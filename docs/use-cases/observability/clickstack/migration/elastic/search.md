@@ -7,6 +7,7 @@ sidebar_label: 'Search'
 sidebar_position: 3
 description: 'Searching in ClickStack and Elastic'
 doc_type: 'guide'
+keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,7 +24,7 @@ For simple log and trace exploration, HyperDX provides a [Lucene-style syntax](/
 
 <Image img={hyperdx_search} alt="Search" size="lg"/>
 
-HyperDX's search interface supports this familiar syntax but translates it behind the scenes into efficient SQL `WHERE` clauses, making the experience familiar for Kibana users while still allowing users to leverage the power of SQL when needed. This allows users to exploit the full range of [string search functions](/sql-reference/functions/string-search-functions), [similarity functions](/sql-reference/functions/string-functions#stringjaccardindex) and [date time functions](/sql-reference/functions/date-time-functions) in ClickHouse.
+HyperDX's search interface supports this familiar syntax but translates it behind the scenes into efficient SQL `WHERE` clauses, making the experience familiar for Kibana users while still allowing users to leverage the power of SQL when needed. This allows users to exploit the full range of [string search functions](/sql-reference/functions/string-search-functions), [similarity functions](/sql-reference/functions/string-functions#stringJaccardIndex) and [date time functions](/sql-reference/functions/date-time-functions) in ClickHouse.
 
 <Image img={hyperdx_sql} alt="SQL" size="lg"/>
 
@@ -49,7 +50,7 @@ Both HyperDX and Elasticsearch provide flexible query languages to enable intuit
 | Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | Curly brackets denote exclusive bounds. `*` in ranges are not supported. e.g. `duration:[100 TO *]`|
 | Exists check            | N/A                       | `_exists_:user` or `field:*` | `_exists_` is not supported. Use `LogAttributes.log.file.path: *` for `Map` columns e.g. `LogAttributes`. For root columns, these have to exist and will have a default value if not included in the event. To search for default values or missing columns use the same syntax as Elasticsearch ` ServiceName:*` or `ServiceName != ''`. |
 | Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | Not currently supported in Lucene syntax. Users can use SQL and the [`match`](/sql-reference/functions/string-search-functions#match) function or other [string search functions](/sql-reference/functions/string-search-functions).|
-| Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | Not currently supported in Lucene syntax. Distance functions can be used in SQL e.g. `editDistance('rror', SeverityText) = 1` or [other similarity functions](/sql-reference/functions/string-functions#jarosimilarity). |
+| Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | Not currently supported in Lucene syntax. Distance functions can be used in SQL e.g. `editDistance('rror', SeverityText) = 1` or [other similarity functions](/sql-reference/functions/string-functions#jaroSimilarity). |
 | Proximity search        | Not supported                       | `"fox quick"~5` | Not currently supported in Lucene syntax. |
 | Boosting                | `quick^2 fox` | `quick^2 fox` | Not supported in HyperDX at present. |
 | Field wildcard          | `service.*:error` | `service.*:error` | Not supported in HyperDX at present. |

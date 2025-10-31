@@ -4,6 +4,7 @@ slug: /cloud/reference/billing/clickpipes/streaming-and-object-storage
 title: 'ClickPipes for streaming and object storage'
 description: 'Overview of billing for streaming and object storage ClickPipes'
 doc_type: 'reference'
+keywords: ['billing', 'clickpipes', 'streaming pricing', 'costs', 'pricing']
 ---
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'

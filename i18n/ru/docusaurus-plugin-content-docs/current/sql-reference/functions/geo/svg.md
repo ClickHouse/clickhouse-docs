@@ -1,13 +1,13 @@
 ---
+slug: '/sql-reference/functions/geo/svg'
+sidebar_label: SVG
 description: 'Документация для Svg'
-sidebar_label: 'SVG'
-slug: /sql-reference/functions/geo/svg
 title: 'Функции для генерации изображений SVG из гео-данных'
+doc_type: reference
 ---
-
 ## Svg {#svg}
 
-Возвращает строку с выбранными тегами SVG элементов из гео-данных.
+Возвращает строку выборки тегов SVG элементов из геоданных.
 
 **Синтаксис**
 
@@ -19,8 +19,8 @@ Svg(geometry,[style])
 
 **Параметры**
 
-- `geometry` — Гео данные. [Geo](../../data-types/geo).
-- `style` — Необязательное имя стиля. [String](../../data-types/string).
+- `geometry` — Геоданные. [Geo](../../data-types/geo).
+- `style` — Необязательно имя стиля. [String](../../data-types/string).
 
 **Возвращаемое значение**
 

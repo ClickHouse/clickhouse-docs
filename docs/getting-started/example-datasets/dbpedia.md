@@ -4,7 +4,7 @@ sidebar_label: 'dbpedia dataset'
 slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia dataset'
 keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 The [dbpedia dataset](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) contains 1 million articles from Wikipedia and their vector embeddings generated using the [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) model from OpenAI.

@@ -1,9 +1,10 @@
 ---
-'description': '表示MergeTree表中某些投影的内容。它可以用于自省。'
+'description': '表示 MergeTree 表中某些投影的内容。它可以用于自省。'
 'sidebar_label': 'mergeTreeProjection'
 'sidebar_position': 77
 'slug': '/sql-reference/table-functions/mergeTreeProjection'
 'title': 'mergeTreeProjection'
+'doc_type': 'reference'
 ---
 
 
@@ -19,15 +20,15 @@ mergeTreeProjection(database, table, projection)
 
 ## 参数 {#arguments}
 
-| 参数         | 描述                                            |
-|--------------|-------------------------------------------------|
-| `database`   | 要从中读取投影的数据库名称。                    |
-| `table`      | 要从中读取投影的表名称。                        |
-| `projection` | 要读取的投影。                                  |
+| 参数        | 描述                                           |
+|-------------|-----------------------------------------------|
+| `database`  | 要读取投影的数据库名称。                       |
+| `table`     | 要读取投影的表名称。                           |
+| `projection`| 要读取的投影。                                |
 
 ## 返回值 {#returned_value}
 
-一个表对象，包含由给定投影提供的列。
+一个带有给定投影提供的列的表对象。
 
 ## 使用示例 {#usage-example}
 

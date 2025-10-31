@@ -1,11 +1,11 @@
 ---
+slug: '/chdb/reference'
+description: 'Форматы Данных для chDB'
 title: 'Техническая справка chDB'
-slug: /chdb/reference
-description: 'Форматы данных для chDB'
 keywords: ['chdb', 'форматы данных']
+doc_type: reference
 ---
-
-| Справочная страница    |
-|------------------------|
+| Страница справки       |
+|----------------------|
 | [Форматы данных](/chdb/reference/data-formats)  |
-| [Справка по SQL](/chdb/reference/sql-reference) |
+| [Справочник SQL](/chdb/reference/sql-reference) |

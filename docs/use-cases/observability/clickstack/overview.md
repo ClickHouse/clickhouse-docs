@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: use-cases/observability/clickstack/getting-started
 description: 'Overview for ClickStack - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';

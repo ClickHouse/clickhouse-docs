@@ -1,5 +1,5 @@
 ---
-'slug': '/integrations/index'
+'slug': '/integrations/data-sources/index'
 'keywords':
 - 'AWS S3'
 - 'Azure Data Factory'
@@ -27,16 +27,17 @@
 - 'ODBC'
 'description': '数据源概述页面'
 'title': '数据源'
+'doc_type': 'landing-page'
 ---
 
 
 # 数据源
 
-ClickHouse 允许您轻松地从各种来源将数据摄取到您的数据库中。
-有关更多信息，请参见下列页面：
+ClickHouse 允许您从各种来源轻松地将数据导入到您的数据库中。
+有关更多信息，请参阅下面列出的页面：
 
-| 数据源                                                                      |
-|-----------------------------------------------------------------------------|
+| 数据源                                                                   |
+|-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
 | [Kafka](/integrations/kafka)                                          |

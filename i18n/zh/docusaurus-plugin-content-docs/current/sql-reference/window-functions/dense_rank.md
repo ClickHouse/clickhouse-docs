@@ -4,18 +4,19 @@
 'sidebar_position': 7
 'slug': '/sql-reference/window-functions/dense_rank'
 'title': 'dense_rank'
+'doc_type': 'reference'
 ---
 
 
 # dense_rank
 
-在其分区内对当前行进行排名，不留空缺。换句话说，如果遇到的任何新行的值与之前行的一个值相等，则它将获得下一个连续的排名，而不会在排名中留空缺。
+在其分区内对当前行进行无间隙的排名。换句话说，如果遇到的新行的值等于之前某一行的值，则它将获得下一个连续的排名，而不会在排名中产生间隙。
 
-[rank](./rank.md) 函数提供了相同的行为，但在排名中会留有空缺。
+[rack](./rank.md) 函数提供相同的行为，但会在排名中产生间隙。
 
 **语法**
 
-别名： `denseRank`（区分大小写）
+别名：`denseRank`（区分大小写）
 
 ```sql
 dense_rank ()
@@ -29,11 +30,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返回值**
 
-- 当前行在其分区内的数字，排名不留空缺。[UInt64](../data-types/int-uint.md)。
+- 当前行在其分区内的一个数字，排名无间隙。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频教程 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
+以下示例基于视频教学中的示例：[在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
 
 查询：
 

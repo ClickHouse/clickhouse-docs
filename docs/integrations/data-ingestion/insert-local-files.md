@@ -6,6 +6,7 @@ slug: /integrations/data-ingestion/insert-local-files
 description: 'Learn about Insert Local Files'
 show_related_blogs: true
 doc_type: 'guide'
+keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
 ---
 
 # Insert local files
@@ -42,7 +43,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. We want to lowercase the `author` column, which is easily done with the [`lower` function](/sql-reference/functions/string-functions#lower). We also want to split the `comment` string into tokens and store the result in the `tokens` column, which can be done using the [`extractAll` function](/sql-reference/functions/string-search-functions#extractall). You do all of this in one `clickhouse-client` command - notice how the `comments.tsv` file is piped into the `clickhouse-client` using the `<` operator:
+3. We want to lowercase the `author` column, which is easily done with the [`lower` function](/sql-reference/functions/string-functions#lower). We also want to split the `comment` string into tokens and store the result in the `tokens` column, which can be done using the [`extractAll` function](/sql-reference/functions/string-search-functions#extractAll). You do all of this in one `clickhouse-client` command - notice how the `comments.tsv` file is piped into the `clickhouse-client` using the `<` operator:
 
 ```bash
 clickhouse-client \

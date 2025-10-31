@@ -1,0 +1,19 @@
+
+
+外部通信は、リッスンホスト設定を有効にすることによってネットワークインターフェースに対して行われます。これにより、ClickHouseサーバーホストが他のホストから到達可能になります：
+
+```xml
+<listen_host>0.0.0.0</listen_host>
+```
+
+HTTP APIのポートは`8123`に設定されています：
+
+```xml
+<http_port>8123</http_port>
+```
+
+ClickHouseのネイティブプロトコルによるclickhouse-clientと他のネイティブClickHouseツール、およびclickhouse-serverと他のclickhouse-serversとの間の相互作用のためのTCPポートは`9000`に設定されています：
+
+```xml
+<tcp_port>9000</tcp_port>
+```

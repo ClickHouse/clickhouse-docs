@@ -6,6 +6,10 @@ keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
 description: 'Tableau can use ClickHouse databases and tables as a data source.'
 title: 'Connecting Tableau to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -23,8 +27,11 @@ import tableau_workbook4 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook5 from '@site/static/images/integrations/data-visualization/tableau_workbook5.png';
 import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Connecting Tableau to ClickHouse
+
+<ClickHouseSupportedBadge/>
 
 ClickHouse offers an official Tableau Connector, featured on
 the [Tableau Exchange](https://exchange.tableau.com/products/1064).

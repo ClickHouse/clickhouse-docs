@@ -1,17 +1,15 @@
 ---
-description: 'Агрегатная функция, которая вычисляет позиции вхождений функции
-  maxIntersections.'
+slug: '/sql-reference/aggregate-functions/reference/maxintersectionsposition'
 sidebar_position: 164
-slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
-title: 'maxIntersectionsPosition'
+description: 'Агрегатная функция, которая вычисляет позиции вхождений функции maxIntersections.'
+title: maxIntersectionsPosition
+doc_type: reference
 ---
-
-
 # maxIntersectionsPosition
 
 Агрегатная функция, которая вычисляет позиции вхождений функции [`maxIntersections`](./maxintersections.md).
 
-Синтаксис:
+Синтаксис следующий:
 
 ```sql
 maxIntersectionsPosition(start_column, end_column)
@@ -34,13 +32,9 @@ CREATE TABLE my_events (
     start UInt32,
     end UInt32
 )
-Engine = MergeTree
+ENGINE = MergeTree
 ORDER BY tuple();
-```
 
-Вставляем данные в таблицу:
-
-```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -57,7 +51,7 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-Обратите внимание, что три из этих интервалов имеют значение 4 общее, и это начинается со второго интервала:
+Обратите внимание, что три из этих интервалов имеют значение 4 общее, и это начинается со 2-го интервала:
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
@@ -68,4 +62,4 @@ SELECT maxIntersectionsPosition(start, end) FROM my_events;
 2
 ```
 
-Другими словами, строка `(1,6)` является началом 3 интервалов, которые пересекаются, и 3 - это максимальное количество пересекающихся интервалов.
+Другими словами, строка `(1,6)` является началом 3 интервалов, которые пересекаются, и 3 – это максимальное количество пересекающихся интервалов.

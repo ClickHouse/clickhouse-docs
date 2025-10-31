@@ -3,14 +3,16 @@ sidebar_label: 'Architecture'
 slug: /cloud/reference/architecture
 title: 'ClickHouse Cloud architecture'
 description: 'This page describes the architecture of ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', 'cloud architecture', 'separation of storage and compute']
 doc_type: 'reference'
 ---
 
-import Architecture from '@site/static/images/cloud/reference/architecture.svg';
+import Image from '@theme/IdealImage';
+import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 # ClickHouse Cloud architecture
 
-<Architecture alt='ClickHouse Cloud architecture' class='image' />
+<Image img={Architecture} size='lg' alt='Cloud architecture'/>
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage

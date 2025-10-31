@@ -1,5 +1,5 @@
 ---
-'description': '在Debian/Ubuntu Linux上安装ClickHouse'
+'description': '在 Debian/Ubuntu Linux 上安装 ClickHouse'
 'keywords':
 - 'ClickHouse'
 - 'install'
@@ -8,8 +8,9 @@
 - 'deb'
 'sidebar_label': 'Debian/Ubuntu'
 'slug': '/install/debian_ubuntu'
-'title': '在Debian/Ubuntu上安装ClickHouse'
+'title': '在 Debian/Ubuntu 上安装 ClickHouse'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import DebianProd from './_snippets/_deb_install.md'

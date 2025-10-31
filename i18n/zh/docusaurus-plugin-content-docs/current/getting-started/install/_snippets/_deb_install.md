@@ -1,19 +1,14 @@
----
-null
-...
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
 # 在 Debian/Ubuntu 上安装 ClickHouse {#install-from-deb-packages}
 
-> 建议使用官方预编译的 `deb` 包来安装 **Debian** 或 **Ubuntu**。
+> 推荐使用官方预编译的 `deb` 包用于 **Debian** 或 **Ubuntu**。
 
 <VerticalStepper>
 
-## 设置 Debian 存储库 {#setup-the-debian-repository}
+## 设置 Debian 仓库 {#setup-the-debian-repository}
 
 要安装 ClickHouse，请运行以下命令：
 
@@ -39,11 +34,11 @@ echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] ht
 sudo apt-get update
 ```
 
-- 您可以将 `stable` 替换为 `lts`，以根据需要使用不同的 [发布类型](/knowledgebase/production)。
-- 您可以从 [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/) 手动下载并安装软件包。
+- 您可以根据需要将 `stable` 替换为 `lts` 以使用不同的 [发布类型](/knowledgebase/production)。
+- 您可以从 [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/) 手动下载和安装软件包。
 <br/>
 <details>
-<summary>旧版本的 deb-packages 安装方法</summary>
+<summary>旧版本的 deb-package 安装方法</summary>
 
 ```bash
 
@@ -108,8 +103,8 @@ clickhouse-client --password
 
 :::tip
 在生产环境中，我们强烈建议在专用节点上运行 ClickHouse Keeper。
-在测试环境中，如果您决定在同一台服务器上运行 ClickHouse Server 和 ClickHouse Keeper，
-则无需安装 ClickHouse Keeper，因为它已包含在 ClickHouse 服务器中。
+在测试环境中，如果您决定在同一服务器上运行 ClickHouse 服务器和 ClickHouse Keeper，
+则无需单独安装 ClickHouse Keeper，因为它包含在 ClickHouse 服务器中。
 :::
 
 要在独立的 ClickHouse Keeper 服务器上安装 `clickhouse-keeper`，请运行：
@@ -130,18 +125,18 @@ sudo systemctl status clickhouse-keeper
 
 ## 软件包 {#packages}
 
-可用的各种 deb 软件包详述如下：
+可用的各种 deb 软件包详情如下：
 
-| 包                              | 描述                                                                                                                                                                                                                                                                              |
-|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `clickhouse-common-static`     | 安装 ClickHouse 编译的二进制文件。                                                                                                                                                                                                                                                  |
-| `clickhouse-server`            | 创建 `clickhouse-server` 的符号链接并安装默认服务器配置。                                                                                                                                                                                                                      |
-| `clickhouse-client`            | 创建 `clickhouse-client` 的符号链接和其他与客户端相关的工具，并安装客户端配置文件。                                                                                                                                                                                                |
-| `clickhouse-common-static-dbg` | 安装带调试信息的 ClickHouse 编译的二进制文件。                                                                                                                                                                                                                                     |
-| `clickhouse-keeper`            | 用于在专用 ClickHouse Keeper 节点上安装 ClickHouse Keeper。如果您在与 ClickHouse 服务器相同的服务器上运行 ClickHouse Keeper，则无需安装此软件包。安装 ClickHouse Keeper 及默认的 ClickHouse Keeper 配置文件。 |
+| 软件包                          | 描述                                                                                                                                                                                                                                                         |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `clickhouse-common-static`      | 安装 ClickHouse 编译的二进制文件。                                                                                                                                                                                                                          |
+| `clickhouse-server`             | 创建 `clickhouse-server` 的符号链接并安装默认的服务器配置。                                                                                                                                                                                              |
+| `clickhouse-client`             | 创建 `clickhouse-client` 及其他与客户端相关工具的符号链接，并安装客户端配置文件。                                                                                                                                                                         |
+| `clickhouse-common-static-dbg`  | 安装 ClickHouse 编译的二进制文件，并包含调试信息。                                                                                                                                                                                                          |
+| `clickhouse-keeper`             | 用于在专用 ClickHouse Keeper 节点上安装 ClickHouse Keeper。如果您在与 ClickHouse 服务器相同的服务器上运行 ClickHouse Keeper，则无需安装此软件包。安装 ClickHouse Keeper 和默认的 ClickHouse Keeper 配置文件。                                             |
 
 <br/>
 :::info
-如果您需要安装特定版本的 ClickHouse，您必须安装具有相同版本的所有软件包：
+如果您需要安装特定版本的 ClickHouse，必须安装所有相同版本的软件包：
 `sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7`
 :::

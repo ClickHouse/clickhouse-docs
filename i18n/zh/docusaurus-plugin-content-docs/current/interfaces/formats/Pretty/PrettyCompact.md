@@ -7,6 +7,7 @@
 'output_format': true
 'slug': '/interfaces/formats/PrettyCompact'
 'title': 'PrettyCompact'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,11 +18,10 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`Pretty`](./Pretty.md) 格式不同的是，此格式在行之间绘制了网格以显示表格。 
-因此，结果更加紧凑。
+与 [`Pretty`](./Pretty.md) 格式不同，该格式在行之间绘制了网格，因此表格结果更加紧凑。
 
 :::note
-此格式默认在命令行客户端的交互模式下使用。
+在交互模式下，命令行客户端默认使用此格式。
 :::
 
 ## 示例用法 {#example-usage}

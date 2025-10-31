@@ -1,18 +1,17 @@
 ---
-description: 'Вычисляет квантиль числовой последовательности данных с использованием линейной интерполяции, принимая во внимание вес каждого элемента.'
+slug: '/sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted'
 sidebar_position: 176
-slug: /sql-reference/aggregate-functions/reference/quantileInterpolatedWeighted
-title: 'quantileInterpolatedWeighted'
+description: 'Вычисляет квантиль числовой последовательности данных с использованием'
+title: quantileInterpolatedWeighted
+doc_type: reference
 ---
-
-
 # quantileInterpolatedWeighted
 
 Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием линейной интерполяции, принимая во внимание вес каждого элемента.
 
-Чтобы получить интерполированное значение, все переданные значения объединяются в массив, который затем сортируется по соответствующим весам. Интерполяция квантилей затем выполняется с использованием [взвешенного метода процентилей](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) путем построения кумулятивного распределения на основе весов, а затем выполняется линейная интерполяция с использованием весов и значений для вычисления квантилей.
+Чтобы получить интерполированное значение, все переданные значения объединяются в массив, который затем сортируется по соответствующим весам. Затем выполняется интерполяция квантиля с использованием [взвешенного процентного метода](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) путем построения кумулятивного распределения на основе весов, а затем выполняется линейная интерполяция с использованием весов и значений для вычисления квантилей.
 
-При использовании нескольких функций `quantile*` с разными уровнями в запросе внутренние состояния не объединяются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
+При использовании нескольких функций `quantile*` с различными уровнями в запросе внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы). В этом случае используйте функцию [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles).
 
 **Синтаксис**
 
@@ -25,12 +24,12 @@ quantileInterpolatedWeighted(level)(expr, weight)
 **Аргументы**
 
 - `level` — Уровень квантиля. Необязательный параметр. Константное число с плавающей запятой от 0 до 1. Рекомендуется использовать значение `level` в диапазоне `[0.01, 0.99]`. Значение по умолчанию: 0.5. При `level=0.5` функция вычисляет [медиану](https://en.wikipedia.org/wiki/Median).
-- `expr` — Выражение по значениям колонки, приводящее к числовым [типам данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
+- `expr` — Выражение по значениям колонки, дающее числовые [типы данных](/sql-reference/data-types), [Date](../../../sql-reference/data-types/date.md) или [DateTime](../../../sql-reference/data-types/datetime.md).
 - `weight` — Колонка с весами членов последовательности. Вес — это количество вхождений значения.
 
 **Возвращаемое значение**
 
-- Квантиль указанного уровня.
+- Квантиль заданного уровня.
 
 Тип:
 
@@ -65,7 +64,7 @@ SELECT quantileInterpolatedWeighted(n, val) FROM t
 └──────────────────────────────────────┘
 ```
 
-**Смотрите также**
+**Смотрите Также**
 
 - [median](/sql-reference/aggregate-functions/reference/median)
 - [quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles)

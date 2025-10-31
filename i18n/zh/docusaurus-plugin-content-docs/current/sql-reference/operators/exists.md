@@ -1,18 +1,19 @@
 ---
-'description': '`EXISTS` 运算符的文档'
+'description': '`EXISTS` 操作符的文档'
 'slug': '/sql-reference/operators/exists'
 'title': 'EXISTS'
+'doc_type': 'reference'
 ---
 
 
 # EXISTS
 
-`EXISTS` 运算符检查子查询的结果中有多少条记录。如果是空的，则运算符返回 `0`。否则，它返回 `1`。
+`EXISTS` 操作符检查子查询结果中有多少记录。如果结果为空，则该操作符返回 `0`。否则，它返回 `1`。
 
-`EXISTS` 也可以在 [WHERE](../../sql-reference/statements/select/where.md) 子句中使用。
+`EXISTS` 也可以用于 [WHERE](../../sql-reference/statements/select/where.md) 子句。
 
 :::tip    
-不支持在子查询中引用主查询的表和列。
+在子查询中不支持对主查询表和列的引用。
 :::
 
 **语法**
@@ -37,7 +38,7 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 └───────────────────┴───────────────────┘
 ```
 
-返回多行的子查询的查询：
+返回几行的子查询的查询：
 
 ```sql
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);

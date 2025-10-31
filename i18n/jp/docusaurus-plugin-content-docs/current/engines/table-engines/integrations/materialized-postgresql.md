@@ -1,10 +1,10 @@
 ---
-description: 'Creates a ClickHouse table with an initial data dump of a PostgreSQL
-  table and starts the replication process.'
-sidebar_label: 'MaterializedPostgreSQL'
-sidebar_position: 130
-slug: '/engines/table-engines/integrations/materialized-postgresql'
-title: 'MaterializedPostgreSQL'
+'description': 'PostgreSQL テーブルの初期データダンプを使用して ClickHouse テーブルを作成し、レプリケーションプロセスを開始します。'
+'sidebar_label': 'MaterializedPostgreSQL'
+'sidebar_position': 130
+'slug': '/engines/table-engines/integrations/materialized-postgresql'
+'title': 'MaterializedPostgreSQL'
+'doc_type': 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -17,19 +17,19 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 <CloudNotSupportedBadge/>
 
 :::note
-ClickHouse Cloud のユーザーは、PostgreSQL から ClickHouse へのレプリケーションには [ClickPipes](/integrations/clickpipes) の使用を推奨します。これは PostgreSQL に対する高性能なデータ変更キャプチャ (CDC) をネイティブにサポートしています。
+ClickHouse Cloudのユーザーは、PostgreSQLのレプリケーションのために[ClickPipes](/integrations/clickpipes)を使用することをお勧めします。これにより、PostgreSQLのために高性能な変更データキャプチャ（CDC）がネイティブにサポートされます。
 :::
 
-ClickHouse テーブルを PostgreSQL テーブルの初期データダンプで作成し、レプリケーションプロセスを開始します。つまり、リモートの PostgreSQL データベース内の PostgreSQL テーブルで新しい変更が行われるたびに適用するバックグラウンドジョブを実行します。
+PostgreSQLテーブルの初期データダンプを使用してClickHouseテーブルを作成し、レプリケーションプロセスを開始します。つまり、リモートPostgreSQLデータベース内のPostgreSQLテーブルでの新しい変更が発生するたびに適用する背景ジョブを実行します。
 
 :::note
-このテーブルエンジンは実験的です。使用するには、設定ファイルで `allow_experimental_materialized_postgresql_table` を 1 に設定するか、`SET` コマンドを使用してください：
+このテーブルエンジンは実験的です。使用するには、設定ファイルに`allow_experimental_materialized_postgresql_table`を1に設定するか、`SET`コマンドを使用して設定してください：
 ```sql
 SET allow_experimental_materialized_postgresql_table=1
 ```
 :::
 
-複数のテーブルが必要な場合は、テーブルエンジンの代わりに [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) データベースエンジンを使用し、レプリケーションするテーブルを指定する `materialized_postgresql_tables_list` 設定を使用することを強く推奨します（データベースの `schema` を追加することも可能です）。これにより CPU 使用率が改善され、接続数やリモート PostgreSQL データベース内のレプリケーションスロット数が減少します。
+複数のテーブルが必要な場合、テーブルエンジンの代わりに[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)データベースエンジンを使用し、レプリケーションされるテーブルを指定する`materialized_postgresql_tables_list`設定を使用することを強くお勧めします（データベースの`schema`を追加することも可能）。これにより、CPU使用率が向上し、接続数が減少し、リモートPostgreSQLデータベース内のレプリケーションスロットも少なくなります。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -39,34 +39,34 @@ ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres
 PRIMARY KEY key;
 ```
 
-**エンジンのパラメータ**
+**エンジンパラメータ**
 
-- `host:port` — PostgreSQL サーバーのアドレス。
-- `database` — リモートデータベース名。
-- `table` — リモートテーブル名。
-- `user` — PostgreSQL ユーザー。
+- `host:port` — PostgreSQLサーバーのアドレス。
+- `database` — リモートデータベースの名前。
+- `table` — リモートテーブルの名前。
+- `user` — PostgreSQLユーザー。
 - `password` — ユーザーパスワード。
 
 ## 要件 {#requirements}
 
-1. [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 設定は `logical` に設定されている必要があり、`max_replication_slots` パラメータは PostgreSQL 設定ファイル内で少なくとも `2` に設定されている必要があります。
+1. [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) の設定は`logical`でなければならず、`max_replication_slots` パラメータはPostgreSQL設定ファイル内で少なくとも`2`以上でなければなりません。
 
-2. `MaterializedPostgreSQL` エンジンを持つテーブルは、PostgreSQL テーブルのレプリカアイデンティティインデックス（デフォルトでは：主キー）と同じ主キーを持たなければなりません（[レプリカアイデンティティインデックスの詳細はこちら](../../../engines/database-engines/materialized-postgresql.md#requirements)）。
+2. `MaterializedPostgreSQL`エンジンを持つテーブルは、PostgreSQLテーブルのレプリカアイデンティティインデックス（デフォルトでは：主キー）と同じ主キーを持たなければなりません（[レプリカアイデンティティインデックスの詳細](../../../engines/database-engines/materialized-postgresql.md#requirements)を参照）。
 
-3. データベースは [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)) のみが許可されています。
+3. データベースは[Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems))のみが許可されています。
 
-4. `MaterializedPostgreSQL` テーブルエンジンは、[pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html) PostgreSQL 関数を必要とするため、PostgreSQL バージョン >= 11 のみで動作します。
+4. `MaterializedPostgreSQL`テーブルエンジンは、実装が[pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html) PostgreSQL関数を必要とするため、PostgreSQLバージョン>= 11でのみ機能します。
 
 ## 仮想カラム {#virtual-columns}
 
-- `_version` — トランザクションカウンター。型： [UInt64](../../../sql-reference/data-types/int-uint.md)。
+- `_version` — トランザクションカウンタ。タイプ：[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
-- `_sign` — 削除マーク。型： [Int8](../../../sql-reference/data-types/int-uint.md)。可能な値：
-    - `1` — 行は削除されていない、
-    - `-1` — 行は削除されている。
+- `_sign` — 削除マーク。タイプ：[Int8](../../../sql-reference/data-types/int-uint.md)。可能な値：
+  - `1` — 行は削除されていない、
+  - `-1` — 行は削除されている。
 
-これらのカラムはテーブル作成時に追加する必要はありません。常に `SELECT` クエリでアクセス可能です。
-`_version` カラムは `WAL` 内の `LSN` ポジションと等しいため、レプリケーションがどれほど最新かをチェックするために使用できます。
+これらのカラムはテーブル作成時に追加する必要はありません。`SELECT`クエリで常にアクセスできます。
+`_version`カラムは`WAL`の`LSN`位置に等しいため、レプリケーションがどれくらい最新の状態であるかを確認するために使用できます。
 
 ```sql
 CREATE TABLE postgresql_db.postgresql_replica (key UInt64, value UInt64)
@@ -77,5 +77,5 @@ SELECT key, value, _version FROM postgresql_db.postgresql_replica;
 ```
 
 :::note
-[**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) 値のレプリケーションはサポートされていません。データ型のデフォルト値が使用されます。
+[**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html)値のレプリケーションはサポートされていません。データ型のデフォルト値が使用されます。
 :::

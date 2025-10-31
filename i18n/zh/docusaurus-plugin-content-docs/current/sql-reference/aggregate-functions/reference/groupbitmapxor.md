@@ -1,17 +1,18 @@
 ---
-'description': '计算一个位图列的 XOR，并返回类型为 UInt64 的基数，如果使用后缀 -State，则返回一个位图对象'
+'description': '计算位图列的 XOR，并返回 UInt64 类型的基数，如果与后缀 -State 一起使用，则返回一个位图对象'
 'sidebar_position': 151
 'slug': '/sql-reference/aggregate-functions/reference/groupbitmapxor'
 'title': 'groupBitmapXor'
+'doc_type': 'reference'
 ---
 
 
 # groupBitmapXor
 
-`groupBitmapXor` 计算位图列的 XOR，并返回 UInt64 类型的基数，如果与后缀 -State 一起使用，则返回一个 [bitmap object](../../../sql-reference/functions/bitmap-functions.md)。
+`groupBitmapXor` 计算一个位图列的异或（XOR），返回类型为 UInt64 的基数，如果带有后缀 -State 使用，则返回一个 [bitmap object](../../../sql-reference/functions/bitmap-functions.md)。
 
 ```sql
-groupBitmapOr(expr)
+groupBitmapXor(expr)
 ```
 
 **参数**
@@ -20,7 +21,7 @@ groupBitmapOr(expr)
 
 **返回值**
 
-UInt64 类型的值。
+返回值为 `UInt64` 类型。
 
 **示例**
 
@@ -34,9 +35,9 @@ CREATE TABLE bitmap_column_expr_test2
 ENGINE = MergeTree
 ORDER BY tag_id;
 
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] as Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] AS Array(UInt32))));
 
 SELECT groupBitmapXor(z) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%');
 ┌─groupBitmapXor(z)─┐

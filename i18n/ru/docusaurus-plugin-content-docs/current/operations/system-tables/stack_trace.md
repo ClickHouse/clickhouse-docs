@@ -1,10 +1,10 @@
 ---
-description: 'Системная таблица, которая содержит трассировки стека всех серверных потоков. Позволяет разработчикам исследовать состояние сервера.'
+slug: '/operations/system-tables/stack_trace'
+description: 'Системная таблица, которая содержит трассировки стека всех потоков'
+title: system.stack_trace
 keywords: ['системная таблица', 'трассировка стека']
-slug: /operations/system-tables/stack_trace
-title: 'system.stack_trace'
+doc_type: reference
 ---
-
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
@@ -12,24 +12,24 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-Содержит трассировки стека всех серверных потоков. Позволяет разработчикам исследовать состояние сервера.
+Содержит трассировки стеков всех потоков сервера. Позволяет разработчикам инспектировать состояние сервера.
 
-Для анализа стековых фреймов используйте функции [интроспекции](../../sql-reference/functions/introspection.md) `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle`.
+Для анализа стековых фреймов используйте функции инспекции `addressToLine`, `addressToLineWithInlines`, `addressToSymbol` и `demangle` [инспекционные функции](../../sql-reference/functions/introspection.md).
 
-Колонки:
+Столбцы:
 
 - `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока.
 - `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Идентификатор потока.
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения подробной информации о выполняемом запросе из системной таблицы [query_log](../system-tables/query_log.md).
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — [трассировка стека](https://en.wikipedia.org/wiki/Stack_trace), представляющая собой список физических адресов, где хранятся вызванные методы.
+- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, который можно использовать для получения деталей о запросе, который выполнялся из системной таблицы [query_log](../system-tables/query_log.md).
+- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — [трассировка стека](https://en.wikipedia.org/wiki/Stack_trace), представляющая собой список физических адресов, где хранятся вызываемые методы.
 
 :::tip
-Посмотрите на базу знаний для полезных запросов, включая [как увидеть, какие потоки в данный момент выполняются](/knowledgebase/find-expensive-queries) и [полезные запросы для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
+Посмотрите Знание Базу для некоторых полезных запросов, включая [как увидеть, какие потоки в настоящее время выполняются](/knowledgebase/find-expensive-queries) и [полезные запросы для устранения неполадок](/knowledgebase/useful-queries-for-troubleshooting).
 :::
 
 **Пример**
 
-Включение функций интроспекции:
+Включение инспекционных функций:
 
 ```sql
 SET allow_introspection_functions = 1;
@@ -99,7 +99,7 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 
 **См. также**
 
-- [Функции интроспекции](../../sql-reference/functions/introspection.md) — Какие функции интроспекции доступны и как их использовать.
-- [system.trace_log](../system-tables/trace_log.md) — Содержит трассировки стека, собранные профилятором запросов.
-- [arrayMap](/sql-reference/functions/array-functions#arraymapfunc-arr1-) — Описание и пример использования функции `arrayMap`.
-- [arrayFilter](/sql-reference/functions/array-functions#arrayfilterfunc-arr1-) — Описание и пример использования функции `arrayFilter`.
+- [Инспекционные функции](../../sql-reference/functions/introspection.md) — Какие инспекционные функции доступны и как их использовать.
+- [system.trace_log](../system-tables/trace_log.md) — Содержит трассировки стеков, собранные с помощью профайлера запросов выборочной нагрузки.
+- [arrayMap](/sql-reference/functions/array-functions#arrayMap) — Описание и пример использования функции `arrayMap`.
+- [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — Описание и пример использования функции `arrayFilter`.

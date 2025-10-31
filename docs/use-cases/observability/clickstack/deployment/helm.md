@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 2
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['ClickStack Helm chart', 'Helm ClickHouse deployment', 'HyperDX Helm installation', 'Kubernetes observability stack', 'ClickStack Kubernetes deployment']
 ---
 
 import Image from '@theme/IdealImage';

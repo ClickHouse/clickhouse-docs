@@ -1,13 +1,14 @@
 ---
-'description': '返回指数平滑移动平均值的和，时间序列在索引 `t` 的时间上。'
+'description': '返回时间序列在索引 `t` 处的指数平滑移动平均值的总和。'
 'sidebar_position': 136
 'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum'
 'title': 'exponentialTimeDecayedSum'
+'doc_type': 'reference'
 ---
 
 ## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
 
-返回时间序列在索引 `t` 处的指数平滑移动平均值的总和。
+返回时间序列在时间索引 `t` 处的指数平滑移动平均值的总和。
 
 **语法**
 
@@ -22,7 +23,7 @@ exponentialTimeDecayedSum(x)(v, t)
 
 **参数**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+- `x` — 值的权重衰减到 1/e 所需的时间差。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 

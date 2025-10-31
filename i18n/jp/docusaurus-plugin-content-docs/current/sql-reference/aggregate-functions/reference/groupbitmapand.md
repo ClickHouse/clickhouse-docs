@@ -1,13 +1,12 @@
 ---
-description: 'ビットマップ列のANDを計算し、タイプUInt64の濃度を返します。サフィックス-Stateを追加すると、ビットマップオブジェクトが返されます。'
-sidebar_position: 149
-slug: '/sql-reference/aggregate-functions/reference/groupbitmapand'
-title: 'groupBitmapAnd'
+'description': 'ビットマップカラムのANDを計算し、UInt64型の基数を返します。-Stateサフィックスを追加すると、ビットマップオブジェクトを返します。'
+'sidebar_position': 149
+'slug': '/sql-reference/aggregate-functions/reference/groupbitmapand'
+'title': 'groupBitmapAnd'
+'doc_type': 'reference'
 ---
 
-
-
-計算の結果を返し、ビットマップカラムの AND を求め、UInt64 型の基数を返します。サフィックス -State を追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) が返されます。
+ビットマップカラムのAND計算を行い、UInt64型の基数を返します。接尾辞-Stateを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)が返されます。
 
 ```sql
 groupBitmapAnd(expr)
@@ -15,11 +14,11 @@ groupBitmapAnd(expr)
 
 **引数**
 
-`expr` – 結果が `AggregateFunction(groupBitmap, UInt*)` 型になる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)`型の結果となる式。
 
 **戻り値**
 
-`UInt64` 型の値。
+UInt64型の値。
 
 **例**
 
@@ -33,9 +32,9 @@ CREATE TABLE bitmap_column_expr_test2
 ENGINE = MergeTree
 ORDER BY tag_id;
 
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] as Array(UInt32))));
-INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] as Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag1', bitmapBuild(cast([1,2,3,4,5,6,7,8,9,10] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag2', bitmapBuild(cast([6,7,8,9,10,11,12,13,14,15] AS Array(UInt32))));
+INSERT INTO bitmap_column_expr_test2 VALUES ('tag3', bitmapBuild(cast([2,4,6,8,10,12] AS Array(UInt32))));
 
 SELECT groupBitmapAnd(z) FROM bitmap_column_expr_test2 WHERE like(tag_id, 'tag%');
 ┌─groupBitmapAnd(z)─┐
@@ -47,9 +46,3 @@ SELECT arraySort(bitmapToArray(groupBitmapAndState(z))) FROM bitmap_column_expr_
 │ [6,8,10]                                         │
 └──────────────────────────────────────────────────┘
 ```
-
----
-
-### Evaluation
-
-The translation accurately reflects the original content in terms of meaning and technical terminology. All HTML tags, markdown formatting, and important terms have been preserved according to the provided guidelines. The translation is clear, professional, and suitable for users familiar with ClickHouse and database terminology. No modifications are necessary at this time.

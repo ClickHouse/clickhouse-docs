@@ -4,6 +4,7 @@
 'sidebar_position': 40
 'slug': '/sql-reference/statements/alter/update'
 'title': 'ALTER TABLE ... UPDATE 语句'
+'doc_type': 'reference'
 ---
 
 
@@ -13,13 +14,13 @@
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
 
-操作与指定过滤表达式匹配的数据。实现为 [mutation](/sql-reference/statements/alter/index.md#mutations)。
+操纵与指定筛选表达式匹配的数据。作为一个 [mutation](/sql-reference/statements/alter/index.md#mutations) 实现。
 
 :::note    
-`ALTER TABLE` 前缀使得此语法与大多数其他支持 SQL 的系统不同。它旨在表明，与 OLTP 数据库中的类似查询不同，这是一项不设计为频繁使用的重操作。
+`ALTER TABLE` 前缀使得该语法与大多数支持 SQL 的其他系统不同。它旨在表示，与 OLTP 数据库中的类似查询不同，这是一项重操作，并不设计为频繁使用。
 :::
 
-`filter_expr` 必须是 `UInt8` 类型。此查询将指定列的值更新为 `filter_expr` 取非零值的行中对应表达式的值。值使用 `CAST` 运算符转换为列类型。不支持更新在主键或分区键计算中使用的列。
+`filter_expr` 必须为 `UInt8` 类型。此查询将指定列的值更新为 `filter_expr` 非零值行中对应表达式的值。值通过 `CAST` 操作符转换为列类型。不支持更新用于计算主键或分区键的列。
 
 一个查询可以包含多个用逗号分隔的命令。
 
@@ -30,7 +31,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 - [Mutations](/sql-reference/statements/alter/index.md#mutations)
 - [ALTER 查询的同步性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 - [mutations_sync](/operations/settings/settings.md/#mutations_sync) 设置
-
 
 ## 相关内容 {#related-content}
 

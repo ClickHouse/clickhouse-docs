@@ -7,6 +7,7 @@
 'output_format': true
 'slug': '/interfaces/formats/PrettySpace'
 'title': 'PrettySpace'
+'doc_type': 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
@@ -17,7 +18,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 ## 描述 {#description}
 
-与 [`PrettyCompact`](./PrettyCompact.md) 格式不同，使用空白（空格字符）来显示表，而不是网格。
+与[`PrettyCompact`](./PrettyCompact.md)格式不同的是，使用空白（空格字符）来显示表格，而不是使用网格。
 
 ## 示例用法 {#example-usage}
 

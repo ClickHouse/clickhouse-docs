@@ -1,15 +1,14 @@
 ---
-description: 'Применяет средний z-тест к выборкам из двух популяций.'
-sidebar_label: 'meanZTest'
+slug: '/sql-reference/aggregate-functions/reference/meanztest'
+sidebar_label: meanZTest
 sidebar_position: 166
-slug: /sql-reference/aggregate-functions/reference/meanztest
-title: 'meanZTest'
+description: 'Применяет тест Z для среднего к выборкам из двух популяций.'
+title: meanZTest
+doc_type: reference
 ---
-
-
 # meanZTest
 
-Применяет средний z-тест к выборкам из двух популяций.
+Применяет z-тест средних значений к выборкам из двух популяций.
 
 **Синтаксис**
 
@@ -21,24 +20,23 @@ meanZTest(population_variance_x, population_variance_y, confidence_level)(sample
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое число](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное число](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целое число](../../../sql-reference/data-types/int-uint.md).
+- `sample_data` — Данные выборки. [Целочисленные](../../../sql-reference/data-types/int-uint.md), [Числа с плавающей запятой](../../../sql-reference/data-types/float.md) или [Десятичные](../../../sql-reference/data-types/decimal.md).
+- `sample_index` — Индекс выборки. [Целочисленные](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `population_variance_x` — Дисперсия для популяции x. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
-- `population_variance_y` — Дисперсия для популяции y. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
+- `population_variance_x` — Дисперсия для популяции x. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
+- `population_variance_y` — Дисперсия для популяции y. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
+- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Числа с плавающей запятой](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
 [Кортеж](../../../sql-reference/data-types/tuple.md) с четырьмя элементами:
 
-- рассчитанная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
+- рассчитанный t-статистик. [Float64](../../../sql-reference/data-types/float.md).
 - рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанный нижний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанный верхний предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
-
+- низкий предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
+- высокий предел доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).
 
 **Пример**
 

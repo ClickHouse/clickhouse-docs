@@ -10,6 +10,7 @@
 'slug': '/install/redhat'
 'title': '在基于rpm的Linux发行版上安装ClickHouse'
 'hide_title': true
+'doc_type': 'guide'
 ---
 
 import RPM from './_snippets/_rpm_install.md'

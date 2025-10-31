@@ -1,8 +1,9 @@
 ---
 slug: /operations/overview
-sidebar_label: 'Performance and Optimizations Overview'
+sidebar_label: 'Performance and optimizations overview'
 description: 'Overview page of Performance and Optimizations'
 title: 'Performance and Optimizations'
+keywords: ['performance optimization', 'best practices', 'optimization guide', 'ClickHouse performance', 'database optimization']
 doc_type: 'reference'
 ---
 

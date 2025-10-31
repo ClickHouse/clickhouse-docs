@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
 description: 'Microsoft Power BI is an interactive data visualization software product developed by Microsoft with a primary focus on business intelligence.'
 title: 'Power BI'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

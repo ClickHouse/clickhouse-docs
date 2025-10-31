@@ -5,6 +5,7 @@ sidebar_position: 3
 description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
 title: 'Google Dataflow Templates'
 doc_type: 'guide'
+keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

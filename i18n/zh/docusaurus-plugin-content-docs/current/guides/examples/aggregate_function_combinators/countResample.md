@@ -1,7 +1,7 @@
 ---
 'slug': '/examples/aggregate-function-combinators/countResample'
 'title': 'countResample'
-'description': '使用 count 的 Resample 组合器的示例'
+'description': '使用 count 的 Resample 组合子的示例'
 'keywords':
 - 'count'
 - 'Resample'
@@ -9,6 +9,7 @@
 - 'examples'
 - 'countResample'
 'sidebar_label': 'countResample'
+'doc_type': 'reference'
 ---
 
 
@@ -16,11 +17,9 @@
 
 ## Description {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-组合器可以应用于[`count`](/sql-reference/aggregate-functions/reference/count)
-聚合函数，以在固定数量的区间(`N`)中计算指定键列的值。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 聚合函数，以在固定数量的区间（`N`）中统计指定键列的值。
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
 ### Basic example {#basic-example}
 
@@ -45,7 +44,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们计算年龄在区间 `[30,60)` 和 `[60,75)` 的所有人。由于我们使用整数表示年龄，因此我们得到的年龄在 `[30, 59]` 和 `[60,74]` 区间。为此，我们将 `Resample` 组合器应用于 `count`。
+我们将统计年龄在区间 `[30,60)` 和 `[60,75)` 的所有人。由于我们使用整数表示年龄，因此我们得到的年龄在 `[30, 59]` 和 `[60,74]` 区间内。为此，我们将 `Resample` 组合器应用于 `count`。
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data

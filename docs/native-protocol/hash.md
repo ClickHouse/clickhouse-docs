@@ -4,6 +4,7 @@ sidebar_position: 5
 title: 'CityHash'
 description: 'Native protocol hash'
 doc_type: 'reference'
+keywords: ['CityHash', 'native protocol hash', 'hash function', 'Google CityHash', 'protocol hashing']
 ---
 
 # CityHash

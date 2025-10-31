@@ -1,11 +1,10 @@
 ---
-description: 'Вычисляет коэффициент корреляции Пирсона, но использует численно стабильный алгоритм.'
+slug: '/sql-reference/aggregate-functions/reference/corrstable'
 sidebar_position: 119
-slug: /sql-reference/aggregate-functions/reference/corrstable
-title: 'corrStable'
+description: 'Вычисляет коэффициент корреляции Пирсона, но использует численно устойчивый'
+title: corrStable
+doc_type: reference
 ---
-
-
 # corrStable
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient): 
@@ -14,7 +13,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-Похож на функцию [`corr`](../reference/corr.md), но использует численно стабильный алгоритм. В результате `corrStable` медленнее, чем `corr`, но выдает более точный результат.
+Похож на функцию [`corr`](../reference/corr.md), но использует численно устойчивый алгоритм. В результате `corrStable` медленнее, чем `corr`, но дает более точный результат.
 
 **Синтаксис**
 

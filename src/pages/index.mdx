@@ -49,7 +49,7 @@ export const Hero = ({children, color}) => {
                     }}>
                         <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconLightning
                             iconWidth={'24px'}/></div>
-                        <div>Quick Start</div>
+                        <div>Quick start</div>
                     </div>
                     <div>Get started with Cloud</div>
                 </a>
@@ -93,7 +93,7 @@ export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link})
 export const SearchClickHouse = ({children, color}) => {
     return (
         <div className='home-page-section-search'>
-            <p style={{fontWeight: '600', fontSize: '18px', margin: 'auto', flex: '1'}}>Search documentation</p>
+            <p style={{fontWeight: '600', fontSize: '18px', marginTop: '1.5rem', flex: '1'}}>Search documentation</p>
             <div className='home-page-hero-right-search'>
                 <SearchBar style="width: 75%"/>
             </div>
@@ -175,10 +175,10 @@ export const DeployClickHouse = ({children, color}) => {
                 <HomePageOptionButton svgIcon={<IconCloud iconWidth='28px'/>}
                                       link='https://clickhouse.com/cloud'>Cloud</HomePageOptionButton>
                 <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px'/>}
-                                      link='/docs/architecture/introduction'>Node Deployment</HomePageOptionButton>
+                                      link='/docs/architecture/introduction'>Node deployment</HomePageOptionButton>
                 <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px'/>}
                                       link='/docs/architecture/cluster-deployment'>Cluster
-                    Deployment</HomePageOptionButton>
+                    deployment</HomePageOptionButton>
             </div>
         </div>
     )
@@ -199,7 +199,7 @@ export const MoreResources = ({children, color}) => {
                                           link='/docs/whats-new/changelog'>Changelog</HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconDatasets iconWidth='28px'/>}
                                           link='/docs/getting-started/example-datasets'>Sample
-                        Datasets</HomePageOptionButton>
+                        datasets</HomePageOptionButton>
                 </div>
             </div>
         </div>

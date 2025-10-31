@@ -4,6 +4,7 @@ description: 'Removing specific tables from a ClickPipe'
 sidebar_label: 'Remove Table'
 slug: /integrations/clickpipes/postgres/removing_tables
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

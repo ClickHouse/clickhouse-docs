@@ -1,9 +1,10 @@
 ---
 description: 'A new analytical benchmark for machine-generated log data'
-sidebar_label: 'Brown University Benchmark'
+sidebar_label: 'Brown university benchmark'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Brown University Benchmark'
-doc_type: 'reference'
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
+doc_type: 'guide'
 ---
 
 `MgBench` is a new analytical benchmark for machine-generated log data, [Andrew Crotty](http://cs.brown.edu/people/acrotty/).

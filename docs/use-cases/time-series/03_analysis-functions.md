@@ -3,7 +3,7 @@ title: 'Analysis functions - Time-series'
 sidebar_label: 'Analysis functions'
 description: 'Functions for analyzing time-series data in ClickHouse.'
 slug: /use-cases/time-series/analysis-functions
-keywords: ['time-series']
+keywords: ['time-series', 'analysis functions', 'window functions', 'aggregation functions', 'moving averages', 'trend analysis']
 show_related_blogs: true
 doc_type: 'reference'
 ---
@@ -61,7 +61,7 @@ LIMIT 10;
 Counter metrics naturally accumulate over time. 
 To analyze this cumulative growth, we can calculate running totals using window functions.
 
-The following query demonstrates this by using the `sum() OVER` clause creates a running total, while the `bar()` function provides a visual representation of the growth. 
+The following query demonstrates this by using the `sum() OVER` clause, which creates a running total. The `bar()` function provides a visual representation of the growth.
 
 ```sql
 SELECT
