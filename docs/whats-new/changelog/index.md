@@ -5,10 +5,10 @@ slug: /whats-new/changelog/
 sidebar_position: 2
 sidebar_label: '2025'
 title: 'Changelog 2025'
+doc_type: 'changelog'
 ---
 
 ### Table of Contents
-
 **[ClickHouse release v25.10, 2025-10-30](#2510)**<br/>
 **[ClickHouse release v25.9, 2025-09-25](#259)**<br/>
 **[ClickHouse release v25.8 LTS, 2025-08-28](#258)**<br/>
@@ -27,6 +27,7 @@ title: 'Changelog 2025'
 **[Changelog for 2019](https://clickhouse.com/docs/whats-new/changelog/2019/)**<br/>
 **[Changelog for 2018](https://clickhouse.com/docs/whats-new/changelog/2018/)**<br/>
 **[Changelog for 2017](https://clickhouse.com/docs/whats-new/changelog/2017/)**<br/>
+
 
 ### ClickHouse release 25.10, 2025-10-31 {#2510}
 
