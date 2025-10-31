@@ -7,6 +7,9 @@ description: 'Zing Data is simple social business intelligence for ClickHouse, m
 title: 'Connect Zing Data to ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

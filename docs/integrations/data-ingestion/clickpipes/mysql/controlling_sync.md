@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Controlling syncs'
 keywords: ['MySQL ClickPipe', 'ClickPipe sync control', 'MySQL CDC replication', 'ClickHouse MySQL connector', 'database synchronization ClickHouse']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

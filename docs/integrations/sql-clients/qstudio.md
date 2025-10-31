@@ -5,6 +5,9 @@ description: 'QStudio is a free SQL tool.'
 title: 'Connect QStudio to ClickHouse'
 doc_type: 'guide'
 keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

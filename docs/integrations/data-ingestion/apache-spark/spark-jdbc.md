@@ -6,6 +6,9 @@ description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';

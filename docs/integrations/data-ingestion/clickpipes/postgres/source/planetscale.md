@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/planetscale
 title: 'PlanetScale for Postgres Source Setup Guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import planetscale_wal_level_logical from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_wal_level_logical.png';

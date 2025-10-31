@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/lifecycle
 title: 'Lifecycle of a Postgres ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Lifecycle of a Postgres ClickPipe {#lifecycle}

@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/generated_columns
 description: 'Page describing important considerations to keep in mind when using PostgreSQL generated columns in tables that are being replicated'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 When using PostgreSQL's generated columns in tables that are being replicated, there are some important considerations to keep in mind. These gotchas can affect the replication process and data consistency in your destination systems.

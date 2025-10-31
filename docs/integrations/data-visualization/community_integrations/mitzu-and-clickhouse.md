@@ -6,7 +6,7 @@ description: 'Mitzu is a no-code warehouse-native product analytics application.
 title: 'Connecting Mitzu to ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
