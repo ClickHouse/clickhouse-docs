@@ -5,6 +5,9 @@ description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data F
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';

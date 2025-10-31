@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL ClickHouse replication', 'ClickPipes MySQL support', 'MySQL CDC ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MySQL FAQ

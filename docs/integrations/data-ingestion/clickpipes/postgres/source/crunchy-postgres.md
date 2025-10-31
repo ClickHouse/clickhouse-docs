@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/crunchy-postgres
 title: 'Crunchy Bridge Postgres Source Setup Guide'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'

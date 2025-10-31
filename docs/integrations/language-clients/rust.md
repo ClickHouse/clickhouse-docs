@@ -6,6 +6,9 @@ slug: /integrations/rust
 description: 'The official Rust client for connecting to ClickHouse.'
 title: 'ClickHouse Rust Client'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 # ClickHouse Rust client

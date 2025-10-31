@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql
 title: 'Ingesting data from MySQL to ClickHouse (using CDC)'
 doc_type: 'guide'
 keywords: ['MySQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

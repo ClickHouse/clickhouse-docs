@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'Best practices'
 doc_type: 'guide'
 keywords: ['kafka best practices', 'clickpipes', 'compression', 'authentication', 'scaling']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Best practices {#best-practices}
