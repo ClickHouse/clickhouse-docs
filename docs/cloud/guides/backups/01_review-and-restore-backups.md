@@ -23,7 +23,7 @@ This guide covers how backups work in ClickHouse Cloud, what options you have to
 
 ## Backup status list {#backup-status-list}
 
-Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](./configurable-backups.md) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
+Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](/cloud/manage/backups/configurable-backups) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
 
 <Image img={backup_status_list} size="md" alt="List of backup statuses in ClickHouse Cloud" border/>
 
@@ -158,8 +158,8 @@ Legacy Plans: For customers on legacy plans, default daily backups retained for 
 
 ## Configurable backups {#configurable-backups}
 
-If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](./configurable-backups.md).
+If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](/cloud/manage/backups/configurable-backups).
 
 ## Export backups to your own cloud account {#export-backups-to-your-own-cloud-account}
 
-For users wanting to export backups to their own cloud account, see [here](./backups-to-own-cloud/export-backups-to-own-cloud-account.md).
+For users wanting to export backups to their own cloud account, see [here](/cloud/manage/backups/export-backups-to-own-cloud-account).

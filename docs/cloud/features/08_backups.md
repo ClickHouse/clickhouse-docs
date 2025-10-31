@@ -84,7 +84,7 @@ To export backups to your own cloud account, you have two options:
 ##### Via Cloud Console UI {#via-ui}
 
 External backups can be [configured in the UI](/cloud/manage/backups/backup-restore-via-ui).
-By default, backups will then be taken daily (as specified in the [default backup policy](/manage/backups/overview#default-backup-policy)).
+By default, backups will then be taken daily (as specified in the [default backup policy](/cloud/features/backups#default-backup-policy)).
 However, we also support [configurable](/cloud/manage/backups/configurable-backups) backups to your own cloud account, which allows for setting a custom schedule.
 It is important to note that all backups to your bucket are full backups with no relationship to other previous or future backups.
 

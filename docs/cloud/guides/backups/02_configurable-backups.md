@@ -28,5 +28,5 @@ Start time and frequency are mutually exclusive. Start time takes precedence.
 :::
 
 :::note
-Changing the backup schedule can cause higher monthly charges for storage as some of the backups might not be covered in the default backups for the service. See ["Understanding backup cost"](./overview.md/#understanding-backup-cost) section below.
+Changing the backup schedule can cause higher monthly charges for storage as some of the backups might not be covered in the default backups for the service. See ["Understanding backup cost"](/cloud/manage/backups/overview#understanding-backup-cost) section below.
 :::
