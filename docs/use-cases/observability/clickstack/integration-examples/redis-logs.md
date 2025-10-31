@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis
-title: 'Monitoring Redis Logs with ClickStack'
+title: 'Monitoring Redis logs with ClickStack'
 sidebar_label: 'Redis'
 pagination_prev: null
 pagination_next: null
@@ -38,9 +38,9 @@ If you would like to test the Redis integration before configuring your own exis
 - Existing Redis installation (version 3.0 or newer)
 - Access to Redis log files
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## Verify Redis logging configuration {#verify-redis}
+#### Verify Redis logging configuration {#verify-redis}
 
 First, check your Redis logging configuration. Connect to Redis and check the log file location:
 
@@ -73,7 +73,7 @@ sudo systemctl restart redis
 docker restart <redis-container>
 ```
 
-## Create custom otel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -127,7 +127,7 @@ This configuration:
 - This configuration uses `start_at: beginning` to read all existing logs when the collector starts, allowing you to see logs immediately. For production deployments where you want to avoid re-ingesting logs on collector restarts, change to `start_at: end`.
 :::
 
-## Configure ClickStack to load custom configuration {#load-custom}
+#### Configure ClickStack to load custom configuration {#load-custom}
 
 To enable custom collector configuration in your existing ClickStack deployment, you must:
 
@@ -135,7 +135,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 3. Mount your Redis log directory so the collector can read them
 
-### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker Compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -151,7 +151,7 @@ services:
       # ... other volumes ...
 ```
 
-### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
 
 If using the all-in-one image with docker run:
 ```bash
@@ -167,7 +167,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the Redis log files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
-## Verifying Logs in ClickStack {#verifying-logs}
+#### Verifying Logs in ClickStack {#verifying-logs}
 
 Once configured, log into HyperDX and verify logs are flowing:
 
@@ -181,9 +181,9 @@ Once configured, log into HyperDX and verify logs are flowing:
 
 For users who want to test the Redis integration before configuring their production systems, we provide a sample dataset of pre-generated Redis logs with realistic patterns.
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## Download the sample dataset {#download-sample}
+#### Download the sample dataset {#download-sample}
 
 Download the sample log file:
 
@@ -191,7 +191,7 @@ Download the sample log file:
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
 
-## Create test collector configuration {#test-config}
+#### Create test collector configuration {#test-config}
 
 Create a file named `redis-demo.yaml` with the following configuration:
 
@@ -233,7 +233,7 @@ service:
 EOF
 ```
 
-## Run ClickStack with demo configuration {#run-demo}
+#### Run ClickStack with demo configuration {#run-demo}
 
 Run ClickStack with the demo logs and configuration:
 
@@ -273,9 +273,9 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <VerticalStepper>
 
-## <a href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json">Download</a> the dashboard configuration. {#download-dashboard}
+#### <a href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json">Download</a> the dashboard configuration. {#download-dashboard}
 
-## Import Pre-built Dashboard {#import-dashboard}
+#### Import Pre-built Dashboard {#import-dashboard}
 
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
@@ -286,7 +286,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <Image img={finish_import} alt="Finish Import"/>
 
-## The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+#### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 

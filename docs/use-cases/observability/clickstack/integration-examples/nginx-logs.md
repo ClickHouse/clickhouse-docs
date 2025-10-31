@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx
-title: 'Monitoring Nginx Logs with ClickStack'
-sidebar_label: 'Nginx Logs'
+title: 'Monitoring nginx logs with ClickStack'
+sidebar_label: 'nginx logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Nginx with ClickStack'
+description: 'Monitoring nginx with ClickStack'
 doc_type: 'guide'
 ---
 
@@ -16,7 +16,7 @@ import example_dashboard from '@site/static/images/clickstack/example-logs-dashb
 import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 
-# Monitoring Nginx Logs with ClickStack {#nginx-clickstack}
+# Monitoring nginx Logs with ClickStack {#nginx-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor nginx with ClickStack by configuring the OpenTelemetry collector to ingest nginx access logs. You'll learn how to:
@@ -34,14 +34,14 @@ Time Required: 5-10 minutes
 This section covers configuring your existing nginx installation to send logs to ClickStack by modifying the ClickStack OTel collector configuration.
 If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx#demo-dataset).
 
-### Prerequisites {#prerequisites}
+##### Prerequisites {#prerequisites}
 - ClickStack instance running
 - Existing nginx installation
 - Access to modify nginx configuration files
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## Configure nginx log format {#configure-nginx}
+#### Configure nginx log format {#configure-nginx}
 First, configure nginx to output logs in JSON format for easier parsing. Add this log format definition to your nginx.conf:
 
 The `nginx.conf` file is typically located at:
@@ -74,7 +74,7 @@ http {
 
 After making this change, reload nginx.
 
-## Create custom otel collector configuration {#custom-otel}
+#### Create custom otel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
@@ -124,7 +124,7 @@ This configuration:
 - The pipelines route data from your receivers to the ClickHouse exporter via the existing processors
 :::
 
-## Configure ClickStack to load custom configuration {#load-custom}
+#### Configure ClickStack to load custom configuration {#load-custom}
 
 To enable custom collector configuration in your existing ClickStack deployment, you must:
 
@@ -132,7 +132,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 2. Set the environment variable CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
 3. Mount your nginx log directories so the collector can read them
 
-### Option 1: Docker Compose {#docker-compose}
+##### Option 1: Docker Compose {#docker-compose}
 
 Update your ClickStack deployment configuration:
 ```yaml
@@ -148,7 +148,7 @@ services:
       # ... other volumes ...
 ```
 
-### Option 2: Docker Run (All-in-One Image) {#all-in-one}
+##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
 
 If using the all-in-one image with docker run:
 ```bash
@@ -164,7 +164,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the nginx log files. In production, use read-only mounts (:ro) and follow the principle of least privilege.
 :::
 
-## Verifying Logs in ClickStack {#verifying-logs}
+#### Verifying Logs in ClickStack {#verifying-logs}
 Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the Logs view
@@ -182,9 +182,9 @@ This is an example of what you should see:
 
 For users who want to test the nginx integration before configuring their production systems, we provide a sample dataset of pre-generated nginx access logs with realistic traffic patterns.
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## Download the sample dataset {#download-sample}
+#### Download the sample dataset {#download-sample}
 
 Download the sample log file and update timestamps to the current time:
 
@@ -200,7 +200,7 @@ The dataset includes:
 - Realistic response times and byte counts
 - Timestamps now distributed over recent time
 
-## Create test collector configuration {#test-config}
+#### Create test collector configuration {#test-config}
 
 Create a file named `nginx-demo.yaml` with the following configuration:
 
@@ -235,7 +235,7 @@ service:
 EOF
 ```
 
-## Run ClickStack with demo configuration {#run-demo}
+#### Run ClickStack with demo configuration {#run-demo}
 
 Run ClickStack with the demo logs and configuration:
 
@@ -248,7 +248,7 @@ docker run --name clickstack-demo \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
-## Verify logs in HyperDX {#verify-demo-logs}
+#### Verify logs in HyperDX {#verify-demo-logs}
 
 Once ClickStack is running (you may have to create an account and login first):
 
@@ -271,9 +271,9 @@ If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 202
 To help you get started monitoring nginx with ClickStack, we provide essential visualizations for nginx logs.
 
 <VerticalStepper>
-## <a href={useBaseUrl('/examples/example-logs-dashboard.json')} download="nginx-logs-dashboard.json">Download</a> the dashboard configuration.
+#### <a href={useBaseUrl('/examples/example-logs-dashboard.json')} download="nginx-logs-dashboard.json">Download</a> the dashboard configuration.
 
-## Import the pre-built dashboard {#import-dashboard}
+#### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
@@ -283,7 +283,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 
 <Image img={finish_import} alt="Finish Import"/>
 
-## The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+#### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
