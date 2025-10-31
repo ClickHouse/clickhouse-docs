@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Export Backups to your Own Cloud Account'
+sidebar_label: 'Export backups'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
 title: 'Export Backups to your Own Cloud Account'
 description: 'Describes how to export backups to your own Cloud account'
@@ -13,7 +13,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 ClickHouse Cloud supports taking backups to your own cloud service provider (CSP) account (AWS S3, Google Cloud Storage, or Azure Blob Storage).
 For details of how ClickHouse Cloud backups work, including "full" vs. "incremental" backups, see the [backups](overview.md) docs.
 
-Here we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
+In this guide, we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
 Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we do not support cross cloud backups.

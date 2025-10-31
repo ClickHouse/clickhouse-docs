@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Overview'
+sidebar_label: 'Review and restore backups'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
 title: 'Overview'
@@ -17,25 +17,9 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-# Backups
+# Review and restore backups
 
-Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup. This minimizes downtime and prevents business critical data from being permanently lost. This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
-
-## How backups work in ClickHouse Cloud {#how-backups-work-in-clickhouse-cloud}
-
-ClickHouse Cloud backups are a combination of "full" and "incremental" backups that constitute a backup chain. The chain starts with a full backup, and incremental backups are then taken over the next several scheduled time periods to create a sequence of backups. Once a backup chain reaches a certain length, a new chain is started. This entire chain of backups can then be utilized to restore data to a new service if needed. Once all backups included in a specific chain are past the retention time frame set for the service (more on retention below), the chain is discarded.
-
-In the screenshot below, the solid line squares show full backups and the dotted line squares show incremental backups. The solid line rectangle around the squares denotes the retention period and the backups that are visible to the end user, which can be used for a backup restore. In the scenario below, backups are being taken every 24 hours and are retained for 2 days.
-
-On Day 1, a full backup is taken to start the backup chain. On Day 2, an incremental backup is taken, and we now have a full and incremental backup available to restore from. By Day 7, we have one full backup and six incremental backups in the chain, with the most recent two incremental backups visible to the user. On Day 8, we take a new full backup, and on Day 9, once we have two backups in the new chain, the previous chain is discarded.
-
-<Image img={backup_chain} size="md" alt="Backup chain example in ClickHouse Cloud" />
-
-*Example backup scenario in Clickhouse Cloud*
-
-## Default backup policy {#default-backup-policy}
-
-In the Basic, Scale, and Enterprise tiers, backups are metered and billed separately from storage. All services will default to one daily backup with the ability to configure more, starting with the Scale tier, via the Settings tab of the Cloud console. Each backup will be retained for at least 24 hours.
+This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
 ## Backup status list {#backup-status-list}
 
