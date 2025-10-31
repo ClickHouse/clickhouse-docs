@@ -15,7 +15,7 @@ import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup.
 This minimizes downtime and prevents business critical data from being permanently lost.
 
-## Backups
+## Backups {#backups}
 
 ### How backups work in ClickHouse Cloud {#how-backups-work-in-clickhouse-cloud}
 
@@ -35,7 +35,7 @@ Each backup will be retained for at least 24 hours.
 
 See ["Review and restore backups"](/cloud/manage/backups/overview) for further details.
 
-## Configurable backups
+## Configurable backups {#configurable-backups}
 
 <ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
 
@@ -55,7 +55,7 @@ In some rare scenarios, the backup scheduler will not respect the **Start Time**
 
 See ["Configure backup schedules"](/cloud/manage/backups/configurable-backups) for steps to configure your backups.
 
-## Bring Your Own Bucket (BYOB) Backups
+## Bring Your Own Bucket (BYOB) Backups {#byob}
 
 <EnterprisePlanFeatureBadge/>
 
@@ -66,4 +66,3 @@ You can take backups to your own cloud service provider (CSP) account:
 - Azure Blob Storage
 
 See ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account) for examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
-

@@ -81,7 +81,6 @@ There is currently NO support for automatic failover between 2 ClickHouse Cloud 
 There is currently NO automatic syncing of data between different ClickHouse Cloud services in the same or different regions .i.e. Active-Active replication
 :::
 
-
 ## Recovery process {#recovery-process}
 
 This section explains the various recovery options and the process that can be followed in each case.
