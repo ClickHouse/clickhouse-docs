@@ -3522,6 +3522,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/security/cloud-access-management",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    }
+    {
       "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
       "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
       "permanent": true
