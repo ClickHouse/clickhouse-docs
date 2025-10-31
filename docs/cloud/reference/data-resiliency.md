@@ -1,5 +1,5 @@
 ---
-slug: /cloud/disaster-recovery
+slug: /cloud/data-resiliency
 sidebar_label: 'Data resiliency'
 title: 'Disaster recovery'
 description: 'This guide provides an overview of disaster recovery.'
