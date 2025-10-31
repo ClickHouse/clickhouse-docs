@@ -316,6 +316,7 @@ DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
+Databrain
 Databricks
 Datadog
 Datadog's
