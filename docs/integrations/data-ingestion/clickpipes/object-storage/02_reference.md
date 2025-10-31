@@ -1,13 +1,14 @@
 ---
-sidebar_label: 'ClickPipes for object storage'
-description: 'Seamlessly connect your object storage to ClickHouse Cloud.'
-slug: /integrations/clickpipes/object-storage
-title: 'Integrating Object Storage with ClickHouse Cloud'
-doc_type: 'guide'
-keywords: ['clickpipes', 'object storage', 's3', 'data ingestion', 'batch loading']
+sidebar_label: 'Reference'
+description: 'Details supported formats, exactly-once semantics, view-support, scaling, limitations, authentication with object storage ClickPipes'
+slug: /integrations/clickpipes/object-storage/reference
+sidebar_position: 1
+title: 'Reference'
+doc_type: 'reference'
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
+keywords: ['clickpipes', 'object storage', 's3', 'data ingestion', 'batch loading']
 ---
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
