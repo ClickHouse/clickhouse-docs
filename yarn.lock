@@ -1248,10 +1248,10 @@
   resolved "https://registry.yarnpkg.com/@chevrotain/utils/-/utils-11.0.3.tgz#e39999307b102cff3645ec4f5b3665f5297a2224"
   integrity sha512-YslZMgtJUyuMbZ+aKvfF3x1f5liK4mWNxghFRv7jqRR9C3R3fAOGTTKvxXDa2Y1s9zSbcpuO0cAxDYsc9SrXoQ==
 
-"@clickhouse/click-ui@^0.0.230":
-  version "0.0.230"
-  resolved "https://registry.yarnpkg.com/@clickhouse/click-ui/-/click-ui-0.0.230.tgz#acd8d8cd98ebd22d33751a155fe024d0dae7a179"
-  integrity sha512-JVO2gJg2GijzBvtHd6NG4rWWIcmPjXYgkAlFRwnNyXultgSYtRyP6cGXqfMm3azkF5pgM1K9z7y7OuHeMctmfA==
+"@clickhouse/click-ui@^0.0.235":
+  version "0.0.235"
+  resolved "https://registry.yarnpkg.com/@clickhouse/click-ui/-/click-ui-0.0.235.tgz#6c846b5e3d695f7560b2cdc2eaa7c21603c0927b"
+  integrity sha512-jsRwmN4xkZua8Ov9Vr2JPZZKYhXrqB1HQ1Ll+5GKteo9PTZYrpBOzuPjKG5G1MZXZRRCdAA5yNoemVaSuLk9Yw==
   dependencies:
     "@h6s/calendar" "^2.0.1"
     "@radix-ui/react-accordion" "^1.1.2"
