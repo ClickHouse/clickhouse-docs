@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
@@ -28,6 +28,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Apache Superset](./superset-and-clickhouse.md)
 - [Astrato](./community_integrations/astrato-and-clickhouse.md)
 - [Chartbrew](./community_integrations/chartbrew-and-clickhouse.md)
+- [Databrain](./community_integrations/databrain-and-clickhouse.md)
 - [Deepnote](./community_integrations/deepnote.md)
 - [Dot](./community_integrations/dot-and-clickhouse.md)
 - [Draxlr](./community_integrations/draxlr-and-clickhouse.md)
@@ -35,6 +36,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./community_integrations/explo-and-clickhouse.md)
 - [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)
 - [Grafana](./grafana/index.md)
+- [Lightdash] (./lightdash-and-clickhouse.md)
 - [Looker](./looker-and-clickhouse.md)
 - [Luzmo](./community_integrations/luzmo-and-clickhouse.md)
 - [Metabase](./metabase-and-clickhouse.md)
@@ -53,12 +55,15 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Astrato](./community_integrations/astrato-and-clickhouse.md)      | Native connector | ✅      | ✅          | Works natively using pushdown SQL (direct query only). |
 | [AWS QuickSight](./quicksight-and-clickhouse.md)     | MySQL interface               | ✅      | ✅          | Works with some limitations, see [the documentation](./quicksight-and-clickhouse.md) for more details                |
 | [Chartbrew](./community_integrations/chartbrew-and-clickhouse.md)           | ClickHouse official connector              | ✅      | ✅          |                                                                                                                                         |
+| [Databrain](./community_integrations/databrain-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Deepnote](./community_integrations/deepnote.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Dot](./community_integrations/dot-and-clickhouse.md)                            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Explo](./community_integrations/explo-and-clickhouse.md)                   | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | Native connector              | ✅      | ✅          |                                                                                                                                         |
+| [Lightdash](./lightdash-and-clickhouse.md)      | Native connector | ✅      | ✅          | 
+            |
 | [Looker](./looker-and-clickhouse.md)                 | Native connector              | ✅      | ✅          | Works with some limitations, see [the documentation](./looker-and-clickhouse.md) for more details                    |
 | Looker                                                                  | MySQL interface               | 🚧     | ❌          |                                                                                                                                         |
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)                   | ClickHouse official connector | ✅      | ✅          |                                                                                                                                         |
