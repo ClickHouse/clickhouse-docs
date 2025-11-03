@@ -1,6 +1,11 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import TOCInline from '@theme/TOCInline';
+
+
+<TOCInline toc={toc} />
+
 
 Java client library to communicate with a DB server through its protocols. The current implementation only supports the [HTTP interface](/interfaces/http).
 The library provides its own API to send requests to a server. The library also provides tools to work with different binary data formats (RowBinary* & Native*).
@@ -14,11 +19,11 @@ The library provides its own API to send requests to a server. The library also 
 <Tabs groupId="client-setup">
 <TabItem value="maven" label="Maven" >
 
-```xml 
+```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.3</version>
 </dependency>
 ```
 
@@ -27,14 +32,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.1")
+implementation("com.clickhouse:client-v2:0.9.3")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.1'
+implementation 'com.clickhouse:client-v2:0.9.3'
 ```
 
 </TabItem>
@@ -110,7 +115,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 |-----------------------|-----------------------------|:--------------------------------------------|
 | `addEndpoint(String endpoint)`          | - `endpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`  |
 | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - connection protocol `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - IP or hostname of a server.<br />- `secure` - if communication should use secure version of the protocol (HTTPS) | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `setOption(String key, String value)`   | - `key` - String key of the client configuration option.<br /> - `value` - String value of the option | Sets raw value of client options. Useful when reading configuration from properties files. | 
+| `setOption(String key, String value)`   | - `key` - String key of the client configuration option.<br /> - `value` - String value of the option | Sets raw value of client options. Useful when reading configuration from properties files. |
 | `setUsername(String username)`          | - `username` - User's username to use while authentication | Sets username for an authentication method that is selected by further configuration <br/> <br/> Default: `default` <br/> Enum: `ClientConfigProperties.USER` <br/> Key: `user` |
 | `setPassword(String password)`          | - `password` - secret value for password authentication | Sets a secret for password authentication and effectively selects as authentication method <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PASSWORD` <br/> Key: `password` |
 | `setAccessToken(String accessToken)`    | - `accessToken` - String representation of an access token | Sets an access token to authenticate with a sets corresponding authentication method <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.ACCESS_TOKEN` <br/> Key: `access_token` |
@@ -130,7 +135,7 @@ Configuration is defined during client creation. See `com.clickhouse.client.api.
 | `setSocketLinger(int secondsToWait)` | - `secondsToWait` - number of seconds. | Set linger time for every TCP socket created by the client. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SOCKET_LINGER_OPT` <br/> Key: `socket_linger`|
 | `compressServerResponse(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if server should compress its responses. <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br/> Key: `compress` |
 | `compressClientRequest(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if client should compress its requests. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br/> Key: `decompress` |
-| `useHttpCompression(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if HTTP compression should be used for client/server communications if corresponding options are enabled | 
+| `useHttpCompression(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if HTTP compression should be used for client/server communications if corresponding options are enabled |
 | `appCompressedData(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Tell client that compression will be handled by application. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.APP_COMPRESSED_DATA` <br/> Key: `app_compressed_data` |
 | `setLZ4UncompressedBufferSize(int size)` | - `size` - size in bytes | Sets size of a buffer that will receive uncompressed portion of a data stream. If buffer is underestimated - a new one will be created and corresponding warning will be present in logs. <br/> <br/> Default: `65536` <br/> Enum: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br/> Key: `compression.lz4.uncompressed_buffer_size`|
 | `disableNativeCompression` | - `disable` - flag that indicates if the option should be disabled | Disable native compression. If set to true then native compression will be disabled. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br/> Key: `disable_native_compression` |
@@ -372,13 +377,13 @@ Future of `InsertResponse` type - the result of the operation and additional inf
 **Examples**
 
 ```java showLineNumbers
-// Important step (done once) - register class to pre-compile object serializer according to the table schema. 
+// Important step (done once) - register class to pre-compile object serializer according to the table schema.
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 
 List<ArticleViewEvent> events = loadBatch();
 
 try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
-    // handle response, then it will be closed and connection that served request will be released. 
+    // handle response, then it will be closed and connection that served request will be released.
 }
 ```
 
@@ -419,7 +424,7 @@ Sends `sqlQuery` as is. Response format is set by query settings. `QueryResponse
 
 **Signatures**
 
-```java 
+```java
 CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
 CompletableFuture<QueryResponse> query(String sqlQuery)
 ```
@@ -436,7 +441,7 @@ Future of `QueryResponse` type - a result dataset and additional information lik
 
 **Examples**
 
-```java 
+```java
 final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
 
 // Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
@@ -453,13 +458,13 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
         String title = reader.getString("title");
         String url = reader.getString("url");
 
-        // collecting data 
+        // collecting data
     }
 } catch (Exception e) {
     log.error("Failed to read data", e);
 }
 
-// put business logic outside of the reading block to release http connection asap.  
+// put business logic outside of the reading block to release http connection asap.
 ```
 
 ### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
@@ -467,7 +472,7 @@ try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
 Sends `sqlQuery` as is. Additionally will send query parameters so the server can compile the SQL expression.
 
 **Signatures**
-```java 
+```java
 CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
 ```
 
@@ -487,7 +492,7 @@ Future of `QueryResponse` type - a result dataset and additional information lik
 
 ```java showLineNumbers
 
-// define parameters. They will be sent to the server along with the request.   
+// define parameters. They will be sent to the server along with the request.
 Map<String, Object> queryParams = new HashMap<>();
 queryParams.put("param1", 2);
 
@@ -500,7 +505,7 @@ try (QueryResponse response =
     while (reader.hasNext()) {
         reader.next(); // Read the next record from stream and parse it
 
-        // reading data 
+        // reading data
     }
 
 } catch (Exception e) {
@@ -514,7 +519,7 @@ try (QueryResponse response =
 Queries a data in `RowBinaryWithNamesAndTypes` format. Returns the result as a collection. Read performance is the same as with the reader but more memory is required to hold the whole dataset.
 
 **Signatures**
-```java 
+```java
 List<GenericRecord> queryAll(String sqlQuery)
 ```
 
@@ -594,7 +599,7 @@ Fetches table schema for the `table`.
 
 **Signatures**
 
-```java 
+```java
 TableSchema getTableSchema(String table)
 TableSchema getTableSchema(String table, String database)
 ```
@@ -615,7 +620,7 @@ Fetches schema from a SQL statement.
 
 **Signatures**
 
-```java 
+```java
 TableSchema getTableSchemaFromQuery(String sql)
 ```
 
@@ -636,7 +641,7 @@ Column match is found by extracting its name from a method name. For example, `g
 
 **Signatures**
 
-```java 
+```java
 void register(Class<?> clazz, TableSchema schema)
 ```
 
@@ -648,7 +653,7 @@ void register(Class<?> clazz, TableSchema schema)
 
 **Examples**
 
-```java showLineNumbers 
+```java showLineNumbers
 client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
 ```
 
