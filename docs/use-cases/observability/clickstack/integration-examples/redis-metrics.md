@@ -282,7 +282,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration
+#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
