@@ -34,23 +34,23 @@ export default function NavigationSubNavUseCases() {
         </li>
         <li>
           <NavigationLink
-            href='https://clickhouse.com/use-cases/business-intelligence'
+            href='https://clickhouse.com/use-cases/data-warehousing'
             onClick={galaxyOnClick('topNav.useCasesMenu.bizIntelSelect')}>
             {translate({
               id: 'topNav.navItems.use_cases.Business intelligence',
-              message: 'Business intelligence',
+              message: 'Data warehousing',
             })}
           </NavigationLink>
         </li>
         <li>
           <NavigationLink
-            href='https://clickhouse.com/use-cases/logging-and-metrics'
+            href='https://clickhouse.com/use-cases/observability'
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.loggingAndMetricsSelect'
             )}>
             {translate({
               id: 'topNav.navItems.use_cases.Logs, events, and traces',
-              message: 'Logs, events, and traces',
+              message: 'Observability',
             })}
           </NavigationLink>
         </li>
