@@ -1,22 +1,23 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis
 title: 'Monitoring Redis logs with ClickStack'
-sidebar_label: 'Redis'
+sidebar_label: 'Redis logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Redis with ClickStack'
+description: 'Monitoring Redis logs with ClickStack'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
-import finish_import from '@site/static/images/clickstack/redis/import-redis-log-dashboard.png';
-import example_dashboard from '@site/static/images/clickstack/redis/redis-log-dashboard.png';
+import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
+import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
 import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Redis Logs with ClickStack {#redis-clickstack}
+# Monitoring Redis logs with ClickStack {#redis-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Redis with ClickStack by configuring the OpenTelemetry collector to ingest Redis server logs. You'll learn how to:
@@ -24,6 +25,8 @@ This guide shows you how to monitor Redis with ClickStack by configuring the Ope
 - Configure the OTel collector to parse Redis log format
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize Redis metrics (connections, commands, memory, errors)
+
+A demo dataset with sample logs is available if you want to test the integration before configuring your production Redis.
 
 Time Required: 5-10 minutes
 :::
@@ -167,7 +170,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the Redis log files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in ClickStack {#verifying-logs}
+#### Verifying Logs in HyperDX {#verifying-logs}
 
 Once configured, log into HyperDX and verify logs are flowing:
 
@@ -271,9 +274,9 @@ If you don't see logs, ensure the time range is set to 2025-10-27 10:00:00 - 202
 
 To help you get started monitoring Redis with ClickStack, we provide essential visualizations for Redis logs.
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-#### <a href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json">Download</a> the dashboard configuration. {#download-dashboard}
+#### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import Pre-built Dashboard {#import-dashboard}
 
@@ -286,7 +289,11 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <Image img={finish_import} alt="Finish Import"/>
 
-#### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+#### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
+
+:::note
+Ensure the time range is set to 2025-10-27 10:00:00 - 2025-10-28 10:00:00. The imported dashboard will not have a time range specified by default.
+:::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
