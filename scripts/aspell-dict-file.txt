@@ -1183,3 +1183,6 @@ DataStream
 Flink's
 --docs/integrations/data-visualization/lightdash-and-clickhouse.md--
 Lightdash’s
+--docs/cloud/guides/backups/03_bring_your_own_backup/03_backup_restore_using_commands.md--
+CSPs
+testchbackups
