@@ -4,7 +4,7 @@ title: 'Monitoring nginx traces with ClickStack'
 sidebar_label: 'nginx traces'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring nginx Traces with ClickStack'
+description: 'Monitoring nginx traces with ClickStack'
 doc_type: 'guide'
 keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 ---
@@ -12,11 +12,12 @@ keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
-import finish_import from '@site/static/images/clickstack/finish-trace-dashboard.png';
-import example_dashboard from '@site/static/images/clickstack/example-trace-dashboard.png';
+import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
+import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring nginx Traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring nginx traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
@@ -25,6 +26,8 @@ This guide shows you how to capture distributed traces from your existing nginx 
 - Configure nginx to send traces to ClickStack's OTLP endpoint
 - Verify traces are appearing in HyperDX
 - Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
+
+A demo dataset with sample traces is available if you want to test the integration before configuring your production nginx.
 
 Time Required: 5-10 minutes
 ::::
@@ -159,7 +162,7 @@ docker-compose restart nginx
 sudo systemctl reload nginx
 ```
 
-#### Verifying Traces in ClickStack {#verifying-traces}
+#### Verifying traces in HyperDX {#verifying-traces}
 
 Once configured, log into HyperDX and verify traces are flowing, you should see something like this, if you don't see traces, try adjusting your time range:
 
@@ -235,7 +238,7 @@ You should see a response like `{"partialSuccess":{}}` indicating the traces wer
 
 #### Verify traces in HyperDX {#verify-demo-traces}
 
-1. Open [HyperDX](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
+1. Open [HyperDX with demo time range](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
 
 Here's what you should see in your search view:
 
@@ -253,7 +256,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <VerticalStepper headerLevel="h4">
 
-#### <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration. {#download}
+#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
@@ -266,6 +269,10 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 <Image img={finish_import} alt="Finish Import"/>
 
 #### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+
+:::note
+Ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00. The imported dashboard will not have a time range specified by default.
+:::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 

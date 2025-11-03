@@ -167,7 +167,7 @@ docker run --name clickstack \
 Ensure the ClickStack collector has appropriate permissions to read the nginx log files. In production, use read-only mounts (:ro) and follow the principle of least privilege.
 :::
 
-#### Verifying Logs in ClickStack {#verifying-logs}
+#### Verifying Logs in HyperDX {#verifying-logs}
 Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the search view
@@ -195,11 +195,10 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```
 
 The dataset includes:
-- 10,000 log entries with realistic traffic patterns
+- Log entries with realistic traffic patterns
 - Various endpoints and HTTP methods
 - Mix of successful requests and errors
 - Realistic response times and byte counts
-- Timestamps now distributed over recent time
 
 #### Create test collector configuration {#test-config}
 
@@ -253,7 +252,7 @@ docker run --name clickstack-demo \
 
 Once ClickStack is running (you may have to create an account and login first):
 
-1. Open [HyperDX](http://localhost:8080/search?from=1760976000000&to=1761062400000&isLive=false&source=690235c1a9b7fc5a7c0fffc7&select=Timestamp,ServiceName,SeverityText,Body&where=&whereLanguage=lucene&filters=[]&orderBy=)
+1. Open [HyperDX with demo time range](http://localhost:8080/search?from=1760976000000&to=1761062400000&isLive=false&source=690235c1a9b7fc5a7c0fffc7&select=Timestamp,ServiceName,SeverityText,Body&where=&whereLanguage=lucene&filters=[]&orderBy=)
 
 Here's what you should see in your search view:
 
@@ -273,7 +272,8 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration
+#### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+
 
 #### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
@@ -288,7 +288,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 #### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
 
 :::note
-Ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. The imported dashboard will not have a time range specified by default.
+Ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00. The imported dashboard will not have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
