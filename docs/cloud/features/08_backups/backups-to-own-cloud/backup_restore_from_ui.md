@@ -5,6 +5,7 @@ title: 'Take a backup or restore a backup from the UI'
 description: 'Page describing how to take a backup or restore a backup from the UI with your own bucket'
 sidebar_position: 2
 doc_type: 'guide'
+keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud features']
 ---
 
 import Image from '@theme/IdealImage'
@@ -61,7 +62,7 @@ AWS uses role based authentication, so create an IAM role that the ClickHouse Cl
         "AWS":  "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
       },
       "Action": "sts:AssumeRole"
-    },
+    }
   ]
 }
 ```

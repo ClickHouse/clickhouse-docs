@@ -4,6 +4,7 @@ sidebar_label: 'NOAA Global Historical Climatology Network '
 slug: /getting-started/example-datasets/noaa
 title: 'NOAA Global Historical Climatology Network'
 doc_type: 'guide'
+keywords: ['example dataset', 'noaa', 'weather data', 'sample data', 'climate']
 ---
 
 This dataset contains weather measurements for the last 120 years. Each row is a measurement for a point in time and station.

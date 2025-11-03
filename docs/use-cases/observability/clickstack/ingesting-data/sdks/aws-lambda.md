@@ -6,6 +6,7 @@ sidebar_position: 6
 description: 'AWS Lambda for ClickStack - The ClickHouse Observability Stack'
 title: 'AWS Lambda'
 doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'aws-lambda', 'lambda-layers']
 ---
 
 import Tabs from '@theme/Tabs';

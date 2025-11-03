@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and monitoring Kubernetes'
 doc_type: 'guide'
+keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
 import Image from '@theme/IdealImage';

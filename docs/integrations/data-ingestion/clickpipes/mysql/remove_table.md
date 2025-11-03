@@ -4,6 +4,7 @@ description: 'Removing specific tables from a ClickPipe'
 sidebar_label: 'Remove table'
 slug: /integrations/clickpipes/mysql/removing_tables
 doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';

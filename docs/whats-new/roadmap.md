@@ -4,6 +4,7 @@ slug: /whats-new/roadmap
 sidebar_position: 50
 description: 'Present and past ClickHouse road maps'
 doc_type: 'landing-page'
+keywords: ['roadmap', 'future features', 'development plans', 'upcoming releases', 'product direction']
 ---
 
 ## Current roadmap {#current-roadmap}

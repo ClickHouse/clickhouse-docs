@@ -5,6 +5,7 @@ sidebar_position: 4
 title: 'Sizing and hardware recommendations'
 description: 'This guide discusses our general recommendations regarding hardware, compute, memory, and disk configurations for open-source users.'
 doc_type: 'guide'
+keywords: ['sizing', 'hardware', 'capacity planning', 'best practices', 'performance']
 ---
 
 # Sizing and hardware recommendations

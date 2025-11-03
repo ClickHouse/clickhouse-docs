@@ -5,6 +5,7 @@ slug: /integrations/kafka/clickhouse-kafka-connect-sink
 description: 'The official Kafka connector from ClickHouse.'
 title: 'ClickHouse Kafka Connect Sink'
 doc_type: 'guide'
+keywords: ['ClickHouse Kafka Connect Sink', 'Kafka connector ClickHouse', 'official ClickHouse connector', 'ClickHouse Kafka integration']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -162,7 +163,7 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **Without a schema declared:**
 
-A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](../../../sql-reference/formats.mdx#jsoneachrow) format.
+A record is converted into JSON and sent to ClickHouse as a value in [JSONEachRow](/interfaces/formats/JSONEachRow) format.
 
 ### Configuration recipes {#configuration-recipes}
 
@@ -277,7 +278,7 @@ Please note: if you encounter issues with missing classes, not every environment
 
 ##### String support {#string-support}
 
-The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats#jsoneachrow), [CSV](/interfaces/formats#csv), and [TSV](/interfaces/formats#tabseparated).
+The connector supports the String Converter in different ClickHouse formats: [JSON](/interfaces/formats/JSONEachRow), [CSV](/interfaces/formats/CSV), and [TSV](/interfaces/formats/TabSeparated).
 
 ```json
 {
@@ -309,19 +310,92 @@ For additional details check out the official [tutorial](https://docs.confluent.
 
 ClickHouse Kafka Connect reports runtime metrics via [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX is enabled in Kafka Connector by default.
 
-ClickHouse Connect `MBeanName`:
+#### ClickHouse-Specific Metrics {#clickhouse-specific-metrics}
+
+The connector exposes custom metrics via the following MBean name:
 
 ```java
 com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 ```
 
-ClickHouse Kafka Connect reports the following metrics:
-
-| Name                 | Type | Description                                                                             |
-|----------------------|------|-----------------------------------------------------------------------------------------|
-| `receivedRecords`      | long | The total number of records received.                                                   |
+| Metric Name           | Type | Description                                                                             |
+|-----------------------|------|-----------------------------------------------------------------------------------------|
+| `receivedRecords`    | long | The total number of records received.                                                   |
 | `recordProcessingTime` | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
 | `taskProcessingTime`   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
+
+#### Kafka Producer/Consumer Metrics {#kafka-producer-consumer-metrics}
+
+The connector exposes standard Kafka producer and consumer metrics that provide insights into data flow, throughput, and performance.
+
+**Topic-Level Metrics:**
+- `records-sent-total`: Total number of records sent to the topic
+- `bytes-sent-total`: Total bytes sent to the topic
+- `record-send-rate`: Average rate of records sent per second
+- `byte-rate`: Average bytes sent per second
+- `compression-rate`: Compression ratio achieved
+
+**Partition-Level Metrics:**
+- `records-sent-total`: Total records sent to the partition
+- `bytes-sent-total`: Total bytes sent to the partition
+- `records-lag`: Current lag in the partition
+- `records-lead`: Current lead in the partition
+- `replica-fetch-lag`: Lag information for replicas
+
+**Node-Level Connection Metrics:**
+- `connection-creation-total`: Total connections created to the Kafka node
+- `connection-close-total`: Total connections closed
+- `request-total`: Total requests sent to the node
+- `response-total`: Total responses received from the node
+- `request-rate`: Average request rate per second
+- `response-rate`: Average response rate per second
+
+These metrics help monitor:
+- **Throughput**: Track data ingestion rates
+- **Lag**: Identify bottlenecks and processing delays
+- **Compression**: Measure data compression efficiency
+- **Connection Health**: Monitor network connectivity and stability
+
+#### Kafka Connect Framework Metrics {#kafka-connect-framework-metrics}
+
+The connector integrates with the Kafka Connect framework and exposes metrics for task lifecycle and error tracking.
+
+**Task Status Metrics:**
+- `task-count`: Total number of tasks in the connector
+- `running-task-count`: Number of tasks currently running
+- `paused-task-count`: Number of tasks currently paused
+- `failed-task-count`: Number of tasks that have failed
+- `destroyed-task-count`: Number of destroyed tasks
+- `unassigned-task-count`: Number of unassigned tasks
+
+Task status values include: `running`, `paused`, `failed`, `destroyed`, `unassigned`
+
+**Error Metrics:**
+- `deadletterqueue-produce-failures`: Number of failed DLQ writes
+- `deadletterqueue-produce-requests`: Total DLQ write attempts
+- `last-error-timestamp`: Timestamp of the last error
+- `records-skip-total`: Total number of records skipped due to errors
+- `records-retry-total`: Total number of records that were retried
+- `errors-total`: Total number of errors encountered
+
+**Performance Metrics:**
+- `offset-commit-failures`: Number of failed offset commits
+- `offset-commit-avg-time-ms`: Average time for offset commits
+- `offset-commit-max-time-ms`: Maximum time for offset commits
+- `put-batch-avg-time-ms`: Average time to process a batch
+- `put-batch-max-time-ms`: Maximum time to process a batch
+- `source-record-poll-total`: Total records polled
+
+#### Monitoring Best Practices {#monitoring-best-practices}
+
+1. **Monitor Consumer Lag**: Track `records-lag` per partition to identify processing bottlenecks
+2. **Track Error Rates**: Watch `errors-total` and `records-skip-total` to detect data quality issues
+3. **Observe Task Health**: Monitor task status metrics to ensure tasks are running properly
+4. **Measure Throughput**: Use `records-send-rate` and `byte-rate` to track ingestion performance
+5. **Monitor Connection Health**: Check node-level connection metrics for network issues
+6. **Track Compression Efficiency**: Use `compression-rate` to optimize data transfer
+
+For detailed JMX metric definitions and Prometheus integration, see the [jmx-export-connector.yml](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/jmx-export-connector.yml) configuration file.
 
 ### Limitations {#limitations}
 

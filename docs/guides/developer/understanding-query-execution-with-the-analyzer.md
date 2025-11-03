@@ -4,6 +4,7 @@ sidebar_label: 'Understanding query execution with the analyzer'
 title: 'Understanding Query Execution with the Analyzer'
 description: 'Describes how you can use the analyzer to understand how ClickHouse executes your queries'
 doc_type: 'guide'
+keywords: ['query execution', 'analyzer', 'query optimization', 'explain', 'performance']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';

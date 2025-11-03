@@ -5,6 +5,7 @@ sidebar_label: 'Question about operating ClickHouse servers and clusters'
 title: 'Question about operating ClickHouse servers and clusters'
 description: 'Landing page for questions about operating ClickHouse servers and clusters'
 doc_type: 'landing-page'
+keywords: ['operations', 'administration', 'deployment', 'cluster management', 'faq']
 ---
 
 # Question about operating ClickHouse servers and clusters

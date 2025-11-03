@@ -4,6 +4,7 @@ title: 'Get started with ClickHouse Cloud'
 description: 'Complete guide to getting started with ClickHouse Cloud - from discovering features to deployment and optimization'
 hide_title: true
 doc_type: 'guide'
+keywords: ['onboarding', 'getting started', 'cloud setup', 'quickstart', 'introduction']
 ---
 
 # Get started with ClickHouse Cloud

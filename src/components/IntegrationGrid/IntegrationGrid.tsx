@@ -72,37 +72,60 @@ function IntegrationCard({ integration }: { integration: IntegrationData }) {
 
   const linkTo = getNavigationLink(integration.docsLink, integration.slug);
 
+  // Check if this is an external link (not to clickhouse.com/docs)
+  const isExternalLink = linkTo.startsWith('http') && !linkTo.includes('clickhouse.com/docs');
+
   return (
-    <Link
-      to={linkTo}
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
-      <CUICard style={{ position: 'relative' }}>
-        {/* Tier Icon in top right corner */}
-        {integration.integration_tier && integration.integration_tier !== 'community' && (
-          <div style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            zIndex: 1,
-            opacity: 0.7
-          }}>
-            {getTierIcon(integration.integration_tier)}
-          </div>
-        )}
-        <CUICard.Body>
-        <CUICard.Header>
-          <img
-            src={getLogoSrc()}
-            alt={`${integration.integration_title || integration.slug} logo`}
-          />
-        </CUICard.Header>
-        <CUICard.Footer>
-            {integration.integration_title}
-        </CUICard.Footer>
-        </CUICard.Body>
-      </CUICard>
-    </Link>
+    <div className={styles.cardWrapper}>
+      <Link
+        to={linkTo}
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        <CUICard style={{ position: 'relative' }}>
+          {/* Tier Icon in top right corner */}
+          {integration.integration_tier && integration.integration_tier !== 'community' && (
+            <div style={{
+              position: 'absolute',
+              top: '12px',
+              right: '12px',
+              zIndex: 1,
+              opacity: 0.7
+            }}>
+              {getTierIcon(integration.integration_tier)}
+            </div>
+          )}
+          <CUICard.Body>
+          <CUICard.Header>
+            <img
+              src={getLogoSrc()}
+              alt={`${integration.integration_title || integration.slug} logo`}
+            />
+          </CUICard.Header>
+          <CUICard.Footer>
+              {integration.integration_title}
+          </CUICard.Footer>
+          </CUICard.Body>
+        </CUICard>
+      </Link>
+      {/* External link overlay */}
+      {isExternalLink && (
+        <div className={styles.externalLinkOverlay}>
+          <svg
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            />
+          </svg>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -159,12 +182,51 @@ function useCMSIntegrations() {
   const [integrations, setIntegrations] = useState<IntegrationData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const fallbackPath = useBaseUrl('/integrations-fallback.json');
 
   useEffect(() => {
     const fetchIntegrations = async () => {
+      // Step 1: Load fallback data first for immediate display
       try {
-        setLoading(true);
-        const response = await fetch('https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark');
+        const fallbackResponse = await fetch(fallbackPath, {
+          cache: 'force-cache' // Use cached version if available
+        });
+
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          const transformedData = transformCMSData(fallbackData.data || []);
+          setIntegrations(transformedData);
+          setError(null);
+          setLoading(false); // Show content immediately with fallback data
+          console.log('Loaded fallback integrations data');
+        } else {
+          console.warn('Fallback file not available, will try CMS only');
+        }
+      } catch (fallbackErr) {
+        console.error('Failed to load fallback integrations data:', fallbackErr);
+        // Continue to try CMS even if fallback fails
+      }
+
+      // Step 2: Try to fetch fresh data from CMS with timeout
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+          console.log('CMS request timed out after 8 seconds');
+        }, 8000); // 8 second timeout
+
+        const response = await fetch(
+          'https://cms.clickhouse-dev.com:1337/api/integrations?populate[]=logo&populate[]=logo_dark',
+          {
+            signal: controller.signal,
+            // Add headers to help with CORS and caching
+            headers: {
+              'Accept': 'application/json',
+            }
+          }
+        );
+
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -172,27 +234,24 @@ function useCMSIntegrations() {
 
         const data = await response.json();
         const transformedData = transformCMSData(data.data || []);
+
+        // Update with fresh CMS data
         setIntegrations(transformedData);
         setError(null);
-      } catch (err) {
-        console.error('Error loading integrations data from endpoint. Falling back to static JSON file.');
-
-        // Fallback to static JSON file
-        try {
-          const fallbackResponse = await fetch('/integrations-fallback.json');
-
-          if (!fallbackResponse.ok) {
-            throw new Error(`Failed to load fallback data: ${fallbackResponse.status}`);
+        console.log('Successfully updated with fresh CMS data');
+      } catch (cmsErr) {
+        // CMS fetch failed, but that's okay - we already have fallback data
+        if (cmsErr instanceof Error) {
+          if (cmsErr.name === 'AbortError') {
+            console.log('CMS request was aborted due to timeout, using fallback data');
+          } else {
+            console.error('Error loading integrations from CMS:', cmsErr.message);
           }
+        }
 
-          const fallbackData = await fallbackResponse.json();
-          const transformedData = transformCMSData(fallbackData.data || []);
-          setIntegrations(transformedData);
-          setError(null);
-        } catch (fallbackErr) {
-          console.error('Failed to load fallback integrations data:', fallbackErr);
-          setError(fallbackErr instanceof Error ? fallbackErr.message : 'Failed to fetch integrations');
-          setIntegrations([]);
+        // Only set error if we don't have any integrations data at all
+        if (integrations.length === 0) {
+          setError('Unable to load integrations. Please try refreshing the page.');
         }
       } finally {
         setLoading(false);
@@ -200,7 +259,7 @@ function useCMSIntegrations() {
     };
 
     fetchIntegrations();
-  }, []);
+  }, [fallbackPath]);
 
   return { integrations, loading, error };
 }
@@ -594,13 +653,8 @@ function getTierIcon(tier: string, withMargin = false): React.ReactNode {
       );
     case 'community':
       return (
-        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={marginStyle}>
-          <path fillRule="evenodd" clipRule="evenodd" d="M6.22168 4.44463V4.44463C6.22168 3.46263 7.01768 2.66663 7.99968 2.66663V2.66663C8.98168 2.66663 9.77768 3.46263 9.77768 4.44463V4.44463C9.77768 5.42663 8.98168 6.22263 7.99968 6.22263V6.22263C7.01768 6.22196 6.22168 5.42596 6.22168 4.44463Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-          <path fillRule="evenodd" clipRule="evenodd" d="M1.91309 11.5553V11.5553C1.91309 10.5733 2.70909 9.77734 3.69109 9.77734V9.77734C4.67309 9.77734 5.46909 10.5733 5.46909 11.5553V11.5553C5.46842 12.5373 4.67309 13.3333 3.69109 13.3333V13.3333C2.70909 13.3333 1.91309 12.5373 1.91309 11.5553Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-          <path fillRule="evenodd" clipRule="evenodd" d="M10.5322 11.5553V11.5553C10.5322 10.5733 11.3282 9.77734 12.3102 9.77734V9.77734C13.2922 9.77734 14.0882 10.5733 14.0882 11.5553V11.5553C14.0882 12.5373 13.2922 13.3333 12.3102 13.3333V13.3333C11.3276 13.3333 10.5322 12.5373 10.5322 11.5553H10.5322Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M10.5939 11.1134H5.40723" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8.95996 5.94006L11.54 9.96006" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M4.45996 9.96006L7.03996 5.94006" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style={marginStyle}>
+          <path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
         </svg>
       );
     default:

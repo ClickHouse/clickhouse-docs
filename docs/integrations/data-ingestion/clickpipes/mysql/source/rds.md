@@ -4,6 +4,7 @@ description: 'Step-by-step guide on how to set up Amazon RDS MySQL as a source f
 slug: /integrations/clickpipes/mysql/source/rds
 title: 'RDS MySQL source setup guide'
 doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';

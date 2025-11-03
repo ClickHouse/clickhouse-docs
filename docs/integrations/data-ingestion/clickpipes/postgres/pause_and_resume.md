@@ -4,6 +4,7 @@ description: 'Pausing and Resuming a Postgres ClickPipe'
 sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/postgres/pause_and_resume
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import Image from '@theme/IdealImage';
