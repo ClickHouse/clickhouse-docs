@@ -16,19 +16,19 @@ We call these _elements_ of the array, and each element can be referred to by an
 
 Arrays in ClickHouse can be formed using the [`array`](/sql-reference/data-types/array) function:
 
-```
+```sql
 array(T)
 ```
 
 Or alternatively, using square brackets:
 
-```
+```sql
 []
 ```
 
 For example, you can create an array of numbers:
 
-```
+```sql
 SELECT array(1, 2, 3) AS numeric_array
 
 ┌─numeric_array─┐
@@ -38,7 +38,7 @@ SELECT array(1, 2, 3) AS numeric_array
 
 Or an array of strings:
 
-```
+```sql
 SELECT array('hello', 'world') AS string_array
 
 ┌─string_array──────┐
@@ -48,7 +48,7 @@ SELECT array('hello', 'world') AS string_array
 
 Or an array of nested types such as [tuples](/sql-reference/data-types/tuple):
 
-```
+```sql
 SELECT array(tuple(1, 2), tuple(3, 4))
 
 ┌─[(1, 2), (3, 4)]─┐
@@ -58,14 +58,14 @@ SELECT array(tuple(1, 2), tuple(3, 4))
 
 You might be tempted to make an array of different types like this:
 
-```
+```sql
 SELECT array('Hello', 'world', 1, 2, 3)
 ```
 
 However, array elements should always have a common super-type, which is the smallest data type that can represent values from two or more different types without loss, allowing them to be used together.
 If there is no common super-type, you'll get an exception when you try to form the array:
 
-```
+```sql
 Received exception:
 Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
@@ -73,7 +73,7 @@ Code: 386. DB::Exception: There is no supertype for types String, String, UInt8,
 when creating arrays on the fly, ClickHouse picks the narrowest type that fits all elements.
 For example, if you create an array of integers and floats, a super-type of float is chosen:
 
-```
+```sql
 SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]) AS array_type;
 
 ┌─mixed_array─┬─array_type─────┐
@@ -87,7 +87,7 @@ This may be different from other programming languages you're used to where arra
 
 For example, given an array, you can select the first element of an array by writing:
 
-```
+```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[1];
 
@@ -99,7 +99,7 @@ SELECT string_array[1];
 It is also possible to use negative indexes.
 In this way, you can select elements relative to the last element:
 
-```
+```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[-1];
 
@@ -130,7 +130,7 @@ In this section, we'll look at some of the most useful ones, starting from the s
 
 The `length` function is used to return the number of elements in the array:
 
-```
+```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT length(string_array);
 
@@ -141,7 +141,7 @@ SELECT length(string_array);
 
 You can also use the [`arrayEnumerate`](/sql-reference/functions/array-functions#arrayEnumerate) function to return an array of indexes of the elements:
 
-```
+```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT arrayEnumerate(string_array);
 
