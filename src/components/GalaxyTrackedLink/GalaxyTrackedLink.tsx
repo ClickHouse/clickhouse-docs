@@ -8,6 +8,7 @@ interface TrackedLinkProps {
   target?: string;
   rel?: string;
   className?: string;
+  download?: string;
 }
 
 export const TrackedLink: React.FC<TrackedLinkProps> = ({ 
