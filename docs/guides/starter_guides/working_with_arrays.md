@@ -71,7 +71,7 @@ Code: 386. DB::Exception: There is no supertype for types String, String, UInt8,
 ```
 
 when creating arrays on the fly, ClickHouse picks the narrowest type that fits all elements.
-For example, if you create an array of ints and floats, a super-type of float is chosen:
+For example, if you create an array of integers and floats, a super-type of float is chosen:
 
 ```
 SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]) AS array_type;
@@ -276,8 +276,7 @@ We saw in the previous query that Denver International Airport was the airport w
 Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
 
 Many of the array functions in ClickHouse are so-called ["higher-order functions"](/sql-reference/functions/overview#higher-order-functions) and accept a lambda function as the first parameter.
-The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order functon
-and returns a new array from the provided array by applying a lambda function to each element of the original array.
+The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order function and returns a new array from the provided array by applying a lambda function to each element of the original array.
 
 Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time:
 
@@ -404,7 +403,7 @@ Regular functions in ClickHouse have the property that they return the same numb
 There is however, one interesting and unique function that breaks this rule worth learning about - the `arrayJoin` function.
 
 `arrayJoin` "explodes" an array - it takes an array and creates a separate row for each element.
-This is similar to SQL's `UNNEST` or `EXPLODE` functions in other databases.
+This is similar to the `UNNEST` or `EXPLODE` SQL functions in other databases.
 
 Unlike most array functions that return arrays or scalar values, `arrayJoin` fundamentally changes the result set by multiplying the number of rows.
 
