@@ -18,6 +18,7 @@ import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/h
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import read_only from '@site/static/images/clickstack/read-only-access.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 <PrivatePreviewBadge/>
@@ -288,45 +289,21 @@ For users looking to explore the HyperDX interface only, we recommend our [sampl
 
 ### User permissions {#user-permissions}
 
-Users accessing HyperDX need **readonly SQL console access**, **SHOW permissions**, and **SELECT permissions** on tables containing observability data.
+Users accessing HyperDX are automatically authenticated using their ClickHouse Cloud console credentials. Access is controlled through SQL console permissions configured in the service settings.
 
-#### Basic Setup {#basic-setup}
+#### To configure user access {#configure-access}
 
-```sql
--- Grant readonly access and observability table permissions
-GRANT readonly TO your_user;
-GRANT SHOW, SELECT ON otel.* TO your_user;
-```
+1. Navigate to your service in the ClickHouse Cloud console
+2. Go to **Settings** → **SQL Console Access**
+3. Set the appropriate permission level for each user:
+   - **Service Admin → Full Access** - Required for enabling alerts
+   - **Service Read Only → Read Only** - Can view observability data and create dashboards
+   - **No access** - Cannot access HyperDX
 
-#### For ClickHouse infrastructure monitoring {#infra-monitoring}
-
-To use the built-in ClickHouse monitoring dashboard, grant additional system table permissions:
-
-```sql
--- Required for ClickHouse infrastructure dashboard
-GRANT SHOW COLUMNS, SELECT(event_date, event_time, memory_usage, 
-  normalized_query_hash, query, query_duration_ms, query_kind, read_rows, 
-  tables, type, written_bytes, written_rows) ON system.query_log TO your_user;
-
-GRANT SHOW COLUMNS, SELECT(CurrentMetric_MemoryTracking, CurrentMetric_S3Requests, 
-  ProfileEvent_OSCPUVirtualTimeMicroseconds, ProfileEvent_OSReadChars, 
-  ProfileEvent_OSWriteChars, ProfileEvent_S3GetObject, ProfileEvent_S3ListObjects, 
-  ProfileEvent_S3PutObject, ProfileEvent_S3UploadPart, event_time) 
-  ON system.metric_log TO your_user;
-
-GRANT SHOW COLUMNS, SELECT(active, database, partition, rows, table) 
-  ON system.parts TO your_user;
-
-GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) 
-  ON system.transposed_metric_log TO your_user;
-```
-
-:::note
-HyperDX uses the user's SQL console permissions to query data. For custom schemas, grant SHOW and SELECT on the specific tables users need to access.
-:::
+<Image img={read_only} alt="ClickHouse Cloud Read Only"/>
 
 :::important Alerts require admin access
-To enable alerts, **at least one user with admin access** to the database via the SQL console must log into HyperDX at least once. This is required to provision a dedicated user in the database that runs alert queries.
+To enable alerts, at least one user with **Service Admin** permissions (mapped to **Full Access** in the SQL Console Access dropdown) must log into HyperDX at least once. This provisions a dedicated user in the database that runs alert queries.
 :::
 
 ### Create a data source {#create-a-datasource}
