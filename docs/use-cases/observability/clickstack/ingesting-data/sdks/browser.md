@@ -6,6 +6,7 @@ sidebar_position: 0
 description: 'Browser SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Browser JS'
 doc_type: 'guide'
+keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'frontend']
 ---
 
 import Tabs from '@theme/Tabs';

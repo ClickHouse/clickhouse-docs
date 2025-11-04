@@ -4,6 +4,7 @@ slug: /integrations/data-formats/sql
 title: 'Inserting and dumping SQL data in ClickHouse'
 description: 'Page describing how to transfer data between other databases and ClickHouse using SQL dumps.'
 doc_type: 'guide'
+keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
 
 # Inserting and dumping SQL data in ClickHouse
@@ -12,7 +13,7 @@ ClickHouse can be easily integrated into OLTP database infrastructures in many w
 
 ## Creating SQL dumps {#creating-sql-dumps}
 
-Data can be dumped in SQL format using [SQLInsert](/interfaces/formats.md/#sqlinsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) settings option as a table name:
+Data can be dumped in SQL format using [SQLInsert](/interfaces/formats/SQLInsert). ClickHouse will write data in `INSERT INTO <table name> VALUES(...` form and use [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) settings option as a table name:
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -43,7 +44,7 @@ SET output_format_sql_insert_max_batch_size = 1000;
 
 ### Exporting a set of values {#exporting-a-set-of-values}
 
-ClickHouse has [Values](/interfaces/formats.md/#data-format-values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
+ClickHouse has [Values](/interfaces/formats/Values) format, which is similar to SQLInsert, but omits an `INSERT INTO table VALUES` part and returns only a set of values:
 
 ```sql
 SELECT * FROM some_data LIMIT 3 FORMAT Values
@@ -54,7 +55,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 
 ## Inserting data from SQL dumps {#inserting-data-from-sql-dumps}
 
-To read SQL dumps, [MySQLDump](/interfaces/formats.md/#mysqldump) is used:
+To read SQL dumps, [MySQLDump](/interfaces/formats/MySQLDump) is used:
 
 ```sql
 SELECT *

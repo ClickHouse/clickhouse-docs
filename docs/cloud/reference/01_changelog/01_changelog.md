@@ -1,9 +1,10 @@
 ---
 slug: /whats-new/cloud
-sidebar_label: 'Cloud Changelog'
+sidebar_label: 'Cloud changelog'
 title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 doc_type: 'changelog'
+keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,6 +32,15 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
+
+## October 17, 2025 {#october-17-2025}
+
+- **Service Monitoring - Resource Utilization Dashboard**  
+  The CPU utilization and memory utilization metrics display will change to show the maximum utilization metric during a particular time period to better surface instances of underprovisionment, from average.
+  In addition, the CPU utilization metric will show a kubernetes-level CPU utilization metric which more closely resembles the metric used by ClickHouse Cloud’s autoscaler. 
+- **External Buckets**  
+  ClickHouse Cloud now lets you export backups directly to your own cloud service provider account.
+  Connect your external storage bucket - AWS S3, Google Cloud Storage, or Azure Blob Storage - and take control of your backup management.
 
 ## August 29, 2025 {#august-29-2025}
 
@@ -214,7 +224,7 @@ remains within the ClickHouse VPC. This setup is ideal for large workloads that
 need to comply with strict data residency requirements by ensuring all data stays
 within a secure customer environment.
 
-- For more details, you can refer to the [documentation](/cloud/reference/byoc) for BYOC
+- For more details, you can refer to the [documentation](/cloud/reference/byoc/overview) for BYOC
   or read our [announcement blog post](https://clickhouse.com/blog/announcing-general-availability-of-clickhouse-bring-your-own-cloud-on-aws).
 - [Contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
 
@@ -449,7 +459,7 @@ Please see the [ClickHouse docs](/cloud/notifications) to learn more about how t
 
 ### ClickHouse Cloud now offers HIPAA-ready services in Beta for GCP {#clickhouse-cloud-now-offers-hipaa-ready-services-in-beta-for-gcp}
 
-Customers looking for increased security for protected health information (PHI) can now onboard to ClickHouse Cloud in [Google Cloud Platform (GCP)](https://cloud.google.com/). ClickHouse has implemented administrative, physical and technical safeguards prescribed by the [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html) and now has configurable security settings that can be implemented, depending on your specific use case and workload. For more information on available security settings, please review our [Security Shared Responsibility Model](/cloud/security/shared-responsibility-model).
+Customers looking for increased security for protected health information (PHI) can now onboard to ClickHouse Cloud in [Google Cloud Platform (GCP)](https://cloud.google.com/). ClickHouse has implemented administrative, physical and technical safeguards prescribed by the [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html) and now has configurable security settings that can be implemented, depending on your specific use case and workload. For more information on available security settings, please review our [Security features page](/cloud/security).
 
 Services are available in GCP `us-central-1` to customers with the **Dedicated** service type and require a Business Associate Agreement (BAA). Contact [sales](mailto:sales@clickhouse.com) or [support](https://clickhouse.com/support/program) to request access to this feature or join the wait list for additional GCP, AWS, and Azure regions.
 
@@ -954,7 +964,7 @@ This release brings usability and performance improvements in the SQL console, b
 This release brings general availability of ClickPipes for Kafka, Confluent Cloud, and Amazon MSK and the Kafka Connect ClickHouse Sink, self-service workflow to secure access to Amazon S3 via IAM roles, and AI-assisted query suggestions ( private preview).
 
 ### Console changes {#console-changes-11}
-- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/cloud/security/secure-s3)
+- Added a self-service workflow to secure [access to Amazon S3 via IAM roles](/cloud/data-sources/secure-s3)
 - Introduced AI-assisted query suggestions in private preview (please [contact ClickHouse Cloud support](https://console.clickhouse.cloud/support) to try it out.)
 
 ### Integrations changes {#integrations-changes-11}
@@ -1292,7 +1302,7 @@ This release brings an officially supported Metabase integration, a major Java c
 - [Metabase](/integrations/data-visualization/metabase-and-clickhouse.md) plugin: Became an official solution maintained by ClickHouse
 - [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md) plugin: Added support for [multiple threads](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - [Grafana](/integrations/data-visualization/grafana/index.md) plugin: Better handling of connection errors
-- [Python](/integrations/language-clients/python/index.md) client: [Streaming support](/integrations/language-clients/python/index.md#streaming-queries) for insert operation
+- [Python](/integrations/language-clients/python/index.md) client: [Streaming support](/integrations/language-clients/python/advanced-querying.md#streaming-queries) for insert operation
 - [Go](/integrations/language-clients/go/index.md) client: [Bug fixes](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): close canceled connections, better handling of connection errors
 - [JS](/integrations/language-clients/js.md) client: [Breaking changes in exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id in the return types
 - [Java](https://github.com/ClickHouse/clickhouse-java#readme) client / JDBC driver major release

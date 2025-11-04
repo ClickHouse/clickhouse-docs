@@ -3,6 +3,7 @@
 'sidebar_position': 112
 'slug': '/sql-reference/aggregate-functions/reference/avg'
 'title': 'avg'
+'doc_type': 'reference'
 ---
 
 
@@ -23,14 +24,14 @@ avg(x)
 **返回值**
 
 - 算术平均值，始终为 [Float64](../../../sql-reference/data-types/float.md)。
-- 如果输入参数 `x` 为空，返回 `NaN`。
+- 如果输入参数 `x` 为空，则返回 `NaN`。
 
 **示例**
 
 查询：
 
 ```sql
-SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
+SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 ```
 
 结果：
@@ -48,7 +49,7 @@ SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 查询：
 
 ```sql
-CREATE table test (t UInt8) ENGINE = Memory;
+CREATE TABLE test (t UInt8) ENGINE = Memory;
 ```
 
 获取算术平均值：

@@ -1,22 +1,20 @@
 ---
-description: 'System table containing information about and status of replicated
-  tables residing on the local server. Useful for monitoring.'
-keywords:
+'description': 'ローカルサーバーに存在するレプリカテーブルに関する情報とステータスを含むシステムテーブル。監視に役立ちます。'
+'keywords':
 - 'system table'
 - 'replicas'
-slug: '/operations/system-tables/replicas'
-title: 'system.replicas'
+'slug': '/operations/system-tables/replicas'
+'title': 'system.replicas'
+'doc_type': 'reference'
 ---
-
-
 
 
 # system.replicas
 
-ローカルサーバー上のレプリケートされたテーブルに関する情報とステータスを含みます。
-このテーブルは監視に使用できます。テーブルには、すべてのReplicated\*テーブルの行が含まれます。
+ローカルサーバーに存在する複製テーブルの情報とステータスを含んでいます。
+このテーブルは監視に使用できます。このテーブルには、すべてのReplicated\*テーブルに対して1行が含まれています。
 
-例:
+例：
 
 ```sql
 SELECT *
@@ -26,9 +24,9 @@ FORMAT Vertical
 ```
 
 ```text
-クエリ ID: dc6dcbcb-dc28-4df9-ae27-4354f5b3b13e
+Query id: dc6dcbcb-dc28-4df9-ae27-4354f5b3b13e
 
-行 1:
+Row 1:
 ───────
 database:                    db
 table:                       test_table
@@ -66,50 +64,50 @@ zookeeper_exception:
 replica_is_active:           {'r1':1,'r2':1}
 ```
 
-カラム:
+カラム：
 
 - `database` (`String`) - データベース名
 - `table` (`String`) - テーブル名
 - `engine` (`String`) - テーブルエンジン名
 - `is_leader` (`UInt8`) - レプリカがリーダーであるかどうか。
-    複数のレプリカが同時にリーダーになることができます。レプリカは、`merge_tree`設定`replicated_can_become_leader`を使用してリーダーにならないようにすることができます。リーダーはバックグラウンドマージをスケジューリングする責任があります。
-    リーダーであるかどうかにかかわらず、利用可能でZKにセッションがある任意のレプリカに対して書き込みが行えます。
-- `can_become_leader` (`UInt8`) - レプリカがリーダーになることができるかどうか。
+    複数のレプリカが同時にリーダーになれる場合があります。レプリカがリーダーになるのを防ぐには、`merge_tree`設定 `replicated_can_become_leader`を使用します。リーダーはバックグラウンドマージのスケジューリングを担当します。
+    書き込みは、リーダーかどうかに関係なく、利用可能でZKにセッションがある任意のレプリカに対しておこなえます。
+- `can_become_leader` (`UInt8`) - レプリカがリーダーになれるかどうか。
 - `is_readonly` (`UInt8`) - レプリカが読み取り専用モードであるかどうか。
-    このモードは、設定にClickHouse Keeperのセクションがない場合、ClickHouse Keeperでのセッション再初期化時に未知のエラーが発生した場合、およびClickHouse Keeperでのセッション再初期化中に有効になります。
-- `is_session_expired` (`UInt8`) - ClickHouse Keeperとのセッションが期限切れになりました。基本的には`is_readonly`と同じです。
-- `future_parts` (`UInt32`) - 未完成のINSERTまたはマージの結果として現れるデータパーツの数。
-- `parts_to_check` (`UInt32`) - 検証のためのキューにあるデータパーツの数。パーツに損傷の疑いがある場合、そのパーツは検証キューに入れられます。
+    このモードは、設定にClickHouse Keeperのセクションがない場合、ClickHouse Keeperでセッションを再初期化する際に未知のエラーが発生した場合、およびClickHouse Keeperでのセッション再初期化中にオンになります。
+- `is_session_expired` (`UInt8`) - ClickHouse Keeperとのセッションが期限切れになったこと。基本的には`is_readonly`と同じです。
+- `future_parts` (`UInt32`) - まだ行われていないINSERTやマージの結果として表示されるデータパーツの数。
+- `parts_to_check` (`UInt32`) - 検証キューにあるデータパーツの数。パーツは、損傷の疑いがある場合に検証キューに入れられます。
 - `zookeeper_path` (`String`) - ClickHouse Keeper内のテーブルデータへのパス。
 - `replica_name` (`String`) - ClickHouse Keeper内のレプリカ名。同じテーブルの異なるレプリカは異なる名前を持ちます。
-- `replica_path` (`String`) - ClickHouse Keeper内のレプリカデータへのパス。'zookeeper_path/replicas/replica_path'を結合したものと同じです。
-- `columns_version` (`Int32`) - テーブル構造のバージョン番号。ALTERが何回実行されたかを示します。レプリカが異なるバージョンを持っている場合、いくつかのレプリカがすべてのALTERをまだ適用していないことを意味します。
-- `queue_size` (`UInt32`) - 実行待ちの操作のためのキューのサイズ。操作にはデータブロックの挿入、マージ、一部のその他のアクションが含まれます。通常、これは`future_parts`と一致します。
-- `inserts_in_queue` (`UInt32`) - 実行する必要があるデータブロックの挿入数。挿入は通常、比較的迅速にレプリケートされます。この数が大きい場合、何か問題があることを意味します。
-- `merges_in_queue` (`UInt32`) - 実行待ちのマージの数。マージは長くなることがあるため、この値が長時間0より大きいままである可能性があります。
+- `replica_path` (`String`) - ClickHouse Keeper内のレプリカデータへのパス。'zookeeper_path/replicas/replica_path'の連結と同じです。
+- `columns_version` (`Int32`) - テーブル構造のバージョン番号。ALTERが何回行われたかを示します。レプリカのバージョンが異なる場合、いくつかのレプリカがすべてのALTERをまだ実行していないことを意味します。
+- `queue_size` (`UInt32`) - 実行待ちの操作のキューサイズ。操作にはデータブロックの挿入、マージ、特定のその他のアクションが含まれます。通常、`future_parts`と一致します。
+- `inserts_in_queue` (`UInt32`) - 実行する必要があるデータブロックの挿入数。挿入は通常かなり迅速に複製されます。この数が大きい場合、何か問題があることを意味します。
+- `merges_in_queue` (`UInt32`) - 実行待ちのマージの数。時にはマージが長引くことがあるため、この値は長い間ゼロより大きいことがあります。
 - `part_mutations_in_queue` (`UInt32`) - 実行待ちの変異の数。
-- `queue_oldest_time` (`DateTime`) - `queue_size`が0より大きい場合、最も古い操作がキューに追加された時間を示します。
-- `inserts_oldest_time` (`DateTime`) - `queue_oldest_time`を参照してください
-- `merges_oldest_time` (`DateTime`) - `queue_oldest_time`を参照してください
-- `part_mutations_oldest_time` (`DateTime`) - `queue_oldest_time`を参照してください
+- `queue_oldest_time` (`DateTime`) - `queue_size`が0より大きい場合、キューに最も古い操作が追加された時刻を示します。
+- `inserts_oldest_time` (`DateTime`) - `queue_oldest_time`を参照
+- `merges_oldest_time` (`DateTime`) - `queue_oldest_time`を参照
+- `part_mutations_oldest_time` (`DateTime`) - `queue_oldest_time`を参照
 
-次の4つのカラムは、ZKとのアクティブなセッションがある場合にのみ非ゼロの値を持ちます。
+次の4つのカラムは、ZKとのアクティブなセッションが存在する場合にのみ非ゼロの値を持ちます。
 
-- `log_max_index` (`UInt64`) - 一般的な活動のログ内の最大エントリ番号。
-- `log_pointer` (`UInt64`) - レプリカがその実行キューにコピーした一般的な活動のログ内の最大エントリ番号に1を加えたもの。`log_pointer`が`log_max_index`よりもかなり小さい場合、何か問題があります。
-- `last_queue_update` (`DateTime`) - 最後にキューが更新された時間。
-- `absolute_delay` (`UInt64`) - 現在のレプリカの遅延の大きさ（秒単位）。
-- `total_replicas` (`UInt8`) - このテーブルの知られているレプリカの合計数。
-- `active_replicas` (`UInt8`) - ClickHouse Keeperにセッションを持つこのテーブルのレプリカの数（つまり、機能しているレプリカの数）。
-- `lost_part_count` (`UInt64`) - テーブルの作成以来、すべてのレプリカで失われたデータパーツの数。この値はClickHouse Keeperに永続化され、増加することしかありません。
-- `last_queue_update_exception` (`String`) - キューに壊れたエントリが含まれている場合。特に、ClickHouseがバージョン間で後方互換性を壊すとき、より新しいバージョンによって書き込まれたログエントリが古いバージョンによって解析できない場合に重要です。
-- `zookeeper_exception` (`String`) - ClickHouse Keeperから情報を取得するときにエラーが発生した場合に得られる最後の例外メッセージ。
+- `log_max_index` (`UInt64`) - 一般的なアクティビティのログの最大エントリ番号。
+- `log_pointer` (`UInt64`) - レプリカが実行キューにコピーした一般的なアクティビティのログ内の最大エントリ番号に1を加えたもの。 `log_pointer`が`log_max_index`よりもずっと小さい場合、何か問題があります。
+- `last_queue_update` (`DateTime`) - 最後にキューが更新された時刻。
+- `absolute_delay` (`UInt64`) - 現在のレプリカが持つ遅延の大きさ（秒単位）。
+- `total_replicas` (`UInt8`) - このテーブルの既知のレプリカの総数。
+- `active_replicas` (`UInt8`) - ClickHouse Keeperにセッションがあるこのテーブルのレプリカの数（つまり、機能しているレプリカの数）。
+- `lost_part_count` (`UInt64`) - テーブル作成以降にすべてのレプリカで失われたデータパーツの数。値はClickHouse Keeperに永続化され、増加し続けます。
+- `last_queue_update_exception` (`String`) - キューが壊れたエントリを含む場合。特に、ClickHouseがバージョン間の後方互換性を壊した場合で、新しいバージョンによって記録されたログエントリが古いバージョンで解析できない場合に重要です。
+- `zookeeper_exception` (`String`) - ClickHouse Keeperから情報を取得する際にエラーが発生した場合に受け取る最後の例外メッセージ。
 - `replica_is_active` ([Map(String, UInt8)](../../sql-reference/data-types/map.md)) — レプリカ名とレプリカのアクティブ状態のマップ。
 
-すべてのカラムをリクエストすると、各行に対してClickHouse Keeperからの読み取りが行われるため、テーブルは少し遅く動作する可能性があります。
-最後の4つのカラム（log_max_index、log_pointer、total_replicas、active_replicas）をリクエストしなければ、テーブルは迅速に動作します。
+すべてのカラムを要求すると、各行に対してClickHouse Keeperから数回の読み取りが行われるため、テーブルの動作が少し遅くなることがあります。
+最後の4つのカラム（log_max_index、log_pointer、total_replicas、active_replicas）を要求しない場合、テーブルは迅速に動作します。
 
-例えば、次のようにしてすべてが正しく動作しているか確認できます:
+たとえば、次のようにしてすべてが正しく動作していることを確認できます：
 
 ```sql
 SELECT
@@ -141,4 +139,4 @@ WHERE
     OR active_replicas < total_replicas
 ```
 
-このクエリが何も返さない場合、すべては正常です。
+このクエリが何も返さない場合、すべてが正常であることを意味します。

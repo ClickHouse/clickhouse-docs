@@ -1,9 +1,10 @@
 ---
-'description': '使用 ClickHouse 进行硬件性能测试和基准测试的指南'
+'description': '使用 ClickHouse 测试和基准测试硬件性能的指南'
 'sidebar_label': '测试硬件'
 'sidebar_position': 54
 'slug': '/operations/performance-test'
 'title': '如何使用 ClickHouse 测试您的硬件'
+'doc_type': 'guide'
 ---
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
@@ -27,6 +28,6 @@ chmod a+x ./hardware.sh
 ./hardware.sh
 ```
 
-3. 复制输出并发送至 feedback@clickhouse.com
+3. 复制输出并发送到 feedback@clickhouse.com
 
-所有结果都发布在这里: https://clickhouse.com/benchmark/hardware/
+所有结果都发布在这里： https://clickhouse.com/benchmark/hardware/

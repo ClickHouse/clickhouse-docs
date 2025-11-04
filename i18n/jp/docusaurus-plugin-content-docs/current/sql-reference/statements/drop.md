@@ -1,21 +1,20 @@
 ---
-description: 'DROP ステートメントのドキュメント'
-sidebar_label: 'DROP'
-sidebar_position: 44
-slug: '/sql-reference/statements/drop'
-title: 'DROP ステートメント'
+'description': 'DROP 文書'
+'sidebar_label': 'DROP'
+'sidebar_position': 44
+'slug': '/sql-reference/statements/drop'
+'title': 'DROP Statements'
+'doc_type': 'reference'
 ---
-
-
 
 
 # DROPステートメント
 
-既存のエンティティを削除します。`IF EXISTS`句が指定されている場合、エンティティが存在しないときにこれらのクエリはエラーを返しません。`SYNC`修飾子が指定されている場合、エンティティは遅延なく削除されます。
+既存のエンティティを削除します。`IF EXISTS`句が指定されている場合、エンティティが存在しない場合でもこれらのクエリはエラーを返しません。`SYNC`修飾子が指定されている場合、エンティティは遅延なく削除されます。
 
 ## DROP DATABASE {#drop-database}
 
-`db`データベース内のすべてのテーブルを削除し、その後`db`データベース自体を削除します。
+`db`データベース内のすべてのテーブルを削除した後、`db`データベース自体を削除します。
 
 構文:
 
@@ -25,7 +24,7 @@ DROP DATABASE [IF EXISTS] db [ON CLUSTER cluster] [SYNC]
 
 ## DROP TABLE {#drop-table}
 
-1つまたは複数のテーブルを削除します。
+1つ以上のテーブルを削除します。
 
 :::tip
 テーブルの削除を元に戻すには、[UNDROP TABLE](/sql-reference/statements/undrop.md)を参照してください。
@@ -38,8 +37,8 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 ```
 
 制限事項:
-- `IF EMPTY`句が指定されている場合、サーバーはクエリを受け取ったレプリカでのみテーブルの空であることを確認します。
-- 複数のテーブルを同時に削除することは原子操作ではありません。つまり、テーブルの削除に失敗した場合、その後のテーブルは削除されません。
+- `IF EMPTY`句が指定されている場合、サーバーはクエリを受信したレプリカのみでテーブルの空をチェックします。  
+- 複数のテーブルを一度に削除することは原子的な操作ではなく、つまり、テーブルの削除に失敗した場合、その後のテーブルは削除されません。
 
 ## DROP DICTIONARY {#drop-dictionary}
 
@@ -83,7 +82,7 @@ DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER
 
 ## DROP QUOTA {#drop-quota}
 
-クォータを削除します。削除されたクォータは、割り当てられていたすべてのエンティティから取り消されます。
+クオータを削除します。削除されたクオータは、割り当てられていたすべてのエンティティから取り消されます。
 
 構文:
 
@@ -113,7 +112,8 @@ DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 
 ## DROP FUNCTION {#drop-function}
 
-[CREATE FUNCTION](./create/function.md)によって作成されたユーザー定義関数を削除します。システム関数は削除できません。
+[CREATE FUNCTION](./create/function.md)によって作成されたユーザー定義の関数を削除します。
+システム関数は削除できません。
 
 **構文**
 

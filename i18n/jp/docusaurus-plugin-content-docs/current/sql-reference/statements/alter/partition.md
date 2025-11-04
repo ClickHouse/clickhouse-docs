@@ -1,31 +1,31 @@
 ---
-description: 'Documentation for Partition'
-sidebar_label: 'PARTITION'
-sidebar_position: 38
-slug: '/sql-reference/statements/alter/partition'
-title: 'Manipulating Partitions and Parts'
+'description': 'パーティションに関するドキュメント'
+'sidebar_label': 'PARTITION'
+'sidebar_position': 38
+'slug': '/sql-reference/statements/alter/partition'
+'title': 'パーティションとパーツの操作'
+'doc_type': 'reference'
 ---
 
+以下の操作が [partitions](/engines/table-engines/mergetree-family/custom-partitioning-key.md) で利用可能です:
 
-
-以下の操作が[パーティション](/engines/table-engines/mergetree-family/custom-partitioning-key.md)に対して利用可能です：
-
-- [DETACH PARTITION\|PART](#detach-partitionpart) — 指定したパーティションまたはパートを`detached`ディレクトリに移動し、忘れます。
-- [DROP PARTITION\|PART](#drop-partitionpart) — 指定したパーティションまたはパートを削除します。
-- [DROP DETACHED PARTITION\|PART](#drop-detached-partitionpart) — `detached`からパートまたはパーティションのすべてのパーツを削除します。
-- [FORGET PARTITION](#forget-partition) — 空のパーティションのメタデータをZooKeeperから削除します。
-- [ATTACH PARTITION\|PART](#attach-partitionpart) — `detached`ディレクトリからテーブルにパーティションまたはパートを追加します。
-- [ATTACH PARTITION FROM](#attach-partition-from) — 一つのテーブルからデータパーティションを別のテーブルにコピーして追加します。
-- [REPLACE PARTITION](#replace-partition) — 一つのテーブルからデータパーティションを別のテーブルにコピーして置き換えます。
+- [DETACH PARTITION\|PART](#detach-partitionpart) — 指定したパーティションまたはパーツを `detached` ディレクトリに移動し、忘却します。
+- [DROP PARTITION\|PART](#drop-partitionpart) — 指定したパーティションまたはパーツを削除します。
+- [DROP DETACHED PARTITION\|PART](#drop-detached-partitionpart) — `detached` からパートまたはパーティションのすべてのパーツを削除します。
+- [FORGET PARTITION](#forget-partition) — 空のパーティションのメタデータを ZooKeeper から削除します。
+- [ATTACH PARTITION\|PART](#attach-partitionpart) — `detached` ディレクトリからテーブルにパーティションまたはパーツを追加します。
+- [ATTACH PARTITION FROM](#attach-partition-from) — 一つのテーブルから別のテーブルにデータパーティションをコピーして追加します。
+- [REPLACE PARTITION](#replace-partition) — 一つのテーブルから別のテーブルにデータパーティションをコピーして置き換えます。
 - [MOVE PARTITION TO TABLE](#move-partition-to-table) — 一つのテーブルから別のテーブルにデータパーティションを移動します。
-- [CLEAR COLUMN IN PARTITION](#clear-column-in-partition) — パーティション内の指定したカラムの値をリセットします。
-- [CLEAR INDEX IN PARTITION](#clear-index-in-partition) — パーティション内の指定した二次インデックスをリセットします。
+- [CLEAR COLUMN IN PARTITION](#clear-column-in-partition) — パーティション内の指定されたカラムの値をリセットします。
+- [CLEAR INDEX IN PARTITION](#clear-index-in-partition) — パーティション内の指定された二次インデックスをリセットします。
 - [FREEZE PARTITION](#freeze-partition) — パーティションのバックアップを作成します。
 - [UNFREEZE PARTITION](#unfreeze-partition) — パーティションのバックアップを削除します。
 - [FETCH PARTITION\|PART](#fetch-partitionpart) — 別のサーバーからパートまたはパーティションをダウンロードします。
-- [MOVE PARTITION\|PART](#move-partitionpart) — パーティション/データパートを別のディスクまたはボリュームに移動します。
-- [UPDATE IN PARTITION](#update-in-partition) — 条件によってパーティション内のデータを更新します。
-- [DELETE IN PARTITION](#delete-in-partition) — 条件によってパーティション内のデータを削除します。
+- [MOVE PARTITION\|PART](#move-partitionpart) — パーティション/データパーツを別のディスクまたはボリュームに移動します。
+- [UPDATE IN PARTITION](#update-in-partition) — 条件に基づいてパーティション内のデータを更新します。
+- [DELETE IN PARTITION](#delete-in-partition) — 条件に基づいてパーティション内のデータを削除します。
+- [REWRITE PARTS](#rewrite-parts) — テーブル（または特定のパーティション）内のパーツを完全に書き換えます。
 
 <!-- -->
 
@@ -35,20 +35,20 @@ title: 'Manipulating Partitions and Parts'
 ALTER TABLE table_name [ON CLUSTER cluster] DETACH PARTITION|PART partition_expr
 ```
 
-指定したパーティションのすべてのデータを`detached`ディレクトリに移動します。サーバーは、まるでそのデータパーティションが存在しないかのように、`detached`データを忘れます。このデータについてサーバーが認識するのは、[ATTACH](#attach-partitionpart)クエリを実行するまではありません。
+指定されたパーティションのすべてのデータを `detached` ディレクトリに移動します。サーバーは、切り離されたデータパーティションを存在しないかのように忘却します。サーバーは、[ATTACH](#attach-partitionpart) クエリを実行するまでこのデータを認識しません。
 
-例：
+例:
 
 ```sql
 ALTER TABLE mt DETACH PARTITION '2020-11-21';
 ALTER TABLE mt DETACH PART 'all_2_2_0';
 ```
 
-パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
-クエリが実行されると、`detached`ディレクトリ内のデータに対して何をしても構いません — ファイルシステムから削除することも、そのまま残すこともできます。
+クエリが実行された後、`detached` ディレクトリ内のデータに対して何をしても構いません — ファイルシステムから削除することもできますし、そのままにすることもできます。
 
-このクエリはレプリケートされ、すべてのレプリカの`detached`ディレクトリにデータを移動します。このクエリはリーダーレプリカでのみ実行可能です。レプリカがリーダーかどうかを知るには、[system.replicas](/operations/system-tables/replicas)テーブルへの`SELECT`クエリを実行します。あるいは、すべてのレプリカで`DETACH`クエリを実行する方が簡単です — リーダーレプリカを除くすべてのレプリカが例外を投げます（複数のリーダーが許可されているため）。
+このクエリはレプリケートされます — すべてのレプリカの `detached` ディレクトリにデータを移動します。このクエリはリーダーレプリカでのみ実行できます。レプリカがリーダーかどうかを確認するには、[system.replicas](/operations/system-tables/replicas) テーブルへの `SELECT` クエリを実行してください。代わりに、すべてのレプリカで `DETACH` クエリを実行する方が簡単です — 複数のリーダーが許可されているため、リーダーレプリカ以外のすべてのレプリカが例外をスローします。
 
 ## DROP PARTITION\|PART {#drop-partitionpart}
 
@@ -56,13 +56,13 @@ ALTER TABLE mt DETACH PART 'all_2_2_0';
 ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
 ```
 
-指定されたパーティションをテーブルから削除します。このクエリは、パーティションを非アクティブとしてタグ付けし、データを完全に削除します。約10分かかります。
+指定されたパーティションをテーブルから削除します。このクエリはパーティションを非アクティブとしてタグ付けし、データを完全に削除します。おおよそ 10 分かかります。
 
-パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
-このクエリはレプリケートされ、すべてのレプリカでデータが削除されます。
+このクエリはレプリケートされます — すべてのレプリカのデータが削除されます。
 
-例：
+例:
 
 ```sql
 ALTER TABLE mt DROP PARTITION '2020-11-21';
@@ -75,8 +75,8 @@ ALTER TABLE mt DROP PART 'all_4_4_0';
 ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|partition_expr
 ```
 
-指定されたパートまたは指定されたパーティションのすべてのパーツを`detached`から削除します。
-パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+指定されたパートまたは指定されたパーティションのすべてのパーツを `detached` から削除します。
+パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
 ## FORGET PARTITION {#forget-partition}
 
@@ -84,11 +84,11 @@ ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|par
 ALTER TABLE table_name FORGET PARTITION partition_expr
 ```
 
-空のパーティションに関するすべてのメタデータをZooKeeperから削除します。パーティションが空でないか不明な場合、クエリは失敗します。再利用されないパーティションに対してのみ実行するようにしてください。
+空のパーティションに関するすべてのメタデータを ZooKeeper から削除します。パーティションが空でない場合や不明である場合、クエリは失敗します。再利用されることのないパーティションに対してのみ実行してください。
 
-パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
-例：
+例:
 
 ```sql
 ALTER TABLE mt FORGET PARTITION '20201121';
@@ -97,25 +97,25 @@ ALTER TABLE mt FORGET PARTITION '20201121';
 ## ATTACH PARTITION\|PART {#attach-partitionpart}
 
 ```sql
-ALTER TABLE table_name [ON CLUSTER cluster] ATTACH PARTITION|PART partition_expr
+ALTER TABLE table_name ATTACH PARTITION|PART partition_expr
 ```
 
-`detached`ディレクトリからテーブルにデータを追加します。全体のパーティションまたは個別のパートにデータを追加することが可能です。例：
+`detached` ディレクトリからテーブルにデータを追加します。全体のパーティションまたは個別のパーツのデータを追加することが可能です。例:
 
 ```sql
 ALTER TABLE visits ATTACH PARTITION 201901;
 ALTER TABLE visits ATTACH PART 201901_2_2_0;
 ```
 
-パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
-このクエリはレプリケートされます。レプリカのイニシエーターは、`detached`ディレクトリ内にデータが存在するかどうかを確認します。
-データが存在すれば、クエリはその整合性をチェックします。すべてが正しければ、クエリはデータをテーブルに追加します。
+このクエリはレプリケートされます。レプリカのイニシエータは、`detached` ディレクトリにデータが存在するかどうかを確認します。
+データが存在する場合、クエリはその整合性をチェックします。すべてが正しければ、クエリはデータをテーブルに追加します。
 
-イニシエーターでないレプリカは、ATTACHコマンドを受け取ると、自身の`detached`フォルダに正しいチェックサムのパートが見つかれば、他のレプリカからの取得なしにデータを追加します。
-正しいチェックサムのパートが見つからなければ、どのレプリカからでもパートがダウンロードされます。
+非イニシエータレプリカが、アタッチコマンドを受信し、自分の `detached` フォルダに正しいチェックサムのパーツを見つけると、他のレプリカからダウンロードすることなくデータを添付します。
+正しいチェックサムのパーツが存在しない場合は、パーツを持つ任意のレプリカからデータがダウンロードされます。
 
-一つのレプリカの`detached`ディレクトリにデータを配置し、すべてのレプリカのテーブルに追加するために`ALTER ... ATTACH`クエリを使用できます。
+一つのレプリカにデータを `detached` ディレクトリに放置し、すべてのレプリカのテーブルに追加するために `ALTER ... ATTACH` クエリを使用できます。
 
 ## ATTACH PARTITION FROM {#attach-partition-from}
 
@@ -123,19 +123,19 @@ ALTER TABLE visits ATTACH PART 201901_2_2_0;
 ALTER TABLE table2 [ON CLUSTER cluster] ATTACH PARTITION partition_expr FROM table1
 ```
 
-このクエリは、データパーティションを`table1`から`table2`にコピーします。
+このクエリは `table1` から `table2` にデータパーティションをコピーします。
 
-注意点：
+注意してください:
 
-- データは`table1`または`table2`から削除されません。
-- `table1`は一時テーブルであってもかまいません。
+- データは `table1` からも `table2` からも削除されません。
+- `table1` は一時テーブルである可能性があります。
 
-クエリが正常に実行されるためには、以下の条件を満たす必要があります：
+クエリが成功するためには、以下の条件を満たす必要があります:
 
-- 両方のテーブルは同じ構造を持っている必要があります。
-- 両方のテーブルは同じパーティションキー、同じORDER BYキーおよび同じ主キーを持っている必要があります。
-- 両方のテーブルは同じストレージポリシーを持っている必要があります。
-- 目的のテーブルは源のテーブルに含まれるすべてのインデックスとプロジェクションを含む必要があります。もし`enforce_index_structure_match_on_partition_manipulation`設定が目的のテーブルで有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルは源のテーブルのインデックスとプロジェクションのスーパーセットを持つことができます。
+- 両方のテーブルが同じ構造を持たなければなりません。
+- 両方のテーブルが同じパーティションキー、同じオーダーバイキー、および同じ主キーを持たなければなりません。
+- 両方のテーブルが同じストレージポリシーを持たなければなりません。
+- 目的のテーブルは、ソーステーブルのすべてのインデックスとプロジェクションを含む必要があります。もし目的のテーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルにはソーステーブルのインデックスとプロジェクションのスーパーセットが含まれていてもかまいません。
 
 ## REPLACE PARTITION {#replace-partition}
 
@@ -143,19 +143,19 @@ ALTER TABLE table2 [ON CLUSTER cluster] ATTACH PARTITION partition_expr FROM tab
 ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM table1
 ```
 
-このクエリは、データパーティションを`table1`から`table2`にコピーし、`table2`内の既存のパーティションを置き換えます。操作は原子的です。
+このクエリは `table1` から `table2` にデータパーティションをコピーし、`table2` の既存のパーティションを置き換えます。操作は原子的です。
 
-注意点：
+注意してください:
 
-- `table1`からデータは削除されません。
-- `table1`は一時テーブルであってもかまいません。
+- データは `table1` から削除されません。
+- `table1` は一時テーブルである可能性があります。
 
-クエリが正常に実行されるためには、以下の条件を満たす必要があります：
+クエリが成功するためには、以下の条件を満たす必要があります:
 
-- 両方のテーブルは同じ構造を持っている必要があります。
-- 両方のテーブルは同じパーティションキー、同じORDER BYキーおよび同じ主キーを持っている必要があります。
-- 両方のテーブルは同じストレージポリシーを持っている必要があります。
-- 目的のテーブルは源のテーブルに含まれるすべてのインデックスとプロジェクションを含む必要があります。もし`enforce_index_structure_match_on_partition_manipulation`設定が目的のテーブルで有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルは源のテーブルのインデックスとプロジェクションのスーパーセットを持つことができます。
+- 両方のテーブルが同じ構造を持たなければなりません。
+- 両方のテーブルが同じパーティションキー、同じオーダーバイキー、および同じ主キーを持たなければなりません。
+- 両方のテーブルが同じストレージポリシーを持たなければなりません。
+- 目的のテーブルは、ソーステーブルのすべてのインデックスとプロジェクションを含む必要があります。もし目的のテーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルにはソーステーブルのインデックスとプロジェクションのスーパーセットが含まれていてもかまいません。
 
 ## MOVE PARTITION TO TABLE {#move-partition-to-table}
 
@@ -163,15 +163,15 @@ ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM ta
 ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO TABLE table_dest
 ```
 
-このクエリは、`table_source`から`table_dest`にデータパーティションを移動します。`table_source`からデータを削除します。
+このクエリは、データパーティションを `table_source` から `table_dest` に移動し、`table_source` からデータを削除します。
 
-クエリが正常に実行されるためには、以下の条件を満たす必要があります：
+クエリが成功するためには、以下の条件を満たす必要があります:
 
-- 両方のテーブルは同じ構造を持っている必要があります。
-- 両方のテーブルは同じパーティションキー、同じORDER BYキーおよび同じ主キーを持っている必要があります。
-- 両方のテーブルは同じストレージポリシーを持っている必要があります。
-- 両方のテーブルは同じエンジンファミリー（レプリケートまたは非レプリケート）である必要があります。
-- 目的のテーブルは源のテーブルに含まれるすべてのインデックスとプロジェクションを含む必要があります。もし`enforce_index_structure_match_on_partition_manipulation`設定が目的のテーブルで有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルは源のテーブルのインデックスとプロジェクションのスーパーセットを持つことができます。
+- 両方のテーブルが同じ構造を持たなければなりません。
+- 両方のテーブルが同じパーティションキー、同じオーダーバイキー、および同じ主キーを持たなければなりません。
+- 両方のテーブルが同じストレージポリシーを持たなければなりません。
+- 両方のテーブルは同じエンジンファミリー（レプリケートされたものか非レプリケートされたもの）でなければなりません。
+- 目的のテーブルは、ソーステーブルのすべてのインデックスとプロジェクションを含む必要があります。もし目的のテーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは同一でなければなりません。それ以外の場合、目的のテーブルにはソーステーブルのインデックスとプロジェクションのスーパーセットが含まれていてもかまいません。
 
 ## CLEAR COLUMN IN PARTITION {#clear-column-in-partition}
 
@@ -179,9 +179,9 @@ ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO T
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR COLUMN column_name IN PARTITION partition_expr
 ```
 
-指定されたパーティション内の指定したカラムのすべての値をリセットします。テーブル作成時に`DEFAULT`句が設定されている場合、このクエリはカラムの値を指定したデフォルト値に設定します。
+指定されたカラムのすべての値をパーティション内でリセットします。テーブル作成時に `DEFAULT` 句が設定されている場合、このクエリはカラムの値を指定されたデフォルト値に設定します。
 
-例：
+例:
 
 ```sql
 ALTER TABLE visits CLEAR COLUMN hour in PARTITION 201902
@@ -193,41 +193,41 @@ ALTER TABLE visits CLEAR COLUMN hour in PARTITION 201902
 ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [WITH NAME 'backup_name']
 ```
 
-このクエリは、指定されたパーティションのローカルバックアップを作成します。`PARTITION`句が省略された場合、クエリはすべてのパーティションのバックアップを一度に作成します。
+このクエリは、指定されたパーティションのローカルバックアップを作成します。`PARTITION` 句が省略された場合、このクエリはすべてのパーティションのバックアップを一度に作成します。
 
 :::note
 バックアッププロセス全体はサーバーを停止することなく実行されます。
 :::
 
-古いスタイルのテーブルに対しては、パーティション名のプレフィックス（例えば`2019`）を指定することができます。この場合、クエリは対応するすべてのパーティションのバックアップを作成します。パーティション式の設定については、[How to set the partition expression](#how-to-set-partition-expression)のセクションを参照してください。
+古いスタイルのテーブルでは、パーティション名のプレフィックスを指定できます（例えば、`2019`） — その場合、このクエリは対応するすべてのパーティションのバックアップを作成します。パーティション式の設定に関するセクション [How to set the partition expression](#how-to-set-partition-expression) を参照してください。
 
-実行時に、データスナップショットのために、クエリはテーブルデータへのハードリンクを作成します。ハードリンクは、`/var/lib/clickhouse/shadow/N/...`ディレクトリに配置されます。ここで：
+実行時には、データスナップショットのために、クエリはテーブルデータへのハードリンクを作成します。ハードリンクは `/var/lib/clickhouse/shadow/N/...` ディレクトリに配置され、ここで：
 
-- `/var/lib/clickhouse/`は、コンフィグで指定された作業ClickHouseディレクトリです。
-- `N`はバックアップのインクリメンタル番号です。
-- `WITH NAME`パラメータが指定されている場合、`'backup_name'`パラメータの値が使用され、インクリメンタル番号の代わりになります。
+- `/var/lib/clickhouse/` は、設定で指定された作業 ClickHouse ディレクトリです。
+- `N` はバックアップの増分数字です。
+- もし `WITH NAME` パラメータが指定されている場合、その場合 `'backup_name'` パラメータの値が増分数字の代わりに使用されます。
 
 :::note
-テーブル内のデータストレージのために[一連のディスクを使用する場合](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes)、`shadow/N`ディレクトリはすべてのディスクに存在し、`PARTITION`式によって一致するデータパーツが格納されます。
+テーブル内のデータストレージ用に [複数のディスクのセットを使用する](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes) 場合、`shadow/N` ディレクトリはすべてのディスク上に表示され、`PARTITION` 式に一致するデータパーツを保存します。
 :::
 
-バックアップ内の同じディレクトリ構造は、`/var/lib/clickhouse/`内と同様に作成されます。クエリは、すべてのファイルに対して`chmod`を実行し、それらへの書き込みを禁止します。
+バックアップ内に、`/var/lib/clickhouse/` 内と同じディレクトリ構造が作成されます。このクエリは、すべてのファイルに対して書き込みを禁止するために `chmod` を実行します。
 
-バックアップを作成した後は、`/var/lib/clickhouse/shadow/`からリモートサーバーにデータをコピーし、その後ローカルサーバーから削除できます。なお、`ALTER t FREEZE PARTITION`クエリはレプリケーションされないため、ローカルサーバーでのバックアップのみを作成します。
+バックアップの作成後、データを `/var/lib/clickhouse/shadow/` からリモートサーバーにコピーし、その後ローカルサーバーから削除できます。この `ALTER t FREEZE PARTITION` クエリはレプリケートされず、ローカルサーバーにのみローカルバックアップを作成します。
 
-クエリはほぼ瞬時にバックアップを作成します（ただし、最初に、関連するテーブルに対する現在のクエリが完了するのを待ちます）。
+このクエリはほぼ瞬時にバックアップを作成します（ただし、最初に対応するテーブルへの現在のクエリがすべて終了するのを待ちます）。
 
-`ALTER TABLE t FREEZE PARTITION`は、テーブルメタデータではなくデータのみをコピーします。テーブルメタデータのバックアップを作成するには、`/var/lib/clickhouse/metadata/database/table.sql`ファイルをコピーします。
+`ALTER TABLE t FREEZE PARTITION` はデータのみをコピーし、テーブルメタデータはコピーしません。テーブルメタデータのバックアップを作成するには、ファイル `/var/lib/clickhouse/metadata/database/table.sql` をコピーします。
 
-バックアップからデータを復元するには、次の手順を行います：
+バックアップからデータを復元するには、次の手順を実行します。
 
-1. テーブルが存在しない場合は作成します。クエリを見るには、.sqlファイルを使用し（`ATTACH`を`CREATE`に置き換えます）、テーブルを作成します。
-2. バックアップ内の`data/database/table/`ディレクトリから`/var/lib/clickhouse/data/database/table/detached/`ディレクトリにデータをコピーします。
-3. `ALTER TABLE t ATTACH PARTITION`クエリを実行して、データをテーブルに追加します。
+1. テーブルが存在しない場合は作成します。クエリを表示するには、.sql ファイルを使用し、その中の `ATTACH` を `CREATE` に置き換えます。
+2. バックアップ内の `data/database/table/` ディレクトリから `/var/lib/clickhouse/data/database/table/detached/` ディレクトリにデータをコピーします。
+3. データをテーブルに追加するために `ALTER TABLE t ATTACH PARTITION` クエリを実行します。
 
-バックアップからの復元にはサーバーを停止する必要はありません。
+バックアップからの復元はサーバーを停止する必要はありません。
 
-バックアップおよびデータ復元に関する詳細については、[データバックアップ](/operations/backup.md)セクションを参照してください。
+バックアップとデータの復元に関する詳細は、[Data Backup](/operations/backup.md) セクションを参照してください。
 
 ## UNFREEZE PARTITION {#unfreeze-partition}
 
@@ -235,7 +235,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [W
 ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WITH NAME 'backup_name'
 ```
 
-指定した名前の`frozen`パーティションをディスクから削除します。`PARTITION`句が省略された場合、クエリはすべてのパーティションのバックアップを一度に削除します。
+指定された名前の `frozen` パーティションをディスクから削除します。`PARTITION` 句が省略された場合、このクエリはすべてのパーティションのバックアップを一度に削除します。
 
 ## CLEAR INDEX IN PARTITION {#clear-index-in-partition}
 
@@ -243,22 +243,18 @@ ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WIT
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION partition_expr
 ```
 
-このクエリは、`CLEAR COLUMN`と同様に動作しますが、カラムデータの代わりにインデックスをリセットします。
+このクエリは `CLEAR COLUMN` と似た動作をしますが、カラムデータの代わりにインデックスをリセットします。
 
-## FETCH PARTITION\|PART {#fetch-partitionpart}
+## FETCH PARTITION|PART {#fetch-partitionpart}
 
-```sql
-ALTER TABLE table_name [ON CLUSTER cluster] FETCH PARTITION|PART partition_expr FROM 'path-in-zookeeper'
-```
+別のサーバーからパーティションをダウンロードします。このクエリはレプリケートされたテーブル用にのみ動作します。
 
-別のサーバーからパーティションをダウンロードします。このクエリはレプリケートテーブルでのみ動作します。
+クエリは次のことを行います：
 
-このクエリは次のことを行います：
+1. 指定されたシャードからパーティション|パーツをダウンロードします。 'path-in-zookeeper' には、ZooKeeper内のシャードへのパスを指定する必要があります。
+2. 次に、ダウンロードしたデータを `table_name` テーブルの `detached` ディレクトリに置きます。データをテーブルに追加するには、[ATTACH PARTITION\|PART](#attach-partitionpart) クエリを使用します。
 
-1. 指定されたシャードからパーティション|パートをダウンロードします。`path-in-zookeeper`では、ZooKeeper内のシャードのパスを指定する必要があります。
-2. 次に、クエリはダウンロードしたデータを`table_name`テーブルの`detached`ディレクトリに配置します。データをテーブルに追加するには、[ATTACH PARTITION\|PART](#attach-partitionpart)クエリを使用します。
-
-例：
+例えば：
 
 1. FETCH PARTITION
 ```sql
@@ -271,30 +267,30 @@ ALTER TABLE users FETCH PART 201901_2_2_0 FROM '/clickhouse/tables/01-01/visits'
 ALTER TABLE users ATTACH PART 201901_2_2_0;
 ```
 
-注意点：
+注意してください:
 
-- `ALTER ... FETCH PARTITION|PART`クエリはレプリケートされません。パートまたはパーティションは、ローカルサーバーの`detached`ディレクトリにのみ配置されます。
-- `ALTER TABLE ... ATTACH`クエリはレプリケートされます。データはすべてのレプリカに追加されます。データは`detached`ディレクトリから一つのレプリカに追加され、他のレプリカには隣接するレプリカから追加されます。
+- `ALTER ... FETCH PARTITION|PART` クエリはレプリケートされません。それはパートまたはパーティションをローカルサーバーの `detached` ディレクトリにのみ配置します。
+- `ALTER TABLE ... ATTACH` クエリはレプリケートされます。それはすべてのレプリカにデータを追加します。データは `detached` ディレクトリ内の一つのレプリカに追加され、他のレプリカには隣接レプリカから追加されます。
 
-ダウンロード前に、システムはパーティションの存在とテーブル構造の一致を確認します。最も適切なレプリカが自動的に健全なレプリカの中から選択されます。
+ダウンロード前に、システムはパーティションが存在するかどうか、またテーブル構造が一致するかどうかを確認します。最も適切なレプリカが健康なレプリカから自動的に選択されます。
 
-クエリは`ALTER TABLE`と呼ばれますが、テーブル構造は変更せず、テーブル内のデータも即座には変更しません。
+クエリは `ALTER TABLE` と呼ばれますが、テーブル構造を変更することはなく、テーブル内のデータに即座に変化を与えることはありません。
 
 ## MOVE PARTITION\|PART {#move-partitionpart}
 
-`MergeTree`エンジンテーブル用の別のボリュームまたはディスクにパーティションまたはデータパーツを移動します。データストレージのために[複数のブロックデバイスを使用する](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes)を参照してください。
+`MergeTree` エンジンテーブルのパーティションまたはデータパーツを別のボリュームまたはディスクに移動します。データストレージ用に [複数のブロックデバイスを使用する](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes) を参照してください。
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] MOVE PARTITION|PART partition_expr TO DISK|VOLUME 'disk_name'
 ```
 
-`ALTER TABLE t MOVE`クエリは：
+`ALTER TABLE t MOVE` クエリ：
 
-- レプリケートされず、異なるレプリカが異なるストレージポリシーを持つ可能性があるためです。
-- 指定されたディスクまたはボリュームが設定されていない場合、エラーを返します。また、ストレージポリシーで指定されたデータ移動の条件が適用できない場合もエラーを返します。
-- データがすでにバックグラウンドプロセス、同時`ALTER TABLE t MOVE`クエリ、またはバックグラウンドデータマージの結果によって移動されている場合、エラーを返す可能性があります。この場合、ユーザーは追加の操作を行うことを避けるべきです。
+- レプリケートされません。なぜなら、異なるレプリカが異なるストレージポリシーを持っている可能性があるからです。
+- 指定されたディスクまたはボリュームが設定されていない場合、エラーを返します。また、ストレージポリシーで指定されたデータ移動の条件が適用できない場合も、エラーが返されます。
+- 後ろで行われるプロセスによって移動されるデータがすでに移動されている場合、同時に `ALTER TABLE t MOVE` クエリを実行した場合、またはバックグラウンドデータのマージの結果としてエラーが返される場合があります。この場合、ユーザーは追加の操作を行うべきではありません。
 
-例：
+例:
 
 ```sql
 ALTER TABLE hits MOVE PART '20190301_14343_16206_438' TO VOLUME 'slow'
@@ -303,9 +299,9 @@ ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 
 ## UPDATE IN PARTITION {#update-in-partition}
 
-指定されたフィルタリング式と一致する指定のパーティション内のデータを操作します。これは[ミューテーション](/sql-reference/statements/alter/index.md#mutations)として実装されています。
+指定されたフィルタリング式に一致する指定されたパーティションのデータを操作します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
-文法：
+構文：
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_expr] WHERE filter_expr
@@ -314,22 +310,22 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 ### 例 {#example}
 
 ```sql
--- パーティション名を使用
+-- using partition name
 ALTER TABLE mt UPDATE x = x + 1 IN PARTITION 2 WHERE p = 2;
 
--- パーティションIDを使用
+-- using partition id
 ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ```
 
-### 参照 {#see-also}
+### 関連 {#see-also}
 
 - [UPDATE](/sql-reference/statements/alter/partition#update-in-partition)
 
 ## DELETE IN PARTITION {#delete-in-partition}
 
-指定されたフィルタリング式と一致する指定のパーティション内のデータを削除します。これは[ミューテーション](/sql-reference/statements/alter/index.md#mutations)として実装されています。
+指定されたフィルタリング式に一致する指定されたパーティション内のデータを削除します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
-文法：
+構文：
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE [IN PARTITION partition_expr] WHERE filter_expr
@@ -338,35 +334,46 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE [IN PARTITION partition_expr]
 ### 例 {#example-1}
 
 ```sql
--- パーティション名を使用
+-- using partition name
 ALTER TABLE mt DELETE IN PARTITION 2 WHERE p = 2;
 
--- パーティションIDを使用
+-- using partition id
 ALTER TABLE mt DELETE IN PARTITION ID '2' WHERE p = 2;
 ```
 
-### 参照 {#see-also-1}
+## REWRITE PARTS {#rewrite-parts}
+
+これは、すべての新しい設定を使用してパーツを最初から書き換えます。これは、テーブルレベルの設定（例えば `use_const_adaptive_granularity`）がデフォルトで新しく書き込まれたパーツにのみ適用されるため、意味を持ちます。
+
+### 例 {#example-rewrite-parts}
+
+```sql
+ALTER TABLE mt REWRITE PARTS;
+ALTER TABLE mt REWRITE PARTS IN PARTITION 2;
+```
+
+### 関連 {#see-also-1}
 
 - [DELETE](/sql-reference/statements/alter/delete)
 
 ## How to Set Partition Expression {#how-to-set-partition-expression}
 
-`ALTER ... PARTITION`クエリでパーティション式を指定する方法はいくつかあります：
+`ALTER ... PARTITION` クエリでパーティション式をさまざまな方法で指定できます：
 
-- `system.parts`テーブルの`partition`カラムからの値として。例えば、`ALTER TABLE visits DETACH PARTITION 201901`。
-- `ALL`キーワードを使用して。このキーワードはDROP/DETACH/ATTACH/ATTACH FROMでのみ使用できます。例えば、`ALTER TABLE visits ATTACH PARTITION ALL`。
-- （タイプが一致する）タプル式や定数のタプルとして。単一要素のパーティションキーの場合、式は`tuple (...)`関数でラップする必要があります。例えば、`ALTER TABLE visits DETACH PARTITION tuple(toYYYYMM(toDate('2019-01-25')))`.
-- パーティションIDとして。パーティションIDは、パーティションの文字列識別子（可能であれば人間が読めるもの）であり、ファイルシステムおよびZooKeeperでパーティションの名前として使用されます。パーティションIDは、`PARTITION ID`句に指定する必要があり、単一引用符で囲まれます。例えば、`ALTER TABLE visits DETACH PARTITION ID '201901'`。
-- [ATTACH PARTITION](#attach-partitionpart)および[DROP DETACHED PART](#drop-detached-partitionpart)クエリでは、`system.detached_parts`テーブルの`name`カラムからの値を持つ文字列リテラルを使用してパートの名前を指定します。例えば、`ALTER TABLE visits ATTACH PART '201901_1_1_0'`。
+- `system.parts` テーブルの `partition` カラムからの値として。例えば、`ALTER TABLE visits DETACH PARTITION 201901` など。
+- キーワード `ALL` を使って。これは DROP/DETACH/ATTACH/ATTACH FROM と共にのみ使用できます。例えば、`ALTER TABLE visits ATTACH PARTITION ALL` など。
+- テーブルのパーティショニングキータプルと一致する（型が一致する）式または定数のタプルとして。単一要素のパーティションキーの場合、式は `tuple (...)` 関数にラップする必要があります。例えば、`ALTER TABLE visits DETACH PARTITION tuple(toYYYYMM(toDate('2019-01-25')))` など。
+- パーティションIDとして。パーティションIDは、パーティションの文字列識別子（可能であれば人間が読める）であり、ファイルシステムやZooKeeperにおけるパーティションの名前として使用されます。パーティションIDは `PARTITION ID` 句で指定する必要があり、単一引用符で囲む必要があります。例えば、`ALTER TABLE visits DETACH PARTITION ID '201901'` など。
+- [ALTER ATTACH PART](#attach-partitionpart) および [DROP DETACHED PART](#drop-detached-partitionpart) クエリにおいて、パーツの名前を指定するには、[system.detached_parts](/operations/system-tables/detached_parts) テーブルの `name` カラムからの値を持つ文字列リテラルを使用します。例えば、`ALTER TABLE visits ATTACH PART '201901_1_1_0'` など。
 
-パーティションを指定したときの引用符の使用は、パーティション式のタイプによって異なります。例えば、`String`型の場合は、その名前を引用符（`'`）で指定する必要があります。`Date`および`Int*`型の場合は、引用符を使用する必要はありません。
+パーティション指定時の引用符の使用は、パーティション式の型に依存します。例えば、`String` 型の場合、その名前を引用符（`'`）で指定する必要があります。`Date` および `Int*` 型の場合、引用符は不要です。
 
-上記のすべての規則は、[OPTIMIZE](/sql-reference/statements/optimize.md)クエリにも当てはまります。非パーティションテーブルを最適化する際に唯一のパーティションを指定する必要がある場合、式を`PARTITION tuple()`に設定します。例えば：
+これらのすべてのルールは、[OPTIMIZE](/sql-reference/statements/optimize.md) クエリにも当てはまります。非パーティションテーブルを最適化する際に唯一のパーティションを指定する必要がある場合は、式 `PARTITION tuple()` を設定します。例えば：
 
 ```sql
 OPTIMIZE TABLE table_not_partitioned PARTITION tuple() FINAL;
 ```
 
-`IN PARTITION`は、[UPDATE](/sql-reference/statements/alter/update)または[DELETE](/sql-reference/statements/alter/delete)式が`ALTER TABLE`クエリの結果として適用されるパーティションを指定します。新しいパーツは指定されたパーティションからのみ作成されます。このようにして、`IN PARTITION`は、テーブルが多くのパーティションに分割されているときに負担を軽減し、データを一点ずつ更新する必要があるときに役立ちます。
+`IN PARTITION` は、[UPDATE](/sql-reference/statements/alter/update) または [DELETE](/sql-reference/statements/alter/delete) 式が `ALTER TABLE` クエリの結果として適用されるパーティションを指定します。新しいパーツは指定されたパーティションからのみ作成されます。これにより、テーブルが多数のパーティションに分かれている場合、リソースの負荷を軽減し、データを一点一点のみ更新することができます。
 
-`ALTER ... PARTITION`クエリの例は、テスト[`00502_custom_partitioning_local`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00502_custom_partitioning_local.sql)および[`00502_custom_partitioning_replicated_zookeeper`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00502_custom_partitioning_replicated_zookeeper.sql)で示されています。
+`ALTER ... PARTITION` クエリの例は、テスト [`00502_custom_partitioning_local`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00502_custom_partitioning_local.sql) および [`00502_custom_partitioning_replicated_zookeeper`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00502_custom_partitioning_replicated_zookeeper.sql) で示されています。

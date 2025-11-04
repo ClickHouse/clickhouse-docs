@@ -1,34 +1,35 @@
 ---
 'slug': '/examples/aggregate-function-combinators/sumForEach'
 'title': 'sumForEach'
-'description': '使用 sumArray 组合器的示例'
+'description': '使用 sumForEach 聚合函数的示例'
 'keywords':
 - 'sum'
-- 'array'
+- 'ForEach'
 - 'combinator'
 - 'examples'
-- 'sumArray'
-'sidebar_label': 'sumArray'
+- 'sumForEach'
+'sidebar_label': 'sumForEach'
+'doc_type': 'reference'
 ---
 
 
-# sumArray {#sumforeach}
+# sumForEach {#sumforeach}
 
 ## Description {#description}
 
-[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，将其从作用于行值的聚合函数转变为作用于数组列的聚合函数，应用聚合到每行数组中的每个元素。
+[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，将其从一个操作行值的聚合函数转变为一个操作数组列的聚合函数，在跨行的每个元素上应用聚合。
 
-## Example Usage {#example-usage}
+## Example usage {#example-usage}
 
-在这个例子中，我们将使用在我们的 [SQL playground](https://sql.clickhouse.com/) 中可用的 `hits` 数据集。
+在这个例子中，我们将利用我们 [SQL playground](https://sql.clickhouse.com/) 中提供的 `hits` 数据集。
 
-`hits` 表包含一个名为 `isMobile` 的 UInt8 类型列，可能为 `0` 表示桌面，或 `1` 表示移动设备：
+`hits` 表包含一个名为 `isMobile` 的 UInt8 类型列，可以是 `0` 表示桌面或 `1` 表示移动设备：
 
 ```sql runnable
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-我们将使用 `sumForEach` 聚合组合器函数来分析桌面与移动流量随一天的每小时变化。点击下面的播放按钮以交互方式运行查询：
+我们将使用 `sumForEach` 聚合组合器函数来分析桌面与移动流量如何按小时变化。点击下面的播放按钮以交互方式运行查询：
 
 ```sql runnable
 SELECT
@@ -45,4 +46,4 @@ ORDER BY hour_of_day;
 
 ## See also {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach combinator`](/sql-reference/aggregate-functions/combinators#-foreach)
+- [`ForEach` combinator](/sql-reference/aggregate-functions/combinators#-foreach)

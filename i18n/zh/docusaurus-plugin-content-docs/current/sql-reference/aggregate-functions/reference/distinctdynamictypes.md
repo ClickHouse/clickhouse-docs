@@ -1,8 +1,9 @@
 ---
-'description': '计算存储在 Dynamic 列中的不同数据类型的列表。'
+'description': '计算存储在 Dynamic 列中的不同数据类型列表。'
 'sidebar_position': 215
 'slug': '/sql-reference/aggregate-functions/reference/distinctdynamictypes'
 'title': 'distinctDynamicTypes'
+'doc_type': 'reference'
 ---
 
 

@@ -5,6 +5,7 @@ pagination_next: null
 description: 'Data ingestion with OpenTelemetry for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting with OpenTelemetry'
 doc_type: 'guide'
+keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry']
 ---
 
 import Image from '@theme/IdealImage';

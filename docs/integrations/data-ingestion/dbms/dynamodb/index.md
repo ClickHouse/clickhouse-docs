@@ -106,7 +106,7 @@ There are a few requirements for the destination table:
   - Rows with the same sorting key will be deduplicated based on the `version` column.
 
 ### Create the snapshot ClickPipe {#create-the-snapshot-clickpipe}
-Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse. Follow the S3 ClickPipe guide [here](/integrations/data-ingestion/clickpipes/object-storage.md), but use the following settings:
+Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse. Follow the S3 ClickPipe guide [here](/integrations/clickpipes/object-storage), but use the following settings:
 
 - **Ingest path**: You will need to locate the path of the exported json files in S3. The path will look something like this:
 

@@ -1,8 +1,9 @@
 ---
-sidebar_label: 'Deduplication Strategies'
+sidebar_label: 'Deduplication strategies'
 description: 'Handle duplicates and deleted rows.'
 slug: /integrations/clickpipes/postgres/deduplication
 title: 'Deduplication strategies (using CDC)'
+keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
 ---
 

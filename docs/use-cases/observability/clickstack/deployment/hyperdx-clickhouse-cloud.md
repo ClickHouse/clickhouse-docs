@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 1
 description: 'Deploying ClickStack with ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,8 +18,17 @@ import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/h
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 <PrivatePreviewBadge/>
+
+::::note[Private Preview]
+This feature is in ClickHouse Cloud private preview. If your org is interested in getting priority access,
+<TrackedLink href="https://clickhouse.com/cloud/clickstack-private-preview" eventName="docs.clickstack_deployment.waitlist_cta">join the waitlist</TrackedLink>.
+
+If you're new to ClickHouse Cloud, click
+<TrackedLink href="/docs/cloud/overview" eventName="docs.clickstack_deployment.cloud_learn_more_cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
+::::
 
 This option is designed for users who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
 

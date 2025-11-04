@@ -4,6 +4,7 @@ sidebar_label: 'Network ports'
 title: 'Network ports'
 description: 'Description of available network ports and what they are used for'
 doc_type: 'reference'
+keywords: ['network', 'ports', 'configuration', 'security', 'firewall']
 ---
 
 # Network ports

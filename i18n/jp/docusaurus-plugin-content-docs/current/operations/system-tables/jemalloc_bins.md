@@ -1,31 +1,30 @@
 ---
-description: 'System table containing information about memory allocations done
-  via jemalloc allocator in different size classes (bins) aggregated from all arenas.'
-keywords:
+'description': 'システムテーブルは、さまざまなサイズクラス（ビン）でjemallocアロケータを介して行われたメモリ割り当てに関する情報を、すべてのアリーナから集約して含んでいます。'
+'keywords':
 - 'system table'
 - 'jemalloc_bins'
-slug: '/operations/system-tables/jemalloc_bins'
-title: 'system.jemalloc_bins'
+'slug': '/operations/system-tables/jemalloc_bins'
+'title': 'system.jemalloc_bins'
+'doc_type': 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 <SystemTableCloud/>
 
-jemallocアロケーターを介して行われたメモリ割り当てに関する情報を、異なるサイズクラス（ビン）からすべてのエリアで集約しています。
-これらの統計は、jemallocにおけるスレッドローカルキャッシュのため、完全に正確ではない可能性があります。
+jemallocアロケーターを介して行われたメモリ割り当てに関する情報が、異なるサイズクラス（ビン）からすべてのアリーナを集計して含まれています。これらの統計は、jemallocにおけるスレッドローカルキャッシュのため、完全に正確ではない可能性があります。
 
 カラム:
 
-- `index` (UInt64) — サイズ順に並べられたビンのインデックス
-- `large` (Bool) — 大きな割り当てにはTrue、小さな割り当てにはFalse
-- `size` (UInt64) — このビン内の割り当てのサイズ
+- `index` (UInt64) — サイズで順序付けられたビンのインデックス
+- `large` (Bool) — 大きな割り当ての場合はTrue、小さな場合はFalse
+- `size` (UInt64) — このビンの割り当てサイズ
 - `allocations` (UInt64) — 割り当ての数
 - `deallocations` (UInt64) — 解放の数
 
 **例**
 
-現在の全体のメモリ使用量に最も寄与した割り当てのサイズを見つけます。
+現在の全体的なメモリ使用量に最も寄与した割り当てのサイズを見つける。
 
 ```sql
 SELECT

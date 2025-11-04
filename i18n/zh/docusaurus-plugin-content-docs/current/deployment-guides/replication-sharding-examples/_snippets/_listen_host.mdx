@@ -1,0 +1,17 @@
+外部通信通过激活 listen host 设置来启用网络接口。这确保 ClickHouse 服务器主机可以被其他主机访问：
+
+```xml
+<listen_host>0.0.0.0</listen_host>
+```
+
+HTTP API 的端口设置为 `8123`：
+
+```xml
+<http_port>8123</http_port>
+```
+
+用于 clickhouse-client 与其他本地 ClickHouse 工具以及 clickhouse-server 与其他 clickhouse-servers 之间通过 ClickHouse 本地协议进行交互的 TCP 端口设置为 `9000`：
+
+```xml
+<tcp_port>9000</tcp_port>
+```

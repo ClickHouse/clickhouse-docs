@@ -1,19 +1,18 @@
 ---
-slug: '/updating-data'
-title: 'データの更新'
-description: 'データの更新 目次'
-keywords:
+'slug': '/updating-data'
+'title': 'データの更新'
+'description': 'データ 更新 TABLE OF CONTENTS'
+'keywords':
 - 'update'
 - 'updating data'
+'doc_type': 'landing-page'
 ---
 
+このドキュメントのこのセクションでは、データを更新する方法について学びます。
 
-
-このセクションでは、データを更新する方法について学びます。
-
-| ページ                                                               | 説明                                                                                                                                                           |
-|--------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [概要](/updating-data/overview)                            | ClickHouseとOLTPデータベース間でのデータ更新の違い、ならびにClickHouseでのさまざまな更新方法についての概要を提供します。                                                         |
-| [更新ミューテーション](/managing-data/update_mutations)      | 更新ミューテーションを使用して更新する方法を学びます。                                                                                                           |
-| [軽量更新](/guides/developer/lightweight-update)              | 軽量更新を使用して更新する方法を学びます。                                                                                                                     |
-| [ReplacingMergeTree](/guides/replacing-merge-tree)             | ReplacingMergeTreeを使用して更新する方法を学びます。                                                                                                            |
+| ページ                                                       | 説明                                                                                                                                                     |
+|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [概要](/updating-data/overview)                             | ClickHouse と OLTP データベースのデータ更新の違い、および ClickHouse でのデータ更新方法のさまざまな手法についての概要を提供します。                           |
+| [アップデートミューテーション](/managing-data/update_mutations) | アップデートミューテーションを使用して更新する方法を学びます。                                                                                               |
+| [軽量更新](/docs/sql-reference/statements/update)           | 軽量更新を使用して更新する方法を学びます。                                                                                                               |
+| [ReplacingMergeTree](/guides/replacing-merge-tree)          | ReplacingMergeTree を使用して更新する方法を学びます。                                                                                                      |

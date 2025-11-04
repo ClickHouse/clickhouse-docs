@@ -1,31 +1,32 @@
 ---
-'description': '将子查询转换为表。该函数实现视图。'
+'description': '将子查询转换为一个 TABLE。此功能实现了 视图。'
 'sidebar_label': '视图'
 'sidebar_position': 210
 'slug': '/sql-reference/table-functions/view'
 'title': '视图'
+'doc_type': 'reference'
 ---
 
 
-# view 表函数
+# view Table Function
 
-将子查询转换为一个表。该函数实现了视图（请参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表不存储数据，而仅存储指定的 `SELECT` 查询。在从表中读取数据时，ClickHouse 执行查询并从结果中删除所有不必要的列。
+将子查询转换为一个表。该函数实现视图 (参见 [CREATE VIEW](/sql-reference/statements/create/view))。生成的表不存储数据，而只存储指定的 `SELECT` 查询。当从该表读取时，ClickHouse 执行查询并删除结果中所有不必要的列。
 
-## 语法 {#syntax}
+## Syntax {#syntax}
 
 ```sql
 view(subquery)
 ```
 
-## 参数 {#arguments}
+## Arguments {#arguments}
 
 - `subquery` — `SELECT` 查询。
 
-## 返回值 {#returned_value}
+## Returned value {#returned_value}
 
 - 一个表。
 
-## 示例 {#examples}
+## Examples {#examples}
 
 输入表：
 
@@ -65,6 +66,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## 相关 {#related}
+## Related {#related}
 
-- [视图表引擎](/engines/table-engines/special/view/)
+- [View Table Engine](/engines/table-engines/special/view/)

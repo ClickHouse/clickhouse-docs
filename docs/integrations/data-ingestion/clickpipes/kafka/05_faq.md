@@ -5,6 +5,7 @@ slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
 doc_type: 'guide'
+keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 ---
 
 ## Kafka ClickPipes FAQ {#faq}
@@ -31,7 +32,7 @@ ClickPipes is a separate cloud service that runs independently of the ClickHouse
 
 <summary>What are the requirements for using ClickPipes for Kafka?</summary>
 
-In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/security/cloud-endpoints-api) in your Kafka setup. Alternatively, you can use [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) to connect ClickPipes for Kafka to your Kafka brokers.
+In order to use ClickPipes for Kafka, you will need a running Kafka broker and a ClickHouse Cloud service with ClickPipes enabled. You will also need to ensure that ClickHouse Cloud can access your Kafka broker. This can be achieved by allowing remote connection on the Kafka side, whitelisting [ClickHouse Cloud Egress IP addresses](/manage/data-sources/cloud-endpoints-api) in your Kafka setup. Alternatively, you can use [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) to connect ClickPipes for Kafka to your Kafka brokers.
 </details>
 
 <details>

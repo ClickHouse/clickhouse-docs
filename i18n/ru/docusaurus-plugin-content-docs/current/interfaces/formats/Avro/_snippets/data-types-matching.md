@@ -1,12 +1,12 @@
-Таблица ниже показывает все типы данных, поддерживаемые форматом Apache Avro, и соответствующие им типы данных ClickHouse в запросах `INSERT` и `SELECT`.
+Таблица ниже показывает все типы данных, поддерживаемые форматом Apache Avro, и их соответствующие типы данных ClickHouse в запросах `INSERT` и `SELECT`.
 
-| Тип данных Avro `INSERT`                   | Тип данных ClickHouse                                                                                                          | Тип данных Avro `SELECT`       |
+| Avro тип данных `INSERT`                     | ClickHouse тип данных                                                                                                          | Avro тип данных `SELECT`         |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
 | `boolean`, `int`, `long`, `float`, `double` | [Int(8\16\32)](/sql-reference/data-types/int-uint.md), [UInt(8\16\32)](/sql-reference/data-types/int-uint.md) | `int`                           |
 | `boolean`, `int`, `long`, `float`, `double` | [Int64](/sql-reference/data-types/int-uint.md), [UInt64](/sql-reference/data-types/int-uint.md)               | `long`                          |
 | `boolean`, `int`, `long`, `float`, `double` | [Float32](/sql-reference/data-types/float.md)                                                                         | `float`                         |
 | `boolean`, `int`, `long`, `float`, `double` | [Float64](/sql-reference/data-types/float.md)                                                                         | `double`                        |
-| `bytes`, `string`, `fixed`, `enum`          | [String](/sql-reference/data-types/string.md)                                                                         | `bytes` или `string` \*        |
+| `bytes`, `string`, `fixed`, `enum`          | [String](/sql-reference/data-types/string.md)                                                                         | `bytes` или `string` \*          |
 | `bytes`, `string`, `fixed`                  | [FixedString(N)](/sql-reference/data-types/fixedstring.md)                                                            | `fixed(N)`                      |
 | `enum`                                      | [Enum(8\16)](/sql-reference/data-types/enum.md)                                                                       | `enum`                          |
 | `array(T)`                                  | [Array(T)](/sql-reference/data-types/array.md)                                                                        | `array(T)`                      |
@@ -26,13 +26,14 @@
 | `fixed(32)`                                 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                               | `fixed(32)`                     |
 | `record`                                    | [Tuple](/sql-reference/data-types/tuple.md)                                                                           | `record`                        |
 
-\* `bytes` является значением по умолчанию, контролируемым настройкой [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern)
+\* `bytes` по умолчанию, контролируется настройкой [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern)
 
-\**  Тип [Variant](/sql-reference/data-types/variant) неявно принимает `null` как значение поля, поэтому, например, Avro `union(T1, T2, null)` будет преобразован в `Variant(T1, T2)`. В результате, при генерации Avro из ClickHouse, мы должны всегда включать тип `null` в набор типов Avro `union`, так как мы не знаем, является ли какое-либо значение на самом деле `null` во время вывода схемы.
+\**  Тип [Variant](/sql-reference/data-types/variant) неявно принимает `null` в качестве значения поля, поэтому, например, Avro `union(T1, T2, null)` будет преобразован в `Variant(T1, T2)`. 
+В результате, при создании Avro из ClickHouse, мы всегда должны включать тип `null` в набор типов Avro `union`, так как мы не знаем, является ли какое-либо значение фактически `null` во время вывода схемы.
 
 \**\* [Логические типы Avro](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
-Неподдерживаемые логические типы данных Avro:
+Не поддерживаемые логические типы данных Avro:
 - `time-millis`
 - `time-micros`
 - `duration`

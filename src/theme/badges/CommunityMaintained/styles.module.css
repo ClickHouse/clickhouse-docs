@@ -12,8 +12,8 @@
 }
 
 .CommunityMaintainedIcon svg path {
-    fill: #69afff;
-    stroke: #ffffff;
+    fill: #ffffff;
+    stroke: none;
 }
 
 .CommunityMaintainedBadge a {
@@ -34,6 +34,6 @@
 }
 
 [data-theme="dark"] .CommunityMaintainedIcon svg path {
-    fill: #69afff;
-    stroke: #ffffff;
+    fill: #ffffff;
+    stroke: none;
 }

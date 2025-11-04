@@ -1,27 +1,27 @@
 ---
-description: 'Руководство по использованию утилиты форматирования для работы с форматами данных ClickHouse'
-slug: /operations/utilities/clickhouse-format
-title: 'clickhouse-format'
+slug: '/operations/utilities/clickhouse-format'
+description: 'Руководство по использованию утилиты формат для работы с форматами'
+title: clickhouse-format
+doc_type: reference
 ---
-
-
 # Утилита clickhouse-format
 
 Позволяет форматировать входные запросы.
 
 Ключи:
 
-- `--help` или `-h` — Вывести справочное сообщение.
+- `--help` или `-h` — Вывести сообщение справки.
 - `--query` — Форматировать запросы любой длины и сложности.
-- `--hilite` — Добавить подсветку синтаксиса с помощью управляющих последовательностей ANSI терминала.
+- `--hilite` или `--highlight` — Добавить подсветку синтаксиса с помощью ANSI-escape последовательностей терминала.
 - `--oneline` — Форматировать в одну строку.
-- `--max_line_length` — Форматировать в одной строке запросы длиной меньше указанной.
+- `--max_line_length` — Форматировать в одну строку запросы с длиной менее указанной.
 - `--comments` — Сохранять комментарии в выводе.
-- `--quiet` или `-q` — Просто проверить синтаксис, без вывода при успехе.
+- `--quiet` или `-q` — Просто проверить синтаксис, без вывода при успешном выполнении.
 - `--multiquery` или `-n` — Разрешить несколько запросов в одном файле.
-- `--obfuscate` — Обфусцировать вместо форматирования.
-- `--seed <string>` — Случайная строка, которая определяет результат обфускации.
-- `--backslash` — Добавить обратный слэш в конце каждой строки форматированного запроса. Может быть полезно, когда вы копируете запрос из интернета или откуда-либо еще с несколькими строками и хотите выполнить его в командной строке.
+- `--obfuscate` — Шифровать вместо форматирования.
+- `--seed <string>` — Сид, произвольная строка, определяющая результат шифрования.
+- `--backslash` — Добавить обратный слэш в конце каждой строки отформатированного запроса. Может быть полезно, когда вы копируете запрос из интернета или откуда-то ещё с несколькими строками и хотите выполнить его в командной строке.
+- `--semicolons_inline` — В режиме нескольких запросов, писать точку с запятой в последней строке запроса вместо новой строки.
 
 ## Примеры {#examples}
 
@@ -52,7 +52,7 @@ $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 SELECT sum(number) FROM numbers(5)
 ```
 
-3. Мульти-запросы:
+3. Мультизапросы:
 
 ```bash
 $ clickhouse-format -n <<< "SELECT min(number) FROM numbers(5); SELECT max(number) FROM numbers(5);"
@@ -71,7 +71,7 @@ FROM numbers(5)
 
 ```
 
-4. Обфускация:
+4. Шифрование:
 
 ```bash
 $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
@@ -83,7 +83,7 @@ $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWE
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
-Тот же запрос и другая строка семени:
+Тот же запрос и другая строка сид:
 
 ```bash
 $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"

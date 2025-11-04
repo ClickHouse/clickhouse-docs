@@ -4,6 +4,7 @@ sidebar_label: 'Merge table function'
 title: 'Merge table function'
 description: 'Query multiple tables at the same time.'
 doc_type: 'reference'
+keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
 The [merge table function](https://clickhouse.com/docs/sql-reference/table-functions/merge) lets us query multiple tables in parallel.
@@ -129,7 +130,7 @@ AND multiIf(
 );
 ```
 
-We use the [`variantType`](/docs/sql-reference/functions/other-functions#varianttype) function to check the type of `winner_seed` for each row and then [`variantElement`](/docs/sql-reference/functions/other-functions#variantelement) to extract the underlying value.
+We use the [`variantType`](/docs/sql-reference/functions/other-functions#variantType) function to check the type of `winner_seed` for each row and then [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) to extract the underlying value.
 When the type is `String`, we cast to a number and then do the comparison.
 The result of running the query is shown below:
 

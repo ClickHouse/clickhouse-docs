@@ -992,7 +992,7 @@ This release improves observability dashboards, optimizes time to create large b
 - Плагин [Metabase](/integrations/data-visualization/metabase-and-clickhouse.md): стал официальным решением, поддерживаемым ClickHouse
 - Плагин [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md): добавлена поддержка [нескольких потоков](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md)
 - Плагин [Grafana](/integrations/data-visualization/grafana/index.md): лучшее управление ошибками соединения
-- Клиент [Python](/integrations/language-clients/python/index.md): добавлена [поддержка стриминга](/integrations/language-clients/python/index.md#streaming-queries) для операции вставки
+- Клиент [Python](/integrations/language-clients/python/index.md): добавлена [поддержка стриминга](/integrations/language-clients/python/advanced-querying.md#streaming-queries) для операции вставки
 - Клиент [Go](/integrations/language-clients/go/index.md): [исправления ошибок](https://github.com/ClickHouse/clickhouse-go/blob/main/CHANGELOG.md): закрытие отмененных соединений, лучшее управление ошибками соединения
 - Клиент [JS](/integrations/language-clients/js.md): [Существенные изменения в exec/insert](https://github.com/ClickHouse/clickhouse-js/releases/tag/0.0.12); exposed query_id в возвращаемых типах
 - Клиент [Java](https://github.com/ClickHouse/clickhouse-java#readme) / JDBC драйвер крупный релиз

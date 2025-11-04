@@ -5,6 +5,7 @@ sidebar_label: 'Security changelog'
 title: 'Security changelog'
 description: 'Security changelog detailing security related updates and changes'
 doc_type: 'changelog'
+keywords: ['security', 'CVE', 'vulnerabilities', 'security fixes', 'patches']
 ---
 
 # Security changelog

@@ -5,14 +5,15 @@
 'keywords':
 - 'system table'
 - 'build_options'
+'doc_type': 'reference'
 ---
 
 包含有关 ClickHouse 服务器构建选项的信息。
 
 列：
 
-- `name` (String) — 构建选项的名称，例如 `USE_ODBC`
-- `value` (String) — 构建选项的值，例如 `1`
+- `name`（字符串） — 构建选项的名称，例如 `USE_ODBC`
+- `value`（字符串） — 构建选项的值，例如 `1`
 
 **示例**
 

@@ -1,8 +1,9 @@
 ---
-'description': '计算Pearson相关系数，但使用了数值稳定的算法。'
+'description': '计算 Pearson 相关系数，但使用数值稳定算法。'
 'sidebar_position': 119
 'slug': '/sql-reference/aggregate-functions/reference/corrstable'
 'title': 'corrStable'
+'doc_type': 'reference'
 ---
 
 
@@ -14,7 +15,7 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-与 [`corr`](../reference/corr.md) 函数类似，但使用了数值稳定的算法。因此，`corrStable` 比 `corr` 更慢，但产生更准确的结果。
+类似于 [`corr`](../reference/corr.md) 函数，但使用了数值稳定的算法。因此，`corrStable` 的速度比 `corr` 慢，但产生更准确的结果。
 
 **语法**
 
@@ -24,8 +25,8 @@ corrStable(x, y)
 
 **参数**
 
-- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
-- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+- `x` — 第一个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
+- `y` — 第二个变量。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal](../../data-types/decimal.md)。
 
 **返回值**
 

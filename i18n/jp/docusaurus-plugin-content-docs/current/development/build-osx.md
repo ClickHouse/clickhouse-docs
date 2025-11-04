@@ -1,45 +1,48 @@
 ---
-description: 'Guide for building ClickHouse from source on macOS systems'
-sidebar_label: 'Build on macOS for macOS'
-sidebar_position: 15
-slug: '/development/build-osx'
-title: 'Build on macOS for macOS'
+'description': 'macOSシステム上でClickHouseをソースからビルドするためのガイド'
+'sidebar_label': 'macOS上でmacOS向けにビルドする'
+'sidebar_position': 15
+'slug': '/development/build-osx'
+'title': 'macOS上でmacOS向けにビルドする'
+'keywords':
+- 'MacOS'
+- 'Mac'
+- 'build'
+'doc_type': 'guide'
 ---
 
 
+# macOS上でClickHouseをビルドする方法
 
-
-# How to Build ClickHouse on macOS for macOS
-
-:::info あなたは自分で ClickHouse をビルドする必要はありません！
-事前にビルドされた ClickHouse を [クイックスタート](https://clickhouse.com/#quick-start) の手順に従ってインストールできます。
+:::info 自分でClickHouseをビルドする必要はありません！
+[クイックスタート](https://clickhouse.com/#quick-start)で説明されているように、事前にビルドされたClickHouseをインストールできます。
 :::
 
-ClickHouse は、macOS 10.15 (Catalina) 以降の macOS x86_64 (Intel) および arm64 (Apple Silicon) でコンパイル可能です。
+ClickHouseは、macOS 10.15（Catalina）以降のmacOS x86_64（Intel）およびarm64（Apple Silicon）上でコンパイルできます。
 
-コンパイラとして、homebrew の Clang のみがサポートされています。
+コンパイラとしては、HomebrewからのClangのみがサポートされています。
 
-## Install Prerequisites {#install-prerequisites}
+## 前提条件をインストールする {#install-prerequisites}
 
-まず、一般的な [必要条件のドキュメント](developer-instruction.md) を参照してください。
+まず、一般的な[前提条件のドキュメント](developer-instruction.md)を参照してください。
 
-次に、[Homebrew](https://brew.sh/) をインストールし、次のコマンドを実行します。
+次に、[Homebrew](https://brew.sh/)をインストールし、次のコマンドを実行します。
 
-その後、以下を実行します:
+その後、次のコマンドを実行します：
 
 ```bash
 brew update
-brew install ccache cmake ninja libtool gettext llvm binutils grep findutils nasm bash
+brew install ccache cmake ninja libtool gettext llvm lld binutils grep findutils nasm bash rust rustup
 ```
 
 :::note
-Apple はデフォルトでケースを区別しないファイルシステムを使用しています。これは通常、コンパイルには影響しませんが（特にスクラッチメイクが機能します）、`git mv` のようなファイル操作に混乱を招くことがあります。
-macOS での真剣な開発のためには、ソースコードをケースを区別するディスクボリュームに保存することを確認してください。たとえば、[これらの手順](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830)を参照してください。
+Appleはデフォルトで大文字と小文字を区別しないファイルシステムを使用しています。通常、これはコンパイルに影響を与えません（特にscratch makesは機能します）が、`git mv`のようなファイル操作に混乱を招くことがあります。
+macOSで本格的な開発を行う場合は、ソースコードが大文字と小文字を区別するディスクボリュームに保存されていることを確認してください。たとえば、[これらの手順](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830)を参照してください。
 :::
 
-## Build ClickHouse {#build-clickhouse}
+## ClickHouseをビルドする {#build-clickhouse}
 
-ビルドを行うには、Homebrew の Clang コンパイラを使用する必要があります:
+ビルドするには、HomebrewのClangコンパイラを使用する必要があります：
 
 ```bash
 cd ClickHouse
@@ -48,18 +51,22 @@ export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
 
-# 生成されたバイナリは次の場所に作成されます: build/programs/clickhouse
+# The resulting binary will be created at: build/programs/clickhouse
 ```
 
-## Caveats {#caveats}
-
-`clickhouse-server` を実行する予定がある場合は、システムの `maxfiles` 変数を増やす必要があります。
-
 :::note
-sudo を使用する必要があります。
+リンク中に`ld: archive member '/' not a mach-o file in ...`エラーが発生する場合は、フラグ`-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar`を設定してllvm-arを使用する必要があるかもしれません。
 :::
 
-そのために、次の内容の `/Library/LaunchDaemons/limit.maxfiles.plist` ファイルを作成してください:
+## 注意事項 {#caveats}
+
+`clickhouse-server`を実行する予定がある場合は、システムの`maxfiles`変数を増加させる必要があります。
+
+:::note
+sudoを使用する必要があります。
+:::
+
+そのためには、次の内容を持つ`/Library/LaunchDaemons/limit.maxfiles.plist`ファイルを作成します。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -85,22 +92,22 @@ sudo を使用する必要があります。
 </plist>
 ```
 
-ファイルに適切な権限を与えます:
+ファイルに適切な権限を与えます：
 
 ```bash
 sudo chown root:wheel /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-ファイルが正しいことを検証します:
+ファイルが正しいかどうかを検証します：
 
 ```bash
 plutil /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-ファイルを読み込む（または再起動）します:
+ファイルをロードする（または再起動します）：
 
 ```bash
 sudo launchctl load -w /Library/LaunchDaemons/limit.maxfiles.plist
 ```
 
-動作しているか確認するには、`ulimit -n` または `launchctl limit maxfiles` コマンドを使用してください。
+動作しているか確認するには、`ulimit -n`または`launchctl limit maxfiles`コマンドを使用します。

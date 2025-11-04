@@ -1,32 +1,31 @@
 ---
-description: 'Системная таблица, содержащая описания движков таблиц, поддерживаемых сервером, и информацию об их возможностях.'
+slug: '/operations/system-tables/table_engines'
+description: 'Системная таблица, содержащая описания движков таблиц, поддерживаемых'
+title: system.table_engine
 keywords: ['системная таблица', 'table_engines']
-slug: /operations/system-tables/table_engines
-title: 'system.table_engine'
+doc_type: reference
 ---
+# system.table_engines
 
+Содержит описание движков таблиц, поддерживаемых сервером, и информацию о поддерживаемых функциях.
 
-# system.table_engine
+Эта таблица содержит следующие столбцы (тип столбца указан в скобках):
 
-Содержит описание движков таблиц, поддерживаемых сервером, и информацию о поддерживаемых ими возможностях.
-
-Эта таблица содержит следующие колонки (тип колонки показан в скобках):
-
-- `name` (String) — Имя движка таблицы.
-- `supports_settings` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы клаузу `SETTINGS`.
+- `name` (String) — Название движка таблицы.
+- `supports_settings` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы оператор `SETTINGS`.
 - `supports_skipping_indices` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы [индексы пропуска](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes).
 - `supports_ttl` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-- `supports_sort_order` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы клаузу `PARTITION_BY`, `PRIMARY_KEY`, `ORDER_BY` и `SAMPLE_BY`.
+- `supports_sort_order` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы операторы `PARTITION_BY`, `PRIMARY_KEY`, `ORDER_BY` и `SAMPLE_BY`.
 - `supports_replication` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы [репликацию данных](../../engines/table-engines/mergetree-family/replication.md).
-- `supports_deduplication` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы дедупликацию данных.
-- `supports_parallel_insert` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы параллельную вставку (см. настройку [`max_insert_threads`](/operations/settings/settings#max_insert_threads)).
+- `supports_duduplication` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы дедупликацию данных.
+- `supports_parallel_insert` (UInt8) — Флаг, указывающий, поддерживает ли движок таблицы асинхронные вставки (см. настройку [`max_insert_threads`](/operations/settings/settings#max_insert_threads)).
 
 Пример:
 
 ```sql
 SELECT *
 FROM system.table_engines
-WHERE name in ('Kafka', 'MergeTree', 'ReplicatedCollapsingMergeTree')
+WHERE name IN ('Kafka', 'MergeTree', 'ReplicatedCollapsingMergeTree')
 ```
 
 ```text
@@ -39,6 +38,6 @@ WHERE name in ('Kafka', 'MergeTree', 'ReplicatedCollapsingMergeTree')
 
 **Смотрите также**
 
-- Семейство MergeTree [клауз запросов](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-query-clauses)
-- [Настройки](../../engines/table-engines/integrations/kafka#creating-a-table) Kafka
-- [Настройки](../../engines/table-engines/special/join.md#join-limitations-and-settings) для Join
+- Семейство MergeTree [операторы запросов](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-query-clauses)
+- Kafka [настройки](/engines/table-engines/integrations/kafka#creating-a-table)
+- Join [настройки](../../engines/table-engines/special/join.md#join-limitations-and-settings)

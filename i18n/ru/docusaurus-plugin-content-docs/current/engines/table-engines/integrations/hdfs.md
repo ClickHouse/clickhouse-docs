@@ -1,11 +1,11 @@
 ---
-description: 'Этот движок предоставляет интеграцию с экосистемой Apache Hadoop, позволяя управлять данными на HDFS через ClickHouse. Этот движок похож на движки File и URL, но предоставляет особенности, специфичные для Hadoop.'
-sidebar_label: 'HDFS'
+slug: '/engines/table-engines/integrations/hdfs'
+sidebar_label: HDFS
 sidebar_position: 80
-slug: /engines/table-engines/integrations/hdfs
-title: 'HDFS'
+description: 'Этот движок обеспечивает интеграцию с экосистемой Apache Hadoop, позволяя'
+title: HDFS
+doc_type: reference
 ---
-
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
@@ -13,9 +13,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
-Этот движок предоставляет интеграцию с [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) экосистемой, позволяя управлять данными на [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) через ClickHouse. Этот движок похож на движки [File](/engines/table-engines/special/file) и [URL](/engines/table-engines/special/url), но предоставляет особенности, специфичные для Hadoop.
+Этот движок предоставляет интеграцию с экосистемой [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop), позволяя управлять данными на [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) через ClickHouse. Этот движок похож на движки [File](/engines/table-engines/special/file) и [URL](/engines/table-engines/special/url), но предоставляет функции, специфичные для Hadoop.
 
-Эта функция не поддерживается инженерами ClickHouse и известна своей ненадежностью. В случае возникновения каких-либо проблем исправьте их самостоятельно и отправьте pull request.
+Эта функция не поддерживается инженерами ClickHouse и известно, что она имеет сомнительное качество. В случае возникновения каких-либо проблем, исправьте их самостоятельно и отправьте pull request.
 
 ## Использование {#usage}
 
@@ -25,15 +25,15 @@ ENGINE = HDFS(URI, format)
 
 **Параметры движка**
 
-- `URI` - полный URI файла в HDFS. Часть пути `URI` может содержать шаблоны. В этом случае таблица будет только для чтения.
-- `format` - указывает один из доступных форматов файлов. Для выполнения запросов `SELECT` формат должен поддерживаться для входных данных, а для выполнения запросов `INSERT` – для выходных данных. Доступные форматы перечислены в разделе [Форматы](/sql-reference/formats#formats-overview).
+- `URI` - полный URI файла в HDFS. Часть пути `URI` может содержать шаблоны (globs). В этом случае таблица будет только для чтения.
+- `format` - задает один из доступных форматов файлов. Для выполнения `SELECT` запросов формат должен поддерживаться для входных данных, а для выполнения `INSERT` запросов – для выходных данных. Доступные форматы перечислены в разделе [Formats](/sql-reference/formats#formats-overview).
 - [PARTITION BY expr]
 
 ### PARTITION BY {#partition-by}
 
-`PARTITION BY` — необязательный. В большинстве случаев вам не нужен ключ партиционирования, и если он нужен, то, как правило, не требуется ключ партиционирования более детализированный, чем по месяцу. Партиционирование не ускоряет запросы (в отличие от выражения ORDER BY). Никогда не используйте слишком детализированное партиционирование. Не партиционируйте ваши данные по идентификаторам клиентов или именам (вместо этого сделайте идентификатор или имя клиента первым столбцом в выражении ORDER BY).
+`PARTITION BY` — Опционально. В большинстве случаев вам не нужен ключ партиционирования, а если он необходим, то обычно не требуется более мелкий ключ, чем по месяцам. Партиционирование не ускоряет запросы (в отличие от выражения ORDER BY). Никогда не используйте слишком гранулярное партиционирование. Не используйте идентификаторы клиентов или имена для партиционирования данных (вместо этого сделайте идентификатор клиента или имя первым столбцом в выражении ORDER BY).
 
-Для партиционирования по месяцу используйте выражение `toYYYYMM(date_column)`, где `date_column` - это колонка с датой типа [Date](/sql-reference/data-types/date.md). Имена партиций здесь имеют формат `"YYYYMM"`.
+Для партиционирования по месяцам используйте выражение `toYYYYMM(date_column)`, где `date_column` — это колонка с датой типа [Date](/sql-reference/data-types/date.md). Имена партиций имеют формат `"YYYYMM"`.
 
 **Пример:**
 
@@ -62,32 +62,32 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 └──────┴───────┘
 ```
 
-## Детали реализации {#implementation-details}
+## Подробности реализации {#implementation-details}
 
-- Чтения и записи могут выполняться параллельно.
+- Чтения и записи могут быть параллельными.
 - Не поддерживается:
-    - операции `ALTER` и `SELECT...SAMPLE`.
-    - Индексы.
-    - Репликация [Zero-copy](../../../operations/storing-data.md#zero-copy) возможна, но не рекомендуется.
+  - Операции `ALTER` и `SELECT...SAMPLE`.
+  - Индексы.
+  - Репликация с [нулевым копированием](../../../operations/storing-data.md#zero-copy) возможна, но не рекомендуется.
 
-  :::note Репликация Zero-copy не готова к производству
-  Репликация Zero-copy отключена по умолчанию в ClickHouse версии 22.8 и выше. Эта функция не рекомендуется для использования в производстве.
+  :::note Репликация с нулевым копированием не готова для производства
+  Репликация с нулевым копированием по умолчанию отключена в ClickHouse версии 22.8 и выше. Эта функция не рекомендуется для использования в производственной среде.
   :::
 
 **Шаблоны в пути**
 
-Несколько компонентов пути могут иметь шаблоны. Для того чтобы файл был обработан, он должен существовать и соответствовать всему шаблону пути. Перечисление файлов определяется при `SELECT` (а не в момент `CREATE`).
+Несколько компонентов пути могут содержать шаблоны. Для обработки файл должен существовать и соответствовать полному шаблону пути. Перечисление файлов происходит во время выполнения `SELECT` (а не в момент `CREATE`).
 
 - `*` — Замещает любое количество любых символов, кроме `/`, включая пустую строку.
-- `?` — Замещает любой одиночный символ.
+- `?` — Замещает любой один символ.
 - `{some_string,another_string,yet_another_one}` — Замещает любую из строк `'some_string', 'another_string', 'yet_another_one'`.
-- `{N..M}` — Замещает любое число в диапазоне от N до M включая оба края.
+- `{N..M}` — Замещает любое число в диапазоне от N до M, включая оба конца.
 
-Конструкции с `{}` аналогичны функции табличного типа [remote](../../../sql-reference/table-functions/remote.md).
+Конструкции с `{}` аналогичны функции табличных функций [remote](../../../sql-reference/table-functions/remote.md).
 
 **Пример**
 
-1.  Предположим, у нас есть несколько файлов в формате TSV с следующими URI на HDFS:
+1. Предположим, у нас есть несколько файлов в формате TSV со следующими URI на HDFS:
 
     - 'hdfs://hdfs1:9000/some_dir/some_file_1'
     - 'hdfs://hdfs1:9000/some_dir/some_file_2'
@@ -96,9 +96,7 @@ SELECT * FROM hdfs_engine_table LIMIT 2
     - 'hdfs://hdfs1:9000/another_dir/some_file_2'
     - 'hdfs://hdfs1:9000/another_dir/some_file_3'
 
-1.  Существует несколько способов создать таблицу, состоящую из всех шести файлов:
-
-<!-- -->
+2. Существует несколько способов создать таблицу, состоящую из всех шести файлов:
 
 ```sql
 CREATE TABLE table_with_range (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/some_file_{1..3}', 'TSV')
@@ -110,45 +108,45 @@ CREATE TABLE table_with_range (name String, value UInt32) ENGINE = HDFS('hdfs://
 CREATE TABLE table_with_question_mark (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/some_file_?', 'TSV')
 ```
 
-Таблица состоит из всех файлов в обоих каталогах (все файлы должны удовлетворять формату и схеме, описанным в запросе):
+Таблица состоит из всех файлов в обоих каталогах (все файлы должны соответствовать формату и схеме, описанным в запросе):
 
 ```sql
 CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/{some,another}_dir/*', 'TSV')
 ```
 
 :::note
-Если перечисление файлов содержит числовые диапазоны с ведущими нулями, используйте конструкцию с фигурными скобками для каждой цифры отдельно или используйте `?`.
+Если перечисление файлов содержит диапазоны чисел с ведущими нулями, используйте конструкцию с фигурными скобками для каждой цифры отдельно или используйте `?`.
 :::
 
 **Пример**
 
-Создайте таблицу с файлами, названия которых `file000`, `file001`, ... , `file999`:
+Создайте таблицу с файлами, названными `file000`, `file001`, ... , `file999`:
 
 ```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
 
-## Настройка {#configuration}
+## Конфигурация {#configuration}
 
-Аналогично GraphiteMergeTree, движок HDFS поддерживает расширённую настройку с использованием конфигурационного файла ClickHouse. Существует два ключа настройки, которые вы можете использовать: глобальный (`hdfs`) и пользовательский (`hdfs_*`). Глобальная конфигурация применяется первой, а затем применяется пользовательская конфигурация (если она существует).
+Аналогично GraphiteMergeTree, движок HDFS поддерживает расширенную конфигурацию с использованием конфигурационного файла ClickHouse. Есть два ключа конфигурации, которые вы можете использовать: глобальный (`hdfs`) и пользовательский уровень (`hdfs_*`). Глобальная конфигурация применяется первой, а затем применяется пользовательская конфигурация (если она существует).
 
 ```xml
-<!-- Глобальные параметры конфигурации для типа движка HDFS -->
+<!-- Global configuration options for HDFS engine type -->
 <hdfs>
   <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
   <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
   <hadoop_security_authentication>kerberos</hadoop_security_authentication>
 </hdfs>
 
-<!-- Конфигурация, специфичная для пользователя "root" -->
+<!-- Configuration specific for user "root" -->
 <hdfs_root>
   <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
 </hdfs_root>
 ```
 
-### Параметры конфигурации {#configuration-options}
+### Опции конфигурации {#configuration-options}
 
-#### Поддерживаемые libhdfs3 {#supported-by-libhdfs3}
+#### Поддерживается libhdfs3 {#supported-by-libhdfs3}
 
 | **параметр**                                         | **значение по умолчанию**       |
 | -                                                  | -                    |
@@ -182,7 +180,7 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 | output\_write\_timeout                                | 3600 * 1000             |
 | output\_close\_timeout                                | 3600 * 1000             |
 | output\_packetpool\_size                              | 1024                    |
-| output\_heartbeat\_interval                          | 10 * 1000               |
+| output\_heartbeat\_interval                           | 10 * 1000               |
 | dfs\_client\_failover\_max\_attempts                  | 15                      |
 | dfs\_client\_read\_shortcircuit\_streams\_cache\_size | 256                     |
 | dfs\_client\_socketcache\_expiryMsec                  | 3000                    |
@@ -194,11 +192,9 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 | dfs\_client\_log\_severity                            | "INFO"                  |
 | dfs\_domain\_socket\_path                             | ""                      |
 
+[Справочник конфигурации HDFS](https://hawq.apache.org/docs/userguide/2.3.0.0-incubating/reference/HDFSConfigurationParameterReference.html) может объяснить некоторые параметры.
 
-[Справка по конфигурации HDFS](https://hawq.apache.org/docs/userguide/2.3.0.0-incubating/reference/HDFSConfigurationParameterReference.html) может объяснить некоторые параметры.
-
-
-#### Дополнительно ClickHouse {#clickhouse-extras}
+#### Дополнительно для ClickHouse {#clickhouse-extras}
 
 | **параметр**                                         | **значение по умолчанию**       |
 | -                                                  | -                    |
@@ -211,23 +207,24 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 
 ## Поддержка Kerberos {#kerberos-support}
 
-Если параметр `hadoop_security_authentication` имеет значение `kerberos`, ClickHouse аутентифицируется через Kerberos. Параметры находятся [здесь](#clickhouse-extras), и `hadoop_security_kerberos_ticket_cache_path` может помочь. Обратите внимание, что из-за ограничений libhdfs3 поддерживается только старомодный подход, коммуникация с узлом данных не защищена SASL (`HADOOP_SECURE_DN_USER` является надежным индикатором такого подхода безопасности). Используйте `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh` для справки.
+Если параметр `hadoop_security_authentication` имеет значение `kerberos`, ClickHouse аутентифицируется через Kerberos. Параметры находятся [здесь](#clickhouse-extras) и `hadoop_security_kerberos_ticket_cache_path` может быть полезен. Обратите внимание, что из-за ограничений libhdfs3 поддерживается только старомодный подход, и коммуникация с datanode не защищена SASL ( `HADOOP_SECURE_DN_USER` является надежным индикатором такого подхода безопасности). Используйте `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh` для справки.
 
-Если указаны `hadoop_kerberos_keytab`, `hadoop_kerberos_principal` или `hadoop_security_kerberos_ticket_cache_path`, будет использоваться аутентификация Kerberos. В этом случае `hadoop_kerberos_keytab` и `hadoop_kerberos_principal` обязательны.
+Если указаны `hadoop_kerberos_keytab`, `hadoop_kerberos_principal` или `hadoop_security_kerberos_ticket_cache_path`, будет использоваться аутентификация Kerberos. В этом случае `hadoop_kerberos_keytab` и `hadoop_kerberos_principal` являются обязательными.
+
 ## Поддержка HDFS Namenode HA {#namenode-ha}
 
-libhdfs3 поддерживает HDFS namenode HA.
+libhdfs3 поддерживает HA для HDFS namenode.
 
 - Скопируйте `hdfs-site.xml` с узла HDFS в `/etc/clickhouse-server/`.
 - Добавьте следующий фрагмент в конфигурационный файл ClickHouse:
 
 ```xml
-  <hdfs>
-    <libhdfs3_conf>/etc/clickhouse-server/hdfs-site.xml</libhdfs3_conf>
-  </hdfs>
+<hdfs>
+  <libhdfs3_conf>/etc/clickhouse-server/hdfs-site.xml</libhdfs3_conf>
+</hdfs>
 ```
 
-- Затем используйте значение тега `dfs.nameservices` из `hdfs-site.xml` в качестве адреса namenode в URI HDFS. Например, замените `hdfs://appadmin@192.168.101.11:8020/abc/` на `hdfs://appadmin@my_nameservice/abc/`.
+- Затем используйте значение тега `dfs.nameservices` из `hdfs-site.xml` в качестве адреса namenode в HDFS URI. Например, замените `hdfs://appadmin@192.168.101.11:8020/abc/` на `hdfs://appadmin@my_nameservice/abc/`.
 
 ## Виртуальные колонки {#virtual-columns}
 
@@ -236,12 +233,12 @@ libhdfs3 поддерживает HDFS namenode HA.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение равно `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 
-## Настройки хранилища {#storage-settings}
+## Настройки хранения {#storage-settings}
 
-- [hdfs_truncate_on_insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - позволяет обрезать файл перед вставкой в него. Отключено по умолчанию.
+- [hdfs_truncate_on_insert](/operations/settings/settings.md#hdfs_truncate_on_insert) - позволяет обрезать файл перед его вставкой. Отключено по умолчанию.
 - [hdfs_create_new_file_on_insert](/operations/settings/settings.md#hdfs_create_new_file_on_insert) - позволяет создавать новый файл при каждой вставке, если формат имеет суффикс. Отключено по умолчанию.
 - [hdfs_skip_empty_files](/operations/settings/settings.md#hdfs_skip_empty_files) - позволяет пропускать пустые файлы при чтении. Отключено по умолчанию.
 
-**Смотрите также**
+**См. также**
 
 - [Виртуальные колонки](../../../engines/table-engines/index.md#table_engines-virtual_columns)

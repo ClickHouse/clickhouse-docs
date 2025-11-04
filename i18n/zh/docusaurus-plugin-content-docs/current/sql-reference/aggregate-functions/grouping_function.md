@@ -1,27 +1,28 @@
 ---
 'description': 'GROUPING 聚合函数的文档。'
 'slug': '/sql-reference/aggregate-functions/grouping_function'
-'title': '分组'
+'title': 'GROUPING'
+'doc_type': 'reference'
 ---
 
 
-# GROUPING
+# 分组
 
 ## GROUPING {#grouping}
 
-[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是 GROUP BY 的修饰符。这两者都会计算小计。ROLLUP 接受一个有序的列列表，例如 `(day, month, year)`，并在每个聚合级别计算小计，然后计算总计。CUBE 计算指定列的所有可能组合的小计。GROUPING 用于识别 ROLLUP 或 CUBE 返回的哪些行是超聚合，并指明哪些是未修改的 GROUP BY 将返回的行。
+[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是对 GROUP BY 的修饰符。这两者都计算小计。ROLLUP 采用有序的列列表，例如 `(day, month, year)`，并在每个聚合级别计算小计，然后计算总计。CUBE 跨所有可能的列组合计算小计。GROUPING 确定 ROLLUP 或 CUBE 返回的哪些行是超级聚合，以及哪些是未修改的 GROUP BY 将返回的行。
 
 GROUPING 函数接受多个列作为参数，并返回一个位掩码。
-- `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的行是小计。
-- `0` 表示由 `ROLLUP` 或 `CUBE` 返回的行不是小计。
+- `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的行是小计
+- `0` 表示由 `ROLLUP` 或 `CUBE` 返回的行不是小计
 
 ## GROUPING SETS {#grouping-sets}
 
-默认情况下，CUBE 修饰符为传递给 CUBE 的所有可能列组合计算小计。GROUPING SETS 允许您指定要计算的特定组合。
+默认情况下，CUBE 修饰符计算传递给 CUBE 的所有可能列组合的小计。GROUPING SETS 允许您指定要计算的特定组合。
 
-分析层次数据是使用 ROLLUP、CUBE 和 GROUPING SETS 修饰符的一个好用例。这里的示例是一个包含有关两个数据中心中安装的 Linux 发行版及其版本的数据表。按发行版、版本和位置查看数据可能是有价值的。
+分析层次数据是使用 ROLLUP、CUBE 和 GROUPING SETS 修饰符的一个良好用例。这里的示例是一个表，包含有关在两个数据中心中安装了什么 Linux 发行版及其版本的数据。按发行版、版本和位置查看数据可能是有价值的。
 
-### Load sample data {#load-sample-data}
+### 加载示例数据 {#load-sample-data}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -69,9 +70,9 @@ FROM
 10 rows in set. Elapsed: 0.409 sec.
 ```
 
-### Simple queries {#simple-queries}
+### 简单查询 {#simple-queries}
 
-按发行版获取每个数据中心的服务器数量：
+按发行版获取每个数据中心的服务器计数：
 ```sql
 SELECT
     datacenter,
@@ -146,9 +147,9 @@ FROM
 1 row in set. Elapsed: 0.244 sec. 
 ```
 
-### Comparing multiple GROUP BY statements with GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
+### 比较多个 GROUP BY 语句与 GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
 
-在没有 CUBE、ROLLUP 或 GROUPING SETS 的情况下细分数据：
+没有 CUBE、ROLLUP 或 GROUPING SETS 的数据细分：
 ```sql
 SELECT
     datacenter,
@@ -207,7 +208,7 @@ FROM
 9 rows in set. Elapsed: 0.527 sec. 
 ```
 
-使用 GROUPING SETS 获取相同信息：
+使用 GROUPING SETS 获取相同的信息：
 ```sql
 SELECT
     datacenter,
@@ -245,9 +246,9 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### Comparing CUBE with GROUPING SETS {#comparing-cube-with-grouping-sets}
+### 比较 CUBE 和 GROUPING SETS {#comparing-cube-with-grouping-sets}
 
-下一个查询中的 CUBE，`CUBE(datacenter,distro,version)` 提供了一个可能不合理的层次结构。在两个发行版之间查看版本是没有意义的（因为 Arch 和 RHEL 没有相同的发布周期或版本命名标准）。下面的 GROUPING SETS 示例更为合适，因为它将 `distro` 和 `version` 分组在同一集合中。
+下一个查询中的 CUBE `CUBE(datacenter,distro,version)` 提供的层次结构可能没有意义。将版本在两个发行版之间进行比较没有意义（因为 Arch 和 RHEL 的版本发布时间和命名标准不同）。接下来的 GROUPING SETS 示例更合适，因为它将 `distro` 和 `version` 组合在同一集合中。
 
 ```sql
 SELECT
@@ -309,7 +310,7 @@ ORDER BY
 39 rows in set. Elapsed: 0.355 sec. 
 ```
 :::note
-上述示例中的版本在未关联到发行版时可能没有意义，如果我们跟踪的是内核版本，那可能是合理的，因为内核版本可以与任一发行版相关联。使用 GROUPING SETS，如下一个示例，可能是更好的选择。
+上述示例中的版本在未与发行版关联时可能没有意义，如果我们跟踪内核版本，可能就有意义，因为内核版本可以与任意发行版关联。使用 GROUPING SETS，如下一个示例中，可能是更好的选择。
 :::
 
 ```sql

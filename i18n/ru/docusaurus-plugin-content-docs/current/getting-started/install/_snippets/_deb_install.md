@@ -138,4 +138,3 @@ sudo systemctl status clickhouse-keeper
 Если вам нужно установить конкретную версию ClickHouse, вы должны установить все пакеты с одной и той же версией:
 `sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7`
 :::
-

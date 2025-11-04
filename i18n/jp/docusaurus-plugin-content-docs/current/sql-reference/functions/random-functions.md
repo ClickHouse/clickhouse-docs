@@ -1,31 +1,28 @@
 ---
-description: 'ランダム数値を生成するための関数に関するドキュメント'
-sidebar_label: 'ランダム数値'
-sidebar_position: 145
-slug: '/sql-reference/functions/random-functions'
-title: 'ランダム数値生成のための関数'
+'description': 'Functions for Generating Random Numbersに関するDocumentation'
+'sidebar_label': 'ランダム数'
+'slug': '/sql-reference/functions/random-functions'
+'title': '数値を生成するための関数'
+'doc_type': 'reference'
 ---
 
+# ランダム数生成のための関数
 
-
-
-# ランダム数生成用の関数
-
-このセクションのすべての関数は、0または1個の引数を受け取ります。引数を提供した場合の唯一の目的は、同じランダム関数が行内で異なる実行を行った際に、異なるランダム値が返されるようにするためです。
+このセクションのすべての関数は、ゼロまたは1つの引数を受け入れます。引数が提供される場合の唯一の使用目的は、[共通部分式排除](/sql-reference/functions/overview#common-subexpression-elimination)を防ぐことであり、同じ行内での異なる実行が同じランダム関数に対して異なるランダム値を返すことを保証します。
 
 関連コンテンツ
 
 - ブログ: [ClickHouseでのランダムデータ生成](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
 
 :::note
-生成されるランダム数は、非暗号化アルゴリズムによって生成されます。
+生成されるランダム数は、非暗号学的アルゴリズムによって生成されます。
 :::
 
 ## rand {#rand}
 
-一様分布のもとでランダムなUInt32数を返します。
+等確率のランダムなUInt32数を返します。
 
-システムから取得した初期状態を使用した線形合同生成器を利用しています。これは、見た目にはランダムですが、実際にはランダムではなく、初期状態が知られている場合は予測可能です。真のランダム性が重要なシナリオでは、システムレベルの呼び出しや外部ライブラリとの統合など、代替手段の使用を検討してください。
+初期状態をシステムから取得した線形同剖生成器を使用しており、見た目はランダムですが、実際には本当にランダムではなく、初期状態が知られている場合には予測可能です。真のランダム性が重要なシナリオでは、システムレベルの呼び出しや外部ライブラリとの統合など、代替の方法を検討してください。
 
 **構文**
 
@@ -50,12 +47,12 @@ SELECT rand();
 ```
 
 ```response
-1569354847 -- 注意: 実際の出力はランダムな数値であり、例に示された特定の数字ではありません。
+1569354847 -- Note: The actual output will be a random number, not the specific number shown in the example
 ```
 
 ## rand64 {#rand64}
 
-ランダムなUInt64整数 (UInt64) 数を返します。
+ランダムなUInt64整数（UInt64）の数を返します。
 
 **構文**
 
@@ -69,9 +66,9 @@ rand64()
 
 **戻り値**
 
-一様分布のもとでランダムなUInt64数を返します。
+等確率のUInt64数を返します。
 
-システムから取得した初期状態を使用した線形合同生成器を利用しています。これは、見た目にはランダムですが、実際にはランダムではなく、初期状態が知られている場合は予測可能です。真のランダム性が重要なシナリオでは、システムレベルの呼び出しや外部ライブラリとの統合など、代替手段の使用を検討してください。
+初期状態をシステムから取得した線形同剖生成器を使用しており、見た目はランダムですが、実際には本当にランダムではなく、初期状態が知られている場合には予測可能です。真のランダム性が重要なシナリオでは、システムレベルの呼び出しや外部ライブラリとの統合など、代替の方法を検討してください。
 
 **例**
 
@@ -80,7 +77,7 @@ SELECT rand64();
 ```
 
 ```response
-15030268859237645412 -- 注意: 実際の出力はランダムな数値であり、例に示された特定の数字ではありません。
+15030268859237645412 -- Note: The actual output will be a random number, not the specific number shown in the example.
 ```
 
 ## randCanonical {#randcanonical}
@@ -99,7 +96,7 @@ randCanonical()
 
 **戻り値**
 
-0（含む）から1（含まない）の範囲のFloat64値を返します。
+0（含む）から1（含まない）までのFloat64値を返します。
 
 **例**
 
@@ -108,12 +105,12 @@ SELECT randCanonical();
 ```
 
 ```response
-0.3452178901234567 - 注意: 実際の出力は0と1の間のランダムなFloat64数であり、例に示された特定の数字ではありません。
+0.3452178901234567 - Note: The actual output will be a random Float64 number between 0 and 1, not the specific number shown in the example.
 ```
 
 ## randConstant {#randconstant}
 
-ランダムな値で埋められた単一の定数カラムを生成します。`rand`とは異なり、この関数は生成されたカラムの各行に同じランダム値が現れることを保証するため、単一のクエリ内の行間で一貫したランダムシードが必要なシナリオに役立ちます。
+ランダムな値で埋められた単一の定数カラムを生成します。`rand`とは異なり、この関数は生成されたカラムの各行に同じランダム値が表示されることを保証し、単一のクエリ内で行間で一貫したランダムシードが必要なシナリオで役立ちます。
 
 **構文**
 
@@ -123,15 +120,15 @@ randConstant([x]);
 
 **引数**
 
-- **[x]（オプション）:** 生成されるランダム値に影響を与えるオプションの式です。提供された場合でも、同じクエリ実行内では結果の値は常に一定です。同じ式を使用する異なるクエリでは、異なる定数値が生成される可能性があります。
+- **[x] (オプショナル):** 生成されるランダム値に影響を与えるオプションの式。提供された場合でも、結果の値は同じクエリ実行内で依然として定数になります。同じ式を使用する異なるクエリは、異なる定数値を生成する可能性が高いです。
 
 **戻り値**
 
 各行に同じランダム値を持つUInt32型のカラムを返します。
 
-**実装の詳細**
+**実装詳細**
 
-実際の出力は、同じオプション式であっても、各クエリの実行ごとに異なります。オプションのパラメータは、単独で`randConstant`を使用するのと比較して生成される値を大きく変更しない場合があります。
+実際の出力は、同じオプション式を使用していても、各クエリ実行ごとに異なります。オプションパラメータは、単独の`randConstant`を使用するのに比べて、生成される値を大幅に変更することはないかもしれません。
 
 **例**
 
@@ -157,7 +154,7 @@ SELECT randConstant(10) AS random_value;
 
 ## randUniform {#randuniform}
 
-`min`から`max`の間の一様に描かれたランダムなFloat64を返します。
+インターバル [`min`, `max`] から均一に引かれたランダムなFloat64を返します。
 
 **構文**
 
@@ -167,12 +164,12 @@ randUniform(min, max)
 
 **引数**
 
-- `min` - `Float64` - 範囲の左端、
-- `max` - `Float64` - 範囲の右端。
+- `min` - `Float64` - 範囲の左境界、
+- `max` - `Float64` - 範囲の右境界。
 
 **戻り値**
 
-[Float64](../data-types/float.md)型のランダムな数を返します。
+[Float64](../data-types/float.md)型のランダムな数。
 
 **例**
 
@@ -192,7 +189,7 @@ SELECT randUniform(5.5, 10) FROM numbers(5)
 
 ## randNormal {#randnormal}
 
-[正規分布](https://en.wikipedia.org/wiki/Normal_distribution)から描かれたランダムなFloat64を返します。
+[正規分布](https://en.wikipedia.org/wiki/Normal_distribution)からランダムなFloat64を返します。
 
 **構文**
 
@@ -229,7 +226,7 @@ SELECT randNormal(10, 2) FROM numbers(5)
 
 ## randLogNormal {#randlognormal}
 
-[対数正規分布](https://en.wikipedia.org/wiki/Log-normal_distribution)から描かれたランダムなFloat64を返します。
+[対数正規分布](https://en.wikipedia.org/wiki/Log-normal_distribution)からランダムなFloat64を返します。
 
 **構文**
 
@@ -266,7 +263,7 @@ SELECT randLogNormal(100, 5) FROM numbers(5)
 
 ## randBinomial {#randbinomial}
 
-[二項分布](https://en.wikipedia.org/wiki/Binomial_distribution)から描かれたランダムなUInt64を返します。
+[二項分布](https://en.wikipedia.org/wiki/Binomial_distribution)から引かれたランダムなUInt64を返します。
 
 **構文**
 
@@ -277,7 +274,7 @@ randBinomial(experiments, probability)
 **引数**
 
 - `experiments` - `UInt64` - 実験の数、
-- `probability` - `Float64` - 各実験での成功の確率、0から1の間の値。
+- `probability` - `Float64` - 各実験の成功確率、0から1の間の値。
 
 **戻り値**
 
@@ -303,7 +300,7 @@ SELECT randBinomial(100, .75) FROM numbers(5)
 
 ## randNegativeBinomial {#randnegativebinomial}
 
-[負の二項分布](https://en.wikipedia.org/wiki/Negative_binomial_distribution)から描かれたランダムなUInt64を返します。
+[負の二項分布](https://en.wikipedia.org/wiki/Negative_binomial_distribution)から引かれたランダムなUInt64を返します。
 
 **構文**
 
@@ -314,7 +311,7 @@ randNegativeBinomial(experiments, probability)
 **引数**
 
 - `experiments` - `UInt64` - 実験の数、
-- `probability` - `Float64` - 各実験での失敗の確率、0から1の間の値。
+- `probability` - `Float64` - 各実験の失敗確率、0から1の間の値。
 
 **戻り値**
 
@@ -340,7 +337,7 @@ SELECT randNegativeBinomial(100, .75) FROM numbers(5)
 
 ## randPoisson {#randpoisson}
 
-[ポアソン分布](https://en.wikipedia.org/wiki/Poisson_distribution)から描かれたランダムなUInt64を返します。
+[ポアソン分布](https://en.wikipedia.org/wiki/Poisson_distribution)から引かれたランダムなUInt64を返します。
 
 **構文**
 
@@ -350,7 +347,7 @@ randPoisson(n)
 
 **引数**
 
-- `n` - `UInt64` - 発生の平均回数。
+- `n` - `UInt64` - 発生の平均数。
 
 **戻り値**
 
@@ -376,7 +373,7 @@ SELECT randPoisson(10) FROM numbers(5)
 
 ## randBernoulli {#randbernoulli}
 
-[ベルヌーイ分布](https://en.wikipedia.org/wiki/Bernoulli_distribution)から描かれたランダムなUInt64を返します。
+[ベルヌーイ分布](https://en.wikipedia.org/wiki/Bernoulli_distribution)から引かれたランダムなUInt64を返します。
 
 **構文**
 
@@ -412,7 +409,7 @@ SELECT randBernoulli(.75) FROM numbers(5)
 
 ## randExponential {#randexponential}
 
-[指数分布](https://en.wikipedia.org/wiki/Exponential_distribution)から描かれたランダムなFloat64を返します。
+[指数分布](https://en.wikipedia.org/wiki/Exponential_distribution)から引かれたランダムなFloat64を返します。
 
 **構文**
 
@@ -448,7 +445,7 @@ SELECT randExponential(1/10) FROM numbers(5)
 
 ## randChiSquared {#randchisquared}
 
-[カイ二乗分布](https://en.wikipedia.org/wiki/Chi-squared_distribution)から描かれたランダムなFloat64を返します - k個の独立した標準正規分布の乱数の平方の合計の分布です。
+[カイ二乗分布](https://en.wikipedia.org/wiki/Chi-squared_distribution)から引かれたランダムなFloat64を返します - k個の独立した標準正規乱数の二乗和の分布です。
 
 **構文**
 
@@ -484,7 +481,7 @@ SELECT randChiSquared(10) FROM numbers(5)
 
 ## randStudentT {#randstudentt}
 
-[スチューデントのt分布](https://en.wikipedia.org/wiki/Student%27s_t-distribution)から描かれたランダムなFloat64を返します。
+[スチューデントt分布](https://en.wikipedia.org/wiki/Student%27s_t-distribution)から引かれたランダムなFloat64を返します。
 
 **構文**
 
@@ -520,7 +517,7 @@ SELECT randStudentT(10) FROM numbers(5)
 
 ## randFisherF {#randfisherf}
 
-[F分布](https://en.wikipedia.org/wiki/F-distribution)から描かれたランダムなFloat64を返します。
+[F分布](https://en.wikipedia.org/wiki/F-distribution)から引かれたランダムなFloat64を返します。
 
 **構文**
 
@@ -530,8 +527,8 @@ randFisherF(d1, d2)
 
 **引数**
 
-- `d1` - `Float64` - `X = (S1 / d1) / (S2 / d2)`におけるd1自由度、
-- `d2` - `Float64` - `X = (S1 / d1) / (S2 / d2)`におけるd2自由度。
+- `d1` - `Float64` - `X = (S1 / d1) / (S2 / d2)` におけるd1の自由度、
+- `d2` - `Float64` - `X = (S1 / d1) / (S2 / d2)` におけるd2の自由度。
 
 **戻り値**
 
@@ -557,7 +554,7 @@ SELECT randFisherF(10, 3) FROM numbers(5)
 
 ## randomString {#randomString}
 
-指定された長さのランダムバイト（ゼロバイトを含む）で埋められた文字列を生成します。すべての文字が表示可能であるとは限りません。
+指定された長さのランダムバイト（ゼロバイトを含む）で埋められた文字列を生成します。すべての文字が印刷可能とは限りません。
 
 **構文**
 
@@ -571,7 +568,7 @@ randomString(length)
 
 **戻り値**
 
-- ランダムなバイトで埋められた文字列。[String](../data-types/string.md)。
+- ランダムバイトで埋められた文字列。[String](../data-types/string.md)。
 
 **例**
 
@@ -597,7 +594,7 @@ len: 30
 
 ## randomFixedString {#randomfixedstring}
 
-指定された長さのランダムバイト（ゼロバイトを含む）で埋められたバイナリ文字列を生成します。すべての文字が表示可能であるとは限りません。
+指定された長さのバイナリ文字列で埋められたランダムバイト（ゼロバイトを含む）を生成します。すべての文字が印刷可能とは限りません。
 
 **構文**
 
@@ -611,14 +608,14 @@ randomFixedString(length);
 
 **戻り値**
 
-- ランダムなバイトで埋められた文字列。[FixedString](../data-types/fixedstring.md)。
+- ランダムバイトで埋められた文字列。[FixedString](../data-types/fixedstring.md)。
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT randomFixedString(13) as rnd, toTypeName(rnd)
+SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
 ```
 
 結果:
@@ -631,7 +628,7 @@ SELECT randomFixedString(13) as rnd, toTypeName(rnd)
 
 ## randomPrintableASCII {#randomprintableascii}
 
-ランダムなセットの[ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters)文字で埋められた文字列を生成します。すべての文字が表示可能です。
+ランダムなASCII[キャラクタ](https://en.wikipedia.org/wiki/ASCII#Printable_characters)のセットで生成された文字列を生成します。すべての文字が印刷可能です。
 `length < 0`を渡すと、関数の動作は未定義です。
 
 **構文**
@@ -646,12 +643,12 @@ randomPrintableASCII(length)
 
 **戻り値**
 
-- ランダムなセットの[ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters)表示可能な文字で埋められた文字列。[String](../data-types/string.md)
+- ランダムなASCII[印刷可能キャラクター](https://en.wikipedia.org/wiki/ASCII#Printable_characters)のセットを含む文字列。[String](../data-types/string.md)
 
 **例**
 
 ```sql
-SELECT number, randomPrintableASCII(30) as str, length(str) FROM system.numbers LIMIT 3
+SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers LIMIT 3
 ```
 
 ```text
@@ -664,7 +661,7 @@ SELECT number, randomPrintableASCII(30) as str, length(str) FROM system.numbers 
 
 ## randomStringUTF8 {#randomstringutf8}
 
-指定された長さのランダムな文字列を生成します。結果の文字列は有効なUTF-8コードポイントを含みます。コードポイントの値は、割り当てられたUnicodeの範囲の外にある場合があります。
+指定された長さのランダムな文字列を生成します。結果の文字列は有効なUTF-8コードポイントを含みます。コードポイントの値は、割り当てられたUnicodeの範囲を超えている可能性があります。
 
 **構文**
 
@@ -674,7 +671,7 @@ randomStringUTF8(length);
 
 **引数**
 
-- `length` — コードポイント単位の文字列の長さ。[UInt64](../data-types/int-uint.md)。
+- `length` — コードポイントでの文字列の長さ。[UInt64](../data-types/int-uint.md)。
 
 **戻り値**
 
@@ -700,7 +697,7 @@ SELECT randomStringUTF8(13)
 
 **構文**
 
-文字列またはFixedString `s`のビットを、確率`prob`で反転します。
+文字列またはFixedString `s`のビットを反転させ、それぞれが確率`prob`で反転します。
 
 **構文**
 
@@ -710,12 +707,12 @@ fuzzBits(s, prob)
 
 **引数**
 
-- `s` - `String`または`FixedString`、
-- `prob` - 定数 `Float32/64` 0.0と1.0の間。
+- `s` - `String`または`FixedString`
+- `prob` - 0.0から1.0の間の定数`Float32/64`。
 
 **戻り値**
 
-`s`と同じ型のノイズを加えた文字列。
+`s`と同じタイプのファジー文字列。
 
 **例**
 
@@ -733,3 +730,12 @@ FROM numbers(3)
 │ aeca2A                                │
 └───────────────────────────────────────┘
 ```
+
+<!-- 
+The inner content of the tags below are replaced at doc framework build time with 
+docs generated from system.functions. Please do not modify or remove the tags.
+See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+-->
+
+<!--AUTOGENERATED_START-->
+<!--AUTOGENERATED_END-->

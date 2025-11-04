@@ -1,7 +1,7 @@
 ---
 slug: /best-practices/choosing-a-partitioning-key
 sidebar_position: 10
-sidebar_label: 'Choosing a Partitioning Key'
+sidebar_label: 'Choosing a partitioning key'
 title: 'Choosing a Partitioning Key'
 description: 'Page describing how to choose a partitioning key'
 keywords: ['partitioning key']
@@ -53,7 +53,7 @@ While partitioning can improve query performance for some workloads, it can also
 
 If the partitioning key is not in the primary key and you are filtering by it, users may see an improvement in query performance with partitioning. See [here](/partitions#query-optimization) for an example.
 
-Conversely, if queries need to query across partitions performance may be negatively impacted due to a higher number of total parts. For this reason, users should understand their access patterns before considering partitioning a a query optimization technique.
+Conversely, if queries need to query across partitions performance may be negatively impacted due to a higher number of total parts. For this reason, users should understand their access patterns before considering partitioning a query optimization technique.
 
 In summary, users should primarily think of partitioning as a data management technique. For an example of managing data, see ["Managing Data"](/observability/managing-data) from the observability use-case guide and ["What are table partitions used for?"](/partitions#data-management) from Core Concepts - Table partitions.
 

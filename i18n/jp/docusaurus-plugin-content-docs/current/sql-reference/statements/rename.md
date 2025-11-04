@@ -1,17 +1,16 @@
 ---
-description: 'Documentation for RENAME Statement'
-sidebar_label: 'RENAME'
-sidebar_position: 48
-slug: '/sql-reference/statements/rename'
-title: 'RENAME Statement'
+'description': 'RENAME ステートメントのドキュメント'
+'sidebar_label': 'RENAME'
+'sidebar_position': 48
+'slug': '/sql-reference/statements/rename'
+'title': 'RENAME ステートメント'
+'doc_type': 'reference'
 ---
-
-
 
 
 # RENAME ステートメント
 
-データベース、テーブル、またはディクショナリの名前を変更します。複数のエンティティは、単一のクエリで名前変更できます。`RENAME` クエリによる複数のエンティティの操作は非原子操作です。エンティティ名を原子的に交換するには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
+データベース、テーブル、または辞書の名前を変更します。複数のエンティティを一つのクエリで名前変更することができます。`RENAME` クエリは複数のエンティティでの操作が非原子的なことに注意してください。エンティティの名前を原子的に入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
 
 **構文**
 
@@ -31,9 +30,10 @@ RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 
 ## RENAME TABLE {#rename-table}
 
-1 つ以上のテーブルの名前を変更します。
+1つまたは複数のテーブルの名前を変更します。
 
-テーブルの名前変更は軽量な操作です。`TO` の後に異なるデータベースを指定すると、テーブルはこのデータベースに移動されます。ただし、データベースを含むディレクトリは同じファイルシステム内に存在している必要があります。そうでない場合、エラーが返されます。1つのクエリで複数のテーブルを名前変更すると、その操作は原子的ではありません。部分的に実行される可能性があり、他のセッションのクエリが `Table ... does not exist ...` エラーを受け取ることがあります。
+テーブルの名前変更は軽量な操作です。`TO` の後に異なるデータベースを指定すると、そのテーブルはこのデータベースに移動します。ただし、データベースを含むディレクトリは同じファイルシステムに存在する必要があります。そうでない場合はエラーが返されます。
+1つのクエリで複数のテーブルを名前変更する場合、その操作は原子的ではありません。部分的に実行される可能性があり、他のセッションでクエリを実行すると `Table ... does not exist ...` エラーが発生することがあります。
 
 **構文**
 
@@ -54,7 +54,7 @@ RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 
 ## RENAME DICTIONARY {#rename-dictionary}
 
-1 つまたは複数のディクショナリの名前を変更します。このクエリは、ディクショナリをデータベース間で移動するために使用できます。
+1つまたは複数の辞書の名前を変更します。このクエリは辞書をデータベース間で移動するために使用できます。
 
 **構文**
 
@@ -62,6 +62,6 @@ RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 ```
 
-**関連情報**
+**関連項目**
 
 - [Dictionaries](../../sql-reference/dictionaries/index.md)

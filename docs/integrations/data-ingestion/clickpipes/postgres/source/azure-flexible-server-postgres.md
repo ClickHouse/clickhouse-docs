@@ -3,6 +3,7 @@ sidebar_label: 'Azure Flexible Server for Postgres'
 description: 'Set up Azure Flexible Server for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
 title: 'Azure Flexible Server for Postgres Source Setup Guide'
+keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 ---
 

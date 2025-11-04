@@ -1,32 +1,33 @@
 ---
-slug: '/examples/aggregate-function-combinators/countResample'
-title: 'countResample'
-description: 'countとResampleコンビネータの使用例'
-keywords:
+'slug': '/examples/aggregate-function-combinators/countResample'
+'title': 'countResample'
+'description': 'countを使用したResampleコンビネータの例'
+'keywords':
 - 'count'
 - 'Resample'
 - 'combinator'
 - 'examples'
 - 'countResample'
-sidebar_label: 'countResample'
+'sidebar_label': 'countResample'
+'doc_type': 'reference'
 ---
-
-
 
 
 # countResample {#countResample}
 
-## 説明 {#description}
+## Description {#description}
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、指定されたキー列の値を固定数の間隔（`N`）でカウントするために、[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用できます。
+コンビネータは、[`count`](/sql-reference/aggregate-functions/reference/count)
+集約関数に適用することができ、指定されたキー列の値を 
+固定数の間隔（`N`）でカウントします。
 
-## 使用例 {#example-usage}
+## Example usage {#example-usage}
 
-### 基本的な例 {#basic-example}
+### Basic example {#basic-example}
 
-例を見てみましょう。`name`、`age`、および`wage`を含むテーブルを作成し、いくつかのデータを挿入します：
+例を見てみましょう。従業員の`name`、`age`、および
+`wage`を含むテーブルを作成し、データをいくつか挿入します：
 
 ```sql
 CREATE TABLE employee_data 
@@ -47,7 +48,10 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`および`[60,75)`の間にある人々をカウントしましょう。年齢を整数で表現するため、`[30, 59]`および`[60,74]`の間隔の年齢が得られます。これを行うために、`count`に`Resample`コンビネータを適用します。
+年齢が`[30,60)` および `[60,75)` の範囲にあるすべての人をカウントしましょう。
+年齢の整数表現を使用するため、`[30, 59]` および `[60,74]` の
+範囲の年齢が得られます。そのためには、`count`に 
+`Resample`コンビネータを適用します。
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -59,6 +63,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 └────────┘
 ```
 
-## 関連項目 {#see-also}
+## See also {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

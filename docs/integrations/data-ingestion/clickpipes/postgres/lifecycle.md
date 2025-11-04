@@ -4,6 +4,7 @@ description: 'Various pipe statuses and their meanings'
 slug: /integrations/clickpipes/postgres/lifecycle
 title: 'Lifecycle of a Postgres ClickPipe'
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Lifecycle of a Postgres ClickPipe {#lifecycle}
@@ -56,9 +57,3 @@ This state applies to snapshot-only pipes and indicates that the snapshot has be
 ## Failed {#failed}
 
 If there is an irrecoverable error in the pipe, it will enter the `Failed` state. You can reach out to support or [resync](./resync) your pipe to recover from this state.
-
-## Degraded {#degraded}
-
-:::note
-This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
-:::

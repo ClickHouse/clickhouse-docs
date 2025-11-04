@@ -4,7 +4,8 @@
 'sidebar_position': 1
 'pagination_prev': null
 'pagination_next': null
-'description': '开始使用 ClickStack 的本地和系统数据以及指标'
+'description': '开始使用 ClickStack 本地和系统数据以及指标'
+'doc_type': 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,31 +18,39 @@ import hyperdx_22 from '@site/static/images/use-cases/observability/hyperdx-22.p
 import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.png';
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
-This getting started guide allows you collect local logs and metrics from your system, sending them to ClickStack for visualization and analysis.
+这个入门指南允许您收集系统中的本地日志和指标，并将其发送到 ClickStack 进行可视化和分析。
 
-**此示例仅适用于 OS X 和 Linux 系统**
+**此示例仅在 OSX 和 Linux 系统上有效**
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+以下示例假设您已根据[一体化镜像的说明](/use-cases/observability/clickstack/getting-started)启动了 ClickStack，并连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或[ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
+
+:::note HyperDX 在 ClickHouse Cloud 中
+此示例数据集也可与 HyperDX 在 ClickHouse Cloud 中一起使用，仅需对流程进行少量调整。如果在 ClickHouse Cloud 中使用 HyperDX，则用户需要本地运行 Open Telemetry 收集器，如[此部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)中所述。
+:::
 
 <VerticalStepper>
 
-## Navigate to the HyperDX UI {#navigate-to-the-hyperdx-ui}
+## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+访问 [http://localhost:8080](http://localhost:8080) 以访问本地部署的 HyperDX UI。如果在 ClickHouse Cloud 中使用 HyperDX，请从左侧菜单中选择您的服务和 `HyperDX`。
 
-## Copy ingestion API key {#copy-ingestion-api-key}
+## 复制数据摄取 API 密钥 {#copy-ingestion-api-key}
 
-Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
+:::note HyperDX 在 ClickHouse Cloud 中
+如果使用 HyperDX 在 ClickHouse Cloud 中，则此步骤不是必需的。
+:::
 
-<Image img={copy_api_key} alt="Copy API key" size="lg"/>
+导航到 [`团队设置`](http://localhost:8080/team) 并从 `API 密钥` 部分复制 `数据摄取 API 密钥`。此 API 密钥确保通过 OpenTelemetry 收集器进行数据摄取的安全。
 
-## Create a local OpenTelemetry configuration {#create-otel-configuration}
+<Image img={copy_api_key} alt="复制 API 密钥" size="lg"/>
 
-Create a `otel-file-collector.yaml` file with the following content.
+## 创建本地 OpenTelemetry 配置 {#create-otel-configuration}
 
-**重要**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above.
+创建一个名为 `otel-local-file-collector.yaml` 的文件，内容如下。
 
-```yml
+**重要**：将值 `<YOUR_INGESTION_API_KEY>` 替换为您上述复制的数据摄取 API 密钥（在 ClickHouse Cloud 中的 HyperDX 不需要）。
+
+```yaml
 receivers:
   filelog:
     include:
@@ -49,6 +58,7 @@ receivers:
       - /var/log/syslog
       - /var/log/messages
       - /private/var/log/*.log       # macOS
+      - /tmp/all_events.log # macos - see below
     start_at: beginning # modify to collect new files only
 
   hostmetrics:
@@ -107,62 +117,66 @@ service:
       exporters: [otlp]
 ```
 
-This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
+该配置会收集 OSX 和 Linux 系统的系统日志和指标，通过 OTLP 端点在 4317 端口将结果发送到 ClickStack。
 
-:::note Ingestion timestamps
-This configuration adjusts timestamps at ingest, assigning an updated time value to each event. Users should ideally [preprocess or parse timestamps](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) using OTel processors or operators in their log files to ensure accurate event time is retained.
+:::note 摄取时间戳
+该配置在摄取时调整时间戳，为每个事件分配更新的时间值。用户理想情况下应该使用 OTel 处理器或操作符在日志文件中[预处理或解析时间戳](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)，以确保保留准确的事件时间。
 
-With this example setup, if the receiver or file processor is configured to start at the beginning of the file, all existing log entries will be assigned the same adjusted timestamp - the time of processing rather than the original event time. Any new events appended to the file will receive timestamps approximating their actual generation time.
+在此示例设置中，如果接收器或文件处理器配置为从文件的开头开始，则所有现有日志条目将被分配相同的调整时间戳——处理时间而不是原始事件时间。任何追加到文件的新事件将获得接近其实际生成时间的时间戳。
 
-To avoid this behavior, you can set the start position to `end` in the receiver configuration. This ensures only new entries are ingested and timestamped near their true arrival time.
+要避免这种行为，可以在接收器配置中将起始位置设置为 `end`。这确保仅摄取并时间标记新的条目，接近其真实到达时间。
 :::
 
-For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
+有关 OpenTelemetry (OTel) 配置结构的更多详细信息，我们建议查看[官方指南](https://opentelemetry.io/docs/collector/configuration/)。
 
-## Start the collector {#start-the-collector}
+:::note OSX 的详细日志
+希望在 OSX 上获取更详细日志的用户可以在启动下面的收集器之前运行命令 `log stream --debug --style ndjson >> /tmp/all_events.log`。这将捕获详细的操作系统日志到文件 `/tmp/all_events.log`，该文件已包含在上述配置中。
+:::
 
-Run the following docker command to start an instance of the OTel collector.
+## 启动收集器 {#start-the-collector}
 
-```bash
+运行以下 Docker 命令以启动 OTel 收集器的实例。
+
+```shell
 docker run --network=host --rm -it \
   --user 0:0 \
-  -v "$(pwd)/otel-file-collector.yaml":/etc/otel/config.yaml \
+  -v "$(pwd)/otel-local-file-collector.yaml":/etc/otel/config.yaml \
   -v /var/log:/var/log:ro \
   -v /private/var/log:/private/var/log:ro \
   otel/opentelemetry-collector-contrib:latest \
   --config /etc/otel/config.yaml
 ```
 
-:::note Root user
-We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
+:::note 根用户
+我们以根用户身份运行收集器，以访问所有系统日志——这在 Linux 系统上捕获受保护路径的日志是必要的。然而，这种方法不推荐用于生产环境。在生产环境中，OpenTelemetry 收集器应该作为本地代理部署，只需具有必要的最小权限以访问预定的日志源。
 :::
 
-The collector will immediately begin collecting local system logs and metrics.
+收集器将立即开始收集本地系统日志和指标。
 
-## Explore system logs {#explore-system-logs}
+## 浏览系统日志 {#explore-system-logs}
 
-Navigate to the HyperDX UI. The search UI should be populated with local system logs. Expand the filters to select the `system.log`:
+导航到 HyperDX UI。搜索 UI 应该填充本地系统日志。扩展过滤器以选择 `system.log`：
 
-<Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
+<Image img={hyperdx_20} alt="HyperDX 本地日志" size="lg"/>
 
-## Explore system metrics {#explore-system-metrics}
+## 浏览系统指标 {#explore-system-metrics}
 
-We can explore our metrics using charts.
+我们可以通过图表浏览我们的指标。
 
-Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type. 
+通过左侧菜单导航到图表浏览器。选择源 `Metrics` 和聚合类型 `Maximum`。
 
-For the `Select a Metric` menu simply type `memory` before selecting `system.memory.utilization (Gauge)`.
+在 `选择指标` 菜单中简单输入 `memory`，然后选择 `system.memory.utilization (Gauge)`。
 
-Press the run button to visualize your memory utilization over time.
+按运行按钮以可视化您的内存使用情况随时间的变化。
 
-<Image img={hyperdx_21} alt="Memory over time" size="lg"/>
+<Image img={hyperdx_21} alt="内存随时间变化" size="lg"/>
 
-Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
+请注意，数字以浮点 `%` 形式返回。为了清晰呈现，选择 `设置数字格式`。
 
-<Image img={hyperdx_22} alt="Number format" size="lg"/>
+<Image img={hyperdx_22} alt="数字格式" size="lg"/>
 
-From the subsequent menu you can select `Percentage` from the `Output format` drop down before clicking `Apply`.
+在后续菜单中，您可以从 `输出格式` 下拉菜单中选择 `百分比`，然后单击 `应用`。
 
-<Image img={hyperdx_23} alt="Memory % of time" size="lg"/>
+<Image img={hyperdx_23} alt="内存占比" size="lg"/>
 
 </VerticalStepper>

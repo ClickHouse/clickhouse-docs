@@ -3,7 +3,8 @@
 'title': '并行副本'
 'keywords':
 - 'parallel replica'
-'description': '在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表将查询分配到多个分片，然后讨论查询如何利用多个副本进行执行。'
+'description': '在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表在多个分片之间分配查询，然后查询如何利用多个副本进行执行。'
+'doc_type': 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -22,164 +23,164 @@ import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.p
 
 ## 介绍 {#introduction}
 
-ClickHouse 可以极快地处理查询，但这些查询是如何在多个服务器之间分发和并行执行的呢？
+ClickHouse 可以非常快速地处理查询，但这些查询是如何在多个服务器之间分配和并行化的呢？
 
-> 在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表将查询分发到多个分片，然后再讨论查询如何利用多个副本来执行。
+> 在本指南中，我们将首先讨论 ClickHouse 如何通过分布式表将查询分配到多个分片上，然后讨论查询如何利用多个副本来执行。
 
 ## 分片架构 {#sharded-architecture}
 
-在无共享架构中，集群通常会被拆分成多个分片，每个分片包含总体数据的一个子集。一个分布式表位于这些分片之上，提供对完整数据的统一视图。
+在无共享架构中，集群通常被拆分为多个分片，每个分片包含整体数据的一个子集。一个分布式表位于这些分片之上，为完整数据提供统一视图。
 
-读取可以发送到本地表。查询的执行将仅在指定的分片上进行，或者可以发送到分布式表，在这种情况下，每个分片将执行给定的查询。查询分布式表的服务器将汇总数据并响应客户端：
+读取请求可以发送到本地表。查询执行将仅在指定的分片上发生，或者可以将其发送到分布式表，在这种情况下，每个分片将执行给定的查询。发出查询的服务器将聚合数据并响应客户端：
 
-<Image img={image_1} size="md" alt="分片架构" />
+<Image img={image_1} size="md" alt="sharded architecture" />
 
-上图可视化了客户端查询分布式表时发生的情况：
+上图可视化了客户查询分布式表时发生的情况：
 
 <ol className="docs-ordered-list">
     <li>
-        select 查询被发送到一个节点上的分布式表（可以通过轮询策略或在负载均衡器路由到特定服务器后进行）。这个节点现在将充当协调者。
+        选择查询通过负载均衡器以任意方式发送到节点上的分布式表（通过轮询策略或在被指向特定服务器后）。该节点将充当协调者。
     </li>
     <li>
-        节点将根据分布式表指定的信息定位需要执行查询的每个分片，并将查询发送到每个分片。
+        节点将通过分布式表指定的信息找到需要执行查询的每个分片，并将查询发送到每个分片。
     </li>
     <li>
-        每个分片在本地读取、过滤和聚合数据，然后将可合并的状态发送回协调者。
+        每个分片本地读取、过滤和聚合数据，然后将可合并的状态发送回协调者。
     </li>
     <li>
         协调节点合并数据，然后将响应发送回客户端。
     </li>
 </ol>
 
-当我们加入副本时，过程相似，唯一的区别是每个分片只有一个副本会执行查询。这意味着将能够并行处理更多查询。
+当我们将副本引入混合时，过程相似，唯一的区别是每个分片仅有一个副本会执行查询。这意味着可以并行处理更多查询。
 
 ## 非分片架构 {#non-sharded-architecture}
 
-ClickHouse Cloud 具有与上述架构非常不同的架构。（有关更多详细信息，请参见 ["ClickHouse Cloud 架构"](https://clickhouse.com/docs/cloud/reference/architecture)）。由于计算和存储的分离，以及几乎无限的存储量，分片的重要性降低。
+ClickHouse Cloud 具有与上述不同的架构。（有关更多细节，请参见 ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)）。通过计算与存储的分离，以及几乎无限的存储，分片的需求变得不那么重要。
 
-下图展示了 ClickHouse Cloud 的架构：
+下图展示了 ClickHouse Cloud 架构：
 
-<Image img={image_2} size="md" alt="非分片架构" />
+<Image img={image_2} size="md" alt="non sharded architecture" />
 
-该架构使我们能够几乎瞬时地添加和移除副本，确保了非常高的集群可扩展性。ClickHouse Keeper 集群（右侧显示）确保我们对于元数据拥有单一的可信源。副本可以从 ClickHouse Keeper 集群获取元数据，并且所有副本维护相同的数据。数据本身存储在对象存储中，SSD 缓存允许我们加速查询。
+这种架构使我们能够几乎瞬时地添加和移除副本，从而确保非常高的集群可扩展性。ClickHouse Keeper 集群（如右所示）确保我们拥有元数据的单一真实性来源。副本可以从 ClickHouse Keeper 集群获取元数据，并且所有副本维护相同的数据。数据本身存储在对象存储中，SSD 缓存使查询速度得以提升。
 
-但是，我们现在如何在多个服务器之间分发查询执行呢？在分片架构中，由于每个分片实际上可以在数据的子集上执行查询，这一点相当明显。没有分片时，它是如何工作的呢？
+但我们如何在多个服务器之间分配查询执行呢？在分片架构中很明显，因为每个分片实际上可以在数据的子集上执行查询。当没有分片时，这会如何工作呢？
 
 ## 引入并行副本 {#introducing-parallel-replicas}
 
-为了通过多个服务器并行化查询执行，我们首先需要能够将我们的一个服务器指定为协调者。协调者负责创建需要执行的任务列表，确保所有任务都被执行、聚合并将结果返回给客户端。就像大多数分布式系统一样，这将是接收初始查询的节点的角色。我们还需要定义工作单元。在分片架构中，工作单元是分片，即数据的子集。在并行副本中，我们将使用称为 [granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) 的小部分表作为工作单元。
+为了通过多个服务器并行化查询执行，我们首先需要能够将我们的一个服务器指定为协调者。协调者负责创建需要执行的任务列表，确保所有任务都被执行、聚合并将结果返回给客户端。与大多数分布式系统一样，这将是接收初始查询的节点的角色。我们还需要定义工作单元。在分片架构中，工作单元是分片，即数据的子集。使用并行副本时，我们将使用表的一个小部分，称为 [granules](/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)，作为工作单元。
 
-现在，让我们借助下图看看它在实践中的工作原理：
+现在，让我们看看实际操作中的工作流程，借助下图：
 
-<Image img={image_3} size="md" alt="并行副本" />
+<Image img={image_3} size="md" alt="Parallel replicas" />
 
 使用并行副本时：
-
-<ol className="docs-ordered-list">
-    <li>
-        客户端的查询在经过负载均衡器后发送到一个节点。这个节点成为此查询的协调者。
-    </li>
-    <li>
-        节点分析每个部分的索引，并选择合适的部分和 granules 进行处理。
-    </li>
-    <li>
-        协调者将工作负载分解为一组可以分配给不同副本的 granules。
-    </li>
-    <li>
-        每组 granules 由相应的副本处理，完成后将可合并状态发送到协调者。
-    </li>
-    <li>
-        最后，协调者合并来自副本的所有结果，然后将响应返回给客户端。
-    </li>
-</ol>
-
-以上步骤概述了并行副本在理论上的工作方式。然而，在实践中，有许多因素可能会阻止这种逻辑完美运行：
-
-<ol className="docs-ordered-list">
-    <li>
-        一些副本可能不可用。
-    </li>
-    <li>
-        在 ClickHouse 中，复制是异步的，某些副本在某些时刻可能没有相同的部分。
-    </li>
-    <li>
-        需要以某种方式处理副本之间的尾延迟。
-    </li>
-    <li>
-        基于每个副本的活动，文件系统缓存在副本之间有所不同，这意味着随机任务分配可能由于缓存局部性导致性能不佳。
-    </li>
-</ol>
-
-我们将在接下来的章节中探讨如何克服这些因素。
-
-### 公告 {#announcements}
-
-为了解决上述列表中的 (1) 和 (2) 问题，我们引入了公告的概念。让我们使用下图可视化它的工作原理：
-
-<Image img={image_4} size="md" alt="公告" />
 
 <ol className="docs-ordered-list">
     <li>
         客户端的查询在经过负载均衡器后发送到一个节点。该节点成为此查询的协调者。
     </li>
     <li>
-        协调节点向集群中的所有副本发送请求以获取公告。副本可能对某个表的当前部分集有稍微不同的视图。因此，我们需要收集这些信息以避免不正确的调度决策。
+        节点分析每个部分的索引，并选择正确的部分和 granules 进行处理。
     </li>
     <li>
-        协调节点然后使用公告来定义可以分配给不同副本的一组 granules。在这里，例如，我们可以看到没有来自部件 3 的 granules 被分配给副本 2，因为此副本在其公告中没有提供该部分。另外，请注意没有任务被分配给副本 3，因为该副本未提供公告。
+        协调者将工作负载拆分为可以分配给不同副本的一组 granules。
     </li>
     <li>
-        每个副本在其 granules 子集上处理完查询后，将可合并的状态发送回协调者，协调者合并结果并将响应发送给客户端。
+        每组 granules 由相应的副本处理，完成时将可合并的状态发送给协调者。
+    </li>
+    <li>
+        最后，协调者合并来自副本的所有结果，然后将响应返回给客户端。
+    </li>
+</ol>
+
+上述步骤概述了并行副本在理论上的工作原理。然而，在实际中，有许多因素可能会阻止这种逻辑完美运行：
+
+<ol className="docs-ordered-list">
+    <li>
+        一些副本可能不可用。
+    </li>
+    <li>
+        ClickHouse 中的复制是异步的，一些副本在某些时间点可能没有相同的部分。
+    </li>
+    <li>
+        需要以某种方式处理副本之间的尾延迟。
+    </li>
+    <li>
+        文件系统缓存因每个副本的活动而异，这意味着随机的任务分配可能导致由于缓存局部性而性能不佳。
+    </li>
+</ol>
+
+我们将在接下来的部分中探讨如何克服这些因素。
+
+### 公告 {#announcements}
+
+为了解决上述列表中的（1）和（2），我们引入了公告的概念。让我们通过下图来可视化它的工作原理：
+
+<Image img={image_4} size="md" alt="Announcements" />
+
+<ol className="docs-ordered-list">
+    <li>
+        客户端的查询在经过负载均衡器后发送到一个节点。该节点成为此查询的协调者。
+    </li>
+    <li>
+        协调节点向集群中的所有副本发送请求以获取公告。副本可能对表的当前部分集有稍微不同的视图。因此，我们需要收集这些信息，以避免不正确的调度决策。
+    </li>
+    <li>
+        协调节点然后使用公告来定义可以分配给不同副本的一组 granules。在这里，例如，我们可以看到由于副本 2 在其公告中没有提供这个部分，因此没有来自部分 3 的 granules 被分配给副本 2。同时注意，由于副本没有提供公告，没有任务被分配给副本 3。
+    </li>
+    <li>
+        每个副本处理完其 granules 子集的查询后，将可合并的状态发送回协调者，协调者合并结果，响应发送给客户端。
     </li>
 </ol>
 
 ### 动态协调 {#dynamic-coordination}
 
-为了解决尾延迟的问题，我们添加了动态协调。这意味着并非所有的 granules 都在一个请求中发送给一个副本，而每个副本能够向协调者请求新的任务（待处理的 granules 集）。协调者将根据接收到的公告向副本提供 granules 集。
+为了解决尾延迟的问题，我们添加了动态协调。这意味着所有 granules 不会在一次请求中发送给副本，而是每个副本将能够向协调者请求新的任务（要处理的一组 granules）。协调者将根据接收到的公告为副本提供一组 granules。
 
-假设我们处于所有副本都已发送公告的阶段。
+假设我们处于处理过程的阶段，此时所有副本都已发送包含所有部分的公告。
 
-下图可视化了动态协调的工作原理：
+下图可视化了动态协调的工作方式：
 
-<Image img={image_5} size="md" alt="动态协调 - 第 1 部分" />
+<Image img={image_5} size="md" alt="Dynamic Coordination - part 1" />
 
 <ol className="docs-ordered-list">
     <li>
-        副本通知协调者节点它们能够处理任务，它们还可以指定可以处理的工作量。
+        副本向协调节点表明它们能够处理任务，同时它们还可以指定自己能够处理多少工作。
     </li>
     <li>
         协调者将任务分配给副本。
     </li>
 </ol>
 
-<Image img={image_6} size="md" alt="动态协调 - 第 2 部分" />
+<Image img={image_6} size="md" alt="Dynamic Coordination - part 2" />
 
 <ol className="docs-ordered-list">
     <li>
-        副本 1 和 2 能够非常快速地完成它们的任务。它们将向协调者请求另一个任务。
+        副本 1 和 2 能够非常快地完成其任务。它们将向协调节点请求另一个任务。
     </li>
     <li>
-        协调者向副本 1 和 2 分配新任务。
+        协调者将新任务分配给副本 1 和 2。
     </li>
 </ol>
 
-<Image img={image_7} size="md" alt="动态协调 - 第 3 部分" />
+<Image img={image_7} size="md" alt="Dynamic Coordination - part 3" />
 
 <ol className="docs-ordered-list">
     <li>
-        所有副本现在都已完成它们的任务处理。它们请求更多任务。
+        所有副本现在都完成了对其任务的处理。它们请求更多任务。
     </li>
     <li>
-        协调者使用公告检查待处理的任务，但没有剩余任务。
+        协调者根据公告检查剩余需要处理的任务，但没有剩余任务。
     </li>
     <li>
-        协调者告诉副本一切都已处理。它现在将合并所有可合并状态并响应查询。
+        协调者告诉副本一切都已处理。它将合并所有可合并的状态并对查询做出响应。
     </li>
 </ol>
 
 ### 管理缓存局部性 {#managing-cache-locality}
 
-最后一个潜在问题是如何处理缓存局部性。如果查询被多次执行，我们如何确保相同的任务路由到相同的副本？在前面的示例中，我们有以下任务分配：
+最后一个可能存在的问题是我们如何处理缓存局部性。如果查询多次执行，我们如何确保相同的任务路由到相同的副本？在前面的例子中，我们有以下任务分配：
 
 <table>
     <thead>
@@ -192,19 +193,19 @@ ClickHouse Cloud 具有与上述架构非常不同的架构。（有关更多详
     </thead>
     <tbody>
         <tr>
-            <td>部件 1</td>
+            <td>部分 1</td>
             <td>g1, g6, g7</td>
             <td>g2, g4, g5</td>
             <td>g3</td>
         </tr>
         <tr>
-            <td>部件 2</td>
+            <td>部分 2</td>
             <td>g1</td>
             <td>g2, g4, g5</td>
             <td>g3</td>
         </tr>
         <tr>
-            <td>部件 3</td>
+            <td>部分 3</td>
             <td>g1, g6</td>
             <td>g2, g4, g5</td>
             <td>g3</td>
@@ -212,43 +213,44 @@ ClickHouse Cloud 具有与上述架构非常不同的架构。（有关更多详
     </tbody>
 </table>
 
-为了确保相同的任务被分配给相同的副本并可以利用缓存，发生了两件事。计算部件 + granules 集合（任务）的哈希。应用任务分配的副本数量的模运算。
+为了确保相同的任务被分配给相同的副本并能够受益于缓存，会发生两件事。部分 + granules 集合（即一个任务）的哈希会被计算。然后应用一个模数来决定任务分配的副本数量。
 
-纸面上这听起来不错，但在现实中，某个副本的突然负载或网络劣化，如果始终使用同一副本执行某些任务，可能会导致尾延迟。如果 `max_parallel_replicas` 小于副本的数量，则随机选择副本进行查询执行。
+在纸面上，这听起来不错，但在实际中，如果某个副本突然负载过重，或网络出现降级，则可能导致尾延迟，因为相同的副本持续用于执行某些任务。如果 `max_parallel_replicas` 小于副本的数量，则会随机选择副本进行查询执行。
 
 ### 任务窃取 {#task-stealing}
 
-如果某个副本处理任务的速度慢于其他副本，其他副本将尝试“窃取”原则上属于该副本的任务，以减少尾延迟。
+如果某个副本处理任务的速度比其他副本慢，其他副本将尝试通过哈希“窃取”原则上属于该副本的任务，以减少尾延迟。
 
 ### 限制 {#limitations}
 
-此功能有已知的限制，主要限制记录在本节中。
+此功能已知有一些限制，其中主要限制在本节中进行了文档说明。
 
 :::note
-如果您发现一个不属于下面给出的限制的问题，并且怀疑并行副本是原因，请在 GitHub 上使用标签 `comp-parallel-replicas` 提交问题。
+如果您发现一个问题，并不属于下面列出的限制，并怀疑并行副本可能是原因，请在 GitHub 上打开一个问题，使用标签 `comp-parallel-replicas`。
 :::
 
-| 限制                                         | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 复杂查询                                      | 当前并行副本对简单查询工作得相当不错。复杂层次如 CTEs、子查询、JOIN、非扁平查询等可能会对查询性能产生负面影响。                                                                                                                                                                                                                                                                                                                               |
-| 小查询                                      | 如果您正在执行一个不处理大量行的查询，在多个副本上执行可能不会提高性能，因为副本之间协调的网络时间可能导致查询执行中的额外周期。您可以通过使用设置 [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica) 来限制这些问题。                                                             |
-| 使用 FINAL 时并行副本被禁用                  |                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| 高基数数据和复杂聚合                          | 高基数聚合需要发送大量数据，可能会显著减慢查询速度。                                                                                                                                                                                                                                                                                                                                                                                                |
-| 与新分析器的兼容性                          | 在特定场景下，新分析器可能显著减慢或加速查询执行。                                                                                                                                                                                                                                                                                                                                                                                                |
+| 限制                                          | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|-----------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 复杂查询                                      | 当前并行副本对于简单查询功能良好。CTE、子查询、JOIN、非平铺查询等复杂性层将对查询性能产生负面影响。                                                                                                                                                                                                                                                                                                                                                                   |
+| 小查询                                        | 如果您执行的查询处理的行数不多，在多个副本上执行可能不会提高性能，因为副本之间的协调网络时间可能导致查询执行中额外的周期。通过使用设置 [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica) 可以减少这些问题的影响。                              |
+| FINAL 时禁用并行副本                         |                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| 投影与并行副本不一起使用                     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| 高基数数据和复杂聚合                          | 高基数聚合需要发送大量数据，会显著减慢查询速度。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 与新分析器的兼容性                           | 在特定情况下，新的分析器可能会显著减慢或加快查询执行。                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## 与并行副本相关的设置 {#settings-related-to-parallel-replicas}
 
-| 设置                                                | 描述                                                                                                                                                                              |
-|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_parallel_replicas`                         | `0`: 禁用<br/> `1`: 启用 <br/> `2`: 强制使用并行副本，如果未使用则抛出异常。                                                                                                     |
-| `cluster_for_parallel_replicas`                    | 用于并行复制的集群名称；如果您使用的是 ClickHouse Cloud，请使用 `default`。                                                                                                              |
-| `max_parallel_replicas`                            | 用于查询在多个副本上执行的最大副本数，指定的数量若低于集群中的副本数，节点将随机选择。此值也可以过度承诺以适应水平扩展。                                                                     |
-| `parallel_replicas_min_number_of_rows_per_replica` | 帮助根据需要处理的行数限制使用的副本数，使用的副本数由：<br/> `estimated rows to read` / `min_number_of_rows_per_replica` 定义。                                         |
-| `allow_experimental_analyzer`                      | `0`: 使用旧分析器<br/> `1`: 使用新分析器。<br/><br/>并行副本的行为可能会根据使用的分析器而变化。                                                                                 |
+| 设置                                            | 描述                                                                                                                                                                                                                                                        |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enable_parallel_replicas`                     | `0`: 禁用<br/> `1`: 启用<br/>`2`: 强制使用并行副本，如果不使用将抛出异常。                                                                                                                                                                                 |
+| `cluster_for_parallel_replicas`                | 用于并行复制的集群名称；如果您使用 ClickHouse Cloud，请使用 `default`。                                                                                                                                                                                  |
+| `max_parallel_replicas`                        | 用于在多个副本上执行查询的最大副本数，如果指定的数量低于集群中的副本数，则将随机选择节点。该值也可以被超分配以考虑水平扩展。                                                                                                                       |
+| `parallel_replicas_min_number_of_rows_per_replica` | 帮助限制基于需要处理的行数的副本数，使用的副本数由以下公式定义：<br/> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                                                                                     |
+| `allow_experimental_analyzer`                  | `0`: 使用旧分析器<br/> `1`: 使用新分析器。<br/><br/>并行副本的行为可能会根据使用的分析器而有所不同。                                                                                                                                                     |
 
-## 调查并行副本的问题 {#investigating-issues-with-parallel-replicas}
+## 调查并行副本问题 {#investigating-issues-with-parallel-replicas}
 
-您可以检查 [`system.query_log`](/docs/operations/system-tables/query_log) 表中每个查询所使用的设置。您还可以查看 [`system.events`](/docs/operations/system-tables/events) 表，以查看服务器上发生的所有事件，并可以使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果您是云用户，请使用 `default`）。
+您可以通过 [`system.query_log`](/docs/operations/system-tables/query_log) 表检查每个查询使用的设置。您还可以查看 [`system.events`](/docs/operations/system-tables/events) 表，以查看在服务器上发生的所有事件，您可以使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果您是云用户，请使用 `default`）。
 
 ```sql title="Query"
 SELECT
@@ -307,7 +309,7 @@ WHERE event ILIKE '%ParallelReplicas%'
 ```
 </details>
 
-[`system.text_log`](/docs/operations/system-tables/text_log) 表还包含使用并行副本执行查询的信息：
+[`system.text_log`](/docs/operations/system-tables/text_log) 表还包含有关使用并行副本执行查询的信息：
 
 ```sql title="Query"
 SELECT message
@@ -380,7 +382,7 @@ Received from 3 replica
 ```
 </details>
 
-最后，您还可以使用 `EXPLAIN PIPELINE`。它突出显示 ClickHouse 将如何执行查询以及将使用哪些资源来执行查询。让我们以以下查询为例：
+最后，您还可以使用 `EXPLAIN PIPELINE`。这将突出显示 ClickHouse 将如何执行查询以及用于执行查询的资源。以以下查询为例：
 
 ```sql
 SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
@@ -389,7 +391,7 @@ WHERE type='type3'
 GROUP BY toYear(timestamp) LIMIT 10
 ```
 
-让我们查看没有并行副本的查询管道：
+让我们来看一下没有并行副本的查询管道：
 
 ```sql title="EXPLAIN PIPELINE (without parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -402,9 +404,9 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=0
 FORMAT TSV;
 ```
 
-<Image img={image_8} size="lg" alt="EXPLAIN 不使用 parallel_replica" />
+<Image img={image_8} size="lg" alt="EXPLAIN without parallel replica" />
 
-现在使用并行副本：
+现在有并行副本：
 
 ```sql title="EXPLAIN PIPELINE (with parallel replica)"
 EXPLAIN PIPELINE graph = 1, compact = 0 
@@ -417,4 +419,4 @@ SETTINGS allow_experimental_parallel_reading_from_replicas=2
 FORMAT TSV;
 ```
 
-<Image img={image_9} size="lg" alt="EXPLAIN 使用 parallel_replica"/>
+<Image img={image_9} size="lg" alt="EXPLAIN with parallel replica"/>

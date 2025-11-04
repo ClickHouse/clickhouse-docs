@@ -51,7 +51,7 @@ Lastly, I/O scheduling allows users to restrict local and remote disk accesses f
 
 ### Permissions {#permissions}
 
-ClickHouse Cloud [controls user access](/cloud/security/cloud-access-management) in two places, via the [cloud console](/cloud/get-started/sql-console) and via the database. Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/integrations/sql-clients/sql-console).
+ClickHouse Cloud controls user access in two places, via the [cloud console](/cloud/guides/sql-console/manage-sql-console-role-assignments) and via the [database](/cloud/security/manage-database-users). Console access is managed via the [clickhouse.cloud](https://console.clickhouse.cloud) user interface. Database access is managed via database user accounts and roles. Additionally, console users can be granted roles within the database that enable the console user to interact with the database via our [SQL console](/integrations/sql-clients/sql-console).
 
 ## Data types {#data-types}
 
@@ -170,7 +170,7 @@ In the following, we provide a mapping of array operations from BigQuery to Clic
 | [ARRAY_CONCAT](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_concat) | [arrayConcat](/sql-reference/functions/array-functions#arrayConcat) |
 | [ARRAY_LENGTH](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_length) | [length](/sql-reference/functions/array-functions#length) |
 | [ARRAY_REVERSE](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_reverse) | [arrayReverse](/sql-reference/functions/array-functions#arrayReverse) |
-| [ARRAY_TO_STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_to_string) | [arrayStringConcat](/sql-reference/functions/splitting-merging-functions#arraystringconcat) |
+| [ARRAY_TO_STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_to_string) | [arrayStringConcat](/sql-reference/functions/splitting-merging-functions#arrayStringConcat) |
 | [GENERATE_ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_array) | [range](/sql-reference/functions/array-functions#range) |
 
 **Create an array with one element for each row in a subquery**
