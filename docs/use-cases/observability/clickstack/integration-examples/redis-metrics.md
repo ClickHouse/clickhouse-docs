@@ -298,7 +298,7 @@ The dashboard will be created with all visualizations pre-configured:
 
 <Image img={example_dashboard} alt="Redis metrics dashboard"/>
 
-**Dashboard includes:**
+**The dashboard includes:**
 - **Commands processed per second** - Redis throughput
 - **Memory usage** - Current memory consumption and trends
 - **Connected clients** - Active client connections
