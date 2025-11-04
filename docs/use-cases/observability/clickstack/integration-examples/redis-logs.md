@@ -34,7 +34,7 @@ Time Required: 5-10 minutes
 ## Integration with existing Redis {#existing-redis}
 
 This section covers configuring your existing Redis installation to send logs to ClickStack by modifying the ClickStack OTel collector configuration.
-If you would like to test the Redis integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/redis#demo-dataset).
+If you would like to test the Redis integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the ["Demo dataset"](/use-cases/observability/clickstack/integrations/redis#demo-dataset) section.
 
 ### Prerequisites {#prerequisites}
 - ClickStack instance running
