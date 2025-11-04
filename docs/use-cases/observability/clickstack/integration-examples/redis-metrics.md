@@ -402,5 +402,4 @@ If you want to explore further, here are some next steps to experiment with your
 
 - Set up alerts for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
 - Create additional dashboards for specific use cases (replication lag, persistence performance)
-- Combine with the [Redis logs guide](../redis) for complete Redis observability
 - Monitor multiple Redis instances by duplicating the receiver configuration with different endpoints
