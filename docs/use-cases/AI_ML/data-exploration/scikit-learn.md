@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/scikit-learn
-sidebar_label: 'Scikit learn'
+sidebar_label: 'Building a binary classifier with scikit-learn'
 title: 'Classifying UK property types with chDB and scikit-learn'
 description: 'This guide explains how to build a binary classifier to distinguish flats from detached houses using chDB, ClickHouse Cloud and Scikit-learn'
 keywords: ['ML', 'Scikit-learn', 'chDB', 'binary classification']
