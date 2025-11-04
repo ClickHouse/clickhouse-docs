@@ -172,7 +172,7 @@ Ensure the ClickStack collector has appropriate permissions to read the Redis lo
 
 #### Verifying Logs in HyperDX {#verifying-logs}
 
-Once configured, log into HyperDX and verify logs are flowing:
+Once configured, log into HyperDX and verify that logs are flowing:
 
 <Image img={log_view} alt="Log view"/>
 
