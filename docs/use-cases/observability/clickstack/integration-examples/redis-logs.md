@@ -22,7 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 :::note[TL;DR]
 This guide shows you how to monitor Redis with ClickStack by configuring the OpenTelemetry collector to ingest Redis server logs. You'll learn how to:
 
-- Configure the OTel collector to parse Redis log format
+- Configure the OTel collector to parse the Redis log format
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize Redis metrics (connections, commands, memory, errors)
 
