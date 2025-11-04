@@ -156,7 +156,7 @@ services:
 
 ##### Option 2: Docker Run (All-in-One Image) {#all-in-one}
 
-If using the all-in-one image with docker run:
+If you're using the all-in-one image with docker, run:
 ```bash
 docker run --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
