@@ -286,6 +286,44 @@ For users looking to explore the HyperDX interface only, we recommend our [sampl
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX Landing" size="lg"/>
 
+### User permissions {#user-permissions}
+
+Users accessing HyperDX need **readonly permissions** and **SELECT access** to tables containing observability data.
+
+**Basic setup:**
+```sql
+-- Grant readonly access and observability table permissions
+GRANT readonly TO your_user;
+GRANT SELECT ON otel.* TO your_user;
+```
+
+**For ClickHouse infrastructure monitoring:**
+
+To use the built-in ClickHouse monitoring dashboard, grant additional system table permissions:
+
+```sql
+-- Required for ClickHouse infrastructure dashboard
+GRANT SHOW COLUMNS, SELECT(event_date, event_time, memory_usage, 
+  normalized_query_hash, query, query_duration_ms, query_kind, read_rows, 
+  tables, type, written_bytes, written_rows) ON system.query_log TO your_user;
+
+GRANT SHOW COLUMNS, SELECT(CurrentMetric_MemoryTracking, CurrentMetric_S3Requests, 
+  ProfileEvent_OSCPUVirtualTimeMicroseconds, ProfileEvent_OSReadChars, 
+  ProfileEvent_OSWriteChars, ProfileEvent_S3GetObject, ProfileEvent_S3ListObjects, 
+  ProfileEvent_S3PutObject, ProfileEvent_S3UploadPart, event_time) 
+  ON system.metric_log TO your_user;
+
+GRANT SHOW COLUMNS, SELECT(active, database, partition, rows, table) 
+  ON system.parts TO your_user;
+
+GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) 
+  ON system.transposed_metric_log TO your_user;
+```
+
+:::note
+HyperDX uses the user's SQL console permissions to query data. For custom schemas, grant SELECT on the specific tables users need to access.
+:::
+
 ### Create a data source {#create-a-datasource}
 
 HyperDX is Open Telemetry native but not Open Telemetry exclusive - users can use their own table schemas if desired.
