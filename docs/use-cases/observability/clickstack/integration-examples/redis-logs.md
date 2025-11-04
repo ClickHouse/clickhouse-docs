@@ -125,7 +125,7 @@ This configuration:
 
 :::note
 - You only define new receivers and pipelines in the custom config
-- The processors (memory_limiter, transform, batch) and exporters (clickhouse) are already defined in the base ClickStack configuration - you just reference them by name
+- The processors (`memory_limiter`, `transform`, `batch`) and exporters (`clickhouse`) are already defined in the base ClickStack configuration - you just reference them by name
 - The time_parser operator extracts timestamps from Redis logs to preserve original log timing
 - This configuration uses `start_at: beginning` to read all existing logs when the collector starts, allowing you to see logs immediately. For production deployments where you want to avoid re-ingesting logs on collector restarts, change to `start_at: end`.
 :::
