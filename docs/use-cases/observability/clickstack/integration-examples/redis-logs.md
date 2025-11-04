@@ -378,5 +378,5 @@ If your Redis logs have a different format, you may need to adjust the regex pat
 
 If you want to explore further, here are some next steps to experiment with your dashboard
 
-- Set up alerts for critical metrics (error rates, latency thresholds)
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
 - Create additional dashboards for specific use cases (API monitoring, security events)
