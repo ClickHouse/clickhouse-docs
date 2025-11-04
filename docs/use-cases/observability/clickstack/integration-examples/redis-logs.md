@@ -119,7 +119,7 @@ service:
 
 This configuration:
 - Reads Redis logs from their standard location
-- Parses Redis's log format using regex to extract structured fields (pid, role, timestamp, log_level, message)
+- Parses Redis's log format using regex to extract structured fields (`pid`, `role`, `timestamp`, `log_level`, `message`)
 - Adds `source: redis` attribute for filtering in HyperDX
 - Routes logs to the ClickHouse exporter via a dedicated pipeline
 
