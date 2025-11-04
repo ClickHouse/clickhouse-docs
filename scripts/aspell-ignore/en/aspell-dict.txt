@@ -1,8 +1,20 @@
-personal_ws-1.1 en 3816
+personal_ws-1.1 en 3836
 AArch
+ABBERD
+ABBERLEY
+ABBERTON
+ABERAERON
+ABERCONWY
+ABERDARE
+ABERDOVEY
+ABERGAVENNY
 ACLs
+ADUR
 AICPA
+ALLERDALE
+ALNWICK
 ALTERs
+ALYN
 AMPLab
 AMQP
 ANNIndex
@@ -285,6 +297,7 @@ DDLWorker
 DDLWorkerThreads
 DDLWorkerThreadsActive
 DDLs
+DEESIDE
 DECRYPT
 DELETEs
 DESC
@@ -676,6 +689,7 @@ KeeperAliveConnections
 KeeperMap
 KeeperOutstandingRequests
 Kerberos
+KETTLEBY
 Khanna
 Kibana
 Kinesis
@@ -1245,6 +1259,7 @@ Sapchuk
 Scalable
 Scatterplot
 Schaefer
+Scikit
 Schedulable
 SchemaInferenceMode
 Schemas
@@ -2367,6 +2382,7 @@ hadoop
 halfMD
 halfday
 hardcoded
+hardcoding
 hardlink
 hardlinked
 hardlinks
@@ -2842,6 +2858,7 @@ nullables
 nullptr
 num
 numerics
+numpy
 nypd
 obfuscator
 observability
@@ -3061,6 +3078,7 @@ quantiletdigestweighted
 quantiletiming
 quantiletimingweighted
 quartile
+quartiles
 queryID
 queryString
 queryStringAndFragment
@@ -3228,6 +3246,7 @@ scala
 scalable
 sccache
 schemaless
+scikit
 schemas
 seekable
 seektable
@@ -3461,6 +3480,7 @@ tcp
 tcpPort
 tcpnodelay
 templateignorespaces
+templated
 textAlign
 tgamma
 tgz
