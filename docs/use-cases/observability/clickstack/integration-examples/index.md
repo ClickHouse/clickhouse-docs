@@ -13,5 +13,6 @@ quick start guides for various log and trace sources.
 
 | Section | Description |
 |------|-------------|
-| [Nginx Logs](./nginx-logs.md) | Introduction to data ingestion methods and architecture |
-| [Nginx Traces](./nginx-traces.md) | Introduction to data ingestion methods and architecture |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Introduction to data ingestion methods and architecture |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Introduction to data ingestion methods and architecture |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Introduction to data ingestion methods and architecture |

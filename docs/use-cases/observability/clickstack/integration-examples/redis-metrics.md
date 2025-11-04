@@ -29,10 +29,6 @@ A demo dataset with sample metrics is available if you want to test the integrat
 Time required: 5-10 minutes
 :::
 
-:::tip Related Guide
-For Redis log collection and troubleshooting, see the [Redis logs guide](../redis).
-:::
-
 ## Integration with existing Redis {#existing-redis}
 
 This section covers configuring your existing Redis installation to send metrics to ClickStack by configuring the ClickStack OTel collector with the Redis receiver.
