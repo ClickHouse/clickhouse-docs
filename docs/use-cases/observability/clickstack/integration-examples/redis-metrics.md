@@ -340,7 +340,7 @@ docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # Expected output: PONG
 ```
 
-Check if Redis INFO command works:
+Check if the Redis INFO command works:
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
 # Should display Redis statistics
