@@ -397,6 +397,6 @@ Ensure your Docker Compose file or `docker run` commands place both containers o
 
 If you want to explore further, here are some next steps to experiment with your monitoring:
 
-- Set up alerts for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
 - Create additional dashboards for specific use cases (replication lag, persistence performance)
 - Monitor multiple Redis instances by duplicating the receiver configuration with different endpoints
