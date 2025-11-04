@@ -1,11 +1,14 @@
 ---
 slug: /faq/operations/delete-old-data
-title: Is it possible to delete old records from a ClickHouse table?
+title: 'Is it possible to delete old records from a ClickHouse table?'
 toc_hidden: true
 toc_priority: 20
+description: 'This page answers the question of whether it is possible to delete old records from a ClickHouse table'
+doc_type: 'reference'
+keywords: ['delete data', 'TTL', 'data retention', 'cleanup', 'data lifecycle']
 ---
 
-# Is It Possible to Delete Old Records from a ClickHouse Table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
+# Is it possible to delete old records from a ClickHouse table? {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
 
 The short answer is “yes”. ClickHouse has multiple mechanisms that allow freeing up disk space by removing old data. Each mechanism is aimed for different scenarios.
 
@@ -39,16 +42,16 @@ ALTER DELETE removes rows using asynchronous batch operations. Unlike DELETE FRO
 
 This is the most common approach to make your system based on ClickHouse [GDPR](https://gdpr-info.eu)-compliant.
 
-More details on [mutations](../../sql-reference/statements/alter/index.md#alter-mutations).
+More details on [mutations](/sql-reference/statements/alter#mutations).
 
 ## DROP PARTITION {#drop-partition}
 
-`ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It’s not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
+`ALTER TABLE ... DROP PARTITION` provides a cost-efficient way to drop a whole partition. It's not that flexible and needs proper partitioning scheme configured on table creation, but still covers most common cases. Like mutations need to be executed from an external system for regular use.
 
-More details on [manipulating partitions](../../sql-reference/statements/alter/partition.md#alter_drop-partition).
+More details on [manipulating partitions](/sql-reference/statements/alter/partition).
 
 ## TRUNCATE {#truncate}
 
-It’s rather radical to drop all data from a table, but in some cases it might be exactly what you need.
+It's rather radical to drop all data from a table, but in some cases it might be exactly what you need.
 
 More details on [table truncation](/sql-reference/statements/truncate.md).

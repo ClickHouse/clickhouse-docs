@@ -1,7 +1,11 @@
 ---
-sidebar_label: Regexp and templates
+sidebar_label: 'Regexp and templates'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
+title: 'Importing and exporting custom text data using Templates and Regex in ClickHouse'
+description: 'Page describing how to import and export custom text using templates and regex in ClickHouse'
+doc_type: 'guide'
+keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
 # Importing and exporting custom text data using Templates and Regex in ClickHouse
@@ -21,7 +25,7 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-We can use a [Template](/interfaces/formats.md/#format-template) format to import this data. We have to define a template string with values placeholders for each row of input data:
+We can use a [Template](/interfaces/formats/Template) format to import this data. We have to define a template string with values placeholders for each row of input data:
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
@@ -46,7 +50,7 @@ To import data using a given template, we have to save our template string in a 
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats.md/#format-template).
+We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats/Template).
 
 Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **should not have** an extra `\n` symbol at the end of file*):
 
@@ -77,7 +81,7 @@ GROUP BY request
 ```
 
 ### Skipping whitespaces {#skipping-whitespaces}
-Consider using [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces), which allows skipping whitespaces between delimiters in a template:
+Consider using [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces), which allows skipping whitespaces between delimiters in a template:
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
@@ -145,7 +149,7 @@ SETTINGS format_template_resultset = 'html.results',
 
 Template format can be used to generate all imaginable text format files, including XML. Just put a relevant template and do the export.
 
-Also consider using an [XML](/interfaces/formats.md/#xml) format to get standard XML results including metadata:
+Also consider using an [XML](/interfaces/formats/XML) format to get standard XML results including metadata:
 
 ```sql
 SELECT *
@@ -156,38 +160,38 @@ FORMAT XML
 ```xml
 <?xml version='1.0' encoding='UTF-8' ?>
 <result>
-	<meta>
-		<columns>
-			<column>
-				<name>time</name>
-				<type>DateTime</type>
-			</column>
-			...
-		</columns>
-	</meta>
-	<data>
-		<row>
-			<time>2023-01-15 13:00:01</time>
-			<ip>3.5.9.2</ip>
-			<host>example.com</host>
-			<request>GET /apple-touch-icon-120x120.png HTTP/1.1</request>
-		</row>
-		...
-	</data>
-	<rows>3</rows>
-	<rows_before_limit_at_least>1000</rows_before_limit_at_least>
-	<statistics>
-		<elapsed>0.000745001</elapsed>
-		<rows_read>1000</rows_read>
-		<bytes_read>88184</bytes_read>
-	</statistics>
+        <meta>
+                <columns>
+                        <column>
+                                <name>time</name>
+                                <type>DateTime</type>
+                        </column>
+                        ...
+                </columns>
+        </meta>
+        <data>
+                <row>
+                        <time>2023-01-15 13:00:01</time>
+                        <ip>3.5.9.2</ip>
+                        <host>example.com</host>
+                        <request>GET /apple-touch-icon-120x120.png HTTP/1.1</request>
+                </row>
+                ...
+        </data>
+        <rows>3</rows>
+        <rows_before_limit_at_least>1000</rows_before_limit_at_least>
+        <statistics>
+                <elapsed>0.000745001</elapsed>
+                <rows_read>1000</rows_read>
+                <bytes_read>88184</bytes_read>
+        </statistics>
 </result>
 
 ```
 
 ## Importing data based on regular expressions {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats.md/#data-format-regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
+[Regexp](/interfaces/formats/Regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
 ```sql
 CREATE TABLE error_log

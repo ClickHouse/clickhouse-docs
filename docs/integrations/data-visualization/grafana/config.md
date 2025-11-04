@@ -1,12 +1,27 @@
 ---
-sidebar_label: Plugin Configuration
+sidebar_label: 'Plugin Configuration'
 sidebar_position: 3
 slug: /integrations/grafana/config
-description: Configuration options for the ClickHouse data source plugin in Grafana
+description: 'Configuration options for the ClickHouse data source plugin in Grafana'
+title: 'Configuring ClickHouse data source in Grafana'
+doc_type: 'guide'
+keywords: ['Grafana plugin configuration', 'data source settings', 'connection parameters', 'authentication setup', 'plugin options']
 ---
+
+import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
+import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
+import config_additional from '@site/static/images/integrations/data-visualization/grafana/config_additional.png';
+import config_logs from '@site/static/images/integrations/data-visualization/grafana/config_logs.png';
+import config_traces from '@site/static/images/integrations/data-visualization/grafana/config_traces.png';
+import alias_table_config_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_config_example.png';
+import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Configuring ClickHouse data source in Grafana
+
+<ClickHouseSupportedBadge/>
 
 The easiest way to modify a configuration is in the Grafana UI on the plugin configuration page, but data sources can also be [provisioned with a YAML file](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
@@ -14,10 +29,10 @@ This page shows a list of options available for configuration in the ClickHouse 
 
 For a quick overview of all the options, a full list of config options can be found [here](#all-yaml-options).
 
-## Common Settings {#common-settings}
+## Common settings {#common-settings}
 
 Example configuration screen:
-<img src={require('./images/config_common.png').default} class="image" alt="Example secure native config" />
+<Image size="sm" img={config_common} alt="Example secure native config" border />
 
 Example configuration YAML for common settings:
 ```yaml
@@ -44,13 +59,13 @@ secureJsonData:
 
 Note that a `version` property is added when the configuration is saved from the UI. This shows the version of the plugin that the config was saved with.
 
-### HTTP Protocol {#http-protocol}
+### HTTP protocol {#http-protocol}
 
 More settings will be displayed if you choose to connect via the HTTP protocol.
 
-<img src={require('./images/config_http.png').default} class="image" alt="Extra HTTP config options" />
+<Image size="md" img={config_http} alt="Extra HTTP config options" border />
 
-#### HTTP Path {#http-path}
+#### HTTP path {#http-path}
 
 If your HTTP server is exposed under a different URL path, you can add that here.
 
@@ -60,7 +75,7 @@ jsonData:
   path: additional/path/example
 ```
 
-#### Custom HTTP Headers {#custom-http-headers}
+#### Custom HTTP headers {#custom-http-headers}
 
 You can add custom headers to the requests sent to your server.
 
@@ -85,11 +100,11 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## Additional Settings {#additional-settings}
+## Additional settings {#additional-settings}
 
 These additional settings are optional.
 
-<img src={require('./images/config_additional.png').default} class="image" alt="Example additional settings" />
+<Image size="sm" img={config_additional} alt="Example additional settings" border />
 
 Example YAML:
 ```yaml
@@ -120,7 +135,7 @@ This will automatically override the default columns to use the selected OTel sc
 While OpenTelemetry isn't required for logs, using a single logs/trace dataset helps to enable a smoother observability workflow with [data linking](./query-builder.md#data-links).
 
 Example logs configuration screen:
-<img src={require('./images/config_logs.png').default} class="image" alt="Logs config" />
+<Image size="sm" img={config_logs} alt="Logs config" border />
 
 Example logs config YAML:
 ```yaml
@@ -147,7 +162,7 @@ This will automatically override the default columns to use the selected OTel sc
 While OpenTelemetry isn't required, this feature works best when using its schema for traces.
 
 Example trace configuration screen:
-<img src={require('./images/config_traces.png').default} class="image" alt="Traces config" />
+<Image size="sm" img={config_traces} alt="Traces config" border />
 
 Example trace config YAML:
 ```yaml
@@ -172,7 +187,7 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
-### Column Aliases {#column-aliases}
+### Column aliases {#column-aliases}
 
 Column aliasing is a convenient way to query your data under different names and types.
 With aliasing, you can take a nested schema and flatten it so it can be easily selected in Grafana.
@@ -183,7 +198,7 @@ Aliasing may be relevant to you if:
 - You store JSON as strings
 - You often apply functions to transform the columns you select
 
-#### Table-defined ALIAS Columns {#table-defined-alias-columns}
+#### Table-defined ALIAS columns {#table-defined-alias-columns}
 
 ClickHouse has column aliasing built-in and works with Grafana out of the box.
 Alias columns can be defined directly on the table.
@@ -201,7 +216,7 @@ Table-defined aliases will not be returned with `SELECT *`, but this can be conf
 
 For more info, read the documentation for the [ALIAS](/sql-reference/statements/create/table#alias) column type.
 
-#### Column Alias Tables {#column-alias-tables}
+#### Column alias tables {#column-alias-tables}
 
 By default, Grafana will provide column suggestions based on the response from `DESC table`.
 In some cases, you may want to completely override the columns that Grafana sees.
@@ -232,14 +247,14 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 ```
 
 We can then configure this table to be used in Grafana. Note that the name can be anything, or even defined in a separate database:
-<img src={require('./images/alias_table_config_example.png').default} class="image" alt="Example alias table config" />
+<Image size="md" img={alias_table_config_example} alt="Example alias table config" border />
 
 Now Grafana will see the results of the alias table instead of the results from `DESC example_table`:
-<img src={require('./images/alias_table_select_example.png').default} class="image" alt="Example alias table select" />
+<Image size="md" img={alias_table_select_example} alt="Example alias table select" border />
 
 Both types of aliasing can be used to perform complex type conversions or JSON field extraction.
 
-## All YAML Options {#all-yaml-options}
+## All YAML options {#all-yaml-options}
 
 These are all of the YAML configuration options made available by the plugin.
 Some fields have example values while others simply show the field's type.
@@ -288,7 +303,7 @@ datasources:
         spanIdColumn: <string>
         operationNameColumn: <string>
         parentSpanIdColumn: <string>
-        serviceNameColumn: <string>  
+        serviceNameColumn: <string>
         durationTimeColumn: <string>
         durationUnitColumn: <time unit>
         startTimeColumn: <string>

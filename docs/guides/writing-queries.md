@@ -1,7 +1,12 @@
 ---
 sidebar_position: 3
-sidebar_label: Selecting data
-title: Selecting ClickHouse Data
+sidebar_label: 'Selecting data'
+title: 'Selecting ClickHouse Data'
+slug: /guides/writing-queries
+description: 'Learn about Selecting ClickHouse Data'
+keywords: ['SELECT', 'data formats']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 ClickHouse is a SQL database, and you query your data by writing the same type of `SELECT` queries you are already familiar with. For example:
@@ -42,10 +47,10 @@ In the above query, the output is returned as tab-separated:
 ```response
 Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-102 Insert a lot of rows per batch	2022-03-21 00:00:00	1.41421
-102 Sort your data based on your commonly-used queries	2022-03-22 00:00:00	2.718
-101 Hello, ClickHouse!	2022-03-22 14:04:09	-1
-101 Granules are the smallest chunks of data read	2022-03-22 14:04:14	3.14159
+102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
 
 4 rows in set. Elapsed: 0.005 sec.
 ```

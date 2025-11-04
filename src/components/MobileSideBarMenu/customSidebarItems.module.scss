@@ -1,0 +1,179 @@
+@use '../../css/breakpoints' as breakpoints;
+
+// Custom Sidebar Items Styles
+.sidebarItem {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  // Ensure items are always visible regardless of screen size
+  display: block !important;
+  visibility: visible !important;
+}
+
+.sidebarItemLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: var(--ifm-font-color-base);
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--ifm-hover-overlay);
+    text-decoration: none;
+    color: var(--ifm-font-color-base);
+  }
+
+  &.active {
+    background-color: var(--ifm-menu-color-background-active);
+    color: var(--ifm-menu-color-active);
+    font-weight: 600;
+  }
+
+  &.hasActiveChild {
+    color: var(--ifm-menu-color-active);
+    font-weight: 500;
+  }
+}
+
+.categoryLink {
+  font-weight: 500;
+
+  &.collapsible {
+    cursor: default; // Default cursor for the container
+
+    // Remove hover effect from container since children handle it
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+.categoryLabel {
+  flex: 0 1 auto; // Only take up the space needed for the text
+  cursor: pointer;
+  padding: 0.1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+
+  &:hover {
+    background-color: var(--ifm-hover-overlay);
+  }
+}
+
+.collapseIcon {
+  margin-left: auto; // Push the arrow to the far right
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  flex-shrink: 0; // Don't shrink the arrow
+
+  &:hover {
+    background-color: var(--ifm-hover-overlay);
+  }
+
+  &.collapsed {
+    transform: rotate(-90deg);
+  }
+}
+
+.sidebarSubItems {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding-left: 1rem;
+  border-left: 1px solid var(--ifm-color-emphasis-300);
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+
+  .sidebarItemLink {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+.linkItem {
+  // Specific styles for link items
+}
+
+.categoryItem {
+  // Specific styles for category items
+  margin-bottom: 0.25rem;
+}
+
+.textItem {
+  // Specific styles for text-only items
+  .sidebarItemText {
+    padding: 0.5rem 0.5rem;
+    color: var(--ifm-font-color-secondary);
+    font-style: italic;
+  }
+}
+
+// Dark theme adjustments
+[data-theme='dark'] {
+  .sidebarItemLink {
+    &:hover {
+      background-color: var(--ifm-color-emphasis-200);
+    }
+
+    &.active {
+      background-color: var(--ifm-menu-color-background-active);
+    }
+  }
+
+  .sidebarSubItems {
+    border-left-color: var(--ifm-color-emphasis-400);
+  }
+}
+
+// Mobile-specific styles
+@media (max-width: 996px) {
+  .sidebarItem {
+    // Ensure mobile visibility
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .sidebarItemLink {
+    padding: 0.2rem 0.5rem;
+    font-size: 14px;
+  }
+
+  .sidebarSubItems {
+    .sidebarItemLink {
+      padding: 0.1rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  // Fix for the overly broad CSS rule hiding links below 996px
+  .sidebarItem a,
+  .sidebarItemLink {
+    display: flex !important;
+  }
+}
+
+// Tablet and desktop styles
+@media (min-width: breakpoints.$mobile-breakpoint) {
+  .sidebarItem {
+    // Ensure desktop visibility
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}

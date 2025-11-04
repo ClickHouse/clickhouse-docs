@@ -1,12 +1,13 @@
 #!/bin/bash
 
 function parse_args() {
+  force_pull=false
 
-  while getopts "hl:" opt; do
+  while getopts "hl:f" opt; do
     case "$opt" in
       h)
         # Display the usage information and exit when -h is provided
-        echo "Usage: $0 [-l path_to_local_clickhouse_repo]"
+        echo "Usage: $0 [-l path_to_local_clickhouse_repo] [-f]"
         echo ""
         echo "Options:"
         echo "  -l   Path to a local copy of the ClickHouse repository."
@@ -22,8 +23,6 @@ function parse_args() {
         ;;
     esac
   done
-
-  echo "$local_path"
 }
 
 # Copy files/folders using rsync (or fallback to cp)
@@ -100,8 +99,9 @@ main() {
 
   if [[ -z "$local_path" ]]; then
 
-    if [[ "$CI" == "true" ]]; then
-      echo "CI environment detected, expecting /ClickHouse without having to pull the repo"
+    # Check if override is set
+    if [[ "$MASTER_PULL" == "false" ]]; then
+      echo "expecting /ClickHouse folder to be present without having to pull it from the repo"
       copy_docs_locally "/ClickHouse"
     else
       git clone --depth 1 --branch master https://github.com/ClickHouse/ClickHouse

@@ -1,13 +1,24 @@
 ---
 slug: /guides/developer/deduplicating-inserts-on-retries
-title: Deduplicating Inserts on Retries
-description: Preventing duplicate data when retrying insert operations
-keywords: [deduplication, deduplicate, insert retries, inserts]
+title: 'Deduplicating Inserts on Retries'
+description: 'Preventing duplicate data when retrying insert operations'
+keywords: ['deduplication', 'deduplicate', 'insert retries', 'inserts']
+doc_type: 'guide'
 ---
 
 Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. This guide covers how to enable deduplication on insert retries such that the same data does not get inserted more than once.
 
 When an insert is retried, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
+
+## Limitations {#limitations}
+
+### Uncertain insert status {#uncertain-insert-status}
+
+The user must retry the insert operation until it succeeds. If all retries fail, it is impossible to determine whether the data was inserted or not. When materialized views are involved, it is also unclear in which tables the data may have appeared. The materialized views could be out of sync with the source table.
+
+### Deduplication window limit {#deduplication-window-limit}
+
+If more than `*_deduplication_window` other insert operations occur during the retry sequence, deduplication may not work as intended. In this case, the same data can be inserted multiple times.
 
 ## Enabling insert deduplication on retries {#enabling-insert-deduplication-on-retries}
 
@@ -15,7 +26,7 @@ When an insert is retried, ClickHouse tries to determine whether the data has al
 
 **Only `*MergeTree` engines support deduplication on insertion.**
 
-For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated-deduplication-window) and [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds) settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non-replicated-deduplication-window) setting.
+For `*ReplicatedMergeTree` engines, insert deduplication is enabled by default and is controlled by the [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window) and [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds) settings. For non-replicated `*MergeTree` engines, deduplication is controlled by the [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window) setting.
 
 The settings above determine the parameters of the deduplication log for a table. The deduplication log stores a finite number of `block_id`s, which determine how deduplication works (see below).
 
@@ -41,11 +52,12 @@ When a table has one or more materialized views, the inserted data is also inser
 
 You can control this process using the following settings for the source table:
 
-- [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated-deduplication-window)
-- [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated-deduplication-window-seconds)
-- [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non-replicated-deduplication-window)
+- [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window)
+- [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds)
+- [`non_replicated_deduplication_window`](/operations/settings/merge-tree-settings#non_replicated_deduplication_window)
 
-You can also use the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
+You have to also enable the user profile setting [`deduplicate_blocks_in_dependent_materialized_views`](/operations/settings/settings#deduplicate_blocks_in_dependent_materialized_views).
+With enabled setting `insert_deduplicate=1` an inserted data is deduplicated in source table. The setting `deduplicate_blocks_in_dependent_materialized_views=1` additionally enables deduplication in dependant tables. You have to enable both if full deduplication is desired.
 
 When inserting blocks into tables under materialized views, ClickHouse calculates the `block_id` by hashing a string that combines the `block_id`s from the source table and additional identifiers. This ensures accurate deduplication within materialized views, allowing data to be distinguished based on its original insertion, regardless of any transformations applied before reaching the destination table under the materialized view.
 
@@ -105,7 +117,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
@@ -120,7 +132,7 @@ SELECT
     *,
     _part
 FROM mv_dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
@@ -140,7 +152,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
@@ -173,7 +185,6 @@ ENGINE = MergeTree
 ORDER BY tuple()
 SETTINGS non_replicated_deduplication_window=1000;
 
-
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
@@ -192,7 +203,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
@@ -232,7 +243,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -243,7 +254,7 @@ ORDER by all;
 Two identical blocks have been inserted as expected.
 
 ```sql
-select 'second attempt';
+SELECT 'second attempt';
 
 INSERT INTO dst SELECT
     0 AS key,
@@ -256,7 +267,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -267,7 +278,7 @@ ORDER by all;
 Retried insertion is deduplicated as expected.
 
 ```sql
-select 'third attempt';
+SELECT 'third attempt';
 
 INSERT INTO dst SELECT
     1 AS key,
@@ -280,7 +291,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
@@ -442,7 +453,7 @@ ORDER by all;
 Two equal blocks inserted to the table `mv_dst` (as expected).
 
 ```sql
-select 'second attempt';
+SELECT 'second attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
@@ -451,7 +462,7 @@ SELECT
     *,
     _part
 FROM dst
-ORDER by all;
+ORDER BY all;
 
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │

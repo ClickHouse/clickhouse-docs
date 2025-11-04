@@ -1,0 +1,39 @@
+.CommunityMaintainedBadge {
+    background-color: #69afff;
+    border-radius: 16px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    color: #ffffff;
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+.CommunityMaintainedIcon svg path {
+    fill: #ffffff;
+    stroke: none;
+}
+
+.CommunityMaintainedBadge a {
+    color: #69afff;
+}
+
+.CommunityMaintainedBadge svg path {
+    color: #69afff;
+}
+
+[data-theme="dark"] .CommunityMaintainedBadge {
+    background-color: #69afff;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .CommunityMaintainedBadge a {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .CommunityMaintainedIcon svg path {
+    fill: #ffffff;
+    stroke: none;
+}

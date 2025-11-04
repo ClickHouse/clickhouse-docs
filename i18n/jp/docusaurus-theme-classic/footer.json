@@ -12,7 +12,7 @@
     "description": "The label of footer link with label=Security linking to https://trust.clickhouse.com/"
   },
   "link.item.label.Terms of Service": {
-    "message": "サービス利用規約",
+    "message": "利用規約",
     "description": "The label of footer link with label=Terms of Service linking to https://clickhouse.com/legal/agreements/terms-of-service"
   },
   "copyright": {

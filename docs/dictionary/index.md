@@ -1,9 +1,14 @@
 ---
 slug: /dictionary
-title: Dictionary
-keywords: [dictionary, dictionaries]
-description: A dictionary provides a key-value representation of data for fast lookups.
+title: 'Dictionary'
+keywords: ['dictionary', 'dictionaries']
+description: 'A dictionary provides a key-value representation of data for fast lookups.'
+doc_type: 'reference'
 ---
+
+import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-cases.png';
+import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
+import Image from '@theme/IdealImage';
 
 # Dictionary
 
@@ -13,16 +18,13 @@ Dictionaries are useful for:
 - Improving the performance of queries, especially when used with `JOIN`s
 - Enriching ingested data on the fly without slowing down the ingestion process
 
-![Uses cases for Dictionary in ClickHouse](./images/dictionary-use-cases.png)
+<Image img={dictionaryUseCases} size="lg" alt="Use cases for Dictionary in ClickHouse"/>
 
 ## Speeding up joins using a Dictionary {#speeding-up-joins-using-a-dictionary}
 
 Dictionaries can be used to speed up a specific type of `JOIN`: the [`LEFT ANY` type](/sql-reference/statements/select/join#supported-types-of-join) where the join key needs to match the key attribute of the underlying key-value storage.
 
-<img src={require('./images/dictionary-left-any-join.png').default}    
-  class='image'
-  alt='Using Dictionary with LEFT ANY JOIN'
-  style={{width: '300px', background: 'none'}} />
+<Image img={dictionaryLeftAnyJoin} size="sm" alt="Using Dictionary with LEFT ANY JOIN"/>
 
 If this is the case, ClickHouse can exploit the dictionary to perform a [Direct Join](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join). This is ClickHouse's fastest join algorithm and is applicable when the underlying [table engine](/engines/table-engines) for the right-hand side table supports low-latency key-value requests. ClickHouse has three table engines providing this: [Join](/engines/table-engines/special/join) (that is basically a pre-calculated hash table), [EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) and [Dictionary](/engines/table-engines/special/dictionary). We will describe the dictionary-based approach, but the mechanics are the same for all three engines.
 
@@ -40,23 +42,23 @@ With our data normalized, this query currently requires a `JOIN` using the `post
 ```sql
 WITH PostIds AS
 (
-   	 SELECT Id
-   	 FROM posts
-   	 WHERE Title ILIKE '%SQL%'
+         SELECT Id
+         FROM posts
+         WHERE Title ILIKE '%SQL%'
 )
 SELECT
     Id,
     Title,
     UpVotes,
     DownVotes,
-    abs(UpVotes - DownVotes) AS Controversial_ratio 
+    abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
 INNER JOIN
 (
     SELECT
-   	 PostId,
-   	 countIf(VoteTypeId = 2) AS UpVotes,
-   	 countIf(VoteTypeId = 3) AS DownVotes
+         PostId,
+         countIf(VoteTypeId = 2) AS UpVotes,
+         countIf(VoteTypeId = 3) AS DownVotes
     FROM votes
     WHERE PostId IN (PostIds)
     GROUP BY PostId
@@ -68,10 +70,10 @@ LIMIT 1
 
 Row 1:
 ──────
-Id:              	25372161
-Title:           	How to add exception handling to SqlDataSource.UpdateCommand
-UpVotes:         	13
-DownVotes:       	13
+Id:                     25372161
+Title:                  How to add exception handling to SqlDataSource.UpdateCommand
+UpVotes:                13
+DownVotes:              13
 Controversial_ratio: 0
 
 1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
@@ -80,7 +82,7 @@ Peak memory usage: 3.18 GiB.
 
 >**Use smaller datasets on the right side of `JOIN`**: This query may seem more verbose than is required, with the filtering on `PostId`s occurring in both the outer and sub queries. This is a performance optimization which ensures the query response time is fast. For optimal performance, always ensure the right side of the `JOIN` is the smaller set and as small as possible. For tips on optimizing JOIN performance and understanding the algorithms available, we recommend [this series of blog articles](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
 
-While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally, we would simply filter the posts to those containing "SQL", before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric. 
+While this query is fast, it relies on us to write the `JOIN` carefully to achieve good performance. Ideally, we would simply filter the posts to those containing "SQL", before looking at the `UpVote` and `DownVote` counts for the subset of blogs to compute our metric.
 
 #### Applying a dictionary {#applying-a-dictionary}
 
@@ -88,19 +90,19 @@ To demonstrate these concepts, we use a dictionary for our vote data. Since dict
 
 ```sql
 SELECT table,
-	formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
-	formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
-	round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+        formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+        formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+        round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table IN ('votes')
 GROUP BY table
 
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ votes │ 1.25 GiB    	│ 3.79 GiB      	│  3.04 │
+│ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
-Data will be stored uncompressed in our dictionary, so we need at least 4GB of memory if we were to store all columns (we won’t) in a dictionary. The dictionary will be replicated across our cluster, so this amount of memory needs to be reserved *per node*.
+Data will be stored uncompressed in our dictionary, so we need at least 4GB of memory if we were to store all columns (we won't) in a dictionary. The dictionary will be replicated across our cluster, so this amount of memory needs to be reserved *per node*.
 
 > In the example below the data for our dictionary originates from a ClickHouse table. While this represents the most common source of dictionaries, [a number of sources](/sql-reference/dictionaries#dictionary-sources) are supported including files, http and databases including [Postgres](/sql-reference/dictionaries#postgresql). As we'll show, dictionaries can be automatically refreshed providing an ideal way to ensure small datasets subject to frequent changes are available for direct joins.
 
@@ -114,7 +116,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-To create our dictionary requires the following DDL - note the use of our above query: 
+To create our dictionary requires the following DDL - note the use of our above query:
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -154,21 +156,20 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-
 Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
 (
-    	SELECT Id
-    	FROM posts
-    	WHERE Title ILIKE '%SQL%'
+        SELECT Id
+        FROM posts
+        WHERE Title ILIKE '%SQL%'
 )
 SELECT Id, Title,
-	dictGet('votes_dict', 'UpVotes', Id) AS UpVotes,
-	dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
-	abs(UpVotes - DownVotes) AS Controversial_ratio
+        dictGet('votes_dict', 'UpVotes', Id) AS UpVotes,
+        dictGet('votes_dict', 'DownVotes', Id) AS DownVotes,
+        abs(UpVotes - DownVotes) AS Controversial_ratio
 FROM posts
-WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (UpVotes > 10)
+WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
@@ -198,22 +199,20 @@ We can use this dictionary to enrich post results:
 
 ```sql
 SELECT
-	Id,
-	Title,
-	dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location
+        Id,
+        Title,
+        dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location
 FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
 
-
-
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
-│ 52296928 │ Comparision between two Strings in ClickHouse             	│ Spain             	│
-│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi │
-│ 61452077 │ How to change PARTITION in clickhouse                     	│ Guangzhou, 广东省中国 │
-│ 55608325 │ Clickhouse select last record without max() on all table  	│ Moscow, Russia    	│
-│ 55758594 │ ClickHouse create temporary table                         	│ Perm', Russia     	│
+│ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
+│ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
+│ 61452077 │ How to change PARTITION in clickhouse                         │ Guangzhou, 广东省中国   │
+│ 55608325 │ Clickhouse select last record without max() on all table      │ Moscow, Russia        │
+│ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
 5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
@@ -224,8 +223,8 @@ Similar to our above join example, we can use the same dictionary to efficiently
 
 ```sql
 SELECT
-	dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location,
-	count() AS c
+        dictGet('users_dict', 'Location', CAST(OwnerUserId, 'UInt64')) AS location,
+        count() AS c
 FROM posts
 WHERE location != ''
 GROUP BY location
@@ -233,11 +232,11 @@ ORDER BY c DESC
 LIMIT 5
 
 ┌─location───────────────┬──────c─┐
-│ India              	│ 787814 │
-│ Germany            	│ 685347 │
-│ United States      	│ 595818 │
+│ India                  │ 787814 │
+│ Germany                │ 685347 │
+│ United States          │ 595818 │
 │ London, United Kingdom │ 538738 │
-│ United Kingdom     	│ 537699 │
+│ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
@@ -273,7 +272,7 @@ CREATE TABLE posts_with_location
 (
     `Id` UInt32,
     `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-     …
+     ...
     `Location` MATERIALIZED dictGet(users_dict, 'Location', OwnerUserId::'UInt64')
 )
 ENGINE = MergeTree
@@ -313,7 +312,7 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## Advanced Dictionary Topics {#advanced-dictionary-topics}
+## Advanced dictionary topics {#advanced-dictionary-topics}
 
 ### Choosing the Dictionary `LAYOUT` {#choosing-the-dictionary-layout}
 
@@ -328,7 +327,7 @@ For database sources such as ClickHouse and Postgres, you can set up a query tha
 
 ### Other dictionary types {#other-dictionary-types}
 
-ClickHouse also supports [Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries), [Polygon](/sql-reference/dictionaries#polygon-dictionaries) and [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) dictionaries. 
+ClickHouse also supports [Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries), [Polygon](/sql-reference/dictionaries#polygon-dictionaries) and [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) dictionaries.
 
 ### More reading {#more-reading}
 

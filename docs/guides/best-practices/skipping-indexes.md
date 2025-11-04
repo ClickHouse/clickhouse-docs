@@ -1,11 +1,18 @@
 ---
 slug: /optimize/skipping-indexes
-sidebar_label: Data Skipping Indexes
+sidebar_label: 'Data skipping indexes'
 sidebar_position: 2
-description: Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
+description: 'Skip indexes enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.'
+title: 'Understanding ClickHouse Data Skipping Indexes'
+doc_type: 'guide'
+keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---
 
-# Understanding ClickHouse Data Skipping Indexes
+import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';
+import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
+import Image from '@theme/IdealImage';
+
+# Understanding ClickHouse data skipping indexes
 
 ## Introduction {#introduction}
 
@@ -17,7 +24,7 @@ In a traditional relational database, one approach to this problem is to attach 
 
 Instead, ClickHouse provides a different type of index, which in specific circumstances can significantly improve query speed. These structures are labeled "Skip" indexes because they enable ClickHouse to skip reading significant chunks of data that are guaranteed to have no matching values.
 
-## Basic Operation {#basic-operation}
+## Basic operation {#basic-operation}
 
 Users can only employ Data Skipping Indexes on the MergeTree family of tables. Each data skipping has four primary arguments:
 
@@ -94,7 +101,7 @@ Instead of processing 100 million rows of 800 megabytes, ClickHouse has only rea
 In a more visual form, this is how the 4096 rows with a `my_value` of 125 were read and selected, and how the following rows
 were skipped without reading from disk:
 
-![Simple Skip](images/simple_skip.svg)
+<Image img={simple_skip} size="md" alt="Simple Skip"/>
 
 Users can access detailed information about skip index usage by enabling the trace when executing queries.  From
 clickhouse-client, set the `send_logs_level`:
@@ -108,9 +115,11 @@ example, the debug log shows that the skip index dropped all but two granules:
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-## Skip Index Types {#skip-index-types}
+## Skip index types {#skip-index-types}
 
+<!-- vale off -->
 ### minmax {#minmax}
+<!-- vale on -->
 
 This lightweight index type requires no parameters.  It stores the minimum and maximum values of the index expression
 for each block (if the expression is a tuple, it separately stores the values for each member of the element
@@ -118,14 +127,16 @@ of the tuple).  This type is ideal for columns that tend to be loosely sorted by
 
 This type of index only works correctly with a scalar or tuple expression -- the index will never be applied to expressions that return an array or map data type.
 
+<!-- vale off -->
 ### set {#set}
+<!-- vale on -->
 
 This lightweight index type accepts a single parameter of the max_size of the value set per block (0 permits
 an unlimited number of discrete values).  This set contains all values in the block (or is empty if the number of values exceeds the max_size).  This index type works well with columns with low cardinality within each set of granules (essentially, "clumped together") but higher cardinality overall.
 
 The cost, performance, and effectiveness of this index is dependent on the cardinality within blocks.  If each block contains a large number of unique values, either evaluating the query condition against a large index set will be very expensive, or the index will not be applied because the index is empty due to exceeding max_size.
 
-### Bloom Filter Types {#bloom-filter-types}
+### Bloom filter types {#bloom-filter-types}
 
 A *Bloom filter* is a data structure that allows space-efficient testing of set membership at the cost of a slight chance of false positives. A false positive is not a significant concern in the case of skip indexes because the only disadvantage is reading a few unnecessary blocks. However, the potential for false positives does mean that the indexed expression should be expected to be true, otherwise valid data may be skipped.
 
@@ -144,7 +155,7 @@ This index works only with String, FixedString, and Map datatypes. The input exp
   ```
 This index can also be useful for text searches, particularly languages without word breaks, such as Chinese.
 
-## Skip Index Functions {#skip-index-functions}
+## Skip index functions {#skip-index-functions}
 
 The core purpose of data-skipping indexes is to limit the amount of data analyzed by popular queries. Given the analytic nature of ClickHouse data, the pattern of those queries in most cases includes functional expressions. Accordingly, skip indexes must interact correctly with common functions to be efficient. This can happen either when:
 * data is inserted and the index is defined as a functional expression (with the result of the expression stored in the index files), or
@@ -153,7 +164,7 @@ The core purpose of data-skipping indexes is to limit the amount of data analyze
 Each type of skip index works on a subset of available ClickHouse functions appropriate to the index implementation listed
 [here](/engines/table-engines/mergetree-family/mergetree/#functions-support). In general, set indexes and Bloom filter based indexes (another type of set index) are both unordered and therefore do not work with ranges. In contrast, minmax indexes work particularly well with ranges since determining whether ranges intersect is very fast. The efficacy of partial match functions LIKE, startsWith, endsWith, and hasToken depend on the index type used, the index expression, and the particular shape of the data.
 
-## Skip Index Settings {#skip-index-settings}
+## Skip index settings {#skip-index-settings}
 
 There are two available settings that apply to skip indexes.
 
@@ -165,14 +176,13 @@ queries.  In circumstances where querying a table is too expensive unless a skip
 names will return an exception for any query that does not use the listed index.  This would prevent poorly written queries from
 consuming server resources.
 
-## Skip Best Practices {#skip-best-practices}
+## Skip index best practices {#skip-best-practices}
 
 Skip indexes are not intuitive, especially for users accustomed to secondary row-based indexes from the RDMS realm or inverted indexes from document stores. To get any benefit, applying a ClickHouse data skipping index must avoid enough granule reads to offset the cost of calculating the index. Critically, if a value occurs even once in an indexed block, it means the entire block must be read into memory and evaluated, and the index cost has been needlessly incurred.
 
 Consider the following data distribution:
 
-![Bad Skip!](images/bad_skip_1.svg)
-
+<Image img={bad_skip} size="md" alt="Bad Skip"/>
 
 Assume the primary/order by key is `timestamp`, and there is an index on `visitor_id`.  Consider the following query:
 
@@ -209,3 +219,9 @@ data skipping index behavior is not easily predictable. Adding them to a table i
 that for any number of reasons don't benefit from the index. They should always be tested on real world type of data, and testing should
 include variations of the type, granularity size and other parameters. Testing will often reveal patterns and pitfalls that aren't obvious from
 thought experiments alone.
+
+## Related docs {#related-docs}
+- [Best practices guide](/best-practices/use-data-skipping-indices-where-appropriate)
+- [Data skipping index examples](/optimize/skipping-indexes/examples)
+- [Manipulating data skipping indices](/sql-reference/statements/alter/skipping-index)
+- [System table information](/operations/system-tables/data_skipping_indices)

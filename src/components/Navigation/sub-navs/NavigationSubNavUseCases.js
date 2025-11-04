@@ -2,6 +2,7 @@ import React from 'react'
 import { galaxyOnClick } from '../../../lib/galaxy/galaxy'
 import LinkWithArrow from '../../LinkWithArrow'
 import { NavigationLink } from '../parts'
+import { translate } from '@docusaurus/Translate';
 
 export default function NavigationSubNavUseCases() {
   return (
@@ -13,7 +14,10 @@ export default function NavigationSubNavUseCases() {
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.realTimeAnalyticsSelect'
             )}>
-            Real-time analytics
+            {translate({
+              id: 'topNav.navItems.use_cases.Real-time analytics',
+              message: 'Real-time analytics',
+            })}
           </NavigationLink>
         </li>
         <li>
@@ -22,23 +26,32 @@ export default function NavigationSubNavUseCases() {
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.machineLearningSelect'
             )}>
-            Machine learning and GenAI
+            {translate({
+              id: 'topNav.navItems.use_cases.Machine learning and GenAI',
+              message: 'Machine learning and GenAI',
+            })}
           </NavigationLink>
         </li>
         <li>
           <NavigationLink
-            href='https://clickhouse.com/use-cases/business-intelligence'
+            href='https://clickhouse.com/use-cases/data-warehousing'
             onClick={galaxyOnClick('topNav.useCasesMenu.bizIntelSelect')}>
-            Business intelligence
+            {translate({
+              id: 'topNav.navItems.use_cases.Business intelligence',
+              message: 'Data warehousing',
+            })}
           </NavigationLink>
         </li>
         <li>
           <NavigationLink
-            href='https://clickhouse.com/use-cases/logging-and-metrics'
+            href='https://clickhouse.com/use-cases/observability'
             onClick={galaxyOnClick(
               'topNav.useCasesMenu.loggingAndMetricsSelect'
             )}>
-            Logs, events, and traces
+            {translate({
+              id: 'topNav.navItems.use_cases.Logs, events, and traces',
+              message: 'Observability',
+            })}
           </NavigationLink>
         </li>
         <li className='ch-nav-v2-mobile-item'>
@@ -46,7 +59,10 @@ export default function NavigationSubNavUseCases() {
           <NavigationLink
             href='https://clickhouse.com/use-cases'
             onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}>
-            All use cases
+            {translate({
+              id: 'topNav.navItems.use_cases.All use cases',
+              message: 'All use cases',
+            })}
           </NavigationLink>
         </li>
       </ul>
@@ -56,7 +72,10 @@ export default function NavigationSubNavUseCases() {
         href='https://clickhouse.com/use-cases'
         onClick={galaxyOnClick('topNav.useCasesMenu.allUseCasesSelect')}
         className='ch-nav-v2-desktop-item ch-nav-v2-link-with-arrow'>
-        All use cases
+        {translate({
+          id: 'topNav.navItems.use_cases.All use cases',
+          message: 'All use cases',
+        })}
       </LinkWithArrow>
     </>
   )

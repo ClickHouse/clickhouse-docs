@@ -1,7 +1,11 @@
 ---
-sidebar_label: Parquet
+sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
+title: 'Working with Parquet in ClickHouse'
+description: 'Page describing how to work with Parquet in ClickHouse'
+doc_type: 'guide'
+keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
 # Working with Parquet in ClickHouse
@@ -24,7 +28,7 @@ Before loading data, we can use [file()](/sql-reference/functions/files.md/#file
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-We've used [Parquet](/interfaces/formats.md/#data-format-parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
+We've used [Parquet](/interfaces/formats/Parquet) as a second argument, so ClickHouse knows the file format. This will print columns with the types:
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -70,7 +74,6 @@ ORDER BY (date, path);
 ```
 
 Now we can import data using the `FROM INFILE` clause:
-
 
 ```sql
 INSERT INTO sometable
@@ -125,8 +128,7 @@ DESCRIBE TABLE imported_from_parquet;
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip nonexistent columns or unsupported values during import. This can be managed with [Parquet settings](/interfaces/formats.md/#parquet-format-settings).
-
+By default, ClickHouse is strict with column names, types, and values. But sometimes, we can skip nonexistent columns or unsupported values during import. This can be managed with [Parquet settings](/interfaces/formats/Parquet#format-settings).
 
 ## Exporting to Parquet format {#exporting-to-parquet-format}
 
@@ -146,7 +148,7 @@ FORMAT Parquet
 This will create the `export.parquet` file in a working directory.
 
 ## ClickHouse and Parquet data types {#clickhouse-and-parquet-data-types}
-ClickHouse and Parquet data types are mostly identical but still [differ a bit](/interfaces/formats.md/#data-types-matching-parquet). For example, ClickHouse will export `DateTime` type as a Parquets' `int64`. If we then import that back to ClickHouse, we're going to see numbers ([time.parquet file](assets/time.parquet)):
+ClickHouse and Parquet data types are mostly identical but still [differ a bit](/interfaces/formats/Parquet#data-types-matching-parquet). For example, ClickHouse will export `DateTime` type as a Parquets' `int64`. If we then import that back to ClickHouse, we're going to see numbers ([time.parquet file](assets/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -178,7 +180,6 @@ FROM file('time.parquet', Parquet);
 │ 4 │ 2023-01-13 15:10:07 │
 └───┴─────────────────────┘
 ```
-
 
 ## Further reading {#further-reading}
 

@@ -1,17 +1,28 @@
 ---
-sidebar_label: Connection Tips
+sidebar_label: 'Connection Tips'
 sidebar_position: 3
 slug: /integrations/tableau/connection-tips
-keywords: [clickhouse, tableau, online, mysql, connect, integrate, ui]
-description: Tableau connection tips when using ClickHouse official connector.
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Tableau connection tips when using ClickHouse official connector.'
+title: 'Connection tips'
+doc_type: 'guide'
 ---
 
+import Image from '@theme/IdealImage';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 # Connection tips
+
+<ClickHouseSupportedBadge/>
+
 ## Initial SQL tab {#initial-sql-tab}
+
 If the *Set Session ID* checkbox is activated on the Advanced tab (by default), feel free to set session level [settings](/operations/settings/settings/) using
+
 ```text
 SET my_setting=value;
-``` 
+```
+
 ## Advanced tab {#advanced-tab}
 
 In 99% of cases you don't need the Advanced tab, for the remaining 1% you can use the following settings:

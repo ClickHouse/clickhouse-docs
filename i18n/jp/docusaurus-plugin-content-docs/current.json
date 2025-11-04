@@ -1,670 +1,551 @@
 {
   "version.label": {
-    "message": "次へ",
-    "description": "The label for version current"
+    "message": "次"
   },
   "sidebar.docs.category.Introduction": {
-    "message": "イントロダクション",
-    "description": "The label for category Introduction in sidebar docs"
+    "message": "イントロダクション"
   },
   "sidebar.docs.category.Concepts": {
-    "message": "概念",
-    "description": "The label for category Concepts in sidebar docs"
+    "message": "概念"
   },
   "sidebar.docs.category.FAQ": {
-    "message": "FAQ",
-    "description": "The label for category FAQ in sidebar docs"
+    "message": "FAQ"
   },
   "sidebar.docs.category.Starter Guides": {
-    "message": "スターターガイド",
-    "description": "The label for category Starter Guides in sidebar docs"
+    "message": "スターターガイド"
   },
   "sidebar.docs.category.Use Case Guides": {
-    "message": "ユースケースガイド",
-    "description": "The label for category Use Case Guides in sidebar docs"
+    "message": "ユースケースガイド"
   },
   "sidebar.docs.category.Observability": {
-    "message": "可観測性",
-    "description": "The label for category Observability in sidebar docs"
+    "message": "可観測性"
   },
   "sidebar.docs.category.Migration Guides": {
-    "message": "マイグレーションガイド",
-    "description": "The label for category Migration Guides in sidebar docs"
+    "message": "移行ガイド"
   },
   "sidebar.docs.category.BigQuery": {
-    "message": "BigQuery",
-    "description": "The label for category BigQuery in sidebar docs"
+    "message": "BigQuery"
   },
   "sidebar.docs.category.PostgreSQL": {
-    "message": "PostgreSQL",
-    "description": "The label for category PostgreSQL in sidebar docs"
+    "message": "PostgreSQL"
   },
   "sidebar.docs.category.Example Datasets": {
-    "message": "サンプルデータセット",
-    "description": "The label for category Example Datasets in sidebar docs"
+    "message": "サンプルデータセット"
   },
   "sidebar.docs.doc.Introduction": {
-    "message": "イントロダクション",
-    "description": "The label for the doc item Introduction in sidebar docs, linking to the doc en/migrations/postgres/overview"
+    "message": "イントロダクション"
   },
   "sidebar.docs.doc.Rockset": {
-    "message": "Rockset",
-    "description": "The label for the doc item Rockset in sidebar docs, linking to the doc en/integrations/migration/rockset"
+    "message": "Rockset"
   },
   "sidebar.cloud.category.Get Started": {
-    "message": "始める",
-    "description": "The label for category Get Started in sidebar cloud"
+    "message": "始める"
   },
   "sidebar.cloud.category.Managing Cloud": {
-    "message": "クラウド管理",
-    "description": "The label for category Managing Cloud in sidebar cloud"
+    "message": "クラウド管理"
   },
   "sidebar.cloud.category.Backups": {
-    "message": "バックアップ",
-    "description": "The label for category Backups in sidebar cloud"
+    "message": "バックアップ"
   },
   "sidebar.cloud.category.Monitoring": {
-    "message": "監視",
-    "description": "The label for category Monitoring in sidebar cloud"
+    "message": "監視"
   },
   "sidebar.cloud.category.Billing": {
-    "message": "請求",
-    "description": "The label for category Billing in sidebar cloud"
+    "message": "請求"
   },
   "sidebar.cloud.category.Marketplace": {
-    "message": "マーケットプレイス",
-    "description": "The label for category Marketplace in sidebar cloud"
+    "message": "マーケットプレイス"
   },
   "sidebar.cloud.category.Jan 2025 Changes FAQ": {
-    "message": "2025年1月の変更についてのFAQ",
-    "description": "The label for category Jan 2025 Changes FAQ in sidebar cloud"
+    "message": "2025年1月の変更に関するFAQ"
   },
   "sidebar.cloud.category.Cloud API": {
-    "message": "クラウドAPI",
-    "description": "The label for category Cloud API in sidebar cloud"
+    "message": "クラウドAPI"
   },
   "sidebar.cloud.category.API Reference": {
-    "message": "APIリファレンス",
-    "description": "The label for category API Reference in sidebar cloud"
+    "message": "APIリファレンス"
   },
   "sidebar.cloud.category.Cloud Reference ": {
-    "message": "クラウドリファレンス",
-    "description": "The label for category Cloud Reference  in sidebar cloud"
+    "message": "クラウドリファレンス"
   },
   "sidebar.cloud.category.Changelogs": {
-    "message": "変更ログ",
-    "description": "The label for category Changelogs in sidebar cloud"
+    "message": "変更履歴"
   },
   "sidebar.cloud.category.Release Notes": {
-    "message": "リリースノート",
-    "description": "The label for category Release Notes in sidebar cloud"
+    "message": "リリースノート"
   },
   "sidebar.cloud.category.Best Practices": {
-    "message": "ベストプラクティス",
-    "description": "The label for category Best Practices in sidebar cloud"
+    "message": "ベストプラクティス"
   },
   "sidebar.cloud.category.Security": {
-    "message": "セキュリティ",
-    "description": "The label for category Security in sidebar cloud"
+    "message": "セキュリティ"
   },
   "sidebar.cloud.category.Cloud Access Management": {
-    "message": "クラウドアクセス管理",
-    "description": "The label for category Cloud Access Management in sidebar cloud"
+    "message": "クラウドアクセス管理"
   },
   "sidebar.cloud.category.Connectivity": {
-    "message": "接続性",
-    "description": "The label for category Connectivity in sidebar cloud"
+    "message": "接続性"
   },
   "sidebar.cloud.category.Private Networking": {
-    "message": "プライベートネットワーキング",
-    "description": "The label for category Private Networking in sidebar cloud"
+    "message": "プライベートネットワーク"
   },
   "sidebar.cloud.category.Privacy and Compliance": {
-    "message": "プライバシーとコンプライアンス",
-    "description": "The label for category Privacy and Compliance in sidebar cloud"
+    "message": "プライバシーとコンプライアンス"
   },
   "sidebar.cloud.category.Migrating to Cloud": {
-    "message": "クラウドへの移行",
-    "description": "The label for category Migrating to Cloud in sidebar cloud"
+    "message": "クラウドへの移行"
   },
   "sidebar.cloud.link.Rockset": {
-    "message": "Rockset",
-    "description": "The label for link Rockset in sidebar cloud, linking to /en/migrations/rockset"
+    "message": "Rockset"
   },
   "sidebar.sqlreference.category.Introduction": {
-    "message": "イントロダクション",
-    "description": "The label for category Introduction in sidebar sqlreference"
+    "message": "イントロダクション"
   },
   "sidebar.sqlreference.category.Data Types": {
-    "message": "データ型",
-    "description": "The label for category Data Types in sidebar sqlreference"
+    "message": "データ型"
   },
   "sidebar.sqlreference.category.Special Data Types": {
-    "message": "特別なデータ型",
-    "description": "The label for category Special Data Types in sidebar sqlreference"
+    "message": "特殊データ型"
   },
   "sidebar.sqlreference.category.Statements": {
-    "message": "ステートメント",
-    "description": "The label for category Statements in sidebar sqlreference"
+    "message": "ステートメント"
   },
   "sidebar.sqlreference.category.SELECT": {
-    "message": "SELECT",
-    "description": "The label for category SELECT in sidebar sqlreference"
+    "message": "SELECT"
   },
   "sidebar.sqlreference.category.CREATE": {
-    "message": "CREATE",
-    "description": "The label for category CREATE in sidebar sqlreference"
+    "message": "CREATE"
   },
   "sidebar.sqlreference.category.ALTER": {
-    "message": "ALTER",
-    "description": "The label for category ALTER in sidebar sqlreference"
+    "message": "ALTER"
   },
   "sidebar.sqlreference.category.Engines": {
-    "message": "エンジン",
-    "description": "The label for category Engines in sidebar sqlreference"
+    "message": "エンジン"
   },
   "sidebar.sqlreference.category.Database Engines": {
-    "message": "データベースエンジン",
-    "description": "The label for category Database Engines in sidebar sqlreference"
+    "message": "データベースエンジン"
   },
   "sidebar.sqlreference.category.Table Engines": {
-    "message": "テーブルエンジン",
-    "description": "The label for category Table Engines in sidebar sqlreference"
+    "message": "テーブルエンジン"
   },
   "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "MergeTreeファミリー",
-    "description": "The label for category MergeTree Family in sidebar sqlreference"
+    "message": "MergeTreeファミリー"
   },
   "sidebar.sqlreference.category.Log Family": {
-    "message": "ログファミリー",
-    "description": "The label for category Log Family in sidebar sqlreference"
+    "message": "ログファミリー"
   },
   "sidebar.sqlreference.category.Integrations": {
-    "message": "統合",
-    "description": "The label for category Integrations in sidebar sqlreference"
+    "message": "統合"
   },
   "sidebar.sqlreference.category.Special": {
-    "message": "特別",
-    "description": "The label for category Special in sidebar sqlreference"
+    "message": "特殊"
   },
   "sidebar.sqlreference.category.Functions": {
-    "message": "関数",
-    "description": "The label for category Functions in sidebar sqlreference"
+    "message": "関数"
   },
   "sidebar.sqlreference.category.Regular Functions": {
-    "message": "通常の関数",
-    "description": "The label for category Regular Functions in sidebar sqlreference"
+    "message": "通常の関数"
   },
   "sidebar.sqlreference.category.Geo": {
-    "message": "地理",
-    "description": "The label for category Geo in sidebar sqlreference"
+    "message": "地理"
   },
   "sidebar.sqlreference.category.Aggregate Functions": {
-    "message": "集約関数",
-    "description": "The label for category Aggregate Functions in sidebar sqlreference"
+    "message": "集約関数"
   },
   "sidebar.sqlreference.category.Table Functions": {
-    "message": "テーブル関数",
-    "description": "The label for category Table Functions in sidebar sqlreference"
+    "message": "テーブル関数"
   },
   "sidebar.sqlreference.category.Window Functions": {
-    "message": "ウィンドウ関数",
-    "description": "The label for category Window Functions in sidebar sqlreference"
+    "message": "ウィンドウ関数"
   },
   "sidebar.sqlreference.category.Other Features": {
-    "message": "その他の機能",
-    "description": "The label for category Other Features in sidebar sqlreference"
+    "message": "その他の機能"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "演算子"
   },
   "sidebar.integrations.category.Language Clients": {
-    "message": "言語クライアント",
-    "description": "The label for category Language Clients in sidebar integrations"
+    "message": "言語クライアント"
   },
   "sidebar.integrations.category.Java": {
-    "message": "Java",
-    "description": "The label for category Java in sidebar integrations"
+    "message": "Java"
   },
   "sidebar.integrations.category.Third-party Clients": {
-    "message": "サードパーティクライアント",
-    "description": "The label for category Third-party Clients in sidebar integrations"
+    "message": "サードパーティクライアント"
   },
   "sidebar.integrations.category.ClickPipes": {
-    "message": "ClickPipes",
-    "description": "The label for category ClickPipes in sidebar integrations"
+    "message": "ClickPipes"
   },
   "sidebar.integrations.category.ClickPipes for Postgres": {
-    "message": "Postgres用ClickPipes",
-    "description": "The label for category ClickPipes for Postgres in sidebar integrations"
+    "message": "Postgres用ClickPipes"
   },
   "sidebar.integrations.category.Source": {
-    "message": "ソース",
-    "description": "The label for category Source in sidebar integrations"
+    "message": "ソース"
   },
   "sidebar.integrations.category.Native Clients & Interfaces": {
-    "message": "ネイティブクライアントとインターフェイス",
-    "description": "The label for category Native Clients & Interfaces in sidebar integrations"
+    "message": "ネイティブクライアントとインターフェース"
   },
   "sidebar.integrations.category.Drivers and Interfaces": {
-    "message": "ドライバーとインターフェイス",
-    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+    "message": "ドライバとインターフェース"
   },
   "sidebar.integrations.category.Data Sources": {
-    "message": "データソース",
-    "description": "The label for category Data Sources in sidebar integrations"
+    "message": "データソース"
   },
   "sidebar.integrations.category.AWS S3": {
-    "message": "AWS S3",
-    "description": "The label for category AWS S3 in sidebar integrations"
+    "message": "AWS S3"
   },
   "sidebar.integrations.category.Kafka": {
-    "message": "Kafka",
-    "description": "The label for category Kafka in sidebar integrations"
+    "message": "Kafka"
   },
   "sidebar.integrations.category.Apache Spark": {
-    "message": "Apache Spark",
-    "description": "The label for category Apache Spark in sidebar integrations"
+    "message": "Apache Spark"
   },
   "sidebar.integrations.category.Data Visualization": {
-    "message": "データビジュアライゼーション",
-    "description": "The label for category Data Visualization in sidebar integrations"
+    "message": "データ視覚化"
   },
   "sidebar.integrations.category.Grafana": {
-    "message": "Grafana",
-    "description": "The label for category Grafana in sidebar integrations"
+    "message": "Grafana"
   },
   "sidebar.integrations.category.Tableau": {
-    "message": "Tableau",
-    "description": "The label for category Tableau in sidebar integrations"
+    "message": "Tableau"
   },
   "sidebar.integrations.category.Data Formats": {
-    "message": "データフォーマット",
-    "description": "The label for category Data Formats in sidebar integrations"
+    "message": "データフォーマット"
   },
   "sidebar.integrations.category.JSON": {
-    "message": "JSON",
-    "description": "The label for category JSON in sidebar integrations"
+    "message": "JSON"
   },
   "sidebar.integrations.category.View All Formats": {
-    "message": "すべてのフォーマットを表示",
-    "description": "The label for category View All Formats in sidebar integrations"
+    "message": "すべてのフォーマットを表示"
   },
   "sidebar.integrations.category.Arrow": {
-    "message": "Arrow",
-    "description": "The label for category Arrow in sidebar integrations"
+    "message": "Arrow"
   },
   "sidebar.integrations.category.Avro": {
-    "message": "Avro",
-    "description": "The label for category Avro in sidebar integrations"
+    "message": "Avro"
   },
   "sidebar.integrations.category.CSV": {
-    "message": "CSV",
-    "description": "The label for category CSV in sidebar integrations"
+    "message": "CSV"
   },
   "sidebar.integrations.category.CustomSeparated": {
-    "message": "カスタム区切り",
-    "description": "The label for category CustomSeparated in sidebar integrations"
+    "message": "CustomSeparated"
   },
   "sidebar.integrations.category.LineAsString": {
-    "message": "文字列としての行",
-    "description": "The label for category LineAsString in sidebar integrations"
+    "message": "LineAsString"
   },
   "sidebar.integrations.category.Parquet": {
-    "message": "Parquet",
-    "description": "The label for category Parquet in sidebar integrations"
+    "message": "Parquet"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "プリティ",
-    "description": "The label for category Pretty in sidebar integrations"
+    "message": "Pretty"
   },
   "sidebar.integrations.category.Protobuf": {
-    "message": "Protobuf",
-    "description": "The label for category Protobuf in sidebar integrations"
+    "message": "Protobuf"
   },
   "sidebar.integrations.category.RowBinary": {
-    "message": "行バイナリ",
-    "description": "The label for category RowBinary in sidebar integrations"
+    "message": "RowBinary"
   },
   "sidebar.integrations.category.TabSeparated": {
-    "message": "タブ区切り",
-    "description": "The label for category TabSeparated in sidebar integrations"
+    "message": "TabSeparated"
   },
   "sidebar.integrations.category.Template": {
-    "message": "テンプレート",
-    "description": "The label for category Template in sidebar integrations"
+    "message": "Template"
   },
   "sidebar.integrations.category.Data Ingestion": {
-    "message": "データ取り込み",
-    "description": "The label for category Data Ingestion in sidebar integrations"
+    "message": "データ取り込み"
   },
   "sidebar.integrations.category.Google Dataflow": {
-    "message": "Google Dataflow",
-    "description": "The label for category Google Dataflow in sidebar integrations"
+    "message": "Google Dataflow"
   },
   "sidebar.integrations.category.Dataflow Templates": {
-    "message": "データフローテンプレート",
-    "description": "The label for category Dataflow Templates in sidebar integrations"
+    "message": "Dataflowテンプレート"
   },
   "sidebar.integrations.category.Tools": {
-    "message": "ツール",
-    "description": "The label for category Tools in sidebar integrations"
+    "message": "ツール"
   },
   "sidebar.integrations.category.SQL Clients": {
-    "message": "SQLクライアント",
-    "description": "The label for category SQL Clients in sidebar integrations"
+    "message": "SQLクライアント"
   },
   "sidebar.integrations.category.Data Integrations": {
-    "message": "データ統合",
-    "description": "The label for category Data Integrations in sidebar integrations"
+    "message": "データ統合"
   },
   "sidebar.integrations.category.Misc": {
-    "message": "その他",
-    "description": "The label for category Misc in sidebar integrations"
+    "message": "その他"
   },
   "sidebar.integrations.doc.Overview": {
-    "message": "概要",
-    "description": "The label for the doc item Overview in sidebar integrations, linking to the doc en/integrations/language-clients/java/index"
+    "message": "概要"
   },
   "sidebar.integrations.doc.Third-party Libraries": {
-    "message": "サードパーティライブラリ",
-    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc en/interfaces/third-party/integrations"
+    "message": "サードパーティライブラリ"
   },
   "sidebar.managingData.category.Core Concepts": {
-    "message": "コアコンセプト",
-    "description": "The label for category Core Concepts in sidebar managingData"
+    "message": "コア概念"
   },
   "sidebar.managingData.category.Updating Data": {
-    "message": "データの更新",
-    "description": "The label for category Updating Data in sidebar managingData"
+    "message": "データの更新"
   },
   "sidebar.managingData.category.Deleting Data": {
-    "message": "データの削除",
-    "description": "The label for category Deleting Data in sidebar managingData"
+    "message": "データの削除"
   },
   "sidebar.managingData.category.Data Modeling": {
-    "message": "データモデリング",
-    "description": "The label for category Data Modeling in sidebar managingData"
+    "message": "データモデリング"
   },
   "sidebar.managingData.category.Dictionary": {
-    "message": "Dictionary",
-    "description": "The label for category Dictionary in sidebar managingData"
+    "message": "辞書"
   },
-  "sidebar.managingData.category.Materialized View": {
-    "message": "マテリアライズドビュー",
-    "description": "The label for category Materialized View in sidebar managingData"
+  "sidebar.managingData.category.Materialized Views": {
+    "message": "マテリアライズドビュー"
   },
   "sidebar.managingData.category.Data Compression": {
-    "message": "データ圧縮",
-    "description": "The label for category Data Compression in sidebar managingData"
+    "message": "データ圧縮"
   },
   "sidebar.managingData.category.Advanced Guides": {
-    "message": "上級ガイド",
-    "description": "The label for category Advanced Guides in sidebar managingData"
+    "message": "高度なガイド"
   },
   "sidebar.managingData.category.Performance and Optimizations": {
-    "message": "パフォーマンスと最適化",
-    "description": "The label for category Performance and Optimizations in sidebar managingData"
+    "message": "パフォーマンスと最適化"
   },
   "sidebar.managingData.doc.Lightweight Updates": {
-    "message": "軽量更新",
-    "description": "The label for the doc item Lightweight Updates in sidebar managingData, linking to the doc en/guides/developer/lightweight-update"
+    "message": "軽量更新"
   },
   "sidebar.managingData.doc.ReplacingMergeTree": {
-    "message": "ReplacingMergeTree",
-    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc en/migrations/postgres/replacing-merge-tree"
+    "message": "ReplacingMergeTree"
   },
   "sidebar.managingData.doc.Lightweight Deletes": {
-    "message": "軽量削除",
-    "description": "The label for the doc item Lightweight Deletes in sidebar managingData, linking to the doc en/guides/developer/lightweight-delete"
+    "message": "軽量削除"
   },
   "sidebar.aboutClickHouse.category.About ClickHouse": {
-    "message": "ClickHouseについて",
-    "description": "The label for category About ClickHouse in sidebar aboutClickHouse"
+    "message": "ClickHouseについて"
   },
   "sidebar.aboutClickHouse.category.Changelogs": {
-    "message": "変更ログ",
-    "description": "The label for category Changelogs in sidebar aboutClickHouse"
+    "message": "変更履歴"
   },
   "sidebar.aboutClickHouse.category.Changelog": {
-    "message": "変更履歴",
-    "description": "The label for category Changelog in sidebar aboutClickHouse"
+    "message": "変更ログ"
   },
   "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
-    "message": "変更履歴",
-    "description": "The generated-index page title for category Changelog in sidebar aboutClickHouse"
+    "message": "変更ログ"
   },
   "sidebar.aboutClickHouse.category.Development and Contributing": {
-    "message": "開発と貢献",
-    "description": "The label for category Development and Contributing in sidebar aboutClickHouse"
+    "message": "開発と貢献"
   },
   "sidebar.aboutClickHouse.category.Native Protocol": {
-    "message": "ネイティブプロトコル",
-    "description": "The label for category Native Protocol in sidebar aboutClickHouse"
+    "message": "ネイティブプロトコル"
   },
   "sidebar.aboutClickHouse.category.FAQ": {
-    "message": "FAQ",
-    "description": "The label for category FAQ in sidebar aboutClickHouse"
+    "message": "FAQ"
   },
   "sidebar.serverAdmin.category.Manage and Deploy": {
-    "message": "管理と展開",
-    "description": "The label for category Manage and Deploy in sidebar serverAdmin"
+    "message": "管理と展開"
   },
   "sidebar.serverAdmin.category.Deployment and Scaling": {
-    "message": "展開とスケーリング",
-    "description": "The label for category Deployment and Scaling in sidebar serverAdmin"
+    "message": "展開とスケーリング"
   },
   "sidebar.serverAdmin.category.Settings": {
-    "message": "設定",
-    "description": "The label for category Settings in sidebar serverAdmin"
+    "message": "設定"
   },
   "sidebar.serverAdmin.category.System Tables": {
-    "message": "システムテーブル",
-    "description": "The label for category System Tables in sidebar serverAdmin"
+    "message": "システムテーブル"
   },
   "sidebar.serverAdmin.category.Security and Authentication": {
-    "message": "セキュリティと認証",
-    "description": "The label for category Security and Authentication in sidebar serverAdmin"
+    "message": "セキュリティと認証"
   },
   "sidebar.serverAdmin.category.External Authenticators": {
-    "message": "外部認証機関",
-    "description": "The label for category External Authenticators in sidebar serverAdmin"
+    "message": "外部認証システム"
   },
   "sidebar.serverAdmin.category.SSL": {
-    "message": "SSL",
-    "description": "The label for category SSL in sidebar serverAdmin"
+    "message": "SSL"
   },
   "sidebar.serverAdmin.category.LDAP": {
-    "message": "LDAP",
-    "description": "The label for category LDAP in sidebar serverAdmin"
+    "message": "LDAP"
   },
   "sidebar.serverAdmin.category.Tools and Utilities": {
-    "message": "ツールとユーティリティ",
-    "description": "The label for category Tools and Utilities in sidebar serverAdmin"
+    "message": "ツールとユーティリティ"
   },
   "sidebar.chdb.category.chDB": {
-    "message": "chDB",
-    "description": "The label for category chDB in sidebar chdb"
+    "message": "chDB"
   },
   "sidebar.chdb.category.Language Integrations": {
-    "message": "言語統合",
-    "description": "The label for category Language Integrations in sidebar chdb"
+    "message": "言語統合"
   },
   "sidebar.chdb.category.Developer Guides": {
-    "message": "開発者ガイド",
-    "description": "The label for category Developer Guides in sidebar chdb"
+    "message": "開発者ガイド"
   },
   "sidebar.chdb.category.Technical Reference": {
-    "message": "技術リファレンス",
-    "description": "The label for category Technical Reference in sidebar chdb"
+    "message": "技術リファレンス"
   },
   "sidebar.chdb.category.Integrations": {
-    "message": "統合",
-    "description": "The label for category Integrations in sidebar chdb"
+    "message": "統合"
   },
   "sidebar.chdb.category.About chDB": {
-    "message": "chDBについて",
-    "description": "The label for category About chDB in sidebar chdb"
+    "message": "chDBについて"
   },
   "sidebar.chdb.link.JupySQL": {
-    "message": "JupySQL",
-    "description": "The label for link JupySQL in sidebar chdb, linking to https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
+    "message": "JupySQL"
   },
   "sidebar.chdb.link.chdb-lambda": {
-    "message": "chdb-lambda",
-    "description": "The label for link chdb-lambda in sidebar chdb, linking to https://github.com/chdb-io/chdb-lambda"
+    "message": "chdb-lambda"
   },
   "sidebar.chdb.link.chdb-cli": {
-    "message": "chdb-cli",
-    "description": "The label for link chdb-cli in sidebar chdb, linking to https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
+    "message": "chdb-cli"
   },
   "sidebar.chdb.link.Discord": {
-    "message": "Discord",
-    "description": "The label for link Discord in sidebar chdb, linking to https://discord.gg/Njw5YXSPPc"
+    "message": "Discord"
   },
   "sidebar.chdb.link.Birth of chDB": {
-    "message": "chDBの誕生",
-    "description": "The label for link Birth of chDB in sidebar chdb, linking to https://auxten.com/the-birth-of-chdb/"
+    "message": "chDBの誕生"
   },
   "sidebar.chdb.link.Joining ClickHouse, Inc.": {
-    "message": "ClickHouse, Inc.への参加",
-    "description": "The label for link Joining ClickHouse, Inc. in sidebar chdb, linking to https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
+    "message": "ClickHouse, Inc.への参加"
   },
   "sidebar.chdb.link.Team and Contributors": {
-    "message": "チームと貢献者",
-    "description": "The label for link Team and Contributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
+    "message": "チームと貢献者"
   },
-  "sidebar.russia.category.Engines": {
-    "message": "エンジン",
-    "description": "The label for category Engines in sidebar russia"
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "始める"
   },
-  "sidebar.russia.category.Engines.link.generated-index.title": {
-    "message": "エンジン",
-    "description": "The generated-index page title for category Engines in sidebar russia"
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド"
   },
-  "sidebar.russia.category.Движки таблиц": {
-    "message": "テーブルエンジン",
-    "description": "The label for category Движки таблиц in sidebar russia"
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "データ管理"
   },
-  "sidebar.russia.category.MergeTree Family": {
-    "message": "MergeTreeファミリー",
-    "description": "The label for category MergeTree Family in sidebar russia"
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "サーバー管理"
   },
-  "sidebar.russia.category.семейство Log": {
-    "message": "ログファミリー",
-    "description": "The label for category семействο Log in sidebar russia"
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス"
   },
-  "sidebar.russia.category.Движки таблиц для интеграции": {
-    "message": "統合用テーブルエンジン",
-    "description": "The label for category Движки таблиц для интеграции in sidebar russia"
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "統合"
   },
-  "sidebar.russia.category.Специальные движки таблиц": {
-    "message": "特別なテーブルエンジン",
-    "description": "The label for category Специальные движки таблиц in sidebar russia"
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
   },
-  "sidebar.russia.category.Движки баз данных": {
-    "message": "データベースエンジン",
-    "description": "The label for category Движки баз данных in sidebar russia"
+  "sidebar.dropdownCategories.category.About": {
+    "message": "について"
   },
-  "sidebar.russia.category.Введение": {
-    "message": "紹介",
-    "description": "The label for category Введение in sidebar russia"
+  "sidebar.dropdownCategories.link.Introduction": {
+    "message": "イントロダクション"
   },
-  "sidebar.russia.category.Начало работы": {
-    "message": "始める",
-    "description": "The label for category Начало работы in sidebar russia"
+  "sidebar.dropdownCategories.link.Starter Guides": {
+    "message": "スターターガイド"
   },
-  "sidebar.russia.category.Тестовые массивы данных": {
-    "message": "データのテスト配列",
-    "description": "The label for category Тестовые массивы данных in sidebar russia"
+  "sidebar.dropdownCategories.link.Concepts": {
+    "message": "概念"
   },
-  "sidebar.russia.category.Интерфейсы": {
-    "message": "インターフェース",
-    "description": "The label for category Интерфейсы in sidebar russia"
+  "sidebar.dropdownCategories.link.Migration Guides": {
+    "message": "移行ガイド"
   },
-  "sidebar.russia.category.Внешние интерфейсы": {
-    "message": "外部インターフェース",
-    "description": "The label for category Внешние интерфейсы in sidebar russia"
+  "sidebar.dropdownCategories.link.Use Case Guides": {
+    "message": "ユースケースガイド"
   },
-  "sidebar.russia.category.Справа по SQL": {
-    "message": "SQLによる参照",
-    "description": "The label for category Справа по SQL in sidebar russia"
+  "sidebar.dropdownCategories.link.Example datasets": {
+    "message": "サンプルデータセット"
   },
-  "sidebar.russia.category.Выражения": {
-    "message": "式",
-    "description": "The label for category Выражения in sidebar russia"
+  "sidebar.dropdownCategories.link.Get Started": {
+    "message": "始める"
   },
-  "sidebar.russia.category.SELECT": {
-    "message": "SELECT",
-    "description": "The label for category SELECT in sidebar russia"
+  "sidebar.dropdownCategories.link.Managing Cloud": {
+    "message": "クラウド管理"
   },
-  "sidebar.russia.category.CREATE": {
-    "message": "CREATE",
-    "description": "The label for category CREATE in sidebar russia"
+  "sidebar.dropdownCategories.link.Cloud API": {
+    "message": "クラウドAPI"
   },
-  "sidebar.russia.category.ALTER": {
-    "message": "ALTER",
-    "description": "The label for category ALTER in sidebar russia"
+  "sidebar.dropdownCategories.link.Cloud Reference": {
+    "message": "クラウドリファレンス"
   },
-  "sidebar.russia.category.Функции": {
-    "message": "関数",
-    "description": "The label for category Функции in sidebar russia"
+  "sidebar.dropdownCategories.link.Best Practices": {
+    "message": "ベストプラクティス"
   },
-  "sidebar.russia.category.Гео-данные": {
-    "message": "地理データ",
-    "description": "The label for category Гео-данные in sidebar russia"
+  "sidebar.dropdownCategories.link.Security": {
+    "message": "セキュリティ"
   },
-  "sidebar.russia.category.Агрегатные функции": {
-    "message": "集約関数",
-    "description": "The label for category Агрегатные функции in sidebar russia"
+  "sidebar.dropdownCategories.link.Migrating to Cloud": {
+    "message": "クラウドへの移行"
   },
-  "sidebar.russia.category.Специальные функции": {
-    "message": "特別な機能",
-    "description": "The label for category Специальные функции in sidebar russia"
+  "sidebar.dropdownCategories.link.Core Data Concepts": {
+    "message": "コアデータ概念"
   },
-  "sidebar.russia.category.Остальные функции": {
-    "message": "その他の機能",
-    "description": "The label for category Остальные функции in sidebar russia"
+  "sidebar.dropdownCategories.link.Updating Data": {
+    "message": "データの更新"
   },
-  "sidebar.russia.category.Частые вопросы": {
-    "message": "よくある質問",
-    "description": "The label for category Частые вопросы in sidebar russia"
+  "sidebar.dropdownCategories.link.Deleting data": {
+    "message": "データの削除"
   },
-  "sidebar.russia.category.Выводы": {
-    "message": "結論",
-    "description": "The label for category Выводы in sidebar russia"
+  "sidebar.dropdownCategories.link.Data Modeling": {
+    "message": "データモデリング"
   },
-  "sidebar.russia.category.Оптимизация производительности": {
-    "message": "パフォーマンスの最適化",
-    "description": "The label for category Оптимизация производительности in sidebar russia"
+  "sidebar.dropdownCategories.link.Performance and Optimizations": {
+    "message": "パフォーマンスと最適化"
   },
-  "sidebar.russia.category.Инструкции": {
-    "message": "手順",
-    "description": "The label for category Инструкции in sidebar russia"
+  "sidebar.dropdownCategories.link.Deployments and Scaling": {
+    "message": "展開とスケーリング"
   },
-  "sidebar.russia.category.Инструкции для разработчиков": {
-    "message": "開発者向け手順",
-    "description": "The label for category Инструкции для разработчиков in sidebar russia"
+  "sidebar.dropdownCategories.link.Security and Authentication": {
+    "message": "セキュリティと認証"
   },
-  "sidebar.russia.category.Значение": {
-    "message": "概念",
-    "description": "The label for category Значение in sidebar russia"
+  "sidebar.dropdownCategories.link.Settings": {
+    "message": "設定"
   },
-  "sidebar.russia.category.Комментарии": {
-    "message": "コメント",
-    "description": "The label for category Комментарии in sidebar russia"
+  "sidebar.dropdownCategories.link.Tools and Utilities": {
+    "message": "ツールとユーティリティ"
   },
-  "sidebar.russia.category.Отладка": {
-    "message": "デバッグ",
-    "description": "The label for category Отладка in sidebar russia"
+  "sidebar.dropdownCategories.link.System Tables": {
+    "message": "システムテーブル"
   },
-  "sidebar.russia.category.Значимость": {
-    "message": "重要性",
-    "description": "The label for category Значимость in sidebar russia"
+  "sidebar.dropdownCategories.link.Functions": {
+    "message": "関数"
   },
-  "sidebar.russia.category.Patch": {
-    "message": "パッチ",
-    "description": "The label for category Patch in sidebar russia"
+  "sidebar.dropdownCategories.link.Engines": {
+    "message": "エンジン"
   },
-  "sidebar.russia.category.Bug Fix": {
-    "message": "バグ修正",
-    "description": "The label for category Bug Fix in sidebar russia"
+  "sidebar.dropdownCategories.link.Other Features": {
+    "message": "その他の機能"
+  },
+  "sidebar.dropdownCategories.link.All Integrations": {
+    "message": "すべての統合"
+  },
+  "sidebar.dropdownCategories.link.Language Clients": {
+    "message": "言語クライアント"
+  },
+  "sidebar.dropdownCategories.link.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
+    "message": "ネイティブクライアントとインターフェース"
+  },
+  "sidebar.dropdownCategories.link.Data Sources": {
+    "message": "データソース"
+  },
+  "sidebar.dropdownCategories.link.Data Visualization": {
+    "message": "データ視覚化"
+  },
+  "sidebar.dropdownCategories.link.Data Formats": {
+    "message": "データフォーマット"
+  },
+  "sidebar.dropdownCategories.link.Data Ingestion": {
+    "message": "データ取り込み"
+  },
+  "sidebar.dropdownCategories.link.Learn chDB": {
+    "message": "chDBを学ぶ"
+  },
+  "sidebar.dropdownCategories.link.Language Integrations": {
+    "message": "言語統合"
+  },
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "ガイド"
+  },
+  "sidebar.dropdownCategories.link.Adopters": {
+    "message": "採用者"
+  },
+  "sidebar.dropdownCategories.link.Changelogs": {
+    "message": "変更履歴"
+  },
+  "sidebar.dropdownCategories.link.Support": {
+    "message": "サポート"
+  },
+  "sidebar.dropdownCategories.link.Development and Contributing": {
+    "message": "開発と貢献"
   }
 }

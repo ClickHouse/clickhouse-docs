@@ -1,6 +1,11 @@
 @use "colors";
 @use "default";
 @use "home";
+@use "./breakpoints.scss" as breakpoints;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* KaTeX renders the input twice by default, once in HTML and one in MathML */
 .katex-html {
@@ -10,6 +15,29 @@
 html[data-theme="dark"] {
   background: var(--click-color-background);
   background-attachment: fixed;
+}
+
+/* This is a fix for the issue where paragraphs have 1rem margin bottom but
+look strange when there is a code block after the paragraph
+*/
+p {
+  margin-bottom: 0rem;
+}
+
+/* We only want to have a gap between successive paragraphs elements,
+not between paragraphs and other elements like code blocks
+*/
+p + * {
+  margin-top: 1rem;
+}
+
+/*
+Fix for the issue where there is no gap between a paragraph which follows
+a list
+ */
+ul + p,
+ol + p {
+  margin-top: 1rem;
 }
 
 body {
@@ -68,7 +96,6 @@ body {
 }
 /* Rich's attempt to add scrollbar to nav */
 .sidebar_mhZE {
-  padding-bottom: 4rem;
   height: 100% !important;
 }
 /* Make the navbar move with the page */
@@ -108,6 +135,7 @@ body {
 
 [data-theme='dark'] .theme-admonition-tip.alert--success .alert-content  {
   background-color: rgba(255,255,255,0.1);
+
 }
 
 [data-theme='dark'] .DocSearch-Hit-source {
@@ -204,7 +232,14 @@ article[itemprop="blogPost"] {
 }
 
 .adopters-table {
-  width: 1150px;
+  overflow-x: auto;
+  width: 100%;
+
+  th {
+    padding: 0;
+    padding-left: 0.7rem;
+    text-align: left;
+  }
 }
 
 /* the buttons on the hompage stack on cell phones - this seems to fix it */
@@ -224,20 +259,64 @@ html {
   font-size: 16px;
 }
 
+/* === Base <code> styles === */
 code {
   font-weight: bold;
-  background-color: var(--ifm-code-background) !important;
+  font-size: 0.95em;
+  border-radius: 0;
+  padding: 0.15em 0.35em !important;
   scrollbar-width: thin;
   scrollbar-color: rgb(99, 99, 99) rgb(41, 45, 62);
-  span {
-    font-style: normal !important;
-  }
 }
 
-/* Style individual tokens */
+/* Normalize inner span styles */
+code span {
+  font-style: normal !important;
+}
+
+/* === Theme-specific inline <code> backgrounds === */
+html[data-theme='dark'] pre,
+html[data-theme='dark'] pre code,
+html[data-theme='dark'] code {
+  background: none !important;
+  background-color: #323131 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  border: none !important;
+  font-weight: normal;
+  border-radius: 3px !important;
+}
+
+html[data-theme='light'] code {
+  font-weight: normal;
+  background-color: #f6f5f5 !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 3px !important;
+}
+
+/* === Block code (pre) === */
+pre {
+  padding: 1em 1em 1em 1em !important;
+  border-radius: 0 !important;
+}
+
+html[data-theme='light'] pre,
+html[data-theme='light'] pre code {
+  background-color: #f5f5f5 !important;
+  color: #000 !important;
+}
+
+html[data-theme='dark'] pre,
+html[data-theme='dark'] pre code {
+  background-color: #282828 !important;
+  color: var(--prism-color);
+}
+
+/* === Prism token styles (Dark Theme) === */
 code .token.keyword {
-  font-style: italic !important; /* Italicize keywords */
-  color: rgb(86, 156, 214) !important; /* Blue for keywords */
+  font-style: italic !important;
+  color: rgb(86, 156, 214) !important;
 }
 
 code .token.plain {
@@ -245,26 +324,61 @@ code .token.plain {
 }
 
 code .token.punctuation {
-  color: rgb(199, 146, 234) !important; /* Match punctuation color */
+  color: rgb(199, 146, 234) !important;
 }
 
 code .token.operator {
-  color: rgb(137, 221, 255) !important; /* Light blue for operators */
+  color: rgb(137, 221, 255) !important;
 }
 
 code .token.string {
-  color: rgb(206, 145, 120) !important; /* Orange for strings */
+  color: rgb(206, 145, 120) !important;
 }
 
 code .token.number {
-  color: rgb(181, 206, 168) !important; /* Green for numbers */
+  color: rgb(181, 206, 168) !important;
 }
 
 code .token.function {
-  color: rgb(220, 220, 170) !important; /* Bright blue for functions */
+  color: rgb(220, 220, 170) !important;
 }
 
-/* Ensure keywords are not italic */
+/* === Prism token styles (Light Theme) === */
+html[data-theme='light'] code .token.keyword {
+  font-style: italic !important;
+  color: rgb(0, 92, 154) !important;
+}
+
+html[data-theme='light'] code .token.plain {
+  color: rgb(36, 41, 46) !important;
+}
+
+html[data-theme='light'] code .token.identifier {
+  color: rgb(0, 102, 204) !important;
+}
+
+html[data-theme='light'] code .token.punctuation {
+  color: rgb(125, 86, 148) !important;
+}
+
+html[data-theme='light'] code .token.operator {
+  color: rgb(0, 112, 138) !important;
+}
+
+html[data-theme='light'] code .token.string {
+  color: rgb(163, 21, 21) !important;
+}
+
+html[data-theme='light'] code .token.number {
+  color: rgb(34, 134, 58) !important;
+}
+
+html[data-theme='light'] code .token.function {
+  color: rgb(88, 92, 63) !important;
+}
+
+/* Ensure keywords are not italic if nested */
+html[data-theme='light'] code span.token.keyword,
 code span.token.keyword {
   font-style: normal !important;
 }
@@ -378,6 +492,16 @@ code span.token.keyword {
   padding-left: 0;
 }
 
+@media (max-width: #{breakpoints.$mobile-breakpoint}) {
+  .theme-doc-sidebar-container,
+  .theme-doc-sidebar-container *,
+  .docsMobileMenuItems,
+  .menu__list {
+    display: block !important;
+    visibility: visible !important;
+  }
+}
+
 li.theme-doc-sidebar-item-category-level-1 {
   .menu__list-item-collapsible {
     font-weight: 700;
@@ -409,15 +533,15 @@ li.theme-doc-sidebar-item-category-level-1 {
 }
 
 .theme-doc-sidebar-item-link-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-5 {
-  padding-left: 1.9rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-link-level-6 {
-  padding-left: 2.2rem;
+  padding-left: 1.2rem;
 }
 
 .theme-doc-sidebar-item-category-level-6 {
@@ -475,18 +599,6 @@ prism-code {
 }
 
 /* Add a drop shadow to images in the user guides and docs */
-img {
-  width: 100%;
-  max-width: 1000px;
-  /* padding looks bad in dark mode as it adds white space around images that have dark backgrounds */
-  /*padding-bottom: 0.2rem;
-  padding-top: 0.5rem;*/
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  background: var(--clickhouse-img-background-color);
-  box-shadow: 0px 1px 8px -1px rgba(21, 21, 21, 0.20);
-}
 
 .eighty-percent {
   max-width: 80%;
@@ -591,27 +703,25 @@ img {
   min-height: auto;
 }
 
-@media (min-width: 1440px) {
-  .container {
-    max-width: 95%;
-    margin-left: 1rem;
+.blog-wrapper .main-wrapper .container {
+  margin-top: 4rem !important;
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .blog-wrapper .main-wrapper .container {
+    margin-top: 8rem !important;
   }
 }
 
-@media (max-width: 1439px) {
-  .container {
-    margin-left: 1rem;
-  }
-}
-
-#__docusaurus {
-  height: 100%;
+.container {
+  max-width: 100%;
 }
 
 .navbar {
   flex: 0 0 var(--ifm-navbar-height);
   background: var(--click-color-background);
   background-attachment: fixed;
+  height: auto;
 }
 
 .search-result-match {
@@ -891,7 +1001,7 @@ img {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: var(--laptop-breakpoint)) {
   .dropdown {
     padding-right: 2px;
     padding-left: 20px;
@@ -942,7 +1052,7 @@ img {
 
   details {
     h1, h2, h3 {
-    color: var(--click-color-text-inverse);
+    color: var(--ifm-font-color-base);
     }
   }
 
@@ -950,7 +1060,6 @@ img {
 
 .main-content-wrapper {
   height: 100%;
-  margin-top: 2rem;
 
   .row {
     height: 100%;
@@ -1034,14 +1143,36 @@ button.DocSearch {
   display: block;
 }
 
+.theme-admonition-warning {
+  .alert-icon {
+    background: var(--click-color-warning-text) !important;
+  }
+
+  .alert-content {
+    background: var(--click-color-warning-background) !important;
+
+    code {
+      background: #bfbfbf !important;
+    }
+  }
+}
+
+[data-theme='dark'] .theme-admonition-warning {
+    color: black !important;
+
+   a {
+     color: black !important;
+   }
+}
+
 .theme-admonition-tip {
   &.alert--warning {
     .alert-icon {
-      background: var(--click-color-warning-text);
+      background: var(--click-color-warning-text) !important;
     }
 
     .alert-content {
-      background: var(--click-color-warning-background);
+      background: var(--click-color-warning-background) !important;
     }
   }
 
@@ -1285,3 +1416,140 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   margin-bottom: 1rem !important;
 }
 
+/* Used for ordered lists within docs pages */
+.docs-ordered-list {
+  padding-left: 40px;
+  margin-bottom: 15px;
+  list-style: decimal outside;
+  li p {
+    margin: 10px;
+  }
+}
+
+/*announcement bar*/
+.announcementBar_s0pr {
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  left: 0;
+  top: 102px;
+}
+
+[data-theme='dark'] .announcementBar_s0pr {
+  color: white !important;
+  background-color: var(--ifm-background-color) !important;
+
+  .clean-btn {
+    color: white !important;
+  }
+}
+
+[data-theme='light'] .announcementBar_s0pr {
+  color: black !important;
+  background-color: white !important;
+
+  .clean-btn {
+    color: black !important;
+  }
+}
+
+/* Install guide */
+.installContainer {
+  display: flex;
+}
+
+@media (max-width: breakpoints.$laptop-breakpoint) {
+  .installContainer {
+    flex-wrap: wrap;
+  }
+  .install-card {
+    margin: 0;
+  }
+}
+
+.install-card {
+  margin: 0em 0.5em;
+}
+
+.prod-or-quick-install {
+  display: flex;
+  margin: 0.5em 0em;
+}
+
+.installInstructions {
+  margin-top: 2em;
+}
+
+.DocSearch-Cancel {
+  color: var(--docsearch-text-color) !important;
+}
+
+.tooltip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #aaa;
+  outline: none; /* remove default outline, but keep focus styling if needed */
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: max-content;
+  max-width: 280px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 4px;
+
+  position: absolute;
+  z-index: 100;
+  top: 125%;       /* place tooltip below the term */
+  left: 50%;
+  transform: translateX(-50%);
+
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  white-space: pre-wrap;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  pointer-events: none; /* tooltip itself should not capture pointer */
+}
+
+.tooltipText.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-link {
+  text-decoration: underline dotted;
+  color: inherit; /* keep text color */
+}
+
+.tooltip-link:hover,
+.tooltip-link:focus {
+  text-decoration: underline solid;
+  outline: none;
+}
+
+.custom-ul,
+.custom-ol {
+  //padding-inline-start: 2rem; // if we want to indent the lists
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
+.custom-li {
+  padding-inline-start: 0.5rem;
+}
+
+.vertical-stepper .custom-ul
+.vertical-stepper .custom-ol {
+  padding-block-end: 1.5rem;
+}
+
+.vertical-stepper > *:last-child {
+  margin-bottom: 0;
+}
+
+.code-viewer {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}

@@ -1,6 +1,10 @@
 ---
 slug: /native-protocol/basics
 sidebar_position: 1
+title: 'Basics'
+description: 'Native protocol basics'
+keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
+doc_type: 'guide'
 ---
 
 # Basics
@@ -62,7 +66,7 @@ r := bytes.NewReader([]byte{
 // Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
-	panic(err)
+        panic(err)
 }
 
 // Check n to prevent OOM or runtime exception in make().
@@ -73,7 +77,7 @@ if n > maxSize || n < 0 {
 
 buf := make([]byte, n)
 if _, err := io.ReadFull(r, buf); err != nil {
-	panic(err)
+        panic(err)
 }
 
 fmt.Println(string(buf))

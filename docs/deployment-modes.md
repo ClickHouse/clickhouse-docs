@@ -1,8 +1,18 @@
 ---
-sidebar_label: Deployment modes
-description: "ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs."
-title: Deployment modes
+slug: /deployment-modes
+sidebar_label: 'Deployment modes'
+description: 'ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs.'
+title: 'Deployment modes'
+keywords: ['Deployment Modes', 'chDB']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
+import chServer from '@site/static/images/deployment-modes/ch-server.png';
+import chCloud from '@site/static/images/deployment-modes/ch-cloud.png';
+import chLocal from '@site/static/images/deployment-modes/ch-local.png';
+import chDB from '@site/static/images/deployment-modes/chdb.png';
+import Image from '@theme/IdealImage';
 
 ClickHouse is a versatile database system that can be deployed in several different ways depending on your needs. At its core, all deployment options **use the same powerful ClickHouse database engine** – what differs is how you interact with it and where it runs.
 
@@ -14,30 +24,29 @@ This guide explores the four main ways to deploy and use ClickHouse:
 * clickhouse-local for command-line data processing
 * chDB for embedding ClickHouse directly in applications
 
-Each deployment mode has its own strengths and ideal use cases, which we'll explore in detail below. 
+Each deployment mode has its own strengths and ideal use cases, which we'll explore in detail below.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## ClickHouse Server {#clickhouse-server}
 
 ClickHouse Server represents the traditional client/server architecture and is ideal for production deployments. This deployment mode provides the full OLAP database capabilities with high throughput and low latency queries that ClickHouse is known for.
 
-<img src={require('./images/deployment-modes/ch-server.png').default} alt='ClickHouse Cloud' class='image' style={{width: '50%'}} />
+<Image img={chServer} alt="ClickHouse Server" size="sm"/>
+
 <br/>
 
 When it comes to deployment flexibility, ClickHouse Server can be installed on your local machine for development or testing, deployed to major cloud providers like AWS, GCP, or Azure for cloud-based operations, or set up on your own on-premises hardware. For larger scale operations, it can be configured as a distributed cluster to handle increased load and provide high availability.
 
-This deployment mode is the go-to choice for production environments where reliability, performance, and full feature access are crucial. 
+This deployment mode is the go-to choice for production environments where reliability, performance, and full feature access are crucial.
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
 [ClickHouse Cloud](/cloud/overview) is a fully managed version of ClickHouse that removes the operational overhead of running your own deployment. While it maintains all the core capabilities of ClickHouse Server, it enhances the experience with additional features designed to streamline development and operations.
 
-<img src={require('./images/deployment-modes/ch-cloud.png').default} alt='ClickHouse Cloud' class='image' style={{width: '50%'}} />
-<br/>
+<Image img={chCloud} alt="ClickHouse Cloud" size="sm"/>
 
-
-A key advantage of ClickHouse Cloud is its integrated tooling. [ClickPipes](/cloud/get-started/cloud-quick-start#clickpipes) provides a robust data ingestion framework, allowing you to easily connect and stream data from various sources without managing complex ETL pipelines. The platform also offers a dedicated [querying API](/cloud/get-started/query-endpoints), making it significantly easier to build applications.
+A key advantage of ClickHouse Cloud is its integrated tooling. [ClickPipes](/getting-started/quick-start/cloud/#clickpipes) provides a robust data ingestion framework, allowing you to easily connect and stream data from various sources without managing complex ETL pipelines. The platform also offers a dedicated [querying API](/cloud/get-started/query-endpoints), making it significantly easier to build applications.
 
 The SQL Console in ClickHouse Cloud includes a powerful [dashboarding](/cloud/manage/dashboards) feature that lets you transform your queries into interactive visualizations. You can create and share dashboards built from your saved queries, with the ability to add interactive elements through query parameters. These dashboards can be made dynamic using global filters, allowing users to explore data through customizable views – though it's important to note that users will need at least read access to the underlying saved queries to view the visualizations.
 
@@ -49,8 +58,7 @@ The managed nature of the service means you don't need to worry about updates, b
 
 [clickhouse-local](/operations/utilities/clickhouse-local) is a powerful command-line tool that provides the complete functionality of ClickHouse in a standalone executable. It's essentially the same database as ClickHouse Server, but packaged in a way that lets you harness all of ClickHouse's capabilities directly from the command line without running a server instance.
 
-<img src={require('./images/deployment-modes/ch-local.png').default} alt='ClickHouse Cloud' class='image' style={{width: '50%'}} />
-<br/>
+<Image img={chLocal} alt="clickHouse-local" size="sm"/>
 
 This tool excels at ad-hoc data analysis, particularly when working with local files or data stored in cloud storage services. You can directly query files in various formats (CSV, JSON, Parquet, etc.) using ClickHouse's SQL dialect, making it an excellent choice for quick data exploration or one-off analysis tasks.
 
@@ -60,11 +68,9 @@ The combination of remote table functions and access to the local file system ma
 
 ## chDB {#chdb}
 
-[chDB](/chdb) is ClickHouse embedded as an in-process database engine,, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
+[chDB](/chdb) is ClickHouse embedded as an in-process database engine, with Python being the primary implementation, though it's also available for Go, Rust, NodeJS, and Bun. This deployment option brings ClickHouse's powerful OLAP capabilities directly into your application's process, eliminating the need for a separate database installation.
 
-<img src={require('./images/deployment-modes/chdb.png').default} alt='ClickHouse Cloud' class='image' style={{width: '50%'}} />
-<br/>
-
+<Image img={chDB} alt="chDB - Embedded ClickHouse" size="sm"/>
 
 chDB provides seamless integration with your application's ecosystem. In Python, for example, it's optimized to work efficiently with common data science tools like Pandas and Arrow, minimizing data copying overhead through Python memoryview. This makes it particularly valuable for data scientists and analysts who want to leverage ClickHouse's query performance within their existing workflows.
 

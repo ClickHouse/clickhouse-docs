@@ -1,7 +1,9 @@
 ---
 slug: /operations/utilities/static-files-disk-uploader
-title: clickhouse-static-files-disk-uploader
-keywords: [clickhouse-static-files-disk-uploader, utility, disk, uploader]
+title: 'clickhouse-static-files-disk-uploader'
+keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
+description: 'Provides a description of the clickhouse-static-files-disk-uploader utility'
+doc_type: 'guide'
 ---
 
 # clickhouse-static-files-disk-uploader

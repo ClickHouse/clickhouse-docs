@@ -1,27 +1,28 @@
 ---
-title: Java
-keywords: [clickhouse, java, jdbc, client, integrate, r2dbc]
-description: Options for connecting to ClickHouse from Java
+title: 'Java'
+keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
+description: 'Options for connecting to ClickHouse from Java'
 slug: /integrations/java
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Java Clients Overview
+# Java clients overview
 
-- [Client 0.8+](./client-v2.md)
-- [JDBC 0.8+](./jdbc-v2.md)
+- [Client 0.8+](./client/client.mdx)
+- [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [R2DBC Driver](./r2dbc.md)
 
-## ClickHouse Client {#clickhouse-client}
+## ClickHouse client {#clickhouse-client}
 
 Java client is a library implementing own API that abstracts details of network communications with ClickHouse server. Currently HTTP Interface is supported only. The library provide utilities to work with different ClickHouse formats and other related functions.
 
 Java Client was developed far back in 2015. Its codebase became very hard to maintain, API is confusing, it is hard to optimize it further. So we have refactored it in 2024 into a new component  `client-v2`. It has clear API, lighter codebase and more performance improvements, better ClickHouse formats support (RowBinary & Native mainly). JDBC will use this client in near feature.  
 
-### Supported Data Types {#supported-data-types}
+### Supported data types {#supported-data-types}
 
 |**Data Type**          |**Client V2 Support**|**Client V1 Support**|
 |-----------------------|---------------------|---------------------|
@@ -72,6 +73,9 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
 |AggregateFunction      |✗                    |✔                    |
+|Variant                |✔                    |✗                    |
+|Dynamic                |✔                    |✗                    |
+|JSON                   |✔                    |✗                    |
 
 [ClickHouse Data Types](/sql-reference/data-types)
 
@@ -107,8 +111,7 @@ Table of features of the clients:
 | SSL Client Authentication                    |✔       |✔      | |
 | Session timezone                             |✔       |✔      | |
 
-
-JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/java/jdbc-driver#features).
+JDBC Drive inherits same features as underlying client implementation. Other JDBC features are listed on its [page](/integrations/language-clients/java/jdbc).
 
 ### Compatibility {#compatibility}
 
@@ -147,7 +150,7 @@ For example, if you are using Maven you could add the following dependency to yo
 </dependencies>
 ```
 
-#### Configuring Logging {#configuring-logging}
+#### Configuring logging {#configuring-logging}
 
 This is going to depend on the logging framework you are using. For example, if you are using `Logback`, you could configure logging in a file called `logback.xml`:
 

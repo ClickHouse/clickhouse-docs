@@ -1,17 +1,33 @@
 ---
-sidebar_label: QuickSight
+sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
-keywords: [clickhouse, aws, amazon, QuickSight, mysql, connect, integrate, ui]
-description: Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).
+keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
+description: 'Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).'
+title: 'QuickSight'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
+import Image from '@theme/IdealImage';
+import quicksight_01 from '@site/static/images/integrations/data-visualization/quicksight_01.png';
+import quicksight_02 from '@site/static/images/integrations/data-visualization/quicksight_02.png';
+import quicksight_03 from '@site/static/images/integrations/data-visualization/quicksight_03.png';
+import quicksight_04 from '@site/static/images/integrations/data-visualization/quicksight_04.png';
+import quicksight_05 from '@site/static/images/integrations/data-visualization/quicksight_05.png';
+import quicksight_06 from '@site/static/images/integrations/data-visualization/quicksight_06.png';
+import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # QuickSight
 
+<ClickHouseSupportedBadge/>
+
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 
-## On-premise ClickHouse Server Setup {#on-premise-clickhouse-server-setup}
+## On-premise ClickHouse server setup {#on-premise-clickhouse-server-setup}
 
 Please refer to [the official documentation](/interfaces/mysql) on how to set up a ClickHouse server with enabled MySQL interface.
 
@@ -75,11 +91,11 @@ QuickSight requires several additional settings in the MySQL user's profile.
 
 However, it is recommended to assign it to a different profile that can be used by your MySQL user instead of the default one.
 
-Finally, configure the Clickhouse Server to listen on the desired IP address(es). 
+Finally, configure the Clickhouse Server to listen on the desired IP address(es).
 In `config.xml`, uncomment out the following to listen on all addresses:
 
 ```bash
-<listen_host>::</listen_host> 
+<listen_host>::</listen_host>
 ```
 
 If you have the `mysql` binary available, you can test the connection from the command line.
@@ -105,43 +121,43 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## Connecting QuickSight to ClickHouse {#connecting-quicksight-to-clickhouse}
 
-First of all, go to https://quicksight.aws.amazon.com, navigate to Datasets and click "New dataset":
+First of all, go to [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), navigate to Datasets and click "New dataset":
 
-<img src={require('./images/quicksight_01.png').default} class="image" alt="Creating a new dataset" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_01} alt="Amazon QuickSight dashboard showing the New dataset button in Datasets section" border />
 <br/>
 
 Search for the official MySQL connector bundled with QuickSight (named just **MySQL**):
 
-<img src={require('./images/quicksight_02.png').default} class="image" alt="MySQL connector search" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_02} alt="QuickSight data source selection screen with MySQL highlighted in search results" border />
 <br/>
 
 Specify your connection details. Please note that MySQL interface port is 9004 by default,
 and it might be different depending on your server configuration.
 
-<img src={require('./images/quicksight_03.png').default} class="image" alt="Specifying the connection details" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_03} alt="QuickSight MySQL connection configuration form with hostname, port, database and credential fields" border />
 <br/>
 
 Now, you have two options on how to fetch the data from ClickHouse. First, you could select a table from the list:
 
-<img src={require('./images/quicksight_04.png').default} class="image" alt="Selecting a table from the list" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_04} alt="QuickSight table selection interface showing database tables available from ClickHouse" border />
 <br/>
 
 Alternatively, you could specify a custom SQL to fetch your data:
 
-<img src={require('./images/quicksight_05.png').default} class="image" alt="Using custom SQL to fetch the data" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_05} alt="QuickSight custom SQL query editor for fetching data from ClickHouse" border />
 <br/>
 
 By clicking "Edit/Preview data", you should be able to see the introspected table structure or adjust your custom SQL, if that's how you decided to access the data:
 
-<img src={require('./images/quicksight_06.png').default} class="image" alt="Viewing the introspected table structure" style={{width: '75%', 'background-color': 'transparent'}}/>
+<Image size="md" img={quicksight_06} alt="QuickSight data preview showing table structure with columns and sample data" border />
 <br/>
 
 Make sure you have "Direct Query" mode selected in the bottom left corner of the UI:
 
-<img src={require('./images/quicksight_07.png').default} class="image" alt="Choosing the Direct Query mode" style={{width: '50%', 'background-color': 'transparent'}}/>  
-<br/>                                                                                                      
+<Image size="md" img={quicksight_07} alt="QuickSight interface with Direct Query mode option highlighted in bottom corner" border />
+<br/>
 
-Now you can proceed with publishing your dataset and creating a new visualization! 
+Now you can proceed with publishing your dataset and creating a new visualization!
 
 ## Known limitations {#known-limitations}
 

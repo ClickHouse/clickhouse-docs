@@ -1,11 +1,18 @@
 ---
 sidebar_position: 1
-sidebar_label: Separation of Storage and Compute
+sidebar_label: 'Separation of storage and compute'
 slug: /guides/separation-storage-compute
+title: 'Separation of Storage and Compute'
+description: 'This guide explores how you can use ClickHouse and S3 to implement an architecture with separated storage and compute.'
+doc_type: 'guide'
+keywords: ['storage', 'compute', 'architecture', 'scalability', 'cloud']
 ---
-import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 
-# Separation of Storage and Compute
+import Image from '@theme/IdealImage';
+import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
+import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
+
+# Separation of storage and compute
 
 ## Overview {#overview}
 
@@ -152,7 +159,7 @@ In the AWS console, if your data was successfully inserted to S3, you should see
 
 If everything worked successfully, you are now using ClickHouse with separated storage and compute!
 
-![S3 bucket example using separation of compute and storage](./images/s3_bucket_example.png)
+<Image img={s3_bucket_example} size="md" alt="S3 bucket example using separation of compute and storage" border/>
 
 ## 3. Implementing replication for fault tolerance (optional) {#3-implementing-replication-for-fault-tolerance-optional}
 
@@ -165,8 +172,7 @@ For fault tolerance, you can use multiple ClickHouse server nodes distributed ac
 Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine. See the following guide for details:
 - [Replicating a single shard across two AWS regions using S3 Object Storage](/integrations/s3#s3-multi-region).
 
-## Further Reading {#further-reading}
+## Further reading {#further-reading}
 
 - [SharedMergeTree table engine](/cloud/reference/shared-merge-tree)
 - [SharedMergeTree announcement blog](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)
-

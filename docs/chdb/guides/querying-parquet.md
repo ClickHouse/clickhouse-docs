@@ -1,9 +1,10 @@
 ---
-title: How to query Parquet files
-sidebar_label: Querying Parquet files
+title: 'How to query Parquet files'
+sidebar_label: 'Querying Parquet files'
 slug: /chdb/guides/querying-parquet
-description: Learn how to query Parquet files with chDB.
-keywords: [chdb, parquet]
+description: 'Learn how to query Parquet files with chDB.'
+keywords: ['chdb', 'parquet']
+doc_type: 'guide'
 ---
 
 A lot of the world's data lives in Amazon S3 buckets.
@@ -48,7 +49,7 @@ But first, let's install `chDB`:
 import chdb
 ```
 
-When querying Parquet files, we can use the [`ParquetMetadata`](/interfaces/formats#parquetmetadata-data-format-parquet-metadata) input format to have it return Parquet metadata rather than the content of the file.
+When querying Parquet files, we can use the [`ParquetMetadata`](/interfaces/formats/ParquetMetadata) input format to have it return Parquet metadata rather than the content of the file.
 Let's use the `DESCRIBE` clause to see the fields returned when we use this format:
 
 ```python
@@ -64,15 +65,15 @@ chdb.query(query, 'TabSeparated')
 ```
 
 ```text
-num_columns	UInt64
-num_rows	UInt64
-num_row_groups	UInt64
-format_version	String
-metadata_size	UInt64
-total_uncompressed_size	UInt64
-total_compressed_size	UInt64
-columns	Array(Tuple(name String, path String, max_definition_level UInt64, max_repetition_level UInt64, physical_type String, logical_type String, compression String, total_uncompressed_size UInt64, total_compressed_size UInt64, space_saved String, encodings Array(String)))
-row_groups	Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
+num_columns     UInt64
+num_rows        UInt64
+num_row_groups  UInt64
+format_version  String
+metadata_size   UInt64
+total_uncompressed_size UInt64
+total_compressed_size   UInt64
+columns Array(Tuple(name String, path String, max_definition_level UInt64, max_repetition_level UInt64, physical_type String, logical_type String, compression String, total_uncompressed_size UInt64, total_compressed_size UInt64, space_saved String, encodings Array(String)))
+row_groups      Array(Tuple(num_columns UInt64, num_rows UInt64, total_uncompressed_size UInt64, total_compressed_size UInt64, columns Array(Tuple(name String, path String, total_compressed_size UInt64, total_uncompressed_size UInt64, have_statistics Bool, statistics Tuple(num_values Nullable(UInt64), null_count Nullable(UInt64), distinct_count Nullable(UInt64), min Nullable(String), max Nullable(String))))))
 ```
 
 Let's have now have a look at the metadata for this file.

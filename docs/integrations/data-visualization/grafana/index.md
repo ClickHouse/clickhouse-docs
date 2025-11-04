@@ -1,12 +1,30 @@
 ---
-sidebar_label: Quick Start
+sidebar_label: 'Quick Start'
 sidebar_position: 1
 slug: /integrations/grafana
-description: Introduction to using ClickHouse with Grafana
+description: 'Introduction to using ClickHouse with Grafana'
+title: 'ClickHouse data source plugin for Grafana'
+show_related_blogs: true
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_visualization'
+  - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
+keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
+import search from '@site/static/images/integrations/data-visualization/grafana/search.png';
+import install from '@site/static/images/integrations/data-visualization/grafana/install.png';
+import add_new_ds from '@site/static/images/integrations/data-visualization/grafana/add_new_ds.png';
+import quick_config from '@site/static/images/integrations/data-visualization/grafana/quick_config.png';
+import valid_ds from '@site/static/images/integrations/data-visualization/grafana/valid_ds.png';
+import Image from '@theme/IdealImage';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # ClickHouse data source plugin for Grafana
+
+<ClickHouseSupportedBadge/>
 
 With Grafana you can explore and share all of your data through dashboards.
 Grafana requires a plugin to connect to ClickHouse, which is easily installed within their UI.
@@ -37,7 +55,7 @@ To configure a read-only user, follow these steps:
 2. Ensure the `readonly` user has enough permission to modify the `max_execution_time` setting required by the underlying [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go).
 3. If you're using a public ClickHouse instance, it is not recommended to set `readonly=2` in the `readonly` profile. Instead, leave `readonly=1` and set the constraint type of `max_execution_time` to [changeable_in_readonly](/operations/settings/constraints-on-settings) to allow modification of this setting.
 
-## 3.  Install the ClickHouse Plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
+## 3.  Install the ClickHouse plugin for Grafana {#3--install-the-clickhouse-plugin-for-grafana}
 
 Before Grafana can connect to ClickHouse, you need to install the appropriate Grafana plugin. Assuming you are logged in to Grafana, follow these steps:
 
@@ -45,21 +63,21 @@ Before Grafana can connect to ClickHouse, you need to install the appropriate Gr
 
 2. Search for **ClickHouse** and click on the signed plugin by Grafana Labs:
 
-    <img src={require('./images/search.png').default} class="image" alt="Select the ClickHouse plugin on the connections page" />
+    <Image size="md" img={search} alt="Select the ClickHouse plugin on the connections page" border />
 
 3. On the next screen, click the **Install** button:
 
-    <img src={require('./images/install.png').default} class="image" alt="Install the ClickHouse plugin" />
+    <Image size="md" img={install} alt="Install the ClickHouse plugin" border />
 
 ## 4. Define a ClickHouse data source {#4-define-a-clickhouse-data-source}
 
 1. Once the installation is complete, click the **Add new data source** button. (You can also add a data source from the **Data sources** tab on the **Connections** page.)
 
-    <img src={require('./images/add_new_ds.png').default} class="image" alt="Create a ClickHouse data source" />
+    <Image size="md" img={add_new_ds} alt="Create a ClickHouse data source" border />
 
 2. Either scroll down and find the **ClickHouse** data source type, or you can search for it in the search bar of the **Add data source** page. Select the **ClickHouse** data source and the following page will appear:
 
-  <img src={require('./images/quick_config.png').default} class="image" alt="Connection configuration page" />
+  <Image size="md" img={quick_config} alt="Connection configuration page" border />
 
 3. Enter your server settings and credentials. The key settings are:
 
@@ -73,9 +91,9 @@ For more settings, check the [plugin configuration](./config.md) documentation.
 
 4. Click the **Save & test** button to verify that Grafana can connect to your ClickHouse service. If successful, you will see a **Data source is working** message:
 
-    <img src={require('./images/valid_ds.png').default} class="image" alt="Select Save & test" />
+    <Image size="md" img={valid_ds} alt="Select Save & test" border />
 
-## 5. Next Steps {#5-next-steps}
+## 5. Next steps {#5-next-steps}
 
 Your data source is now ready to use! Learn more about how to build queries with the [query builder](./query-builder.md).
 
@@ -83,21 +101,10 @@ For more details on configuration, check the [plugin configuration](./config.md)
 
 If you're looking for more information that is not included in these docs, check the [plugin repository on GitHub](https://github.com/grafana/clickhouse-datasource).
 
-## Upgrading Plugin Versions {#upgrading-plugin-versions}
+## Upgrading plugin versions {#upgrading-plugin-versions}
 
 Starting with v4, configurations and queries are able to be upgraded as new versions are released.
 
 Configurations and queries from v3 are migrated to v4 as they are opened. While the old configurations and dashboards will load in v4, the migration is not persisted until they are saved again in the new version. If you notice any issues when opening an old configuration/query, discard your changes and [report the issue on GitHub](https://github.com/grafana/clickhouse-datasource/issues).
 
 The plugin cannot downgrade to previous versions if the configuration/query was created with a newer version.
-
-## Related content {#related-content}
-
-- [Plugin Repository on GitHub](https://github.com/grafana/clickhouse-datasource)
-- Blog: [Visualizing Data with ClickHouse - Part 1 - Grafana](https://clickhouse.com/blog/visualizing-data-with-grafana)
-- Blog: [Visualizing ClickHouse Data with Grafana - Video](https://www.youtube.com/watch?v=Ve-VPDxHgZU)
-- Blog: [ClickHouse Grafana plugin 4.0 - Leveling up SQL Observability](https://clickhouse.com/blog/clickhouse-grafana-plugin-4-0)
-- Blog: [Getting Data Into ClickHouse - Part 3 - Using S3](https://clickhouse.com/blog/getting-data-into-clickhouse-part-3-s3)
-- Blog: [Building an Observability Solution with ClickHouse - Part 1 - Logs](https://clickhouse.com/blog/storing-log-data-in-clickhouse-fluent-bit-vector-open-telemetry)
-- Blog: [Building an Observability Solution with ClickHouse - Part 2 - Traces](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
-- Blog & Webinar: [A Story of Open-source GitHub Activity using ClickHouse + Grafana](https://clickhouse.com/blog/introduction-to-clickhouse-and-grafana-webinar)

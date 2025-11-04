@@ -1,12 +1,14 @@
 ---
 slug: /operations/access-rights
 sidebar_position: 1
-sidebar_label: Users and Roles
-title: Access Control and Account Management
-keywords: [ClickHouse Cloud, Access Control, User Management, RBAC, Security]
+sidebar_label: 'Users and roles'
+title: 'Access Control and Account Management'
+keywords: ['ClickHouse Cloud', 'Access Control', 'User Management', 'RBAC', 'Security']
+description: 'Describes access control and account management in ClickHouse Cloud'
+doc_type: 'guide'
 ---
 
-# Creating Users and Roles in ClickHouse
+# Creating users and roles in ClickHouse
 
 ClickHouse supports access control management based on [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) approach.
 
@@ -28,14 +30,14 @@ You can configure access entities using:
 We recommend using SQL-driven workflow. Both of the configuration methods work simultaneously, so if you use the server configuration files for managing accounts and access rights, you can smoothly switch to SQL-driven workflow.
 
 :::note
-You can’t manage the same access entity by both configuration methods simultaneously.
+You can't manage the same access entity by both configuration methods simultaneously.
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud Console users, please refer to this [page](/cloud/security/cloud-access-management)
+If you are looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/manage-cloud-users)
 :::
 
-To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show.md#show-access-statement) statement.
+To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show#show-access) statement.
 
 ## Overview {#access-control-usage}
 
@@ -44,16 +46,16 @@ By default, the ClickHouse server provides the `default` user account which is n
 If you just started using ClickHouse, consider the following scenario:
 
 1.  [Enable](#enabling-access-control) SQL-driven access control and account management for the `default` user.
-2.  Log in to the `default` user account and create all the required users. Don’t forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
-3.  [Restrict permissions](/operations/settings/permissions-for-queries.md#permissions_for_queries) for the `default` user and disable SQL-driven access control and account management for it.
+2.  Log in to the `default` user account and create all the required users. Don't forget to create an administrator account (`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`).
+3.  [Restrict permissions](/operations/settings/permissions-for-queries) for the `default` user and disable SQL-driven access control and account management for it.
 
-### Properties of Current Solution {#access-control-properties}
+### Properties of current solution {#access-control-properties}
 
 - You can grant permissions for databases and tables even if they do not exist.
 - If a table is deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
 - There are no lifetime settings for privileges.
 
-### User Account {#user-account-management}
+### User account {#user-account-management}
 
 A user account is an access entity that allows to authorize someone in ClickHouse. A user account contains:
 
@@ -64,17 +66,17 @@ A user account is an access entity that allows to authorize someone in ClickHous
 - Settings with their constraints applied by default at user login.
 - Assigned settings profiles.
 
-Privileges can be granted to a user account by the [GRANT](/sql-reference/statements/grant.md) query or by assigning [roles](#role-management). To revoke privileges from a user, ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query. To list privileges for a user, use the [SHOW GRANTS](/sql-reference/statements/show.md#show-grants-statement) statement.
+Privileges can be granted to a user account by the [GRANT](/sql-reference/statements/grant.md) query or by assigning [roles](#role-management). To revoke privileges from a user, ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query. To list privileges for a user, use the [SHOW GRANTS](/sql-reference/statements/show#show-grants) statement.
 
 Management queries:
 
 - [CREATE USER](/sql-reference/statements/create/user.md)
-- [ALTER USER](/sql-reference/statements/alter/user.md#alter-user-statement)
+- [ALTER USER](/sql-reference/statements/alter/user)
 - [DROP USER](/sql-reference/statements/drop.md)
-- [SHOW CREATE USER](/sql-reference/statements/show.md#show-create-user-statement)
-- [SHOW USERS](/sql-reference/statements/show.md#show-users-statement)
+- [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
+- [SHOW USERS](/sql-reference/statements/show#show-users)
 
-### Settings Applying {#access-control-settings-applying}
+### Settings applying {#access-control-settings-applying}
 
 Settings can be configured differently: for a user account, in its granted roles and in settings profiles. At user login, if a setting is configured for different access entities, the value and constraints of this setting are applied as follows (from higher to lower priority):
 
@@ -105,7 +107,7 @@ Management queries:
 
 Privileges can be granted to a role by the [GRANT](/sql-reference/statements/grant.md) query. To revoke privileges from a role ClickHouse provides the [REVOKE](/sql-reference/statements/revoke.md) query.
 
-#### Row Policy {#row-policy-management}
+#### Row policy {#row-policy-management}
 
 Row policy is a filter that defines which of the rows are available to a user or a role. Row policy contains filters for one particular table, as well as a list of roles and/or users which should use this row policy.
 
@@ -121,7 +123,7 @@ Management queries:
 - [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
 - [SHOW POLICIES](/sql-reference/statements/show#show-policies)
 
-### Settings Profile {#settings-profiles-management}
+### Settings profile {#settings-profiles-management}
 
 Settings profile is a collection of [settings](/operations/settings/index.md). Settings profile contains settings and constraints, as well as a list of roles and/or users to which this profile is applied.
 
@@ -148,7 +150,7 @@ Management queries:
 - [SHOW QUOTA](/sql-reference/statements/show#show-quota)
 - [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
-### Enabling SQL-driven Access Control and Account Management {#enabling-access-control}
+### Enabling SQL-driven access control and account management {#enabling-access-control}
 
 - Setup a directory for configuration storage.
 
@@ -158,11 +160,10 @@ Management queries:
 
     By default, SQL-driven access control and account management is disabled for all users. You need to configure at least one user in the `users.xml` configuration file and set the values of the [`access_management`](/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections`, and `show_named_collections_secrets` settings to 1.
 
-
-## Defining SQL Users and Roles {#defining-sql-users-and-roles}
+## Defining SQL users and roles {#defining-sql-users-and-roles}
 
 :::tip
-If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/cloud-access-management).
+If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/console-roles).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
@@ -200,12 +201,11 @@ This article shows the basics of defining SQL users and roles and applying those
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-## ALTER permissions {#alter-permissions}
+## Alter permissions {#alter-permissions}
 
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.
 
 The `ALTER` statements are divided into several categories, some of which are hierarchical and some of which are not and must be explicitly defined.
-
 
 **Example DB, table and user configuration**
 1. With an admin user, create a sample user
@@ -490,7 +490,6 @@ ALTER TABLE my_db.my_table
 
 Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
-
 0 rows in set. Elapsed: 0.004 sec.
 
 Received exception from server (version 22.5.1):
@@ -529,7 +528,6 @@ GRANT ALTER UPDATE ON my_db.my_table TO my_user;
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
 Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
-
 
 0 rows in set. Elapsed: 0.004 sec.
 

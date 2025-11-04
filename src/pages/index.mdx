@@ -1,0 +1,222 @@
+---
+sidebar_label: 'Home'
+displayed_sidebar: 'docs'
+slug: /
+sidebar_position: 1
+title: 'ClickHouse Docs'
+keywords: ['clickhouse', 'docs', 'knowledge base']
+pagination_next: null
+hide_title: true
+id: 'home-page'
+description: 'Docs homepage'
+doc_type: 'landing-page'
+---
+
+import ClickHouseLogo from '@site/src/icons/ClickHouseLogo';
+import IconCloud from '@site/src/icons/IconCloud';
+import IconCluster from '@site/src/icons/IconCluster';
+import IconDatasets from '@site/src/icons/IconDatasets';
+import IconChangelog from '@site/src/icons/IconChangelog';
+import IconSupport from '@site/src/icons/IconSupport';
+import IconTerminal from '@site/src/icons/IconTerminal';
+import IconSingleNode from '@site/src/icons/IconSingleNode';
+import IconSQLConsole from '@site/src/icons/IconSQLConsole';
+import IconLightning from '@site/src/icons/IconLightning';
+import IconDownload from '@site/src/icons/IconDownload';
+import Image from '@theme/IdealImage';
+import SearchBar from "@theme/SearchBar";
+
+export const Hero = ({children, color}) => {
+    return (
+        <div className='home-page-hero'>
+            <div className='home-page-hero-left'>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '12px'}}>
+                    <ClickHouseLogo width='220px' color='black'/>
+                </div>
+                <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference
+                    documentation, and videos
+                </div>
+            </div>
+            <div className='home-page-hero-right'>
+                <a href='/docs/cloud/get-started/cloud-quick-start' className='home-page-hero-button'>
+                    <div style={{
+                        fontWeight: '600',
+                        fontSize: '18px',
+                        marginBottom: '12px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconLightning
+                            iconWidth={'24px'}/></div>
+                        <div>Quick start</div>
+                    </div>
+                    <div>Get started with Cloud</div>
+                </a>
+                <a href='/docs/getting-started/quick-start/oss' className='home-page-hero-button'>
+                    <div style={{
+                        fontWeight: '600',
+                        fontSize: '18px',
+                        marginBottom: '12px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconDownload
+                            iconWidth={'24px'}/></div>
+                        <div>Install locally</div>
+                    </div>
+                    <div>Get started with OSS</div>
+                </a>
+            </div>
+        </div>
+    )
+}
+
+export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link}) => {
+    return (
+        <a
+            href={link || '#'}
+            className='home-page-option-button'>
+            <div className='home-page-option-icon'>
+                {
+                    svgIcon ? svgIcon : (
+                        <Image img={icon} size="small" alt={`${children} logo`} style={{width: iconWidth || '28px'}} border />
+                    )
+                }
+            </div>
+            <div style={{fontWeight: '500'}}>{children}</div>
+        </a>
+    )
+}
+
+export const SearchClickHouse = ({children, color}) => {
+    return (
+        <div className='home-page-section-search'>
+            <p style={{fontWeight: '600', fontSize: '18px', marginTop: '1.5rem', flex: '1'}}>Search documentation</p>
+            <div className='home-page-hero-right-search'>
+                <SearchBar style="width: 75%"/>
+            </div>
+        </div>
+    )
+}
+
+export const ConnectToClickHouse = ({children, color}) => {
+    return (
+        <div className='home-page-section'>
+            <div className='home-page-section-left'>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Connect to ClickHouse</div>
+                <div style={{marginBottom: '12px'}}>Connect your application to ClickHouse in just a few minutes</div>
+                <div><a href='/docs/interfaces/overview'>View all clients and drivers &rarr;</a></div>
+            </div>
+            <div>
+                <div className='home-page-button-container'>
+                    <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px'/>} link='/docs/interfaces/cli'>ClickHouse
+                        CLI</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px'/>}
+                                          link='/docs/cloud/get-started/sql-console'>Cloud SQL
+                        Console</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-nodejs.svg'
+                                          link='/docs/integrations/javascript'>Node.js</HomePageOptionButton>
+                </div>
+                <div className='home-page-button-container'>
+                    <HomePageOptionButton icon='/docs/images/logo-java.svg'
+                                          link='/docs/integrations/java'>Java</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-python.svg'
+                                          link='/docs/integrations/python'>Python</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-go.svg'
+                                          link='/docs/integrations/go'>Go</HomePageOptionButton>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const MigrateToClickHouse = ({children, color}) => {
+    return (
+        <div className='home-page-section'>
+            <div className='home-page-section-left'>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Migrate to ClickHouse</div>
+                <div style={{marginBottom: '12px'}}>Load your data from other databases, data warehouses, and object
+                    storage
+                </div>
+                <div><a href='/docs/integrations'>View all integrations &rarr;</a></div>
+            </div>
+            <div>
+                <div className='home-page-button-container'>
+                    <HomePageOptionButton icon='/docs/images/logo-snowflake.svg'
+                                          link='/docs/migrations/snowflake'>Snowflake</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-bigquery.svg'
+                                          link='/docs/migrations/bigquery'>BigQuery</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-redshift.svg'
+                                          link='/docs/integrations/redshift'>Redshift</HomePageOptionButton>
+                </div>
+                <div className='home-page-button-container'>
+                    <HomePageOptionButton icon='/docs/images/logo-postgres.svg'
+                                          link='/docs/integrations/postgresql'>Postgres</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-mysql.svg'
+                                          link='/docs/integrations/mysql'>MySQL</HomePageOptionButton>
+                    <HomePageOptionButton icon='/docs/images/logo-s3.svg'
+                                          link='/docs/integrations/s3'>S3</HomePageOptionButton>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const DeployClickHouse = ({children, color}) => {
+    return (
+        <div className='home-page-section'>
+            <div className='home-page-section-left'>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Deploy ClickHouse</div>
+                <div style={{marginBottom: '12px'}}>Deploy ClickHouse to our cloud or on your own infrastructure</div>
+            </div>
+            <div className='home-page-button-container'>
+                <HomePageOptionButton svgIcon={<IconCloud iconWidth='28px'/>}
+                                      link='https://clickhouse.com/cloud'>Cloud</HomePageOptionButton>
+                <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px'/>}
+                                      link='/docs/architecture/introduction'>Node deployment</HomePageOptionButton>
+                <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px'/>}
+                                      link='/docs/architecture/cluster-deployment'>Cluster
+                    deployment</HomePageOptionButton>
+            </div>
+        </div>
+    )
+}
+
+export const MoreResources = ({children, color}) => {
+    return (
+        <div className='home-page-section'>
+            <div className='home-page-section-left'>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '10px'}}>Additional resources</div>
+            </div>
+            <div>
+                <div className='home-page-button-container'>
+                    <HomePageOptionButton svgIcon={<IconSupport iconWidth='28px'/>}
+                                          link='https://clickhouse.com/support/program'>Contact
+                        Support</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconChangelog iconWidth='28px'/>}
+                                          link='/docs/whats-new/changelog'>Changelog</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconDatasets iconWidth='28px'/>}
+                                          link='/docs/getting-started/example-datasets'>Sample
+                        datasets</HomePageOptionButton>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const HomeContainer = () => {
+    return (
+        <div className='home-container'>
+            <Hero/>
+            <SearchClickHouse/>
+            <ConnectToClickHouse/>
+            <MigrateToClickHouse/>
+            <DeployClickHouse/>
+            <MoreResources/>
+        </div>
+    )
+}
+
+<HomeContainer/>

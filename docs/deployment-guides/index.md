@@ -1,9 +1,12 @@
 ---
 slug: /deployment-guides/index
-title: Deployment Guides Overview
+title: 'Deployment Guides Overview'
+description: 'Landing page for the deployment and scaling section'
+keywords: ['deployment guides', 'scaling', 'cluster deployment', 'replication', 'fault tolerance']
+doc_type: 'landing-page'
 ---
 
-# Deployment and Scaling
+# Deployment and scaling
 
 This section covers the following topics:
 
@@ -12,4 +15,4 @@ This section covers the following topics:
 | [Introduction](/architecture/introduction)                    |
 | [Scaling Out](/architecture/horizontal-scaling)               |
 | [Replication for fault tolerance](/architecture/replication)  |
-| [Cluster Deployment](/architecture/cluster-deployment)        |
+| [Cluster deployment](/architecture/cluster-deployment)        |

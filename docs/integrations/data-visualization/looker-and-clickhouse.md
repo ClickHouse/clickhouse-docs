@@ -1,13 +1,26 @@
 ---
-sidebar_label: Looker
+sidebar_label: 'Looker'
 slug: /integrations/looker
-keywords: [clickhouse, looker, connect, integrate, ui]
-description: Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.
+keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
+description: 'Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.'
+title: 'Looker'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_visualization'
 ---
 
+import Image from '@theme/IdealImage';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
+import looker_01 from '@site/static/images/integrations/data-visualization/looker_01.png';
+import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
+import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';
+import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Looker
+
+<PartnerBadge/>
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 
@@ -18,22 +31,22 @@ Looker can connect to ClickHouse Cloud or on-premise deployment via the official
 
 Navigate to Admin -> Database -> Connections and click the "Add Connection" button in the top right corner.
 
-<img src={require('./images/looker_01.png').default} class="image" alt="Adding a new connection" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_01} alt="Adding a new connection in Looker's database management interface" border />
 <br/>
 
 Choose a name for your data source, and select `ClickHouse` from the dialect drop-down. Enter your credentials in the form.
 
-<img src={require('./images/looker_02.png').default} class="image" alt="Specifying your credentials" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_02} alt="Specifying your ClickHouse credentials in Looker connection form" border />
 <br/>
 
 If you are using ClickHouse Cloud or your deployment requires SSL, make sure you have SSL turned on in the additional settings.
 
-<img src={require('./images/looker_03.png').default} class="image" alt="Enabling SSL" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_03} alt="Enabling SSL for ClickHouse connection in Looker settings" border />
 <br/>
 
 Test your connection first, and, once it is done, connect to your new ClickHouse data source.
 
-<img src={require('./images/looker_04.png').default} class="image" alt="Enabling SSL" style={{width: '80%', 'background-color': 'transparent'}}/>
+<Image size="md" img={looker_04} alt="Testing and connecting to the ClickHouse data source" border />
 <br/>
 
 Now you should be able to attach ClickHouse Datasource to your Looker project.

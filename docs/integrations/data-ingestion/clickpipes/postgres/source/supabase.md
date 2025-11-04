@@ -1,10 +1,17 @@
 ---
-sidebar_label: Supabase Postgres
-description: Set up Supabase instance as a source for ClickPipes
+sidebar_label: 'Supabase Postgres'
+description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
+title: 'Supabase Source Setup Guide'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-# Supabase Source Setup Guide
+import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
+import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
+import Image from '@theme/IdealImage';
+
+# Supabase source setup guide
 
 This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 
@@ -13,7 +20,6 @@ This is a guide on how to setup Supabase Postgres for usage in ClickPipes.
 ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 :::
-
 
 ## Creating a user with permissions and replication slot {#creating-a-user-with-permissions-and-replication-slot}
 
@@ -35,9 +41,7 @@ Here, we can run the following SQL commands:
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
-![User and publication commands](images/setup/supabase/supabase-commands.jpg)
-
-
+<Image img={supabase_commands} alt="User and publication commands" size="large" border/>
 
 Click on **Run** to have a publication and a user ready.
 
@@ -49,20 +53,17 @@ Also, remember to use the same publication name when creating the mirror in Clic
 
 :::
 
-
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
-
 
 :::warning
 
 This step will restart your Supabase database and may cause a brief downtime.
 
-:::warning
-
 You can increase the `max_slot_wal_keep_size` parameter for your Supabase database to a higher value (at least 100GB or `102400`) by following the [Supabase Docs](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)
 
 For better recommendation of this value you can contact the ClickPipes team.
 
+:::
 
 ## Connection details to use for Supabase {#connection-details-to-use-for-supabase}
 
@@ -70,8 +71,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 **Important**: Disable `Display connection pooler` on this page and head over to the `Connection parameters` section and note/copy the parameters.
 
-![Locate Supabase Connection Details](images/setup/supabase/supabase-connection-details.jpg)
-
+<Image img={supabase_connection_details} size="lg" border alt="Locate Supabase Connection Details" border/>
 
 :::info
 
@@ -79,12 +79,13 @@ The connection pooler is not supported for CDC based replication, hence it needs
 
 :::
 
+## Note on RLS {#note-on-rls}
+The ClickPipes Postgres user must not be restricted by RLS policies, as it can lead to missing data. You can disable RLS policies for the user by running the below command:
+```sql
+ALTER USER clickpipes_user BYPASSRLS;
+```
 
 ## What's next? {#whats-next}
 
 You can now [create your ClickPipe](../index.md) and start ingesting data from your Postgres instance into ClickHouse Cloud.
 Make sure to note down the connection details you used while setting up your Postgres instance as you will need them during the ClickPipe creation process.
-
-
-
-

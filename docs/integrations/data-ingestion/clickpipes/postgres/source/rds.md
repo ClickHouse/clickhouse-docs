@@ -1,16 +1,28 @@
 ---
-sidebar_label: Amazon RDS Postgres
-description: Set up Amazon RDS Postgres as a source for ClickPipes
+sidebar_label: 'Amazon RDS Postgres'
+description: 'Set up Amazon RDS Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/rds
+title: 'RDS Postgres Source Setup Guide'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-# RDS Postgres Source Setup Guide
+import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
+import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
+import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
+import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
+import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
+import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
+import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
+import Image from '@theme/IdealImage';
+
+# RDS Postgres source setup guide
 
 ## Supported Postgres versions {#supported-postgres-versions}
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 You can skip this section if your RDS instance already has the following settings configured:
 - `rds.logical_replication = 1`
@@ -18,7 +30,19 @@ You can skip this section if your RDS instance already has the following setting
 
 These settings are typically pre-configured if you previously used another data replication tool.
 
-![Checking if logical replication is already enabled](images/setup/rds/logical_rep_already_configured.png)
+```text
+postgres=> SHOW rds.logical_replication ;
+ rds.logical_replication
+-------------------------
+ on
+(1 row)
+
+postgres=> SHOW wal_sender_timeout ;
+ wal_sender_timeout
+--------------------
+ 0
+(1 row)
+```
 
 If not already configured, follow these steps:
 
@@ -26,21 +50,21 @@ If not already configured, follow these steps:
     - Set `rds.logical_replication` to 1
     - Set `wal_sender_timeout` to 0
 
-    ![Where to find Parameter groups in RDS?](images/setup/rds/parameter_group_in_blade.png)
+<Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
 
-    ![Changing rds.logical_replication](images/setup/rds/change_rds_logical_replication.png)
+<Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
 
-    ![Changing wal_sender_timeout](images/setup/rds/change_wal_sender_timeout.png)
+<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your RDS Postgres database
 
-    ![Modifying RDS Postgres with new parameter group](images/setup/rds/modify_parameter_group.png)
+<Image img={modify_parameter_group} alt="Modifying RDS Postgres with new parameter group" size="lg" border/>
 
 3. Reboot your RDS instance to apply the changes
 
-    ![Reboot RDS Postgres](images/setup/rds/reboot_rds.png)
+<Image img={reboot_rds} alt="Reboot RDS Postgres" size="lg" border/>
 
-## Configure Database User {#configure-database-user}
+## Configure database user {#configure-database-user}
 
 Connect to your RDS Postgres instance as an admin user and execute the following commands:
 
@@ -70,16 +94,15 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
     ```
 
+## Configure network access {#configure-network-access}
 
-## Configure Network Access {#configure-network-access}
-
-### IP-based Access Control {#ip-based-access-control}
+### IP-based access control {#ip-based-access-control}
 
 If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
 
-![Where to find security group in RDS Postgres?](images/setup/rds/security_group_in_rds_postgres.png)
+<Image img={security_group_in_rds_postgres} alt="Where to find security group in RDS Postgres?" size="lg" border/>
 
-![Edit inbound rules for the above security group](images/setup/rds/edit_inbound_rules.png)
+<Image img={edit_inbound_rules} alt="Edit inbound rules for the above security group" size="lg" border/>
 
 ### Private Access via AWS PrivateLink {#private-access-via-aws-privatelink}
 
@@ -88,7 +111,7 @@ To connect to your RDS instance through a private network, you can use AWS Priva
 ### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
 RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
 
-1. Using a cron job, resolve the RDS endpoint’s IP periodically and update the NLB if it has changed.
+1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.
 2. Using RDS Event Notifications with EventBridge/SNS: Trigger updates automatically using AWS RDS event notifications
 3. Stable EC2: Deploy an EC2 instance to act as a polling service or IP-based proxy
 4. Automate IP address management using tools like Terraform or CloudFormation.

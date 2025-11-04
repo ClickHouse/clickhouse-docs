@@ -70,9 +70,9 @@ function ObsoleteIcon () {
   return (
     <svg viewBox="0 0 24 24"
          stroke="currentColor"
-         stroke-width="2"
-         stroke-linecap="round"
-         stroke-linejoin="round">
+         strokeWidth="2"
+         strokeLinecap="round"
+         strokeLinejoin="round">
       <path d="M20 16l-4 4"/>
       <path d="M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5z"
             fill="none"/>
@@ -172,7 +172,7 @@ const aliases = {
   secondary: 'note',
   important: 'info',
   success: 'tip',
-  warning: 'danger',
+  warning: 'caution',
 };
 function getAdmonitionConfig(unsafeType) {
   const type = aliases[unsafeType] ?? unsafeType;

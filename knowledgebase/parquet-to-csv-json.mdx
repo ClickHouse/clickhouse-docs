@@ -11,9 +11,9 @@ keywords: ['Converting', 'Parquet', 'CSV', 'JSON']
 
 ## Converting Files from Parquet to CSV or JSON {#converting-files-from-parquet-to-csv-or-json}
 
-You can use `clickhouse-local` to convert files between any of the [input and output formats](https://clickhouse.com/docs/en/interfaces/formats) that ClickHouse supports (which is over 70 different formats!). In this article, we are convert a Parquet file in S3 into a CSV and JSON file.
+You can use `clickhouse-local` to convert files between any of the [input and output formats](https://clickhouse.com/docs/interfaces/formats) that ClickHouse supports (which is over 70 different formats!). In this article, we are convert a Parquet file in S3 into a CSV and JSON file.
 
-Let's start at the beginning. ClickHouse has a collection of [table functions](https://clickhouse.com/docs/en/sql-reference/table-functions/) that read from files, databases and other resoures and converts the data to a table. To demonstrate, suppose we have a Parquet file in S3. We will use the `s3` table function to read it (ClickHouse knows it's a Parquet file based on the filename).
+Let's start at the beginning. ClickHouse has a collection of [table functions](https://clickhouse.com/docs/sql-reference/table-functions/) that read from files, databases and other resoures and converts the data to a table. To demonstrate, suppose we have a Parquet file in S3. We will use the `s3` table function to read it (ClickHouse knows it's a Parquet file based on the filename).
 
 But first, let's download the `clickhouse` binary:
 
@@ -137,4 +137,4 @@ FROM file('house_prices.csv')
 INTO OUTFILE 'house_prices.parquet'"
 ```
 
-As we mentioned above, you can use any of the ClickHouse [input and output formats](https://clickhouse.com/docs/en/interfaces/formats) along with `clickhouse local` to easily convert files into different formats.
+As we mentioned above, you can use any of the ClickHouse [input and output formats](https://clickhouse.com/docs/interfaces/formats) along with `clickhouse local` to easily convert files into different formats.

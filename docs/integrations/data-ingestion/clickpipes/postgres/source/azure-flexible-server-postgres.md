@@ -1,30 +1,39 @@
 ---
-sidebar_label: Azure Flexible Server for Postgres
-description: Set up Azure Flexible Server for Postgres as a source for ClickPipes
+sidebar_label: 'Azure Flexible Server for Postgres'
+description: 'Set up Azure Flexible Server for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
+title: 'Azure Flexible Server for Postgres Source Setup Guide'
+keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
+doc_type: 'guide'
 ---
 
-# Azure Flexible Server for Postgres Source Setup Guide
+import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';
+import wal_level from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/wal_level.png';
+import restart from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/restart.png';
+import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
+import Image from '@theme/IdealImage';
+
+# Azure flexible server for Postgres source setup guide
 
 ClickPipes supports Postgres version 12 and later.
 
-## Enable Logical Replication {#enable-logical-replication}
+## Enable logical replication {#enable-logical-replication}
 
 **You don't need** to follow the below steps if `wal_level` is set to `logical`. This setting should mostly be pre-configured if you are migrating from another data replication tool.
 
 1. Click on the **Server parameters** section
 
-   ![Server Parameters](images/setup/azure-flexible-server-postgres/server_parameters.png)
+<Image img={server_parameters} alt="Server Parameters in Azure Flexible Server for Postgres" size="lg" border/>
 
 2. Edit the `wal_level` to `logical`
 
-   ![Change wal_level to logical](images/setup/azure-flexible-server-postgres/wal_level.png)
+<Image img={wal_level} alt="Change wal_level to logical in Azure Flexible Server for Postgres" size="lg" border/>
+
 3. This change would require a server restart. So restart when requested.
 
-   ![Restart server](images/setup/azure-flexible-server-postgres/restart.png)
+<Image img={restart} alt="Restart server after changing wal_level" size="lg" border/>
 
-
-## Creating ClickPipes User and Granting permissions {#creating-clickpipes-user-and-granting-permissions}
+## Creating ClickPipes users and granting permissions {#creating-clickpipes-user-and-granting-permissions}
 
 Connect to your Azure Flexible Server Postgres through the admin user and run the below commands:
 
@@ -60,7 +69,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.
@@ -68,8 +76,7 @@ Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-sta
 1. Go to the **Networking** tab and add the [ClickPipes IPs](../../index.md#list-of-static-ips) to the Firewall
    of your Azure Flexible Server Postgres OR the Jump Server/Bastion if you are using SSH tunneling.
 
-   ![Add ClickPipes IPs to Firewall](images/setup/azure-flexible-server-postgres/firewall.png)
-
+<Image img={firewall} alt="Add ClickPipes IPs to Firewall in Azure Flexible Server for Postgres" size="lg"/>
 
 ## What's next? {#whats-next}
 

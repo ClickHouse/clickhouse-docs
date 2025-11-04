@@ -1,0 +1,18 @@
+@use '../../../../css/breakpoints.scss' as breakpoints;
+
+@media (min-width: breakpoints.$mobile-breakpoint) {
+  .menu {
+    flex-grow: 1;
+    padding: 0 1rem 0.5rem;
+  }
+  @supports (scrollbar-gutter: stable) {
+    .menu {
+      padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      scrollbar-gutter: stable;
+    }
+  }
+
+  .menuWithAnnouncementBar {
+    margin-bottom: var(--docusaurus-announcement-bar-height);
+  }
+}

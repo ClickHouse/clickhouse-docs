@@ -1,0 +1,642 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+
+Java-клиентская библиотека для взаимодействия с сервером БД через его протоколы. Текущая реализация поддерживает только [HTTP интерфейс](/interfaces/http).  
+Библиотека предоставляет собственный API для отправки запросов на сервер. Она также предоставляет инструменты для работы с различными бинарными форматами данных (RowBinary* и Native*).  
+
+## Установка {#setup}
+
+- Maven Central (веб-страница проекта): https://mvnrepository.com/artifact/com.clickhouse/client-v2
+- Ночные сборки (ссылка на репозиторий): https://central.sonatype.com/repository/maven-snapshots/
+- Архив ночных сборок (ссылка на репозиторий): https://s01.oss.sonatype.org/content/repositories/snapshots/
+<br/>
+<Tabs groupId="client-setup">
+<TabItem value="maven" label="Maven" >
+
+```xml
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>client-v2</artifactId>
+    <version>0.9.1</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/client-v2
+implementation("com.clickhouse:client-v2:0.9.1")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/client-v2
+implementation 'com.clickhouse:client-v2:0.9.1'
+```
+
+</TabItem>
+</Tabs>
+
+## Инициализация {#initialization}
+
+Объект Client инициализируется с помощью `com.clickhouse.client.api.Client.Builder#build()`. Каждый клиент имеет свой контекст, и объекты между ними не разделяются.  
+У Builder есть методы конфигурации для удобной настройки.
+
+Пример:
+```java showLineNumbers
+Client client = new Client.Builder()
+               .addEndpoint("https://clickhouse-cloud-instance:8443/")
+               .setUsername(user)
+               .setPassword(password)
+               .build();
+```
+
+`Client` является `AutoCloseable` и должен быть закрыт, когда больше не нужен.  
+
+### Аутентификация {#authentication}
+
+Аутентификация настраивается для каждого клиента на этапе инициализации. Поддерживаются три метода аутентификации: по паролю, по токену доступа, по SSL клиентскому сертификату.
+
+Аутентификация по паролю требует установки имени пользователя и пароля, вызвав `setUsername(String)` и `setPassword(String)`:
+```java showLineNumbers
+Client client = new Client.Builder()
+       .addEndpoint("https://clickhouse-cloud-instance:8443/")
+       .setUsername(user)
+       .setPassword(password)
+       .build();
+```
+
+Аутентификация по токену доступа требует установки токена доступа, вызвав `setAccessToken(String)`:
+```java showLineNumbers
+Client client = new Client.Builder()
+       .addEndpoint("https://clickhouse-cloud-instance:8443/")
+       .setAccessToken(userAccessToken)
+       .build();
+```
+
+Аутентификация по SSL клиентскому сертификату требует установки имени пользователя, включения SSL аутентификации, установки клиентского сертификата и клиентского ключа, вызвав `setUsername(String)`, `useSSLAuthentication(boolean)`, `setClientCertificate(String)` и `setClientKey(String)` соответственно:
+```java showLineNumbers
+Client client = new Client.Builder()
+        .useSSLAuthentication(true)
+        .setUsername("some_user")
+        .setClientCertificate("some_user.crt")
+        .setClientKey("some_user.key")
+```
+
+:::note  
+SSL аутентификацию может быть сложно отладить в производственной среде, потому что многие ошибки из SSL библиотек не предоставляют достаточно информации. Например, если клиентский сертификат и ключ не совпадают, сервер сразу разорвет соединение (в случае HTTP это будет стадия инициации соединения, когда HTTP запросы еще не отправлены, поэтому ответ не будет направлен).  
+
+Пожалуйста, используйте инструменты, такие как [openssl](https://docs.openssl.org/master/man1/openssl/), для проверки сертификатов и ключей:  
+- проверить целостность ключа: `openssl rsa -in [key-file.key] -check -noout`  
+- проверить, что сертификат клиента имеет соответствующий CN для пользователя:  
+    - получить CN из сертификата пользователя - `openssl x509 -noout -subject -in [user.cert]`  
+    - убедиться, что то же значение установлено в базе данных `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (запрос выведет `auth_params` с чем-то вроде ` {"common_names":["some_user"]}`)  
+
+:::  
+## Конфигурация {#configuration}
+
+Все настройки определяются через методы экземпляра (так называемые методы конфигурации), которые делают область и контекст каждого значения ясными.  
+Основные параметры конфигурации определены в одной области (клиент или операция) и не переопределяют друг друга.
+
+Конфигурация определяется во время создания клиента. См. `com.clickhouse.client.api.Client.Builder`.
+
+## Конфигурация клиента {#client-configuration}  
+
+<WideTableWrapper>
+| Метод конфигурации  | Аргументы                   |  Описание                                |
+|-----------------------|-----------------------------|:--------------------------------------------|
+| `addEndpoint(String endpoint)`          | - `endpoint` - URL-формат адреса сервера.      | Добавляет конечную точку сервера в список доступных серверов. На данный момент поддерживается только одна конечная точка. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none`  |
+| `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - протокол соединения `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - IP-адрес или имя хоста сервера.<br />- `secure` - если связь должна использовать безопасную версию протокола (HTTPS) | Добавляет конечную точку сервера в список доступных серверов. На данный момент поддерживается только одна конечная точка. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `setOption(String key, String value)`   | - `key` - строковый ключ параметра конфигурации клиента.<br /> - `value` - строковое значение параметра | Устанавливает сырой значение параметров клиента. Полезно при чтении конфигурации из файлов свойств. | 
+| `setUsername(String username)`          | - `username` - Имя пользователя для аутентификации | Устанавливает имя пользователя для метода аутентификации, который выбирается дальнейшей конфигурацией <br/> <br/> По умолчанию: `default` <br/> Enum: `ClientConfigProperties.USER` <br/> Ключ: `user` |
+| `setPassword(String password)`          | - `password` - секретное значение для аутентификации по паролю | Устанавливает секрет для аутентификации по паролю и фактически выбирает метод аутентификации <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PASSWORD` <br/> Ключ: `password` |
+| `setAccessToken(String accessToken)`    | - `accessToken` - строковое представление токена доступа | Устанавливает токен доступа для аутентификации с устанавливающим соответствующий метод аутентификации <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.ACCESS_TOKEN` <br/> Ключ: `access_token` |
+| `useSSLAuthentication(boolean useSSLAuthentication)` | - `useSSLAuthentication` - флаг, указывающий, следует ли использовать SSL аутентификацию | Устанавливает SSL клиентский сертификат как метод аутентификации. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_AUTH` <br/> Ключ: `ssl_authentication` |
+| `enableConnectionPool(boolean enable)`  | - `enable` - флаг, указывающий, следует ли активировать опцию | Устанавливает, будет ли включен пул соединений <br/> <br/> По умолчанию: `true` <br/> Enum: `ClientConfigProperties.CONNECTION_POOL_ENABLED` <br/> Ключ: `connection_pool_enabled` |
+| `setConnectTimeout(long timeout, ChronoUnit unit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `unit` - единица времени тайм-аута | Устанавливает тайм-аут инициации соединений для любых исходящих соединений. Это влияет на время ожидания при получении соединения сокета. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.CONNECTION_TIMEOUT` <br/> Ключ: `connection_timeout`|
+| `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `unit` - единица времени тайм-аута | Устанавливает тайм-аут запроса соединения. Это имеет значение только при получении соединения из пула. <br/> <br/> По умолчанию: `10000` <br/> Enum: `ClientConfigProperties.CONNECTION_REQUEST_TIMEOUT` <br/> Ключ: `connection_request_timeout` |
+| `setMaxConnections(int maxConnections)` | - `maxConnections` - количество соединений | Устанавливает, сколько соединений клиент может открыть к каждой конечной точке сервера. <br/> <br/> По умолчанию: `10` <br/> Enum: `ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS` <br/> Ключ: `max_open_connections` |
+| `setConnectionTTL(long timeout, ChronoUnit unit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `unit` - единица времени тайм-аута | Устанавливает время жизни соединения, после которого соединение будет считаться неактивным <br/> <br/> По умолчанию: `-1` <br/> Enum: `ClientConfigProperties.CONNECTION_TTL` <br/> Ключ: `connection_ttl`|
+| `setKeepAliveTimeout(long timeout, ChronoUnit unit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `unit` - единица времени тайм-аута | Устанавливает тайм-аут поддержки соединения HTTP. Эта опция может использоваться для отключения Keep-Alive, установив тайм-аут в ноль - `0` <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br/> Ключ: `http_keep_alive_timeout` |
+| `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)` | - `strategy` - константа enum `com.clickhouse.client.api.ConnectionReuseStrategy` | Выбирает, какую стратегию должен использовать пул соединений: `LIFO`, если соединение должно быть использовано снова, как только оно возвращается в пул, или `FIFO`, чтобы использовать соединение в том порядке, в котором они становятся доступными (возвращенные соединения не используются немедленно). <br/> <br/> По умолчанию: `FIFO` <br/> Enum: `ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br/> Ключ: `connection_reuse_strategy`|
+| `setSocketTimeout(long timeout, ChronoUnit unit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `unit` - единица времени тайм-аута | Устанавливает тайм-аут сокета, который влияет на операции чтения и записи <br/> <br/> По умолчанию: `0` <br/> Enum: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br/> Ключ: `socket_timeout`|
+| `setSocketRcvbuf(long size)` | - `size` - размер в байтах | Устанавливает буфер приема TCP сокета. Этот буфер находится вне памяти JVM. <br/> <br/> По умолчанию: `8196` <br/> Enum: `ClientConfigProperties.SOCKET_RCVBUF_OPT` <br/> Ключ: `socket_rcvbuf` |
+| `setSocketSndbuf(long size)` | - `size` - размер в байтах | Устанавливает буфер отправки TCP сокета. Этот буфер находится вне памяти JVM. <br/> <br/> По умолчанию: `8196` <br/> Enum: `ClientConfigProperties.SOCKET_SNDBUF_OPT` <br/> Ключ: `socket_sndbuf` |
+| `setSocketKeepAlive(boolean value)` | - `value` - флаг, указывающий, следует ли активировать опцию. | Устанавливает опцию `SO_KEEPALIVE` для каждого TCP сокета, созданного клиентом. TCP Keep Alive включает механизм, который будет проверять работоспособность соединения и поможет обнаружить резко завершенные соединения. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br/> Ключ: `socket_keepalive` |
+| `setSocketTcpNodelay(boolean value)` | - `value` - флаг, указывающий, следует ли активировать опцию. | Устанавливает опцию `SO_NODELAY` для каждого TCP сокета, созданного клиентом. Эта опция TCP заставит сокет передавать данные как можно скорее. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br/> Ключ: `socket_tcp_nodelay`|
+| `setSocketLinger(int secondsToWait)` | - `secondsToWait` - количество секунд. | Устанавливает время ожидания для каждого TCP сокета, созданного клиентом. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SOCKET_LINGER_OPT` <br/> Ключ: `socket_linger`|
+| `compressServerResponse(boolean enabled)` | - `enabled` - флаг, указывающий, следует ли активировать опцию | Устанавливает, должен ли сервер сжимать свои ответы. <br/> <br/> По умолчанию: `true` <br/> Enum: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br/> Ключ: `compress` |
+| `compressClientRequest(boolean enabled)` | - `enabled` - флаг, указывающий, следует ли активировать опцию | Устанавливает, должен ли клиент сжимать свои запросы. <br/> <br/> По умолчанию: `false` <br/> Enum: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br/> Ключ: `decompress` |
+| `useHttpCompression(boolean enabled)` | - `enabled` - флаг, указывающий, следует ли активировать опцию | Устанавливает, следует ли использовать HTTP-сжатие для коммуникаций клиент/сервер, если соответствующие опции включены | 
+| `appCompressedData(boolean enabled)` | - `enabled` - флаг, указывающий, следует ли активировать опцию | Указывает клиенту, что сжатие будет обрабатываться приложением. <br/> <br/> По умолчанию: `false` <br/> Enum: `ClientConfigProperties.APP_COMPRESSED_DATA` <br/> Ключ: `app_compressed_data` |
+| `setLZ4UncompressedBufferSize(int size)` | - `size` - размер в байтах | Устанавливает размер буфера, который будет получать несжатую часть потока данных. Если буфер недооценен, будет создан новый, и соответствующее предупреждение будет отображено в журналах. <br/> <br/> По умолчанию: `65536` <br/> Enum: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br/> Ключ: `compression.lz4.uncompressed_buffer_size`|
+| `disableNativeCompression` | - `disable` - флаг, указывающий, следует ли отключить опцию | Отключить родное сжатие. Если установлено значение true, то родное сжатие будет отключено. <br/> <br/> По умолчанию: `false` <br/> Enum: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br/> Ключ: `disable_native_compression` |
+| `setDefaultDatabase(String database)` | - `database` - название базы данных | Устанавливает базу данных по умолчанию. <br/> <br/> По умолчанию: `default` <br/> Enum: `ClientConfigProperties.DATABASE` <br/> Ключ: `database` |
+| `addProxy(ProxyType type, String host, int port)` | - `type` - тип прокси.<br /> - `host` - имя хоста прокси или IP-адрес.<br /> - `port` - порт прокси | Устанавливает прокси для использования при взаимодействии с сервером. Установка прокси необходима, если для прокси требуется аутентификация. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PROXY_TYPE` <br/> Ключ: `proxy_type` <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PROXY_HOST` <br/> Ключ: `proxy_host`  <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PROXY_PORT` <br/> Ключ: `proxy_port` |
+| `setProxyCredentials(String user, String pass)` | - `user` - имя пользователя прокси.<br /> - `pass` - пароль | Устанавливает учетные данные для аутентификации с прокси. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PROXY_USER` <br/> Ключ: `proxy_user` <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.PROXY_PASSWORD` <br/> Ключ: `proxy_password` |
+| `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | - `timeout` - тайм-аут в определенной единице времени.<br /> - `timeUnit` - единица времени тайм-аута | Устанавливает максимальный тайм-аут выполнения для запросов <br/> <br/> По умолчанию: `0` <br/> Enum: `ClientConfigProperties.MAX_EXECUTION_TIME` <br/> Ключ: `max_execution_time`|
+| `setHttpCookiesEnabled(boolean enabled)` | `enabled` - флаг, указывающий, следует ли активировать опцию | Устанавливает, должны ли cookies HTTP запомниться и быть отправлены обратно серверу. |
+| `setSSLTrustStore(String path)` | `path` - путь к файлу на локальной (клиентской) стороне | Устанавливает, должен ли клиент использовать SSL truststore для верификации сервера. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_TRUST_STORE` <br/> Ключ: `trust_store` |
+| `setSSLTrustStorePassword(String password)` | `password` - секретное значение | Устанавливает пароль для разблокировки SSL truststore, указанный в `setSSLTrustStore(String path)` <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br/> Ключ: `key_store_password` |
+| `setSSLTrustStoreType(String type)` | `type` - имя типа truststore | Устанавливает тип truststore, указанный в `setSSLTrustStore(String path)`. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_KEYSTORE_TYPE` <br/> Ключ: `key_store_type` |
+| `setRootCertificate(String path)` | `path` - путь к файлу на локальной (клиентской) стороне | Устанавливает, должен ли клиент использовать указанный корневой сертификат (CA) для верификации хоста сервера. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.CA_CERTIFICATE` <br/> Ключ: `sslrootcert` |
+| `setClientCertificate(String path)` | `path` - путь к файлу на локальной (клиентской) стороне | Устанавливает путь к клиентскому сертификату, который будет использоваться при инициации SSL соединения и для SSL аутентификации. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_CERTIFICATE` <br/> Ключ: `sslcert`|
+| `setClientKey(String path)` | `path` - путь к файлу на локальной (клиентской) стороне | Устанавливает личный ключ клиента, который будет использоваться для шифрования SSL-сообщений с сервером. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_KEY` <br/> Ключ: `ssl_key`|
+| `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - флаг, указывающий, следует ли активировать опцию | Устанавливает, должен ли клиент использовать временную зону сервера при декодировании значений колонок DateTime и Date. Если включено, временная зона сервера должна быть установлена с помощью `setServerTimeZone(String timeZone)` <br/> <br/> По умолчанию: `true` <br/> Enum: `ClientConfigProperties.USE_SERVER_TIMEZONE` <br/> Ключ: `use_server_time_zone`|
+| `useTimeZone(String timeZone)` | `timeZone` - строковое значение действительного идентификатора временной зоны Java (см. `java.time.ZoneId`) | Устанавливает, должна ли быть использована указанная временная зона при декодировании значений колонок DateTime и Date. Переопределит временную зону сервера. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.USE_TIMEZONE` <br/> Ключ: `use_time_zone` |
+| `setServerTimeZone(String timeZone)` |  `timeZone` - строковое значение действительного идентификатора временной зоны Java (см. `java.time.ZoneId`) | Устанавливает временную зону на стороне сервера. По умолчанию будет использоваться временная зона UTC. <br/> <br/> По умолчанию: `UTC` <br/> Enum: `ClientConfigProperties.SERVER_TIMEZONE` <br/> Ключ: `server_time_zone` |
+| `useAsyncRequests(boolean async)` | `async` - флаг, указывающий, следует ли активировать опцию. | Устанавливает, должен ли клиент выполнять запрос в отдельном потоке. По умолчанию отключено, так как приложение лучше знает, как организовать многопоточные задачи, и выполнение задач в отдельном потоке не улучшает производительность. <br/> <br/> По умолчанию: `false` <br/> Enum: `ClientConfigProperties.ASYNC_OPERATIONS` <br/> Ключ: `async` |
+| `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - экземпляр службы исполнителя. | Устанавливает службу исполнителя для операционных задач. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none`|
+| `setClientNetworkBufferSize(int size)` | - `size` - размер в байтах | Устанавливает размер буфера в пространстве памяти приложения, который используется для копирования данных между сокетом и приложением. Больший размер уменьшает количество системных вызовов к стеку TCP, но влияет на то, сколько памяти расходуется на каждое соединение. Этот буфер также подлежит сборке мусора, так как соединения имеют короткую жизнь. Также учитывайте, что выделение большого непрерывного блока памяти может быть проблемой. <br/> <br/> По умолчанию: `300000` <br/> Enum: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> Ключ: `client_network_buffer_size`|
+| `retryOnFailures(ClientFaultCause ...causes)` | - `causes` - константа enum `com.clickhouse.client.api.ClientFaultCause` | Устанавливает типы сбоев, которые можно восстанавливать/повторять. <br/> <br/> По умолчанию: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br/> Enum: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br/> Ключ: `client_retry_on_failures` |
+| `setMaxRetries(int maxRetries)` | - `maxRetries` - количество повторов | Устанавливает максимальное количество повторов для сбоев, определенных с помощью `retryOnFailures(ClientFaultCause ...causes)` <br/> <br/> По умолчанию: `3` <br/> Enum: `ClientConfigProperties.RETRY_ON_FAILURE` <br/> Ключ: `retry` |
+| `allowBinaryReaderToReuseBuffers(boolean reuse)` | - `reuse` - флаг, указывающий, следует ли активировать опцию | Большинство наборов данных содержат числовые данные, закодированные в виде маленьких последовательностей байтов. По умолчанию читатель будет выделять необходимый буфер, читать данные в него и затем преобразовывать в целевой класс Number. Это может вызвать значительное давление на сборщик мусора из-за выделения и освобождения многих маленьких объектов. Если эта опция включена, то читатель будет использовать заранее выделенные буферы для трансформации чисел. Это безопасно, потому что у каждого читателя есть собственный набор буферов, и читатели используются одним потоком. |
+| `httpHeader(String key, String value)` | - `key` - ключ HTTP-заголовка.<br /> - `value` - строковое значение заголовка. | Устанавливает значение для одного HTTP-заголовка. Предыдущее значение заменяется. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `httpHeader(String key, Collection values)` | - `key` - ключ HTTP-заголовка.<br /> - `values` - список строковых значений. | Устанавливает значения для одного HTTP-заголовка. Предыдущее значение заменяется. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `httpHeaders(Map headers)` | - `header` - карта с HTTP-заголовками и их значениями. | Устанавливает несколько значений HTTP-заголовка за раз. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `serverSetting(String name, String value)` | - `name` - имя настройки уровня запроса.<br /> - `value` - строковое значение настройки. | Устанавливает, какие настройки передавать серверу вместе с каждым запросом. Индивидуальные настройки операций могут переопределять это. [Список настроек](/operations/settings/query-level) <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `serverSetting(String name, Collection values)` | - `name` - имя настройки уровня запроса.<br /> - `values` - строковые значения настройки. | Устанавливает, какие настройки передавать серверу вместе с каждым запросом. Индивидуальные настройки операций могут переопределять это. [Список настроек](/operations/settings/query-level). Этот метод полезен для установки настроек с несколькими значениями, например [ролей](/interfaces/http#setting-role-with-query-parameters) <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - реализация стратегии соответствия столбца и методу | Устанавливает пользовательскую стратегию, которая будет использоваться для соответствия полей класса DTO и колонок БД при регистрации DTO. <br/> <br/> По умолчанию: `none` <br/> Enum: `none` <br/> Ключ: `none` |
+| `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - флаг, указывающий, следует ли активировать опцию | Устанавливает, должно ли использоваться базовое HTTP-аутентификация для обычной аутентификации по имени пользователя и паролю. По умолчанию включено. Использование этого типа аутентификации устраняет проблемы с паролями, содержащими специальные символы, которые нельзя передать через HTTP-заголовки. <br/> <br/> По умолчанию: `true` <br/> Enum: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> Ключ: `http_use_basic_auth` |
+| `setClientName(String clientName)` | - `clientName` - строка, представляющая имя приложения | Устанавливает дополнительную информацию о вызываемом приложении. Эта строка будет передана серверу как имя клиента. В случае HTTP протокола она будет передана как заголовок `User-Agent`. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.CLIENT_NAME` <br/> Ключ: `client_name` |
+| `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - закодированный токен-носитель |  Указывает, следует ли использовать Bearer-аутентификацию и какой токен использовать. Токен будет отправлен как есть, поэтому его следует закодировать перед передачей в этот метод. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> Ключ: `bearer_token` |
+| `registerClientMetrics(Object registry, String name)` | - `registry` - экземпляр реестра Micrometer<br /> - `name` - имя группы метрик | Регистрирует сенсоры с экземпляром реестра Micrometer (https://micrometer.io/). |
+| `setServerVersion(String version)` | - `version` - строковое значение версии сервера | Устанавливает версию сервера, чтобы избежать обнаружения версии. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SERVER_VERSION` <br/> Ключ: `server_version` |
+| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - карта подсказок типов | Устанавливает сопоставление подсказок типов для типов ClickHouse. Например, чтобы сделать многомерные массивы представленными как контейнеры Java, а не собственные массивные объекты. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> Ключ: `type_hint_mapping` |
+| `sslSocketSNI(String sni)` | - `sni` - строковое значение имени сервера | Устанавливает имя сервера, используемое для SNI (Server Name Indication) в SSL/TLS соединении. <br/> <br/> По умолчанию: - <br/> Enum: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> Ключ: `ssl_socket_sni` |
+</WideTableWrapper>
+
+### Настройки сервера
+
+Настройки на стороне сервера могут быть установлены на уровне клиента один раз при создании (см. метод `serverSetting` класса `Builder`) и на уровне операции (см. `serverSetting` для класса настроек операций).
+
+```java showLineNumbers
+ try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
+        .setUsername("default")
+        .setPassword(ClickHouseServerForTest.getPassword())
+        .compressClientRequest(true)
+
+        // Client level
+        .serverSetting("max_threads", "10")
+        .serverSetting("async_insert", "1")
+        .serverSetting("roles", Arrays.asList("role1", "role2"))
+
+        .build()) {
+
+	// Operation level
+	QuerySettings querySettings = new QuerySettings();
+	querySettings.serverSetting("session_timezone", "Europe/Zurich");
+
+	...
+}
+```  
+Когда параметры устанавливаются через метод `setOption` (либо класс `Client.Builder`, либо класс настроек операций), имена настроек сервера должны быть префиксированы `clickhouse_setting_`. В этом случае может быть полезен `com.clickhouse.client.api.ClientConfigProperties#serverSetting()`.  
+
+### Пользовательский HTTP-заголовок
+
+Пользовательские HTTP-заголовки могут быть установлены для всех операций (уровень клиента) или для одной конкретной (уровень операции).  
+```java showLineNumbers
+
+QuerySettings settings = new QuerySettings()
+    .httpHeader(HttpHeaders.REFERER, clientReferer)
+    .setQueryId(qId);
+
+```
+
+Когда параметры устанавливаются через метод `setOption` (либо класс `Client.Builder`, либо класс настроек операций), имена пользовательских заголовков должны быть префиксированы `http_header_`. Метод `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` может быть полезен в этом случае.  
+
+## Общие определения {#common-definitions}
+### ClickHouseFormat {#clickhouseformat}
+
+Перечисление [поддерживаемых форматов](/interfaces/formats). Включает все форматы, которые поддерживает ClickHouse.
+
+* `raw` - пользователь должен перекодировать необработанные данные
+* `full` - клиент может перекодировать данные самостоятельно и принимает поток необработанных данных
+* `-` - операция не поддерживается ClickHouse для этого формата
+
+Эта версия клиента поддерживает:
+
+| Формат                                                                                                                      | Вход   | Выход   |
+|-----------------------------------------------------------------------------------------------------------------------------|:------:|:-------:|
+| [TabSeparated](/interfaces/formats#tabseparated)                                                                          | raw    | raw     |
+| [TabSeparatedRaw](/interfaces/formats#tabseparatedraw)                                                                    | raw    | raw     |
+| [TabSeparatedWithNames](/interfaces/formats#tabseparatedwithnames)                                                        | raw    | raw     |
+| [TabSeparatedWithNamesAndTypes](/interfaces/formats#tabseparatedwithnamesandtypes)                                        | raw    | raw     |
+| [TabSeparatedRawWithNames](/interfaces/formats#tabseparatedrawwithnames)                                                  | raw    | raw     |
+| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats#tabseparatedrawwithnamesandtypes)                                  | raw    | raw     |
+| [Template](/interfaces/formats#format-template)                                                                            | raw    | raw     |
+| [TemplateIgnoreSpaces](/interfaces/formats#templateignorespaces)                                                          | raw    |  -      |
+| [CSV](/interfaces/formats#csv)                                                                                            | raw    | raw     |
+| [CSVWithNames](/interfaces/formats#csvwithnames)                                                                          | raw    | raw     |
+| [CSVWithNamesAndTypes](/interfaces/formats#csvwithnamesandtypes)                                                          | raw    | raw     |
+| [CustomSeparated](/interfaces/formats#format-customseparated)                                                             | raw    | raw     |
+| [CustomSeparatedWithNames](/interfaces/formats#customseparatedwithnames)                                                  | raw    | raw     |
+| [CustomSeparatedWithNamesAndTypes](/interfaces/formats#customseparatedwithnamesandtypes)                                  | raw    | raw     |
+| [SQLInsert](/interfaces/formats#sqlinsert)                                                                                | -      | raw     |
+| [Values](/interfaces/formats#data-format-values)                                                                          | raw    | raw     |
+| [Vertical](/interfaces/formats#vertical)                                                                                    | -      | raw     |
+| [JSON](/interfaces/formats#json)                                                                                          | raw    | raw     |
+| [JSONAsString](/interfaces/formats#jsonasstring)                                                                          | raw    | -       |
+| [JSONAsObject](/interfaces/formats#jsonasobject)                                                                          | raw    | -       |
+| [JSONStrings](/interfaces/formats#jsonstrings)                                                                            | raw    | raw     |
+| [JSONColumns](/interfaces/formats#jsoncolumns)                                                                            | raw    | raw     |
+| [JSONColumnsWithMetadata](/interfaces/formats#jsoncolumnsmonoblock)                                                       | raw    | raw     |
+| [JSONCompact](/interfaces/formats#jsoncompact)                                                                            | raw    | raw     |
+| [JSONCompactStrings](/interfaces/formats#jsoncompactstrings)                                                              | -      | raw     |
+| [JSONCompactColumns](/interfaces/formats#jsoncompactcolumns)                                                              | raw    | raw     |
+| [JSONEachRow](/interfaces/formats#jsoneachrow)                                                                            | raw    | raw     |
+| [PrettyJSONEachRow](/interfaces/formats#prettyjsoneachrow)                                                                | -      | raw     |
+| [JSONEachRowWithProgress](/interfaces/formats#jsoneachrowwithprogress)                                                    | -      | raw     |
+| [JSONStringsEachRow](/interfaces/formats#jsonstringseachrow)                                                              | raw    | raw     |
+| [JSONStringsEachRowWithProgress](/interfaces/formats#jsonstringseachrowwithprogress)                                      | -      | raw     |
+| [JSONCompactEachRow](/interfaces/formats#jsoncompacteachrow)                                                              | raw    | raw     |
+| [JSONCompactEachRowWithNames](/interfaces/formats#jsoncompacteachrowwithnames)                                            | raw    | raw     |
+| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats#jsoncompacteachrowwithnamesandtypes)                            | raw    | raw     |
+| [JSONCompactStringsEachRow](/interfaces/formats#jsoncompactstringseachrow)                                                | raw    | raw     |
+| [JSONCompactStringsEachRowWithNames](/interfaces/formats#jsoncompactstringseachrowwithnames)                              | raw    | raw     |
+| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats#jsoncompactstringseachrowwithnamesandtypes)              | raw    | raw     |
+| [JSONObjectEachRow](/interfaces/formats#jsonobjecteachrow)                                                                | raw    | raw     |
+| [BSONEachRow](/interfaces/formats#bsoneachrow)                                                                            | raw    | raw     |
+| [TSKV](/interfaces/formats#tskv)                                                                                          | raw    | raw     |
+| [Pretty](/interfaces/formats#pretty)                                                                                      | -      | raw     |
+| [PrettyNoEscapes](/interfaces/formats#prettynoescapes)                                                                    | -      | raw     |
+| [PrettyMonoBlock](/interfaces/formats#prettymonoblock)                                                                    | -      | raw     |
+| [PrettyNoEscapesMonoBlock](/interfaces/formats#prettynoescapesmonoblock)                                                | -      | raw     |
+| [PrettyCompact](/interfaces/formats#prettycompact)                                                                        | -      | raw     |
+| [PrettyCompactNoEscapes](/interfaces/formats#prettycompactnoescapes)                                                      | -      | raw     |
+| [PrettyCompactMonoBlock](/interfaces/formats#prettycompactmonoblock)                                                      | -      | raw     |
+| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats#prettycompactnoescapesmonoblock)                                    | -      | raw     |
+| [PrettySpace](/interfaces/formats#prettyspace)                                                                            | -      | raw     |
+| [PrettySpaceNoEscapes](/interfaces/formats#prettyspacenoescapes)                                                          | -      | raw     |
+| [PrettySpaceMonoBlock](/interfaces/formats#prettyspacemonoblock)                                                          | -      | raw     |
+| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats#prettyspacenoescapesmonoblock)                                      | -      | raw     |
+| [Prometheus](/interfaces/formats#prometheus)                                                                              | -      | raw     |
+| [Protobuf](/interfaces/formats#protobuf)                                                                                  | raw    | raw     |
+| [ProtobufSingle](/interfaces/formats#protobufsingle)                                                                      | raw    | raw     |
+| [ProtobufList](/interfaces/formats#protobuflist)                                                                          | raw    | raw     |
+| [Avro](/interfaces/formats#data-format-avro)                                                                              | raw    | raw     |
+| [AvroConfluent](/interfaces/formats#data-format-avro-confluent)                                                           | raw    | -       |
+| [Parquet](/interfaces/formats#data-format-parquet)                                                                        | raw    | raw     |
+| [ParquetMetadata](/interfaces/formats#data-format-parquet-metadata)                                                       | raw    | -       |
+| [Arrow](/interfaces/formats#data-format-arrow)                                                                            | raw    | raw     |
+| [ArrowStream](/interfaces/formats#data-format-arrow-stream)                                                               | raw    | raw     |
+| [ORC](/interfaces/formats#data-format-orc)                                                                                | raw    | raw     |
+| [One](/interfaces/formats#data-format-one)                                                                                | raw    | -       |
+| [Npy](/interfaces/formats#data-format-npy)                                                                                | raw    | raw     |
+| [RowBinary](/interfaces/formats#rowbinary)                                                                                | full   | full    |
+| [RowBinaryWithNames](/interfaces/formats#rowbinarywithnamesandtypes)                                                      | full   | full    |
+| [RowBinaryWithNamesAndTypes](/interfaces/formats#rowbinarywithnamesandtypes)                                            | full   | full    |
+| [RowBinaryWithDefaults](/interfaces/formats#rowbinarywithdefaults)                                                        | full   | -       |
+| [Native](/interfaces/formats#native)                                                                                      | full   | raw     |
+| [Null](/interfaces/formats#null)                                                                                          | -      | raw     |
+| [XML](/interfaces/formats#xml)                                                                                            | -      | raw     |
+| [CapnProto](/interfaces/formats#capnproto)                                                                                | raw    | raw     |
+| [LineAsString](/interfaces/formats#lineasstring)                                                                          | raw    | raw     |
+| [Regexp](/interfaces/formats#data-format-regexp)                                                                          | raw    | -       |
+| [RawBLOB](/interfaces/formats#rawblob)                                                                                    | raw    | raw     |
+| [MsgPack](/interfaces/formats#msgpack)                                                                                    | raw    | raw     |
+| [MySQLDump](/interfaces/formats#mysqldump)                                                                                | raw    | -       |
+| [DWARF](/interfaces/formats#dwarf)                                                                                        | raw    | -       |
+| [Markdown](/interfaces/formats#markdown)                                                                                    | -      | raw     |
+| [Form](/interfaces/formats#form)                                                                                          | raw    | -       |
+## Insert API {#insert-api}
+### insert(String tableName, InputStream data, ClickHouseFormat format) {#insertstring-tablename-inputstream-data-clickhouseformat-format}
+
+Принимает данные в виде `InputStream` байт в указанном формате. Ожидается, что `data` закодированы в `format`.
+
+**Сигнатуры**
+
+```java
+CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
+CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format)
+```
+
+**Параметры**
+
+`tableName` - имя целевой таблицы.
+
+`data` - входной поток закодированных данных.
+
+`format` - формат, в котором закодированы данные.
+
+`settings` - настройки запроса.
+
+**Возвращаемое значение**
+
+Future типа `InsertResponse` - результат операции и дополнительная информация, такая как метрики на стороне сервера.
+
+**Примеры**
+
+```java showLineNumbers
+try (InputStream dataStream = getDataStream()) {
+    try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
+            insertSettings).get(3, TimeUnit.SECONDS)) {
+
+        log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+    } catch (Exception e) {
+        log.error("Failed to write JSONEachRow data", e);
+        throw new RuntimeException(e);
+    }
+}
+
+```
+### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
+
+Отправляет запрос на запись в базу данных. Список объектов преобразуется в эффективный формат и затем отправляется на сервер. Класс элементов в списке должен быть зарегистрирован заранее с помощью метода `register(Class, TableSchema)`.
+
+**Сигнатуры**
+```java
+client.insert(String tableName, List<?> data, InsertSettings settings)
+client.insert(String tableName, List<?> data)
+```
+
+**Параметры**
+
+`tableName` - имя целевой таблицы.
+
+`data` - коллекция DTO (объект передачи данных).
+
+`settings` - настройки запроса.
+
+**Возвращаемое значение**
+
+Future типа `InsertResponse` - результат операции и дополнительная информация, такая как метрики на стороне сервера.
+
+**Примеры**
+
+```java showLineNumbers
+// Important step (done once) - register class to pre-compile object serializer according to the table schema. 
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+
+List<ArticleViewEvent> events = loadBatch();
+
+try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
+    // handle response, then it will be closed and connection that served request will be released. 
+}
+```
+### InsertSettings {#insertsettings}
+
+Настройки конфигурации для операций вставки.
+
+**Методы конфигурации**
+
+| Метод                                          | Описание                                                                                                                |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`                   | Устанавливает ID запроса, который будет назначен операции. Значение по умолчанию: `null`.                             |
+| `setDeduplicationToken(String token)`          | Устанавливает токен дедупликации. Этот токен будет отправлен на сервер и может быть использован для идентификации запроса. Значение по умолчанию: `null`. |
+| `setInputStreamCopyBufferSize(int size)`       | Размер буфера копирования. Буфер используется во время операций записи для копирования данных из пользовательского входного потока в выходной поток. Значение по умолчанию: `8196`. |
+| `serverSetting(String name, String value)`     | Устанавливает индивидуальные настройки сервера для операции.                                                            |
+| `serverSetting(String name, Collection values)` | Устанавливает индивидуальные настройки сервера с несколькими значениями для операции. Элементы коллекции должны быть строковыми значениями.  |
+| `setDBRoles(Collection dbRoles)`               | Устанавливает роли БД, которые должны быть применены перед выполнением операции. Элементы коллекции должны быть строковыми значениями. |
+| `setOption(String option, Object value)`       | Устанавливает опцию конфигурации в необработанном формате. Это не настройка сервера.                                   |
+### InsertResponse {#insertresponse}
+
+Объект ответа, который содержит результат операции вставки. Он доступен только в том случае, если клиент получил ответ от сервера.
+
+:::note
+Этот объект должен быть закрыт как можно скорее, чтобы освободить соединение, поскольку соединение не может быть повторно использовано, пока все данные предыдущего ответа не будут полностью прочитаны.
+:::
+
+| Метод                          | Описание                                                                                          |
+|-------------------------------|---------------------------------------------------------------------------------------------------|
+| `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                         |
+| `String getQueryId()`         | Возвращает ID запроса, назначенный для операции приложением (через настройки операции или сервером). |
+## Query API {#query-api}
+### query(String sqlQuery) {#querystring-sqlquery}
+
+Отправляет `sqlQuery` как есть. Формат ответа устанавливается настройками запроса. `QueryResponse` будет содержать ссылку на поток ответа, который должен быть обработан читателем для поддерживаемого формата.
+
+**Сигнатуры**
+
+```java
+CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
+CompletableFuture<QueryResponse> query(String sqlQuery)
+```
+
+**Параметры**
+
+`sqlQuery` - отдельное SQL выражение. Запрос отправляется как есть на сервер.
+
+`settings` - настройки запроса.
+
+**Возвращаемое значение**
+
+Future типа `QueryResponse` - результирующий набор данных и дополнительная информация, такая как метрики на стороне сервера. Объект ответа должен быть закрыт после обработки набора данных.
+
+**Примеры**
+
+```java
+final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
+
+// Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // get values
+        double id = reader.getDouble("id");
+        String title = reader.getString("title");
+        String url = reader.getString("url");
+
+        // collecting data 
+    }
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+// put business logic outside of the reading block to release http connection asap.  
+```
+### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
+
+Отправляет `sqlQuery` как есть. Дополнительно будут отправлены параметры запроса, чтобы сервер мог составить SQL выражение.
+
+**Сигнатуры**
+```java
+CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
+```
+
+**Параметры**
+
+`sqlQuery` - SQL выражение с заполнителями `{}`.
+
+`queryParams` - карта переменных для завершения SQL выражения на сервере.
+
+`settings` - настройки запроса.
+
+**Возвращаемое значение**
+
+Future типа `QueryResponse` - результирующий набор данных и дополнительная информация, такая как метрики на стороне сервера. Объект ответа должен быть закрыт после обработки набора данных.
+
+**Примеры**
+
+```java showLineNumbers
+
+// define parameters. They will be sent to the server along with the request.   
+Map<String, Object> queryParams = new HashMap<>();
+queryParams.put("param1", 2);
+
+try (QueryResponse response =
+        client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // reading data 
+    }
+
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+```
+### queryAll(String sqlQuery) {#queryallstring-sqlquery}
+
+Запрашивает данные в формате `RowBinaryWithNamesAndTypes`. Возвращает результат в виде коллекции. Производительность чтения такая же, как и у читателя, но требуется больше памяти для хранения всего набора данных.
+
+**Сигнатуры**
+```java
+List<GenericRecord> queryAll(String sqlQuery)
+```
+
+**Параметры**
+
+`sqlQuery` - SQL выражение для запроса данных с сервера.
+
+**Возвращаемое значение**
+
+Полный набор данных, представленный списком объектов `GenericRecord`, которые обеспечивают доступ к результатам данных в строковом стиле.
+
+**Примеры**
+
+```java showLineNumbers
+try {
+    log.info("Reading whole table and process record by record");
+    final String sql = "select * from " + TABLE_NAME + " where title <> ''";
+
+    // Read whole result set and process it record by record
+    client.queryAll(sql).forEach(row -> {
+        double id = row.getDouble("id");
+        String title = row.getString("title");
+        String url = row.getString("url");
+
+        log.info("id: {}, title: {}, url: {}", id, title, url);
+    });
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+```
+### QuerySettings {#querysettings}
+
+Настройки конфигурации для операций запросов.
+
+**Методы конфигурации**
+
+| Метод                                          | Описание                                                                                                                |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`                   | Устанавливает ID запроса, который будет назначен операции.                                                             |
+| `setFormat(ClickHouseFormat format)`           | Устанавливает формат ответа. Смотрите `RowBinaryWithNamesAndTypes` для полного списка.                                 |
+| `setMaxExecutionTime(Integer maxExecutionTime)` | Устанавливает максимальное время выполнения операции на сервере. Не будет влиять на тайм-аут чтения.                   |
+| `waitEndOfQuery(Boolean waitEndOfQuery)`      | Запрашивает у сервера ожидание завершения запроса перед отправкой ответа.                                              |
+| `setUseServerTimeZone(Boolean useServerTimeZone)` | Часовой пояс сервера (смотрите конфигурацию клиента) будет использоваться для разбора типов даты/времени в результате операции. Значение по умолчанию `false`. |
+| `setUseTimeZone(String timeZone)`              | Запрашивает сервер использовать `timeZone` для конверсии времени. Смотрите [session_timezone](/operations/settings/settings#session_timezone). |
+| `serverSetting(String name, String value)`     | Устанавливает индивидуальные настройки сервера для операции.                                                            |
+| `serverSetting(String name, Collection values)` | Устанавливает индивидуальные настройки сервера с несколькими значениями для операции. Элементы коллекции должны быть строковыми значениями. |
+| `setDBRoles(Collection dbRoles)`               | Устанавливает роли БД, которые должны быть применены перед выполнением операции. Элементы коллекции должны быть строковыми значениями. |
+| `setOption(String option, Object value)`       | Устанавливает опцию конфигурации в необработанном формате. Это не настройка сервера.                                    |
+### QueryResponse {#queryresponse}
+
+Объект ответа, который содержит результат выполнения запроса. Он доступен только в том случае, если клиент получил ответ от сервера.
+
+:::note
+Этот объект должен быть закрыт как можно скорее, чтобы освободить соединение, поскольку соединение не может быть повторно использовано, пока все данные предыдущего ответа не будут полностью прочитаны.
+:::
+
+| Метод                              | Описание                                                                                          |
+|-------------------------------------|---------------------------------------------------------------------------------------------------|
+| `ClickHouseFormat getFormat()`      | Возвращает формат, в котором данные в ответе закодированы.                                        |
+| `InputStream getInputStream()`      | Возвращает не сжатый поток байтов данных в указанном формате.                                     |
+| `OperationMetrics getMetrics()`     | Возвращает объект с метриками операции.                                                           |
+| `String getQueryId()`               | Возвращает ID запроса, назначенный для операции приложением (через настройки операции или сервером). |
+| `TimeZone getTimeZone()`            | Возвращает часовой пояс, который должен быть использован для обработки типов Date/DateTime в ответе. |
+### Примеры {#examples}
+
+- Примеры кода доступны в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
+- Ссылка на [реализацию Spring Service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
+## Общий API {#common-api}
+### getTableSchema(String table) {#gettableschemastring-table}
+
+Получает схему таблицы для `table`.
+
+**Сигнатуры**
+
+```java
+TableSchema getTableSchema(String table)
+TableSchema getTableSchema(String table, String database)
+```
+
+**Параметры**
+
+`table` - имя таблицы, для которой должна быть получена информация о схеме.
+
+`database` - база данных, в которой определена целевая таблица.
+
+**Возвращаемое значение**
+
+Возвращает объект `TableSchema` со списком колонок таблицы.
+### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
+
+Получает схему из SQL выражения.
+
+**Сигнатуры**
+
+```java
+TableSchema getTableSchemaFromQuery(String sql)
+```
+
+**Параметры**
+
+`sql` - SQL выражение "SELECT", для которого должна быть возвращена схема.
+
+**Возвращаемое значение**
+
+Возвращает объект `TableSchema` с колонками, соответствующими выражению `sql`.
+### TableSchema {#tableschema}
+### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
+
+Компилирует слой сериализации и десериализации для класса Java, который будет использоваться для записи/чтения данных с `schema`. Метод создаст сериализатор и десериализатор для пары геттер/сеттер и соответствующей колонки.
+Совпадение колонки определяется извлечением её имени из названия метода. Например, `getFirstName` будет соответствовать колонке `first_name` или `firstname`.
+
+**Сигнатуры**
+
+```java
+void register(Class<?> clazz, TableSchema schema)
+```
+
+**Параметры**
+
+`clazz` - класс, представляющий POJO, используемый для чтения/записи данных.
+
+`schema` - схема данных, используемая для сопоставления с свойствами POJO.
+
+**Примеры**
+
+```java showLineNumbers
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+```
+## Примеры использования {#usage-examples}
+
+Полные примеры кода хранятся в репозитории в папке 'example' [папка](https://github.com/ClickHouse/clickhouse-java/tree/main/examples):
+
+- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - основной набор примеров.
+- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - пример использования клиента в приложении Spring Boot.
+- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - пример использования клиента в приложении Ktor (Kotlin).

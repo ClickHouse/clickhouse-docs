@@ -1,6 +1,9 @@
 ---
 slug: /integrations/misc
-keywords: [Retool, Easypanel, Splunk]
+keywords: ['Retool', 'Easypanel', 'Splunk']
+title: 'Tools'
+description: 'Landing page for the Tools section'
+doc_type: 'landing-page'
 ---
 
 # Tools

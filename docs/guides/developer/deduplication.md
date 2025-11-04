@@ -1,11 +1,17 @@
 ---
 slug: /guides/developer/deduplication
-sidebar_label: Deduplication Strategies
+sidebar_label: 'Deduplication strategies'
 sidebar_position: 3
-description: Use deduplication when you need to perform frequent upserts, updates and deletes.
+description: 'Use deduplication when you need to perform frequent upserts, updates and deletes.'
+title: 'Deduplication Strategies'
+keywords: ['deduplication strategies', 'data deduplication', 'upserts', 'updates and deletes', 'developer guide']
+doc_type: 'guide'
 ---
 
-# Deduplication Strategies
+import deduplication from '@site/static/images/guides/developer/de_duplication.png';
+import Image from '@theme/IdealImage';
+
+# Deduplication strategies
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 
@@ -19,7 +25,7 @@ ClickHouse is built for speed when it comes to data insertion. The storage files
 
 |||
 |------|----|
-|<img src={require('./images/Deduplication.png').default} class="image" alt="Cassandra logo" style={{width: '16rem', 'background-color': 'transparent'}}/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
+|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse provides free training on deduplication and many other topics.  The [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) is a good place to start.|
 
 </div>
 
@@ -100,7 +106,9 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works OK if you have a small amount of data. If you are dealing with a large amount of data, using `FINAL` is probably not the best option. Let's discuss a better option for finding the latest value of a column…
+Using `FINAL` works okay if you have a small amount of data. If you are dealing with a large amount of data, 
+using `FINAL` is probably not the best option. Let's discuss a better option for 
+finding the latest value of a column.
 :::
 
 ### Avoiding FINAL {#avoiding-final}
@@ -135,7 +143,6 @@ FROM hackernews_rmt
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-
 Instead of using `FINAL`, let's use some business logic - we know that the `views` column is always increasing, so we can select the row with the largest value using the `max` function after grouping by the desired columns:
 
 ```sql
@@ -159,9 +166,9 @@ Grouping as shown in the query above can actually be more efficient (in terms of
 
 Our [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) expands on this example, including how to use a `version` column with `ReplacingMergeTree`.
 
-## Using CollapsingMergeTree for Updating Columns Frequently {#using-collapsingmergetree-for-updating-columns-frequently}
+## Using CollapsingMergeTree for updating columns frequently {#using-collapsingmergetree-for-updating-columns-frequently}
 
-Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new… and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
+Updating a column involves deleting an existing row and replacing it with new values. As you have already seen, this type of mutation in ClickHouse happens _eventually_ - during merges. If you have a lot of rows to update, it can actually be more efficient to avoid `ALTER TABLE..UPDATE` and instead just insert the new data alongside the existing data. We could add a column that denotes whether or not the data is stale or new... and there is actually a table engine that already implements this behavior very nicely, especially considering that it deletes the stale data automatically for you. Let's see how it works.
 
 Suppose we track the number of views that a Hacker News comment has using an external system and every few hours, we push the data into ClickHouse. We want the old rows deleted and the new rows to represent the new state of each Hacker News comment. We can use a `CollapsingMergeTree` to implement this behavior.
 
@@ -243,7 +250,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 :::
 
-## Real-time Updates from Multiple Threads {#real-time-updates-from-multiple-threads}
+## Real-time updates from multiple threads {#real-time-updates-from-multiple-threads}
 
 With a `CollapsingMergeTree` table, rows cancel each other using a sign column, and the state of a row is determined by the last row inserted. But this can be problematic if you are inserting rows from different threads where rows can be inserted out of order. Using the "last" row does not work in this situation.
 
@@ -333,9 +340,8 @@ FROM hackernews_views_vcmt
 
 A `VersionedCollapsingMergeTree` table is quite handy when you want to implement deduplication while inserting rows from multiple clients and/or threads.
 
-## Why aren’t my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
+## Why aren't my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
 
 One reason inserted rows may not be deduplicated is if you are using a non-idempotent function or expression in your `INSERT` statement. For example, if you are inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine will not know to deduplicate the rows as each inserted row will generate a unique checksum.
 
 In this case, you can specify your own `insert_deduplication_token` for each batch of rows to ensure that multiple inserts of the same batch will not result in the same rows being re-inserted. Please see the [documentation on `insert_deduplication_token`](/operations/settings/settings#insert_deduplication_token) for more details about how to use this setting.
-

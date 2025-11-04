@@ -1,27 +1,18 @@
 ---
 slug: /operations/overview
-sidebar_label: Performance and Optimizations Overview
-description: Overview page of Performance and Optimizations
+sidebar_label: 'Performance and optimizations overview'
+description: 'Overview page of Performance and Optimizations'
+title: 'Performance and Optimizations'
+keywords: ['performance optimization', 'best practices', 'optimization guide', 'ClickHouse performance', 'database optimization']
+doc_type: 'reference'
 ---
+
+import TableOfContents from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
 # Performance and Optimizations
 
 This section contains tips and best practices for improving performance with ClickHouse. 
 We recommend users read [Core Concepts](/parts) as a precursor to this section, 
-which covers the main concepts required to improve performance, 
-especially [Primary Indices](./sparse-primary-indexes.md).
+which covers the main concepts required to improve performance.
 
-| Topic                                                                                 | Description                                                                                                                                                                                                                                                                                                                                                             |
-|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Query Optimization Guide](/optimize/query-optimization)                      | A good place to start for query optimization, this simple guide describes common scenarios of how to use different performance and optimization techniques to improve query performance.                                                                                                                                                                                |
-| [Partitioning Key](/optimize/partitioning-key)                                | Delves into ClickHouse partition key optimization. Explains how choosing the right partition key can significantly improve query performance by allowing ClickHouse to quickly locate relevant data segments. Covers best practices for selecting efficient partition keys and potential pitfalls to avoid.                                                             |
-| [Data Skipping Indexes](/optimize/skipping-indexes)                           | Explains data skipping indexes as a way to optimize performance.                                                                                                                                                                                                                                                                                                        |
-| [Bulk Inserts](/optimize/bulk-inserts)                                        | Explains the benefits of using bulk inserts in ClickHouse.                                                                                                                                                                                                                                                                                                              |
-| [Asynchronous Inserts](/optimize/asynchronous-inserts)                        | Focuses on ClickHouse's asynchronous inserts feature. It likely explains how asynchronous inserts work (batching data on the server for efficient insertion) and their benefits (improved performance by offloading insert processing). It might also cover enabling asynchronous inserts and considerations for using them effectively in your ClickHouse environment. |
-| [Avoid Mutations](/optimize/avoid-mutations)                                  | Discusses the importance of avoiding mutations (updates and deletes) in ClickHouse. It recommends using append-only inserts for optimal performance and suggests alternative approaches for handling data changes.                                                                                                                                                      |
-| [Avoid Nullable Columns](/optimize/avoid-nullable-columns)                    | Discusses why you may want to avoid Nullable columns to save space and increase performance. Demonstrates how to set a default value for a column.                                                                                                                                                                                                                      |
-| [Avoid Optimize Final](/optimize/avoidoptimizefinal)                          | Explains how the `OPTIMIZE TABLE ... FINAL` query is resource-intensive and suggests alternative approaches to optimize ClickHouse performance.                                                                                                                                                                                                                         |
-| [Analyzer](/operations/analyzer)                                              | Looks at the ClickHouse Analyzer, a tool for analyzing and optimizing queries. Discusses how the Analyzer works, its benefits (e.g., identifying performance bottlenecks), and how to use it to improve your ClickHouse queries' efficiency.                                                                                                                            |
-| [Query Profiling](/operations/optimizing-performance/sampling-query-profiler) | Explains ClickHouse's Sampling Query Profiler, a tool that helps analyze query execution.                                                                                                                                                                                                                                                                               |
-| [Query Cache](/operations/query-cache)                                        | Details ClickHouse's Query Cache, a feature that aims to improve performance by caching the results of frequently executed `SELECT` queries.                                                                                                                                                                                                                            |
-| [Testing Hardware](/operations/performance-test)                              | How to run a basic ClickHouse performance test on any server without installation of ClickHouse packages. (Not applicable to ClickHouse Cloud)                                                                                                                                                                                                                          |
+<TableOfContents/>

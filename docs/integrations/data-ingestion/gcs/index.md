@@ -1,10 +1,17 @@
 ---
-sidebar_label: Google Cloud Storage (GCS)
+sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: "Google Cloud Storage (GCS) Backed MergeTree"
+description: 'Google Cloud Storage (GCS) Backed MergeTree'
+title: 'Integrate Google Cloud Storage with ClickHouse'
+doc_type: 'guide'
+keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse integration', 'GCS backed MergeTree', 'ClickHouse GCS storage', 'Google Cloud ClickHouse']
 ---
+
 import BucketDetails from '@site/docs/_snippets/_GCS_authentication_and_bucket.md';
+import Image from '@theme/IdealImage';
+import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
+import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
 # Integrate Google Cloud Storage with ClickHouse
 
@@ -14,13 +21,13 @@ If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), t
 
 ClickHouse recognizes that GCS represents an attractive storage solution for users seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
 
-## GCS Backed MergeTree {#gcs-backed-mergetree}
+## GCS backed MergeTree {#gcs-backed-mergetree}
 
-### Creating a Disk {#creating-a-disk}
+### Creating a disk {#creating-a-disk}
 
 To utilize a GCS bucket as a disk, we must first declare it within the ClickHouse configuration in a file under `conf.d`. An example of a GCS disk declaration is shown below.  This configuration includes multiple sections to configure the GCS "disk", the cache, and the policy that is specified in DDL queries when tables are to be created on the GCS disk.  Each of these are described below.
 
-#### storage_configuration > disks > gcs {#storage_configuration--disks--gcs}
+#### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
 - Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
@@ -34,14 +41,14 @@ This part of the configuration is shown in the highlighted section and specifies
     <storage_configuration>
         <disks>
             <gcs>
-	    <!--highlight-start-->
+            <!--highlight-start-->
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
-	    <!--highlight-end-->
+            <!--highlight-end-->
             </gcs>
         </disks>
         <policies>
@@ -56,7 +63,7 @@ This part of the configuration is shown in the highlighted section and specifies
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > disks > cache {#storage_configuration--disks--cache}
+#### Storage configuration > disks > cache {#storage_configuration--disks--cache}
 
 The example configuration highlighted below enables a 10Gi memory cache for the disk `gcs`.
 
@@ -72,14 +79,14 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
-	    <!--highlight-start-->
-	    <gcs_cache>
+            <!--highlight-start-->
+            <gcs_cache>
                 <type>cache</type>
                 <disk>gcs</disk>
                 <path>/var/lib/clickhouse/disks/gcs_cache/</path>
                 <max_size>10Gi</max_size>
             </gcs_cache>
-	    <!--highlight-end-->
+            <!--highlight-end-->
         </disks>
         <policies>
             <gcs_main>
@@ -93,7 +100,7 @@ The example configuration highlighted below enables a 10Gi memory cache for the 
     </storage_configuration>
 </clickhouse>
 ```
-#### storage_configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
+#### Storage configuration > policies > gcs_main {#storage_configuration--policies--gcs_main}
 
 Storage configuration policies allow choosing where data is stored.  The policy highlighted below allows data to be stored on the disk `gcs` by specifying the policy `gcs_main`.  For example, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 
@@ -111,7 +118,7 @@ Storage configuration policies allow choosing where data is stored.  The policy 
             </gcs>
         </disks>
         <policies>
-	    <!--highlight-start-->
+            <!--highlight-start-->
             <gcs_main>
                 <volumes>
                     <main>
@@ -119,7 +126,7 @@ Storage configuration policies allow choosing where data is stored.  The policy 
                     </main>
                 </volumes>
             </gcs_main>
-	    <!--highlight-end-->
+            <!--highlight-end-->
         </policies>
     </storage_configuration>
 </clickhouse>
@@ -151,7 +158,7 @@ CREATE TABLE trips_gcs
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 
@@ -162,20 +169,18 @@ INSERT INTO trips_gcs SELECT trip_id, pickup_date, pickup_datetime, dropoff_date
 Depending on the hardware, this latter insert of 1m rows may take a few minutes to execute. You can confirm the progress via the system.processes table. Feel free to adjust the row count up to the limit of 10m and explore some sample queries.
 
 ```sql
-SELECT passenger_count, avg(tip_amount) as avg_tip, avg(total_amount) as avg_amount FROM trips_gcs GROUP BY passenger_count;
+SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_gcs GROUP BY passenger_count;
 ```
 
-### Handling Replication {#handling-replication}
+### Handling replication {#handling-replication}
 
 Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two GCP regions using GCS](#gcs-multi-region) guide for details.
 
-
-### Learn More {#learn-more}
+### Learn more {#learn-more}
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
 For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
-
 
 ## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
@@ -196,7 +201,7 @@ Sample requirements for high availability:
 
 ClickHouse Keeper requires two nodes to function, hence a requirement for three nodes for high availability.
 
-### Prepare VMs {#prepare-vms}
+### Prepare virtual machines {#prepare-vms}
 
 Deploy five VMS in three regions:
 
@@ -218,13 +223,13 @@ Place `chnode1` in one GCP region, and `chnode2` in a second.  In this guide `us
 Do not start `clickhouse server` until after it is configured.  Just install it.
 :::
 
-Refer to the [installation instructions](/getting-started/install.md/#available-installation-options) when performing the deployment steps on the ClickHouse server nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
 #### Deploy ClickHouse Keeper {#deploy-clickhouse-keeper}
 
 Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region, but in a different availability zone from the ClickHouse node in that region.
 
-Refer to the [installation instructions](/getting-started/install.md/#install-standalone-clickhouse-keeper) when performing the deployment steps on the ClickHouse Keeper nodes.
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
 ### Create two buckets {#create-two-buckets}
 
@@ -290,7 +295,7 @@ All of the ClickHouse Keeper nodes have the same configuration file except for t
 </clickhouse>
 ```
 
-### Configure ClickHouse Server {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
 :::note best practice
 Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
@@ -311,7 +316,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 
 - Edit the hostnames to match your Keeper hosts
 
-
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
     <zookeeper>
@@ -330,7 +334,6 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
     </zookeeper>
 </clickhouse>
 ```
-
 
 #### Remote ClickHouse servers {#remote-clickhouse-servers}
 
@@ -401,7 +404,7 @@ These substitutions are common across the two nodes:
                 <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
-	    <cache>
+            <cache>
                 <type>cache</type>
                 <disk>gcs</disk>
                 <path>/var/lib/clickhouse/disks/gcs_cache/</path>
@@ -439,35 +442,35 @@ Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` retur
 echo mntr | nc localhost 9181
 ```
 ```response
-zk_version	v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
-zk_avg_latency	0
-zk_max_latency	11
-zk_min_latency	0
-zk_packets_received	1783
-zk_packets_sent	1783
+zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
+zk_avg_latency  0
+zk_max_latency  11
+zk_min_latency  0
+zk_packets_received     1783
+zk_packets_sent 1783
 # highlight-start
-zk_num_alive_connections	2
-zk_outstanding_requests	0
-zk_server_state	leader
+zk_num_alive_connections        2
+zk_outstanding_requests 0
+zk_server_state leader
 # highlight-end
-zk_znode_count	135
-zk_watch_count	8
-zk_ephemerals_count	3
-zk_approximate_data_size	42533
-zk_key_arena_size	28672
-zk_latest_snapshot_size	0
-zk_open_file_descriptor_count	182
-zk_max_file_descriptor_count	18446744073709551615
+zk_znode_count  135
+zk_watch_count  8
+zk_ephemerals_count     3
+zk_approximate_data_size        42533
+zk_key_arena_size       28672
+zk_latest_snapshot_size 0
+zk_open_file_descriptor_count   182
+zk_max_file_descriptor_count    18446744073709551615
 # highlight-start
-zk_followers	2
-zk_synced_followers	2
+zk_followers    2
+zk_synced_followers     2
 # highlight-end
 ```
-
 
 ### Start ClickHouse server {#start-clickhouse-server}
 
 On `chnode1` and `chnode` run:
+
 ```bash
 sudo service clickhouse-server start
 ```
@@ -542,7 +545,7 @@ cache_path:
 ```
 #### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
-# highlight-next-line
+-- highlight-next-line
 create table trips on cluster 'cluster_1S_2R' (
  `trip_id` UInt32,
  `pickup_date` Date,
@@ -560,7 +563,7 @@ create table trips on cluster 'cluster_1S_2R' (
 ENGINE = ReplicatedMergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-# highlight-next-line
+-- highlight-next-line
 SETTINGS storage_policy='gcs_main'
 ```
 ```response
@@ -619,10 +622,13 @@ formatReadableSize(total_bytes): 36.42 MiB
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-#### Verify in Google Cloud Console {#verify-in-google-cloud-console}
+#### Verify in Google Cloud console {#verify-in-google-cloud-console}
 
 Looking at the buckets you will see that a folder was created in each bucket with the name that was used in the `storage.xml` configuration file.  Expand the folders and you will see many files, representing the data partitions.
 #### Bucket for replica one {#bucket-for-replica-one}
-![replica one bucket](@site/docs/integrations/data-ingestion/s3/images/GCS-examine-bucket-1.png)
+
+<Image img={GCS_examine_bucket_1} size="lg" border alt="Replica one bucket in Google Cloud Storage showing folder structure with data partitions" />
+
 #### Bucket for replica two {#bucket-for-replica-two}
-![replica two bucket](@site/docs/integrations/data-ingestion/s3/images/GCS-examine-bucket-2.png)
+
+<Image img={GCS_examine_bucket_2} size="lg" border alt="Replica two bucket in Google Cloud Storage showing folder structure with data partitions" />

@@ -1,19 +1,25 @@
 ---
-sidebar_label: Spark JDBC
+sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
-description: Introduction to Apache Spark with ClickHouse
-keywords: [ clickhouse, Apache Spark, jdbc, migrating, data ]
+description: 'Introduction to Apache Spark with ClickHouse'
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
+title: 'Spark JDBC'
+doc_type: 'guide'
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark JDBC
+
+<ClickHouseSupportedBadge/>
+
 JDBC is one of the most commonly used data sources in Spark.
 In this section, we will provide details on how to
-use the [ClickHouse official JDBC connector](/integrations/java/jdbc-driver) with Spark.
-
+use the [ClickHouse official JDBC connector](/integrations/language-clients/java/jdbc) with Spark.
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -29,7 +35,6 @@ public static void main(String[] args) {
 
         String jdbcURL = "jdbc:ch://localhost:8123/default";
         String query = "select * from example_table where id > 2";
-
 
         //---------------------------------------------------------------------------------------------------
         // Load the table from ClickHouse using jdbc method
@@ -53,9 +58,7 @@ public static void main(String[] args) {
                 .option("query", query)
                 .load();
 
-
         df2.show();
-
 
         // Stop the Spark session
         spark.stop();
@@ -72,7 +75,6 @@ object ReadData extends App {
 
   val jdbcURL = "jdbc:ch://localhost:8123/default"
   val query: String = "select * from example_table where id > 2"
-
 
   //---------------------------------------------------------------------------------------------------
   // Load the table from ClickHouse using jdbc method
@@ -97,8 +99,6 @@ object ReadData extends App {
     .load()
 
   df2.show()
-
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -187,7 +187,6 @@ df.show()
         rows.add(RowFactory.create(1, "John"));
         rows.add(RowFactory.create(2, "Doe"));
 
-
         Dataset<Row> df = spark.createDataFrame(rows, schema);
 
         //---------------------------------------------------------------------------------------------------
@@ -211,7 +210,6 @@ df.show()
                 .option("password", "123456")
                 .save();
 
-
         // Stop the Spark session
         spark.stop();
     }
@@ -232,7 +230,6 @@ object WriteData extends App {
   jdbcProperties.put("password", "123456")
 
   // Create a sample DataFrame
-
 
   val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
@@ -266,7 +263,6 @@ object WriteData extends App {
     .option("user", "default")
     .option("password", "123456")
     .save()
-
 
   // Stop the Spark session// Stop the Spark session
   spark.stop()
@@ -312,7 +308,6 @@ df.write \
     .mode("append") \
     .save()
 
-
 ```
 
 </TabItem>
@@ -337,7 +332,6 @@ df.write \
 </TabItem>
 </Tabs>
 
-
 ## Parallelism {#parallelism}
 
 When using Spark JDBC, Spark reads the data using a single partition. To achieve higher concurrency, you must specify
@@ -346,7 +340,7 @@ reading in parallel from multiple workers.
 Please visit Apache Spark's official documentation for more information
 on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
-## JDBC Limitations {#jdbc-limitations}
+## JDBC limitations {#jdbc-limitations}
 
 * As of today, you can insert data using JDBC only into existing tables (currently there is no way to auto create the
   table on DF insertion, as Spark does with other connectors).

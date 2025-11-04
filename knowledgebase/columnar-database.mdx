@@ -6,6 +6,10 @@ tags: ['Core Data Concepts']
 keywords: ['Columnar Database']
 ---
 
+import Image from '@theme/IdealImage';
+import RowOriented from '@site/static/images/row-oriented.gif';
+import ColumnOriented from '@site/static/images/column-oriented.gif';
+
 {frontMatter.description}
 {/* truncate */}
 
@@ -26,9 +30,9 @@ Key columnar database advantages are:
 Here is an illustration of the difference between traditional row-oriented systems and columnar databases when building reports:
 
 **Traditional row-oriented**
-![Traditional row-oriented](@site/docs/images/row-oriented.gif#)
+<Image img={RowOriented} alt="Illustration of traditional row-oriented database storage" size="md" />
 
 **Columnar**
-![Columnar](@site/docs/images/column-oriented.gif#)
+<Image img={ColumnOriented} alt="Illustration of columnar database storage" size="md" />
 
-A columnar database is the preferred choice for analytical applications because it allows having many columns in a table just in case but does not pay the cost for unused columns on read query execution time (a traditional OLTP database reads all of the data during queries as the data is stored in rows and not columns). Column-oriented databases are designed for big data processing and data warehousing. They often natively scale using distributed clusters of low-cost hardware to increase throughput. ClickHouse does it with a combination of [distributed](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) and [replicated](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication) tables.
+A columnar database is the preferred choice for analytical applications because it allows having many columns in a table just in case but does not pay the cost for unused columns on read query execution time (a traditional OLTP database reads all of the data during queries as the data is stored in rows and not columns). Column-oriented databases are designed for big data processing and data warehousing. They often natively scale using distributed clusters of low-cost hardware to increase throughput. ClickHouse does it with a combination of [distributed](https://clickhouse.com/docs/engines/table-engines/special/distributed) and [replicated](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication) tables.

@@ -1,0 +1,50 @@
+---
+description: 'Install ClickHouse'
+keywords: ['clickhouse', 'install', 'getting started', 'quick start']
+sidebar_label: 'Install'
+slug: /install
+title: 'Install ClickHouse'
+doc_type: 'guide'
+---
+
+import InstallSelector from '@site/src/components/Install/Install'
+import Windows from './_snippets/_windows_install.md'
+import TarProd from './_snippets/_linux_tar_install.md'
+import QuickInstall from './_snippets/_quick_install.md'
+import DebianProd from './_snippets/_deb_install.md'
+import RPMProd from './_snippets/_rpm_install.md'
+import MacOSProd from './_snippets/_macos.md'
+import Docker from './_snippets/_docker.md'
+import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
+
+# Installation instructions
+
+<CardPrimary
+    alignContent="center"
+    description="Start building instantly without having to size and scale your cluster. We take care of sizing, scaling
+    , security, reliability and upgrades."
+    icon="cloud"
+    infoText="Get started free"
+    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+    isSelected
+    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+    size="md"
+    title="ClickHouse Cloud"
+    topBadgeText="Recommended"
+/>
+<br/>
+
+Alternatively, select a platform, distribution and install method below to view install
+instructions for Opensource ClickHouse:
+
+<InstallSelector
+    windows={<Windows/>}
+    quickinstall={<QuickInstall/>}
+    debian_prod={<DebianProd/>}
+    rpm_prod={<RPMProd/>}
+    tar_prod={<TarProd/>}
+    macos_prod={<MacOSProd/>}
+    docker={<Docker/>}
+/>
+

@@ -1,10 +1,24 @@
 ---
 slug: /integrations/jupysql
-sidebar_label: Jupyter notebooks
-description: JupySQL is a multi-platform database tool for Jupyter.
+sidebar_label: 'Jupyter notebooks'
+description: 'JupySQL is a multi-platform database tool for Jupyter.'
+title: 'Using JupySQL with ClickHouse'
+keywords: ['JupySQL', 'Jupyter notebook', 'Python', 'data analysis', 'interactive SQL']
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
+import Image from '@theme/IdealImage';
+import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
+import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+
 # Using JupySQL with ClickHouse
+
+<CommunityMaintainedBadge/>
+
 In this guide we'll show an integration with ClickHouse.
 
 We will use JupySQL to run queries on top of ClickHouse.
@@ -12,15 +26,12 @@ Once the data is loaded, we'll visualize it via SQL plotting.
 
 The integration between JupySQL and ClickHouse is made possible by the use of the clickhouse_sqlalchemy library. This library allows for easy communication between the two systems, and enables users to connect to ClickHouse and pass the SQL dialect. Once connected, users can run SQL queries directly from the Clickhouse native UI, or from the Jupyter notebook directly.
 
-
 ```python
 # Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
     Note: you may need to restart the kernel to use updated packages.
-
-
 
 ```python
 import pandas as pd
@@ -33,13 +44,11 @@ from sklearn_evaluation import plot
 
 **You'd need to make sure your Clickhouse is up and reachable for the next stages. You can use either the local or the cloud version.**
 
-**Note:** you will need to adjust the connection string according to the instance type you're trying to connect to (url, user, password). In the example below we've used a local instance. To learn more about it, check out [this guide](/getting-started/quick-start).
-
+**Note:** you will need to adjust the connection string according to the instance type you're trying to connect to (url, user, password). In the example below we've used a local instance. To learn more about it, check out [this guide](/get-started/quick-start).
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
 ```
-
 
 ```sql
 %%sql
@@ -99,17 +108,10 @@ ORDER BY pickup_datetime;
     *  clickhouse://default:***@localhost:8123/default
     Done.
 
-
-
-
-
 <table>
     <tr>
     </tr>
 </table>
-
-
-
 
 ```sql
 %%sql
@@ -168,17 +170,10 @@ SELECT * FROM s3(
     *  clickhouse://default:***@localhost:8123/default
     Done.
 
-
-
-
-
 <table>
     <tr>
     </tr>
 </table>
-
-
-
 
 ```python
 %sql SELECT count() FROM trips limit 5;
@@ -186,10 +181,6 @@ SELECT * FROM s3(
 
     *  clickhouse://default:***@localhost:8123/default
     Done.
-
-
-
-
 
 <table>
     <tr>
@@ -200,19 +191,12 @@ SELECT * FROM s3(
     </tr>
 </table>
 
-
-
-
 ```python
 %sql SELECT DISTINCT(pickup_ntaname) FROM trips limit 5;
 ```
 
     *  clickhouse://default:***@localhost:8123/default
     Done.
-
-
-
-
 
 <table>
     <tr>
@@ -235,19 +219,12 @@ SELECT * FROM s3(
     </tr>
 </table>
 
-
-
-
 ```python
 %sql SELECT round(avg(tip_amount), 2) FROM trips
 ```
 
     *  clickhouse://default:***@localhost:8123/default
     Done.
-
-
-
-
 
 <table>
     <tr>
@@ -257,9 +234,6 @@ SELECT * FROM s3(
         <td>1.68</td>
     </tr>
 </table>
-
-
-
 
 ```sql
 %%sql
@@ -272,10 +246,6 @@ GROUP BY passenger_count
 
     *  clickhouse://default:***@localhost:8123/default
     Done.
-
-
-
-
 
 <table>
     <tr>
@@ -324,9 +294,6 @@ GROUP BY passenger_count
     </tr>
 </table>
 
-
-
-
 ```sql
 %%sql
 SELECT
@@ -341,7 +308,6 @@ limit 5;
 
 *  clickhouse://default:***@localhost:8123/default
 Done.
-
 
 <table>
     <tr>
@@ -401,10 +367,7 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-
-
-![histogram example](images/jupysql-plot-1.png)
-
+<Image img={jupysql_plot_1} size="md" alt="Histogram showing distribution of trip distances with 10 bins from the short-trips dataset" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
@@ -413,4 +376,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-![histogram second example](images/jupysql-plot-1.png)
+<Image img={jupysql_plot_2} size="md" alt="Histogram showing distribution of trip distances with 50 bins and grid, titled 'Trip distance from trips < 6.3'" border />

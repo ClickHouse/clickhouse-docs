@@ -1,10 +1,13 @@
 ---
 slug: /guides/developer/overview
-sidebar_label: Advanced Guides Overview
-description: Overview of the advanced guides
+sidebar_label: 'Advanced guides overview'
+description: 'Overview of the advanced guides'
+title: 'Advanced Guides'
+keywords: ['ClickHouse advanced guides', 'developer guides', 'query optimization', 'materialized views', 'deduplication', 'time series', 'query execution']
+doc_type: 'guide'
 ---
 
-# Advanced Guides
+# Advanced guides
 
 This section contains the following advanced guides:
 

@@ -1,13 +1,14 @@
 ---
 slug: /data-compression/compression-in-clickhouse
-title: Compression in ClickHouse
-description: Choosing ClickHouse compression algorithms
-keywords: [compression, codec, encoding]
+title: 'Compression in ClickHouse'
+description: 'Choosing ClickHouse compression algorithms'
+keywords: ['compression', 'codec', 'encoding']
+doc_type: 'reference'
 ---
 
 One of the secrets to ClickHouse query performance is compression. 
 
-Less data on disk means less I/O and faster queries and inserts. The overhead of any compression algorithm with respect to CPU will in most cases be out weighted by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
+Less data on disk means less I/O and faster queries and inserts. The overhead of any compression algorithm with respect to CPU is in most cases outweighed by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
 
 > For why ClickHouse compresses data so well, we recommended [this article](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema). In summary, as a column-oriented database, values will be written in column order. If these values are sorted, the same values will be adjacent to each other. Compression algorithms exploit contiguous patterns of data. On top of this, ClickHouse has codecs and granular data types which allow users to tune the compression techniques further.
 
@@ -37,30 +38,103 @@ WHERE table = 'posts'
 GROUP BY name
 
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
-│ Body              	│ 46.14 GiB   	  │ 127.31 GiB        │	2.76       │
-│ Title             	│ 1.20 GiB    	  │ 2.63 GiB          │	2.19       │
-│ Score             	│ 84.77 MiB   	  │ 736.45 MiB        │	8.69       │
-│ Tags              	│ 475.56 MiB  	  │ 1.40 GiB          │	3.02       │
-│ ParentId          	│ 210.91 MiB  	  │ 696.20 MiB        │ 3.3        │
-│ Id                	│ 111.17 MiB  	  │ 736.45 MiB        │	6.62       │
-│ AcceptedAnswerId  	│ 81.55 MiB   	  │ 736.45 MiB        │	9.03       │
-│ ClosedDate        	│ 13.99 MiB   	  │ 517.82 MiB        │ 37.02      │
-│ LastActivityDate  	│ 489.84 MiB  	  │ 964.64 MiB        │	1.97       │
-│ CommentCount      	│ 37.62 MiB   	  │ 565.30 MiB        │ 15.03      │
-│ OwnerUserId       	│ 368.98 MiB  	  │ 736.45 MiB        │ 2          │
-│ AnswerCount       	│ 21.82 MiB   	  │ 622.35 MiB        │ 28.53      │
-│ FavoriteCount     	│ 280.95 KiB  	  │ 508.40 MiB        │ 1853.02    │
-│ ViewCount         	│ 95.77 MiB   	  │ 736.45 MiB        │	7.69       │
-│ LastEditorUserId  	│ 179.47 MiB  	  │ 736.45 MiB        │ 4.1        │
-│ ContentLicense    	│ 5.45 MiB    	  │ 847.92 MiB        │ 155.5      │
-│ OwnerDisplayName  	│ 14.30 MiB   	  │ 142.58 MiB        │	9.97       │
-│ PostTypeId        	│ 20.93 MiB   	  │ 565.30 MiB        │ 27         │
-│ CreationDate      	│ 314.17 MiB  	  │ 964.64 MiB        │	3.07       │
-│ LastEditDate      	│ 346.32 MiB  	  │ 964.64 MiB        │	2.79       │
-│ LastEditorDisplayName │ 5.46 MiB    	  │ 124.25 MiB        │ 22.75      │
-│ CommunityOwnedDate	│ 2.21 MiB    	  │ 509.60 MiB        │ 230.94     │
+│ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
+│ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
+│ Score                 │ 84.77 MiB       │ 736.45 MiB        │ 8.69       │
+│ Tags                  │ 475.56 MiB      │ 1.40 GiB          │ 3.02       │
+│ ParentId              │ 210.91 MiB      │ 696.20 MiB        │ 3.3        │
+│ Id                    │ 111.17 MiB      │ 736.45 MiB        │ 6.62       │
+│ AcceptedAnswerId      │ 81.55 MiB       │ 736.45 MiB        │ 9.03       │
+│ ClosedDate            │ 13.99 MiB       │ 517.82 MiB        │ 37.02      │
+│ LastActivityDate      │ 489.84 MiB      │ 964.64 MiB        │ 1.97       │
+│ CommentCount          │ 37.62 MiB       │ 565.30 MiB        │ 15.03      │
+│ OwnerUserId           │ 368.98 MiB      │ 736.45 MiB        │ 2          │
+│ AnswerCount           │ 21.82 MiB       │ 622.35 MiB        │ 28.53      │
+│ FavoriteCount         │ 280.95 KiB      │ 508.40 MiB        │ 1853.02    │
+│ ViewCount             │ 95.77 MiB       │ 736.45 MiB        │ 7.69       │
+│ LastEditorUserId      │ 179.47 MiB      │ 736.45 MiB        │ 4.1        │
+│ ContentLicense        │ 5.45 MiB        │ 847.92 MiB        │ 155.5      │
+│ OwnerDisplayName      │ 14.30 MiB       │ 142.58 MiB        │ 9.97       │
+│ PostTypeId            │ 20.93 MiB       │ 565.30 MiB        │ 27         │
+│ CreationDate          │ 314.17 MiB      │ 964.64 MiB        │ 3.07       │
+│ LastEditDate          │ 346.32 MiB      │ 964.64 MiB        │ 2.79       │
+│ LastEditorDisplayName │ 5.46 MiB        │ 124.25 MiB        │ 22.75      │
+│ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
+
+<details>
+   
+<summary>A note on compact versus wide parts</summary>
+
+If you are seeing `compressed_size` or `uncompressed_size` values equal to `0`, this could be because the type of the
+parts are `compact` and not `wide` (see description for `part_type` in [`system.parts`](/operations/system-tables/parts)).
+The part format is controlled by settings [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
+and [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part) meaning that if the inserted
+data results in a part which does not exceed the values of the aforementioned settings, the part will be compact rather
+than wide and you will not see the values for `compressed_size` or `uncompressed_size`.
+
+To demonstrate:
+
+```sql title="Query"
+-- Create a table with compact parts
+CREATE TABLE compact (
+  number UInt32
+)
+ENGINE = MergeTree()
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- Not big enough to exceed default of min_bytes_for_wide_part = 10485760
+
+-- Check the type of the parts
+SELECT table, name, part_type from system.parts where table = 'compact';
+
+-- Get the compressed and uncompressed column sizes for the compact table
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'compact'
+GROUP BY name;
+
+-- Create a table with wide parts 
+CREATE TABLE wide (
+  number UInt32
+)
+ENGINE = MergeTree()
+ORDER BY number
+SETTINGS min_bytes_for_wide_part=0
+AS SELECT * FROM numbers(100000);
+
+-- Check the type of the parts
+SELECT table, name, part_type from system.parts where table = 'wide';
+
+-- Get the compressed and uncompressed sizes for the wide table
+SELECT name,
+   formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+   formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+   round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
+FROM system.columns
+WHERE table = 'wide'
+GROUP BY name;
+```
+
+```response title="Response"
+   ┌─table───┬─name──────┬─part_type─┐
+1. │ compact │ all_1_1_0 │ Compact   │
+   └─────────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 0.00 B          │ 0.00 B            │   nan │
+   └────────┴─────────────────┴───────────────────┴───────┘
+   ┌─table─┬─name──────┬─part_type─┐
+1. │ wide  │ all_1_1_0 │ Wide      │
+   └───────┴───────────┴───────────┘
+   ┌─name───┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
+1. │ number │ 392.31 KiB      │ 390.63 KiB        │     1 │
+   └────────┴─────────────────┴───────────────────┴───────┘
+```
+
+</details>
 
 We show both a compressed and uncompressed size here. Both are important. The compressed size equates to what we will need to read off disk - something we want to minimize for query performance (and storage cost). This data will need to be decompressed prior to reading. The size of this uncompressed size will be dependent on the data type used in this case. Minimizing this size will reduce memory overhead of queries and the amount of data which has to be processed by the query, improving utilization of caches and ultimately query times.
 
@@ -76,7 +150,7 @@ FROM system.columns
 WHERE table = 'posts'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 50.16 GiB   	  │ 143.47 GiB        │  2.86 │
+│ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -91,7 +165,7 @@ FROM system.columns
 WHERE `table` = 'posts_v3'
 
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ 25.15 GiB   	  │ 68.87 GiB         │  2.74 │
+│ 25.15 GiB       │ 68.87 GiB         │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
@@ -160,28 +234,28 @@ Below we specify the `Delta` codec for the `Id`, `ViewCount` and `AnswerCount`, 
 ```sql
 CREATE TABLE posts_v4
 (
-	`Id` Int32 CODEC(Delta, ZSTD),
-	`PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
-	`AcceptedAnswerId` UInt32,
-	`CreationDate` DateTime64(3, 'UTC'),
-	`Score` Int32,
-	`ViewCount` UInt32 CODEC(Delta, ZSTD),
-	`Body` String,
-	`OwnerUserId` Int32,
-	`OwnerDisplayName` String,
-	`LastEditorUserId` Int32,
-	`LastEditorDisplayName` String,
-	`LastEditDate` DateTime64(3, 'UTC'),
-	`LastActivityDate` DateTime64(3, 'UTC'),
-	`Title` String,
-	`Tags` String,
-	`AnswerCount` UInt16 CODEC(Delta, ZSTD),
-	`CommentCount` UInt8,
-	`FavoriteCount` UInt8,
-	`ContentLicense` LowCardinality(String),
-	`ParentId` String,
-	`CommunityOwnedDate` DateTime64(3, 'UTC'),
-	`ClosedDate` DateTime64(3, 'UTC')
+        `Id` Int32 CODEC(Delta, ZSTD),
+        `PostTypeId` Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
+        `Score` Int32,
+        `ViewCount` UInt32 CODEC(Delta, ZSTD),
+        `Body` String,
+        `OwnerUserId` Int32,
+        `OwnerDisplayName` String,
+        `LastEditorUserId` Int32,
+        `LastEditorDisplayName` String,
+        `LastEditDate` DateTime64(3, 'UTC'),
+        `LastActivityDate` DateTime64(3, 'UTC'),
+        `Title` String,
+        `Tags` String,
+        `AnswerCount` UInt16 CODEC(Delta, ZSTD),
+        `CommentCount` UInt8,
+        `FavoriteCount` UInt8,
+        `ContentLicense` LowCardinality(String),
+        `ParentId` String,
+        `CommunityOwnedDate` DateTime64(3, 'UTC'),
+        `ClosedDate` DateTime64(3, 'UTC')
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
@@ -206,12 +280,12 @@ ORDER BY
     `table` ASC
 
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
-│ posts_v3 │ AnswerCount │ 9.67 MiB    	   │ 113.69 MiB        │ 11.76 │
-│ posts_v4 │ AnswerCount │ 10.39 MiB   	   │ 111.31 MiB        │ 10.71 │
-│ posts_v3 │ Id      	 │ 159.70 MiB  	   │ 227.38 MiB        │  1.42 │
-│ posts_v4 │ Id      	 │ 64.91 MiB   	   │ 222.63 MiB        │  3.43 │
-│ posts_v3 │ ViewCount   │ 45.04 MiB   	   │ 227.38 MiB        │  5.05 │
-│ posts_v4 │ ViewCount   │ 52.72 MiB   	   │ 222.63 MiB        │  4.22 │
+│ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
+│ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
+│ posts_v3 │ Id          │ 159.70 MiB      │ 227.38 MiB        │  1.42 │
+│ posts_v4 │ Id          │ 64.91 MiB       │ 222.63 MiB        │  3.43 │
+│ posts_v3 │ ViewCount   │ 45.04 MiB       │ 227.38 MiB        │  5.05 │
+│ posts_v4 │ ViewCount   │ 52.72 MiB       │ 222.63 MiB        │  4.22 │
 └──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
 
 6 rows in set. Elapsed: 0.008 sec

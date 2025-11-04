@@ -9,15 +9,14 @@ import BlogBreadcrumbs from "../../components/BlogBreadcrumbs/BlogBreadcrumbs";
 import {useLocation} from '@docusaurus/router';
 // apply a bottom margin in list view
 function useContainerClassName() {
-  const {isBlogPostPage} = useBlogPost();
-  return !isBlogPostPage ? 'margin-bottom--xl' : undefined;
+  return 'margin-bottom--xl';
 }
 export default function BlogPostItem({children, className}) {
   const location = useLocation()
   const containerClassName = useContainerClassName();
   return (
     <BlogPostItemContainer className={clsx(containerClassName, className)}>
-      {location.pathname === '/docs/knowledgebase' || location.pathname.includes('/docs/knowledgebase/tags/') ? <div></div> : <BlogBreadcrumbs/>}
+      {location.pathname.includes('/knowledgebase') || location.pathname.includes('/knowledgebase/tags/') ? <div></div> : <BlogBreadcrumbs/>}
       <BlogPostItemHeader />
       <BlogPostItemContent>{children}</BlogPostItemContent>
       <BlogPostItemFooter />

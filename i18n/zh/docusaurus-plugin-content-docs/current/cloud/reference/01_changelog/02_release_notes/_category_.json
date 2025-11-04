@@ -1,0 +1,6 @@
+{
+  "label": "Release notes",
+  "collapsible": true,
+  "collapsed": true,
+  "link": { "type": "doc", "id": "cloud/reference/changelog/release_notes/index" }
+}

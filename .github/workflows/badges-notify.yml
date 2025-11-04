@@ -1,0 +1,57 @@
+name: Weekly Badge Monitor
+
+on:
+  schedule:
+    # Run every Monday at 10:00 AM Amsterdam time (UTC+1/+2)
+    # Using 8:00 UTC to account for Amsterdam time (adjusts for DST)
+    - cron: '0 8 * * 1'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  monitor-badges:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x scripts/badger.sh
+
+      - name: Run badge finder script
+        id: find_badges
+        run: |
+          # Run the script and capture output
+          SCRIPT_OUTPUT=$(scripts/badger.sh)
+          
+          # Escape the output for JSON and store in GitHub output
+          # Replace newlines with \n and escape quotes
+          ESCAPED_OUTPUT=$(echo "$SCRIPT_OUTPUT" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+          
+          echo "badges_output<<EOF" >> $GITHUB_OUTPUT
+          echo "$ESCAPED_OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Send webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.DOCS_BADGER }}
+          BADGES_OUTPUT: ${{ steps.find_badges.outputs.badges_output }}
+        run: |
+          # Create JSON payload
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "badges_list": "$BADGES_OUTPUT"
+          }
+          EOF
+          )
+          
+          # Send webhook
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD" \
+            "$WEBHOOK_URL"
+
+      - name: Log completion
+        run: |
+          echo "Badge monitoring completed successfully"
+          echo "Webhook sent to configured endpoint"

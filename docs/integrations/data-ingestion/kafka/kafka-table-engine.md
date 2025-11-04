@@ -1,21 +1,28 @@
 ---
-sidebar_label: Kafka Table Engine
+sidebar_label: 'Kafka Table Engine'
 sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
-description: Using the Kafka Table Engine
+description: 'Using the Kafka Table Engine'
+title: 'Using the Kafka table engine'
+doc_type: 'guide'
+keywords: ['kafka', 'table engine', 'streaming', 'real-time', 'message queue']
 ---
-import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+import Image from '@theme/IdealImage';
+import kafka_01 from '@site/static/images/integrations/data-ingestion/kafka/kafka_01.png';
+import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafka_02.png';
+import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
+import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
 # Using the Kafka table engine
 
-<CloudNotSupportedBadge/>
-
-:::note
-Kafka table engine is not supported on [ClickHouse Cloud](https://clickhouse.com/cloud). Please consider [ClickPipes](../clickpipes/kafka.md) or [Kafka Connect](./kafka-clickhouse-connect-sink.md)
-:::
+The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
 ### Kafka to ClickHouse {#kafka-to-clickhouse}
+
+:::note
+If you're on ClickHouse Cloud, we recommend using [ClickPipes](/integrations/clickpipes) instead. ClickPipes natively supports private network connections, scaling ingestion and cluster resources independently, and comprehensive monitoring for streaming Kafka data into ClickHouse.
+:::
 
 To use the Kafka table engine, you should be broadly familiar with [ClickHouse materialized views](../../../guides/developer/cascading-materialized-views.md).
 
@@ -27,20 +34,17 @@ The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Wh
 
 To persist this data from a read of the table engine, we need a means of capturing the data and inserting it into another table. Trigger-based materialized views natively provide this functionality. A materialized view initiates a read on the table engine, receiving batches of documents. The TO clause determines the destination of the data - typically a table of the [Merge Tree family](../../../engines/table-engines/mergetree-family/index.md). This process is visualized below:
 
-<img src={require('./images/kafka_01.png').default} class="image" alt="Kafka table engine" style={{width: '80%'}}/>
+<Image img={kafka_01} size="lg" alt="Kafka table engine architecture diagram" style={{width: '80%'}} />
 
 #### Steps {#steps}
-
 
 ##### 1. Prepare {#1-prepare}
 
 If you have data populated on a target topic, you can adapt the following for use in your dataset. Alternatively, a sample Github dataset is provided [here](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson). This dataset is used in the examples below and uses a reduced schema and subset of the rows (specifically, we limit to Github events concerning the [ClickHouse repository](https://github.com/ClickHouse/ClickHouse)), compared to the full dataset available [here](https://ghe.clickhouse.tech/), for brevity. This is still sufficient for most of the queries [published with the dataset](https://ghe.clickhouse.tech/) to work.
 
-
 ##### 2. Configure ClickHouse {#2-configure-clickhouse}
 
 This step is required if you are connecting to a secure Kafka. These settings cannot be passed through the SQL DDL commands and must be configured in the ClickHouse config.xml. We assume you are connecting to a SASL secured instance. This is the simplest method when interacting with Confluent Cloud.
-
 
 ```xml
 <clickhouse>
@@ -119,7 +123,7 @@ confluent kafka topic create --if-not-exists github
 Now we need to populate this topic with some data, which we'll do using [kcat](https://github.com/edenhill/kcat). We can run a command similar to the following if we're running Kafka locally with authentication disabled:
 
 ```bash
-cat github_all_columns.ndjson | 
+cat github_all_columns.ndjson |
 kcat -P \
   -b <host>:<port> \
   -t github
@@ -128,7 +132,7 @@ kcat -P \
 Or the following if our Kafka cluster uses SASL to authenticate:
 
 ```bash
-cat github_all_columns.ndjson | 
+cat github_all_columns.ndjson |
 kcat -P \
   -b <host>:<port> \
   -t github
@@ -142,7 +146,7 @@ The dataset contains 200,000 rows, so it should be ingested in just a few second
 
 ##### 5. Create the Kafka table engine {#5-create-the-kafka-table-engine}
 
-The below example creates a table engine with the same schema as the merge tree table. This isn’t strictly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
+The below example creates a table engine with the same schema as the merge tree table. This isn't strictly required, as you can have an alias or ephemeral columns in the target table. The settings are important; however - note the use of `JSONEachRow` as the data type for consuming JSON from a Kafka topic. The values `github` and `clickhouse` represent the name of the topic and consumer group names, respectively. The topics can actually be a list of values.
 
 ```sql
 CREATE TABLE github_queue
@@ -174,9 +178,8 @@ CREATE TABLE github_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('kafka_host:9092', 'github', 'clickhouse',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
-
 
 We discuss engine settings and performance tuning below. At this point, a simple select on the table `github_queue` should read some rows.  Note that this will move the consumer offsets forward, preventing these rows from being re-read without a [reset](#common-operations). Note the limit and required parameter `stream_like_engine_allow_direct_select.`
 
@@ -207,7 +210,7 @@ You should see 200,000 rows:
 └─────────┘
 ```
 
-#### Common Operations {#common-operations}
+#### Common operations {#common-operations}
 
 ##### Stopping & restarting message consumption {#stopping--restarting-message-consumption}
 
@@ -223,9 +226,9 @@ This will not impact the offsets of the consumer group. To restart consumption, 
 ATTACH TABLE github_queue;
 ```
 
-##### Adding Kafka Metadata {#adding-kafka-metadata}
+##### Adding Kafka metadata {#adding-kafka-metadata}
 
-It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view’s select statement.
+It can be useful to keep track of the metadata from the original Kafka messages after it's been ingested into ClickHouse. For example, we may want to know how much of a specific topic or partition we have consumed. For this purpose, the Kafka table engine exposes several [virtual columns](../../../engines/table-engines/index.md#table_engines-virtual_columns). These can be persisted as columns in our target table by modifying our schema and materialized view's select statement.
 
 First, we perform the stop operation described above before adding columns to our target table.
 
@@ -241,8 +244,8 @@ ALTER TABLE github
    ADD COLUMN partition UInt64;
 ```
 
-Next, we need to ensure virtual columns are mapped as required. 
-Virtual columns are prefixed with `_`. 
+Next, we need to ensure virtual columns are mapped as required.
+Virtual columns are prefixed with `_`.
 A complete listing of virtual columns can be found [here](../../../engines/table-engines/integrations/kafka.md#virtual-columns).
 
 To update our table with the virtual columns, we'll need to drop the materialized view, re-attach the Kafka engine table, and re-create the materialized view.
@@ -257,15 +260,15 @@ ATTACH TABLE github_queue;
 
 ```sql
 CREATE MATERIALIZED VIEW github_mv TO github AS
-SELECT *, _topic as topic, _partition as partition
+SELECT *, _topic AS topic, _partition as partition
 FROM github_queue;
 ```
 
 Newly consumed rows should have the metadata.
 
 ```sql
-SELECT actor_login, event_type, created_at, topic, partition 
-FROM github 
+SELECT actor_login, event_type, created_at, topic, partition
+FROM github
 LIMIT 10;
 ```
 
@@ -284,8 +287,7 @@ The result looks like:
 | jpn | CommitCommentEvent | 2011-02-12 12:24:31 | github | 0 |
 | Oxonium | CommitCommentEvent | 2011-02-12 12:31:28 | github | 0 |
 
-
-##### Modify Kafka Engine Settings {#modify-kafka-engine-settings}
+##### Modify Kafka engine settings {#modify-kafka-engine-settings}
 
 We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view does not need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
 
@@ -304,16 +306,16 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, ClickHouse has some features that can help.
 
 * Treat the message field as strings. Functions can be used in the materialized view statement to perform cleansing and casting if required. This should not represent a production solution but might assist in one-off ingestion.
-* If you’re consuming JSON from a topic, using the JSONEachRow format, use the setting [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md#settings-input-format-skip-unknown-fields). When writing data, by default, ClickHouse throws an exception if input data contains columns that do not exist in the target table. However, if this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
+* If you're consuming JSON from a topic, using the JSONEachRow format, use the setting [`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields). When writing data, by default, ClickHouse throws an exception if input data contains columns that do not exist in the target table. However, if this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
 * Consider the setting `kafka_skip_broken_messages`. This requires the user to specify the level of tolerance per block for malformed messages - considered in the context of kafka_max_block_size. If this tolerance is exceeded (measured in absolute messages) the usual exception behaviour will revert, and other messages will be skipped.
 
 ##### Delivery Semantics and challenges with duplicates {#delivery-semantics-and-challenges-with-duplicates}
 
-The Kafka table engine has at-least-once semantics. Duplicates are possible in several known rare circumstances. For example, messages could be read from Kafka and successfully inserted into ClickHouse. Before the new offset can be committed, the connection to Kafka is lost. A retry of the block in this situation is required. The block may be [de-duplicated ](../../../engines/table-engines/mergetree-family/replication.md#table_engines-replication)using a distributed table or ReplicatedMergeTree as the target table. While this reduces the chance of duplicate rows, it relies on identical blocks. Events such as a Kafka rebalancing may invalidate this assumption, causing duplicates in rare circumstances.
+The Kafka table engine has at-least-once semantics. Duplicates are possible in several known rare circumstances. For example, messages could be read from Kafka and successfully inserted into ClickHouse. Before the new offset can be committed, the connection to Kafka is lost. A retry of the block in this situation is required. The block may be [de-duplicated ](/engines/table-engines/mergetree-family/replication)using a distributed table or ReplicatedMergeTree as the target table. While this reduces the chance of duplicate rows, it relies on identical blocks. Events such as a Kafka rebalancing may invalidate this assumption, causing duplicates in rare circumstances.
 
 ##### Quorum based Inserts {#quorum-based-inserts}
 
-You may need [quorum-based inserts](../../../operations/settings/settings.md#settings-insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can’t be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
+You may need [quorum-based inserts](/operations/settings/settings#insert_quorum) for cases where higher delivery guarantees are required in ClickHouse. This can't be set on the materialized view or the target table. It can, however, be set for user profiles e.g.
 
 ```xml
 <profiles>
@@ -331,10 +333,9 @@ Although a rarer use case, ClickHouse data can also be persisted in Kafka. For e
 
 Our initial objective is best illustrated:
 
-<img src={require('./images/kafka_02.png').default} class="image" alt="Kafka table engine with inserts" style={{width: '80%'}}/>
+<Image img={kafka_02} size="lg" alt="Kafka table engine with inserts diagram" />
 
 We assume you have the tables and views created under steps for [Kafka to ClickHouse](#kafka-to-clickhouse) and that the topic has been fully consumed.
-
 
 ##### 1. Inserting rows directly {#1-inserting-rows-directly}
 
@@ -374,8 +375,7 @@ You should see 100 additional rows:
 
 We can utilize materialized views to push messages to a Kafka engine (and a topic) when documents are inserted into a table. When rows are inserted into the GitHub table, a materialized view is triggered, which causes the rows to be inserted back into a Kafka engine and into a new topic. Again this is best illustrated:
 
-<img src={require('./images/kafka_03.png').default} class="image" alt="Kafka table engine inserts with materialized view" style={{width: '80%'}}/>
-
+<Image img={kafka_03} size="lg" alt="Kafka table engine with materialized views diagram"/>
 
 Create a new Kafka topic `github_out` or equivalent. Ensure a Kafka table engine `github_out_queue` points to this topic.
 
@@ -409,34 +409,34 @@ CREATE TABLE github_out_queue
     member_login LowCardinality(String)
 )
    ENGINE = Kafka('host:port', 'github_out', 'clickhouse_out',
-            'JSONEachRow') settings kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
+            'JSONEachRow') SETTINGS kafka_thread_per_consumer = 0, kafka_num_consumers = 1;
 ```
 
 Now create a new materialized view `github_out_mv` to point at the GitHub table, inserting rows to the above engine when it triggers. Additions to the GitHub table will, as a result, be pushed to our new Kafka topic.
 
 ```sql
 CREATE MATERIALIZED VIEW github_out_mv TO github_out_queue AS
-SELECT file_time, event_type, actor_login, repo_name, 
-       created_at, updated_at, action, comment_id, path, 
-       ref, ref_type, creator_user_login, number, title, 
+SELECT file_time, event_type, actor_login, repo_name,
+       created_at, updated_at, action, comment_id, path,
+       ref, ref_type, creator_user_login, number, title,
        labels, state, assignee, assignees, closed_at, merged_at,
-       merge_commit_sha, requested_reviewers, merged_by, 
-       review_comments, member_login 
-FROM github 
+       merge_commit_sha, requested_reviewers, merged_by,
+       review_comments, member_login
+FROM github
 FORMAT JsonEachRow;
 ```
 
 Should you insert into the original github topic, created as part of [Kafka to ClickHouse](#kafka-to-clickhouse), documents will magically appear in the "github_clickhouse" topic. Confirm this with native Kafka tooling. For example, below, we insert 100 rows onto the github topic using [kcat](https://github.com/edenhill/kcat) for a Confluent Cloud hosted topic:
 
 ```sql
-head -n 10 github_all_columns.ndjson | 
+head -n 10 github_all_columns.ndjson |
 kcat -P \
   -b <host>:<port> \
   -t github
   -X security.protocol=sasl_ssl \
   -X sasl.mechanisms=PLAIN \
   -X sasl.username=<username> \
-  -X sasl.password=<password> 
+  -X sasl.password=<password>
 ```
 
 A read on the `github_out` topic should confirm delivery of the messages.
@@ -449,13 +449,13 @@ kcat -C \
   -X sasl.mechanisms=PLAIN \
   -X sasl.username=<username> \
   -X sasl.password=<password> \
-  -e -q | 
+  -e -q |
 wc -l
 ```
 
 Although an elaborate example, this illustrates the power of materialized views when used in conjunction with the Kafka engine.
 
-### Clusters and Performance {#clusters-and-performance}
+### Clusters and performance {#clusters-and-performance}
 
 #### Working with ClickHouse Clusters {#working-with-clickhouse-clusters}
 
@@ -463,27 +463,26 @@ Through Kafka consumer groups, multiple ClickHouse instances can potentially rea
 
 Multiple ClickHouse instances can all be configured to read from a topic using the same consumer group id - specified during the Kafka table engine creation. Therefore, each instance will read from one or more partitions, inserting segments to their local target table. The target tables can, in turn, be configured to use a ReplicatedMergeTree to handle duplication of the data. This approach allows Kafka reads to be scaled with the ClickHouse cluster, provided there are sufficient Kafka partitions.
 
-<img src={require('./images/kafka_04.png').default} class="image" alt="Replicated Kafka table engine" style={{width: '80%'}}/>
+<Image img={kafka_04} size="lg" alt="Kafka table engine with ClickHouse clusters diagram"/>
 
-#### Tuning Performance {#tuning-performance}
+#### Tuning performance {#tuning-performance}
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
 
-
-* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](../../../operations/settings/settings.md#setting-max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
+* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](/operations/settings/settings#max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
 * The number of consumers for a table engine can be increased using kafka_num_consumers. However, by default, inserts will be linearized in a single thread unless kafka_thread_per_consumer is changed from the default value of 1. Set this to 1 to ensure flushes are performed in parallel. Note that creating a Kafka engine table with N consumers (and kafka_thread_per_consumer=1) is logically equivalent to creating N Kafka engines, each with a materialized view and kafka_thread_per_consumer=0.
 * Increasing consumers is not a free operation. Each consumer maintains its own buffers and threads, increasing the overhead on the server. Be conscious of the overhead of consumers and scale linearly across your cluster first and if possible.
 * If the throughput of Kafka messages is variable and delays are acceptable, consider increasing the stream_flush_interval_ms to ensure larger blocks are flushed.
-* [background_message_broker_schedule_pool_size](../../../operations/settings/settings.md#background_message_broker_schedule_pool_size) sets the number of threads performing background tasks. These threads are used for Kafka streaming. This setting is applied at the ClickHouse server start and can’t be changed in a user session, defaulting to 16. If you see timeouts in the logs, it may be appropriate to increase this.
+* [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size) sets the number of threads performing background tasks. These threads are used for Kafka streaming. This setting is applied at the ClickHouse server start and can't be changed in a user session, defaulting to 16. If you see timeouts in the logs, it may be appropriate to increase this.
 * For communication with Kafka, the librdkafka library is used, which itself creates threads. Large numbers of Kafka tables, or consumers, can thus result in large numbers of context switches. Either distribute this load across the cluster, only replicating the target tables if possible, or consider using a table engine to read from multiple topics - a list of values is supported. Multiple materialized views can be read from a single table, each filtering to the data from a specific topic.
 
 Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
 
-#### Additional Settings {#additional-settings}
+#### Additional settings {#additional-settings}
 
 Aside from the settings discussed above, the following may be of interest:
 
-* [Kafka_max_wait_ms](../../../operations/settings/settings.md#kafka-max-wait-ms) - The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
+* [Kafka_max_wait_ms](/operations/settings/settings#kafka_max_wait_ms) - The wait time in milliseconds for reading messages from Kafka before retry. Set at a user profile level and defaults to 5000.
 
 [All settings ](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)from the underlying librdkafka can also be placed in the ClickHouse configuration files inside a _kafka_ element - setting names should be XML elements with periods replaced with underscores e.g.
 
@@ -496,4 +495,3 @@ Aside from the settings discussed above, the following may be of interest:
 ```
 
 These are expert settings and we'd suggest you refer to the Kafka documentation for an in-depth explanation.
-

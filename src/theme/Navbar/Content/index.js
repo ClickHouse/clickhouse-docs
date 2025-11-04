@@ -1,14 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import clsx from "clsx";
-import { useThemeConfig } from "@docusaurus/theme-common";
-import {
-  splitNavbarItems,
-  useNavbarMobileSidebar,
-} from "@docusaurus/theme-common/internal";
-import NavbarItem from "@theme/NavbarItem";
-import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle";
 import NavbarLogo from "@theme/Navbar/Logo";
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import ColorModeToggle from "../../../components/ColorModeToggler";
 import { usePluginData } from "@docusaurus/useGlobalData";
@@ -16,41 +9,23 @@ import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../com
 import MobileSideBarMenu from "../../../components/MobileSideBarMenu";
 import Navigation from "../../../components/Navigation";
 import sidebars from "../../../../sidebars";
-import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
-
-
-function useNavbarItems() {
-  // TODO temporary casting until ThemeConfig type is improved
-  return useThemeConfig().navbar.items;
-}
-
-function useNavbarSecondaryItems() {
-  // TODO temporary casting until ThemeConfig type is improved
-  return useDocusaurusContext().siteConfig.customFields.secondaryNavItems ?? [];
-}
-
-function NavbarItems({ items }) {
-  return (
-    <>
-      {items.map((item, i) => (
-        <NavbarItem {...item} key={i} />
-      ))}
-    </>
-  );
-}
+import { useDocsSidebar } from '@docusaurus/plugin-content-docs/client';
+import { translate } from "@docusaurus/Translate";
+import LocaleDropdownNavbarItem from "@theme/NavbarItem/LocaleDropdownNavbarItem"
+import SearchBar from "@theme/SearchBar";
+import {useNavbarMobileSidebar} from "@docusaurus/theme-common/internal";
 
 export default function NavbarContent() {
-  const mobileSidebar = useNavbarMobileSidebar();
-  const secondaryItems = useNavbarSecondaryItems();
   let items = [];
   try {
     const sidebar = useDocsSidebar();
     items = sidebar.items;
-  } catch {}
+  } catch { }
   const {
     github_stars,
     menuItems,
   } = usePluginData("ch-header-plugin");
+
 
   return (
     <div className={`${styles.navbarHeaderContainer} navbar-header`}>
@@ -91,19 +66,24 @@ export default function NavbarContent() {
               </span>
             </div>
           </a>
-          <a
-            href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
-            className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
-          >
-            Sign in
-          </a>
-          <a
-            href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
-            className="click-button-anchor"
-          >
-            <button className="click-button primary-btn">Get started</button>
-          </a>
-          {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
+          <div className={styles.mobileSearchBar}>
+            <SearchBar/>
+          </div>
+          <div className={styles.signUp}>
+            <a
+                href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
+                className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
+            >
+              Sign in
+            </a>
+            <a
+                href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
+                className="click-button-anchor"
+            >
+              <button className="click-button primary-btn">Get started</button>
+            </a>
+          </div>
+          <MobileSideBarMenu sidebar={items} menu={sidebars}/>
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
@@ -111,17 +91,18 @@ export default function NavbarContent() {
           {sidebars.dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
-          <DocsCategoryDropdownLinkOnly title='Knowledge Base' link='/docs/knowledgebase' />
+          <DocsCategoryDropdownLinkOnly title={translate({
+            id: 'theme.blog.title',
+            message: 'Knowledge base',
+          })} link='/knowledgebase' />
         </div>
         <div
           className={`${styles.secondaryMenuRight} secondary-nav--items-right`}
         >
-          <NavbarItems items={secondaryItems} />
+          <LocaleDropdownNavbarItem />
           <ColorModeToggle className="navbar-color-toggle" />
         </div>
-        <MobileSideBarMenu sidebar={items}/>   
       </div>
     </div>
   );
 }
-

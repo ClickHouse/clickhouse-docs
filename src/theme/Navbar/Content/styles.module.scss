@@ -1,0 +1,311 @@
+@use '../../../css/breakpoints.scss' as breakpoints;
+
+.navbarInner {
+  border-bottom: 1px solid var(--click-color-stroke);
+}
+
+.navbarHeaderContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.secondaryMenu {
+  display: none;
+}
+
+.navRight .mobileSearchBar {
+  display: flex;
+}
+
+.navRight .signUp {
+    display: none;
+}
+
+.navRight .githubStars {
+  display: none;
+}
+
+.navRight {
+  z-index: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+  // Push to the right edge and eliminate any extra spacing
+  margin-left: auto;
+
+  // Force the last child to have no margin/padding on the right
+  > *:last-child {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  // Hide empty divs that might be creating unwanted space
+  > div:empty {
+    display: none !important;
+  }
+
+  // Also hide divs that only contain whitespace
+  > div:not(:has(*)):not([class]):not([id]) {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+  .navRight .mobileSearchBar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+
+  .secondaryMenu {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    gap: 2rem;
+    border-bottom: 1px solid var(--click-color-stroke);
+    height: 3.5rem;
+  }
+
+  .navRight {
+    display: flex;
+  }
+
+  .navRight .signUp {
+    display: flex;
+  }
+
+  .navRight .githubStars {
+    display: flex;
+  }
+
+  .githubStars, .signIn {
+    display: flex;
+    color: var(--ifm-navbar-link-active-color);
+  }
+
+  .githubStarsContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .githubStarsContainer {
+    text-decoration-line: none;
+  }
+
+  .githubText {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .githubStars:hover, .signIn:hover {
+    text-decoration-line: none;
+    color: var(--ifm-navbar-link-color);
+  }
+
+  .signIn {
+    margin-right: 10px;
+    align-self: center;
+  }
+
+}
+
+@media screen and (min-width: breakpoints.$laptop-breakpoint) {
+
+  .navRight {
+    display: flex;
+    justify-content: right;
+  }
+}
+
+.secondaryMenuLeft {
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow: auto;
+  gap: 1rem;
+}
+
+.secondaryMenuRight {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.secondaryMenuLeft > *, .secondaryMenuRight a, .secondaryMenuRight button {
+  display: flex !important;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.secondaryMenuLeft > *, .secondaryMenuRight > a {
+  padding: 0;
+}
+
+.secondaryMenu::-webkit-scrollbar {
+  display: none;
+}
+
+.navbarInner {
+  padding: 0 2rem;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+}
+
+.navbarItemsList {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navbarLogo {
+  z-index: 2;
+  left: 2rem;
+}
+
+.dropdownCategoriesContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  white-space: wrap;
+}
+
+@media (max-width: breakpoints.$laptop-breakpoint) {
+  .navbarItemsList {
+    display: none !important;
+  }
+
+  .dropdownCategoriesContainer {
+    display: none !important;
+  }
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+  
+  :global .navbar-color-toggle span {
+    display: none;
+  }
+
+  .navRight a {
+    display: none;
+  }
+
+  .githubStars {
+    display: none;
+  }
+
+  .click-button .primary-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+}
+
+@media (max-width: breakpoints.$mobile-breakpoint) {
+  //.dropdownCategoriesContainer {
+  //  display:inline-block;
+  //}
+}
+
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
+  .navRight .githubStars {
+    display: none;
+  }
+}
+
+@media screen and (max-width: breakpoints.$mobile-breakpoint) {
+    .secondaryMenu {
+      gap:0;
+    }
+}
+
+@media screen and (min-width: breakpoints.$large-desktop-breakpoint) {
+  .dropdownCategoriesContainer {
+    max-width: breakpoints.$laptop-breakpoint;
+    justify-content: unset;
+  }
+}
+
+//
+
+// Additional styles for mobile sidebar navigation
+
+.docsMobileMenu_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+
+  .backNavigation {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 0.5rem;
+
+    .backButton {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: none;
+      border: none;
+      color: var(--ifm-color-primary);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--ifm-border-radius);
+      font-size: 0.9rem;
+
+      &:hover {
+        background-color: var(--ifm-color-emphasis-100);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .currentCategoryTitle {
+      font-weight: 600;
+      color: var(--ifm-color-content);
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  .headerActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.categoryDescription {
+  font-size: 0.8rem;
+  color: var(--ifm-color-content-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.3;
+}
+
+.docsMobileMenuItems {
+  .menu__link {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--ifm-color-emphasis-100);
+    }
+
+    &--active {
+      background-color: var(--ifm-color-primary-lighter);
+      color: var(--ifm-color-primary-darker);
+      font-weight: 600;
+    }
+  }
+}

@@ -1,12 +1,16 @@
 ---
-title: "Troubleshooting"
+title: 'Troubleshooting'
+description: 'Installation troubleshooting guide'
+slug: /guides/troubleshooting
+doc_type: 'guide'
+keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnostics']
 ---
 
 ## Installation {#installation}
 
 ### Cannot import GPG keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
-The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install.md) article.
+The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
 
 ### Cannot import GPG keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
@@ -19,13 +23,13 @@ sudo apt-get install gnupg
 ### Cannot get deb packages from ClickHouse repository with apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. Check firewall settings.
-1. If you cannot access the repository for any reason, download packages as described in the [install guide](../getting-started/install.md) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
+1. If you cannot access the repository for any reason, download packages as described in the [install guide](../getting-started/install/install.mdx) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
 
 ### Cannot update deb packages from ClickHouse repository with apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 The issue may be happened when the GPG key is changed.
 
-Please use the manual from the [setup](../getting-started/install.md#setup-the-debian-repository) page to update the repository configuration.
+Please use the manual from the [setup](/install/debian_ubuntu) page to update the repository configuration.
 
 ### You get different warnings with `apt-get update` {#you-get-different-warnings-with-apt-get-update}
 
@@ -70,7 +74,7 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-After that follow the [install guide](../getting-started/install.md#from-rpm-packages)
+After that follow the [install guide](/install/redhat)
 
 ## Connecting to the server {#connecting-to-the-server}
 
@@ -132,7 +136,7 @@ Revision: 54413
 
 #### See system.d logs {#see-systemd-logs}
 
-If you do not find any useful information in `clickhouse-server` logs or there aren’t any logs, you can view `system.d` logs using the command:
+If you do not find any useful information in `clickhouse-server` logs or there aren't any logs, you can view `system.d` logs using the command:
 
 ```shell
 sudo journalctl -u clickhouse-server
@@ -155,7 +159,7 @@ Check:
     - If you run ClickHouse in Docker in an IPv6 network, make sure that `network=host` is set.
 
 1. Endpoint settings.
-    - Check [listen_host](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-listen_host) and [tcp_port](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-tcp_port) settings.
+    - Check [listen_host](/operations/server-configuration-parameters/settings#listen_host) and [tcp_port](/operations/server-configuration-parameters/settings#tcp_port) settings.
     - ClickHouse server accepts localhost connections only by default.
 
 1. HTTP protocol settings:
@@ -165,8 +169,8 @@ Check:
 1. Secure connection settings.
 
     - Check:
-        - The [tcp_port_secure](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-tcp_port_secure) setting.
-        - Settings for [SSL certificates](../operations/server-configuration-parameters/settings.md#server_configuration_parameters-openssl).
+        - The [tcp_port_secure](/operations/server-configuration-parameters/settings#tcp_port_secure) setting.
+        - Settings for [SSL certificates](/operations/server-configuration-parameters/settings#openssl).
     - Use proper parameters while connecting. For example, use the `port_secure` parameter with `clickhouse_client`.
 
 1. User settings:

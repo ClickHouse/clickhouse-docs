@@ -1,25 +1,16 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: Cascading Materialized Views
-description: How to use multiple materialized views from a source table.
-keywords: [materialized view, aggregation]
+title: 'Cascading Materialized Views'
+description: 'How to use multiple materialized views from a source table.'
+keywords: ['materialized view', 'aggregation']
+doc_type: 'guide'
 ---
 
-# Cascading Materialized Views
+# Cascading materialized views
 
-This example demonstrates how to create a Materialized View, and then how to cascade a second Materialized View on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
+This example demonstrates how to create a materialized view, and then how to cascade a second materialized view on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 
-<div style={{width:'640px', height: '360px'}}>
-  <iframe src="//www.youtube.com/embed/QDAJTKZT8y4"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <br />
 
@@ -64,7 +55,7 @@ You can create a materialized view on a Null table. So the data written to the t
 
 ## Monthly aggregated table and materialized view {#monthly-aggregated-table-and-materialized-view}
 
-For the first Materialized View, we need to create the `Target` table, for this example, it will be `analytics.monthly_aggregated_data` and we will store the sum of the views by month and domain name.
+For the first materialized view, we need to create the `Target` table, for this example, it will be `analytics.monthly_aggregated_data` and we will store the sum of the views by month and domain name.
 
 ```sql
 CREATE TABLE analytics.monthly_aggregated_data
@@ -77,7 +68,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY (domain_name, month)
 ```
 
-The Materialized View that will forward the data on the target table will look like this:
+The materialized view that will forward the data on the target table will look like this:
 
 ```sql
 CREATE MATERIALIZED VIEW analytics.monthly_aggregated_data_mv
@@ -113,7 +104,7 @@ ORDER BY (domain_name, year)
 This step defines the cascade. The `FROM` statement will use the `monthly_aggregated_data` table, this means the data flow will be:
 
 1. The data comes to the `hourly_data` table.
-2. ClickHouse will forward the data received to the first Materialized View `monthly_aggregated_data` table,
+2. ClickHouse will forward the data received to the first materialized view `monthly_aggregated_data` table,
 3. Finally, the data received in step 2 will be forwarded to the `year_aggregated_data`.
 
 ```sql
@@ -123,7 +114,7 @@ AS
 SELECT
     toYear(toStartOfYear(month)) AS year,
     domain_name,
-    sumMerge(sumCountViews) as sumCountViews
+    sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
     domain_name,
@@ -189,7 +180,7 @@ Instead, let's try using the `Merge` suffix to get the `sumCountViews` value:
 
 ```sql
 SELECT
-   sumMerge(sumCountViews) as sumCountViews
+   sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data;
 ```
 
@@ -207,7 +198,7 @@ In the `AggregatingMergeTree` we have defined the `AggregateFunction` as `sum`, 
 SELECT
     month,
     domain_name,
-    sumMerge(sumCountViews) as sumCountViews
+    sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
     domain_name,
@@ -222,7 +213,7 @@ Now that we have the data stored in the target table `monthly_aggregated_data` w
 SELECT
    month,
    domain_name,
-   sumMerge(sumCountViews) as sumCountViews
+   sumMerge(sumCountViews) AS sumCountViews
 FROM analytics.monthly_aggregated_data
 GROUP BY
    domain_name,
@@ -260,7 +251,6 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ## Combining multiple source tables to single target table {#combining-multiple-source-tables-to-single-target-table}
 
@@ -301,13 +291,13 @@ Create two materialized views pointing to the same `Target` table. You don't nee
 ```sql
 CREATE MATERIALIZED VIEW analytics.daily_impressions_mv
 TO analytics.daily_overview
-AS                                                
+AS
 SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
     0 clicks         ---<<<--- if you omit this, it will be the same 0
-FROM                                              
+FROM
     analytics.impressions
 GROUP BY
     toDate(event_time) AS on_date,

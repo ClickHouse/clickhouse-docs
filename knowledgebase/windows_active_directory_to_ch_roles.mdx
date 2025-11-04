@@ -6,6 +6,12 @@ tags: ['Tools and Utilities']
 keywords: ['Windows']
 ---
 
+import Image from "@theme/IdealImage";
+import ad_env from "@site/static/images/knowledgebase/windows-ad-ch-roles/AD_Env_and_UO_structure.png";
+import ad_group from "@site/static/images/knowledgebase/windows-ad-ch-roles/AD_Group_clickhouse_ad_db1_users.png";
+import ad_user from "@site/static/images/knowledgebase/windows-ad-ch-roles/AD_user_clickhouse_db1_user.png";
+import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles/AD_user_to_group.png";
+
 {frontMatter.description}
 {/* truncate */}
 
@@ -36,15 +42,15 @@ In this environment, we have the following:
 
 - Example AD Environment and UO structure:
 
-![Example_AD_Env_and_UO_structure](./images/windows-ad-ch-roles/AD_Env_and_UO_structure.png)
+<Image img={ad_env} size="md" alt="Example AD Environment and UO structure" />
 
 - Example AD Security Group Configuration:
 
-![Example_AD_Group_clickhouse_ad_db1_users](./images/windows-ad-ch-roles/AD_Group_clickhouse_ad_db1_users.png)
+<Image img={ad_group} size="md" alt="Example AD Security Group Configuration" />
 
 - Example AD User Configuration:
 
-![Example_AD_user_clickhouse_db1_user](./images/windows-ad-ch-roles/AD_user_clickhouse_db1_user.png)
+<Image img={ad_user} size="md" alt="Example AD User Configuration" />
 
 
 
@@ -59,7 +65,7 @@ In this environment, we have the following:
 
 - Example user group membership:  
 
-![Example_AD_user_to_group](./images/windows-ad-ch-roles/AD_user_to_group.png)
+<Image img={ad_user_group} size="md" alt="Example user group membership" />
 
 2.  In ClickHouse `config.xml`, add the `ldap_servers` configuration to each ClickHouse node.
 ```

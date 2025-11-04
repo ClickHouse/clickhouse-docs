@@ -1,9 +1,13 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
+title: 'Column types'
+description: 'Column types for the native protocol'
+keywords: ['native protocol columns', 'column types', 'data types', 'protocol data types', 'binary encoding']
+doc_type: 'reference'
 ---
 
-# Column Types
+# Column types
 
 See [Data Types](/sql-reference/data-types/) for general reference.
 
@@ -63,8 +67,8 @@ Rows count in `Data` is last value from `Offsets`.
 ```go
 // Nulls is nullable "mask" on Values column.
 // For example, to encode [null, "", "hello", null, "world"]
-//	Values: ["", "", "hello", "", "world"] (len: 5)
-//	Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
+//      Values: ["", "", "hello", "", "world"] (len: 5)
+//      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
 ## UUID {#uuid}
@@ -75,7 +79,7 @@ Alias of `FixedString(16)`, UUID value represented as binary.
 
 Alias of `Int8` or `Int16`, but each integer is mapped to some `String` value.
 
-## Low Cardinality {#low-cardinality}
+## `LowCardinality` type {#low-cardinality}
 
 `LowCardinality(T)` consists of `Index T, Keys K`,
 where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`.
@@ -86,8 +90,8 @@ where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`
 //
 // For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
 // be encoded as:
-//	Index: ["Eko", "Amadela"] (String)
-//	Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
+//      Index: ["Eko", "Amadela"] (String)
+//      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
 // The CardinalityKey is chosen depending on Index size, i.e. maximum value
 // of chosen type should be able to represent any index of Index element.

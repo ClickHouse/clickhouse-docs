@@ -7,22 +7,8 @@ import {
 } from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import DocSidebarItems from '@theme/DocSidebarItems';
-import styles from './styles.module.css';
-function useShowAnnouncementBar() {
-  const {isActive} = useAnnouncementBar();
-  const [showAnnouncementBar, setShowAnnouncementBar] = useState(isActive);
-  useScrollPosition(
-    ({scrollY}) => {
-      if (isActive) {
-        setShowAnnouncementBar(scrollY === 0);
-      }
-    },
-    [isActive],
-  );
-  return isActive && showAnnouncementBar;
-}
+import styles from './styles.module.scss';
 export default function DocSidebarDesktopContent({path, sidebar, className}) {
-  const showAnnouncementBar = useShowAnnouncementBar();
   return (
     <nav
       aria-label={translate({
@@ -33,10 +19,9 @@ export default function DocSidebarDesktopContent({path, sidebar, className}) {
       className={clsx(
         'menu thin-scrollbar',
         styles.menu,
-        showAnnouncementBar && styles.menuWithAnnouncementBar,
         className,
       )}
-      style={{paddingTop: '1.75rem', overflowY: 'auto'}}
+      style={{paddingTop: '1.75rem', marginBottom: '3.5rem', overflowY: 'auto'}}
     >
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list')}>
         <DocSidebarItems items={sidebar} activePath={path} level={1} />

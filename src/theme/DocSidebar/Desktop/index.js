@@ -4,7 +4,7 @@ import {useThemeConfig} from '@docusaurus/theme-common';
 import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 import SearchBar from "../../SearchBar";
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
   const {
@@ -45,7 +45,6 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden, ...props}) {
         styles.sidebar,
         hideOnScroll && styles.sidebarWithHideableNavbar,
         isHidden && styles.sidebarHidden,
-        'padding-top--md',
       )}
       >
       {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}

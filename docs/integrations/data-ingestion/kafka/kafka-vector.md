@@ -1,9 +1,13 @@
 ---
-sidebar_label: Vector with Kafka
+sidebar_label: 'Vector with Kafka'
 sidebar_position: 3
 slug: /integrations/kafka/kafka-vector
-description: Using Vector with Kafka and ClickHouse
+description: 'Using Vector with Kafka and ClickHouse'
+title: 'Using Vector with Kafka and ClickHouse'
+doc_type: 'guide'
+keywords: ['kafka', 'vector', 'log collection', 'observability', 'integration']
 ---
+
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 ## Using Vector with Kafka and ClickHouse {#using-vector-with-kafka-and-clickhouse}
@@ -21,14 +25,12 @@ Note that the current implementation of the ClickHouse sink utilizes the HTTP in
 ### License {#license}
 Vector is distributed under the [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
-
 ### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />
 
 ### Steps {#steps}
 
 1. Create the Kafka `github` topic and insert the [Github dataset](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
-
 
 ```bash
 cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
@@ -109,7 +111,7 @@ A few important notes on this configuration and behavior of Vector:
 - The source parameter `decoding.codec = "json"` ensures the message is passed to the ClickHouse sink as a single JSON object. If handling messages as Strings and using the default `bytes` value, the contents of the message will be appended to a field `message`. In most cases this will require processing in ClickHouse as described in the [Vector getting started](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs) guide.
 - Vector [adds a number of fields](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) to the messages. In our example, we ignore these fields in the ClickHouse sink via the configuration parameter `skip_unknown_fields = true`. This ignores fields that are not part of the target table schema. Feel free to adjust your schema to ensure these meta fields such as `offset` are added.
 - Notice how the sink references of the source of events via the parameter `inputs`.
-- Note the behavior of the ClickHouse sink as described [here](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). For optimal throughput, users may wish to tune the `buffer.max_events`, `batch.timeout_secs` and `batch.max_bytes` parameters. Per ClickHouse [recommendations](../../../concepts/why-clickhouse-is-so-fast.md#performance-when-inserting-data) a value of 1000 is should be considered a minimum for the number of events in any single batch. For uniform high throughput use cases, users may increase the parameter `buffer.max_events`. More variable throughputs may require changes in the parameter `batch.timeout_secs`
+- Note the behavior of the ClickHouse sink as described [here](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). For optimal throughput, users may wish to tune the `buffer.max_events`, `batch.timeout_secs` and `batch.max_bytes` parameters. Per ClickHouse [recommendations](/sql-reference/statements/insert-into#performance-considerations) a value of 1000 is should be considered a minimum for the number of events in any single batch. For uniform high throughput use cases, users may increase the parameter `buffer.max_events`. More variable throughputs may require changes in the parameter `batch.timeout_secs`
 - The parameter `auto_offset_reset = "smallest"` forces the Kafka source to start from the start of the topic - thus ensuring we consume the messages published in step (1). Users may require different behavior. See [here](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset) for further details.
 
 4. Start Vector
@@ -123,7 +125,7 @@ By default, a [health check](https://vector.dev/docs/reference/configuration/sin
 5. Confirm the insertion of the data.
 
 ```sql
-SELECT count() as count FROM github;
+SELECT count() AS count FROM github;
 ```
 
 | count |

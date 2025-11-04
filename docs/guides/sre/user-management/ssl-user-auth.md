@@ -1,10 +1,14 @@
 ---
-sidebar_label: SSL User Certificate Authentication
+sidebar_label: 'SSL user certificate authentication'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
+title: 'Configuring SSL User Certificate for Authentication'
+description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
+doc_type: 'guide'
+keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---
 
-# Configuring SSL User Certificate for Authentication
+# Configuring SSL user certificate for authentication
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
@@ -12,10 +16,13 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
 
 :::note
-SSL user authentication is supported when using the `https` or native interfaces only.
-It is not currently used in gRPC or PostgreSQL/MySQL emulation ports.
+SSL user authentication is supported when using the `https`, `native`, `mysql`, and `postgresql` interfaces.
 
 ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secure authentication (although `relaxed` will work for testing purposes).
+
+If you use AWS NLB with the MySQL interface, you have to ask AWS support to enable the undocumented option:
+
+> I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 :::
 
 ## 1. Create SSL user certificates {#1-create-ssl-user-certificates}
@@ -23,7 +30,6 @@ ClickHouse nodes need `<verificationMode>strict</verificationMode>` set for secu
 :::note
 This example uses self-signed certificates with a self-signed CA. For production environments, create a CSR and submit to your PKI team or certificate provider to obtain a proper certificate.
 :::
-
 
 1. Generate a Certificate Signing Request (CSR) and key. The basic format is the following:
     ```bash
@@ -84,7 +90,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     ```
     :::
 
-
 ## 3. Testing {#3-testing}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
@@ -109,7 +114,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     Note that the password passed to clickhouse-client is ignored when a certificate is specified in the config.
     :::
 
-
 ## 4. Testing HTTP {#4-testing-http}
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
@@ -132,7 +136,6 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::note
     Notice that no password was specified, the certificate is used in lieu of a password and is how ClickHouse will authenticate the user.
     :::
-
 
 ## Summary {#summary}
 

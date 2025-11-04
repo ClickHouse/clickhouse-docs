@@ -1,7 +1,10 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: Connecting to PostgreSQL
-keywords: [clickhouse, postgres, postgresql, connect, integrate, table, engine]
+title: 'Connecting to PostgreSQL'
+keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
+description: 'Page describing the various ways to connect PostgreSQL to ClickHouse'
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
@@ -11,17 +14,15 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
 
-- using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
-- using `PeerDB by ClickHouse`, a CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud
-  - PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
 - using the `PostgreSQL` table engine, for reading from a PostgreSQL table
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
 
-## Using ClickPipes (powered by PeerDB) {#using-clickpipes-powered-by-peerdb}
+:::tip
+We recommend using [ClickPipes](/integrations/clickpipes/postgres), a managed integration service for ClickHouse Cloud powered by PeerDB.
+Alternatively, [PeerDB](https://github.com/PeerDB-io/peerdb) is available as an an open-source CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+:::
 
-PeerDB is now available natively in ClickHouse Cloud - Blazing-fast Postgres to ClickHouse CDC with our [new ClickPipe connector](/integrations/clickpipes/postgres) - now in Private Preview. Please [sign up here](https://clickpipes.peerdb.io/)
-
-## Using the PostgreSQL Table Engine {#using-the-postgresql-table-engine}
+## Using the PostgreSQL table engine {#using-the-postgresql-table-engine}
 
 The `PostgreSQL` table engine allows **SELECT** and **INSERT** operations on data stored on the remote PostgreSQL server from ClickHouse.
 This article is to illustrate basic methods of integration using one table.
@@ -77,7 +78,7 @@ This article is to illustrate basic methods of integration using one table.
 
 :::note
 If you are using this feature in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
-Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) for egress traffic details.
+Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) for egress traffic details.
 :::
 
 ### 2. Define a Table in ClickHouse {#2-define-a-table-in-clickhouse}
@@ -113,7 +114,6 @@ Check the ClickHouse [Cloud Endpoints API](/cloud/security/cloud-endpoints-api) 
   :::note
   View the [PostgreSQL table engine](/engines/table-engines/integrations/postgresql) doc page for a complete list of parameters.
   :::
-
 
 ### 3 Test the Integration {#3-test-the-integration}
 
@@ -210,7 +210,6 @@ _*ClickHouse needs minimum of `logical` wal level and minimum `2` replication sl
 CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
 ```
 _*for demonstration purposes, full superuser rights have been granted._
-
 
 3. create a new database:
 ```sql
@@ -345,8 +344,3 @@ This integration guide focused on a simple example on how to replicate a databas
 :::info
 For more features available for advanced options, please see the [reference documentation](/engines/database-engines/materialized-postgresql).
 :::
-
-
-## Related content {#related-content}
-- Blog: [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Blog: [ClickHouse and PostgreSQL - a Match Made in Data Heaven - part 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
