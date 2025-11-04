@@ -288,13 +288,14 @@ For users looking to explore the HyperDX interface only, we recommend our [sampl
 
 ### User permissions {#user-permissions}
 
-Users accessing HyperDX need **readonly SQL console access** and **SELECT permissions** on tables containing observability data.
+Users accessing HyperDX need **readonly SQL console access**, **SHOW permissions**, and **SELECT permissions** on tables containing observability data.
 
 #### Basic Setup {#basic-setup}
+
 ```sql
 -- Grant readonly access and observability table permissions
 GRANT readonly TO your_user;
-GRANT SELECT ON otel.* TO your_user;
+GRANT SHOW, SELECT ON otel.* TO your_user;
 ```
 
 #### For ClickHouse infrastructure monitoring {#infra-monitoring}
@@ -321,7 +322,7 @@ GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value)
 ```
 
 :::note
-HyperDX uses the user's SQL console permissions to query data. For custom schemas, grant SELECT on the specific tables users need to access.
+HyperDX uses the user's SQL console permissions to query data. For custom schemas, grant SHOW and SELECT on the specific tables users need to access.
 :::
 
 :::important Alerts require admin access
