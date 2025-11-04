@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Monitoring Redis metrics with ClickStack'
 doc_type: 'guide'
+keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
