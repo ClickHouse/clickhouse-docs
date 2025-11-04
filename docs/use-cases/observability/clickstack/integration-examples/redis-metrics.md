@@ -72,7 +72,7 @@ redis-cli -a <your-password> ping
 ClickStack allows you to extend the base OpenTelemetry collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
 Create a file named `redis-metrics.yaml` with the following configuration:
-```yaml
+```yaml title="redis-metrics.yaml"
 receivers:
   redis:
     endpoint: "localhost:6379"
