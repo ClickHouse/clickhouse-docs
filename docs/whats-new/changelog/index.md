@@ -2145,7 +2145,3 @@ doc_type: 'changelog'
 
 #### Build/Testing/Packaging Improvement
 * The universal installation script will propose installation even on macOS. [#74339](https://github.com/ClickHouse/ClickHouse/pull/74339) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
-:::note
-There have been no new releases yet for 2025.  
- View changelog for the year [2024](/docs/whats-new/changelog/2024).
-:::
