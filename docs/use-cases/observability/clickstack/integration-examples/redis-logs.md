@@ -76,7 +76,7 @@ sudo systemctl restart redis
 docker restart <redis-container>
 ```
 
-#### Create custom otel collector configuration {#custom-otel}
+#### Create custom OTel collector configuration {#custom-otel}
 
 ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 

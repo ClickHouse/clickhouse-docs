@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
 title: 'Monitoring nginx traces with ClickStack'
-sidebar_label: 'nginx traces'
+sidebar_label: 'Nginx traces'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring nginx traces with ClickStack'
@@ -17,7 +17,7 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring nginx traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring Nginx traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
