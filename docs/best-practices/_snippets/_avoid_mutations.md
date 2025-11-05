@@ -6,6 +6,10 @@ When a mutation is issued, ClickHouse schedules the creation of new **mutated pa
 
 For large datasets, this can produce a substantial spike in disk I/O and degrade overall cluster performance. Unlike merges, mutations can't be rolled back once submitted and will continue to execute even after server restarts unless explicitly cancelled—see [`KILL MUTATION`](/sql-reference/statements/kill#kill-mutation).
 
+:::tip Monitoring the number of active or queued mutations in ClickHouse
+For how to monitor the number of active or queued mutations refer to the following [knowledge base article](/knowledgebase/view_number_of_active_mutations).
+:::
+
 Mutations are **totally ordered**: they apply to data inserted before the mutation was issued, while newer data remains unaffected. They do not block inserts but can still overlap with other ongoing queries. A SELECT running during a mutation may read a mix of mutated and unmutated parts, which can lead to inconsistent views of the data during execution. ClickHouse executes mutations in parallel per part, which can further intensify memory and CPU usage, especially when complex subqueries (like x IN (SELECT ...)) are involved.
 
 As a rule, **avoid frequent or large-scale mutations**, especially on high-volume tables. Instead, use alternative table engines such as [ReplacingMergeTree](/guides/replacing-merge-tree) or [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree), which are designed to handle data corrections more efficiently at query time or during merges. If mutations are absolutely necessary, monitor them carefully using the system.mutations table and use `KILL MUTATION` if a process is stuck or misbehaving. Misusing mutations can lead to degraded performance, excessive storage churn, and potential service instability—so apply them with caution and sparingly.

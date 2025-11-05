@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx
-title: 'Monitoring Nginx logs with ClickStack'
-sidebar_label: 'Nginx logs'
+title: 'Monitoring nginx logs with ClickStack'
+sidebar_label: 'nginx logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring nginx logs with ClickStack'
+description: 'Monitoring nginx with ClickStack'
 doc_type: 'guide'
 ---
 
@@ -17,7 +17,7 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring nginx Logs with ClickStack {#nginx-clickstack}
+# Monitoring nginx logs with ClickStack {#nginx-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor nginx with ClickStack by configuring the OpenTelemetry collector to ingest nginx access logs. You'll learn how to:

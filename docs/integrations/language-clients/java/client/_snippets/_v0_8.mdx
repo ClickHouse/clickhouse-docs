@@ -382,6 +382,128 @@ try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
 }
 ```
 
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings)
+**Beta** 
+
+This API method allows to pass a writer object that will encode data directly into an output stream. Data will be compressed by the client.
+There is a configuration option in `InsertSettings` called `appCompressedData` that allows to turn off client compression and let application to send compressed stream. 
+Examples shows major usecases this API was designed for. 
+
+`com.clickhouse.client.api.DataStreamWriter` is a functional interface with a method `onOutput` that is called by the client when output stream is ready for data to be written. This interface has
+another method `onRetry` with default implementation. This method is called when retry logic is triggered and mainly used to reset data source if applicable. 
+
+
+**Signatures**
+```java
+CompletableFuture<InsertResponse> insert(String tableName,              // name of destination table
+                                         DataStreamWriter writer,       // data writer instance 
+                                         ClickHouseFormat format,       // data format in which the writer encodes data 
+                                         InsertSettings settings)       // operation settings
+```
+
+**Parameters**
+
+`tableName` - name of the target table. 
+
+`writer` - data writer instance.
+
+`format` - data format in which the writer encodes data. 
+
+`settings` - request settings.
+
+**Return value**
+
+Future of `InsertResponse` type - the result of the operation and additional information like server side metrics.
+
+**Examples**
+
+Writing a collection of JSON objects encoded as string values using `JSONEachRow` format: 
+```java showLineNumbers
+
+final int EXECUTE_CMD_TIMEOUT = 10; // seconds
+final String tableName = "events";
+final String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] rows = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // writing raw bytes 
+    for (String row : rows) {
+        out.write(row.getBytes());
+    }
+
+}, ClickHouseFormat.JSONEachRow, new InsertSettings()).get()) {
+
+    System.out.println("Rows written: " + response.getWrittenRows());
+}
+
+```
+
+Writing already compressed data:
+```java showLineNumbers
+String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
+String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] data = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+// This step is only for showcase. Real application would have already compressed data. 
+byte[][] compressedData = new byte[data.length][];
+for (int i = 0 ; i < data.length; i++) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gz = new GZIPOutputStream(baos);
+    gz.write(data[i].getBytes(StandardCharsets.UTF_8));
+    gz.finish();
+    compressedData[i] = baos.toByteArray();
+}
+
+InsertSettings insertSettings = new InsertSettings()
+        .appCompressedData(true, "gzip"); // defining compression algorithm (sent via HTTP headers)
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // Writing data 
+    for (byte[] row : compressedData) {
+        out.write(row);
+    }
+}, ClickHouseFormat.JSONEachRow, insertSettings).get()) {
+    System.out.println("Rows written: " + response.getWrittenRows());
+}    
+
+```
+
 ### InsertSettings {#insertsettings}
 
 Configuration options for insert operations.

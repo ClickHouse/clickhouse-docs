@@ -75,12 +75,9 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 ## Continuous Ingest {#continuous-ingest}
 ClickPipes supports continuous ingestion from S3, GCS, Azure Blob Storage, and DigitalOcean Spaces. When enabled, ClickPipes continuously ingests data from the specified path, and polls for new files at a rate of once every 30 seconds. However, new files must be lexically greater than the last ingested file. This means that they must be named in a way that defines the ingestion order. For instance, files named `file1`, `file2`, `file3`, etc., will be ingested sequentially. If a new file is added with a name like `file0`, ClickPipes will not ingest it because it is not lexically greater than the last ingested file.
 
-## Archive table {#archive-table}
-ClickPipes will create a table next to your destination table with the postfix `s3_clickpipe_<clickpipe_id>_archive`. This table will contain a list of all the files that have been ingested by the ClickPipe. This table is used to track files during ingestion and can be used to verify files have been ingested. The archive table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
+## Tracking ingested files {#tracking-ingested-files}
 
-:::note
-These tables will not be visible using ClickHouse Cloud SQL Console, you will need to connect via an external client either using HTTPS or Native connection to read them.
-:::
+To track which files have been ingested include the `_file` [virtual column](/sql-reference/table-functions/s3#virtual-columns) in the field mappings. The `_file` virtual column contains the filename of the source object, making it easy to query and identify which files have been processed.
 
 ## Authentication {#authentication}
 
