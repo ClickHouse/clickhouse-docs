@@ -45,21 +45,19 @@ Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestio
 
 <Image img={copy_api_key} alt="Copy API key" size="lg"/>
 
-## Create a local OpenTelemetry configuration {#create-otel-configuration}
+## Create a custom OpenTelemetry configuration {#create-otel-configuration}
 
-Create a `otel-local-file-collector.yaml` file with the following content.
-
-**Important**: Populate the value `<YOUR_INGESTION_API_KEY>` with your ingestion API key copied above (not required for HyperDX in ClickHouse Cloud).
+Create a `custom-local-config.yaml` file with the following content:
 
 ```yaml
 receivers:
   filelog:
     include:
-      - /var/log/**/*.log             # Linux
-      - /var/log/syslog
-      - /var/log/messages
-      - /private/var/log/*.log       # macOS
-      - /tmp/all_events.log # macos - see below
+      - /host/var/log/**/*.log        # Linux logs from host
+      - /host/var/log/syslog
+      - /host/var/log/messages
+      - /host/private/var/log/*.log   # macOS logs from host
+      - /tmp/all_events.log           # macOS - see below
     start_at: beginning # modify to collect new files only
 
   hostmetrics:
@@ -96,29 +94,25 @@ receivers:
       network:
       processes:
 
-exporters:
-  otlp:
-    endpoint: localhost:4317
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    tls:
-      insecure: true
-    sending_queue:
-      enabled: true
-      num_consumers: 10
-      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
-
 service:
   pipelines:
-    logs:
+    logs/local:
       receivers: [filelog]
-      exporters: [otlp]
-    metrics:
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+    metrics/hostmetrics:
       receivers: [hostmetrics]
-      exporters: [otlp]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
 ```
 
-This configuration collects system logs and metric for OSX and Linux systems, sending the results to ClickStack via the OTLP endpoint on port 4317.
+This configuration collects system logs and metrics for OSX and Linux systems, sending the results to ClickStack. The configuration extends the ClickStack collector by adding new receivers and pipelines—you reference the existing `clickhouse` exporter and processors (`memory_limiter`, `batch`) that are already configured in the base ClickStack collector.
 
 :::note Ingestion timestamps
 This configuration adjusts timestamps at ingest, assigning an updated time value to each event. Users should ideally [preprocess or parse timestamps](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) using OTel processors or operators in their log files to ensure accurate event time is retained.
@@ -136,20 +130,42 @@ Users wanting more detailed logs on OSX can run the command `log stream --debug 
 
 ## Start the collector {#start-the-collector}
 
-Run the following docker command to start an instance of the OTel collector.
+Run the following docker command to start the all-in-one container with your custom configuration:
 
 ```shell
-docker run --network=host --rm -it \
+docker run -d --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   --user 0:0 \
-  -v "$(pwd)/otel-local-file-collector.yaml":/etc/otel/config.yaml \
-  -v /var/log:/var/log:ro \
-  -v /private/var/log:/private/var/log:ro \
-  otel/opentelemetry-collector-contrib:latest \
-  --config /etc/otel/config.yaml
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
 :::note Root user
 We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
+
+Note that we mount the host's `/var/log` to `/host/var/log` inside the container to avoid conflicts with the container's own log files.
+:::
+
+:::note HyperDX in ClickHouse Cloud
+If using HyperDX in ClickHouse Cloud with a standalone collector, use this command instead:
+
+```shell
+docker run -d \
+  -p 4317:4317 -p 4318:4318 \
+  --user 0:0 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/host/var/log:ro \
+  -v /private/var/log:/host/private/var/log:ro \
+  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+```
 :::
 
 The collector will immediately begin collecting local system logs and metrics.
