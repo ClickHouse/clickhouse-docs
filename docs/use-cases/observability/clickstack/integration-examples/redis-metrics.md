@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis-metrics
 title: 'Monitoring Redis metrics with ClickStack'
-sidebar_label: 'Redis Metrics'
+sidebar_label: 'Redis metrics'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Redis metrics with ClickStack'
@@ -97,11 +97,19 @@ receivers:
       redis.keys.expired:
         enabled: true
 
+processors:
+  resource:
+    attributes:
+      - key: service.name
+        value: "redis"
+        action: upsert
+
 service:
   pipelines:
     metrics/redis:
       receivers: [redis]
       processors:
+        - resource
         - memory_limiter
         - batch
       exporters:
@@ -112,6 +120,7 @@ This configuration:
 - Connects to Redis on `localhost:6379` (adjust endpoint for your setup)
 - Collects metrics every 10 seconds
 - Collects key performance metrics (commands, clients, memory, keyspace stats)
+- **Sets the required `service.name` resource attribute** per [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/specs/semconv/resource/#service)
 - Routes metrics to the ClickHouse exporter via a dedicated pipeline
 
 **Key metrics collected:**
@@ -128,10 +137,12 @@ This configuration:
 - `redis.connections.rejected` - Rejected connections
 
 :::note
-- You only define new receivers and pipelines in the custom config
-- The processors (`memory_limiter`, `batch`) and exporters (`clickhouse`) are already defined in the base ClickStack configuration - you just reference them by name
-- For production deployments with authentication, store the password in an environment variable and reference it as `${env:REDIS_PASSWORD}`
-- Adjust `collection_interval` based on your monitoring needs (10s is a good default; lower values increase data volume)
+- You only define new receivers, processors, and pipelines in the custom config
+- The `memory_limiter` and `batch` processors and `clickhouse` exporter are already defined in the base ClickStack configuration - you just reference them by name
+- The `resource` processor sets the required `service.name` attribute per OpenTelemetry semantic conventions
+- For production with authentication, store the password in an environment variable: `${env:REDIS_PASSWORD}`
+- Adjust `collection_interval` based on your needs (10s default; lower values increase data volume)
+- For multiple Redis instances, customize `service.name` to distinguish them (e.g., `"redis-cache"`, `"redis-sessions"`)
 :::
 
 #### Configure ClickStack to load custom configuration {#load-custom}
@@ -298,14 +309,6 @@ The dashboard will be created with all visualizations pre-configured:
 
 <Image img={example_dashboard} alt="Redis metrics dashboard"/>
 
-**The dashboard includes:**
-- **Commands processed per second** - Redis throughput
-- **Memory usage** - Current memory consumption and trends
-- **Connected clients** - Active client connections
-- **Cache performance** - Keyspace hits and misses
-- **Key evictions** - Memory pressure indicator
-- **Rejected connections** - Connection limit issues
-
 :::note
 For the demo dataset, ensure the time range is set to 2025-10-20 05:00:00 - 2025-10-21 05:00:00.
 :::
@@ -399,4 +402,4 @@ If you want to explore further, here are some next steps to experiment with your
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
 - Create additional dashboards for specific use cases (replication lag, persistence performance)
-- Monitor multiple Redis instances by duplicating the receiver configuration with different endpoints
+- Monitor multiple Redis instances by duplicating the receiver configuration with different endpoints and service names
