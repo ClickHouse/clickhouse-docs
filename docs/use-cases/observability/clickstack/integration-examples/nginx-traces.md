@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Monitoring nginx Traces with ClickStack'
-sidebar_label: 'nginx Traces'
+title: 'Monitoring nginx traces with ClickStack'
+sidebar_label: 'nginx traces'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring nginx Traces with ClickStack'
+description: 'Monitoring nginx traces with ClickStack'
 doc_type: 'guide'
 keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 ---
@@ -12,11 +12,12 @@ keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
-import finish_import from '@site/static/images/clickstack/finish-trace-dashboard.png';
-import example_dashboard from '@site/static/images/clickstack/example-trace-dashboard.png';
+import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
+import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring nginx Traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring nginx traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
@@ -26,26 +27,29 @@ This guide shows you how to capture distributed traces from your existing nginx 
 - Verify traces are appearing in HyperDX
 - Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
 
-Time Required: 5-10 minutes.
-:::
+A demo dataset with sample traces is available if you want to test the integration before configuring your production nginx.
 
-## Prerequisites {#prerequisites}
+Time Required: 5-10 minutes
+::::
+
+## Integration with existing nginx {#existing-nginx}
+
+This section covers adding distributed tracing to your existing nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
+If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset).
+
+##### Prerequisites {#prerequisites}
 - ClickStack instance running with OTLP endpoints accessible (ports 4317/4318)
 - Existing nginx installation (version 1.18 or higher)
 - Root or sudo access to modify nginx configuration
 - ClickStack hostname or IP address
 
-## Integration with existing nginx {#existing-nginx}
+<VerticalStepper headerLevel="h4">
 
-This section covers adding distributed tracing to your existing nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
-
-<VerticalStepper>
-
-## Install OpenTelemetry nginx module {#install-module}
+#### Install OpenTelemetry nginx module {#install-module}
 
 The easiest way to add tracing to nginx is using the official nginx image with OpenTelemetry support built-in.
 
-### Using the nginx:otel image {#using-otel-image}
+##### Using the nginx:otel image {#using-otel-image}
 
 Replace your current nginx image with the OpenTelemetry-enabled version:
 
@@ -60,7 +64,7 @@ This image includes the `ngx_otel_module.so` pre-installed and ready to use.
 If you're running nginx outside of Docker, refer to the [OpenTelemetry nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
 :::
 
-## Configure nginx to send traces to ClickStack {#configure-nginx}
+#### Configure nginx to send traces to ClickStack {#configure-nginx}
 
 Add OpenTelemetry configuration to your `nginx.conf` file. The configuration loads the module and directs traces to ClickStack's OTLP endpoint.
 
@@ -132,7 +136,7 @@ Replace `<clickstack-host>` with your ClickStack instance hostname or IP address
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
 :::
 
-### Understanding the configuration {#understanding-configuration}
+##### Understanding the configuration {#understanding-configuration}
 
 **What gets traced:**
 Each request to nginx creates a trace span showing:
@@ -158,7 +162,7 @@ docker-compose restart nginx
 sudo systemctl reload nginx
 ```
 
-## Verifying Traces in ClickStack {#verifying-traces}
+#### Verifying traces in HyperDX {#verifying-traces}
 
 Once configured, log into HyperDX and verify traces are flowing, you should see something like this, if you don't see traces, try adjusting your time range:
 
@@ -170,9 +174,9 @@ Once configured, log into HyperDX and verify traces are flowing, you should see 
 
 For users who want to test the nginx trace integration before configuring their production systems, we provide a sample dataset of pre-generated nginx traces with realistic traffic patterns.
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## Start ClickStack {#start-clickstack}
+#### Start ClickStack {#start-clickstack}
 
 If you don't have ClickStack running yet, start it with:
 
@@ -188,7 +192,7 @@ Wait about 30 seconds for ClickStack to fully initialize before proceeding.
 - Port 4317: OTLP gRPC endpoint (used by nginx module)
 - Port 4318: OTLP HTTP endpoint (used for demo traces)
 
-## Download the sample dataset {#download-sample}
+#### Download the sample dataset {#download-sample}
 
 Download the sample traces file and update timestamps to the current time:
 
@@ -204,7 +208,7 @@ The dataset includes:
 - Latencies ranging from 10ms to 800ms
 - Original traffic patterns preserved, shifted to current time
 
-## Send traces to ClickStack {#send-traces}
+#### Send traces to ClickStack {#send-traces}
 
 Set your API key as an environment variable (if not already set):
 
@@ -232,15 +236,15 @@ This demo assumes ClickStack is running locally on `localhost:4318`. For remote 
 
 You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
 
-## Verify traces in HyperDX {#verify-demo-traces}
+#### Verify traces in HyperDX {#verify-demo-traces}
 
-1. Open [HyperDX](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
-
-:::note
-It is important to use the link above to get the correct time range, if you don't use this link set your time range to Oct 26 13:00:00 - Oct 27 13:00:00 to see proper results.
-:::
+1. Open [HyperDX with demo time range](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
 
 Here's what you should see in your search view:
+
+:::note
+If you don't see logs, ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::
 
 <Image img={view_traces} alt="View Traces"/>
 
@@ -250,11 +254,11 @@ Here's what you should see in your search view:
 
 To help you get started monitoring traces with ClickStack, we provide essential visualizations for trace data.
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h4">
 
-## <a href={useBaseUrl('/examples/example-traces.json')} download="example-traces.json">Download</a> the dashboard configuration. {#download}
+#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
-## Import the pre-built dashboard {#import-dashboard}
+#### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.
 2. Click "Import Dashboard" in the upper right corner under the ellipses.
 
@@ -264,7 +268,11 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <Image img={finish_import} alt="Finish Import"/>
 
-## The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+#### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
+
+:::note
+Ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00. The imported dashboard will not have a time range specified by default.
+:::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
 
