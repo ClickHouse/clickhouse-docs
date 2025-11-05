@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Monitoring Nginx Traces with ClickStack'
-sidebar_label: 'Nginx Traces'
+title: 'Monitoring nginx Traces with ClickStack'
+sidebar_label: 'nginx Traces'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Nginx Traces with ClickStack'
+description: 'Monitoring nginx Traces with ClickStack'
 doc_type: 'guide'
 keywords: ['ClickStack', 'nginx', 'traces', 'otel']
 ---
@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/finish-trace-dashboard
 import example_dashboard from '@site/static/images/clickstack/example-trace-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 
-# Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
