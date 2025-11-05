@@ -10,7 +10,10 @@ This section of the documentation covers topics related to billing, and contains
 
 | Page                                  | Description                                                          |
 |---------------------------------------|----------------------------------------------------------------------|
-| [Overview](/cloud/marketplace/marketplace-billing)                       | Overview and FAQ pages for marketplace billing.                      | 
+| [Overview](/cloud/manage/billing/overview)                       | Pricing examples and FAQs for billing.                      | 
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | Learn more about how payment thresholds work and how to adjust them. |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | Troubleshoot common billing issues.                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | Landing page for further marketplace related topics.                 |
+
+
+https://clickhouse.com/docs/cloud/
