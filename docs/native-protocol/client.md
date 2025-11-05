@@ -4,6 +4,7 @@ sidebar_position: 2
 title: 'Native client packets'
 description: 'Native protocol client'
 doc_type: 'reference'
+keywords: ['client packets', 'native protocol client', 'protocol packets', 'client communication', 'TCP client']
 ---
 
 # Client packets

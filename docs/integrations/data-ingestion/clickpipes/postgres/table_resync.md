@@ -2,8 +2,9 @@
 title: 'Resyncing Specific Tables'
 description: 'Resyncing specific tables in a Postgres ClickPipe'
 slug: /integrations/clickpipes/postgres/table_resync
-sidebar_label: 'Resync Table'
+sidebar_label: 'Resync table'
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 # Resyncing specific tables {#resync-tables}

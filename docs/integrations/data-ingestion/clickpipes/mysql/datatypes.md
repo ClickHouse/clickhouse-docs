@@ -3,6 +3,7 @@ title: 'Supported data types'
 slug: /integrations/clickpipes/mysql/datatypes
 description: 'Page describing MySQL ClickPipe datatype mapping from MySQL to ClickHouse'
 doc_type: 'reference'
+keywords: ['MySQL ClickPipe datatypes', 'MySQL to ClickHouse data types', 'ClickPipe datatype mapping', 'MySQL ClickHouse type conversion', 'database type compatibility']
 ---
 
 Here is the supported data-type mapping for the MySQL ClickPipe:

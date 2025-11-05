@@ -4,6 +4,7 @@ title: 'Data sources'
 hide_title: true
 description: 'Table of contents page for the ClickHouse Cloud guides section'
 doc_type: 'landing-page'
+keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutorials']
 ---
 
 ## Cloud integrations {#cloud-integrations}

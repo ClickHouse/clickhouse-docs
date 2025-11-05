@@ -70,7 +70,7 @@ ENGINE = Kafka(
 );
 ```
 
-Note that we're using the [`JSONAsObject`](https://clickhouse.com/docs/interfaces/formats#jsonasobject) format, which will ensure that incoming messages are made available as a JSON object.
+Note that we're using the [`JSONAsObject`](https://clickhouse.com/docs/interfaces/formats/JSON/JSONAsObject) format, which will ensure that incoming messages are made available as a JSON object.
 This format can only be parsed into a table that has a single column with the `JSON` type.
 
 Next, we'll create the underlying table to store the Wiki data:

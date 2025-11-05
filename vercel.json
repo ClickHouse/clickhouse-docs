@@ -3522,13 +3522,18 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/security/cloud-access-management",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
       "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
       "permanent": true
     },
     {
       "source": "/docs/cloud/security/secure-s3",
-      "destination": "/cloud/data-sources/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
       "permanent": true
     },
     {
@@ -3562,8 +3567,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/secure-s3",
-      "destination": "/docs/cloud/data-sources/secure-s3",
       "source": "/docs/operations/system-tables/crash-log",
       "destination": "/docs/operations/system-tables/crash_log",
       "permanent": true
@@ -3581,6 +3584,26 @@
     {
       "source": "/docs/operations/system-tables/role-grants",
       "destination": "/docs/operations/system-tables/role_grants",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/byoc",
+      "destination": "/docs/cloud/reference/byoc/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-clickhouse",
+      "destination": "/docs/intro",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/inviting-new-users",
+      "destination": "/docs/cloud/security/manage-cloud-users#invite-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/functions/time-series-analysis-functions",
+      "destination": "/docs/sql-reference/functions/time-series-functions",
       "permanent": true
     }
   ]

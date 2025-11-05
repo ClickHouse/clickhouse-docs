@@ -5,6 +5,7 @@ sidebar_position: 2
 description: 'Consolidated Skip Index Examples'
 title: 'Data Skipping Index Examples'
 doc_type: 'guide'
+keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---
 
 # Data skipping index examples {#data-skipping-index-examples}
@@ -14,7 +15,8 @@ This page consolidates ClickHouse data skipping index examples, showing how to d
 **Index syntax:** 
 
 ```sql
-INDEX name expr TYPE type(...) [GRANULARITY N]`
+INDEX name expr TYPE type(...) [GRANULARITY N]
+```
 
 ClickHouse supports five skip index types:
 
@@ -126,7 +128,7 @@ See [parameter docs](/engines/table-engines/mergetree-family/mergetree#n-gram-bl
 
 ## Token Bloom filter (tokenbf\_v1) for word-based search {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-`tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hastoken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
+`tokenbf_v1` indexes tokens separated by non-alphanumeric characters. You should use it with [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), `LIKE` word patterns or equals/IN. It supports `String`/`FixedString`/`Map` types.
 
 See [Token bloom filter](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) and [Bloom filter types](/optimize/skipping-indexes#skip-index-types) pages for more details.
 
