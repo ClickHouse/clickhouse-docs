@@ -15,5 +15,4 @@ This section of the documentation covers topics related to billing, and contains
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | Troubleshoot common billing issues.                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | Landing page for further marketplace related topics.                 |
 
-
 https://clickhouse.com/docs/cloud/
