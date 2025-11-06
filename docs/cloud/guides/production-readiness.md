@@ -169,7 +169,7 @@ Document your recovery time objectives (RTO) and recovery point objectives (RPO)
 
 Understand your current support tier's SLA expectations and escalation procedures. Create internal runbooks defining when to engage ClickHouse support and integrate these procedures with your existing incident management processes.
 
-Learn more about [ClickHouse Cloud Backup and Recovery](/cloud/manage/backups/overview) and [Support Services](/about-us/support).
+Learn more about [ClickHouse Cloud backup and recovery](/cloud/manage/backups/overview) and [support services](/about-us/support).
 
 ## Next steps {#next-steps}
 
