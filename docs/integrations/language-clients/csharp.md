@@ -12,20 +12,20 @@ integration:
   website: 'https://github.com/ClickHouse/clickhouse-cs'
 ---
 
-# ClickHouse C# Client
+# ClickHouse C# client
 
 The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
 Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
-## Migration Guide {#migration-guide}
+## Migration guide {#migration-guide}
 
 1. Update your `.csproj` file with the new package name `ClickHouse.Driver` and [the latest version on NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
 2. Update all `ClickHouse.Client` references to `ClickHouse.Driver` in your codebase.
 
 ---
 
-## Supported .NET Versions {#supported-net-versions}
+## Supported .NET versions {#supported-net-versions}
 
 `ClickHouse.Driver` supports the following .NET versions:
 
@@ -41,18 +41,20 @@ Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 ## Installation {#installation}
 
 Install the package from NuGet:
+
 ```bash
 dotnet add package ClickHouse.Driver
 ```
 
 Or using the NuGet Package Manager:
+
 ```bash
 Install-Package ClickHouse.Driver
 ```
 
 ---
 
-## Quick Start {#quick-start}
+## Quick start {#quick-start}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -65,6 +67,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 ```
 
 Using **Dapper**:
+
 ```csharp
 using Dapper;
 using ClickHouse.Driver.ADO;
@@ -80,7 +83,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 
 ## Usage {#usage}
 
-### Connection String Parameters {#connection-string}
+### Connection string parameters {#connection-string}
 
 | Parameter           | Description                                     | Default             |
 | ------------------- | ----------------------------------------------- | ------------------- |
@@ -90,7 +93,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 | `Username`          | Authentication username                         | `default`           |
 | `Password`          | Authentication password                         | *(empty)*           |
 | `Protocol`          | Connection protocol (`http` or `https`)         | `http`              |
-| `Compression`       | Enables GZip compression                        | `true`              |
+| `Compression`       | Enables Gzip compression                        | `true`              |
 | `UseSession`        | Enables persistent server session               | `false`             |
 | `SessionId`         | Custom session ID                               | Random GUID         |
 | `Timeout`           | HTTP timeout (seconds)                          | `120`               |
@@ -99,15 +102,17 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 
 **Example:** `Host=clickhouse;Port=8123;Username=default;Password=;Database=default`
 
-**Note about sessions:**
+:::note Sessions
 
 `UseSession` flag enables persistence of server session, allowing use of `SET` statements and temp tables. Session will be reset after 60 seconds of inactivity (default timeout). Session lifetime can be extended by setting session settings via ClickHouse statements.
 
-`ClickHouseConnection` class normally allows for parallel operation (multiple threads can run queries concurrently). However, enabling `UseSession` flag will limit that to one active query per connection at any moment of time (serverside limitation).
+`ClickHouseConnection` class normally allows for parallel operation (multiple threads can run queries concurrently). However, enabling `UseSession` flag will limit that to one active query per connection at any moment of time (server-side limitation).
+
+:::
 
 ---
 
-### Connection Lifetime & Pooling {#connection-lifetime}
+### Connection lifetime and pooling {#connection-lifetime}
 
 `ClickHouse.Driver` uses `System.Net.Http.HttpClient` under the hood. `HttpClient` has a per-endpoint connection pool. As a consequence:
 
@@ -125,9 +130,10 @@ For DI environments, there is a bespoke constructor `ClickHouseConnection(string
 
 ---
 
-### Creating a Table {#creating-a-table}
+### Creating a table {#creating-a-table}
 
 Create a table using standard SQL syntax:
+
 ```csharp
 using ClickHouse.Driver.ADO;
 
@@ -145,9 +151,10 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ---
 
-### Inserting Data {#inserting-data}
+### Inserting data {#inserting-data}
 
 Insert data using parameterized queries:
+
 ```csharp
 using ClickHouse.Driver.ADO;
 
@@ -167,13 +174,14 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ---
 
-### Bulk Insert {#bulk-insert}
+### Bulk insert {#bulk-insert}
 
 Using `ClickHouseBulkCopy` requires:
 
 * Target connection (`ClickHouseConnection` instance)
 * Target table name (`DestinationTableName` property)
 * Data source (`IDataReader` or `IEnumerable<object[]>`)
+  
 ```csharp
 using ClickHouse.Driver.ADO;
 using ClickHouse.Driver.Copy;
@@ -197,17 +205,17 @@ await bulkCopy.WriteToServerAsync(values);
 Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
-**Notes:**
-
-* For optimal performance, ClickHouseBulkCopy uses the Task Parallel Library (TPL) to process batches of data, with up to 4 parallel insertion tasks (tweakable).
+:::note
+* For optimal performance, ClickHouseBulkCopy uses the Task Parallel Library (TPL) to process batches of data, with up to 4 parallel insertion tasks (this can be tuned).
 * Column names can be optionally provided via `ColumnNames` property if source data has fewer columns than target table.
 * Configurable parameters: `Columns`, `BatchSize`, `MaxDegreeOfParallelism`.
 * Before copying, a `SELECT * FROM <table> LIMIT 0` query is performed to get information about target table structure. Types of provided objects must reasonably match the target table.
 * Sessions are not compatible with parallel insertion. Connection passed to `ClickHouseBulkCopy` must have sessions disabled, or `MaxDegreeOfParallelism` must be set to `1`.
+:::
 
 ---
 
-### Performing SELECT Queries {#performing-select-queries}
+### Performing SELECT queries {#performing-select-queries}
 
 Execute SELECT queries and process results:
 
@@ -234,7 +242,8 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ---
 
-### Raw Streaming {#raw-streaming}
+### Raw streaming {#raw-streaming}
+
 ```csharp
 using var command = connection.CreateCommand();
 command.Text = "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow";
@@ -246,15 +255,17 @@ var json = reader.ReadToEnd();
 
 ---
 
-### Nested Columns Support {#nested-columns}
+### Nested columns support {#nested-columns}
 
 ClickHouse nested types (`Nested(...)`) can be read and written using array semantics.
+
 ```sql
 CREATE TABLE test.nested (
     id UInt32,
     params Nested (param_id UInt8, param_val String)
 ) ENGINE = Memory
 ```
+
 ```csharp
 using var bulkCopy = new ClickHouseBulkCopy(connection)
 {
@@ -269,56 +280,62 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ---
 
-### AggregateFunction Columns {#aggregatefunction-columns}
+### AggregateFunction columns {#aggregatefunction-columns}
 
 Columns of type `AggregateFunction(...)` cannot be queried or inserted directly.
 
 To insert:
+
 ```sql
 INSERT INTO t VALUES (uniqState(1));
 ```
 
 To select:
+
 ```sql
 SELECT uniqMerge(c) FROM t;
 ```
 
 ---
 
-### SQL Parameters {#sql-parameters}
+### SQL parameters {#sql-parameters}
 
 To pass parameters in query, ClickHouse parameter formatting must be used, in following form:
+
 ```sql
 {<name>:<data type>}
 ```
 
 **Examples:**
+
 ```sql
 SELECT {value:Array(UInt16)} as value
 ```
+
 ```sql
 SELECT * FROM table WHERE val = {tuple_in_tuple:Tuple(UInt8, Tuple(String, UInt8))}
 ```
+
 ```sql
 INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 ```
 
-**Notes:**
-
+:::note
 * SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception.
 * To insert large volume of records, consider using Bulk Insert functionality.
+:::
 
 ---
 
-## Supported Data Types {#supported-data-types}
+## Supported data types {#supported-data-types}
 
 `ClickHouse.Driver` supports the following ClickHouse data types with their corresponding .NET type mappings:
 
-### Boolean Types {#boolean-types}
+### Boolean types {#boolean-types}
 
 * `Bool` → `bool`
 
-### Numeric Types {#numeric-types}
+### Numeric types {#numeric-types}
 
 **Signed Integers:**
 * `Int8` → `sbyte`
@@ -347,12 +364,12 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 * `Decimal128` → `decimal`
 * `Decimal256` → `BigDecimal`
 
-### String Types {#string-types}
+### String types {#string-types}
 
 * `String` → `string`
 * `FixedString` → `string`
 
-### Date and Time Types {#date-time-types}
+### Date and time types {#date-time-types}
 
 * `Date` → `DateTime`
 * `Date32` → `DateTime`
@@ -360,18 +377,18 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 * `DateTime32` → `DateTime`
 * `DateTime64` → `DateTime`
 
-### Network Types {#network-types}
+### Network types {#network-types}
 
 * `IPv4` → `IPAddress`
 * `IPv6` → `IPAddress`
 
-### Geographic Types {#geographic-types}
+### Geographic types {#geographic-types}
 
 * `Point` → `Tuple`
 * `Ring` → `Array of Points`
 * `Polygon` → `Array of Rings`
 
-### Complex Types {#complex-types}
+### Complex types {#complex-types}
 
 * `Array(T)` → `Array of any type`
 * `Tuple(T1, T2, ...)` → `Tuple of any types`
@@ -380,7 +397,7 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ---
 
-### DateTime Handling {#datetime-handling}
+### DateTime handling {#datetime-handling}
 
 `ClickHouse.Driver` tries to correctly handle timezones and `DateTime.Kind` property. Specifically:
 
@@ -393,7 +410,7 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ---
 
-### Environment Variables {#environment-variables}
+### Environment variables {#environment-variables}
 
 You can set defaults using environment variables:
 
@@ -403,15 +420,18 @@ You can set defaults using environment variables:
 | `CLICKHOUSE_USER`     | Default username |
 | `CLICKHOUSE_PASSWORD` | Default password |
 
-**Note:** Values provided explicitly to the `ClickHouseConnection` constructor will take priority over environment variables.
+:::note
+Values provided explicitly to the `ClickHouseConnection` constructor will take priority over environment variables.
+:::
 
 ---
 
-### ORM & Dapper Support {#orm-support}
+### ORM & Dapper support {#orm-support}
 
 `ClickHouse.Driver` supports Dapper (with limitations).
 
 **Working example:**
+
 ```csharp
 connection.QueryAsync<string>(
     "SELECT {p1:Int32}",
@@ -420,6 +440,7 @@ connection.QueryAsync<string>(
 ```
 
 **Not supported:**
+
 ```csharp
 connection.QueryAsync<string>(
     "SELECT {p1:Int32}",
