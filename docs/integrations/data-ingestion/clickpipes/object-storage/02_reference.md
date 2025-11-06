@@ -58,9 +58,9 @@ To increase the throughput on large ingest jobs, we recommend scaling the ClickH
 - ClickPipes will only attempt to ingest objects at 10GB or smaller in size. If a file is greater than 10GB an error will be appended to the ClickPipes dedicated error table.
 - Azure Blob Storage pipes with continuous ingest on containers with over 100k files will have a latency of around 10–15 seconds in detecting new files. Latency increases with file count.
 - Object Storage ClickPipes **does not** share a listing syntax with the [S3 Table Function](/sql-reference/table-functions/s3), nor Azure with the [AzureBlobStorage Table function](/sql-reference/table-functions/azureBlobStorage).
-    - `?` - Substitutes any single character
-    - `*` - Substitutes any number of any characters except / including empty string
-    - `**` - Substitutes any number of any character include / including empty string
+  - `?` - Substitutes any single character
+  - `*` - Substitutes any number of any characters except / including empty string
+  - `**` - Substitutes any number of any character include / including empty string
 
 :::note
 This is a valid path (for S3):
