@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-metrics
-title: 'Monitoring Kafka Metrics with ClickStack'
+title: 'Monitoring Kafka metrics with ClickStack'
 sidebar_label: 'Kafka Metrics'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Kafka Metrics with ClickStack'
+description: 'Monitoring Kafka metrics with ClickStack'
 doc_type: 'guide'
 keywords: ['Kafka', 'metrics', 'OTEL', 'ClickStack', 'JMX']
 ---
@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Kafka Metrics with ClickStack {#kafka-metrics-clickstack}
+# Monitoring Kafka metrics with ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Apache Kafka performance metrics with ClickStack by configuring the OpenTelemetry collector's JMX receiver. You'll learn how to:
