@@ -35,7 +35,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Explo](./community_integrations/explo-and-clickhouse.md)
 - [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)
 - [Grafana](./grafana/index.md)
-- [Lightdash] (./lightdash-and-clickhouse.md)
+- [Lightdash](./lightdash-and-clickhouse.md)
 - [Looker](./looker-and-clickhouse.md)
 - [Luzmo](./community_integrations/luzmo-and-clickhouse.md)
 - [Metabase](./metabase-and-clickhouse.md)
