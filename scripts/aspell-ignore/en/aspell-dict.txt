@@ -57,6 +57,7 @@ AsynchronousInsertThreadsActive
 AsynchronousMetricsCalculationTimeSpent
 AsynchronousMetricsUpdateInterval
 AsynchronousReadWait
+ATTR
 AuroraMySQL
 AuroraPostgreSQL
 Authenticator
@@ -252,6 +253,7 @@ ContentSquare's
 Contentsquare
 ContextLockWait
 Contrib
+CoreDNS
 CopilotKit
 Copilotkit
 CoreDNS
@@ -292,6 +294,9 @@ DIEs
 DLOPEN
 DLSYM
 DOGEFI
+DATALAKE
+DLOPEN
+DLSYM
 DSAR
 DSPy
 DaemonSet
@@ -376,6 +381,7 @@ Durre
 ECMA
 EDOT
 EMQX
+EPOLL
 ENIs
 EPOLL
 ETag
@@ -413,6 +419,8 @@ FILECACHE
 FIPS
 FOSDEM
 FQDN
+FCNTL
+FILECACHE
 FSTAT
 Fabi
 Failover
@@ -456,6 +464,9 @@ GTID
 GTIDs
 GTest
 GUID
+GETPWUID
+GETTIME
+GETTIMEOFDAY
 GWLBs
 Gb
 Gbit
@@ -495,12 +506,14 @@ HANA
 HAProxy
 HDDs
 HHMM
+HIVEMETASTORE
 HIPAA
 HIVEMETASTORE
 HMAC
 HNSW
 HSTS
 HTAP
+HAProxy
 HTTPConnection
 HTTPThreads
 Hashboard's
@@ -535,12 +548,15 @@ IDEs
 IDNA
 IMDS
 IMDb
+INIT
 INFILE
 INIT
 INOUT
 INSERTed
 INSERTs
 INVOKER
+IOSETUP
+ISTREAM
 IOPS
 IOPrefetchThreads
 IOPrefetchThreadsActive
@@ -710,6 +726,7 @@ Lemire
 Levenshtein
 Lhotsky
 Liao
+LIBSSH
 LibFuzzer
 LibreChat
 Lifecycles
@@ -764,6 +781,7 @@ MMappedFiles
 MPROTECT
 MQTT
 MQTTX
+MPROTECT
 MREMAP
 MSSQL
 MSan
@@ -859,6 +877,7 @@ NEKUDOTAYIM
 NETLINK
 NEWDATE
 NEWDECIMAL
+NETLINK
 NFKC
 NFKD
 NIST
@@ -917,6 +936,7 @@ OLAP
 OLTP
 OOMKilled
 OOMs
+OOMKilled
 ORCCompression
 ORMs
 OSContextSwitches
@@ -966,6 +986,7 @@ OSUptime
 OSUserTime
 OSUserTimeCPU
 OSUserTimeNormalized
+OSTREAM
 OTLP
 OTel
 OUTFILE
@@ -1464,6 +1485,8 @@ Uint
 Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
+UNCOMPRESS
+UNLINK
 UnidirectionalEdgeIsValid
 UnionStep
 UniqThetaSketch
@@ -1485,6 +1508,7 @@ VPNs
 Vadim
 Valgrind
 ValueError
+validator
 Vaza
 Vectorization
 Vectorized
@@ -1499,6 +1523,7 @@ VirtualBox
 Vose
 WAITPID
 WALs
+WAITPID
 WSFG
 WarpStream
 WebUI
@@ -1543,6 +1568,8 @@ ZooKeeperSession
 ZooKeeperWatch
 ZooKeepers
 Zstandard
+ZCONNECTIONLOSS
+ZSESSIONEXPIRED
 aarch
 abstractmethod
 accurateCast
@@ -2070,6 +2097,7 @@ denormals
 deployable
 dequeued
 dequeues
+deregistration
 dereference
 deregistration
 deserialization
@@ -2163,6 +2191,7 @@ equi
 erfc
 errno
 errorCodeToName
+errno
 errored
 etag
 evalMLMethod
@@ -2535,6 +2564,7 @@ kolya
 konsole
 kostik
 kostikConsistentHash
+kube
 ksqlDB
 kube
 kurtPop
@@ -2979,6 +3009,7 @@ preprocessed
 preprocessing
 preprocessor
 presentational
+prestop
 prestable
 prestop
 prettycompact
@@ -3115,6 +3146,8 @@ redash
 reddit
 redis
 redisstreams
+refetch
+refetched
 refcounter
 refetch
 refetched
@@ -3243,6 +3276,7 @@ serverTimeZone
 serverTimezone
 serverUUID
 serverless
+serializeValueIntoMemory
 sessionCacheSize
 sessionIdContext
 sessionTimeout
@@ -3743,6 +3777,7 @@ variadic
 variantElement
 variantType
 varint
+varargs
 varpop
 varpopstable
 varsamp
