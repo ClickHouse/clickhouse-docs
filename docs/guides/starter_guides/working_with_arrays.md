@@ -81,6 +81,46 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 └─────────────┴────────────────┘
 ```
 
+<details>
+<summary>Creating arrays of different types</summary>
+
+You can use the `use_variant_as_common_type` setting to change the default behavior described above.
+This allows you to use the [Variant](/sql-reference/data-types/variant) type as a result type for `if`/`multiIf`/`array`/`map` functions when there is no common type for argument types.
+
+For example:
+
+```sql
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    toTypeName(array)
+SETTINGS use_variant_as_common_type = 1;
+```
+
+```response
+┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
+│ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
+└──────────────────────────────────────┴──────────────────────────────────────────────┘
+```
+
+You can then also read the types from the array by type name:
+
+```sql
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    array.UInt8,
+    array.String,
+    array.`Array(String)`
+SETTINGS use_variant_as_common_type = 1;
+```
+
+```response
+┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
+│ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
+└──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
+```
+
+</details>
+
 Use of the index with square brackets provides a convenient way to access array elements.
 In ClickHouse, it's important to know that the array index always starts from **1**.
 This may be different from other programming languages you're used to where arrays are zero-indexed.
@@ -270,7 +310,7 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap {#arraymap}
+### arrayMap and arrayZip {#arraymap}
 
 We saw in the previous query that Denver International Airport was the airport with the most outward flights for our particular chosen day.
 Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
@@ -278,25 +318,25 @@ Let's take a look at how many of those flights were on-time, delayed by 15-30 mi
 Many of the array functions in ClickHouse are so-called ["higher-order functions"](/sql-reference/functions/overview#higher-order-functions) and accept a lambda function as the first parameter.
 The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order function and returns a new array from the provided array by applying a lambda function to each element of the original array.
 
-Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time:
+Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time.
+For pairs of origin/destinations, it shows the tail number and status for every flight:
 
-```sql
+```sql runnable
+WITH arrayMap(
+              d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME')),
+              groupArray(DepDelayMinutes)
+    ) AS statuses
+
 SELECT
     Origin,
     toStringCutToZero(Dest) AS Destination,
-    Tail_Number,
-    DepDelayMinutes AS delay_minutes,
---highlight-start
-    arrayMap(d -> if(d >= 30, 'DELAYED', 
-                  if(d >= 15, 'WARNING', 'ON-TIME')),
-             [DepDelayMinutes])[1] AS status
---highlight-end
+    arrayZip(groupArray(Tail_Number), statuses) as tailNumberStatuses
 FROM ontime.ontime
 WHERE Origin = 'DEN'
-    AND FlightDate = '2024-01-01'
-    AND DepTime IS NOT NULL
-    AND DepDelayMinutes IS NOT NULL
-ORDER BY DepDelayMinutes DESC
+  AND FlightDate = '2024-01-01'
+  AND DepTime IS NOT NULL
+  AND DepDelayMinutes IS NOT NULL
+GROUP BY ALL
 ```
 
 In the above query, the `arrayMap` function takes a single-element array `[DepDelayMinutes]` and applies the lambda function `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` to categorize it.
@@ -316,7 +356,7 @@ FROM ontime.ontime
 WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
-ORDER BY num_on_time DESC
+ORDER BY num_delays_30_min_or_more DESC
 ```
 
 In the query above we pass a lambda function as the first argument to the [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) function.
@@ -400,70 +440,62 @@ In the example above, we used `arrayReduce` to find the average and maximum dela
 ### arrayJoin {#arrayJoin}
 
 Regular functions in ClickHouse have the property that they return the same number of rows than they receive.
-There is however, one interesting and unique function that breaks this rule worth learning about - the `arrayJoin` function.
+There is however, one interesting and unique function that breaks this rule, which is worth learning about - the `arrayJoin` function.
 
-`arrayJoin` "explodes" an array - it takes an array and creates a separate row for each element.
+`arrayJoin` "explodes" an array by taking it and creating a separate row for each element.
 This is similar to the `UNNEST` or `EXPLODE` SQL functions in other databases.
 
 Unlike most array functions that return arrays or scalar values, `arrayJoin` fundamentally changes the result set by multiplying the number of rows.
 
-Consider the query below which returns a single array of destinations for a given origin:
+Consider the query below which returns an array of values from 0 to 100 in steps of 10.
+We could consider the array to be different delay times: 0 minutes, 10 minutes, 20 minutes, and so on.
 
 ```sql runnable
+WITH range(0, 100, 10) AS delay
+SELECT delay
+```
+
+We can write a query using `arrayJoin` to work out how many delays there were of up to that number of minutes between two airports.
+The query below creates a histogram showing the distribution of flight delays from Denver (DEN) to Miami (MIA) on January 1, 2024, using cumulative delay buckets:
+
+```sql runnable
+WITH range(0, 100, 10) AS delay,
+    toStringCutToZero(Dest) AS Destination
+
 SELECT
-    Origin,
-    groupArray(toStringCutToZero(Dest)) AS Destinations
+    'Up to ' || arrayJoin(delay) || ' minutes' AS delayTime,
+    countIf(DepDelayMinutes >= arrayJoin(delay)) AS flightsDelayed
 FROM ontime.ontime
-WHERE Origin = 'DEN' 
-    AND FlightDate = '2024-01-01'
-GROUP BY Origin
-LIMIT 1
+WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
+GROUP BY delayTime
+ORDER BY flightsDelayed DESC
 ```
 
-With `arrayJoin`, each destination becomes it's own row:
+In the query above we return an array of delays using a CTE clause (`WITH` clause).
+`Destination` converts the destination code to a string.
+
+We use `arrayJoin` to explode the delay array into separate rows.
+Each value from the `delay` array becomes its own row with alias `del`,
+and we get 10 rows: one for `del=0`, one for `del=10`, one for `del=20`, etc.
+For each delay threshold (`del`), the query counts how many flights had delays greater than or equal to that threshold
+using `countIf(DepDelayMinutes >= del)`.
+
+`arrayJoin` also has a SQL command equivalent `ARRAY JOIN`.
+The query above is reproduced below with the SQL command equivalent for comparison:
 
 ```sql runnable
-SELECT
-    Origin,
---highlight-next-line
-    arrayJoin(groupArray(toStringCutToZero(Dest))) AS Destination
+WITH range(0, 100, 10) AS delay, 
+     toStringCutToZero(Dest) AS Destination
+
+SELECT    
+    'Up to ' || del || ' minutes' AS delayTime,
+    countIf(DepDelayMinutes >= del) flightsDelayed
 FROM ontime.ontime
-WHERE Origin = 'DEN' 
-    AND FlightDate = '2024-01-01'
-GROUP BY Origin
-LIMIT 10
+ARRAY JOIN delay AS del
+WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
+GROUP BY ALL
+ORDER BY flightsDelayed DESC
 ```
-
-Let's use this function to figure out how many flights depart from `DEN` at different times of the day:
-
-```sql runnable
--- Create time-of-day categories for each flight, then explode to count flights per category
-WITH flight_categories AS (
-    SELECT
-        FlightDate,
-        Origin,
-        Dest,
-        -- Categorize the flight into multiple relevant buckets
-        arrayFilter(x -> x != '', [
-            if(DepTime < 600, 'early-morning', ''),
-            if(DepTime >= 600 AND DepTime < 1200, 'morning', ''),
-            if(DepTime >= 1200 AND DepTime < 1800, 'afternoon', ''),
-            if(DepTime >= 1800, 'evening', '')
-        ]) AS categories
-    FROM ontime.ontime
-    WHERE FlightDate = '2024-01-01'
-)
-SELECT
---highlight-next-line
-    arrayJoin(categories) AS category,
-    count() AS flight_count
-FROM flight_categories
-GROUP BY category
-ORDER BY flight_count DESC
-```
-
-The query above categorizes each flight by its departure time into various buckets of the time of day: early-morning, morning, afternoon, evening with the help of the now familiar `arrayFilter` function.
-It then uses the `arrayJoin` function to explode the array so each category becomes a separate row, allowing us to count how many total flights departed during each time period on January 1st, 2024.
 
 ## Next steps {#next-steps}
 
@@ -473,6 +505,6 @@ You might also want to learn about related data structures such as [`tuples`](/s
 Practice applying these concepts to your own datasets, and experiment with different queries on the SQL playground or other example datasets.
 
 Arrays are a fundamental feature in ClickHouse that enable, efficient analytical queries - as you become more comfortable with array functions, you'll find they can dramatically simplify complex aggregations and time-series analysis.
-For more array fun we recommend the Youtube video below:
+For more array fun, we recommend the YouTube video below from Mark, our resident data expert:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/7jaw3J6U_h8?si=6NiEJ7S1odU-VVqX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
