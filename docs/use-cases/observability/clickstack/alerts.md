@@ -145,7 +145,7 @@ Depending on the service type, users will need to provide different details. Spe
 
 **Slack (Webhook URL)**
 
-- Webhook URL. For example: `https://hooks.slack.com/services/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`. See the [Slack documentation](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/) for further details.
+- Webhook URL. For example: `https://hooks.slack.com/services/<unique_path>`. See the [Slack documentation](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/) for further details.
 
 **Slack (API)**
 
