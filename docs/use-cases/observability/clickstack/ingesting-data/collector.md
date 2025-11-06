@@ -298,9 +298,7 @@ For agent instances responsible for shipping events to a gateway, and only setti
 <BetaBadge/>
 
 :::warning Beta Feature
-JSON type support in ClickStack is a **beta feature**. While it is under active development and supported by the ClickHouse team, it may have limitations, change in the future, or contain bugs. 
-
-**For production use**, ensure you are running **ClickHouse version 25.3 or later**, where the JSON type is production-ready. For earlier versions of ClickHouse, the JSON type is not recommended for production use.
+JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
 :::
 
 ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
