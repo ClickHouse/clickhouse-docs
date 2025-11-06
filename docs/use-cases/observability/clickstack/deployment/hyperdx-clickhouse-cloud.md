@@ -20,6 +20,7 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import read_only from '@site/static/images/clickstack/read-only-access.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 <PrivatePreviewBadge/>
 
@@ -336,16 +337,6 @@ If using your own schema, we recommend creating a Logs source ensuring the requi
 
 </VerticalStepper>
 
-## JSON type support {#json-type-support}
-
-<BetaBadge/>
-
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
-
-For the benefits of this type, see [Benefits of the JSON type](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
-
-In order to enable support for the JSON type, users must set the following environment variables:
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - enables support in the OTel collector, ensuring schemas are created using the JSON type.
+<JSONSupport/>
 
 Additionally, users should contact support@clickhouse.com to ensure JSON is enabled on both their ClickHouse Cloud service.

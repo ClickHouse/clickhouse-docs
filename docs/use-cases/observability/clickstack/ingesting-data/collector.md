@@ -297,6 +297,12 @@ For agent instances responsible for shipping events to a gateway, and only setti
 
 <BetaBadge/>
 
+:::warning Beta Feature
+JSON type support in ClickStack is a **beta feature**. While it is under active development and supported by the ClickHouse team, it may have limitations, change in the future, or contain bugs. 
+
+**For production use**, ensure you are running **ClickHouse version 25.3 or later**, where the JSON type is production-ready. For earlier versions of ClickHouse, the JSON type is not recommended for production use.
+:::
+
 ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
 
 ### Benefits of the JSON type {#benefits-json-type}
@@ -327,7 +333,7 @@ docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e O
 ### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
 
 :::important Backwards compatibility
-The [JSON type](/interfaces/formats/JSON) type is not backwards compatible with existing map-based schemas. New tables will be created using the `JSON` type.
+The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
 :::
 
 To migrate from the Map-based schemas, follow these steps:
