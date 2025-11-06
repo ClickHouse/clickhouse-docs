@@ -165,7 +165,7 @@ Test backup restoration at least quarterly for critical production services. Org
 
 Document your recovery time objectives (RTO) and recovery point objectives (RPO) to validate that your current backup configuration meets business requirements. Establish regular testing schedules for backup restoration and maintain updated recovery documentation.
 
-### Production Support Integration {#production-support}
+### Production support integration {#production-support}
 
 Understand your current support tier's SLA expectations and escalation procedures. Create internal runbooks defining when to engage ClickHouse support and integrate these procedures with your existing incident management processes.
 
