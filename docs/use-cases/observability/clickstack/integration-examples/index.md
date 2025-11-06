@@ -13,7 +13,7 @@ quick start guides for various log and trace sources.
 
 | Section | Description |
 |------|-------------|
-| [nginx logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for nginx logs |
-| [nginx traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Quick start guide for nginx traces |
-| [Redis logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis logs |
-| [Redis metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for redis metrics |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Quick start guide for Nginx Traces |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis Logs |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for Redis Metrics |

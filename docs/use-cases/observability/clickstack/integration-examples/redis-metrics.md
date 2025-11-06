@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis-metrics
-title: 'Monitoring Redis metrics with ClickStack'
-sidebar_label: 'Redis metrics'
+title: 'Monitoring Redis Metrics with ClickStack'
+sidebar_label: 'Redis Metrics'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Redis metrics with ClickStack'
+description: 'Monitoring Redis Metrics with ClickStack'
 doc_type: 'guide'
 keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
@@ -16,12 +16,12 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Redis metrics with ClickStack {#redis-metrics-clickstack}
+# Monitoring Redis Metrics with ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Redis performance metrics with ClickStack by configuring the OpenTelemetry collector's Redis receiver. You'll learn how to:
 
-- Configure the OTel collector to collect Redis metrics
+- Configure the OTel collector to collect Redis Metrics
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize Redis performance (commands/sec, memory usage, connected clients, cache performance)
 
@@ -34,7 +34,7 @@ Time required: 5-10 minutes
 
 This section covers configuring your existing Redis installation to send metrics to ClickStack by configuring the ClickStack OTel collector with the Redis receiver.
 
-If you would like to test the Redis metrics integration before configuring your own existing setup, you can test with our preconfigured demo dataset in the [following section](#demo-dataset).
+If you would like to test the Redis Metrics integration before configuring your own existing setup, you can test with our preconfigured demo dataset in the [following section](#demo-dataset).
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running
@@ -216,19 +216,19 @@ Once configured, log into HyperDX and verify metrics are flowing:
 2. Search for metrics starting with `redis.` (e.g., `redis.commands.processed`, `redis.memory.used`)
 3. You should see metric data points appearing at your configured collection interval
 
-<!-- <Image img={metrics_view} alt="Redis metrics view"/> -->
+<!-- <Image img={metrics_view} alt="Redis Metrics view"/> -->
 
 </VerticalStepper>
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the Redis metrics integration before configuring their production systems, we provide a pre-generated dataset with realistic Redis metrics patterns.
+For users who want to test the Redis Metrics integration before configuring their production systems, we provide a pre-generated dataset with realistic Redis Metrics patterns.
 
 <VerticalStepper headerLevel="h4">
 
 #### Download the sample metrics dataset {#download-sample}
 
-Download the pre-generated metrics files (24 hours of Redis metrics with realistic patterns):
+Download the pre-generated metrics files (24 hours of Redis Metrics with realistic patterns):
 ```bash
 # Download gauge metrics (memory, fragmentation ratio)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
@@ -271,7 +271,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
-Proceed to the [Dashboards and visualization](#dashboards) section to import the dashboard and view all Redis metrics at once.
+Proceed to the [Dashboards and visualization](#dashboards) section to import the dashboard and view all Redis Metrics at once.
 
 :::note
 The demo dataset time range is 2025-10-20 00:00:00 to 2025-10-21 05:00:00. Make sure your time range in HyperDX matches this window.
@@ -286,7 +286,7 @@ Look for these interesting patterns:
 
 ## Dashboards and visualization {#dashboards}
 
-To help you get started monitoring Redis with ClickStack, we provide essential visualizations for Redis metrics.
+To help you get started monitoring Redis with ClickStack, we provide essential visualizations for Redis Metrics.
 
 <VerticalStepper headerLevel="h4">
 
@@ -307,7 +307,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 The dashboard will be created with all visualizations pre-configured:
 
-<Image img={example_dashboard} alt="Redis metrics dashboard"/>
+<Image img={example_dashboard} alt="Redis Metrics dashboard"/>
 
 :::note
 For the demo dataset, ensure the time range is set to 2025-10-20 05:00:00 - 2025-10-21 05:00:00.
