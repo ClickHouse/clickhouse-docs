@@ -341,6 +341,7 @@ GROUP BY ALL
 
 In the above query, the `arrayMap` function takes a single-element array `[DepDelayMinutes]` and applies the lambda function `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` to categorize it.
 Then the first element of the resulting array is extracted with `[DepDelayMinutes][1]`.
+The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function combines the `Tail_Number` array and the `statuses` array into a single array.
 
 ### arrayFilter {#arrayfilter}
 
