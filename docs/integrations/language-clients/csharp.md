@@ -52,23 +52,33 @@ Install-Package ClickHouse.Driver
 
 ---
 
-## Usage {#usage}
+## Quick Start {#quick-start}
 
-### Creating a Connection {#creating-a-connection}
-
-Create a connection using a connection string:
 ```csharp
 using ClickHouse.Driver.ADO;
 
-var connectionString = "Host=localhost;Protocol=http;Database=default;Username=default;Password=";
-
-using (var connection = new ClickHouseConnection(connectionString))
+using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=https;Port=8443;Username=user"))
 {
-    connection.Open();
+    var version = await connection.ExecuteScalarAsync("SELECT version()");
+    Console.WriteLine(version);
+}
+```
+
+Using **Dapper**:
+```csharp
+using Dapper;
+using ClickHouse.Driver.ADO;
+
+using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
+{
+    var result = await connection.QueryAsync<string>("SELECT name FROM system.databases");
+    Console.WriteLine(string.Join('\n', result));
 }
 ```
 
 ---
+
+## Usage {#usage}
 
 ### Connection String Parameters {#connection-string}
 
@@ -189,7 +199,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 
 **Notes:**
 
-* To make best use of ClickHouse properties, `ClickHouseBulkCopy` utilizes TPL to process batches of data, with up to 4 parallel insertion tasks (tweakable).
+* For optimal performance, ClickHouseBulkCopy uses the Task Parallel Library (TPL) to process batches of data, with up to 4 parallel insertion tasks (tweakable).
 * Column names can be optionally provided via `ColumnNames` property if source data has fewer columns than target table.
 * Configurable parameters: `Columns`, `BatchSize`, `MaxDegreeOfParallelism`.
 * Before copying, a `SELECT * FROM <table> LIMIT 0` query is performed to get information about target table structure. Types of provided objects must reasonably match the target table.
@@ -202,7 +212,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 Execute SELECT queries and process results:
 
 ```csharp
-using ClickHouse.Client.ADO;
+using ClickHouse.Driver.ADO;
 using System.Data;
 
 using (var connection = new ClickHouseConnection(connectionString))
@@ -304,11 +314,11 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 `ClickHouse.Driver` supports the following ClickHouse data types with their corresponding .NET type mappings:
 
-### Boolean Types
+### Boolean Types {#boolean-types}
 
 * `Bool` → `bool`
 
-### Numeric Types
+### Numeric Types {#numeric-types}
 
 **Signed Integers:**
 * `Int8` → `sbyte`
@@ -337,12 +347,12 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 * `Decimal128` → `decimal`
 * `Decimal256` → `BigDecimal`
 
-### String Types
+### String Types {#string-types}
 
 * `String` → `string`
 * `FixedString` → `string`
 
-### Date and Time Types
+### Date and Time Types {#date-time-types}
 
 * `Date` → `DateTime`
 * `Date32` → `DateTime`
@@ -350,18 +360,18 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 * `DateTime32` → `DateTime`
 * `DateTime64` → `DateTime`
 
-### Network Types
+### Network Types {#network-types}
 
 * `IPv4` → `IPAddress`
 * `IPv6` → `IPAddress`
 
-### Geographic Types
+### Geographic Types {#geographic-types}
 
 * `Point` → `Tuple`
 * `Ring` → `Array of Points`
 * `Polygon` → `Array of Rings`
 
-### Complex Types
+### Complex Types {#complex-types}
 
 * `Array(T)` → `Array of any type`
 * `Tuple(T1, T2, ...)` → `Tuple of any types`
@@ -393,6 +403,8 @@ You can set defaults using environment variables:
 | `CLICKHOUSE_USER`     | Default username |
 | `CLICKHOUSE_PASSWORD` | Default password |
 
+**Note:** Values provided explicitly to the `ClickHouseConnection` constructor will take priority over environment variables.
+
 ---
 
 ### ORM & Dapper Support {#orm-support}
@@ -413,29 +425,4 @@ connection.QueryAsync<string>(
     "SELECT {p1:Int32}",
     new { p1 = 42 }
 );
-```
-
----
-
-### Quick Start {#quick-start}
-```csharp
-using ClickHouse.Driver.ADO;
-
-using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=https;Port=8443;Username=user"))
-{
-    var version = await connection.ExecuteScalarAsync("SELECT version()");
-    Console.WriteLine(version);
-}
-```
-
-Using **Dapper**:
-```csharp
-using Dapper;
-using ClickHouse.Driver.ADO;
-
-using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
-{
-    var result = await connection.QueryAsync<string>("SELECT name FROM system.databases");
-    Console.WriteLine(string.Join('\n', result));
-}
 ```
