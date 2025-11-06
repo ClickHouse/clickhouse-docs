@@ -171,9 +171,14 @@ From this view, users can see all alerts that have been created and are currentl
 
 <Image img={alerts_view} alt="Alerts view" size="lg"/>
 
-This view also displays the execution status of the alert. A red bar indicates that the alert has fired, while a green bar indicates that the alert executed successfully but did not fire.
+This view also displays the alert evaluation history. Alerts are evaluated on a recurring time interval (defined by the period/duration set during alert creation). During each evaluation, HyperDX queries your data to check whether the alert condition is met:
 
-In the above example the first alert has fired every time. The second alert fired twice before triggering and not firing.
+- **Red bar**: The threshold condition was met during this evaluation and the alert fired (notification sent)
+- **Green bar**: The alert was evaluated but the threshold condition was not met (no notification sent)
+
+Each evaluation is independent - the alert checks the data for that time window and fires only if the condition is true at that moment.
+
+In the example above, the first alert has fired on every evaluation, indicating a persistent issue. The second alert shows a resolved issue - it fired twice initially (red bars), then on subsequent evaluations the threshold condition was no longer met (green bars).
 
 Clicking an alert takes you to the chart or search the alert is attached to.
 
