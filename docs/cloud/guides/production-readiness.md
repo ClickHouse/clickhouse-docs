@@ -171,7 +171,7 @@ Understand your current support tier's SLA expectations and escalation procedure
 
 Learn more about [ClickHouse Cloud Backup and Recovery](/cloud/manage/backups/overview) and [Support Services](/about-us/support).
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 After implementing the integrations and procedures in this guide, focus on optimization and operational maturity. Review query patterns and optimize table structures for performance. Implement network isolation, audit logging, and compliance controls required for your industry. Establish runbooks for common scenarios, implement automated testing for schema changes, and build internal knowledge bases for your team.
 
