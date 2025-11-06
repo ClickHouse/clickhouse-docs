@@ -1129,6 +1129,7 @@ RHEL
 RIPEMD
 RMDIR
 ROLLUP
+RPOs
 RWLock
 RWLockActiveReaders
 RWLockActiveWriters
@@ -2195,7 +2196,6 @@ extractURLParameters
 extractable
 facto
 failover
-failovers
 fallbacks
 farmFingerprint
 farmHash
@@ -3170,6 +3170,7 @@ reshards
 resolvers
 resourceGUID
 restartable
+restorable
 resultset
 resync
 resynchronization
@@ -3835,3 +3836,5 @@ usedatabrain
 whitelist
 whitelisted
 whitelisting
+TrackedLink
+eventName

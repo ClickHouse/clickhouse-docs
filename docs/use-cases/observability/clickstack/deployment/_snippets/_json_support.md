@@ -4,6 +4,12 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
+:::warning Beta Feature
+JSON type support in ClickStack is a **beta feature**. While it is under active development and supported by the ClickHouse team, it may have limitations, change in the future, or contain bugs. 
+
+**For production use**, ensure you are running **ClickHouse version 25.3 or later**, where the JSON type is production-ready. For earlier versions of ClickHouse, the JSON type is not recommended for production use.
+:::
+
 ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
 
 For the benefits of this type see [Benefits of the JSON type](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
