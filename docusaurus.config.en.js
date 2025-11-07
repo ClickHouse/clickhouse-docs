@@ -322,17 +322,12 @@ const config = {
         },
       };
     },
-    [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: process.env.VERCEL_ENV === 'preview' ? [
-          {
-            from: '/',
-            to: '/docs',
-          },
-        ] : [],
-      },
-    ],
+    // [
+    // N.B - If you need to redirect a page please do so from vercel.json
+    // 	'@docusaurus/plugin-client-redirects',
+    // 	{
+    // 	},
+    // ],
     [
       "vercel-analytics",
       {
