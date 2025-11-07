@@ -35,7 +35,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 
 ## November 7, 2025 {#november-7-2025}
 
-- ClickHouse Cloud console now supports all possible replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
+- ClickHouse Cloud console now supports configuring replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
   These options are available both when setting up a new service as well as when setting minimum and maximum replica sizes on the settings page.
 - Custom hardware profiles (available on the Enterprise tier) now support idling.
 - ClickHouse Cloud now offers a simplified purchasing experience through AWS Marketplace, with separate options for [pay-as-you-go](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu?sr=0-2&ref_=beagle&applicationId=AWSMPContessa) and [committed spend contracts](https://aws.amazon.com/marketplace/pp/prodview-4qyeihstyym2s?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).
