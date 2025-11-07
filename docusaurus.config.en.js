@@ -160,16 +160,6 @@ const config = {
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
-        async redirects() {
-          const redirects = [];
-          if (process.env.VERCEL_ENV === 'preview') {
-            redirects.push({
-              from: '/',
-              to: '/docs',
-            });
-          }
-          return redirects;
-        },
         blog: {
           path: "knowledgebase",
           blogTitle: "ClickHouse Knowledge Base",
@@ -332,12 +322,17 @@ const config = {
         },
       };
     },
-    // [
-    // N.B - If you need to redirect a page please do so from vercel.json
-    // 	'@docusaurus/plugin-client-redirects',
-    // 	{
-    // 	},
-    // ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: process.env.VERCEL_ENV === 'preview' ? [
+          {
+            from: '/',
+            to: '/docs',
+          },
+        ] : [],
+      },
+    ],
     [
       "vercel-analytics",
       {
