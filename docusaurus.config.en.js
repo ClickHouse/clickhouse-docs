@@ -160,6 +160,16 @@ const config = {
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
+        async redirects() {
+          const redirects = [];
+          if (process.env.VERCEL_ENV === 'preview') {
+            redirects.push({
+              from: '/',
+              to: '/docs',
+            });
+          }
+          return redirects;
+        },
         blog: {
           path: "knowledgebase",
           blogTitle: "ClickHouse Knowledge Base",
