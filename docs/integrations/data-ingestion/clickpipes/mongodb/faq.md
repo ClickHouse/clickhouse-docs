@@ -52,7 +52,7 @@ For more examples, see our [Working with JSON guide](./quickstart).
 
 ### How do I handle `resume of change stream was not possible, as the resume point may no longer be in the oplog.` error? {#resume-point-may-no-longer-be-in-the-oplog-error}
 
-This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend [increasing the oplog retention period](./source/atlas#enable-oplog-retention) (or [here](./source/generic#enable-oplog-retention) if you are on a self-managed MongoDB).
+This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend increasing the oplog retention period. See instructions for [MongoDB Atlas](./source/atlas#enable-oplog-retention), [self-managed MongoDB](./source/generic#enable-oplog-retention), or [DocumentDB](./source/docdb##configure-change-stream-log-retention).
 
 ### How is replication managed? {#how-is-replication-managed}
 

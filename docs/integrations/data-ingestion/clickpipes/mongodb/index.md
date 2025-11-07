@@ -38,6 +38,8 @@ To get started, you first need to ensure that your MongoDB database is correctly
 
 2. [Generic MongoDB](./mongodb/source/generic)
 
+3. [Amazon DocumentDB](./mongodb/source/docdb)
+
 Once your source MongoDB database is set up, you can continue creating your ClickPipe.
 
 ## Create your ClickPipe {#create-your-clickpipe}
