@@ -33,6 +33,12 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
 
+:::tip[Automatically keep up to date!]
+  <a href="/docs/cloud/changelog-rss.xml">
+    Subscribe to Cloud Changelog via RSS
+  </a>
+:::
+
 ## November 7, 2025 {#november-7-2025}
 
 - ClickHouse Cloud console now supports configuring replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
