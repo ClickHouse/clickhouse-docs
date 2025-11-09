@@ -25,14 +25,14 @@ As this feature is beta, you will need to enable it using:
 
 ## Gathering Requirements OneLake {#gathering-requirements}
 
-Before being able to query your table in Microsoft you will need to collect the following info:
+Before querying your table in Microsoft Fabric, you'll need to collect the following information:
 
 - A OneLake tenant ID (Your Entra ID)
 - A client ID
 - A client secret
-- A warehouse id and a data item id
+- A warehouse ID and a data item ID
 
-Microsoft OneLake [has a page](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) in their documentation to help you finding the above informations. 
+See [Microsoft OneLake's documentation](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) for help finding these values.
 
 ## Creating a connection between OneLake and ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
