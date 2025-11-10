@@ -82,8 +82,13 @@ Additional requirements may apply for HIPAA compliance (including signing a BAA)
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
 Customers must sign a Business Associate Agreement (BAA) and request onboarding through Sales or Support to set up services in HIPAA compliant regions. The following regions support HIPAA compliance:
+- AWS af-south-1 (South Africa) **Private Region**
+- AWS ca-central-1 (Canada) **Private Region**
 - AWS eu-central-1 (Frankfurt)
+- AWS eu-north-1 (Stockholm) **Private Region**
+- AWS eu-west-1 (Ireland)
 - AWS eu-west-2 (London)
+- AWS sa-east-1 (South America) **Private Region**
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
@@ -96,8 +101,13 @@ Customers must sign a Business Associate Agreement (BAA) and request onboarding 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 
 Customers must request onboarding through Sales or Support to set up services in PCI compliant regions. The following regions support PCI compliance:
+- AWS af-south-1 (South Africa) **Private Region**
+- AWS ca-central-1 (Canada) **Private Region**
 - AWS eu-central-1 (Frankfurt)
+- AWS eu-north-1 (Stockholm) **Private Region**
+- AWS eu-west-1 (Ireland)
 - AWS eu-west-2 (London)
+- AWS sa-east-1 (South America) **Private Region**
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
