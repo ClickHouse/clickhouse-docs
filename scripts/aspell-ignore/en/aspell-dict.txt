@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3820
+personal_ws-1.1 en 3822
 AArch
 ACLs
 AICPA
@@ -316,6 +316,7 @@ DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
+Databrain
 Databricks
 Datadog
 Datadog's
@@ -3829,6 +3830,12 @@ href
 useBaseUrl
 SpanName
 lucene
+multi-tenancy
+single-tenancy
+usedatabrain
+whitelist
+whitelisted
+whitelisting
 TrackedLink
 eventName
 OneLake
