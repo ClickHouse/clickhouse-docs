@@ -3,18 +3,78 @@ const path = require('path');
 const glob = require('glob');
 const https = require('https');
 const http = require('http');
+const { URL } = require('url');
+
+// Whitelist of allowed GitHub repositories
+const ALLOWED_GITHUB_REPOS = [
+  'ClickHouse/clickhouse-rs',
+  'ClickHouse/DataflowTemplates',
+  'ClickHouse/ch-go',
+  'ClickHouse/clickhouse-beam-connector',
+  'ClickHouse/clickhouse-connect',
+  'ClickHouse/clickhouse-cpp',
+  'ClickHouse/clickhouse-cs',
+  'ClickHouse/clickhouse-go',
+  'ClickHouse/clickhouse-java',
+  'ClickHouse/clickhouse-js',
+  'ClickHouse/clickhouse-kafka-connect',
+  'ClickHouse/clickhouse-odbc',
+  'ClickHouse/clickhouse-tableau-connector-jdbc',
+  'ClickHouse/dbt-clickhouse',
+  'ClickHouse/flink-connector-clickhouse',
+  'ClickHouse/metabase-clickhouse-driver',
+  'ClickHouse/power-bi-clickhouse',
+  'ClickHouse/spark-clickhouse-connector',
+];
+
+// Helper function to validate GitHub raw URL
+function validateGitHubUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+
+    // Check if it's a raw.githubusercontent.com URL
+    if (parsedUrl.hostname !== 'raw.githubusercontent.com') {
+      throw new Error('URL must be from raw.githubusercontent.com');
+    }
+
+    // Extract repository from pathname (format: /org/repo/...)
+    const pathParts = parsedUrl.pathname.split('/').filter(p => p);
+    if (pathParts.length < 2) {
+      throw new Error('Invalid GitHub URL format');
+    }
+
+    const repo = `${pathParts[0]}/${pathParts[1]}`;
+
+    // Check if repository is in whitelist
+    if (!ALLOWED_GITHUB_REPOS.includes(repo)) {
+      throw new Error(`Repository "${repo}" is not in the allowed list. Allowed repositories: ${ALLOWED_GITHUB_REPOS.join(', ')}`);
+    }
+
+    return true;
+  } catch (error) {
+    throw new Error(`GitHub URL validation failed: ${error.message}`);
+  }
+}
 
 // Helper function to fetch content from URL
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
-    const client = url.startsWith('https:') ? https : http;
-    
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (error) {
+      reject(new Error(`Invalid URL: ${error.message}`));
+      return;
+    }
+
+    const client = parsedUrl.protocol === 'https:' ? https : http;
+
     client.get(url, (res) => {
       if (res.statusCode !== 200) {
         reject(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
         return;
       }
-      
+
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => resolve(data));
@@ -22,10 +82,11 @@ function fetchUrl(url) {
   });
 }
 
+
 // Helper function to extract snippet from content using comment markers
 function extractSnippet(content, snippetId = null) {
   const lines = content.split('\n');
-  
+
   // Define comment patterns for different languages
   const commentPatterns = [
     // Hash-style comments (Python, Ruby, Shell, YAML, etc.)
@@ -37,11 +98,11 @@ function extractSnippet(content, snippetId = null) {
     // XML/HTML comments
     { start: `<!--docs-start${snippetId ? `-${snippetId}` : ''}-->`, end: `<!--docs-end${snippetId ? `-${snippetId}` : ''}-->` }
   ];
-  
+
   for (const pattern of commentPatterns) {
     let startIndex = -1;
     let endIndex = -1;
-    
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       if (line.includes(pattern.start)) {
@@ -51,12 +112,12 @@ function extractSnippet(content, snippetId = null) {
         break;
       }
     }
-    
+
     if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
       return lines.slice(startIndex, endIndex).join('\n');
     }
   }
-  
+
   // If no snippet markers found, return original content
   return content;
 }
@@ -67,7 +128,7 @@ function codeImportPlugin(context, options) {
     async loadContent() {
       // Find all markdown files in docs directory that might contain code imports
       const docsPath = path.join(context.siteDir, 'docs');
-      
+
       const markdownFiles = [
         ...glob.sync('**/*.md', { cwd: docsPath, absolute: true }),
         ...glob.sync('**/*.mdx', { cwd: docsPath, absolute: true }),
@@ -75,26 +136,26 @@ function codeImportPlugin(context, options) {
 
       // Process each markdown file for code imports
       const processedFiles = [];
-      
+
       for (const filePath of markdownFiles) {
         try {
           let content = fs.readFileSync(filePath, 'utf8');
           let modified = false;
-          
+
           // Process code blocks with file= or url= syntax
           const fileUrlRegex = /```(\w+)?\s*((?:file|url)=[^\s\n]+)([^\n]*)\n([^`]*?)```/g;
           const matches = [...content.matchAll(fileUrlRegex)];
-          
+
           for (const match of matches) {
             const [fullMatch, lang, param, additionalMeta, existingContent] = match;
-            
+
             // Parse snippet parameter from additional metadata
             const snippetMatch = additionalMeta.match(/snippet=(\w+)/);
             const snippetId = snippetMatch ? snippetMatch[1] : null;
-            
+
             try {
               let importedContent;
-              
+
               if (param.startsWith('file=')) {
                 // Handle file import
                 const importPath = param.replace('file=', '');
@@ -105,6 +166,8 @@ function codeImportPlugin(context, options) {
                 // Handle URL import
                 const url = param.replace('url=', '');
                 try {
+                  // Validate GitHub URL before fetching
+                  validateGitHubUrl(url);
                   const rawContent = await fetchUrl(url);
                   importedContent = extractSnippet(rawContent, snippetId);
                 } catch (urlError) {
@@ -113,21 +176,21 @@ function codeImportPlugin(context, options) {
                   continue; // Skip this replacement if URL fetch fails
                 }
               }
-              
+
               // Preserve the complete metadata
               const fullMeta = `${param}${additionalMeta}`;
               const metaStr = fullMeta ? ` ${fullMeta}` : '';
               const replacement = `\`\`\`${lang || ''}${metaStr}\n${importedContent}\n\`\`\``;
-              
+
               content = content.replace(fullMatch, replacement);
               modified = true;
-              
+
             } catch (error) {
               console.warn(`Could not process ${param} in ${filePath}: ${error.message}`);
               process.exit(1);
             }
           }
-          
+
           if (modified) {
             processedFiles.push({
               path: filePath,
@@ -140,13 +203,13 @@ function codeImportPlugin(context, options) {
           process.exit(1);
         }
       }
-      
+
       return { processedFiles };
     },
-    
+
     async contentLoaded({ content, actions }) {
       const { processedFiles } = content;
-      
+
       // Write processed files back to disk during build
       for (const file of processedFiles) {
         try {
