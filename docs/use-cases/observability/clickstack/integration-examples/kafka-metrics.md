@@ -250,7 +250,7 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Verify metrics in HyperDX {#verify-metrics}
+#### Verify metrics in HyperDX {#verify-demo-metrics}
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
@@ -298,6 +298,7 @@ For the demo dataset, ensure the time range is set to 2025-11-05 16:00:00 to 202
 #### No metrics appearing in HyperDX {#no-metrics}
 
 **Verify API key is set and passed to the container:**
+
 ```bash
 # Check environment variable
 echo $CLICKSTACK_API_KEY
@@ -323,11 +324,13 @@ LIMIT 10
 ```
 
 If no results, check the JMX exporter logs:
+
 ```bash
 docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
 ```
 
 **Generate Kafka activity to populate metrics:**
+
 ```bash
 # Create a test topic
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
@@ -342,6 +345,7 @@ If you see `Authorization failed` or `401 Unauthorized`:
 
 1. Verify the API key in HyperDX UI (Settings → API Keys → Ingestion API Key)
 2. Re-export and restart:
+
 ```bash
 export CLICKSTACK_API_KEY=your-correct-api-key
 docker compose down
@@ -351,7 +355,8 @@ docker compose up -d
 #### Port conflicts with Kafka client commands {#port-conflicts}
 
 When running Kafka commands from within the Kafka container, you may see:
-```
+
+```bash
 Error: Port already in use: 9999
 ```
 
