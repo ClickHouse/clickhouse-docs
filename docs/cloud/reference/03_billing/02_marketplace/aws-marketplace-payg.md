@@ -41,7 +41,7 @@ Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and search for â
 
 ### View purchase options {#purchase-options}
 
-Click on the [listing](https://aws.amazon.com/marketplace/pp/prodview-jettukeanwrfc) and then on **View purchase options**.
+Click on the [listing](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu) and then on **View purchase options**.
 
 <Image img={aws_marketplace_payg_2} alt="AWS Marketplace view purchase options" border/>
 
