@@ -31,7 +31,7 @@ A demo dataset with sample metrics is available if you want to test the integrat
 Time required: 10-15 minutes
 :::
 
-## Integration with existing Kafka {#existing-kafka}
+## Integration with an existing Kafka deployment {#existing-kafka}
 
 Monitor your existing Kafka deployment by running the OpenTelemetry JMX Metric Gatherer container to collect metrics and send them to ClickStack via OTLP.
 
