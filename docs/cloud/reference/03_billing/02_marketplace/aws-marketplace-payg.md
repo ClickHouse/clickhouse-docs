@@ -23,6 +23,7 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 - An AWS account that is enabled with purchasing rights by your billing administrator.
 - To purchase, you must be logged into the AWS marketplace with this account.
+- To connect a ClickHouse organization to your subscription, you must be an admin of that organization.
 
 :::note
 One AWS account can only subscribe to one “ClickHouse Cloud - Pay As You Go” subscription which can only be linked to one ClickHouse organization.
