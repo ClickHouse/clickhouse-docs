@@ -11,6 +11,7 @@ keywords: ['Kafka', 'metrics', 'OTEL', 'ClickStack', 'JMX']
 
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/kafka/import-kafka-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
@@ -32,37 +33,45 @@ Time required: 10-15 minutes
 
 ## Integration with existing Kafka {#existing-kafka}
 
-This section covers configuring your existing Kafka installation to send metrics to ClickStack using the OpenTelemetry JMX Metric Gatherer.
+Monitor your existing Kafka deployment by running the OpenTelemetry JMX Metric Gatherer container to collect metrics and send them to ClickStack via OTLP.
 
-If you would like to test the Kafka Metrics integration before configuring your own existing setup, you can test with our preconfigured demo dataset in the [following section](#demo-dataset).
+If you want to test this integration first without modifying your existing setup, skip to the [demo dataset section](#demo-dataset).
 
 ##### Prerequisites {#prerequisites}
-- ClickStack instance running with OTLP endpoint accessible (port 4317)
-- Existing Kafka installation (version 2.0 or newer)
-- JMX port exposed on Kafka brokers (default port 9999)
-- Java Runtime Environment (JRE) 8 or higher installed on the Kafka broker host
-- Network access from Kafka broker to ClickStack OTLP endpoint
+- ClickStack instance running
+- Existing Kafka installation (version 2.0 or newer) with JMX enabled
+- Network access between ClickStack and Kafka (JMX port 9999, Kafka port 9092)
+- OpenTelemetry JMX Metric Gatherer JAR (download instructions below)
 
 <VerticalStepper headerLevel="h4">
 
-#### Verify Kafka JMX is enabled {#verify-jmx}
+#### Get ClickStack API key {#get-api-key}
 
-Kafka exposes metrics via JMX (Java Management Extensions). Verify JMX is enabled on your Kafka brokers.
+The JMX Metric Gatherer sends data to ClickStack's OTLP endpoint, which requires authentication.
 
-Add these settings to your Kafka broker startup configuration:
+1. Open HyperDX at your ClickStack URL (e.g., http://localhost:8080)
+2. Create an account or log in if needed
+3. Navigate to **Team Settings → API Keys**
+4. Copy your **Ingestion API Key**
+
+<Image img={api_key} alt="ClickStack API Key"/>
+
+5. Set it as an environment variable:
 ```bash
-# Set JMX port
-export JMX_PORT=9999
-
-# Optional: Enable JMX authentication
-# export KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote \
-#   -Dcom.sun.management.jmxremote.authenticate=true \
-#   -Dcom.sun.management.jmxremote.ssl=false \
-#   -Dcom.sun.management.jmxremote.password.file=/path/to/jmxremote.password \
-#   -Dcom.sun.management.jmxremote.access.file=/path/to/jmxremote.access"
+export CLICKSTACK_API_KEY=your-api-key-here
 ```
 
-For Docker deployments:
+#### Download the OpenTelemetry JMX Metric Gatherer {#download-jmx}
+
+Download the JMX Metric Gatherer JAR:
+```bash
+curl -L -o opentelemetry-jmx-metrics.jar \
+  https://github.com/open-telemetry/opentelemetry-java-contrib/releases/download/v1.32.0/opentelemetry-jmx-metrics.jar
+```
+
+#### Verify Kafka JMX is enabled {#verify-jmx}
+
+Ensure JMX is enabled on your Kafka brokers. For Docker deployments:
 ```yaml
 services:
   kafka:
@@ -70,105 +79,126 @@ services:
     environment:
       JMX_PORT: 9999
       KAFKA_JMX_HOSTNAME: kafka
-      # ... other Kafka configuration ...
+      # ... other Kafka configuration
     ports:
       - "9092:9092"
       - "9999:9999"
 ```
 
+For non-Docker deployments, set these in your Kafka startup:
+```bash
+export JMX_PORT=9999
+```
+
 Verify JMX is accessible:
 ```bash
-# Check if JMX port is listening
 netstat -an | grep 9999
-# Or check environment variable
-echo $JMX_PORT
 ```
 
-#### Download the JMX Metric Gatherer {#download-jmx}
+#### Deploy JMX Metric Gatherer with Docker Compose {#deploy-jmx}
 
-Download the OpenTelemetry JMX Metric Gatherer JAR on the Kafka broker host:
+This example shows a complete setup with Kafka, the JMX Metric Gatherer, and ClickStack. Adjust service names and endpoints to match your existing deployment:
+```yaml
+services:
+  clickstack:
+    image: docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    ports:
+      - "8080:8080"
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - monitoring
 
-```bash
-curl -L -o opentelemetry-jmx-metrics.jar \
-  https://github.com/open-telemetry/opentelemetry-java-contrib/releases/download/v1.32.0/opentelemetry-jmx-metrics.jar
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka:9092,CONTROLLER://kafka:29093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: kafka
+      KAFKA_JMX_OPTS: '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.rmi.port=9999'
+    ports:
+      - "9092:9092"
+      - "9999:9999"
+    networks:
+      - monitoring
+
+  kafka-jmx-exporter:
+    image: eclipse-temurin:11-jre
+    depends_on:
+      - kafka
+      - clickstack
+    environment:
+      - CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY}
+    volumes:
+      - ./opentelemetry-jmx-metrics.jar:/app/opentelemetry-jmx-metrics.jar
+    command: >
+      sh -c "java
+      -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi
+      -Dotel.jmx.target.system=kafka
+      -Dotel.metrics.exporter=otlp
+      -Dotel.exporter.otlp.protocol=http/protobuf
+      -Dotel.exporter.otlp.endpoint=http://clickstack:4318
+      -Dotel.exporter.otlp.headers=authorization=\${CLICKSTACK_API_KEY}
+      -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0
+      -Dotel.jmx.interval.milliseconds=10000
+      -jar /app/opentelemetry-jmx-metrics.jar"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
 ```
 
-#### Run the JMX Metric Gatherer {#run-jmx}
+**Key configuration parameters:**
 
-Start the JMX Metric Gatherer to collect metrics from Kafka and send them to ClickStack:
+- `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - JMX connection URL (use your Kafka hostname)
+- `otel.jmx.target.system=kafka` - Enables Kafka-specific metrics
+- `http://clickstack:4318` - OTLP HTTP endpoint (use your ClickStack hostname)
+- `authorization=\${CLICKSTACK_API_KEY}` - API key for authentication (required)
+- `service.name=kafka,kafka.broker.id=broker-0` - Resource attributes for filtering
+- `10000` - Collection interval in milliseconds (10 seconds)
 
-```bash
-java \
-  -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi \
-  -Dotel.jmx.target.system=kafka \
-  -Dotel.metrics.exporter=otlp \
-  -Dotel.exporter.otlp.endpoint=http://<clickstack-host>:4317 \
-  -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0 \
-  -Dotel.jmx.interval.milliseconds=10000 \
-  -jar opentelemetry-jmx-metrics.jar
-```
+#### Verify metrics in HyperDX {#verify-metrics}
 
-Replace `<clickstack-host>` with your ClickStack hostname or IP address (use `localhost` if ClickStack is on the same host).
-
-**For JMX authentication:**
-```bash
-java \
-  -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi \
-  -Dotel.jmx.username=<jmx-username> \
-  -Dotel.jmx.password=<jmx-password> \
-  -Dotel.jmx.target.system=kafka \
-  -Dotel.metrics.exporter=otlp \
-  -Dotel.exporter.otlp.endpoint=http://<clickstack-host>:4317 \
-  -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0 \
-  -jar opentelemetry-jmx-metrics.jar
-```
-
-**For multiple Kafka brokers**, run a separate JMX Metric Gatherer process on each broker with unique broker IDs:
-```bash
-# On broker 0
-java -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0 ...
-
-# On broker 1
-java -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-1 ...
-```
-
-**To run as a background service**, use `nohup` or create a systemd service:
-```bash
-nohup java \
-  -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi \
-  -Dotel.jmx.target.system=kafka \
-  -Dotel.metrics.exporter=otlp \
-  -Dotel.exporter.otlp.endpoint=http://<clickstack-host>:4317 \
-  -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0 \
-  -jar opentelemetry-jmx-metrics.jar > jmx-collector.log 2>&1 &
-```
-
-**Key metrics collected:**
-
-*Broker metrics:*
-- `kafka.broker.message_in_rate` - Messages received per second
-- `kafka.broker.byte_in_rate` - Bytes received per second
-- `kafka.broker.byte_out_rate` - Bytes sent per second
-
-*Partition metrics:*
-- `kafka.partition.count` - Total number of partitions
-- `kafka.partition.under_replicated` - Under-replicated partitions (data safety concern)
-- `kafka.partition.offline` - Offline partitions (availability concern)
-
-*Request metrics:*
-- `kafka.request.produce.time.avg` - Average produce request latency
-- `kafka.request.fetch_consumer.time.avg` - Average consumer fetch latency
-
-*Consumer lag:*
-- `kafka.consumer.lag` - Consumer group lag by topic and partition
-
-#### Verify metrics in HyperDX {#verifying-metrics}
-
-Once configured, log into HyperDX and verify metrics are flowing:
+Log into HyperDX and confirm metrics are flowing:
 
 1. Navigate to the Chart Explorer
-2. Search for metrics starting with `kafka.` (e.g., `kafka.broker.message_in_rate`, `kafka.partition.count`)
-3. You should see metric data points appearing at 10-second intervals
+2. Search for `kafka.message.count` or `kafka.partition.count`
+3. Metrics should appear at 10-second intervals
+
+**Key metrics to verify:**
+- `kafka.message.count` - Total messages processed
+- `kafka.partition.count` - Total partitions
+- `kafka.partition.under_replicated` - Should be 0 in a healthy cluster
+- `kafka.network.io` - Network throughput
+- `kafka.request.time.*` - Request latency percentiles
+
+To generate activity and populate more metrics:
+```bash
+# Create a test topic
+docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
+
+# Send test messages
+echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
+```
+
+:::note
+When running Kafka client commands (kafka-topics, kafka-console-producer, etc.) from within the Kafka container, prefix with `unset JMX_PORT &&` to prevent JMX port conflicts.
+:::
 
 </VerticalStepper>
 
@@ -206,8 +236,6 @@ docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
-
-Wait approximately 30 seconds for ClickStack to fully start.
 
 #### Load metrics into ClickStack {#load-metrics}
 
@@ -267,106 +295,91 @@ For the demo dataset, ensure the time range is set to 2025-11-05 16:00:00 to 202
 
 ## Troubleshooting {#troubleshooting}
 
-### JMX Metric Gatherer not starting {#jmx-not-starting}
+#### No metrics appearing in HyperDX {#no-metrics}
 
-Verify Java is installed and in your PATH:
+**Verify API key is set and passed to the container:**
 ```bash
-java -version
-# Should display Java version 8 or higher
+# Check environment variable
+echo $CLICKSTACK_API_KEY
+
+# Verify it's in the container
+docker exec <jmx-exporter-container> env | grep CLICKSTACK_API_KEY
 ```
 
-Check that the JAR file was downloaded successfully:
+If missing, set it and restart:
 ```bash
-ls -lh opentelemetry-jmx-metrics.jar
-# Should show ~26MB file
+export CLICKSTACK_API_KEY=your-api-key-here
+docker compose up -d kafka-jmx-exporter
 ```
 
-### No metrics appearing in HyperDX {#no-metrics}
-
-Verify the JMX Metric Gatherer is running:
-```bash
-# Check if process is running
-ps aux | grep opentelemetry-jmx-metrics
-
-# Check for any error output
-# If you ran with nohup, check the log file
-tail -f jmx-collector.log
-```
-
-Verify Kafka's JMX port is accessible:
-```bash
-# Check if JMX port is listening
-netstat -an | grep 9999
-
-# Test with jconsole or jmxterm if available
-```
-
-Verify ClickStack's OTLP endpoint is reachable:
-```bash
-# Test connectivity to ClickStack
-telnet <clickstack-host> 4317
-# Or
-curl -v http://<clickstack-host>:4317
-```
-
-Check if metrics are in ClickHouse:
+**Check if metrics are reaching ClickHouse:**
 ```bash
 docker exec <clickstack-container> clickhouse-client --query "
 SELECT DISTINCT MetricName 
 FROM otel_metrics_sum 
 WHERE ServiceName = 'kafka' 
-  AND TimeUnix >= NOW() - INTERVAL 10 MINUTE
+LIMIT 10
 "
 ```
 
-### JMX authentication errors {#auth-errors}
-
-If you see authentication errors when starting the JMX Metric Gatherer:
-
+If no results, check the JMX exporter logs:
 ```bash
-# Verify JMX authentication is enabled in Kafka
-echo $KAFKA_JMX_OPTS
+docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
 ```
 
-Add authentication parameters to the java command:
+**Generate Kafka activity to populate metrics:**
 ```bash
-java \
-  -Dotel.jmx.service.url=service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi \
-  -Dotel.jmx.username=<jmx-username> \
-  -Dotel.jmx.password=<jmx-password> \
-  -Dotel.jmx.target.system=kafka \
-  -Dotel.metrics.exporter=otlp \
-  -Dotel.exporter.otlp.endpoint=http://<clickstack-host>:4317 \
-  -Dotel.resource.attributes=service.name=kafka,kafka.broker.id=broker-0 \
-  -jar opentelemetry-jmx-metrics.jar
+# Create a test topic
+docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
+
+# Send test messages
+echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-### Network connectivity issues {#network-issues}
+#### Authentication errors {#auth-errors}
 
-If the JMX Metric Gatherer can't reach Kafka JMX or ClickStack OTLP:
+If you see `Authorization failed` or `401 Unauthorized`:
 
+1. Verify the API key in HyperDX UI (Settings → API Keys → Ingestion API Key)
+2. Re-export and restart:
 ```bash
-# Test JMX connectivity
-telnet localhost 9999
-
-# Test ClickStack OTLP endpoint
-telnet <clickstack-host> 4317
-
-# Check firewall rules
-# Ensure ports 9999 (JMX) and 4317 (OTLP) are open
+export CLICKSTACK_API_KEY=your-correct-api-key
+docker compose down
+docker compose up -d
 ```
 
-### Missing specific metrics {#missing-metrics}
+#### Port conflicts with Kafka client commands {#port-conflicts}
 
-If certain Kafka metrics are not appearing:
+When running Kafka commands from within the Kafka container, you may see:
+```
+Error: Port already in use: 9999
+```
 
-- Verify the metric exists in Kafka's JMX endpoint using a JMX browser tool like JConsole
-- Check that `target_system: kafka` is set correctly
-- Some metrics may only appear under specific conditions (e.g., consumer lag only appears when consumers are active)
-- Review the [OpenTelemetry JMX Metric Gatherer documentation](https://github.com/open-telemetry/opentelemetry-java-contrib/tree/main/jmx-metrics) for the complete list of Kafka metrics
+Prefix commands with `unset JMX_PORT &&`:
+```bash
+docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
+```
 
-## Next steps {#next-steps}
+#### Network connectivity issues {#network-issues}
 
-- Set up alerts for critical metrics (under-replicated partitions, consumer lag thresholds, high request latency)
-- Monitor multiple Kafka brokers by running separate JMX Metric Gatherer processes with different broker IDs
-- Correlate Kafka metrics with application traces to understand end-to-end request performance
+If the JMX exporter logs show `Connection refused`:
+
+Verify all containers are on the same Docker network:
+```bash
+docker compose ps
+docker network inspect <network-name>
+```
+
+Test connectivity:
+```bash
+# From JMX exporter to ClickStack
+docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
+```
+
+## Going to production {#going-to-production}
+
+This guide sends metrics directly from the JMX Metric Gatherer to ClickStack's OTLP endpoint, which works well for testing and small deployments. 
+
+For production environments, deploy your own OpenTelemetry Collector as an agent to receive metrics from the JMX Exporter and forward them to ClickStack. This provides batching, resilience, and centralized configuration management.
+
+See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns and collector configuration examples.
