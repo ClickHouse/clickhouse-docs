@@ -41,11 +41,15 @@ This guide walks you through each area, helping you transition from a working Cl
 
 Establish separate environments to safely test changes before impacting production workloads. Most production incidents trace back to untested queries or configuration changes deployed directly to production systems.
 
+:::note
+**In ClickHouse Cloud, each environment is a separate service.** You'll provision distinct production, staging, and development services within your organization, each with its own compute resources, storage, and endpoint.
+:::
+
 **Environment structure**: Maintain production (live workloads), staging (production-equivalent validation), and development (individual/team experimentation) environments.
 
 **Testing**: Test queries in staging before production deployment. Queries that work on small datasets often cause memory exhaustion, excessive CPU usage, or slow execution at production scale. Validate configuration changes including user permissions, quotas, and service settings in staging—configuration errors discovered in production create immediate operational incidents.
 
-**Sizing**: Size your staging service to approximate production load characteristics. Testing on significantly smaller infrastructure may not reveal resource contention or scaling issues. Use production-representative datasets through periodic data refreshes or synthetic data generation.
+**Sizing**: Size your staging service to approximate production load characteristics. Testing on significantly smaller infrastructure may not reveal resource contention or scaling issues. Use production-representative datasets through periodic data refreshes or synthetic data generation. For guidance on how to size your staging environment and scale services appropriately, refer to the [Sizing and hardware recommendations](/guides/sizing-and-hardware-recommendations) and [Scaling in ClickHouse Cloud](/manage/scaling) documentation. These resources provide practical advice on memory, CPU, and storage sizing, as well as details on vertical and horizontal scaling options to help you match your staging environment to production workloads.
 
 ## Enterprise authentication and user management {#enterprise-authentication}
 
@@ -173,8 +177,6 @@ Learn more about [ClickHouse Cloud backup and recovery](/cloud/manage/backups/ov
 
 ## Next steps {#next-steps}
 
-After implementing the integrations and procedures in this guide, focus on optimization and operational maturity. Review query patterns and optimize table structures for performance. Implement network isolation, audit logging, and compliance controls required for your industry. Establish runbooks for common scenarios, implement automated testing for schema changes, and build internal knowledge bases for your team.
-
-- Visit the cloud [resource tour](/cloud/get-started/cloud/resource-tour) for guides on [monitoring](/cloud/get-started/cloud/resource-tour#monitoring), [security](/cloud/get-started/cloud/resource-tour#security), and [cost optimization](/cloud/get-started/cloud/resource-tour#cost-optimization)
+After implementing the integrations and procedures in this guide, visit the [Cloud resource tour](/cloud/get-started/cloud/resource-tour) for guides on [monitoring](/cloud/get-started/cloud/resource-tour#monitoring), [security](/cloud/get-started/cloud/resource-tour#security), and [cost optimization](/cloud/get-started/cloud/resource-tour#cost-optimization).
 
 When current service tier limitations impact your production operations, consider upgrade paths for enhanced capabilities such as private networking, customer-managed encryption keys, or multi-region disaster recovery options.
