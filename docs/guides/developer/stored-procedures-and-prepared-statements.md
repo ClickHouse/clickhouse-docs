@@ -27,8 +27,7 @@ ClickHouse is optimized for:
 - **Batch processing** - Handling large data volumes efficiently
 - **Declarative queries** - SQL queries that describe what data to retrieve, not how to process it
 
-Stored procedures with procedural logic work against these optimizations.
-Instead, ClickHouse provides alternatives that align with its strengths.
+Stored procedures with procedural logic work against these optimizations. Instead, ClickHouse provides alternatives that align with its strengths.
 
 ### User-Defined Functions (UDFs) {#user-defined-functions}
 
@@ -197,7 +196,7 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-**Common use cases:**
+#### Common use cases {#common-use-cases}
 - Dynamic date range filtering
 - User-specific data slicing
 - [Multi-tenant data access](/cloud/bestpractices/multi-tenancy)
@@ -559,7 +558,7 @@ print(f"Status: {status}, Loyalty Points: {points}")
 
 <br/>
 
-**Key differences:**
+#### Key differences {#key-differences}
 
 1. **Control flow** - MySQL stored procedure uses `IF/ELSE`, `WHILE` loops. In ClickHouse, implement this logic in your application code (Python, Java, etc.)
 2. **Transactions** - MySQL supports `BEGIN/COMMIT/ROLLBACK` for ACID transactions. ClickHouse is an analytical database optimized for append-only workloads, not transactional updates
