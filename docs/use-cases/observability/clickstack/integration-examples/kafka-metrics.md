@@ -323,7 +323,7 @@ LIMIT 10
 "
 ```
 
-If no results, check the JMX exporter logs:
+If you don't see any results, check the JMX exporter logs:
 
 ```bash
 docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
