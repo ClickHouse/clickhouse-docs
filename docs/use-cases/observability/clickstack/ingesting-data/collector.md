@@ -100,9 +100,96 @@ With Docker Compose, modify the collector configuration using the same environme
 
 ### Advanced configuration {#advanced-configuration}
 
-Currently, the ClickStack distribution of the OTel collector does not support modification of its configuration file. If you need a more complex configuration e.g. [configuring TLS](#securing-the-collector), or modifying the batch size, we recommend copying and modifying the [default configuration](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) and deploying your own version of the OTel collector using the ClickHouse exporter documented [here](/observability/integrating-opentelemetry#exporting-to-clickhouse) and [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+The ClickStack distribution of the OTel collector supports extending the base configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
 
-The default ClickStack configuration for the OpenTelemetry (OTel) collector can be found [here](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml).
+#### Extending the collector configuration {#extending-collector-config}
+
+To add custom receivers, processors, or pipelines:
+
+1. Create a custom configuration file with your additional configuration
+2. Mount the file at `/etc/otelcol-contrib/custom.config.yaml`
+3. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+
+**Example custom configuration:**
+
+```yaml
+receivers:
+  # Collect logs from local files
+  filelog:
+    include:
+      - /var/log/**/*.log
+      - /var/log/syslog
+      - /var/log/messages
+    start_at: beginning
+
+  # Collect host system metrics
+  hostmetrics:
+    collection_interval: 30s
+    scrapers:
+      cpu:
+        metrics:
+          system.cpu.utilization:
+            enabled: true
+      memory:
+        metrics:
+          system.memory.utilization:
+            enabled: true
+      disk:
+      network:
+      filesystem:
+        metrics:
+          system.filesystem.utilization:
+            enabled: true
+
+service:
+  pipelines:
+    # Logs pipeline
+    logs/host:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+    
+    # Metrics pipeline
+    metrics/hostmetrics:
+      receivers: [hostmetrics]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+```
+
+**Deploy with the all-in-one image:**
+```bash
+docker run -d --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
+
+**Deploy with the standalone collector:**
+```bash
+docker run -d \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=default \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -p 4317:4317 -p 4318:4318 \
+  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+```
+
+:::note
+You only define new receivers, processors, and pipelines in the custom config. The base processors (`memory_limiter`, `batch`) and exporters (`clickhouse`) are already defined—reference them by name. The custom configuration is merged with the base configuration and cannot override existing components.
+:::
+
+For more complex configurations, refer to the [default ClickStack collector configuration](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) and the [ClickHouse exporter documentation](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
 #### Configuration structure {#configuration-structure}
 
@@ -120,7 +207,7 @@ To further secure your deployment, we recommend:
 
 - Configuring the collector to communicate with ClickHouse over HTTPS.
 - Create a dedicated user for ingestion with limited permissions - see below.
-- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. **Currently, this requires users to deploy a default distribution of the collector and manage the configuration themselves**. 
+- Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. This can be configured via [custom collector configuration](#extending-collector-config).
 
 ### Creating an ingestion user {#creating-an-ingestion-user}
 
@@ -276,7 +363,7 @@ However, if you require high delivery guarantees or the ability to replay data (
 In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
 
 :::note OTel collector configuration
-The ClickStack OpenTelemetry collector distribution cannot be used with Kafka as it requires a configuration modification. Users will need to deploy a default OTel collector using the ClickHouse exporter.
+The ClickStack OpenTelemetry collector distribution can be configured with Kafka using [custom collector configuration](#extending-collector-config).
 :::
 
 ## Estimating resources {#estimating-resources}
@@ -298,9 +385,7 @@ For agent instances responsible for shipping events to a gateway, and only setti
 <BetaBadge/>
 
 :::warning Beta Feature
-JSON type support in ClickStack is a **beta feature**. While it is under active development and supported by the ClickHouse team, it may have limitations, change in the future, or contain bugs. 
-
-**For production use**, ensure you are running **ClickHouse version 25.3 or later**, where the JSON type is production-ready. For earlier versions of ClickHouse, the JSON type is not recommended for production use.
+JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
 :::
 
 ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.

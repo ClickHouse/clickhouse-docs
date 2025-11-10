@@ -33,6 +33,16 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
 
+## November 7, 2025 {#november-7-2025}
+
+- ClickHouse Cloud console now supports configuring replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
+  These options are available both when setting up a new service as well as when setting minimum and maximum replica sizes on the settings page.
+- Custom hardware profiles (available on the Enterprise tier) now support idling.
+- ClickHouse Cloud now offers a simplified purchasing experience through AWS Marketplace, with separate options for [pay-as-you-go](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu?sr=0-2&ref_=beagle&applicationId=AWSMPContessa) and [committed spend contracts](https://aws.amazon.com/marketplace/pp/prodview-4qyeihstyym2s?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).
+- Alerting is now available for ClickStack users in ClickHouse Cloud.
+  Users can now create and manage alerts directly in the HyperDX UI, across logs, metrics, and traces with no extra setup, no extra infra or service, and no config. Alerts integrate with Slack, PagerDuty, and more.
+  For more information see the [alerting documentation](/use-cases/observability/clickstack/alerts).
+
 ## October 17, 2025 {#october-17-2025}
 
 - **Service Monitoring - Resource Utilization Dashboard**  

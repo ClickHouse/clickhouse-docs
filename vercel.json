@@ -12,6 +12,16 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/docs",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app$"
+        }
+      ]
+    },
+    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
