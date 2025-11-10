@@ -107,6 +107,7 @@ You can customize settings by using `--set` flags. For example:
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
+```
 
 Alternatively, edit the `values.yaml`. To retrieve the default values:
 
