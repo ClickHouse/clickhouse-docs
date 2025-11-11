@@ -180,7 +180,7 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Verify metrics in HyperDX {#verify-metrics}
+#### Verify metrics in HyperDX {#verify-metrics-demo}
 
 Once loaded, the quickest way to see your metrics is through the pre-built dashboard.
 
