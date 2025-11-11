@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3822
+personal_ws-1.1 en 3824
 AArch
 ACLs
 AICPA
@@ -3842,5 +3842,9 @@ whitelisted
 whitelisting
 TrackedLink
 eventName
+deprovisioning
+runbooks
+severities
+webhooks
 OneLake
 OneLake's
