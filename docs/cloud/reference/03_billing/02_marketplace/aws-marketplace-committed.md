@@ -30,11 +30,10 @@ One AWS account can only subscribe to one “ClickHouse Cloud - Committed Contra
 Required permissions to view and accept your committed contract in AWS:
 
 - If you use AWS managed policies, it is required to have the following permissions:
-    - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-    - or `AWSMarketplaceFullAccess`
+  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  - or `AWSMarketplaceFullAccess`
 - If you aren't using AWS managed policies it is required to have the following permissions:
   - IAM action `aws-marketplace:ListPrivateListings` and `aws-marketplace:ViewSubscriptions`
-
 
 ## Steps to sign up {#steps-to-sign-up}
 
@@ -45,7 +44,6 @@ Required permissions to view and accept your committed contract in AWS:
 You should have received an email with a link to review and accept your private offer.
 
 <Image img={mp_committed_spend_1} size="md" alt="AWS Marketplace private offer email"/>
-
 
 ### Review offer link {#review-offer-link}
 
