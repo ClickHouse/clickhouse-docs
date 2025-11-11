@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/integration-guides
 pagination_prev: null
 pagination_next: null
 description: 'Data ingestion for ClickStack - The ClickHouse Observability Stack'
-title: 'Integration Guides'
+title: 'Integration guides'
 doc_type: 'landing-page'
 keywords: ['ClickStack data ingestion', 'observability data ingestion', 'ClickStack integration guides']
 ---
@@ -13,6 +13,7 @@ quick start guides for various log and trace sources.
 
 | Section | Description |
 |------|-------------|
-| [Nginx Logs](./nginx-logs.md) | Quick start guide for Nginx logs |
-| [Nginx Traces](./nginx-traces.md) | Quick start guide for nginx traces |
-| [Redis](./redis-logs.md) | Quick start guide for Redis logs |
+| [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
+| [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Quick start guide for Nginx Traces |
+| [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis Logs |
+| [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for Redis Metrics |

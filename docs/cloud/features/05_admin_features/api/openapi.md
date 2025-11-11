@@ -36,6 +36,10 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 Permissions align with ClickHouse Cloud [predefined roles](/cloud/security/console-roles). The developer role has read-only permissions for assigned services and the admin role has full read and write permissions.
 :::
 
+:::tip Query API Endpoints
+To use API keys with [Query API Endpoints](/cloud/get-started/query-endpoints), set Organization Role to `Member` (minimum) and grant Service Role access to `Query Endpoints`.
+:::
+
   <Image img={image_03} size="md" alt="Create API key form" border/>
 
 4. The next screen will display your Key ID and Key secret. Copy these values and put them somewhere safe, such as a vault. The values will not be displayed after you leave this screen.

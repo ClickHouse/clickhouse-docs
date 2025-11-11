@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Monitoring nginx traces with ClickStack'
-sidebar_label: 'nginx traces'
+title: 'Monitoring Nginx Traces with ClickStack'
+sidebar_label: 'Nginx Traces'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring nginx traces with ClickStack'
+description: 'Monitoring Nginx Traces with ClickStack'
 doc_type: 'guide'
-keywords: ['ClickStack', 'nginx', 'traces', 'otel']
+keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,41 +17,41 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring nginx traces with ClickStack {#nginx-traces-clickstack}
+# Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to capture distributed traces from your existing nginx installation and visualize them in ClickStack. You'll learn how to:
+This guide shows you how to capture distributed traces from your existing Nginx installation and visualize them in ClickStack. You'll learn how to:
 
-- Add the OpenTelemetry module to nginx
-- Configure nginx to send traces to ClickStack's OTLP endpoint
+- Add the OpenTelemetry module to Nginx
+- Configure Nginx to send traces to ClickStack's OTLP endpoint
 - Verify traces are appearing in HyperDX
 - Use a pre-built dashboard to visualize request performance (latency, errors, throughput)
 
-A demo dataset with sample traces is available if you want to test the integration before configuring your production nginx.
+A demo dataset with sample traces is available if you want to test the integration before configuring your production Nginx.
 
 Time Required: 5-10 minutes
 ::::
 
-## Integration with existing nginx {#existing-nginx}
+## Integration with existing Nginx {#existing-nginx}
 
-This section covers adding distributed tracing to your existing nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
+This section covers adding distributed tracing to your existing Nginx installation by installing the OpenTelemetry module and configuring it to send traces to ClickStack.
 If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [following section](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset).
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running with OTLP endpoints accessible (ports 4317/4318)
-- Existing nginx installation (version 1.18 or higher)
-- Root or sudo access to modify nginx configuration
+- Existing Nginx installation (version 1.18 or higher)
+- Root or sudo access to modify Nginx configuration
 - ClickStack hostname or IP address
 
 <VerticalStepper headerLevel="h4">
 
-#### Install OpenTelemetry nginx module {#install-module}
+#### Install OpenTelemetry Nginx module {#install-module}
 
-The easiest way to add tracing to nginx is using the official nginx image with OpenTelemetry support built-in.
+The easiest way to add tracing to Nginx is using the official Nginx image with OpenTelemetry support built-in.
 
 ##### Using the nginx:otel image {#using-otel-image}
 
-Replace your current nginx image with the OpenTelemetry-enabled version:
+Replace your current Nginx image with the OpenTelemetry-enabled version:
 
 ```yaml
 # In your docker-compose.yml or Dockerfile
@@ -61,10 +61,10 @@ image: nginx:1.27-otel
 This image includes the `ngx_otel_module.so` pre-installed and ready to use.
 
 :::note
-If you're running nginx outside of Docker, refer to the [OpenTelemetry nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
+If you're running Nginx outside of Docker, refer to the [OpenTelemetry Nginx documentation](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) for manual installation instructions.
 :::
 
-#### Configure nginx to send traces to ClickStack {#configure-nginx}
+#### Configure Nginx to send traces to ClickStack {#configure-nginx}
 
 Add OpenTelemetry configuration to your `nginx.conf` file. The configuration loads the module and directs traces to ClickStack's OTLP endpoint.
 
@@ -116,7 +116,7 @@ http {
 }
 ```
 
-If running nginx in Docker, pass the environment variable to the container:
+If running Nginx in Docker, pass the environment variable to the container:
 
 ```yaml
 services:
@@ -131,15 +131,15 @@ services:
 Replace `<clickstack-host>` with your ClickStack instance hostname or IP address.
 
 :::note
-- **Port 4317** is the gRPC endpoint used by the nginx module
-- **otel_service_name** should be descriptive of your nginx instance (e.g., "api-gateway", "frontend-proxy")
+- **Port 4317** is the gRPC endpoint used by the Nginx module
+- **otel_service_name** should be descriptive of your Nginx instance (e.g., "api-gateway", "frontend-proxy")
 - Change **otel_service_name** to match your environment for easier identification in HyperDX
 :::
 
 ##### Understanding the configuration {#understanding-configuration}
 
 **What gets traced:**
-Each request to nginx creates a trace span showing:
+Each request to Nginx creates a trace span showing:
 - Request method and path
 - HTTP status code
 - Request duration
@@ -148,12 +148,12 @@ Each request to nginx creates a trace span showing:
 **Span attributes:**
 The `otel_span_attr` directives add metadata to each trace, allowing you to filter and analyze requests in HyperDX by status code, method, route, etc.
 
-After making these changes, test your nginx configuration:
+After making these changes, test your Nginx configuration:
 ```bash
 nginx -t
 ```
 
-If the test passes, reload nginx:
+If the test passes, reload Nginx:
 ```bash
 # For Docker
 docker-compose restart nginx
@@ -172,7 +172,7 @@ Once configured, log into HyperDX and verify traces are flowing, you should see 
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the nginx trace integration before configuring their production systems, we provide a sample dataset of pre-generated nginx traces with realistic traffic patterns.
+For users who want to test the nginx trace integration before configuring their production systems, we provide a sample dataset of pre-generated Nginx Traces with realistic traffic patterns.
 
 <VerticalStepper headerLevel="h4">
 
