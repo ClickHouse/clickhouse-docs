@@ -3820,6 +3820,10 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+CronJobs
+DAGs
+Dagster
+RDBMS
 OTELCOL
 elipses
 geolocation

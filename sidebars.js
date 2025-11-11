@@ -1156,6 +1156,7 @@ const sidebars = {
         "guides/developer/ttl",
         "guides/developer/understanding-query-execution-with-the-analyzer",
         "guides/joining-tables",
+        "guides/developer/stored-procedures-and-prepared-statements"
       ],
     },
     {
