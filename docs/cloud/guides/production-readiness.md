@@ -51,16 +51,30 @@ Establish separate environments to safely test changes before impacting producti
 
 **Sizing**: Size your staging service to approximate production load characteristics. Testing on significantly smaller infrastructure may not reveal resource contention or scaling issues. Use production-representative datasets through periodic data refreshes or synthetic data generation. For guidance on how to size your staging environment and scale services appropriately, refer to the [Sizing and hardware recommendations](/guides/sizing-and-hardware-recommendations) and [Scaling in ClickHouse Cloud](/manage/scaling) documentation. These resources provide practical advice on memory, CPU, and storage sizing, as well as details on vertical and horizontal scaling options to help you match your staging environment to production workloads.
 
+## Private networking {#private-networking}
+
+[Private networking](/cloud/security/connectivity/private-networking) in ClickHouse Cloud allows you to connect your ClickHouse services directly to your cloud virtual network, ensuring that data does not traverse the public internet. This is essential for organizations with strict security or compliance requirements, or for those running applications in private subnets.
+
+ClickHouse Cloud supports private networking through the following mechanisms:
+
+- [AWS PrivateLink](/manage/security/aws-privatelink): Enables secure connectivity between your VPC and ClickHouse Cloud without exposing traffic to the public internet. It supports cross-region connectivity and is available in the Scale and Enterprise plans. Setup involves creating a PrivateLink endpoint and adding it to your ClickHouse Cloud organization and service allow list. More details and step-by-step instructions are available in the documentation here.
+- [GCP Private Service Connect](/manage/security/gcp-private-service-connect) (PSC): Allows private access to ClickHouse Cloud from your Google Cloud VPC. Like AWS, it is available in Scale and Enterprise plans and requires explicit configuration of service endpoints and allow lists here.
+- [Azure Private Link](/cloud/security/azure-privatelink): Provides private connectivity between your Azure VNet and ClickHouse Cloud, supporting cross-region connections. The setup process involves obtaining a connection alias, creating a private endpoint, and updating allow lists here.
+
+If you need more technical details or step-by-step setup instructions, the linked documentation for each provider contains comprehensive guides.
+
 ## Enterprise authentication and user management {#enterprise-authentication}
 
 Moving from console-based user management to enterprise authentication integration is essential for production readiness.
 
-### SSO/SAML setup {#sso-saml-setup}
+### SSO and social authentication {#sso-authentication}
 
-Enterprise tier ClickHouse Cloud supports SAML integration with identity providers including Okta, Azure Active Directory, and Google Workspace. SAML configuration requires coordination with ClickHouse support and involves providing your IdP metadata and configuring attribute mappings.
+[SAML SSO](/cloud/security/saml-setup): Enterprise tier ClickHouse Cloud supports SAML integration with identity providers including Okta, Azure Active Directory, and Google Workspace. SAML configuration requires coordination with ClickHouse support and involves providing your IdP metadata and configuring attribute mappings.
+
+[Social SSO](/cloud/security/manage-my-account): ClickHouse Cloud also supports social authentication providers (Google, Microsoft, GitHub) as an equally secure alternative to SAML SSO. Social SSO provides faster setup for organizations without existing SAML infrastructure while maintaining enterprise security standards.
 
 :::note Important limitation
-Users authenticated through SAML are assigned the "Member" role by default and must be manually granted additional roles by an admin after their first login. Group-to-role mapping and automatic role assignment are not currently supported.
+Users authenticated through SAML or social SSO are assigned the "Member" role by default and must be manually granted additional roles by an admin after their first login. Group-to-role mapping and automatic role assignment are not currently supported.
 :::
 
 ### Access control design {#access-control-design}
@@ -169,6 +183,8 @@ Test backup restoration at least quarterly for critical production services. Org
 
 Document your recovery time objectives (RTO) and recovery point objectives (RPO) to validate that your current backup configuration meets business requirements. Establish regular testing schedules for backup restoration and maintain updated recovery documentation.
 
+**Cross-region backup storage**: Organizations with geographic disaster recovery requirements can configure ClickHouse Cloud to export backups to customer-owned storage buckets in alternate regions. This provides protection against regional outages but requires manual restoration procedures. Contact ClickHouse support to implement cross-region backup exports. Future platform releases will provide automated multi-region replication capabilities.
+
 ### Production support integration {#production-support}
 
 Understand your current support tier's SLA expectations and escalation procedures. Create internal runbooks defining when to engage ClickHouse support and integrate these procedures with your existing incident management processes.
@@ -179,4 +195,4 @@ Learn more about [ClickHouse Cloud backup and recovery](/cloud/manage/backups/ov
 
 After implementing the integrations and procedures in this guide, visit the [Cloud resource tour](/cloud/get-started/cloud/resource-tour) for guides on [monitoring](/cloud/get-started/cloud/resource-tour#monitoring), [security](/cloud/get-started/cloud/resource-tour#security), and [cost optimization](/cloud/get-started/cloud/resource-tour#cost-optimization).
 
-When current service tier limitations impact your production operations, consider upgrade paths for enhanced capabilities such as private networking, customer-managed encryption keys, or multi-region disaster recovery options.
+When current [service tier limitations](/cloud/manage/cloud-tiers) impact your production operations, consider upgrade paths for enhanced capabilities such as [private networking](/cloud/security/connectivity/private-networking), [TDE/CMEK](/cloud/security/cmek) (Transparent Data Encryption with Customer-Managed Encryption Keys), or [advanced backup options](/cloud/manage/backups/configurable-backups).
