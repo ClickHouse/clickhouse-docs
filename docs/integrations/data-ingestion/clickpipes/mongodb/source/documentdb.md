@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Amazon DocumentDB'
 description: 'Step-by-step guide on how to set up Amazon DocumentDB as a source for ClickPipes'
-slug: /integrations/clickpipes/mongodb/source/docdb
+slug: /integrations/clickpipes/mongodb/source/documentdb
 title: 'Amazon DocumentDB source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'documentdb', 'cdc', 'data ingestion', 'real-time sync']
@@ -21,7 +21,7 @@ ClickPipes supports DocumentDB version 5.0.
 
 ## Configure change stream log retention {#configure-change-stream-log-retention}
 
-By default, Amazon DocumentDB has a 3-hour change stream log retention period, initial load may take much longer depending on existing data volume in your DocumentDB. We recommend setting the change stream log retention to 72 hours or longer to ensure that it is not truncated before the initial snapshot is completed.
+By default, Amazon DocumentDB has a 3-hour change stream log retention period, while initial load may take much longer depending on existing data volume in your DocumentDB. We recommend setting the change stream log retention to 72 hours or longer to ensure that it is not truncated before the initial snapshot is completed.
 
 ### Update change stream log retention via AWS Console {#update-change-stream-log-retention-via-aws-console}
 
@@ -38,12 +38,14 @@ By default, Amazon DocumentDB has a 3-hour change stream log retention period, i
 
 ### Update change stream log retention via AWS CLI {#update-change-stream-log-retention-via-aws-cli}
 
-To check the current change stream log retention period via AWS CLI:
+Alternatively, you can configure this via AWS CLI.
+
+To check the current change stream log retention period:
 ```shell
 aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --query "Parameters[?ParameterName=='change_stream_log_retention_duration'].{Name:ParameterName,Value:ParameterValue}"
 ```
 
-To set the change stream log retention period to 72 hours via AWS CLI:
+To set the change stream log retention period to 72 hours:
 ```shell
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```

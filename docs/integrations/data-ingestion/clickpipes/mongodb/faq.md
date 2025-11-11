@@ -52,7 +52,7 @@ For more examples, see our [Working with JSON guide](./quickstart).
 
 ### How do I handle `resume of change stream was not possible, as the resume point may no longer be in the oplog.` error? {#resume-point-may-no-longer-be-in-the-oplog-error}
 
-This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend increasing the oplog retention period. See instructions for [MongoDB Atlas](./source/atlas#enable-oplog-retention), [self-managed MongoDB](./source/generic#enable-oplog-retention), or [Amazon DocumentDB](./source/docdb#configure-change-stream-log-retention).
+This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend increasing the oplog retention period. See instructions for [MongoDB Atlas](./source/atlas#enable-oplog-retention), [self-managed MongoDB](./source/generic#enable-oplog-retention), or [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention).
 
 ### How is replication managed? {#how-is-replication-managed}
 
@@ -68,7 +68,7 @@ Yes, the MongoDB ClickPipe supports both Replica Set and Sharded Cluster.
 
 ### Does MongoDB ClickPipe support Amazon DocumentDB? {#documentdb-support}
 
-Yes, MongoDB ClickPipe supports Amazon DocumentDB 5.0. See [Amazon DocumentDB source setup guide](./source/docdb.md) for details.
+Yes, MongoDB ClickPipe supports Amazon DocumentDB 5.0. See [Amazon DocumentDB source setup guide](./source/documentdb.md) for details.
 
 ### Does MongoDB ClickPipe support PrivateLink? {#privatelink-support}
 
