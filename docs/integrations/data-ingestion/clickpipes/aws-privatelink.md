@@ -56,7 +56,7 @@ To set up PrivateLink with VPC resource:
 2. Create a resource configuration
 3. Create a resource share
 
-#### 1. Create a resource gateway {#create-resource gateway}
+#### 1. Create a resource gateway {#create-resource-gateway}
 
 Resource gateway is the point that receives traffic for specified resources in your VPC.
 
