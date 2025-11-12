@@ -1995,6 +1995,12 @@ const sidebars = {
           label: "Production",
           description: "Deploy ClickStack in production",
           href: "/use-cases/observability/clickstack/production"
+        },
+        {
+          type: "link",
+          label: "Integration examples",
+          description: "Integration quick start guides",
+          href: "/use-cases/observability/clickstack/integration-guides"
         }
       ]
     },

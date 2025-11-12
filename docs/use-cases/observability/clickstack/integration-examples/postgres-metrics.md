@@ -67,7 +67,7 @@ receivers:
     password: ${env:POSTGRES_PASSWORD}
     databases:
       - postgres
-      - your_application_db
+      - your_application_db # Replace with your actual database names
     collection_interval: 30s
     tls:
       insecure: true
@@ -131,7 +131,7 @@ Once metrics are flowing, proceed to the [Dashboards and visualization](#dashboa
 For users who want to test the PostgreSQL metrics integration before configuring their production systems, we provide a pre-generated dataset with realistic PostgreSQL metrics patterns.
 
 :::note[Database-level metrics only]
-This demo dataset includes database-level metrics only, matching the default PostgreSQL receiver configuration. Table-level and index-level metrics are disabled by default because they generate significantly more data. Database-level metrics provide comprehensive monitoring for most use cases.
+This demo dataset includes database-level metrics only to keep the sample data lightweight. Table and index metrics are collected automatically when monitoring a real PostgreSQL database.
 :::
 
 <VerticalStepper headerLevel="h4">
