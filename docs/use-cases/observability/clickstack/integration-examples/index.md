@@ -8,8 +8,7 @@ doc_type: 'landing-page'
 keywords: ['ClickStack data ingestion', 'observability data ingestion', 'ClickStack integration guides']
 ---
 
-ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. This section contains
-quick start guides for various log and trace sources.
+ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. This section contains quick start guides for various log, trace, and metrics sources.
 
 :::note
 Several of these integration guides use ClickStack's built-in OpenTelemetry Collector for quick testing. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.
