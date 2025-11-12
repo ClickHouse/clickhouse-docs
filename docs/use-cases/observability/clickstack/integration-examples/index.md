@@ -14,10 +14,6 @@ ClickStack provides multiple ways to ingest observability data into your ClickHo
 Several of these integration guides use ClickStack's built-in OpenTelemetry Collector for quick testing. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.
 :::
 
-:::note
-Several of these integration guides use ClickStack's built-in OpenTelemetry Collector for quick testing. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.
-:::
-
 | Section | Description |
 |------|-------------|
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Quick start guide for Kafka Metrics |
