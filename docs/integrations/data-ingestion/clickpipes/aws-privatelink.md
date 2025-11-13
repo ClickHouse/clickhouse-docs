@@ -6,6 +6,7 @@ title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
 ---
+
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_rpe_select from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_select.png';
