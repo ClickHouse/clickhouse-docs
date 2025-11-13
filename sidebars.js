@@ -1616,7 +1616,6 @@ const sidebars = {
             "use-cases/observability/clickstack/ingesting-data/overview",
             "use-cases/observability/clickstack/ingesting-data/opentelemetry",
             "use-cases/observability/clickstack/ingesting-data/collector",
-            "use-cases/observability/clickstack/ingesting-data/kubernetes",
             "use-cases/observability/clickstack/ingesting-data/schemas",
             {
               type: "category",
