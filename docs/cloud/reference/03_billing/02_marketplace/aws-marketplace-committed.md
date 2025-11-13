@@ -54,7 +54,7 @@ This should take you to your AWS Marketplace page with the private offer details
 
 Complete the steps to subscribe on the AWS portal and click on **"Set up your account"**.
 It is critical to redirect to ClickHouse Cloud at this point and either register for a new account, or sign in with an existing account.
-Without completing this step, we will not be able to link your AWS Marketplace subscription to ClickHouse Cloud.
+Without completing this step, we will not be able to link your AWS Marketplace contract to ClickHouse Cloud.
 
 <Image img={mp_committed_spend_2} size="md" alt="AWS Marketplace private offer email"/>
 
@@ -82,11 +82,11 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 ### Create or select organization to bill {#create-select-org-to-bill}
 
-After successfully logging in, you can decide whether to create a new organization to bill to this marketplace subscription or choose an existing organization to bill to this subscription.
+After successfully logging in, you can decide whether to create a new organization to bill to this marketplace contract or choose an existing organization to bill to this contract.
 
 <Image img={mp_committed_spend_6} size="md" alt="Create or select an organization to bill to this subscription"/>
 
-After completing this step your organization will be connected to this AWS subscription and all usage will be billed via your AWS account.
+After completing this step your organization will be connected to your AWS committed spend contract and all usage will be billed via your AWS account.
 You can confirm from the organization's billing page in the ClickHouse UI that billing is indeed now linked to the AWS marketplace.
 
 <Image img={mp_committed_spend_7} size="md" alt="Confirm set up is complete"/>
