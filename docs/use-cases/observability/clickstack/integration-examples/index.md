@@ -19,6 +19,7 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Quick start guide for Kafka Metrics |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Quick start guide for Nginx Logs |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Quick start guide for Nginx Traces |
+| [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Quick start guide for PostgreSQL Metrics |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Quick start guide for PostgreSQL Metrics |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Quick start guide for Redis Logs |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Quick start guide for Redis Metrics |
