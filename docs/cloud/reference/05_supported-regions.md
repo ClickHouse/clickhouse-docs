@@ -14,6 +14,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 ## AWS regions {#aws-regions}
 
 - ap-northeast-1 (Tokyo)
+- ap-northeast-2 (South Korea, Seoul)
 - ap-south-1 (Mumbai)
 - ap-southeast-1 (Singapore)
 - ap-southeast-2 (Sydney)
@@ -30,11 +31,11 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)
-- ap-northeast-2 (South Korea, Seoul)
  
 ## Google Cloud regions {#google-cloud-regions}
 
 - asia-southeast1 (Singapore)
+- asia-northeast1 (Tokyo)
 - europe-west4 (Netherlands)
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
@@ -43,7 +44,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - us-west1 (Oregon)
 - australia-southeast1(Sydney)
-- asia-northeast1 (Tokyo)
 - europe-west3 (Frankfurt)
 - europe-west6 (Zurich)
 - northamerica-northeast1 (Montréal)
