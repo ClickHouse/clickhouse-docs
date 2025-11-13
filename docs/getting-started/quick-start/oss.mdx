@@ -28,14 +28,15 @@ then insert data into it and run a query to select that data.
 ClickHouse runs natively on Linux, FreeBSD and macOS, and runs on Windows via
 the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about). The simplest way to download ClickHouse locally is to run the
 following `curl` command. It determines if your operating system is supported,
-then downloads an appropriate ClickHouse binary from the master branch.
+then downloads an appropriate ClickHouse binary built from master branch.
 
 :::note
 We recommend running the command below from a new and empty subdirectory as
 some configuration files will be created in the directory the binary is located
 in the first time ClickHouse server is run.
 
-If you are looking to install a production instance of ClickHouse, please see the [install page](/install) rather.
+If you are looking to install a production instance of ClickHouse, please see the [install page](/install).
+The script below is not the recommended way to install ClickHouse for production.
 :::
 
 ```bash
