@@ -51,7 +51,7 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 <Image img={datagrip_1} size="lg" border alt="DataGrip Drivers tab showing ClickHouse driver installation" />
 
-## 3. Connect to ClickHouse {#connect-to-clickhouse}
+## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
 
 - Specify your database connection details, and click **Test Connection**. 
 In step one you gathered your connection details - fill in the host URL, port, username, password, and database name, then test the connection.
@@ -60,15 +60,13 @@ In step one you gathered your connection details - fill in the host URL, port, u
 Enter only the hostname in the **Host** field (e.g., `your-host.clickhouse.cloud`) without any protocol prefix like `https://`.
 
 For ClickHouse Cloud connections, you must add `?ssl=true` to the **URL** field below the host. The complete JDBC URL should look like:
-```
-jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true
-```
+
+`jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true`
 
 ClickHouse Cloud requires SSL encryption for all connections. Without the `?ssl=true` parameter, you'll see "Connection reset" errors even with correct credentials.
 
 For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
 :::
-
 
 <Image img={datagrip_7} border alt="DataGrip connection details form with ClickHouse settings" />
 
