@@ -37,7 +37,6 @@ You have several options to resolve these issues:
 
 4. **Skip certificate verification** - For self-hosted MySQL or MariaDB, whose default configurations provision a self-signed certificate we can't validate ([MySQL](https://dev.mysql.com/doc/refman/8.4/en/creating-ssl-rsa-files-using-mysql.html#creating-ssl-rsa-files-using-mysql-automatic), [MariaDB](https://mariadb.com/kb/en/securing-connections-for-client-and-server/#enabling-tls-for-mariadb-server)). Relying on this certificate encrypts the data in transit but runs the risk of server impersonation. We recommend properly signed certificates for production environments, but this option is useful for testing on a one-off instance or connecting to legacy infrastructure.
 
-
 ### Do you support schema changes? {#do-you-support-schema-changes}
 
 Please refer to the [ClickPipes for MySQL: Schema Changes Propagation Support](./schema-changes) page for more information.
