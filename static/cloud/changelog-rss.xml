@@ -5,8 +5,18 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 08 Nov 2025 11:23:36 -0600</lastBuildDate>
+    <lastBuildDate>Fri, 14 Nov 2025 14:06:15 -0600</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ClickHouse Cloud - November 14, 2025</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#november-14-2025</link>
+      <description>- We’re excited to announce that ClickHouse Cloud is now available in two additional public regions:
+- GCP Japan (asia-northeast1)
+- AWS Seoul (Asia Pacific, ap-northeast-2): — now also supported in ClickPipes 🆕
+- Terraform and API now support adding tags to services and filtering services by tags.</description>
+      <pubDate>Fri, 14 Nov 2025 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-14-2025</guid>
+    </item>
     <item>
       <title>ClickHouse Cloud - November 7, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#november-7-2025</link>
