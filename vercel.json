@@ -3615,6 +3615,11 @@
       "source": "/docs/sql-reference/functions/time-series-analysis-functions",
       "destination": "/docs/sql-reference/functions/time-series-functions",
       "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/ingesting-data/kubernetes",
+      "destination": "/docs/use-cases/observability/clickstack/integrations/kubernetes",
+      "permanent": true
     }
   ]
 }

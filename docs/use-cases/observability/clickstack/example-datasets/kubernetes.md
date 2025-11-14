@@ -68,7 +68,7 @@ All services are deployed to the `otel-demo` namespace. Each deployment includes
 
 - Automatic instrumentation with OTel and ClickStack SDKS for traces, metrics, and logs.
 - All services send their instrumentation to a `my-hyperdx-hdx-oss-v2-otel-collector` OpenTelemetry collector (not deployed)
-- [Forwarding of resource tags](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) to correlate logs, metrics and traces via the environment variable `OTEL_RESOURCE_ATTRIBUTES`.
+- [Forwarding of resource tags](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) to correlate logs, metrics and traces via the environment variable `OTEL_RESOURCE_ATTRIBUTES`.
 
 ```shell
 ## download demo Kubernetes manifest file
