@@ -23,7 +23,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.3</version>
+    <version>0.9.4</version>
 </dependency>
 ```
 
@@ -32,14 +32,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.3")
+implementation("com.clickhouse:client-v2:0.9.4")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.3'
+implementation 'com.clickhouse:client-v2:0.9.4'
 ```
 
 </TabItem>
@@ -664,3 +664,148 @@ Complete examples code is stored in the repo in a 'example` [folder](https://git
 - [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - main set of examples.
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - example of how to use the client in a Spring Boot application.
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - example of how to use the client in Ktor (Kotlin) application.
+
+## Migration From V1 ( =< 0.7.x ) {#migration_from_v1}
+
+
+Old client (V1) was using `com.clickhouse.client.ClickHouseClient#builder` as start point. The new client (V2) uses similar pattern with `com.clickhouse.client.api.Client.Builder`. Main
+differences are:
+- no service loader is used to grab implementation. The `com.clickhouse.client.api.Client` is facade class for all kinds of implementation in the future.
+- a fewer sources of configuration: one is provided to the builder and one is with operation settings (`QuerySettings`, `InsertSettings`). Previous version had configuration per node and was loading
+env. variables in some cases.
+
+### Configuration Parameters Match {#migration_from_v1_config}
+
+There are 3 enum classes related to configuration in V1:
+- `com.clickhouse.client.config.ClickHouseDefaults` - configuration parameters that supposed to be set in most use cases. Like `USER` and `PASSWORD`.
+- `com.clickhouse.client.config.ClickHouseClientOption` - configuration parameters specific for the client. Like `HEALTH_CHECK_INTERVAL`.
+- `com.clickhouse.client.http.config.ClickHouseHttpOption` - configuration parameters specific for HTTP interface. Like `RECEIVE_QUERY_PROGRESS`.
+
+They were designed to group parameters and provide clear separation. However in some cases it lead to a confusion (is there a difference between `com.clickhouse.client.config.ClickHouseDefaults#ASYNC` and
+`com.clickhouse.client.config.ClickHouseClientOption#ASYNC`). The new V2 client uses `com.clickhouse.client.api.Client.Builder` as single dictionary of all possible client configuration options.There is
+`com.clickhouse.client.api.ClientConfigProperties` where all configuration parameter names are listed.
+
+Table below shows what old options are supported in the new client and there new meaning.
+✔	- supported
+✗ - dropped
+| V1 Configuration | Matching V2 Builder Method | Comments          |
+|------------------|----------------------------|-------------------|
+| `com.clickhouse.client.config.ClickHouseDefaults#ASYNC`, `com.clickhouse.client.config.ClickHouseClientOption#ASYNC` | `com.clickhouse.client.api.Client.Builder#useAsyncRequests` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#AUTO_SESSION` | ✗ | Session support will be reviewed |
+| `com.clickhouse.client.config.ClickHouseDefaults#BUFFERING` | ✗ |  |
+| `com.clickhouse.client.config.ClickHouseDefaults#HOST` | `com.clickhouse.client.api.Client.Builder#addEndpoint` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#PROTOCOL` | ✗ | Only HTTP supported in V2.  |
+| `com.clickhouse.client.config.ClickHouseDefaults#DATABASE` | `com.clickhouse.client.api.Client.Builder#setDefaultDatabase` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#USER` | `com.clickhouse.client.api.Client.Builder#setUsername` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#PASSWORD` | `com.clickhouse.client.api.Client.Builder#setPassword` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#FORMAT`, `com.clickhouse.client.config.ClickHouseClientOption#FORMAT` | ✗ | Moved to operation settings (`QuerySettings` and `InsertSettings`) |
+| `com.clickhouse.client.config.ClickHouseDefaults#MAX_SCHEDULER_THREADS` | ✗ | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` |
+| `com.clickhouse.client.config.ClickHouseDefaults#MAX_THREADS` | ✗ | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` |
+| `com.clickhouse.client.config.ClickHouseDefaults#MAX_REQUESTS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseDefaults#ROUNDING_MODE` | | |
+| `com.clickhouse.client.config.ClickHouseDefaults#THREAD_KEEPALIVE_TIMEOUT` | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#setServerTimeZone` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SERVER_VERSION`, `com.clickhouse.client.config.ClickHouseClientOption#SERVER_VERSION` | `com.clickhouse.client.api.Client.Builder#setServerVersion` | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SSL_CERTIFICATE_TYPE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SSL_KEY_ALGORITHM` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SSL_PROTOCOL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseDefaults#SRV_RESOLVE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#AUTO_DISCOVERY` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SETTINGS` | | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SOCKET_FACTORY` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SOCKET_FACTORY_OPTIONS` | ✗ | See `com.clickhouse.client.api.Client.Builder#sslSocketSNI` to set SNI |
+| `com.clickhouse.client.config.ClickHouseClientOption#LOAD_BALANCING_POLICY` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#LOAD_BALANCING_TAGS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#HEALTH_CHECK_INTERVAL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#HEALTH_CHECK_METHOD` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#NODE_DISCOVERY_INTERVAL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#NODE_DISCOVERY_LIMIT` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#NODE_CHECK_INTERVAL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#NODE_GROUP_SIZE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CHECK_ALL_NODES` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#BUFFER_SIZE` | `com.clickhouse.client.api.Client.Builder#setClientNetworkBufferSize` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#BUFFER_QUEUE_VARIATION` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#READ_BUFFER_SIZE` | ✗ |  |
+| `com.clickhouse.client.config.ClickHouseClientOption#WRITE_BUFFER_SIZE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#REQUEST_CHUNK_SIZE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#REQUEST_BUFFERING` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#RESPONSE_BUFFERING` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CLIENT_NAME` | `com.clickhouse.client.api.Client.Builder#setClientName` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS` | `com.clickhouse.client.api.Client.Builder#compressServerResponse` | See also `com.clickhouse.client.api.Client.Builder#useHttpCompression` |
+| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS` | `com.clickhouse.client.api.Client.Builder#compressClientRequest` | See also `com.clickhouse.client.api.Client.Builder#useHttpCompression` |
+| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http compression. Http compression is defined by `Accept-Encoding` header. |
+| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http compression. Http compression is defined by `Content-Encoding` header. |
+| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS_LEVEL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS_LEVEL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#CONNECTION_TIMEOUT` |`com.clickhouse.client.api.Client.Builder#setConnectTimeout` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#DATABASE` | `com.clickhouse.client.api.Client.Builder#setDefaultDatabase` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#FAILOVER` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#LOG_LEADING_COMMENT` | ✗ | See `com.clickhouse.client.api.query.QuerySettings#logComment` and `com.clickhouse.client.api.insert.InsertSettings#logComment` |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_BUFFER_SIZE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_MAPPER_CACHE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_EXECUTION_TIME` | `com.clickhouse.client.api.Client.Builder#setExecutionTimeout` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_QUEUED_BUFFERS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_QUEUED_REQUESTS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_RESULT_ROWS` | ✗ | Is server side setting. |
+| `com.clickhouse.client.config.ClickHouseClientOption#RESULT_OVERFLOW_MODE` | ✗ | Is server side setting. |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_THREADS_PER_CLIENT` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MAX_CORE_THREAD_TTL` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PRODUCT_NAME` | ✗ | Use client name |
+| `com.clickhouse.client.config.ClickHouseClientOption#RENAME_RESPONSE_COLUMN` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#RETRY` | `com.clickhouse.client.api.Client.Builder#setMaxRetries` | See also `com.clickhouse.client.api.Client.Builder#retryOnFailures` |
+| `com.clickhouse.client.config.ClickHouseClientOption#REPEAT_ON_SESSION_LOCK` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#REUSE_VALUE_WRAPPER` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SERVER_REVISION` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#setServerTimeZone` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_ID` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_CHECK` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_TIMEOUT` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_TIMEOUT` | `com.clickhouse.client.api.Client.Builder#setSocketTimeout(long)` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_REUSEADDR` | `com.clickhouse.client.api.Client.Builder#setSocketReuseAddress` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_KEEPALIVE` | `com.clickhouse.client.api.Client.Builder#setSocketKeepAlive` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_LINGER` | `com.clickhouse.client.api.Client.Builder#setSocketLinger` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_IP_TOS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_TCP_NODELAY` | `com.clickhouse.client.api.Client.Builder#setSocketTcpNodelay` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_RCVBUF` | `com.clickhouse.client.api.Client.Builder#setSocketRcvbuf` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_SNDBUF` | `com.clickhouse.client.api.Client.Builder#setSocketSndbuf` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL` | ✗ | See `com.clickhouse.client.api.Client.Builder#addEndpoint` |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL_MODE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL_ROOT_CERTIFICATE` | `com.clickhouse.client.api.Client.Builder#setRootCertificate` | SSL Auth should be enabled by `com.clickhouse.client.api.Client.Builder#useSSLAuthentication` |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL_CERTIFICATE` | `com.clickhouse.client.api.Client.Builder#setClientCertificate` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL_KEY` | `com.clickhouse.client.api.Client.Builder#setClientKey` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#KEY_STORE_TYPE` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStoreType` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#TRUST_STORE` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStore` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#KEY_STORE_PASSWORD` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStorePassword` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#TRANSACTION_TIMEOUT` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#WIDEN_UNSIGNED_TYPES` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_BINARY_STRING` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_BLOCKING_QUEUE` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_COMPILATION` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_OBJECTS_IN_ARRAYS` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_TYPE` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_HOST` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_PORT` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_USERNAME` | `com.clickhouse.client.api.Client.Builder#setProxyCredentials` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_PASSWORD` | `com.clickhouse.client.api.Client.Builder#setProxyCredentials` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#useServerTimeZone` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_SERVER_TIME_ZONE_FOR_DATES` | | |
+| `com.clickhouse.client.config.ClickHouseClientOption#USE_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#useTimeZone` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#QUERY_ID` | ✗ | See `QuerySettings` and `InsertSettings` |
+| `com.clickhouse.client.config.ClickHouseClientOption#CONNECTION_TTL` | `com.clickhouse.client.api.Client.Builder#setConnectionTTL` | |
+| `com.clickhouse.client.config.ClickHouseClientOption#MEASURE_REQUEST_TIME` | ✗ | |
+| `com.clickhouse.client.config.ClickHouseClientOption#SSL_SOCKET_SNI` | `com.clickhouse.client.api.Client.Builder#sslSocketSNI` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#CONNECTION_PROVIDER` | ✗ | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#CUSTOM_HEADERS` | `com.clickhouse.client.api.Client.Builder#httpHeaders` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#CUSTOM_PARAMS` | ✗ | See `com.clickhouse.client.api.Client.Builder#serverSetting`|
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#DEFAULT_RESPONSE` | ✗ | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#KEEP_ALIVE` | `com.clickhouse.client.api.Client.Builder#setKeepAliveTimeout` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#MAX_OPEN_CONNECTIONS` | `com.clickhouse.client.api.Client.Builder#setMaxConnections` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#RECEIVE_QUERY_PROGRESS` | ✗ | Server side setting |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#SEND_HTTP_CLIENT_ID` | ✗ | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#WAIT_END_OF_QUERY` | ✗ | Server side setting |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#REMEMBER_LAST_SET_ROLES` | `com.clickhouse.client.api.Client#setDBRoles` | Is runtime configuration now. See also `com.clickhouse.client.api.query.QuerySettings#setDBRoles` and `com.clickhouse.client.api.insert.InsertSettings#setDBRoles` |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#AHC_VALIDATE_AFTER_INACTIVITY` | ✗ | Always enabled when Apache Http Client is used |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#AHC_RETRY_ON_FAILURE` | `com.clickhouse.client.api.Client.Builder#retryOnFailures` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#CONNECTION_REUSE_STRATEGY` | `com.clickhouse.client.api.Client.Builder#setConnectionReuseStrategy` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#KEEP_ALIVE_TIMEOUT` | `com.clickhouse.client.api.Client.Builder#setKeepAliveTimeout` | |
+| `com.clickhouse.client.http.config.ClickHouseHttpOption#USE_BASIC_AUTHENTICATION` | `com.clickhouse.client.api.Client.Builder#useHTTPBasicAuth` | |

@@ -177,7 +177,7 @@ const sidebars = {
             }
           ]
         },
-        { 
+        {
           type: "category",
           label: "Data lake",
           collapsed: true,
