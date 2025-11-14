@@ -39,6 +39,14 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## November 14, 2025 {#november-14-2025}
+- We’re excited to announce that **ClickHouse Cloud** is now available in **two additional public regions**:
+  - **GCP Japan (asia-northeast1)**
+  - **AWS Seoul (Asia Pacific, ap-northeast-2)** — now also supported in **ClickPipes** 🆕
+
+  These regions were previously available as **private regions** and are now **open to all users**.
+- Terraform and API now support adding tags to services and filtering services by tags.
+
 ## November 7, 2025 {#november-7-2025}
 
 - ClickHouse Cloud console now supports configuring replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
