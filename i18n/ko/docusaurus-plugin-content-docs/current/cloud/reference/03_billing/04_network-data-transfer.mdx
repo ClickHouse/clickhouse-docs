@@ -1,0 +1,43 @@
+---
+'sidebar_label': '데이터 전송'
+'slug': '/cloud/manage/network-data-transfer'
+'title': '데이터 전송'
+'description': 'ClickHouse Cloud가 수신 및 송신 데이터 전송을 측정하는 방법을 이해하세요.'
+'doc_type': 'guide'
+'keywords':
+- 'billing'
+- 'network transfer'
+- 'data egress'
+- 'costs'
+- 'pricing'
+---
+
+import NetworkPricing from '@site/i18n/ko/docusaurus-plugin-content-docs/current/cloud/reference/_snippets/_network_transfer_rates.md';
+
+ClickHouse Cloud는 전송된 데이터의 수신 및 송신을 측정합니다. 여기에는 ClickHouse Cloud의 모든 데이터뿐만 아니라 지역 내 및 지역 간 데이터 전송도 포함됩니다. 이 사용량은 서비스 수준에서 추적됩니다. 이 사용량에 따라 고객은 데이터 전송 요금을 부담하며, 이는 후에 월 청구서에 추가됩니다.
+
+ClickHouse Cloud는 다음에 대해 요금을 청구합니다:
+- ClickHouse Cloud에서 공용 인터넷으로의 데이터 송신, 다른 클라우드 제공자의 다른 지역 포함.
+- 동일 클라우드 제공자의 다른 지역으로의 데이터 송신.
+
+지역 내 데이터 전송 또는 Private Link/Private Service Connect 사용 및 데이터 전송에 대한 요금은 부과되지 않습니다. 그러나 사용 패턴이 고객에게 적절하게 요금을 부과할 능력에 영향을 미치는 경우, 추가 데이터 전송 요금 차원을 설정할 권리를 보유합니다.
+
+참고: Private Link/Private Service Connect 사용에 대한 Cloud Service Provider (CSP) 요금이 적용됩니다. 가장 최신 정보는 CSP의 요금 페이지를 참조하시기 바랍니다.
+
+데이터 전송 요금은 Cloud Service Provider (CSP)와 지역에 따라 다릅니다. 공용 인터넷 송신 요금은 출발 지역에만 기반합니다. 지역 간(또는 교차 지역) 요금은 출발 및 도착 지역 모두에 따라 달라집니다.
+
+**데이터 전송 비용 최소화를 위한 모범 사례**
+
+데이터 수신 및 송신 시 데이터 전송 비용을 최소화하기 위해 염두에 두어야 할 몇 가지 패턴이 있습니다.
+
+1. Clickhouse Cloud에서 데이터를 수신하거나 송신할 때, 가능한 경우 압축을 사용하여 전송되는 데이터 양과 관련된 비용을 최소화하세요.
+
+2. 비인라인 값을 사용하여 네이티브 프로토콜을 통해 INSERT를 수행할 때 (예: `INSERT INTO [TABLE] FROM INFILE [FILE] FORMAT NATIVE`), ClickHouse 클라이언트가 메타데이터를 서버에서 가져와 데이터를 패킹한다는 점을 인지하세요. 메타데이터가 `INSERT` 페이로드보다 클 경우, 서버 관점에서 수신보다 송신이 더 많아지는 기이한 현상이 발생할 수 있습니다. 이것이 용납할 수 없는 경우, `VALUES` 구문으로 데이터를 인라인하거나 HTTP 프로토콜을 사용하는 것을 고려하세요.
+
+아래 표는 공용 인터넷 또는 지역 간 데이터 전송에 대한 송신 요금이 클라우드 제공자 및 지역에 따라 어떻게 달라지는지를 보여줍니다.
+
+:::note
+ClickHouse Cloud는 출발 지역과 도착 지역에 따라 Tier 1에서 Tier 4까지의 계층으로 지역 간 사용량을 측정합니다. 아래 표는 지역 간 데이터 전송의 각 조합에 대한 계층을 보여줍니다. ClickHouse Cloud의 청구 사용 화면에서는 계층별로 구분된 데이터 전송 사용량을 확인할 수 있습니다.
+:::
+
+<NetworkPricing/>

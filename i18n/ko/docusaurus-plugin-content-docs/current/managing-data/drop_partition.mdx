@@ -1,0 +1,84 @@
+---
+'slug': '/managing-data/drop_partition'
+'sidebar_label': 'Drop partition'
+'title': '파티션 삭제'
+'hide_title': false
+'description': '파티션 삭제에 대한 페이지 설명'
+'keywords':
+- 'DROP PARTITION'
+- 'drop partition'
+- 'delete partition'
+- 'remove partition'
+- 'partition management'
+'doc_type': 'reference'
+---
+
+## Background {#background}
+
+파티셔닝은 `PARTITION BY` 절을 통해 테이블이 처음 정의될 때 지정됩니다. 이 절은 어떤 컬럼에 대한 SQL 식을 포함할 수 있으며, 그 결과가 어떤 파티션으로 행이 전송될지를 정의합니다.
+
+데이터 파트는 디스크의 각 파티션과 논리적으로 연결되어 있으며, 독립적으로 쿼리할 수 있습니다. 아래 예시에서는 `toYear(CreationDate)` 식을 사용하여 `posts` 테이블을 연도별로 파티셔닝합니다. ClickHouse에 행이 삽입될 때, 이 식은 각 행에 대해 평가되고, 결과 파티션이 존재할 경우 해당 파티션으로 라우팅됩니다 (행이 특정 연도의 첫 번째일 경우, 파티션이 생성됩니다).
+
+```sql
+ CREATE TABLE posts
+(
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
+...
+        `ClosedDate` DateTime64(3, 'UTC')
+)
+ENGINE = MergeTree
+ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
+PARTITION BY toYear(CreationDate)
+```
+
+파티션 식을 설정하는 방법에 대한 내용은 [파티션 식 설정 방법](/sql-reference/statements/alter/partition/#how-to-set-partition-expression) 섹션을 참조하십시오.
+
+ClickHouse에서 사용자는 주로 파티셔닝을 데이터 관리 기능으로 간주해야 하며, 쿼리 최적화 기법으로는 보지 않아야 합니다. 키를 기반으로 데이터를 논리적으로 분리함으로써, 각 파티션은 독립적으로 작업할 수 있습니다(e.g., 삭제됨). 이는 사용자가 파티션을 이동할 수 있게 하며, 따라서 [저장 계층](/integrations/s3#storage-tiers) 간의 부분 집합을 효율적으로 이동시킬 수 있도록 하거나 [데이터 만료/클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)를 가능하게 합니다.
+
+## Drop partitions {#drop-partitions}
+
+`ALTER TABLE ... DROP PARTITION`는 전체 파티션을 삭제하는 비용 효율적인 방법을 제공합니다.
+
+```sql
+ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
+```
+
+이 쿼리는 파티션을 비활성으로 태그하고 데이터를 완전히 삭제하며, 대략 10분 정도 소요됩니다. 이 쿼리는 복제되며 – 모든 복제본에서 데이터를 삭제합니다.
+
+아래 예시에서는 연관된 파티션을 드롭하여 이전 테이블에서 2008년의 포스트를 제거합니다.
+
+```sql
+SELECT DISTINCT partition
+FROM system.parts
+WHERE `table` = 'posts'
+
+┌─partition─┐
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
+└───────────┘
+
+17 rows in set. Elapsed: 0.002 sec.
+
+ALTER TABLE posts
+(DROP PARTITION '2008')
+
+0 rows in set. Elapsed: 0.103 sec.
+```

@@ -1,0 +1,32 @@
+각 구성 파일은 다음과 같은 고유 구성을 포함합니다 (아래에 표시됨).  
+사용되는 `server_id`는 해당 ClickHouse Keeper 노드에 대해 고유해야 하며, `<raft_configuration>` 섹션에 정의된 서버 `<id>`와 일치해야 합니다.  
+`tcp_port`는 ClickHouse Keeper의 _클라이언트_가 사용하는 포트입니다.
+
+```xml
+<tcp_port>9181</tcp_port>
+<server_id>{id}</server_id>
+```
+
+다음 섹션은 [raft 합의 알고리즘](https://en.wikipedia.org/wiki/Raft_(algorithm))에 참여하는 서버를 구성하는 데 사용됩니다:
+
+```xml
+<raft_configuration>
+    <server>
+        <id>1</id>
+        <hostname>clickhouse-keeper-01</hostname>
+        <!-- TCP port used for communication between ClickHouse Keeper nodes -->
+        <!--highlight-next-line-->
+        <port>9234</port>
+    </server>
+    <server>
+        <id>2</id>
+        <hostname>clickhouse-keeper-02</hostname>
+        <port>9234</port>
+    </server>
+    <server>
+        <id>3</id>
+        <hostname>clickhouse-keeper-03</hostname>
+        <port>9234</port>
+    </server>
+</raft_configuration>
+```

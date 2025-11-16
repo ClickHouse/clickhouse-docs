@@ -1,0 +1,23 @@
+---
+'description': '역할에 대한 Documentation'
+'sidebar_label': 'ROLE'
+'sidebar_position': 46
+'slug': '/sql-reference/statements/alter/role'
+'title': 'ALTER ROLE'
+'doc_type': 'reference'
+---
+
+변경 역할.
+
+구문:
+
+```sql
+ALTER ROLE [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]] 
+    [ON CLUSTER cluster_name]
+    [DROP ALL PROFILES]
+    [DROP ALL SETTINGS]
+    [DROP PROFILES 'profile_name' [,...] ]
+    [DROP SETTINGS variable [,...] ]
+    [ADD|MODIFY SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
+    [ADD PROFILES 'profile_name' [,...] ]
+```

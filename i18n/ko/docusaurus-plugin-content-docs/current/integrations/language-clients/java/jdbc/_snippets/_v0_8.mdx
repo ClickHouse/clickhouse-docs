@@ -1,0 +1,221 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::note
+`clickhouse-jdbc`는 최신 자바 클라이언트를 사용하여 표준 JDBC 인터페이스를 구현합니다. 성능/직접 접근이 중요한 경우 최신 자바 클라이언트를 직접 사용하는 것을 추천합니다.
+:::
+
+## 0.7.x에서의 변경사항 {#changes-from-07x}
+0.8에서는 드라이버가 JDBC 사양을 보다 엄격하게 준수하도록 변경하였으며, 이로 인해 일부 기능이 제거되어 영향을 받을 수 있습니다:
+
+| 이전 기능                         | 비고                                                                                                                                                                                                                                                                                     |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 트랜잭션 지원                    | 드라이버의 초기 버전은 **트랜잭션 지원을 시뮬레이션** 하였으며, 이로 인해 예기치 않은 결과가 발생할 수 있습니다.                                                                                                                                                                                  |
+| 응답 컬럼 이름 변경              | `ResultSet`은 변경 가능했으나, 효율성을 위해 이제는 읽기 전용입니다.                                                                                                                                                                                                                         |
+| 다중 문장 SQL                    | 다중 문장 지원은 단순히 **시뮬레이션** 되며, 이제는 1:1로 엄격하게 준수됩니다.                                                                                                                                                                                                                       |
+| 명명된 매개변수                   | JDBC 사양의 일부가 아닙니다.                                                                                                                                                                                                                                                                   |
+| 스트림 기반 `PreparedStatement` | 드라이버의 초기 버전은 `PreparedStatement`의 비-JDBC 사용을 허용하였으나, 이러한 옵션이 필요하다면 [Java Client](/integrations/language-clients/java/client/client.mdx) 및 그 [예제들](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)을 참고하시기 바랍니다. |
+
+:::note
+`Date`는 시간대 없이 저장되며, `DateTime`은 시간대와 함께 저장됩니다. 이로 인해 주의하지 않으면 예기치 않은 결과가 발생할 수 있습니다.
+:::
+
+## 환경 요구사항 {#environment-requirements}
+
+- [OpenJDK](https://openjdk.java.net) 버전 >= 8
+
+### 설정 {#setup}
+
+<Tabs groupId="jdbc-base-dependencies">
+    <TabItem value="maven" label="Maven" >
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>clickhouse-jdbc</artifactId>
+    <version>0.9.1</version>
+    <classifier>shaded-all</classifier>
+</dependency>
+```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+implementation("com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all")
+```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+implementation 'com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all'
+```
+
+    </TabItem>
+</Tabs>
+
+## 구성 {#configuration}
+
+**드라이버 클래스**: `com.clickhouse.jdbc.ClickHouseDriver`
+
+**URL 구문**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, 예를 들어:
+
+- `jdbc:clickhouse:http://localhost:8123`
+- `jdbc:clickhouse:https://localhost:8443?ssl=true`
+
+**연결 속성**:
+
+표준 JDBC 속성 이외에도, 드라이버는 기본 [java client](/integrations/language-clients/java/client/client.mdx)에서 제공하는 ClickHouse 전용 속성을 지원합니다. 지원되지 않는 기능의 경우 가능하다면 메서드가 `SQLFeatureNotSupportedException`을 반환합니다. 기타 사용자 정의 속성은 다음과 같습니다:
+
+| 속성                             | 기본값   | 설명                                                       |
+|----------------------------------|----------|----------------------------------------------------------|
+| `disable_frameworks_detection`   | `true`   | User-Agent에 대한 프레임워크 탐지를 비활성화합니다.       |
+| `jdbc_ignore_unsupported_values` | `false`  | `SQLFeatureNotSupportedException`을 억제합니다.            |
+| `clickhouse.jdbc.v1`             | `false`  | 새로운 JDBC 대신 구버전 JDBC 구현을 사용합니다.            |
+| `default_query_settings`         | `null`   | 쿼리 작업에 대한 기본 쿼리 설정을 전달할 수 있습니다.    |
+| `jdbc_resultset_auto_close`      | `true`   | `Statement`가 닫힐 때 자동으로 `ResultSet`을 닫습니다.   |
+| `beta.row_binary_for_simple_insert` | `false` | `RowBinary` 작성자를 기반으로 한 `PreparedStatement` 구현을 사용합니다. `INSERT INTO ... VALUES` 쿼리에만 작동합니다. |
+
+## 지원되는 데이터 유형 {#supported-data-types}
+
+JDBC 드라이버는 기본 [java client](/integrations/language-clients/java/client/client.mdx)와 동일한 데이터 형식을 지원합니다.
+
+### 날짜, 시간 및 시간대 처리 {#handling-dates-times-and-timezones}
+`java.sql.Date`, `java.sql.Time`, 및 `java.sql.Timestamp`는 시간대를 계산하는 데 복잡성을 추가할 수 있습니다. 물론 이들은 지원되지만, [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) 패키지를 사용하는 것도 고려할 수 있습니다. `ZonedDateTime` 및 `OffsetDateTime`은 java.sql.Timestamp, java.sql.Date, 및 java.sql.Time의 훌륭한 대안입니다.
+
+## 연결 생성 {#creating-connection}
+
+```java
+String url = "jdbc:ch://my-server:8123/system";
+
+Properties properties = new Properties();
+DataSource dataSource = new DataSource(url, properties);//DataSource or DriverManager are the main entry points
+try (Connection conn = dataSource.getConnection()) {
+... // do something with the connection
+```
+
+## 자격 증명 및 설정 제공 {#supplying-credentials-and-settings}
+
+```java showLineNumbers
+String url = "jdbc:ch://localhost:8123?jdbc_ignore_unsupported_values=true&socket_timeout=10";
+
+Properties info = new Properties();
+info.put("user", "default");
+info.put("password", "password");
+info.put("database", "some_db");
+
+//Creating a connection with DataSource
+DataSource dataSource = new DataSource(url, info);
+try (Connection conn = dataSource.getConnection()) {
+... // do something with the connection
+}
+
+//Alternate approach using the DriverManager
+try (Connection conn = DriverManager.getConnection(url, info)) {
+... // do something with the connection
+}
+```
+
+## 단순 쿼리 {#simple-statement}
+
+```java showLineNumbers
+
+try (Connection conn = dataSource.getConnection(...);
+    Statement stmt = conn.createStatement()) {
+    ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
+    while(rs.next()) {
+        // ...
+    }
+}
+```
+
+## 삽입 {#insert}
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?, ?)")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // timestamp
+    ps.addBatch();
+    ...
+    ps.executeBatch(); // stream everything on-hand into ClickHouse
+}
+```
+
+## `HikariCP` {#hikaricp}
+
+```java showLineNumbers
+// connection pooling won't help much in terms of performance,
+// because the underlying implementation has its own pool.
+// for example: HttpURLConnection has a pool for sockets
+HikariConfig poolConfig = new HikariConfig();
+poolConfig.setConnectionTimeout(5000L);
+poolConfig.setMaximumPoolSize(20);
+poolConfig.setMaxLifetime(300_000L);
+poolConfig.setDataSource(new ClickHouseDataSource(url, properties));
+
+try (HikariDataSource ds = new HikariDataSource(poolConfig);
+     Connection conn = ds.getConnection();
+     Statement s = conn.createStatement();
+     ResultSet rs = s.executeQuery("SELECT * FROM system.numbers LIMIT 3")) {
+    while (rs.next()) {
+        // handle row
+        log.info("Integer: {}, String: {}", rs.getInt(1), rs.getString(1));//Same column but different types
+    }
+}
+```
+
+## 추가 정보 {#more-information}
+자세한 정보는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-java) 및 [Java Client 문서](/integrations/language-clients/java/client/client.mdx)를 참조하세요.
+
+## 문제 해결 {#troubleshooting}
+### 로깅 {#logging}
+드라이버는 [slf4j](https://www.slf4j.org/)를 사용하여 로깅하며, `classpath`에서 첫 번째로 사용 가능한 구현을 사용할 것입니다.
+
+### 대형 삽입 시 JDBC 타임아웃 해결 {#resolving-jdbc-timeout-on-large-inserts}
+
+대형 삽입을 ClickHouse에서 수행할 때 실행 시간이 긴 경우 JDBC 타임아웃 오류가 발생할 수 있습니다:
+
+```plaintext
+Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+이 오류는 데이터 삽입 프로세스를 방해하고 시스템 안정성에 영향을 미칠 수 있습니다. 이 문제를 해결하려면 클라이언트의 OS에서 몇 가지 타임아웃 설정을 조정해야 할 수 있습니다.
+
+#### Mac OS {#mac-os}
+
+Mac OS에서는 다음 설정을 조정하여 문제를 해결할 수 있습니다:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+#### Linux {#linux}
+
+Linux의 경우, 동등한 설정만으로 문제를 해결할 수 없을 수 있습니다. Linux가 소켓 유지 생존 설정을 처리하는 방식과의 차이로 인해 추가 단계가 필요합니다. 다음 단계를 수행하세요:
+
+1. `/etc/sysctl.conf` 또는 관련 구성 파일에서 다음 Linux 커널 매개변수를 조정합니다:
+
+ - `net.inet.tcp.keepidle`: 60000
+ - `net.inet.tcp.keepintvl`: 45000
+ - `net.inet.tcp.keepinit`: 45000
+ - `net.inet.tcp.keepcnt`: 8
+ - `net.inet.tcp.always_keepalive`: 1
+ - `net.ipv4.tcp_keepalive_intvl`: 75
+ - `net.ipv4.tcp_keepalive_probes`: 9
+ - `net.ipv4.tcp_keepalive_time`: 60 (기본 300초에서 이 값을 낮추는 것을 고려할 수 있습니다)
+
+2. 커널 매개변수를 수정한 후, 다음 명령어를 실행하여 변경 사항을 적용합니다:
+
+```shell
+sudo sysctl -p
+```
+
+이 설정을 적용한 후, 클라이언트가 소켓에서 Keep Alive 옵션을 활성화했는지 확인해야 합니다:
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```

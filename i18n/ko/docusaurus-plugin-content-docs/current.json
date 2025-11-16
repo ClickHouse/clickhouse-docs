@@ -1,0 +1,990 @@
+{
+  "version.label": {
+    "message": "다음",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "소개",
+    "description": "The label for category Introduction in sidebar docs"
+  },
+  "sidebar.docs.category.Quick start": {
+    "message": "빠른 시작",
+    "description": "The label for category Quick start in sidebar docs"
+  },
+  "sidebar.docs.category.Install": {
+    "message": "설치",
+    "description": "The label for category Install in sidebar docs"
+  },
+  "sidebar.docs.category.Concepts": {
+    "message": "개념",
+    "description": "The label for category Concepts in sidebar docs"
+  },
+  "sidebar.docs.category.FAQ": {
+    "message": "자주 묻는 질문",
+    "description": "The label for category FAQ in sidebar docs"
+  },
+  "sidebar.docs.category.Starter guides": {
+    "message": "시작 가이드",
+    "description": "The label for category Starter guides in sidebar docs"
+  },
+  "sidebar.docs.category.Best practices": {
+    "message": "모범 사례",
+    "description": "The label for category Best practices in sidebar docs"
+  },
+  "sidebar.docs.category.Use case guides": {
+    "message": "사용 사례 가이드",
+    "description": "The label for category Use case guides in sidebar docs"
+  },
+  "sidebar.docs.category.Observability": {
+    "message": "관측성",
+    "description": "The label for category Observability in sidebar docs"
+  },
+  "sidebar.docs.category.Capabilities": {
+    "message": "기능",
+    "description": "The label for category Capabilities in sidebar docs"
+  },
+  "sidebar.docs.category.Build your own": {
+    "message": "나만의 구축",
+    "description": "The label for category Build your own in sidebar docs"
+  },
+  "sidebar.docs.category.Time-series": {
+    "message": "시계열",
+    "description": "The label for category Time-series in sidebar docs"
+  },
+  "sidebar.docs.category.Data lake": {
+    "message": "데이터 레이크",
+    "description": "The label for category Data lake in sidebar docs"
+  },
+  "sidebar.docs.category.AI/ML": {
+    "message": "AI/ML",
+    "description": "The label for category AI/ML in sidebar docs"
+  },
+  "sidebar.docs.category.MCP": {
+    "message": "MCP",
+    "description": "The label for category MCP in sidebar docs"
+  },
+  "sidebar.docs.category.Integrate AI agent libraries": {
+    "message": "AI 에이전트 라이브러리 통합",
+    "description": "The label for category Integrate AI agent libraries in sidebar docs"
+  },
+  "sidebar.docs.category.Data exploration": {
+    "message": "데이터 탐색",
+    "description": "The label for category Data exploration in sidebar docs"
+  },
+  "sidebar.docs.category.Example datasets": {
+    "message": "예제 데이터셋",
+    "description": "The label for category Example datasets in sidebar docs"
+  },
+  "sidebar.docs.category.Tips and community wisdom": {
+    "message": "팁 및 커뮤니티 지식",
+    "description": "The label for category Tips and community wisdom in sidebar docs"
+  },
+  "sidebar.cloud.category.Get started": {
+    "message": "시작하기",
+    "description": "The label for category Get started in sidebar cloud"
+  },
+  "sidebar.cloud.category.Discover": {
+    "message": "발견",
+    "description": "The label for category Discover in sidebar cloud"
+  },
+  "sidebar.cloud.category.Use cases": {
+    "message": "사용 사례",
+    "description": "The label for category Use cases in sidebar cloud"
+  },
+  "sidebar.cloud.category.ML/AI": {
+    "message": "ML/AI",
+    "description": "The label for category ML/AI in sidebar cloud"
+  },
+  "sidebar.cloud.category.Setup": {
+    "message": "설정",
+    "description": "The label for category Setup in sidebar cloud"
+  },
+  "sidebar.cloud.category.Migration guides": {
+    "message": "마이그레이션 가이드",
+    "description": "The label for category Migration guides in sidebar cloud"
+  },
+  "sidebar.cloud.category.PostgreSQL": {
+    "message": "PostgreSQL",
+    "description": "The label for category PostgreSQL in sidebar cloud"
+  },
+  "sidebar.cloud.category.Migration guide": {
+    "message": "마이그레이션 가이드",
+    "description": "The label for category Migration guide in sidebar cloud"
+  },
+  "sidebar.cloud.category.BigQuery": {
+    "message": "BigQuery",
+    "description": "The label for category BigQuery in sidebar cloud"
+  },
+  "sidebar.cloud.category.Snowflake": {
+    "message": "Snowflake",
+    "description": "The label for category Snowflake in sidebar cloud"
+  },
+  "sidebar.cloud.category.Elasticsearch": {
+    "message": "Elasticsearch",
+    "description": "The label for category Elasticsearch in sidebar cloud"
+  },
+  "sidebar.cloud.category.Redshift": {
+    "message": "Redshift",
+    "description": "The label for category Redshift in sidebar cloud"
+  },
+  "sidebar.cloud.category.OSS to Cloud": {
+    "message": "OSS에서 클라우드로",
+    "description": "The label for category OSS to Cloud in sidebar cloud"
+  },
+  "sidebar.cloud.category.Other...": {
+    "message": "기타...",
+    "description": "The label for category Other... in sidebar cloud"
+  },
+  "sidebar.cloud.category.Tune": {
+    "message": "조정",
+    "description": "The label for category Tune in sidebar cloud"
+  },
+  "sidebar.cloud.category.Features": {
+    "message": "기능",
+    "description": "The label for category Features in sidebar cloud"
+  },
+  "sidebar.cloud.category.SQL console": {
+    "message": "SQL 콘솔",
+    "description": "The label for category SQL console in sidebar cloud"
+  },
+  "sidebar.cloud.category.Infrastructure": {
+    "message": "인프라",
+    "description": "The label for category Infrastructure in sidebar cloud"
+  },
+  "sidebar.cloud.category.Automatic Scaling": {
+    "message": "자동 확장",
+    "description": "The label for category Automatic Scaling in sidebar cloud"
+  },
+  "sidebar.cloud.category.Admin": {
+    "message": "관리자",
+    "description": "The label for category Admin in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud API": {
+    "message": "클라우드 API",
+    "description": "The label for category Cloud API in sidebar cloud"
+  },
+  "sidebar.cloud.category.Monitoring": {
+    "message": "모니터링",
+    "description": "The label for category Monitoring in sidebar cloud"
+  },
+  "sidebar.cloud.category.Guides": {
+    "message": "가이드",
+    "description": "The label for category Guides in sidebar cloud"
+  },
+  "sidebar.cloud.category.Backups": {
+    "message": "백업",
+    "description": "The label for category Backups in sidebar cloud"
+  },
+  "sidebar.cloud.category.Bring Your Own Backup": {
+    "message": "자체 백업 사용",
+    "description": "The label for category Bring Your Own Backup in sidebar cloud"
+  },
+  "sidebar.cloud.category.Best practices": {
+    "message": "모범 사례",
+    "description": "The label for category Best practices in sidebar cloud"
+  },
+  "sidebar.cloud.category.Data sources": {
+    "message": "데이터 소스",
+    "description": "The label for category Data sources in sidebar cloud"
+  },
+  "sidebar.cloud.category.Deployment options": {
+    "message": "배포 옵션",
+    "description": "The label for category Deployment options in sidebar cloud"
+  },
+  "sidebar.cloud.category.BYOC (Bring Your Own Cloud)": {
+    "message": "BYOC (자체 클라우드 사용)",
+    "description": "The label for category BYOC (Bring Your Own Cloud) in sidebar cloud"
+  },
+  "sidebar.cloud.category.Onboarding": {
+    "message": "온보딩",
+    "description": "The label for category Onboarding in sidebar cloud"
+  },
+  "sidebar.cloud.category.FAQ": {
+    "message": "자주 묻는 질문",
+    "description": "The label for category FAQ in sidebar cloud"
+  },
+  "sidebar.cloud.category.Observability": {
+    "message": "관측성",
+    "description": "The label for category Observability in sidebar cloud"
+  },
+  "sidebar.cloud.category.Security": {
+    "message": "보안",
+    "description": "The label for category Security in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud access management": {
+    "message": "클라우드 접근 관리",
+    "description": "The label for category Cloud access management in sidebar cloud"
+  },
+  "sidebar.cloud.category.Connectivity": {
+    "message": "연결성",
+    "description": "The label for category Connectivity in sidebar cloud"
+  },
+  "sidebar.cloud.category.Private networking": {
+    "message": "프라이빗 네트워킹",
+    "description": "The label for category Private networking in sidebar cloud"
+  },
+  "sidebar.cloud.category.Audit logging": {
+    "message": "감사 로그",
+    "description": "The label for category Audit logging in sidebar cloud"
+  },
+  "sidebar.cloud.category.Compliance": {
+    "message": "준수",
+    "description": "The label for category Compliance in sidebar cloud"
+  },
+  "sidebar.cloud.category.Reference": {
+    "message": "참조",
+    "description": "The label for category Reference in sidebar cloud"
+  },
+  "sidebar.cloud.category.Change logs": {
+    "message": "변경 로그",
+    "description": "The label for category Change logs in sidebar cloud"
+  },
+  "sidebar.cloud.category.Release notes": {
+    "message": "릴리스 노트",
+    "description": "The label for category Release notes in sidebar cloud"
+  },
+  "sidebar.cloud.category.Billing": {
+    "message": "청구",
+    "description": "The label for category Billing in sidebar cloud"
+  },
+  "sidebar.cloud.category.Marketplace": {
+    "message": "마켓플레이스",
+    "description": "The label for category Marketplace in sidebar cloud"
+  },
+  "sidebar.cloud.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for category ClickPipes in sidebar cloud"
+  },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "소개",
+    "description": "The label for category Introduction in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Data types": {
+    "message": "데이터 유형",
+    "description": "The label for category Data types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "특수 데이터 유형",
+    "description": "The label for category Special Data Types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "문장",
+    "description": "The label for category Statements in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "The label for category SELECT in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE",
+    "description": "The label for category CREATE in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "The label for category ALTER in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "연산자",
+    "description": "The label for category Operators in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "엔진",
+    "description": "The label for category Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "데이터베이스 엔진",
+    "description": "The label for category Database Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "테이블 엔진",
+    "description": "The label for category Table Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTree 계열",
+    "description": "The label for category MergeTree Family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Log family": {
+    "message": "로그 계열",
+    "description": "The label for category Log family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "통합",
+    "description": "The label for category Integrations in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "특수",
+    "description": "The label for category Special in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "함수",
+    "description": "The label for category Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Regular functions": {
+    "message": "정규 함수",
+    "description": "The label for category Regular functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "지리",
+    "description": "The label for category Geo in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate functions": {
+    "message": "집계 함수",
+    "description": "The label for category Aggregate functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "집계 함수",
+    "description": "The label for category Aggregate Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "조합기 예제",
+    "description": "The label for category Combinator examples in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table functions": {
+    "message": "테이블 함수",
+    "description": "The label for category Table functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Window functions": {
+    "message": "윈도우 함수",
+    "description": "The label for category Window functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Formats": {
+    "message": "형식",
+    "description": "The label for category Formats in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Arrow": {
+    "message": "화살표",
+    "description": "The label for category Arrow in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Avro": {
+    "message": "Avro",
+    "description": "The label for category Avro in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CSV": {
+    "message": "CSV",
+    "description": "The label for category CSV in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CustomSeparated": {
+    "message": "커스텀 구분",
+    "description": "The label for category CustomSeparated in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.JSON": {
+    "message": "JSON",
+    "description": "The label for category JSON in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "The label for category LineAsString in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Parquet": {
+    "message": "Parquet",
+    "description": "The label for category Parquet in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Pretty": {
+    "message": "예쁘게",
+    "description": "The label for category Pretty in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "The label for category Protobuf in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "The label for category RowBinary in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "The label for category TabSeparated in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Template": {
+    "message": "템플릿",
+    "description": "The label for category Template in sidebar sqlreference"
+  },
+  "sidebar.integrations.category.Language clients": {
+    "message": "언어 클라이언트",
+    "description": "The label for category Language clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.Java": {
+    "message": "Java",
+    "description": "The label for category Java in sidebar integrations"
+  },
+  "sidebar.integrations.category.Python": {
+    "message": "Python",
+    "description": "The label for category Python in sidebar integrations"
+  },
+  "sidebar.integrations.category.Third-party Clients": {
+    "message": "타사 클라이언트",
+    "description": "The label for category Third-party Clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for category ClickPipes in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for Postgres": {
+    "message": "Postgres용 ClickPipes",
+    "description": "The label for category ClickPipes for Postgres in sidebar integrations"
+  },
+  "sidebar.integrations.category.Operations": {
+    "message": "작업",
+    "description": "The label for category Operations in sidebar integrations"
+  },
+  "sidebar.integrations.category.Source": {
+    "message": "출처",
+    "description": "The label for category Source in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for object storage": {
+    "message": "객체 저장소용 ClickPipes",
+    "description": "The label for category ClickPipes for object storage in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for Kafka": {
+    "message": "Kafka용 ClickPipes",
+    "description": "The label for category ClickPipes for Kafka in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for MySQL": {
+    "message": "MySQL용 ClickPipes",
+    "description": "The label for category ClickPipes for MySQL in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for MongoDB": {
+    "message": "MongoDB용 ClickPipes",
+    "description": "The label for category ClickPipes for MongoDB in sidebar integrations"
+  },
+  "sidebar.integrations.category.Native clients & interfaces": {
+    "message": "네이티브 클라이언트 및 인터페이스",
+    "description": "The label for category Native clients & interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "드라이버 및 인터페이스",
+    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data sources": {
+    "message": "데이터 소스",
+    "description": "The label for category Data sources in sidebar integrations"
+  },
+  "sidebar.integrations.category.AWS S3": {
+    "message": "AWS S3",
+    "description": "The label for category AWS S3 in sidebar integrations"
+  },
+  "sidebar.integrations.category.Kafka": {
+    "message": "Kafka",
+    "description": "The label for category Kafka in sidebar integrations"
+  },
+  "sidebar.integrations.category.Table engines": {
+    "message": "테이블 엔진",
+    "description": "The label for category Table engines in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data visualization": {
+    "message": "데이터 시각화",
+    "description": "The label for category Data visualization in sidebar integrations"
+  },
+  "sidebar.integrations.category.Grafana": {
+    "message": "Grafana",
+    "description": "The label for category Grafana in sidebar integrations"
+  },
+  "sidebar.integrations.category.Tableau": {
+    "message": "Tableau",
+    "description": "The label for category Tableau in sidebar integrations"
+  },
+  "sidebar.integrations.category.Third-party": {
+    "message": "타사",
+    "description": "The label for category Third-party in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data formats": {
+    "message": "데이터 형식",
+    "description": "The label for category Data formats in sidebar integrations"
+  },
+  "sidebar.integrations.category.JSON": {
+    "message": "JSON",
+    "description": "The label for category JSON in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data ingestion": {
+    "message": "데이터 수집",
+    "description": "The label for category Data ingestion in sidebar integrations"
+  },
+  "sidebar.integrations.category.Apache Spark": {
+    "message": "Apache Spark",
+    "description": "The label for category Apache Spark in sidebar integrations"
+  },
+  "sidebar.integrations.category.Azure Data Factory": {
+    "message": "Azure Data Factory",
+    "description": "The label for category Azure Data Factory in sidebar integrations"
+  },
+  "sidebar.integrations.category.Google Dataflow": {
+    "message": "Google Dataflow",
+    "description": "The label for category Google Dataflow in sidebar integrations"
+  },
+  "sidebar.integrations.category.Dataflow templates": {
+    "message": "Dataflow 템플릿",
+    "description": "The label for category Dataflow templates in sidebar integrations"
+  },
+  "sidebar.integrations.category.dbt": {
+    "message": "dbt",
+    "description": "The label for category dbt in sidebar integrations"
+  },
+  "sidebar.integrations.category.Tools": {
+    "message": "도구",
+    "description": "The label for category Tools in sidebar integrations"
+  },
+  "sidebar.integrations.category.SQL clients": {
+    "message": "SQL 클라이언트",
+    "description": "The label for category SQL clients in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data integrations": {
+    "message": "데이터 통합",
+    "description": "The label for category Data integrations in sidebar integrations"
+  },
+  "sidebar.integrations.category.Misc": {
+    "message": "기타",
+    "description": "The label for category Misc in sidebar integrations"
+  },
+  "sidebar.integrations.link.View all formats": {
+    "message": "모든 형식 보기",
+    "description": "The label for link View all formats in sidebar integrations, linking to /interfaces/formats"
+  },
+  "sidebar.integrations.doc.Overview": {
+    "message": "개요",
+    "description": "The label for the doc item Overview in sidebar integrations, linking to the doc integrations/language-clients/java/index"
+  },
+  "sidebar.integrations.doc.Introduction": {
+    "message": "소개",
+    "description": "The label for the doc item Introduction in sidebar integrations, linking to the doc integrations/language-clients/python/index"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "타사 라이브러리",
+    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc interfaces/third-party/integrations"
+  },
+  "sidebar.managingData.category.Core concepts": {
+    "message": "핵심 개념",
+    "description": "The label for category Core concepts in sidebar managingData"
+  },
+  "sidebar.managingData.category.Updating data": {
+    "message": "데이터 업데이트",
+    "description": "The label for category Updating data in sidebar managingData"
+  },
+  "sidebar.managingData.category.Deleting data": {
+    "message": "데이터 삭제",
+    "description": "The label for category Deleting data in sidebar managingData"
+  },
+  "sidebar.managingData.category.Data modeling": {
+    "message": "데이터 모델링",
+    "description": "The label for category Data modeling in sidebar managingData"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "딕셔너리",
+    "description": "The label for category Dictionary in sidebar managingData"
+  },
+  "sidebar.managingData.category.Materialized views": {
+    "message": "물리화된 뷰",
+    "description": "The label for category Materialized views in sidebar managingData"
+  },
+  "sidebar.managingData.category.Projections": {
+    "message": "프로젝션",
+    "description": "The label for category Projections in sidebar managingData"
+  },
+  "sidebar.managingData.category.Data compression": {
+    "message": "데이터 압축",
+    "description": "The label for category Data compression in sidebar managingData"
+  },
+  "sidebar.managingData.category.Advanced guides": {
+    "message": "고급 가이드",
+    "description": "The label for category Advanced guides in sidebar managingData"
+  },
+  "sidebar.managingData.category.Performance and optimizations": {
+    "message": "성능 및 최적화",
+    "description": "The label for category Performance and optimizations in sidebar managingData"
+  },
+  "sidebar.managingData.category.Data skipping indexes": {
+    "message": "데이터 스킵 인덱스",
+    "description": "The label for category Data skipping indexes in sidebar managingData"
+  },
+  "sidebar.managingData.doc.Lightweight updates": {
+    "message": "경량 업데이트",
+    "description": "The label for the doc item Lightweight updates in sidebar managingData, linking to the doc guides/developer/on-fly-mutations"
+  },
+  "sidebar.managingData.doc.ReplacingMergeTree": {
+    "message": "ReplacingMergeTree",
+    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc guides/developer/replacing-merge-tree"
+  },
+  "sidebar.managingData.doc.Lightweight deletes": {
+    "message": "경량 삭제",
+    "description": "The label for the doc item Lightweight deletes in sidebar managingData, linking to the doc guides/developer/lightweight-delete"
+  },
+  "sidebar.aboutClickHouse.category.About ClickHouse": {
+    "message": "ClickHouse 소개",
+    "description": "The label for category About ClickHouse in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelogs": {
+    "message": "변경 로그",
+    "description": "The label for category Changelogs in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelog": {
+    "message": "변경 로그",
+    "description": "The label for category Changelog in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
+    "message": "변경 로그",
+    "description": "The generated-index page title for category Changelog in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Development and contributing": {
+    "message": "개발 및 기여",
+    "description": "The label for category Development and contributing in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Native protocol": {
+    "message": "네이티브 프로토콜",
+    "description": "The label for category Native protocol in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.FAQ": {
+    "message": "자주 묻는 질문",
+    "description": "The label for category FAQ in sidebar aboutClickHouse"
+  },
+  "sidebar.serverAdmin.category.Manage and deploy": {
+    "message": "관리 및 배포",
+    "description": "The label for category Manage and deploy in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Deployment and scaling": {
+    "message": "배포 및 확장",
+    "description": "The label for category Deployment and scaling in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Examples": {
+    "message": "예제",
+    "description": "The label for category Examples in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Backup/Restore": {
+    "message": "백업/복원",
+    "description": "The label for category Backup/Restore in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Allocation profiling": {
+    "message": "할당 프로파일링",
+    "description": "The label for category Allocation profiling in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "설정",
+    "description": "The label for category Settings in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.System tables": {
+    "message": "시스템 테이블",
+    "description": "The label for category System tables in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Security and authentication": {
+    "message": "보안 및 인증",
+    "description": "The label for category Security and authentication in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.External authenticators": {
+    "message": "외부 인증기",
+    "description": "The label for category External authenticators in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.SSL": {
+    "message": "SSL",
+    "description": "The label for category SSL in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.LDAP": {
+    "message": "LDAP",
+    "description": "The label for category LDAP in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Tools and utilities": {
+    "message": "도구 및 유틸리티",
+    "description": "The label for category Tools and utilities in sidebar serverAdmin"
+  },
+  "sidebar.chdb.category.chDB": {
+    "message": "chDB",
+    "description": "The label for category chDB in sidebar chdb"
+  },
+  "sidebar.chdb.category.Language integrations": {
+    "message": "언어 통합",
+    "description": "The label for category Language integrations in sidebar chdb"
+  },
+  "sidebar.chdb.category.Developer guides": {
+    "message": "개발자 가이드",
+    "description": "The label for category Developer guides in sidebar chdb"
+  },
+  "sidebar.chdb.category.Technical reference": {
+    "message": "기술 참조",
+    "description": "The label for category Technical reference in sidebar chdb"
+  },
+  "sidebar.chdb.category.Integrations": {
+    "message": "통합",
+    "description": "The label for category Integrations in sidebar chdb"
+  },
+  "sidebar.chdb.category.About chDB": {
+    "message": "chDB 소개",
+    "description": "The label for category About chDB in sidebar chdb"
+  },
+  "sidebar.chdb.link.JupySQL": {
+    "message": "JupySQL",
+    "description": "The label for link JupySQL in sidebar chdb, linking to https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
+  },
+  "sidebar.chdb.link.chdb-lambda": {
+    "message": "chdb-lambda",
+    "description": "The label for link chdb-lambda in sidebar chdb, linking to https://github.com/chdb-io/chdb-lambda"
+  },
+  "sidebar.chdb.link.chdb-cli": {
+    "message": "chdb-cli",
+    "description": "The label for link chdb-cli in sidebar chdb, linking to https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
+  },
+  "sidebar.chdb.link.Discord": {
+    "message": "Discord",
+    "description": "The label for link Discord in sidebar chdb, linking to https://discord.gg/Njw5YXSPPc"
+  },
+  "sidebar.chdb.link.Birth of chDB": {
+    "message": "chDB의 탄생",
+    "description": "The label for link Birth of chDB in sidebar chdb, linking to https://auxten.com/the-birth-of-chdb/"
+  },
+  "sidebar.chdb.link.Joining ClickHouse, Inc.": {
+    "message": "ClickHouse, Inc. 가입",
+    "description": "The label for link Joining ClickHouse, Inc. in sidebar chdb, linking to https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
+  },
+  "sidebar.chdb.link.Team and dontributors": {
+    "message": "팀 및 기여자",
+    "description": "The label for link Team and dontributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
+  },
+  "sidebar.clickstack.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "The label for category ClickStack in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Sample datasets": {
+    "message": "샘플 데이터셋",
+    "description": "The label for category Sample datasets in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Deployment": {
+    "message": "배포",
+    "description": "The label for category Deployment in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Ingesting data": {
+    "message": "데이터 수집",
+    "description": "The label for category Ingesting data in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.SDKs": {
+    "message": "SDKs",
+    "description": "The label for category SDKs in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Migration guides": {
+    "message": "마이그레이션 가이드",
+    "description": "The label for category Migration guides in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Migrating from Elastic": {
+    "message": "Elastic에서 마이그레이션",
+    "description": "The label for category Migrating from Elastic in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Integration quick start": {
+    "message": "통합 빠른 시작",
+    "description": "The label for category Integration quick start in sidebar clickstack"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "시작하기",
+    "description": "The label for category Get started in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "클라우드",
+    "description": "The label for category Cloud in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "데이터 관리",
+    "description": "The label for category Manage data in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "서버 관리자",
+    "description": "The label for category Server admin in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "참조",
+    "description": "The label for category Reference in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "통합",
+    "description": "The label for category Integrations in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "The label for category ClickStack in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "The label for category chDB in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "소개",
+    "description": "The label for category About in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.link.Introduction": {
+    "message": "소개",
+    "description": "The label for link Introduction in sidebar dropdownCategories, linking to /sql-reference"
+  },
+  "sidebar.dropdownCategories.link.Concepts": {
+    "message": "개념",
+    "description": "The label for link Concepts in sidebar dropdownCategories, linking to /concepts"
+  },
+  "sidebar.dropdownCategories.link.Starter guides": {
+    "message": "시작 가이드",
+    "description": "The label for link Starter guides in sidebar dropdownCategories, linking to /starter-guides"
+  },
+  "sidebar.dropdownCategories.link.Best practices": {
+    "message": "모범 사례",
+    "description": "The label for link Best practices in sidebar dropdownCategories, linking to /best-practices"
+  },
+  "sidebar.dropdownCategories.link.Migration guides": {
+    "message": "마이그레이션 가이드",
+    "description": "The label for link Migration guides in sidebar dropdownCategories, linking to /integrations/migration/overview"
+  },
+  "sidebar.dropdownCategories.link.Use case guides": {
+    "message": "사용 사례 가이드",
+    "description": "The label for link Use case guides in sidebar dropdownCategories, linking to /use-cases"
+  },
+  "sidebar.dropdownCategories.link.Example datasets": {
+    "message": "예제 데이터셋",
+    "description": "The label for link Example datasets in sidebar dropdownCategories, linking to /getting-started/example-datasets"
+  },
+  "sidebar.dropdownCategories.link.Tips and community wisdom": {
+    "message": "팁 및 커뮤니티 지식",
+    "description": "The label for link Tips and community wisdom in sidebar dropdownCategories, linking to /tips-and-tricks/community-wisdom"
+  },
+  "sidebar.dropdownCategories.link.Get Started": {
+    "message": "시작하기",
+    "description": "The label for link Get Started in sidebar dropdownCategories, linking to /cloud/get-started/"
+  },
+  "sidebar.dropdownCategories.link.Features": {
+    "message": "기능",
+    "description": "The label for link Features in sidebar dropdownCategories, linking to /cloud/manage/cloud-tiers"
+  },
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "가이드",
+    "description": "The label for link Guides in sidebar dropdownCategories, linking to /chdb/guides"
+  },
+  "sidebar.dropdownCategories.link.Reference": {
+    "message": "참조",
+    "description": "The label for link Reference in sidebar dropdownCategories, linking to /cloud/reference/"
+  },
+  "sidebar.dropdownCategories.link.Core data concepts": {
+    "message": "핵심 데이터 개념",
+    "description": "The label for link Core data concepts in sidebar dropdownCategories, linking to /managing-data/core-concepts"
+  },
+  "sidebar.dropdownCategories.link.Updating data": {
+    "message": "데이터 업데이트",
+    "description": "The label for link Updating data in sidebar dropdownCategories, linking to /updating-data"
+  },
+  "sidebar.dropdownCategories.link.Deleting data": {
+    "message": "데이터 삭제",
+    "description": "The label for link Deleting data in sidebar dropdownCategories, linking to /managing-data/deleting-data/overview"
+  },
+  "sidebar.dropdownCategories.link.Data modeling": {
+    "message": "데이터 모델링",
+    "description": "The label for link Data modeling in sidebar dropdownCategories, linking to /data-modeling/overview"
+  },
+  "sidebar.dropdownCategories.link.Performance and optimizations": {
+    "message": "성능 및 최적화",
+    "description": "The label for link Performance and optimizations in sidebar dropdownCategories, linking to /operations/overview"
+  },
+  "sidebar.dropdownCategories.link.Deployments and scaling": {
+    "message": "배포 및 확장",
+    "description": "The label for link Deployments and scaling in sidebar dropdownCategories, linking to /deployment-guides/index"
+  },
+  "sidebar.dropdownCategories.link.Security and authentication": {
+    "message": "보안 및 인증",
+    "description": "The label for link Security and authentication in sidebar dropdownCategories, linking to /security-and-authentication"
+  },
+  "sidebar.dropdownCategories.link.Settings": {
+    "message": "설정",
+    "description": "The label for link Settings in sidebar dropdownCategories, linking to /operations/settings"
+  },
+  "sidebar.dropdownCategories.link.Tools and utilities": {
+    "message": "도구 및 유틸리티",
+    "description": "The label for link Tools and utilities in sidebar dropdownCategories, linking to /operations/utilities"
+  },
+  "sidebar.dropdownCategories.link.System tables": {
+    "message": "시스템 테이블",
+    "description": "The label for link System tables in sidebar dropdownCategories, linking to /operations/system-tables"
+  },
+  "sidebar.dropdownCategories.link.Functions": {
+    "message": "함수",
+    "description": "The label for link Functions in sidebar dropdownCategories, linking to /sql-reference/functions"
+  },
+  "sidebar.dropdownCategories.link.Engines": {
+    "message": "엔진",
+    "description": "The label for link Engines in sidebar dropdownCategories, linking to /engines"
+  },
+  "sidebar.dropdownCategories.link.All integrations": {
+    "message": "모든 통합",
+    "description": "The label for link All integrations in sidebar dropdownCategories, linking to /integrations"
+  },
+  "sidebar.dropdownCategories.link.Language clients": {
+    "message": "언어 클라이언트",
+    "description": "The label for link Language clients in sidebar dropdownCategories, linking to /integrations/language-clients"
+  },
+  "sidebar.dropdownCategories.link.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for link ClickPipes in sidebar dropdownCategories, linking to /integrations/clickpipes"
+  },
+  "sidebar.dropdownCategories.link.Native clients & interfaces": {
+    "message": "네이티브 클라이언트 및 인터페이스",
+    "description": "The label for link Native clients & interfaces in sidebar dropdownCategories, linking to /interfaces/natives-clients-and-interfaces"
+  },
+  "sidebar.dropdownCategories.link.Data sources": {
+    "message": "데이터 소스",
+    "description": "The label for link Data sources in sidebar dropdownCategories, linking to /integrations/data-sources/index"
+  },
+  "sidebar.dropdownCategories.link.Data visualization": {
+    "message": "데이터 시각화",
+    "description": "The label for link Data visualization in sidebar dropdownCategories, linking to /integrations/data-visualization"
+  },
+  "sidebar.dropdownCategories.link.Data formats": {
+    "message": "데이터 형식",
+    "description": "The label for link Data formats in sidebar dropdownCategories, linking to /integrations/data-formats"
+  },
+  "sidebar.dropdownCategories.link.Data ingestion": {
+    "message": "데이터 수집",
+    "description": "The label for link Data ingestion in sidebar dropdownCategories, linking to /integrations/data-ingestion-overview"
+  },
+  "sidebar.dropdownCategories.link.Getting started": {
+    "message": "시작하기",
+    "description": "The label for link Getting started in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/getting-started"
+  },
+  "sidebar.dropdownCategories.link.Sample datasets": {
+    "message": "샘플 데이터셋",
+    "description": "The label for link Sample datasets in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Architecture": {
+    "message": "아키텍처",
+    "description": "The label for link Architecture in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Deployment": {
+    "message": "배포",
+    "description": "The label for link Deployment in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/deployment"
+  },
+  "sidebar.dropdownCategories.link.Ingesting data": {
+    "message": "데이터 수집",
+    "description": "The label for link Ingesting data in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/ingesting-data"
+  },
+  "sidebar.dropdownCategories.link.Configuration options": {
+    "message": "구성 옵션",
+    "description": "The label for link Configuration options in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Production": {
+    "message": "프로덕션",
+    "description": "The label for link Production in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Integration examples": {
+    "message": "통합 예제",
+    "description": "The label for link Integration examples in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/integration-guides"
+  },
+  "sidebar.dropdownCategories.link.Learn chDB": {
+    "message": "chDB 배우기",
+    "description": "The label for link Learn chDB in sidebar dropdownCategories, linking to /chdb"
+  },
+  "sidebar.dropdownCategories.link.Language integrations": {
+    "message": "언어 통합",
+    "description": "The label for link Language integrations in sidebar dropdownCategories, linking to /chdb/install"
+  },
+  "sidebar.dropdownCategories.link.Adopters": {
+    "message": "채택자",
+    "description": "The label for link Adopters in sidebar dropdownCategories, linking to /about-us/adopters"
+  },
+  "sidebar.dropdownCategories.link.Changelogs": {
+    "message": "변경 로그",
+    "description": "The label for link Changelogs in sidebar dropdownCategories, linking to /category/changelog"
+  },
+  "sidebar.dropdownCategories.link.Support": {
+    "message": "지원",
+    "description": "The label for link Support in sidebar dropdownCategories, linking to /about-us/support"
+  },
+  "sidebar.dropdownCategories.link.Development and contributing": {
+    "message": "개발 및 기여",
+    "description": "The label for link Development and contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+  }
+}
