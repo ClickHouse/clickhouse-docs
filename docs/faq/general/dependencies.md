@@ -12,7 +12,7 @@ keywords: ['dependencies', '3rd-party']
 
 ClickHouse does not have any runtime dependencies. It is distributed as a single binary application which is fully self-contained. This application provides all the functionality of the cluster, serves queries, acts as a worker node in the cluster, as a coordination system providing the RAFT consensus algorithm, as a client or a local query engine.
 
-This unique architecture choice differentiates it with other systems, that often have dedicated frontend, backend, or aggregation nodes, as it makes the deployment, cluster management, and monitoring easier.
+This unique architecture choice differentiates it from other systems, that often have dedicated frontend, backend, or aggregation nodes, as it makes the deployment, cluster management, and monitoring easier.
 
 :::info
 Many years ago, ClickHouse used to require ZooKeeper for coordination of distributed clusters. It is no longer needed, and while we support using ZooKeeper, it's no longer recommended.
