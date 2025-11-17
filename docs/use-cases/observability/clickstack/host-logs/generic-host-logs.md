@@ -1,25 +1,31 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs
 title: 'Monitoring Host Logs with ClickStack'
-sidebar_label: 'Generic Host Logs'
+sidebar_label: 'Host Logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Host Logs with ClickStack'
 doc_type: 'guide'
-keywords: ['host logs', 'systemd', 'journald', 'syslog', 'OTEL', 'ClickStack', 'system monitoring']
+keywords: ['host logs', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'system monitoring']
 ---
 
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import log_view from '@site/static/images/clickstack/host-logs/log-view.png';
+import search_view from '@site/static/images/clickstack/host-logs/search-view.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
+import logs_dashboard from '@site/static/images/clickstack/host-logs/host-logs-dashboard.png';
+import finish_import from '@site/static/images/clickstack/host-logs/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Monitoring Host Logs with ClickStack {#host-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to ingest systemd journal logs. You'll learn how to:
+This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to ingest syslog files. You'll learn how to:
 
-- Configure the OTel collector to read from systemd journal
+- Configure the OTel collector to read system log files
 - Deploy ClickStack with your custom configuration
 - Use a pre-built dashboard to visualize host log insights (errors, warnings, service activity)
 
@@ -30,51 +36,63 @@ Time Required: 5-10 minutes
 
 ## Integration with existing hosts {#existing-hosts}
 
-This section covers configuring your existing Linux hosts to send system logs to ClickStack by modifying the ClickStack OTel collector configuration.
+This section covers configuring your existing hosts to send system logs to ClickStack by modifying the ClickStack OTel collector configuration to read syslog files.
 
 If you would like to test the host logs integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the ["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs#demo-dataset) section.
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running
-- Linux system with systemd/journald (Ubuntu 16.04+, RHEL 7+, Debian 8+)
-- Access to `/var/log/journal` directory
+- System with syslog files
+- Access to modify ClickStack configuration files
 
 <VerticalStepper headerLevel="h4">
 
-#### Verify journald is running {#verify-journald}
+#### Verify syslog files exist {#verify-syslog}
 
-First, verify that systemd-journald is active on your system:
+First, verify that your system is writing syslog files:
 
 ```bash
-# Check journald status
-systemctl status systemd-journald
+# Check if syslog files exist (Linux)
+ls -la /var/log/syslog /var/log/messages
 
-# View recent journal entries to confirm logs are being collected
-journalctl -n 20
+# Or on macOS
+ls -la /var/log/system.log
+
+# View recent entries
+tail -20 /var/log/syslog
 ```
 
-Common journal locations:
-- **Linux (systemd)**: `/var/log/journal`
-- **macOS**: See [legacy syslog configuration](#legacy-syslog)
-- **Docker**: Mount host's `/var/log/journal` directory
-
-:::note
-If `journalctl` is not available or journald is not running, your system may be using traditional syslog. See the [legacy syslog configuration](#legacy-syslog) section instead.
-:::
+Common syslog locations:
+- **Ubuntu/Debian**: `/var/log/syslog`
+- **RHEL/CentOS/Fedora**: `/var/log/messages`
+- **macOS**: `/var/log/system.log`
 
 #### Create custom OTel collector configuration {#custom-otel}
 
-ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable. The custom configuration is merged with the base configuration managed by HyperDX via OpAMP.
+ClickStack allows you to extend the base OpenTelemetry Collector configuration by mounting a custom configuration file and setting an environment variable.
 
-Create a file named `host-logs-monitoring.yaml` with the following configuration:
+Create a file named `host-logs-monitoring.yaml` with the configuration for your system:
+
+<Tabs groupId="os-type">
+<TabItem value="modern-linux" label="Modern Linux (Ubuntu 24.04+)" default>
 
 ```yaml
 receivers:
-  journald:
-    directory: /var/log/journal
+  filelog/syslog:
+    include:
+      - /var/log/syslog
     start_at: end
-    priority: info
     operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout_type: gotime
+        layout: '2006-01-02T15:04:05.999999-07:00'
+      
       - type: add
         field: attributes.source
         value: "host-logs"
@@ -86,7 +104,7 @@ receivers:
 service:
   pipelines:
     logs/host:
-      receivers: [journald]
+      receivers: [filelog/syslog]
       processors:
         - memory_limiter
         - transform
@@ -95,17 +113,99 @@ service:
         - clickhouse
 ```
 
-This configuration:
-- Reads systemd journal logs from their standard location
-- Filters to `info` priority and above (excludes debug logs)
-- Adds `source: host-logs` attribute for filtering in HyperDX
-- Captures all system logs including service logs, kernel messages, and authentication events
-- Routes logs to the ClickHouse exporter via a dedicated pipeline
+</TabItem>
+<TabItem value="legacy-linux" label="Legacy Linux (Ubuntu 20.04, RHEL, CentOS)">
+
+```yaml
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/messages
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
+
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+```yaml
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/system.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
+
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
+
+</TabItem>
+</Tabs>
+<br/>
+All configurations:
+- Read syslog files from their standard locations
+- Parse the syslog format to extract structured fields (timestamp, hostname, unit/service, PID, message)
+- Preserve original log timestamps
+- Add `source: host-logs` attribute for filtering in HyperDX
+- Route logs to the ClickHouse exporter via a dedicated pipeline
 
 :::note
 - You only define new receivers and pipelines in the custom config
 - The processors (`memory_limiter`, `transform`, `batch`) and exporters (`clickhouse`) are already defined in the base ClickStack configuration - you just reference them by name
-- The systemd journal automatically includes rich metadata like systemd unit, hostname, process ID, and priority level
+- The regex parser extracts systemd unit names, PIDs, and other metadata from the syslog format
 - This configuration uses `start_at: end` to avoid re-ingesting logs on collector restarts. For testing, change to `start_at: beginning` to see historical logs immediately.
 :::
 
@@ -115,8 +215,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 
 1. Mount the custom config file at `/etc/otelcol-contrib/custom.config.yaml`
 2. Set the environment variable `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-3. Mount your systemd journal directory so the collector can read them
-4. Run with appropriate permissions to access journal files
+3. Mount your syslog directory so the collector can read them
 
 ##### Option 1: Docker Compose {#docker-compose}
 
@@ -125,13 +224,12 @@ Update your ClickStack deployment configuration:
 services:
   clickstack:
     # ... existing configuration ...
-    user: "0:0"  # Required for journal access
     environment:
       - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
       # ... other environment variables ...
     volumes:
       - ./host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      - /var/log/journal:/var/log/journal:ro
+      - /var/log:/var/log:ro
       # ... other volumes ...
 ```
 
@@ -140,24 +238,15 @@ services:
 If you're using the all-in-one image with docker run:
 ```bash
 docker run --name clickstack \
-  --user 0:0 \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log/journal:/var/log/journal:ro \
+  -v /var/log:/var/log:ro \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ```
 
 :::note
-Ensure the ClickStack collector has appropriate permissions to read the journal files. Running as root (`--user 0:0`) is the simplest approach. In production, consider creating a dedicated user and adding it to the `systemd-journal` group:
-
-```bash
-# Create user and add to systemd-journal group
-sudo useradd -r otelcol
-sudo usermod -a -G systemd-journal otelcol
-```
-
-Then run the container with `--user $(id -u otelcol):$(id -g otelcol)` instead of `--user 0:0`.
+Ensure the ClickStack collector has appropriate permissions to read the syslog files. In production, use read-only mounts (`:ro`) and follow the principle of least privilege.
 :::
 
 #### Verifying Logs in HyperDX {#verifying-logs}
@@ -167,7 +256,10 @@ Once configured, log into HyperDX and verify logs are flowing:
 1. Navigate to the search view
 2. Set source to Logs
 3. Filter by `source:host-logs` to see host-specific logs
-4. You should see structured log entries with fields like `unit` (systemd unit name), `priority`, `hostname`, `message`, etc.
+4. You should see structured log entries with fields like `unit`, `hostname`, `pid`, `message`, etc.
+
+<Image img={search_view} alt="Search view"/>
+<Image img={log_view} alt="Log view"/>
 
 </VerticalStepper>
 
@@ -186,11 +278,13 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```
 
 The dataset includes:
-- System service start/stop events
-- Kernel messages
-- Authentication events
-- Application logs from common services
-- Mix of info, warning, and error severity levels
+- System boot sequence
+- SSH login activity (successful and failed attempts)
+- Security incident (brute force attack with fail2ban response)
+- Scheduled maintenance (cron jobs, anacron)
+- Service restarts (rsyslog)
+- Kernel messages and firewall activity
+- Mix of normal operations and notable events
 
 #### Create test collector configuration {#test-config}
 
@@ -202,16 +296,16 @@ receivers:
   filelog/journal:
     include:
       - /tmp/host-demo/journal.log
-    start_at: beginning  # Read from beginning for demo data
+    start_at: beginning
     operators:
       - type: regex_parser
-        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+)\[(?P<pid>\d+)\]: (?P<message>.*)$'
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
         parse_from: body
         parse_to: attributes
       
       - type: time_parser
         parse_from: attributes.timestamp
-        layout: '%b %d %H:%M:%S'
+        layout: '%Y-%m-%dT%H:%M:%S%z'
       
       - type: add
         field: attributes.source
@@ -257,10 +351,13 @@ Once ClickStack is running:
 
 1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
 2. Navigate to the Search view and set the source to `Logs`
-3. Set the time range to **2025-11-15 00:00:00 - 2025-11-16 00:00:00**
+3. Set the time range to **2025-11-10 00:00:00 - 2025-11-13 00:00:00**
 
-:::note
-If you don't see logs, ensure the time range is set to 2025-11-15 00:00:00 - 2025-11-16 00:00:00 and 'Logs' is selected as the source.
+<Image img={search_view} alt="Search view"/>
+<Image img={log_view} alt="Log view"/>
+
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 </VerticalStepper>
@@ -282,19 +379,24 @@ To help you get started monitoring host logs with ClickStack, we provide essenti
 
 3. Upload the `host-logs-dashboard.json` file and click **Finish Import**
 
+<Image img={finish_import} alt="Finish import"/>
+
 #### View the dashboard {#created-dashboard}
 
 The dashboard will be created with all visualizations pre-configured:
 
+<Image img={logs_dashboard} alt="Logs dashboard"/>
+
 Key visualizations include:
 - Log volume over time by severity
-- Error and warning event distribution
 - Top systemd units generating logs
-- Recent critical system events
-- Service start/stop activity timeline
+- SSH login activity (successful vs failed)
+- Firewall activity (blocked vs allowed)
+- Security events (failed logins, bans, blocks)
+- Service restart activity
 
 :::note
-For the demo dataset, ensure the time range is set to 2025-11-15 00:00:00 - 2025-11-16 00:00:00. The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -315,32 +417,28 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head 
 
 ### No logs appearing in HyperDX {#no-logs}
 
-**Verify journald is running and accessible:**
+**Verify syslog files exist and are being written:**
 ```bash
-# Check journald status on host
-systemctl status systemd-journald
+# Check if syslog exists
+ls -la /var/log/syslog /var/log/messages
 
-# Verify journal directory exists and is accessible
-docker exec <container> ls -la /var/log/journal
+# Verify logs are being written
+tail -f /var/log/syslog
 ```
 
-**Test if collector can read journal:**
+**Check the collector can read the logs:**
 ```bash
-# Try reading journal from inside container
-docker exec <container> journalctl -n 10
-
-# If permission denied, check user/group permissions
-docker exec <container> id
+docker exec <container> cat /var/log/syslog | head -20
 ```
 
-**Check the effective config includes your journald receiver:**
+**Check the effective config includes your filelog receiver:**
 ```bash
-docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 journald
+docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
 **Check for errors in the collector logs:**
 ```bash
-docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i journal
+docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i "filelog\|syslog"
 ```
 
 **If using the demo dataset, verify the log file is accessible:**
@@ -348,82 +446,34 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i journa
 docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 ```
 
-### Permission issues {#permission-issues}
+### Logs not parsing correctly {#logs-not-parsing}
 
-If you see permission errors when trying to read journal files:
+**Verify your syslog format matches the configuration you chose:**
 
+For Modern Linux (Ubuntu 24.04+):
 ```bash
-# Option 1: Run as root (simplest for testing)
-docker run --user 0:0 ...
-
-# Option 2: Add collector user to systemd-journal group (production)
-sudo usermod -a -G systemd-journal otelcol
-# Then restart the container
+# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
+tail -5 /var/log/syslog
 ```
 
-On some systems (Ubuntu 24.04+), you may need to explicitly add the user to the `systemd-journal` group even when running as root.
-
-## Legacy: Traditional Syslog {#legacy-syslog}
-
-For systems without systemd journal support (older Linux distributions, BSD systems, macOS), you can use the traditional syslog approach.
-
-Create a file named `host-syslog-monitoring.yaml` with the following configuration:
-
-```yaml
-receivers:
-  filelog/syslog:
-    include:
-      - /var/log/syslog
-      - /var/log/messages
-      - /var/log/system.log  # macOS
-    start_at: end
-    operators:
-      - type: syslog_parser
-        protocol: rfc3164
-      
-      - type: add
-        field: attributes.source
-        value: "host-syslog"
-      
-      - type: add
-        field: resource["service.name"]
-        value: "host-syslog-production"
-
-service:
-  pipelines:
-    logs/host-syslog:
-      receivers: [filelog/syslog]
-      processors:
-        - memory_limiter
-        - transform
-        - batch
-      exporters:
-        - clickhouse
-```
-
-Mount the appropriate log directories when running ClickStack:
-
+For Legacy Linux or macOS:
 ```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/host-syslog-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log:/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+# Should show traditional format: Nov 17 14:16:16
+tail -5 /var/log/syslog
+# or
+tail -5 /var/log/system.log
 ```
 
-:::note
-The syslog parser automatically extracts fields like severity, facility, hostname, and message from traditional syslog format.
-:::
+If your format doesn't match, select the appropriate configuration tab in the [Create custom OTel collector configuration](#custom-otel) section.
 
 ## Next steps {#next-steps}
 
 After setting up host logs monitoring:
 
-- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, kernel panics, authentication failures)
-- Filter by specific systemd units to monitor particular services
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, disk warnings)
+- Filter by specific units to monitor particular services
 - Correlate host logs with application logs for comprehensive troubleshooting
-- Create custom dashboards for security monitoring (authentication events, sudo usage)
+- Create custom dashboards for security monitoring (SSH attempts, sudo usage, firewall blocks)
 
 ## Going to production {#going-to-production}
 
