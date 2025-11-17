@@ -5,7 +5,7 @@ toc_priority: 10
 slug: /faq/general/datalake
 description: 'ClickHouse supports data lakes, including Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive'
 doc_type: 'reference'
-keywords: ['data lake', 'lakehouse', '']
+keywords: ['data lake', 'lakehouse']
 ---
 
 # Does ClickHouse support Data Lakes?
