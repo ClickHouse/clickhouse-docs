@@ -12,7 +12,7 @@ keywords: ['updates', 'real-time']
 
 ClickHouse supports the UPDATE statement and is capable running real-time updates as fast as it runs INSERTs.
 
-This is possible thanks to the patch parts data structure, which allows quickly applying changes without a significant impact on the SELECT performance.
+This is possible thanks to the [patch parts data structure](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates#stage-3-patch-parts--updates-the-clickhouse-way), which allows quickly applying changes without a significant impact on the SELECT performance.
 
 Moreover, due to MVCC (multi-version concurrency control) and snapshot isolation, updates provide ACID properties.
 
