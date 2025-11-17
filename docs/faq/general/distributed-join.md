@@ -2,7 +2,7 @@
 title: 'Does ClickHouse support distributed JOIN?'
 toc_hidden: true
 toc_priority: 10
-slug: /faq/general/federated
+slug: /faq/general/distributed-join
 description: 'ClickHouse supports distributed JOIN'
 doc_type: 'reference'
 keywords: ['distributed', 'join']
