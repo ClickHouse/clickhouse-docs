@@ -1,0 +1,18 @@
+---
+slug: /starter-guides
+title: 'Starter Guides'
+description: 'Landing page for starter guides'
+pagination_prev: null
+pagination_next: null
+doc_type: 'landing-page'
+keywords: ['beginner', 'tutorial', 'create table', 'insert data', 'select data', 'update data', 'delete data']
+---
+
+In this section of the docs you'll find starter guides for common SQL queries: `CREATE`, `INSERT`, `SELECT`, and mutations `UPDATE` and `DELETE`.
+
+| Page                                                | Description                                                            |
+|-----------------------------------------------------|------------------------------------------------------------------------|
+| [Create Tables](/guides/creating-tables)         | Starter guide on how to create a table.                                |
+| [Insert Data](/guides/inserting-data)            | Starter guide on how to insert data into a table.                      |
+| [Select Data](/guides/writing-queries)           | Starter guide on how to select data from a table.                      |
+| [Update and Delete Data](/guides/developer/mutations) | Starter guide on mutations - updating and deleting data in ClickHouse. |
