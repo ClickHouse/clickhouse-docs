@@ -292,7 +292,11 @@ Once ClickStack is running:
 
 1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
 2. Navigate to the Search view and set the source to `Logs`
-3. Set the time range to **2025-11-10 00:00:00 - 2025-11-11 00:00:00**
+3. Set the time range to **2025-11-09 00:00:00 - 2025-11-12 00:00:00**
+
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
+:::
 
 <Image img={logs_search_view} alt="Logs search view"/>
 
@@ -326,7 +330,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={logs_dashboard} alt="Logs dashboard"/>
 
 :::note
-For the demo dataset, ensure the time range is set to 2025-11-10 00:00:00 - 2025-11-11 00:00:00. The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 </VerticalStepper>

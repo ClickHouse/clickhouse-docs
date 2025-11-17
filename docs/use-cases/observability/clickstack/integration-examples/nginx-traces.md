@@ -238,12 +238,14 @@ You should see a response like `{"partialSuccess":{}}` indicating the traces wer
 
 #### Verify traces in HyperDX {#verify-demo-traces}
 
-1. Open [HyperDX with demo time range](http://localhost:8080/search?from=1761501600000&to=1761588000000&isLive=false&source=69023d1b4f1d41a964641b09&where=&select=Timestamp,ServiceName,StatusCode,round(Duration/1e6),SpanName&whereLanguage=lucene&orderBy=&filters=[])
+1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
+2. Navigate to the Search view and set the source to `Traces`
+3. Set the time range to **2025-10-25 13:00:00 - 2025-10-28 13:00:00**
 
 Here's what you should see in your search view:
 
-:::note
-If you don't see logs, ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**. The wide time range ensures you'll see the demo traces regardless of your location. Once you see the traces, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 <Image img={view_traces} alt="View Traces"/>
@@ -271,7 +273,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 #### The dashboard will be created with all visualizations pre-configured. {#created-dashboard}
 
 :::note
-Ensure the time range is set to 2025-10-26 13:00:00 - 2025-10-27 13:00:00. The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
