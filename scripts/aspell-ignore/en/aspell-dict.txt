@@ -1,4 +1,4 @@
-personal_ws-1.1 en 3816
+personal_ws-1.1 en 3824
 AArch
 ACLs
 AICPA
@@ -316,6 +316,7 @@ DatabaseOnDiskThreads
 DatabaseOnDiskThreadsActive
 DatabaseOrdinaryThreads
 DatabaseOrdinaryThreadsActive
+Databrain
 Databricks
 Datadog
 Datadog's
@@ -3819,6 +3820,10 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+CronJobs
+DAGs
+Dagster
+RDBMS
 OTELCOL
 elipses
 geolocation
@@ -3829,3 +3834,17 @@ href
 useBaseUrl
 SpanName
 lucene
+multi-tenancy
+single-tenancy
+usedatabrain
+whitelist
+whitelisted
+whitelisting
+TrackedLink
+eventName
+deprovisioning
+runbooks
+severities
+webhooks
+OneLake
+OneLake's
