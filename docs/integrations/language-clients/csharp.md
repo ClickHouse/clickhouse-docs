@@ -410,7 +410,7 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ---
 
-## Logging {#logging}
+## Logging and diagnostics {#logging-and-diagnostics}
 
 The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
 
