@@ -36,7 +36,7 @@ Time Required: 5-10 minutes
 
 ## Integration with existing hosts {#existing-hosts}
 
-This section covers configuring your existing hosts to send system logs to ClickStack by modifying the ClickStack OTel collector configuration to read syslog files.
+This section covers configuring your existing hosts to send system logs to ClickStack by modifying the ClickStack OTel collector configuration to read all system log files (syslog, auth, kernel, daemon, and application logs).
 
 If you would like to test the host logs integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the ["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs#demo-dataset) section.
 
