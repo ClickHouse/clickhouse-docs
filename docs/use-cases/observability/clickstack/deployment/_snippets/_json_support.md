@@ -4,7 +4,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-:::warning Beta Feature
+:::warning Beta Feature - not production ready
 JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs.
 :::
 
