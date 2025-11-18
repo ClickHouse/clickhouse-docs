@@ -13,6 +13,22 @@ const ClientVersionDropdown = (props) => {
     const buttonRef = useRef(null);
     const dropdownRef = useRef(null);
 
+    // Store header IDs for each version
+    // Structure: { 0: ['header-1', 'header-2'], 1: ['header-3', 'header-4'] }
+    const [versionHeaders, setVersionHeaders] = useState({});
+
+    // Support both old API (snippet) and new API (children)
+    const usingChildren = props.children && React.Children.count(props.children) > 0;
+    const childrenArray = usingChildren ? React.Children.toArray(props.children) : [];
+
+    // Callback for Version components to report their headers
+    const handleHeadersCollected = (versionIndex, headerIds) => {
+        setVersionHeaders(prev => ({
+            ...prev,
+            [versionIndex]: headerIds
+        }));
+    };
+
     // Find version from URL parameter on initial load
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -135,8 +151,81 @@ const ClientVersionDropdown = (props) => {
 
     const selectedVersion = props.versions[selectedVersionIndex];
 
-    // Get the MDXContent component
-    const MDXContent = selectedVersion.snippet;
+    // Effect to filter TOC based on selected version
+    useEffect(() => {
+        if (!usingChildren) return;
+
+        const filterTOC = () => {
+            // Get the header IDs for the currently selected version
+            const activeVersionHeaderIds = versionHeaders[selectedVersionIndex] || [];
+
+            if (activeVersionHeaderIds.length === 0) {
+                // Headers not collected yet, try again later
+                return;
+            }
+
+            // Find TOC - try multiple selectors for Docusaurus compatibility
+            const tocLinks = document.querySelectorAll(
+                '.table-of-contents a, .theme-doc-toc-desktop a, [class*="tocDesktop"] a, .toc a'
+            );
+
+            tocLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const headerId = href.substring(1);
+                    const linkParent = link.parentElement; // <li> element
+
+                    // Show TOC link only if its header ID is in the active version's headers
+                    if (activeVersionHeaderIds.includes(headerId)) {
+                        linkParent.style.display = '';
+                    } else {
+                        linkParent.style.display = 'none';
+                    }
+                }
+            });
+        };
+
+        // Run immediately
+        filterTOC();
+
+        // Re-run after a delay to catch dynamically rendered TOC items
+        const timer = setTimeout(filterTOC, 200);
+
+        return () => clearTimeout(timer);
+    }, [selectedVersionIndex, usingChildren, versionHeaders]);
+
+    // Render content based on API being used
+    const renderContent = () => {
+        if (usingChildren) {
+            // New API: render children with show/hide based on selection
+            // Clone children and inject version props
+            return childrenArray.map((child, index) => {
+                const isVisible = index === selectedVersionIndex;
+
+                // Clone the child to add versionIndex and callback props
+                const clonedChild = React.cloneElement(child, {
+                    versionIndex: index,
+                    isVisible: isVisible,
+                    onHeadersCollected: handleHeadersCollected
+                });
+
+                return (
+                    <div
+                        key={index}
+                        style={{ display: isVisible ? 'block' : 'none' }}
+                        data-version-index={index}
+                        data-version-visible={isVisible}
+                    >
+                        {clonedChild}
+                    </div>
+                );
+            });
+        } else {
+            // Old API: render snippet
+            const MDXContent = selectedVersion.snippet;
+            return MDXContent && typeof MDXContent === 'function' && <MDXContent />;
+        }
+    };
 
     return (
         <>
@@ -154,7 +243,7 @@ const ClientVersionDropdown = (props) => {
             {renderDropdown()}
 
             <div className={styles.snippetContainer}>
-                {MDXContent && typeof MDXContent === 'function' && <MDXContent />}
+                {renderContent()}
             </div>
         </>
     );
