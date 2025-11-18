@@ -123,6 +123,7 @@ receivers:
     include:
       - /var/log/syslog
       - /var/log/messages
+      - /var/log/**/*.log
     start_at: end
     operators:
       - type: regex_parser
