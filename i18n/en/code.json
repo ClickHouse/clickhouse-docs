@@ -7,7 +7,7 @@
     "message": "Products"
   },
   "topNav.navItems.Use cases": {
-    "message": "Use cases"
+    "message": "Solutions"
   },
   "topNav.navItems.Docs": {
     "message": "Docs"
@@ -172,10 +172,10 @@
     "message": "Machine learning and GenAI"
   },
   "topNav.navItems.use_cases.Business intelligence": {
-    "message": "Business intelligence"
+    "message": "Data warehousing"
   },
   "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "Logs, events, and traces"
+    "message": "Observability"
   },
   "topNav.navItems.use_cases.All use cases": {
     "message": "All use cases"

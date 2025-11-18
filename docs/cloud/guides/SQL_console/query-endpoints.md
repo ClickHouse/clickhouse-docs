@@ -24,10 +24,14 @@ The **Query API Endpoints** feature allows you to create an API endpoint directl
 ## Pre-requisites {#quick-start-guide}
 
 Before proceeding, ensure you have:
-- an API key
-- an Admin Console Role.
+- An API key with appropriate permissions
+- An Admin Console Role
 
 You can follow this guide to [create an API key](/cloud/manage/openapi) if you don't yet have one.
+
+:::note Minimum permissions
+To query an API endpoint, the API key needs `Member` organization role with `Query Endpoints` service access. The database role is configured when you create the endpoint.
+:::
 
 <VerticalStepper headerLevel="h3">
 

@@ -18,7 +18,7 @@ ORDER BY timestamp
 ```
 
 :::note
-View the [SQL Reference](../sql-reference/statements/select/index.md) for more details on the syntax and available clauses and options.
+View the [SQL Reference](/sql-reference/statements/select) for more details on the syntax and available clauses and options.
 :::
 
 Notice the response comes back in a nice table format:
@@ -34,7 +34,7 @@ Notice the response comes back in a nice table format:
 4 rows in set. Elapsed: 0.008 sec.
 ```
 
-Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](../interfaces/formats.md):
+Add a `FORMAT` clause to specify one of the [many supported output formats of ClickHouse](/interfaces/formats#formats-overview):
 ```sql
 SELECT *
 FROM helloworld.my_first_table
@@ -57,5 +57,5 @@ Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
 :::note
 ClickHouse supports over 70 input and output formats, so between the thousands of functions and all the data formats, you can use ClickHouse to perform some impressive and fast ETL-like data transformations. In fact, you don't even
-need a ClickHouse server up and running to transform data - you can use the `clickhouse-local` tool. View the [docs page of `clickhouse-local`](../operations/utilities/clickhouse-local.md) for details.
+need a ClickHouse server up and running to transform data - you can use the `clickhouse-local` tool. View the [docs page of `clickhouse-local`](/interfaces/cli) for details.
 :::

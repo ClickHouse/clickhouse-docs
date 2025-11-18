@@ -10,6 +10,7 @@ doc_type: 'reference'
 
 import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
 import Version from '@theme/ClientVersionDropdown/Version';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -265,11 +266,11 @@ Latest JDBC (0.7.2) version uses Client-V1
 
 `clickhouse-jdbc` API is synchronous, and generally, it has more overheads(e.g., SQL parsing and type mapping/conversion, etc.). Consider [clickhouse-client](/integrations/sql-clients/sql-console) when performance is critical or if you prefer a more direct way to access ClickHouse.
 
-## Environment requirements {#environment-requirements}
+## Environment requirements {#v07-environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) version >= 8
 
-### Setup {#setup}
+### Setup {#v07-setup}
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven">
@@ -337,7 +338,7 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
     </TabItem>
 </Tabs>
 
-## Configuration {#configuration}
+## Configuration {#v07-configuration}
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
 
@@ -362,7 +363,7 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 
 Note: please refer to [JDBC specific configuration](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) for more.
 
-## Supported data types {#supported-data-types}
+## Supported data types {#v07-supported-data-types}
 
 JDBC Driver supports same data formats as client library does.
 
@@ -373,7 +374,7 @@ JDBC Driver supports same data formats as client library does.
 - UInt64 - mapped to `long` (in client-v1)
 :::
 
-## Creating Connection {#creating-connection}
+## Creating Connection {#v07-creating-connection}
 
 ```java
 String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by default
@@ -386,7 +387,7 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-## Simple Statement {#simple-statement}
+## Simple Statement {#v07-simple-statement}
 
 ```java showLineNumbers
 
@@ -399,7 +400,7 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-## Insert {#insert}
+## Insert {#v07-insert}
 
 :::note
 - Use `PreparedStatement` instead of `Statement`
@@ -513,7 +514,7 @@ try (PreparedStatement stmt = conn.prepareStatement(
 
 <br/>
 
-## Configuring HTTP library {#configuring-http-library}
+## Configuring HTTP library {#v07-configuring-http-library}
 
 The ClickHouse JDBC connector supports three HTTP libraries: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), and [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
 
@@ -574,7 +575,7 @@ These properties ensure that your Java application communicates with the ClickHo
   }
 ```
 
-## Resolving JDBC Timeout on Large Inserts {#resolving-jdbc-timeout-on-large-inserts}
+## Resolving JDBC Timeout on Large Inserts {#v07-resolving-jdbc-timeout-on-large-inserts}
 
 When performing large inserts in ClickHouse with long execution times, you may encounter JDBC timeout errors like:
 
@@ -584,7 +585,7 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 
 These errors can disrupt the data insertion process and affect system stability. To address this issue you need to adjust a few timeout settings in the client's OS.
 
-### Mac OS {#mac-os}
+### Mac OS {#v07-mac-os}
 
 On Mac OS, the following settings can be adjusted to resolve the issue:
 
@@ -594,7 +595,7 @@ On Mac OS, the following settings can be adjusted to resolve the issue:
 - `net.inet.tcp.keepcnt`: 8
 - `net.inet.tcp.always_keepalive`: 1
 
-### Linux {#linux}
+### Linux {#v07-linux}
 
 On Linux, the equivalent settings alone may not resolve the issue. Additional steps are required due to the differences in how Linux handles socket keep-alive settings. Follow these steps:
 
@@ -622,7 +623,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](/integrations/language-clients/java/jdbc-v1#configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.
