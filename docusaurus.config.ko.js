@@ -6,7 +6,7 @@ import fixLinks from "./src/hooks/fixLinks.js";
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
 import glossaryTransformer from "./plugins/glossary-transformer.js";
-const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
+const remarkCustomBlocks = require("./plugins/remark-custom-blocks");
 
 // Helper function to skip over index.md files.
 function skipIndex(items) {
@@ -26,11 +26,9 @@ const config = {
       src: "/docs/ko/js/kapa_widget.js",
       async: true,
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
-    }
+    },
   ],
-  clientModules: [
-    require.resolve('./src/clientModules/utmPersistence.js')
-  ],
+  clientModules: [require.resolve("./src/clientModules/utmPersistence.js")],
   // Settings for Docusaurus Faster - build optimizations
   future: {
     experimental_faster: {
@@ -85,7 +83,7 @@ const config = {
         label: "한국어",
         htmlLang: "ko",
         path: "ko",
-      }
+      },
     },
   },
   staticDirectories: ["static"],
@@ -170,9 +168,9 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        ...(process.env.VERCEL_ENV !== 'preview' && {
+        ...(process.env.VERCEL_ENV !== "preview" && {
           googleTagManager: {
-            containerId: 'GTM-WTNTDT7W',
+            containerId: "GTM-WTNTDT7W",
           },
         }),
       }),
@@ -209,9 +207,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      metadata: [
-        {name: 'Accept-Language', content: 'ko-KR,ko;q=0.9'},
-      ],
+      metadata: [{ name: "Accept-Language", content: "ko-KR,ko;q=0.9" }],
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
@@ -262,7 +258,16 @@ const config = {
       prism: {
         theme: prismLight,
         darkTheme: prismDark,
-        additionalLanguages: ["java", "cpp", "rust", "python", "javascript", "yaml", "bash", "docker"],
+        additionalLanguages: [
+          "java",
+          "cpp",
+          "rust",
+          "python",
+          "javascript",
+          "yaml",
+          "bash",
+          "docker",
+        ],
         magicComments: [
           // Remember to extend the default highlight class name as well!
           {
@@ -300,7 +305,7 @@ const config = {
       },
     ],
     chHeader,
-    ['./plugins/tailwind-config.js', {}],
+    ["./plugins/tailwind-config.js", {}],
   ],
   customFields: {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
@@ -310,6 +315,3 @@ const config = {
 };
 
 module.exports = config;
-
-
-

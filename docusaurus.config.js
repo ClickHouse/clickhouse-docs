@@ -11,7 +11,7 @@ const configMap = {
   jp: jpConfig,
   zh: zhConfig,
   ru: ruConfig,
-  ko: koConfig
+  ko: koConfig,
 };
 
 // Export the selected config, defaulting to English if the environment variable is invalid
