@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs
 title: 'Monitoring Host Logs with ClickStack'
-sidebar_label: 'Host Logs'
+sidebar_label: 'Generic Host Logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Host Logs with ClickStack'
+description: 'Monitoring Generic Host Logs with ClickStack'
 doc_type: 'guide'
-keywords: ['host logs', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'system monitoring']
+keywords: ['host logs', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'system monitoring', 'server logs']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 # Monitoring Host Logs with ClickStack {#host-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to ingest syslog files. You'll learn how to:
+This guide shows you how to monitor host system logs with ClickStack by configuring the OpenTelemetry collector to collect logs from systemd, kernel, SSH, cron, and other system services. You'll learn how to:
 
 - Configure the OTel collector to read system log files
 - Deploy ClickStack with your custom configuration
@@ -81,6 +81,7 @@ receivers:
   filelog/syslog:
     include:
       - /var/log/syslog
+      - /var/log/**/*.log
     start_at: end
     operators:
       - type: regex_parser
@@ -161,6 +162,7 @@ receivers:
   filelog/syslog:
     include:
       - /var/log/system.log
+      - /host/private/var/log/*.log
     start_at: end
     operators:
       - type: regex_parser
