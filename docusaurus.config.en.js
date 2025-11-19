@@ -327,7 +327,10 @@ const config = {
       return {
         name: 'webpack-optimization-plugin',
         configureWebpack(config, isServer) {
-          if (!isServer) {
+
+          const isVercel = process.env.VERCEL === '1';
+
+          if (!isServer && isVercel) {
             return {
               optimization: {
                 splitChunks: {
