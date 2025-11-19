@@ -216,7 +216,7 @@ We recommend creating a dedicated database and user for the OTel collector for i
 ```sql
 CREATE DATABASE otel;
 CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
 This assumes the collector has been configured to use the database `otel`. This can be controlled through the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Pass this to the image hosting the collector [similar to other environment variables](#modifying-otel-collector-configuration).

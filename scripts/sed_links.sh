@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set locale to prevent perl warnings
+export LC_ALL=C
+export LANG=C
+
 # Sometimes we need to change links which are reporting as broken
 # but they are from the ClickHouse/ClickHouse repo. In this case
 # it's useful to sed the link so that the build can pass and then

@@ -250,14 +250,16 @@ docker run --name clickstack-demo \
 
 #### Verify logs in HyperDX {#verify-demo-logs}
 
-Once ClickStack is running (you may have to create an account and login first):
+Once ClickStack is running:
 
-1. Open [HyperDX with demo time range](http://localhost:8080/search?from=1760976000000&to=1761062400000&isLive=false&source=690235c1a9b7fc5a7c0fffc7&select=Timestamp,ServiceName,SeverityText,Body&where=&whereLanguage=lucene&filters=[]&orderBy=)
+1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
+2. Navigate to the Search view and set the source to `Logs`
+3. Set the time range to **2025-10-19 11:00:00 - 2025-10-22 11:00:00**
 
 Here's what you should see in your search view:
 
-:::note
-If you don't see logs, ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans 2025-10-20 11:00:00 - 2025-10-21 11:00:00 UTC. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 <Image img={search_view} alt="Log view"/>
@@ -287,7 +289,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 #### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
 
 :::note
-Ensure the time range is set to 2025-10-20 11:00:00 - 2025-10-21 11:00:00. The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-20 11:00:00 - 2025-10-21 11:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
