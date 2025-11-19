@@ -38,7 +38,7 @@ const plugin = (options) => {
         visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
             // Look specifically for the <VerticalStepper> tag used in the markdown file
             if (node.name === 'VerticalStepper') {
-                try {
+                try{
                     // --- 1. Parse <VerticalStepper> Attributes ---
                     const jsxAttributes = node.attributes || [];
                     let type = "numbered"; // Default type
