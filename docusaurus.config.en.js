@@ -308,7 +308,7 @@ const config = {
         defaultMode: "dark",
       },
     }),
-
+    
   plugins: [
     "docusaurus-plugin-sass",
     function (context, options) {
@@ -371,11 +371,38 @@ const config = {
     ]
   ],
   customFields: {
-    blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
+    blogSidebarLink: "/docs/knowledgebase",
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },
-
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              name: 'vendors',
+              chunks: 'all',
+              test: /node_modules/,
+              priority: 20,
+            },
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 10,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+          },
+          maxSize: 244000,
+        },
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = config;
