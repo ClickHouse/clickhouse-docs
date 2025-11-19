@@ -186,8 +186,8 @@ Once loaded, the quickest way to see your metrics is through the pre-built dashb
 
 Proceed to the [Dashboards and visualization](#dashboards) section to import the dashboard and view many PostgreSQL metrics at once.
 
-:::note
-The demo dataset time range is November 10, 2025 00:00:00 to November 11, 2025 00:00:00. Make sure your time range in HyperDX matches this window.
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**. Set your time range to **2025-11-09 00:00:00 - 2025-11-12 00:00:00** to ensure you see the demo metrics regardless of your location. Once you see the metrics, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 </VerticalStepper>
@@ -218,7 +218,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={example_dashboard} alt="PostgreSQL metrics dashboard"/>
 
 :::note
-For the demo dataset, ensure the time range is set to November 10, 2025 00:00:00 - November 11, 2025 00:00:00.
+For the demo dataset, set the time range to **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 </VerticalStepper>

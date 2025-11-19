@@ -410,19 +410,151 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ---
 
-### Environment variables {#environment-variables}
+## Logging and diagnostics {#logging-and-diagnostics}
 
-You can set defaults using environment variables:
+The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
 
-| Variable              | Purpose          |
-| --------------------- | ---------------- |
-| `CLICKHOUSE_DB`       | Default database |
-| `CLICKHOUSE_USER`     | Default username |
-| `CLICKHOUSE_PASSWORD` | Default password |
+### Quick start {#logging-quick-start}
 
-:::note
-Values provided explicitly to the `ClickHouseConnection` constructor will take priority over environment variables.
-:::
+#### Using ClickHouseConnection {#logging-clickhouseconnection}
+
+```csharp
+using ClickHouse.Driver.ADO;
+using Microsoft.Extensions.Logging;
+
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder
+        .AddConsole()
+        .SetMinimumLevel(LogLevel.Information);
+});
+
+var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
+{
+    LoggerFactory = loggerFactory
+};
+
+await using var connection = new ClickHouseConnection(settings);
+await connection.OpenAsync();
+```
+
+#### Using appsettings.json {#logging-appsettings-config}
+
+You can configure logging levels using standard .NET configuration:
+
+```csharp
+using ClickHouse.Driver.ADO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
+
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder
+        .AddConfiguration(configuration.GetSection("Logging"))
+        .AddConsole();
+});
+
+var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
+{
+    LoggerFactory = loggerFactory
+};
+
+await using var connection = new ClickHouseConnection(settings);
+await connection.OpenAsync();
+```
+
+#### Using in-memory configuration {#logging-inmemory-config}
+
+You can also configure logging verbosity by category in code:
+
+```csharp
+using ClickHouse.Driver.ADO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+var categoriesConfiguration = new Dictionary<string, string>
+{
+    { "LogLevel:Default", "Warning" },
+    { "LogLevel:ClickHouse.Driver.Connection", "Information" },
+    { "LogLevel:ClickHouse.Driver.Command", "Debug" }
+};
+
+var config = new ConfigurationBuilder()
+    .AddInMemoryCollection(categoriesConfiguration)
+    .Build();
+
+using var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder
+        .AddConfiguration(config)
+        .AddSimpleConsole();
+});
+
+var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
+{
+    LoggerFactory = loggerFactory
+};
+
+await using var connection = new ClickHouseConnection(settings);
+await connection.OpenAsync();
+```
+
+### Categories and emitters {#logging-categories}
+
+The driver uses dedicated categories so that you can fine-tune log levels per component:
+
+| Category | Source | Highlights |
+| --- | --- | --- |
+| `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Connection lifecycle, HTTP client factory selection, connection opening/closing, session management. |
+| `ClickHouse.Driver.Command` | `ClickHouseCommand` | Query execution start/completion, timing, query IDs, server statistics, and error details. |
+| `ClickHouse.Driver.Transport` | `ClickHouseConnection` | Low-level HTTP streaming requests, compression flags, response status codes, and transport failures. |
+| `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | Metadata loading, batch operations, row counts, and upload completions. |
+
+#### Example: Diagnosing connection issues {#logging-config-example}
+
+```json
+{
+    "Logging": {
+        "LogLevel": {
+            "ClickHouse.Driver.Connection": "Trace",
+            "ClickHouse.Driver.Transport": "Trace"
+        }
+    }
+}
+```
+
+This will log:
+- HTTP client factory selection (default pool vs single connection)
+- HTTP handler configuration (SocketsHttpHandler or HttpClientHandler)
+- Connection pool settings (MaxConnectionsPerServer, PooledConnectionLifetime, etc.)
+- Timeout settings (ConnectTimeout, Expect100ContinueTimeout, etc.)
+- SSL/TLS configuration
+- Connection open/close events
+- Session ID tracking
+
+### Debug mode: network tracing and diagnostics {#logging-debugmode}
+
+To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Warning: this will generate extremely verbose logs, and impact performance. It is not recommended to enable debug mode in production.
+
+```csharp
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder
+        .AddConsole()
+        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
+});
+
+var settings = new ClickHouseClientSettings()
+{
+    LoggerFactory = loggerFactory,
+    EnableDebugMode = true,  // Enable low-level network tracing
+};
+```
 
 ---
 

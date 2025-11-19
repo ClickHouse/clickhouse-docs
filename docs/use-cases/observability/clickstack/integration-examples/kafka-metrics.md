@@ -256,8 +256,8 @@ Once loaded, the quickest way to see your metrics is through the pre-built dashb
 
 Proceed to the [Dashboards and visualization](#dashboards) section to import the dashboard and view all Kafka metrics at once.
 
-:::note
-The demo dataset time range is 2025-11-05 16:00:00 to 2025-11-06 16:00:00. Make sure your time range in HyperDX matches this window.
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**. Set your time range to **2025-11-04 16:00:00 - 2025-11-07 16:00:00** to ensure you see the demo metrics regardless of your location. Once you see the metrics, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 </VerticalStepper>
@@ -288,7 +288,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={example_dashboard} alt="Kafka Metrics dashboard"/>
 
 :::note
-For the demo dataset, ensure the time range is set to 2025-11-05 16:00:00 to 2025-11-06 16:00:00.
+For the demo dataset, set the time range to **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 </VerticalStepper>

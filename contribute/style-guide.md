@@ -331,7 +331,53 @@ which may need versioned documentation, we use the following custom
 <ClientVersionDropdown versions={}/>
 ```
 
-### How to use it 
+### How to use it
+
+The `ClientVersionDropdown` component supports two APIs:
+
+#### API 1: Inline Content (Recommended)
+
+This approach keeps all content in the main file, which allows Docusaurus to properly generate the table of contents (TOC) for all versions.
+
+```js
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown'
+import Version from '@theme/ClientVersionDropdown/Version'
+
+<ClientVersionDropdown versions={[
+    {
+        'version': 'v0.8+'
+    },
+    {
+        'version': 'v0.7.x'
+    }
+]}>
+
+<Version>
+## Environment requirements
+
+Your v0.8+ content here...
+</Version>
+
+<Version>
+## Environment requirements {#v07-environment-requirements}
+
+Your v0.7.x content here...
+</Version>
+
+</ClientVersionDropdown>
+```
+
+**Important Notes:**
+- All content is placed directly in the main `.mdx` file
+- Each `<Version>` block contains the content for one version
+- The order of `<Version>` blocks must match the order in the `versions` array
+- **Make header IDs unique** across versions using explicit anchor IDs (e.g., `{#v07-environment-requirements}`)
+- The TOC will show only headers from the currently selected version
+- The component will display the first version as 'selected' by default
+
+#### API 2: External Snippets (Legacy)
+
+This approach uses separate snippet files for each version. Note that this method has limitations with TOC generation.
 
 Versioned folders are structured as follows:
 
@@ -352,9 +398,9 @@ Versioned folders are structured as follows:
 ```
 
 * The content for each version is placed in a snippet. For example `_v0_7.mdx`
-  * Snippets begin with `_` 
+  * Snippets begin with `_`
   * Snippets do not contain front-matter
-  * These snippets import any components they may need (See `_v0_7.mdx` for example)
+  * These snippets import any components they may need
   * They should be .mdx files
 * There is a single page for all versions. For example `client.mdx`
   * This page contains frontmatter
@@ -370,8 +416,8 @@ import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDro
 Also import the two snippets:
 
 ```js
-import v07 from './_v0_7.mdx'
-import v08 from './_v0_8.mdx'
+import v07 from './_snippets/_v0_7.mdx'
+import v08 from './_snippets/_v0_8.mdx'
 ```
 
 Pass it an array of objects representing versions and their respective snippets:

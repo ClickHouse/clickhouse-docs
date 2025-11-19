@@ -310,7 +310,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={example_dashboard} alt="Redis Metrics dashboard"/>
 
 :::note
-For the demo dataset, ensure the time range is set to 2025-10-20 05:00:00 - 2025-10-21 05:00:00.
+For the demo dataset, set the time range to **2025-10-20 05:00:00 - 2025-10-21 05:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 </VerticalStepper>
