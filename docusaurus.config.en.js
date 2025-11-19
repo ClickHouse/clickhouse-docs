@@ -336,15 +336,17 @@ const config = {
                 splitChunks: {
                   chunks: 'all',
                   cacheGroups: {
-                    defaultVendors: {
-                      test: /[\\/]node_modules[\\/]/,
+                    vendor: {
+                      chunks: 'all',
+                      test: /node_modules/,
                       priority: 20,
-                      reuseExistingChunk: true,
                     },
-                    default: {
+                    common: {
                       minChunks: 2,
+                      chunks: 'all',
                       priority: 10,
                       reuseExistingChunk: true,
+                      enforce: true,
                     },
                   },
                   maxSize: 244000,
