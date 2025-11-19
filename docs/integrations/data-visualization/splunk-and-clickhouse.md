@@ -6,6 +6,9 @@ keywords: ['Splunk', 'integration', 'data visualization']
 description: 'Connect Splunk dashboards to ClickHouse'
 title: 'Connecting Splunk to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';

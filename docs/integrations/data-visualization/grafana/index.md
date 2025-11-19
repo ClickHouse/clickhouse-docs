@@ -7,7 +7,7 @@ title: 'ClickHouse data source plugin for Grafana'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'core'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
 keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']

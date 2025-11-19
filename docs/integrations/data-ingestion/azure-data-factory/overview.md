@@ -5,6 +5,9 @@ description: 'Bringing Azure Data into ClickHouse - Overview'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Bringing Azure Data into ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

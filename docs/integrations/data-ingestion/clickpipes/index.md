@@ -5,6 +5,9 @@ slug: /integrations/clickpipes
 title: 'Integrating with ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['ClickPipes', 'data ingestion platform', 'streaming data', 'integration platform', 'ClickHouse Cloud']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

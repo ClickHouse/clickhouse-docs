@@ -7,7 +7,7 @@ description: 'Efficiently query very large datasets, analyzing and modeling in t
 title: 'Connect ClickHouse to Deepnote'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
   - website: 'https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote'
 ---

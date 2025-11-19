@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'Resync table'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Resyncing specific tables {#resync-tables}

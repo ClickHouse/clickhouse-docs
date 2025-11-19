@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'Schema registries for Kafka ClickPipe'
 doc_type: 'guide'
 keywords: ['schema registries', 'kafka', 'clickpipes', 'avro', 'confluent']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # Schema registries {#schema-registries}

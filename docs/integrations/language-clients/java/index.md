@@ -4,6 +4,9 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Options for connecting to ClickHouse from Java'
 slug: /integrations/java
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';

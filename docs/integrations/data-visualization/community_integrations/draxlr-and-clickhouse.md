@@ -7,7 +7,7 @@ description: 'Draxlr is a Business intelligence tool with data visualization and
 title: 'Connecting Draxlr to ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
