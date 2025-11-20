@@ -6,16 +6,31 @@ WITH
     FROM file(cpp_file, LineAsString)
     WHERE match(line, '^\\s*DECLARE\\(')
     ),
+    setting_aliases AS
+    (
+        SELECT
+            alias_for,
+            groupArray(name) AS aliases
+        FROM system.settings
+        WHERE alias_for != ''
+        AND alias_for IN settings_from_cpp
+        GROUP BY alias_for
+    ),
     main_content AS
     (
-    SELECT format('## {} {} {}  \n\n{}\n\n{}\n\n',
-    name,
-    '{#'||name||'}',
-    multiIf(tier == 'Experimental', '<ExperimentalBadge/>', tier == 'Beta', '<BetaBadge/>', ''),
-    if(type != '' AND default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', type, default), ''),
-    trim(BOTH '\\n' FROM description))
-    FROM system.settings WHERE name IN settings_from_cpp
-    ORDER BY name
+    SELECT format('## {} {} {}  \n\n{}{}\n\n{}\n\n',
+    s.name,
+    '{#'||s.name||'}',
+    multiIf(s.tier == 'Experimental', '<ExperimentalBadge/>', s.tier == 'Beta', '<BetaBadge/>', ''),
+    if(sa.aliases IS NOT NULL AND length(sa.aliases) > 0,
+       '**Aliases**: ' || arrayStringConcat(arrayMap(x -> '`' || x || '`', sa.aliases), ', ') || '\n\n',
+       ''),
+    if(s.type != '' AND s.default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', s.type, s.default), ''),
+    trim(BOTH '\\n' FROM s.description))
+    FROM system.settings s
+    LEFT JOIN setting_aliases sa ON s.name = sa.alias_for
+    WHERE s.name IN settings_from_cpp
+    ORDER BY s.name
     ),
     '' ||
 '---
