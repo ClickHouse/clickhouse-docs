@@ -4,6 +4,7 @@ description: 'Establish a secure connection between ClickPipes and a data source
 slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
+keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -117,8 +118,8 @@ aws vpc-lattice create-resource-configuration \
 :::note
 You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
-to make it private before creating the resource configuration 
-or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead. 
+to make it private before creating the resource configuration
+or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead.
 For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
@@ -214,7 +215,7 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-r
 5. Select any of existing reverse private endpoints or create a new one.
 
 :::info
-If cross-region access is required for RDS, you need to create a VPC endpoint service and 
+If cross-region access is required for RDS, you need to create a VPC endpoint service and
 [this guide should provide](/knowledgebase/aws-privatelink-setup-for-clickpipes) a good starting point to set it up.
 
 For same-region access, creating a VPC Resource is the recommended approach.
@@ -265,9 +266,9 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 
     <Image img={cp_rpe_settings1} alt="ClickHouse Cloud settings" size="md" border/>
 
-    Reverse private endpoint extended information is shown in the flyout.
+   Reverse private endpoint extended information is shown in the flyout.
 
-    Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
+   Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
 
 </VerticalStepper>
 

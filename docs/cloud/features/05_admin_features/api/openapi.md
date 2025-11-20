@@ -4,6 +4,7 @@ slug: /cloud/manage/openapi
 title: 'Managing API Keys'
 description: 'ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.'
 doc_type: 'guide'
+keywords: ['api', 'openapi', 'rest api', 'documentation', 'cloud management']
 ---
 
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';
@@ -33,6 +34,10 @@ This document covers the ClickHouse Cloud API. For database API endpoints, pleas
 <br/>
 :::note
 Permissions align with ClickHouse Cloud [predefined roles](/cloud/security/console-roles). The developer role has read-only permissions for assigned services and the admin role has full read and write permissions.
+:::
+
+:::tip Query API Endpoints
+To use API keys with [Query API Endpoints](/cloud/get-started/query-endpoints), set Organization Role to `Member` (minimum) and grant Service Role access to `Query Endpoints`.
 :::
 
   <Image img={image_03} size="md" alt="Create API key form" border/>

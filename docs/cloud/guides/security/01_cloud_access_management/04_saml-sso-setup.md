@@ -4,6 +4,7 @@ slug: /cloud/security/saml-setup
 title: 'SAML SSO setup'
 description: 'How to set up SAML SSO with ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP', 'Okta', 'Google']
 ---
 
 import Image from '@theme/IdealImage';

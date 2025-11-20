@@ -4,6 +4,10 @@ description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse 
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -86,7 +90,7 @@ You have familiarized yourself with the [ClickPipes intro](./index.md) and setup
 ## Supported data formats {#supported-data-formats}
 
 The supported formats are:
-- [JSON](../../../interfaces/formats.md/#json)
+- [JSON](/interfaces/formats/JSON)
 
 ## Supported data types {#supported-data-types}
 

@@ -5,6 +5,7 @@ slug: /integrations/kafka/kafka-table-engine
 description: 'Using the Kafka Table Engine'
 title: 'Using the Kafka table engine'
 doc_type: 'guide'
+keywords: ['kafka', 'table engine', 'streaming', 'real-time', 'message queue']
 ---
 
 import Image from '@theme/IdealImage';

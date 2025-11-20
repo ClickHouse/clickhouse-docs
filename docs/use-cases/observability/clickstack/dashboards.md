@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Visualizations and Dashboards with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -24,6 +25,7 @@ import dashboard_edit from '@site/static/images/use-cases/observability/hyperdx-
 import dashboard_clickhouse from '@site/static/images/use-cases/observability/hyperdx-dashboard-clickhouse.png';
 import dashboard_services from '@site/static/images/use-cases/observability/hyperdx-dashboard-services.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
+import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in HyperDX. These charts can be added to dashboards for sharing with other users.
 
@@ -150,17 +152,19 @@ The dashboard will be auto-saved. To set the dashboard name, select the title an
 
 </VerticalStepper>
 
-## Dashboards - editing visualizations {#dashboards-editing-visualizations}
+## Dashboards - Editing visualizations {#dashboards-editing-visualizations}
 
 To remove, edit, or duplicate a visualization, hover over it and use the corresponding action buttons.
 
 <Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
 
-## Dashboard listing and search {#dashboard-listing-search}
+## Dashboard - Listing and search {#dashboard-listing-search}
 
 Dashboards are accessible from the left-hand menu, with built-in search to quickly locate specific dashboards.
-
 <Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+
+## Dashboards - Tagging {#tagging}
+<Tagging />
 
 ## Presets {#presets}
 

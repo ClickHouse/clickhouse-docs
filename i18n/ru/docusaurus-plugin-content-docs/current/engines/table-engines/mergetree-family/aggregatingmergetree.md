@@ -8,7 +8,7 @@ doc_type: reference
 ---
 # AggregatingMergeTree
 
-Двигатель наследует от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree), изменяя логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
+Движок наследует от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree), изменяя логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
 
 Вы можете использовать таблицы `AggregatingMergeTree` для инкрементной агрегации данных, включая агрегированные материализованные представления.
 
@@ -17,7 +17,7 @@ doc_type: reference
 <iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="Aggregation States in ClickHouse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Двигатель обрабатывает все колонки со следующими типами:
+Движок обрабатывает все колонки со следующими типами:
 
 - [`AggregateFunction`](../../../sql-reference/data-types/aggregatefunction.md)
 - [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)

@@ -3,14 +3,9 @@ import styles from "./styles.module.css"
 
 const Icon = () => {
   return (
-    <div className={styles.CommunityMaintainedIcon} style={{ marginRight: '8px', marginTop: '4px' }}>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fillRule="evenodd" clipRule="evenodd" d="M6.22168 4.44463V4.44463C6.22168 3.46263 7.01768 2.66663 7.99968 2.66663V2.66663C8.98168 2.66663 9.77768 3.46263 9.77768 4.44463V4.44463C9.77768 5.42663 8.98168 6.22263 7.99968 6.22263V6.22263C7.01768 6.22196 6.22168 5.42596 6.22168 4.44463Z" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
-        <path fillRule="evenodd" clipRule="evenodd" d="M1.91309 11.5553V11.5553C1.91309 10.5733 2.70909 9.77734 3.69109 9.77734V9.77734C4.67309 9.77734 5.46909 10.5733 5.46909 11.5553V11.5553C5.46842 12.5373 4.67309 13.3333 3.69109 13.3333V13.3333C2.70909 13.3333 1.91309 12.5373 1.91309 11.5553Z" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
-        <path fillRule="evenodd" clipRule="evenodd" d="M10.5322 11.5553V11.5553C10.5322 10.5733 11.3282 9.77734 12.3102 9.77734V9.77734C13.2922 9.77734 14.0882 10.5733 14.0882 11.5553V11.5553C14.0882 12.5373 13.2922 13.3333 12.3102 13.3333V13.3333C11.3276 13.3333 10.5322 12.5373 10.5322 11.5553H10.5322Z" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M10.5939 11.1134H5.40723" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M8.95996 5.94006L11.54 9.96006" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M4.45996 9.96006L7.03996 5.94006" stroke="#FBEFF8" strokeLinecap="round" strokeLinejoin="round" />
+    <div className={styles.CommunityMaintainedIcon} style={{ marginRight: '8px', display: 'flex', alignItems: 'center' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 256 256">
+        <path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
       </svg>
     </div>
   )

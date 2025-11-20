@@ -4,6 +4,7 @@ sidebar_position: 3
 title: 'Server packets'
 description: 'Native protocol server'
 doc_type: 'reference'
+keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specification', 'networking']
 ---
 
 # Server packets

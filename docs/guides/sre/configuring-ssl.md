@@ -4,6 +4,7 @@ sidebar_label: 'Configuring SSL-TLS'
 sidebar_position: 20
 title: 'Configuring SSL-TLS'
 description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
+keywords: ['SSL configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide']
 doc_type: 'guide'
 ---
 

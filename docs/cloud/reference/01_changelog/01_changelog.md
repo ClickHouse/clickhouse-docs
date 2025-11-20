@@ -4,6 +4,7 @@ sidebar_label: 'Cloud changelog'
 title: 'Cloud Changelog'
 description: 'ClickHouse Cloud changelog providing descriptions of what is new in each ClickHouse Cloud release'
 doc_type: 'changelog'
+keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,6 +32,39 @@ import query_endpoints from '@site/static/images/cloud/reference/may-17-query-en
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
+
+:::tip[Automatically keep up to date!]
+  <a href="/docs/cloud/changelog-rss.xml">
+    Subscribe to Cloud Changelog via RSS
+  </a>
+:::
+
+## November 14, 2025 {#november-14-2025}
+- We’re excited to announce that **ClickHouse Cloud** is now available in **two additional public regions**:
+  - **GCP Japan (asia-northeast1)**
+  - **AWS Seoul (Asia Pacific, ap-northeast-2)** — now also supported in **ClickPipes**
+
+  These regions were previously available as **private regions** and are now **open to all users**.
+- Terraform and API now support adding tags to services and filtering services by tags.
+
+## November 7, 2025 {#november-7-2025}
+
+- ClickHouse Cloud console now supports configuring replica sizes in increments of 1 vCPU, 4 GiB from the cloud console.
+  These options are available both when setting up a new service as well as when setting minimum and maximum replica sizes on the settings page.
+- Custom hardware profiles (available on the Enterprise tier) now support idling.
+- ClickHouse Cloud now offers a simplified purchasing experience through AWS Marketplace, with separate options for [pay-as-you-go](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu?sr=0-2&ref_=beagle&applicationId=AWSMPContessa) and [committed spend contracts](https://aws.amazon.com/marketplace/pp/prodview-4qyeihstyym2s?sr=0-3&ref_=beagle&applicationId=AWSMPContessa).
+- Alerting is now available for ClickStack users in ClickHouse Cloud.
+  Users can now create and manage alerts directly in the HyperDX UI, across logs, metrics, and traces with no extra setup, no extra infra or service, and no config. Alerts integrate with Slack, PagerDuty, and more.
+  For more information see the [alerting documentation](/use-cases/observability/clickstack/alerts).
+
+## October 17, 2025 {#october-17-2025}
+
+- **Service Monitoring - Resource Utilization Dashboard**  
+  The CPU utilization and memory utilization metrics display will change to show the maximum utilization metric during a particular time period to better surface instances of underprovisionment, from average.
+  In addition, the CPU utilization metric will show a kubernetes-level CPU utilization metric which more closely resembles the metric used by ClickHouse Cloud’s autoscaler. 
+- **External Buckets**  
+  ClickHouse Cloud now lets you export backups directly to your own cloud service provider account.
+  Connect your external storage bucket - AWS S3, Google Cloud Storage, or Azure Blob Storage - and take control of your backup management.
 
 ## August 29, 2025 {#august-29-2025}
 
@@ -214,7 +248,7 @@ remains within the ClickHouse VPC. This setup is ideal for large workloads that
 need to comply with strict data residency requirements by ensuring all data stays
 within a secure customer environment.
 
-- For more details, you can refer to the [documentation](/cloud/reference/byoc) for BYOC
+- For more details, you can refer to the [documentation](/cloud/reference/byoc/overview) for BYOC
   or read our [announcement blog post](https://clickhouse.com/blog/announcing-general-availability-of-clickhouse-bring-your-own-cloud-on-aws).
 - [Contact us](https://clickhouse.com/cloud/bring-your-own-cloud) to request access.
 

@@ -5,6 +5,7 @@ sidebar_position: 20
 description: 'ClickHouse does not support automatic shard rebalancing, so we provide some best practices for how to rebalance shards.'
 title: 'Rebalancing Data'
 doc_type: 'guide'
+keywords: ['scaling', 'clusters', 'horizontal scaling', 'capacity planning', 'performance']
 ---
 
 # Rebalancing data

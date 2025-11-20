@@ -4,6 +4,7 @@ sidebar_label: 'Dynamic column selection'
 title: 'Dynamic column selection'
 description: 'Use alternative query languages in ClickHouse'
 doc_type: 'guide'
+keywords: ['dynamic column selection', 'regular expressions', 'APPLY modifier', 'advanced queries', 'developer guide']
 ---
 
 [Dynamic column selection](/docs/sql-reference/statements/select#dynamic-column-selection) is a powerful but underutilized ClickHouse feature that allows you to select columns using regular expressions instead of naming each column individually. You can also apply functions to matching columns using the `APPLY` modifier, making it incredibly useful for data analysis and transformation tasks.

@@ -6,6 +6,7 @@ sidebar_position: 5
 description: 'Node.js SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Node.js'
 doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 import Tabs from '@theme/Tabs';
@@ -84,7 +85,7 @@ By default, `console.*` logs are collected by default. If you're using a logger
 such as `winston` or `pino`, you'll need to add a transport to your logger to
 send logs to ClickStack.  If you're using another type of logger,
 [reach out](mailto:support@clickhouse.com) or explore one of our platform
-integrations if applicable (such as [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes)).
+integrations if applicable (such as [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes)).
 
 <Tabs groupId="logging">
 <TabItem value="Winston" label="Winston" default>

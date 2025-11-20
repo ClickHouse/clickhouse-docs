@@ -4,6 +4,11 @@ slug: /integrations/datagrip
 description: 'DataGrip is a database IDE that supports ClickHouse out of the box.'
 title: 'Connecting DataGrip to ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
+  - website: 'https://www.jetbrains.com/datagrip/'
+keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL client', 'integrated development environment']
 ---
 
 import Image from '@theme/IdealImage';
@@ -48,17 +53,22 @@ DataGrip is available at https://www.jetbrains.com/datagrip/
 
 ## 3. Connect to ClickHouse {#3-connect-to-clickhouse}
 
-- Specify your database connection details, and click **Test Connection**:
+- Specify your database connection details, and click **Test Connection**. 
+In step one you gathered your connection details - fill in the host URL, port, username, password, and database name, then test the connection.
 
-  In step one you gathered your connection details, fill in the host URL, port, username, password, and database name, then test the connection.
+:::tip
+Enter only the hostname in the **Host** field (e.g., `your-host.clickhouse.cloud`) without any protocol prefix like `https://`.
 
-  :::tip
-  The **HOST** entry in the DataGrip dialog is actually a URL, see the image below.
+For ClickHouse Cloud connections, you must add `?ssl=true` to the **URL** field below the host. The complete JDBC URL should look like:
 
-  For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
-  :::
+`jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true`
 
-<Image img={datagrip_7} size="md" border alt="DataGrip connection details form with ClickHouse settings" />
+ClickHouse Cloud requires SSL encryption for all connections. Without the `?ssl=true` parameter, you'll see "Connection reset" errors even with correct credentials.
+
+For more details on JDBC URL settings, please refer to the [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) repository.
+:::
+
+<Image img={datagrip_7} border alt="DataGrip connection details form with ClickHouse settings" />
 
 ## Learn more {#learn-more}
 

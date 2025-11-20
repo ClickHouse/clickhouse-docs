@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 2
 description: 'Deploying ClickStack with Helm - The ClickHouse Observability Stack'
 doc_type: 'guide'
+keywords: ['ClickStack Helm chart', 'Helm ClickHouse deployment', 'HyperDX Helm installation', 'Kubernetes observability stack', 'ClickStack Kubernetes deployment']
 ---
 
 import Image from '@theme/IdealImage';
@@ -106,6 +107,7 @@ You can customize settings by using `--set` flags. For example:
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
+```
 
 Alternatively, edit the `values.yaml`. To retrieve the default values:
 

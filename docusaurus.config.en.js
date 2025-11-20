@@ -322,6 +322,42 @@ const config = {
         },
       };
     },
+    // Webpack optimization plugin for large sites
+    function webpackOptimizationPlugin(context, options) {
+      return {
+        name: 'webpack-optimization-plugin',
+        configureWebpack(config, isServer) {
+
+          const isVercel = process.env.VERCEL === '1';
+
+          if (!isServer && isVercel) {
+            return {
+              optimization: {
+                splitChunks: {
+                  chunks: 'all',
+                  cacheGroups: {
+                    vendor: {
+                      chunks: 'all',
+                      test: /node_modules/,
+                      priority: 20,
+                    },
+                    common: {
+                      minChunks: 2,
+                      chunks: 'all',
+                      priority: 10,
+                      reuseExistingChunk: true,
+                      enforce: true,
+                    },
+                  },
+                  maxSize: 244000,
+                },
+              },
+            };
+          }
+          return {};
+        },
+      };
+    },
     // [
     // N.B - If you need to redirect a page please do so from vercel.json
     // 	'@docusaurus/plugin-client-redirects',
@@ -371,7 +407,7 @@ const config = {
     ]
   ],
   customFields: {
-    blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
+    blogSidebarLink: "/docs/knowledgebase",
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
   },

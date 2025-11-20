@@ -4,6 +4,7 @@ sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
 description: 'Using ClickHouse Connector Sink with Kafka Connect and ClickHouse'
 title: 'Integrating Confluent Cloud with ClickHouse'
+keywords: ['Confluent ClickHouse integration', 'ClickHouse Kafka connector', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'custom connector Confluent']
 doc_type: 'guide'
 ---
 

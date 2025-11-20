@@ -6,6 +6,7 @@ sidebar_position: 3
 description: 'Java SDK for ClickStack - The ClickHouse Observability Stack'
 title: 'Java'
 doc_type: 'guide'
+keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
