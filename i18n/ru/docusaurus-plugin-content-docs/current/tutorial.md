@@ -549,4 +549,4 @@ LAYOUT(HASHED_ARRAY())
 - [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите ваш любимый инструмент UI/BI к ClickHouse.
 - [Справочник SQL](./sql-reference/index.md): Ознакомьтесь с SQL-функциями, доступными в ClickHouse для преобразования, обработки и анализа данных.
 
-test again
+test again!

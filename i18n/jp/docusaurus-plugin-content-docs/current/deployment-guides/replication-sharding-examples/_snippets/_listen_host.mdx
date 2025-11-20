@@ -1,0 +1,17 @@
+ネットワークインターフェイスへの外部からの通信は、`listen_host` 設定を有効にすることで許可されます。これにより、ClickHouse サーバーホストが他のホストから到達可能になります。
+
+```xml
+<listen_host>0.0.0.0</listen_host>
+```
+
+HTTP API のポートは `8123` に設定されています。
+
+```xml
+<http_port>8123</http_port>
+```
+
+ClickHouse のネイティブプロトコルによる、clickhouse-client と他のネイティブ ClickHouse ツール、および clickhouse-server と他の clickhouse-server 間の通信に使用される TCP ポートは `9000` に設定されています。
+
+```xml
+<tcp_port>9000</tcp_port>
+```

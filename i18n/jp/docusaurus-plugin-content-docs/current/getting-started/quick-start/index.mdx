@@ -1,0 +1,122 @@
+---
+description: '数分で ClickHouse を使い始め、サンプルデータを試し、自分のソリューションを構築しましょう'
+keywords: ['clickhouse', 'クイックスタート']
+sidebar_label: 'クイックスタート'
+sidebar_position: 0
+slug: /get-started/quick-start
+title: 'クイックスタート'
+doc_type: 'landing-page'
+---
+
+import {CardSecondary, CardPromotion} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
+
+<div
+  style={{
+display: 'inline-flex',
+flexDirection: 'column',
+width: '100%',
+maxWidth: 'calc(700px + 1rem)'
+}}
+>
+  <div
+    style={{
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '1rem',
+    marginBottom: '1rem',
+    width: '100%',
+    '@media (max-width: 996px)': {
+        flexDirection: 'column'
+    }
+}}
+  >
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
+        '@media (max-width: 996px)': {
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
+        }
+    }}
+    >
+      <Link to="/getting-started/quick-start/cloud" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          badgeText="推奨"
+          description="数分で ClickHouse Cloud を使い始めましょう。
+ClickHouse サービスの作成方法、
+ClickHouse への接続方法、そして CDC、SQL コンソール、
+ローカルクライアントやファイルアップロードを使って
+サービスにデータを追加する方法を順を追って説明します。
+"
+          icon="cloud"
+          infoText="開始する"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/cloud"
+          title="Cloud クイックスタート"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
+    </div>
+
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
+        '@media (max-width: 996px)': {
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
+        }
+    }}
+    >
+      <Link to="/getting-started/quick-start/oss" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          description="数分で OSS ClickHouse を使い始めましょう。ローカル環境に
+ClickHouse server と client をインストールし、テーブルを作成して
+サンプルデータを挿入し、独自のデータを ClickHouse に取り込む
+さまざまな方法を学びます。
+"
+          icon="server"
+          infoText="開始する"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/oss"
+          title="OSS クイックスタート"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
+    </div>
+  </div>
+
+  <div
+    style={{
+    width: '100%',
+    '@media (max-width: 996px)': {
+        maxWidth: '100%',
+        margin: '0'
+    }
+}}
+  >
+    <Link to="/cloud/overview" style={{textDecoration: 'none', width: '100%'}}>
+      <CardPromotion
+        icon="question"
+        label="どちらを選ぶべきか迷っている場合はこちらをクリックしてください。Cloud と OSS ClickHouse の違いについて説明します。"
+        style={{
+              display: 'flex',
+              flex: '1',
+              width: '100%',
+              minHeight: 'auto',
+              alignItems: 'flex-start',
+              padding: '1rem',
+              boxSizing: 'border-box',
+              cursor: 'pointer'
+          }}
+      />
+    </Link>
+  </div>
+</div>
