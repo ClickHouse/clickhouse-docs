@@ -62,6 +62,7 @@ implementation 'com.clickhouse:client-v2:0.9.4'
 
 </TabItem>
 </Tabs>
+<br/>
 
 ## Initialization {#initialization}
 
@@ -128,69 +129,145 @@ Major configuration parameters are defined in one scope (client or operation) an
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
 ## Client Configuration {#client-configuration}
-<WideTableWrapper>
-| Configuration Method  | Arguments                   |  Description                                |
-|-----------------------|-----------------------------|:--------------------------------------------|
-| `addEndpoint(String endpoint)`          | - `endpoint` - URL formatted a server address.      | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`  |
-| `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - connection protocol `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - IP or hostname of a server.<br />- `secure` - if communication should use secure version of the protocol (HTTPS) | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `setOption(String key, String value)`   | - `key` - String key of the client configuration option.<br /> - `value` - String value of the option | Sets raw value of client options. Useful when reading configuration from properties files. |
-| `setUsername(String username)`          | - `username` - User's username to use while authentication | Sets username for an authentication method that is selected by further configuration <br/> <br/> Default: `default` <br/> Enum: `ClientConfigProperties.USER` <br/> Key: `user` |
-| `setPassword(String password)`          | - `password` - secret value for password authentication | Sets a secret for password authentication and effectively selects as authentication method <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PASSWORD` <br/> Key: `password` |
-| `setAccessToken(String accessToken)`    | - `accessToken` - String representation of an access token | Sets an access token to authenticate with a sets corresponding authentication method <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.ACCESS_TOKEN` <br/> Key: `access_token` |
-| `useSSLAuthentication(boolean useSSLAuthentication)` | - `useSSLAuthentication` - flag that indicates if SSL auth should be used | Sets SSL Client Certificate as an authentication method. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_AUTH` <br/> Key: `ssl_authentication` |
-| `enableConnectionPool(boolean enable)`  | - `enable` - flag that indicates if the option should be enabled | Sets if a connection pool is enabled <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.CONNECTION_POOL_ENABLED` <br/> Key: `connection_pool_enabled` |
-| `setConnectTimeout(long timeout, ChronoUnit unit)` | - `timeout` - timeout in some time unit.<br /> - `unit` - time unit of the `timeout` | Sets connection initiation timeout  for any outgoing connection. This affects time wait on getting socket connect. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.CONNECTION_TIMEOUT` <br/> Key: `connection_timeout`|
-| `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | - `timeout` - timeout in some time unit.<br /> - `unit` - time unit of the `timeout` | Sets connection request timeout. This take effect only for getting connection from a pool. <br/> <br/> Default: `10000` <br/> Enum: `ClientConfigProperties.CONNECTION_REQUEST_TIMEOUT` <br/> Key: `connection_request_timeout` |
-| `setMaxConnections(int maxConnections)` | - `maxConnections` - number of connections | Sets how many connections can a client open to each server endpoint. <br/> <br/> Default: `10` <br/> Enum: `ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS` <br/> Key: `max_open_connections` |
-| `setConnectionTTL(long timeout, ChronoUnit unit)` | - `timeout` - timeout in some time unit.<br /> - `unit` - time unit of the `timeout` | Sets connection TTL after which connection will be considered as not active <br/> <br/> Default: `-1` <br/> Enum: `ClientConfigProperties.CONNECTION_TTL` <br/> Key: `connection_ttl`|
-| `setKeepAliveTimeout(long timeout, ChronoUnit unit)` | - `timeout` - timeout in some time unit.<br /> - `unit` - time unit of the `timeout` | Sets HTTP connection keep-alive timeout. This option may be used to disable Keep-Alive by setting timeout to zero - `0` <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br/> Key: `http_keep_alive_timeout` |
-| `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)` | - `strategy` - enum `com.clickhouse.client.api.ConnectionReuseStrategy` constant | Selects which strategy connection pool should use: `LIFO` if connection should be reused as soon as they are returned to a pool or `FIFO` to use connection in the order they become available (returned connection are not used immediately). <br/> <br/> Default: `FIFO` <br/> Enum: `ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br/> Key: `connection_reuse_strategy`|
-| `setSocketTimeout(long timeout, ChronoUnit unit`)` | - `timeout` - timeout in some time unit.<br /> - `unit` - time unit of the `timeout` | Sets socket timeout that affects read and write operations <br/> <br/> Default: `0` <br/> Enum: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br/> Key: `socket_timeout`|
-| `setSocketRcvbuf(long size)` | - `size` - size in bytes | Sets TCP socket receive buffer. This buffer out of the JVM memory. <br/> <br/> Default: `8196` <br/> Enum: `ClientConfigProperties.SOCKET_RCVBUF_OPT` <br/> Key: `socket_rcvbuf` |
-| `setSocketSndbuf(long size)` | - `size` - size in bytes | Sets TCP socket receive buffer. This buffer out of the JVM memory. <br/> <br/> Default: `8196` <br/> Enum: `ClientConfigProperties.SOCKET_SNDBUF_OPT` <br/> Key: `socket_sndbuf` |
-| `setSocketKeepAlive(boolean value)` | - `value` - flag that indicates if option should be enabled. | Sets option `SO_KEEPALIVE` for every TCP socket created by the client. TCP Keep Alive enables mechanism that will check liveness of the connection and will help to detect abruptly terminated ones. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br/> Key: `socket_keepalive` |
-| `setSocketTcpNodelay(boolean value)` | - `value` - flag that indicates if option should be enabled. | Sets option `SO_NODELAY` for every TCP socket created by the client. This TCP option will make socket to push data as soon as possible. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br/> Key: `socket_tcp_nodelay`|
-| `setSocketLinger(int secondsToWait)` | - `secondsToWait` - number of seconds. | Set linger time for every TCP socket created by the client. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SOCKET_LINGER_OPT` <br/> Key: `socket_linger`|
-| `compressServerResponse(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if server should compress its responses. <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br/> Key: `compress` |
-| `compressClientRequest(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if client should compress its requests. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br/> Key: `decompress` |
-| `useHttpCompression(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Sets if HTTP compression should be used for client/server communications if corresponding options are enabled |
-| `appCompressedData(boolean enabled)` | - `enabled` - flag that indicates if the option should be enabled | Tell client that compression will be handled by application. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.APP_COMPRESSED_DATA` <br/> Key: `app_compressed_data` |
-| `setLZ4UncompressedBufferSize(int size)` | - `size` - size in bytes | Sets size of a buffer that will receive uncompressed portion of a data stream. If buffer is underestimated - a new one will be created and corresponding warning will be present in logs. <br/> <br/> Default: `65536` <br/> Enum: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br/> Key: `compression.lz4.uncompressed_buffer_size`|
-| `disableNativeCompression` | - `disable` - flag that indicates if the option should be disabled | Disable native compression. If set to true then native compression will be disabled. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br/> Key: `disable_native_compression` |
-| `setDefaultDatabase(String database)` | - `database` - name of a database | Sets default database. <br/> <br/> Default: `default` <br/> Enum: `ClientConfigProperties.DATABASE` <br/> Key: `database` |
-| `addProxy(ProxyType type, String host, int port)` | - `type` - proxy type.<br /> - `host` - proxy host name or IP Address.<br /> - `port` - proxy port | Sets proxy to be used for communication with a server. Setting proxy is required if proxy requires authentication. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PROXY_TYPE` <br/> Key: `proxy_type` <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PROXY_HOST` <br/> Key: `proxy_host`  <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PROXY_PORT` <br/> Key: `proxy_port` |
-| `setProxyCredentials(String user, String pass)` | - `user` - proxy username.<br /> - `pass` - password | Sets user credentials to authenticate with a proxy. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PROXY_USER` <br/> Key: `proxy_user` <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.PROXY_PASSWORD` <br/> Key: `proxy_password` |
-| `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | - `timeout` - timeout in some time unit.<br /> - `timeUnit` - time unit of the `timeout` | Sets maximum execution timeout for queries <br/> <br/> Default: `0` <br/> Enum: `ClientConfigProperties.MAX_EXECUTION_TIME` <br/> Key: `max_execution_time`|
-| `setHttpCookiesEnabled(boolean enabled)` | `enabled` - flag that indicates if the option should be enabled | Set if HTTP cookies should be remembered and sent to server back. |
-| `setSSLTrustStore(String path)` | `path` - file path on local (client side) system | Sets if client should use SSL truststore for server host validation. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_TRUST_STORE` <br/> Key: `trust_store` |
-| `setSSLTrustStorePassword(String password)` | `password` - secret value | Sets password to be used to unlock SSL truststore specified by `setSSLTrustStore(String path)` <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br/> Key: `key_store_password` |
-| `setSSLTrustStoreType(String type)` | `type` - truststore type name | Sets type of the truststore specified by `setSSLTrustStore(String path)`. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_KEYSTORE_TYPE` <br/> Key: `key_store_type` |
-| `setRootCertificate(String path)` | `path` - file path on local (client side) system | Sets if client should use specified root (CA) certificate for server host to validation.<br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.CA_CERTIFICATE` <br/> Key: `sslrootcert` |
-| `setClientCertificate(String path)` | `path` - file path on local (client side) system | Sets client certificate path to be used while initiating SSL connection and to be used by SSL authentication.<br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_CERTIFICATE` <br/> Key: `sslcert`|
-| `setClientKey(String path)` | `path` - file path on local (client side) system | Sets client private key to be used for encrypting SSL communication with a server. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_KEY` <br/> Key: `ssl_key`|
-| `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - flag that indicates if the option should be enabled | Sets if client should use server timezone when decoding DateTime and Date column values. If enabled then server timezone should be set by `setServerTimeZone(String timeZone)` <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.USE_SERVER_TIMEZONE` <br/> Key: `use_server_time_zone`|
-| `useTimeZone(String timeZone)` | `timeZone` - string value of java valid timezone ID (see `java.time.ZoneId`) | Sets if specified timezone should be used when decoding DateTime and Date column values. Will override server timezone. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.USE_TIMEZONE` <br/> Key: `use_time_zone` |
-| `setServerTimeZone(String timeZone)` |  `timeZone` - string value of java valid timezone ID (see `java.time.ZoneId`) | Sets server side timezone. UTC timezone will be used by default. <br/> <br/> Default: `UTC` <br/> Enum: `ClientConfigProperties.SERVER_TIMEZONE` <br/> Key: `server_time_zone` |
-| `useAsyncRequests(boolean async)` | `async` - flag that indicates if the option should be enabled. | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multi-threaded tasks and running tasks in separate thread do not help with performance. <br/> <br/> Default: `false` <br/> Enum: `ClientConfigProperties.ASYNC_OPERATIONS` <br/> Key: `async` |
-| `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - instance of executor service. | Sets executor service for operation tasks. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none`|
-| `setClientNetworkBufferSize(int size)` | - `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data back-and-forth between socket and application. Greater reduces system calls to TCP stack, but affects how much memory is spent on every connection. This buffer is also subject for GC because connections are shortlive. Also keep in mind that allocating big continuous block of memory might be a problem. <br/> <br/> Default: `300000` <br/> Enum: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> Key: `client_network_buffer_size`|
-| `retryOnFailures(ClientFaultCause ...causes)` | - `causes` - enum constant of `com.clickhouse.client.api.ClientFaultCause` | Sets recoverable/retriable fault types. <br/> <br/> Default: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br/> Enum: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br/> Key: `client_retry_on_failures` |
-| `setMaxRetries(int maxRetries)` | - `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures(ClientFaultCause ...causes)` <br/> <br/> Default: `3` <br/> Enum: `ClientConfigProperties.RETRY_ON_FAILURE` <br/> Key: `retry` |
-| `allowBinaryReaderToReuseBuffers(boolean reuse)` | - `reuse` - flag that indicates if the option should be enabled | Most datasets contain numeric data encoded as small byte sequences. By default reader will allocate required buffer, read data into it and then transform into a target Number class. That may cause significant GC preasure because of many small objects are being allocated and released. If this option is enabled then reader will use preallocated buffers to do numbers transcoding. It is safe because each reader has own set of buffers and readers are used by one thread. |
-| `httpHeader(String key, String value)` | - `key` - HTTP header key.<br /> - `value` - string value of the header. | Sets value for a single HTTP header. Previous value is overridden. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `httpHeader(String key, Collection values)` | - `key` - HTTP header key.<br /> - `values` - list of string values. | Sets values for a single HTTP header. Previous value is overridden. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `httpHeaders(Map headers)` | - `header` - map with HTTP headers and their values. | Sets multiple HTTP header values at a time. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `serverSetting(String name, String value)` | - `name` - name of a query level setting.<br /> - `value` - string value of the setting. | Sets what settings to pass to server along with each query. Individual operation settings may override it. The [List of settings](/operations/settings/query-level) <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `serverSetting(String name,  Collection values)` | - `name` - name of a query level setting.<br /> - `values` - string values of the setting. |Sets what settings to pass to server along with each query. Individual operation settings may override it. The [List of settings](/operations/settings/query-level). This method is useful to set settings with multiple values, for example [roles](/interfaces/http#setting-role-with-query-parameters) <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - implementation of a column-field matching strategy | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. <br/> <br/> Default: `none` <br/> Enum: `none` <br/> Key: `none` |
-| `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - flag that indicates if the option should be enabled | Sets if basic HTTP authentication should be used for user-password authentication. Default is enabled. Using this type of authentication resolves issues with passwords containing special characters that cannot be transferred over HTTP headers. <br/> <br/> Default: `true` <br/> Enum: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> Key: `http_use_basic_auth` |
-| `setClientName(String clientName)` | - `clientName` - a string representing application name | Sets additional information about calling application. This string will be passed to server as a client name. In case of HTTP protocol it will be passed as a `User-Agent` header. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.CLIENT_NAME` <br/> Key: `client_name`|
-| `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - an encoded bearer token |  Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is, so it should be encoded before passing to this method. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> Key: `bearer_token` |
-| `registerClientMetrics(Object registry, String name)` | - `registry` - Micrometer registry instance<br /> - `name` - metrics group name | Registers sensors with Micrometer (https://micrometer.io/) registry instance. |
-| `setServerVersion(String version)` | - `version` - string value of a server version | Sets server version to avoid version detection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SERVER_VERSION` <br/> Key: `server_version` |
-| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - map of type hints | Sets type hint mapping for ClickHouse types. For example, to make multidimesional arrays be present as Java containers instead of own Array objects. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> Key: `type_hint_mapping` |
-| `sslSocketSNI(String sni)` | - `sni` - string value of a server name | Sets server name to be used for SNI (Server Name Indication) in SSL/TLS connection. <br/> <br/> Default: - <br/> Enum: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> Key: `ssl_socket_sni` |
-</WideTableWrapper>
+
+<Tabs groupId="client-config">
+<TabItem value="connection" label="Connection & Endpoints">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `addEndpoint(String endpoint)` | `endpoint` - URL formatted server address | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. | `none` | `none` |
+| `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - connection protocol<br/>`host` - IP or hostname<br/>`secure` - use HTTPS | Adds a server endpoint to list of available servers. Currently only one endpoint is supported. | `none` | `none` |
+| `enableConnectionPool(boolean enable)` | `enable` - flag to enable/disable | Sets if a connection pool is enabled | `true` | `connection_pool_enabled` |
+| `setMaxConnections(int maxConnections)` | `maxConnections` - number of connections | Sets how many connections can a client open to each server endpoint. | `10` | `max_open_connections` |
+| `setConnectionTTL(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets connection TTL after which connection will be considered as not active | `-1` | `connection_ttl` |
+| `setKeepAliveTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets HTTP connection keep-alive timeout. Set to `0` to disable Keep-Alive. | - | `http_keep_alive_timeout` |
+| `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)` | `strategy` - `LIFO` or `FIFO` | Selects which strategy connection pool should use | `FIFO` | `connection_reuse_strategy` |
+| `setDefaultDatabase(String database)` | `database` - name of a database | Sets default database. | `default` | `database` |
+
+</TabItem>
+
+<TabItem value="authentication" label="Authentication">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setUsername(String username)` | `username` - username for authentication | Sets username for an authentication method that is selected by further configuration | `default` | `user` |
+| `setPassword(String password)` | `password` - secret value | Sets a secret for password authentication and effectively selects as authentication method | - | `password` |
+| `setAccessToken(String accessToken)` | `accessToken` - access token string | Sets an access token to authenticate with a sets corresponding authentication method | - | `access_token` |
+| `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - flag to enable SSL auth | Sets SSL Client Certificate as an authentication method. | - | `ssl_authentication` |
+| `useHTTPBasicAuth(boolean useBasicAuth)` | `useBasicAuth` - flag to enable/disable | Sets if basic HTTP authentication should be used for user-password authentication. Resolves issues with passwords containing special characters. | `true` | `http_use_basic_auth` |
+| `useBearerTokenAuth(String bearerToken)` | `bearerToken` - an encoded bearer token | Specifies whether to use Bearer Authentication and what token to use. The token will be sent as is. | - | `bearer_token` |
+
+</TabItem>
+
+<TabItem value="timeouts" label="Timeouts & Retry">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setConnectTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets connection initiation timeout for any outgoing connection. | - | `connection_timeout` |
+| `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets connection request timeout. This take effect only for getting connection from a pool. | `10000` | `connection_request_timeout` |
+| `setSocketTimeout(long timeout, ChronoUnit unit)` | `timeout` - timeout value<br/>`unit` - time unit | Sets socket timeout that affects read and write operations | `0` | `socket_timeout` |
+| `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | `timeout` - timeout value<br/>`timeUnit` - time unit | Sets maximum execution timeout for queries | `0` | `max_execution_time` |
+| `retryOnFailures(ClientFaultCause ...causes)` | `causes` - enum constant of `ClientFaultCause` | Sets recoverable/retriable fault types. | `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` | `client_retry_on_failures` |
+| `setMaxRetries(int maxRetries)` | `maxRetries` - number of retries | Sets maximum number of retries for failures defined by `retryOnFailures` | `3` | `retry` |
+
+</TabItem>
+
+<TabItem value="socket" label="Socket Options">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setSocketRcvbuf(long size)` | `size` - size in bytes | Sets TCP socket receive buffer. This buffer out of the JVM memory. | `8196` | `socket_rcvbuf` |
+| `setSocketSndbuf(long size)` | `size` - size in bytes | Sets TCP socket send buffer. This buffer out of the JVM memory. | `8196` | `socket_sndbuf` |
+| `setSocketKeepAlive(boolean value)` | `value` - flag to enable/disable | Sets option `SO_KEEPALIVE` for every TCP socket. TCP Keep Alive enables mechanism that will check liveness of the connection. | - | `socket_keepalive` |
+| `setSocketTcpNodelay(boolean value)` | `value` - flag to enable/disable | Sets option `SO_NODELAY` for every TCP socket. This TCP option will make socket to push data as soon as possible. | - | `socket_tcp_nodelay` |
+| `setSocketLinger(int secondsToWait)` | `secondsToWait` - number of seconds | Set linger time for every TCP socket created by the client. | - | `socket_linger` |
+
+</TabItem>
+
+<TabItem value="compression" label="Compression">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `compressServerResponse(boolean enabled)` | `enabled` - flag to enable/disable | Sets if server should compress its responses. | `true` | `compress` |
+| `compressClientRequest(boolean enabled)` | `enabled` - flag to enable/disable | Sets if client should compress its requests. | `false` | `decompress` |
+| `useHttpCompression(boolean enabled)` | `enabled` - flag to enable/disable | Sets if HTTP compression should be used for client/server communications if corresponding options are enabled | - | - |
+| `appCompressedData(boolean enabled)` | `enabled` - flag to enable/disable | Tell client that compression will be handled by application. | `false` | `app_compressed_data` |
+| `setLZ4UncompressedBufferSize(int size)` | `size` - size in bytes | Sets size of a buffer that will receive uncompressed portion of a data stream. | `65536` | `compression.lz4.uncompressed_buffer_size` |
+| `disableNativeCompression` | `disable` - flag to disable | Disable native compression. If set to true then native compression will be disabled. | `false` | `disable_native_compression` |
+
+</TabItem>
+
+<TabItem value="ssl" label="SSL/Security">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setSSLTrustStore(String path)` | `path` - file path on local system | Sets if client should use SSL truststore for server host validation. | - | `trust_store` |
+| `setSSLTrustStorePassword(String password)` | `password` - secret value | Sets password to be used to unlock SSL truststore specified by `setSSLTrustStore` | - | `key_store_password` |
+| `setSSLTrustStoreType(String type)` | `type` - truststore type name | Sets type of the truststore specified by `setSSLTrustStore`. | - | `key_store_type` |
+| `setRootCertificate(String path)` | `path` - file path on local system | Sets if client should use specified root (CA) certificate for server host to validation. | - | `sslrootcert` |
+| `setClientCertificate(String path)` | `path` - file path on local system | Sets client certificate path to be used while initiating SSL connection and to be used by SSL authentication. | - | `sslcert` |
+| `setClientKey(String path)` | `path` - file path on local system | Sets client private key to be used for encrypting SSL communication with a server. | - | `ssl_key` |
+| `sslSocketSNI(String sni)` | `sni` - server name string | Sets server name to be used for SNI (Server Name Indication) in SSL/TLS connection. | - | `ssl_socket_sni` |
+
+</TabItem>
+
+<TabItem value="proxy" label="Proxy">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `addProxy(ProxyType type, String host, int port)` | `type` - proxy type<br/>`host` - proxy hostname or IP<br/>`port` - proxy port | Sets proxy to be used for communication with a server. | - | `proxy_type`, `proxy_host`, `proxy_port` |
+| `setProxyCredentials(String user, String pass)` | `user` - proxy username<br/>`pass` - password | Sets user credentials to authenticate with a proxy. | - | `proxy_user`, `proxy_password` |
+
+</TabItem>
+
+<TabItem value="http" label="HTTP & Headers">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setHttpCookiesEnabled(boolean enabled)` | `enabled` - flag to enable/disable | Set if HTTP cookies should be remembered and sent to server back. | - | - |
+| `httpHeader(String key, String value)` | `key` - HTTP header key<br/>`value` - string value | Sets value for a single HTTP header. Previous value is overridden. | `none` | `none` |
+| `httpHeader(String key, Collection values)` | `key` - HTTP header key<br/>`values` - list of string values | Sets values for a single HTTP header. Previous value is overridden. | `none` | `none` |
+| `httpHeaders(Map headers)` | `headers` - map with HTTP headers | Sets multiple HTTP header values at a time. | `none` | `none` |
+
+</TabItem>
+
+<TabItem value="server-settings" label="Server Settings">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `serverSetting(String name, String value)` | `name` - setting name<br/>`value` - setting value | Sets what settings to pass to server along with each query. Individual operation settings may override it. [List of settings](/operations/settings/query-level) | `none` | `none` |
+| `serverSetting(String name, Collection values)` | `name` - setting name<br/>`values` - setting values | Sets what settings to pass to server with multiple values, for example [roles](/interfaces/http#setting-role-with-query-parameters) | `none` | `none` |
+
+</TabItem>
+
+<TabItem value="timezone" label="Timezone">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - flag to enable/disable | Sets if client should use server timezone when decoding DateTime and Date column values. | `true` | `use_server_time_zone` |
+| `useTimeZone(String timeZone)` | `timeZone` - java valid timezone ID | Sets if specified timezone should be used when decoding DateTime and Date column values. Will override server timezone. | - | `use_time_zone` |
+| `setServerTimeZone(String timeZone)` | `timeZone` - java valid timezone ID | Sets server side timezone. UTC timezone will be used by default. | `UTC` | `server_time_zone` |
+
+</TabItem>
+
+<TabItem value="advanced" label="Advanced">
+
+| Method | Arguments | Description | Default | Key |
+|--------|-----------|-------------|---------|-----|
+| `setOption(String key, String value)` | `key` - configuration option key<br/>`value` - option value | Sets raw value of client options. Useful when reading configuration from properties files. | - | - |
+| `useAsyncRequests(boolean async)` | `async` - flag to enable/disable | Sets if client should execute request in a separate thread. Disabled by default because application knows better how to organize multi-threaded tasks. | `false` | `async` |
+| `setSharedOperationExecutor(ExecutorService executorService)` | `executorService` - executor service instance | Sets executor service for operation tasks. | `none` | `none` |
+| `setClientNetworkBufferSize(int size)` | `size` - size in bytes | Sets size of a buffer in application memory space that is used to copy data between socket and application. | `300000` | `client_network_buffer_size` |
+| `allowBinaryReaderToReuseBuffers(boolean reuse)` | `reuse` - flag to enable/disable | If enabled, reader will use preallocated buffers to do numbers transcoding. Reduces GC pressure for numeric data. | - | - |
+| `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - matching strategy implementation | Sets custom strategy to be used for matching DTO class fields and DB columns when registering DTO. | `none` | `none` |
+| `setClientName(String clientName)` | `clientName` - application name string | Sets additional information about calling application. Will be passed as `User-Agent` header. | - | `client_name` |
+| `registerClientMetrics(Object registry, String name)` | `registry` - Micrometer registry instance<br/>`name` - metrics group name | Registers sensors with Micrometer (https://micrometer.io/) registry instance. | - | - |
+| `setServerVersion(String version)` | `version` - server version string | Sets server version to avoid version detection. | - | `server_version` |
+| `typeHintMapping(Map typeHintMapping)` | `typeHintMapping` - map of type hints | Sets type hint mapping for ClickHouse types. For example, to make multidimensional arrays be present as Java containers. | - | `type_hint_mapping` |
+
+</TabItem>
+</Tabs>
+<br/>
 
 ### Server Settings
 
@@ -703,130 +780,218 @@ They were designed to group parameters and provide clear separation. However in 
 `com.clickhouse.client.config.ClickHouseClientOption#ASYNC`). The new V2 client uses `com.clickhouse.client.api.Client.Builder` as single dictionary of all possible client configuration options.There is
 `com.clickhouse.client.api.ClientConfigProperties` where all configuration parameter names are listed.
 
-Table below shows what old options are supported in the new client and there new meaning.
-✔	- supported
-✗ - dropped
-| V1 Configuration | Matching V2 Builder Method | Comments          |
-|------------------|----------------------------|-------------------|
-| `com.clickhouse.client.config.ClickHouseDefaults#ASYNC`, `com.clickhouse.client.config.ClickHouseClientOption#ASYNC` | `com.clickhouse.client.api.Client.Builder#useAsyncRequests` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#AUTO_SESSION` | ✗ | Session support will be reviewed |
-| `com.clickhouse.client.config.ClickHouseDefaults#BUFFERING` | ✗ |  |
-| `com.clickhouse.client.config.ClickHouseDefaults#HOST` | `com.clickhouse.client.api.Client.Builder#addEndpoint` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#PROTOCOL` | ✗ | Only HTTP supported in V2.  |
-| `com.clickhouse.client.config.ClickHouseDefaults#DATABASE` | `com.clickhouse.client.api.Client.Builder#setDefaultDatabase` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#USER` | `com.clickhouse.client.api.Client.Builder#setUsername` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#PASSWORD` | `com.clickhouse.client.api.Client.Builder#setPassword` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#FORMAT`, `com.clickhouse.client.config.ClickHouseClientOption#FORMAT` | ✗ | Moved to operation settings (`QuerySettings` and `InsertSettings`) |
-| `com.clickhouse.client.config.ClickHouseDefaults#MAX_SCHEDULER_THREADS` | ✗ | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` |
-| `com.clickhouse.client.config.ClickHouseDefaults#MAX_THREADS` | ✗ | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` |
-| `com.clickhouse.client.config.ClickHouseDefaults#MAX_REQUESTS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseDefaults#ROUNDING_MODE` | | |
-| `com.clickhouse.client.config.ClickHouseDefaults#THREAD_KEEPALIVE_TIMEOUT` | see `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#setServerTimeZone` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SERVER_VERSION`, `com.clickhouse.client.config.ClickHouseClientOption#SERVER_VERSION` | `com.clickhouse.client.api.Client.Builder#setServerVersion` | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SSL_CERTIFICATE_TYPE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SSL_KEY_ALGORITHM` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SSL_PROTOCOL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseDefaults#SRV_RESOLVE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#AUTO_DISCOVERY` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SETTINGS` | | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SOCKET_FACTORY` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CUSTOM_SOCKET_FACTORY_OPTIONS` | ✗ | See `com.clickhouse.client.api.Client.Builder#sslSocketSNI` to set SNI |
-| `com.clickhouse.client.config.ClickHouseClientOption#LOAD_BALANCING_POLICY` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#LOAD_BALANCING_TAGS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#HEALTH_CHECK_INTERVAL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#HEALTH_CHECK_METHOD` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#NODE_DISCOVERY_INTERVAL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#NODE_DISCOVERY_LIMIT` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#NODE_CHECK_INTERVAL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#NODE_GROUP_SIZE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CHECK_ALL_NODES` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#BUFFER_SIZE` | `com.clickhouse.client.api.Client.Builder#setClientNetworkBufferSize` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#BUFFER_QUEUE_VARIATION` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#READ_BUFFER_SIZE` | ✗ |  |
-| `com.clickhouse.client.config.ClickHouseClientOption#WRITE_BUFFER_SIZE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#REQUEST_CHUNK_SIZE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#REQUEST_BUFFERING` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#RESPONSE_BUFFERING` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CLIENT_NAME` | `com.clickhouse.client.api.Client.Builder#setClientName` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS` | `com.clickhouse.client.api.Client.Builder#compressServerResponse` | See also `com.clickhouse.client.api.Client.Builder#useHttpCompression` |
-| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS` | `com.clickhouse.client.api.Client.Builder#compressClientRequest` | See also `com.clickhouse.client.api.Client.Builder#useHttpCompression` |
-| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http compression. Http compression is defined by `Accept-Encoding` header. |
-| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http compression. Http compression is defined by `Content-Encoding` header. |
-| `com.clickhouse.client.config.ClickHouseClientOption#COMPRESS_LEVEL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#DECOMPRESS_LEVEL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#CONNECTION_TIMEOUT` |`com.clickhouse.client.api.Client.Builder#setConnectTimeout` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#DATABASE` | `com.clickhouse.client.api.Client.Builder#setDefaultDatabase` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#FAILOVER` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#LOG_LEADING_COMMENT` | ✗ | See `com.clickhouse.client.api.query.QuerySettings#logComment` and `com.clickhouse.client.api.insert.InsertSettings#logComment` |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_BUFFER_SIZE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_MAPPER_CACHE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_EXECUTION_TIME` | `com.clickhouse.client.api.Client.Builder#setExecutionTimeout` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_QUEUED_BUFFERS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_QUEUED_REQUESTS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_RESULT_ROWS` | ✗ | Is server side setting. |
-| `com.clickhouse.client.config.ClickHouseClientOption#RESULT_OVERFLOW_MODE` | ✗ | Is server side setting. |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_THREADS_PER_CLIENT` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MAX_CORE_THREAD_TTL` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PRODUCT_NAME` | ✗ | Use client name |
-| `com.clickhouse.client.config.ClickHouseClientOption#RENAME_RESPONSE_COLUMN` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#RETRY` | `com.clickhouse.client.api.Client.Builder#setMaxRetries` | See also `com.clickhouse.client.api.Client.Builder#retryOnFailures` |
-| `com.clickhouse.client.config.ClickHouseClientOption#REPEAT_ON_SESSION_LOCK` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#REUSE_VALUE_WRAPPER` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SERVER_REVISION` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#setServerTimeZone` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_ID` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_CHECK` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SESSION_TIMEOUT` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_TIMEOUT` | `com.clickhouse.client.api.Client.Builder#setSocketTimeout(long)` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_REUSEADDR` | `com.clickhouse.client.api.Client.Builder#setSocketReuseAddress` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_KEEPALIVE` | `com.clickhouse.client.api.Client.Builder#setSocketKeepAlive` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_LINGER` | `com.clickhouse.client.api.Client.Builder#setSocketLinger` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_IP_TOS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_TCP_NODELAY` | `com.clickhouse.client.api.Client.Builder#setSocketTcpNodelay` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_RCVBUF` | `com.clickhouse.client.api.Client.Builder#setSocketRcvbuf` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SOCKET_SNDBUF` | `com.clickhouse.client.api.Client.Builder#setSocketSndbuf` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL` | ✗ | See `com.clickhouse.client.api.Client.Builder#addEndpoint` |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL_MODE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL_ROOT_CERTIFICATE` | `com.clickhouse.client.api.Client.Builder#setRootCertificate` | SSL Auth should be enabled by `com.clickhouse.client.api.Client.Builder#useSSLAuthentication` |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL_CERTIFICATE` | `com.clickhouse.client.api.Client.Builder#setClientCertificate` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL_KEY` | `com.clickhouse.client.api.Client.Builder#setClientKey` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#KEY_STORE_TYPE` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStoreType` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#TRUST_STORE` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStore` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#KEY_STORE_PASSWORD` | `com.clickhouse.client.api.Client.Builder#setSSLTrustStorePassword` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#TRANSACTION_TIMEOUT` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#WIDEN_UNSIGNED_TYPES` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_BINARY_STRING` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_BLOCKING_QUEUE` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_COMPILATION` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_OBJECTS_IN_ARRAYS` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_TYPE` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_HOST` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_PORT` | `com.clickhouse.client.api.Client.Builder#addProxy` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_USERNAME` | `com.clickhouse.client.api.Client.Builder#setProxyCredentials` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#PROXY_PASSWORD` | `com.clickhouse.client.api.Client.Builder#setProxyCredentials` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_SERVER_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#useServerTimeZone` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_SERVER_TIME_ZONE_FOR_DATES` | | |
-| `com.clickhouse.client.config.ClickHouseClientOption#USE_TIME_ZONE` | `com.clickhouse.client.api.Client.Builder#useTimeZone` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#QUERY_ID` | ✗ | See `QuerySettings` and `InsertSettings` |
-| `com.clickhouse.client.config.ClickHouseClientOption#CONNECTION_TTL` | `com.clickhouse.client.api.Client.Builder#setConnectionTTL` | |
-| `com.clickhouse.client.config.ClickHouseClientOption#MEASURE_REQUEST_TIME` | ✗ | |
-| `com.clickhouse.client.config.ClickHouseClientOption#SSL_SOCKET_SNI` | `com.clickhouse.client.api.Client.Builder#sslSocketSNI` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#CONNECTION_PROVIDER` | ✗ | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#CUSTOM_HEADERS` | `com.clickhouse.client.api.Client.Builder#httpHeaders` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#CUSTOM_PARAMS` | ✗ | See `com.clickhouse.client.api.Client.Builder#serverSetting`|
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#DEFAULT_RESPONSE` | ✗ | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#KEEP_ALIVE` | `com.clickhouse.client.api.Client.Builder#setKeepAliveTimeout` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#MAX_OPEN_CONNECTIONS` | `com.clickhouse.client.api.Client.Builder#setMaxConnections` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#RECEIVE_QUERY_PROGRESS` | ✗ | Server side setting |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#SEND_HTTP_CLIENT_ID` | ✗ | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#WAIT_END_OF_QUERY` | ✗ | Server side setting |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#REMEMBER_LAST_SET_ROLES` | `com.clickhouse.client.api.Client#setDBRoles` | Is runtime configuration now. See also `com.clickhouse.client.api.query.QuerySettings#setDBRoles` and `com.clickhouse.client.api.insert.InsertSettings#setDBRoles` |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#AHC_VALIDATE_AFTER_INACTIVITY` | ✗ | Always enabled when Apache Http Client is used |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#AHC_RETRY_ON_FAILURE` | `com.clickhouse.client.api.Client.Builder#retryOnFailures` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#CONNECTION_REUSE_STRATEGY` | `com.clickhouse.client.api.Client.Builder#setConnectionReuseStrategy` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#KEEP_ALIVE_TIMEOUT` | `com.clickhouse.client.api.Client.Builder#setKeepAliveTimeout` | |
-| `com.clickhouse.client.http.config.ClickHouseHttpOption#USE_BASIC_AUTHENTICATION` | `com.clickhouse.client.api.Client.Builder#useHTTPBasicAuth` | |
+Table below shows what old options are supported in the new client and their new meaning.
+
+**Legend:** ✔ = supported, ✗ = dropped
+
+<Tabs groupId="v1-migration">
+<TabItem value="connection-auth" label="Connection & Auth">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#HOST` | `Client.Builder#addEndpoint` | |
+| `ClickHouseDefaults#PROTOCOL` | ✗ | Only HTTP supported in V2 |
+| `ClickHouseDefaults#DATABASE`<br/>`ClickHouseClientOption#DATABASE` | `Client.Builder#setDefaultDatabase` | |
+| `ClickHouseDefaults#USER` | `Client.Builder#setUsername` | |
+| `ClickHouseDefaults#PASSWORD` | `Client.Builder#setPassword` | |
+| `ClickHouseClientOption#CONNECTION_TIMEOUT` | `Client.Builder#setConnectTimeout` | |
+| `ClickHouseClientOption#CONNECTION_TTL` | `Client.Builder#setConnectionTTL` | |
+| `ClickHouseHttpOption#MAX_OPEN_CONNECTIONS` | `Client.Builder#setMaxConnections` | |
+| `ClickHouseHttpOption#KEEP_ALIVE`<br/>`ClickHouseHttpOption#KEEP_ALIVE_TIMEOUT` | `Client.Builder#setKeepAliveTimeout` | |
+| `ClickHouseHttpOption#CONNECTION_REUSE_STRATEGY` | `Client.Builder#setConnectionReuseStrategy` | |
+| `ClickHouseHttpOption#USE_BASIC_AUTHENTICATION` | `Client.Builder#useHTTPBasicAuth` | |
+
+</TabItem>
+
+<TabItem value="ssl" label="SSL & Security">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#SSL_CERTIFICATE_TYPE` | ✗ | |
+| `ClickHouseDefaults#SSL_KEY_ALGORITHM` | ✗ | |
+| `ClickHouseDefaults#SSL_PROTOCOL` | ✗ | |
+| `ClickHouseClientOption#SSL` | ✗ | See `Client.Builder#addEndpoint` |
+| `ClickHouseClientOption#SSL_MODE` | ✗ | |
+| `ClickHouseClientOption#SSL_ROOT_CERTIFICATE` | `Client.Builder#setRootCertificate` | SSL Auth should be enabled by `useSSLAuthentication` |
+| `ClickHouseClientOption#SSL_CERTIFICATE` | `Client.Builder#setClientCertificate` | |
+| `ClickHouseClientOption#SSL_KEY` | `Client.Builder#setClientKey` | |
+| `ClickHouseClientOption#KEY_STORE_TYPE` | `Client.Builder#setSSLTrustStoreType` | |
+| `ClickHouseClientOption#TRUST_STORE` | `Client.Builder#setSSLTrustStore` | |
+| `ClickHouseClientOption#KEY_STORE_PASSWORD` | `Client.Builder#setSSLTrustStorePassword` | |
+| `ClickHouseClientOption#SSL_SOCKET_SNI` | `Client.Builder#sslSocketSNI` | |
+| `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY` | ✗ | |
+| `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY_OPTIONS` | ✗ | See `Client.Builder#sslSocketSNI` to set SNI |
+
+</TabItem>
+
+<TabItem value="socket" label="Socket Options">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#SOCKET_TIMEOUT` | `Client.Builder#setSocketTimeout` | |
+| `ClickHouseClientOption#SOCKET_REUSEADDR` | `Client.Builder#setSocketReuseAddress` | |
+| `ClickHouseClientOption#SOCKET_KEEPALIVE` | `Client.Builder#setSocketKeepAlive` | |
+| `ClickHouseClientOption#SOCKET_LINGER` | `Client.Builder#setSocketLinger` | |
+| `ClickHouseClientOption#SOCKET_IP_TOS` | ✗ | |
+| `ClickHouseClientOption#SOCKET_TCP_NODELAY` | `Client.Builder#setSocketTcpNodelay` | |
+| `ClickHouseClientOption#SOCKET_RCVBUF` | `Client.Builder#setSocketRcvbuf` | |
+| `ClickHouseClientOption#SOCKET_SNDBUF` | `Client.Builder#setSocketSndbuf` | |
+
+</TabItem>
+
+<TabItem value="compression" label="Compression">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#COMPRESS` | `Client.Builder#compressServerResponse` | See also `useHttpCompression` |
+| `ClickHouseClientOption#DECOMPRESS` | `Client.Builder#compressClientRequest` | See also `useHttpCompression` |
+| `ClickHouseClientOption#COMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http. Http uses `Accept-Encoding` |
+| `ClickHouseClientOption#DECOMPRESS_ALGORITHM` | ✗ | `LZ4` for non-http. Http uses `Content-Encoding` |
+| `ClickHouseClientOption#COMPRESS_LEVEL` | ✗ | |
+| `ClickHouseClientOption#DECOMPRESS_LEVEL` | ✗ | |
+
+</TabItem>
+
+<TabItem value="proxy" label="Proxy">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#PROXY_TYPE` | `Client.Builder#addProxy` | |
+| `ClickHouseClientOption#PROXY_HOST` | `Client.Builder#addProxy` | |
+| `ClickHouseClientOption#PROXY_PORT` | `Client.Builder#addProxy` | |
+| `ClickHouseClientOption#PROXY_USERNAME` | `Client.Builder#setProxyCredentials` | |
+| `ClickHouseClientOption#PROXY_PASSWORD` | `Client.Builder#setProxyCredentials` | |
+
+</TabItem>
+
+<TabItem value="timeouts-retry" label="Timeouts & Retry">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#MAX_EXECUTION_TIME` | `Client.Builder#setExecutionTimeout` | |
+| `ClickHouseClientOption#RETRY` | `Client.Builder#setMaxRetries` | See also `retryOnFailures` |
+| `ClickHouseHttpOption#AHC_RETRY_ON_FAILURE` | `Client.Builder#retryOnFailures` | |
+| `ClickHouseClientOption#FAILOVER` | ✗ | |
+| `ClickHouseClientOption#REPEAT_ON_SESSION_LOCK` | ✗ | |
+| `ClickHouseClientOption#SESSION_ID` | ✗ | |
+| `ClickHouseClientOption#SESSION_CHECK` | ✗ | |
+| `ClickHouseClientOption#SESSION_TIMEOUT` | ✗ | |
+
+</TabItem>
+
+<TabItem value="timezone" label="Timezone">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#SERVER_TIME_ZONE`<br/>`ClickHouseClientOption#SERVER_TIME_ZONE` | `Client.Builder#setServerTimeZone` | |
+| `ClickHouseClientOption#USE_SERVER_TIME_ZONE` | `Client.Builder#useServerTimeZone` | |
+| `ClickHouseClientOption#USE_SERVER_TIME_ZONE_FOR_DATES` | | |
+| `ClickHouseClientOption#USE_TIME_ZONE` | `Client.Builder#useTimeZone` | |
+
+</TabItem>
+
+<TabItem value="buffers" label="Buffers & Performance">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#BUFFER_SIZE` | `Client.Builder#setClientNetworkBufferSize` | |
+| `ClickHouseClientOption#BUFFER_QUEUE_VARIATION` | ✗ | |
+| `ClickHouseClientOption#READ_BUFFER_SIZE` | ✗ | |
+| `ClickHouseClientOption#WRITE_BUFFER_SIZE` | ✗ | |
+| `ClickHouseClientOption#REQUEST_CHUNK_SIZE` | ✗ | |
+| `ClickHouseClientOption#REQUEST_BUFFERING` | ✗ | |
+| `ClickHouseClientOption#RESPONSE_BUFFERING` | ✗ | |
+| `ClickHouseClientOption#MAX_BUFFER_SIZE` | ✗ | |
+| `ClickHouseClientOption#MAX_QUEUED_BUFFERS` | ✗ | |
+| `ClickHouseClientOption#MAX_QUEUED_REQUESTS` | ✗ | |
+| `ClickHouseClientOption#REUSE_VALUE_WRAPPER` | ✗ | |
+
+</TabItem>
+
+<TabItem value="threading" label="Threading & Async">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#ASYNC`<br/>`ClickHouseClientOption#ASYNC` | `Client.Builder#useAsyncRequests` | |
+| `ClickHouseDefaults#MAX_SCHEDULER_THREADS` | ✗ | see `setSharedOperationExecutor` |
+| `ClickHouseDefaults#MAX_THREADS` | ✗ | see `setSharedOperationExecutor` |
+| `ClickHouseDefaults#THREAD_KEEPALIVE_TIMEOUT` | see `setSharedOperationExecutor` | |
+| `ClickHouseClientOption#MAX_THREADS_PER_CLIENT` | ✗ | |
+| `ClickHouseClientOption#MAX_CORE_THREAD_TTL` | ✗ | |
+
+</TabItem>
+
+<TabItem value="http-headers" label="HTTP & Headers">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseHttpOption#CUSTOM_HEADERS` | `Client.Builder#httpHeaders` | |
+| `ClickHouseHttpOption#CUSTOM_PARAMS` | ✗ | See `Client.Builder#serverSetting` |
+| `ClickHouseClientOption#CLIENT_NAME` | `Client.Builder#setClientName` | |
+| `ClickHouseHttpOption#CONNECTION_PROVIDER` | ✗ | |
+| `ClickHouseHttpOption#DEFAULT_RESPONSE` | ✗ | |
+| `ClickHouseHttpOption#SEND_HTTP_CLIENT_ID` | ✗ | |
+| `ClickHouseHttpOption#AHC_VALIDATE_AFTER_INACTIVITY` | ✗ | Always enabled when Apache Http Client is used |
+
+</TabItem>
+
+<TabItem value="format-query" label="Format & Query">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#FORMAT`<br/>`ClickHouseClientOption#FORMAT` | ✗ | Moved to operation settings (`QuerySettings` and `InsertSettings`) |
+| `ClickHouseClientOption#QUERY_ID` | ✗ | See `QuerySettings` and `InsertSettings` |
+| `ClickHouseClientOption#LOG_LEADING_COMMENT` | ✗ | See `QuerySettings#logComment` and `InsertSettings#logComment` |
+| `ClickHouseClientOption#MAX_RESULT_ROWS` | ✗ | Is server side setting |
+| `ClickHouseClientOption#RESULT_OVERFLOW_MODE` | ✗ | Is server side setting |
+| `ClickHouseHttpOption#RECEIVE_QUERY_PROGRESS` | ✗ | Server side setting |
+| `ClickHouseHttpOption#WAIT_END_OF_QUERY` | ✗ | Server side setting |
+| `ClickHouseHttpOption#REMEMBER_LAST_SET_ROLES` | `Client#setDBRoles` | Runtime config now. See also `QuerySettings#setDBRoles` and `InsertSettings#setDBRoles` |
+
+</TabItem>
+
+<TabItem value="node-discovery" label="Node Discovery & Load Balancing">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseClientOption#AUTO_DISCOVERY` | ✗ | |
+| `ClickHouseClientOption#LOAD_BALANCING_POLICY` | ✗ | |
+| `ClickHouseClientOption#LOAD_BALANCING_TAGS` | ✗ | |
+| `ClickHouseClientOption#HEALTH_CHECK_INTERVAL` | ✗ | |
+| `ClickHouseClientOption#HEALTH_CHECK_METHOD` | ✗ | |
+| `ClickHouseClientOption#NODE_DISCOVERY_INTERVAL` | ✗ | |
+| `ClickHouseClientOption#NODE_DISCOVERY_LIMIT` | ✗ | |
+| `ClickHouseClientOption#NODE_CHECK_INTERVAL` | ✗ | |
+| `ClickHouseClientOption#NODE_GROUP_SIZE` | ✗ | |
+| `ClickHouseClientOption#CHECK_ALL_NODES` | ✗ | |
+
+</TabItem>
+
+<TabItem value="misc" label="Miscellaneous">
+
+| V1 Configuration | V2 Builder Method | Comments |
+|------------------|-------------------|----------|
+| `ClickHouseDefaults#AUTO_SESSION` | ✗ | Session support will be reviewed |
+| `ClickHouseDefaults#BUFFERING` | ✗ | |
+| `ClickHouseDefaults#MAX_REQUESTS` | ✗ | |
+| `ClickHouseDefaults#ROUNDING_MODE` | | |
+| `ClickHouseDefaults#SERVER_VERSION`<br/>`ClickHouseClientOption#SERVER_VERSION` | `Client.Builder#setServerVersion` | |
+| `ClickHouseDefaults#SRV_RESOLVE` | ✗ | |
+| `ClickHouseClientOption#CUSTOM_SETTINGS` | | |
+| `ClickHouseClientOption#PRODUCT_NAME` | ✗ | Use client name |
+| `ClickHouseClientOption#RENAME_RESPONSE_COLUMN` | ✗ | |
+| `ClickHouseClientOption#SERVER_REVISION` | ✗ | |
+| `ClickHouseClientOption#TRANSACTION_TIMEOUT` | ✗ | |
+| `ClickHouseClientOption#WIDEN_UNSIGNED_TYPES` | ✗ | |
+| `ClickHouseClientOption#USE_BINARY_STRING` | ✗ | |
+| `ClickHouseClientOption#USE_BLOCKING_QUEUE` | ✗ | |
+| `ClickHouseClientOption#USE_COMPILATION` | ✗ | |
+| `ClickHouseClientOption#USE_OBJECTS_IN_ARRAYS` | ✗ | |
+| `ClickHouseClientOption#MAX_MAPPER_CACHE` | ✗ | |
+| `ClickHouseClientOption#MEASURE_REQUEST_TIME` | ✗ | |
+
+</TabItem>
+</Tabs>
 
 </Version>
 
