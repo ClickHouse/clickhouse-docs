@@ -1,0 +1,14 @@
+- `config.d` 디렉토리는 ClickHouse 서버 구성 파일인 `config.xml`을 포함하고 있으며, 이 파일에서 각 ClickHouse 노드에 대한 사용자 정의 구성이 정의됩니다. 이 구성은 모든 ClickHouse 설치에 포함된 기본 `config.xml` ClickHouse 구성 파일과 결합됩니다.
+- `users.d` 디렉토리는 사용자 구성 파일인 `users.xml`을 포함하고 있으며, 이 파일에서 사용자에 대한 사용자 정의 구성이 정의됩니다. 이 구성은 모든 ClickHouse 설치에 포함된 기본 ClickHouse `users.xml` 구성 파일과 결합됩니다.
+
+:::tip 사용자 정의 구성 디렉토리
+자체 구성을 작성할 때, `/etc/clickhouse-server/config.xml` 및 `etc/clickhouse-server/users.xml`의 기본 구성을 직접 수정하기보다는 `config.d`와 `users.d` 디렉토리를 활용하는 것이 모범 사례입니다.
+
+이 줄은
+
+```xml
+<clickhouse replace="true">
+```
+
+`config.d` 및 `users.d` 디렉토리에 정의된 구성 섹션이 기본 `config.xml` 및 `users.xml` 파일에서 정의된 기본 구성 섹션을 재정의하도록 보장합니다.
+:::

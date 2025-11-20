@@ -1,0 +1,185 @@
+---
+'slug': '/merges'
+'title': '파트 병합'
+'description': 'ClickHouse에서 파트 병합이란 무엇인가'
+'keywords':
+- 'merges'
+'doc_type': 'guide'
+---
+
+import merges_01 from '@site/static/images/managing-data/core-concepts/merges_01.png';
+import merges_02 from '@site/static/images/managing-data/core-concepts/merges_02.png';
+import merges_03 from '@site/static/images/managing-data/core-concepts/merges_03.png';
+import merges_04 from '@site/static/images/managing-data/core-concepts/merges_04.png';
+import merges_05 from '@site/static/images/managing-data/core-concepts/merges_05.png';
+import merges_06 from '@site/static/images/managing-data/core-concepts/merges_06.png';
+import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07.png';
+import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
+import Image from '@theme/IdealImage';
+
+## ClickHouse에서 파트 병합이란? {#what-are-part-merges-in-clickhouse}
+
+<br/>
+
+ClickHouse [는 빠릅니다](/concepts/why-clickhouse-is-so-fast) 쿼리에 대해서만이 아니라 삽입에도 빠르며, 이는 [저장소 계층](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)이 [LSM 트리](https://en.wikipedia.org/wiki/Log-structured_merge-tree)와 유사하게 작동하기 때문입니다:
+
+① [MergeTree 엔진](/engines/table-engines/mergetree-family) 계열에서 테이블에 대한 삽입이 이루어지면 정렬된 불변의 [데이터 파트](/parts)가 생성됩니다.
+
+② 모든 데이터 처리 작업은 **백그라운드 파트 병합**에 오프로드됩니다.
+
+이로 인해 데이터 쓰기가 경량화되고 [매우 효율적입니다](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
+
+테이블당 ^^parts^^ 수를 제어하고 위의 ②를 구현하기 위해 ClickHouse는 계속해서 [파티션별](/partitions#per-partition-merges)로 작은 ^^parts^^를 백그라운드에서 더 큰 ^^parts^^로 병합하여 압축 크기가 약 [~150 GB](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)에 도달할 때까지 진행합니다.
+
+다음 다이어그램은 이 백그라운드 병합 프로세스를 개략적으로 보여줍니다:
+
+<Image img={merges_01} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+파트의 `병합 수준`은 각 추가 병합마다 1씩 증가합니다. `0`의 수준은 파트가 새롭고 아직 병합되지 않았음을 의미합니다. 더 큰 ^^parts^^로 병합된 ^^parts^^는 [비활성 상태로](/operations/system-tables/parts) 표시되며, 최종적으로 [구성 가능한](/operations/settings/merge-tree-settings#old_parts_lifetime) 시간(기본적으로 8분) 후에 삭제됩니다. 시간이 지나면서 병합된 ^^parts^^의 **트리**가 생성됩니다. 그래서 [병합 트리](/engines/table-engines/mergetree-family) 테이블이라는 이름이 붙었습니다.
+
+## 병합 모니터링 {#monitoring-merges}
+
+[테이블 파트란 무엇인가](/parts) 예에서, 우리는 ClickHouse가 [parts](/operations/system-tables/parts) 시스템 테이블에 모든 테이블 ^^parts^^를 추적한다는 것을 [보여주었습니다](/parts#monitoring-table-parts). 우리는 다음 쿼리를 사용하여 예제 테이블의 활성 파트당 병합 수준과 저장된 행 수를 검색했습니다:
+```sql
+SELECT
+    name,
+    level,
+    rows
+FROM system.parts
+WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
+ORDER BY name ASC;
+```
+
+[이전에 문서화된](/parts#monitoring-table-parts) 쿼리 결과는 예제 테이블에 네 개의 활성 ^^parts^^가 있으며, 각각 처음 삽입된 ^^parts^^의 단일 병합에서 생성된 것을 보여줍니다:
+```response
+   ┌─name────────┬─level─┬────rows─┐
+1. │ all_0_5_1   │     1 │ 6368414 │
+2. │ all_12_17_1 │     1 │ 6442494 │
+3. │ all_18_23_1 │     1 │ 5977762 │
+4. │ all_6_11_1  │     1 │ 6459763 │
+   └─────────────┴───────┴─────────┘
+```
+
+[실행 중인](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) 쿼리를 실행하면 네 개의 ^^parts^^가 단일 최종 파트로 병합되었음을 보여줍니다(테이블에 더 이상 삽입이 없다고 가정할 때):
+
+```response
+   ┌─name───────┬─level─┬─────rows─┐
+1. │ all_0_23_2 │     2 │ 25248433 │
+   └────────────┴───────┴──────────┘
+```
+
+ClickHouse 24.10에서는 새로운 [병합 대시보드](https://presentations.clickhouse.com/2024-release-24.10/index.html#17)가 내장된 [모니터링 대시보드](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards)에 추가되었습니다. OSS 및 Cloud 둘 다에서 `/merges` HTTP 핸들러를 통해 사용할 수 있으며, 이를 사용하여 예제 테이블의 모든 파트 병합을 시각화할 수 있습니다:
+
+<Image img={merges_dashboard} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+위의 기록된 대시보드는 초기 데이터 삽입부터 최종적으로 단일 파트로 병합되는 전체 과정을 포착합니다:
+
+① 활성 ^^parts^^의 수.
+
+② 상자 형태로 시각적으로 표현된 파트 병합(크기는 파트 크기를 반영).
+
+③ [쓰기 증폭](https://en.wikipedia.org/wiki/Write_amplification).
+
+## 동시 병합 {#concurrent-merges}
+
+단일 ClickHouse 서버는 여러 백그라운드 [병합 스레드](/operations/server-configuration-parameters/settings#background_pool_size)를 사용하여 동시 파트 병합을 실행합니다:
+
+<Image img={merges_02} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+각 병합 스레드는 루프를 실행합니다:
+
+① 다음에 병합할 ^^parts^^를 결정하고 이러한 ^^parts^^를 메모리에 로드합니다.
+
+② 메모리에서 ^^parts^^를 더 큰 파트로 병합합니다.
+
+③ 병합된 파트를 디스크에 기록합니다.
+
+①로 돌아가기
+
+CPU 코어 수와 RAM 크기를 늘리면 백그라운드 병합 처리량을 증가시킬 수 있습니다.
+
+## 메모리 최적화 병합 {#memory-optimized-merges}
+
+ClickHouse는 반드시 모든 ^^parts^^를 한 번에 메모리에 로드하지 않습니다. 이는 [이전 예](/merges#concurrent-merges)에서 개략적으로 설명된 바와 같습니다. 여러 [요인](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210)을 기반으로 하며, 메모리 소비를 줄이기 위해(병합 속도를 희생하여) 소위 [수직 병합](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209)은 ^^parts^^를 한 번에 병합하는 대신 블록 조각으로 로드하고 병합합니다.
+
+## 병합 메커니즘 {#merge-mechanics}
+
+아래 다이어그램은 ClickHouse에서 단일 백그라운드 [병합 스레드](/merges#concurrent-merges)가 ^^parts^^를 병합하는 방법을 보여줍니다(기본적으로 [수직 병합](/merges#memory-optimized-merges) 없이):
+
+<Image img={merges_03} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+파트 병합은 여러 단계로 수행됩니다:
+
+**① 압축 해제 및 로드**: 병합될 ^^parts^^의 [압축된 이진 컬럼 파일](/parts#what-are-table-parts-in-clickhouse)이 압축 해제되고 메모리에 로드됩니다.
+
+**② 병합**: 데이터가 더 큰 컬럼 파일로 병합됩니다.
+
+**③ 인덱싱**: 병합된 컬럼 파일에 대해 새로운 [스파스 기본 인덱스](/guides/best-practices/sparse-primary-indexes)가 생성됩니다.
+
+**④ 압축 및 저장**: 새로운 컬럼 파일과 인덱스가 [압축](/sql-reference/statements/create/table#column_compression_codec)되고 병합된 데이터 파트를 나타내는 새로운 [디렉토리](/parts#what-are-table-parts-in-clickhouse)에 저장됩니다.
+
+부가적인 [데이터 파트의 메타데이터](/parts), 예를 들어 보조 데이터 스킵 인덱스, 컬럼 통계, 체크섬, 최소-최대 인덱스 또한 병합된 컬럼 파일을 기반으로 재생성됩니다. 간결함을 위해 이러한 세부 사항은 생략하였습니다.
+
+단계 ②의 메커니즘은 사용된 특정 [MergeTree 엔진](/engines/table-engines/mergetree-family) 에 따라 다르며, 서로 다른 엔진이 병합을 다르게 처리합니다. 예를 들어, 행이 집계되거나 구식인 경우 교체될 수 있습니다. 앞서 언급했듯이, 이 접근 방식은 **모든 데이터 처리를 백그라운드 병합에 오프로드하여, **초고속 삽입**을 가능하게 하고, 쓰기 작업을 경량화하고 효율적으로 유지합니다.
+
+다음으로, ^^MergeTree^^ 계열의 특정 엔진의 병합 메커니즘을 간략히 설명하겠습니다.
+
+### 표준 병합 {#standard-merges}
+
+아래 다이어그램은 표준 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 테이블에서 ^^parts^^가 병합되는 방식을 보여줍니다:
+
+<Image img={merges_04} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+위 다이어그램의 DDL 문장은 ^^정렬 키^^ `(town, street)`가 있는 `MergeTree` 테이블을 생성하여, 디스크 상의 데이터가 이 컬럼들에 의해 정렬되고 이에 따라 스파스 기본 인덱스가 생성됨을 의미합니다.
+
+① 압축이 해제되고 미리 정렬된 테이블 컬럼은 ② 테이블의 ^^정렬 키^^에 의해 정의된 글로벌 정렬 순서를 유지하면서 병합되고, ③ 새로운 스파스 기본 인덱스가 생성되며, ④ 병합된 컬럼 파일과 인덱스는 압축되고 디스크에 새로운 데이터 파트로 저장됩니다.
+
+### 교체 병합 {#replacing-merges}
+
+[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 테이블의 파트 병합은 [표준 병합](/merges#standard-merges)과 유사하게 작동하지만, 각 행의 가장 최근 버전만 유지되며 이전 버전은 폐기됩니다:
+
+<Image img={merges_05} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+위 다이어그램의 DDL 문장은 ^^정렬 키^^ `(town, street, id)`가 있는 `ReplacingMergeTree` 테이블을 생성하여, 디스크 상의 데이터가 이 컬럼들에 의해 정렬되고 이에 따라 스파스 기본 인덱스가 생성됨을 의미합니다.
+
+② 병합은 표준 `MergeTree` 테이블과 유사하게 진행되며 압축이 해제되고 미리 정렬된 컬럼을 글로벌 정렬 순서를 유지하면서 병합합니다.
+
+그러나 `ReplacingMergeTree`는 동일한 ^^정렬 키^^를 가진 중복 행을 제거하고, 해당 파트의 생성 타임스탬프를 기반으로 가장 최근의 행만 유지합니다.
+
+<br/>
+
+### 합산 병합 {#summing-merges}
+
+숫자 데이터는 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 테이블의 ^^parts^^ 병합 중에 자동으로 요약됩니다:
+
+<Image img={merges_06} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+위 다이어그램의 DDL 문장은 `town`을 ^^정렬 키^^로 하는 `SummingMergeTree` 테이블을 정의하여, 디스크 상의 데이터가 이 컬럼으로 정렬되고 이에 따라 스파스 기본 인덱스가 생성됨을 의미합니다.
+
+② 병합 단계에서, ClickHouse는 동일한 ^^정렬 키^^를 가진 모든 행을 하나의 행으로 대체하며, 숫자 컬럼의 값을 합산합니다.
+
+### 집계 병합 {#aggregating-merges}
+
+위의 `SummingMergeTree` 테이블 예시는 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 테이블의 특수 변형으로, 파트 병합 중에 [90개 이상의](/sql-reference/aggregate-functions/reference) 집계 함수를 적용하여 [자동으로 점진적 데이터 변환](https://www.youtube.com/watch?v=QDAJTKZT8y4)을 허용합니다:
+
+<Image img={merges_07} size="lg" alt='PART MERGES'/>
+
+<br/>
+
+위 다이어그램의 DDL 문장은 `town`을 ^^정렬 키^^로 하는 `AggregatingMergeTree` 테이블을 생성하여, 데이터가 디스크에서 이 컬럼으로 정렬되고 이에 따라 스파스 기본 인덱스가 생성됨을 보장합니다.
+
+② 병합 중에 ClickHouse는 동일한 ^^정렬 키^^를 가진 모든 행을 하나의 행으로 대체하며, [부분 집계 상태](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization)를 저장합니다 (예: `sum` 및 `count`에 대한 `avg()`). 이러한 상태는 점진적인 백그라운드 병합을 통해 정확한 결과를 보장합니다.

@@ -1,0 +1,387 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+`clickhouse-jdbc`는 표준 JDBC 인터페이스를 구현합니다. [clickhouse-client](/integrations/sql-clients/sql-console) 위에서 구축되어, 커스텀 타입 매핑, 트랜잭션 지원, 표준 동기 `UPDATE` 및 `DELETE` 문 등과 같은 추가 기능을 제공하므로 레거시 애플리케이션 및 도구와 쉽게 사용할 수 있습니다.
+
+:::note
+최신 JDBC (0.7.2) 버전은 Client-V1을 사용합니다.
+:::
+
+`clickhouse-jdbc` API는 동기이며, 일반적으로 더 많은 오버헤드를 가집니다(예: SQL 파싱 및 타입 매핑/변환 등). 성능이 중요한 경우 또는 ClickHouse에 보다 직접적으로 접근하는 방법을 선호하는 경우 [clickhouse-client](/integrations/sql-clients/sql-console)을 고려하십시오.
+
+## 환경 요구 사항 {#environment-requirements}
+
+- [OpenJDK](https://openjdk.java.net) 버전 >= 8
+
+### 설정 {#setup}
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>clickhouse-jdbc</artifactId>
+    <version>0.7.2</version>
+    <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
+    <classifier>shaded-all</classifier>
+</dependency>
+```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+// use uber jar with all dependencies included, change classifier to http for smaller jar
+implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+// use uber jar with all dependencies included, change classifier to http for smaller jar
+implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+```
+
+    </TabItem>
+</Tabs>
+
+버전 `0.5.0` 이후로, 우리는 클라이언트를 패키징한 Apache HTTP Client를 사용하고 있습니다. 패키지의 공유 버전이 없기 때문에 의존성으로 로거를 추가해야 합니다.
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven" >
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>2.0.16</version>
+</dependency>
+```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+implementation("org.slf4j:slf4j-api:2.0.16")
+```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+implementation 'org.slf4j:slf4j-api:2.0.16'
+```
+
+    </TabItem>
+</Tabs>
+
+## 구성 {#configuration}
+
+**드라이버 클래스**: `com.clickhouse.jdbc.ClickHouseDriver`
+
+**URL 구문**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, 예를 들어:
+
+- `jdbc:ch://localhost`는 `jdbc:clickhouse:http://localhost:8123`와 같습니다.
+- `jdbc:ch:https://localhost`는 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`와 같습니다.
+- `jdbc:ch:grpc://localhost`는 `jdbc:clickhouse:grpc://localhost:9100`와 같습니다.
+
+**연결 속성**:
+
+| 속성                        | 기본값  | 설명                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-----------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `continueBatchOnError`      | `false` | 오류 발생 시 배치 처리를 계속할지 여부                                                                                                                                                                                                                                                                                                                                                                                |
+| `createDatabaseIfNotExist`  | `false` | 데이터베이스가 존재하지 않을 경우 생성할지 여부                                                                                                                                                                                                                                                                                                                                                                         |
+| `custom_http_headers`       |         | 사용자 정의 HTTP 헤더를 콤마로 구분하여, 예: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                        |
+| `custom_http_params`        |         | 사용자 정의 HTTP 쿼리 매개변수를 콤마로 구분하여, 예: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                             |
+| `nullAsDefault`             | `0`     | `0` - null 값을 그대로 처리하고 non-nullable 컬럼에 null을 삽입할 때 예외를 발생시킴; `1` - null 값을 그대로 처리하고 삽입 시 null 체크를 비활성화; `2` - 쿼리 및 삽입 시 null을 해당 데이터 타입의 기본 값으로 대체                                                                                                                                                                          |
+| `jdbcCompliance`            | `true`  | 표준 동기 UPDATE/DELETE 및 가짜 트랜잭션을 지원할지 여부                                                                                                                                                                                                                                                                                                                                                                  |
+| `typeMappings`              |         | ClickHouse 데이터 타입과 자바 클래스간의 매핑을 사용자 정의합니다. 이는 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) 및 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-)의 결과에 영향을 미칩니다. 예: `UInt128=java.lang.String,UInt256=java.lang.String` |
+| `wrapperObject`             | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-)가 Array / Tuple에 대해 java.sql.Array / java.sql.Struct를 반환해야 할지 여부                                                                                                                                                                                                                                          |
+
+참고: [JDBC 특정 구성](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java)을 참조하십시오.
+
+## 지원되는 데이터 유형 {#supported-data-types}
+
+JDBC 드라이버는 클라이언트 라이브러리와 동일한 데이터 형식을 지원합니다.
+
+:::note
+- AggregatedFunction - :warning: `SELECT * FROM table ...`를 지원하지 않습니다.
+- Decimal - 일관성을 위해 21.9+에서 `SET output_format_decimal_trailing_zeros=1`를 사용하십시오.
+- Enum - 문자열과 정수로 모두 처리할 수 있습니다.
+- UInt64 - `long`으로 매핑됩니다(클라이언트-v1).
+:::
+
+## 연결 수립 {#creating-connection}
+
+```java
+String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by default
+
+Properties properties = new Properties();
+
+ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
+try (Connection conn = dataSource.getConnection("default", "password");
+    Statement stmt = conn.createStatement()) {
+}
+```
+
+## 간단한 문 {#simple-statement}
+
+```java showLineNumbers
+
+try (Connection conn = dataSource.getConnection(...);
+    Statement stmt = conn.createStatement()) {
+    ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
+    while(rs.next()) {
+        // ...
+    }
+}
+```
+
+## 삽입 {#insert}
+
+:::note
+- `Statement` 대신 `PreparedStatement`를 사용하십시오.
+:::
+
+입력 함수와 비교할 때 더 쉽게 사용할 수 있지만 성능은 느립니다(아래 참조):
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // timestamp
+    ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
+    ...
+    ps.executeBatch(); // stream everything on-hand into ClickHouse
+}
+```
+
+### 입력 테이블 함수를 사용하는 경우 {#with-input-table-function}
+
+훌륭한 성능 특성을 가진 옵션:
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement(
+    "insert into mytable select col1, col2 from input('col1 String, col2 DateTime64(3), col3 Int32')")) {
+    // The column definition will be parsed so the driver knows there are 3 parameters: col1, col2 and col3
+    ps.setString(1, "test"); // col1
+    ps.setObject(2, LocalDateTime.now()); // col2, setTimestamp is slow and not recommended
+    ps.setInt(3, 123); // col3
+    ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
+    ...
+    ps.executeBatch(); // stream everything on-hand into ClickHouse
+}
+```
+- 가능할 경우 [입력 함수 문서](/sql-reference/table-functions/input/)를 참조하십시오.
+
+### 플레이스홀더를 사용한 삽입 {#insert-with-placeholders}
+
+이 옵션은 작은 삽입에만 권장됩니다. 긴 SQL 표현이 필요하기 때문에(클라이언트 측에서 파싱되며 CPU 및 메모리를 소모합니다):
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // timestamp
+    ps.setString(3, null); // description
+    ps.addBatch(); // append parameters to the query
+    ...
+    ps.executeBatch(); // issue the composed query: insert into mytable values(...)(...)...(...)
+}
+```
+
+## DateTime 및 시간대 처리 {#handling-datetime-and-time-zones}
+
+`java.sql.Timestamp` 대신 `java.time.LocalDateTime` 또는 `java.time.OffsetDateTime`를 사용하고, `java.sql.Date` 대신 `java.time.LocalDate`를 사용하는 것이 좋습니다.
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable where date_time > ?")) {
+    ps.setObject(2, LocalDateTime.now());
+    ResultSet rs = ps.executeQuery();
+    while(rs.next()) {
+        LocalDateTime dateTime = (LocalDateTime) rs.getObject(1);
+    }
+    ...
+}
+```
+
+## `AggregateFunction` 처리 {#handling-aggregatefunction}
+
+:::note
+현재는 `groupBitmap`만 지원됩니다.
+:::
+
+```java showLineNumbers
+// batch insert using input function
+try (ClickHouseConnection conn = newConnection(props);
+        Statement s = conn.createStatement();
+        PreparedStatement stmt = conn.prepareStatement(
+                "insert into test_batch_input select id, name, value from input('id Int32, name Nullable(String), desc Nullable(String), value AggregateFunction(groupBitmap, UInt32)')")) {
+    s.execute("drop table if exists test_batch_input;"
+            + "create table test_batch_input(id Int32, name Nullable(String), value AggregateFunction(groupBitmap, UInt32))engine=Memory");
+    Object[][] objs = new Object[][] {
+            new Object[] { 1, "a", "aaaaa", ClickHouseBitmap.wrap(1, 2, 3, 4, 5) },
+            new Object[] { 2, "b", null, ClickHouseBitmap.wrap(6, 7, 8, 9, 10) },
+            new Object[] { 3, null, "33333", ClickHouseBitmap.wrap(11, 12, 13) }
+    };
+    for (Object[] v : objs) {
+        stmt.setInt(1, (int) v[0]);
+        stmt.setString(2, (String) v[1]);
+        stmt.setString(3, (String) v[2]);
+        stmt.setObject(4, v[3]);
+        stmt.addBatch();
+    }
+    int[] results = stmt.executeBatch();
+    ...
+}
+
+// use bitmap as query parameter
+try (PreparedStatement stmt = conn.prepareStatement(
+    "SELECT bitmapContains(my_bitmap, toUInt32(1)) as v1, bitmapContains(my_bitmap, toUInt32(2)) as v2 from {tt 'ext_table'}")) {
+    stmt.setObject(1, ClickHouseExternalTable.builder().name("ext_table")
+            .columns("my_bitmap AggregateFunction(groupBitmap,UInt32)").format(ClickHouseFormat.RowBinary)
+            .content(new ByteArrayInputStream(ClickHouseBitmap.wrap(1, 3, 5).toBytes()))
+            .asTempTable()
+            .build());
+    ResultSet rs = stmt.executeQuery();
+    Assert.assertTrue(rs.next());
+    Assert.assertEquals(rs.getInt(1), 1);
+    Assert.assertEquals(rs.getInt(2), 0);
+    Assert.assertFalse(rs.next());
+}
+```
+
+<br/>
+
+## HTTP 라이브러리 구성 {#configuring-http-library}
+
+ClickHouse JDBC 커넥터는 세 가지 HTTP 라이브러리를 지원합니다: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html), 그리고 [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/)입니다.
+
+:::note
+`HttpClient`는 JDK 11 이상에서만 지원됩니다.
+:::
+
+JDBC 드라이버는 기본적으로 `HttpClient`를 사용합니다. ClickHouse JDBC 커넥터에서 사용하는 HTTP 라이브러리는 다음 속성을 설정하여 변경할 수 있습니다:
+
+```java
+properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
+```
+
+다음은 해당 값의 전체 목록입니다:
+
+| 속성 값               | HTTP 라이브러리     |
+|-----------------------|--------------------|
+| HTTP_CLIENT           | `HttpClient`       |
+| HTTP_URL_CONNECTION   | `HttpURLConnection` |
+| APACHE_HTTP_CLIENT    | Apache `HttpClient` |
+
+<br/>
+
+## SSL로 ClickHouse에 연결 {#connect-to-clickhouse-with-ssl}
+
+SSL을 사용하여 ClickHouse에 대한 안전한 JDBC 연결을 설정하려면 JDBC 속성을 구성하여 SSL 매개변수를 포함해야 합니다. 일반적으로 `sslmode` 및 `sslrootcert`와 같은 SSL 속성을 JDBC URL 또는 Properties 개체에 지정해야 합니다.
+
+## SSL 속성 {#ssl-properties}
+
+| 이름                | 기본 값        | 선택적 값     | 설명                                                                         |
+|---------------------|-----------------|----------------|--------------------------------------------------------------------------------|
+| `ssl`               | false           | true, false    | 연결을 위한 SSL/TLS를 활성화할지 여부                                       |
+| `sslmode`           | strict          | strict, none   | SSL/TLS 인증서를 검증할지 여부                                             |
+| `sslrootcert`       |                 |                | SSL/TLS 루트 인증서의 경로                                               |
+| `sslcert`           |                 |                | SSL/TLS 인증서의 경로                                 |
+| `sslkey`            |                 |                | PKCS#8 형식의 RSA 키                                                   |
+| `key_store_type`    |                 | JKS, PKCS12    | `KeyStore`/`TrustStore` 파일의 유형 또는 형식 지정                      |
+| `trust_store`       |                 |                | `TrustStore` 파일의 경로                                                    |
+| `key_store_password` |                 |                | `KeyStore` 구성에서 지정된 `KeyStore` 파일에 접근하는 데 필요한 비밀번호 |
+
+이 속성은 Java 애플리케이션이 ClickHouse 서버와 암호화된 연결로 통신하도록 보장하여 데이터 전송 중에 데이터 보안을 강화합니다.
+
+```java showLineNumbers
+String url = "jdbc:ch://your-server:8443/system";
+
+Properties properties = new Properties();
+properties.setProperty("ssl", "true");
+properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
+properties.setProperty("sslrootcert", "/mine.crt");
+try (Connection con = DriverManager
+        .getConnection(url, properties)) {
+
+    try (PreparedStatement stmt = con.prepareStatement(
+
+        // place your code here
+
+    }
+}
+```
+
+## 대량 삽입 시 JDBC 시간 초과 해결 {#resolving-jdbc-timeout-on-large-inserts}
+
+ClickHouse에서 긴 실행 시간이 소요되는 대량 삽입을 수행할 때 다음과 같은 JDBC 시간 초과 오류가 발생할 수 있습니다:
+
+```plaintext
+Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+
+이러한 오류는 데이터 삽입 프로세스를 방해하고 시스템 안정성에 영향을 미칠 수 있습니다. 이 문제를 해결하려면 클라이언트 OS에서 몇 가지 시간 초과 설정을 조정해야 합니다.
+
+### Mac OS {#mac-os}
+
+Mac OS에서는 다음 설정을 조정하여 문제를 해결할 수 있습니다:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+### Linux {#linux}
+
+Linux에서는 동등한 설정만으로는 문제가 해결되지 않을 수 있습니다. Linux가 소켓 keep-alive 설정을 처리하는 방식이 다르기 때문에 추가 단계가 필요합니다. 다음 단계를 따르십시오:
+
+1. `/etc/sysctl.conf` 또는 관련 구성 파일에서 다음 Linux 커널 매개변수를 조정하십시오:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+- `net.ipv4.tcp_keepalive_intvl`: 75
+- `net.ipv4.tcp_keepalive_probes`: 9
+- `net.ipv4.tcp_keepalive_time`: 60 (기본 300초에서 이 값을 낮추는 것을 고려할 수 있습니다)
+
+2. 커널 매개변수를 수정한 후, 다음 명령어를 실행하여 변경 사항을 적용하십시오:
+
+```shell
+sudo sysctl -p
+```
+
+이러한 설정을 설정한 후에는 클라이언트가 소켓에서 Keep Alive 옵션을 활성화하도록 확인해야 합니다:
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```
+
+:::note
+현재 소켓 keep-alive를 설정할 때 Apache HTTP Client 라이브러리를 사용해야 합니다. `clickhouse-java`에서 지원하는 다른 두 HTTP 클라이언트 라이브러리는 소켓 옵션을 설정할 수 없습니다. 자세한 가이드는 [HTTP 라이브러리 구성](/integrations/language-clients/java/jdbc-v1#configuring-http-library)을 참조하십시오.
+:::
+
+대안으로, 동등한 매개변수를 JDBC URL에 추가할 수 있습니다.
+
+JDBC 드라이버의 기본 소켓 및 연결 시간 초과는 30초입니다. 대량 데이터 삽입 작업을 지원하기 위해 시간 초과를 늘릴 수 있습니다. `ClickHouseClientOption`에 정의된 `SOCKET_TIMEOUT` 및 `CONNECTION_TIMEOUT` 옵션과 함께 `ClickHouseClient`의 `options` 메서드를 사용하십시오:
+
+```java showLineNumbers
+final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
+final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
+    client.read(servers).write()
+        .option(ClickHouseClientOption.SOCKET_TIMEOUT, MS_12H)
+        .option(ClickHouseClientOption.CONNECTION_TIMEOUT, MS_12H)
+        .query(sql)
+        .executeAndWait();
+}
+```

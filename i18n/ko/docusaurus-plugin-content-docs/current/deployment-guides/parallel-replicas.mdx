@@ -1,0 +1,428 @@
+---
+'slug': '/deployment-guides/parallel-replicas'
+'title': '병렬 복제본'
+'keywords':
+- 'parallel replica'
+'description': '이 가이드에서는 먼저 ClickHouse가 분산 테이블을 통해 여러 샤드에 쿼리를 어떻게 분산하는지 논의하고, 그런 다음
+  쿼리가 실행을 위해 여러 복제본을 어떻게 활용할 수 있는지 설명합니다.'
+'doc_type': 'reference'
+---
+
+import Image from '@theme/IdealImage';
+import BetaBadge from '@theme/badges/BetaBadge';
+import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
+import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
+import image_3 from '@site/static/images/deployment-guides/parallel-replicas-3.png'
+import image_4 from '@site/static/images/deployment-guides/parallel-replicas-4.png'
+import image_5 from '@site/static/images/deployment-guides/parallel-replicas-5.png'
+import image_6 from '@site/static/images/deployment-guides/parallel-replicas-6.png'
+import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.png'
+import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
+import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
+
+<BetaBadge/>
+
+## 소개 {#introduction}
+
+ClickHouse는 쿼리를 매우 빠르게 처리하지만, 이러한 쿼리들이 여러 서버에 어떻게 분산되고 병렬화되는 것일까요?
+
+> 이 가이드에서는 먼저 ClickHouse가 분산 테이블을 통해 쿼리를 여러 샤드에 어떻게 분산하는지에 대해 논의하고, 그 다음 쿼리가 실행을 위해 여러 복제본을 활용할 수 있는 방법에 대해 설명합니다.
+
+## 샤딩 아키텍처 {#sharded-architecture}
+
+공유 없는 아키텍처에서는 클러스터가 여러 샤드로 나뉘며, 각 샤드는 전체 데이터의 하위 집합을 포함합니다. 분산 테이블은 이러한 샤드 위에 위치하여 전체 데이터에 대한 통합된 뷰를 제공합니다.
+
+데이터 읽기는 로컬 테이블로 전송될 수 있습니다. 쿼리 실행은 특정 샤드에서만 발생할 수 있으며, 분산 테이블로 전송될 수도 있고, 이 경우에는 각 샤드가 주어진 쿼리를 실행합니다. 분산 테이블이 쿼리된 서버는 데이터를 집계하여 클라이언트에 응답합니다:
+
+<Image img={image_1} size="md" alt="sharded archtiecture" />
+
+위의 그림은 클라이언트가 분산 테이블을 쿼리할 때 발생하는 일을 시각화합니다:
+
+<ol className="docs-ordered-list">
+    <li>
+        선택 쿼리는 임의의 노드의 분산 테이블로 전송됩니다
+        (라운드 로빈 전략을 통해 또는 로드 밸런서에 의해 특정 서버로 라우팅된 후). 이 노드는 이제 조정자로 작용합니다.
+    </li>
+    <li>
+        노드는 쿼리를 실행해야 할 각 샤드를 찾아내어,
+        분산 테이블에 지정된 정보에 따라 쿼리가 각 샤드로 전송됩니다.
+    </li>
+    <li>
+        각 샤드는 로컬에서 데이터를 읽고, 필터링하고, 집계한 후
+        병합 가능한 상태를 조정자에게 다시 전송합니다.
+    </li>
+    <li>
+        조정 노드는 데이터를 병합한 후 응답을 클라이언트에 전송합니다.
+    </li>
+</ol>
+
+복제본을 추가하면 절차는 대체로 비슷하지만, 각 샤드에서 단일 복제본만 쿼리를 실행한다는 점만 달라집니다. 이는 더 많은 쿼리를 병렬로 처리할 수 있음을 의미합니다.
+
+## 비샤딩 아키텍처 {#non-sharded-architecture}
+
+ClickHouse Cloud는 위에서 제시한 아키텍처와 매우 다른 아키텍처를 가지고 있습니다. (자세한 내용은 ["ClickHouse Cloud Architecture"](https://clickhouse.com/docs/cloud/reference/architecture)를 참조하세요). 컴퓨트와 스토리지를 분리하고 사실상 무한한 저장 용량을 제공함에 따라, 샤드의 필요성이 덜 중요해집니다.
+
+아래 그림은 ClickHouse Cloud 아키텍처를 보여줍니다:
+
+<Image img={image_2} size="md" alt="non sharded architecture" />
+
+이 아키텍처는 우리가 거의 즉시 복제본을 추가 및 제거할 수 있게 하여 매우 높은 클러스터 확장성을 보장합니다. ClickHouse Keeper 클러스터(오른쪽에 표시됨)는 메타데이터의 단일 신뢰 출처를 보장합니다. 복제본은 ClickHouse Keeper 클러스터에서 메타데이터를 가져오고 모두 동일한 데이터를 유지합니다. 데이터 자체는 객체 스토리지에 저장되며 SSD 캐시를 통해 쿼리 속도를 높일 수 있습니다.
+
+그렇다면 이제 여러 서버에 쿼리 실행을 어떻게 분산할 수 있을까요? 샤딩 아키텍처에서는 각 샤드가 실제로 데이터의 하위 집합에서 쿼리를 실행할 수 있기 때문에 아주 명백했습니다. 샤딩이 없을 때는 어떻게 작동할까요?
+
+## 병렬 복제본 소개 {#introducing-parallel-replicas}
+
+여러 서버를 통한 쿼리 실행을 병렬화하려면, 먼저 서버 중 하나를 조정자로 지정할 수 있어야 합니다. 조정자는 실행해야 하는 작업 목록을 작성하고, 모든 작업이 실행되고 집계되어 결과가 클라이언트에게 전송되도록 하여야 합니다. 대부분의 분산 시스템에서 이 역할은 초기 쿼리를 수신한 노드의 역할입니다. 또한 작업 단위를 정의해야 합니다. 샤딩 아키텍처에서는 작업 단위가 샤드, 즉 데이터의 하위 집합입니다. 병렬 복제본을 사용할 때는 테이블의 작은 부분을 작업 단위로 사용합니다, 이를 [그란울](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)이라고 합니다.
+
+이제 아래 그림을 통해 실제로 어떻게 작동하는지 살펴보겠습니다:
+
+<Image img={image_3} size="md" alt="Parallel replicas" />
+
+병렬 복제본을 사용하여:
+
+<ol className="docs-ordered-list">
+    <li>
+        클라이언트의 쿼리는 로드 밸런서를 통해 한 노드로 전송됩니다. 이 노드는 이 쿼리의 조정자가 됩니다.
+    </li>
+    <li>
+        노드는 각 파트의 인덱스를 분석하고 처리할 올바른 파트와 그란울을 선택합니다.
+    </li>
+    <li>
+        조정자는 작업 부하를 여러 복제본에 할당할 수 있는 그란울 집합으로 분할합니다.
+    </li>
+    <li>
+        각 그란울 집합은 해당 복제본에 의해 처리되고, 완료되면 조정자에게 병합 가능한 상태가 전송됩니다.
+    </li>
+    <li>
+        마지막으로 조정자는 복제본에서 모든 결과를 병합하고 응답을 클라이언트에게 반환합니다.
+    </li>
+</ol>
+
+위의 단계는 이론적으로 병렬 복제본이 어떻게 작동하는지를 개요합니다.
+하지만 실제로는 이러한 논리가 완벽하게 작동하지 못하는 다양한 요소가 있습니다:
+
+<ol className="docs-ordered-list">
+    <li>
+        일부 복제본이 사용할 수 없을 수 있습니다.
+    </li>
+    <li>
+        ClickHouse의 복제는 비동기적이며, 일부 복제본이 같은 파트를 동시에 가지지 않을 수 있습니다.
+    </li>
+    <li>
+        복제본 간의 지연(latency) 문제를 처리해야 합니다.
+    </li>
+    <li>
+        파일 시스템 캐시는 각 복제본에서의 활동에 따라 달라지므로, 임의의 작업 할당이 캐시 지역성으로 인해 최적의 성능 결과를 제공하지 않을 수 있습니다.
+    </li>
+</ol>
+
+이러한 요소를 해결하는 방법은 다음 섹션에서 살펴보겠습니다.
+
+### 공지 사항 {#announcements}
+
+위 목록의 (1) 및 (2) 문제를 해결하기 위해 공지 개념을 도입했습니다. 아래 그림을 사용하여 작동 방식을 시각화해 보겠습니다:
+
+<Image img={image_4} size="md" alt="Announcements" />
+
+<ol className="docs-ordered-list">
+    <li>
+        클라이언트의 쿼리는 로드 밸런서를 통해 한 노드로 전송됩니다. 이 노드는 이 쿼리의 조정자가 됩니다.
+    </li>
+    <li>
+        조정 노드는 모든 복제본에서 공지를 가져오는 요청을 보냅니다. 복제본은 테이블의 현재 파트 세트에 대해 약간 다른 뷰를 가질 수 있습니다. 결과적으로 잘못된 스케줄링 결정을 피하기 위해 이 정보를 수집해야 합니다.
+    </li>
+    <li>
+        조정 노드는 그런 다음 공지를 사용하여 서로 다른 복제본에 할당할 수 있는 그란울 집합을 정의합니다. 예를 들어, 공지에서 파트 3의 그란울이 복제본 2에 할당되지 않았음을 볼 수 있습니다. 이는 이 복제본이 공지에 이 파트를 제공하지 않았기 때문입니다. 또한 복제본 3에 할당된 작업이 없는 이유는 이 복제본이 공지를 제공하지 않았기 때문입니다.
+    </li>
+    <li>
+        각 복제본이 자신의 그란울 하위 집합에서 쿼리를 처리하고 병합 가능한 상태가 조정자에게 다시 전송된 후, 조정자는 결과를 병합하고 응답을 클라이언트에게 보냅니다.
+    </li>
+</ol>
+
+### 동적 조정 {#dynamic-coordination}
+
+지연 문제를 해결하기 위해 동적 조정을 추가했습니다. 이는 모든 그란울이 한 요청에서 복제본으로 전송되지 않고, 각 복제본이 조정자에게 처리할 새로운 작업(그란울 집합)을 요청할 수 있도록 함을 의미합니다. 조정자는 수신한 공지에 따라 복제본에 그란울 집합을 제공합니다.
+
+모든 복제본이 모든 파트를 포함한 공지를 보냈다고 가정해 보겠습니다.
+
+아래 그림은 동적 조정이 어떻게 작동하는지를 시각화합니다:
+
+<Image img={image_5} size="md" alt="Dynamic Coordination - part 1" />
+
+<ol className="docs-ordered-list">
+    <li>
+        복제본은 조정자 노드에게 작업을 처리할 수 있다는 것을 알려주고, 처리할 수 있는 작업의 양을 지정할 수 있습니다.
+    </li>
+    <li>
+        조정자는 복제본에 작업을 할당합니다.
+    </li>
+</ol>
+
+<Image img={image_6} size="md" alt="Dynamic Coordination - part 2" />
+
+<ol className="docs-ordered-list">
+    <li>
+        복제본 1과 2는 작업을 매우 빠르게 완료할 수 있습니다. 그들은 조정자 노드에게 다른 작업을 요청할 것입니다.
+    </li>
+    <li>
+        조정자는 복제본 1과 2에 새로운 작업을 할당합니다.
+    </li>
+</ol>
+
+<Image img={image_7} size="md" alt="Dynamic Coordination - part 3" />
+
+<ol className="docs-ordered-list">
+    <li>
+        모든 복제본이 이제 작업 처리를 완료했습니다. 그들은 더 많은 작업을 요청합니다.
+    </li>
+    <li>
+        조정자는 공지를 사용하여 처리할 남은 작업을 확인하지만, 남은 작업이 없습니다.
+    </li>
+    <li>
+        조정자는 복제본에게 모든 작업이 처리되었음을 알립니다. 이제 모든 병합 가능한 상태를 병합하고 쿼리에 응답할 것입니다.
+    </li>
+</ol>
+
+### 캐시 지역성 관리 {#managing-cache-locality}
+
+남은 마지막 잠재적 문제는 캐시 지역성을 처리하는 방법입니다. 쿼리가 여러 번 실행되면, 같은 작업이 같은 복제본으로 라우팅되도록 어떻게 보장할 수 있을까요? 이전 예에서는 다음과 같이 작업이 할당되었습니다:
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>복제본 1</th>
+            <th>복제본 2</th>
+            <th>복제본 3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>파트 1</td>
+            <td>g1, g6, g7</td>
+            <td>g2, g4, g5</td>
+            <td>g3</td>
+        </tr>
+        <tr>
+            <td>파트 2</td>
+            <td>g1</td>
+            <td>g2, g4, g5</td>
+            <td>g3</td>
+        </tr>
+        <tr>
+            <td>파트 3</td>
+            <td>g1, g6</td>
+            <td>g2, g4, g5</td>
+            <td>g3</td>
+        </tr>
+    </tbody>
+</table>
+
+동일한 작업이 동일한 복제본에 할당되고 캐시의 이점을 누릴 수 있도록 하기 위해 두 가지 일이 발생합니다. 파트 + 그란울 집합(작업)의 해시가 계산됩니다. 작업 할당에서 복제본 수에 대한 모드가 적용됩니다.
+
+이론적으로는 좋게 들리지만, 실제로는 한 복제본에 갑작스러운 부하가 걸리거나 네트워크가 약화되면, 특정 작업을 실행하는 데 동일한 복제본을 지속적으로 사용하는 경우 지연이 발생할 수 있습니다. `max_parallel_replicas`가 복제본의 수보다 적으면 쿼리 실행을 위해 임의 선택된 복제본이 사용됩니다.
+
+### 작업 훔치기 {#task-stealing}
+
+어떤 복제본이 다른 복제본보다 작업을 느리게 처리하는 경우, 다른 복제본들은 이론적으로 그 복제본에 속하는 작업을 해시를 통해 '훔쳐' 지연을 줄이려고 시도합니다.
+
+### 한계 {#limitations}
+
+이 기능에는 알려진 한계가 있으며, 주요 한계는 이 섹션에 문서화되어 있습니다.
+
+:::note
+아래에 나열된 한계 중 하나가 아닌 문제가 발견되면, 병렬 복제본이 원인이라고 의심되는 경우, 레이블 `comp-parallel-replicas`를 사용하여 GitHub에 문제를 열어주세요.
+:::
+
+| 한계                                           | 설명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 복잡한 쿼리                                    | 현재 병렬 복제본은 간단한 쿼리에 대해서 잘 작동합니다. CTE, 서브쿼리, JOIN, 비평면 쿼리 등과 같은 복잡성 계층은 쿼리 성능에 부정적인 영향을 미칠 수 있습니다.                                                                                                                                                                                                                                                                                                    |
+| 작은 쿼리                                    | 많은 행을 처리하지 않는 쿼리를 실행하는 경우, 여러 복제본에서 실행하면 쿼리 실행 사이의 네트워크 시간이 추가 주기를 초래할 수 있으므로 좋은 성능 시간을 제공하지 못할 수 있습니다. 이러한 문제는 설정: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica)를 사용하여 제한할 수 있습니다.                                                                      |
+| FINAL 사용 시 병렬 복제본 비활성화           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 프로젝션은 병렬 복제본과 함께 사용되지 않음   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 높은 카드inality 데이터 및 복잡한 집계       | 많은 데이터를 전송해야 하는 높은 카드inality 집계는 쿼리를 상당히 느리게 만들 수 있습니다.                                                                                                                                                                                                                                                                                                                                                                                            |
+| 새로운 분석기와의 호환성                      | 새로운 분석기는 특정 시나리오에서 쿼리 실행 속도를 크게 느리게 하거나 빠르게 할 수 있습니다.                                                                                                                                                                                                                                                                                                                                                                               |
+
+## 병렬 복제본 관련 설정 {#settings-related-to-parallel-replicas}
+
+| 설정                                         | 설명                                                                                                                                                                                                                                                                                                                                         |
+|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enable_parallel_replicas`                    | `0`: 비활성화<br/> `1`: 활성화 <br/>`2`: 병렬 복제본 사용 강제, 사용하지 않을 경우 예외 발생.                                                                                                                                                                                                                                                       |
+| `cluster_for_parallel_replicas`               | 병렬 복제를 위해 사용할 클러스터 이름; ClickHouse Cloud를 사용하는 경우 `default`를 사용합니다.                                                                                                                                                                                                                                        |
+| `max_parallel_replicas`                       | 다중 복제본에서 쿼리 실행을 위해 사용할 최대 복제본 수. 클러스터의 복제본 수보다 적은 수가 지정된 경우 노드는 임의로 선택됩니다. 이 값은 수평 확장을 고려하여 오버커밋 될 수도 있습니다.                                                                                                                                          |
+| `parallel_replicas_min_number_of_rows_per_replica` | 처리해야 할 행 수에 따라 사용되는 복제본 수를 제한하는 데 도움이 됩니다. 사용되는 복제본 수는 다음과 같이 정의됩니다: <br/> `추정된 읽어야 할 행 수` / `min_number_of_rows_per_replica`.                                                                                                       |
+| `allow_experimental_analyzer`                 | `0`: 이전 분석기 사용<br/> `1`: 새로운 분석기 사용. <br/><br/>병렬 복제본의 동작은 사용된 분석기에 따라 변경될 수 있습니다.                                                                                                                                                                          |
+
+## 병렬 복제본 문제 조사 {#investigating-issues-with-parallel-replicas}
+
+각 쿼리에 대해 사용되고 있는 설정을 [`system.query_log`](/docs/operations/system-tables/query_log) 테이블에서 확인할 수 있습니다. 서버에서 발생한 모든 이벤트를 보려면 [`system.events`](/docs/operations/system-tables/events) 테이블을 참조하고, 모든 복제본의 테이블을 보려면 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 테이블 함수를 사용할 수 있습니다
+(클라우드 사용자라면 `default`를 사용하세요).
+
+```sql title="Query"
+SELECT
+   hostname(),
+   *
+FROM clusterAllReplicas('default', system.events)
+WHERE event ILIKE '%ParallelReplicas%'
+```
+<details>
+<summary>응답</summary>
+```response title="Response"
+┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleRequestMicroseconds      │   438 │ Time spent processing requests for marks from replicas                                               │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   558 │ Time spent processing replicas announcements                                                         │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadUnassignedMarks            │   240 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasReadAssignedForStealingMarks   │     4 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingByHashMicroseconds     │     5 │ Time spent collecting segments meant for stealing by hash                                            │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasProcessingPartsMicroseconds    │     5 │ Time spent processing data parts                                                                     │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     3 │ Time spent collecting orphaned segments                                                              │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
+│ c-crimson-vd-86-server-rdhnsx3-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
+└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleRequestMicroseconds      │   698 │ Time spent processing requests for marks from replicas                                               │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   644 │ Time spent processing replicas announcements                                                         │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadUnassignedMarks            │   190 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasReadAssignedForStealingMarks   │    54 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingByHashMicroseconds     │     8 │ Time spent collecting segments meant for stealing by hash                                            │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasProcessingPartsMicroseconds    │     4 │ Time spent processing data parts                                                                     │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
+│ c-crimson-vd-86-server-e9kp5f0-0 │ ParallelReplicasAvailableCount                 │     6 │ Number of replicas available to execute a query with task-based parallel replicas                    │
+└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleRequestMicroseconds      │   620 │ Time spent processing requests for marks from replicas                                               │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   656 │ Time spent processing replicas announcements                                                         │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadUnassignedMarks            │     1 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasReadAssignedForStealingMarks   │     1 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingByHashMicroseconds     │     4 │ Time spent collecting segments meant for stealing by hash                                            │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasProcessingPartsMicroseconds    │     3 │ Time spent processing data parts                                                                     │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     1 │ Time spent collecting orphaned segments                                                              │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
+│ c-crimson-vd-86-server-ybtm18n-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
+└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+┌─hostname()───────────────────────┬─event──────────────────────────────────────────┬─value─┬─description──────────────────────────────────────────────────────────────────────────────────────────┐
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleRequestMicroseconds      │   696 │ Time spent processing requests for marks from replicas                                               │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasHandleAnnouncementMicroseconds │   717 │ Time spent processing replicas announcements                                                         │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadUnassignedMarks            │     2 │ Sum across all replicas of how many unassigned marks were scheduled                                  │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasReadAssignedForStealingMarks   │     2 │ Sum across all replicas of how many of scheduled marks were assigned for stealing by consistent hash │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingByHashMicroseconds     │    10 │ Time spent collecting segments meant for stealing by hash                                            │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasProcessingPartsMicroseconds    │     6 │ Time spent processing data parts                                                                     │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasStealingLeftoversMicroseconds  │     2 │ Time spent collecting orphaned segments                                                              │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasUsedCount                      │     2 │ Number of replicas used to execute a query with task-based parallel replicas                         │
+│ c-crimson-vd-86-server-16j1ncj-0 │ ParallelReplicasAvailableCount                 │    12 │ Number of replicas available to execute a query with task-based parallel replicas                    │
+└──────────────────────────────────┴────────────────────────────────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+</details>
+
+[`system.text_log`](/docs/operations/system-tables/text_log) 테이블은 병렬 복제본을 사용하여 실행된 쿼리에 대한 정보를 포함하고 있습니다:
+
+```sql title="Query"
+SELECT message
+FROM clusterAllReplicas('default', system.text_log)
+WHERE query_id = 'ad40c712-d25d-45c4-b1a1-a28ba8d4019c'
+ORDER BY event_time_microseconds ASC
+```
+
+<details>
+<summary>응답</summary>
+```response title="Response"
+┌─message────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ (from 54.218.178.249:59198) SELECT * FROM session_events WHERE type='type2' LIMIT 10 SETTINGS allow_experimental_parallel_reading_from_replicas=2; (stage: Complete)                                                                                       │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage Complete │
+│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') to stage WithMergeableState only analyze │
+│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') from stage FetchColumns to stage WithMergeableState only analyze │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 to stage WithMergeableState only analyze │
+│ Access granted: SELECT(clientId, sessionId, pageId, timestamp, type) ON default.session_events                                                                                                                                                             │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage FetchColumns to stage WithMergeableState only analyze │
+│ Query SELECT __table1.clientId AS clientId, __table1.sessionId AS sessionId, __table1.pageId AS pageId, __table1.timestamp AS timestamp, __table1.type AS type FROM default.session_events AS __table1 WHERE __table1.type = 'type2' LIMIT _CAST(10, 'UInt64') SETTINGS allow_experimental_parallel_reading_from_replicas = 2 from stage WithMergeableState to stage Complete │
+│ The number of replicas requested (100) is bigger than the real number available in the cluster (6). Will use the latter number to execute the query.                                                                                                       │
+│ Initial request from replica 4: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 4 replica
+                                                                                                   │
+│ Reading state is fully initialized: part all_0_2_1 with ranges [(0, 182)] in replicas [4]; part all_3_3_0 with ranges [(0, 62)] in replicas [4]                                                                                                            │
+│ Sent initial requests: 1 Replicas count: 6                                                                                                                                                                                                                 │
+│ Initial request from replica 2: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 2 replica
+                                                                                                   │
+│ Sent initial requests: 2 Replicas count: 6                                                                                                                                                                                                                 │
+│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 4 with 1 parts: [part all_0_2_1 with ranges [(128, 182)]]. Finish: false; mine_marks=0, stolen_by_hash=54, stolen_rest=0                                                                                                       │
+│ Initial request from replica 1: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 1 replica
+                                                                                                   │
+│ Sent initial requests: 3 Replicas count: 6                                                                                                                                                                                                                 │
+│ Handling request from replica 4, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 4 with 2 parts: [part all_0_2_1 with ranges [(0, 128)], part all_3_3_0 with ranges [(0, 62)]]. Finish: false; mine_marks=0, stolen_by_hash=0, stolen_rest=190                                                                  │
+│ Initial request from replica 0: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 0 replica
+                                                                                                   │
+│ Sent initial requests: 4 Replicas count: 6                                                                                                                                                                                                                 │
+│ Initial request from replica 5: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 5 replica
+                                                                                                   │
+│ Sent initial requests: 5 Replicas count: 6                                                                                                                                                                                                                 │
+│ Handling request from replica 2, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 2 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+│ Initial request from replica 3: 2 parts: [part all_0_2_1 with ranges [(0, 182)], part all_3_3_0 with ranges [(0, 62)]]----------
+Received from 3 replica
+                                                                                                   │
+│ Sent initial requests: 6 Replicas count: 6                                                                                                                                                                                                                 │
+│ Total rows to read: 2000000                                                                                                                                                                                                                                │
+│ Handling request from replica 5, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 5 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+│ Handling request from replica 0, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 0 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+│ Handling request from replica 1, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 1 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+│ Handling request from replica 3, minimal marks size is 240                                                                                                                                                                                                 │
+│ Going to respond to replica 3 with 0 parts: []. Finish: true; mine_marks=0, stolen_by_hash=0, stolen_rest=0                                                                                                                                                │
+│ (c-crimson-vd-86-server-rdhnsx3-0.c-crimson-vd-86-server-headless.ns-crimson-vd-86.svc.cluster.local:9000) Cancelling query because enough data has been read                                                                                              │
+│ Read 81920 rows, 5.16 MiB in 0.013166 sec., 6222087.194288318 rows/sec., 391.63 MiB/sec.                                                                                                                                                                   │
+│ Coordination done: Statistics: replica 0 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 1 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 2 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 3 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0}; replica 4 - {requests: 3 marks: 244 assigned_to_me: 0 stolen_by_hash: 54 stolen_unassigned: 190}; replica 5 - {requests: 2 marks: 0 assigned_to_me: 0 stolen_by_hash: 0 stolen_unassigned: 0} │
+│ Peak memory usage (for query): 1.81 MiB.                                                                                                                                                                                                                   │
+│ Processed in 0.024095586 sec.                                                                                                                                                                                                                              │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+</details>
+
+마지막으로 `EXPLAIN PIPELINE`을 사용할 수도 있습니다. 이는 ClickHouse가 쿼리를 실행하는 방법과 쿼리 실행에 사용될 자원을 강조합니다. 예를 들어 다음의 쿼리를 살펴보겠습니다:
+
+```sql
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
+FROM session_events 
+WHERE type='type3' 
+GROUP BY toYear(timestamp) LIMIT 10
+```
+
+병렬 복제본 없이 쿼리 파이프라인을 보겠습니다:
+
+```sql title="EXPLAIN PIPELINE (without parallel replica)"
+EXPLAIN PIPELINE graph = 1, compact = 0 
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
+FROM session_events 
+WHERE type='type3' 
+GROUP BY toYear(timestamp) 
+LIMIT 10 
+SETTINGS allow_experimental_parallel_reading_from_replicas=0 
+FORMAT TSV;
+```
+
+<Image img={image_8} size="lg" alt="EXPLAIN without parallel_replica" />
+
+이제 병렬 복제본과 함께:
+
+```sql title="EXPLAIN PIPELINE (with parallel replica)"
+EXPLAIN PIPELINE graph = 1, compact = 0 
+SELECT count(), uniq(pageId) , min(timestamp), max(timestamp) 
+FROM session_events 
+WHERE type='type3' 
+GROUP BY toYear(timestamp) 
+LIMIT 10 
+SETTINGS allow_experimental_parallel_reading_from_replicas=2 
+FORMAT TSV;
+```
+
+<Image img={image_9} size="lg" alt="EXPLAIN with parallel_replica"/>

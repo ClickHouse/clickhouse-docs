@@ -1,0 +1,189 @@
+---
+'slug': '/primary-indexes'
+'title': '기본 키 인덱스'
+'description': 'ClickHouse에서 스파스 기본 키 인덱스는 어떻게 작동합니까'
+'keywords':
+- 'sparse primary index'
+- 'primary index'
+- 'index'
+'doc_type': 'guide'
+---
+
+import visual01 from '@site/static/images/managing-data/core-concepts/primary-index-light_01.gif';
+import visual02 from '@site/static/images/managing-data/core-concepts/primary-index-light_02.gif';
+import visual03 from '@site/static/images/managing-data/core-concepts/primary-index-light_03.gif';
+import Image from '@theme/IdealImage';
+
+:::tip 고급 인덱싱 세부정보를 찾고 계신가요?
+이 페이지에서는 ClickHouse의 스파스 기본 인덱스가 어떻게 구축되고, 어떻게 작동하며, 쿼리를 가속화하는 데 어떻게 도움이 되는지를 소개합니다.
+
+고급 인덱싱 전략 및 깊이 있는 기술 세부정보에 대해서는 [기본 인덱스 심층 분석](/guides/best-practices/sparse-primary-indexes)을 참조하십시오.
+:::
+
+## ClickHouse에서 스파스 기본 인덱스는 어떻게 작동합니까? {#how-does-the-sparse-primary-index-work-in-clickHouse}
+
+<br/>
+
+ClickHouse의 스파스 기본 인덱스는 테이블의 ^^기본 키^^ 컬럼에 대한 쿼리 조건과 일치할 수 있는 데이터를 포함할 수 있는 행 블록인 [그라뉼](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)을 효율적으로 식별하는 데 도움을 줍니다. 다음 섹션에서는 이 인덱스가 이러한 컬럼의 값으로부터 어떻게 구성되는지 설명합니다.
+
+### 스파스 기본 인덱스 생성 {#sparse-primary-index-creation}
+
+스파스 기본 인덱스가 어떻게 구축되는지 설명하기 위해 [uk_price_paid_simple](https://clickhouse.com/docs/parts) 테이블과 몇 가지 애니메이션을 사용합니다.
+
+[리마인더](https://clickhouse.com/docs/parts)로, ① 예제 테이블의 ^^기본 키^^ (town, street)에 대한 ② 삽입된 데이터는 ③ 디스크에 저장되고, ^^기본 키^^ 컬럼 값에 따라 정렬되며, 각 컬럼에 대해 별도의 파일로 압축됩니다:
+
+<Image img={visual01} size="lg"/>
+
+<br/><br/>
+
+처리 중에 각 컬럼의 데이터는 ④ 논리적으로 그라뉼로 나뉘어집니다—각 그라뉼은 8,192행을 커버하며, 이는 ClickHouse의 데이터 처리 메커니즘이 작동하는 가장 작은 단위입니다.
+
+이 ^^그라뉼^^ 구조가 기본 인덱스를 **스파스**하게 만드는 이유입니다: ClickHouse는 각 ^^그라뉼^^에서 단 한 행의 ^^기본 키^^ 값을 저장합니다—구체적으로는 첫 번째 행. 이로 인해 각 ^^그라뉼^^에는 하나의 인덱스 항목이 생성됩니다:
+
+<Image img={visual02} size="lg"/>
+
+<br/><br/>
+
+스파스함 덕분에 기본 인덱스는 충분히 작아서 전체가 메모리에 들어가 fast filtering을 가능하게 하며, ^^기본 키^^ 컬럼에 대한 쿼리의 성능을 가속화할 수 있습니다. 다음 섹션에서는 이러한 쿼리를 가속화하는 방법을 보여줍니다.
+
+### 기본 인덱스 사용 {#primary-index-usage}
+
+우리는 또 다른 애니메이션을 통해 스파스 기본 인덱스가 쿼리 가속화에 어떻게 사용되는지를 개략적으로 설명합니다:
+
+<Image img={visual03} size="lg"/>
+
+<br/><br/>
+
+① 예제 쿼리에는 두 개의 ^^기본 키^^ 컬럼에 대한 조건이 포함되어 있습니다: `town = 'LONDON' AND street = 'OXFORD STREET'`.
+
+② 쿼리를 가속화하기 위해 ClickHouse는 테이블의 기본 인덱스를 메모리로 로드합니다.
+
+③ 그런 다음 인덱스 항목을 스캔하여 어떤 그라뉼이 조건과 일치하는 행을 포함할 수 있는지 확인합니다—즉, 어떤 그라뉼을 건너뛰어야 하는지를 파악합니다.
+
+④ 이러한 잠재적으로 관련 있는 그라뉼은 로드되고 [처리](https://optimize/query-parallelism)되며, 쿼리에 필요한 다른 컬럼의 해당 그라뉼과 함께 메모리에서 처리됩니다.
+
+## 기본 인덱스 모니터링 {#monitoring-primary-indexes}
+
+테이블의 각 [데이터 파트](/parts)에는 고유한 기본 인덱스가 있습니다. 우리는 [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) 테이블 함수를 사용하여 이러한 인덱스의 내용을 검사할 수 있습니다.
+
+다음 쿼리는 예제 테이블의 각 데이터 파트에 대한 기본 인덱스의 항목 수를 나열합니다:
+
+```sql
+SELECT
+    part_name,
+    max(mark_number) AS entries
+FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
+GROUP BY part_name;
+```
+
+```txt
+   ┌─part_name─┬─entries─┐
+1. │ all_2_2_0 │     914 │
+2. │ all_1_1_0 │    1343 │
+3. │ all_0_0_0 │    1349 │
+   └───────────┴─────────┘
+```
+
+이 쿼리는 현재 데이터 ^^파트^^ 중 하나의 기본 인덱스에서 처음 10개의 항목을 보여줍니다. 이러한 ^^파트^^는 지속적으로 [병합](/merges)되어 더 큰 ^^파트^^로 구성됩니다:
+
+```sql
+SELECT 
+    mark_number + 1 AS entry,
+    town,
+    street
+FROM mergeTreeIndex('uk', 'uk_price_paid_simple')
+WHERE part_name = (SELECT any(part_name) FROM mergeTreeIndex('uk', 'uk_price_paid_simple')) 
+ORDER BY mark_number ASC
+LIMIT 10;
+```
+
+```txt
+    ┌─entry─┬─town───────────┬─street───────────┐
+ 1. │     1 │ ABBOTS LANGLEY │ ABBEY DRIVE      │
+ 2. │     2 │ ABERDARE       │ RICHARDS TERRACE │
+ 3. │     3 │ ABERGELE       │ PEN Y CAE        │
+ 4. │     4 │ ABINGDON       │ CHAMBRAI CLOSE   │
+ 5. │     5 │ ABINGDON       │ THORNLEY CLOSE   │
+ 6. │     6 │ ACCRINGTON     │ MAY HILL CLOSE   │
+ 7. │     7 │ ADDLESTONE     │ HARE HILL        │
+ 8. │     8 │ ALDEBURGH      │ LINDEN ROAD      │
+ 9. │     9 │ ALDERSHOT      │ HIGH STREET      │
+10. │    10 │ ALFRETON       │ ALMA STREET      │
+    └───────┴────────────────┴──────────────────┘
+```
+
+마지막으로, 우리는 [EXPLAIN](/sql-reference/statements/explain) 절을 사용하여 기본 인덱스가 모든 데이터 ^^파트^^에서 어떻게 사용되어 예제 쿼리의 조건과 일치하지 않는 그라뉼을 건너뛰는지를 확인합니다. 이러한 그라뉼은 로드 및 처리에서 제외됩니다:
+```sql
+EXPLAIN indexes = 1
+SELECT
+    max(price)
+FROM
+    uk.uk_price_paid_simple
+WHERE
+    town = 'LONDON' AND street = 'OXFORD STREET';
+```
+
+```txt
+    ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────┐
+ 1. │ Expression ((Project names + Projection))                                                                  │
+ 2. │   Aggregating                                                                                              │
+ 3. │     Expression (Before GROUP BY)                                                                           │
+ 4. │       Expression                                                                                           │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple)                                                        │
+ 6. │         Indexes:                                                                                           │
+ 7. │           PrimaryKey                                                                                       │
+ 8. │             Keys:                                                                                          │
+ 9. │               town                                                                                         │
+10. │               street                                                                                       │
+11. │             Condition: and((street in ['OXFORD STREET', 'OXFORD STREET']), (town in ['LONDON', 'LONDON'])) │
+12. │             Parts: 3/3                                                                                     │
+13. │             Granules: 3/3609                                                                               │
+    └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+위 EXPLAIN 출력의 13행을 주목하십시오. 여기서는 모든 데이터 ^^파트^^에서 3,609개의 그라뉼 중 3개만 기본 인덱스 분석에 의해 처리 대상으로 선택되었음을 보여줍니다. 나머지 그라뉼은 완전히 건너뛰어졌습니다.
+
+또한 쿼리를 실행함으로써 대부분의 데이터가 건너뛰어졌음을 확인할 수 있습니다:
+```sql
+SELECT max(price)
+FROM uk.uk_price_paid_simple
+WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
+```
+
+```txt
+   ┌─max(price)─┐
+1. │  263100000 │ -- 263.10 million
+   └────────────┘
+
+1 row in set. Elapsed: 0.010 sec. Processed 24.58 thousand rows, 159.04 KB (2.53 million rows/s., 16.35 MB/s.)
+Peak memory usage: 13.00 MiB.
+```
+
+위에서 보여준 것처럼, 예제 테이블의 약 3천만 행 중에서 약 25,000행만 처리되었습니다:
+```sql
+SELECT count() FROM uk.uk_price_paid_simple;
+```
+
+```txt
+   ┌──count()─┐
+1. │ 29556244 │ -- 29.56 million
+   └──────────┘
+```
+
+## 주요 내용 {#key-takeaways}
+
+* **스파스 기본 인덱스**는 ClickHouse가 쿼리 조건에 일치하는 행을 포함할 수 있는 그라뉼을 식별하여 불필요한 데이터를 건너뛰는 데 도움을 줍니다.
+
+* 각 인덱스는 **각 ^^그라뉼^^의 첫 번째 행에서만 ^^기본 키^^** 값을 저장하여 메모리에 적합할 정도로 압축됩니다 (기본적으로 ^^그라뉼^^에는 8,192행이 있습니다).
+
+* ^^MergeTree^^ 테이블의 **각 데이터 파트**는 **고유한 기본 인덱스**를 가지며, 이는 쿼리 실행 중 독립적으로 사용됩니다.
+
+* 쿼리 중에 인덱스는 ClickHouse가 **그라뉼을 건너뛰게 하여** I/O 및 메모리 사용량을 줄이고 성능을 가속화할 수 있도록 합니다.
+
+* `mergeTreeIndex` 테이블 함수를 사용하여 인덱스 내용을 **검사**하고 `EXPLAIN` 절을 사용하여 인덱스 사용을 모니터링할 수 있습니다.
+
+## 더 많은 정보를 찾을 수 있는 곳 {#where-to-find-more-information}
+
+ClickHouse에서 스파스 기본 인덱스가 작동하는 방식에 대해 더 깊이 살펴보려면, 전통적인 데이터베이스 인덱스와의 차이점 및 사용을 위한 모범 사례를 포함하여 자세한 인덱싱 [심층 분석](/guides/best-practices/sparse-primary-indexes)을 확인하십시오.
+
+ClickHouse가 기본 인덱스 스캔으로 선택된 데이터를 높은 수준에서 병렬로 처리하는 방식에 대해 관심이 있으시면, 쿼리 병렬성 가이드를 [여기](/optimize/query-parallelism)에서 확인하십시오.

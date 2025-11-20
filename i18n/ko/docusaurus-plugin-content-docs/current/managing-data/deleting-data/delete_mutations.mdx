@@ -1,0 +1,24 @@
+---
+'slug': '/managing-data/delete_mutations'
+'sidebar_label': '삭제 변형'
+'title': '삭제 변형'
+'hide_title': false
+'description': '페이지는 삭제 변형 - 테이블 데이터를 삭제를 통해 조작하는 ALTER 쿼리에 대해 설명합니다.'
+'keywords':
+- 'delete mutations'
+- 'ALTER TABLE DELETE'
+- 'data mutations'
+- 'data parts rewrite'
+- 'ReplacingMergeTree'
+'doc_type': 'reference'
+---
+
+import DeleteMutations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/delete.md';
+
+Delete mutations는 데이터를 삭제하면서 테이블 데이터를 조작하는 `ALTER` 쿼리를 의미합니다. 특히 `ALTER TABLE DELETE`와 같은 쿼리가 있습니다. 이러한 쿼리를 수행하면 데이터 파트의 새로운 변형이 생성됩니다. 즉, 이러한 명령문은 변형이 발생하기 전에 삽입된 모든 데이터에 대해 전체 데이터 파트를 다시 쓰도록 트리거합니다. 이는 많은 쓰기 요청으로 이어질 수 있습니다.
+
+:::info
+삭제를 위해, 기본 MergeTree 테이블 엔진 대신 [ReplacingMergeTree](/guides/replacing-merge-tree) 또는 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)와 같은 특화된 테이블 엔진을 사용하여 이러한 대량의 쓰기 요청을 피할 수 있습니다.
+:::
+
+<DeleteMutations/>

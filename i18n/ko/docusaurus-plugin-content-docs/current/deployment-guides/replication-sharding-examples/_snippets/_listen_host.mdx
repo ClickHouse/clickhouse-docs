@@ -1,0 +1,17 @@
+외부 통신은 listen host 설정을 활성화하여 네트워크 인터페이스에 대해 활성화됩니다. 이렇게 하면 ClickHouse 서버 호스트가 다른 호스트에서 접근 가능하게 됩니다:
+
+```xml
+<listen_host>0.0.0.0</listen_host>
+```
+
+HTTP API의 포트는 `8123`으로 설정됩니다:
+
+```xml
+<http_port>8123</http_port>
+```
+
+clickhouse-client와 다른 네이티브 ClickHouse 도구, 그리고 clickhouse-server와 다른 clickhouse-servers 간의 ClickHouse의 네이티브 프로토콜을 통한 상호작용을 위한 TCP 포트는 `9000`으로 설정됩니다:
+
+```xml
+<tcp_port>9000</tcp_port>
+```

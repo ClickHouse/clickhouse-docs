@@ -1,0 +1,751 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+
+Java 클라이언트 라이브러리를 사용하여 DB 서버와 프로토콜을 통해 통신합니다. 현재 구현은 [HTTP 인터페이스](/interfaces/http)만 지원합니다. 이 라이브러리는 서버에 요청을 보내기 위한 고유한 API를 제공합니다. 또한, 다양한 이진 데이터 형식(RowBinary* & Native*)을 다루기 위한 도구도 제공합니다.
+
+## Setup {#setup}
+
+- Maven Central (프로젝트 웹 페이지): https://mvnrepository.com/artifact/com.clickhouse/client-v2
+- 야간 빌드 (저장소 링크): https://central.sonatype.com/repository/maven-snapshots/
+- 이전 야간 빌드 아티팩토리 (저장소 링크): https://s01.oss.sonatype.org/content/repositories/snapshots/
+<br/>
+<Tabs groupId="client-setup">
+<TabItem value="maven" label="Maven" >
+
+```xml
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>client-v2</artifactId>
+    <version>0.9.1</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/client-v2
+implementation("com.clickhouse:client-v2:0.9.1")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/client-v2
+implementation 'com.clickhouse:client-v2:0.9.1'
+```
+
+</TabItem>
+</Tabs>
+## Initialization {#initialization}
+
+Client 객체는 `com.clickhouse.client.api.Client.Builder#build()`에 의해 초기화됩니다. 각 클라이언트는 고유한 컨텍스트를 가지며 서로 간에 객체를 공유하지 않습니다. Builder는 편리한 설정을 위한 구성 메서드를 제공합니다.
+
+예:
+```java showLineNumbers
+Client client = new Client.Builder()
+               .addEndpoint("https://clickhouse-cloud-instance:8443/")
+               .setUsername(user)
+               .setPassword(password)
+               .build();
+```
+
+`Client`는 `AutoCloseable`이며 더 이상 필요하지 않을 때는 닫아야 합니다.
+### Authentication {#authentication}
+
+인증은 초기화 단계에서 클라이언트별로 구성됩니다. 지원되는 인증 방법은 비밀번호, 액세스 토큰, SSL 클라이언트 인증서의 세 가지입니다.
+
+비밀번호에 의한 인증은 `setUsername(String)` 및 `setPassword(String)`를 호출하여 사용자 이름 비밀번호를 설정해야 합니다:
+```java showLineNumbers
+Client client = new Client.Builder()
+       .addEndpoint("https://clickhouse-cloud-instance:8443/")
+       .setUsername(user)
+       .setPassword(password)
+       .build();
+```
+
+액세스 토큰에 의한 인증은 `setAccessToken(String)`을 호출하여 액세스 토큰을 설정해야 합니다:
+```java showLineNumbers
+Client client = new Client.Builder()
+       .addEndpoint("https://clickhouse-cloud-instance:8443/")
+       .setAccessToken(userAccessToken)
+       .build();
+```
+
+SSL 클라이언트 인증서에 의한 인증은 사용자 이름을 설정하고, SSL 인증을 활성화하며, 클라이언트 인증서와 클라이언트 키를 설정해야 합니다. 이를 위해 `setUsername(String)`, `useSSLAuthentication(boolean)`, `setClientCertificate(String)` 및 `setClientKey(String)`를 각각 호출합니다:
+```java showLineNumbers
+Client client = new Client.Builder()
+        .useSSLAuthentication(true)
+        .setUsername("some_user")
+        .setClientCertificate("some_user.crt")
+        .setClientKey("some_user.key")
+```
+
+:::note
+SSL 인증은 생산 환경에서 문제를 해결하기 어려울 수 있습니다. SSL 라이브러리에서 발생하는 많은 오류가 충분한 정보를 제공하지 않기 때문입니다. 예를 들어, 클라이언트 인증서와 키가 일치하지 않으면 서버는 즉시 연결을 종료합니다(HTTP의 경우 이는 연결 초기화 단계에서 일어나며 HTTP 요청이 전송되지 않으므로 응답이 전송되지 않습니다).
+
+인증서와 키를 확인하려면 [openssl](https://docs.openssl.org/master/man1/openssl/)와 같은 도구를 사용하십시오:
+- 키 무결성 확인: `openssl rsa -in [key-file.key] -check -noout`
+- 클라이언트 인증서가 사용자에 대한 일치하는 CN을 가지는지 확인:
+    - 사용자 인증서에서 CN 가져오기 - `openssl x509 -noout -subject -in [user.cert]`
+    - 데이터베이스에서 동일한 값이 설정되어 있는지 확인 `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (쿼리는 `auth_params`를 출력하여 `{"common_names":["some_user"]}`와 같은 내용을 보여줍니다).
+
+:::
+## Configuration {#configuration}
+
+모든 설정은 각 값의 범위와 문맥을 분명하게 하는 인스턴스 메서드(구성 메서드라고도 함)로 정의됩니다. 주요 구성 매개변수는 하나의 범위(클라이언트 또는 작업)에 정의되며 서로를 덮어쓰지 않습니다.
+
+구성은 클라이언트 생성 중에 정의됩니다. `com.clickhouse.client.api.Client.Builder`를 참조하십시오.
+## Client Configuration {#client-configuration}
+<WideTableWrapper>
+| Configuration Method  | Arguments                   |  Description                                |
+|-----------------------|-----------------------------|:--------------------------------------------|
+| `addEndpoint(String endpoint)`          | - `endpoint` - 서버 주소 형식의 URL.      | 사용 가능한 서버 목록에 서버 엔드포인트를 추가합니다. 현재는 하나의 엔드포인트만 지원됩니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none`  |
+| `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | - `protocol` - 연결 프로토콜 `com.clickhouse.client.api.enums.Protocol#HTTP`.<br />- `host` - 서버의 IP 또는 호스트 이름.<br />- `secure` - 통신에 프로토콜의 보안 버전(HTTPS)을 사용해야 하는지 여부 | 사용 가능한 서버 목록에 서버 엔드포인트를 추가합니다. 현재는 하나의 엔드포인트만 지원됩니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `setOption(String key, String value)`   | - `key` - 클라이언트 구성 옵션의 문자열 키.<br /> - `value` - 옵션의 문자열 값 | 클라이언트 옵션의 원시 값을 설정합니다. 프로퍼티 파일에서 구성을 읽을 때 유용합니다. | 
+| `setUsername(String username)`          | - `username` - 인증 시 사용할 사용자의 사용자 이름 | 추가 구성에 의해 선택된 인증 방법에 대한 사용자 이름을 설정합니다. <br/> <br/> 기본값: `default` <br/> 열거형: `ClientConfigProperties.USER` <br/> 키: `user` |
+| `setPassword(String password)`          | - `password` - 비밀번호 인증을 위한 비밀 값 | 비밀번호 인증을 위한 비밀을 설정하며, 사실상 인증 방법을 선택합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PASSWORD` <br/> 키: `password` |
+| `setAccessToken(String accessToken)`    | - `accessToken` - 액세스 토큰의 문자열 표현 | 설정된 해당 인증 방법으로 인증하기 위해 액세스 토큰을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.ACCESS_TOKEN` <br/> 키: `access_token` |
+| `useSSLAuthentication(boolean useSSLAuthentication)` | - `useSSLAuthentication` - SSL 인증을 사용할지 여부를 나타내는 플래그 | 인증 방법으로 SSL 클라이언트 인증서를 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_AUTH` <br/> 키: `ssl_authentication` |
+| `enableConnectionPool(boolean enable)`  | - `enable` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 연결 풀을 활성화해야 하는지 설정합니다. <br/> <br/> 기본값: `true` <br/> 열거형: `ClientConfigProperties.CONNECTION_POOL_ENABLED` <br/> 키: `connection_pool_enabled` |
+| `setConnectTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `unit` - `timeout`의 시간 단위 | 모든 아웃고잉 연결에 대한 연결 초기화 타임아웃을 설정합니다. 이는 소켓 연결을 얻는 대기 시간에 영향을 미칩니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.CONNECTION_TIMEOUT` <br/> 키: `connection_timeout`|
+| `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `unit` - `timeout`의 시간 단위 | 연결 요청 타임아웃을 설정합니다. 이는 풀에서 연결을 얻을 때만 적용됩니다. <br/> <br/> 기본값: `10000` <br/> 열거형: `ClientConfigProperties.CONNECTION_REQUEST_TIMEOUT` <br/> 키: `connection_request_timeout` |
+| `setMaxConnections(int maxConnections)` | - `maxConnections` - 연결 수 | 클라이언트가 각 서버 엔드포인트에 대해 열 수 있는 연결 수를 설정합니다. <br/> <br/> 기본값: `10` <br/> 열거형: `ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS` <br/> 키: `max_open_connections` |
+| `setConnectionTTL(long timeout, ChronoUnit unit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `unit` - `timeout`의 시간 단위 | 연결이 더 이상 활성으로 간주되는 TTL을 설정합니다. <br/> <br/> 기본값: `-1` <br/> 열거형: `ClientConfigProperties.CONNECTION_TTL` <br/> 키: `connection_ttl`|
+| `setKeepAliveTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `unit` - `timeout`의 시간 단위 | HTTP 연결 유지 활성화 타임아웃을 설정합니다. 이 옵션은 타임아웃을 0으로 설정하여 Keep-Alive를 비활성화하는 데 사용될 수 있습니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.HTTP_KEEP_ALIVE_TIMEOUT` <br/> 키: `http_keep_alive_timeout` |
+| `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)` | - `strategy` - 열거형 `com.clickhouse.client.api.ConnectionReuseStrategy` 상수 | 연결 풀이 어떤 전략을 사용해야 하는지 선택합니다: 연결이 풀에 반환되자마자 재사용되는 `LIFO` 또는 사용 가능한 순서대로 연결을 사용하는 `FIFO` (반환된 연결은 즉시 사용되지 않음). <br/> <br/> 기본값: `FIFO` <br/> 열거형: `ClientConfigProperties.CONNECTION_REUSE_STRATEGY` <br/> 키: `connection_reuse_strategy`|
+| `setSocketTimeout(long timeout, ChronoUnit unit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `unit` - `timeout`의 시간 단위 | 읽기 및 쓰기 작업에 영향을 미치는 소켓 타임아웃을 설정합니다. <br/> <br/> 기본값: `0` <br/> 열거형: `ClientConfigProperties.SOCKET_OPERATION_TIMEOUT` <br/> 키: `socket_timeout`|
+| `setSocketRcvbuf(long size)` | - `size` - 바이트 단위의 크기 | TCP 소켓 수신 버퍼를 설정합니다. 이 버퍼는 JVM 메모리 밖에 위치합니다. <br/> <br/> 기본값: `8196` <br/> 열거형: `ClientConfigProperties.SOCKET_RCVBUF_OPT` <br/> 키: `socket_rcvbuf` |
+| `setSocketSndbuf(long size)` | - `size` - 바이트 단위의 크기 | TCP 소켓 송신 버퍼를 설정합니다. 이 버퍼는 JVM 메모리 밖에 위치합니다. <br/> <br/> 기본값: `8196` <br/> 열거형: `ClientConfigProperties.SOCKET_SNDBUF_OPT` <br/> 키: `socket_sndbuf` |
+| `setSocketKeepAlive(boolean value)` | - `value` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그. | 클라이언트가 생성하는 모든 TCP 소켓에 대해 `SO_KEEPALIVE` 옵션을 설정합니다. TCP Keep Alive는 연결의 생존성을 확인하는 메커니즘을 활성화하며 abruptly terminated ones를 감지하는 데 도움을 줍니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SOCKET_KEEPALIVE_OPT` <br/> 키: `socket_keepalive` |
+| `setSocketTcpNodelay(boolean value)` | - `value` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그. | 클라이언트가 생성하는 모든 TCP 소켓에 대해 `SO_NODELAY` 옵션을 설정합니다. 이 TCP 옵션은 가능한 빨리 데이터를 푸시하도록 소켓을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SOCKET_TCP_NO_DELAY_OPT` <br/> 키: `socket_tcp_nodelay`|
+| `setSocketLinger(int secondsToWait)` | - `secondsToWait` - 초 단위의 숫자. | 클라이언트가 생성하는 모든 TCP 소켓에 대한 대기 시간을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SOCKET_LINGER_OPT` <br/> 키: `socket_linger`|
+| `compressServerResponse(boolean enabled)` | - `enabled` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 서버가 응답을 압축해야 하는지 설정합니다. <br/> <br/> 기본값: `true` <br/> 열거형: `ClientConfigProperties.COMPRESS_SERVER_RESPONSE` <br/> 키: `compress` |
+| `compressClientRequest(boolean enabled)` | - `enabled` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 클라이언트가 요청을 압축해야 하는지 설정합니다. <br/> <br/> 기본값: `false` <br/> 열거형: `ClientConfigProperties.COMPRESS_CLIENT_REQUEST` <br/> 키: `decompress` |
+| `useHttpCompression(boolean enabled)` | - `enabled` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 클라이언트/서버 통신 시 HTTP 압축을 사용할지 설정합니다. 해당 옵션이 활성화되어 있어야 합니다. | 
+| `appCompressedData(boolean enabled)` | - `enabled` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 클라이언트에게 압축이 애플리케이션에 의해 처리될 것임을 알립니다. <br/> <br/> 기본값: `false` <br/> 열거형: `ClientConfigProperties.APP_COMPRESSED_DATA` <br/> 키: `app_compressed_data` |
+| `setLZ4UncompressedBufferSize(int size)` | - `size` - 바이트 단위의 크기 | 데이터 스트림의 압축되지 않은 부분을 수신할 버퍼의 크기를 설정합니다. 버퍼가 과소 평가되면 새로운 버퍼가 생성되고, 해당 경고가 로그에 나타날 것입니다. <br/> <br/> 기본값: `65536` <br/> 열거형: `ClientConfigProperties.COMPRESSION_LZ4_UNCOMPRESSED_BUF_SIZE` <br/> 키: `compression.lz4.uncompressed_buffer_size`|
+| `disableNativeCompression` | - `disable` - 옵션을 비활성화해야 하는지 여부를 나타내는 플래그 | 네이티브 압축을 비활성화합니다. true로 설정하면 네이티브 압축이 비활성화됩니다. <br/> <br/> 기본값: `false` <br/> 열거형: `ClientConfigProperties.DISABLE_NATIVE_COMPRESSION` <br/> 키: `disable_native_compression` |
+| `setDefaultDatabase(String database)` | - `database` - 데이터베이스 이름 | 기본 데이터베이스를 설정합니다. <br/> <br/> 기본값: `default` <br/> 열거형: `ClientConfigProperties.DATABASE` <br/> 키: `database` |
+| `addProxy(ProxyType type, String host, int port)` | - `type` - 프록시 유형.<br /> - `host` - 프록시 호스트 이름 또는 IP 주소.<br /> - `port` - 프록시 포트 | 서버와의 통신에 사용할 프록시를 설정합니다. 프록시에 인증이 필요한 경우 프록시 설정이 필요합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PROXY_TYPE` <br/> 키: `proxy_type` <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PROXY_HOST` <br/> 키: `proxy_host`  <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PROXY_PORT` <br/> 키: `proxy_port` |
+| `setProxyCredentials(String user, String pass)` | - `user` - 프록시 사용자 이름.<br /> - `pass` - 비밀번호 | 프록시 인증을 위한 사용자 자격 증명을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PROXY_USER` <br/> 키: `proxy_user` <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.PROXY_PASSWORD` <br/> 키: `proxy_password` |
+| `setExecutionTimeout(long timeout, ChronoUnit timeUnit)` | - `timeout` - 특정 시간 단위의 타임아웃.<br /> - `timeUnit` - `timeout`의 시간 단위 | 쿼리에 대한 최대 실행 타임아웃을 설정합니다. <br/> <br/> 기본값: `0` <br/> 열거형: `ClientConfigProperties.MAX_EXECUTION_TIME` <br/> 키: `max_execution_time`|
+| `setHttpCookiesEnabled(boolean enabled)` | - `enabled` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | HTTP 쿠키를 기억하고 서버로 전송해야 하는지 설정합니다. |
+| `setSSLTrustStore(String path)` | - `path` - 로컬(클라이언트 측) 시스템의 파일 경로 | 클라이언트가 서버 호스트 검증을 위해 SSL 신뢰 저장소를 사용해야 하는지 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_TRUST_STORE` <br/> 키: `trust_store` |
+| `setSSLTrustStorePassword(String password)` | - `password` - 비밀 값 | `setSSLTrustStore(String path)`로 지정된 SSL 신뢰 저장소를 잠금 해제하는 데 사용할 비밀번호를 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_KEY_STORE_PASSWORD` <br/> 키: `key_store_password` |
+| `setSSLTrustStoreType(String type)` | - `type` - 신뢰 저장소 유형 이름 | `setSSLTrustStore(String path)`로 지정된 신뢰 저장소의 유형을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_KEYSTORE_TYPE` <br/> 키: `key_store_type` |
+| `setRootCertificate(String path)` | - `path` - 로컬(클라이언트 측) 시스템의 파일 경로 | 클라이언트가 서버 호스트 검증을 위해 지정된 루트(CA) 인증서를 사용해야 하는지 설정합니다.<br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.CA_CERTIFICATE` <br/> 키: `sslrootcert` |
+| `setClientCertificate(String path)` | - `path` - 로컬(클라이언트 측) 시스템의 파일 경로 | SSL 연결을 시작할 때 사용할 클라이언트 인증서 경로를 설정합니다. 이 인증서는 SSL 인증에 사용됩니다.<br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_CERTIFICATE` <br/> 키: `sslcert`|
+| `setClientKey(String path)` | - `path` - 로컬(클라이언트 측) 시스템의 파일 경로 | 서버와의 SSL 통신을 암호화하는 데 사용할 클라이언트 개인 키를 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_KEY` <br/> 키: `ssl_key`|
+| `useServerTimeZone(boolean useServerTimeZone)` | - `useServerTimeZone` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 날짜 및 시간 열 값을 디코딩할 때 클라이언트가 서버의 시간대를 사용해야 하는지 설정합니다. 활성화되면 서버 시간대는 `setServerTimeZone(String timeZone)`로 설정해야 합니다. <br/> <br/> 기본값: `true` <br/> 열거형: `ClientConfigProperties.USE_SERVER_TIMEZONE` <br/> 키: `use_server_time_zone`|
+| `useTimeZone(String timeZone)` | - `timeZone` - java 유효한 시간대 ID의 문자열 값(see `java.time.ZoneId`) | 날짜 및 시간 열 값을 디코딩할 때 지정된 시간대를 사용해야 하는지 설정합니다. 서버 시간대를 덮어씁니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.USE_TIMEZONE` <br/> 키: `use_time_zone` |
+| `setServerTimeZone(String timeZone)` |  - `timeZone` - java 유효한 시간대 ID의 문자열 값(see `java.time.ZoneId`) | 서버 측의 시간대를 설정합니다. 기본적으로 UTC 시간이 사용됩니다. <br/> <br/> 기본값: `UTC` <br/> 열거형: `ClientConfigProperties.SERVER_TIMEZONE` <br/> 키: `server_time_zone` |
+| `useAsyncRequests(boolean async)` | - `async` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그. | 클라이언트가 별도의 스레드에서 요청을 실행해야 하는지 설정합니다. 기본적으로 비활성화되어 있으며, 애플리케이션이 멀티스레드 작업을 구성하는 방법을 더 잘 아는 경우가 많기 때문입니다. 별도의 스레드에서 작업을 실행해도 성능에 도움이 되지 않습니다. <br/> <br/> 기본값: `false` <br/> 열거형: `ClientConfigProperties.ASYNC_OPERATIONS` <br/> 키: `async` |
+| `setSharedOperationExecutor(ExecutorService executorService)` | - `executorService` - 실행기 서비스의 인스턴스. | 작업 태스크를 위한 실행기 서비스를 설정합니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none`|
+| `setClientNetworkBufferSize(int size)` | - `size` - 바이트 단위의 크기 | 소켓과 애플리케이션 간의 데이터 복사를 위해 사용되는 애플리케이션 메모리 공간의 버퍼 크기를 설정합니다. 더 큰 값은 TCP 스택에 대한 시스템 호출을 줄이지만 각 연결에 소비되는 메모리 양에 영향을 미칩니다. 이 버퍼는 GC의 대상이기도 하며, 연결이 짧게 살아있기 때문입니다. 또한 큰 연속적인 메모리 블록의 할당은 문제가 될 수 있습니다. <br/> <br/> 기본값: `300000` <br/> 열거형: `ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE` <br/> 키: `client_network_buffer_size`|
+| `retryOnFailures(ClientFaultCause ...causes)` | - `causes` - 열거형 상수 `com.clickhouse.client.api.ClientFaultCause` | 복구 가능한/재시도 가능한 오류 유형을 설정합니다. <br/> <br/> 기본값: `NoHttpResponse,ConnectTimeout,ConnectionRequestTimeout` <br/> 열거형: `ClientConfigProperties.CLIENT_RETRY_ON_FAILURE` <br/> 키: `client_retry_on_failures` |
+| `setMaxRetries(int maxRetries)` | - `maxRetries` - 재시도 횟수 | `retryOnFailures(ClientFaultCause ...causes)`에서 정의된 실패에 대한 최대 재시도 횟수를 설정합니다. <br/> <br/> 기본값: `3` <br/> 열거형: `ClientConfigProperties.RETRY_ON_FAILURE` <br/> 키: `retry` |
+| `allowBinaryReaderToReuseBuffers(boolean reuse)` | - `reuse` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 대부분의 데이터 세트는 작은 바이트 시퀀스로 인코딩된 숫자 데이터를 포함하고 있습니다. 기본적으로 리더는 필요한 버퍼를 할당하고 데이터를 읽어서 그 안에 변환한 후 목표 숫자 클래스로 변환합니다. 이로 인해 많은 작은 객체들이 할당되고 해제되어 GC에 상당한 압력을 줄 수 있습니다. 이 옵션이 활성화되면 리더가 미리 할당된 버퍼를 사용하여 숫자 변환을 수행합니다. 이는 각 리더가 고유한 버퍼를 가지므로 안전합니다. |
+| `httpHeader(String key, String value)` | - `key` - HTTP 헤더 키.<br /> - `value` - 헤더의 문자열 값. | 단일 HTTP 헤더에 대한 값을 설정합니다. 이전 값은 덮어씌워집니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `httpHeader(String key, Collection values)` | - `key` - HTTP 헤더 키.<br /> - `values` - 문자열 값 목록. | 단일 HTTP 헤더에 대한 값을 설정합니다. 이전 값은 덮어씌워집니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `httpHeaders(Map headers)` | - `header` - HTTP 헤더와 해당 값의 맵. | 여러 HTTP 헤더 값을 한 번에 설정합니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `serverSetting(String name, String value)` | - `name` - 쿼리 수준 설정의 이름.<br /> - `value` - 설정의 문자열 값. | 각 쿼리와 함께 서버에 전달할 설정을 설정합니다. 개별 작업 설정은 이를 덮어쓸 수 있습니다. [설정 목록](/operations/settings/query-level) <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `serverSetting(String name,  Collection values)` | - `name` - 쿼리 수준 설정의 이름.<br /> - `values` - 설정의 문자열 값. | 쿼리와 함께 서버에 전달할 설정을 설정합니다. 개별 작업 설정은 이를 덮어쓸 수 있습니다. [설정 목록](/operations/settings/query-level). 이 방법은 여러 값으로 설정할 때 유용합니다. 예를 들어 [roles](/interfaces/http#setting-role-with-query-parameters) <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | - `strategy` - 컬럼-필드 매칭 전략의 구현 | DTO 등록 시 DTO 클래스 필드와 DB 컬럼을 매칭하기 위해 사용할 사용자 지정 전략을 설정합니다. <br/> <br/> 기본값: `none` <br/> 열거형: `none` <br/> 키: `none` |
+| `useHTTPBasicAuth(boolean useBasicAuth)` | - `useBasicAuth` - 옵션을 활성화해야 하는지 여부를 나타내는 플래그 | 사용자-비밀번호 인증에 대해 기본 HTTP 인증을 사용할지 설정합니다. 기본적으로 활성화되어 있습니다. 이 유형의 인증을 사용하면 HTTP 헤더를 통해 전송할 수 없는 특수 문자가 포함된 비밀번호 문제를 해결할 수 있습니다. <br/> <br/> 기본값: `true` <br/> 열거형: `ClientConfigProperties.HTTP_USE_BASIC_AUTH` <br/> 키: `http_use_basic_auth` |
+| `setClientName(String clientName)` | - `clientName` - 애플리케이션 이름을 나타내는 문자열 | 호출하는 애플리케이션에 대한 추가 정보를 설정합니다. 이 문자열은 클라이언트 이름으로 서버에 전송됩니다. HTTP 프로토콜의 경우 `User-Agent` 헤더로 전달됩니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.CLIENT_NAME` <br/> 키: `client_name`|
+| `useBearerTokenAuth(String bearerToken)` | - `bearerToken` - 인코딩된 베어러 토큰 | 베어러 인증을 사용할지 여부와 어떤 토큰을 사용할지 지정합니다. 이 토큰은 있는 그대로 전송되어야 하므로 이 메서드에 전달하기 전에 인코딩되어야 합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.BEARERTOKEN_AUTH` <br/> 키: `bearer_token` |
+| `registerClientMetrics(Object registry, String name)` | - `registry` - Micrometer 레지스트리 인스턴스<br /> - `name` - 메트릭 그룹 이름 | Micrometer (https://micrometer.io/) 레지스트리 인스턴스에 센서를 등록합니다. |
+| `setServerVersion(String version)` | - `version` - 서버 버전의 문자열 값 | 버전 감지를 피하기 위해 서버 버전을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SERVER_VERSION` <br/> 키: `server_version` |
+| `typeHintMapping(Map typeHintMapping)` | - `typeHintMapping` - 타입 힌트의 맵 | ClickHouse 유형에 대한 타입 힌트 매핑을 설정합니다. 예를 들어, 다차원 배열이 자신만의 배열 객체가 아닌 Java 컨테이너로 표현되도록 만드는 방법입니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.TYPE_HINT_MAPPING` <br/> 키: `type_hint_mapping` |
+| `sslSocketSNI(String sni)` | - `sni` - 서버 이름의 문자열 값 | SSL/TLS 연결에서 SNI(서버 이름 표시)를 위해 사용할 서버 이름을 설정합니다. <br/> <br/> 기본값: - <br/> 열거형: `ClientConfigProperties.SSL_SOCKET_SNI` <br/> 키: `ssl_socket_sni` |
+</WideTableWrapper>
+### Server Settings
+
+서버 측 설정은 클라이언트 생성 시 한 번 설정할 수 있으며(Builder의 `serverSetting` 메서드 참조), 작업 수준에서도 설정할 수 있습니다(작업 설정 클래스의 `serverSetting` 참조).
+
+```java showLineNumbers
+ try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
+        .setUsername("default")
+        .setPassword(ClickHouseServerForTest.getPassword())
+        .compressClientRequest(true)
+
+        // Client level
+        .serverSetting("max_threads", "10")
+        .serverSetting("async_insert", "1")
+        .serverSetting("roles", Arrays.asList("role1", "role2"))
+
+        .build()) {
+
+	// Operation level
+	QuerySettings querySettings = new QuerySettings();
+	querySettings.serverSetting("session_timezone", "Europe/Zurich");
+
+	...
+}
+```
+옵션이 `setOption` 메서드(클라이언트.Builder 또는 작업 설정 클래스 중 하나)를 통해 설정되면 서버 설정 이름은 `clickhouse_setting_`으로 접두어가 붙여야 합니다. 이 경우 `com.clickhouse.client.api.ClientConfigProperties#serverSetting()`이 유용할 수 있습니다.
+### Custom HTTP Header
+
+커스텀 HTTP 헤더는 모든 작업(클라이언트 수준) 또는 단일 작업(작업 수준)에서 설정할 수 있습니다.
+```java showLineNumbers
+
+QuerySettings settings = new QuerySettings()
+    .httpHeader(HttpHeaders.REFERER, clientReferer)
+    .setQueryId(qId);
+
+```
+
+옵션이 `setOption` 메서드(클라이언트.Builder 또는 작업 설정 클래스 중 하나)를 통해 설정되면 커스텀 헤더 이름은 `http_header_`로 접두어가 붙여야 합니다. 이 경우 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()`가 유용할 수 있습니다.
+## Common Definitions {#common-definitions}
+### ClickHouseFormat {#clickhouseformat}
+
+ClickHouse가 지원하는 [형식](../interfaces/formats)의 열거형입니다. ClickHouse에서 지원하는 모든 형식을 포함합니다.
+
+* `raw` - 사용자가 원시 데이터를 변환해야 함
+* `full` - 클라이언트가 데이터를 스스로 변환할 수 있으며 원시 데이터 스트림을 수락
+* `-` - ClickHouse에서 이 형식에 대해 지원하지 않는 작업
+
+이 클라이언트 버전에서는 다음 형식을 지원합니다:
+
+| 형식                                                                                                                         | 입력  | 출력  |
+|----------------------------------------------------------------------------------------------------------------------------|:------:|:-------:|
+| [TabSeparated](/interfaces/formats/TabSeparated)                                                                       | raw    | raw     |
+| [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                                 | raw    | raw     |
+| [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                                   | raw    | raw     |
+| [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                                   | raw    | raw     |
+| [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                             | raw    | raw     |
+| [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                             | raw    | raw     |
+| [Template](/interfaces/formats/Template)                                                                              | raw    | raw     |
+| [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                                     | raw    |  -      |
+| [CSV](/interfaces/formats/CSV)                                                                                         | raw    | raw     |
+| [CSVWithNames](/interfaces/formats/CSVWithNames)                                                                       | raw    | raw     |
+| [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                                       | raw    | raw     |
+| [CustomSeparated](/interfaces/formats/CustomSeparated)                                                              | raw    | raw     |
+| [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                               | raw    | raw     |
+| [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                               | raw    | raw     |
+| [SQLInsert](/interfaces/formats/SQLInsert)                                                                             | -      | raw     |
+| [Values](/interfaces/formats/Values)                                                                                   | raw    | raw     |
+| [Vertical](/interfaces/formats/Vertical)                                                                               | -      | raw     |
+| [JSON](/interfaces/formats/JSON)                                                                                       | raw    | raw     |
+| [JSONAsString](/interfaces/formats/JSONAsString)                                                                       | raw    | -       |
+| [JSONAsObject](/interfaces/formats/JSONAsObject)                                                                       | raw    | -       |
+| [JSONStrings](/interfaces/formats/JSONStrings)                                                                         | raw    | raw     |
+| [JSONColumns](/interfaces/formats/JSONColumns)                                                                         | raw    | raw     |
+| [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                                 | raw    | raw     |
+| [JSONCompact](/interfaces/formats/JSONCompact)                                                                         | raw    | raw     |
+| [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                           | -      | raw     |
+| [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                           | raw    | raw     |
+| [JSONEachRow](/interfaces/formats/JSONEachRow)                                                                         | raw    | raw     |
+| [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                             | -      | raw     |
+| [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                                 | -      | raw     |
+| [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                           | raw    | raw     |
+| [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                                   | -      | raw     |
+| [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                           | raw    | raw     |
+| [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                                         | raw    | raw     |
+| [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)                         | raw    | raw     |
+| [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                             | raw    | raw     |
+| [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                           | raw    | raw     |
+| [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes)           | raw    | raw     |
+| [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                             | raw    | raw     |
+| [BSONEachRow](/interfaces/formats/BSONEachRow)                                                                         | raw    | raw     |
+| [TSKV](/interfaces/formats/TSKV)                                                                                       | raw    | raw     |
+| [Pretty](/interfaces/formats/Pretty)                                                                                   | -      | raw     |
+| [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                                 | -      | raw     |
+| [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                                 | -      | raw     |
+| [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                               | -      | raw     |
+| [PrettyCompact](/interfaces/formats/PrettyCompact)                                                                     | -      | raw     |
+| [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                                   | -      | raw     |
+| [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                                   | -      | raw     |
+| [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                                 | -      | raw     |
+| [PrettySpace](/interfaces/formats/PrettySpace)                                                                         | -      | raw     |
+| [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                                       | -      | raw     |
+| [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                                       | -      | raw     |
+| [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                                     | -      | raw     |
+| [Prometheus](/interfaces/formats/Prometheus)                                                                           | -      | raw     |
+| [Protobuf](/interfaces/formats/Protobuf)                                                                               | raw    | raw     |
+| [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                                   | raw    | raw     |
+| [ProtobufList](/interfaces/formats/ProtobufList)                                                                        | raw    | raw     |
+| [Avro](/interfaces/formats/Avro)                                                                                   | raw    | raw     |
+| [AvroConfluent](/interfaces/formats/AvroConfluent)                                                               | raw    | -       |
+| [Parquet](/interfaces/formats/Parquet)                                                                                 | raw    | raw     |
+| [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                               | raw    | -       |
+| [Arrow](/interfaces/formats/Arrow)                                                                                   | raw    | raw     |
+| [ArrowStream](/interfaces/formats/ArrowStream)                                                                       | raw    | raw     |
+| [ORC](/interfaces/formats/ORC)                                                                                       | raw    | raw     |
+| [One](/interfaces/formats/One)                                                                                       | raw    | -       |
+| [Npy](/interfaces/formats/Npy)                                                                                       | raw    | raw     |
+| [RowBinary](/interfaces/formats/RowBinary)                                                                             | full   | full    |
+| [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                                  | full   | full    |
+| [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                          | full   | full    |
+| [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                                    | full   | -       |
+| [Native](/interfaces/formats/Native)                                                                                   | full   | raw     |
+| [Null](/interfaces/formats/Null)                                                                                       | -      | raw     |
+| [XML](/interfaces/formats/XML)                                                                                         | -      | raw     |
+| [CapnProto](/interfaces/formats/CapnProto)                                                                             | raw    | raw     |
+| [LineAsString](/interfaces/formats/LineAsString)                                                                       | raw    | raw     |
+| [Regexp](/interfaces/formats/Regexp)                                                                                   | raw    | -       |
+| [RawBLOB](/interfaces/formats/RawBLOB)                                                                                 | raw    | raw     |
+| [MsgPack](/interfaces/formats/MsgPack)                                                                                 | raw    | raw     |
+| [MySQLDump](/interfaces/formats/MySQLDump)                                                                             | raw    | -       |
+| [DWARF](/interfaces/formats/DWARF)                                                                                     | raw    | -       |
+| [Markdown](/interfaces/formats/Markdown)                                                                               | -      | raw     |
+| [Form](/interfaces/formats/Form)                                                                                       | raw    | -       |
+
+## Insert API {#insert-api}
+### insert(String tableName, InputStream data, ClickHouseFormat format) {#insertstring-tablename-inputstream-data-clickhouseformat-format}
+
+지정된 형식으로 바이트의 `InputStream`으로 데이터를 수락합니다. `data`가 `format`으로 인코딩되어 있다고 예상됩니다.
+
+**서명**
+
+```java
+CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
+CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format)
+```
+
+**매개변수**
+
+`tableName` - 대상 테이블 이름입니다.
+
+`data` - 인코딩된 데이터의 입력 스트림입니다.
+
+`format` - 데이터가 인코딩된 형식입니다.
+
+`settings` - 요청 설정입니다.
+
+**반환 값**
+
+작업의 결과 및 추가 정보(서버 측 메트릭 등)를 포함하는 `InsertResponse` 유형의 Future입니다.
+
+**예시**
+
+```java showLineNumbers
+try (InputStream dataStream = getDataStream()) {
+    try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
+            insertSettings).get(3, TimeUnit.SECONDS)) {
+
+        log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+    } catch (Exception e) {
+        log.error("Failed to write JSONEachRow data", e);
+        throw new RuntimeException(e);
+    }
+}
+
+```
+### insert(String tableName, List&lt;?> data, InsertSettings settings) {#insertstring-tablename-listlt-data-insertsettings-settings}
+
+데이터베이스에 쓰기 요청을 보냅니다. 객체 목록은 효율적인 형식으로 변환된 후 서버로 전송됩니다. 목록 항목의 클래스는 미리 `register(Class, TableSchema)` 메서드를 사용하여 등록해야 합니다.
+
+**서명**
+```java
+client.insert(String tableName, List<?> data, InsertSettings settings)
+client.insert(String tableName, List<?> data)
+```
+
+**매개변수**
+
+`tableName` - 대상 테이블의 이름입니다.
+
+`data` - DTO(데이터 전송 객체) 컬렉션입니다.
+
+`settings` - 요청 설정입니다.
+
+**반환 값**
+
+작업의 결과 및 추가 정보(서버 측 메트릭 등)를 포함하는 `InsertResponse` 유형의 Future입니다.
+
+**예시**
+
+```java showLineNumbers
+// Important step (done once) - register class to pre-compile object serializer according to the table schema. 
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+
+List<ArticleViewEvent> events = loadBatch();
+
+try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
+    // handle response, then it will be closed and connection that served request will be released. 
+}
+```
+### insert(String tableName, DataStreamWriter writer, ClickHouseFormat format, InsertSettings settings)
+**베타**
+
+이 API 메서드는 데이터를 출력 스트림에 직접 인코딩할 작성기 객체를 전달할 수 있게 해줍니다. 데이터는 클라이언트에 의해 압축됩니다.
+`InsertSettings`에 `appCompressedData`라는 구성 옵션이 있어 클라이언트 압축을 끄고 애플리케이션이 압축 스트림을 전송하도록 허용합니다.
+예시는 이 API가 설계된 주요 사용 사례를 보여줍니다.
+
+`com.clickhouse.client.api.DataStreamWriter`는 데이터가 기록되기 위해 출력 스트림이 준비되면 클라이언트에 의해 호출되는 `onOutput` 메서드를 가진 기능적 인터페이스입니다. 이 인터페이스에는 `onRetry`라는 기본 구현이 있는 또 다른 메서드가 있습니다. 이 메서드는 재시도 로직이 트리거될 때 호출되며, 필요한 경우 데이터 소스를 재설정하는 데 주로 사용됩니다.
+
+**서명**
+```java
+CompletableFuture<InsertResponse> insert(String tableName,              // name of destination table
+                                         DataStreamWriter writer,       // data writer instance 
+                                         ClickHouseFormat format,       // data format in which the writer encodes data 
+                                         InsertSettings settings)       // operation settings
+```
+
+**매개변수**
+
+`tableName` - 대상 테이블의 이름입니다.
+
+`writer` - 데이터 작성기 인스턴스입니다.
+
+`format` - 작성기가 데이터를 인코딩하는 데이터 형식입니다.
+
+`settings` - 요청 설정입니다.
+
+**반환 값**
+
+작업의 결과 및 추가 정보(서버 측 메트릭 등)를 포함하는 `InsertResponse` 유형의 Future입니다.
+
+**예시**
+
+`JSONEachRow` 형식을 사용하여 문자열 값으로 인코딩된 JSON 객체 컬렉션 작성:
+```java showLineNumbers
+
+final int EXECUTE_CMD_TIMEOUT = 10; // seconds
+final String tableName = "events";
+final String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] rows = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // writing raw bytes 
+    for (String row : rows) {
+        out.write(row.getBytes());
+    }
+
+}, ClickHouseFormat.JSONEachRow, new InsertSettings()).get()) {
+
+    System.out.println("Rows written: " + response.getWrittenRows());
+}
+
+```
+
+이미 압축된 데이터 작성:
+```java showLineNumbers
+String tableName = "very_long_table_name_with_uuid_" + UUID.randomUUID().toString().replace('-', '_');
+String tableCreate = "CREATE TABLE \"" + tableName + "\" " +
+        " (name String, " +
+        "  v1 Float32, " +
+        "  v2 Float32, " +
+        "  attrs Nullable(String), " +
+        "  corrected_time DateTime('UTC') DEFAULT now()," +
+        "  special_attr Nullable(Int8) DEFAULT -1)" +
+        "  Engine = MergeTree ORDER by ()";
+
+client.execute("DROP TABLE IF EXISTS " + tableName).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+client.execute(createTableSQL).get(EXECUTE_CMD_TIMEOUT, TimeUnit.SECONDS);
+
+String correctedTime = Instant.now().atZone(ZoneId.of("UTC")).format(DataTypeUtils.DATETIME_FORMATTER);
+String[] data = new String[] {
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\", \"special_attr\": 10}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\", \"corrected_time\": \"" + correctedTime + "\"}",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6, \"attrs\": \"a=1,b=2,c=5\" }",
+        "{ \"name\": \"foo1\", \"v1\": 0.3, \"v2\": 0.6 }",
+};
+
+
+// This step is only for showcase. Real application would have already compressed data. 
+byte[][] compressedData = new byte[data.length][];
+for (int i = 0 ; i < data.length; i++) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    GZIPOutputStream gz = new GZIPOutputStream(baos);
+    gz.write(data[i].getBytes(StandardCharsets.UTF_8));
+    gz.finish();
+    compressedData[i] = baos.toByteArray();
+}
+
+InsertSettings insertSettings = new InsertSettings()
+        .appCompressedData(true, "gzip"); // defining compression algorithm (sent via HTTP headers)
+
+try (InsertResponse response = client.insert(tableName, out -> {
+    // Writing data 
+    for (byte[] row : compressedData) {
+        out.write(row);
+    }
+}, ClickHouseFormat.JSONEachRow, insertSettings).get()) {
+    System.out.println("Rows written: " + response.getWrittenRows());
+}    
+
+```
+### InsertSettings {#insertsettings}
+
+삽입 작업에 대한 구성 옵션입니다.
+
+**구성 메서드**
+
+| 메서드                                      | 설명                                                                                                                    |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`                 | 작업에 할당될 쿼리 ID를 설정합니다. 기본값: `null`.                                                                    |
+| `setDeduplicationToken(String token)`        | 중복 제거 토큰을 설정합니다. 이 토큰은 서버로 전송되며 쿼리를 식별하는 데 사용할 수 있습니다. 기본값: `null`.       |
+| `setInputStreamCopyBufferSize(int size)`     | 복사 버퍼 크기. 이 버퍼는 사용자 제공 입력 스트림에서 출력 스트림으로 데이터를 복사하는 데 사용됩니다. 기본값: `8196`. |
+| `serverSetting(String name, String value)`   | 작업에 대한 개별 서버 설정을 설정합니다.                                                                               |
+| `serverSetting(String name, Collection values)` | 작업에 대한 개별 서버 설정을 여러 값으로 설정합니다. 컬렉션의 항목은 `String` 값이어야 합니다.                     |
+| `setDBRoles(Collection dbRoles)`             | 작업을 실행하기 전에 설정할 DB 역할을 설정합니다. 컬렉션의 항목은 `String` 값이어야 합니다.                        |
+| `setOption(String option, Object value)`     | 원시 형식으로 구성 옵션을 설정합니다. 이는 서버 설정이 아닙니다.                                                       |
+### InsertResponse {#insertresponse}
+
+삽입 작업의 결과를 보유하는 응답 객체입니다. 클라이언트가 서버로부터 응답을 받았을 때만 사용할 수 있습니다.
+
+:::note
+이 객체는 가능한 한 빨리 닫아야 하며, 이전 응답의 모든 데이터가 완전히 읽히기 전까지 연결을 재사용할 수 없습니다.
+:::
+
+| 메서드                      | 설명                                                                                          |
+|-----------------------------|------------------------------------------------------------------------------------------------|
+| `OperationMetrics getMetrics()` | 작업 메트릭을 포함하는 객체를 반환합니다.                                                       |
+| `String getQueryId()`       | 애플리케이션(작업 설정을 통해 또는 서버에 의해)에서 작업에 할당된 쿼리 ID를 반환합니다.     |
+## Query API {#query-api}
+### query(String sqlQuery) {#querystring-sqlquery}
+
+`sqlQuery`를 있는 그대로 전송합니다. 응답 형식은 쿼리 설정에 의해 설정됩니다. `QueryResponse`는 지원하는 형식에 대한 응답 스트림에 대한 참조를 보유해야 합니다.
+
+**서명**
+
+```java
+CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
+CompletableFuture<QueryResponse> query(String sqlQuery)
+```
+
+**매개변수**
+
+`sqlQuery` - 단일 SQL 문입니다. 쿼리는 있는 그대로 서버로 전송됩니다.
+
+`settings` - 요청 설정입니다.
+
+**반환 값**
+
+결과 데이터 세트 및 추가 정보(서버 측 메트릭 등)를 포함하는 `QueryResponse` 유형의 Future입니다. 응답 객체는 데이터 세트를 소비한 후 닫아야 합니다.
+
+**예시**
+
+```java
+final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
+
+// Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // get values
+        double id = reader.getDouble("id");
+        String title = reader.getString("title");
+        String url = reader.getString("url");
+
+        // collecting data 
+    }
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+// put business logic outside of the reading block to release http connection asap.  
+```
+### query(String sqlQuery, Map&lt;String, Object> queryParams, QuerySettings settings) {#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings}
+
+`sqlQuery`를 있는 그대로 전송합니다. 추가로 쿼리 매개변수를 전송하면 서버가 SQL 표현식을 컴파일할 수 있습니다.
+
+**서명**
+```java
+CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
+```
+
+**매개변수**
+
+`sqlQuery` - 플레이스홀더 `{}`가 있는 SQL 표현식입니다.
+
+`queryParams` - 서버에서 SQL 표현식을 완성하기 위한 변수의 맵입니다.
+
+`settings` - 요청 설정입니다.
+
+**반환 값**
+
+결과 데이터 세트 및 추가 정보(서버 측 메트릭 등)를 포함하는 `QueryResponse` 유형의 Future입니다. 응답 객체는 데이터 세트를 소비한 후 닫아야 합니다.
+
+**예시**
+
+```java showLineNumbers
+
+// define parameters. They will be sent to the server along with the request.   
+Map<String, Object> queryParams = new HashMap<>();
+queryParams.put("param1", 2);
+
+try (QueryResponse response =
+        client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
+
+    // Create a reader to access the data in a convenient way
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+    while (reader.hasNext()) {
+        reader.next(); // Read the next record from stream and parse it
+
+        // reading data 
+    }
+
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+
+```
+### queryAll(String sqlQuery) {#queryallstring-sqlquery}
+
+`RowBinaryWithNamesAndTypes` 형식으로 데이터를 쿼리합니다. 결과를 컬렉션으로 반환합니다. 읽기 성능은 리더와 동일하지만 전체 데이터 세트를 보유하는 데 더 많은 메모리가 필요합니다.
+
+**서명**
+```java
+List<GenericRecord> queryAll(String sqlQuery)
+```
+
+**매개변수**
+
+`sqlQuery` - 서버에서 데이터를 쿼리하기 위한 SQL 표현식입니다.
+
+**반환 값**
+
+`GenericRecord` 객체 목록으로 표현된 전체 데이터 세트로, 결과 데이터에 대한 행 스타일의 액세스를 제공합니다.
+
+**예시**
+
+```java showLineNumbers
+try {
+    log.info("Reading whole table and process record by record");
+    final String sql = "select * from " + TABLE_NAME + " where title <> ''";
+
+    // Read whole result set and process it record by record
+    client.queryAll(sql).forEach(row -> {
+        double id = row.getDouble("id");
+        String title = row.getString("title");
+        String url = row.getString("url");
+
+        log.info("id: {}, title: {}, url: {}", id, title, url);
+    });
+} catch (Exception e) {
+    log.error("Failed to read data", e);
+}
+```
+### QuerySettings {#querysettings}
+
+쿼리 작업에 대한 구성 옵션입니다.
+
+**구성 메서드**
+
+| 메서드                                       | 설명                                                                                                                   |
+|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `setQueryId(String queryId)`                 | 작업에 할당될 쿼리 ID를 설정합니다.                                                                                 |
+| `setFormat(ClickHouseFormat format)`         | 응답 형식을 설정합니다. 전체 목록은 `RowBinaryWithNamesAndTypes`를 참조하세요.                                        |
+| `setMaxExecutionTime(Integer maxExecutionTime)` | 서버에서 작업 실행 시간을 설정합니다. 읽기 시간 초과에는 영향을 주지 않습니다.                                     |
+| `waitEndOfQuery(Boolean waitEndOfQuery)`     | 서버에 응답을 보내기 전에 쿼리 종료를 기다리도록 요청합니다.                                                       |
+| `setUseServerTimeZone(Boolean useServerTimeZone)` | 서버 시간대(클라이언트 구성 참조)를 사용하여 결과의 날짜/시간 유형을 구문 분석합니다. 기본값 `false`.               |
+| `setUseTimeZone(String timeZone)`            | 서버에 `timeZone`을 시간 변환에 사용하도록 요청합니다. [session_timezone](/operations/settings/settings#session_timezone)를 참조하세요. |
+| `serverSetting(String name, String value)`   | 작업에 대한 개별 서버 설정을 설정합니다.                                                                             |
+| `serverSetting(String name, Collection values)` | 작업에 대한 개별 서버 설정을 여러 값으로 설정합니다. 컬렉션의 항목은 `String` 값이어야 합니다.                      |
+| `setDBRoles(Collection dbRoles)`             | 작업을 실행하기 전에 설정할 DB 역할을 설정합니다. 컬렉션의 항목은 `String` 값이어야 합니다.                       |
+| `setOption(String option, Object value)`     | 원시 형식으로 구성 옵션을 설정합니다. 이는 서버 설정이 아닙니다.                                                     |
+### QueryResponse {#queryresponse}
+
+쿼리 실행 결과를 보유하는 응답 객체입니다. 클라이언트가 서버로부터 응답을 받았을 때만 사용할 수 있습니다.
+
+:::note
+이 객체는 가능한 한 빨리 닫아야 하며, 이전 응답의 모든 데이터가 완전히 읽히기 전까지 연결을 재사용할 수 없습니다.
+:::
+
+| 메서드                              | 설명                                                                                          |
+|-------------------------------------|------------------------------------------------------------------------------------------------|
+| `ClickHouseFormat getFormat()`      | 응답에서 데이터가 인코딩된 형식을 반환합니다.                                              |
+| `InputStream getInputStream()`      | 지정된 형식의 데이터의 압축되지 않은 바이트 스트림을 반환합니다.                             |
+| `OperationMetrics getMetrics()`     | 작업 메트릭을 포함하는 객체를 반환합니다.                                                   |
+| `String getQueryId()`               | 애플리케이션(작업 설정을 통해 또는 서버에 의해)에서 작업에 할당된 쿼리 ID를 반환합니다.     |
+| `TimeZone getTimeZone()`            | 응답에서 날짜/날짜 시간 유형을 처리하는 데 사용해야 할 시간대를 반환합니다.                |
+### Examples {#examples}
+
+- 예제 코드는 [repo](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)에서 확인할 수 있습니다.
+- Spring 서비스 [구현](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) 참조
+## Common API {#common-api}
+### getTableSchema(String table) {#gettableschemastring-table}
+
+`table`에 대한 테이블 스키마를 가져옵니다.
+
+**서명**
+
+```java
+TableSchema getTableSchema(String table)
+TableSchema getTableSchema(String table, String database)
+```
+
+**매개변수**
+
+`table` - 스키마 데이터를 가져와야 할 테이블 이름입니다.
+
+`database` - 대상 테이블이 정의된 데이터베이스입니다.
+
+**반환 값**
+
+테이블 컬럼 목록을 포함하는 `TableSchema` 객체를 반환합니다.
+### getTableSchemaFromQuery(String sql) {#gettableschemafromquerystring-sql}
+
+SQL 문에서 스키마를 가져옵니다.
+
+**서명**
+
+```java
+TableSchema getTableSchemaFromQuery(String sql)
+```
+
+**매개변수**
+
+`sql` - 스키마가 반환되어야 하는 "SELECT" SQL 문입니다.
+
+**반환 값**
+
+`sql` 표현식과 일치하는 열을 가진 `TableSchema` 객체를 반환합니다.
+### TableSchema {#tableschema}
+### register(Class&lt;?> clazz, TableSchema schema) {#registerclasslt-clazz-tableschema-schema}
+
+Java 클래스에 대해 `schema`와 함께 데이터를 쓰고 읽는 데 사용되는 직렬화 및 역직렬화 계층을 컴파일합니다. 이 메서드는 쌍 getter/setter 및 해당 컬럼에 대한 직렬 변환기를 작성합니다. 컬럼 일치는 메서드 이름에서 이름을 추출하여 찾아집니다. 예를 들어, `getFirstName`은 컬럼 `first_name` 또는 `firstname`과 일치합니다.
+
+**서명**
+
+```java
+void register(Class<?> clazz, TableSchema schema)
+```
+
+**매개변수**
+
+`clazz` - 데이터를 읽고 쓰는 데 사용되는 POJO를 나타내는 클래스입니다.
+
+`schema` - POJO 속성과 일치하는 데이터 스키마입니다.
+
+**예시**
+
+```java showLineNumbers
+client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+```
+## Usage Examples {#usage-examples}
+
+완전한 예제 코드는 'example` [폴더](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)에 저장되어 있습니다:
+
+- [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 주요 예제 세트입니다.
+- [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot 애플리케이션에서 클라이언트를 사용하는 방법의 예입니다.
+- [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor (Kotlin) 애플리케이션에서 클라이언트를 사용하는 방법의 예입니다.

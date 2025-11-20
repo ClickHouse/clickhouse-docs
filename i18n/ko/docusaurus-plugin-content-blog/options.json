@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "ClickHouse 지식 기반",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "지식 기반",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "모든 KB 기사",
+    "description": "The label for the left sidebar"
+  }
+}

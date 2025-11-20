@@ -58,10 +58,10 @@ yarn build
 
 3. Run translator
 
-Specify the config file, see [./languages/jp.json](./languages/jp.json).
+Specify the config file, see [jp.json](../scripts/translate/languages/jp.json).
 
 ```bash
-python3 /opt/clickhouse-docs/scripts/translate/translate.py --input-folder /opt/clickhouse-docs/docs --output-folder /opt/clickhouse-docs/i18n/jp --config ./languages/jp.json
+python3 scripts/translate/translate.py --input-folder docs --output-folder i18n/jp --config scripts/translate/languages/jp.json
 ```
 
 4. Replace imports

@@ -1,0 +1,22 @@
+{
+  "link.item.label.Trademark": {
+    "message": "상표",
+    "description": "The label of footer link with label=Trademark linking to https://clickhouse.com/legal/trademark-policy"
+  },
+  "link.item.label.Privacy": {
+    "message": "개인정보 보호",
+    "description": "The label of footer link with label=Privacy linking to https://clickhouse.com/legal/privacy-policy"
+  },
+  "link.item.label.Security": {
+    "message": "보안",
+    "description": "The label of footer link with label=Security linking to https://trust.clickhouse.com/"
+  },
+  "link.item.label.Terms of Service": {
+    "message": "서비스 약관",
+    "description": "The label of footer link with label=Terms of Service linking to https://clickhouse.com/legal/agreements/terms-of-service"
+  },
+  "copyright": {
+    "message": "© 2016–2025 ClickHouse, Inc.",
+    "description": "The footer copyright"
+  }
+}
