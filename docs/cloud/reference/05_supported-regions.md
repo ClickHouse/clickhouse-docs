@@ -25,7 +25,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east-1 (N. Virginia)
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
-- il-central-1 (Israel)
+- il-central-1 (Israel, Tel Aviv)
 
 **Private Region:**
 - ca-central-1 (Canada)
