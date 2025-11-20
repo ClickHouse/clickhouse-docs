@@ -542,11 +542,11 @@ LAYOUT(HASHED_ARRAY())
 
 ## 下一步 {#next-steps}
 
-通过以下文档深入了解 ClickHouse:
+通过以下文档深入了解 ClickHouse：
 
-- [ClickHouse 主索引介绍](./guides/best-practices/sparse-primary-indexes.md): 了解 ClickHouse 如何使用稀疏主索引在查询时高效定位相关数据。
-- [集成外部数据源](/integrations/index.mdx): 查看数据源集成选项,包括文件、Kafka、PostgreSQL、数据管道等。
-- [ClickHouse 数据可视化](./integrations/data-visualization/index.md): 将您常用的 UI/BI 工具连接到 ClickHouse。
-- [SQL 参考文档](./sql-reference/index.md): 浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
+- [ClickHouse 主索引介绍](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引在查询时高效定位相关数据。
+- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等多种方式。
+- [ClickHouse 数据可视化](./integrations/data-visualization/index.md)：将您常用的 UI/BI 工具连接到 ClickHouse。
+- [SQL 参考手册](./sql-reference/index.md)：浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
 
-test again!
+test again!!
