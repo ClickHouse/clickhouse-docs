@@ -1,51 +1,52 @@
+# curlを使用したスクリプトによるClickHouseのインストール
 
-
-
-# Install ClickHouse via script using curl
-
-プロダクション用に ClickHouse をインストールする必要がない場合、最も迅速な方法は、curl を使用してインストールスクリプトを実行することです。このスクリプトは、あなたの OS に適したバイナリを決定します。
+本番環境用のインストールが不要な場合、最も迅速にセットアップする方法は、curlを使用してインストールスクリプトを実行することです。このスクリプトは、お使いのOSに適したバイナリを自動的に判別します。
 
 <VerticalStepper>
 
-## Install ClickHouse using curl {#install-clickhouse-using-curl}
 
-以下のコマンドを実行して、あなたのオペレーティングシステム用の単一バイナリをダウンロードします。
+## curlを使用したClickHouseのインストール {#install-clickhouse-using-curl}
+
+お使いのオペレーティングシステム用のシングルバイナリをダウンロードするには、以下のコマンドを実行します。
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
 :::note
-Mac ユーザーの方へ: バイナリの開発者を確認できないというエラーが表示される場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)をご覧ください。
+Macユーザーの方へ：バイナリの開発者を検証できないというエラーが表示される場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)をご参照ください。
 :::
 
-## Start clickhouse-local {#start-clickhouse-local}
 
-`clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を使ってローカルおよびリモートファイルを処理でき、設定の必要がありません。テーブルデータは一時的な場所に保存されるため、`clickhouse-local`を再起動すると、以前に作成したテーブルは利用できなくなります。
+## clickhouse-localの起動 {#start-clickhouse-local}
 
-次のコマンドを実行して [clickhouse-local](/operations/utilities/clickhouse-local) を起動します:
+`clickhouse-local`を使用すると、設定不要でClickHouseの強力なSQL構文を使ってローカルファイルやリモートファイルを処理できます。テーブルデータは一時的な場所に保存されるため、`clickhouse-local`を再起動すると、以前に作成したテーブルは利用できなくなります。
+
+[clickhouse-local](/operations/utilities/clickhouse-local)を起動するには、次のコマンドを実行します:
 
 ```bash
 ./clickhouse
 ```
 
-## Start clickhouse-server {#start-clickhouse-server}
 
-データを永続化したい場合は、`clickhouse-server` を実行する必要があります。次のコマンドを使用して ClickHouse サーバーを起動できます:
+## clickhouse-serverの起動 {#start-clickhouse-server}
+
+データを永続化したい場合は、`clickhouse-server`を実行します。ClickHouseサーバーは以下のコマンドで起動できます:
 
 ```bash
 ./clickhouse server
 ```
 
-## Start clickhouse-client {#start-clickhouse-client}
 
-サーバーが起動したら、新しいターミナルウィンドウを開き、以下のコマンドを実行して `clickhouse-client` を起動します:
+## clickhouse-clientの起動 {#start-clickhouse-client}
+
+サーバーが起動して実行中の状態で、新しいターミナルウィンドウを開き、以下のコマンドを実行して`clickhouse-client`を起動します:
 
 ```bash
 ./clickhouse client
 ```
 
-以下のような表示がされます:
+次のような出力が表示されます:
 
 ```response
 ./clickhouse client
@@ -56,12 +57,12 @@ Connected to ClickHouse server version 24.5.1.
 local-host :)
 ```
 
-テーブルデータはカレントディレクトリに保存され、ClickHouse サーバーを再起動した後も引き続き利用可能です。必要に応じて、追加のコマンドライン引数として `-C config.xml` を `./clickhouse server` に渡し、設定ファイルでさらに設定を行うことができます。すべての利用可能な設定は、[こちら](/operations/server-configuration-parameters/settings)および[例の設定ファイルテンプレート](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に文書化されています。
+テーブルデータは現在のディレクトリに保存され、ClickHouseサーバーの再起動後も引き続き利用可能です。必要に応じて、`./clickhouse server`に追加のコマンドライン引数として`-C config.xml`を渡し、設定ファイルで追加の設定を行うことができます。利用可能なすべての設定項目は[こちら](/operations/server-configuration-parameters/settings)および[設定ファイルテンプレートの例](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に記載されています。
 
-これで、ClickHouse に SQL コマンドを送信する準備が整いました！
+これでClickHouseにSQLコマンドを送信する準備が整いました!
 
 :::tip
-[クイックスタート](/get-started/quick-start)では、テーブルの作成とデータの挿入の手順を説明しています。
+[クイックスタート](/get-started/quick-start)では、テーブルの作成とデータの挿入手順を説明しています。
 :::
 
 </VerticalStepper>

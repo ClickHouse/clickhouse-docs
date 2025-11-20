@@ -1,18 +1,19 @@
 ---
-'slug': '/managing-data/delete_mutations'
-'sidebar_label': '删除变更'
-'title': '删除变更'
-'hide_title': false
-'description': '页面描述删除变更 - ALTER 查询通过删除操作操纵表数据'
-'doc_type': 'reference'
+slug: /managing-data/delete_mutations
+sidebar_label: 'Delete mutations'
+title: '删除变更'
+hide_title: false
+description: '介绍删除变更的页面——通过删除操作来修改表数据的 ALTER 查询'
+keywords: ['delete mutations', 'ALTER TABLE DELETE', 'data mutations', 'data parts rewrite', 'ReplacingMergeTree']
+doc_type: 'reference'
 ---
 
-import DeleteMutations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/delete.md';
-
-Delete mutations refers to `ALTER` 查询，旨在通过删除操作来操纵表数据。最显著的例子是 `ALTER TABLE DELETE` 等查询。执行这些查询将生成数据部分的新变异版本。这意味着，诸如此类的语句会引发对所有在变异之前插入的数据的整个数据部分进行重写，这将转化为大量的写请求。
+删除变更是指通过删除来操作表数据的 `ALTER` 查询，最典型的就是 `ALTER TABLE DELETE` 等语句。执行此类查询会生成数据分片的新的变更版本。这意味着，这类语句会对所有在变更之前插入的数据分片进行整体重写，从而产生大量写请求。
 
 :::info
-对于删除操作，您可以通过使用专用的表引擎，如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)，来避免产生大量的写请求，而不是使用默认的 MergeTree 表引擎。
+对于删除操作，可以通过使用诸如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 等专用表引擎，而不是默认的 MergeTree 表引擎，来避免产生如此大量的写请求。
 :::
 
-<DeleteMutations/>
+import DeleteMutations from '@site/docs/sql-reference/statements/alter/delete.md';
+
+<DeleteMutations />

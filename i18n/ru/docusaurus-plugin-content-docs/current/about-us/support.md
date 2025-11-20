@@ -1,22 +1,24 @@
 ---
-slug: '/about-us/support'
-sidebar_label: Поддержка
+slug: /about-us/support
+sidebar_label: 'Поддержка'
+title: 'Службы поддержки ClickHouse Cloud'
 sidebar_position: 30
-description: 'Информация о поддержке услуг ClickHouse Cloud'
-title: 'Услуги поддержки ClickHouse Cloud'
-doc_type: reference
+description: 'Информация о службах поддержки ClickHouse Cloud'
+doc_type: 'reference'
+keywords: ['support', 'help', 'customer service', 'technical support', 'service level agreement']
 ---
-# Услуги поддержки ClickHouse Cloud
 
-ClickHouse предоставляет услуги поддержки для пользователей и клиентов ClickHouse Cloud. Наша цель – команда поддержки, которая представляет продукт ClickHouse – непревзойденная производительность, простота в использовании и исключительно быстрые, качественные результаты. Для подробной информации [посетите страницу нашей программы поддержки ClickHouse](https://clickhouse.com/support/program/).
+# Службы поддержки ClickHouse Cloud
 
-[Войдите в консоль Cloud](https://console.clickhouse.cloud/support) и выберите **Help -> Support** из меню, чтобы открыть новый запрос на поддержку и просмотреть статус ваших поданных запросов.
+ClickHouse предоставляет услуги поддержки для пользователей и клиентов ClickHouse Cloud. Наша цель — команда службы поддержки, которая отражает суть продукта ClickHouse: непревзойдённая производительность, простота использования и исключительно быстрые, качественные результаты. Подробности см. на странице [ClickHouse Support Program](https://clickhouse.com/support/program/).
 
-Вы также можете подписаться на нашу [страницу статуса](https://status.clickhouse.com), чтобы быстро получать уведомления о любых инцидентах, влияющих на нашу платформу.
+[Войдите в консоль Cloud](https://console.clickhouse.cloud/support) и выберите в меню **Help -> Support**, чтобы открыть новый запрос в поддержку и просмотреть статус уже отправленных запросов. 
+
+Вы также можете подписаться на нашу [страницу статуса](https://status.clickhouse.com), чтобы оперативно получать уведомления о любых инцидентах, затрагивающих нашу платформу.
 
 :::note
-Пожалуйста, обратите внимание, что только клиенты по подписке имеют Соглашение об уровне обслуживания по инцидентам поддержки. Если вы в данный момент не являетесь пользователем ClickHouse Cloud – хотя мы постараемся ответить на ваш вопрос, мы настоятельно рекомендуем обратиться к одному из наших ресурсов сообщества:
+Обратите внимание, что только клиенты с платной подпиской имеют соглашение об уровне обслуживания (SLA) по инцидентам в поддержке. Если вы сейчас не являетесь пользователем ClickHouse Cloud — хотя мы постараемся ответить на ваш вопрос, мы рекомендуем вместо этого воспользоваться одним из наших ресурсов сообщества:
 
-- [Канал ClickHouse Community Slack](https://clickhouse.com/slack)
-- [Другие варианты сообщества](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
+- [Канал сообщества ClickHouse в Slack](https://clickhouse.com/slack)
+- [Другие ресурсы сообщества](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)
 :::

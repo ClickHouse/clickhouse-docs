@@ -1,22 +1,32 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxSimpleState'
-sidebar_label: minSimpleState
-description: 'Пример использования комбінатора minSimpleState'
-title: maxSimpleState
-keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
-doc_type: reference
+title: 'maxSimpleState'
+description: 'Пример использования комбинатора агрегатной функции maxSimpleState'
+keywords: ['max', 'state', 'simple', 'combinator', 'examples', 'maxSimpleState']
+sidebar_label: 'maxSimpleState'
+doc_type: 'reference'
 ---
-# minSimpleState {#minsimplestate}
+
+
+
+# maxSimpleState {#maxsimplestate}
+
 
 ## Описание {#description}
 
-Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применен к функции [`max`](/sql-reference/aggregate-functions/reference/max) для возврата максимального значения среди всех входных значений. Он возвращает результат с типом `SimpleAggregateState`.
+Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может применяться к функции [`max`](/sql-reference/aggregate-functions/reference/max)
+для получения максимального значения среди всех входных значений. Возвращает
+результат типа `SimpleAggregateState`.
+
 
 ## Пример использования {#example-usage}
 
-Пример, приведенный в [`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage), демонстрирует использование как `maxSimpleState`, так и `minSimpleState`.
+Пример, приведённый в [`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage),
+демонстрирует использование `maxSimpleState` и `minSimpleState`.
+
 
 ## См. также {#see-also}
+
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)
+- [Комбинатор `SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [Тип `SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

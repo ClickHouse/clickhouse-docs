@@ -1,35 +1,28 @@
 ---
-'slug': '/examples/aggregate-function-combinators/groupArrayResample'
-'title': 'groupArray重采样'
-'description': '使用 Resample 组合器与 groupArray 的示例'
-'keywords':
-- 'groupArray'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'groupArrayResample'
-'sidebar_label': 'groupArrayResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/groupArrayResample'
+title: 'groupArrayResample'
+description: '在 groupArray 中使用 Resample 组合器的示例'
+keywords: ['groupArray', 'Resample', 'combinator', 'examples', 'groupArrayResample']
+sidebar_label: 'groupArrayResample'
+doc_type: 'reference'
 ---
+
 
 
 # groupArrayResample {#grouparrayresample}
 
+
 ## 描述 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-组合器可以应用于[`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，以
-将指定键列的范围划分为固定数量的区间（`N`），
-并通过从每个区间内落入的数据点中选择一个代表值（对应于最小键）来构建结果数组。
-它创建一个下采样的数据视图，而不是收集所有值。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 组合器可应用于 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数,将指定键列的取值范围划分为固定数量的区间(`N`),并从落入每个区间的数据点中选择一个代表值(对应最小键值)来构造结果数组。它创建数据的降采样视图,而非收集所有值。
 
-## 示例用法 {#example-usage}
 
-让我们看一个例子。我们将创建一个包含员工的`name`、`age`和
-`wage`的表，并插入一些数据：
+## 使用示例 {#example-usage}
+
+让我们看一个示例。我们将创建一个包含员工的 `name`(姓名)、`age`(年龄)和 `wage`(工资)的表,并向其中插入一些数据:
 
 ```sql
-CREATE TABLE employee_data 
+CREATE TABLE employee_data
 (
     name String,
     age UInt8,
@@ -46,15 +39,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们获取年龄在区间`[30,60)` 
-和`[60,75)`内的人的名字。由于我们对年龄使用整数表示，因此我们得到的年龄区间为
-`[30, 59]`和`[60,74]`。
+让我们获取年龄位于 `[30,60)` 和 `[60,75)` 区间内的人员姓名。由于我们使用整数表示年龄,因此实际获取的是 `[30, 59]` 和 `[60,74]` 区间内的年龄。
 
-为了将名字聚合到数组中，我们使用`groupArray`聚合函数。
-它接受一个参数。在我们的例子中，它是名字列。`groupArrayResample`
-函数应该使用年龄列按照年龄聚合名字。为了定义
-所需的区间，我们将`30`、`75`、`30`作为参数传递给`groupArrayResample`
-函数：
+要将姓名聚合到数组中,我们使用 `groupArray` 聚合函数。它接受一个参数。在本例中,该参数是 name 列。`groupArrayResample` 函数使用 age 列按年龄聚合姓名。为了定义所需的区间,我们将 `30`、`75`、`30` 作为参数传递给 `groupArrayResample` 函数:
 
 ```sql
 SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
@@ -66,6 +53,8 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 └───────────────────────────────────────────────┘
 ```
 
+
 ## 另请参阅 {#see-also}
+
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [`Resample 组合器`](/sql-reference/aggregate-functions/combinators#-resample)

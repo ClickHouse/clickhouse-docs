@@ -1,34 +1,43 @@
 ---
-'slug': '/faq/general/ne-tormozit'
-'title': '“не тормозит”是什么意思？'
-'toc_hidden': true
-'toc_priority': 11
-'description': '本页面解释了“Не тормозит”的含义'
-'keywords':
-- 'Yandex'
-'doc_type': 'reference'
+slug: /faq/general/ne-tormozit
+title: '“не тормозит” 是什么意思？'
+toc_hidden: true
+toc_priority: 11
+description: '本页解释 “Не тормозит” 的含义'
+keywords: ['Yandex']
+doc_type: 'reference'
 ---
 
 
-# "Не тормозит"是什么意思？ {#what-does-ne-tormozit-mean}
 
-当人们看到复古（限量生产）ClickHouse T恤时，我们经常会收到这个问题。它们的前面用大字号的粗体字写着**"ClickHouse не тормозит"**。
+# "Не тормозит" 是什么意思? {#what-does-ne-tormozit-mean}
 
-在ClickHouse开源之前，它是由一家大型欧洲IT公司[“Yandex”](https://yandex.com/company/)开发的内部存储系统。因此，它最初得到了用西里尔字母书写的口号“не тормозит”（发音为“ne tormozit”）。开源发布后，我们首次为当地活动制作了一些这样的T恤，并毫不犹豫地使用了这个口号。
+当人们看到复古版(限量生产)的 ClickHouse T 恤时,我们经常会被问到这个问题。这些 T 恤的正面印有大号粗体文字 **"ClickHouse не тормозит"**。
 
-第二批这些T恤计划在国际活动中赠送，我们尝试制作这个口号的英文版本。
-不幸的是，我们无法找到一个引人注目的英文等效表达。原句优雅且简练，而T恤上的空间限制使我们无法找到一个足够好的翻译，因为大多数选项似乎太长或不准确。
-我们决定继续在为国际活动制作的T恤上保持这个口号。这被证明是一个很好的决定，因为世界各地的人们在看到它时都感到惊讶和好奇。
+在 ClickHouse 开源之前,它是由欧洲大型 IT 公司 [Yandex](https://yandex.com/company/) 作为内部存储系统开发的。这就是为什么它最初采用了西里尔字母的口号 "не тормозит"(发音为 "ne tormozit")。开源发布后,我们首先为本地活动制作了一些这样的 T 恤,直接使用原口号是很自然的选择。
 
-那么，它的意思是什么？以下是*“не тормозит”*的一些翻译方式：
+第二批 T 恤原本计划在国际活动中赠送,我们尝试制作这个口号的英文版本。
+不幸的是,我们无法想出一个同样有力的英文表达。原始短语既优雅又简洁,而 T 恤上的空间限制意味着我们无法找到足够好的翻译,因为大多数选项要么太长,要么不够准确。
+我们决定即使在为国际活动制作的 T 恤上也保留这个口号。事实证明这是一个很好的决定,因为世界各地的人们看到它时都感到既惊喜又好奇。
 
-- 如果字面翻译，它听起来像是*“ClickHouse不踩刹车踏板”*。
-- 更简短但不够精确的翻译可能是*“ClickHouse不慢”*、*“ClickHouse不滞后”*或简单的*“ClickHouse很快”*。
+那么,它是什么意思呢?以下是翻译 _"не тормозит"_ 的几种方式:
 
-如果您还没有亲眼见过这些T恤，您可以在许多与ClickHouse相关的视频中在线查看它们。例如，这个：
+- 如果直译,听起来像是 _"ClickHouse 不踩刹车"_。
+- 更简短但不太精确的翻译可能是 _"ClickHouse 不慢"_、_"ClickHouse 不卡顿"_ 或者简单地说 _"ClickHouse 很快"_。
+
+如果您还没有亲眼见过这些 T 恤,可以在许多 ClickHouse 相关视频中在线查看。例如这个视频:
 
 <div class='vimeo-container'>
-<iframe width="560" height="315" src="http://www.youtube.com/embed/bSyQahMVZ7w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe
+    width='560'
+    height='315'
+    src='http://www.youtube.com/embed/bSyQahMVZ7w'
+    title='YouTube video player'
+    frameborder='0'
+    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    referrerpolicy='strict-origin-when-cross-origin'
+    allowfullscreen
+  ></iframe>
 </div>
 
-_P.S. 这些T恤不是售卖的_，它们是免费的，在一些[ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/)上赠送，通常作为最佳问题或其他积极参与形式的礼物。现在，这些T恤不再生产，它们已成为非常珍贵的收藏品。
+_附注:这些 T 恤不对外销售_,它们曾在一些 [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/) 上免费赠送,通常作为对最佳提问或其他形式积极参与的奖励。现在,这些 T 恤已不再生产,已成为极具价值的收藏品。

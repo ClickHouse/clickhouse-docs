@@ -1,18 +1,21 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data/schemas'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackが使用するテーブルとスキーマ - ClickHouse可観測性スタック'
-'sidebar_label': 'テーブルとスキーマ'
-'title': 'ClickStackが使用するテーブルとスキーマ'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/ingesting-data/schemas
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack - ClickHouse Observability Stack で使用されるテーブルとスキーマ'
+sidebar_label: 'テーブルとスキーマ'
+title: 'ClickStack で使用されるテーブルとスキーマ'
+doc_type: 'reference'
+keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-The ClickStack OpenTelemetry (OTel) コレクターは、[ClickHouse エクスポーター](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md)を使用して、ClickHouse 内にテーブルを作成し、データを挿入します。
+ClickStack の OpenTelemetry (OTel) コレクターは、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse 上にテーブルを作成し、データを挿入します。
 
-以下のテーブルは、`default` データベース内の各データタイプのために作成されます。ユーザーは、OTel コレクターをホスティングするイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、このターゲットデータベースを変更できます。
+次のテーブルは、`default` データベース内の各データタイプごとに作成されます。OTel コレクターをホストしているイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
 
-## Logs {#logs}
+
+
+## ログ {#logs}
 
 ```sql
 CREATE TABLE otel_logs
@@ -48,7 +51,8 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-## Traces {#traces}
+
+## トレース {#traces}
 
 ```sql
 CREATE TABLE otel_traces
@@ -87,9 +91,10 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
-## Metrics {#metrics}
 
-### Gauge metrics {#gauge}
+## メトリクス {#metrics}
+
+### ゲージメトリクス {#gauge}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -127,7 +132,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Sum metrics {#sum}
+### 合計メトリクス {#sum}
+
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -167,7 +173,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Histogram metrics {#histogram}
+### ヒストグラムメトリクス {#histogram}
+
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -211,11 +218,12 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Exponential histograms {#exponential-histograms}
+### 指数ヒストグラム {#exponential-histograms}
 
 :::note
-HyperDX は、指数ヒストグラムメトリクスの取得/表示をまだサポートしていません。ユーザーはメトリクスソースでそれらを設定できますが、将来のサポートが提供される予定です。
+HyperDXは現在、指数ヒストグラムメトリクスの取得・表示に対応していません。メトリクスソースで設定することは可能ですが、将来的なサポートが予定されています。
 :::
+
 
 ```sql
 CREATE TABLE otel_metrics_exponentialhistogram (
@@ -264,7 +272,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Summary table {#summary-table}
+### 集約テーブル {#summary-table}
+
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -300,7 +309,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-## Sessions {#sessions}
+
+## セッション {#sessions}
 
 ```sql
 CREATE TABLE hyperdx_sessions

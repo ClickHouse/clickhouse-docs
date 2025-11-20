@@ -1,14 +1,18 @@
 ---
-'description': '数据集包含航空公司航班的准时表现'
-'sidebar_label': 'OnTime 航空公司航班数据'
-'slug': '/getting-started/example-datasets/ontime'
-'title': 'OnTime'
-'doc_type': 'reference'
+description: '包含航空航班准点表现数据的数据集'
+sidebar_label: 'OnTime 航班数据'
+slug: /getting-started/example-datasets/ontime
+title: 'OnTime'
+doc_type: 'guide'
+keywords: ['example dataset', 'flight data', 'sample data', 'airline performance', 'benchmark']
 ---
 
-这个数据集包含来自交通统计局的数据。
+该数据集包含来自美国交通统计局（Bureau of Transportation Statistics）的数据。
+
+
 
 ## 创建表 {#creating-a-table}
+
 
 ```sql
 CREATE TABLE `ontime`
@@ -126,6 +130,10 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
+
+
+
+
 ## 从原始数据导入 {#import-from-raw-data}
 
 下载数据：
@@ -134,23 +142,25 @@ CREATE TABLE `ontime`
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-使用多个线程加载数据：
+使用多线程加载数据：
 
 ```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(如果您的服务器内存不足或出现其他问题，请删除 `-P $(nproc)` 部分)
+（如果服务器内存不足或遇到其他问题，请删除 `-P $(nproc)` 部分）
+
 
 ## 从保存的副本导入 {#import-from-a-saved-copy}
 
-另外，您可以通过以下查询从保存的副本导入数据：
+或者,您可以通过以下查询从已保存的副本导入数据:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-快照创建于 2022-05-29。
+该快照创建于 2022-05-29。
+
 
 ## 查询 {#queries}
 
@@ -166,7 +176,7 @@ FROM
 );
 ```
 
-Q1. 2000年到2008年间每日航班数量
+Q1. 2000 年至 2008 年按星期几统计的航班数量
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -176,7 +186,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 2000-2008年间，延误超过10分钟的航班数量，按周几分组
+Q2. 2000-2008 年延误超过 10 分钟的航班数量,按星期几分组
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -186,7 +196,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 2000-2008年间，按机场分类的延误数量
+Q3. 2000-2008 年按机场统计的延误次数
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -197,7 +207,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年按航空公司分类的延误数量
+Q4. 2007 年按承运商统计的延误次数
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -207,7 +217,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. 2007年按航空公司分类的延误比例
+Q5. 2007 年按承运商统计的延误百分比
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -233,7 +243,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-相同查询的更好版本：
+更优的查询版本:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -243,7 +253,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 之前请求的更广泛的年份范围，2000-2008
+Q6. 前一个查询的扩展年份范围版本,2000-2008 年
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -269,7 +279,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-相同查询的更好版本：
+更优的查询版本:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -279,7 +289,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 按年份分类延误超过10分钟的航班比例
+Q7. 按年份统计延误超过 10 分钟的航班百分比
 
 ```sql
 SELECT Year, c1/c2
@@ -303,7 +313,7 @@ JOIN
 ORDER BY Year;
 ```
 
-相同查询的更好版本：
+更优的查询版本:
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -312,7 +322,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 按直接连接城市数量分类的最热门目的地，适用于各个年份范围
+Q8. 不同年份范围内按直连城市数量统计的最热门目的地
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -332,6 +342,7 @@ GROUP BY Year;
 
 Q10.
 
+
 ```sql
 SELECT
    min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt,
@@ -348,7 +359,7 @@ ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-奖励：
+额外说明：
 
 ```sql
 SELECT avg(cnt)
@@ -386,13 +397,13 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-您还可以在 Playground 中玩数据， [示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+你也可以在 Playground 中试用这些数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-这个性能测试由 Vadim Tkachenko 创建。详细信息请参见：
+此性能测试由 Vadim Tkachenko 创建。参见：
 
-- https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
-- https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/
-- https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/
-- https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/
-- https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/
-- http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html
+* [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
+* [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)
+* [https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/](https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/)
+* [https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/](https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/)
+* [https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/](https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/)
+* [http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html](http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html)

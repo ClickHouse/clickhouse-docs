@@ -1,14 +1,18 @@
 ---
-'description': 'データセットには航空便のオンタイムパフォーマンスが含まれています'
-'sidebar_label': 'OnTime 航空会社フライトデータ'
-'slug': '/getting-started/example-datasets/ontime'
-'title': 'OnTime'
-'doc_type': 'reference'
+description: '航空便の定時運航実績を含むデータセット'
+sidebar_label: 'OnTime 航空便データ'
+slug: /getting-started/example-datasets/ontime
+title: 'OnTime'
+doc_type: 'guide'
+keywords: ['example dataset', 'flight data', 'sample data', 'airline performance', 'benchmark']
 ---
 
-このデータセットには、交通統計局からのデータが含まれています。
+このデータセットには、Bureau of Transportation Statistics のデータが含まれています。
+
+
 
 ## テーブルの作成 {#creating-a-table}
+
 
 ```sql
 CREATE TABLE `ontime`
@@ -126,6 +130,10 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
+
+
+
+
 ## 生データからのインポート {#import-from-raw-data}
 
 データのダウンロード:
@@ -134,23 +142,25 @@ CREATE TABLE `ontime`
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-複数スレッドでデータをロードする:
+マルチスレッドでのデータ読み込み:
 
 ```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(サーバーでメモリ不足やその他の問題が発生する場合は、`-P $(nproc)` 部分を削除してください)
+(サーバーでメモリ不足やその他の問題が発生した場合は、`-P $(nproc)` の部分を削除してください)
+
 
 ## 保存されたコピーからのインポート {#import-from-a-saved-copy}
 
-別途、以下のクエリを使って保存されたコピーからデータをインポートできます:
+または、以下のクエリを使用して保存されたコピーからデータをインポートすることもできます：
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-スナップショットは 2022-05-29 に作成されました。
+このスナップショットは2022-05-29に作成されました。
+
 
 ## クエリ {#queries}
 
@@ -166,7 +176,7 @@ FROM
 );
 ```
 
-Q1. 2000年から2008年までの1日あたりのフライト数
+Q1. 2000年から2008年までの曜日別フライト数
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -176,7 +186,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 2000年から2008年までの曜日ごとにグループ化された10分以上遅延したフライト数
+Q2. 2000年から2008年までの10分以上遅延したフライト数(曜日別)
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -186,7 +196,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 2000年から2008年までの空港ごとの遅延数
+Q3. 2000年から2008年までの空港別遅延数
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -197,7 +207,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年のキャリアごとの遅延数
+Q4. 2007年の航空会社別遅延数
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -207,7 +217,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. 2007年のキャリアごとの遅延率
+Q5. 2007年の航空会社別遅延率
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -233,7 +243,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリのより良いバージョン:
+同じクエリの改良版:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -243,7 +253,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 2000年から2008年までのより広い範囲の年についての前のリクエスト
+Q6. 前述のクエリをより広い年範囲(2000年から2008年)で実行
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -269,7 +279,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリのより良いバージョン:
+同じクエリの改良版:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -279,7 +289,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 年ごとの10分以上遅延したフライトの割合
+Q7. 年別の10分以上遅延したフライトの割合
 
 ```sql
 SELECT Year, c1/c2
@@ -303,7 +313,7 @@ JOIN
 ORDER BY Year;
 ```
 
-同じクエリのより良いバージョン:
+同じクエリの改良版:
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -312,7 +322,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 様々な年範囲の直接接続された都市数による人気のある目的地
+Q8. 様々な年範囲における直接接続都市数による最も人気のある目的地
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -332,6 +342,7 @@ GROUP BY Year;
 
 Q10.
 
+
 ```sql
 SELECT
    min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt,
@@ -348,7 +359,7 @@ ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-ボーナス:
+ボーナス：
 
 ```sql
 SELECT avg(cnt)
@@ -386,13 +397,13 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Playgroundでデータを操作することもできます、[例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+Playground でもデータを試すことができます（[サンプル](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)）。
 
-このパフォーマンステストは Vadim Tkachenko によって作成されました。参照:
+このパフォーマンステストは Vadim Tkachenko によって作成されました。詳しくは次も参照してください。
 
-- https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
-- https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/
-- https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/
-- https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/
-- https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/
-- http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html
+* [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
+* [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)
+* [https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/](https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/)
+* [https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/](https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/)
+* [https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/](https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/)
+* [http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html](http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html)

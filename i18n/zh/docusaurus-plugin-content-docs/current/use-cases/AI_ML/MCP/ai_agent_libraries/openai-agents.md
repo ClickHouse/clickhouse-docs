@@ -1,48 +1,51 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/openai-agents'
-'sidebar_label': '集成 OpenAI'
-'title': '如何构建一个使用 ClickHouse MCP Server 的 OpenAI 代理。'
-'pagination_prev': null
-'pagination_next': null
-'description': '学习如何构建一个可以与 ClickHouse MCP Server 交互的 OpenAI 代理。'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'OpenAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
+sidebar_label: '集成 OpenAI'
+title: '如何使用 ClickHouse MCP Server 构建 OpenAI Agent'
+pagination_prev: null
+pagination_next: null
+description: '了解如何构建一个可以与 ClickHouse MCP Server 交互的 OpenAI Agent。'
+keywords: ['ClickHouse', 'MCP', 'OpenAI']
+show_related_blogs: true
+doc_type: '指南'
 ---
 
 
-# 如何使用 ClickHouse MCP 服务器构建 OpenAI 代理
 
-在本指南中，您将学习如何构建一个可以与 [ClickHouse 的 SQL 游乐场](https://sql.clickhouse.com/) 交互的 [OpenAI](https://github.com/openai/openai-agents-python) 代理，该代理使用 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)。
+# 如何使用 ClickHouse MCP Server 构建 OpenAI Agent
 
-:::note 示例笔记本
-该示例可以在 [示例存储库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中找到。
+在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) Agent，使用 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+
+:::note 示例 Notebook
+你可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中找到该示例的 Notebook 版本。
 :::
 
-## 先决条件 {#prerequisites}
+
+
+## 前置条件 {#prerequisites}
+
 - 您需要在系统上安装 Python。
 - 您需要在系统上安装 `pip`。
-- 您需要一个 OpenAI API 密钥。
+- 您需要一个 OpenAI API 密钥
 
 您可以通过 Python REPL 或脚本运行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
-## 安装库 {#install-libraries}
 
-通过运行以下命令安装所需的库：
+## 安装依赖库 {#install-libraries}
+
+运行以下命令安装所需的库：
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q openai-agents
+pip install -q --upgrade pip
+pip install -q openai-agents
 ```
 
-## 设置凭据 {#setup-credentials}
 
-接下来，您需要提供您的 OpenAI API 密钥：
+## 设置凭证 {#setup-credentials}
+
+接下来,您需要提供 OpenAI API 密钥:
 
 ```python
 import os, getpass
@@ -53,9 +56,11 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
 Enter OpenAI API Key: ········
 ```
 
+
 ## 初始化 MCP 服务器和 OpenAI 代理 {#initialize-mcp-and-agent}
 
-现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 游乐场，初始化您的 OpenAI 代理并向其提问：
+现在配置 ClickHouse MCP 服务器指向 ClickHouse SQL 演练场,
+初始化您的 OpenAI 代理并向其提问:
 
 ```python
 from agents.mcp import MCPServer, MCPServerStdio
@@ -63,9 +68,9 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """Simple version that just filters important events"""
+    """简化版本,仅过滤重要事件"""
 
-    # Tool calls
+    # 工具调用
     if (hasattr(chunk, 'type') and
             chunk.type == 'run_item_stream_event'):
 
@@ -76,13 +81,13 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # Handle both string and already-parsed output
+                # 处理字符串和已解析的输出
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
                     output = chunk.item.output
 
-                # Handle both dict and list formats
+                # 处理字典和列表格式
                 if isinstance(output, dict):
                     if output.get('type') == 'text':
                         text = output['text']
@@ -91,7 +96,7 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 elif isinstance(output, list) and len(output) > 0:
-                    # Handle list format
+                    # 处理列表格式
                     first_item = output[0]
                     if isinstance(first_item, dict) and first_item.get('type') == 'text':
                         text = first_item['text']
@@ -100,11 +105,11 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 else:
-                    # Fallback - just print the raw output
+                    # 回退 - 仅打印原始输出
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # Fallback to raw output if parsing fails
+                # 如果解析失败则回退到原始输出
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -115,7 +120,7 @@ def simple_render_chunk(chunk):
             except (AttributeError, IndexError):
                 print(f"💬 Response: {str(chunk.item)[:100]}...")
 
-    # Text deltas for streaming
+    # 流式传输的文本增量
     elif (hasattr(chunk, 'type') and
           chunk.type == 'raw_response_event' and
           hasattr(chunk, 'data') and
@@ -124,7 +129,7 @@ def simple_render_chunk(chunk):
         print(chunk.data.delta, end='', flush=True)
 
 async with MCPServerStdio(
-        name="ClickHouse SQL Playground",
+        name="ClickHouse SQL 演练场",
         params={
             "command": "uv",
             "args": [
@@ -138,17 +143,18 @@ async with MCPServerStdio(
 ) as server:
     agent = Agent(
         name="Assistant",
-        instructions="Use the tools to query ClickHouse and answer questions based on those files.",
+        instructions="使用工具查询 ClickHouse 并根据这些文件回答问题。",
         mcp_servers=[server],
     )
 
-    message = "What's the biggest GitHub project so far in 2025?"
+    message = "2025 年迄今为止最大的 GitHub 项目是什么?"
     print(f"\n\nRunning: {message}")
-    with trace("Biggest project workflow"):
+    with trace("最大项目工作流"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
+
 
 ```response title="Response"
 Running: What's the biggest GitHub project so far in 2025?
@@ -185,7 +191,7 @@ log...
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.💬 Response: The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.
+基于 star 数量，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个 star。💬 响应：基于 star 数量，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个 star。
 ```
 
 </VerticalStepper>

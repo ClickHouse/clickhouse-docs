@@ -1,11 +1,12 @@
 ---
-'slug': '/optimize/avoid-nullable-columns'
-'sidebar_label': 'Nullable カラムを避ける'
-'title': 'Nullable カラムを避ける'
-'description': 'ClickHouse において Nullable カラムを避けるべき理由'
-'doc_type': 'guide'
+slug: /optimize/avoid-nullable-columns
+sidebar_label: 'Nullable カラムを避ける'
+title: 'Nullable カラムを避ける'
+description: 'ClickHouse で Nullable カラムを避けるべき理由'
+doc_type: 'guide'
+keywords: ['avoid nullable columns', 'nullable columns', 'data types', 'best practices', 'performance optimization']
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
 <Content />

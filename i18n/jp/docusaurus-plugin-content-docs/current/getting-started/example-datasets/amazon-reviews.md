@@ -1,21 +1,25 @@
 ---
-'description': '150M以上のアマゾン製品のカスタマー レビュー'
-'sidebar_label': 'アマゾン カスタマー レビュー'
-'slug': '/getting-started/example-datasets/amazon-reviews'
-'title': 'アマゾン カスタマー レビュー'
-'doc_type': 'reference'
+description: '1億5,000万件を超える Amazon 製品のカスタマーレビュー'
+sidebar_label: 'Amazon カスタマーレビュー'
+slug: /getting-started/example-datasets/amazon-reviews
+title: 'Amazon カスタマーレビュー'
+doc_type: 'guide'
+keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-このデータセットには、Amazon製品に関する1億5千万件以上の顧客レビューが含まれています。データはAWS S3内のスナッピー圧縮されたParquetファイルにあり、合計サイズは49GB（圧縮後）です。このデータをClickHouseに挿入する手順を見ていきましょう。
+このデータセットには、1億5,000万件を超える Amazon 製品のカスタマーレビューが含まれています。データは AWS S3 上の Snappy 圧縮の Parquet ファイルで提供されており、圧縮後の合計サイズは 49GB です。これを ClickHouse に取り込む手順を見ていきます。
 
 :::note
-以下のクエリは**Production**インスタンスのClickHouse Cloudで実行されました。詳細については
-["Playground specifications"](/getting-started/playground#specifications)を参照してください。
+以下のクエリは、ClickHouse Cloud の **Production** インスタンス上で実行されています。詳細については
+["Playground specifications"](/getting-started/playground#specifications)
+を参照してください。
 :::
+
+
 
 ## データセットの読み込み {#loading-the-dataset}
 
-1. データをClickHouseに挿入せずに、その場でクエリを実行できます。いくつかの行を取得して、どのように見えるか確認しましょう：
+1. ClickHouseにデータを挿入することなく、その場でクエリを実行できます。いくつかの行を取得して、どのような内容か確認してみましょう:
 
 ```sql
 SELECT *
@@ -23,7 +27,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-行は次のようになります：
+行は次のようになります:
 
 ```response
 Row 1:
@@ -41,8 +45,8 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   case is sturdy and protects as I want
-review_body:       I won't count on the waterproof part (I took off the rubber seals at the bottom because the got on my nerves). But the case is sturdy and protects as I want.
+review_headline:   ケースは頑丈で、望み通りに保護してくれる
+review_body:       防水機能は期待していません(底部のゴムシールは気になったので外しました)。しかし、ケースは頑丈で、望み通りに保護してくれます。
 
 Row 2:
 ──────
@@ -59,8 +63,8 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   One Star
-review_body:       Cant use the case because its big for the phone. Waist of money!
+review_headline:   星1つ
+review_body:       ケースが携帯電話に対して大きすぎて使えません。お金の無駄でした!
 
 Row 3:
 ──────
@@ -77,11 +81,11 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   but overall this case is pretty sturdy and provides good protection for the phone
-review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
+review_headline:   しかし全体的にこのケースはかなり頑丈で、携帯電話をしっかり保護してくれる
+review_body:       最初は前面部分を携帯電話に固定するのが少し難しかったですが、全体的にこのケースはかなり頑丈で、携帯電話をしっかり保護してくれます。これが私の求めていたものです。このケースをまた購入したいと思います。
 ```
 
-2. このデータをClickHouseに格納するために、`amazon_reviews`という新しい`MergeTree`テーブルを定義しましょう：
+2. このデータをClickHouseに保存するために、`amazon_reviews`という名前の新しい`MergeTree`テーブルを定義しましょう:
 
 ```sql
 CREATE DATABASE amazon
@@ -113,26 +117,27 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. 次の`INSERT`コマンドは、`s3Cluster`テーブル関数を使用しています。これにより、クラスターのすべてのノードを使用して複数のS3ファイルを並行して処理できます。また、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`という名前で始まる任意のファイルを挿入するためにワイルドカードも使用します：
+3. 以下の`INSERT`コマンドは`s3Cluster`テーブル関数を使用しており、クラスタのすべてのノードを使って複数のS3ファイルを並列処理できます。また、ワイルドカードを使用して、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`という名前で始まるすべてのファイルを挿入します:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
-FROM s3Cluster('default', 
+FROM s3Cluster('default',
 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet')
 ```
 
+
 :::tip
-ClickHouse Cloudでは、クラスターの名前は`default`です。`default`をクラスターの名前に変更するか、クラスターがない場合は`s3`テーブル関数を使用してください（`s3Cluster`の代わりに）。
+ClickHouse Cloud では、クラスター名は `default` です。`default` をお使いのクラスター名に変更するか、クラスターがない場合は `s3Cluster` の代わりに `s3` テーブル関数を使用してください。
 :::
 
-5. このクエリはあまり時間がかからず、平均して約30万行/秒で処理されます。5分ほどで全ての行が挿入されるはずです：
+5. このクエリはそれほど時間はかからず、平均して 1 秒あたり約 300,000 行を処理します。5 分ほど経てば、すべての行が挿入されたことを確認できるはずです。
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. データがどれくらいのスペースを使用しているか見てみましょう：
+6. データがどれくらいの領域を使用しているか確認しましょう:
 
 ```sql runnable
 SELECT
@@ -148,11 +153,12 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-元のデータは約70Gでしたが、ClickHouseで圧縮されると約30Gを占めます。
+元のデータは約 70G でしたが、ClickHouse で圧縮すると約 30G になります。
 
-## サンプルクエリ {#example-queries}
 
-7. いくつかのクエリを実行してみましょう。データセット内で最も役立つレビューの上位10件は次のとおりです：
+## クエリ例 {#example-queries}
+
+7. いくつかのクエリを実行してみましょう。データセット内で最も役立つレビューのトップ10は以下の通りです：
 
 ```sql runnable
 SELECT
@@ -164,10 +170,10 @@ LIMIT 10
 ```
 
 :::note
-このクエリはパフォーマンスを向上させるために[プロジェクション](/data-modeling/projections)を使用しています。
+このクエリは、パフォーマンスを向上させるために[プロジェクション](/data-modeling/projections)を使用しています。
 :::
 
-8. Amazonでレビュー数が最も多い上位10製品は次のとおりです：
+8. Amazonで最もレビュー数が多い製品のトップ10は以下の通りです：
 
 ```sql runnable
 SELECT
@@ -179,7 +185,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. 各製品の月ごとの平均レビュー評価は次のとおりです（実際の[Amazonのジョブ面接問題](https://datalemur.com/questions/sql-avg-review-ratings)!）：
+9. 各製品の月ごとの平均レビュー評価は以下の通りです（実際の[Amazonの面接問題](https://datalemur.com/questions/sql-avg-review-ratings)です！）：
 
 ```sql runnable
 SELECT
@@ -196,7 +202,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. 製品カテゴリごとの合計票数は次のとおりです。このクエリは`product_category`が主キーに含まれているため高速です：
+10. 製品カテゴリごとの総投票数は以下の通りです。このクエリは、`product_category`がプライマリキーに含まれているため高速に実行されます：
 
 ```sql runnable
 SELECT
@@ -207,7 +213,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. レビューに最も頻繁に出現する**"awful"**という単語が含まれる製品を見つけましょう。これは大きなタスクで、1億5千万以上の文字列を解析して単語を探す必要があります：
+11. レビュー内で**「awful」**という単語が最も頻繁に出現する製品を見つけてみましょう。これは大規模なタスクです - 1億5100万以上の文字列を解析して1つの単語を検索する必要があります：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -222,12 +228,12 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-このような大量のデータのクエリ時間に注意してください。結果はまた楽しい読み物でもあります！
+このような大量のデータに対するクエリ時間に注目してください。結果も興味深い内容です！
 
-12. 同じクエリを再度実行できますが、今回はレビュー内で**awesome**を検索します：
+12. 同じクエリを再度実行できますが、今回はレビュー内で**「awesome」**を検索します：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
-SELECT 
+SELECT
     product_id,
     any(product_title),
     avg(star_rating),

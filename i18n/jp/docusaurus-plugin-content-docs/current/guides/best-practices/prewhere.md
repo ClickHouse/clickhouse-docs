@@ -1,10 +1,11 @@
 ---
-'slug': '/optimize/prewhere'
-'sidebar_label': 'PREWHERE 最適化'
-'sidebar_position': 21
-'description': 'PREWHERE は不要なカラムデータを読み込むことを避けることで I/O を削減します。'
-'title': 'PREWHERE 最適化はどのように機能しますか？'
-'doc_type': 'guide'
+slug: /optimize/prewhere
+sidebar_label: 'PREWHERE 最適化'
+sidebar_position: 21
+description: 'PREWHERE によって不要なカラムデータの読み取りを回避し、I/O を削減できます。'
+title: 'PREWHERE 最適化はどのように機能しますか？'
+doc_type: 'guide'
+keywords: ['prewhere', 'query optimization', 'performance', 'filtering', 'best practices']
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';
@@ -12,99 +13,117 @@ import visual02 from '@site/static/images/guides/best-practices/prewhere_02.gif'
 import visual03 from '@site/static/images/guides/best-practices/prewhere_03.gif';
 import visual04 from '@site/static/images/guides/best-practices/prewhere_04.gif';
 import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif';
+
 import Image from '@theme/IdealImage';
 
 
+# PREWHERE 最適化はどのように動作しますか？
 
-# PREWHERE最適化はどのように機能しますか？
+[PREWHERE 句](/sql-reference/statements/select/prewhere) は、ClickHouse におけるクエリ実行の最適化機構です。不要なデータの読み取りを回避し、非フィルタ列をディスクから読み込む前に無関係なデータを除外することで、I/O を削減し、クエリの実行速度を向上させます。
 
-[PREWHERE句](/sql-reference/statements/select/prewhere)は、ClickHouseにおけるクエリ実行の最適化機能です。これは、不要なデータの読み込みを避け、ディスクから非フィルタ列を読み込む前に関連性のないデータをフィルタリングすることで、I/Oを削減し、クエリ速度を向上させます。
+このガイドでは、PREWHERE がどのように動作するか、その効果をどのように測定するか、そして最良のパフォーマンスを得るためにどのようにチューニングすればよいかを説明します。
 
-このガイドでは、PREWHEREの機能、影響を測定する方法、および最適なパフォーマンスを引き出すための調整方法について説明します。
 
-## PREWHERE最適化なしのクエリ処理 {#query-processing-without-prewhere-optimization}
 
-最初に、[uk_price_paid_simple](/parts)テーブルに対してPREWHEREを使用せずにクエリがどのように処理されるかを示します：
+## PREWHERE最適化を使用しないクエリ処理 {#query-processing-without-prewhere-optimization}
 
-<Image img={visual01} size="md" alt="PREWHERE最適化なしのクエリ処理"/>
+まず、[uk_price_paid_simple](/parts)テーブルに対するクエリがPREWHEREを使用せずにどのように処理されるかを説明します:
 
-<br/><br/>
-① クエリには、テーブルの主キーの一部であり、したがって主インデックスの一部でもある`town`カラムに対するフィルタが含まれています。
+<Image
+  img={visual01}
+  size='md'
+  alt='PREWHERE最適化を使用しないクエリ処理'
+/>
 
-② クエリを加速するために、ClickHouseはテーブルの主インデックスをメモリに読み込みます。
+<br />
+<br />① クエリには`town`カラムに対するフィルタが含まれており、このカラムはテーブルのプライマリキーの一部であり、したがってプライマリインデックスの一部でもあります。
 
-③ インデックスエントリをスキャンして、`town`カラムのどのグラニュールが述語に一致する行を含む可能性があるかを特定します。
+② クエリを高速化するため、ClickHouseはテーブルのプライマリインデックスをメモリにロードします。
 
-④ これらの関連がある可能性のあるグラニュールがメモリに読み込まれ、クエリに必要な他のカラムの位置が一致したグラニュールも一緒にロードされます。
+③ インデックスエントリをスキャンして、述語に一致する行を含む可能性のあるtownカラムのグラニュールを特定します。
 
-⑤ 残りのフィルタがクエリ実行中に適用されます。
+④ これらの関連する可能性のあるグラニュールが、クエリに必要な他のカラムの位置的に整列したグラニュールとともにメモリにロードされます。
 
-ご覧の通り、PREWHEREなしでは、すべての関連性のあるカラムがフィルタリングの前に読み込まれます。実際に一致する行がわずかしかない場合でもすべてがロードされます。
+⑤ 残りのフィルタはクエリ実行時に適用されます。
 
-## PREWHEREがクエリ効率を改善する方法 {#how-prewhere-improves-query-efficiency}
+ご覧のように、PREWHEREを使用しない場合、実際に一致する行がわずかであっても、フィルタリングの前に関連する可能性のあるすべてのカラムがロードされます。
 
-以下のアニメーションは、上記のクエリにPREWHERE句がすべてのクエリ述語に適用されている場合の処理方法を示しています。
 
-最初の3つの処理ステップは以前と同じです：
+## PREWHEREがクエリ効率を向上させる仕組み {#how-prewhere-improves-query-efficiency}
 
-<Image img={visual02} size="md" alt="PREWHERE最適化付きのクエリ処理"/>
+以下のアニメーションは、すべてのクエリ述語にPREWHERE句を適用した場合の、上記クエリの処理方法を示しています。
 
-<br/><br/>
-① クエリには、テーブルの主キーの一部であり、したがって主インデックスの一部でもある`town`カラムに対するフィルタが含まれています。
+最初の3つの処理ステップは以前と同じです:
 
-② PREWHERE句なしの実行と同様に、クエリを加速するために、ClickHouseは主インデックスをメモリに読み込みます。
+<Image
+  img={visual02}
+  size='md'
+  alt='PREWHERE最適化によるクエリ処理'
+/>
 
-③ 次に、インデックスエントリをスキャンして、`town`カラムのどのグラニュールが述語に一致する行を含む可能性があるかを特定します。
+<br />
+<br />① クエリには`town`カラムに対するフィルタが含まれており、これはテーブルのプライマリキーの一部であり、したがってプライマリインデックスの一部でもあります。
 
-PREWHERE句のおかげで、次のステップが異なります：関連のあるすべてのカラムを前もって読むのではなく、ClickHouseはデータをカラムごとにフィルタリングし、実際に必要なものだけを読み込みます。これにより、特に広いテーブルの場合、I/Oが劇的に削減されます。
+② PREWHERE句を使用しない実行と同様に、クエリを高速化するため、ClickHouseはプライマリインデックスをメモリにロードします。
 
-各ステップで、前のフィルタを生き残った、つまり一致した少なくとも1行を含むグラニュールのみをロードします。これにより、各フィルタについてのロードと評価されるグラニュールの数が単調に減少します：
+③ 次に、インデックスエントリをスキャンして、述語に一致する行を含む可能性のある`town`カラムのグラニュールを特定します。
 
-**ステップ1: `town`によるフィルタリング**<br/>
-ClickHouseはPREWHERE処理を始め、① `town`カラムから選択されたグラニュールを読み込み、`London`に一致する行を含むものをチェックします。
+ここで、PREWHERE句により、次のステップが異なります。すべての関連カラムを事前に読み取る代わりに、ClickHouseはカラムごとにデータをフィルタリングし、本当に必要なものだけをロードします。これにより、特に幅の広いテーブルでI/Oが大幅に削減されます。
 
-例では、すべての選択されたグラニュールが一致するため、② 次のフィルタカラム`date`の対応する位置一致グラニュールが処理のために選択されます：
+各ステップで、前のフィルタを通過した（つまり一致した）行を少なくとも1つ含むグラニュールのみをロードします。その結果、各フィルタでロードおよび評価するグラニュールの数は単調に減少します:
 
-<Image img={visual03} size="md" alt="ステップ1: `town`によるフィルタリング"/>
+**ステップ1: townによるフィルタリング**<br/>
+ClickHouseは、① `town`カラムから選択されたグラニュールを読み取り、実際に`London`に一致する行を含むものを確認することで、PREWHERE処理を開始します。
 
-<br/><br/>
-**ステップ2: `date`によるフィルタリング**<br/>
-次に、ClickHouseは① 選択された`date`カラムのグラニュールを読み込み、フィルタ`date > '2024-12-31'`を評価します。
+この例では、選択されたすべてのグラニュールが一致するため、② 次のフィルタカラムである`date`の対応する位置整合されたグラニュールが処理対象として選択されます:
 
-この場合、3つのグラニュールのうち2つが一致する行を含むため、② 次のフィルタカラム`price`からの位置一致グラニュールのみがさらなる処理のために選択されます：
+<Image img={visual03} size='md' alt='ステップ1: townによるフィルタリング' />
 
-<Image img={visual04} size="md" alt="ステップ2: `date`によるフィルタリング"/>
+<br />
+<br />
+**ステップ2: dateによるフィルタリング**
+<br />
+次に、ClickHouseは① 選択された`date`カラムのグラニュールを読み取り、フィルタ`date > '2024-12-31'`を評価します。
 
-<br/><br/>
-**ステップ3: `price`によるフィルタリング**<br/>
-最後に、ClickHouseは① `price`カラムから2つの選択されたグラニュールを読み込み、最後のフィルタ`price > 10_000`を評価します。
+この場合、3つのグラニュールのうち2つが一致する行を含むため、② 次のフィルタカラムである`price`の位置整合されたグラニュールのみがさらなる処理対象として選択されます:
 
-2つのグラニュールのうち1つのみが一致する行を含むため、② その位置一致グラニュールから`SELECT`カラム—`street`—をさらなる処理のためにロードする必要があります：
+<Image img={visual04} size='md' alt='ステップ2: dateによるフィルタリング' />
 
-<Image img={visual05} size="md" alt="ステップ2: `price`によるフィルタリング"/>
+<br />
+<br />
+**ステップ3: priceによるフィルタリング**
+<br />
+最後に、ClickHouseは① `price`カラムから選択された2つのグラニュールを読み取り、最後のフィルタ`price > 10_000`を評価します。
 
-<br/><br/>
-最終ステップでは、一致する行を含む最小のカラムグラニュールセットのみがロードされます。これにより、メモリの使用量が低減し、ディスクI/Oが少なく、クエリ実行が高速化されます。
+2つのグラニュールのうち1つだけが一致する行を含むため、② `SELECT`対象カラムである`street`の位置整合されたグラニュールのみがさらなる処理のためにロードされます:
 
-:::note PREWHEREは読み取るデータを削減しますが、処理される行は削減しません
-PREWHEREを使用しても、ClickHouseはPREWHEREありとなしのクエリの両方で同じ数の行を処理します。ただし、PREWHERE最適化が適用されることで、すべての処理行に対してすべてのカラム値を読み込む必要がなくなります。
+<Image img={visual05} size='md' alt='ステップ3: priceによるフィルタリング' />
+
+<br />
+<br />
+最終ステップでは、一致する行を含む最小限のカラムグラニュールのセットのみがロードされます。これにより、メモリ使用量の削減、ディスクI/Oの減少、およびクエリ実行の高速化が実現されます。
+
+:::note PREWHEREは読み取るデータを削減するが、処理する行数は削減しない
+ClickHouseは、PREWHEREバージョンと非PREWHEREバージョンのクエリの両方で同じ数の行を処理することに注意してください。ただし、PREWHERE最適化が適用されると、処理されるすべての行に対してすべてのカラム値をロードする必要はありません。
 :::
 
-## PREWHERE最適化は自動的に適用されます {#prewhere-optimization-is-automatically-applied}
 
-PREWHERE句は、上記の例のように手動で追加できます。しかし、PREWHEREを手動で記述する必要はありません。設定[`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere)が有効になっている（デフォルトはtrue）場合、ClickHouseは自動的にWHEREからPREWHEREにフィルタ条件を移動させ、最も読み取り量を削減する条件を優先させます。
+## PREWHERE最適化は自動的に適用される {#prewhere-optimization-is-automatically-applied}
 
-小さなカラムはスキャンが速いため、より大きなカラムを処理する時点では、ほとんどのグラニュールがすでにフィルタリングされています。すべてのカラムには同じ数の行が含まれているため、カラムのサイズは主にそのデータ型によって決まります。たとえば、`UInt8`カラムは一般的に`String`カラムよりもずっと小さいです。
+PREWHERE句は上記の例のように手動で追加できます。ただし、PREWHEREを手動で記述する必要はありません。設定[`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere)が有効な場合（デフォルトでtrue）、ClickHouseは自動的にフィルタ条件をWHEREからPREWHEREに移動し、読み取り量を最も削減できるものを優先します。
 
-ClickHouseは、バージョン[23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov)以降、この戦略をデフォルトで採用し、PREWHEREフィルタカラムの圧縮されていないサイズの昇順でのマルチステップ処理を行います。
+この考え方は、小さいカラムの方がスキャンが高速であり、大きいカラムが処理される頃には、ほとんどのグラニュールがすでにフィルタリングされているというものです。すべてのカラムは同じ行数を持つため、カラムのサイズは主にそのデータ型によって決まります。例えば、`UInt8`カラムは一般的に`String`カラムよりもはるかに小さくなります。
 
-バージョン[23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)以降、オプションのカラム統計により、カラムサイズだけでなく実際のデータ選択性に基づいてフィルタ処理順序を選択することで、さらに改善が見込まれます。
+ClickHouseはバージョン[23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov)以降、デフォルトでこの戦略に従い、PREWHEREフィルタカラムを非圧縮サイズの昇順でソートして多段階処理を行います。
 
-## PREWHEREの影響を測定する方法 {#how-to-measure-prewhere-impact}
+バージョン[23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)以降、オプションのカラム統計により、カラムサイズだけでなく実際のデータ選択性に基づいてフィルタ処理順序を選択することで、さらに改善できます。
 
-PREWHEREがクエリに役立っていることを確認するために、`optimize_move_to_prewhere`設定が有効な場合と無効な場合のクエリパフォーマンスを比較できます。
 
-まず、`optimize_move_to_prewhere`設定が無効な状態でクエリを実行します：
+## PREWHEREの効果を測定する方法 {#how-to-measure-prewhere-impact}
+
+PREWHEREがクエリのパフォーマンス向上に寄与しているかを検証するには、`optimize_move_to_prewhere`設定を有効にした場合と無効にした場合でクエリのパフォーマンスを比較します。
+
+まず、`optimize_move_to_prewhere`設定を無効にしてクエリを実行します:
 
 ```sql
 SELECT
@@ -124,12 +143,13 @@ SETTINGS optimize_move_to_prewhere = false;
    └─────────────┘
 
 3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
-Peak memory usage: 132.10 MiB.
+ピークメモリ使用量: 132.10 MiB.
 ```
 
-ClickHouseは、クエリの処理中に**23.36 MB**のカラムデータを読み取り、2.31百万行を処理しました。
+ClickHouseはこのクエリで231万行を処理する際に、**23.36 MB**のカラムデータを読み取りました。
 
-次に、`optimize_move_to_prewhere`設定が有効な状態でクエリを実行します。（この設定はオプションですが、デフォルトで有効になっています）：
+次に、`optimize_move_to_prewhere`設定を有効にしてクエリを実行します(この設定はデフォルトで有効になっているため、指定は任意です):
+
 ```sql
 SELECT
     street
@@ -148,14 +168,15 @@ SETTINGS optimize_move_to_prewhere = true;
    └─────────────┘
 
 3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
-Peak memory usage: 132.11 MiB.
+ピークメモリ使用量: 132.11 MiB.
 ```
 
-処理された行数は同じ（2.31百万）ですが、PREWHEREのおかげで、ClickHouseは3倍以上少ないカラムデータ—わずか6.74 MB（23.36 MBの代わりに）を読み込み、総実行時間を3分の1に削減しました。
+処理された行数は同じ(231万行)ですが、PREWHEREのおかげでClickHouseが読み取ったカラムデータは3分の1以下となり、23.36 MBではなくわずか6.74 MBで済みました。その結果、総実行時間が3分の1に短縮されました。
 
-ClickHouseがPREWHEREを内部でどのように適用しているかをより深く理解するためには、EXPLAINとトレースログを使用します。
+ClickHouseが内部でPREWHEREをどのように適用しているかをより深く理解するには、EXPLAINとトレースログを使用します。
 
-[EXPLAIN](/sql-reference/statements/explain#explain-plan)句を用いて、クエリの論理プランを調べます：
+[EXPLAIN](/sql-reference/statements/explain#explain-plan)句を使用してクエリの論理プランを確認します:
+
 ```sql
 EXPLAIN PLAN actions = 1
 SELECT
@@ -168,19 +189,20 @@ WHERE
 
 ```txt
 ...
-Prewhere info                                                                                                                                                                                                                                          
-  Prewhere filter column: 
-    and(greater(__table1.date, '2024-12-31'_String), 
-    less(__table1.price, 10000_UInt16), 
-    equals(__table1.town, 'LONDON'_String)) 
+Prewhere info
+  Prewhere filter column:
+    and(greater(__table1.date, '2024-12-31'_String),
+    less(__table1.price, 10000_UInt16),
+    equals(__table1.town, 'LONDON'_String))
 ...
 ```
 
-プラン出力の大部分は非常に冗長であるため、ここでは省略します。基本的には、3つのカラム述語がすべて自動的にPREWHEREに移動されたことを示しています。
+プランの出力は非常に冗長なため、ここではほとんどを省略しています。要するに、3つのカラム述語すべてが自動的にPREWHEREに移動されたことが示されています。
 
-これを自身で再現すると、クエリプランでも、これらの述語の順序がカラムのデータ型サイズに基づいていることがわかります。カラム統計を有効にしていないため、ClickHouseはサイズをPREWHEREの処理順序を決定するためのフォールバックとして利用します。
+これを自分で再現する際、クエリプランでこれらの述語の順序がカラムのデータ型サイズに基づいていることがわかります。カラム統計を有効にしていないため、ClickHouseはPREWHERE処理順序を決定する際の代替手段としてサイズを使用します。
 
-さらに詳しい内部の動作を観察したい場合は、クエリ実行中にClickHouseにテストレベルのログエントリをすべて返すよう指示することができます：
+さらに内部の動作を詳しく確認したい場合は、クエリ実行中にすべてのテストレベルのログエントリを返すようClickHouseに指示することで、個々のPREWHERE処理ステップを観察できます:
+
 ```sql
 SELECT
     street
@@ -202,10 +224,11 @@ SETTINGS send_logs_level = 'test';
 ...
 ```
 
-## 主なポイント {#key-takeaways}
 
-* PREWHEREは、後でフィルタリングされるカラムデータの読み込みを回避し、I/Oとメモリを節約します。
-* `optimize_move_to_prewhere`が有効な場合、新たに手動でPREWHEREを記述することなく自動で機能します（デフォルト）。
-* フィルタリングの順序は重要です：小さく選択性の高いカラムを最初に配置するべきです。
-* `EXPLAIN`とログを使用して、PREWHEREが適用されているかを確認し、その効果を理解します。
-* PREWHEREは、広いテーブルや選択的フィルタを伴う大規模なスキャンにおいて特に影響を持ちます。
+## 重要なポイント {#key-takeaways}
+
+- PREWHEREは、後でフィルタリングされるカラムデータの読み取りを回避することで、I/Oとメモリを節約します。
+- `optimize_move_to_prewhere`が有効な場合(デフォルト)、自動的に機能します。
+- フィルタリングの順序は重要です。サイズが小さく選択性の高いカラムを最初に配置してください。
+- `EXPLAIN`とログを使用して、PREWHEREが適用されていることを確認し、その効果を把握してください。
+- PREWHEREは、カラム数の多いテーブルと選択的なフィルタを使用した大規模スキャンで最も効果的です。

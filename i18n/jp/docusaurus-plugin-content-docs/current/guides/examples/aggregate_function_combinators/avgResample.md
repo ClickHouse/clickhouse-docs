@@ -1,39 +1,38 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgResample'
-'title': 'avgResample'
-'description': 'avgを使用したResampleコンビネータの例'
-'keywords':
-- 'avg'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'avgResample'
-'sidebar_label': 'avgResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgResample'
+title: 'avgResample'
+description: 'avg で Resample コンビネータを使用する例'
+keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
+sidebar_label: 'avgResample'
+doc_type: 'reference'
 ---
+
 
 
 # countResample {#countResample}
 
+
 ## 説明 {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、指定されたキー カラムの値を固定数の間隔 (`N`) でカウントするために[`count`](/sql-reference/aggregate-functions/reference/count) 
-集約関数に適用できます。
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
+集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
+区間でカウントできます。
+
 
 ## 使用例 {#example-usage}
 
 ### 基本的な例 {#basic-example}
 
-例を見てみましょう。従業員の`name`、`age`、および`wage`を含むテーブルを作成し、その中にデータを挿入します。
+例を見てみましょう。従業員の`name`、`age`、`wage`を含むテーブルを作成し、データを挿入します:
 
 ```sql
-CREATE TABLE employee_data 
+CREATE TABLE employee_data
 (
     name String,
     age UInt8,
     wage Float32
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -46,7 +45,8 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が `[30,60)` および `[60,75)` の人々の平均賃金を取得しましょう（`[` は排他的で、`]` は包含的です）。整数表現を使用しているため、年齢は `[30, 59]` および `[60,74]` の範囲になります。これを行うために、`avg` 集約関数に `Resample` コンビネータを適用します。
+年齢が`[30,60)`と`[60,75)`の区間にある人々の平均賃金を取得してみましょう(`[`は閉区間、`)`は開区間を表します)。年齢には整数表現を使用するため、実際には`[30, 59]`と`[60,74]`の区間の年齢が対象となります。
+これを実現するには、`avg`集約関数に`Resample`コンビネータを適用します。
 
 ```sql
 WITH avg_wage AS
@@ -65,6 +65,8 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## 参照 {#see-also}
+
+## 関連項目 {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

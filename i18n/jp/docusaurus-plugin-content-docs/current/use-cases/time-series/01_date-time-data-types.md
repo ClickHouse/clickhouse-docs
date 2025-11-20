@@ -1,33 +1,32 @@
 ---
-'title': '日付と時刻のデータ型 - 時系列'
-'sidebar_label': '日付と時刻のデータ型'
-'description': 'ClickHouseの時系列データ型。'
-'slug': '/use-cases/time-series/date-time-data-types'
-'keywords':
-- 'Time Series'
-- 'DateTime'
-'show_related_blogs': true
-'doc_type': 'reference'
+title: '日付と時刻のデータ型 - 時系列'
+sidebar_label: '日付と時刻のデータ型'
+description: 'ClickHouse の時系列データ型。'
+slug: /use-cases/time-series/date-time-data-types
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'data types', 'temporal data', 'timestamp']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
 
-# 日付と時刻のデータ型
 
-効果的な時系列データ管理には、包括的な日付および時刻型のセットが必要であり、ClickHouseはまさにそれを提供します。 
-コンパクトな日付表現からナノ秒精度の高精度タイムスタンプまで、これらの型はさまざまな時系列アプリケーションのための実用的な要件とストレージ効率のバランスを取るように設計されています。
+# 日付および時刻のデータ型
 
-歴史的な金融データ、IoTセンサーの読み取り、または未来の日付のイベントに取り組んでいる場合でも、ClickHouseの日付および時刻型はさまざまな時間データシナリオを処理するために必要な柔軟性を提供します。 
-サポートされている型の範囲は、ストレージスペースとクエリパフォーマンスの最適化を可能にし、同時に使用ケースが要求する精度を維持します。
+時系列データを効果的に管理するには、日付と時刻のデータ型が一通り揃っていることが重要であり、ClickHouse はまさにそれを提供します。
+コンパクトな日付表現からナノ秒精度の高精度タイムスタンプまで、これらの型は、さまざまな時系列アプリケーションにおける実務上の要件とストレージ効率とのバランスを取るように設計されています。
 
-* [`Date`](/sql-reference/data-types/date) 型は、ほとんどの場合に十分です。この型は日付を保存するのに2バイトを必要とし、範囲は `[1970-01-01, 2149-06-06]` に制限されています。
+履歴の金融データ、IoT センサーの測定値、将来日付のイベントなど、どのようなデータを扱う場合でも、ClickHouse の日付および時刻のデータ型は、さまざまな時系列データのユースケースに対応できる柔軟性を提供します。
+サポートされる型の幅広いバリエーションにより、ユースケースで要求される精度を維持しつつ、ストレージ容量とクエリ性能の両方を最適化できます。
 
-* [`Date32`](/sql-reference/data-types/date32) は、より広い範囲の日付をカバーします。日付を保存するのに4バイトを必要とし、範囲は `[1900-01-01, 2299-12-31]` に制限されています。
+* [`Date`](/sql-reference/data-types/date) 型は、多くの場合これだけで十分です。この型は日付を格納するのに 2 バイトを使用し、範囲は `[1970-01-01, 2149-06-06]` に制限されます。
 
-* [`DateTime`](/sql-reference/data-types/datetime) は、秒精度で日付時刻値を保存し、範囲は `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` です。1つの値あたり4バイトを必要とします。
+* [`Date32`](/sql-reference/data-types/date32) は、より広い日付範囲を扱えます。日付の格納には 4 バイトを使用し、範囲は `[1900-01-01, 2299-12-31]` に制限されます。
 
-* より精度が必要な場合は、[`DateTime64`](/sql-reference/data-types/datetime64) を使用することができます。これにより、ナノ秒精度までの時間を保存でき、範囲は `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]` です。1つの値あたり8バイトを必要とします。
+* [`DateTime`](/sql-reference/data-types/datetime) は秒精度で日時を格納し、範囲は `[1970-01-01 00:00:00, 2106-02-07 06:28:15]` です。1 値あたり 4 バイトを使用します。
 
-さまざまな日付型を保存するテーブルを作成してみましょう。
+* さらに高い精度が必要な場合は、[`DateTime64`](/sql-reference/data-types/datetime64) を使用できます。これはナノ秒精度までの時刻を格納でき、範囲は `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]` です。1 値あたり 8 バイトを使用します。
+
+さまざまな日付型を格納するテーブルを作成してみましょう。
 
 ```sql
 CREATE TABLE dates
@@ -42,7 +41,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-[`now()`](/sql-reference/functions/date-time-functions#now) 関数を使用して現在の時刻を返し、 [`now64()`](/sql-reference/functions/date-time-functions#now64) で指定された精度で取得することができます。
+現在時刻を返すには [`now()`](/sql-reference/functions/date-time-functions#now) 関数を使用し、第1引数で精度を指定して [`now64()`](/sql-reference/functions/date-time-functions#now64) 関数を使えば、指定した精度で現在時刻を取得できます。
 
 ```sql
 INSERT INTO dates 
@@ -53,7 +52,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-これは、カラムタイプに応じて列を時刻で埋めます：
+これは、カラムの型に応じてカラムに時刻データを投入します。
 
 ```sql
 SELECT * FROM dates
@@ -61,7 +60,7 @@ FORMAT Vertical;
 ```
 
 ```text
-Row 1:
+行 1:
 ──────
 date:                  2025-03-12
 wider_date:            2125-03-12
@@ -70,9 +69,10 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
+
 ## タイムゾーン {#time-series-timezones}
 
-多くのユースケースでは、タイムゾーンも保存する必要があります。 `DateTime` または `DateTime64` 型の最後の引数としてタイムゾーンを設定できます：
+多くのユースケースでは、タイムゾーン情報も保存する必要があります。`DateTime`または`DateTime64`型の最後の引数としてタイムゾーンを設定できます:
 
 ```sql
 CREATE TABLE dtz
@@ -87,24 +87,24 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-DDLでタイムゾーンを定義したので、異なるタイムゾーンを使用して時刻を挿入することができます：
+DDLでタイムゾーンを定義することで、異なるタイムゾーンを使用して時刻を挿入できるようになります:
 
 ```sql
-INSERT INTO dtz 
-SELECT 1, 
+INSERT INTO dtz
+SELECT 1,
        toDateTime('2022-12-12 12:13:14', 'America/New_York'),
        toDateTime('2022-12-12 12:13:14', 'America/New_York'),
        toDateTime64('2022-12-12 12:13:14.123456789', 9, 'America/New_York'),
        toDateTime64('2022-12-12 12:13:14.123456789', 9, 'America/New_York')
 UNION ALL
-SELECT 2, 
+SELECT 2,
        toDateTime('2022-12-12 12:13:15'),
        toDateTime('2022-12-12 12:13:15'),
        toDateTime64('2022-12-12 12:13:15.123456789', 9),
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-さて、テーブルの内容を見てみましょう：
+それでは、テーブルの内容を確認してみましょう:
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -128,18 +128,20 @@ dt_2:   2022-12-12 12:13:15
 dt64_2: 2022-12-12 12:13:15.123456789
 ```
 
-最初の行では、`America/New_York` タイムゾーンを使用してすべての値を挿入しました。
-* `dt_1` と `dt64_1` は、クエリ時に自動的に `Europe/Berlin` に変換されます。
-* `dt_2` と `dt64_2` は明示的なタイムゾーンが指定されていないため、サーバーのローカルタイムゾーンである `Europe/London` を使用します。
+1行目では、すべての値を`America/New_York`タイムゾーンで挿入しました。
+
+- `dt_1`と`dt64_1`は、クエリ実行時に自動的に`Europe/Berlin`に変換されます。
+- `dt_2`と`dt64_2`にはタイムゾーンが指定されていないため、サーバーのローカルタイムゾーン(この場合は`Europe/London`)が使用されます。
 
 2行目では、タイムゾーンを指定せずにすべての値を挿入したため、サーバーのローカルタイムゾーンが使用されました。
-最初の行と同様に、`dt_1` と `dt_3` は `Europe/Berlin` に変換され、一方で `dt_2` と `dt64_2` はサーバーのローカルタイムゾーンを使用します。
+1行目と同様に、`dt_1`と`dt64_1`は`Europe/Berlin`に変換され、`dt_2`と`dt64_2`はサーバーのローカルタイムゾーンを使用します。
+
 
 ## 日付と時刻の関数 {#time-series-date-time-functions}
 
-ClickHouseは、異なるデータ型間で変換するための関数のセットも提供しています。
+ClickHouseには、異なるデータ型間で変換を行うための関数セットが用意されています。
 
-たとえば、 [`toDate`](/sql-reference/functions/type-conversion-functions#todate) を使用して `DateTime` 値を `Date` 型に変換できます：
+例えば、[`toDate`](/sql-reference/functions/type-conversion-functions#todate)を使用して`DateTime`値を`Date`型に変換できます:
 
 ```sql
 SELECT
@@ -147,7 +149,7 @@ SELECT
     toTypeName(current_time),
     toDate(current_time) AS date_only,
     toTypeName(date_only)
-FORMAT Vertical;    
+FORMAT Vertical;
 ```
 
 ```text
@@ -159,7 +161,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-[`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) を使用して `DateTime` を `DateTime64` に変換できます：
+[`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64)を使用して`DateTime`を`DateTime64`に変換できます:
 
 ```sql
 SELECT
@@ -179,7 +181,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-さらに、 [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) を使用して `Date` または `DateTime64` から `DateTime` に戻すことができます：
+また、[`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime)を使用して`Date`または`DateTime64`を`DateTime`に変換できます:
 
 ```sql
 SELECT

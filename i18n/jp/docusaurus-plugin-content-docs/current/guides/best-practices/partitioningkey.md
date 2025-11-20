@@ -1,11 +1,12 @@
 ---
-'slug': '/optimize/partitioning-key'
-'sidebar_label': 'Partitioning Key'
-'title': '低カーディナリティのパーティションキーを選択する'
-'description': '低カーディナリティのパーティションキーを使用するか、テーブルにパーティションキーを使用しないことをお勧めします。'
-'doc_type': 'guide'
+slug: /optimize/partitioning-key
+sidebar_label: 'パーティションキー'
+title: 'カーディナリティの低いパーティションキーを選ぶ'
+description: 'テーブルにはカーディナリティの低いパーティションキーを使うか、パーティションキーを設定しないようにします。'
+doc_type: 'guide'
+keywords: ['partitioning', 'partition key', 'data organization', 'best practices', 'performance']
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/partitioning_keys.mdx';
+import Content from '@site/docs/best-practices/partitioning_keys.mdx';
 
 <Content />

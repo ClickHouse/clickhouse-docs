@@ -1,89 +1,95 @@
 ---
-'slug': '/cloud/reference/shared-catalog'
-'sidebar_label': '共有カタログ'
-'title': '共有カタログと共有データベースエンジン'
-'keywords':
-- 'SharedCatalog'
-- 'SharedDatabaseEngine'
-'description': '共有カタログコンポーネントとClickHouse Cloudにおける共有データベースエンジンについて説明します'
-'doc_type': 'reference'
+slug: /cloud/reference/shared-catalog
+sidebar_label: '共有カタログ'
+title: '共有カタログと共有データベースエンジン'
+keywords: ['SharedCatalog', 'SharedDatabaseEngine']
+description: 'ClickHouse Cloud における Shared Catalog コンポーネントと Shared データベースエンジンについて説明します'
+doc_type: 'reference'
 ---
 
 
-# Shared catalog and shared database engine {#shared-catalog-and-shared-database-engine}
 
-**ClickHouse Cloud（およびファーストパーティパートナーのクラウドサービス）専用**
+# 共有カタログと共有データベースエンジン {#shared-catalog-and-shared-database-engine}
 
-Shared Catalogは、ClickHouse Cloud内のレプリカ間でステートレスエンジンを使用するデータベースやテーブルのメタデータおよびDDL操作をレプリケートする、クラウドネイティブなコンポーネントです。これにより、動的または部分的にオフラインの環境でも、これらのオブジェクトの一貫した状態管理が可能になり、メタデータの整合性が確保されます。
+**ClickHouse Cloud（およびファーストパーティパートナークラウドサービス）専用**
 
-Shared Catalogは**テーブル自体をレプリケートしません**が、DDLクエリとメタデータをレプリケートすることで、すべてのレプリカがデータベースおよびテーブル定義の一貫したビューを持つことを確保します。
+共有カタログは、ClickHouse Cloud内のレプリカ間で、ステートレスエンジンを使用するデータベースとテーブルのメタデータおよびDDL操作をレプリケートするクラウドネイティブコンポーネントです。これらのオブジェクトに対して一貫性のある集中的な状態管理を実現し、動的環境や部分的にオフラインの環境においてもメタデータの整合性を確保します。
 
-以下のデータベースエンジンのレプリケーションをサポートしています：
+共有カタログは**テーブル自体をレプリケートしません**が、DDLクエリとメタデータをレプリケートすることで、すべてのレプリカがデータベースおよびテーブル定義の一貫したビューを持つことを保証します。
+
+以下のデータベースエンジンのレプリケーションに対応しています：
 
 - Shared
 - PostgreSQL
 - MySQL
 - DataLakeCatalog
 
-## Architecture and metadata storage {#architecture-and-metadata-storage}
 
-Shared Catalog内のすべてのメタデータとDDLクエリの履歴は、ZooKeeperに中央集中的に保存されます。ローカルディスクには何も永続化されません。このアーキテクチャにより、次のことが保証されます：
+## アーキテクチャとメタデータストレージ {#architecture-and-metadata-storage}
 
-- すべてのレプリカ間での一貫した状態
+Shared Catalog内のすべてのメタデータとDDLクエリ履歴は、ZooKeeperに集中管理されます。ローカルディスクには一切永続化されません。このアーキテクチャにより、以下が保証されます：
+
+- すべてのレプリカ間での状態の一貫性
 - コンピュートノードのステートレス性
-- 高速で信頼性の高いレプリカブートストラッピング
+- 高速かつ信頼性の高いレプリカのブートストラップ
 
-## Shared database engine {#shared-database-engine}
 
-**Shared database engine**は、Shared Catalogと連携して、**ステートレステーブルエンジン**（例：`SharedMergeTree`）を使用するテーブルを持つデータベースを管理します。これらのテーブルエンジンは、永続的な状態をディスクに書き込まず、動的なコンピュート環境と互換性があります。
+## Sharedデータベースエンジン {#shared-database-engine}
 
-Shared database engineは、Replicated database engineの動作を基に改善され、追加の保証と運用上の利点を提供します。
+**Sharedデータベースエンジン**は、Shared Catalogと連携して、`SharedMergeTree`などの**ステートレステーブルエンジン**を使用するテーブルを持つデータベースを管理します。これらのテーブルエンジンは永続的な状態をディスクに書き込まないため、動的なコンピュート環境に適しています。
 
-### Key benefits {#key-benefits}
+Sharedデータベースエンジンは、Replicatedデータベースエンジンの動作を基盤として改善を加え、追加の保証と運用上の利点を提供します。
 
-- **原子的なCREATE TABLE ... AS SELECT**
-  テーブルの作成とデータ挿入は原子的に実行されます—操作全体が完了するか、テーブルは全く作成されません。
+### 主な利点 {#key-benefits}
+
+- **アトミックなCREATE TABLE ... AS SELECT**
+  テーブルの作成とデータの挿入がアトミックに実行されます。操作全体が完了するか、テーブルが全く作成されないかのいずれかになります。
 
 - **データベース間でのRENAME TABLE**
-  データベース間でのテーブルの原子的な移動を可能にします：
-```sql
-RENAME TABLE db1.table TO db2.table;
-```
+  データベース間でテーブルをアトミックに移動できます:
 
-- **UNDROP TABLEによる自動テーブル回復**
-  削除されたテーブルは、デフォルトで8時間保持され、復元可能です：
-```sql
-UNDROP TABLE my_table;
-```
-  保存期間はサーバー設定で構成可能です。
+  ```sql
+  RENAME TABLE db1.table TO db2.table;
+  ```
+
+- **UNDROP TABLEによる自動テーブル復旧**
+  削除されたテーブルはデフォルトで8時間保持され、復元可能です:
+
+  ```sql
+  UNDROP TABLE my_table;
+  ```
+
+  保持期間はサーバー設定で変更できます。
 
 - **改善されたコンピュート間の分離**
-  削除クエリを処理するためにすべてのレプリカがオンラインである必要があるReplicated database engineとは異なり、Shared Catalogはメタデータの中央集中的な削除を実行します。これにより、一部のレプリカがオフラインのときでも操作が成功します。
+  DROP クエリの処理に全レプリカのオンラインを必要とするReplicatedデータベースエンジンとは異なり、Shared Catalogは集中管理されたメタデータ削除を実行します。これにより、一部のレプリカがオフラインでも操作を成功させることができます。
 
 - **自動メタデータレプリケーション**
-  Shared Catalogは、データベース定義が起動時にすべてのサーバーに自動的にレプリケートされることを保証します。オペレーターは、新しいインスタンスでメタデータを手動で構成または同期する必要はありません。
+  Shared Catalogは、起動時にデータベース定義が全サーバーに自動的にレプリケートされることを保証します。オペレーターは新しいインスタンスでメタデータを手動で構成または同期する必要がありません。
 
-- **中央集約型、バージョン管理されたメタデータの状態**
-  Shared Catalogは、ZooKeeperに単一の信頼のソースを保存します。レプリカが起動すると、最新の状態を取得し、整合性を確保するために差分を適用します。クエリ実行中に、システムは他のレプリカが少なくとも必要なバージョンのメタデータに達するまで待つことができます。
+- **集中管理されたバージョン管理メタデータ状態**
+  Shared CatalogはZooKeeperに単一の信頼できる情報源を保存します。レプリカの起動時に最新の状態を取得し、差分を適用して整合性を確保します。クエリ実行時には、正確性を保証するために他のレプリカが必要なバージョンのメタデータに到達するまで待機することができます。
 
-## Usage in ClickHouse Cloud {#usage-in-clickhouse-cloud}
 
-エンドユーザーがShared CatalogとShared database engineを使用する際には、追加の構成は必要ありません。データベースの作成は、従来通りの手順です：
+## ClickHouse Cloudでの使用 {#usage-in-clickhouse-cloud}
+
+エンドユーザーにとって、Shared CatalogとSharedデータベースエンジンの使用に追加設定は不要です。データベースの作成方法は従来と同じです：
 
 ```sql
 CREATE DATABASE my_database;
 ```
 
-ClickHouse Cloudは、自動的にデータベースにShared database engineを割り当てます。このようなデータベース内でステートレスエンジンを使用して作成されたテーブルは、Shared Catalogのレプリケーションおよび調整機能の恩恵を自動的に受けます。
+ClickHouse Cloudは自動的にデータベースにSharedデータベースエンジンを割り当てます。ステートレスエンジンを使用してこのようなデータベース内に作成されたテーブルは、Shared Catalogのレプリケーションおよびコーディネーション機能を自動的に利用できます。
 
-## Summary {#summary}
 
-Shared CatalogとShared database engineは次の機能を提供します：
+## 概要 {#summary}
 
-- ステートレスエンジン用の信頼性の高い自動メタデータレプリケーション
-- ローカルメタデータ永続化なしのステートレスコンピュート
-- 複雑なDDLに対する原子的操作
+Shared CatalogとSharedデータベースエンジンは以下の機能を提供します:
+
+- ステートレスエンジン向けの信頼性の高い自動メタデータレプリケーション
+- ローカルメタデータの永続化が不要なステートレスコンピュート
+- 複雑なDDLに対するアトミック操作
 - 弾力的、一時的、または部分的にオフラインのコンピュート環境への改善されたサポート
-- ClickHouse Cloudユーザーにとってシームレスな利用
+- ClickHouse Cloudユーザーにとってのシームレスな利用
 
-これらの機能により、Shared CatalogはClickHouse Cloudにおけるスケーラブルでクラウドネイティブなメタデータ管理の基盤となります。
+これらの機能により、Shared CatalogはClickHouse Cloudにおけるスケーラブルでクラウドネイティブなメタデータ管理の基盤となっています。

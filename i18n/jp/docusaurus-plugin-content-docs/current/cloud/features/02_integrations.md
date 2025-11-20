@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'インテグレーション'
-'slug': '/manage/integrations'
-'title': 'インテグレーション'
-'description': 'ClickHouseへのインテグレーション'
-'doc_type': 'landing-page'
+sidebar_label: '連携'
+slug: /manage/integrations
+title: '連携'
+description: 'ClickHouse の連携機能'
+doc_type: 'landing-page'
+keywords: ['integrations', 'cloud features', 'third-party tools', 'data sources', 'connectors']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -24,45 +25,47 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import Image from '@theme/IdealImage';
 
-ClickHouse Cloud は、あなたが愛するツールやサービスを接続することを可能にします。
+ClickHouse Cloud では、お使いのツールやサービスを自由に連携できます。
 
-## ClickHouse Cloud 用の管理された統合パイプライン {#clickpipes}
 
-ClickPipes は、さまざまなソースからデータをインジェストするための管理された統合プラットフォームであり、数回のボタンクリックで操作を可能にします。
-最も要求の厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を確保します。
-ClickPipes は、長期的なストリーミングのニーズや一時的なデータロードジョブに使用できます。
+## ClickHouse Cloud向けマネージド統合パイプライン {#clickpipes}
 
-| 名前                                                 | ロゴ                                                                                             |タイプ| ステータス           | 説明                                                                                          |
-|----------------------------------------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      |ストリーミング| 安定           | ClickPipes を設定し、Apache Kafka から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。     |
-| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 |ストリーミング| 安定           | Confluent と ClickHouse Cloud の結合された力を直接統合を通じて解放します。          |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     |ストリーミング| 安定           | ClickPipes を設定し、Redpanda から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。         |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             |ストリーミング| 安定           | ClickPipes を設定し、AWS MSK から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。          |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           |ストリーミング| 安定           | ClickPipes を設定し、Azure Event Hubs から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。 |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     |ストリーミング| 安定           | ClickPipes を設定し、WarpStream から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。       |
-| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              |オブジェクトストレージ| 安定           | ClickPipes を設定して、オブジェクトストレージから大量のデータをインジェストします。                            |
-| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  |オブジェクトストレージ| 安定           | ClickPipes を設定して、オブジェクトストレージから大量のデータをインジェストします。                            |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | オブジェクトストレージ | 安定 | ClickPipes を設定して、オブジェクトストレージから大量のデータをインジェストします。  |
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | オブジェクトストレージ | プライベートベータ | ClickPipes を設定して、オブジェクトストレージから大量のデータをインジェストします。  |
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <AmazonKinesis class="image" alt="Amazon Kinesis logo" style={{width: '3rem', height: 'auto'}}/> |ストリーミング| 安定           | ClickPipes を設定し、Amazon Kinesis から ClickHouse Cloud へのストリーミングデータのインジェストを開始します。   |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         |DBMS| 安定      | ClickPipes を設定し、Postgres から ClickHouse Cloud へのデータのインジェストを開始します。                   |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| プライベートベータ | ClickPipes を設定し、MySQL から ClickHouse Cloud へのデータのインジェストを開始します。                      |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           |DBMS| プライベートプレビュー | ClickPipes を設定し、MongoDB から ClickHouse Cloud へのデータのインジェストを開始します。                   |
+ClickPipesは、多様なソースからのデータ取り込みを数回のクリックで簡単に実現するマネージド統合プラットフォームです。
+最も要求の厳しいワークロード向けに設計されたClickPipesの堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと信頼性を保証します。
+ClickPipesは、長期的なストリーミングニーズや一回限りのデータロードジョブに使用できます。
 
-## 言語クライアントの統合 {#language-client-integrations}
+| 名前                                               | ロゴ                                                                                             | タイプ           | ステータス          | 説明                                                                                          |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      | ストリーミング      | 安定版          | ClickPipesを設定し、Apache KafkaからClickHouse Cloudへのストリーミングデータの取り込みを開始します。     |
+| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 | ストリーミング      | 安定版          | 直接統合により、ConfluentとClickHouse Cloudの統合パワーを活用できます。          |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     | ストリーミング      | 安定版          | ClickPipesを設定し、RedpandaからClickHouse Cloudへのストリーミングデータの取り込みを開始します。         |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             | ストリーミング      | 安定版          | ClickPipesを設定し、AWS MSKからClickHouse Cloudへのストリーミングデータの取り込みを開始します。          |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           | ストリーミング      | 安定版          | ClickPipesを設定し、Azure Event HubsからClickHouse Cloudへのストリーミングデータの取り込みを開始します。 |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     | ストリーミング      | 安定版          | ClickPipesを設定し、WarpStreamからClickHouse Cloudへのストリーミングデータの取り込みを開始します。       |
+| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              | オブジェクトストレージ | 安定版          | ClickPipesを設定し、オブジェクトストレージから大量のデータを取り込みます。                            |
+| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  | オブジェクトストレージ | 安定版          | ClickPipesを設定し、オブジェクトストレージから大量のデータを取り込みます。                            |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | オブジェクトストレージ | 安定版          | ClickPipesを設定し、オブジェクトストレージから大量のデータを取り込みます。                            |
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | オブジェクトストレージ | プライベートベータ    | ClickPipesを設定し、オブジェクトストレージから大量のデータを取り込みます。                            |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <AmazonKinesis class="image" alt="Amazon Kinesis logo" style={{width: '3rem', height: 'auto'}}/> | ストリーミング      | 安定版          | ClickPipesを設定し、Amazon KinesisからClickHouse Cloudへのストリーミングデータの取り込みを開始します。   |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         | DBMS           | 安定版          | ClickPipesを設定し、PostgresからClickHouse Cloudへのデータ取り込みを開始します。                   |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               | DBMS           | プライベートベータ    | ClickPipesを設定し、MySQLからClickHouse Cloudへのデータ取り込みを開始します。                      |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           | DBMS           | プライベートプレビュー | ClickPipesを設定し、MongoDBからClickHouse Cloudへのデータ取り込みを開始します。                    |
 
-ClickHouse は、いくつかの言語クライアント統合を提供しており、それぞれのドキュメントは以下にリンクされています。
 
-| ページ                                                                    | 説明                                                                      |
-|-------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| [C++](/interfaces/cpp)                                          | C++ クライアントライブラリとユーザーダープ非同期フレームワーク                     |
-| [C#](/integrations/csharp)                                  | C# プロジェクトを ClickHouse に接続する方法を学びます。                         |
-| [Go](/integrations/go)                                          | Go プロジェクトを ClickHouse に接続する方法を学びます。                             |
-| [JavaScript](/integrations/javascript)                          | 公式の JS クライアントを使用して、JS プロジェクトを ClickHouse に接続する方法を学びます。 |
-| [Java](/integrations/java)                                      | Java と ClickHouse に対するいくつかの統合についてもっと知ります。                   |
-| [Python](/integrations/python)                                  | Python プロジェクトを ClickHouse に接続する方法を学びます。                         |
-| [Rust](/integrations/rust)                                      | Rust プロジェクトを ClickHouse に接続する方法を学びます。                           |
-| [サードパーティクライアント](/interfaces/third-party/client-libraries) | サードパーティ開発者のクライアントライブラリについてもっと知ります。                   |
+## 言語クライアント統合 {#language-client-integrations}
 
-ClickPipes や言語クライアントに加えて、ClickHouse はコア統合、パートナー統合、コミュニティ統合を含む多くの統合をサポートしています。
-完全なリストについては、ドキュメントの ["Integrations"](/integrations) セクションを参照してください。
+ClickHouseは複数の言語クライアント統合を提供しており、各ドキュメントへのリンクは以下の通りです。
+
+| ページ                                                            | 説明                                                                      |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [C++](/interfaces/cpp)                                          | C++クライアントライブラリとuserver非同期フレームワーク                            |
+| [C#](/integrations/csharp)                                      | C#プロジェクトをClickHouseに接続する方法について説明します。                             |
+| [Go](/integrations/go)                                          | GoプロジェクトをClickHouseに接続する方法について説明します。                             |
+| [JavaScript](/integrations/javascript)                          | 公式JSクライアントを使用してJavaScriptプロジェクトをClickHouseに接続する方法について説明します。 |
+| [Java](/integrations/java)                                      | JavaとClickHouseの複数の統合について詳しく説明します。                   |
+| [Python](/integrations/python)                                  | PythonプロジェクトをClickHouseに接続する方法について説明します。                         |
+| [Rust](/integrations/rust)                                      | RustプロジェクトをClickHouseに接続する方法について説明します。                           |
+| [サードパーティクライアント](/interfaces/third-party/client-libraries) | サードパーティ開発者によるクライアントライブラリについて詳しく説明します。                   |
+
+ClickPipesや言語クライアントに加えて、ClickHouseはコア統合、パートナー統合、コミュニティ統合を含む多数の統合をサポートしています。
+完全なリストについては、ドキュメントの[「統合」](/integrations)セクションを参照してください。

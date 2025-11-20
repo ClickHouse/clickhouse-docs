@@ -1,36 +1,36 @@
 ---
-'slug': '/examples/aggregate-function-combinators/anyIf'
-'title': 'anyIf'
-'description': 'anyIf コミネーターを使用する例'
-'keywords':
-- 'any'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'anyIf'
-'sidebar_label': 'anyIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/anyIf'
+title: 'anyIf'
+description: 'anyIf コンビネーターの使用例'
+keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
+
 
 
 # anyIf {#avgif}
 
+
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータは、指定された条件に一致する、特定のカラムから最初に遭遇した要素を選択するために[`any`](/sql-reference/aggregate-functions/reference/any)集約関数に適用できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`any`](/sql-reference/aggregate-functions/reference/any)
+集約関数に適用することで、指定された条件に一致する、指定されたカラムから最初に見つかった要素を選択できます。
+
 
 ## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ販売データを格納するテーブルを作成し、`anyIf`を使用して200を超えたおよび未満の最初の`transaction_id`を選択します。
+この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
+`anyIf`を使用して金額が200以上と200未満の最初の`transaction_id`を選択します。
 
-まず、テーブルを作成し、データを挿入します：
+まず、テーブルを作成してデータを挿入します：
 
-```sql title="Query"
+```sql title="クエリ"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple();
 
@@ -50,12 +50,14 @@ SELECT
 FROM sales;
 ```
 
-```response title="Response"
+```response title="レスポンス"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
 ```
 
+
 ## 関連項目 {#see-also}
+
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`Ifコンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

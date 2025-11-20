@@ -1,29 +1,29 @@
 ---
-'description': 'Набор данных, содержащий более 28 миллионов публикаций Hacker News
-  и их векторные внедрения'
-'sidebar_label': 'Hacker News Векторный Поиск набор данных'
-'slug': '/getting-started/example-datasets/hackernews-vector-search-dataset'
-'title': 'Hacker News Векторный Поиск набор данных'
-'keywords':
-- 'semantic search'
-- 'vector similarity'
-- 'approximate nearest neighbours'
-- 'embeddings'
-'doc_type': 'guide'
+description: 'Набор данных, содержащий более 28 миллионов публикаций Hacker News и их векторные представления'
+sidebar_label: 'Набор данных для векторного поиска по Hacker News'
+slug: /getting-started/example-datasets/hackernews-vector-search-dataset
+title: 'Набор данных для векторного поиска по Hacker News'
+keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
+doc_type: 'guide'
 ---
+
+
+
 ## Введение {#introduction}
 
-Набор данных [Hacker News](https://news.ycombinator.com/) содержит 28.74 миллиона
-постов и их векторные встраивания. Встраивания были сгенерированы с использованием модели [SentenceTransformers](https://sbert.net/) [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2). Размерность каждого вектора встраивания составляет `384`.
+[Набор данных Hacker News](https://news.ycombinator.com/) содержит 28,74 миллиона
+публикаций и их векторные эмбеддинги. Эмбеддинги были сгенерированы с использованием модели [SentenceTransformers](https://sbert.net/) [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2). Размерность каждого вектора эмбеддинга составляет `384`.
 
-Этот набор данных можно использовать для изучения проектирования, масштабирования и производительности больших масштабов,
-реальных приложений поиска по векторным данным, основанным на текстовых данных, созданных пользователями.
+Этот набор данных можно использовать для изучения аспектов проектирования, масштабирования и производительности крупномасштабного
+приложения векторного поиска в реальных условиях, построенного на основе пользовательских текстовых данных.
 
-## Подробности набора данных {#dataset-details}
 
-Полный набор данных с векторными встраиваниями предоставляется ClickHouse в виде единственного файла `Parquet` в [S3 корзине](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet).
+## Детали набора данных {#dataset-details}
 
-Мы рекомендуем пользователям сначала провести оценку размера, чтобы оценить требования к хранению и памяти для этого набора данных, обратившись к [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+Полный набор данных с векторными эмбеддингами доступен от ClickHouse в виде одного файла `Parquet` в [S3-бакете](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet)
+
+Рекомендуется сначала провести оценку размера для определения требований к хранилищу и памяти для этого набора данных, обратившись к [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+
 
 ## Шаги {#steps}
 
@@ -31,7 +31,7 @@
 
 ### Создание таблицы {#create-table}
 
-Создайте таблицу `hackernews` для хранения постов и их встраиваний, а также связанных атрибутов:
+Создайте таблицу `hackernews` для хранения публикаций, их векторных представлений и связанных атрибутов:
 
 ```sql
 CREATE TABLE hackernews
@@ -57,22 +57,21 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-`id` - это просто увеличивающееся целое число. Дополнительные атрибуты можно использовать в предикатах, чтобы понять
-поиск по векторной схожести в сочетании с пост-фильтрацией/предфильтрацией, как объяснено в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+Поле `id` представляет собой инкрементируемое целое число. Дополнительные атрибуты могут использоваться в предикатах для реализации поиска по векторному сходству в сочетании с пост-фильтрацией/пре-фильтрацией, как описано в [документации](../../engines/table-engines/mergetree-family/annindexes.md)
 
 ### Загрузка данных {#load-table}
 
-Чтобы загрузить набор данных из файла `Parquet`, выполните следующий SQL-запрос:
+Для загрузки набора данных из файла `Parquet` выполните следующий SQL-запрос:
 
 ```sql
 INSERT INTO hackernews SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet');
 ```
 
-Вставка 28.74 миллиона строк в таблицу займет несколько минут.
+Вставка 28,74 миллионов строк в таблицу займет несколько минут.
 
-### Построение индекса векторной схожести {#build-vector-similarity-index}
+### Построение индекса векторного сходства {#build-vector-similarity-index}
 
-Выполните следующий SQL, чтобы определить и построить индекс векторной схожести на колонке `vector` таблицы `hackernews`:
+Выполните следующий SQL-запрос для определения и построения индекса векторного сходства на столбце `vector` таблицы `hackernews`:
 
 ```sql
 ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
@@ -80,16 +79,16 @@ ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hns
 ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ```
 
-Параметры и соображения по производительности для создания и поиска индекса описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
-Вышеуказанный запрос использует значения 64 и 512 соответственно для гиперпараметров HNSW `M` и `ef_construction`.
-Пользователям необходимо тщательно подбирать оптимальные значения для этих параметров, оценивая время постройки индекса и качество результатов поиска,
-соответствующие выбранным значениям.
+Параметры и соображения производительности для создания индекса и поиска описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+Приведенный выше запрос использует значения 64 и 512 соответственно для гиперпараметров HNSW `M` и `ef_construction`.
+Необходимо тщательно подбирать оптимальные значения для этих параметров, оценивая время построения индекса и качество результатов поиска
+в соответствии с выбранными значениями.
 
-Построение и сохранение индекса могут занять несколько минут/часов для полного набора данных в 28.74 миллиона, в зависимости от количества доступных ядер CPU и пропускной способности хранилища.
+Построение и сохранение индекса для полного набора данных из 28,74 миллионов записей может занять от нескольких минут до часа, в зависимости от количества доступных ядер процессора и пропускной способности хранилища.
 
-### Выполнение ANN поиска {#perform-ann-search}
+### Выполнение ANN-поиска {#perform-ann-search}
 
-После того как индекс векторной схожести будет построен, запросы векторного поиска автоматически будут использовать индекс:
+После построения индекса векторного сходства запросы векторного поиска будут автоматически использовать индекс:
 
 ```sql title="Query"
 SELECT id, title, text
@@ -99,18 +98,17 @@ LIMIT 10
 
 ```
 
-Первый раз загрузка векторного индекса в память может занять несколько секунд/минут.
+Первоначальная загрузка векторного индекса в память может занять от нескольких секунд до минут.
 
-### Генерация встраиваний для запроса поиска {#generating-embeddings-for-search-query}
+### Генерация векторных представлений для поискового запроса {#generating-embeddings-for-search-query}
 
-[Sentence Transformers](https://www.sbert.net/) предоставляют локальные, простые в использовании модели встраивания
-для захвата семантического значения предложений и абзацев.
+[Sentence Transformers](https://www.sbert.net/) предоставляют локальные, простые в использовании модели векторных представлений для извлечения семантического значения предложений и абзацев.
 
-Набор данных в этом наборе HackerNews содержит векторные встраивания, сгенерированные с помощью 
-модели [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+Набор данных HackerNews содержит векторные представления, сгенерированные с помощью модели
+[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
 
-Пример скрипта на Python представлен ниже, чтобы продемонстрировать, как программно генерировать
-векторные встраивания с использованием пакета `sentence_transformers`. Вектор встраивания для поиска
+Ниже приведен пример Python-скрипта, демонстрирующий программную генерацию
+векторных представлений с использованием пакета Python `sentence_transformers`. Полученный вектор поискового запроса
 затем передается в качестве аргумента функции [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) в запросе `SELECT`.
 
 ```python
@@ -126,35 +124,38 @@ model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
 while True:
-    # Take the search query from user
-    print("Enter a search query :")
+    # Получение поискового запроса от пользователя
+    print("Введите поисковый запрос:")
     input_query = sys.stdin.readline();
     texts = [input_query]
 
-    # Run the model and obtain search vector
-    print("Generating the embedding for ", input_query);
+    # Запуск модели и получение вектора поиска
+    print("Генерация векторного представления для", input_query);
     embeddings = model.encode(texts)
 
-    print("Querying ClickHouse...")
+```
+
+
+    print("Выполняем запрос к ClickHouse...")
     params = {'v1':list(embeddings[0]), 'v2':20}
     result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-    print("Results :")
+    print("Результаты:")
     for row in result.result_rows:
         print(row[0], row[2][:100])
         print("---------")
 
-```
+````
 
-Пример выполнения вышеуказанного Python-скрипта и результаты поиска по схожести показаны ниже
-(только 100 символов из каждого из 20 лучших постов напечатаны):
+Ниже приведён пример запуска вышеуказанного скрипта на Python и результатов поиска по схожести
+(выводятся только первые 100 символов из каждого из топ-20 постов):
 
 ```text
-Initializing...
+Инициализация...
 
-Enter a search query :
+Введите поисковый запрос:
 Are OLAP cubes useful
 
-Generating the embedding for  "Are OLAP cubes useful"
+Генерируем эмбеддинг для «Are OLAP cubes useful»
 
 Querying ClickHouse...
 
@@ -212,56 +213,55 @@ quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the act
 28422935 chotmat:
 rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
 ---------
-```
+````
 
-## Демонстрационное приложение для резюме {#summarization-demo-application}
 
-Пример выше продемонстрировал семантический поиск и извлечение документа с использованием ClickHouse.
+## Демонстрационное приложение для суммаризации {#summarization-demo-application}
 
-Следующее представлено очень простое, но в то же время высокопотенциальное приложение генеративного ИИ.
+Приведенный выше пример продемонстрировал семантический поиск и извлечение документов с использованием ClickHouse.
+
+Далее представлено очень простое, но многообещающее демонстрационное приложение генеративного ИИ.
 
 Приложение выполняет следующие шаги:
 
 1. Принимает _тему_ в качестве входных данных от пользователя
-2. Генерирует вектор встраивания для _темы_, используя `SentenceTransformers` с моделью `all-MiniLM-L6-v2`
-3. Извлекает высокорелевантные посты/комментарии, используя поиск по векторной схожести на таблице `hackernews`
-4. Использует `LangChain` и OpenAI API Chat `gpt-3.5-turbo`, чтобы **резюмировать** контент, извлеченный на шаге #3.
-   Посты/комментарии, извлеченные на шаге #3, передаются как _контекст_ в Chat API и являются ключевой связкой в генеративном ИИ.
+2. Генерирует вектор эмбеддинга для _темы_ с использованием `SentenceTransformers` с моделью `all-MiniLM-L6-v2`
+3. Извлекает наиболее релевантные посты/комментарии с использованием векторного поиска по сходству в таблице `hackernews`
+4. Использует `LangChain` и OpenAI `gpt-3.5-turbo` Chat API для **суммаризации** контента, извлеченного на шаге №3.
+   Посты/комментарии, извлеченные на шаге №3, передаются в качестве _контекста_ в Chat API и являются ключевым звеном в генеративном ИИ.
 
-Пример из выполнения приложения резюмирования сначала приведен ниже, затем код
-для приложения резюмирования. Для запуска приложения необходимо установить ключ API OpenAI в переменную окружения
-`OPENAI_API_KEY`. Ключ API OpenAI можно получить после регистрации на https://platform.openai.com.
+Ниже сначала приведен пример запуска приложения для суммаризации, а затем код
+приложения для суммаризации. Для запуска приложения требуется установить ключ OpenAI API в переменную окружения `OPENAI_API_KEY`. Ключ OpenAI API можно получить после регистрации на https://platform.openai.com.
 
-Это приложение демонстрирует случай использования генеративного ИИ, который применим в различных предприятиях, таких как:
-анализ клиентских отзывов, автоматизация технической поддержки, анализ пользовательских бесед, юридические документы, медицинские записи,
-транскрипты встреч, финансовые отчеты и т.д.
+Это приложение демонстрирует сценарий использования генеративного ИИ, применимый ко множеству корпоративных областей, таких как:
+анализ настроений клиентов, автоматизация технической поддержки, анализ пользовательских диалогов, юридические документы, медицинские записи,
+расшифровки встреч, финансовые отчеты и т. д.
 
 ```shell
 $ python3 summarize.py
 
-Enter a search topic :
-ClickHouse performance experiences
+Введите тему поиска:
+Опыт работы с производительностью ClickHouse
 
-Generating the embedding for ---->  ClickHouse performance experiences
+Генерация эмбеддинга для ---->  Опыт работы с производительностью ClickHouse
 
-Querying ClickHouse to retrieve relevant articles...
+Запрос к ClickHouse для извлечения релевантных статей...
 
-Initializing chatgpt-3.5-turbo model...
+Инициализация модели chatgpt-3.5-turbo...
 
-Summarizing search results retrieved from ClickHouse...
+Суммаризация результатов поиска, извлеченных из ClickHouse...
 
-Summary from chatgpt-3.5:
-The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
-AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
-for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
-in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
-are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
-engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
-as a powerful tool for real-time data processing, analytics, and handling large volumes of data
-efficiently, gaining popularity for its impressive performance and cost-effectiveness.
+Резюме от chatgpt-3.5:
+Обсуждение сосредоточено на сравнении ClickHouse с различными базами данных, такими как TimescaleDB, Apache Spark,
+AWS Redshift и QuestDB, подчеркивая экономически эффективную высокую производительность ClickHouse и его пригодность
+для аналитических приложений. Пользователи хвалят ClickHouse за простоту, скорость и эффективность использования ресурсов
+при обработке крупномасштабных аналитических нагрузок, хотя упоминаются некоторые проблемы, такие как операции DML и сложности с резервным копированием. ClickHouse признан за возможности вычисления агрегатов в реальном времени и надежную
+инженерную реализацию, с сравнениями с другими базами данных, такими как Druid и MemSQL. В целом, ClickHouse рассматривается
+как мощный инструмент для обработки данных в реальном времени, аналитики и эффективной работы с большими объемами данных,
+набирающий популярность благодаря впечатляющей производительности и экономической эффективности.
 ```
 
-Код для вышеуказанного приложения :
+Код для приведенного выше приложения:
 
 ```python
 print("Initializing...")
@@ -291,12 +291,12 @@ model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
 while True:
-    # Take the search query from user
+    # Получить поисковый запрос от пользователя
     print("Enter a search topic :")
     input_query = sys.stdin.readline();
     texts = [input_query]
 
-    # Run the model and obtain search or reference vector
+    # Запустить модель и получить поисковый или референсный вектор
     print("Generating the embedding for ----> ", input_query);
     embeddings = model.encode(texts)
 
@@ -304,7 +304,7 @@ while True:
     params = {'v1':list(embeddings[0]), 'v2':100}
     result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # Just join all the search results
+    # Просто объединить все результаты поиска
     doc_results = ""
     for row in result.result_rows:
         doc_results = doc_results + "\n" + row[2]
@@ -334,12 +334,15 @@ CONSCISE SUMMARY :
 
     prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
 
+```
+
+
     num_tokens = num_tokens_from_string(doc_results, model_name)
 
     gpt_35_turbo_max_tokens = 4096
     verbose = False
 
-    print("Summarizing search results retrieved from ClickHouse...")
+    print("Формирование сводки результатов поиска, полученных из ClickHouse...")
 
     if num_tokens <= gpt_35_turbo_max_tokens:
         chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
@@ -348,6 +351,8 @@ CONSCISE SUMMARY :
 
     summary = chain.run(docs)
 
-    print(f"Summary from chatgpt-3.5: {summary}")
+    print(f"Сводка от chatgpt-3.5: {summary}")
+
 ```
 </VerticalStepper>
+```

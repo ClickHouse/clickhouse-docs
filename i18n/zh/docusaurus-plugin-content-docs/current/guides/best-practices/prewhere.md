@@ -1,10 +1,11 @@
 ---
-'slug': '/optimize/prewhere'
-'sidebar_label': 'PREWHERE 优化'
-'sidebar_position': 21
-'description': 'PREWHERE 通过避免读取不必要的列数据来减少 I/O.'
-'title': 'PREWHERE 优化是如何工作的？'
-'doc_type': 'guide'
+slug: /optimize/prewhere
+sidebar_label: 'PREWHERE 优化'
+sidebar_position: 21
+description: 'PREWHERE 通过避免读取不必要的列数据来减少 I/O 开销。'
+title: 'PREWHERE 优化是如何工作的？'
+doc_type: 'guide'
+keywords: ['prewhere', 'query optimization', 'performance', 'filtering', 'best practices']
 ---
 
 import visual01 from '@site/static/images/guides/best-practices/prewhere_01.gif';
@@ -12,98 +13,117 @@ import visual02 from '@site/static/images/guides/best-practices/prewhere_02.gif'
 import visual03 from '@site/static/images/guides/best-practices/prewhere_03.gif';
 import visual04 from '@site/static/images/guides/best-practices/prewhere_04.gif';
 import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif';
+
 import Image from '@theme/IdealImage';
 
 
-# PREWHERE优化是如何工作的？
+# PREWHERE 优化是如何工作的？
 
-[PREWHERE子句](/sql-reference/statements/select/prewhere) 是ClickHouse中的一种查询执行优化。它通过避免不必要的数据读取，减少I/O并提高查询速度，在从磁盘读取非过滤列之前过滤掉无关数据。
+[PREWHERE 子句](/sql-reference/statements/select/prewhere) 是 ClickHouse 中的一种查询执行优化手段。它通过避免不必要的数据读取，并在从磁盘读取非过滤列之前先过滤掉无关数据，从而减少 I/O 并提升查询速度。
 
-本指南解释了PREWHERE的工作原理，如何测量其影响，以及如何调整以获得最佳性能。
+本指南将介绍 PREWHERE 的工作原理、如何衡量其影响，以及如何对其进行调优以获得最佳性能。
 
-## 没有PREWHERE优化的查询处理 {#query-processing-without-prewhere-optimization}
 
-我们将通过示例说明如何在不使用PREWHERE的情况下处理对[uk_price_paid_simple](/parts) 表的查询：
 
-<Image img={visual01} size="md" alt="Query processing without PREWHERE optimization"/>
+## 不使用 PREWHERE 优化的查询处理 {#query-processing-without-prewhere-optimization}
 
-<br/><br/>
-① 查询包含对`town`列的过滤，该列是表的主键的一部分，因此也是主索引的一部分。
+我们首先演示在不使用 PREWHERE 的情况下,[uk_price_paid_simple](/parts) 表的查询是如何处理的:
 
-② 为了加速查询，ClickHouse将表的主索引加载到内存中。
+<Image
+  img={visual01}
+  size='md'
+  alt='不使用 PREWHERE 优化的查询处理'
+/>
 
-③ 它扫描索引条目，以识别`town`列中的哪些粒度可能包含与谓词匹配的行。
+<br />
+<br />① 查询包含对 `town` 列的过滤条件,该列是表主键的一部分,因此也是主索引的一部分。
 
-④ 这些潜在相关的粒度与任何其他需要用于查询的列的按位置对齐的粒度一起加载到内存中。
+② 为了加速查询,ClickHouse 将表的主索引加载到内存中。
 
-⑤ 剩余的过滤器将在查询执行期间应用。
+③ 它扫描索引条目,以识别 town 列中哪些数据颗粒可能包含与谓词匹配的行。
 
-如您所见，没有PREWHERE时，在过滤之前加载了所有潜在相关的列，即使只有少数行实际匹配。
+④ 这些可能相关的数据颗粒会被加载到内存中,同时还会加载查询所需的其他列中位置对齐的数据颗粒。
 
-## PREWHERE如何提高查询效率 {#how-prewhere-improves-query-efficiency}
+⑤ 然后在查询执行期间应用剩余的过滤条件。
 
-以下动画展示了如何在上述查询上应用PREWHERE子句来处理所有查询谓词。
+如您所见,在不使用 PREWHERE 的情况下,所有可能相关的列都会在过滤之前被加载,即使实际匹配的行很少。
 
-前三个处理步骤与之前相同：
 
-<Image img={visual02} size="md" alt="Query processing with PREWHERE optimization"/>
+## PREWHERE 如何提升查询效率 {#how-prewhere-improves-query-efficiency}
 
-<br/><br/>
-① 查询包含对`town`列的过滤，该列是表的主键的一部分——因此也是主索引的一部分。
+以下动画展示了当 PREWHERE 子句应用于所有查询谓词时,上述查询的处理过程。
 
-② 类似于未使用PREWHERE子句的情况，为了加速查询，ClickHouse将主索引加载到内存中。
+前三个处理步骤与之前相同:
 
-③ 然后扫描索引条目，以识别`town`列中的哪些粒度可能包含与谓词匹配的行。
+<Image
+  img={visual02}
+  size='md'
+  alt='使用 PREWHERE 优化的查询处理'
+/>
 
-现在，多亏了PREWHERE子句，下一步有所不同：ClickHouse通过逐列过滤数据，仅加载真正需要的数据，而不是提前读取所有相关列。这大大减少了I/O，尤其是对于宽表。
+<br />
+<br />① 查询包含对 `town` 列的过滤条件,该列是表主键的一部分——因此也是主索引的一部分。
 
-在每一步中，它仅加载包含至少一行经过—即匹配—之前过滤条件的粒度。结果是，每个过滤条件需要加载和评估的粒度数量单调减少：
+② 与不使用 PREWHERE 子句的执行类似,为了加速查询,ClickHouse 将主索引加载到内存中,
 
-**步骤1：按town过滤**<br/>
-ClickHouse开始PREWHERE处理，通过①读取`town`列中选定的粒度，并检查哪些实际包含与`London`匹配的行。
+③ 然后扫描索引条目以识别 `town` 列中哪些数据块可能包含与谓词匹配的行。
 
-在我们的示例中，所有选定的粒度都匹配，因此②为下一个过滤列`date`选择了相应的按位置对齐的粒度：
+现在,得益于 PREWHERE 子句,下一步有所不同:ClickHouse 不再预先读取所有相关列,而是逐列过滤数据,仅加载真正需要的内容。这大幅减少了 I/O 操作,尤其是对于宽表。
 
-<Image img={visual03} size="md" alt="Step 1: Filtering by town"/>
+在每一步中,它只加载包含至少一行通过(即匹配)前一个过滤条件的数据块。因此,每个过滤条件需要加载和评估的数据块数量单调递减:
 
-<br/><br/>
-**步骤2：按date过滤**<br/>
-接下来，ClickHouse ①读取选定的`date`列粒度以评估过滤条件`date > '2024-12-31'`。
+**步骤 1:按 town 过滤**<br/>
+ClickHouse 开始 PREWHERE 处理,① 读取 `town` 列中选定的数据块,并检查哪些数据块实际包含与 `London` 匹配的行。
 
-在这种情况下，三个粒度中有两个包含匹配行，因此②仅选择它们的按位置对齐的粒度作为下一个过滤列`price`的进一步处理：
+在我们的示例中,所有选定的数据块都匹配,因此 ② 接下来选择下一个过滤列 `date` 对应的位置对齐数据块进行处理:
 
-<Image img={visual04} size="md" alt="Step 2: Filtering by date"/>
+<Image img={visual03} size='md' alt='步骤 1:按 town 过滤' />
 
-<br/><br/>
-**步骤3：按price过滤**<br/>
-最后，ClickHouse ①读取`price`列中选择的两个粒度以评估最后的过滤条件`price > 10_000`。
+<br />
+<br />
+**步骤 2:按 date 过滤**
+<br />
+接下来,ClickHouse ① 读取选定的 `date` 列数据块以评估过滤条件 `date > '2024-12-31'`。
 
-只有两个粒度中的一个包含匹配行，因此②仅需要加载其按位置对齐的粒度，即`SELECT`列中的`street`，以进行进一步处理：
+在这种情况下,三个数据块中有两个包含匹配的行,因此 ② 仅选择它们在下一个过滤列 `price` 中位置对齐的数据块进行进一步处理:
 
-<Image img={visual05} size="md" alt="Step 2: Filtering by price"/>
+<Image img={visual04} size='md' alt='步骤 2:按 date 过滤' />
 
-<br/><br/>
-到最后一步时，仅加载包含匹配行的最小列粒度集。这导致较低的内存使用，减少磁盘I/O，并加快查询执行速度。
+<br />
+<br />
+**步骤 3:按 price 过滤**
+<br />
+最后,ClickHouse ① 读取 `price` 列中选定的两个数据块以评估最后一个过滤条件 `price > 10_000`。
 
-:::note PREWHERE减少数据读取，而不是处理的行数
-请注意，在PREWHERE和非PREWHERE版本的查询中，ClickHouse处理的行数是相同的。然而，应用PREWHERE优化后，不需要为每个处理的行加载所有列值。
+两个数据块中只有一个包含匹配的行,因此 ② 只需加载其在 `SELECT` 列 `street` 中位置对齐的数据块进行进一步处理:
+
+<Image img={visual05} size='md' alt='步骤 3:按 price 过滤' />
+
+<br />
+<br />
+到最后一步,仅加载最小的列数据块集合,即那些包含匹配行的数据块。这降低了内存使用量,减少了磁盘 I/O,并加快了查询执行速度。
+
+:::note PREWHERE 减少数据读取量,而非处理的行数
+请注意,ClickHouse 在使用和不使用 PREWHERE 的查询版本中处理相同数量的行。但是,应用 PREWHERE 优化后,并非每个处理的行都需要加载所有列的值。
 :::
 
-## PREWHERE优化是自动应用的 {#prewhere-optimization-is-automatically-applied}
 
-可以手动添加PREWHERE子句，如上述示例所示。然而，您不需要手动编写PREWHERE。当设置[`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere)启用时（默认值为true），ClickHouse会自动将过滤条件从WHERE移到PREWHERE，优先处理那些将最大程度减少读取量的条件。
+## PREWHERE 优化自动应用 {#prewhere-optimization-is-automatically-applied}
 
-其思想是，较小的列扫描速度更快，并且在处理较大的列时，大多数粒度通常已经被过滤掉。由于所有列的行数相同，列的大小主要由其数据类型决定，例如，`UInt8`列通常远小于`String`列。
+PREWHERE 子句可以手动添加,如上例所示。但是,您无需手动编写 PREWHERE。当设置 [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) 启用时(默认为 true),ClickHouse 会自动将过滤条件从 WHERE 移动到 PREWHERE,优先处理那些能最大程度减少读取量的条件。
 
-自版本[23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov)以来，ClickHouse默认遵循此策略，为多步骤处理按未压缩大小升序排序PREWHERE过滤列。
+其原理是较小的列扫描速度更快,当处理较大的列时,大部分数据颗粒已经被过滤掉了。由于所有列具有相同的行数,列的大小主要由其数据类型决定,例如,`UInt8` 列通常比 `String` 列小得多。
 
-自版本[23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)起，可选的列统计信息可以进一步改善这一点，通过根据实际数据选择性选择过滤处理顺序，而不仅仅是列大小。
+从版本 [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov) 开始,ClickHouse 默认遵循此策略,按未压缩大小的升序对 PREWHERE 过滤列进行排序,以进行多步处理。
 
-## 如何测量PREWHERE的影响 {#how-to-measure-prewhere-impact}
+从版本 [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere) 开始,可选的列统计信息可以进一步改进此功能,根据实际数据选择性而非仅列大小来选择过滤处理顺序。
 
-要验证PREWHERE对您的查询是否有帮助，您可以比较启用和未启用`optimize_move_to_prewhere设置`的查询性能。
 
-我们从禁用`optimize_move_to_prewhere`设置开始运行查询：
+## 如何衡量 PREWHERE 的影响 {#how-to-measure-prewhere-impact}
+
+要验证 PREWHERE 是否对查询有帮助,可以比较启用和禁用 `optimize_move_to_prewhere` 设置时的查询性能。
+
+首先在禁用 `optimize_move_to_prewhere` 设置的情况下运行查询:
 
 ```sql
 SELECT
@@ -126,9 +146,10 @@ SETTINGS optimize_move_to_prewhere = false;
 Peak memory usage: 132.10 MiB.
 ```
 
-ClickHouse在处理2.31百万行时读取了**23.36 MB**的列数据。
+ClickHouse 在处理该查询的 231 万行数据时读取了 **23.36 MB** 的列数据。
 
-接下来，我们运行启用`optimize_move_to_prewhere`设置的查询。（请注意，虽然这个设置是可选的，但默认情况下是启用的）：
+接下来,在启用 `optimize_move_to_prewhere` 设置的情况下运行查询。(请注意,此设置是可选的,因为该设置默认已启用):
+
 ```sql
 SELECT
     street
@@ -150,11 +171,12 @@ SETTINGS optimize_move_to_prewhere = true;
 Peak memory usage: 132.11 MiB.
 ```
 
-处理的行数相同（2.31百万），但由于PREWHERE，ClickHouse读取的列数据减少了超过三倍——仅6.74 MB，而不是23.36 MB——这将总运行时间缩短了3倍。
+处理的行数相同(231 万行),但得益于 PREWHERE,ClickHouse 读取的列数据减少了三倍多——仅 6.74 MB 而非 23.36 MB——使总运行时间缩短了 3 倍。
 
-为了深入了解ClickHouse如何在后台应用PREWHERE，您可以使用EXPLAIN和跟踪日志。
+要深入了解 ClickHouse 如何在后台应用 PREWHERE,可以使用 EXPLAIN 和跟踪日志。
 
-我们使用[EXPLAIN](/sql-reference/statements/explain#explain-plan)子句检查查询的逻辑计划：
+使用 [EXPLAIN](/sql-reference/statements/explain#explain-plan) 子句检查查询的逻辑计划:
+
 ```sql
 EXPLAIN PLAN actions = 1
 SELECT
@@ -167,19 +189,20 @@ WHERE
 
 ```txt
 ...
-Prewhere info                                                                                                                                                                                                                                          
-  Prewhere filter column: 
-    and(greater(__table1.date, '2024-12-31'_String), 
-    less(__table1.price, 10000_UInt16), 
-    equals(__table1.town, 'LONDON'_String)) 
+Prewhere info
+  Prewhere filter column:
+    and(greater(__table1.date, '2024-12-31'_String),
+    less(__table1.price, 10000_UInt16),
+    equals(__table1.town, 'LONDON'_String))
 ...
 ```
 
-我们在此省略大部分计划输出，因为它相当冗长。本质上，它显示所有三个列谓词已被自动移动到PREWHERE。
+此处省略了大部分计划输出,因为内容相当冗长。本质上,它显示所有三个列谓词都被自动移至 PREWHERE。
 
-在您自己复制此过程时，您还会在查询计划中看到这些谓词的顺序是基于列的数据类型大小。由于我们未启用列统计，ClickHouse使用大小作为确定PREWHERE处理顺序的后备。
+当您自己重现此操作时,还会在查询计划中看到这些谓词的顺序是基于列的数据类型大小。由于我们没有启用列统计信息,ClickHouse 使用大小作为确定 PREWHERE 处理顺序的后备方案。
 
-如果您想更深入了解，您可以通过指示ClickHouse在查询执行期间返回所有测试级日志条目来观察每个单独的PREWHERE处理步骤：
+如果想更深入地了解底层机制,可以通过指示 ClickHouse 在查询执行期间返回所有测试级别的日志条目来观察每个单独的 PREWHERE 处理步骤:
+
 ```sql
 SELECT
     street
@@ -201,10 +224,11 @@ SETTINGS send_logs_level = 'test';
 ...
 ```
 
+
 ## 关键要点 {#key-takeaways}
 
-* PREWHERE避免读取后续将被过滤掉的列数据，从而节省I/O和内存。
-* 当`optimize_move_to_prewhere`启用时（默认），它会自动工作。
-* 过滤顺序很重要：小且选择性强的列应优先。
-* 使用`EXPLAIN`和日志验证PREWHERE是否应用，并理解其影响。
-* PREWHERE对宽表和大扫描与选择性过滤条件的影响最大。
+- PREWHERE 可避免读取后续会被过滤掉的列数据,从而节省 I/O 和内存开销。
+- 当 `optimize_move_to_prewhere` 启用时(默认启用),该功能会自动生效。
+- 过滤顺序很重要:应优先使用数据量小且选择性强的列。
+- 使用 `EXPLAIN` 和日志来验证 PREWHERE 是否已应用并了解其效果。
+- PREWHERE 在宽表和使用选择性过滤器的大规模扫描场景中效果最为显著。

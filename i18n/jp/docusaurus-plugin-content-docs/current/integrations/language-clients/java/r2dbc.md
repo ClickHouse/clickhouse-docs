@@ -1,16 +1,11 @@
 ---
-'sidebar_label': 'R2DBC Driver'
-'sidebar_position': 5
-'keywords':
-- 'clickhouse'
-- 'java'
-- 'driver'
-- 'integrate'
-- 'r2dbc'
-'description': 'ClickHouse R2DBC ドライバー'
-'slug': '/integrations/java/r2dbc'
-'title': 'R2DBC ドライバー'
-'doc_type': 'reference'
+sidebar_label: 'R2DBC ドライバ'
+sidebar_position: 5
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'ClickHouse R2DBC ドライバ'
+slug: /integrations/java/r2dbc
+title: 'R2DBC ドライバ'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -18,25 +13,27 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# R2DBCドライバー
+# R2DBC ドライバ
+
+
 
 ## R2DBCドライバー {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) は、ClickHouse用の非同期Javaクライアントのラッパーです。
+ClickHouse用非同期Javaクライアントの[R2DBC](https://r2dbc.io/)ラッパーです。
 
 ### 環境要件 {#environment-requirements}
 
-- [OpenJDK](https://openjdk.java.net) バージョン >= 8
+- [OpenJDK](https://openjdk.java.net) version >= 8
 
 ### セットアップ {#setup}
 
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
+    <!-- SPI 0.9.1.RELEASEの場合はclickhouse-r2dbc_0.9.1に変更してください -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
+    <!-- すべての依存関係を含むuber jarを使用します。より小さなjarにする場合はclassifierをhttpまたはgrpcに変更してください -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>

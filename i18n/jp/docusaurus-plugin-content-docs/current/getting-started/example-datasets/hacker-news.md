@@ -1,16 +1,19 @@
 ---
-'description': 'ハッカーニュースデータを含む28百万行のデータセット。'
-'sidebar_label': 'Hacker News'
-'slug': '/getting-started/example-datasets/hacker-news'
-'title': 'ハッカーニュースデータセット'
-'doc_type': 'reference'
+description: 'Hacker News のデータ 2,800 万行を含むデータセット。'
+sidebar_label: 'Hacker News'
+slug: /getting-started/example-datasets/hacker-news
+title: 'Hacker News データセット'
+doc_type: 'guide'
+keywords: ['サンプルデータセット', 'hacker news', 'サンプルデータ', 'テキスト分析', 'ベクトル検索']
 ---
 
 
 
-# Hacker Newsデータセット
+# Hacker News データセット
 
-> このチュートリアルでは、28百万行のHacker NewsデータをCSVおよびParquetフォーマットからClickHouseテーブルに挿入し、データを探索するための簡単なクエリを実行します。
+> このチュートリアルでは、CSV と Parquet の両方の形式から 2,800 万行の Hacker News データを ClickHouse のテーブルに取り込み、いくつかの簡単なクエリを実行してデータを探索します。
+
+
 
 ## CSV {#csv}
 
@@ -18,27 +21,28 @@
 
 ### CSVのダウンロード {#download}
 
-データセットのCSV版は、公開の[S3バケット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz)からダウンロードするか、次のコマンドを実行することで取得できます。
+データセットのCSV版は、公開[S3バケット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz)からダウンロードできます。または、次のコマンドを実行してダウンロードすることもできます:
 
 ```bash
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
 ```
 
-4.6GBで、28百万行のこの圧縮ファイルは、ダウンロードに5〜10分かかるはずです。
+4.6GB、2800万行のこの圧縮ファイルは、ダウンロードに5〜10分かかります。
 
 ### データのサンプリング {#sampling}
 
-[`clickhouse-local`](/operations/utilities/clickhouse-local/)を使用すると、ClickHouseサーバーを展開および設定することなく、ローカルファイルに対して迅速な処理を行うことができます。
+[`clickhouse-local`](/operations/utilities/clickhouse-local/)を使用すると、ClickHouseサーバーをデプロイおよび設定することなく、ローカルファイルに対して高速な処理を実行できます。
 
-ClickHouseにデータを保存する前に、clickhouse-localを使用してファイルをサンプリングしましょう。コンソールから次のコマンドを実行します。
+ClickHouseにデータを保存する前に、clickhouse-localを使用してファイルをサンプリングしましょう。
+コンソールから次のコマンドを実行します:
 
 ```bash
 clickhouse-local
 ```
 
-次に、データを探索するために以下のコマンドを実行します。
+次に、以下のコマンドを実行してデータを確認します:
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT *
 FROM file('hacknernews.csv.gz', CSVWithNames)
 LIMIT 2
@@ -46,7 +50,7 @@ SETTINGS input_format_try_infer_datetimes = 0
 FORMAT Vertical
 ```
 
-```response title="Response"
+```response title="レスポンス"
 Row 1:
 ──────
 id:          344065
@@ -84,13 +88,19 @@ parts:       []
 descendants: 10
 ```
 
-このコマンドにはさまざまな微妙な機能があります。[`file`](/sql-reference/functions/files/#file)オペレーターは、ローカルディスクからファイルを読み取ることができ、フォーマット`CSVWithNames`のみを指定します。最も重要なことは、スキーマが自動的にファイルの内容から推測されることです。また、`clickhouse-local`が拡張子からgzipフォーマットを推測して圧縮ファイルを読み取ることができることにも注意してください。`Vertical`フォーマットは、各カラムのデータをより簡単に見るために使用されます。
+このコマンドには多くの便利な機能があります。
+[`file`](/sql-reference/functions/files/#file)演算子を使用すると、`CSVWithNames`形式のみを指定してローカルディスクからファイルを読み取ることができます。
+最も重要なのは、ファイルの内容からスキーマが自動的に推論されることです。
+また、`clickhouse-local`が拡張子からgzip形式を推論して圧縮ファイルを読み取れることにも注目してください。
+`Vertical`形式は、各カラムのデータをより見やすく表示するために使用されています。
 
-### スキーマ推測によるデータの読み込み {#loading-the-data}
+### スキーマ推論を使用したデータの読み込み {#loading-the-data}
 
-データ読み込みのための最もシンプルで強力なツールは`clickhouse-client`です。機能豊富なネイティブコマンドラインクライアントです。データを読み込むには、再度スキーマ推測を活用し、ClickHouseにカラムのタイプを決定させることができます。
+データ読み込みのための最もシンプルかつ強力なツールは`clickhouse-client`です。これは機能豊富なネイティブコマンドラインクライアントです。
+データを読み込む際には、再びスキーマ推論を活用し、ClickHouseにカラムの型を判定させることができます。
 
-次のコマンドを実行してテーブルを作成し、リモートCSVファイルから直接データを挿入します。内容には[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を使用してアクセスします。スキーマは自動的に推測されます。
+次のコマンドを実行してテーブルを作成し、リモートCSVファイルから直接データを挿入します。[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を介してコンテンツにアクセスします。
+スキーマは自動的に推論されます:
 
 ```sql
 CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
@@ -98,11 +108,13 @@ CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
 ) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
 ```
 
-これにより、データから推測されたスキーマを使用して空のテーブルが作成されます。[`DESCRIBE TABLE`](/sql-reference/statements/describe-table)コマンドを使用すると、これらの割り当てられたタイプを理解することができます。
+これにより、データから推論されたスキーマを使用して空のテーブルが作成されます。
+[`DESCRIBE TABLE`](/sql-reference/statements/describe-table)コマンドを使用すると、割り当てられた型を確認できます。
 
-```sql title="Query"
+```sql title="クエリ"
 DESCRIBE TABLE hackernews
 ```
+
 
 ```text title="Response"
 ┌─name────────┬─type─────────────────────┬
@@ -124,18 +136,19 @@ DESCRIBE TABLE hackernews
 └─────────────┴──────────────────────────┴
 ```
 
-このテーブルにデータを挿入するには、`INSERT INTO, SELECT`コマンドを使用します。`url`関数と合わせて、データはURLから直接ストリーミングされます。
+このテーブルにデータを挿入するには、`INSERT INTO, SELECT` コマンドを使用します。
+`url` 関数と組み合わせることで、URL から直接データがストリーミングされます:
 
 ```sql
 INSERT INTO hackernews SELECT *
 FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames')
 ```
 
-これで、1つのコマンドで28百万行をClickHouseに成功裏に挿入しました！
+単一のコマンドで ClickHouse に 2,800 万行の挿入が完了しました!
 
-### データを探索する {#explore}
+### データの探索 {#explore}
 
-以下のクエリを実行して、Hacker Newsのストーリーおよび特定のカラムをサンプリングします。
+次のクエリを実行して、Hacker News のストーリーと特定のカラムをサンプリングします:
 
 ```sql title="Query"
 SELECT
@@ -184,15 +197,17 @@ url:   http://articles.chicagotribune.com/2011-05-27/business/sc-cons-0526-start
 score: 1
 ```
 
-スキーマ推測は初期データ探索のための優れたツールですが、それは「最善の努力」であり、データの最適スキーマを定義するための長期的な代替品ではありません。
+スキーマ推論は初期のデータ探索には優れたツールですが、「ベストエフォート」であり、データに最適なスキーマを定義する長期的な代替手段にはなりません。
 
-### スキーマを定義する {#define-a-schema}
+### スキーマの定義 {#define-a-schema}
 
-明らかな最初の最適化は、各フィールドのタイプを定義することです。時間フィールドを`DateTime`型として宣言するだけでなく、次のフィールドに適切なタイプを定義します。ClickHouseでは、データの主キーidは`ORDER BY`句を介して定義されます。
+最初の最適化として、各フィールドに型を定義することが挙げられます。
+time フィールドを `DateTime` 型として宣言することに加えて、既存のデータセットを削除した後、以下の各フィールドに適切な型を定義します。
+ClickHouse では、データのプライマリキー id は `ORDER BY` 句で定義されます。
 
-適切なタイプを選択し、`ORDER BY`句に含めるカラムを選択することは、クエリの速度と圧縮を改善するのに役立ちます。
+適切な型を選択し、`ORDER BY` 句に含めるカラムを選択することで、クエリ速度と圧縮率の向上に役立ちます。
 
-古いスキーマを削除し、改善されたスキーマを作成する以下のクエリを実行します。
+以下のクエリを実行して、古いスキーマを削除し、改善されたスキーマを作成します:
 
 ```sql title="Query"
 DROP TABLE IF EXISTS hackernews;
@@ -219,21 +234,23 @@ CREATE TABLE hackernews
 ORDER BY id
 ```
 
-最適化されたスキーマを持つことで、ローカルファイルシステムからデータを今すぐ挿入できます。再び`clickhouse-client`を使用して、明示的な`INSERT INTO`を使用してファイルを挿入します。
+最適化されたスキーマにより、ローカルファイルシステムからデータを挿入できるようになりました。
+再び `clickhouse-client` を使用して、明示的な `INSERT INTO` と `INFILE` 句を使用してファイルを挿入します。
 
 ```sql title="Query"
 INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
 ```
 
-### サンプルクエリを実行する {#run-sample-queries}
+### サンプルクエリの実行 {#run-sample-queries}
 
-以下にいくつかのサンプルクエリを示し、独自のクエリを作成するためのインスピレーションを提供します。
+独自のクエリを作成する際の参考として、以下にいくつかのサンプルクエリを示します。
 
-#### Hacker Newsでの「ClickHouse」トピックの広がりはどのくらいか？ {#how-pervasive}
 
-スコアフィールドはストーリーの人気を測る指標を提供し、`id`フィールドと`||`連結演算子を使用して元の投稿へのリンクを生成できます。
+#### Hacker Newsにおいて「ClickHouse」はどの程度話題になっているか？ {#how-pervasive}
 
-```sql title="Query"
+`score`フィールドはストーリーの人気度を示す指標を提供し、`id`フィールドと`||`連結演算子を使用して元の投稿へのリンクを生成できます。
+
+```sql title="クエリ"
 SELECT
     time,
     score,
@@ -247,7 +264,7 @@ ORDER BY score DESC
 LIMIT 5 FORMAT Vertical
 ```
 
-```response title="Response"
+```response title="レスポンス"
 Row 1:
 ──────
 time:        1632154428
@@ -294,9 +311,9 @@ url:         https://github.com/ClickHouse/ClickHouse
 hn_url:      https://news.ycombinator.com/item?id=27310247
 ```
 
-ClickHouseは時間の経過とともにより多くのノイズを生成しているのでしょうか？ここで、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を使用できます。
+ClickHouseは時間の経過とともにより多く言及されるようになっているのでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を使用できるようになります。
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT
    toYYYYMM(time) AS monthYear,
    bar(count(), 0, 120, 20)
@@ -305,6 +322,7 @@ WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text 
 GROUP BY monthYear
 ORDER BY monthYear ASC
 ```
+
 
 ```response title="Response"
 ┌─monthYear─┬─bar(count(), 0, 120, 20)─┐
@@ -373,9 +391,9 @@ ORDER BY monthYear ASC
 └───────────┴──────────────────────────┘
 ```
 
-「ClickHouse」は時間の経過とともに人気が高まっているようです。
+時間の経過とともにClickHouseの人気が高まっていることがわかります。
 
-#### ClickHouse関連の記事のトップコメント者は誰か？ {#top-commenters}
+#### ClickHouse関連記事で最も多くコメントしているのは誰か？ {#top-commenters}
 
 ```sql title="Query"
 SELECT
@@ -398,9 +416,10 @@ LIMIT 5
 └─────────────┴──────────┘
 ```
 
-#### どのコメントが最も関心を引くか？ {#comments-by-most-interest}
+#### 最も関心を集めているコメントは？ {#comments-by-most-interest}
 
-```sql title="Query"
+
+```sql title="クエリ"
 SELECT
   by,
   sum(score) AS total_score,
@@ -412,7 +431,7 @@ ORDER BY total_score DESC
 LIMIT 5
 ```
 
-```response title="Response"
+```response title="応答"
 ┌─by───────┬─total_score─┬─total_sub_comments─┐
 │ zX41ZdbW │        571  │              50    │
 │ jetter   │        386  │              30    │
@@ -424,19 +443,22 @@ LIMIT 5
 
 </VerticalStepper>
 
+
 ## Parquet {#parquet}
 
-ClickHouseの強みの1つは、あらゆる数の[フォーマット](/interfaces/formats)を扱う能力です。CSVは理想的な使用例を示し、データ交換に最も効率的ではありません。
+ClickHouseの強みの一つは、多数の[フォーマット](/interfaces/formats)を扱える能力です。
+CSVは比較的理想的なユースケースを表していますが、データ交換において最も効率的というわけではありません。
 
-次に、効率的な列指向フォーマットであるParquetファイルからデータを読み込みます。
+次に、効率的なカラム指向フォーマットであるParquetファイルからデータを読み込みます。
 
-Parquetには最小限のタイプがあり、ClickHouseはこれを尊重する必要があります。このタイプ情報はフォーマット自体にエンコードされています。Parquetファイルのタイプ推測は、CSVファイル用のスキーマとは必然的に少し異なる結果になります。
+Parquetは最小限の型を持ち、ClickHouseはこれを尊重する必要があります。この型情報はフォーマット自体にエンコードされています。
+Parquetファイルに対する型推論は、必然的にCSVファイルとは若干異なるスキーマになります。
 
 <VerticalStepper headerLevel="h3">
 
-### データを挿入する {#insert-the-data}
+### データの挿入 {#insert-the-data}
 
-次のクエリを実行して、Parquetフォーマットで同じデータを読み取ります。再び、url関数を使用してリモートデータを読み取ります。
+次のクエリを実行して、同じデータをParquetフォーマットで読み込みます。再度url関数を使用してリモートデータを読み込みます:
 
 ```sql
 DROP TABLE IF EXISTS hackernews;
@@ -452,12 +474,11 @@ INSERT INTO hackernews SELECT *
 FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
 ```
 
-:::note ParquetでのNullキー
-Parquetフォーマットの条件として、キーが`NULL`である可能性を受け入れなければなりません。
-データには含まれていないにもかかわらず。
+:::note ParquetにおけるNullキー
+Parquetフォーマットの条件として、データ内に実際には存在しない場合でも、キーが`NULL`である可能性を受け入れる必要があります。
 :::
 
-次のコマンドを実行して、推測されたスキーマを表示します。
+次のコマンドを実行して、推論されたスキーマを表示します:
 
 ```sql title="Query"
 ┌─name────────┬─type───────────────────┬
@@ -478,7 +499,7 @@ Parquetフォーマットの条件として、キーが`NULL`である可能性�
 └─────────────┴────────────────────────┴
 ```
 
-CSVファイルと同様に、選択したタイプに対するより高い制御を得るためにスキーマを手動で指定し、データをs3から直接挿入できます。
+CSVファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、s3から直接データを挿入できます:
 
 ```sql
 CREATE TABLE hackernews
@@ -523,9 +544,9 @@ SELECT * FROM s3(
          descendants UInt32');
 ```
 
-### クエリを高速化するためにスキッピングインデックスを追加する {#add-skipping-index}
+### クエリを高速化するためのスキッピングインデックスの追加 {#add-skipping-index}
 
-「ClickHouse」を言及しているコメントの数を見つけるには、次のクエリを実行します。
+「ClickHouse」に言及しているコメントの数を調べるには、次のクエリを実行します:
 
 ```sql title="Query"
 SELECT count(*)
@@ -541,18 +562,20 @@ WHERE hasToken(lower(comment), 'ClickHouse');
 └─────────┘
 ```
 
-次に、「comment」カラムに反転[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成して、このクエリを高速化します。小文字のコメントは、ケースに依存せずに用語を見つけるためにインデックスされることに注意してください。
+次に、このクエリを高速化するために、「comment」カラムに転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
+大文字小文字に関係なく用語を検索できるように、小文字化されたコメントがインデックス化されることに注意してください。
 
-次のコマンドを実行してインデックスを作成します。
+次のコマンドを実行してインデックスを作成します:
 
 ```sql
 ALTER TABLE hackernews ADD INDEX comment_idx(lower(comment)) TYPE inverted;
 ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
 ```
 
-インデックスのマテリアライズにはしばらくかかります（インデックスが作成されたか確認するには、システムテーブル`system.data_skipping_indices`を使用します）。
 
-インデックスが作成されたら、再度クエリを実行します。
+インデックスの実体化には時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用してください）。
+
+インデックスが作成されたら、クエリを再実行します：
 
 ```sql title="Query"
 SELECT count(*)
@@ -560,17 +583,17 @@ FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse');
 ```
 
-インデックスを使用して、クエリの実行時間が0.843秒から0.248秒になったことに注意してください。
+インデックスを使用することで、クエリの実行時間がインデックスなしの0.843秒から0.248秒に短縮されたことに注目してください：
 
 ```response title="Response"
 #highlight-next-line
-1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
+1行を返しました。経過時間：0.248秒。処理行数：454万行、1.79 GB（1834万行/秒、7.24 GB/秒）
 ┌─count()─┐
 │    1145 │
 └─────────┘
 ```
 
-[`EXPLAIN`](/sql-reference/statements/explain)句を使用すると、このインデックスの追加がクエリを約3.4倍改善した理由を理解できます。
+[`EXPLAIN`](/sql-reference/statements/explain) 句を使用することで、このインデックスの追加によってクエリが約3.4倍高速化された理由を理解できます。
 
 ```response text="Query"
 EXPLAIN indexes = 1
@@ -599,9 +622,9 @@ WHERE hasToken(lower(comment), 'clickhouse')
 └─────────────────────────────────────────────────┘
 ```
 
-インデックスがクエリの高速化のために大規模なグラニュールのスキップを可能にしたことに注意してください。
+インデックスによって大量のグラニュールをスキップできるようになり、クエリが高速化されたことに注目してください。
 
-さらに、一つまたは複数の用語を効率的に検索することも可能です。
+また、単一の用語、または複数の用語すべてを効率的に検索することも可能になりました：
 
 ```sql title="Query"
 SELECT count(*)

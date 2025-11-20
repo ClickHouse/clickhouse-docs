@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/sample-data'
-'title': 'サンプルログ、トレースおよびメトリクス'
-'sidebar_position': 0
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackを使用して、ログ、セッション、トレースおよびメトリクスを含むサンプルデータセットを使用して始めましょう'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/getting-started/sample-data
+title: 'サンプルログ、トレース、メトリクス'
+sidebar_position: 0
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack の利用を開始するにあたり、ログ、セッション、トレース、メトリクスを含むサンプルデータセットを使ってみる'
+doc_type: 'guide'
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -31,75 +32,76 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
+# ClickStack - サンプルログ、トレース、メトリクス {#clickstack-sample-dataset}
 
-# ClickStack - サンプルログ、トレース、およびメトリクス {#clickstack-sample-dataset}
+以下の例では、[オールインワンイメージの手順](/use-cases/observability/clickstack/getting-started)を使用してClickStackを起動し、[ローカルClickHouseインスタンス](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)または[ClickHouse Cloudインスタンス](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)に接続済みであることを前提としています。
 
-以下の例は、[オールインワンイメージのインストラクション](/use-cases/observability/clickstack/getting-started)を使用してClickStackを開始し、[ローカルClickHouseインスタンス](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)または[ClickHouse Cloudインスタンス](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)に接続したことを前提としています。
-
-:::note ClickHouse CloudにおけるHyperDX
-このサンプルデータセットは、HyperDXをClickHouse Cloudで使用する場合にも利用できます。流れに若干の調整が必要ですが記載されています。ClickHouse CloudでHyperDXを使用する場合、ユーザーは[このデプロイメントモデルのための始め方ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルでOpen Telemetryコレクターを実行する必要があります。
+:::note ClickHouse CloudでのHyperDX
+このサンプルデータセットは、ClickHouse CloudのHyperDXでも使用可能です。記載されている通り、フローに若干の調整が必要です。ClickHouse CloudでHyperDXを使用する場合、[このデプロイメントモデルの入門ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)に記載されているように、OpenTelemetryコレクターをローカルで実行する必要があります。
 :::
 
 <VerticalStepper>
 
-## HyperDX UIに移動する {#navigate-to-the-hyperdx-ui}
 
-ローカルにデプロイしている場合は、[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用している場合は、左のメニューからサービスと`HyperDX`を選択します。
+## HyperDX UIへの移動 {#navigate-to-the-hyperdx-ui}
 
-<Image img={hyperdx} alt="HyperDX UI" size="lg"/>
+ローカルにデプロイしている場合は、[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用している場合は、サービスを選択し、左側のメニューから`HyperDX`を選択します。
 
-## 取り込みAPIキーをコピーする {#copy-ingestion-api-key}
+<Image img={hyperdx} alt='HyperDX UI' size='lg' />
 
-:::note ClickHouse CloudにおけるHyperDX
-ClickHouse CloudでHyperDXを使用している場合、このステップは必要ありません。そこでは現在、取り込みキーのサポートがありません。
+
+## 取り込みAPIキーのコピー {#copy-ingestion-api-key}
+
+:::note ClickHouse CloudでのHyperDX
+ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。現在、取り込みキーはサポートされていません。
 :::
 
-[`チーム設定`](http://localhost:8080/team)に移動し、`APIキー`セクションから`取り込みAPIキー`をコピーします。このAPIキーは、OpenTelemetryコレクターを通じたデータ取り込みのセキュリティを保証します。
+[`Team Settings`](http://localhost:8080/team)に移動し、`API Keys`セクションから`Ingestion API Key`をコピーします。このAPIキーにより、OpenTelemetryコレクター経由のデータ取り込みが安全に実行されます。
 
-<Image img={copy_api_key} alt="APIキーをコピー" size="lg"/>
+<Image img={copy_api_key} alt='APIキーのコピー' size='lg' />
 
-## サンプルデータをダウンロードする {#download-sample-data}
 
-UIにサンプルデータを表示するために、以下のファイルをダウンロードします：
+## サンプルデータのダウンロード {#download-sample-data}
+
+UIにサンプルデータを投入するには、以下のファイルをダウンロードしてください:
 
 [サンプルデータ](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
-```shell
 
+```shell
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-
-# or
-
+# または
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-このファイルには、私たちの公開された[OpenTelemetryデモ](https://github.com/ClickHouse/opentelemetry-demo)からの例示的なログ、メトリクス、トレースが含まれています。これは、マイクロサービスを持つシンプルなeコマースストアです。このファイルをお好みのディレクトリにコピーしてください。
+このファイルには、公開されている [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)（マイクロサービス構成のシンプルな EC サイト）から取得したログ、メトリクス、トレースのサンプルが含まれています。任意のディレクトリにこのファイルをコピーしてください。
 
-## サンプルデータをロードする {#load-sample-data}
 
-このデータをロードするために、展開したOpenTelemetry (OTel) コレクターのHTTPエンドポイントに送信します。
+## サンプルデータの読み込み {#load-sample-data}
+
+このデータを読み込むには、デプロイ済みのOpenTelemetry（OTel）コレクターのHTTPエンドポイントに送信するだけです。
 
 まず、上記でコピーしたAPIキーをエクスポートします。
 
-:::note ClickHouse CloudにおけるHyperDX
-ClickHouse CloudでHyperDXを使用している場合、このステップは必要ありません。そこでは現在、取り込みキーのサポートがありません。
+:::note ClickHouse CloudのHyperDX
+ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。現在、取り込みキーはサポートされていません。
 :::
 
-```shell
 
-# export API key
+```shell
+# APIキーをエクスポート
 export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
 ```
 
-次のコマンドを実行してデータをOTelコレクターに送信します：
+次のコマンドを実行して、データを OTel コレクターに送信します。
 
 ```shell
 for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
   echo "loading ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    echo "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
     -H "Content-Type: application/json" \
     -H "authorization: ${CLICKSTACK_API_KEY}" \
     --data-binary @-
@@ -107,78 +109,82 @@ for filename in $(tar -tf sample.tar.gz); do
 done
 ```
 
-これにより、OTLPログ、トレース、およびメトリックソースがOTelコレクターにデータを送信することをシミュレートします。製品環境では、これらのソースは言語クライアントまたは他のOTelコレクターである可能性があります。
+これは、OTLP のログ、トレース、およびメトリクスのソースが OTel collector にデータを送信する状況をシミュレートします。本番環境では、これらのソースは各種言語向けクライアントや、別の OTel collector になる場合があります。
 
-`サーチ`ビューに戻ると、データのロードが始まっていることが確認できるはずです（データが表示されない場合は、時間枠を`直近1時間`に調整してください）。
+`Search` ビューに戻ると、データの読み込みが開始されているはずです（データが表示されない場合は、時間範囲を `Last 1 hour` に変更してください）:
 
-<Image img={hyperdx_10} alt="HyperDX サーチ" size="lg"/>
+<Image img={hyperdx_10} alt="HyperDX search" size="lg" />
 
-データのロードには数分かかりますので、次のステップに進む前にロードが完了するのを待ってください。
+データの読み込みには数分かかります。次のステップに進む前に、読み込みが完了するまでお待ちください。
 
-## セッションを探る {#explore-sessions}
 
-ユーザーが商品購入時に問題を抱えているとの報告があるとしましょう。私たちはHyperDXのセッションリプレイ機能を使用して、彼らの体験を確認できます。
+## セッションの調査 {#explore-sessions}
 
-左のメニューから[`クライアントセッション`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572)を選択します。
+ユーザーが商品の支払いで問題を経験しているという報告があるとします。HyperDXのセッションリプレイ機能を使用して、ユーザーの体験を確認できます。
 
-<Image img={hyperdx_11} alt="セッション" size="lg"/>
+左側のメニューから[`Client Sessions`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572)を選択します。
 
-このビューでは、当社のeコマースストアのフロントエンドセッションを確認できます。ユーザーがチェックアウトし、購入を完了しようとするまで、セッションは匿名のままです。
+<Image img={hyperdx_11} alt='Sessions' size='lg' />
 
-メールアドレスを含むセッションの中には、取引の失敗の報告を確認しかねない関連エラーが発生しているものがあります。
+このビューでは、eコマースストアのフロントエンドセッションを確認できます。セッションは、ユーザーがチェックアウトして購入を完了しようとするまで匿名のままです。
 
-失敗と関連するメールを選択したトレースを選ぶと、ユーザーのセッションを再生し、問題を確認することができます。再生ボタンを押してセッションを視聴しましょう。
+メールアドレスが関連付けられた一部のセッションにはエラーが発生しており、取引失敗の報告を裏付けている可能性があります。
 
-<Image img={hyperdx_12} alt="セッションリプレイ" size="lg"/>
+失敗とメールアドレスが関連付けられたトレースを選択します。次のビューでは、ユーザーのセッションを再生して問題を確認できます。再生ボタンを押してセッションを視聴します。
 
-再生では、ユーザーがサイトを巡回し、カートにアイテムを追加する様子が表示されます。支払いを完了しようとするセッションの後半にスキップしても構いません。
+<Image img={hyperdx_12} alt='Session replay' size='lg' />
+
+リプレイでは、ユーザーがサイトを閲覧し、カートに商品を追加する様子が表示されます。セッションの後半で支払いを完了しようとする場面まで自由にスキップできます。
 
 :::tip
-エラーは赤色でタイムラインに注釈が付けられています。
+エラーはタイムライン上に赤色で注釈されます。
 :::
 
-ユーザーは、明らかなエラーもなく、注文を出すことができませんでした。左パネルの下部にスクロールして、ユーザーのブラウザからのネットワークおよびコンソールイベントが含まれている部分を確認してください。`/api/checkout`の呼び出し時に500エラーが発生したことがわかります。
+ユーザーは注文を完了できず、明確なエラーは表示されませんでした。左パネルの下部にスクロールすると、ユーザーのブラウザからのネットワークイベントとコンソールイベントが表示されます。`/api/checkout`の呼び出し時に500エラーが発生していることがわかります。
 
-<Image img={hyperdx_13} alt="セッション内のエラー" size="lg"/>
+<Image img={hyperdx_13} alt='Error in session' size='lg' />
 
-この`500`エラーを選択します。`概要`および`カラム値`は、問題の原因を示すものではなく、エラーが予期しないものであり、`内部エラー`を引き起こす可能性があることのみを示しています。
+この`500`エラーを選択します。`Overview`も`Column Values`も、エラーが予期しないものであり`Internal Error`を引き起こしているという事実以外に、問題の原因を示していません。
 
-## トレースを探る {#explore-traces}
 
-`トレース`タブに移動して、全体の分散トレースを確認します。
+## トレースの調査 {#explore-traces}
 
-<Image img={hyperdx_14} alt="セッション トレース" size="lg"/>
+`Trace`タブに移動して、完全な分散トレースを表示します。
 
-トレースを下にスクロールして、エラーの発生源である`checkout`サービススパンを確認します。`Payment`サービススパンを選択します。
+<Image img={hyperdx_14} alt='セッショントレース' size='lg' />
 
-<Image img={hyperdx_15} alt="スパン" size="lg"/>
+トレースを下にスクロールして、エラーの発生元である`checkout`サービススパンを確認します。`Payment`サービススパンを選択します。
 
-`カラム値`タブを選択し、下にスクロールします。ここでは、キャッシュが満杯であることに関連する問題が示されています。
+<Image img={hyperdx_15} alt='スパン' size='lg' />
 
-<Image img={hyperdx_16} alt="カラム値" size="lg"/>
+`Column Values`タブを選択して下にスクロールします。この問題はキャッシュが満杯になっていることに起因していることがわかります。
 
-上にスクロールしてトレースに戻ると、前回の設定のおかげでスパンに関連付けられたログが確認できます。これらはさらなる文脈を提供します。
+<Image img={hyperdx_16} alt='カラム値' size='lg' />
 
-<Image img={hyperdx_17} alt="関連付けられたログ" size="lg"/>
+上にスクロールしてトレースに戻ると、先ほどの設定により、ログがスパンと相関していることがわかります。これらは追加のコンテキストを提供します。
 
-キャッシュが決済サービスで満杯になっていることが確認できており、それが決済の完了を妨げています。
+<Image img={hyperdx_17} alt='相関ログ' size='lg' />
 
-## ログを探る {#explore-logs}
+決済サービスでキャッシュが満杯になっており、それが決済の完了を妨げていることが確認できました。
 
-さらに詳細を知るために、[`サーチ`ビュー](http://localhost:8080/search)に戻ります：
 
-ソースから`ログ`を選択し、`payment`サービスにフィルターを適用します。
+## ログの調査 {#explore-logs}
 
-<Image img={hyperdx_18} alt="ログ" size="lg"/>
+詳細を確認するには、[`Search` ビュー](http://localhost:8080/search)に戻ります：
 
-問題は最近発生していますが、影響を受けた決済の数は多いことがわかります。さらに、Visa決済に関連するキャッシュが問題を引き起こしているようです。
+ソースから `Logs` を選択し、`payment` サービスにフィルタを適用します。
 
-## メトリクスをチャート表示する {#chart-metrics}
+<Image img={hyperdx_18} alt='ログ' size='lg' />
 
-コード内に明らかなエラーが導入されていることは間違いありませんが、メトリクスを使用してキャッシュサイズを確認できます。`チャートエクスプローラー`ビューに移動します。
+この問題は最近発生したものですが、影響を受けた決済の数が多いことがわかります。さらに、Visa決済に関連するキャッシュが問題を引き起こしているようです。
 
-データソースとして`メトリクス`を選択します。`visa_validation_cache.size (Gauge)`の`最大値`をプロットするためにチャートビルダーを完成させ、再生ボタンを押します。キャッシュは明らかに最大サイズに達する前に増加しており、その後エラーが生成されました。
 
-<Image img={hyperdx_19} alt="メトリクス" size="lg"/>
+## チャートメトリクス {#chart-metrics}
+
+コードに明らかにエラーが混入していますが、メトリクスを使用してキャッシュサイズを確認することができます。`Chart Explorer`ビューに移動します。
+
+データソースとして`Metrics`を選択します。チャートビルダーを使用して`visa_validation_cache.size (Gauge)`の`Maximum`をプロットし、再生ボタンを押します。キャッシュは最大サイズに達するまで増加し続けており、その後エラーが発生しました。
+
+<Image img={hyperdx_19} alt='Metrics' size='lg' />
 
 </VerticalStepper>

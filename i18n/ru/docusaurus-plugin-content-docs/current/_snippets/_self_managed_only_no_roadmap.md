@@ -1,8 +1,8 @@
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 :::note
-Эта страница не применима к [ClickHouse Cloud](https://clickhouse.com/cloud). Функция, описанная здесь, недоступна в сервисах ClickHouse Cloud.
-Смотрите руководство по [совместимости с Cloud](/whats-new/cloud-compatibility) для получения дополнительной информации.
+Эта страница не относится к [ClickHouse Cloud](https://clickhouse.com/cloud). Описанная здесь функциональность недоступна в сервисах ClickHouse Cloud.
+Дополнительные сведения см. в руководстве по [совместимости с ClickHouse Cloud](/whats-new/cloud-compatibility).
 :::

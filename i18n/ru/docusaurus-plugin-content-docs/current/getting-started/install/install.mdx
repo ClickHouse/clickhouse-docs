@@ -1,11 +1,12 @@
 ---
-slug: '/install'
-sidebar_label: Установка
-description: 'Установить ClickHouse'
-title: 'Установка ClickHouse'
+description: 'Установка ClickHouse'
 keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
-doc_type: guide
+sidebar_label: 'Установка'
+slug: /install
+title: 'Установка ClickHouse'
+doc_type: 'guide'
 ---
+
 import InstallSelector from '@site/src/components/Install/Install'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
@@ -22,7 +23,7 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
     alignContent="center"
-    description="Начните строить мгновенно, не беспокоясь о размере и масштабировании вашего кластера. Мы позаботимся о размерности, масштабировании, безопасности, надежности и обновлениях."
+    description="Начните работу мгновенно, без необходимости подбирать размер и масштабировать кластер. Мы берём на себя выбор конфигурации, масштабирование, безопасность, надёжность и обновления."
     icon="cloud"
     infoText="Начать бесплатно"
     infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
@@ -32,9 +33,11 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
     title="ClickHouse Cloud"
     topBadgeText="Рекомендуется"
 />
+
 <br/>
 
-В качестве альтернативы выберите платформу, дистрибутив и метод установки ниже, чтобы просмотреть инструкции по установке для Opensource ClickHouse:
+Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции
+по установке для ClickHouse с открытым исходным кодом:
 
 <InstallSelector
     windows={<Windows/>}

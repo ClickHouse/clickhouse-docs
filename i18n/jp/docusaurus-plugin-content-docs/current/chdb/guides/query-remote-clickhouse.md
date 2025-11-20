@@ -1,75 +1,77 @@
 ---
-'title': 'リモート ClickHouse サーバーへのクエリの方法'
-'sidebar_label': 'リモート ClickHouse のクエリ'
-'slug': '/chdb/guides/query-remote-clickhouse'
-'description': 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを送信する方法を学びます。'
-'keywords':
-- 'chdb'
-- 'clickhouse'
-'doc_type': 'guide'
+title: 'リモート ClickHouse サーバーへのクエリ方法'
+sidebar_label: 'リモート ClickHouse へのクエリ'
+slug: /chdb/guides/query-remote-clickhouse
+description: 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を説明します。'
+keywords: ['chdb', 'clickhouse']
+doc_type: 'guide'
 ---
 
-In this guide, we're going to learn how to query a remote ClickHouse server from chDB.
+このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を学びます。
 
-## Setup {#setup}
 
-Let's first create a virtual environment:
+
+## セットアップ {#setup}
+
+まず、仮想環境を作成します：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-And now we'll install chDB.
-Make sure you have version 2.0.2 or higher:
+次に、chDBをインストールします。
+バージョン2.0.2以上を使用してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-And now we're going to install pandas, and ipython:
+続いて、pandasとipythonをインストールします：
 
 ```bash
 pip install pandas ipython
 ```
 
-We're going to use `ipython` to run the commands in the rest of the guide, which you can launch by running:
+このガイドの以降のコマンドを実行するには`ipython`を使用します。次のコマンドで起動できます：
 
 ```bash
 ipython
 ```
 
-You can also use the code in a Python script or in your favorite notebook.
+Pythonスクリプトまたはお好みのノートブックでコードを使用することもできます。
 
-## An intro to ClickPy {#an-intro-to-clickpy}
 
-クエリを実行するリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
-ClickPy は PyPI パッケージのダウンロードを追跡し、UI を介してパッケージの統計を探索することを可能にします。
-基盤となるデータベースは、`play` ユーザーを使用してクエリを実行できます。
+## ClickPyの紹介 {#an-intro-to-clickpy}
 
-ClickPy についての詳細は [その GitHub レポジトリ](https://github.com/ClickHouse/clickpy) を参照してください。
+これからクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
+ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを通じてパッケージの統計情報を確認できます。
+基盤となるデータベースには`play`ユーザーを使用してクエリを実行できます。
 
-## Querying the ClickPy ClickHouse service {#querying-the-clickpy-clickhouse-service}
+ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-Let's import chDB:
+
+## ClickPy ClickHouseサービスへのクエリ {#querying-the-clickpy-clickhouse-service}
+
+chDBをインポートします:
 
 ```python
 import chdb
 ```
 
-We're going to query ClickPy using the `remoteSecure` function.
-This function takes in a host name, table name, and username at a minimum.
+`remoteSecure`関数を使用してClickPyにクエリを実行します。
+この関数は、最低限ホスト名、テーブル名、ユーザー名を引数として受け取ります。
 
-We can write the following query to return the number of downloads per day of the [`openai` package](https://clickpy.clickhouse.com/dashboard/openai) as a Pandas DataFrame:
- 
+以下のクエリで、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして取得できます:
+
 ```python
 query = """
 SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'openai'
@@ -95,7 +97,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-Now let's do the same to return the downloads for [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn):
+次に、同様の方法で[`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn)のダウンロード数を取得します:
 
 ```python
 query = """
@@ -103,8 +105,8 @@ SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'scikit-learn'
@@ -130,14 +132,15 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Merging Pandas DataFrames {#merging-pandas-dataframes}
 
-We now have two DataFrames, which we can merge together based on date (which is the `x` column) like this:
+## Pandas DataFrameのマージ {#merging-pandas-dataframes}
+
+これで2つのDataFrameが用意できたので、日付（`x`列）を基準に次のようにマージできます：
 
 ```python
 df = openai_df.merge(
-  sklearn_df, 
-  on="x", 
+  sklearn_df,
+  on="x",
   suffixes=("_openai", "_sklearn")
 )
 df.head(n=5)
@@ -152,7 +155,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-We can then compute the ratio of Open AI downloads to `scikit-learn` downloads like this:
+次に、OpenAIのダウンロード数と`scikit-learn`のダウンロード数の比率を次のように計算できます：
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -168,10 +171,11 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Querying Pandas DataFrames {#querying-pandas-dataframes}
 
-Next, let's say we want to find the dates with the best and worst ratios. 
-We can go back to chDB and compute those values:
+## Pandas DataFrameのクエリ {#querying-pandas-dataframes}
+
+次に、最良および最悪の比率を持つ日付を見つけたいとします。
+chDBに戻ってこれらの値を計算できます:
 
 ```python
 chdb.query("""
@@ -188,4 +192,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-If you want to learn more about querying Pandas DataFrames, see the [Pandas DataFrames developer guide](querying-pandas.md).
+Pandas DataFrameのクエリについて詳しく知りたい場合は、[Pandas DataFrames開発者ガイド](querying-pandas.md)を参照してください。

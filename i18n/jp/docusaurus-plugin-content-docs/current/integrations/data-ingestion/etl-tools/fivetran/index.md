@@ -1,10 +1,14 @@
 ---
-'sidebar_label': 'Fivetran'
-'slug': '/integrations/fivetran'
-'sidebar_position': 2
-'description': 'ユーザーは dbt を使用して ClickHouse でデータを変換およびモデル化できます'
-'title': 'Fivetran と ClickHouse Cloud'
-'doc_type': 'guide'
+sidebar_label: 'Fivetran'
+slug: /integrations/fivetran
+sidebar_position: 2
+description: 'ユーザーは ClickHouse で dbt を使用してデータの変換とモデリングを行えます'
+title: 'Fivetran と ClickHouse Cloud'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['fivetran', 'data movement', 'etl', 'clickhouse destination', 'automated data platform']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
@@ -14,35 +18,40 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
+
+
 ## 概要 {#overview}
 
-[Fivetran](https://www.fivetran.com) は、クラウドデータプラットフォーム間でデータを自動的に移動するプラットフォームです。
+[Fivetran](https://www.fivetran.com)は、クラウドデータプラットフォーム間でのデータ移動を自動化するプラットフォームです。
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) は、[Fivetranの宛先](https://fivetran.com/docs/destinations/clickhouse) としてサポートされており、ユーザーは様々なソースからデータを ClickHouse にロードすることができます。
+[ClickHouse Cloud](https://clickhouse.com/cloud)は[Fivetranの送信先](https://fivetran.com/docs/destinations/clickhouse)としてサポートされており、さまざまなソースからClickHouseへデータをロードすることができます。
 
 :::note
-[ClickHouse Cloud 宛先](https://fivetran.com/docs/destinations/clickhouse) は現在プライベートプレビュー中です。問題が発生した場合は ClickHouse サポートにお問い合わせください。
+[ClickHouse Cloud送信先](https://fivetran.com/docs/destinations/clickhouse)は現在プライベートプレビュー中です。問題が発生した場合は、ClickHouseサポートまでお問い合わせください。
 :::
 
 <div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/sWe5JHW3lAs"
-    width="640"
-    height="360"
-    frameborder="0"
-    allow="autoplay;
+  <iframe
+    src='//www.youtube.com/embed/sWe5JHW3lAs'
+    width='640'
+    height='360'
+    frameborder='0'
+    allow='autoplay;
     fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+    picture-in-picture'
+    allowfullscreen
+  ></iframe>
 </div>
+
 
 ## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
 
-Fivetran の公式ドキュメントをご覧ください：
+Fivetran ウェブサイトの公式ドキュメントを参照してください:
 
 - [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
+
 ## お問い合わせ {#contact-us}
 
-ご質問がある場合や、機能リクエストがある場合は、[サポートチケット](/about-us/support) を開いてください。
+ご質問や機能のリクエストがございましたら、[サポートチケット](/about-us/support)を開いてください。

@@ -1,41 +1,38 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countResample'
-'title': 'countResample'
-'description': 'countを使用したResampleコンビネータの例'
-'keywords':
-- 'count'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'countResample'
-'sidebar_label': 'countResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countResample'
+title: 'countResample'
+description: 'count で Resample コンビネーターを使用する例'
+keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
+sidebar_label: 'countResample'
+doc_type: 'reference'
 ---
+
 
 
 # countResample {#countResample}
 
-## Description {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-コンビネータは、[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することができ、指定されたキー列の値を 
-固定数の間隔（`N`）でカウントします。
+## 説明 {#description}
 
-## Example usage {#example-usage}
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
+集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
+区間でカウントできます。
 
-### Basic example {#basic-example}
 
-例を見てみましょう。従業員の`name`、`age`、および
-`wage`を含むテーブルを作成し、データをいくつか挿入します：
+## 使用例 {#example-usage}
+
+### 基本的な例 {#basic-example}
+
+例を見てみましょう。従業員の`name`、`age`、`wage`を含むテーブルを作成し、データを挿入します:
 
 ```sql
-CREATE TABLE employee_data 
+CREATE TABLE employee_data
 (
     name String,
     age UInt8,
     wage Float32
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -48,10 +45,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)` および `[60,75)` の範囲にあるすべての人をカウントしましょう。
-年齢の整数表現を使用するため、`[30, 59]` および `[60,74]` の
-範囲の年齢が得られます。そのためには、`count`に 
-`Resample`コンビネータを適用します。
+年齢が`[30,60)`と`[60,75)`の区間にある人数を数えてみましょう。年齢には整数表現を使用しているため、実際には`[30, 59]`と`[60,74]`の区間になります。これを行うには、`count`に`Resample`コンビネータを適用します:
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
@@ -63,6 +57,8 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 └────────┘
 ```
 
-## See also {#see-also}
+
+## 関連項目 {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

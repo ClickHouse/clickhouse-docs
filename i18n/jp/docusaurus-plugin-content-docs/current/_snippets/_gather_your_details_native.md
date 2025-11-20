@@ -1,23 +1,22 @@
-
-
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 import Image from '@theme/IdealImage';
 
-To connect to ClickHouse with native TCP you need this information:
+ネイティブ TCP で ClickHouse に接続するには、次の情報が必要です。
 
-- The HOST and PORT: typically, the port is 9440 when using TLS, or 9000 when not using TLS.
+| Parameter(s)              | Description                                                 |
+| ------------------------- | ----------------------------------------------------------- |
+| `HOST` and `PORT`         | 通常、TLS を使用する場合のポートは 9440、TLS を使用しない場合のポートは 9000 です。         |
+| `DATABASE NAME`           | 初期状態では `default` という名前のデータベースがあります。接続したいデータベースの名前を使用してください。 |
+| `USERNAME` and `PASSWORD` | 初期状態ではユーザー名は `default` です。ユースケースに適したユーザー名を使用してください。         |
 
-- The DATABASE NAME: out of the box there is a database named `default`, use the name of the database that you want to connect to.
+ClickHouse Cloud サービスの接続情報は、ClickHouse Cloud コンソールで確認できます。
+接続するサービスを選択し、**Connect** をクリックします。
 
-- The USERNAME and PASSWORD: out of the box the username is `default`. Use the username appropriate for your use case.
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud サービスの接続ボタン" border />
 
-The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.  Select the service that you will connect to and click **Connect**:
+**Native** を選択すると、サンプルの `clickhouse-client` コマンド内に接続情報が表示されます。
 
-<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border/>
+<Image img={connection_details_native} size="md" alt="ClickHouse Cloud のネイティブ TCP 接続情報" border />
 
-Choose **Native**, and the details are available in an example `clickhouse-client` command.
-
-<Image img={connection_details_native} size="md" alt="ClickHouse Cloud Native TCP connection details" border/>
-
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
+セルフマネージドの ClickHouse を使用している場合、接続情報は ClickHouse 管理者によって設定されます。

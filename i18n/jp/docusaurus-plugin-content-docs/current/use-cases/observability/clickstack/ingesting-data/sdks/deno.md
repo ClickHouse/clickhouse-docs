@@ -1,48 +1,51 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/deno'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'Deno SDK for ClickStack - ClickHouse 可观察性堆栈'
-'title': 'Deno'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/deno
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'ClickStack 用 Deno SDK - ClickHouse オブザーバビリティスタック'
+title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
 
-このガイドは以下を統合します：
+このガイドでは、次の機能を扱います:
 
 - **ログ**
 
 :::note
-現在、OpenTelemetry ロギングのみをサポートしています。トレーシングのサポートについては、[以下のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
+現在サポートしているのは OpenTelemetry Logging のみです。トレーシングのサポートについては、[こちらのガイド](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)を参照してください。
 :::
+
+
 
 ## ロギング {#logging}
 
-ロギングは、`std/log` モジュールのカスタムロガーをエクスポートすることでサポートされています。
+`std/log`モジュール用のカスタムロガーをエクスポートすることで、ロギングがサポートされます。
 
-**使用例：**
+**使用例:**
 
 ```typescript
-import * as log from 'https://deno.land/std@0.203.0/log/mod.ts';
-import { OpenTelemetryHandler } from 'npm:@hyperdx/deno';
+import * as log from "https://deno.land/std@0.203.0/log/mod.ts"
+import { OpenTelemetryHandler } from "npm:@hyperdx/deno"
 
 log.setup({
   handlers: {
-    otel: new OpenTelemetryHandler('DEBUG'),
+    otel: new OpenTelemetryHandler("DEBUG")
   },
 
   loggers: {
-    'my-otel-logger': {
-      level: 'DEBUG',
-      handlers: ['otel'],
-    },
-  },
-});
+    "my-otel-logger": {
+      level: "DEBUG",
+      handlers: ["otel"]
+    }
+  }
+})
 
-log.getLogger('my-otel-logger').info('Hello from Deno!');
+log.getLogger("my-otel-logger").info("Hello from Deno!")
 ```
 
-### アプリケーションを実行する {#run-the-application}
+### アプリケーションの実行 {#run-the-application}
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \

@@ -1,29 +1,28 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumIf'
-'title': 'sumIf'
-'description': 'sumIfコムビネーターを使用する例'
-'keywords':
-- 'sum'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'sumIf'
-'sidebar_label': 'sumIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumIf'
+title: 'sumIf'
+description: 'sumIf 結合子の使用例'
+keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
+sidebar_label: 'sumIf'
+doc_type: 'reference'
 ---
+
 
 
 # sumIf {#sumif}
 
-## Description {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、`sum`(/sql-reference/aggregate-functions/reference/sum) 関数に適用して、条件が真である行の値の合計を計算するために、`sumIf` 集約コンビネータ関数を使用します。
+## 説明 {#description}
 
-## Example usage {#example-usage}
+[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`sum`](/sql-reference/aggregate-functions/reference/sum)関数に適用することで、条件が真となる行の値の合計を計算できます。これは`sumIf`集約コンビネータ関数を使用して実現されます。
 
-この例では、成功フラグを持つ販売データを保存するテーブルを作成し、`sumIf`を使用して成功した取引の総販売額を計算します。
 
-```sql title="Query"
+## 使用例 {#example-usage}
+
+この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
+`sumIf`を使用して成功した取引の売上合計額を計算します。
+
+```sql title="クエリ"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -43,20 +42,22 @@ SELECT
 FROM sales;
 ```
 
-`sumIf` 関数は、`is_successful = 1` の条件を満たす金額のみを合計します。この場合、合計するのは: 100.50 + 200.75 + 300.00 + 175.25 です。
+`sumIf`関数は`is_successful = 1`の場合の金額のみを合計します。
+この場合、100.50 + 200.75 + 300.00 + 175.25が合計されます。
 
-```response title="Response"
+```response title="レスポンス"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### Calculate trading volume by price direction {#calculate-trading-vol-price-direction}
+### 価格変動方向別の取引量を計算 {#calculate-trading-vol-price-direction}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で使用できる `stock` テーブルを利用して、2002年上半期の価格方向による取引量を計算します。
+この例では、[ClickHouse playground](https://sql.clickhouse.com/)で利用可能な`stock`テーブルを使用して、
+2002年の価格変動方向別の取引量を計算します。
 
-```sql title="Query"
-SELECT 
+```sql title="クエリ"
+SELECT
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
     formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
@@ -70,24 +71,27 @@ ORDER BY month;
 
 ```markdown
     ┌──────month─┬─volume_on_up_days─┬─volume_on_down_days─┬─volume_on_neutral_days─┬─total_volume──┐
- 1. │ 2002-01-01 │ 26.07 billion     │ 30.74 billion       │ 781.80 million         │ 57.59 billion │
- 2. │ 2002-02-01 │ 20.84 billion     │ 29.60 billion       │ 642.36 million         │ 51.09 billion │
- 3. │ 2002-03-01 │ 28.81 billion     │ 23.57 billion       │ 762.60 million         │ 53.14 billion │
- 4. │ 2002-04-01 │ 24.72 billion     │ 30.99 billion       │ 763.92 million         │ 56.47 billion │
- 5. │ 2002-05-01 │ 25.09 billion     │ 30.57 billion       │ 858.57 million         │ 56.52 billion │
- 6. │ 2002-06-01 │ 29.10 billion     │ 30.88 billion       │ 875.71 million         │ 60.86 billion │
- 7. │ 2002-07-01 │ 32.27 billion     │ 41.73 billion       │ 747.32 million         │ 74.75 billion │
- 8. │ 2002-08-01 │ 28.57 billion     │ 27.49 billion       │ 1.17 billion           │ 57.24 billion │
- 9. │ 2002-09-01 │ 23.37 billion     │ 31.02 billion       │ 775.66 million         │ 55.17 billion │
-10. │ 2002-10-01 │ 38.57 billion     │ 34.05 billion       │ 956.48 million         │ 73.57 billion │
-11. │ 2002-11-01 │ 34.90 billion     │ 25.47 billion       │ 998.34 million         │ 61.37 billion │
-12. │ 2002-12-01 │ 22.99 billion     │ 28.65 billion       │ 1.14 billion           │ 52.79 billion │
+
+1.  │ 2002-01-01 │ 26.07 billion │ 30.74 billion │ 781.80 million │ 57.59 billion │
+2.  │ 2002-02-01 │ 20.84 billion │ 29.60 billion │ 642.36 million │ 51.09 billion │
+3.  │ 2002-03-01 │ 28.81 billion │ 23.57 billion │ 762.60 million │ 53.14 billion │
+4.  │ 2002-04-01 │ 24.72 billion │ 30.99 billion │ 763.92 million │ 56.47 billion │
+5.  │ 2002-05-01 │ 25.09 billion │ 30.57 billion │ 858.57 million │ 56.52 billion │
+6.  │ 2002-06-01 │ 29.10 billion │ 30.88 billion │ 875.71 million │ 60.86 billion │
+7.  │ 2002-07-01 │ 32.27 billion │ 41.73 billion │ 747.32 million │ 74.75 billion │
+8.  │ 2002-08-01 │ 28.57 billion │ 27.49 billion │ 1.17 billion │ 57.24 billion │
+9.  │ 2002-09-01 │ 23.37 billion │ 31.02 billion │ 775.66 million │ 55.17 billion │
+10. │ 2002-10-01 │ 38.57 billion │ 34.05 billion │ 956.48 million │ 73.57 billion │
+11. │ 2002-11-01 │ 34.90 billion │ 25.47 billion │ 998.34 million │ 61.37 billion │
+12. │ 2002-12-01 │ 22.99 billion │ 28.65 billion │ 1.14 billion │ 52.79 billion │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Calculate trading volume by stock symbol {#calculate-trading-volume}
+### 銘柄別の取引量を計算 {#calculate-trading-volume}
 
-この例では、[ClickHouse playground](https://sql.clickhouse.com/) で使用できる `stock` テーブルを利用して、2006年に当時の最大の3つのテクノロジー企業の株式シンボルによる取引量を計算します。
+
+この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用して、
+当時最大級だったテクノロジー企業3社について、2006年の銘柄シンボルごとの取引量を計算します。
 
 ```sql title="Query"
 SELECT 
@@ -105,21 +109,23 @@ ORDER BY month;
 
 ```markdown title="Response"
     ┌──────month─┬─apple_volume───┬─microsoft_volume─┬─google_volume──┬─total_volume─┬─major_tech_percentage─┐
- 1. │ 2006-01-01 │ 782.21 million │ 1.39 billion     │ 299.69 million │  84343937700 │                  2.93 │
- 2. │ 2006-02-01 │ 670.38 million │ 1.05 billion     │ 297.65 million │  73524748600 │                  2.74 │
- 3. │ 2006-03-01 │ 744.85 million │ 1.39 billion     │ 288.36 million │  87960830800 │                  2.75 │
- 4. │ 2006-04-01 │ 718.97 million │ 1.45 billion     │ 185.65 million │  78031719800 │                  3.02 │
- 5. │ 2006-05-01 │ 557.89 million │ 2.32 billion     │ 174.94 million │  97096584100 │                  3.14 │
- 6. │ 2006-06-01 │ 641.48 million │ 1.98 billion     │ 142.55 million │  96304086800 │                  2.87 │
- 7. │ 2006-07-01 │ 624.93 million │ 1.33 billion     │ 127.74 million │  79940921800 │                  2.61 │
- 8. │ 2006-08-01 │ 639.35 million │ 1.13 billion     │ 107.16 million │  84251753200 │                  2.23 │
- 9. │ 2006-09-01 │ 633.45 million │ 1.10 billion     │ 121.72 million │  82775234300 │                  2.24 │
-10. │ 2006-10-01 │ 514.82 million │ 1.29 billion     │ 158.90 million │  93406712600 │                   2.1 │
-11. │ 2006-11-01 │ 494.37 million │ 1.24 billion     │ 118.49 million │  90177365500 │                  2.06 │
-12. │ 2006-12-01 │ 603.95 million │ 1.14 billion     │ 91.77 million  │  80499584100 │                  2.28 │
+ 1. │ 2006-01-01 │ 782.21 百万 │ 1.39 10億     │ 299.69 百万 │  84343937700 │                  2.93 │
+ 2. │ 2006-02-01 │ 670.38 百万 │ 1.05 10億     │ 297.65 百万 │  73524748600 │                  2.74 │
+ 3. │ 2006-03-01 │ 744.85 百万 │ 1.39 10億     │ 288.36 百万 │  87960830800 │                  2.75 │
+ 4. │ 2006-04-01 │ 718.97 百万 │ 1.45 10億     │ 185.65 百万 │  78031719800 │                  3.02 │
+ 5. │ 2006-05-01 │ 557.89 百万 │ 2.32 10億     │ 174.94 百万 │  97096584100 │                  3.14 │
+ 6. │ 2006-06-01 │ 641.48 百万 │ 1.98 10億     │ 142.55 百万 │  96304086800 │                  2.87 │
+ 7. │ 2006-07-01 │ 624.93 百万 │ 1.33 10億     │ 127.74 百万 │  79940921800 │                  2.61 │
+ 8. │ 2006-08-01 │ 639.35 百万 │ 1.13 10億     │ 107.16 百万 │  84251753200 │                  2.23 │
+ 9. │ 2006-09-01 │ 633.45 百万 │ 1.10 10億     │ 121.72 百万 │  82775234300 │                  2.24 │
+10. │ 2006-10-01 │ 514.82 百万 │ 1.29 10億     │ 158.90 百万 │  93406712600 │                   2.1 │
+11. │ 2006-11-01 │ 494.37 百万 │ 1.24 10億     │ 118.49 百万 │  90177365500 │                  2.06 │
+12. │ 2006-12-01 │ 603.95 百万 │ 1.14 10億     │ 91.77 百万  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## See also {#see-also}
+
+## 関連項目 {#see-also}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -1,15 +1,16 @@
 ---
-slug: '/best-practices/avoid-optimize-final'
-sidebar_label: 'Избегайте Optimize Final'
+slug: /best-practices/avoid-optimize-final
 sidebar_position: 10
-description: 'Страница, описывающая, почему вы должны избегать оператора OPTIMIZE'
-title: 'Избегайте Optimize Final'
-doc_type: guide
+sidebar_label: 'Избегайте OPTIMIZE FINAL'
+title: 'Избегайте OPTIMIZE FINAL'
+description: 'Страница, объясняющая, почему следует избегать использования конструкции OPTIMIZE FINAL в ClickHouse'
+keywords: ['avoid OPTIMIZE FINAL', 'background merges']
 hide_title: true
+doc_type: 'guide'
 ---
-import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_optimize_final.md';
 
+# Не используйте `OPTIMIZE FINAL`
 
-# Избегайте `OPTIMIZE FINAL`
+import Content from '@site/docs/best-practices/_snippets/_avoid_optimize_final.md';
 
 <Content />

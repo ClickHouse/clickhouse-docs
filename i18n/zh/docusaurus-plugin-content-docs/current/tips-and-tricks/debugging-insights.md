@@ -1,50 +1,54 @@
 ---
-'sidebar_position': 1
-'slug': '/community-wisdom/debugging-insights'
-'sidebar_label': '调试洞见'
-'doc_type': 'guide'
-'keywords':
-- 'clickhouse troubleshooting'
-- 'clickhouse errors'
-- 'slow queries'
-- 'memory problems'
-- 'connection issues'
-- 'performance optimization'
-- 'database errors'
-- 'configuration problems'
-- 'debug'
-- 'solutions'
-'title': '课程 - 调试洞见'
-'description': '找到最常见的 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
+sidebar_position: 1
+slug: /community-wisdom/debugging-insights
+sidebar_label: '调试洞见'
+doc_type: 'guide'
+keywords: [
+  'clickhouse troubleshooting',
+  'clickhouse errors',
+  'slow queries',
+  'memory problems', 
+  'connection issues',
+  'performance optimization',
+  'database errors',
+  'configuration problems',
+  'debug',
+  'solutions'
+]
+title: '经验分享 - 调试洞见'
+description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
 
-# ClickHouse 操作：社区调试洞察 {#clickhouse-operations-community-debugging-insights}
-*本指南是从社区见面会中获得的一系列发现的一部分。有关更多现实世界的解决方案和洞察，您可以 [按特定问题浏览](./community-wisdom.md)。*
-*高运营成本困扰您吗？请查看 [成本优化](./cost-optimization.md) 社区洞察指南。*
 
-## 基本系统表 {#essential-system-tables}
+# ClickHouse 运维:社区调试经验 {#clickhouse-operations-community-debugging-insights}
 
-这些系统表对于生产调试至关重要：
+_本指南是从社区交流活动中总结的系列经验之一。如需了解更多实际解决方案和见解,可以[按具体问题浏览](./community-wisdom.md)。_
+_运维成本居高不下?请参阅[成本优化](./cost-optimization.md)社区经验指南。_
+
+
+## 核心系统表 {#essential-system-tables}
+
+这些系统表是生产环境调试的基础:
 
 ### system.errors {#system-errors}
 
-显示您 ClickHouse 实例中的所有活动错误。
+显示 ClickHouse 实例中的所有活跃错误。
 
 ```sql
-SELECT name, value, changed 
-FROM system.errors 
-WHERE value > 0 
+SELECT name, value, changed
+FROM system.errors
+WHERE value > 0
 ORDER BY value DESC;
 ```
 
 ### system.replicas {#system-replicas}
 
-包含用于监控集群健康的复制延迟和状态信息。
+包含用于监控集群健康状况的复制延迟和状态信息。
 
 ```sql
 SELECT database, table, replica_name, absolute_delay, queue_size, inserts_in_queue
-FROM system.replicas 
+FROM system.replicas
 WHERE absolute_delay > 60
 ORDER BY absolute_delay DESC;
 ```
@@ -55,121 +59,129 @@ ORDER BY absolute_delay DESC;
 
 ```sql
 SELECT database, table, replica_name, position, type, create_time, last_exception
-FROM system.replication_queue 
+FROM system.replication_queue
 WHERE last_exception != ''
 ORDER BY create_time DESC;
 ```
 
 ### system.merges {#system-merges}
 
-显示当前的合并操作，并可以识别卡住的进程。
+显示当前的合并操作,可用于识别卡住的进程。
 
 ```sql
 SELECT database, table, elapsed, progress, is_mutation, total_size_bytes_compressed
-FROM system.merges 
+FROM system.merges
 ORDER BY elapsed DESC;
 ```
 
 ### system.parts {#system-parts}
 
-对于监控部分计数和识别碎片问题至关重要。
+对于监控数据分片数量和识别碎片化问题至关重要。
 
 ```sql
 SELECT database, table, count() as part_count
-FROM system.parts 
+FROM system.parts
 WHERE active = 1
 GROUP BY database, table
 ORDER BY count() DESC;
 ```
 
-## 常见生产问题 {#common-production-issues}
+
+## 常见生产环境问题 {#common-production-issues}
 
 ### 磁盘空间问题 {#disk-space-problems}
 
-在复制设置中，磁盘空间耗尽会导致级联问题。当一个节点耗尽空间时，其他节点继续尝试与其同步，从而导致网络流量激增和混淆的症状。一位社区成员花了 4 小时调试，结果只是磁盘空间过低。请查看此 [查询](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases) 以监控特定集群上的磁盘存储。
+在副本部署中,磁盘空间耗尽会引发连锁反应。当某个节点空间不足时,其他节点仍会持续尝试与其同步,导致网络流量激增并产生令人困惑的症状。曾有社区成员花费4小时排查问题,最终发现根本原因仅仅是磁盘空间不足。可以使用此[查询](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases)来监控特定集群的磁盘存储情况。
 
-AWS 用户应注意，默认的一般用途 EBS 卷有 16TB 的限制。
+AWS 用户需要注意,默认的通用型 EBS 卷存在 16TB 的容量限制。
 
-### 部件过多错误 {#too-many-parts-error}
+### 数据分片过多错误 {#too-many-parts-error}
 
-小的频繁插入会造成性能问题。社区发现，插入速率超过每秒 10 次通常会触发“部件过多”错误，因为 ClickHouse 无法快速合并部件。
+频繁的小批量插入会导致性能问题。社区发现,当插入速率超过每秒10次时,经常会触发"数据分片过多"错误,这是因为 ClickHouse 无法足够快地合并数据分片。
 
-**解决方案：**
-- 使用 30 秒或 200MB 的阈值进行批量数据处理
-- 启用 async_insert 进行自动分批  
-- 使用缓冲表进行服务器端批处理
-- 配置 Kafka 以控制批量大小
+**解决方案:**
 
-[官方建议](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)：每次插入至少 1,000 行，理想状态下为 10,000 到 100,000。
+- 使用30秒或200MB阈值进行批量处理
+- 启用 async_insert 实现自动批处理
+- 使用缓冲表进行服务端批处理
+- 配置 Kafka 以控制批次大小
 
-### 时间戳无效问题 {#data-quality-issues}
+[官方建议](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous):每次插入至少1,000行,理想情况下为10,000至100,000行。
 
-发送任意时间戳数据的应用程序会造成分区问题。这会导致具有不现实日期（例如 1998 或 2050 年）数据的分区，从而导致意外的存储行为。
+### 无效时间戳问题 {#data-quality-issues}
+
+应用程序发送带有任意时间戳的数据会造成分区问题。这会导致分区中包含不合理日期(如1998年或2050年)的数据,从而引发意外的存储行为。
 
 ### `ALTER` 操作风险 {#alter-operation-risks}
 
-在多 TB 表上进行大规模 `ALTER` 操作可能会消耗大量资源并可能锁定数据库。一位社区示例涉及在 14TB 数据上将一个整数更改为浮点数，这导致整个数据库被锁定，并需要从备份中重建。
+在多TB级别的表上执行大型 `ALTER` 操作可能会消耗大量资源,并可能导致数据库锁定。一个社区案例中,在14TB数据上将 Integer 类型更改为 Float 类型,导致整个数据库被锁定,最终需要从备份重建。
 
-**监控高成本变更：**
+**监控高成本的变更操作:**
 
 ```sql
 SELECT database, table, mutation_id, command, parts_to_do, is_done
-FROM system.mutations 
+FROM system.mutations
 WHERE is_done = 0;
 ```
 
-首先在较小的数据集上测试模式更改。
+建议先在较小的数据集上测试架构变更。
 
-## 内存和性能 {#memory-and-performance}
+
+## 内存与性能 {#memory-and-performance}
 
 ### 外部聚合 {#external-aggregation}
 
-为内存密集型操作启用外部聚合。这虽然较慢，但可以防止由于溢出到磁盘而导致的内存不足崩溃。您可以通过使用 `max_bytes_before_external_group_by` 来实现，这将帮助防止在大型 `GROUP BY` 操作中出现内存不足崩溃。您可以在 [这里]( /operations/settings/settings#max_bytes_before_external_group_by) 了解更多关于此设置的信息。
+为内存密集型操作启用外部聚合。虽然速度较慢,但可以通过溢写到磁盘来防止内存溢出崩溃。您可以使用 `max_bytes_before_external_group_by` 参数来实现,这将有助于防止大型 `GROUP BY` 操作导致的内存溢出崩溃。您可以在[此处](/operations/settings/settings#max_bytes_before_external_group_by)了解有关此设置的更多信息。
 
 ```sql
-SELECT 
+SELECT
     column1,
     column2,
     COUNT(*) as count,
     SUM(value) as total
 FROM large_table
 GROUP BY column1, column2
-SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
+SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB 阈值
 ```
 
-### 异步插入详细信息 {#async-insert-details}
+### 异步插入详情 {#async-insert-details}
 
-异步插入会自动在服务器端对小插入进行批处理以提高性能。您可以配置是否在返回确认之前等待数据写入磁盘——立即返回速度更快但耐久性较差。现代版本支持去重，以处理批次内的重复数据。
+异步插入会在服务器端自动批处理小批量插入以提高性能。您可以配置是否在返回确认之前等待数据写入磁盘——立即返回速度更快但持久性较低。现代版本支持去重功能以处理批次内的重复数据。
 
 **相关文档**
+
 - [选择插入策略](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)
 
 ### 分布式表配置 {#distributed-table-configuration}
 
-默认情况下，分布式表使用单线程插入。启用 `insert_distributed_sync` 进行并行处理并立即将数据发送到分片。
+默认情况下,分布式表使用单线程插入。启用 `insert_distributed_sync` 可实现并行处理并立即将数据发送到各分片。
 
-使用分布式表时监控临时数据的积累。
+使用分布式表时需监控临时数据的累积情况。
 
 ### 性能监控阈值 {#performance-monitoring-thresholds}
 
-社区建议的监控阈值：
-- 每个分区的部件：最好少于 100
-- 延迟插入：应保持在零
-- 插入速率：为了最佳性能，限制在每秒约 1 次
+社区推荐的监控阈值:
+
+- 每个分区的数据部分数:建议少于 100
+- 延迟插入:应保持为零
+- 插入速率:建议限制在每秒约 1 次以获得最佳性能
 
 **相关文档**
+
 - [自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key)
+
 
 ## 快速参考 {#quick-reference}
 
-| 问题 | 检测 | 解决方案 |
-|-------|-----------|----------|
-| 磁盘空间 | 检查 `system.parts` 总字节 | 监控使用情况，规划扩展 |
-| 部件过多 | 计算每个表的部件 | 批量插入，启用 async_insert |
-| 复制延迟 | 检查 `system.replicas` 延迟 | 监控网络，重启副本 |
-| 错误数据 | 验证分区日期 | 实施时间戳验证 |
-| 卡住的变更 | 检查 `system.mutations` 状态 | 先在小数据上测试 |
+| 问题           | 检测方法                        | 解决方案                           |
+| --------------- | -------------------------------- | ---------------------------------- |
+| 磁盘空间      | 检查 `system.parts` 总字节数 | 监控使用量，规划扩容        |
+| 分片过多  | 统计每个表的分片数            | 批量插入，启用 async_insert |
+| 复制延迟 | 检查 `system.replicas` 延迟    | 监控网络，重启副本  |
+| 数据异常        | 验证分区日期         | 实施时间戳校验     |
+| Mutation 卡住 | 检查 `system.mutations` 状态  | 先在小数据集上测试           |
 
-### 视频来源 {#video-sources}
-- [操作 ClickHouse 的 10 个经验教训](https://www.youtube.com/watch?v=liTgGiTuhJE)
-- [在 ClickHouse 中快速、并发和一致的异步插入](https://www.youtube.com/watch?v=AsMPEfN5QtM)
+### 视频资源 {#video-sources}
+
+- [ClickHouse 运维的 10 条经验](https://www.youtube.com/watch?v=liTgGiTuhJE)
+- [ClickHouse 中快速、并发且一致的异步插入](https://www.youtube.com/watch?v=AsMPEfN5QtM)

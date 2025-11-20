@@ -1,58 +1,73 @@
 ---
-'sidebar_label': 'DbVisualizer'
-'slug': '/integrations/dbvisualizer'
-'description': 'DbVisualizer 是一种数据库工具，具备对 ClickHouse 的扩展支持。'
-'title': '将 DbVisualizer 连接到 ClickHouse'
-'doc_type': 'guide'
+sidebar_label: 'DbVisualizer'
+slug: /integrations/dbvisualizer
+description: 'DbVisualizer 是一款对 ClickHouse 提供增强支持的数据库工具。'
+title: '将 DbVisualizer 连接到 ClickHouse'
+keywords: ['DbVisualizer', 'database visualization', 'SQL client', 'JDBC driver', 'database tool']
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
 ---
 
-import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 连接 DbVisualizer 和 ClickHouse
+# 将 DbVisualizer 连接至 ClickHouse
 
 <CommunityMaintainedBadge/>
 
-## 开始或下载 DbVisualizer {#start-or-download-dbvisualizer}
 
-DbVisualizer 可在 https://www.dbvis.com/download/ 获取。
 
-## 1. 收集连接细节 {#1-gather-your-connection-details}
+## 启动或下载 DbVisualizer {#start-or-download-dbvisualizer}
+
+DbVisualizer 可从 https://www.dbvis.com/download/ 下载
+
+
+## 1. 收集连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-## 2. 内置 JDBC 驱动程序管理 {#2-built-in-jdbc-driver-management}
 
-DbVisualizer 随附最新的 ClickHouse JDBC 驱动程序。它具有完整的 JDBC 驱动程序管理功能，指向最新版本以及驱动程序的历史版本。
+## 2. 内置 JDBC 驱动管理 {#2-built-in-jdbc-driver-management}
 
-<Image img={dbvisualizer_driver_manager} size="lg" border alt="DbVisualizer 驱动管理界面显示 ClickHouse JDBC 驱动配置" />
+DbVisualizer 内置了最新的 ClickHouse JDBC 驱动程序,并提供完整的 JDBC 驱动管理功能,支持访问最新版本和历史版本的驱动程序。
+
+<Image
+  img={dbvisualizer_driver_manager}
+  size='lg'
+  border
+  alt='DbVisualizer 驱动管理器界面,显示 ClickHouse JDBC 驱动配置'
+/>
+
 
 ## 3. 连接到 ClickHouse {#3-connect-to-clickhouse}
 
-要使用 DbVisualizer 连接到数据库，您必须首先创建并设置数据库连接。
+要使用 DbVisualizer 连接到数据库，首先必须创建并设置一个数据库连接。
 
-1. 从 **Database->Create Database Connection** 创建一个新连接，并从弹出菜单中选择数据库的驱动程序。
+1. 通过 **Database -> Create Database Connection** 创建一个新连接，并在弹出菜单中为数据库选择驱动程序。
 
-2. 为新连接打开一个 **Object View** 选项卡。
+2. 新连接会打开一个 **Object View** 选项卡。
 
-3. 在 **Name** 字段中输入连接名称，并可选地在 **Notes** 字段中输入连接描述。
+3. 在 **Name** 字段中输入连接名称，可选地在 **Notes** 字段中输入该连接的说明。
 
 4. 将 **Database Type** 保持为 **Auto Detect**。
 
-5. 如果 **Driver Type** 中所选的驱动程序带有绿色勾号，则准备就绪。如果没有绿色勾号，则可能需要在 **Driver Manager** 中配置该驱动程序。
+5. 如果在 **Driver Type** 中选择的驱动带有绿色对勾标记，则表示可以直接使用。若没有绿色对勾标记，则可能需要在 **Driver Manager** 中配置该驱动。
 
-6. 在其他字段中输入有关数据库服务器的信息。
+6. 在其余字段中输入数据库服务器的相关信息。
 
-7. 通过单击 **Ping Server** 按钮验证是否可以与指定的地址和端口建立网络连接。
+7. 点击 **Ping Server** 按钮，验证是否可以与指定的地址和端口建立网络连接。
 
-8. 如果 Ping Server 的结果显示服务器可达，请单击 **Connect** 连接到数据库服务器。
+8. 如果 Ping Server 的结果显示服务器可达，点击 **Connect** 以连接到数据库服务器。
 
 :::tip
-如果在连接到数据库时遇到问题，请参阅 [修复连接问题](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) 的一些提示。
+如果在连接数据库时遇到问题，请参阅 [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) 获取一些故障排查建议。
+
 
 ## 了解更多 {#learn-more}
 
-要获取有关 DbVisualizer 的更多信息，请访问 [DbVisualizer 文档](https://www.dbvis.com/docs/ug/)。
+如需了解更多关于 DbVisualizer 的信息,请访问 [DbVisualizer 文档](https://www.dbvis.com/docs/ug/)。

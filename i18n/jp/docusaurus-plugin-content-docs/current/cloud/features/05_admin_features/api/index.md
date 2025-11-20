@@ -1,14 +1,15 @@
 ---
-'title': 'クラウド API'
-'slug': '/cloud/manage/cloud-api'
-'description': 'クラウド API セクションのランディングページ'
-'doc_type': 'landing-page'
+title: 'Cloud API'
+slug: /cloud/manage/cloud-api
+description: 'Cloud API セクションのランディングページ'
+doc_type: 'landing-page'
+keywords: ['ClickHouse Cloud', 'cloud API', 'API documentation', 'REST API reference', 'cloud management API']
 ---
 
-このセクションには、Cloud APIに関するリファレンスドキュメントが含まれており、以下のページがあります。
+このセクションでは Cloud API に関するリファレンスドキュメントを提供しており、次のページで構成されています。
 
-| ページ                                       | 説明                                                                                                                                    |
-|--------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| [概要](/cloud/manage/api/api-overview)    | レート制限、Terraform Provider、Swagger (OpenAPI) エンドポイントとUI、利用可能なサポートの概要を提供します。                             | 
-| [APIキーの管理](/cloud/manage/openapi)     | CloudのAPIについて、OpenAPIを利用してアカウントおよびサービスの側面をプログラムで管理する方法を学びます。                           |
-| [APIリファレンス](https://clickhouse.com/docs/cloud/manage/api/swagger) | OpenAPI（swagger）リファレンスページ。                                                                                                   |
+| Page                                       | Description                                                                                                                          |
+|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| [Overview](/cloud/manage/api/api-overview) | レート制限、Terraform Provider、Swagger (OpenAPI) のエンドポイントおよび UI、利用可能なサポートの概要を説明します。                    | 
+| [Managing API Keys](/cloud/manage/openapi) | OpenAPI を利用した Cloud の API について学び、アカウントおよびサービスのさまざまな側面をプログラムから管理できるようになります。 |
+| [API Reference](https://clickhouse.com/docs/cloud/manage/api/swagger) | OpenAPI (Swagger) のリファレンスページです。                                                                                         |

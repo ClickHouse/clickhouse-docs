@@ -1,139 +1,152 @@
 ---
-'sidebar_position': 1
-'slug': '/community-wisdom/performance-optimization'
-'sidebar_label': 'パフォーマンス最適化'
-'doc_type': 'guide'
-'keywords':
-- 'performance optimization'
-- 'query performance'
-- 'database tuning'
-- 'slow queries'
-- 'memory optimization'
-- 'cardinality analysis'
-- 'indexing strategies'
-- 'aggregation optimization'
-- 'sampling techniques'
-- 'database performance'
-- 'query analysis'
-- 'performance troubleshooting'
-'title': 'レッスン - パフォーマンス最適化'
-'description': 'パフォーマンス最適化戦略の実世界の例'
+sidebar_position: 1
+slug: /community-wisdom/performance-optimization
+sidebar_label: 'パフォーマンス最適化'
+doc_type: 'guide'
+keywords: [
+  'performance optimization',
+  'query performance',
+  'database tuning',
+  'slow queries',
+  'memory optimization',
+  'cardinality analysis',
+  'indexing strategies',
+  'aggregation optimization',
+  'sampling techniques',
+  'database performance',
+  'query analysis',
+  'performance troubleshooting'
+]
+title: 'レッスン - パフォーマンス最適化'
+description: 'パフォーマンス最適化戦略の実例'
 ---
 
 
-# パフォーマンス最適化: コミュニティによるテスト済み戦略 {#performance-optimization}
-*このガイドは、コミュニティミートアップから得られた知見のコレクションの一部です。より現実的な解決策や洞察については、[特定の問題でブラウズ](./community-wisdom.md)できます。*
-*Materialized Viewsに関して問題がありますか？[Materialized Views](./materialized-views.md)のコミュニティインサイトガイドをチェックしてください。*
-*クエリが遅いと感じており、さらに例が必要な場合は、[Query Optimization](/optimize/query-optimization)ガイドもご覧ください。*
 
-## カーディナリティによるソート（低いから高い） {#cardinality-ordering}
-ClickHouseの主インデックスは、低カーディナリティのカラムが最初に配置されると最も効果的に機能し、大きなデータのチャンクを効率的にスキップできます。キーの後半に配置された高カーディナリティのカラムは、それらのチャンク内で細かいソートを提供します。ユニークな値が少ないカラム（ステータス、カテゴリ、国など）から始め、ユニークな値が多いカラム（user_id、timestamp、session_idなど）で終了します。
+# パフォーマンス最適化：コミュニティで検証された戦略 {#performance-optimization}
 
-カーディナリティと主インデックスに関する詳細なドキュメントも参照してください：
-- [Choosing a Primary Key](/best-practices/choosing-a-primary-key)
-- [Primary indexes](/primary-indexes)
+_このガイドは、コミュニティミートアップで得られた知見をまとめたコレクションの一部です。実際の解決策や洞察をさらに知りたい場合は、[特定の問題別に参照](./community-wisdom.md)できます。_
+_マテリアライズドビューで問題が発生していますか？[マテリアライズドビュー](./materialized-views.md)のコミュニティ洞察ガイドをご確認ください。_
+_クエリが遅く、より多くの例を知りたい場合は、[クエリ最適化](/optimize/query-optimization)ガイドもご用意しています。_
 
-## 時間の粒度が重要 {#time-granularity}
-ORDER BY句でタイムスタンプを使用する際は、カーディナリティと精度のトレードオフを考慮してください。マイクロ秒精度のタイムスタンプは非常に高いカーディナリティ（行ごとにほぼ一意の値）を生成し、ClickHouseのスパース主インデックスの効果を減少させます。丸められたタイムスタンプはカーディナリティを下げ、より良いインデックススキッピングを可能にしますが、時間ベースのクエリの精度が失われます。
+
+## カーディナリティ順（低から高へ）{#cardinality-ordering}
+
+ClickHouseのプライマリインデックスは、カーディナリティの低いカラムを最初に配置することで最も効果的に機能し、大量のデータチャンクを効率的にスキップできます。キーの後方に配置されたカーディナリティの高いカラムは、それらのチャンク内で細かいソートを提供します。一意の値が少ないカラム（status、category、countryなど）から始め、一意の値が多いカラム（user_id、timestamp、session_idなど）で終わるようにします。
+
+カーディナリティとプライマリインデックスに関する詳細なドキュメントは以下を参照してください：
+
+- [プライマリキーの選択](/best-practices/choosing-a-primary-key)
+- [プライマリインデックス](/primary-indexes)
+
+
+## 時間粒度の重要性 {#time-granularity}
+
+ORDER BY句でタイムスタンプを使用する際は、カーディナリティと精度のトレードオフを考慮してください。マイクロ秒精度のタイムスタンプは非常に高いカーディナリティ(ほぼ行ごとに一意の値)を生成し、ClickHouseのスパースプライマリインデックスの効果を低下させます。丸めたタイムスタンプは低いカーディナリティを生成し、より効果的なインデックススキップを可能にしますが、時間ベースのクエリの精度は失われます。
 
 ```sql runnable editable
--- Challenge: Try different time functions like toStartOfMinute or toStartOfWeek
--- Experiment: Compare the cardinality differences with your own timestamp data
-SELECT 
-    'Microsecond precision' as granularity,
+-- チャレンジ: toStartOfMinuteやtoStartOfWeekなど、異なる時間関数を試してみましょう
+-- 実験: 独自のタイムスタンプデータでカーディナリティの違いを比較してみましょう
+SELECT
+    'マイクロ秒精度' as granularity,
     uniq(created_at) as unique_values,
-    'Creates massive cardinality - bad for sort key' as impact
+    '膨大なカーディナリティを生成 - ソートキーには不適切' as impact
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
 UNION ALL
-SELECT 
-    'Hour precision',
+SELECT
+    '時間精度',
     uniq(toStartOfHour(created_at)),
-    'Much better for sort key - enables skip indexing'
+    'ソートキーに適している - スキップインデックスを有効化'
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
-UNION ALL  
-SELECT 
-    'Day precision',
+UNION ALL
+SELECT
+    '日精度',
     uniq(toStartOfDay(created_at)),
-    'Best for reporting queries'
+    'レポートクエリに最適'
 FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## 平均ではなく個々のクエリに焦点を当てる {#focus-on-individual-queries-not-averages}
 
-ClickHouseのパフォーマンスをデバッグする際は、平均クエリ時間や全体システムのメトリクスに依存しないでください。代わりに、特定のクエリが遅い理由を特定します。システムは良好な平均パフォーマンスを持っていても、個々のクエリはメモリの枯渇、フィルタリングの不良、または高カーディナリティの操作によって苦しむことがあります。
+## 平均値ではなく個別のクエリに注目する {#focus-on-individual-queries-not-averages}
 
-ClickHouseのCTOであるアレクセイによると: *「正しい方法は、この特定のクエリが5秒で処理された理由を自問することです...中央値や他のクエリが迅速に処理されたかどうかは気にしません。私が気にするのは私のクエリだけです」*
+ClickHouseのパフォーマンスをデバッグする際は、平均クエリ時間やシステム全体のメトリクスに頼らないでください。その代わりに、特定のクエリが遅い理由を特定してください。システム全体の平均パフォーマンスが良好であっても、個別のクエリがメモリ不足、不適切なフィルタリング、または高カーディナリティ操作の影響を受けている可能性があります。
 
-クエリが遅い場合は、平均を見てはいけません。「なぜこの特定のクエリが遅かったのか？」と自問し、実際のリソース使用パターンを調べてください。
+ClickHouseのCTOであるAlexeyによると、_「正しいアプローチは、なぜこの特定のクエリが5秒で処理されたのかを自問することです。中央値や他のクエリが速く処理されるかどうかは関係ありません。私が気にするのは自分のクエリだけです」_
+
+クエリが遅い場合、平均値だけを見ないでください。「なぜこの特定のクエリが遅かったのか?」と問いかけ、実際のリソース使用パターンを調査してください。
+
 
 ## メモリと行スキャン {#memory-and-row-scanning}
 
-Sentryは、400万人以上の開発者から日々数十億のイベントを処理する開発者優先のエラー追跡プラットフォームです。彼らの重要な洞察: *「この特定の状況でメモリを駆動するのはグルーピングキーのカーディナリティです」* - 高カーディナリティの集約は、行スキャンではなくメモリ枯渇によってパフォーマンスを低下させます。
+Sentryは開発者ファーストのエラー追跡プラットフォームで、400万人以上の開発者から日々数十億のイベントを処理しています。彼らの重要な知見：_「この状況でメモリを消費する要因は、グルーピングキーのカーディナリティである」_ - 高カーディナリティの集約は、行スキャンではなく、メモリ枯渇によってパフォーマンスを低下させます。
 
-クエリが失敗した場合、それがメモリの問題（グループが多すぎる）なのか、スキャンの問題（行が多すぎる）なのかを判断します。
+クエリが失敗した場合、メモリの問題（グループ数が多すぎる）なのか、スキャンの問題（行数が多すぎる）なのかを判断してください。
 
-`GROUP BY user_id, error_message, url_path`のようなクエリは、すべてのユニークな値の組み合わせごとに別のメモリ状態を生成します。ユーザー、エラーの種類、URLパスの負荷が高いと、同時にメモリに保持される必要がある何百万もの集約状態が生成される可能性があります。
+`GROUP BY user_id, error_message, url_path`のようなクエリは、3つの値すべての一意な組み合わせごとに個別のメモリ状態を作成します。ユーザー数、エラータイプ、URLパスが増加すると、同時にメモリ上に保持する必要がある集約状態が数百万にも達する可能性があります。
 
-極端なケースでは、Sentryは決定論的サンプリングを使用します。10%のサンプルはメモリ使用量を90%削減し、ほとんどの集約の精度を約5%維持します：
+極端なケースでは、Sentryは決定論的サンプリングを使用しています。10%のサンプルはメモリ使用量を90%削減しながら、ほとんどの集約において約5%の精度を維持します：
 
 ```sql
-WHERE cityHash64(user_id) % 10 = 0  -- Always same 10% of users
+WHERE cityHash64(user_id) % 10 = 0  -- 常に同じ10%のユーザー
 ```
 
-これにより、同じユーザーがすべてのクエリに表示され、時間帯を越えて一貫した結果が得られます。重要な洞察: `cityHash64()`は、同じ入力に対して一貫したハッシュ値を生成するため、`user_id = 12345`は常に同じ値にハッシュされ、ユーザーは10%のサンプルに常に含まれるか、決して含まれない - クエリ間でのちらつきはありません。
+これにより、すべてのクエリで同じユーザーが表示され、期間を超えて一貫した結果が得られます。重要な知見：`cityHash64()`は同じ入力に対して一貫したハッシュ値を生成するため、`user_id = 12345`は常に同じ値にハッシュされ、そのユーザーが10%のサンプルに常に含まれるか、まったく含まれないかのいずれかになります - クエリ間で変動することはありません。
+
 
 ## Sentryのビットマスク最適化 {#bit-mask-optimization}
 
-高カーディナリティのカラム（URLなど）で集約する場合、各ユニークな値はメモリ内に別の集約状態を作成し、メモリの枯渇につながります。Sentryの解決策: 実際のURL文字列でグルーピングするのではなく、ビットマスクに収束するブール式でグルーピングします。
+高カーディナリティカラム（URLなど）で集計を行う場合、各ユニーク値がメモリ内に個別の集計状態を作成し、メモリ枯渇につながります。Sentryの解決策：実際のURL文字列でグループ化する代わりに、ビットマスクに集約されるブール式でグループ化します。
 
-次のクエリは、この状況が該当する場合にあなたのテーブルで試すことができます：
+この状況に該当する場合、自身のテーブルで試すことができるクエリを以下に示します：
 
 ```sql
--- Memory-Efficient Aggregation Pattern: Each condition = one integer per group
--- Key insight: sumIf() creates bounded memory regardless of data volume
--- Memory per group: N integers (N * 8 bytes) where N = number of conditions
+-- メモリ効率的な集計パターン：各条件 = グループごとに1つの整数
+-- 重要なポイント：sumIf()はデータ量に関係なくメモリ使用量が制限される
+-- グループあたりのメモリ：N個の整数（N * 8バイト）、Nは条件の数
 
-SELECT 
+SELECT
     your_grouping_column,
 
-    -- Each sumIf creates exactly one integer counter per group
-    -- Memory stays constant regardless of how many rows match each condition
+    -- 各sumIfはグループごとに正確に1つの整数カウンタを作成
+    -- 各条件に一致する行数に関係なくメモリは一定
     sumIf(1, your_condition_1) as condition_1_count,
     sumIf(1, your_condition_2) as condition_2_count,
     sumIf(1, your_text_column LIKE '%pattern%') as pattern_matches,
     sumIf(1, your_numeric_column > threshold_value) as above_threshold,
 
-    -- Complex multi-condition aggregations still use constant memory
+    -- 複雑な複数条件の集計でも一定のメモリを使用
     sumIf(1, your_condition_1 AND your_text_column LIKE '%pattern%') as complex_condition_count,
 
-    -- Standard aggregations for context
+    -- コンテキスト用の標準集計
     count() as total_rows,
     avg(your_numeric_column) as average_value,
     max(your_timestamp_column) as latest_timestamp
 
 FROM your_schema.your_table
-WHERE your_timestamp_column >= 'start_date' 
+WHERE your_timestamp_column >= 'start_date'
   AND your_timestamp_column < 'end_date'
 GROUP BY your_grouping_column
-HAVING condition_1_count > minimum_threshold 
+HAVING condition_1_count > minimum_threshold
    OR condition_2_count > another_threshold
 ORDER BY (condition_1_count + condition_2_count + pattern_matches) DESC
 LIMIT 20
 ```
 
-ユニークな文字列をメモリに保存する代わりに、その文字列に関する質問への回答を整数として保存します。集約状態は、データの多様性にかかわらず、限界があり、小さくなります。
+すべてのユニーク文字列をメモリに格納する代わりに、それらの文字列に関する質問への回答を整数として格納します。集計状態は、データの多様性に関係なく、制限され小さくなります。
 
-Sentryのエンジニアリングチームから: 「これらの重いクエリは10倍以上速くなり、メモリ使用量は100倍低下しました（そして、より重要なことに、限界があります）。私たちの大規模な顧客は、リプレイを検索する際にエラーを見ることがなくなり、私たちは任意のサイズの顧客をサポートできるようになりました。」
+Sentryのエンジニアリングチームより：「これらの重いクエリは10倍以上高速になり、メモリ使用量は100分の1に削減されました（さらに重要なことに、制限されています）。最大規模の顧客はリプレイ検索時にエラーが発生しなくなり、メモリ不足なしに任意の規模の顧客をサポートできるようになりました。」
 
-## 動画のソース {#video-sources}
 
-- [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - Sentryのメモリ最適化に関するプロダクションの教訓
-- [ClickHouse Performance Analysis](https://www.youtube.com/watch?v=lxKbvmcLngo) - デバッグ手法のアレクセイ・ミロビドフ
-- [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - コミュニティの最適化戦略
+## 動画リソース {#video-sources}
 
-**次を読む**:
-- [Query Optimization Guide](/optimize/query-optimization)
-- [Materialized Views Community Insights](./materialized-views.md)
+- [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - Sentryの本番環境でのメモリ最適化に関する知見
+- [ClickHouse Performance Analysis](https://www.youtube.com/watch?v=lxKbvmcLngo) - Alexey Milovidovによるデバッグ手法
+- [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - コミュニティによる最適化戦略
+
+**次に読む**:
+
+- [クエリ最適化ガイド](/optimize/query-optimization)
+- [マテリアライズドビューに関するコミュニティの知見](./materialized-views.md)

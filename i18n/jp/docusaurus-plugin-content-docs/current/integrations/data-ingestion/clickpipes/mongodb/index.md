@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'MongoDBからClickHouseへのデータ取り込み'
-'description': 'MongoDBをClickHouse Cloudにシームレスに接続する方法を説明します。'
-'slug': '/integrations/clickpipes/mongodb'
-'title': 'MongoDBからClickHouseへのデータ取り込み（CDCを使用）'
-'doc_type': 'guide'
+sidebar_label: 'MongoDB から ClickHouse へのデータ取り込み'
+description: 'MongoDB を ClickHouse Cloud にシームレスに接続する方法を説明します。'
+slug: /integrations/clickpipes/mongodb
+title: 'MongoDB から ClickHouse へのデータ取り込み（CDC を使用）'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -16,90 +17,105 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# MongoDBからClickHouseへのデータの取り込み（CDCを使用）
+# MongoDB から ClickHouse へのデータ取り込み（CDC の利用）
 
 <BetaBadge/>
 
 :::info
-ClickPipesを介してMongoDBからClickHouse Cloudへのデータの取り込みは公開ベータ版です。
+ClickPipes を使用した MongoDB から ClickHouse Cloud へのデータ取り込みは、現在パブリックベータです。
 :::
 
 :::note
-ClickHouse Cloudのコンソールおよびドキュメントでは、MongoDBの「テーブル」と「コレクション」は互換的に使用されています。
+ClickHouse Cloud のコンソールおよびドキュメントでは、MongoDB に対して「table」と「collection」という用語は同じ意味で使用されます。
 :::
 
-ClickPipesを使用してMongoDBデータベースからClickHouse Cloudにデータを取り込むことができます。ソースのMongoDBデータベースは、オンプレミスまたはMongoDB Atlasのようなサービスを使用してクラウドにホストできます。
+ClickPipes を使用して、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースとなる MongoDB データベースは、オンプレミス環境でも、MongoDB Atlas などのサービスを利用したクラウド環境でも構いません。
+
+
 
 ## 前提条件 {#prerequisites}
 
-開始するには、まずMongoDBデータベースが正しくレプリケーションのために設定されていることを確認する必要があります。設定手順はMongoDBのデプロイ方法によって異なるため、以下の関連ガイドに従ってください：
+開始する前に、MongoDBデータベースがレプリケーション用に正しく設定されていることを確認する必要があります。設定手順はMongoDBのデプロイ方法によって異なるため、以下の該当するガイドを参照してください。
 
 1. [MongoDB Atlas](./mongodb/source/atlas)
 
-2. [一般的なMongoDB](./mongodb/source/generic)
+2. [汎用MongoDB](./mongodb/source/generic)
 
-ソースのMongoDBデータベースがセットアップされたら、ClickPipeの作成を続けることができます。
+ソースMongoDBデータベースのセットアップが完了したら、ClickPipeの作成を続行できます。
 
-## ClickPipeを作成する {#create-your-clickpipe}
 
-ClickHouse Cloudアカウントにログインしていることを確認してください。まだアカウントがない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
+## ClickPipeの作成 {#create-your-clickpipe}
 
-1. ClickHouse Cloudのコンソールで、ClickHouse Cloudサービスに移動します。
+ClickHouse Cloudアカウントにログインしていることを確認してください。アカウントをお持ちでない場合は、[こちら](https://cloud.clickhouse.com/)から登録できます。
 
-<Image img={cp_service} alt="ClickPipes service" size="lg" border/>
+1. ClickHouse Cloudコンソールで、ClickHouse Cloudサービスに移動します。
 
-2. 左側のメニューから`Data Sources`ボタンを選択し、「ClickPipeの設定」をクリックします。
+<Image img={cp_service} alt='ClickPipesサービス' size='lg' border />
 
-<Image img={cp_step0} alt="Select imports" size="lg" border/>
+2. 左側のメニューから`Data Sources`ボタンを選択し、「Set up a ClickPipe」をクリックします。
+
+<Image img={cp_step0} alt='インポートの選択' size='lg' border />
 
 3. `MongoDB CDC`タイルを選択します。
 
-<Image img={mongodb_tile} alt="Select MongoDB" size="lg" border/>
+<Image img={mongodb_tile} alt='MongoDBの選択' size='lg' border />
 
-### ソースMongoDBデータベース接続を追加する {#add-your-source-mongodb-database-connection}
+### ソースMongoDBデータベース接続の追加 {#add-your-source-mongodb-database-connection}
 
-4. 前提条件のステップで設定したソースMongoDBデータベースの接続詳細を入力します。
+4. 前提条件の手順で設定したソースMongoDBデータベースの接続情報を入力します。
 
    :::info
-   接続詳細を追加する前に、ClickPipesのIPアドレスがファイアウォールルールでホワイトリストに登録されていることを確認してください。次のページには[ClickPipesのIPアドレスのリスト](../index.md#list-of-static-ips)があります。
-   詳細については、このページの[上部](#prerequisites)にリンクされているソースMongoDB設定ガイドを参照してください。
+   接続情報の追加を開始する前に、ファイアウォールルールでClickPipesのIPアドレスをホワイトリストに登録していることを確認してください。[ClickPipesのIPアドレス一覧](../index.md#list-of-static-ips)は次のページで確認できます。
+   詳細については、[このページの上部](#prerequisites)にリンクされているソースMongoDBセットアップガイドを参照してください。
    :::
 
-   <Image img={mongodb_connection_details} alt="Fill in connection details" size="lg" border/>
+   <Image
+     img={mongodb_connection_details}
+     alt='接続情報の入力'
+     size='lg'
+     border
+   />
 
-接続詳細が入力されたら、`Next`をクリックします。
+接続情報の入力が完了したら、`Next`をクリックします。
 
-#### 詳細設定を構成する {#advanced-settings}
+#### 詳細設定の構成 {#advanced-settings}
 
-必要に応じて詳細設定を構成できます。各設定の簡単な説明は以下の通りです：
+必要に応じて詳細設定を構成できます。各設定の簡単な説明を以下に示します:
 
-- **同期間隔**: ClickPipesがソースデータベースをポーリングする間隔です。これは、コストに敏感なユーザーにとって、宛先のClickHouseサービスに影響を与えるため、値を高く（`3600`以上）保つことをお勧めします。
-- **取得バッチサイズ**: 一度に取得する行の数です。これは最善の努力による設定であり、すべてのケースで尊重されるわけではありません。
-- **初期スナップショットで並行して取得するテーブル数**: 初期スナップショット中に並行して取得されるテーブルの数です。多数のテーブルがある場合に、並行して取得するテーブルの数を制御するのに便利です。
+- **Sync interval**: ClickPipesがソースデータベースの変更をポーリングする間隔です。これは宛先ClickHouseサービスに影響を与えるため、コストを重視するユーザーには、この値を高めに設定すること（`3600`以上）を推奨します。
+- **Pull batch size**: 1回のバッチで取得する行数です。これはベストエフォート設定であり、すべてのケースで保証されるわけではありません。
+- **Snapshot number of tables in parallel**: 初期スナップショット時に並列で取得されるテーブルの数です。多数のテーブルがあり、並列で取得されるテーブル数を制御したい場合に有用です。
 
-### テーブルを構成する {#configure-the-tables}
+### テーブルの構成 {#configure-the-tables}
 
 5. ここでClickPipeの宛先データベースを選択できます。既存のデータベースを選択するか、新しいデータベースを作成できます。
 
-   <Image img={select_destination_db} alt="Select destination database" size="lg" border/>
+   <Image
+     img={select_destination_db}
+     alt='宛先データベースの選択'
+     size='lg'
+     border
+   />
 
-6. ソースMongoDBデータベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際に、宛先のClickHouseデータベースでテーブルの名前を変更することもできます。
+6. ソースMongoDBデータベースから複製するテーブルを選択できます。テーブルを選択する際、宛先ClickHouseデータベースでテーブル名を変更することもできます。
 
-### 権限を確認し、ClickPipeを開始する {#review-permissions-and-start-the-clickpipe}
+### 権限の確認とClickPipeの開始 {#review-permissions-and-start-the-clickpipe}
 
-7. 権限のドロップダウンから「フルアクセス」ロールを選択し、「設定を完了」をクリックします。
+7. 権限ドロップダウンから「Full access」ロールを選択し、「Complete Setup」をクリックします。
 
-   <Image img={ch_permissions} alt="Review permissions" size="lg" border/>
+   <Image img={ch_permissions} alt='権限の確認' size='lg' border />
 
-## 次は何ですか？ {#whats-next}
 
-MongoDBからClickHouse CloudへのデータをレプリケートするClickPipeを設定したら、データを最適なパフォーマンスでクエリおよびモデル化する方法に集中できます。
+## 次のステップ {#whats-next}
+
+MongoDBからClickHouse CloudへデータをレプリケートするためのClickPipeの設定が完了したら、最適なパフォーマンスを実現するためのデータのクエリ方法とモデリング方法に集中できます。
+
 
 ## 注意事項 {#caveats}
 
-このコネクタを使用するときに注意すべきいくつかの注意事項があります：
+このコネクタを使用する際の注意事項は以下の通りです:
 
-- MongoDBのバージョンは5.1.0以上が必要です。
-- CDCのためにMongoDBのネイティブなChange Streams APIを使用します。これはMongoDBのoplogに依存してリアルタイムの変更をキャプチャします。
-- MongoDBのドキュメントはデフォルトでJSONタイプとしてClickHouseにレプリケートされます。これにより柔軟なスキーマ管理が可能になり、ClickHouseの豊富なJSON演算子を使用してクエリおよび分析が行えます。JSONデータのクエリについての詳細は[こちら](https://clickhouse.com/docs/sql-reference/data-types/newjson)を参照してください。
-- セルフサービスのPrivateLink設定は現在利用できません。AWSでPrivateLinkが必要な場合は、db-integrations-support@clickhouse.comにお問い合わせいただくか、サポートチケットを作成してください。私たちはそれを有効にするために協力します。
+- MongoDB バージョン 5.1.0 以上が必要です。
+- CDC には MongoDB のネイティブ Change Streams API を使用しており、MongoDB の oplog に依存してリアルタイムの変更をキャプチャします。
+- MongoDB のドキュメントはデフォルトで JSON 型として ClickHouse にレプリケートされます。これにより柔軟なスキーマ管理が可能になり、ClickHouse の豊富な JSON 演算子をクエリや分析に使用できます。JSON データのクエリについて詳しくは[こちら](https://clickhouse.com/docs/sql-reference/data-types/newjson)をご覧ください。
+- セルフサービスの PrivateLink 設定は現在利用できません。AWS をご利用で PrivateLink が必要な場合は、db-integrations-support@clickhouse.com までご連絡いただくか、サポートチケットを作成してください。有効化のサポートをいたします。

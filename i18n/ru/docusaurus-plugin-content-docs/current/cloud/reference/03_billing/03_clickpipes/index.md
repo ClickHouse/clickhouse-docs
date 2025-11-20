@@ -1,18 +1,18 @@
 ---
-'slug': '/cloud/reference/billing/clickpipes'
-'title': 'ClickPipes'
-'description': 'билдинг ClickPipes'
-'keywords':
-- 'ClickPipes Billing'
-'doc_type': 'reference'
+slug: /cloud/reference/billing/clickpipes
+title: 'ClickPipes'
+description: 'Выставление счетов за ClickPipes'
+keywords: ['ClickPipes Billing']
+doc_type: 'reference'
 ---
+
 :::note
-Использование MySQL и MongoDB CDC ClickPipes бесплатно до достижения общего доступного релиза (GA). Клиенты будут уведомлены заранее о запланированных релизах GA для пересмотра и оптимизации использования ClickPipes.
+Использование MySQL и MongoDB CDC ClickPipes является бесплатным до достижения статуса General Availability (GA). Клиенты будут уведомлены заранее до запуска GA, чтобы они могли пересмотреть и оптимизировать использование ClickPipes.
 :::
 
-[ClickPipes](/integrations/clickpipes) выставление счетов основано на **использовании вычислительных ресурсов** и **приемах данных**. Для получения дополнительной информации о модели ценообразования для каждой категории, смотрите специализированные страницы по выставлению счетов:
+Выставление счетов за [ClickPipes](/integrations/clickpipes) основано на **использовании вычислительных ресурсов** и **объёме загружаемых данных**. Дополнительные сведения о модели ценообразования для каждой категории см. на отдельных страницах по биллингу:
 
-| Страница                                                                                                                | Описание                                                                                                                                                                                                                                    |
+| Page                                                                                                                | Description                                                                                                                                                                                                                                    |
 |---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ClickPipes для Postgres CDC](/cloud/reference/billing/clickpipes/postgres-cdc)                                 | Ценообразование для PostgreSQL CDC ClickPipes.                |
-| [ClickPipes для потоковой передачи и объектного хранения](/cloud/reference/billing/clickpipes/streaming-and-object-storage) | Ценообразование для потоковых и объектных ClickPipes. |
+| [ClickPipes for Postgres CDC](/cloud/reference/billing/clickpipes/postgres-cdc)                                 | Цены для PostgreSQL CDC ClickPipes.                |
+| [ClickPipes for streaming and object storage](/cloud/reference/billing/clickpipes/streaming-and-object-storage) | Цены для ClickPipes для потоковой передачи и объектного хранилища. |

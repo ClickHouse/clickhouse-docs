@@ -1,36 +1,12 @@
 ---
-slug: '/optimize/avoid-nullable-columns'
-sidebar_label: 'Избегайте Nullable Колонок'
-description: 'Почему допустимые колонки следует избегать в ClickHouse'
-title: 'Избегайте Nullable Колонок'
-doc_type: guide
+slug: /optimize/avoid-nullable-columns
+sidebar_label: 'Избегайте столбцов Nullable'
+title: 'Избегайте столбцов Nullable'
+description: 'Почему в ClickHouse следует избегать столбцов типа Nullable'
+doc_type: 'guide'
+keywords: ['avoid nullable columns', 'nullable columns', 'data types', 'best practices', 'performance optimization']
 ---
-import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
 
-# Адаптивные алгоритмы JOIN
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
-Адаптивные алгоритмы JOIN в ClickHouse предотавляют возможность выбора наилучшего метода соединения в зависимости от текущих условий и характеристик данных. Это может существенно улучшить производительность запросов.
-
-## Параметры адаптивного JOIN
-
-Адаптивные алгоритмы JOIN позволяют:
-
-- Выбор наилучшего алгоритма зависимо от размера объединяемых таблиц.
-- Оптимизация использования ресурсов в зависимости от текущей нагрузки.
-- Улучшение времени выполнения запросов за счет динамической адаптации.
-
-### Как включить адаптивные JOIN
-
-Для включения адаптивного JOIN требуется изменить настройки сервера. Это можно сделать через файл конфигурации или непосредственно в SQL запросе.
-
-```sql
-SET enable_adaptive_join = 1;
-
-### Примечания
-
-- Адаптивные алгоритмы JOIN лучше всего работают с большими наборами данных.
-- Рекомендуется тестировать производительность на различных данных для выбора оптимальных параметров.
-
-## Заключение
-
-Адаптивные алгоритмы JOIN являются мощным инструментом для повышения производительности запросов в ClickHouse. Их использование помогает достичь лучшей оптимизации и обработки данных.
+<Content />

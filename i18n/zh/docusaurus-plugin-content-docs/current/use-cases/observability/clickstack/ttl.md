@@ -1,23 +1,25 @@
 ---
-'slug': '/use-cases/observability/clickstack/ttl'
-'title': '管理生存时间 (TTL)'
-'sidebar_label': '管理生存时间 (TTL)'
-'pagination_prev': null
-'pagination_next': null
-'description': '使用 ClickStack 管理生存时间 (TTL)'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/ttl
+title: '管理 TTL'
+sidebar_label: '管理 TTL'
+pagination_prev: null
+pagination_next: null
+description: '在 ClickStack 中管理 TTL'
+doc_type: 'guide'
+keywords: ['clickstack', 'ttl', 'data retention', 'lifecycle', 'storage management']
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-## TTL in ClickStack {#ttl-clickstack}
 
-生存时间 (TTL) 是 ClickStack 中一个关键特性，旨在有效管理和保留数据，尤其是在大量数据不断生成的情况下。TTL 允许自动过期和删除旧数据，确保存储得到最佳利用，同时不需要人工干预来维持性能。这一能力对保持数据库的轻量化、降低存储成本、以及确保查询速度快且高效，因而专注于最相关和最新的数据至关重要。此外，它通过系统管理数据生命周期，有助于遵守数据保留政策，从而增强可观察解决方案的整体可持续性和可扩展性。
+## ClickStack 中的 TTL {#ttl-clickstack}
 
-**默认情况下，ClickStack 会保留数据 3 天。要修改此设置，请参见 ["Modifying TTL"](#modifying-ttl)。**
+生存时间(TTL)是 ClickStack 中用于高效数据保留和管理的关键功能,尤其是在持续生成海量数据的情况下。TTL 允许自动过期和删除旧数据,确保存储得到最优利用,并在无需人工干预的情况下保持性能。此功能对于保持数据库精简、降低存储成本以及通过聚焦于最相关和最新的数据来确保查询保持快速高效至关重要。此外,它通过系统化地管理数据生命周期来帮助遵守数据保留策略,从而增强可观测性解决方案的整体可持续性和可扩展性。
 
-在 ClickHouse 中，TTL 是在表级别控制的。例如，日志的模式如下所示：
+**默认情况下,ClickStack 保留数据 3 天。要修改此设置,请参阅["修改 TTL"](#modifying-ttl)。**
+
+TTL 在 ClickHouse 中是在表级别控制的。例如,日志的表结构如下所示:
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -55,49 +57,52 @@ TTL TimestampTime + toIntervalDay(3)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 ```
 
-ClickHouse 中的分区允许数据根据列或 SQL 表达式在磁盘上进行逻辑分离。通过逻辑分离数据，每个分区可以独立操作，例如在根据 TTL 策略过期时进行删除。
+ClickHouse 中的分区允许根据列或 SQL 表达式在磁盘上逻辑分离数据。通过逻辑分离数据,每个分区可以独立操作,例如根据 TTL 策略在过期时删除。
 
-如上例所示，分区在表最初通过 `PARTITION BY` 子句定义时指定。此子句可以包含任何列的 SQL 表达式，结果将定义一行数据发送到哪个分区。这会导致数据与磁盘上每个分区通过一个共同的文件夹名称前缀逻辑关联，从而可以独立查询。对于上述示例，默认的 `otel_logs` 模式使用表达式 `toDate(Timestamp)` 按天进行分区。当行数据插入 ClickHouse 时，此表达式会对每行进行评估，并在结果分区存在时将其路由到该分区（如果该行是某天的第一行，将会创建该分区）。有关分区及其其他应用的详细信息，请参见 ["Table Partitions"](/partitions)。
+如上例所示,分区在表初始定义时通过 `PARTITION BY` 子句指定。此子句可以包含针对任何列的 SQL 表达式,其结果将决定行被发送到哪个分区。这会使数据在磁盘上通过公共文件夹名称前缀与每个分区逻辑关联,然后可以单独查询。对于上面的示例,默认的 `otel_logs` 表结构使用表达式 `toDate(Timestamp)` 按天分区。当行插入到 ClickHouse 时,此表达式将针对每一行进行计算,并路由到相应的分区(如果存在)(如果该行是当天的第一行,则会创建分区)。有关分区及其其他应用的更多详细信息,请参阅["表分区"](/partitions)。
 
-<Image img={observability_14} alt="Partitions" size="lg"/>
+<Image img={observability_14} alt='分区' size='lg' />
 
-表模式还包括 `TTL TimestampTime + toIntervalDay(3)` 和设置 `ttl_only_drop_parts = 1`。前者确保数据在超过 3 天后将被删除。设置 `ttl_only_drop_parts = 1` 强制仅删除所有数据均已过期的数据分区（而不是试图部分删除行）。通过分区确保来自不同日期的数据从未“合并”，因此可以有效地删除数据。
+
+表结构还包括 `TTL TimestampTime + toIntervalDay(3)`，并设置 `ttl_only_drop_parts = 1`。前者子句确保数据在超过 3 天后会被删除。设置 `ttl_only_drop_parts = 1` 会强制仅删除其中所有数据都已过期的数据 part（而不是尝试部分删除行）。在通过分区保证不同日期的数据永远不会被“合并”的情况下，就可以高效地删除数据。 
 
 :::important `ttl_only_drop_parts`
-我们建议始终使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)。启用此设置时，ClickHouse 会在所有行过期时删除整个分区。与部分清理 TTL 行（通过资源密集型突变实现，当 `ttl_only_drop_parts=0` 时）相比，删除整个分区允许更短的 `merge_with_ttl_timeout` 时间并降低对系统性能的影响。如果数据按您执行 TTL 过期的相同单位进行分区，比如天，分区自然只会包含来自定义时间间隔的数据。这将确保可以高效地应用 `ttl_only_drop_parts=1`。
+我们建议始终使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)。启用该设置后，当一个 part 中的所有行都已过期时，ClickHouse 会删除整个 part。与通过资源消耗较高的变更操作（当 `ttl_only_drop_parts=0` 时）对 TTL 过期行进行部分清理相比，删除整个 part 可以缩短 `merge_with_ttl_timeout` 的时间，并降低对系统性能的影响。如果数据按照与你执行 TTL 过期所使用的时间单位（例如天）进行分区，各个 part 自然只会包含该时间区间内的数据。这将确保可以高效地应用 `ttl_only_drop_parts=1`。
 :::
 
-默认情况下，具有过期 TTL 的数据会在 ClickHouse [合并数据分区](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时被移除。当 ClickHouse 检测到数据过期时，会执行一个非计划的合并。
+默认情况下，TTL 过期的数据会在 ClickHouse [合并数据 part](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时被删除。当 ClickHouse 检测到数据已过期时，会执行一次非计划合并。
 
 :::note TTL schedule
-TTL 不是立即应用的，而是按照计划进行，如上所述。MergeTree 表设置 `merge_with_ttl_timeout` 设置在使用删除 TTL 之前重复合并的最小延迟（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟，触发 TTL 合并可能需要更长时间。如果值设置得过低，会执行许多非计划的合并，这可能会消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制执行 TTL 过期。
+如上所述，TTL 不会立即生效，而是按计划执行。MergeTree 表设置 `merge_with_ttl_timeout` 用于设置在重复执行带有删除 TTL 的合并之前的最小延迟时间（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟；触发一次 TTL 合并可能需要更长时间。如果该值设置得过低，将会执行许多非计划合并，可能消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制触发一次 TTL 过期。
 :::
 
-## Modifying TTL {#modifying-ttl}
 
-要修改 TTL，用户可以选择以下两种方式：
 
-1. **修改表模式（推荐）**。这需要连接到 ClickHouse 实例，例如使用 [clickhouse-client](/interfaces/cli) 或 [Cloud SQL Console](/cloud/get-started/sql-console)。例如，我们可以使用以下 DDL 修改 `otel_logs` 表的 TTL：
+## 修改 TTL {#modifying-ttl}
+
+要修改 TTL,用户可以采用以下任一方式:
+
+1. **修改表结构(推荐)**。这需要连接到 ClickHouse 实例,例如使用 [clickhouse-client](/interfaces/cli) 或 [Cloud SQL Console](/cloud/get-started/sql-console)。例如,我们可以使用以下 DDL 修改 `otel_logs` 表的 TTL:
 
 ```sql
 ALTER TABLE default.otel_logs
 MODIFY TTL TimestampTime + toIntervalDay(7);
 ```
 
-2. **修改 OTel 收集器**。ClickStack OpenTelemetry 收集器如果表不存在则会在 ClickHouse 中创建表。这是通过 ClickHouse 导出器实现的，该导出器本身公开了一个用于控制默认 TTL 表达式的 `ttl` 参数，例如：
+2. **修改 OTel 收集器**。ClickStack OpenTelemetry 收集器会在表不存在时在 ClickHouse 中创建表。这是通过 ClickHouse 导出器实现的,该导出器提供了一个 `ttl` 参数,用于控制默认的 TTL 表达式,例如:
 
 ```yaml
 exporters:
- clickhouse:
-   endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
-   ttl: 72h
+  clickhouse:
+    endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
+    ttl: 72h
 ```
 
-### Column level TTL {#column-level-ttl}
+### 列级 TTL {#column-level-ttl}
 
-上述示例在表级别上过期数据。用户还可以在列级别上过期数据。随着数据的老化，可以用于删除在调查中其值不值得保留的列。例如，我们建议保留 `Body` 列，以防在插入时尚未提取新的动态元数据，例如新的 Kubernetes 标签。在一段时间后，例如 1 个月，可能会明显发现这些额外的元数据没有用处，从而限制了保留 `Body` 列的价值。
+上述示例在表级别设置数据过期。用户也可以在列级别设置数据过期。随着数据老化,可以利用此功能删除那些在调查分析中价值不足以证明其保留成本的列。例如,我们建议保留 `Body` 列,以防在插入时未提取的新动态元数据被添加,例如新的 Kubernetes 标签。一段时间后(例如 1 个月),如果这些额外的元数据明显没有用处,那么保留 `Body` 列的价值就会降低。
 
-下面，我们展示了如何在 30 天后删除 `Body` 列。
+下面展示了如何在 30 天后删除 `Body` 列。
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -111,5 +116,5 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note
-指定列级 TTL 要求用户提供自己的模式。这不能在 OTel 收集器中指定。
+指定列级 TTL 需要用户自行定义表结构。这无法在 OTel 收集器中指定。
 :::

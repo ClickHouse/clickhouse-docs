@@ -1,43 +1,38 @@
 ---
-'slug': '/integrations/data-formats'
-'sidebar_label': '概要'
-'sidebar_position': 1
-'keywords':
-- 'clickhouse'
-- 'CSV'
-- 'TSV'
-- 'Parquet'
-- 'clickhouse-client'
-- 'clickhouse-local'
-'title': 'さまざまなデータフォーマットをClickHouseにインポートする'
-'description': 'ClickHouseにさまざまなデータフォーマットをインポートする方法を説明するページ'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /integrations/data-formats
+sidebar_label: '概要'
+sidebar_position: 1
+keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
+title: 'さまざまなデータ形式からの ClickHouse へのインポート'
+description: 'さまざまなデータ形式を ClickHouse にインポートする方法を説明するページ'
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 
-# ClickHouseへのさまざまなデータ形式のインポート
 
-このドキュメントのこのセクションでは、さまざまなファイルタイプからの読み込みの例を見つけることができます。
+# 様々なデータ形式からClickHouseへのインポート
+
+このセクションでは、様々なファイル形式からデータを読み込む方法の例を紹介します。
 
 ### [**バイナリ**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Protoなどのバイナリ形式をエクスポートおよびロードします。
+ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Protoなどのバイナリ形式のエクスポートと読み込み。
 
-### [**CSVおよびTSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
+### [**CSVとTSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-カスタムヘッダーとセパレーターを使って、TSVを含むCSVファミリーのインポートおよびエクスポートを行います。
+カスタムヘッダーと区切り文字を使用したTSVを含むCSVファミリーのインポートとエクスポート。
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-オブジェクトや行区切りのNDJSONとして含むさまざまな形式のJSONをロードおよびエクスポートします。
+オブジェクト形式や行区切りのNDJSONを含む、様々な形式でのJSONの読み込みとエクスポート。
 
 ### [**Parquetデータ**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-ParquetやArrowなどの一般的なApacheフォーマットを扱います。
+ParquetやArrowなどの一般的なApache形式の処理。
 
 ### [**SQLデータ**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？ これ以上探す必要はありません。
+MySQLやPostgreSQLにインポートするためのSQLダンプが必要な場合は、こちらをご覧ください。
 
-Grafana、TableauなどのBIツールを接続することを検討している場合は、ドキュメントの[可視化カテゴリー](../../data-visualization/index.md)をチェックしてください。
+GrafanaやTableauなどのBIツールとの接続については、ドキュメントの[可視化カテゴリ](../../data-visualization/index.md)をご確認ください。

@@ -1,20 +1,19 @@
 ---
-'slug': '/use-cases/AI/MCP/janai'
-'sidebar_label': 'Интеграция Jan.ai'
-'title': 'Настройка ClickHouse MCP сервера с Jan.ai'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Этот гид объясняет, как настроить Jan.ai с сервером ClickHouse MCP.'
-'keywords':
-- 'AI'
-- 'Jan.ai'
-- 'MCP'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/janai
+sidebar_label: 'Интеграция Jan.ai'
+title: 'Настройка сервера ClickHouse MCP для Jan.ai'
+pagination_prev: null
+pagination_next: null
+description: 'В этом руководстве объясняется, как настроить Jan.ai с сервером ClickHouse MCP.'
+keywords: ['AI', 'Jan.ai', 'MCP']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
+
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/0_janai_openai.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/1_janai_mcp_servers.png';
 import MCPServersList from '@site/static/images/use-cases/AI_ML/MCP/2_janai_mcp_servers_list.png';
@@ -23,83 +22,87 @@ import MCPEnabled from '@site/static/images/use-cases/AI_ML/MCP/4_janai_toggle.p
 import MCPTool from '@site/static/images/use-cases/AI_ML/MCP/5_jani_tools.png';
 import Question from '@site/static/images/use-cases/AI_ML/MCP/6_janai_question.png';
 import MCPToolConfirm from '@site/static/images/use-cases/AI_ML/MCP/7_janai_tool_confirmation.png';
-
 import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_called.png';  
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
-import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
+import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
 
-# Использование сервера ClickHouse MCP с Jan.ai
+# Использование MCP-сервера ClickHouse с Jan.ai
 
-> В этом руководстве объясняется, как использовать сервер ClickHouse MCP с [Jan.ai](https://jan.ai/docs).
+> В этом руководстве описывается использование MCP-сервера ClickHouse с [Jan.ai](https://jan.ai/docs).
 
 <VerticalStepper headerLevel="h2">
 
+
 ## Установка Jan.ai {#install-janai}
 
-Jan.ai — это альтернативный ChatGPT с открытым исходным кодом, который работает на 100% в оффлайн-режиме. 
+Jan.ai — это альтернатива ChatGPT с открытым исходным кодом, которая работает полностью офлайн.
 Вы можете скачать Jan.ai для [Mac](https://jan.ai/docs/desktop/mac), [Windows](https://jan.ai/docs/desktop/windows) или [Linux](https://jan.ai/docs/desktop/linux).
 
-Это нативное приложение, поэтому после загрузки вы можете его запустить.
+Это нативное приложение, поэтому после загрузки его можно сразу запустить.
+
 
 ## Добавление LLM в Jan.ai {#add-llm-to-janai}
 
-Мы можем включить модели через меню настроек. 
+Модели можно активировать через меню настроек.
 
-Чтобы включить OpenAI, нам необходимо предоставить API-ключ, как показано ниже:
+Для активации OpenAI необходимо указать API-ключ, как показано ниже:
 
-<Image img={OpenAIModels} alt="Включить модели OpenAI" size="md"/>
+<Image img={OpenAIModels} alt='Активация моделей OpenAI' size='md' />
+
 
 ## Включение MCP-серверов {#enable-mcp-servers}
 
-На момент написания MCP-серверы являются экспериментальной функцией в Jan.ai. 
-Мы можем включить их, переключив эксперименты:
+На момент написания данной документации MCP-серверы являются экспериментальной функцией в Jan.ai.
+Чтобы включить их, необходимо активировать экспериментальные функции:
 
-<Image img={MCPServers} alt="Включить MCP-серверы" size="md"/>
+<Image img={MCPServers} alt='Включение MCP-серверов' size='md' />
 
-После того как переключатель будет активирован, мы увидим `MCP Servers` в меню слева.
+После активации переключателя в левом меню появится пункт `MCP Servers`.
+
 
 ## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
-Если мы нажмем на меню `MCP Servers`, мы увидим список MCP-серверов, к которым можем подключиться:
+При нажатии на меню `MCP Servers` отобразится список серверов MCP, к которым можно подключиться:
 
-<Image img={MCPServersList} alt="Список MCP-серверов" size="md"/>
+<Image img={MCPServersList} alt='Список серверов MCP' size='md' />
 
-Эти сервера по умолчанию отключены, но мы можем включить их, нажав на переключатель.
+Все эти серверы по умолчанию отключены, но их можно включить с помощью переключателя.
 
-Чтобы установить сервер ClickHouse MCP, нужно нажать на значок `+`, а затем заполнить форму следующими данными:
+Чтобы установить сервер ClickHouse MCP, нажмите на значок `+` и заполните форму следующим образом:
 
-<Image img={MCPForm} alt="Добавить MCP-сервер" size="md"/>
+<Image img={MCPForm} alt='Добавление сервера MCP' size='md' />
 
-После этого нам нужно переключить сервер ClickHouse, если он еще не включен:
+После этого необходимо включить сервер ClickHouse, если он еще не включен:
 
-<Image img={MCPEnabled} alt="Включить MCP-сервер" size="md"/>
+<Image img={MCPEnabled} alt='Включение сервера MCP' size='md' />
 
-Теперь инструменты сервера ClickHouse MCP будут видны в диалоговом окне чата:
+Инструменты сервера ClickHouse MCP теперь будут доступны в диалоговом окне чата:
 
-<Image img={MCPTool} alt="Инструменты сервера ClickHouse MCP" size="md"/>
+<Image img={MCPTool} alt='Инструменты сервера ClickHouse MCP' size='md' />
 
-## Общение с сервером ClickHouse MCP с Jan.ai {#chat-to-clickhouse-mcp-server}
 
-Пришло время поговорить о данных, хранящихся в ClickHouse! 
+## Общение с ClickHouse MCP Server через Jan.ai {#chat-to-clickhouse-mcp-server}
+
+Пришло время поработать с данными, хранящимися в ClickHouse!
 Давайте зададим вопрос:
 
-<Image img={Question} alt="Вопрос" size="md"/>
+<Image img={Question} alt='Вопрос' size='md' />
 
-Jan.ai спросит подтверждение перед вызовом инструмента:
+Jan.ai запросит подтверждение перед вызовом инструмента:
 
-<Image img={MCPToolConfirm} alt="Подтверждение инструмента" size="md"/>
+<Image img={MCPToolConfirm} alt='Подтверждение инструмента' size='md' />
 
-Затем он покажет нам список вызовов инструментов, которые были совершены:
+Затем отобразится список выполненных вызовов инструментов:
 
-<Image img={ToolsCalled} alt="Вызванные инструменты" size="md"/>
+<Image img={ToolsCalled} alt='Вызванные инструменты' size='md' />
 
-Если мы нажмем на вызов инструмента, мы сможем увидеть детали вызова:
+При нажатии на вызов инструмента можно увидеть детали вызова:
 
-<Image img={ToolsCalledExpanded} alt="Вызванные инструменты - расширенный вид" size="md"/>    
+<Image img={ToolsCalledExpanded} alt='Развернутые вызванные инструменты' size='md' />
 
-А затем внизу мы увидим наш результат:
+А ниже представлен результат:
 
-<Image img={Result} alt="Результат" size="md"/>    
+<Image img={Result} alt='Результат' size='md' />
 
 </VerticalStepper>

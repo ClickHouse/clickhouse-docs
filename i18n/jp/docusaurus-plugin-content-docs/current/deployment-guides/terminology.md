@@ -1,28 +1,30 @@
 ---
-'slug': '/architecture/introduction'
-'sidebar_label': 'イントロダクション'
-'title': 'イントロダクション'
-'sidebar_position': 1
-'description': 'ページは、ClickHouseユーザーにClickHouseサポートおよびサービス組織から提供されたアドバイスに基づくデプロイメントの例を示しています。'
-'doc_type': 'guide'
+slug: /architecture/introduction
+sidebar_label: 'イントロダクション'
+title: 'イントロダクション'
+sidebar_position: 1
+description: 'ClickHouse Support と Services 組織が ClickHouse ユーザーに提供している推奨事項に基づくデプロイメント例をまとめたページ'
+doc_type: 'guide'
+keywords: ['deployment', 'architecture', 'replication', 'sharding', 'cluster setup']
 ---
 
-import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
+import ReplicationShardingTerminology from '@site/docs/_snippets/_replication-sharding-terminology.md';
 
-このセクションのデプロイメント例は、ClickHouse サポートおよびサービス組織から ClickHouse ユーザーに提供されたアドバイスに基づいています。これらは動作する例であり、是非試してみて、ニーズに合わせて調整することをお勧めします。ここにあなたの要件にぴったり合った例が見つかるかもしれません。
+このセクションのデプロイ例は、ClickHouse Support and Services チームが ClickHouse ユーザーに提供しているアドバイスに基づいています。これらは実際に動作する例であり、まず試してからニーズに合わせて調整することをお勧めします。この中に、要件にぴったり合う例が見つかるかもしれません。
 
-私たちは、[例のリポジトリ](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes)にさまざまなトポロジーの「レシピ」を提供しており、このセクションの例があなたのニーズにぴったり合わない場合には、ぜひそれらを確認することをお勧めします。
+[example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes) には、さまざまなトポロジ向けの複数の「レシピ」を用意しています。このセクションの例がニーズに完全には合わない場合は、こちらもあわせてご確認ください。
 
 <ReplicationShardingTerminology />
 
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/vBjCJtw_Ei0"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>

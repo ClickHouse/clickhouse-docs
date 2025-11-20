@@ -1,17 +1,21 @@
 ---
-slug: '/guides/developer/debugging-memory-issues'
+slug: /guides/developer/debugging-memory-issues
 sidebar_label: 'Отладка проблем с памятью'
 sidebar_position: 1
-description: 'Запросы, которые помогут вам отладить проблемы с памятью.'
+description: 'Запросы, которые помогут диагностировать проблемы с памятью.'
+keywords: ['memory issues']
 title: 'Отладка проблем с памятью'
-keywords: ['проблемы с памятью']
-doc_type: guide
+doc_type: 'guide'
 ---
+
+
+
 # Отладка проблем с памятью {#debugging-memory-issues}
 
-При возникновении проблем с памятью или утечкой памяти полезно знать, какие запросы и ресурсы потребляют значительное количество памяти. Ниже вы можете найти запросы, которые помогут вам отладить проблемы с памятью, определив, какие запросы, базы данных и таблицы можно оптимизировать:
+При возникновении проблем с памятью или утечек памяти важно знать, какие запросы и ресурсы потребляют значительный объем памяти. Ниже приведены запросы, которые помогут отладить проблемы с памятью путем выявления запросов, баз данных и таблиц, подлежащих оптимизации:
 
-## Список текущих процессов по пиковому использованию памяти {#list-currently-running-processes-by-peak-memory}
+
+## Список текущих запросов по пиковому потреблению памяти {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -24,6 +28,7 @@ FROM system.processes
 ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
+
 
 ## Список метрик использования памяти {#list-metrics-for-memory-usage}
 
@@ -39,6 +44,7 @@ ORDER BY
     value DESC;
 ```
 
+
 ## Список таблиц по текущему использованию памяти {#list-tables-by-current-memory-usage}
 
 ```sql
@@ -50,25 +56,29 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-## Вывод общего объема памяти, используемой для слияний {#output-total-memory-used-by-merges}
+
+## Вывод общего объёма памяти, используемой слияниями {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## Вывод общего объема памяти, используемой текущими процессами {#output-total-memory-used-by-currently-running-processes}
+
+## Вывод общего объема памяти, используемой выполняющимися процессами {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-## Вывод общего объема памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
+
+## Вывод общего объёма памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-## Вывод общего объема памяти, используемой первичными ключами и гранулярностью индекса {#output-total-memory-used-by-primary-keys}
+
+## Вывод общего объема памяти, используемого первичными ключами и гранулярностью индекса {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

@@ -1,98 +1,108 @@
 ---
-'sidebar_label': 'Timescale'
-'description': 'PostgresをTimescaleDB拡張機能を使用して、ClickPipesのソースとして設定します'
-'slug': '/integrations/clickpipes/postgres/source/timescale'
-'title': 'PostgresとTimescaleDBソース設定ガイド'
-'keywords':
-- 'TimescaleDB'
-'doc_type': 'guide'
+sidebar_label: 'Timescale'
+description: 'ClickPipes のソースとして TimescaleDB 拡張機能付き Postgres を構成する'
+slug: /integrations/clickpipes/postgres/source/timescale
+title: 'TimescaleDB 拡張機能付き Postgres ソース構成ガイド'
+keywords: ['TimescaleDB']
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# Postgres with TimescaleDB ソース設定ガイド
+# TimescaleDB を利用した Postgres ソース設定ガイド
 
 <BetaBadge/>
 
+
+
 ## 背景 {#background}
 
-[TimescaleDB](https://github.com/timescale/timescaledb) は、Timescale Inc によって開発されたオープンソースの Postgres 拡張機能であり、Postgres を離れることなく分析クエリのパフォーマンスを向上させることを目的としています。これは、拡張機能によって管理され、「チャンク」への自動パーティショニングをサポートする「ハイパーテーブル」を作成することによって実現されます。ハイパーテーブルは、透過的な圧縮とハイブリッド行列ストレージ（「ハイパコア」として知られる）をサポートしていますが、これらの機能には専用ライセンスのバージョンの拡張機能が必要です。
+[TimescaleDB](https://github.com/timescale/timescaledb)は、Timescale Inc が開発したオープンソースのPostgres拡張機能で、Postgresから移行することなく分析クエリのパフォーマンスを向上させることを目的としています。これは、拡張機能によって管理され、「チャンク」への自動パーティショニングをサポートする「ハイパーテーブル」を作成することで実現されます。ハイパーテーブルは透過的な圧縮とハイブリッド行列ストレージ(「hypercore」として知られる)もサポートしていますが、これらの機能にはプロプライエタリライセンス版の拡張機能が必要です。
 
-Timescale Inc は、TimescaleDB に対する二つのマネージドサービスも提供しています：
+Timescale Incは、TimescaleDB向けに2つのマネージドサービスも提供しています:
+
 - `Managed Service for Timescale`
-- `Timescale Cloud`。
+- `Timescale Cloud`.
 
-サードパーティのベンダーが TimescaleDB 拡張機能を使用可能にするマネージドサービスを提供していますが、ライセンスの関係上、これらのベンダーは開放ソース版の拡張機能のみをサポートしています。
+TimescaleDB拡張機能を使用できるマネージドサービスを提供するサードパーティベンダーも存在しますが、ライセンスの関係上、これらのベンダーはオープンソース版の拡張機能のみをサポートしています。
 
-Timescale のハイパーテーブルは、様々な点で通常の Postgres テーブルとは異なる動作をします。これにより、複製プロセスにいくつかの複雑さが生じるため、Timescale のハイパーテーブルを複製する能力は **ベストエフォート** として考慮すべきです。
+Timescaleのハイパーテーブルは、通常のPostgresテーブルとはいくつかの点で異なる動作をします。これにより、レプリケーションプロセスに複雑さが生じるため、Timescaleハイパーテーブルのレプリケーション機能は**ベストエフォート**として考慮すべきです。
 
-## サポートされる Postgres バージョン {#supported-postgres-versions}
 
-ClickPipes は Postgres バージョン 12 以降をサポートしています。
+## サポートされているPostgresバージョン {#supported-postgres-versions}
 
-## 論理複製を有効にする {#enable-logical-replication}
+ClickPipesはPostgresバージョン12以降をサポートしています。
 
-手順は、TimescaleDB を使用している Postgres インスタンスがどのようにデプロイされているかによって異なります。
 
-- マネージドサービスを使用していて、プロバイダーがサイドバーに表示されている場合は、そのプロバイダーのガイドに従ってください。
-- 自分で TimescaleDB をデプロイする場合は、一般的なガイドに従ってください。
+## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-他のマネージドサービスの場合、論理複製を有効にする手助けのためにプロバイダーとサポートチケットを提出してください。
+実行する手順は、TimescaleDBを使用したPostgresインスタンスのデプロイ方法によって異なります。
+
+- マネージドサービスを使用しており、プロバイダーがサイドバーに記載されている場合は、そのプロバイダー向けのガイドに従ってください。
+- TimescaleDBを自身でデプロイしている場合は、汎用ガイドに従ってください。
+
+その他のマネージドサービスについては、論理レプリケーションがまだ有効になっていない場合、プロバイダーにサポートチケットを発行して有効化の支援を依頼してください。
 
 :::info
-Timescale Cloud では、CDC モードでの Postgres パイプに必要な論理複製を有効にすることはサポートされていません。そのため、Timescale Cloud のユーザーは、Postgres ClickPipe でデータのワンタイムロード (`Initial Load Only`) のみを実行できることに注意してください。
+Timescale Cloudは、CDCモードのPostgresパイプに必要な論理レプリケーションの有効化をサポートしていません。
+そのため、Timescale CloudのユーザーはPostgres ClickPipeを使用してデータの一回限りのロード（`Initial Load Only`）のみを実行できます。
 :::
+
 
 ## 設定 {#configuration}
 
-Timescale のハイパーテーブルは、そこに挿入されたデータを保持しません。代わりに、データは `_timescaledb_internal` スキーマ内の複数の対応する「チャンク」テーブルに保存されます。ハイパーテーブルでクエリを実行することに問題はありませんが、論理複製中は、ハイパーテーブルでの変更を検出する代わりに、チャンクテーブルでの変更を検出します。Postgres ClickPipe には、チャンクテーブルから親のハイパーテーブルに自動的に変更を再マッピングするロジックがありますが、これには追加の手順が必要です。
+Timescaleのハイパーテーブルは、挿入されたデータを直接保存しません。代わりに、データは`_timescaledb_internal`スキーマ内の複数の対応する「チャンク」テーブルに保存されます。ハイパーテーブルに対してクエリを実行する場合、これは問題になりません。しかし、論理レプリケーション中は、ハイパーテーブルではなくチャンクテーブルの変更を検出します。Postgres ClickPipeには、チャンクテーブルからの変更を親ハイパーテーブルに自動的に再マッピングするロジックがありますが、これには追加の手順が必要です。
 
 :::info
-データを一度だけロードする (`Initial Load Only`) だけを行いたい場合は、ステップ 2 以降をスキップしてください。
+データの一回限りのロード(`Initial Load Only`)のみを実行する場合は、ステップ2以降をスキップしてください。
 :::
 
-1. パイプ用の Postgres ユーザーを作成し、複製したいテーブルに対して `SELECT` の権限を付与します。
+1. パイプ用のPostgresユーザーを作成し、レプリケートするテーブルに対する`SELECT`権限を付与します。
 
 ```sql
-CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
--- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
-GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
+  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+  -- 必要に応じて、スキーマ全体ではなく個別のテーブルのみにこれらのGRANTを限定することができます
+  -- ただし、ClickPipeに新しいテーブルを追加する際は、ユーザーにもそれらを追加する必要があります。
+  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 ```
 
 :::note
-`clickpipes_user` と `clickpipes_password` をお好みのユーザー名とパスワードに置き換えてください。
+`clickpipes_user`と`clickpipes_password`を任意のユーザー名とパスワードに置き換えてください。
 :::
 
-2. Postgres スーパーユーザー / 管理者ユーザーとして、複製したいテーブルとハイパーテーブルがあるソースインスタンスに、**`_timescaledb_internal` スキーマ全体を含む** パブリケーションを作成します。ClickPipe を作成する際には、このパブリケーションを選択する必要があります。
+2. Postgresのスーパーユーザー/管理者ユーザーとして、レプリケートするテーブルとハイパーテーブルを含み、**さらに`_timescaledb_internal`スキーマ全体も含む**パブリケーションをソースインスタンス上に作成します。ClickPipeを作成する際に、このパブリケーションを選択する必要があります。
 
 ```sql
--- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
+-- ClickPipeに新しいテーブルを追加する際は、パブリケーションにも手動で追加する必要があります。
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
 :::tip
-`FOR ALL TABLES` のパブリケーションを作成することはお勧めしません。これは、Postgres から ClickPipes へのトラフィックが増加し（パイプに含まれていない他のテーブルの変更を送信するため）、全体の効率が低下します。
+`FOR ALL TABLES`でパブリケーションを作成することは推奨しません。これにより、PostgresからClickPipesへのトラフィックが増加し(パイプに含まれていない他のテーブルの変更も送信されるため)、全体的な効率が低下します。
 
-手動で作成したパブリケーションに対しては、テーブルをパイプに追加する前に、そのパブリケーションに追加したいテーブルを含めてください。
+手動で作成したパブリケーションの場合は、パイプに追加する前に、対象のテーブルをパブリケーションに追加してください。
 :::
 
 :::info
-一部のマネージドサービスは、管理ユーザーがスキーマ全体に対してパブリケーションを作成するために必要な権限を持っていない場合があります。その場合は、プロバイダーにサポートチケットを提出してください。もしくは、このステップと次のステップをスキップしてデータのワンタイムロードを行うことができます。
+一部のマネージドサービスでは、管理者ユーザーにスキーマ全体のパブリケーションを作成するために必要な権限が付与されていません。
+この場合は、プロバイダーにサポートチケットを提出してください。または、このステップと以降のステップをスキップして、データの一回限りのロードを実行することもできます。
 :::
 
-3. 前に作成したユーザーに複製権限を付与します。
+3. 先ほど作成したユーザーにレプリケーション権限を付与します。
 
 ```sql
--- Give replication permission to the USER
+-- ユーザーにレプリケーション権限を付与
   ALTER USER clickpipes_user REPLICATION;
 ```
 
-これらの手順を実行した後は、[ClickPipe の作成](../index.md)を続行できるはずです。
+これらのステップの後、[ClickPipeの作成](../index.md)に進むことができます。
 
-## ネットワークアクセスを設定する {#configure-network-access}
 
-Timescale インスタンスへのトラフィックを制限したい場合は、[文書化された静的 NAT IP](../../index.md#list-of-static-ips)を許可リストに追加してください。これを行う手順はプロバイダーによって異なるため、プロバイダーがサイドバーに表示されている場合はそれを参照するか、チケットを提出してください。
+## ネットワークアクセスの設定 {#configure-network-access}
+
+Timescaleインスタンスへのトラフィックを制限したい場合は、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)を許可リストに追加してください。
+
+設定手順はプロバイダーによって異なります。お使いのプロバイダーがサイドバーに記載されている場合はそちらを参照するか、プロバイダーにサポートチケットを発行してください。

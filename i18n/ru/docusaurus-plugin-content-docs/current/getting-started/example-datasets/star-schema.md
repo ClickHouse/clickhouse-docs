@@ -1,17 +1,22 @@
 ---
-slug: '/getting-started/example-datasets/star-schema'
+description: 'Набор данных и запросы Star Schema Benchmark (SSB)'
 sidebar_label: 'Star Schema Benchmark'
-description: 'Набор данных и запросы звездной схемы бенчмарка (SSB)'
+slug: /getting-started/example-datasets/star-schema
 title: 'Star Schema Benchmark (SSB, 2009)'
-doc_type: reference
+doc_type: 'guide'
+keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
 ---
-Схема звезды Benchmark в значительной степени основана на таблицах и запросах [TPC-H](tpch.md), но, в отличие от TPC-H, она использует макет схемы звезды. Основная масса данных хранится в гигантской таблице фактов, окруженной несколькими маленькими таблицами измерений. Запросы объединяют таблицу фактов с одной или несколькими таблицами измерений, чтобы применить критерии фильтрации, например, `MONTH = 'JANUARY'`.
+
+Star Schema Benchmark в общих чертах основан на таблицах и запросах [TPC-H](tpch.md), но в отличие от TPC-H использует схемную организацию типа «звезда».
+Основной объём данных хранится в огромной таблице фактов, окружённой несколькими небольшими таблицами измерений.
+В запросах таблица фактов соединяется с одной или несколькими таблицами измерений для применения критериев фильтрации, например `MONTH = 'JANUARY'`.
 
 Ссылки:
-- [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil и др.), 2009
-- [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl и др.), 2013
 
-Сначала ознакомьтесь с репозиторием схемы звезды и соберите генератор данных:
+* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil и др.), 2009
+* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl и др.), 2013
+
+Сначала клонируйте репозиторий Star Schema Benchmark и скомпилируйте генератор данных:
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -19,7 +24,7 @@ cd ssb-dbgen
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-s` указывает коэффициент масштабирования. Например, с `-s 100` будет сгенерировано 600 миллионов строк.
+Затем сгенерируйте данные. Параметр `-s` задаёт коэффициент масштаба. Например, при `-s 100` будет сгенерировано 600 миллионов строк.
 
 ```bash
 ./dbgen -s 1000 -T c
@@ -29,7 +34,8 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-Теперь создайте таблицы в ClickHouse:
+Теперь создадим таблицы в ClickHouse:
+
 
 ```sql
 CREATE TABLE customer
@@ -126,7 +132,9 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-Во многих случаях использования ClickHouse несколько таблиц конвертируются в одну денормализованную плоскую таблицу. Этот шаг является необязательным, ниже перечислены запросы в их оригинальной форме и в формате, переписанном для денормализованной таблицы.
+Во многих сценариях использования ClickHouse несколько таблиц преобразуются в одну денормализованную «плоскую» таблицу.
+Этот шаг необязателен: ниже приведены запросы в их исходном виде и в варианте, переписанном для денормализованной таблицы.
+
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -267,6 +275,7 @@ WHERE
 ```
 
 Q2.1
+
 
 ```sql
 SELECT
@@ -451,6 +460,7 @@ ORDER BY
 
 Q3.2
 
+
 ```sql
 SELECT
     C_CITY,
@@ -606,6 +616,7 @@ ORDER BY
 ```
 
 Q4.1
+
 
 ```sql
 SELECT

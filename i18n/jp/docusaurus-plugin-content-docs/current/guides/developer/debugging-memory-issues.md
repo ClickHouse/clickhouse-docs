@@ -1,20 +1,21 @@
 ---
-'slug': '/guides/developer/debugging-memory-issues'
-'sidebar_label': 'メモリの問題をデバッグする'
-'sidebar_position': 1
-'description': 'メモリの問題をデバッグするためのクエリ。'
-'keywords':
-- 'memory issues'
-'title': 'メモリの問題をデバッグする'
-'doc_type': 'guide'
+slug: /guides/developer/debugging-memory-issues
+sidebar_label: 'メモリ問題のデバッグ'
+sidebar_position: 1
+description: 'メモリ問題のデバッグに役立つクエリ。'
+keywords: ['memory issues']
+title: 'メモリ問題のデバッグ'
+doc_type: 'guide'
 ---
+
 
 
 # メモリ問題のデバッグ {#debugging-memory-issues}
 
-メモリ問題やメモリリークに直面したときに、どのクエリやリソースが多くのメモリを消費しているかを知っていると役立ちます。以下に、どのクエリ、データベース、テーブルが最適化できるかを見つけるためのメモリ問題をデバッグするのに役立つクエリを示します。
+メモリ問題やメモリリークが発生した場合、どのクエリやリソースが大量のメモリを消費しているかを把握することが重要です。以下に、最適化が必要なクエリ、データベース、テーブルを特定し、メモリ問題のデバッグに役立つクエリを示します。
 
-## ピークメモリ使用量による現在実行中のプロセスのリスト {#list-currently-running-processes-by-peak-memory}
+
+## ピークメモリ使用量で現在実行中のプロセスを一覧表示 {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -28,7 +29,8 @@ ORDER BY peak_memory_usage DESC
 LIMIT 100;
 ```
 
-## メモリ使用量のメトリックのリスト {#list-metrics-for-memory-usage}
+
+## メモリ使用量のメトリクスを一覧表示する {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -42,7 +44,8 @@ ORDER BY
     value DESC;
 ```
 
-## 現在のメモリ使用量によるテーブルのリスト {#list-tables-by-current-memory-usage}
+
+## 現在のメモリ使用量によるテーブルの一覧表示 {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -53,25 +56,29 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-## マージによる総メモリ使用量の出力 {#output-total-memory-used-by-merges}
+
+## マージで使用されている総メモリ量を出力する {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## 現在実行中のプロセスによる総メモリ使用量の出力 {#output-total-memory-used-by-currently-running-processes}
+
+## 現在実行中のプロセスが使用している総メモリ量を出力する {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-## 辞書による総メモリ使用量の出力 {#output-total-memory-used-by-dictionaries}
+
+## ディクショナリが使用する総メモリ量を出力する {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-## 主キーおよびインデックスの粒度による総メモリ使用量の出力 {#output-total-memory-used-by-primary-keys}
+
+## プライマリキーとインデックス粒度が使用する総メモリ量を出力する {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

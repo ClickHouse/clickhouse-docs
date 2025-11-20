@@ -1,36 +1,35 @@
 ---
-'slug': '/examples/aggregate-function-combinators/anyIf'
-'title': 'anyIf'
-'description': '使用 anyIf 组合器的示例'
-'keywords':
-- 'any'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'anyIf'
-'sidebar_label': 'anyIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/anyIf'
+title: 'anyIf'
+description: 'anyIf 组合子使用示例'
+keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
+
 
 
 # anyIf {#avgif}
 
+
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合子可以应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数，以选择给定列中第一个遇到的符合给定条件的元素。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数,以从指定列中选择首个满足给定条件的元素。
 
-## 示例用法 {#example-usage}
 
-在这个例子中，我们将创建一个存储销售数据的表，其中包含成功标志，并且我们将使用 `anyIf` 选择交易金额超过和低于 200 的第一个 `transaction_id`。
+## 使用示例 {#example-usage}
 
-我们首先创建一个表并插入数据：
+在此示例中,我们将创建一个存储销售数据及成功标志的表,
+并使用 `anyIf` 选择金额高于和低于 200 的第一个 `transaction_id`。
 
-```sql title="Query"
+首先创建表并插入数据:
+
+```sql title="查询"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple();
 
@@ -50,12 +49,14 @@ SELECT
 FROM sales;
 ```
 
-```response title="Response"
+```response title="响应"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
 ```
 
+
 ## 另请参阅 {#see-also}
+
 - [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

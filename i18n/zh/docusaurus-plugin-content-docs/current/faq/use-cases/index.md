@@ -1,18 +1,18 @@
 ---
-'slug': '/faq/use-cases/'
-'sidebar_position': 2
-'sidebar_label': '关于 ClickHouse 用例的问题'
-'title': '关于 ClickHouse 用例的问题'
-'description': '着陆页列出关于 ClickHouse 用例的常见问题'
-'doc_type': 'landing-page'
+slug: /faq/use-cases/
+sidebar_position: 2
+sidebar_label: 'ClickHouse 用例相关问题'
+title: 'ClickHouse 用例相关问题'
+description: '汇总 ClickHouse 常见用例问题的入口页'
+keywords: ['ClickHouse use cases', 'time-series database', 'key-value storage', 'database applications', 'OLAP use cases']
+doc_type: 'landing-page'
 ---
 
+# 关于 ClickHouse 使用场景的问题
 
-# 有关 ClickHouse 用例的问题
-
-- [我可以将 ClickHouse 用作时间序列数据库吗？](/knowledgebase/time-series)
+- [我可以将 ClickHouse 用作时序数据库吗？](/knowledgebase/time-series)
 - [我可以将 ClickHouse 用作键值存储吗？](/knowledgebase/key-value)
 
-:::info 你没有找到想要的内容？
-查看我们的 [知识库](/knowledgebase/)，并浏览文档中很多有用的文章。
+:::info 没找到你要的内容？
+请查看我们的 [知识库](/knowledgebase/)，并浏览文档中提供的众多实用文章。
 :::

@@ -1,27 +1,26 @@
 ---
-'slug': '/examples/aggregate-function-combinators/countIf'
-'title': 'countIf'
-'description': 'countIf コンビネータの使用例'
-'keywords':
-- 'count'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'countIf'
-'sidebar_label': 'countIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/countIf'
+title: 'countIf'
+description: 'countIf コンビネーターの使用例'
+keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
+sidebar_label: 'countIf'
+doc_type: 'reference'
 ---
+
 
 
 # countIf {#countif}
 
-## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`count`](/sql-reference/aggregate-functions/reference/count) 関数に適用することができ、`countIf` 集約コンビネーター関数を使用して、条件が真である行の数をカウントします。
+## Description {#description}
+
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`count`](/sql-reference/aggregate-functions/reference/count) 関数に適用することで、条件が真である行の数をカウントできます。これには `countIf` 集約コンビネータ関数を使用します。
+
 
 ## 使用例 {#example-usage}
 
-この例では、ユーザーログイン試行を保存するテーブルを作成し、`countIf` を使用して成功したログインの数をカウントします。
+この例では、ユーザーのログイン試行を格納するテーブルを作成し、
+`countIf`を使用して成功したログインの回数をカウントします。
 
 ```sql title="Query"
 CREATE TABLE login_attempts(
@@ -45,7 +44,7 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-`countIf` 関数は、各ユーザーについて `is_successful = 1` の行のみをカウントします。
+`countIf`関数は、各ユーザーについて`is_successful = 1`となる行のみをカウントします。
 
 ```response title="Response"
    ┌─user_id─┬─successful_logins─┐
@@ -54,6 +53,8 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
-## その他 {#see-also}
+
+## 関連項目 {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -1,40 +1,15 @@
 ---
-'slug': '/integrations/data-sources/index'
-'keywords':
-- 'AWS S3'
-- 'Azure Data Factory'
-- 'PostgreSQL'
-- 'Kafka'
-- 'MySQL'
-- 'Cassandra'
-- 'Data Factory'
-- 'Redis'
-- 'RabbitMQ'
-- 'MongoDB'
-- 'Google Cloud Storage'
-- 'Hive'
-- 'Hudi'
-- 'Iceberg'
-- 'MinIO'
-- 'Delta Lake'
-- 'RocksDB'
-- 'Splunk'
-- 'SQLite'
-- 'NATS'
-- 'EMQX'
-- 'local files'
-- 'JDBC'
-- 'ODBC'
-'description': '数据源概述页面'
-'title': '数据源'
-'doc_type': 'landing-page'
+slug: /integrations/data-sources/index
+keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
+description: '数据源总览页面'
+title: '数据源'
+doc_type: 'landing-page'
 ---
-
 
 # 数据源
 
-ClickHouse 允许您从各种来源轻松地将数据导入到您的数据库中。
-有关更多信息，请参阅下面列出的页面：
+ClickHouse 允许你轻松地从多种数据源向数据库写入数据。
+如需了解更多信息，请参阅以下页面：
 
 | 数据源                                                                   |
 |-------------------------------------------------------------------------------|

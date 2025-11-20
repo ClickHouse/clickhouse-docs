@@ -1,24 +1,25 @@
 ---
-'slug': '/guides/developer/overview'
-'sidebar_label': '高级指南概述'
-'description': '高级指南的概述'
-'title': '高级指南'
-'doc_type': 'guide'
+slug: /guides/developer/overview
+sidebar_label: '高级指南概览'
+description: '高级指南概览'
+title: '高级指南'
+keywords: ['ClickHouse 高级指南', '开发者指南', '查询优化', '物化视图', '去重', '时间序列', '查询执行']
+doc_type: 'guide'
 ---
-
 
 # 高级指南
 
 本节包含以下高级指南：
 
-| 指南                                                                                                                  | 描述                                                                                                                                                                                                                                                                                                                                    |
+| Guide                                                                                                                  | Description                                                                                                                                                                                                                                                                                                                                    |
 |------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [替代查询语言](../developer/alternative-query-languages)                                         | 一份关于支持的替代方言以及如何使用它们的指南。提供了每种方言的查询示例。                                                                                                                                                                                                                                   |
-| [级联物化视图](../developer/cascading-materialized-views)                                       | 一份关于如何创建物化视图并将它们级联在一起，结合多个源表到一个目标表中的指南。包含了一个使用级联物化视图按月和年汇总一组域名数据的示例。                                                                              |
-| [调试内存问题](../developer/debugging-memory-issues)                                                 | 一份关于如何调试 ClickHouse 内存问题的指南。                                                                                                                                                                                                                                                                                       |
-| [重试时去重插入](../developer/deduplicating-inserts-on-retries)                               | 一份关于如何处理可能重试失败插入情况的指南。                                                                                                                                                                                                                                                                      |
-| [去重策略](../developer/deduplication)                                                          | 一份深入探讨数据去重的指南，去重是一种从数据库中移除重复行的技术。解释了与 OLTP 系统中基于主键的去重的区别，ClickHouse 的去重方法，以及如何在 ClickHouse 查询中处理重复数据场景。                                          |
-| [填补时间序列数据中的缺口](../developer/time-series-filling-gaps)                                       | 一份提供 ClickHouse 在处理时间序列数据方面能力的指南，包括填补数据缺口的技术，以创建更完整和连续的时间序列信息表示。                                                                                                                |
-| [使用 TTL (生存时间) 管理数据](../developer/ttl)                                                         | 一份讨论如何使用 `WITH FILL` 子句填补时间序列数据缺口的指南。涵盖如何用 0 值填补缺口、如何指定填补缺口的起始点、如何填补到特定的结束点，以及如何插值用于累计计算的值。                                                     |
-| [通过分析器理解查询执行](../developer/understanding-query-execution-with-the-analyzer) | 一份揭开 ClickHouse 查询执行神秘面纱的指南，介绍分析器工具。解释了分析器如何将查询分解为一系列步骤，使您能够可视化和排除整个执行过程中的故障，以实现最佳性能。                                                                               |
-| [在 ClickHouse 中使用 JOIN](../joining-tables)                                                                  | 一份简化在 ClickHouse 中连接表的指南。涵盖不同的连接类型（`INNER`、`LEFT`、`RIGHT` 等），探讨高效连接的最佳实践（如将较小的表放在右侧），并提供有关 ClickHouse 内部连接算法的见解，帮助您优化复杂数据关系的查询。 |
+| [Alternative Query Languages](../developer/alternative-query-languages)                                         | 介绍受支持的其他查询方言及其使用方式的指南，并为每种方言提供查询示例。                                                                                                                                                                                                                                   |
+| [Cascading Materialized Views](../developer/cascading-materialized-views)                                       | 介绍如何创建物化视图并将其级联使用，将多个源表合并到一个目标表中的指南。包含一个示例，演示如何使用级联物化视图对一组域名的数据按月和按年进行聚合。                                                                              |
+| [Debugging memory issues](../developer/debugging-memory-issues)                                                 | 介绍如何在 ClickHouse 中排查和调试内存问题的指南。                                                                                                                                                                                                                                                                                       |
+| [Deduplicating Inserts on Retries](../developer/deduplicating-inserts-on-retries)                               | 介绍在可能重试失败插入操作的场景中如何处理重复插入的指南。                                                                                                                                                                                                                                                                      |
+| [Deduplication strategies](../developer/deduplication)                                                          | 深入介绍数据去重这一用于从数据库中删除重复行的技术的指南。解释其与 OLTP 系统中基于主键去重的差异、ClickHouse 的去重方式，以及如何在 ClickHouse 查询中处理重复数据场景。                                          |
+| [Filling gaps in time-series data](../developer/time-series-filling-gaps)                                       | 提供 ClickHouse 在处理时序数据方面能力洞察的指南，包括用于填补数据缺口、从而构建更完整、连续的时序信息表示的技术。                                                                                                                |
+| [Manage Data with TTL (Time-to-live)](../developer/ttl)                                                         | 讨论如何使用 `WITH FILL` 子句填补时序数据缺口的指南。涵盖如何用 0 值填补缺口、如何指定填补缺口的起始点、如何填补到特定结束点，以及如何为累积计算进行插值。                                                     |
+| [Stored procedures & query parameters](../developer/stored-procedures-and-prepared-statements)                  | 说明 ClickHouse 不支持传统存储过程，并给出推荐替代方案（包括用户自定义函数（UDF）、参数化视图、物化视图以及外部编排）的指南。同时还介绍查询参数，用于实现安全的参数化查询（类似预处理语句）。            |
+| [Understanding query execution with the Analyzer](../developer/understanding-query-execution-with-the-analyzer) | 通过介绍 analyzer 工具来剖析 ClickHouse 查询执行过程的指南。解释 analyzer 如何将查询拆解为一系列步骤，使你能够可视化并排查整个执行过程，以获得最佳性能。                                                                               |
+| [Using JOINs in ClickHouse](../joining-tables)                                                                  | 介绍如何在 ClickHouse 中更简单地完成表关联的指南。涵盖不同的关联类型（`INNER`、`LEFT`、`RIGHT` 等），探讨实现高效关联的最佳实践（如将较小的表放在右侧），并提供有关 ClickHouse 内部关联算法的见解，帮助你针对复杂数据关系优化查询。 |

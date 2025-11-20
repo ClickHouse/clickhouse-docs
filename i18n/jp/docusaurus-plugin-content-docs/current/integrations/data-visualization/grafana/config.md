@@ -1,14 +1,15 @@
 ---
-'sidebar_label': 'プラグイン設定'
-'sidebar_position': 3
-'slug': '/integrations/grafana/config'
-'description': 'GrafanaにおけるClickHouseデータソースプラグインの設定オプション'
-'title': 'GrafanaでのClickHouseデータソースの設定'
-'doc_type': 'guide'
+sidebar_label: 'プラグインの設定'
+sidebar_position: 3
+slug: /integrations/grafana/config
+description: 'Grafana における ClickHouse データソースプラグインの構成オプション'
+title: 'Grafana における ClickHouse データソースの構成'
+doc_type: 'guide'
+keywords: ['Grafana プラグインの構成', 'データソースの設定', '接続パラメータ', '認証設定', 'プラグインオプション']
 ---
 
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
 import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
 import config_additional from '@site/static/images/integrations/data-visualization/grafana/config_additional.png';
@@ -19,209 +20,247 @@ import alias_table_select_example from '@site/static/images/integrations/data-vi
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# ClickHouse データソースの Grafana での設定
+# Grafana での ClickHouse データソースの構成
 
 <ClickHouseSupportedBadge/>
 
-設定を変更する最も簡単な方法は、Grafana UI のプラグイン設定ページで行うことですが、データソースは [YAML ファイルでプロビジョニングすることもできます](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+構成を変更する最も簡単な方法は、Grafana のプラグイン設定ページにある UI を使うことですが、データソースは [YAML ファイルでプロビジョニングすることもできます](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
-このページでは、ClickHouse プラグインでの設定に利用できるオプションのリストと、YAML を使用してデータソースをプロビジョニングするための設定スニペットを示します。
+このページでは、ClickHouse プラグインで設定可能なオプションの一覧と、YAML でデータソースをプロビジョニングする場合の設定スニペットを紹介します。
 
-すべてのオプションの簡単な概要については、すべての設定オプションの完全なリストを [こちら](#all-yaml-options) で確認できます。
+すべてのオプションを手早く確認したい場合は、設定オプションの完全な一覧が [こちら](#all-yaml-options) にあります。
 
-## 一般設定 {#common-settings}
 
-設定画面の例：
-<Image size="sm" img={config_common} alt="Example secure native config" border />
 
-一般設定の例 YAML：
+## 共通設定 {#common-settings}
+
+設定画面の例:
+
+<Image
+  size='sm'
+  img={config_common}
+  alt='セキュアなネイティブ設定の例'
+  border
+/>
+
+共通設定のYAML設定例:
+
 ```yaml
 jsonData:
-  host: 127.0.0.1 # (required) server address.
-  port: 9000      # (required) server port. For native, defaults to 9440 secure and 9000 insecure. For HTTP, defaults to 8443 secure and 8123 insecure.
+  host: 127.0.0.1 # (必須) サーバーアドレス
+  port: 9000 # (必須) サーバーポート。ネイティブの場合、デフォルトはセキュア接続で9440、非セキュア接続で9000。HTTPの場合、デフォルトはセキュア接続で8443、非セキュア接続で8123
 
-  protocol: native # (required) the protocol used for the connection. Can be set to "native" or "http".
-  secure: false    # set to true if the connection is secure.
+  protocol: native # (必須) 接続に使用するプロトコル。"native"または"http"を設定可能
+  secure: false # 接続がセキュアな場合はtrueに設定
 
-  username: default # the username used for authentication.
+  username: default # 認証に使用するユーザー名
 
-  tlsSkipVerify:     <boolean> # skips TLS verification when set to true.
-  tlsAuth:           <boolean> # set to true to enable TLS client authentication.
-  tlsAuthWithCACert: <boolean> # set to true if CA certificate is provided. Required for verifying self-signed TLS certificates.
+  tlsSkipVerify: <boolean> # trueに設定するとTLS検証をスキップ
+  tlsAuth: <boolean> # TLSクライアント認証を有効にする場合はtrueに設定
+  tlsAuthWithCACert: <boolean> # CA証明書が提供されている場合はtrueに設定。自己署名TLS証明書の検証に必要
 
 secureJsonData:
-  password: secureExamplePassword # the password used for authentication.
+  password: secureExamplePassword # 認証に使用するパスワード
 
-  tlsCACert:     <string> # TLS CA certificate
-  tlsClientCert: <string> # TLS client certificate
-  tlsClientKey:  <string> # TLS client key
+  tlsCACert: <string> # TLS CA証明書
+  tlsClientCert: <string> # TLSクライアント証明書
+  tlsClientKey: <string> # TLSクライアントキー
 ```
 
-UI から設定が保存されるときに `version` プロパティが追加されることに注意してください。これにより、設定が保存されたプラグインのバージョンが表示されます。
+UIから設定を保存すると`version`プロパティが追加されます。これは設定が保存されたプラグインのバージョンを示します。
 
-### HTTP プロトコル {#http-protocol}
+### HTTPプロトコル {#http-protocol}
 
-HTTP プロトコルを介して接続することを選択した場合、さらに設定が表示されます。
+HTTPプロトコル経由で接続する場合、追加の設定が表示されます。
 
-<Image size="md" img={config_http} alt="Extra HTTP config options" border />
+<Image size='md' img={config_http} alt='追加のHTTP設定オプション' border />
 
-#### HTTP パス {#http-path}
+#### HTTPパス {#http-path}
 
-HTTP サーバーが異なる URL パスで公開されている場合は、ここに追加できます。
+HTTPサーバーが異なるURLパスで公開されている場合、ここで指定できます。
 
 ```yaml
 jsonData:
-  # excludes first slash
+  # 先頭のスラッシュは除く
   path: additional/path/example
 ```
 
-#### カスタム HTTP ヘッダー {#custom-http-headers}
+#### カスタムHTTPヘッダー {#custom-http-headers}
 
 サーバーに送信されるリクエストにカスタムヘッダーを追加できます。
 
-ヘッダーはプレーンテキストまたはセキュアな形式にできます。すべてのヘッダーキーはプレーンテキストで保存され、セキュアなヘッダー値はセキュアな設定に保存されます（`password` フィールドに類似）。
+ヘッダーはプレーンテキストまたはセキュアのいずれかを指定できます。
+すべてのヘッダーキーはプレーンテキストで保存され、セキュアなヘッダー値はセキュア設定に保存されます(`password`フィールドと同様)。
 
-:::warning セキュアな値は HTTP を介して送信される
-セキュアなヘッダー値は設定に安全に保存されていますが、セキュア接続が無効の場合、値は依然として HTTP 経由で送信されます。
+:::warning HTTP経由のセキュア値
+セキュアなヘッダー値は設定内で安全に保存されますが、セキュア接続が無効な場合、値はHTTP経由で送信されます。
 :::
 
-プレーン/セキュアヘッダーの例 YAML：
+プレーン/セキュアヘッダーのYAML例:
+
 ```yaml
 jsonData:
   httpHeaders:
-  - name: X-Example-Plain-Header
-    value: plain text value
-    secure: false
-  - name: X-Example-Secure-Header
-    # "value" is excluded
-    secure: true
+    - name: X-Example-Plain-Header
+      value: plain text value
+      secure: false
+    - name: X-Example-Secure-Header
+      # "value"は除外
+      secure: true
 secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
+
 
 ## 追加設定 {#additional-settings}
 
 これらの追加設定はオプションです。
 
-<Image size="sm" img={config_additional} alt="Example additional settings" border />
+<Image
+  size='sm'
+  img={config_additional}
+  alt='追加設定の例'
+  border
+/>
 
-例の YAML：
+YAMLの例：
+
 ```yaml
 jsonData:
-  defaultDatabase: default # default database loaded by the query builder. Defaults to "default".
-  defaultTable: <string>   # default table loaded by the query builder.
+  defaultDatabase: default # クエリビルダーで読み込まれるデフォルトデータベース。デフォルトは "default"。
+  defaultTable: <string> # クエリビルダーで読み込まれるデフォルトテーブル。
 
-  dialTimeout: 10    # dial timeout when connecting to the server, in seconds. Defaults to "10".
-  queryTimeout: 60   # query timeout when running a query, in seconds. Defaults to 60. This requires permissions on the user, if you get a permission error try setting it to "0" to disable it.
-  validateSql: false # when set to true, will validate the SQL in the SQL editor.
+  dialTimeout: 10 # サーバー接続時のダイヤルタイムアウト（秒単位）。デフォルトは "10"。
+  queryTimeout: 60 # クエリ実行時のクエリタイムアウト（秒単位）。デフォルトは60。ユーザー権限が必要です。権限エラーが発生した場合は、"0" に設定して無効化してください。
+  validateSql: false # true に設定すると、SQLエディタでSQLを検証します。
 ```
 
 ### OpenTelemetry {#opentelemetry}
 
-OpenTelemetry (OTel) はプラグイン内に深く統合されています。OpenTelemetry データは、私たちの [exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) を使用して ClickHouse にエクスポートできます。最適な使用のためには、OTel を [ログ](#logs) と [トレース](#traces) の両方に設定することを推奨します。
+OpenTelemetry（OTel）はプラグインに深く統合されています。
+OpenTelemetryデータは、[エクスポータープラグイン](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)を使用してClickHouseにエクスポートできます。
+最適な利用のためには、[ログ](#logs)と[トレース](#traces)の両方でOTelを設定することを推奨します。
 
-[データリンク](./query-builder.md#data-links) を有効にするためのデフォルトを設定することが必要で、これは強力な可観測性ワークフローを可能にする機能です。
+また、強力なオブザーバビリティワークフローを実現する[データリンク](./query-builder.md#data-links)機能を有効にするには、これらのデフォルト設定を構成する必要があります。
 
 ### ログ {#logs}
 
-[ログのクエリビルディングを加速するため](./query-builder.md#logs)、デフォルトのデータベース/テーブルおよびログクエリ用のカラムを設定できます。これにより、クエリビルダーが実行可能なログクエリで事前に読み込まれ、可観測性のためのエクスプローラーページでのブラウジングが速くなります。
+[ログのクエリ構築](./query-builder.md#logs)を高速化するために、デフォルトのデータベース/テーブルおよびログクエリ用のカラムを設定できます。これにより、実行可能なログクエリがクエリビルダーに事前読み込みされ、オブザーバビリティのための探索ページの閲覧が高速化されます。
 
-OpenTelemetry を使用している場合は、「**OTel を使用する**」スイッチを有効にし、**デフォルトのログテーブル**を `otel_logs` に設定する必要があります。これにより、選択した OTel スキーマバージョンを使用するためにデフォルトのカラムを自動的に上書きします。
+OpenTelemetryを使用している場合は、「**Use OTel**」スイッチを有効にし、**デフォルトログテーブル**を `otel_logs` に設定してください。
+これにより、選択されたOTelスキーマバージョンを使用するようにデフォルトカラムが自動的に上書きされます。
 
-OpenTelemetry はログには必要ありませんが、単一のログ/トレースデータセットを使用することで、[データリンク](./query-builder.md#data-links) を用いたスムーズな可観測性ワークフローが実現します。
+OpenTelemetryはログに必須ではありませんが、単一のログ/トレースデータセットを使用することで、[データリンク](./query-builder.md#data-links)によるよりスムーズなオブザーバビリティワークフローが実現されます。
 
 ログ設定画面の例：
-<Image size="sm" img={config_logs} alt="Logs config" border />
 
-ログ設定の例 YAML：
+<Image size='sm' img={config_logs} alt='ログ設定' border />
+
+ログ設定YAMLの例：
+
 ```yaml
 jsonData:
   logs:
-    defaultDatabase: default # default log database.
-    defaultTable: otel_logs  # default log table. If you're using OTel, this should be set to "otel_logs".
+    defaultDatabase: default # デフォルトログデータベース。
+    defaultTable: otel_logs # デフォルトログテーブル。OTelを使用している場合は、"otel_logs" に設定してください。
 
-    otelEnabled: false  # set to true if OTel is enabled.
-    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
+    otelEnabled: false # OTelが有効な場合はtrueに設定します。
+    otelVersion: latest # 使用するotel collectorスキーマバージョン。バージョンはUIに表示されますが、"latest" はプラグインで利用可能な最新バージョンを使用します。
 
-    # Default columns to be selected when opening a new log query. Will be ignored if OTel is enabled.
-    timeColumn:       <string> # the primary time column for the log.
-    levelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
-    messageColumn: <string> # the log's message/content.
+    # 新しいログクエリを開く際に選択されるデフォルトカラム。OTelが有効な場合は無視されます。
+    timeColumn: <string> # ログのプライマリ時刻カラム。
+    levelColumn: <string> # ログのレベル/重大度。値は通常 "INFO"、"error"、"Debug" のようになります。
+    messageColumn: <string> # ログのメッセージ/内容。
 ```
 
 ### トレース {#traces}
 
-[トレースのクエリビルディングを加速するため](./query-builder.md#traces)、デフォルトのデータベース/テーブルおよびトレースクエリ用のカラムを設定できます。これにより、クエリビルダーが実行可能なトレース検索クエリで事前に読み込まれ、可観測性のためのエクスプローラーページでのブラウジングが速くなります。
+[トレースのクエリ構築](./query-builder.md#traces)を高速化するために、デフォルトのデータベース/テーブルおよびトレースクエリ用のカラムを設定できます。これにより、実行可能なトレース検索クエリがクエリビルダーに事前読み込みされ、オブザーバビリティのための探索ページの閲覧が高速化されます。
 
-OpenTelemetry を使用している場合は、「**OTel を使用する**」スイッチを有効にし、**デフォルトのトレーステーブル**を `otel_traces` に設定する必要があります。これにより、選択した OTel スキーマバージョンを使用するためにデフォルトのカラムを自動的に上書きします。OpenTelemetry は必須ではありませんが、この機能はトレースに OTel のスキーマを使用している場合に最も効果的に機能します。
+OpenTelemetryを使用している場合は、「**Use OTel**」スイッチを有効にし、**デフォルトトレーステーブル**を `otel_traces` に設定してください。
+これにより、選択されたOTelスキーマバージョンを使用するようにデフォルトカラムが自動的に上書きされます。
+OpenTelemetryは必須ではありませんが、この機能はトレースにそのスキーマを使用する場合に最も効果的に動作します。
 
 トレース設定画面の例：
-<Image size="sm" img={config_traces} alt="Traces config" border />
 
-トレース設定の例 YAML：
+<Image size='sm' img={config_traces} alt='トレース設定' border />
+
+トレース設定YAMLの例：
+
 ```yaml
 jsonData:
   traces:
-    defaultDatabase: default  # default trace database.
-    defaultTable: otel_traces # default trace table. If you're using OTel, this should be set to "otel_traces".
+    defaultDatabase: default # デフォルトトレースデータベース。
+    defaultTable: otel_traces # デフォルトトレーステーブル。OTelを使用している場合は、"otel_traces" に設定してください。
 
-    otelEnabled: false  # set to true if OTel is enabled.
-    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
-
-    # Default columns to be selected when opening a new trace query. Will be ignored if OTel is enabled.
-    traceIdColumn:       <string>    # trace ID column.
-    spanIdColumn:        <string>    # span ID column.
-    operationNameColumn: <string>    # operation name column.
-    parentSpanIdColumn:  <string>    # parent span ID column.
-    serviceNameColumn:   <string>    # service name column.
-    durationTimeColumn:  <string>    # duration time column.
-    durationUnitColumn:  <time unit> # duration time unit. Can be set to "seconds", "milliseconds", "microseconds", or "nanoseconds". For OTel the default is "nanoseconds".
-    startTimeColumn:     <string>    # start time column. This is the primary time column for the trace span.
-    tagsColumn:          <string>    # tags column. This is expected to be a map type.
-    serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
+    otelEnabled: false # OTelが有効な場合はtrueに設定します。
+    otelVersion: latest # 使用するotel collectorスキーマバージョン。バージョンはUIに表示されますが、"latest" はプラグインで利用可能な最新バージョンを使用します。
 ```
+
+
+    # 新しいトレースクエリを開く際に選択されるデフォルトカラム。OTelが有効な場合は無視されます。
+    traceIdColumn:       <string>    # トレースIDカラム。
+    spanIdColumn:        <string>    # スパンIDカラム。
+    operationNameColumn: <string>    # オペレーション名カラム。
+    parentSpanIdColumn:  <string>    # 親スパンIDカラム。
+    serviceNameColumn:   <string>    # サービス名カラム。
+    durationTimeColumn:  <string>    # 実行時間カラム。
+    durationUnitColumn:  <time unit> # 実行時間の単位。"seconds"、"milliseconds"、"microseconds"、または"nanoseconds"に設定可能。OTelの場合、デフォルトは"nanoseconds"です。
+    startTimeColumn:     <string>    # 開始時刻カラム。トレーススパンの主要な時刻カラムです。
+    tagsColumn:          <string>    # タグカラム。マップ型である必要があります。
+    serviceTagsColumn:   <string>    # サービスタグカラム。マップ型である必要があります。
+
+````
 
 ### カラムエイリアス {#column-aliases}
 
-カラムエイリアスは、異なる名前や型でデータをクエリする便利な方法です。エイリアスを使用することで、ネストされたスキーマを平坦化し、Grafana で簡単に選択できるようになります。
+カラムエイリアスは、異なる名前や型でデータをクエリするための便利な機能です。
+エイリアスを使用することで、ネストされたスキーマを平坦化し、Grafanaで簡単に選択できるようになります。
 
-エイリアスが relevant である場合：
-- スキーマとそのほとんどのネストされたプロパティ/型を知っている
-- データを Map タイプで保存している
-- JSON を文字列として保存している
-- 選択するカラムに関数を適用していることが多い
+エイリアスは以下の場合に有用です:
+- スキーマとそのネストされたプロパティ/型のほとんどを把握している場合
+- データをMap型で保存している場合
+- JSONを文字列として保存している場合
+- 選択するカラムを変換する関数を頻繁に適用する場合
 
-#### テーブル定義のエイリアスカラム {#table-defined-alias-columns}
+#### テーブル定義のALIASカラム {#table-defined-alias-columns}
 
-ClickHouse にはエイリアスカラムの組み込み機能があり、Grafana との互換性があります。エイリアスカラムは、テーブル上で直接定義できます。
+ClickHouseにはカラムエイリアス機能が組み込まれており、Grafanaとすぐに連携できます。
+エイリアスカラムはテーブル上で直接定義できます。
 
 ```sql
 CREATE TABLE alias_example (
   TimestampNanos DateTime(9),
   TimestampDate ALIAS toDate(TimestampNanos)
 )
-```
+````
 
-上の例では、ナノ秒のタイムスタンプを `Date` 型に変換するエイリアス `TimestampDate` を作成しています。このデータは、最初のカラムのようにディスクに保存されるのではなく、クエリ時に計算されます。テーブル定義のエイリアスは `SELECT *` では返されませんが、これはサーバー設定で構成できます。
+上記の例では、ナノ秒のタイムスタンプを`Date`型に変換する`TimestampDate`というエイリアスを作成しています。
+このデータは最初のカラムのようにディスクに保存されず、クエリ実行時に計算されます。
+テーブル定義のエイリアスは`SELECT *`では返されませんが、サーバー設定で変更可能です。
 
-詳細については、[ALIAS](/sql-reference/statements/create/table#alias) カラムタイプのドキュメントを参照してください。
+詳細については、[ALIAS](/sql-reference/statements/create/table#alias)カラム型のドキュメントを参照してください。
 
 #### カラムエイリアステーブル {#column-alias-tables}
 
-デフォルトでは、Grafana は `DESC table` からのレスポンスに基づいてカラムの提案を提供します。場合によっては、Grafana が見るカラムを完全に上書きしたいことがあります。これにより、テーブルの複雑さに応じて、Grafana でカラムを選択する際にスキーマを隠すことができます。
+デフォルトでは、Grafanaは`DESC table`のレスポンスに基づいてカラムの候補を提供します。
+場合によっては、Grafanaが認識するカラムを完全に上書きしたいことがあります。
+これにより、カラム選択時にGrafanaでスキーマを隠蔽でき、テーブルの複雑さに応じてユーザーエクスペリエンスを向上させることができます。
 
-これに対する利点は、テーブルを変更することなく簡単に更新できることです。一部のスキーマでは、これが何千ものエントリになり、基になるテーブル定義を混乱させることがあります。また、ユーザーに無視させたいカラムを隠すこともできます。
+テーブル定義のエイリアスに対するこの方法の利点は、テーブルを変更することなく簡単に更新できることです。一部のスキーマでは、エイリアスが数千のエントリに及ぶ可能性があり、基礎となるテーブル定義を煩雑にする可能性があります。また、ユーザーに表示したくないカラムを隠すこともできます。
 
-Grafana は、エイリアステーブルが以下のカラム構造を持っていることを要求します：
+Grafanaでは、エイリアステーブルが以下のカラム構造を持つ必要があります:
+
 ```sql
 CREATE TABLE aliases (
-  `alias` String,  -- The name of the alias, as seen in the Grafana column selector
-  `select` String, -- The SELECT syntax to use in the SQL generator
-  `type` String    -- The type of the resulting column, so the plugin can modify the UI options to match the data type.
+  `alias` String,  -- Grafanaのカラムセレクターに表示されるエイリアスの名前
+  `select` String, -- SQLジェネレーターで使用するSELECT構文
+  `type` String    -- 結果カラムの型。プラグインがデータ型に合わせてUIオプションを変更できるようにします。
 )
 ```
 
-これが、エイリアステーブルを使用して `ALIAS` カラムの動作を再現する方法です：
+エイリアステーブルを使用して`ALIAS`カラムの動作を再現する方法は次のとおりです:
+
 ```sql
 CREATE TABLE example_table (
   TimestampNanos DateTime(9)
@@ -230,23 +269,37 @@ CREATE TABLE example_table (
 CREATE TABLE example_table_aliases (`alias` String, `select` String, `type` String);
 
 INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
-('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Preserve original column from table (optional)
-('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
+('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- テーブルの元のカラムを保持(オプション)
+('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- TimestampNanosをDateに変換する新しいカラムを追加
 ```
 
-このテーブルを Grafana で使用するように設定します。名前は何でも構いませんし、別のデータベースで定義することもできます：
-<Image size="md" img={alias_table_config_example} alt="Example alias table config" border />
+その後、このテーブルをGrafanaで使用するように設定できます。名前は任意のものにでき、別のデータベースで定義することもできます:
 
-これにより、Grafana は `DESC example_table` からの結果ではなく、エイリアステーブルの結果を見るようになります：
-<Image size="md" img={alias_table_select_example} alt="Example alias table select" border />
+<Image
+  size='md'
+  img={alias_table_config_example}
+  alt='エイリアステーブル設定の例'
+  border
+/>
 
-両方のエイリアスタイプは、複雑な型変換や JSON フィールドの抽出を実行するために使用できます。
+これで、Grafanaは`DESC example_table`の結果ではなく、エイリアステーブルの結果を認識するようになります:
 
-## すべての YAML オプション {#all-yaml-options}
+<Image
+  size='md'
+  img={alias_table_select_example}
+  alt='エイリアステーブル選択の例'
+  border
+/>
 
-これらは、プラグインによって提供されるすべての YAML 設定オプションです。一部のフィールドには例として値が示されていますが、他のフィールドは単にフィールドの型を示しています。
+両方のタイプのエイリアスは、複雑な型変換やJSONフィールドの抽出を実行するために使用できます。
 
-YAML でデータソースをプロビジョニングする方法についての詳細は、[Grafana ドキュメント](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) を参照してください。
+
+## すべてのYAMLオプション {#all-yaml-options}
+
+以下は、このプラグインで利用可能なすべてのYAML設定オプションです。
+一部のフィールドには例示値が記載されており、その他のフィールドは型のみを示しています。
+
+YAMLを使用したデータソースのプロビジョニングの詳細については、[Grafanaドキュメント](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)を参照してください。
 
 ```yaml
 datasources:
@@ -268,11 +321,11 @@ datasources:
       queryTimeout: 60
       validateSql: false
       httpHeaders:
-      - name: X-Example-Plain-Header
-        value: plain text value
-        secure: false
-      - name: X-Example-Secure-Header
-        secure: true
+        - name: X-Example-Plain-Header
+          value: plain text value
+          secure: false
+        - name: X-Example-Secure-Header
+          secure: true
       logs:
         defaultDatabase: default
         defaultTable: otel_logs
@@ -297,8 +350,8 @@ datasources:
         tagsColumn: <string>
         serviceTagsColumn: <string>
     secureJsonData:
-      tlsCACert:     <string>
+      tlsCACert: <string>
       tlsClientCert: <string>
-      tlsClientKey:  <string>
+      tlsClientKey: <string>
       secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```

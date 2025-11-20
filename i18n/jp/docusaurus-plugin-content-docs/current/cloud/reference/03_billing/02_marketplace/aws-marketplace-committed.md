@@ -1,104 +1,122 @@
 ---
-'slug': '/cloud/billing/marketplace/aws-marketplace-committed-contract'
-'title': 'AWS Marketplace コミット契約'
-'description': 'AWS Marketplaceを通じてClickHouse Cloudにサブスクライブする (Committed Contract)'
-'keywords':
-- 'aws'
-- 'amazon'
-- 'marketplace'
-- 'billing'
-- 'committed'
-- 'committed contract'
-'doc_type': 'guide'
+slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
+title: 'AWS Marketplace コミットメント契約'
+description: 'AWS Marketplace を通じて ClickHouse Cloud にコミットメント契約で申し込む'
+keywords: ['aws', 'amazon', 'marketplace', 'billing', 'committed', 'committed contract']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import aws_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-committed-1.png';
-import aws_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-6.png';
-import aws_marketplace_payg_7 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-7.png';
-import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-8.png';
-import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
-import aws_marketplace_payg_10 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-10.png';
-import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
-import aws_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-12.png';
+import mp_committed_spend_1 from '@site/static/images/cloud/reference/mp_committed_spend_1.png'
+import mp_committed_spend_2 from '@site/static/images/cloud/reference/mp_committed_spend_2.png'
+import mp_committed_spend_3 from '@site/static/images/cloud/reference/mp_committed_spend_3.png'
+import mp_committed_spend_4 from '@site/static/images/cloud/reference/mp_committed_spend_4.png'
+import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committed_spend_5.png'
+import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
+import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-ClickHouse Cloudを[AWS Marketplace](https://aws.amazon.com/marketplace)で開始するには、コミットされた契約を通じて行います。コミットされた契約、別名プライベートオファーは、顧客が一定期間にわたってClickHouse Cloudに対して特定の金額を支出することを約束するためのものです。
+コミット済み契約（committed contract）を利用して、[AWS Marketplace](https://aws.amazon.com/marketplace) から ClickHouse Cloud の利用を開始できます。\
+`Committed contract`（Private Offer とも呼ばれます）は、お客様が一定期間にわたり ClickHouse Cloud に対して特定の金額の利用を約束するための仕組みです。
+
 
 ## 前提条件 {#prerequisites}
 
-- 特定の契約条件に基づくClickHouseからのプライベートオファー。
-- ClickHouse組織をコミットされた支出オファーに接続するには、その組織の管理者である必要があります。
+- 特定の契約条件に基づくClickHouseからのプライベートオファー
+- ClickHouse組織をコミット支出オファーに接続するには、その組織の管理者である必要があります。
 
-[AWSでコミット契約を表示および受諾するために必要な権限](https://docs.aws.amazon.com/marketplace/latest/buyerguide/private-offers-page.html#private-offers-page-permissions):
-- AWSが管理するポリシーを使用している場合、次の権限が必要です: `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`, または `AWSMarketplaceFullAccess`。
-- AWSが管理するポリシーを使用していない場合、次の権限が必要です: IAMアクション `aws-marketplace:ListPrivateListings` と `aws-marketplace:ViewSubscriptions`。
+:::note
+1つのAWSアカウントでサブスクライブできる「ClickHouse Cloud - Committed Contract」プライベートオファーは1つのみで、それは1つのClickHouse組織にのみリンクできます。
+:::
+
+AWSでコミット契約を表示および承認するために必要な権限:
+
+- AWSマネージドポリシーを使用する場合、以下の権限が必要です:
+  - `AWSMarketplaceRead-only`、`AWSMarketplaceManageSubscriptions`
+  - または `AWSMarketplaceFullAccess`
+- AWSマネージドポリシーを使用していない場合、以下の権限が必要です:
+  - IAMアクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
+
 
 ## サインアップ手順 {#steps-to-sign-up}
 
-1. プライベートオファーを確認し受諾するためのリンクを含むメールを受け取っているはずです。
+<VerticalStepper headerLevel="h3">
 
-<br />
+### プライベートオファーの承認 {#private-offer-accept}
 
-<Image img={aws_marketplace_committed_1} size="md" alt="AWS Marketplace private offer email" border/>
+プライベートオファーを確認して承認するためのリンクが記載されたメールが届いているはずです。
 
-<br />
+<Image
+  img={mp_committed_spend_1}
+  size='md'
+  alt='AWS Marketplaceプライベートオファーメール'
+/>
 
-2. メール内の**オファーを確認**リンクをクリックしてください。これにより、プライベートオファーの詳細が表示されるAWS Marketplaceページに移動します。プライベートオファーを受け入れる際は、契約オプションのプルダウンリストで単位数を1に設定してください。
+### オファーリンクの確認 {#review-offer-link}
 
-3. AWSポータルでのサブスクリプション手続きを完了し、**アカウントを設定**をクリックします。この時点でClickHouse Cloudにリダイレクトされ、新しいアカウントを登録するか、既存のアカウントでサインインする必要があります。このステップを完了しない限り、あなたのAWS MarketplaceのサブスクリプションとClickHouse Cloudをリンクさせることができません。
+メール内の「Review Offer」リンクをクリックします。
+プライベートオファーの詳細が表示されたAWS Marketplaceページに移動します。
 
-4. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録してください。このステップは非常に重要で、あなたのClickHouse Cloud組織をAWS Marketplaceの請求に結びつけるために必要です。
+### アカウントのセットアップ {#setup-your-account}
 
-<br />
+AWSポータルでサブスクリプション手順を完了し、**「Set up your account」**をクリックします。
+この時点でClickHouse Cloudにリダイレクトし、新規アカウントを登録するか、既存のアカウントでサインインすることが重要です。
+この手順を完了しないと、AWS MarketplaceコントラクトをClickHouse Cloudにリンクできません。
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud sign in page" border/>
+<Image
+  img={mp_committed_spend_2}
+  size='md'
+  alt='AWS Marketplaceプライベートオファーメール'
+/>
 
-<br />
+### Cloudへのログイン {#login-cloud}
 
-新しいClickHouse Cloudユーザーの場合は、ページの下部にある**登録**をクリックしてください。新しいユーザーを作成し、メールを確認するように促されます。メールを確認した後、ClickHouse Cloudのログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使ってログインできます。
+ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新規アカウントを登録します。
+この手順は、ClickHouse Cloud組織をAWS Marketplaceの請求に紐付けるために必要です。
 
-<br />
+<Image
+  img={mp_committed_spend_3}
+  size='md'
+  alt='AWS Marketplaceプライベートオファーメール'
+/>
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud sign up page" border/>
+### 新規ユーザーの場合は登録 {#register}
 
-<br />
+ClickHouse Cloudの新規ユーザーの場合は、ページ下部の「Register」をクリックします。
+新規ユーザーの作成とメールアドレスの確認を求められます。
+メールアドレスを確認した後、ClickHouse Cloudのログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
 
-新しいユーザーの場合、ビジネスに関する基本情報を提供する必要がありますので、ご注意ください。以下のスクリーンショットを参照してください。
+新規ユーザーの場合、ビジネスに関する基本情報の提供も必要になります。
+以下のスクリーンショットを参照してください。
 
-<br />
+<Image
+  img={mp_committed_spend_4}
+  size='md'
+  alt='ビジネス情報の提供'
+/>
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud sign up info form" border/>
+<Image
+  img={mp_committed_spend_5}
+  size='md'
+  alt='ビジネス情報の提供'
+/>
 
-<br />
+既存のClickHouse Cloudユーザーの場合は、認証情報を使用してログインするだけです。
 
-<br />
+### 請求先組織の作成または選択 {#create-select-org-to-bill}
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
+ログインに成功したら、このマーケットプレイスコントラクトに請求する新しい組織を作成するか、このコントラクトに請求する既存の組織を選択するかを決定できます。
 
-<br />
+<Image
+  img={mp_committed_spend_6}
+  size='md'
+  alt='このサブスクリプションに請求する組織の作成または選択'
+/>
 
-既存のClickHouse Cloudユーザーの場合は、資格情報を使用してログインするだけです。
+この手順を完了すると、組織がAWSコミット支出コントラクトに接続され、すべての使用量がAWSアカウント経由で請求されます。
+ClickHouse UIの組織の請求ページから、請求が実際にAWS Marketplaceにリンクされていることを確認できます。
 
-5. ログインに成功すると、新しいClickHouse Cloud組織が作成されます。この組織はあなたのAWS請求アカウントに接続され、すべての使用量はAWSアカウントを通じて請求されます。
+<Image img={mp_committed_spend_7} size='md' alt='セットアップ完了の確認' />
 
-6. ログインすると、請求が実際にAWS Marketplaceに関連付けられていることを確認でき、ClickHouse Cloudリソースの設定を開始できます。
+問題が発生した場合は、遠慮なく[サポートチーム](https://clickhouse.com/support/program)にお問い合わせください。
 
-<br />
-
-<Image img={aws_marketplace_payg_10} size="md" alt="ClickHouse Cloud view AWS Marketplace billing" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud new services page" border/>
-
-<br />
-
-6. サインアップを確認するメールが届くはずです：
-
-<br />
-
-<Image img={aws_marketplace_payg_12} size="md" alt="AWS Marketplace confirmation email" border/>
-
-<br />
-
-問題が発生した場合は、[サポートチームにお問い合わせください](https://clickhouse.com/support/program)。
+</VerticalStepper>

@@ -1,61 +1,65 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': 'Создание DSPy'
-'title': 'Как использовать DSPy и ClickHouse MCP сервер для создания AI代理'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Изучите, как использовать DSPy и ClickHouse MCP сервер для создания
-  AI代理'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'DSPy'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
+sidebar_label: 'Интеграция DSPy'
+title: 'Как создать ИИ-агента с помощью DSPy и сервера ClickHouse MCP'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать ИИ-агента с помощью DSPy и сервера ClickHouse MCP'
+keywords: ['ClickHouse', 'MCP', 'DSPy']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Как создать AI-агента с помощью DSPy и сервера ClickHouse MCP
 
-В этом руководстве вы узнаете, как создать AI-агента с помощью [DSPy](https://github.com/langchain-ai/langgraph), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 
-## Предварительные условия {#prerequisites}
 
-- Вам потребуется установленный Python на вашем устройстве.
-- Вам потребуется установленный `pip` на вашем устройстве.
-- Вам нужен ключ API Anthropic или ключ API от другого поставщика LLM.
+# Как создать AI‑агента с DSPy и сервером ClickHouse MCP
 
-Вы можете выполнять следующие шаги как из вашего REPL Python, так и через скрипт.
+В этом руководстве вы узнаете, как создать AI‑агента с помощью [DSPy](https://github.com/langchain-ai/langgraph), который
+сможет взаимодействовать с [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример блокнота
-Этот пример можно найти в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb).
+
+
+## Предварительные требования {#prerequisites}
+
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ Anthropic или API-ключ другого провайдера LLM.
+
+Следующие шаги можно выполнить как из Python REPL, так и с помощью скрипта.
+
+:::note Пример в виде notebook
+Этот пример доступен в виде notebook в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb).
 :::
 
 <VerticalStepper headerLevel="h2">
 
-## Установите библиотеки {#install-libraries}
 
-Выполните следующие команды с помощью `pip`, чтобы установить необходимые библиотеки:
+## Установка библиотек {#install-libraries}
+
+Выполните следующие команды с использованием `pip` для установки необходимых библиотек:
 
 ```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
+pip install -q --upgrade pip
+pip install -q dspy
+pip install -q mcp
 ```
 
-## Настройте учетные данные {#setup-credentials}
 
-Далее вам необходимо предоставить ваш ключ API Anthropic:
+## Настройка учётных данных {#setup-credentials}
+
+Далее необходимо указать ваш API-ключ Anthropic:
 
 ```python
 import os
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ Anthropic:")
 ```
 
-:::note Использование другого поставщика LLM
-Если у вас нет ключа API Anthropic и вы хотите использовать другого поставщика LLM,
-вы можете найти инструкции по настройке ваших учетных данных в [документации DSPy](https://dspy.ai/#__tabbed_1_1).
+:::note Использование другого провайдера LLM
+Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
+инструкции по настройке учётных данных можно найти в [документации DSPy](https://dspy.ai/#__tabbed_1_1)
 :::
 
-Далее определите учетные данные, необходимые для подключения к SQL-песочнице ClickHouse:
+Далее определите учётные данные, необходимые для подключения к демонстрационной среде ClickHouse SQL:
 
 ```python
 env = {
@@ -67,9 +71,10 @@ env = {
 }
 ```
 
-## Инициализируйте сервер MCP {#initialize-mcp}
 
-Теперь настройте сервер ClickHouse MCP так, чтобы он указывал на SQL-песочницу ClickHouse.
+## Инициализация MCP-сервера {#initialize-mcp}
+
+Теперь настройте MCP-сервер ClickHouse для подключения к тестовой среде ClickHouse SQL.
 
 ```python
 from mcp import ClientSession, StdioServerParameters
@@ -88,26 +93,28 @@ server_params = StdioServerParameters(
 )
 ```
 
-## Инициализируйте LLM {#initialize-llm}
 
-Далее инициализируйте LLM с помощью следующей строки:
+## Инициализация LLM {#initialize-llm}
+
+Далее инициализируйте LLM следующей строкой:
 
 ```python
 dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
 ```
 
-## Запустите агента {#run-the-agent}
 
-Наконец, инициализируйте и запустите агента:
+## Запуск агента {#run-the-agent}
+
+Finally, initialize and run the agent:
 
 ```python
 class DataAnalyst(dspy.Signature):
-    """You are a data analyst. You'll be asked questions and you need to try to answer them using the tools you have access to. """
+    """Вы — аналитик данных. Вам будут задавать вопросы, и вы должны пытаться отвечать на них, используя доступные вам инструменты. """
 
     user_request: str = dspy.InputField()
     process_result: str = dspy.OutputField(
         desc=(
-            "Answer to the query"
+            "Ответ на запрос"
         )
     )
 
@@ -127,18 +134,18 @@ async with stdio_client(server_params) as (read, write):
         print_dspy_result(result)
 ```
 
-```response title="Response"
+```response title="Ответ"
 ================================================================================
-🤖 DSPy ReAct Result
+🤖 Результат DSPy ReAct
 ================================================================================
 
-📍 STEP 1
+📍 ШАГ 1
 ----------------------------------------
-🧠 THINKING: I need to find information about Amazon product categories and determine which one is most popular. First, I should explore what databases are available to see if there's any Amazon-related data.
+🧠 РАЗМЫШЛЕНИЕ: Мне нужно найти информацию о категориях продуктов Amazon и определить, какая из них самая популярная. Сначала я должен изучить доступные базы данных, чтобы увидеть, есть ли данные, связанные с Amazon.
 
-🔧 TOOL: list_databases
+🔧 ИНСТРУМЕНТ: list_databases
 
-📊 RESULT:
+📊 РЕЗУЛЬТАТ:
    amazon
 bluesky
 country
@@ -170,14 +177,14 @@ reddit
 rubygems
 sta...
 
-📍 STEP 2
+📍 ШАГ 2
 ----------------------------------------
-🧠 THINKING: Great! I can see there's an "amazon" database available. This is exactly what I need to find information about Amazon product categories. Let me explore the tables in the amazon database to see what data is available.
+🧠 РАЗМЫШЛЕНИЕ: Отлично! Я вижу, что доступна база данных «amazon». Это именно то, что мне нужно для поиска информации о категориях продуктов Amazon. Изучу таблицы в базе данных amazon, чтобы увидеть, какие данные доступны.
 
-🔧 TOOL: list_tables
-   Args: {'database': 'amazon'}
+🔧 ИНСТРУМЕНТ: list_tables
+   Аргументы: {'database': 'amazon'}
 
-📊 RESULT:
+📊 РЕЗУЛЬТАТ:
    {
   "database": "amazon",
   "name": "amazon_reviews",
@@ -189,52 +196,56 @@ sta...
       "default_type": "",
       "default_expression": "",...
 
-📍 STEP 3
+📍 ШАГ 3
 ----------------------------------------
-🧠 THINKING: Perfect! I found the amazon_reviews table which contains a product_category column. This table has over 150 million rows of Amazon review data, which should give me a good representation of product popularity. To find the most popular Amazon product category, I need to count the number of reviews per category and order them by count in descending order. The category with the most reviews would be considered the most popular.
+🧠 РАЗМЫШЛЕНИЕ: Идеально! Я нашел таблицу amazon_reviews, которая содержит столбец product_category. Эта таблица содержит более 150 миллионов строк данных отзывов Amazon, что должно дать хорошее представление о популярности категорий. Чтобы найти самую популярную категорию продуктов Amazon, мне нужно подсчитать количество отзывов по каждой категории и отсортировать их по убыванию количества. Категория с наибольшим количеством отзывов будет считаться самой популярной.
 
-🔧 TOOL: run_select_query
-   Args: {'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
+🔧 ИНСТРУМЕНТ: run_select_query
+   Аргументы: {'query': 'SELECT product_category, COUNT(*) as review_count FROM amazon.amazon_reviews GROUP BY product_category ORDER BY review_count DESC LIMIT 10'}
 
-📊 RESULT:
-   1. Books: 19,530,930 reviews
-   2. Digital_Ebook_Purchase: 17,622,107 reviews
-   3. Wireless: 9,001,567 reviews
-   4. PC: 6,908,245 reviews
-   5. Home: 6,221,321 reviews
-   ... and 5 more
+📊 РЕЗУЛЬТАТ:
+   1. Books: 19 530 930 отзывов
+   2. Digital_Ebook_Purchase: 17 622 107 отзывов
+   3. Wireless: 9 001 567 отзывов
+   4. PC: 6 908 245 отзывов
+   5. Home: 6 221 321 отзывов
+   ... и еще 5
 
-📍 STEP 4
+📍 ШАГ 4
 ----------------------------------------
-🧠 THINKING: Perfect! I have found the answer to the user's question. Based on the Amazon reviews data, I can clearly see that "Books" is the most popular Amazon product category with 19,530,930 reviews, followed by "Digital_Ebook_Purchase" with 17,622,107 reviews. The data shows a clear ranking of product categories by popularity based on the number of reviews each category has received. I now have all the information needed to answer the user's question.
+🧠 РАЗМЫШЛЕНИЕ: Идеально! Я нашел ответ на вопрос пользователя. На основе данных отзывов Amazon я четко вижу, что «Books» — самая популярная категория продуктов Amazon с 19 530 930 отзывами, за которой следует «Digital_Ebook_Purchase» с 17 622 107 отзывами. Данные показывают четкий рейтинг категорий продуктов по популярности на основе количества полученных отзывов для каждой категории. Теперь у меня есть вся необходимая информация для ответа на вопрос пользователя.
 
-🔧 TOOL: finish
+🔧 ИНСТРУМЕНТ: finish
 
-📊 RESULT:
-   Completed.
+📊 РЕЗУЛЬТАТ:
+   Завершено.
 
-🎯 REASONING
+🎯 ОБОСНОВАНИЕ
 ----------------------------------------
-To answer the question about the most popular Amazon product category, I accessed the Amazon database and found a table called "amazon_reviews" with over 150 million review records. This table contains a "product_category" column that allows me to analyze product popularity based on review volume. I ran a query to count the number of reviews per product category and ordered them by count in descending order. The assumption here is that categories with more reviews indicate higher popularity, as more reviews typically correlate with more purchases and customer engagement.
+Чтобы ответить на вопрос о самой популярной категории продуктов Amazon, я обратился к базе данных Amazon и нашел таблицу под названием «amazon_reviews» с более чем 150 миллионами записей отзывов. Эта таблица содержит столбец «product_category», который позволяет анализировать популярность категорий на основе объема отзывов. Я выполнил запрос для подсчета количества отзывов по каждой категории продуктов и отсортировал их по убыванию. Предположение здесь в том, что категории с большим количеством отзывов указывают на более высокую популярность, поскольку большее количество отзывов обычно коррелирует с большим количеством покупок и вовлеченностью клиентов.
 
-✅ FINAL RESULT
+✅ КОНЕЧНЫЙ РЕЗУЛЬТАТ
 ----------------------------------------
-Based on Amazon review data containing over 150 million records, the most popular Amazon product category is **Books** with 19,530,930 reviews. 
+На основе данных отзывов Amazon, содержащих более 150 миллионов записей, самая популярная категория продуктов Amazon — **Books** с 19 530 930 отзывами.
 
-Here are the top 10 most popular Amazon product categories by review count:
+```
 
-1. **Books** - 19,530,930 reviews
-2. **Digital_Ebook_Purchase** - 17,622,107 reviews  
-3. **Wireless** - 9,001,567 reviews
-4. **PC** - 6,908,245 reviews
-5. **Home** - 6,221,321 reviews
-6. **Apparel** - 5,906,085 reviews
-7. **Health & Personal Care** - 5,331,239 reviews
-8. **Beauty** - 5,115,462 reviews
-9. **Video DVD** - 5,069,014 reviews
-10. **Mobile_Apps** - 5,033,164 reviews
 
-It's interesting to note that Books and Digital Ebook Purchase (which are related categories) together account for over 37 million reviews, showing the strong popularity of reading materials on Amazon's platform.
-================================================================================
+Вот 10 самых популярных категорий товаров Amazon по количеству отзывов:
+
+1. **Books** - 19,530,930 отзывов
+2. **Digital&#95;Ebook&#95;Purchase** - 17,622,107 отзывов
+3. **Wireless** - 9,001,567 отзывов
+4. **PC** - 6,908,245 отзывов
+5. **Home** - 6,221,321 отзыв
+6. **Apparel** - 5,906,085 отзывов
+7. **Health &amp; Personal Care** - 5,331,239 отзывов
+8. **Beauty** - 5,115,462 отзывов
+9. **Video DVD** - 5,069,014 отзывов
+10. **Mobile&#95;Apps** - 5,033,164 отзывов
+
+# Интересно, что категории Books и Digital&#95;Ebook&#95;Purchase (которые близки по тематике) вместе дают более 37 миллионов отзывов, что говорит о высокой популярности материалов для чтения на платформе Amazon.
+
 ```
 </VerticalStepper>
+```

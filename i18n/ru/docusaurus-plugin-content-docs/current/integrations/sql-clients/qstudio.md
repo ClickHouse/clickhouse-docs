@@ -1,11 +1,13 @@
 ---
-slug: '/integrations/qstudio'
-sidebar_label: QStudio
-description: 'QStudio — это безплатный инструмент SQL.'
-title: 'Подключите QStudio к ClickHouse'
-doc_type: guide
+slug: /integrations/qstudio
+sidebar_label: 'QStudio'
+description: 'QStudio — это бесплатный инструмент для работы с SQL.'
+title: 'Подключение QStudio к ClickHouse'
+doc_type: 'guide'
+keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import qstudio_add_connection from '@site/static/images/integrations/sql-clients/qstudio-add-connection.png';
 import qstudio_running_query from '@site/static/images/integrations/sql-clients/qstudio-running-query.png';
 import Image from '@theme/IdealImage';
@@ -16,52 +18,68 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-QStudio — это бесплатный SQL GUI, который позволяет выполнять SQL-скрипты, легко просматривать таблицы, строить диаграммы и экспортировать результаты. Он работает на всех операционных системах и с любыми базами данных.
+QStudio — это бесплатный графический интерфейс для работы с SQL, который позволяет запускать SQL-скрипты, легко просматривать таблицы, строить графики и экспортировать результаты. Он работает на любой операционной системе и с любой базой данных.
 
 QStudio подключается к ClickHouse с помощью JDBC.
 
-## 1. Соберите ваши данные ClickHouse {#1-gather-your-clickhouse-details}
 
-QStudio использует JDBC через HTTP(S) для подключения к ClickHouse; вам понадобятся:
 
-- конечная точка
+## 1. Соберите данные для подключения к ClickHouse {#1-gather-your-clickhouse-details}
+
+QStudio использует JDBC через HTTP(S) для подключения к ClickHouse. Вам потребуются:
+
+- адрес сервера (endpoint)
 - номер порта
 - имя пользователя
 - пароль
 
 <ConnectionDetails />
 
+
 ## 2. Загрузите QStudio {#2-download-qstudio}
 
-QStudio доступен по адресу https://www.timestored.com/qstudio/download/
+QStudio можно загрузить по адресу https://www.timestored.com/qstudio/download/
 
-## 3. Добавьте базу данных {#3-add-a-database}
 
-- Когда вы впервые откроете QStudio, нажмите на меню **Сервер->Добавить сервер** или на кнопку добавления сервера на панели инструментов.
-- Затем укажите данные:
+## 3. Добавление базы данных {#3-add-a-database}
 
-<Image img={qstudio_add_connection} size="lg" border alt="Экран настройки подключения базы данных QStudio с показом параметров подключения ClickHouse" />
+- При первом запуске QStudio выберите в меню **Server->Add Server** или нажмите кнопку добавления сервера на панели инструментов.
+- Затем укажите следующие параметры:
 
-1.  Тип сервера: Clickhouse.com
-2.  Обратите внимание, что для хоста вы ДОЛЖНЫ включить https://
-    Хост: https://abc.def.clickhouse.cloud
-    Порт: 8443
-3.  Имя пользователя: default
-    Пароль: `XXXXXXXXXXX`
-4. Нажмите Добавить
+<Image
+  img={qstudio_add_connection}
+  size='lg'
+  border
+  alt='Экран настройки подключения к базе данных в QStudio с параметрами подключения к ClickHouse'
+/>
 
-Если QStudio обнаружит, что у вас не установлен драйвер JDBC для ClickHouse, он предложит загрузить его для вас:
+1.  Server Type: Clickhouse.com
+2.  Важно: в поле Host ОБЯЗАТЕЛЬНО указывайте https://
+    Host: https://abc.def.clickhouse.cloud
+    Port: 8443
+3.  Username: default
+    Password: `XXXXXXXXXXX`
+4.  Нажмите Add
 
-## 4. Делайте запросы к ClickHouse {#4-query-clickhouse}
+Если QStudio обнаружит, что драйвер ClickHouse JDBC не установлен, будет предложено загрузить его автоматически:
 
-- Откройте редактор запросов и выполните запрос. Вы можете выполнять запросы с помощью
-- Ctrl + e - Выполняет выделенный текст
-- Ctrl + Enter - Выполняет текущую строку
+
+## 4. Выполнение запросов к ClickHouse {#4-query-clickhouse}
+
+- Откройте редактор запросов и выполните запрос. Запросы можно выполнять следующими способами:
+- Ctrl + e — выполняет выделенный текст
+- Ctrl + Enter — выполняет текущую строку
 
 - Пример запроса:
 
-<Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, показывающий выполнение примера SQL-запроса к базе данных ClickHouse" />
+<Image
+  img={qstudio_running_query}
+  size='lg'
+  border
+  alt='Интерфейс QStudio с примером выполнения SQL-запроса к базе данных ClickHouse'
+/>
+
 
 ## Следующие шаги {#next-steps}
 
-Посмотрите [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, и [документацию ClickHouse](https://clickhouse.com/docs), чтобы узнать о возможностях ClickHouse.
+Изучите [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, и [документацию ClickHouse](https://clickhouse.com/docs), чтобы узнать о возможностях ClickHouse.

@@ -1,10 +1,12 @@
 ---
-'slug': '/cloud/reference/changelogs'
-'title': 'Changelogs'
-'description': 'Страница доступа для Cloud changelogs'
-'doc_type': 'landing-page'
+slug: /cloud/reference/changelogs
+title: 'Журналы изменений'
+description: 'Целевая страница журналов изменений Cloud'
+doc_type: 'landing-page'
+keywords: ['ClickHouse Cloud changelog', 'Cloud release notes', 'cloud updates', 'version history']
 ---
-| Page                                                          | Description                                     |
+
+| Страница                                                      | Описание                                        |
 |---------------------------------------------------------------|-------------------------------------------------|
-| [Cloud Changelog](/whats-new/cloud)                   | Changelog for ClickHouse Cloud                  |
-| [Release Notes](/cloud/reference/changelogs/release-notes) | Release notes for all ClickHouse Cloud releases |
+| [Cloud Changelog](/whats-new/cloud)                   | Журнал изменений ClickHouse Cloud              |
+| [Release Notes](/cloud/reference/changelogs/release-notes) | Примечания ко всем релизам ClickHouse Cloud    |

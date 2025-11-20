@@ -1,67 +1,63 @@
 ---
-'title': '安装 chDB 以用于 Rust'
-'sidebar_label': 'Rust'
-'slug': '/chdb/install/rust'
-'description': '如何安装和使用 chDB Rust 绑定'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'rust'
-- 'install'
-- 'ffi'
-- 'bindings'
-'doc_type': 'guide'
+title: '在 Rust 中安装 chDB'
+sidebar_label: 'Rust'
+slug: /chdb/install/rust
+description: '如何安装和使用 chDB 的 Rust 绑定'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
+doc_type: 'guide'
 ---
 
 
-# chDB for Rust {#chdb-for-rust}
 
-chDB-rust 提供实验性的 FFI（外部函数接口）绑定，用于 chDB，使您能够在 Rust 应用程序中直接运行 ClickHouse 查询，而无需任何外部依赖。
+# Rust 版 chDB {#chdb-for-rust}
 
-## Installation {#installation}
+chDB-rust 为 chDB 提供实验性的 FFI(外部函数接口)绑定,让您能够在 Rust 应用程序中直接运行 ClickHouse 查询,无需任何外部依赖项。
 
-### Install libchdb {#install-libchdb}
 
-安装 chDB 库：
+## 安装 {#installation}
+
+### 安装 libchdb {#install-libchdb}
+
+安装 chDB 库:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-## Usage {#usage}
 
-chDB Rust 提供无状态和有状态查询执行模式。
+## 使用方法 {#usage}
 
-### Stateless usage {#stateless-usage}
+chDB Rust 提供无状态和有状态两种查询执行模式。
 
-对于没有持久状态的简单查询：
+### 无状态模式 {#stateless-usage}
+
+适用于无需持久化状态的简单查询：
 
 ```rust
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Execute a simple query
+    // 执行简单查询
     let result = execute(
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouse version: {}", result.data_utf8()?);
+    println!("ClickHouse 版本: {}", result.data_utf8()?);
 
-    // Query with CSV file
+    // 查询 CSV 文件
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSV data: {}", result.data_utf8()?);
+    println!("CSV 数据: {}", result.data_utf8()?);
 
     Ok(())
 }
 ```
 
-### Stateful usage (Sessions) {#stateful-usage-sessions}
+### 有状态模式（会话） {#stateful-usage-sessions}
 
-对于需要持久状态的查询，如数据库和表：
+适用于需要持久化状态（如数据库和表）的查询：
 
 ```rust
 use chdb_rust::{
@@ -73,19 +69,19 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Create a temporary directory for database storage
+    // 为数据库存储创建临时目录
     let tmp = TempDir::new("chdb-rust")?;
 
-    // Build session with configuration
+    // 构建会话并配置参数
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // Cleanup on drop
+        .with_auto_cleanup(true)  // 销毁时自动清理
         .build()?;
 
-    // Create database and table
+    // 创建数据库和表
     session.execute(
-        "CREATE DATABASE demo; USE demo", 
+        "CREATE DATABASE demo; USE demo",
         Some(&[Arg::MultiQuery])
     )?;
 
@@ -94,76 +90,80 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // Insert data
+    // 插入数据
     session.execute(
         "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
         None,
     )?;
 
-    // Query data
+    // 查询数据
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("Query results:\n{}", result.data_utf8()?);
+    println!("查询结果:\n{}", result.data_utf8()?);
 
-    // Get query statistics
-    println!("Rows read: {}", result.rows_read());
-    println!("Bytes read: {}", result.bytes_read());
-    println!("Query time: {:?}", result.elapsed());
+    // 获取查询统计信息
+    println!("读取行数: {}", result.rows_read());
+    println!("读取字节数: {}", result.bytes_read());
+    println!("查询耗时: {:?}", result.elapsed());
 
     Ok(())
 }
 ```
 
-## Building and testing {#building-testing}
 
-### Build the project {#build-the-project}
+## 构建和测试 {#building-testing}
+
+### 构建项目 {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### Run tests {#run-tests}
+### 运行测试 {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### Development dependencies {#development-dependencies}
+### 开发依赖项 {#development-dependencies}
 
-该项目包括以下开发依赖：
+项目包含以下开发依赖项:
+
 - `bindgen` (v0.70.1) - 从 C 头文件生成 FFI 绑定
-- `tempdir` (v0.3.7) - 在测试中处理临时目录
+- `tempdir` (v0.3.7) - 测试中的临时目录处理
 - `thiserror` (v1) - 错误处理工具
 
-## Error handling {#error-handling}
 
-chDB Rust 通过 `Error` 枚举提供全面的错误处理：
+## 错误处理 {#error-handling}
+
+chDB Rust 通过 `Error` 枚举提供完善的错误处理机制:
 
 ```rust
 use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("Success: {}", result.data_utf8()?);
+        println!("成功: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("Query failed: {}", msg);
+        eprintln!("查询失败: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("No result returned");
+        eprintln!("未返回结果");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("Invalid UTF-8: {}", e);
+        eprintln!("无效的 UTF-8: {}", e);
     },
     Err(e) => {
-        eprintln!("Other error: {}", e);
+        eprintln!("其他错误: {}", e);
     }
 }
 ```
 
-## GitHub repository {#github-repository}
+
+## GitHub 仓库 {#github-repository}
 
 您可以在 [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust) 找到该项目的 GitHub 仓库。

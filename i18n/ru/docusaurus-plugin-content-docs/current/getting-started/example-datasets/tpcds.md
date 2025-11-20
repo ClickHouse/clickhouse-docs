@@ -1,16 +1,21 @@
 ---
-slug: '/getting-started/example-datasets/tpcds'
-sidebar_label: TPC-DS
-description: 'Набор данных и запросы для бенчмарка TPC-DS.'
+description: 'Набор данных и запросы бенчмарка TPC-DS.'
+sidebar_label: 'TPC-DS'
+slug: /getting-started/example-datasets/tpcds
 title: 'TPC-DS (2012)'
-doc_type: reference
+doc_type: 'guide'
+keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
-Похожий на [Бенчмарк Звездной Схемы (SSB)](star-schema.md), TPC-DS основан на [TPC-H](tpch.md), но пошел противоположным путем, т.е. увеличил количество соединений, необходимых для хранения данных в сложной схеме снежинка (24 вместо 8 таблиц). Распределение данных смещено (например, нормальное и распределение Пуассона). Включает 99 отчетных и произвольных запросов с случайными подстановками.
+
+Подобно [Star Schema Benchmark (SSB)](star-schema.md), TPC-DS основан на [TPC-H](tpch.md), но пошёл по противоположному пути: увеличил количество необходимых соединений, сохранив данные в сложной схеме «снежинка» (24 таблицы вместо 8).
+Распределение данных неравномерное (например, нормальное и распределение Пуассона).
+Он включает 99 отчётных и произвольных запросов со случайными подстановками.
 
 Ссылки
-- [Создание TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-Сначала загрузите репозиторий TPC-DS и скомпилируйте генератор данных:
+* [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
+
+Сначала клонируйте репозиторий TPC-DS и соберите генератор данных:
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -18,7 +23,7 @@ cd tpcds-kit/tools
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-scale` указывает масштабный коэффициент.
+Затем сгенерируйте данные. Параметр `-scale` задаёт коэффициент масштаба.
 
 ```bash
 ./dsdgen -scale 1
@@ -27,10 +32,12 @@ make
 Затем сгенерируйте запросы (используйте тот же масштабный коэффициент):
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # генерирует 99 запросов в out/query_0.sql
 ```
 
-Теперь создайте таблицы в ClickHouse. Вы можете использовать оригинальные определения таблиц в tools/tpcds.sql или "оптимизированные" определения таблиц с правильно определенными первичными индексами и типами колонок LowCardinality, где это имеет смысл.
+Теперь создайте таблицы в ClickHouse.
+Вы можете использовать либо исходные определения таблиц из tools/tpcds.sql, либо «оптимизированные» определения таблиц с корректно заданными первичными ключами и типами столбцов LowCardinality там, где это имеет смысл.
+
 
 ```sql
 CREATE TABLE call_center(
@@ -587,5 +594,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 Затем выполните сгенерированные запросы.
 
 ::::warning
-TPC-DS активно использует коррелированные подзапросы, которые на момент написания (сентябрь 2024) не поддерживаются ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)). В результате многие из вышеуказанных бенчмарковых запросов будут завершаться ошибками.
+TPC-DS активно использует коррелированные подзапросы, которые на момент написания (сентябрь 2024 года) не поддерживаются в ClickHouse ([issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)).
+В результате многие из приведённых выше запросов бенчмарка завершатся с ошибками.
 ::::

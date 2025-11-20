@@ -1,33 +1,36 @@
 ---
-slug: '/getting-started/example-datasets/tw-weather'
-sidebar_label: 'Исторические метеоданные Тайваня'
-sidebar_position: 1
-description: '131 миллион строк данных наблюдений за погодой за последние 128 лет'
-title: 'Исторические метеоданные Тайваня'
-doc_type: reference
+description: '131 миллионов строк данных наблюдений за погодой за последние 128 лет'
+sidebar_label: 'Исторические метеоданные по Тайваню'
+slug: /getting-started/example-datasets/tw-weather
+title: 'Исторические метеоданные по Тайваню'
+doc_type: 'guide'
+keywords: ['example dataset', 'weather', 'taiwan', 'sample data', 'climate data']
 ---
-Этот набор данных содержит исторические метеорологические наблюдения за последние 128 лет. Каждая строка представляет собой измерение для определенного момента времени и метеорологической станции.
 
-Происхождение этого набора данных доступно [здесь](https://github.com/Raingel/historical_weather), а список номеров метеорологических станций можно найти [здесь](https://github.com/Raingel/weather_station_list).
+Этот набор данных содержит исторические результаты метеорологических измерений за последние 128 лет. Каждая строка соответствует одному измерению для конкретного момента времени и метеостанции.
 
-> Источниками метеорологических наборов данных являются метеорологические станции, созданные Центральным метеорологическим управлением (код станции начинается с C0, C1 и 4), и сельскохозяйственные метеорологические станции, принадлежащие Совету сельского хозяйства (код станции отличается от указанных выше):
+Источник этого набора данных доступен [здесь](https://github.com/Raingel/historical_weather), а список кодов метеостанций можно найти [здесь](https://github.com/Raingel/weather_station_list).
+
+> Источниками метеорологических наборов данных являются метеорологические станции, созданные Центральной метеорологической администрацией (код станции начинается с C0, C1 или 4), а также сельскохозяйственные метеорологические станции, относящиеся к Совету по сельскому хозяйству (код станции отличается от указанных выше):
 
     - StationId
     - MeasuredDate, время наблюдения
     - StnPres, атмосферное давление на станции
-    - SeaPres, атмосферное давление на уровне моря
+    - SeaPres, давление, приведённое к уровню моря
     - Td, температура точки росы
     - RH, относительная влажность
-    - Другие элементы, где это возможно
+    - Другие параметры, где доступны
 
-## Скачивание данных {#downloading-the-data}
 
-- [Предобработанная версия](#pre-processed-data) данных для ClickHouse, которая была очищена, переструктурирована и дополнена. Этот набор данных охватывает годы с 1896 по 2023.
-- [Скачайте оригинальные необработанные данные](#original-raw-data) и преобразуйте в формат, необходимый для ClickHouse. Пользователи, желающие добавить свои собственные колонки, могут рассмотреть или завершить свои подходы.
+
+## Загрузка данных {#downloading-the-data}
+
+- [Предобработанная версия](#pre-processed-data) данных для ClickHouse, которая была очищена, реструктурирована и дополнена. Этот набор данных охватывает период с 1896 по 2023 год.
+- [Загрузите исходные необработанные данные](#original-raw-data) и преобразуйте их в формат, требуемый ClickHouse. Пользователи, желающие добавить собственные столбцы, могут изучить или реализовать свои подходы.
 
 ### Предобработанные данные {#pre-processed-data}
 
-Данные также были переструктурированы с одного измерения на строку до одной строки на идентификатор метеорологической станции и измеренную дату, т.е.
+Набор данных также был реструктурирован из формата с одним измерением на строку в формат со строкой на идентификатор метеостанции и дату измерения, т. е.
 
 ```csv
 StationId,MeasuredDate,StnPres,Tx,RH,WS,WD,WSGust,WDGust,Precp,GloblRad,TxSoil0cm,TxSoil5cm,TxSoil20cm,TxSoil50cm,TxSoil100cm,SeaPres,Td,PrecpHour,SunShine,TxSoil10cm,EvapA,Visb,UVI,Cloud Amount,TxSoil30cm,TxSoil200cm,TxSoil300cm,TxSoil500cm,VaporPressure
@@ -37,49 +40,53 @@ C0X100,2016-01-01 03:00:00,1021.3,15.8,74,1.5,353.0,,,,,,,,,,,,,,,,,,,,,,,
 C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```
 
-Запрашивать такие данные легко, и в результате таблица имеет меньше пропусков, а некоторые элементы могут быть null, потому что их невозможно измерить на этой метеорологической станции.
+Это упрощает выполнение запросов и обеспечивает меньшую разреженность результирующей таблицы, при этом некоторые элементы имеют значение null, поскольку соответствующие измерения недоступны на данной метеостанции.
 
-Этот набор данных доступен по следующему адресу Google CloudStorage. Вы можете либо скачать набор данных на локальную файловую систему (и вставить их с помощью клиента ClickHouse), либо вставить их непосредственно в ClickHouse (см. [Вставка по URL](#inserting-from-url)).
+Этот набор данных доступен в следующем расположении Google Cloud Storage. Вы можете либо загрузить набор данных в локальную файловую систему (и вставить данные с помощью клиента ClickHouse), либо вставить их напрямую в ClickHouse (см. [Вставка из URL](#inserting-from-url)).
 
-Чтобы скачать:
+Для загрузки:
 
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
+```
 
-# Option: Validate the checksum
+
+# Вариант: проверить контрольную сумму
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-
-# Checksum should be equal to: 11b484f5bd9ddafec5cfb131eb2dd008
+# Контрольная сумма должна быть: 11b484f5bd9ddafec5cfb131eb2dd008
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
 
-# Option: Validate the checksum
-md5sum daily_weather_preprocessed_1896_2023.csv
 
-# Checksum should be equal to: 1132248c78195c43d93f843753881754
-```
+# Опция: проверить контрольную сумму
 
-### Оригинальные необработанные данные {#original-raw-data}
+md5sum daily&#95;weather&#95;preprocessed&#95;1896&#95;2023.csv
 
-Следующие детали касаются шагов для загрузки оригинальных необработанных данных, чтобы преобразовать и конвертировать их по своему усмотрению.
+# Контрольная сумма должна быть равна: 1132248c78195c43d93f843753881754
+
+````
+
+### Исходные необработанные данные {#original-raw-data}
+
+Ниже описаны шаги по загрузке исходных необработанных данных для их последующего преобразования и конвертации.
 
 #### Загрузка {#download}
 
-Для загрузки оригинальных необработанных данных:
+Для загрузки исходных необработанных данных:
 
 ```bash
 mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
+````
 
 
-# Option: Validate the checksum
+# Вариант: проверить контрольную сумму
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-
-# Checksum should be equal to: b66b9f137217454d655e3004d7d1b51a
+# Контрольная сумма должна быть равна: b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -89,25 +96,33 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 ...
 
 
-# Option: Validate the checksum
+
+# Вариант: проверить контрольную сумму
+
 cat *.csv | md5sum
 
-# Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
-```
+# Контрольная сумма должна быть равна: b26db404bf84d4063fac42e576464ce1
 
-#### Получение метеорологических станций Тайваня {#retrieve-the-taiwan-weather-stations}
+````
+
+#### Получение списка метеостанций Тайваня {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
+````
 
 
-# Option: Convert the UTF-8-BOM to UTF-8 encoding
-sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
+# Вариант: удалить BOM из файла в кодировке UTF-8
+
+sed -i &#39;1s/^\xEF\xBB\xBF//&#39; weather&#95;sta&#95;list.csv
+
 ```
+```
+
 
 ## Создание схемы таблицы {#create-table-schema}
 
-Создайте таблицу MergeTree в ClickHouse (с помощью клиента ClickHouse).
+Создайте таблицу MergeTree в ClickHouse (из клиента ClickHouse).
 
 ```bash
 CREATE TABLE tw_weather_data (
@@ -146,19 +161,20 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-## Вставка в ClickHouse {#inserting-into-clickhouse}
+
+## Вставка данных в ClickHouse {#inserting-into-clickhouse}
 
 ### Вставка из локального файла {#inserting-from-local-file}
 
-Данные можно вставить из локального файла следующим образом (с помощью клиента ClickHouse):
+Данные можно вставить из локального файла следующим образом (из клиента ClickHouse):
 
 ```sql
 INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_1896_2023.csv'
 ```
 
-где `/path/to` представляет собой конкретный путь пользователя к локальному файлу на диске.
+где `/path/to` — это путь пользователя к локальному файлу на диске.
 
-И пример ответа после вставки данных в ClickHouse:
+Пример вывода после вставки данных в ClickHouse:
 
 ```response
 Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
@@ -168,18 +184,20 @@ Ok.
 Peak memory usage: 583.23 MiB.
 ```
 
-### Вставка по URL {#inserting-from-url}
+### Вставка из URL {#inserting-from-url}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
 FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/daily_weather_preprocessed_1896_2023.csv', 'CSVWithNames')
 
 ```
-Чтобы узнать, как ускорить этот процесс, пожалуйста, ознакомьтесь с нашей статьей в блоге о [оптимизации больших загрузок данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
 
-## Проверка строк данных и размеров {#check-data-rows-and-sizes}
+Чтобы узнать, как ускорить этот процесс, см. нашу статью в блоге о [настройке загрузки больших объемов данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
 
-1. Давайте посмотрим, сколько строк было вставлено:
+
+## Проверка количества строк и размера данных {#check-data-rows-and-sizes}
+
+1. Посмотрим, сколько строк было вставлено:
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -192,7 +210,7 @@ FROM tw_weather_data;
 └─────────────────────────────────┘
 ```
 
-2. Давайте посмотрим, сколько дискового пространства используется для этой таблицы:
+2. Посмотрим, сколько дискового пространства занимает эта таблица:
 
 ```sql
 SELECT
@@ -208,9 +226,10 @@ WHERE (`table` = 'tw_weather_data') AND active
 └───────────┴───────────────────┘
 ```
 
+
 ## Примеры запросов {#sample-queries}
 
-### Q1: Получить самую высокую температуру точки росы для каждой метеорологической станции в каждом конкретном году {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1: Получение максимальной температуры точки росы для каждой метеостанции за указанный год {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
 
 ```sql
 SELECT
@@ -253,10 +272,10 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
+30 строк в результате. Время выполнения: 0.045 сек. Обработано 6.41 млн строк, 187.33 МБ (143.92 млн строк/сек., 4.21 ГБ/сек.)
 ```
 
-### Q2: Получение необработанных данных с определенным диапазоном времени, полями и метеорологической станцией {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2: Получение исходных данных для указанного временного диапазона, полей и метеостанции {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
 ```sql
 SELECT
@@ -277,6 +296,7 @@ ORDER BY MeasuredDate ASC
 LIMIT 10
 ```
 
+
 ```response
 ┌─StnPres─┬─SeaPres─┬───Tx─┬───Td─┬─RH─┬──WS─┬──WD─┬─WSGust─┬─WDGust─┬─Precp─┬─PrecpHour─┐
 │  1029.5 │    ᴺᵁᴸᴸ │ 11.8 │ ᴺᵁᴸᴸ │ 78 │ 2.7 │ 271 │    5.5 │    275 │ -99.8 │     -99.8 │
@@ -291,11 +311,12 @@ LIMIT 10
 │  1028.3 │    ᴺᵁᴸᴸ │ 13.6 │ ᴺᵁᴸᴸ │ 91 │ 1.2 │ 273 │    4.4 │    256 │ -99.8 │     -99.8 │
 └─────────┴─────────┴──────┴──────┴────┴─────┴─────┴────────┴────────┴───────┴───────────┘
 
-10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
+10 строк в наборе. Прошло: 0.009 сек. Обработано 91.70 тыс. строк, 2.33 МБ (9.67 млн строк/с., 245.31 МБ/с.)
 ```
+
 
 ## Благодарности {#credits}
 
-Мы хотим поблагодарить Центральное метеорологическое управление и Сеть сельскохозяйственных метеорологических наблюдений (станции) Совета сельского хозяйства за подготовку, очистку и распределение этого набора данных. Мы ценим ваши усилия.
+Мы выражаем благодарность Центральному метеорологическому управлению и Сети сельскохозяйственных метеорологических наблюдений (станций) Совета по сельскому хозяйству за подготовку, обработку и распространение этого набора данных. Мы высоко ценим вашу работу.
 
-Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. Модель глубокого обучения, ориентированная на приложение, для раннего предупреждения о грибковом заболевании риса на Тайване. Ecological Informatics 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]
+Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. Application-oriented deep learning model for early warning of rice blast in Taiwan. Ecological Informatics 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]

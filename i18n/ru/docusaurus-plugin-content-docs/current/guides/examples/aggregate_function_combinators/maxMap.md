@@ -1,22 +1,29 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxMap'
-sidebar_label: maxMap
+title: 'maxMap'
 description: 'Пример использования комбинатора maxMap'
-title: maxMap
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
-doc_type: reference
+sidebar_label: 'maxMap'
+doc_type: 'reference'
 ---
+
+
+
 # maxMap {#maxmap}
+
 
 ## Описание {#description}
 
-Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применен к функции [`max`](/sql-reference/aggregate-functions/reference/max), чтобы вычислить максимальное значение в Map по каждому ключу, используя агрегатную функцию `maxMap`.
+Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может применяться к функции [`max`](/sql-reference/aggregate-functions/reference/max) для вычисления максимального значения в Map для каждого ключа с использованием агрегатной функции-комбинатора `maxMap`.
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит коды статусов и их количество для различных временных интервалов, где каждая строка содержит Map кодов статусов и соответствующих им количеств. Мы будем использовать `maxMap`, чтобы найти максимальное количество для каждого кода статуса в каждом временном интервале.
+В этом примере мы создадим таблицу, которая хранит коды статусов и их количество для различных временных интервалов,
+где каждая строка содержит Map кодов статусов с соответствующими им счётчиками. Мы используем
+`maxMap` для нахождения максимального значения счётчика для каждого кода статуса в каждом временном интервале.
 
-```sql title="Query"
+```sql title="Запрос"
 CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
@@ -36,7 +43,8 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-Функция `maxMap` найдет максимальное количество для каждого кода статуса в каждом временном интервале. Например:
+Функция `maxMap` найдёт максимальное значение счётчика для каждого кода статуса в каждом временном интервале. Например:
+
 - В временном интервале '2000-01-01 00:00:00':
   - Статус 'a': 15
   - Статус 'b': 25
@@ -49,13 +57,15 @@ GROUP BY timeslot;
   - Статус 'f': max(95, 105) = 105
   - Статус 'g': max(115, 125) = 125
 
-```response title="Response"
+```response title="Результат"
    ┌────────────timeslot─┬─maxMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':105,'g':125}      │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
+
 ## См. также {#see-also}
+
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [Комбинатор `Map`](/sql-reference/aggregate-functions/combinators#-map)

@@ -1,20 +1,22 @@
 ---
-'description': 'スター スキーマ ベンチマーク (SSB) データ セットとクエリ'
-'sidebar_label': 'スター スキーマ ベンチマーク'
-'slug': '/getting-started/example-datasets/star-schema'
-'title': 'スター スキーマ ベンチマーク (SSB, 2009)'
-'doc_type': 'reference'
+description: 'Star Schema Benchmark (SSB) のデータセットとクエリ'
+sidebar_label: 'Star Schema Benchmark'
+slug: /getting-started/example-datasets/star-schema
+title: 'Star Schema Benchmark (SSB, 2009)'
+doc_type: 'guide'
+keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
 ---
 
-The Star Schema Benchmarkはおおよそ[TPC-H](tpch.md)のテーブルとクエリに基づいていますが、TPC-Hとは異なり、スタースキーマのレイアウトを使用しています。
-データの大部分は巨大なファクトテーブルにあり、その周りに複数の小さなディメンションテーブルがあります。
-クエリはファクトテーブルを1つまたは複数のディメンションテーブルと結合してフィルター基準を適用します。例：`MONTH = 'JANUARY'`。
+Star Schema Benchmark は [TPC-H](tpch.md) のテーブルおよびクエリに大まかに基づいていますが、TPC-H と異なり、スター・スキーマ形式のレイアウトを採用しています。
+データの大部分は巨大なファクトテーブルに格納され、その周囲を複数の小さなディメンションテーブルが取り囲みます。
+クエリでは、フィルタ条件を適用するためにファクトテーブルを 1 つ以上のディメンションテーブルと結合します（例: `MONTH = 'JANUARY'`）。
 
-参照:
-- [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil et. al), 2009
-- [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl. et. al.), 2013
+参考文献:
 
-まず、スタースキーマベンチマークのリポジトリをチェックアウトし、データジェネレーターをコンパイルします：
+* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil ほか), 2009
+* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl ほか), 2013
+
+まず、Star Schema Benchmark のリポジトリを取得し、データジェネレーターをコンパイルします。
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -22,7 +24,7 @@ cd ssb-dbgen
 make
 ```
 
-次に、データを生成します。パラメータ`-s`はスケールファクターを指定します。例えば、`-s 100`を指定すると、6億行が生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば `-s 100` の場合、6億行が生成されます。
 
 ```bash
 ./dbgen -s 1000 -T c
@@ -32,7 +34,8 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-次に、ClickHouseにテーブルを作成します：
+次に、ClickHouse でテーブルを作成します：
+
 
 ```sql
 CREATE TABLE customer
@@ -119,7 +122,7 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
-データは以下のようにインポートできます：
+データは次の方法でインポートできます。
 
 ```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
@@ -129,8 +132,9 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-ClickHouseの多くの使用例では、複数のテーブルが単一の非正規化フラットテーブルに変換されます。
-このステップはオプションですが、以下のクエリは元の形式と非正規化テーブル用に書き換えられた形式でリストされています。
+ClickHouse の多くのユースケースでは、複数のテーブルを 1 つの非正規化されたフラットなテーブルに変換します。
+このステップは必須ではなく、以下のクエリは、元の形式と非正規化テーブル向けに書き換えた形式の両方を示しています。
+
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -182,7 +186,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-クエリは`./qgen -s <scaling_factor>`によって生成されます。例として`s = 100`のクエリ：
+クエリは `./qgen -s <scaling_factor>` で生成されます。`s = 100` の場合のクエリ例:
 
 Q1.1
 
@@ -272,6 +276,7 @@ WHERE
 
 Q2.1
 
+
 ```sql
 SELECT
     sum(LO_REVENUE),
@@ -342,7 +347,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規化テーブル：
+非正規化されたテーブル：
 
 ```sql
 SELECT
@@ -454,6 +459,7 @@ ORDER BY
 ```
 
 Q3.2
+
 
 ```sql
 SELECT
@@ -611,6 +617,7 @@ ORDER BY
 
 Q4.1
 
+
 ```sql
 SELECT
     D_YEAR,
@@ -745,7 +752,7 @@ ORDER BY
     P_BRAND
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -768,13 +775,3 @@ ORDER BY
     S_CITY ASC,
     P_BRAND ASC;
 ```
-
----
-
-Upon reviewing the translation, the following points were observed:
-- The translation maintains the semantic meaning of the original text and preserves all HTML tags and markdown formatting.
-- Technical terms were accurately translated following the provided glossary.
-- The format and structure of the document were kept intact.
-- No content or references were omitted or altered.
-  
-The translation meets the required guidelines and accurately reflects the original document.

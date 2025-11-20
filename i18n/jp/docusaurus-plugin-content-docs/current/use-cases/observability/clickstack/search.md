@@ -1,48 +1,73 @@
 ---
-'slug': '/use-cases/observability/clickstack/search'
-'title': 'ClickStackでの検索'
-'sidebar_label': '検索'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackでの検索'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/search
+title: 'ClickStack での検索'
+sidebar_label: '検索'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack での検索'
+doc_type: 'guide'
+keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
 
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
+import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
+import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStack は、イベント（ログやトレース）に対してフルテキスト検索を行うことができます。イベントに一致するキーワードを入力するだけで、検索を始めることができます。たとえば、ログに「Error」が含まれている場合、検索バーに「Error」と入力するだけで見つけることができます。
+ClickStack を使用すると、イベント（ログやトレース）に対してフルテキスト検索を行うことができます。イベントにマッチするキーワードを入力するだけで、すぐに検索を始められます。たとえば、ログに &quot;Error&quot; が含まれている場合は、検索バーに &quot;Error&quot; と入力するだけで見つけることができます。
 
-同じ検索構文は、ダッシュボードやチャートでのイベントフィルタリングにも使用されます。
+同じ検索構文は、Dashboards や Charts でイベントをフィルタリングする際にも使用されます。
 
-## 自然言語検索構文 {#natural-language-syntax}
 
-- 検索は大文字と小文字を区別しません。
-- 検索はデフォルトで完全な単語に一致します（例： `Error` は `Error here` に一致しますが、 `Errors here` には一致しません）。部分的な単語に一致させるには、単語をワイルドカードで囲むことができます（例： `*Error*` は `AnyError` および `AnyErrors` に一致します）。
-- 検索語は任意の順序で検索されます（例： `Hello World` は `Hello World` および `World Hello` を含むログに一致します）。
-- キーワードを除外するには、 `NOT` または `-` を使用します（例： `Error NOT Exception` または `Error -Exception`）。
-- 複数のキーワードを組み合わせるには、 `AND` および `OR` を使用します（例： `Error OR Exception`）。
-- 正確な一致は二重引用符で指定できます（例： `"Error tests not found"`）。
+## 検索機能 {#search-features}
 
-<Image img={hyperdx_27} alt="Search" size="md"/>
+### 自然言語検索構文 {#natural-language-syntax}
 
-### カラム/プロパティ検索 {#column-search}
+- 検索では大文字と小文字は区別されません
+- 検索はデフォルトで単語全体に一致します（例：`Error`は`Error here`に一致しますが、`Errors here`には一致しません）。ワイルドカードで単語を囲むことで部分一致させることができます（例：`*Error*`は`AnyError`と`AnyErrors`に一致します）
+- 検索語は任意の順序で検索されます（例：`Hello World`は`Hello World`と`World Hello`を含むログに一致します）
+- `NOT`または`-`を使用してキーワードを除外できます（例：`Error NOT Exception`または`Error -Exception`）
+- `AND`と`OR`を使用して複数のキーワードを組み合わせることができます（例：`Error OR Exception`）
+- 完全一致は二重引用符を使用して行えます（例：`"Error tests not found"`）
 
-- `column:value` を使用してカラムや JSON/マッププロパティを検索できます（例： `level:Error` 、 `service:app`）。
-- 比較演算子（ `>` 、 `<` 、 `>=` 、 `<=` ）を使用して値の範囲を検索できます（例： `Duration:>1000`）。
-- プロパティの存在を検索するには、 `property:*` を使用します（例： `duration:*`）。
+<Image img={hyperdx_27} alt='検索' size='md' />
 
-## 時間入力 {#time-input}
+#### カラム/プロパティ検索 {#column-search}
 
-- 時間入力は自然言語の入力を受け付けます（例： `1 hour ago` 、 `yesterday` 、 `last week`）。
-- 単一の時点を指定すると、その時点から現在まで検索します。
-- 時間範囲は、時間クエリのデバッグを容易にするために、検索時に常に解析された時間範囲に変換されます。
-- ヒストグラムのバーをハイライトすることで、特定の時間範囲にズームインすることもできます。
+- `column:value`を使用してカラムとJSON/mapプロパティを検索できます（例：`level:Error`、`service:app`）
+- 比較演算子（`>`、`<`、`>=`、`<=`）を使用して値の範囲を検索できます（例：`Duration:>1000`）
+- `property:*`を使用してプロパティの存在を検索できます（例：`duration:*`）
 
-## SQL 検索構文 {#sql-syntax}
+### 時刻入力 {#time-input}
 
-検索入力を SQL モードに切り替えることができます。これにより、検索のための有効な SQL WHERE 句を受け入れます。これは、Lucene 構文では表現できない複雑なクエリに便利です。
+- 時刻入力は自然言語入力を受け付けます（例：`1 hour ago`、`yesterday`、`last week`）
+- 単一の時点を指定すると、その時点から現在までが検索されます
+- 時間範囲は検索時に常に解析された時間範囲に変換され、時刻クエリのデバッグが容易になります
+- ヒストグラムバーをハイライトして特定の時間範囲にズームインすることもできます
 
-## SELECT 文 {#select-statement}
+### SQL検索構文 {#sql-syntax}
 
-検索結果に表示するカラムを指定するには、 `SELECT` 入力を使用します。これは検索ページで選択するカラムのための SQL SELECT 式です。エイリアスは現在サポートされていません（例： `column as "alias"` は使用できません）。
+検索入力をオプションでSQLモードに切り替えることができます。これにより、検索に有効な任意のSQL WHERE句を使用できます。Lucene構文では表現できない複雑なクエリに便利です。
+
+### SELECT文 {#select-statement}
+
+検索結果に表示するカラムを指定するには、`SELECT`入力を使用できます。これは検索ページで選択するカラムのSQL SELECT式です。現時点ではエイリアスはサポートされていません（例：`column as "alias"`は使用できません）。
+
+
+## 保存された検索 {#saved-searches}
+
+検索を保存することで、後から素早くアクセスできます。保存した検索は左サイドバーに表示されるため、頻繁に使用する検索クエリを再構築することなく簡単に再利用できます。
+
+検索を保存するには、検索クエリを設定して保存ボタンをクリックします。保存した検索には、後で識別しやすいようにわかりやすい名前を付けることができます。
+
+<Image img={saved_search} alt='検索の保存' size='md' />
+
+### 保存された検索へのアラートの追加 {#alerts-on-saved-searches}
+
+保存された検索にアラートを設定することで、特定の条件が満たされたときに通知を受け取ることができます。保存された検索に一致するイベント数が指定されたしきい値を超えた場合、または下回った場合にトリガーされるアラートを設定できます。
+
+アラートの設定と構成の詳細については、[アラートのドキュメント](/use-cases/observability/clickstack/alerts)を参照してください。
+
+### タグ付け {#tagging}
+
+<Tagging />

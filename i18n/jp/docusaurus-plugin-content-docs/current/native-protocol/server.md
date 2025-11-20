@@ -1,135 +1,146 @@
 ---
-'slug': '/native-protocol/server'
-'sidebar_position': 3
-'title': 'サーバーパケット'
-'description': 'ネイティブプロトコルサーバー'
-'doc_type': 'reference'
+slug: /native-protocol/server
+sidebar_position: 3
+title: 'サーバーパケット'
+description: 'ネイティブプロトコル（サーバー側）'
+doc_type: 'reference'
+keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specification', 'networking']
 ---
+
 
 
 # サーバーパケット
 
-| 値   | 名前                             | 説明                                                        |
-|------|----------------------------------|-----------------------------------------------------------|
-| 0    | [Hello](#hello)                  | サーバーハンドシェイク応答                                   |
-| 1    | データ                             | [クライアントデータ](./client.md#data) と同じ                   |
-| 2    | [例外](#exception)               | クエリ処理の例外                                           |
-| 3    | [進行状況](#progress)             | クエリの進行状況                                          |
-| 4    | [Pong](#pong)                    | Ping 応答                                                |
-| 5    | [ストリームの終わり](#end-of-stream) | すべてのパケットが転送されました                           |
-| 6    | [プロファイル情報](#profile-info) | プロファイリングデータ                                       |
-| 7    | 合計                             | 合計値                                                    |
-| 8    | 極値                             | 極値 (最小、最大)                                          |
-| 9    | TablesStatusResponse             | TableStatus リクエストへの応答                           |
-| 10   | [ログ](#log)                      | クエリシステムログ                                        |
-| 11   | テーブルカラム                     | カラムの説明                                             |
-| 12   | UUIDs                            | ユニークパーツIDのリスト                                  |
-| 13   | ReadTaskRequest                  | 次のタスクが必要なリクエストを示す文字列 (UUID)          |
-| 14   | [プロファイルイベント](#profile-events) | サーバーからのプロファイルイベントを含むパケット         |
+| value | name                             | description                                                      |
+|-------|----------------------------------|------------------------------------------------------------------|
+| 0     | [Hello](#hello)                  | サーバーからのハンドシェイク応答                                 |
+| 1     | Data                             | [クライアントデータ](./client.md#data) と同じ                    |
+| 2     | [Exception](#exception)          | クエリ処理時の例外                                               |
+| 3     | [Progress](#progress)            | クエリの進行状況                                                 |
+| 4     | [Pong](#pong)                    | Ping に対する応答                                                |
+| 5     | [EndOfStream](#end-of-stream)    | すべてのパケットの送信が完了                                     |
+| 6     | [ProfileInfo](#profile-info)     | プロファイリングデータ                                           |
+| 7     | Totals                           | 合計値                                                           |
+| 8     | Extremes                         | 極値（最小値、最大値）                                           |
+| 9     | TablesStatusResponse             | TableStatus リクエストへの応答                                   |
+| 10    | [Log](#log)                      | クエリのシステムログ                                             |
+| 11    | TableColumns                     | カラムの定義                                                     |
+| 12    | UUIDs                            | 一意なパーツ ID の一覧                                           |
+| 13    | ReadTaskRequest                  | 次のタスクが必要なリクエストを表す文字列（UUID）                 |
+| 14    | [ProfileEvents](#profile-events) | サーバーからのプロファイルイベントを含むパケット                 |
 
-`データ`、`合計`、および `極値` は圧縮できる。
+`Data`、`Totals`、`Extremes` は圧縮可能です。
+
+
 
 ## Hello {#hello}
 
-[クライアント hello](./client.md#hello) への応答。
+[クライアントhello](./client.md#hello)に対するレスポンス。
 
-| フィールド         | 型      | 値               | 説明                       |
-|--------------------|---------|-------------------|--------------------------|
-| 名前               | 文字列  | `Clickhouse`     | サーバー名                |
-| version_major      | UVarInt | `21`              | サーバーのメジャーバージョン |
-| version_minor      | UVarInt | `12`              | サーバーのマイナーバージョン |
-| revision           | UVarInt | `54452`           | サーバーのリビジョン      |
-| tz                 | 文字列  | `Europe/Moscow`  | サーバーのタイムゾーン    |
-| display_name       | 文字列  | `Clickhouse`     | UI用のサーバー名          |
-| version_patch      | UVarInt | `3`               | サーバーのパッチバージョン  |
+| field         | type    | value           | description          |
+| ------------- | ------- | --------------- | -------------------- |
+| name          | String  | `Clickhouse`    | サーバー名          |
+| version_major | UVarInt | `21`            | サーバーのメジャーバージョン |
+| version_minor | UVarInt | `12`            | サーバーのマイナーバージョン |
+| revision      | UVarInt | `54452`         | サーバーのリビジョン      |
+| tz            | String  | `Europe/Moscow` | サーバーのタイムゾーン      |
+| display_name  | String  | `Clickhouse`    | UI表示用のサーバー名   |
+| version_patch | UVarInt | `3`             | サーバーのパッチバージョン |
 
-## 例外 {#exception}
 
-クエリ処理中のサーバー例外。
+## Exception {#exception}
 
-| フィールド       | 型     | 値                                    | 説明                        |
-|------------------|--------|----------------------------------------|---------------------------|
-| コード            | Int32  | `60`                                   | [ErrorCodes.cpp][codes]を参照。 |
-| 名前              | 文字列 | `DB::Exception`                        | サーバーのメジャーバージョン       |
-| メッセージ        | 文字列 | `DB::Exception: Table X doesn't exist` | サーバーのマイナーバージョン       |
-| stack_trace       | 文字列 | ~                                      | C++ スタックトレース            |
-| nested            | Bool   | `true`                                 | 他のエラー                       |
+クエリ処理中に発生するサーバー例外。
 
-`nested` が `false` になるまで、例外の連続リストが続くことがあります。
+| field       | type   | value                                  | description                  |
+| ----------- | ------ | -------------------------------------- | ---------------------------- |
+| code        | Int32  | `60`                                   | [ErrorCodes.cpp][codes]を参照 |
+| name        | String | `DB::Exception`                        | 例外名                        |
+| message     | String | `DB::Exception: Table X doesn't exist` | エラーメッセージ                |
+| stack_trace | String | ~                                      | C++スタックトレース            |
+| nested      | Bool   | `true`                                 | ネストされたエラーの有無        |
 
-[codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "エラーコードのリスト"
+`nested`が`false`になるまで、例外が連続してリストされる場合があります。
 
-## 進行状況 {#progress}
+[codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "エラーコード一覧"
 
-サーバーによって定期的に報告されるクエリ実行の進行状況。
+
+## Progress {#progress}
+
+サーバーから定期的に報告されるクエリ実行の進捗状況。
 
 :::tip
-進行状況は **データ** で報告されます。合計については、クライアントで累積してください。
+進捗状況は**差分**で報告されます。合計値を取得するには、クライアント側で累積する必要があります。
 :::
 
-| フィールド     | 型      | 値      | 説明                   |
-|----------------|---------|----------|------------------------|
-| 行数           | UVarInt | `65535`  | 行の数                 |
-| バイト数       | UVarInt | `871799` | バイトの数             |
-| 合計行数       | UVarInt | `0`      | 合計行数               |
-| クライアントから書き込み行数 | UVarInt | `0` | クライアントからの行数    |
-| クライアントから書き込みバイト数 | UVarInt | `0` | クライアントからのバイト数 |
+| field       | type    | value    | description       |
+| ----------- | ------- | -------- | ----------------- |
+| rows        | UVarInt | `65535`  | 行数         |
+| bytes       | UVarInt | `871799` | バイト数        |
+| total_rows  | UVarInt | `0`      | 総行数        |
+| wrote_rows  | UVarInt | `0`      | クライアントからの行数  |
+| wrote_bytes | UVarInt | `0`      | クライアントからのバイト数 |
+
 
 ## Pong {#pong}
 
-[クライアント ping](./client.md#ping) への応答、パケットボディなし。
+[クライアントping](./client.md#ping)に対する応答で、パケットボディは含まれません。
 
-## ストリームの終わり {#end-of-stream}
 
-これ以上の **データ** パケットは送信されず、クエリ結果はサーバーからクライアントに完全にストリーミングされました。
+## ストリームの終了 {#end-of-stream}
 
-パケットボディなし。
+これ以上**Data**パケットは送信されません。クエリ結果はサーバーからクライアントへ完全にストリーミングされました。
+
+パケット本体はありません。
+
 
 ## プロファイル情報 {#profile-info}
 
-| フィールド          | 型      |
-|---------------------|---------|
-| 行数                | UVarInt |
-| ブロック数          | UVarInt |
-| バイト数            | UVarInt |
-| 適用された制限      | Bool    |
-| 制限前の行数        | UVarInt |
-| 制限前に計算された行数 | Bool    |
+| フィールド                    | 型      |
+| ---------------------------- | ------- |
+| rows                         | UVarInt |
+| blocks                       | UVarInt |
+| bytes                        | UVarInt |
+| applied_limit                | Bool    |
+| rows_before_limit            | UVarInt |
+| calculated_rows_before_limit | Bool    |
 
-## ログ {#log}
 
-**データブロック**としてのサーバーログ。
+## Log {#log}
+
+サーバーログを含む**データブロック**。
 
 :::tip
-**カラムのデータブロック**としてエンコードされますが、圧縮されることはありません。
+列の**データブロック**としてエンコードされますが、圧縮されません。
 :::
 
-| カラム       | 型      |
-|--------------|---------|
-| 時間         | DateTime |
-| マイクロ秒   | UInt32   |
-| ホスト名     | 文字列   |
-| クエリID     | 文字列   |
-| スレッドID   | UInt64   |
-| 優先度       | Int8     |
-| ソース       | 文字列   |
-| テキスト     | 文字列   |
+| 列         | 型       |
+| ---------- | -------- |
+| time       | DateTime |
+| time_micro | UInt32   |
+| host_name  | String   |
+| query_id   | String   |
+| thread_id  | UInt64   |
+| priority   | Int8     |
+| source     | String   |
+| text       | String   |
+
 
 ## プロファイルイベント {#profile-events}
 
-**データブロック**としてのプロファイルイベント。
+プロファイルイベントを含む**データブロック**。
 
 :::tip
-**カラムのデータブロック**としてエンコードされますが、圧縮されることはありません。
+カラムの**データブロック**としてエンコードされますが、圧縮されません。
 
-`値` の型は、サーバーのリビジョンに応じて `UInt64` または `Int64` です。
+`value`の型は、サーバーリビジョンに応じて`UInt64`または`Int64`です。
 :::
 
-| カラム         | 型            |
-|----------------|-----------------|
-| ホスト名       | 文字列          |
-| 現在の時間     | DateTime        |
-| スレッドID     | UInt64          |
-| 型             | Int8            |
-| 名前           | 文字列          |
-| 値             | UInt64 または Int64 |
+| column       | type            |
+| ------------ | --------------- |
+| host_name    | String          |
+| current_time | DateTime        |
+| thread_id    | UInt64          |
+| type         | Int8            |
+| name         | String          |
+| value        | UInt64 or Int64 |

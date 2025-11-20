@@ -1,3 +1,3 @@
-:::note 在 ClickHouse Cloud 中查询
-此系统表中的数据在 ClickHouse Cloud 中的每个节点上本地保存。因此，要获得所有数据的完整视图，需要使用 `clusterAllReplicas` 函数。有关进一步的详细信息，请参见 [这里](/operations/system-tables/overview#system-tables-in-clickhouse-cloud)。
+:::note 在 ClickHouse Cloud 中进行查询
+该系统表中的数据在 ClickHouse Cloud 的每个节点上本地存储。因此，如需获取所有数据的完整视图，需要使用 `clusterAllReplicas` 函数。更多详情请参阅[这里](/operations/system-tables/overview#system-tables-in-clickhouse-cloud)。
 :::

@@ -1,23 +1,28 @@
 ---
-slug: '/getting-started/example-datasets/brown-benchmark'
+description: 'Новый аналитический бенчмарк для машинных журналов (логов)'
 sidebar_label: 'Бенчмарк Университета Брауна'
-description: 'Новый аналитический Benchmark для машинно-генерируемых данных журналов'
+slug: /getting-started/example-datasets/brown-benchmark
 title: 'Бенчмарк Университета Брауна'
-doc_type: reference
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
+doc_type: 'guide'
 ---
-`MgBench` — это новая аналитическая бенчмарка для данных логов, сгенерированных машинами, [Эндрю Кротти](http://cs.brown.edu/people/acrotty/).
+
+`MgBench` — это новый аналитический бенчмарк для журнальных данных, сгенерированных машинами, [Andrew Crotty](http://cs.brown.edu/people/acrotty/).
 
 Скачайте данные:
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
 Распакуйте данные:
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
 Создайте базу данных и таблицы:
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -81,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-Вставьте данные:
+Вставить данные:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -89,14 +94,15 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## Запустите бенчмарк запросы {#run-benchmark-queries}
+
+## Запуск тестовых запросов {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: What is the CPU/network utilization for each web server since midnight?
+-- Q1.1: Какова загрузка CPU и сети для каждого веб-сервера с полуночи?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -121,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: Which computer lab machines have been offline in the past day?
+-- Q1.2: Какие машины компьютерных лабораторий были недоступны за последний день?
 
 SELECT machine_name,
        log_time
@@ -135,7 +141,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
+-- Q1.3: Каковы средние почасовые метрики за последние 10 дней для конкретной рабочей станции?
 
 SELECT dt,
        hr,
@@ -168,7 +174,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: Over 1 month, how often was each server blocked on disk I/O?
+-- Q1.4: Как часто каждый сервер блокировался на дисковом вводе-выводе за месяц?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -183,7 +189,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: Which externally reachable VMs have run low on memory?
+-- Q1.5: На каких доступных извне виртуальных машинах заканчивалась память?
 
 SELECT machine_name,
        dt,
@@ -204,43 +210,47 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: What is the total hourly network traffic across all file servers?
+-- Q1.6: Каков общий почасовой сетевой трафик по всем файловым серверам?
 
-SELECT dt,
-       hr,
-       SUM(net_in) AS net_in_sum,
-       SUM(net_out) AS net_out_sum,
-       SUM(net_in) + SUM(net_out) AS both_sum
-FROM (
-  SELECT CAST(log_time AS DATE) AS dt,
-         EXTRACT(HOUR FROM log_time) AS hr,
-         COALESCE(bytes_in, 0.0) / 1000000000.0 AS net_in,
-         COALESCE(bytes_out, 0.0) / 1000000000.0 AS net_out
-  FROM logs1
-  WHERE machine_name IN ('allsorts','andes','bigred','blackjack','bonbon',
-      'cadbury','chiclets','cotton','crows','dove','fireball','hearts','huey',
-      'lindt','milkduds','milkyway','mnm','necco','nerds','orbit','peeps',
-      'poprocks','razzles','runts','smarties','smuggler','spree','stride',
-      'tootsie','trident','wrigley','york')
-) AS r
-GROUP BY dt,
-         hr
-ORDER BY both_sum DESC
-LIMIT 10;
 ```
 
+
+SELECT dt,
+hr,
+SUM(net&#95;in) AS net&#95;in&#95;sum,
+SUM(net&#95;out) AS net&#95;out&#95;sum,
+SUM(net&#95;in) + SUM(net&#95;out) AS both&#95;sum
+FROM (
+SELECT CAST(log&#95;time AS DATE) AS dt,
+EXTRACT(HOUR FROM log&#95;time) AS hr,
+COALESCE(bytes&#95;in, 0.0) / 1000000000.0 AS net&#95;in,
+COALESCE(bytes&#95;out, 0.0) / 1000000000.0 AS net&#95;out
+FROM logs1
+WHERE machine&#95;name IN (&#39;allsorts&#39;,&#39;andes&#39;,&#39;bigred&#39;,&#39;blackjack&#39;,&#39;bonbon&#39;,
+&#39;cadbury&#39;,&#39;chiclets&#39;,&#39;cotton&#39;,&#39;crows&#39;,&#39;dove&#39;,&#39;fireball&#39;,&#39;hearts&#39;,&#39;huey&#39;,
+&#39;lindt&#39;,&#39;milkduds&#39;,&#39;milkyway&#39;,&#39;mnm&#39;,&#39;necco&#39;,&#39;nerds&#39;,&#39;orbit&#39;,&#39;peeps&#39;,
+&#39;poprocks&#39;,&#39;razzles&#39;,&#39;runts&#39;,&#39;smarties&#39;,&#39;smuggler&#39;,&#39;spree&#39;,&#39;stride&#39;,
+&#39;tootsie&#39;,&#39;trident&#39;,&#39;wrigley&#39;,&#39;york&#39;)
+) AS r
+GROUP BY dt,
+hr
+ORDER BY both&#95;sum DESC
+LIMIT 10;
+
+````
+
 ```sql
--- Q2.1: Which requests have caused server errors within the past 2 weeks?
+-- Q2.1: Какие запросы вызвали ошибки сервера за последние 2 недели?
 
 SELECT *
 FROM logs2
 WHERE status_code >= 500
   AND log_time >= TIMESTAMP '2012-12-18 00:00:00'
 ORDER BY log_time;
-```
+````
 
 ```sql
--- Q2.2: During a specific 2-week period, was the user password file leaked?
+-- Q2.2: Произошла ли утечка файла паролей пользователей в течение определенного двухнедельного периода?
 
 SELECT *
 FROM logs2
@@ -252,7 +262,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: What was the average path depth for top-level requests in the past month?
+-- Q2.3: Какова средняя глубина пути для запросов верхнего уровня за последний месяц?
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -277,7 +287,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
+-- Q2.4: Какие клиенты за последние 3 месяца выполнили избыточное количество запросов?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -289,7 +299,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: What are the daily unique visitors?
+-- Q2.5: Сколько уникальных посетителей в день?
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -303,7 +313,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: What are the average and maximum data transfer rates (Gbps)?
+-- Q2.6: Каковы средняя и максимальная скорости передачи данных (Гбит/с)?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -316,7 +326,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: Did the indoor temperature reach freezing over the weekend?
+-- Q3.1: Опускалась ли температура в помещении до нуля в выходные?
 
 SELECT *
 FROM logs3
@@ -326,7 +336,7 @@ WHERE event_type = 'temperature'
 ```
 
 ```sql
--- Q3.4: Over the past 6 months, how frequently were each door opened?
+-- Q3.4: Как часто открывалась каждая дверь за последние 6 месяцев?
 
 SELECT device_name,
        device_floor,
@@ -339,13 +349,15 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-Запрос 3.5 ниже использует оператор UNION. Установите режим для объединения результатов SELECT запросов. Настройка используется только при использовании с UNION без явного указания UNION ALL или UNION DISTINCT.
+
+Запрос 3.5 ниже использует UNION. Установите режим объединения результатов запросов SELECT. Этот параметр используется только при применении UNION без явного указания UNION ALL или UNION DISTINCT.
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: Where in the building do large temperature variations occur in winter and summer?
+-- Q3.5: В каких частях здания зимой и летом наблюдаются значительные колебания температуры?
 
 WITH temperature AS (
   SELECT dt,
@@ -399,7 +411,7 @@ WHERE dt >= DATE '2019-06-01'
 ```
 
 ```sql
--- Q3.6: For each device category, what are the monthly power consumption metrics?
+-- Q3.6: Каковы ежемесячные показатели потребления электроэнергии для каждой категории устройств?
 
 SELECT yr,
        mo,
@@ -443,4 +455,4 @@ ORDER BY yr,
          mo;
 ```
 
-Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).
+Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), см. [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).

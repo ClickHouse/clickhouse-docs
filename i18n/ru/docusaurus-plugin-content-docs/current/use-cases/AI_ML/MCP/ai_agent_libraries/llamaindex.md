@@ -1,50 +1,52 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/llamaindex'
-'sidebar_label': 'Интеграция LlamaIndex'
-'title': 'Как создать LlamaIndex AI агент с использованием ClickHouse MCP Server.'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать LlamaIndex AI агент, который может взаимодействовать
-  с ClickHouse MCP Server.'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'LlamaIndex'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
+sidebar_label: 'Интеграция LlamaIndex'
+title: 'Как создать AI-агента LlamaIndex на базе ClickHouse MCP Server.'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать AI-агента LlamaIndex, который может взаимодействовать с ClickHouse MCP Server.'
+keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Как создать агента ИИ LlamaIndex с использованием ClickHouse MCP Server
 
-В этом руководстве вы узнаете, как создать агента ИИ [LlamaIndex](https://docs.llamaindex.ai), который может взаимодействовать с [SQL-площадкой ClickHouse](https://sql.clickhouse.com/) с помощью [MCP Server ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример блокнота
-Этот пример можно найти в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
+
+# Как создать AI-агента LlamaIndex с помощью ClickHouse MCP Server
+
+В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
+может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+
+:::note Пример ноутбука
+Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
-- У вас должна быть установлена Python на вашей системе.
-- У вас должен быть установлен `pip` на вашей системе.
-- Вам нужен ключ API Anthropic или ключ API от другого поставщика LLM.
 
-Вы можете выполнять следующие шаги либо из вашего Python REPL, либо через скрипт.
+
+## Предварительные требования {#prerequisites}
+
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ Anthropic или API-ключ другого провайдера LLM.
+
+Следующие шаги можно выполнить как из Python REPL, так и с помощью скрипта.
 
 <VerticalStepper headerLevel="h2">
+
 
 ## Установка библиотек {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q llama-index
-!pip install -q clickhouse-connect
-!pip install -q llama-index-llms-anthropic
-!pip install -q llama-index-tools-mcp
+pip install -q --upgrade pip
+pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
+
 
 ## Настройка учетных данных {#setup-credentials}
 
-Далее вам нужно предоставить ваш ключ API Anthropic:
+Далее вам потребуется указать ваш API-ключ Anthropic:
 
 ```python
 import os, getpass
@@ -55,15 +57,16 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 Enter Anthropic API Key: ········
 ```
 
-:::note Использование другого поставщика LLM
-Если у вас нет ключа API Anthropic и вы хотите использовать другого поставщика LLM,
-вы можете найти инструкции по настройке ваших учетных данных в [документации "LLMs" LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/)
+:::note Использование другого провайдера LLM
+Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
+инструкции по настройке учетных данных можно найти в [документации LlamaIndex по разделу "LLMs"](https://docs.llamaindex.ai/en/stable/examples/)
 :::
 
-## Инициализация MCP Server {#initialize-mcp-and-agent}
 
-Теперь настройте ClickHouse MCP Server, чтобы он указывал на SQL-площадку ClickHouse.
-Вам нужно преобразовать их из функций Python в инструменты Llama Index:
+## Инициализация MCP-сервера {#initialize-mcp-and-agent}
+
+Теперь настройте ClickHouse MCP Server для подключения к демонстрационной площадке ClickHouse SQL.
+Вам потребуется преобразовать их из функций Python в инструменты Llama Index:
 
 ```python
 from llama_index.tools.mcp import BasicMCPClient, McpToolSpec
@@ -89,12 +92,16 @@ mcp_tool_spec = McpToolSpec(
     client=mcp_client,
 )
 
-tools = await mcp_tool_spec.to_tool_list_async()
 ```
+
+
+tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
+
+````
 ## Создание агента {#create-agent}
 
-Теперь вы готовы создать агента, который имеет доступ к этим инструментам. Установите максимальное
-число вызовов инструментов за одно выполнение на 10. Вы можете изменить этот параметр, если хотите:
+Теперь вы готовы создать агента с доступом к этим инструментам. Установите максимальное
+количество вызовов инструментов за один запуск равным 10. При необходимости этот параметр можно изменить:
 
 ```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
@@ -104,7 +111,8 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     llm=llm, verbose=True, max_function_calls=10
 )
 agent = AgentRunner(agent_worker)
-```
+````
+
 
 ## Инициализация LLM {#initialize-llm}
 
@@ -115,18 +123,18 @@ from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```
 
+
 ## Запуск агента {#run-agent}
 
-Наконец, вы можете задать агенту вопрос:
+Теперь вы можете задать агенту вопрос:
 
 ```python
 response = agent.query("What's the most popular repository?")
 ```
 
-Ответ слишком длинный, поэтому он был сокращен в примере 
-ответа ниже:
+Ответ довольно длинный, поэтому в примере ниже он сокращён:
 
-```response title="Response"
+```response title="Ответ"
 Added user message to memory: What's the most popular repository?
 === LLM Response ===
 I'll help you find the most popular repository. Let me first explore the available databases and tables to understand the data structure.
@@ -148,7 +156,7 @@ Based on the GitHub data, **the most popular repository is `sindresorhus/awesome
 Here are the top 10 most popular repositories by star count:
 
 1. **sindresorhus/awesome** - 402,292 stars
-2. **996icu/996.ICU** - 388,413 stars  
+2. **996icu/996.ICU** - 388,413 stars
 3. **kamranahmedse/developer-roadmap** - 349,097 stars
 4. **donnemartin/system-design-primer** - 316,524 stars
 5. **jwasham/coding-interview-university** - 313,767 stars

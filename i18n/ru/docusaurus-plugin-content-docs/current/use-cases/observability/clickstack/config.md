@@ -1,22 +1,25 @@
 ---
-'slug': '/use-cases/observability/clickstack/config'
-'title': 'Параметры конфигурации'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Параметры конфигурации для ClickStack - Стек мониторинга ClickHouse'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/config
+title: 'Параметры конфигурации'
+pagination_prev: null
+pagination_next: null
+description: 'Параметры конфигурации ClickStack — стека наблюдаемости ClickHouse'
+keywords: ['настройка ClickStack', 'настройка наблюдаемости', 'параметры HyperDX', 'настройка коллектора', 'переменные окружения']
+doc_type: 'reference'
 ---
+
 import Image from '@theme/IdealImage';
 import hyperdx_25 from '@site/static/images/use-cases/observability/hyperdx-25.png';
 import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.png';
 
-The following configuration options are available for each component of ClickStack:
+Для каждого компонента ClickStack доступны следующие параметры настройки:
+
 
 ## Изменение настроек {#modifying-settings}
 
 ### Docker {#docker}
 
-Если вы используете [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) или [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only), просто передайте желаемую настройку через переменную окружения, например:
+Если вы используете [All in One](/use-cases/observability/clickstack/deployment/all-in-one), [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) или [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only), просто передайте нужную настройку через переменную окружения, например:
 
 ```shell
 docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
@@ -24,11 +27,12 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 
 
 ### Docker Compose {#docker-compose}
 
-Если вы используете [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), файл [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) может быть использован для изменения настроек.
+Если вы используете руководство по развертыванию с [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), файл [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) можно использовать для изменения настроек.
 
-В качестве альтернативы, вы можете явно переписать настройки в файле [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml), например:
+Альтернативно, явно переопределите настройки в файле [`docker-compose.yaml`](https://github.com/hyperdxio/hyperdx/blob/main/docker-compose.yml), например.
 
 Пример:
+
 ```yaml
 services:
   app:
@@ -40,9 +44,9 @@ services:
 
 ### Helm {#helm}
 
-#### Настройка значений (необязательно) {#customizing-values}
+#### Настройка значений (опционально) {#customizing-values}
 
-Вы можете настроить параметры, используя флаги `--set`, например:
+Вы можете настроить значения с помощью флагов `--set`, например:
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 \
@@ -60,7 +64,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
   --set env[0].value=abc
 ```
 
-В качестве альтернативы отредактируйте `values.yaml`. Чтобы получить значения по умолчанию:
+Альтернативно, отредактируйте файл `values.yaml`. Чтобы получить значения по умолчанию:
 
 ```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
@@ -91,319 +95,326 @@ ingress:
       value: abc
 ```
 
+
 ## HyperDX {#hyperdx}
 
-### Настройки источника данных {#datasource-settings}
+### Настройки источников данных {#datasource-settings}
 
-HyperDX зависит от определения пользователем источника для каждого из типов/столпов данных наблюдаемости:
+HyperDX требует от пользователя определить источник для каждого типа данных наблюдаемости:
 
-- `Logs`
-- `Traces`
-- `Metrics`
-- `Sessions`
+- `Логи`
+- `Трассировки`
+- `Метрики`
+- `Сессии`
 
-Эта конфигурация может быть выполнена внутри приложения в `Team Settings -> Sources`, как показано ниже для логов:
+Эту конфигурацию можно выполнить в приложении через `Team Settings -> Sources`, как показано ниже для логов:
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
+<Image img={hyperdx_25} alt='Конфигурация источника HyperDX' size='lg' />
 
-Каждый из этих источников требует указать как минимум одну таблицу при создании, а также набор колонок, которые позволяют HyperDX запрашивать данные.
+Для каждого из этих источников при создании необходимо указать как минимум одну таблицу, а также набор столбцов, которые позволят HyperDX запрашивать данные.
 
-Если используется [схема OpenTelemetry (OTel) по умолчанию](/observability/integrating-opentelemetry#out-of-the-box-schema), предоставляемая с ClickStack, эти колонки могут быть автоматически выведены для каждого из источников. Если [изменяется схема](#clickhouse) или используется пользовательская схема, пользователи должны указать и обновить эти сопоставления.
+При использовании [схемы OpenTelemetry (OTel) по умолчанию](/observability/integrating-opentelemetry#out-of-the-box-schema), поставляемой с ClickStack, эти столбцы могут быть автоматически определены для каждого источника. При [изменении схемы](#clickhouse) или использовании пользовательской схемы необходимо указать и обновить эти сопоставления вручную.
 
 :::note
-Схема по умолчанию для ClickHouse, предоставляемая с ClickStack, является схемой, созданной [экспортером ClickHouse для OTel коллекторов](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). Эти названия колонок соответствуют официальной спецификации OTel, документированной [здесь](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
+Схема по умолчанию для ClickHouse, поставляемая с ClickStack, создана [экспортером ClickHouse для коллектора OTel](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). Имена столбцов соответствуют официальной спецификации OTel, задокументированной [здесь](https://opentelemetry.io/docs/specs/otel/logs/data-model/).
 :::
 
-Следующие настройки доступны для каждого источника:
+Для каждого источника доступны следующие настройки:
 
 #### Логи {#logs}
 
-| Настройка                        | Описание                                                                                                             | Обязательно | Выведено в схеме по умолчанию | Выведенное значение                                      |
-|-------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------|
-| `Name`                        | Имя источника.                                                                                                            | Да      | Нет                          | –                                                   |
-| `Server Connection`           | Имя соединения с сервером.                                                                                                | Да      | Нет                          | `Default`                                             |
-| `Database`                    | Имя базы данных ClickHouse.                                                                                              | Да      | Да                         | `default`                                             |
-| `Table`                       | Имя целевой таблицы. Установите на `otel_logs`, если используется схема по умолчанию.                                     | Да      | Нет                         |                                            |
-| `Timestamp Column`            | Столбец даты и времени или выражение, которое является частью вашего первичного ключа.                                                        | Да       | Да                         | `TimestampTime`                                       |
-| `Default Select`              | Колонки, отображаемые в результатах поиска по умолчанию.                                                                               | Да       | Да                         | `Timestamp`, `ServiceName`, `SeverityText`, `Body`         |
-| `Service Name Expression`     | Выражение или колонка для имени службы.                                                                             | Да       | Да                         | `ServiceName`                                         |
-| `Log Level Expression`        | Выражение или колонка для уровня логирования.                                                                                | Да       | Да                         | `SeverityText`                                        |
-| `Body Expression`             | Выражение или колонка для сообщения лога.                                                                              | Да       | Да                         | `Body`                                                |
-| `Log Attributes Expression`   | Выражение или колонка для пользовательских атрибутов логов.                                                                        | Да       | Да                         | `LogAttributes`                                       |
-| `Resource Attributes Expression` | Выражение или колонка для ресурсов уровня атрибутов.                                                                  | Да       | Да                         | `ResourceAttributes`                                  |
-| `Displayed Timestamp Column`  | Столбец временной метки, используемый для отображения в пользовательском интерфейсе.                                                                                   | Да       | Да                         | `ResourceAttributes`                                  |
-| `Correlated Metric Source`    | Связанный источник метрик (например, HyperDX метрики).                                                                           | Нет       | Нет                          | –                                                   |
-| `Correlated Trace Source`     | Связанный источник трассировок (например, HyperDX трассировки).                                                                             | Нет       | Нет                          | –                                                   |
-| `Trace Id Expression`         | Выражение или колонка, используемая для извлечения идентификатора трассировки.                                                                         | Да       | Да                         | `TraceId`                                             |
-| `Span Id Expression`          | Выражение или колонка, используемая для извлечения идентификатора спана.                                                                          | Да       | Да                         | `SpanId`                                              |
-| `Implicit Column Expression`  | Столбец, используемый для полнотекстового поиска, если поле не указано (в стиле Lucene). Обычно это тело лога.                      | Да       | Да                         | `Body`                                                |
+| Настройка                        | Описание                                                                                          | Обязательно | Определяется в схеме по умолчанию | Определяемое значение                              |
+| -------------------------------- | ------------------------------------------------------------------------------------------------- | ----------- | --------------------------------- | -------------------------------------------------- |
+| `Name`                           | Имя источника.                                                                                    | Да          | Нет                               | –                                                  |
+| `Server Connection`              | Имя подключения к серверу.                                                                        | Да          | Нет                               | `Default`                                          |
+| `Database`                       | Имя базы данных ClickHouse.                                                                       | Да          | Да                                | `default`                                          |
+| `Table`                          | Имя целевой таблицы. Установите `otel_logs` при использовании схемы по умолчанию.                 | Да          | Нет                               |                                                    |
+| `Timestamp Column`               | Столбец или выражение даты и времени, входящее в состав первичного ключа.                         | Да          | Да                                | `TimestampTime`                                    |
+| `Default Select`                 | Столбцы, отображаемые в результатах поиска по умолчанию.                                          | Да          | Да                                | `Timestamp`, `ServiceName`, `SeverityText`, `Body` |
+| `Service Name Expression`        | Выражение или столбец для имени сервиса.                                                          | Да          | Да                                | `ServiceName`                                      |
+| `Log Level Expression`           | Выражение или столбец для уровня логирования.                                                     | Да          | Да                                | `SeverityText`                                     |
+| `Body Expression`                | Выражение или столбец для сообщения лога.                                                         | Да          | Да                                | `Body`                                             |
+| `Log Attributes Expression`      | Выражение или столбец для пользовательских атрибутов лога.                                        | Да          | Да                                | `LogAttributes`                                    |
+| `Resource Attributes Expression` | Выражение или столбец для атрибутов уровня ресурса.                                               | Да          | Да                                | `ResourceAttributes`                               |
+| `Displayed Timestamp Column`     | Столбец временной метки, используемый для отображения в интерфейсе.                               | Да          | Да                                | `ResourceAttributes`                               |
+| `Correlated Metric Source`       | Связанный источник метрик (например, метрики HyperDX).                                            | Нет         | Нет                               | –                                                  |
+| `Correlated Trace Source`        | Связанный источник трассировок (например, трассировки HyperDX).                                   | Нет         | Нет                               | –                                                  |
+| `Trace Id Expression`            | Выражение или столбец для извлечения идентификатора трассировки.                                  | Да          | Да                                | `TraceId`                                          |
+| `Span Id Expression`             | Выражение или столбец для извлечения идентификатора спана.                                        | Да          | Да                                | `SpanId`                                           |
+| `Implicit Column Expression`     | Столбец для полнотекстового поиска, если поле не указано (в стиле Lucene). Обычно это тело лога. | Да          | Да                                | `Body`                                             |
 
 #### Трассировки {#traces}
 
-| Настройка                          | Описание                                                                                                             | Обязательно | Выведено в схеме по умолчанию | Выведенное значение         |
-|----------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
-| `Name`                           | Имя источника.                                                                                                            | Да      | Нет                          | –                      |
-| `Server Connection`              | Имя соединения с сервером.                                                                                                | Да      | Нет                          | `Default`              |
-| `Database`                       | Имя базы данных ClickHouse.                                                                                              | Да      | Да                         | `default`                |
-| `Table`                          | Имя целевой таблицы. Установите на `otel_traces`, если используется схема по умолчанию.                                                                                                    | Да      | Да                         |      -       |
-| `Timestamp Column`              | Столбец даты и времени или выражение, которое является частью вашего первичного ключа.                                                        | Да      | Да                         | `Timestamp`              |
-| `Timestamp`                      | Псевдоним для `Timestamp Column`.                                                                                          | Да      | Да                         | `Timestamp`              |
-| `Default Select`                | Колонки, отображаемые в результатах поиска по умолчанию.                                                                               | Да      | Да                         | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
-| `Duration Expression`           | Выражение для вычисления длительности спана.                                                                              | Да      | Да                         | `Duration`               |
-| `Duration Precision`            | Точность для выражения длительности (например, наносекунды, микросекунды).                                                | Да      | Да                         | ns                     |
-| `Trace Id Expression`           | Выражение или колонка для идентификаторов трассировок.                                                                                    | Да      | Да                         | `TraceId`                |
-| `Span Id Expression`            | Выражение или колонка для идентификаторов спанов.                                                                                     | Да      | Да                         | `SpanId`                 |
-| `Parent Span Id Expression`     | Выражение или колонка для идентификаторов родительских спанов.                                                                              | Да      | Да                         | `ParentSpanId`           |
-| `Span Name Expression`          | Выражение или колонка для имен спанов.                                                                                   | Да      | Да                         | `SpanName`               |
-| `Span Kind Expression`          | Выражение или колонка для вида спана (например, клиент, сервер).                                                              | Да      | Да                         | `SpanKind`               |
-| `Correlated Log Source`         | Необязательно. Связанный источник логов (например, HyperDX логи).                                                                       | Нет       | Нет                          | –                      |
-| `Correlated Session Source`     | Необязательно. Связанный источник сессий.                                                                                       | Нет       | Нет                          | –                      |
-| `Correlated Metric Source`      | Необязательно. Связанный источник метрик (например, HyperDX метрики).                                                                  | Нет       | Нет                          | –                      |
-| `Status Code Expression`        | Выражение для кода статуса спана.                                                                                   | Да      | Да                         | `StatusCode`             |
-| `Status Message Expression`     | Выражение для сообщения статуса спана.                                                                                | Да      | Да                         | `StatusMessage`          |
-| `Service Name Expression`       | Выражение или колонка для имени службы.                                                                             | Да      | Да                         | `ServiceName`            |
-| `Resource Attributes Expression`| Выражение или колонка для ресурсов уровня атрибутов.                                                                    | Да      | Да                         | `ResourceAttributes`     |
-| `Event Attributes Expression`   | Выражение или колонка для атрибутов событий.                                                                             | Да      | Да                         | `SpanAttributes`         |
-| `Span Events Expression`        | Выражение для извлечения событий спана. Обычно это колонка типа `Nested`. Это позволяет отображать трассировки исключений с поддерживаемыми языковыми SDK.                                                   | Да      | Да                         | `Events`                 |
-| `Implicit Column Expression`   | Столбец, используемый для полнотекстового поиска, если поле не указано (в стиле Lucene). Обычно это тело лога. | Да  | Да  | `SpanName`|
+
+| Настройка                        | Описание                                                                                                                                           | Обязательно | Выводится в схеме по умолчанию | Выведенное значение                                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `Name`                           | Имя источника.                                                                                                                                       | Да      | Нет                         | –                                                                                                     |
+| `Server Connection`              | Имя подключения к серверу.                                                                                                                            | Да      | Нет                         | `Default`                                                                                             |
+| `Database`                       | Имя базы данных ClickHouse.                                                                                                                          | Да      | Да                        | `default`                                                                                             |
+| `Table`                          | Имя целевой таблицы. Установите значение `otel_traces` при использовании схемы по умолчанию.                                                                               | Да      | Да                        | -                                                                                                     |
+| `Timestamp Column`               | Столбец или выражение типа Datetime, которое является частью первичного ключа.                                                                                    | Да      | Да                        | `Timestamp`                                                                                           |
+| `Timestamp`                      | Псевдоним для `Timestamp Column`.                                                                                                                      | Да      | Да                        | `Timestamp`                                                                                           |
+| `Default Select`                 | Столбцы, отображаемые в результатах поиска по умолчанию.                                                                                                           | Да      | Да                        | `Timestamp, ServiceName as service, StatusCode as level, round(Duration / 1e6) as duration, SpanName` |
+| `Duration Expression`            | Выражение для вычисления длительности спана.                                                                                                          | Да      | Да                        | `Duration`                                                                                            |
+| `Duration Precision`             | Точность выражения длительности (например, наносекунды, микросекунды).                                                                            | Да      | Да                        | ns                                                                                                    |
+| `Trace Id Expression`            | Выражение или столбец для идентификаторов трейса.                                                                                                                | Да      | Да                        | `TraceId`                                                                                             |
+| `Span Id Expression`             | Выражение или столбец для идентификаторов спана.                                                                                                                 | Да      | Да                        | `SpanId`                                                                                              |
+| `Parent Span Id Expression`      | Выражение или столбец для идентификаторов родительского спана.                                                                                                          | Да      | Да                        | `ParentSpanId`                                                                                        |
+| `Span Name Expression`           | Выражение или столбец для имен спанов.                                                                                                               | Да      | Да                        | `SpanName`                                                                                            |
+| `Span Kind Expression`           | Выражение или столбец для типа спана (например, client, server).                                                                                          | Да      | Да                        | `SpanKind`                                                                                            |
+| `Correlated Log Source`          | Необязательно. Связанный источник логов (например, логи HyperDX).                                                                                                   | Нет       | Нет                         | –                                                                                                     |
+| `Correlated Session Source`      | Необязательно. Связанный источник сессий.                                                                                                                   | Нет       | Нет                         | –                                                                                                     |
+| `Correlated Metric Source`       | Необязательно. Связанный источник метрик (например, метрики HyperDX).                                                                                             | Нет       | Нет                         | –                                                                                                     |
+| `Status Code Expression`         | Выражение для кода статуса спана.                                                                                                               | Да      | Да                        | `StatusCode`                                                                                          |
+| `Status Message Expression`      | Выражение для сообщения о статусе спана.                                                                                                            | Да      | Да                        | `StatusMessage`                                                                                       |
+| `Service Name Expression`        | Выражение или столбец для имени сервиса.                                                                                                         | Да      | Да                        | `ServiceName`                                                                                         |
+| `Resource Attributes Expression` | Выражение или столбец для атрибутов уровня ресурса.                                                                                                | Да      | Да                        | `ResourceAttributes`                                                                                  |
+| `Event Attributes Expression`    | Выражение или столбец для атрибутов событий.                                                                                                         | Да      | Да                        | `SpanAttributes`                                                                                      |
+| `Span Events Expression`         | Выражение для извлечения событий спана. Обычно это столбец типа `Nested`. Позволяет отображать трассировки стека исключений при использовании поддерживаемых SDK. | Да      | Да                        | `Events`                                                                                              |
+| `Implicit Column Expression`     | Столбец, используемый для полнотекстового поиска, если поле не указано (в стиле Lucene). Обычно это тело лога.                                                  | Да      | Да                        | `SpanName`                                                                                            |
 
 #### Метрики {#metrics}
 
-| Настройка               | Описание                                                                                   | Обязательно | Выведено в схеме по умолчанию | Выведенное значение              |
-|------------------------|-----------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------|
-| `Name`                 | Имя источника.                                                                                  | Да      | Нет                          | –                           |
-| `Server Connection`    | Имя соединения с сервером.                                                                        | Да      | Нет                          | `Default`                   |
-| `Database`             | Имя базы данных ClickHouse.                                                                      | Да      | Да                         | `default`                   |
-| `Gauge Table`          | Таблица, хранящая метрики типа gauge.                                                              | Да      | Нет                         | `otel_metrics_gauge`        |
-| `Histogram Table`      | Таблица, хранящая метрики типа histogram.                                                          | Да      | Нет                         | `otel_metrics_histogram`    |
-| `Sum Table`            | Таблица, хранящая метрики типа sum (счетчик).                                                      | Да      | Нет                         | `otel_metrics_sum`          |
-| `Correlated Log Source`| Необязательно. Связанный источник логов (например, HyperDX логи).                                               | Нет       | Нет                          | –                           |
+
+| Параметр                | Описание                                         | Обязательный | Выводится в схеме по умолчанию | Выводимое значение       |
+| ----------------------- | ------------------------------------------------ | ------------ | ------------------------------ | ------------------------ |
+| `Name`                  | Имя источника.                                   | Да           | Нет                            | –                        |
+| `Server Connection`     | Имя подключения к серверу.                       | Да           | Нет                            | `Default`                |
+| `Database`              | Имя базы данных ClickHouse.                      | Да           | Да                             | `default`                |
+| `Gauge Table`           | Таблица для хранения метрик типа gauge.          | Да           | Нет                            | `otel_metrics_gauge`     |
+| `Histogram Table`       | Таблица для хранения метрик типа histogram.      | Да           | Нет                            | `otel_metrics_histogram` |
+| `Sum Table`             | Таблица для хранения метрик типа sum (счётчики). | Да           | Нет                            | `otel_metrics_sum`       |
+| `Correlated Log Source` | Необязательный параметр. Связанный источник логов (например, логи HyperDX). | Нет          | Нет                            | –                        |
 
 #### Сессии {#settings}
 
-| Настройка                        | Описание                                                                                         | Обязательно | Выведено в схеме по умолчанию | Выведенное значение         |
-|-------------------------------|-----------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
-| `Name`                        | Имя источника.                                                                                        | Да      | Нет                          | –                      |
-| `Server Connection`           | Имя соединения с сервером.                                                                             | Да      | Нет                          | `Default`              |
-| `Database`                    | Имя базы данных ClickHouse.                                                                           | Да      | Да                         | `default`              |
-| `Table`                       | Целевая таблица для данных сессий. Имя целевой таблицы. Установите на `hyperdx_sessions`, если используется схема по умолчанию.                                                                          | Да      | Да                         | -      |
-| `Timestamp Column`           | Столбец даты и времени или выражение, которое является частью вашего первичного ключа.                                    | Да      | Да                         | `TimestampTime`            |
-| `Log Attributes Expression`   | Выражение для извлечения атрибутов уровня лога из данных сессий.                                  | Да      | Да                         | `LogAttributes`        |
-| `LogAttributes`               | Псевдоним или ссылка на поле, используемая для хранения атрибутов лога.                                              | Да      | Да                         | `LogAttributes`        |
-| `Resource Attributes Expression` | Выражение для извлечения метаданных уровня ресурсов.                                               | Да      | Да                         | `ResourceAttributes`   |
-| `Correlated Trace Source`     | Необязательно. Связанный источник трассировок для корреляции сессий.                                              | Нет       | Нет                          | –                      |
-| `Implicit Column Expression`  | Столбец, используемый для полнотекстового поиска при отсутствии указанного поля (например, парсинг запросов в стиле Lucene).      | Да      | Да                         | `Body` |
+| Параметр                         | Описание                                                                                                 | Обязательный | Выводится в схеме по умолчанию | Выводимое значение   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------ | ------------------------------ | -------------------- |
+| `Name`                           | Имя источника.                                                                                           | Да           | Нет                            | –                    |
+| `Server Connection`              | Имя подключения к серверу.                                                                               | Да           | Нет                            | `Default`            |
+| `Database`                       | Имя базы данных ClickHouse.                                                                              | Да           | Да                             | `default`            |
+| `Table`                          | Целевая таблица для данных сессий. Установите значение `hyperdx_sessions` при использовании схемы по умолчанию. | Да           | Да                             | -                    |
+| `Timestamp Column`               | Столбец или выражение типа datetime, входящее в состав первичного ключа.                                 | Да           | Да                             | `TimestampTime`      |
+| `Log Attributes Expression`      | Выражение для извлечения атрибутов уровня логов из данных сессий.                                       | Да           | Да                             | `LogAttributes`      |
+| `LogAttributes`                  | Псевдоним или ссылка на поле для хранения атрибутов логов.                                              | Да           | Да                             | `LogAttributes`      |
+| `Resource Attributes Expression` | Выражение для извлечения метаданных уровня ресурсов.                                                     | Да           | Да                             | `ResourceAttributes` |
+| `Correlated Trace Source`        | Необязательный параметр. Связанный источник трассировок для корреляции сессий.                           | Нет          | Нет                            | –                    |
+| `Implicit Column Expression`     | Столбец, используемый для полнотекстового поиска при отсутствии указанного поля (например, при парсинге запросов в стиле Lucene). | Да           | Да                             | `Body`               |
 
 ### Коррелированные источники {#correlated-sources}
 
-Чтобы обеспечить полную кросс-источниковую корреляцию в ClickStack, пользователи должны настроить коррелированные источники для логов, трассировок, метрик и сессий. Это позволяет HyperDX ассоциировать связанные данные и предоставлять богатый контекст при отображении событий.
+Для включения полной межисточниковой корреляции в ClickStack необходимо настроить коррелированные источники для логов, трассировок, метрик и сессий. Это позволяет HyperDX связывать взаимосвязанные данные и предоставлять расширенный контекст при отображении событий.
 
-- `Logs`: Можно коррелировать с трассировками и метриками.
-- `Traces`: Можно коррелировать с логами, сессиями и метриками.
-- `Metrics`: Можно коррелировать с логами.
-- `Sessions`: Можно коррелировать с трассировками.
+- `Logs`: могут быть коррелированы с трассировками и метриками.
+- `Traces`: могут быть коррелированы с логами, сессиями и метриками.
+- `Metrics`: могут быть коррелированы с логами.
+- `Sessions`: могут быть коррелированы с трассировками.
 
-Установив эти корреляции, HyperDX может, например, отображать соответствующие логи вместе с трассировкой или выводить аномалии метрик, связанные с сессией. Правильная конфигурация обеспечивает единый и контекстуальный опыт наблюдаемости.
+Настроив эти корреляции, HyperDX может, например, отображать соответствующие логи рядом с трассировкой или выявлять аномалии метрик, связанные с сессией. Правильная конфигурация обеспечивает единый и контекстуальный опыт наблюдаемости.
 
-Например, ниже приведен источник логов, настроенный с коррелированными источниками:
+Например, ниже показан источник Logs, настроенный с коррелированными источниками:
 
-<Image img={hyperdx_26} alt="HyperDX Source correlated" size="md"/>
+<Image img={hyperdx_26} alt='Коррелированный источник HyperDX' size='md' />
 
-### Настройки конфигурации приложения {#application-configuration-settings}
+### Параметры конфигурации приложения {#application-configuration-settings}
 
 :::note HyperDX в ClickHouse Cloud
-Эти настройки не могут быть изменены, когда HyperDX управляется в ClickHouse Cloud.
+Эти параметры не могут быть изменены, когда HyperDX управляется в ClickHouse Cloud.
 :::
 
 - `HYPERDX_API_KEY`
-  - **По умолчанию:** Нет (обязательно)
-  - **Описание:** Ключ аутентификации для API HyperDX.
-  - **Руководство:** 
-  - Необходим для телеметрии и логирования
-  - В локальной разработке может быть любым непустым значением
-  - Для продакшена используйте безопасный, уникальный ключ
-  - Может быть получен на странице настроек команды после создания аккаунта
+  - **По умолчанию:** отсутствует (обязательный)
+  - **Описание:** ключ аутентификации для API HyperDX.
+  - **Рекомендации:**
+  - Обязателен для телеметрии и логирования
+  - При локальной разработке может быть любым непустым значением
+  - Для продакшена используйте безопасный уникальный ключ
+  - Можно получить на странице настроек команды после создания учётной записи
 
 - `HYPERDX_LOG_LEVEL`
   - **По умолчанию:** `info`
-  - **Описание:** Устанавливает уровень детализации логирования.
-  - **Опции:** `debug`, `info`, `warn`, `error`
-  - **Руководство:**
-  - Используйте `debug` для детальной отладки
+  - **Описание:** устанавливает уровень детализации логирования.
+  - **Варианты:** `debug`, `info`, `warn`, `error`
+  - **Рекомендации:**
+  - Используйте `debug` для детальной диагностики
   - Используйте `info` для нормальной работы
-  - Используйте `warn` или `error` в продакшене для уменьшения объема логов
+  - Используйте `warn` или `error` в продакшене для уменьшения объёма логов
+
 
 - `HYPERDX_API_PORT`
-  - **По умолчанию:** `8000`
-  - **Описание:** Порт для сервера API HyperDX.
-  - **Руководство:**
-  - Убедитесь, что этот порт доступен на вашем хосте
-  - Измените, если у вас конфликт портов
-  - Должен соответствовать порту в конфигурациях вашего API клиента
+  - **Default:** `8000`
+  - **Description:** Порт сервера HyperDX API.
+  - **Guidance:**
+  - Убедитесь, что этот порт свободен на хосте
+  - Измените, если есть конфликт портов
+  - Должен совпадать с портом в конфигурации ваших API‑клиентов
 
 - `HYPERDX_APP_PORT`
-  - **По умолчанию:** `8000`
-  - **Описание:** Порт для фронтенд-приложения HyperDX.
-  - **Руководство:**
-  - Убедитесь, что этот порт доступен на вашем хосте
-  - Измените, если у вас конфликт портов
-  - Должен быть доступен из вашего браузера
+  - **Default:** `8000`
+  - **Description:** Порт фронтенд‑приложения HyperDX.
+  - **Guidance:**
+  - Убедитесь, что этот порт свободен на хосте
+  - Измените, если есть конфликт портов
+  - Должен быть доступен из браузера
 
 - `HYPERDX_APP_URL`
-  - **По умолчанию:** `http://localhost`
-  - **Описание:** Базовый URL для фронтенд-приложения.
-  - **Руководство:**
-  - Установите на свой домен в продакшене
-  - Укажите протокол (http/https)
+  - **Default:** `http://localhost`
+  - **Description:** Базовый URL фронтенд‑приложения.
+  - **Guidance:**
+  - Укажите ваш домен в продуктивной среде
+  - Указывайте протокол (http/https)
   - Не добавляйте завершающий слэш
 
 - `MONGO_URI`
-  - **По умолчанию:** `mongodb://db:27017/hyperdx`
-  - **Описание:** Строка подключения к MongoDB.
-  - **Руководство:**
-  - Используйте по умолчанию для локальной разработки с Docker
-  - Для продакшена используйте безопасную строку подключения
-  - Включите аутентификацию, если это необходимо
+  - **Default:** `mongodb://db:27017/hyperdx`
+  - **Description:** Строка подключения к MongoDB.
+  - **Guidance:**
+  - Используйте значение по умолчанию для локальной разработки с Docker
+  - В продуктивной среде используйте защищённую строку подключения
+  - Добавьте аутентификацию, если требуется
   - Пример: `mongodb://user:pass@host:port/db`
 
 - `MINER_API_URL`
-  - **По умолчанию:** `http://miner:5123`
-  - **Описание:** URL для сервиса выявления паттернов логов.
-  - **Руководство:**
-  - Используйте по умолчанию для локальной разработки с Docker
-  - Установите на URL сервиса майнера в продакшене
-  - Должен быть доступен из сервиса API
+  - **Default:** `http://miner:5123`
+  - **Description:** URL сервиса по анализу шаблонов логов.
+  - **Guidance:**
+  - Используйте значение по умолчанию для локальной разработки с Docker
+  - Укажите URL вашего сервиса miner в продуктивной среде
+  - Должен быть доступен из API‑сервиса
 
 - `FRONTEND_URL`
-  - **По умолчанию:** `http://localhost:3000`
-  - **Описание:** URL для фронтенд-приложения.
-  - **Руководство:**
-  - Используйте по умолчанию для локальной разработки
-  - Установите на свой домен в продакшене
-  - Должен быть доступен из сервиса API
+  - **Default:** `http://localhost:3000`
+  - **Description:** URL фронтенд‑приложения.
+  - **Guidance:**
+  - Используйте значение по умолчанию для локальной разработки
+  - Укажите ваш домен в продуктивной среде
+  - Должен быть доступен из API‑сервиса
 
 - `OTEL_SERVICE_NAME`
-  - **По умолчанию:** `hdx-oss-api`
-  - **Описание:** Имя сервиса для инструментирования OpenTelemetry.
-  - **Руководство:**
-  - Используйте описательное имя для вашего сервиса HyperDX. Применимо, если HyperDX самостоянно инструментирует.
-  - Помогает идентифицировать сервис HyperDX в данных телеметрии
+  - **Default:** `hdx-oss-api`
+  - **Description:** Имя сервиса для инструментирования OpenTelemetry.
+  - **Guidance:**
+  - Используйте описательное имя для вашего сервиса HyperDX. Актуально, если HyperDX самоинструментируется.
+  - Помогает идентифицировать сервис HyperDX в телеметрических данных
 
 - `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
-  - **По умолчанию:** `http://localhost:4318`
-  - **Описание:** Конечная точка коллектора OpenTelemetry.
-  - **Руководство:**
-  - Важно для самостоянно инструментирования HyperDX.
-  - Используйте по умолчанию для локальной разработки
-  - Установите на URL вашего коллектора в продакшене
+  - **Default:** `http://localhost:4318`
+  - **Description:** Endpoint коллектора OpenTelemetry.
+  - **Guidance:**
+  - Актуально при самоинструментировании HyperDX
+  - Используйте значение по умолчанию для локальной разработки
+  - Укажите URL вашего коллектора в продуктивной среде
   - Должен быть доступен из вашего сервиса HyperDX
 
 - `USAGE_STATS_ENABLED`
-  - **По умолчанию:** `true`
-  - **Описание:** Переключает сбор статистики использования.
-  - **Руководство:**
-  - Установите в `false`, чтобы отключить отслеживание использования
-  - Полезно для развертываний с учетом конфиденциальности
-  - По умолчанию `true` для улучшения продукта
+  - **Default:** `true`
+  - **Description:** Переключатель сбора статистики использования.
+  - **Guidance:**
+  - Установите `false`, чтобы отключить сбор статистики использования
+  - Полезно для развёртываний с повышенными требованиями к конфиденциальности
+  - Значение по умолчанию — `true`, чтобы улучшать продукт
 
 - `IS_OSS`
-  - **По умолчанию:** `true`
-  - **Описание:** Указывает, работает ли в режиме OSS.
-  - **Руководство:**
-  - Оставьте в `true` для развертываний с открытым кодом
-  - Установите в `false` для развертываний предприятия
+  - **Default:** `true`
+  - **Description:** Показывает, запущен ли в режиме OSS.
+  - **Guidance:**
+  - Оставьте `true` для опенсорс‑развёртываний
+  - Установите `false` для enterprise‑развёртываний
   - Влияет на доступность функций
 
 - `IS_LOCAL_MODE`
-  - **По умолчанию:** `false`
-  - **Описание:** Указывает, работает ли в локальном режиме.
-  - **Руководство:**
-  - Установите в `true` для локальной разработки
-  - Отключает определенные функции продакшена
+  - **Default:** `false`
+  - **Description:** Показывает, запущен ли в локальном режиме.
+  - **Guidance:**
+  - Установите `true` для локальной разработки
+  - Отключает некоторые функции, предназначенные для продуктивной среды
   - Полезно для тестирования и разработки
 
 - `EXPRESS_SESSION_SECRET`
-  - **По умолчанию:** `hyperdx is cool 👋`
-  - **Описание:** Секрет для управления сессиями Express.
-  - **Руководство:**
-  - Измените в продакшене
-  - Используйте сильную, случайную строку
-  - Храните в секрете и в безопасности
+  - **Default:** `hyperdx is cool 👋`
+  - **Description:** Секрет для управления сессиями Express.
+  - **Guidance:**
+  - Измените в продуктивной среде
+  - Используйте надёжную случайную строку
+  - Храните в секрете и обеспечьте её безопасность
 
 - `ENABLE_SWAGGER`
-  - **По умолчанию:** `false`
-  - **Описание:** Переключает документацию API Swagger.
-  - **Руководство:**
-  - Установите в `true`, чтобы включить документацию API
+  - **Default:** `false`
+  - **Description:** Переключатель документации Swagger API.
+  - **Guidance:**
+  - Установите `true`, чтобы включить документацию API
   - Полезно для разработки и тестирования
-  - Отключите в продакшене
+  - Отключайте в продуктивной среде
 
 - `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
-  - **По умолчанию:** `false`
-  - **Описание:** Включает Бета поддержку для типа JSON в HyperDX. Смотрите также [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) для включения поддержки JSON в OTel коллекторе.
-  - **Руководство:**
-  - Установите в `true`, чтобы включить поддержку JSON в ClickStack.
+  - **Default:** `false`
+  - **Description:** Включает бета‑поддержку типа JSON в HyperDX. См. также [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) для включения поддержки JSON в OTel‑коллекторе.
+  - **Guidance:**
+  - Установите `true`, чтобы включить поддержку JSON в ClickStack.
+
+
 
 ## Коллектор OpenTelemetry {#otel-collector}
 
-Смотрите ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) для получения дополнительной информации.
+Подробнее см. ["Коллектор OpenTelemetry ClickStack"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
 
-- `CLICKHOUSE_ENDPOINT`  
-  - **По умолчанию:** *Нет (обязательно)*, если используется отдельный образ. Если All-in-one или Docker Compose распределение, это устанавливается на интегрированную инстанцию ClickHouse.
-  - **Описание:** HTTPS URL инстанции ClickHouse для экспорта телеметрии.  
-  - **Руководство:**  
-    - Должен быть полным HTTPS конечным пунктом, включая порт (например, `https://clickhouse.example.com:8443`)  
-    - Обязательно для коллектора, чтобы отправить данные в ClickHouse  
+- `CLICKHOUSE_ENDPOINT`
+  - **По умолчанию:** _Не задан (обязателен)_ для автономного образа. Для дистрибутивов All-in-one или Docker Compose указывает на интегрированный экземпляр ClickHouse.
+  - **Описание:** HTTPS URL экземпляра ClickHouse для экспорта телеметрических данных.
+  - **Рекомендации:**
+    - Должен быть полным HTTPS-адресом, включая порт (например, `https://clickhouse.example.com:8443`)
+    - Обязателен для отправки данных коллектором в ClickHouse
 
-- `CLICKHOUSE_USER`  
-  - **По умолчанию:** `default`  
-  - **Описание:** Имя пользователя, используемое для аутентификации с инстанцией ClickHouse.  
-  - **Руководство:**  
-    - Убедитесь, что у пользователя есть разрешения `INSERT` и `CREATE TABLE`  
-    - Рекомендуется создать отдельного пользователя для погрузки  
+- `CLICKHOUSE_USER`
+  - **По умолчанию:** `default`
+  - **Описание:** Имя пользователя для аутентификации в экземпляре ClickHouse.
+  - **Рекомендации:**
+    - Убедитесь, что пользователь имеет права `INSERT` и `CREATE TABLE`
+    - Рекомендуется создать отдельного пользователя для приёма данных
 
-- `CLICKHOUSE_PASSWORD`  
-  - **По умолчанию:** *Нет (обязательно, если включена аутентификация)*  
-  - **Описание:** Пароль для указанного пользователя ClickHouse.  
-  - **Руководство:**  
-    - Обязательно, если у учетной записи пользователя установлен пароль  
-    - Храните безопасно, используя секреты в продакшен-развертываниях  
+- `CLICKHOUSE_PASSWORD`
+  - **По умолчанию:** _Не задан (обязателен, если включена аутентификация)_
+  - **Описание:** Пароль для указанного пользователя ClickHouse.
+  - **Рекомендации:**
+    - Обязателен, если для учётной записи пользователя установлен пароль
+    - Храните безопасно через secrets в production-развёртываниях
 
-- `HYPERDX_LOG_LEVEL`  
-  - **По умолчанию:** `info`  
-  - **Описание:** Уровень детализации логов для коллектора.  
-  - **Руководство:**  
-    - Принимает значения такие как `debug`, `info`, `warn`, `error`  
-    - Используйте `debug` во время отладки  
+- `HYPERDX_LOG_LEVEL`
+  - **По умолчанию:** `info`
+  - **Описание:** Уровень детализации логирования для коллектора.
+  - **Рекомендации:**
+    - Принимает значения `debug`, `info`, `warn`, `error`
+    - Используйте `debug` при устранении неполадок
 
-- `OPAMP_SERVER_URL`  
-  - **По умолчанию:** *Нет (обязательно)*, если используется отдельный образ. Если All-in-one или Docker Compose распределение, это указывает на развернутую инстанцию HyperDX.
-  - **Описание:** URL сервера OpAMP, используемого для управления коллектором (например, инстанция HyperDX). Порт по умолчанию - `4320`.
-  - **Руководство:**  
-    - Должен указывать на вашу инстанцию HyperDX  
-    - Включает динамическую конфигурацию и безопасную погрузку  
+- `OPAMP_SERVER_URL`
+  - **По умолчанию:** _Не задан (обязателен)_ для автономного образа. Для дистрибутивов All-in-one или Docker Compose указывает на развёрнутый экземпляр HyperDX.
+  - **Описание:** URL сервера OpAMP, используемого для управления коллектором (например, экземпляр HyperDX). По умолчанию используется порт `4320`.
+  - **Рекомендации:**
+    - Должен указывать на ваш экземпляр HyperDX
+    - Обеспечивает динамическую конфигурацию и безопасный приём данных
 
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`  
-  - **По умолчанию:** `default`  
-  - **Описание:** База данных ClickHouse, в которую коллектор записывает телеметрию.  
-  - **Руководство:**  
-    - Установите, если используете пользовательское имя базы данных  
-    - Убедитесь, что указанный пользователь имеет доступ к этой базе данных  
+- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  - **По умолчанию:** `default`
+  - **Описание:** База данных ClickHouse, в которую коллектор записывает телеметрические данные.
+  - **Рекомендации:**
+    - Задайте при использовании пользовательского имени базы данных
+    - Убедитесь, что указанный пользователь имеет доступ к этой базе данных
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
   - **По умолчанию:** `<пустая строка>`
-  - **Описание:** Включает флаги функций для включения в коллектор. Если установлено значение `--feature-gates=clickhouse.json`, включает Бета поддержку типа JSON в коллекторе, обеспечивая создание схем с этим типом. Смотрите также [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) для включения поддержки JSON в HyperDX.
-  - **Руководство:**
-  - Установите в `true`, чтобы включить поддержку JSON в ClickStack.
+  - **Описание:** Включает флаги функций в коллекторе. Если установлено значение `--feature-gates=clickhouse.json`, включается бета-поддержка типа JSON в коллекторе, обеспечивая создание схем с этим типом. См. также [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) для включения поддержки JSON в HyperDX.
+  - **Рекомендации:**
+  - Установите значение `true` для включения поддержки JSON в ClickStack.
+
 
 ## ClickHouse {#clickhouse}
 
-ClickStack поставляется с конфигурацией ClickHouse по умолчанию, предназначенной для многотерабайтного масштаба, но пользователи могут изменять и оптимизировать ее в соответствии со своей нагрузкой.
+ClickStack поставляется с конфигурацией ClickHouse по умолчанию, рассчитанной на работу с данными объёмом в несколько терабайт, но пользователи могут свободно изменять и оптимизировать её под свою рабочую нагрузку.
 
-Чтобы эффективно настроить ClickHouse, пользователи должны понимать ключевые концепции хранения, такие как [части](/parts), [партиции](/partitions), [шарды и реплики](/shards), а также как происходит [слияние](/merges) во время вставки. Мы рекомендуем ознакомиться с основами [первичных индексов](/primary-indexes), [разреженных вторичных индексов](/optimize/skipping-indexes) и индексов пропуска данных, а также с методами [управления жизненным циклом данных](/observability/managing-data), например, с использованием TTL.
+Для эффективной настройки ClickHouse пользователям необходимо понимать ключевые концепции хранения данных, такие как [куски](/parts), [партиции](/partitions), [шарды и реплики](/shards), а также как происходят [слияния](/merges) при вставке данных. Рекомендуем изучить основы [первичных индексов](/primary-indexes), [разреженных вторичных индексов](/optimize/skipping-indexes) и индексов пропуска данных, а также методы [управления жизненным циклом данных](/observability/managing-data), например, с использованием TTL.
 
-ClickStack поддерживает [кастомизацию схем](/use-cases/observability/schema-design) - пользователи могут изменять типы колонок, извлекать новые поля (например, из логов), применять кодеки и словари, и ускорять запросы, используя проекции.
+ClickStack поддерживает [настройку схемы](/use-cases/observability/schema-design) — пользователи могут изменять типы столбцов, извлекать новые поля (например, из логов), применять кодеки и словари, а также ускорять запросы с помощью проекций.
 
-Кроме того, материализованные представления могут быть использованы для [преобразования или фильтрации данных во время погрузки](/use-cases/observability/schema-design#materialized-columns), при условии, что данные записываются в исходную таблицу представления, а приложение читает из целевой таблицы.
+Кроме того, материализованные представления можно использовать для [преобразования или фильтрации данных при загрузке](/use-cases/observability/schema-design#materialized-columns), при условии, что данные записываются в исходную таблицу представления, а приложение читает из целевой таблицы.
 
-Для получения дополнительной информации обратитесь к документации ClickHouse о проектировании схем, стратегиях индексации и лучших практиках управления данными - большинство из которых напрямую применимо к развертываниям ClickStack.
+Для получения более подробной информации обратитесь к документации ClickHouse по проектированию схем, стратегиям индексирования и лучшим практикам управления данными — большинство из них напрямую применимы к развёртываниям ClickStack.

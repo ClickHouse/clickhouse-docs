@@ -1,22 +1,19 @@
 ---
-'slug': '/managing-data/core-concepts'
-'title': '核心概念'
-'description': '了解 ClickHouse 的工作核心概念'
-'keywords':
-- 'concepts'
-- 'part'
-- 'partition'
-- 'primary index'
-'doc_type': 'guide'
+slug: /managing-data/core-concepts
+title: '核心概念'
+description: '学习 ClickHouse 工作原理中的核心概念'
+keywords: ['concepts', 'part', 'partition', 'primary index']
+doc_type: 'guide'
 ---
 
-在本节文档中，您将了解 ClickHouse 工作的一些核心概念。
+在本节文档中，
+你将学习 ClickHouse 工作原理中的一些核心概念。
 
-| 页面                                         | 描述                                                                                                                                                                                                           |
+| Page                                         | Description                                                                                                                                                                                                           |
 |----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [表的分区片段](./parts.md)                        | 了解 ClickHouse 中的表的分区片段是什么。                                                                                                                                                                             |
-| [表的分区](./partitions.mdx)             | 了解表的分区是什么以及它们的用途。                                                                                                                                                           |
-| [表的分区片段合并](./merges.mdx)                | 了解表的分区片段合并是什么以及它们的用途。                                                                                                                                                          |
-| [表的分片和副本](./shards.mdx)        | 了解表的分片和副本是什么以及它们的用途。                                                                                                                                                  |
-| [主索引](./primary-indexes.mdx)         | 介绍 ClickHouse 的稀疏主索引以及它如何帮助有效跳过查询执行过程中不必要的数据。解释了索引的构建和使用方式，并提供了观察其效果的示例和工具。链接到有关高级用例和最佳实践的深度探讨。 |
-| [架构概述](./academic_overview.mdx) | 基于我们在 VLDB 2024 科学论文中的研究，对 ClickHouse 架构中所有组件的简要学术概述。                                                                                                |
+| [Table parts](./parts.md)                        | 了解 ClickHouse 中的表数据片段（part）是什么。                                                                                                                                                                       |
+| [Table partitions](./partitions.mdx)             | 了解表分区是什么以及它们的用途。                                                                                                                                                                                      |
+| [Table part merges](./merges.mdx)                | 了解表数据片段（part）合并是什么以及它们的用途。                                                                                                                                                                     |
+| [Table shards and replicas](./shards.mdx)        | 了解表分片和副本是什么以及它们的用途。                                                                                                                                                                                |
+| [Primary indexes](./primary-indexes.mdx)         | 介绍 ClickHouse 的稀疏主索引，以及它如何在查询执行过程中高效跳过不必要的数据。解释索引是如何构建和使用的，并给出示例和工具来观察其效果，同时提供指向深入讲解的链接，涵盖高级用例和最佳实践。 |
+| [Architectural Overview](./academic_overview.mdx) | 基于我们在 VLDB 2024 上发表的学术论文，对 ClickHouse 架构的所有组件进行简明的学术性概览。                                                                                                                            |

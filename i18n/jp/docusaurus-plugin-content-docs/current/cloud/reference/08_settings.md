@@ -1,9 +1,10 @@
 ---
-'sidebar_label': '設定を構成する'
-'slug': '/manage/settings'
-'title': '設定を構成する'
-'description': '特定のユーザーまたは役割のために、ClickHouse Cloud サービスの設定を構成する方法'
-'doc_type': 'guide'
+sidebar_label: '設定の構成'
+slug: /manage/settings
+title: '設定の構成'
+description: '特定のユーザーまたはロール向けに ClickHouse Cloud サービスの設定を行う方法'
+keywords: ['ClickHouse Cloud', 'settings configuration', 'cloud settings', 'user settings', 'role settings']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -12,10 +13,10 @@ import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-setti
 
 # 設定の構成
 
-特定の [ユーザー](/operations/access-rights#user-account-management) または [ロール](/operations/access-rights#role-management) のために、ClickHouse Cloud サービスの設定を指定するには、[SQL駆動の設定プロファイル](/operations/access-rights#settings-profiles-management) を使用する必要があります。設定プロファイルを適用することで、サービスが停止、アイドル状態、またはアップグレードされているときにも、構成した設定が持続されることが保証されます。設定プロファイルについて詳しく知りたい場合は、[こちらのページ](/operations/settings/settings-profiles.md)をご覧ください。
+特定の[ユーザー](/operations/access-rights#user-account-management)または[ロール](/operations/access-rights#role-management)ごとに ClickHouse Cloud サービスの設定を行うには、[SQL-driven Settings Profiles](/operations/access-rights#settings-profiles-management) を使用する必要があります。Settings Profiles を適用すると、サービスが停止・アイドル状態・アップグレードされた場合でも、構成した設定が保持されます。Settings Profiles の詳細については、[こちら](/operations/settings/settings-profiles.md)を参照してください。
 
-XMLベースの設定プロファイルおよび [構成ファイル](/operations/configuration-files.md) は、現在 ClickHouse Cloud ではサポートされていないことに注意してください。
+なお、XML ベースの Settings Profiles および[設定ファイル](/operations/configuration-files.md)は、現在 ClickHouse Cloud ではサポートされていません。
 
-ClickHouse Cloud サービスに指定できる設定について詳しく知りたい場合は、[当社のドキュメント](/operations/settings)でカテゴリ別に可能なすべての設定をご覧ください。
+ClickHouse Cloud サービスに対して指定可能な設定の詳細については、[ドキュメント](/operations/settings)でカテゴリ別に一覧をご確認ください。
 
 <Image img={cloud_settings_sidebar} size="sm" alt="Cloud settings sidebar" border/>

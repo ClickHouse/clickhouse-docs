@@ -1,19 +1,17 @@
-
-
-| トピック                                                                              | 説明                                                                                                                                                               |
-|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [クエリ最適化ガイド](/optimize/query-optimization)                                   | クエリ最適化の基本を学ぶための出発点で、一般的なシナリオとクエリ実行速度を向上させるためのパフォーマンス技術をカバーしています。                                       |
-| [主インデックス上級ガイド](/guides/best-practices/sparse-primary-indexes)          | ClickHouseのユニークなスパース主インデックスシステムについて深く掘り下げ、従来のデータベースとの違いや最適なインデックス戦略のベストプラクティスを紹介します。                 |
-| [クエリの並列処理](/optimize/query-parallelism)                                      | ClickHouseが処理レーンと`max_threads`設定を使用してクエリ実行を並列化する方法や、並列実行を検査および最適化する方法を学びます。                                    |
-| [パーティションキー](/optimize/partitioning-key)                                    | パーティションキーの選択をマスターし、効率的なデータセグメントの剪定を可能にしてクエリパフォーマンスを劇的に向上させ、一般的なパーティショニングの落とし穴を回避します。       |
-| [データスキッピングインデックス](/optimize/skipping-indexes)                      | 不要なデータブロックをスキップし、非主キー列のフィルタリングされたクエリを加速させるために、セカンダリインデックスを戦略的に適用します。                              |
-| [`PREWHERE`最適化](/optimize/prewhere)                                            | `PREWHERE`が不要なカラムを読み取る前にデータをフィルタリングすることでI/Oを自動的に削減する方法と、その効果を監視する方法を理解します。                                   |
-| [バルクインサート](/optimize/bulk-inserts)                                         | データ挿入を効果的にバッチ処理して、取り込みスループットを最大化し、リソースのオーバーヘッドを削減します。                                                        |
-| [非同期インサート](/optimize/asynchronous-inserts)                                 | サーバーサイドのバッチ処理を利用して挿入性能を改善し、クライアントサイドの複雑さを減少させ、高頻度の挿入のスループットを増加させます。                                 |
-| [変異を避ける](/optimize/avoid-mutations)                                          | 高価な`UPDATE`や`DELETE`操作を排除しながらデータの正確性とパフォーマンスを維持する、追加専用のワークフローを設計します。                                         |
-| [Nullableカラムを避ける](/optimize/avoid-nullable-columns)                        | Nullableカラムの代わりにデフォルト値を使用することで、ストレージオーバーヘッドを削減し、クエリパフォーマンスを向上させます。                                      |
-| [ `OPTIMIZE FINAL`を避ける](/optimize/avoidoptimizefinal)                       | `OPTIMIZE TABLE FINAL`をいつ使用すべきか、使用すべきでないかを理解しましょう。                                                                                |
-| [アナライザー](/operations/analyzer)                                               | ClickHouseの新しいクエリアナライザーを活用して、パフォーマンスのボトルネックを特定し、クエリ実行計画を最適化して効率を向上させます。                         |
-| [クエリプロファイリング](/operations/optimizing-performance/sampling-query-profiler) | サンプリングクエリプロファイラーを使用してクエリ実行パターンを分析し、パフォーマンスのホットスポットを特定し、リソース使用を最適化します。                     |
-| [クエリキャッシュ](/operations/query-cache)                                       | ClickHouseの組み込みクエリ結果キャッシングを有効にして設定することで、頻繁に実行される`SELECT`クエリを加速させます。                                         |
-| [ハードウェアのテスト](/operations/performance-test)                               | どのサーバーでもClickHouseのパフォーマンスベンチマークをインストールなしで実行してハードウェアの能力を評価します。(ClickHouse Cloudには適用されません)                |
+| Topic                                                                           | Description                                                                                                                                                       |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Query optimization guide](/optimize/query-optimization)                        | 代表的なシナリオとパフォーマンス向上テクニックを通じて、クエリ実行速度を改善するためのクエリ最適化の基礎をここから学べます。                            |
+| [Primary indexes advanced guide](/guides/best-practices/sparse-primary-indexes) | ClickHouse 独自のスパースなプライマリインデックス方式の仕組み、従来のデータベースとの違い、最適なインデックス戦略のベストプラクティスを詳しく解説します。 |
+| [Query parallelism](/optimize/query-parallelism)                                | ClickHouse が処理レーンと `max_threads` 設定を用いてクエリ実行をどのように並列化するかを学び、並列実行の確認と最適化方法を理解します。                    |
+| [Partitioning key](/optimize/partitioning-key)                                  | 効率的なデータセグメントのプルーニングを可能にし、一般的なパーティショニングの落とし穴を回避することで、クエリ性能を大幅に向上させるパーティションキーの選定方法を習得します。    |
+| [Data skipping indexes](/optimize/skipping-indexes)                             | セカンダリインデックスを戦略的に適用し、不要なデータブロックをスキップすることで、プライマリキー以外の列に対するフィルタ付きクエリを高速化します。        |
+| [`PREWHERE` optimization](/optimize/prewhere)                                   | 不要な列を読み込む前にデータをフィルタリングすることで `PREWHERE` が自動的に I/O を削減する仕組みと、その有効性を監視する方法を理解します。               |
+| [Bulk inserts](/optimize/bulk-inserts)                                          | データ挿入を効果的にバッチ処理することで、取り込みスループットを最大化し、リソースのオーバーヘッドを削減します。                                             |
+| [Asynchronous inserts](/optimize/asynchronous-inserts)                          | サーバー側のバッチ処理を活用してクライアント側の複雑さを軽減し、高頻度の挿入におけるスループットを向上させます。                                               |
+| [Avoid mutations](/optimize/avoid-mutations)                                    | コストの高い `UPDATE` や `DELETE` 操作を排除しつつ、データの正確性とパフォーマンスを維持する、追記専用ワークフローを設計します。                              |
+| [Avoid nullable columns](/optimize/avoid-nullable-columns)                      | 可能な場合は nullable 列の代わりにデフォルト値を使用することで、ストレージのオーバーヘッドを削減し、クエリ性能を改善します。                                 |
+| [Avoid `OPTIMIZE FINAL`](/optimize/avoidoptimizefinal)                          | `OPTIMIZE TABLE FINAL` を使用すべき場合と使用すべきでない場合を理解します。                                                                                     |
+| [Analyzer](/operations/analyzer)                                                | ClickHouse の新しいクエリアナライザを活用して、パフォーマンスボトルネックを特定し、クエリ実行プランを最適化して効率を高めます。                               |
+| [Query profiling](/operations/optimizing-performance/sampling-query-profiler)   | サンプリングクエリプロファイラを使用してクエリ実行パターンを分析し、ホットスポットを特定して、リソース使用を最適化します。                                    |
+| [Query cache](/operations/query-cache)                                          | ClickHouse に組み込まれたクエリ結果キャッシュを有効化・設定することで、頻繁に実行される `SELECT` クエリを高速化します。                                       |
+| [Testing hardware](/operations/performance-test)                                | インストール不要で任意のサーバー上で ClickHouse の性能ベンチマークを実行し、ハードウェアの性能を評価します（ClickHouse Cloud には適用されません）。          |

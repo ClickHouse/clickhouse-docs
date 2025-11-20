@@ -1,20 +1,18 @@
 ---
-'slug': '/cloud/manage/billing'
-'title': '請求'
-'description': '請求のための目次ページ。'
-'keywords':
-- 'billing'
-- 'payment thresholds'
-- 'trouble shooting'
-- 'marketplace'
-'doc_type': 'landing-page'
+slug: /cloud/manage/billing
+title: '課金'
+description: '課金に関する目次ページ。'
+keywords: ['billing', 'payment thresholds', 'trouble shooting', 'marketplace']
+doc_type: 'landing-page'
 ---
 
-この文書のセクションでは、請求に関するトピックを扱い、以下のページが含まれています：
+このドキュメントセクションでは課金に関するトピックを扱い、次のページが含まれます。
 
-| ページ                                    | 説明                                                              |
-|------------------------------------------|------------------------------------------------------------------|
-| [概要](/cloud/marketplace/marketplace-billing)                         | マーケットプレイスの請求に関する概要とFAQページ。                     | 
-| [支払いの閾値](/cloud/billing/payment-thresholds)                   | 支払いの閾値の仕組みと調整方法について学びます。                    |
-| [請求問題のトラブルシューティング](/manage/clickhouse-cloud-billing-compliance) | 一般的な請求問題のトラブルシューティング。                          |
-| [マーケットプレイス](/cloud/manage/marketplace/)                  | その他のマーケットプレイス関連トピックのランディングページ。         |
+| Page                                  | Description                                                          |
+|---------------------------------------|----------------------------------------------------------------------|
+| [Overview](/cloud/manage/billing/overview)                       | 課金に関する料金例と FAQ。                      | 
+| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 支払いのしきい値の仕組みと、その調整方法について説明します。 |
+| [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | よく発生する課金関連の問題のトラブルシューティング。                                  |
+| [Marketplace](/cloud/manage/marketplace/)                    | マーケットプレイス関連トピックへのランディングページ。                 |
+
+https://clickhouse.com/docs/cloud/

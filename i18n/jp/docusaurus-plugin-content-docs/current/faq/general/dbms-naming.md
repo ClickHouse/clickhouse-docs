@@ -1,22 +1,24 @@
 ---
-'title': '"ClickHouse"は何を意味しますか？'
-'toc_hidden': true
-'toc_priority': 10
-'slug': '/faq/general/dbms-naming'
-'description': '"ClickHouse"は何を意味するかについて学びましょう。'
-'doc_type': 'reference'
+title: '"ClickHouse" はどういう意味ですか？'
+toc_hidden: true
+toc_priority: 10
+slug: /faq/general/dbms-naming
+description: '"ClickHouse" という名前の意味について解説します'
+doc_type: 'reference'
+keywords: ['ClickHouse name', 'clickstream', 'data warehouse', 'database naming', 'ClickHouse history']
 ---
 
 
-# ClickHouseとは何ですか？ {#what-does-clickhouse-mean}
 
-「**Click**stream」と「Data ware**House**」の組み合わせです。これは、ClickHouseがインターネット全体の人々によるすべてのクリックの記録を保持するために設計されたYandex.Metricaでの元々のユースケースに由来しており、今でもその役割を果たしています。このユースケースについては[ClickHouseの歴史](../../about-us/history.md)ページで詳しく知ることができます。
+# 「ClickHouse」の意味は? {#what-does-clickhouse-mean}
 
-この二つの部分からなる意味には二つの結果があります：
+「**Click**stream」と「Data ware**House**」を組み合わせた造語です。Yandex.Metricaでの当初のユースケースに由来しており、ClickHouseはインターネット上の全世界のユーザーによるすべてのクリックを記録することを目的として開発されました。現在もその役割を果たしています。このユースケースの詳細については、[ClickHouseの歴史](../../about-us/history.md)ページをご覧ください。
 
-- Click**H**ouseの正しい書き方は、Hを大文字にすることです。
-- 短縮する必要がある場合は、**CH**を使用してください。歴史的な理由から、中国ではCKとして短縮することも一般的であり、主に中国語でのClickHouseに関する最初の講演の一つがこの形式を使用したためです。
+この2つの要素から成る名称には、2つの重要な点があります:
 
-:::info    
-ClickHouseがその名前を得てから数年後、意味のある二つの単語を組み合わせるというアプローチが、カーネギーメロン大学のデータベースの准教授Andy Pavloによる[研究](https://www.cs.cmu.edu/~pavlo/blog/2020/03/on-naming-a-database-management-system.html)で、データベースの名前を付ける最良の方法として強調されました。ClickHouseは、Postgresと共に「史上最高のデータベース名」賞を受賞しました。
+- Click**H**ouseの正しい表記は、Hを大文字にした形のみです。
+- 略称を使用する場合は、**CH**を使用してください。歴史的な経緯により、中国ではCKという略称も普及していますが、これは主にClickHouseに関する初期の中国語講演でこの形式が使用されたためです。
+
+:::info  
+ClickHouseが命名されてから数年後、それぞれ独立した意味を持つ2つの単語を組み合わせるこのアプローチは、Carnegie Mellon大学のデータベース准教授であるAndy Pavloによる[研究](https://www.cs.cmu.edu/~pavlo/blog/2020/03/on-naming-a-database-management-system.html)において、データベースの命名方法として最良であると評価されました。ClickHouseは、Postgresとともに彼の「史上最高のデータベース名」賞を共有しています。
 :::

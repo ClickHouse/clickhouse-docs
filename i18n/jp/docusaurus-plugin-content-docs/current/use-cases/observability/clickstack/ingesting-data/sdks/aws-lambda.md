@@ -1,47 +1,49 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/aws_lambda'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'AWS Lambda for ClickStack - ClickHouse 可观察性堆栈'
-'title': 'AWS Lambda'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/aws_lambda
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'ClickStack 向け AWS Lambda - ClickHouse オブザーバビリティスタック'
+title: 'AWS Lambda'
+doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'aws-lambda', 'lambda-layers']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-**このガイドは統合します:**
+**このガイドで扱うもの:**
 
 <table>
   <tbody>
     <tr>
-      <td className="pe-2">✅ ログ</td>
-      <td className="pe-2">✅ メトリクス</td>
-      <td className="pe-2">✅ トレース</td>
+      <td className="pe-2">✅ Logs</td>
+      <td className="pe-2">✅ Metrics</td>
+      <td className="pe-2">✅ Traces</td>
     </tr>
   </tbody>
 </table>
 
+
 ## OpenTelemetry Lambdaレイヤーのインストール {#installing-the-otel-lambda-layers}
 
-OpenTelemetryプロジェクトは、以下の目的で別々のLambdaレイヤーを提供します：
+OpenTelemetryプロジェクトは、以下の目的で個別のLambdaレイヤーを提供しています：
 
-1. OpenTelemetryの自動計測を使用して、Lambda関数のコードを自動的に計測します。
-2. 収集したログ、メトリクス、トレースをClickStackに転送します。
+1. OpenTelemetry自動計装を使用してLambda関数コードを自動的に計装する
+2. 収集されたログ、メトリクス、トレースをClickStackに転送する
 
-### 言語固有の自動計測レイヤーの追加 {#adding-language-specific-auto-instrumentation}
+### 言語固有の自動計装レイヤーの追加 {#adding-language-specific-auto-instrumentation}
 
-言語固有の自動計測Lambdaレイヤーは、特定の言語用のOpenTelemetry自動計測パッケージを使用して、Lambda関数のコードを自動的に計測します。
+言語固有の自動計装Lambdaレイヤーは、特定の言語向けのOpenTelemetry自動計装パッケージを使用してLambda関数コードを自動的に計装します。
 
-各言語とリージョンごとに独自のレイヤーARNがあります。
+各言語とリージョンには独自のレイヤーARNがあります。
 
-LambdaがすでにOpenTelemetry SDKで計測されている場合は、このステップをスキップできます。
+LambdaがすでにOpenTelemetry SDKで計装されている場合は、この手順をスキップできます。
 
-**始めるには**：
+**開始するには**：
 
-1. Layersセクションで「Add a layer」をクリックします。
-2. ARNを指定し、言語に基づいて正しいARNを選択し、`<region>`を自分のリージョン（例：`us-east-2`）に置き換えてください：
+1. Layersセクションで「Add a layer」をクリックします
+2. 「specify an ARN」を選択し、言語に基づいて正しいARNを選択します。`<region>`を実際のリージョン（例：`us-east-2`）に置き換えてください：
 
 <Tabs groupId="install-language-options">
 <TabItem value="javascript" label="Javascript" default>
@@ -77,9 +79,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
 
 </Tabs>
 
-_レイヤーの最新リリースは、[OpenTelemetry Lambda Layers GitHubリポジトリ](https://github.com/open-telemetry/opentelemetry-lambda/releases)で見つけることができます。_
+_レイヤーの最新リリースは[OpenTelemetry Lambda Layers GitHubリポジトリ](https://github.com/open-telemetry/opentelemetry-lambda/releases)で確認できます。_
 
-3. Lambda関数の「Configuration」>「Environment variables」で次の環境変数を設定します。
+3. Lambda関数の「Configuration」>「Environment variables」で以下の環境変数を設定します。
 
 <Tabs groupId="install-language-env">
 <TabItem value="javascript" label="Javascript" default>
@@ -127,14 +129,14 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### OpenTelemetryコレクタLambdaレイヤーのインストール {#installing-the-otel-collector-layer}
+### OpenTelemetryコレクターLambdaレイヤーのインストール {#installing-the-otel-collector-layer}
 
-コレクタLambdaレイヤーを使用すると、Lambda関数からClickStackにログ、メトリクス、トレースを転送でき、エクスポータの遅延による応答時間への影響を最小限に抑えることができます。
+コレクターLambdaレイヤーを使用すると、エクスポーターのレイテンシによる応答時間への影響なしに、Lambda関数からClickStackへログ、メトリクス、トレースを転送できます。
 
-**コレクタレイヤーをインストールするには**：
+**コレクターレイヤーをインストールするには**：
 
-1. Layersセクションで「Add a layer」をクリックします。
-2. ARNを指定し、アーキテクチャに基づいて正しいARNを選択し、`<region>`を自分のリージョン（例：`us-east-2`）に置き換えてください：
+1. Layersセクションで「Add a layer」をクリックします
+2. 「specify an ARN」を選択し、アーキテクチャに基づいて正しいARNを選択します。`<region>`を実際のリージョン（例：`us-east-2`）に置き換えてください：
 
 <Tabs groupId="install-language-layer">
 
@@ -152,14 +154,15 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
 arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
 ```
 
+
 </TabItem>
 
 </Tabs>
 
-3. コレクタをClickStackに送信するように設定するために、プロジェクトに次の`collector.yaml`ファイルを追加します：
+3. 以下の `collector.yaml` ファイルをプロジェクトに追加して、コレクターがClickStackに送信するように設定します:
+
 
 ```yaml
-
 # collector.yaml
 receivers:
   otlp:
@@ -202,26 +205,28 @@ service:
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
+
 ## インストールの確認 {#checking-the-installation}
 
-レイヤーをデプロイした後、Lambda関数から自動的に収集されたトレースがHyperDXに表示されるはずです。`decouple`および`batching`プロセッサはテレメトリコレクションに遅延を引き起こす可能性があるため、トレースが表示されるまでに時間がかかる場合があります。カスタムログやメトリクスを生成するには、言語固有のOpenTelemetry SDKを使用してコードを計測する必要があります。
+レイヤーをデプロイすると、Lambda関数から自動的に収集されたトレースがHyperDXに表示されるようになります。`decouple`および`batching`プロセッサによってテレメトリ収集に遅延が発生する可能性があるため、トレースの表示が遅れる場合があります。カスタムログやメトリクスを出力するには、使用している言語に対応したOpenTelemetry SDKでコードをインストルメント化する必要があります。
+
 
 ## トラブルシューティング {#troubleshoting}
 
-### カスタム計測が送信されない {#custom-instrumentation-not-sending}
+### カスタムインストルメンテーションが送信されない {#custom-instrumentation-not-sending}
 
-手動で定義したトレースやその他のテレメトリが表示されない場合、OpenTelemetry APIパッケージの互換性のないバージョンを使用している可能性があります。OpenTelemetry APIパッケージがAWS Lambdaに含まれるバージョンと同じか、それよりも古いバージョンであることを確認してください。
+手動で定義したトレースやその他のテレメトリが表示されない場合、互換性のないバージョンのOpenTelemetry APIパッケージを使用している可能性があります。OpenTelemetry APIパッケージのバージョンが、AWS Lambdaに含まれているバージョン以下であることを確認してください。
 
 ### SDKデバッグログの有効化 {#enabling-sdk-debug-logs}
 
-`OTEL_LOG_LEVEL`環境変数を`DEBUG`に設定して、OpenTelemetry SDKからのデバッグログを有効にします。これにより、自動計測レイヤーがアプリケーションを正しく計測していることを確認できます。
+OpenTelemetry SDKのデバッグログを有効にするには、環境変数`OTEL_LOG_LEVEL`を`DEBUG`に設定します。これにより、自動インストルメンテーション層がアプリケーションを正しくインストルメント化していることを確認できます。
 
-### コレクタデバッグログの有効化 {#enabling-collector-debug-logs}
+### コレクターデバッグログの有効化 {#enabling-collector-debug-logs}
 
-コレクタの問題をデバッグするには、コレクタの設定ファイルを変更して`logging`エクスポータを追加し、テレメトリログレベルを`debug`に設定して、コレクタLambdaレイヤーからの詳細なログを有効にします。
+コレクターの問題をデバッグするには、コレクター設定ファイルを変更して`logging`エクスポーターを追加し、テレメトリのログレベルを`debug`に設定することで、コレクターLambdaレイヤーからより詳細なログを有効にできます。
+
 
 ```yaml
-
 # collector.yaml
 receivers:
   otlp:

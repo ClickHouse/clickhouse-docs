@@ -1,22 +1,28 @@
 ---
-slug: '/getting-started/example-datasets/tpch'
-sidebar_label: TPC-H
-description: 'Набор данных и запросов бенчмарка TPC-H.'
+description: 'Набор данных и запросы бенчмарка TPC-H.'
+sidebar_label: 'TPC-H'
+slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
-doc_type: reference
+doc_type: 'guide'
+keywords: ['example dataset', 'tpch', 'benchmark', 'sample data', 'performance testing']
 ---
-Популярный бенчмарк, который моделирует внутреннее хранилище данных оптового поставщика. Данные хранятся в представлении третьей нормальной формы, что требует множества соединений во время выполнения запросов. Несмотря на свой возраст и нереалистичное предположение о равномерном и независимом распределении данных, TPC-H остается самым популярным OLAP бенчмарком на сегодняшний день.
+
+Популярный бенчмарк, моделирующий внутреннее хранилище данных оптового поставщика.
+Данные хранятся в представлении в третьей нормальной форме, что требует большого количества соединений (`JOIN`) при выполнении запросов.
+Несмотря на возраст и нереалистичное предположение о равномерном и независимом распределении данных, TPC-H по-прежнему остаётся самым популярным OLAP-бенчмарком на сегодняшний день.
 
 **Ссылки**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et al., 2000)
+- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et al., 2013)
+- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et al., 2020)
+
+
 
 ## Генерация и импорт данных {#data-generation-and-import}
 
-Сначала клонируйте репозиторий TPC-H и соберите генератор данных:
+Сначала клонируйте репозиторий TPC-H и скомпилируйте генератор данных:
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -24,35 +30,38 @@ cd tpch-kit/dbgen
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-s` указывает фактор масштабирования. Например, с `-s 100` генерируется 600 миллионов строк для таблицы 'lineitem'.
+Затем сгенерируйте данные. Параметр `-s` задает коэффициент масштабирования. Например, при `-s 100` для таблицы 'lineitem' генерируется 600 миллионов строк.
 
 ```bash
 ./dbgen -s 100
 ```
 
-Подробные размеры таблиц при факторе масштабирования 100:
+Детальные размеры таблиц при коэффициенте масштабирования 100:
 
 | Таблица  | размер (в строках) | размер (сжатый в ClickHouse) |
-|----------|--------------------|-------------------------------|
-| nation   | 25                 | 2 кБ                          |
-| region   | 5                  | 1 кБ                          |
-| part     | 20.000.000         | 895 МБ                        |
-| supplier | 1.000.000          | 75 МБ                         |
-| partsupp | 80.000.000         | 4.37 ГБ                       |
-| customer | 15.000.000         | 1.19 ГБ                       |
-| orders   | 150.000.000        | 6.15 ГБ                       |
-| lineitem | 600.000.000        | 26.69 ГБ                      |
+| -------- | ------------------ | ---------------------------- |
+| nation   | 25             | 2 kB                            |
+| region   | 5              | 1 kB                            |
+| part     | 20.000.000     | 895 MB                          |
+| supplier | 1.000.000      | 75 MB                           |
+| partsupp | 80.000.000     | 4.37 GB                         |
+| customer | 15.000.000     | 1.19 GB                         |
+| orders   | 150.000.000    | 6.15 GB                         |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
-(Сжатые размеры в ClickHouse взяты из `system.tables.total_bytes` и основаны на приведенных ниже определениях таблиц.)
+(Размеры сжатых данных в ClickHouse взяты из `system.tables.total_bytes` и основаны на приведенных ниже определениях таблиц.)
 
 Теперь создайте таблицы в ClickHouse.
 
-Мы придерживаемся правил спецификации TPC-H как можно ближе:
-- Первичные ключи создаются только для колонок, упомянутых в разделе 1.4.2.2 спецификации.
-- Заместительные параметры были заменены значениями для валидации запросов в разделах 2.1.x.4 спецификации.
-- В соответствии с разделом 1.4.2.1 определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию. 
-  Производительность `SELECT` запросов в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
-- В соответствии с разделом 1.3.1, мы используем нативные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, упомянутых в спецификации (например, `Identifier`, `Variable text, size N`). Единственным эффектом этого является лучшая читаемость, SQL-92 типы данных, генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
+Мы максимально придерживаемся правил спецификации TPC-H:
+
+- Первичные ключи создаются только для столбцов, упомянутых в разделе 1.4.2.2 спецификации.
+- Параметры подстановки заменены значениями для валидации запросов в разделах 2.1.x.4 спецификации.
+- Согласно разделу 1.4.2.1, определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию.
+  Производительность запросов `SELECT` в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
+- Согласно разделу 1.3.1, мы используем нативные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, упомянутых в
+  спецификации (например, `Identifier`, `Variable text, size N`). Единственное преимущество этого подхода — лучшая читаемость; типы данных SQL-92, генерируемые
+  `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также работают в ClickHouse.
 
 ```sql
 CREATE TABLE nation (
@@ -109,43 +118,47 @@ CREATE TABLE customer (
     c_comment     String)
 ORDER BY (c_custkey);
 
+```
+
+
 CREATE TABLE orders  (
-    o_orderkey       Int32,
-    o_custkey        Int32,
-    o_orderstatus    String,
-    o_totalprice     Decimal(15,2),
-    o_orderdate      Date,
-    o_orderpriority  String,
-    o_clerk          String,
-    o_shippriority   Int32,
-    o_comment        String)
-ORDER BY (o_orderkey);
--- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
--- "Quantifying TPC-H Choke Points and Their Optimizations":
--- ORDER BY (o_orderdate, o_orderkey);
+o&#95;orderkey       Int32,
+o&#95;custkey        Int32,
+o&#95;orderstatus    String,
+o&#95;totalprice     Decimal(15,2),
+o&#95;orderdate      Date,
+o&#95;orderpriority  String,
+o&#95;clerk          String,
+o&#95;shippriority   Int32,
+o&#95;comment        String)
+ORDER BY (o&#95;orderkey);
+-- Ниже приведён альтернативный ключ сортировки, который не соответствует официальным правилам TPC-H, но рекомендован в разд. 4.5
+-- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
+-- ORDER BY (o&#95;orderdate, o&#95;orderkey);
 
 CREATE TABLE lineitem (
-    l_orderkey       Int32,
-    l_partkey        Int32,
-    l_suppkey        Int32,
-    l_linenumber     Int32,
-    l_quantity       Decimal(15,2),
-    l_extendedprice  Decimal(15,2),
-    l_discount       Decimal(15,2),
-    l_tax            Decimal(15,2),
-    l_returnflag     String,
-    l_linestatus     String,
-    l_shipdate       Date,
-    l_commitdate     Date,
-    l_receiptdate    Date,
-    l_shipinstruct   String,
-    l_shipmode       String,
-    l_comment        String)
-ORDER BY (l_orderkey, l_linenumber);
--- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
--- "Quantifying TPC-H Choke Points and Their Optimizations":
--- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
-```
+l&#95;orderkey       Int32,
+l&#95;partkey        Int32,
+l&#95;suppkey        Int32,
+l&#95;linenumber     Int32,
+l&#95;quantity       Decimal(15,2),
+l&#95;extendedprice  Decimal(15,2),
+l&#95;discount       Decimal(15,2),
+l&#95;tax            Decimal(15,2),
+l&#95;returnflag     String,
+l&#95;linestatus     String,
+l&#95;shipdate       Date,
+l&#95;commitdate     Date,
+l&#95;receiptdate    Date,
+l&#95;shipinstruct   String,
+l&#95;shipmode       String,
+l&#95;comment        String)
+ORDER BY (l&#95;orderkey, l&#95;linenumber);
+-- Ниже приведён альтернативный ключ сортировки, который не соответствует официальным правилам TPC-H, но рекомендован в разд. 4.5
+-- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
+-- ORDER BY (l&#95;shipdate, l&#95;orderkey, l&#95;linenumber);
+
+````
 
 Данные можно импортировать следующим образом:
 
@@ -158,14 +171,14 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO partsupp FORMA
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT CSV" < orders.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
-```
+````
 
 :::note
-Вместо использования tpch-kit и самостоятельной генерации таблиц, вы можете импортировать данные из публичной корзины S3. Убедитесь,
-что предварительно создали пустые таблицы с помощью вышеуказанных операторов `CREATE`.
+Вместо использования tpch-kit и самостоятельной генерации таблиц вы можете импортировать данные из общедоступного S3-бакета. Сначала обязательно создайте пустые таблицы с помощью приведённых выше операторов `CREATE`.
+
 
 ```sql
--- Scaling factor 1
+-- Коэффициент масштабирования 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -175,7 +188,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- Scaling factor 100
+-- Коэффициент масштабирования 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -184,31 +197,34 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-````
+```
+
 :::
 
-## Queries {#queries}
+
+## Запросы {#queries}
 
 :::note
-Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
+Для получения корректных результатов в соответствии со стандартом SQL необходимо включить настройку [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls).
 :::
 
 :::note
-Some TPC-H queries query use correlated subqueries which are available since v25.8.
-Please use at least this ClickHouse version to run the queries.
+Некоторые запросы TPC-H используют коррелированные подзапросы, которые доступны начиная с версии v25.8.
+Для выполнения запросов используйте как минимум эту версию ClickHouse.
 
-In ClickHouse versions 25.5, 25.6, 25.7, it is necessary to set additionally:
+В версиях ClickHouse 25.5, 25.6, 25.7 необходимо дополнительно установить:
 
 ```sql
 SET allow_experimental_correlated_subqueries = 1;
 ```
+
 :::
 
-Запросы генерируются с помощью `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100` приведены ниже:
+Запросы генерируются командой `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100` приведены ниже:
 
 **Корректность**
 
-Результаты запросов согласуются с официальными результатами, если не указано иное. Для проверки создайте базу данных TPC-H с фактором масштабирования = 1 (`dbgen`, см. выше) и сравните с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
+Результаты запросов соответствуют официальным результатам, если не указано иное. Для проверки сгенерируйте базу данных TPC-H с коэффициентом масштабирования = 1 (`dbgen`, см. выше) и сравните с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
 
 **Q1**
 
@@ -339,6 +355,7 @@ ORDER BY
 
 **Q5**
 
+
 ```sql
 SELECT
     n_name,
@@ -381,9 +398,9 @@ WHERE
 ```
 
 ::::note
-С февраля 2025 года запрос не работает из коробки из-за бага с добавлением Decimal. Соответствующая проблема: https://github.com/ClickHouse/ClickHouse/issues/70136
+По состоянию на февраль 2025 года этот запрос не работает «из коробки» из‑за ошибки при сложении значений типа Decimal. Соответствующая задача: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-Эта альтернативная формулировка работает и была проверена на соответствие эталонным результатам.
+Эта альтернативная запись работает и проверена на возврат эталонных результатов.
 
 ```sql
 SELECT
@@ -396,9 +413,10 @@ WHERE
     AND l_discount BETWEEN 0.05 AND 0.07
     AND l_quantity < 24;
 ```
+
 ::::
 
-**Q7**
+**Вопрос 7**
 
 ```sql
 SELECT
@@ -484,6 +502,7 @@ ORDER BY
 ```
 
 **Q9**
+
 
 ```sql
 SELECT
@@ -647,6 +666,7 @@ ORDER BY
 
 **Q14**
 
+
 ```sql
 SELECT
     100.00 * sum(CASE
@@ -798,6 +818,7 @@ ORDER BY
 
 **Q19**
 
+
 ```sql
 SELECT
     sum(l_extendedprice * (1 - l_discount)) AS revenue
@@ -923,6 +944,7 @@ ORDER BY
 ```
 
 **Q22**
+
 
 ```sql
 SELECT

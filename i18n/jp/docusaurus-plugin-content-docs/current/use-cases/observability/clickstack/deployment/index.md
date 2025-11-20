@@ -1,23 +1,22 @@
 ---
-'slug': '/use-cases/observability/clickstack/deployment'
-'title': 'デプロイメントオプション'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackをデプロイする - ClickHouseの可観測性スタック'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/deployment
+title: 'デプロイメントオプション'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack のデプロイ - ClickHouse オブザーバビリティスタック'
+doc_type: 'reference'
+keywords: ['ClickStack', 'observability']
 ---
 
-ClickStackは、さまざまなユースケースに適した複数のデプロイオプションを提供します。
+ClickStack には、さまざまなユースケースに対応する複数のデプロイメントオプションがあります。
 
-各デプロイオプションの概要は以下の通りです。[Getting Started Guide](/use-cases/observability/clickstack/getting-started)では、特にオプション1と2が示されています。こちらにも完全性のために含めています。
+各デプロイメントオプションの概要を以下に示します。[Getting Started Guide](/use-cases/observability/clickstack/getting-started) では特にオプション 1 と 2 を取り上げています。ここでは完全性のためにすべてのオプションを記載しています。
 
-| 名前              | 説明                                                                                                              | 適した用途                                                                                         | 制限事項                                                                                                         | 例のリンク                                                                                                                                     |
-|------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| All-in-One       | すべてのClickStackコンポーネントがバンドルされた単一のDockerコンテナ。                                            | プロダクションデプロイメント、デモ、プロトタイプ                                                      | プロダクションには推奨されません                                                                                | [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one)                                    |
-| ClickHouse Cloud       | ClickHouseとHyperDXがClickHouse Cloudでホスティングされる。                                                    | デモ、ローカルのフルスタックテスト                                                                    | プロダクションには推奨されません                                                                                | [All-in-One](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)                                    |
-| Helm             | Kubernetesベースのデプロイメント用の公式Helmチャート。ClickHouse Cloudおよびプロダクションスケーリングをサポート。  | Kubernetesでのプロダクションデプロイメント                                                         | Kubernetesの知識が必要、Helmによるカスタマイズ                                                               | [Helm](/use-cases/observability/clickstack/deployment/helm)                                           |
-| Docker Compose   | Docker Composeを使用して各ClickStackコンポーネントを個別にデプロイ。                                              | ローカルテスト、プロトタイプ、単一サーバーでのプロダクション、BYO ClickHouse                              | フォールトトレランスなし、複数のコンテナの管理が必要                                                          | [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)                          |
-| HyperDX Only     | 自分のClickHouseおよびスキーマを使用してHyperDXを独立して利用。                                                | 既存のClickHouseユーザー、カスタムイベントパイプライン                                               | ClickHouseは含まれず、ユーザーが取り込みとスキーマの管理を行う必要がある                                      | [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)                              |
-| Local Mode Only  | ブラウザ内で完全に実行され、ローカルストレージを使用。バックエンドや永続性はなし。                               | デモ、デバッグ、HyperDXを使用した開発                                                                  | 認証なし、永続性なし、アラートなし、単一ユーザーのみ                                                        | [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only)                        | 
-
-After comparing the original text with the translation, everything appears accurate, with no content, links, or specific terms omitted or altered incorrectly. All guidelines have been followed.
+| Name             | Description                                                                                                          | Suitable For                                                                                         | Limitations                                                                                                 | Example Link                                                                                                                                      |
+|------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| All-in-One       | すべての ClickStack コンポーネントをまとめた単一の Docker コンテナ。                                                      | デモ、PoC（概念実証）、本番相当の評価                                                                        | 本番環境には推奨されない                                                                               | [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one)                               |
+| ClickHouse Cloud       | ClickHouse と HyperDX が ClickHouse Cloud 上でホストされる構成。                                                      | デモ、ローカルでのフルスタックテスト                                                                        | 本番環境には推奨されない                                                                               | [ClickHouse Cloud](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)                               |
+| Helm             | Kubernetes ベースのデプロイメント向け公式 Helm チャート。ClickHouse Cloud および本番環境でのスケーリングをサポート。             | Kubernetes 上での本番デプロイ                                                                   | Kubernetes に関する知識が必要、Helm によるカスタマイズが必要                                                        | [Helm](/use-cases/observability/clickstack/deployment/helm)                                          |
+| Docker Compose   | 各 ClickStack コンポーネントを Docker Compose で個別にデプロイ。                                                    | ローカルテスト、PoC、単一サーバーでの本番運用、BYO（持ち込み）ClickHouse                                       | フォールトトレランスなし、複数コンテナの管理が必要                                                    | [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)                       |
+| HyperDX Only     | 独自の ClickHouse とスキーマを用いて HyperDX を単独で利用。                                                       | 既存の ClickHouse ユーザー、カスタムイベントパイプライン                                                       | ClickHouse は含まれず、ユーザーがインジェストとスキーマを管理する必要がある                                                | [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)                           |
+| Local Mode Only  | ブラウザとローカルストレージのみで完全に実行。バックエンドや永続化はなし。                                          | デモ、デバッグ、HyperDX を利用した開発                                                                     | 認証なし、永続化なし、アラートなし、単一ユーザーのみ                                                      | [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only)                     |

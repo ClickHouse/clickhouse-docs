@@ -1,19 +1,20 @@
 ---
-'slug': '/use-cases/observability/build-your-own'
-'title': '构建你自己的可观察性堆栈'
-'pagination_prev': null
-'pagination_next': null
-'description': '构建你自己的可观察性堆栈的登录页面'
-'doc_type': 'landing-page'
+slug: /use-cases/observability/build-your-own
+title: '自建可观测性技术栈'
+pagination_prev: null
+pagination_next: null
+description: '自建可观测性技术栈的入口页'
+doc_type: 'landing-page'
+keywords: ['observability', 'custom stack', 'build your own', 'logs', 'traces', 'metrics', 'OpenTelemetry']
 ---
 
-这个指南帮助您构建一个以 ClickHouse 为基础的自定义可观察性堆栈。了解如何为日志、指标和跟踪设计、实施和优化您的可观察性解决方案，并提供实际示例和最佳实践。
+本指南将帮助你以 ClickHouse 为核心构建自定义可观测性技术栈。通过实践示例和最佳实践，学习如何为日志、指标和链路追踪设计、实现并优化你的可观测性方案。
 
-| 页面                                                        | 描述                                                                                                                                                                   |
+| Page                                                        | Description                                                                                                                                                                   |
 |-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [介绍](/use-cases/observability/introduction)            | 本指南旨在帮助希望使用 ClickHouse 构建自己可观察性解决方案的用户，重点关注日志和跟踪。                                             |
-| [架构设计](/use-cases/observability/schema-design)          | 了解为什么建议用户为日志和跟踪创建自己的架构，以及一些最佳实践。                                                  |
-| [管理数据](/observability/managing-data)          | 用于可观察性的 ClickHouse 部署通常涉及大型数据集，这些数据集需要进行管理。ClickHouse 提供了有助于数据管理的功能。           |
-| [集成 OpenTelemetry](/observability/integrating-opentelemetry) | 使用 OpenTelemetry 通过 ClickHouse 收集和导出日志和跟踪。                                                           |
-| [使用可视化工具](/observability/grafana)    | 了解如何使用 ClickHouse 的可观察性可视化工具，包括 HyperDX 和 Grafana。                                       |
-| [演示应用程序](/observability/demo-application)    | 探索 OpenTelemetry 演示应用程序，该程序已被分叉以支持与 ClickHouse 一起用于日志和跟踪。                                           |
+| [Introduction](/use-cases/observability/introduction)            | 本指南面向希望使用 ClickHouse 自建可观测性解决方案的用户，重点聚焦日志和链路追踪。                                                                                             |
+| [Schema design](/use-cases/observability/schema-design)          | 了解为什么推荐用户为日志和链路追踪自定义表结构，并参考相应的设计最佳实践。                                                                                                     |
+| [Managing data](/observability/managing-data)          | 用于可观测性的 ClickHouse 部署通常涉及超大规模数据集，需要进行有效管理。ClickHouse 提供了一系列功能来帮助进行数据管理。                                                         |
+| [Integrating OpenTelemetry](/observability/integrating-opentelemetry) | 借助 OpenTelemetry 在 ClickHouse 中采集并导出日志和链路追踪数据。                                                                                 |
+| [Using Visualization Tools](/observability/grafana)    | 学习如何将 HyperDX、Grafana 等可观测性可视化工具与 ClickHouse 集成使用。                                                                  |
+| [Demo Application](/observability/demo-application)    | 体验为支持在 ClickHouse 中处理日志和链路追踪而 fork 的 OpenTelemetry 示例应用。                                                              |

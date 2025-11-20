@@ -1,57 +1,59 @@
 ---
-'title': 'JupySQL と chDB'
-'sidebar_label': 'JupySQL'
-'slug': '/chdb/guides/jupysql'
-'description': 'Bun 用の chDB をインストールする方法'
-'keywords':
-- 'chdb'
-- 'JupySQL'
-'doc_type': 'guide'
+title: 'JupySQL と chDB'
+sidebar_label: 'JupySQL'
+slug: /chdb/guides/jupysql
+description: 'Bun 用 chDB のインストール方法'
+keywords: ['chdb', 'JupySQL']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) は、Jupyter ノートブックおよび IPython シェルで SQL を実行できる Python ライブラリです。このガイドでは、chDB と JupySQL を使用してデータをクエリする方法を学びます。
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) は、Jupyter Notebook と IPython シェル上で SQL を実行できる Python ライブラリです。
+このガイドでは、chDB と JupySQL を使ってデータをクエリする方法を学びます。
 
-<div class='vimeo-container'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="vimeo-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
+
 
 ## セットアップ {#setup}
 
-まず、仮想環境を作成します：
+まず、仮想環境を作成しましょう：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、JupySQL、IPython、Jupyter Lab をインストールします：
+次に、JupySQL、IPython、Jupyter Labをインストールします：
 
 ```bash
 pip install jupysql ipython jupyterlab
 ```
 
-IPython で JupySQL を使用でき、以下のように起動できます：
+JupySQLはIPythonで使用できます。IPythonは以下のコマンドで起動します：
 
 ```bash
 ipython
 ```
 
-または、Jupyter Lab で以下を実行できます：
+または、Jupyter Labで使用する場合は以下のコマンドで起動します：
 
 ```bash
 jupyter lab
 ```
 
 :::note
-Jupyter Lab を使用している場合は、ガイドの残りの部分に従う前にノートブックを作成する必要があります。
+Jupyter Labを使用する場合は、このガイドの残りの手順を進める前にノートブックを作成してください。
 :::
+
 
 ## データセットのダウンロード {#downloading-a-dataset}
 
-[Jeff Sackmann の tennis_atp](https://github.com/JeffSackmann/tennis_atp) データセットの一つを使用します。このデータセットには、選手とそのランキングに関するメタデータが含まれています。まず、ランキングファイルをダウンロードします：
+[Jeff Sackmannのtennis_atp](https://github.com/JeffSackmann/tennis_atp)データセットを使用します。このデータセットには、選手のメタデータと時系列のランキング情報が含まれています。
+まず、ランキングファイルをダウンロードします：
 
 ```python
 from urllib.request import urlretrieve
@@ -67,36 +69,40 @@ for file in files:
   )
 ```
 
-## chDB と JupySQL の設定 {#configuring-chdb-and-jupysql}
 
-次に、chDB の `dbapi` モジュールをインポートします：
+## chDBとJupySQLの設定 {#configuring-chdb-and-jupysql}
+
+次に、chDB用の`dbapi`モジュールをインポートします：
 
 ```python
 from chdb import dbapi
 ```
 
-そして、chDB 接続を作成します。永続化するデータは、`atp.chdb` ディレクトリに保存されます：
+次に、chDB接続を作成します。
+永続化されたデータはすべて`atp.chdb`ディレクトリに保存されます：
 
 ```python
 conn = dbapi.connect(path="atp.chdb")
 ```
 
-次に、`sql` マジックをロードし、chDB への接続を作成します：
+次に、`sql`マジックコマンドを読み込み、chDBへの接続を作成します：
 
 ```python
 %load_ext sql
 %sql conn --alias chdb
 ```
 
-次に、クエリの結果が途中で切れないように表示制限を表示します：
+次に、クエリ結果が切り捨てられないように表示制限を解除します：
 
 ```python
 %config SqlMagic.displaylimit = None
 ```
 
-## CSV ファイルでのデータクエリ {#querying-data-in-csv-files}
 
-`atp_rankings` プレフィックスのファイルをいくつかダウンロードしました。`DESCRIBE` 句を使用してスキーマを理解しましょう：
+## CSVファイル内のデータのクエリ {#querying-data-in-csv-files}
+
+`atp_rankings`プレフィックスを持つ複数のファイルをダウンロードしました。
+`DESCRIBE`句を使用してスキーマを確認しましょう:
 
 ```python
 %%sql
@@ -116,7 +122,7 @@ SETTINGS describe_compact_output=1,
 +--------------+-------+
 ```
 
-これらのファイルに対して直接 `SELECT` クエリを書いて、データの内容を確認します：
+これらのファイルに対して直接`SELECT`クエリを実行し、データの内容を確認することもできます:
 
 ```python
 %sql SELECT * FROM file('atp_rankings*.csv') LIMIT 1
@@ -130,7 +136,8 @@ SETTINGS describe_compact_output=1,
 +--------------+------+--------+--------+
 ```
 
-データの形式は少し奇妙です。この日付をクリーンアップし、`REPLACE` 句を使用してクリーンアップされた `ranking_date` を返します：
+データの形式が少し不規則です。
+日付をクリーンアップし、`REPLACE`句を使用してクリーンアップされた`ranking_date`を返しましょう:
 
 ```python
 %%sql
@@ -159,15 +166,17 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-## CSV ファイルを chDB にインポート {#importing-csv-files-into-chdb}
 
-これらの CSV ファイルのデータをテーブルに保存します。デフォルトのデータベースはディスク上にデータを永続化しないため、まず別のデータベースを作成する必要があります：
+## CSVファイルをchDBにインポートする {#importing-csv-files-into-chdb}
+
+次に、これらのCSVファイルのデータをテーブルに格納します。
+デフォルトデータベースはディスク上にデータを永続化しないため、まず別のデータベースを作成する必要があります:
 
 ```python
 %sql CREATE DATABASE atp
 ```
 
-次に、CSV ファイルの内容に基づいてスキーマを持つ `rankings` というテーブルを作成します：
+次に、CSVファイル内のデータ構造からスキーマが導出される`rankings`というテーブルを作成します:
 
 ```python
 %%sql
@@ -181,7 +190,7 @@ FROM file('atp_rankings*.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-テーブル内のデータの簡単なチェックを行います：
+テーブル内のデータを簡単に確認してみましょう:
 
 ```python
 %sql SELECT * FROM atp.rankings LIMIT 10
@@ -204,9 +213,10 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-良い感じです - 出力は期待通り、CSV ファイルを直接クエリしたときと同じです。
+問題ありません。出力は予想通り、CSVファイルを直接クエリした場合と同じです。
 
-選手メタデータについても同様のプロセスを行います。今回はデータが1つのCSVファイルにすべて含まれているため、そのファイルをダウンロードします：
+選手メタデータについても同じプロセスを実行します。
+今回はデータがすべて単一のCSVファイルに含まれているため、そのファイルをダウンロードしましょう:
 
 ```python
 _ = urlretrieve(
@@ -215,9 +225,10 @@ _ = urlretrieve(
 )
 ```
 
-そして、CSVファイルの内容に基づいて `players` というテーブルを作成します。`dob` フィールドを `Date32` 型にクリーンアップします。
+次に、CSVファイルの内容に基づいて`players`というテーブルを作成します。
+また、`dob`フィールドを`Date32`型になるようにクリーンアップします。
 
-> ClickHouse では、`Date` 型は 1970 年以降の日付のみをサポートします。`dob` 列には 1970 年以前の日付が含まれているため、代わりに `Date32` 型を使用します。
+> ClickHouseでは、`Date`型は1970年以降の日付のみをサポートします。`dob`カラムには1970年以前の日付が含まれているため、代わりに`Date32`型を使用します。
 
 ```python
 %%sql
@@ -235,11 +246,12 @@ FROM file('atp_players.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-それが完了したら、取り込んだデータを見てみましょう：
+実行が完了したら、取り込んだデータを確認できます:
 
 ```python
 %sql SELECT * FROM atp.players LIMIT 10
 ```
+
 
 ```text
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
@@ -258,11 +270,14 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-## chDB のクエリ {#querying-chdb}
 
-データの取り込みが完了しました。さあ、データをクエリする楽しい部分に入ります！
+## chDBへのクエリ実行 {#querying-chdb}
 
-テニス選手は、出場するトーナメントでのパフォーマンスに基づいてポイントを得ます。各選手の52週間のロール期間にわたってポイントを集計しています。各選手が獲得した最大ポイントとその時のランキングを見つけるクエリを書きます：
+データの取り込みが完了したので、次は楽しい部分であるデータのクエリ実行です！
+
+テニス選手は、出場するトーナメントでの成績に基づいてポイントを獲得します。
+各選手のポイントは52週間のローリング期間で集計されます。
+ここでは、各選手が獲得した最大ポイントと、その時点でのランキングを取得するクエリを記述します:
 
 ```python
 %%sql
@@ -294,11 +309,13 @@ LIMIT 10
 +------------+-----------+-----------+------+------------+
 ```
 
-このリストにある選手の中には、ポイントの合計が 1 位ではないにもかかわらず、大量のポイントを獲得した選手がいるのは非常に興味深いです。
+興味深いことに、このリストには多くのポイントを獲得しながらも、そのポイント総数で1位になっていない選手が含まれています。
+
 
 ## クエリの保存 {#saving-queries}
 
-クエリを保存するために、`%%sql` マジックと同じ行に `--save` パラメータを使用できます。`--no-execute` パラメータは、クエリの実行をスキップします。
+`%%sql`マジックと同じ行で`--save`パラメータを使用することで、クエリを保存できます。
+`--no-execute`パラメータを指定すると、クエリの実行がスキップされます。
 
 ```python
 %%sql --save best_points --no-execute
@@ -312,7 +329,8 @@ GROUP BY ALL
 ORDER BY maxPoints DESC
 ```
 
-保存したクエリを実行すると、それは実行前に共通テーブル式 (CTE) に変換されます。次のクエリでは、ランキング 1 位のときに選手が達成した最大ポイントを計算します：
+保存されたクエリを実行すると、実行前に共通テーブル式(CTE)に変換されます。
+次のクエリでは、ランク1の時に選手が達成した最大ポイントを計算します:
 
 ```python
 %sql select * FROM best_points WHERE rank=1
@@ -339,15 +357,18 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-## パラメータを持つクエリ {#querying-with-parameters}
 
-クエリ内でパラメータを使用することもできます。パラメータは単なる通常の変数です：
+## パラメータを使用したクエリ {#querying-with-parameters}
+
+クエリでパラメータを使用することもできます。
+パラメータは通常の変数です：
 
 ```python
 rank = 10
 ```
 
-次に、クエリ内で `{{variable}}` 構文を使用します。以下のクエリは、選手が初めてトップ 10 にランクインしたときと最後にトップ 10 にランクインしたときの間の日数が最も少なかった選手を見つけます：
+クエリ内では `{{variable}}` 構文を使用できます。
+以下のクエリは、初めてトップ10にランクインした日と最後にトップ10にランクインした日の間の日数が最も少ない選手を検索します：
 
 ```python
 %%sql
@@ -381,11 +402,14 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
+
 ## ヒストグラムのプロット {#plotting-histograms}
 
-JupySQL には限られたチャート機能もあります。ボックスプロットやヒストグラムを作成できます。
+JupySQLには限定的なグラフ作成機能もあります。
+箱ひげ図やヒストグラムを作成できます。
 
-ヒストグラムを作成しますが、その前に、各選手が達成したトップ 100 のランキングを計算するクエリを書いて（保存もします）、そのデータを使用して何人の選手が各ランクに達成したかをカウントするヒストグラムを作成します：
+ヒストグラムを作成しますが、まず各選手が達成したトップ100以内のランキングを計算するクエリを記述（および保存）しましょう。
+これを使用して、各ランキングを達成した選手の数をカウントするヒストグラムを作成できます:
 
 ```python
 %%sql --save players_per_rank --no-execute
@@ -394,7 +418,7 @@ FROM atp.rankings
 WHERE rank <= 100
 ```
 
-次に、以下のコマンドを実行してヒストグラムを作成します：
+次に、以下を実行してヒストグラムを作成できます:
 
 ```python
 from sql.ggplot import ggplot, geom_histogram, aes
@@ -408,4 +432,8 @@ plot = (
 )
 ```
 
-<Image img={PlayersPerRank} size="md" alt="ATP データセットの選手ランキングのヒストグラム" />
+<Image
+  img={PlayersPerRank}
+  size='md'
+  alt='ATPデータセットにおける選手ランキングのヒストグラム'
+/>

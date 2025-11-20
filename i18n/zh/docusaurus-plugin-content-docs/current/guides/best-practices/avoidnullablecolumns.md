@@ -1,11 +1,12 @@
 ---
-'slug': '/optimize/avoid-nullable-columns'
-'sidebar_label': '避免 Nullable 列'
-'title': '避免 Nullable 列'
-'description': '为什么应在 ClickHouse 中避免 Nullable 列'
-'doc_type': 'guide'
+slug: /optimize/avoid-nullable-columns
+sidebar_label: '避免使用 Nullable 列'
+title: '避免使用 Nullable 列'
+description: '为什么在 ClickHouse 中应避免使用 Nullable 列'
+doc_type: 'guide'
+keywords: ['avoid nullable columns', 'nullable columns', 'data types', 'best practices', 'performance optimization']
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_nullable_columns.md';
 
 <Content />

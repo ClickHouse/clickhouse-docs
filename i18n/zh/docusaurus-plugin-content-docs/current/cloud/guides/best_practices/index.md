@@ -1,34 +1,24 @@
 ---
-'slug': '/cloud/bestpractices'
-'keywords':
-- 'Cloud'
-- 'Best Practices'
-- 'Bulk Inserts'
-- 'Asynchronous Inserts'
-- 'Avoid Mutations'
-- 'Avoid Nullable Columns'
-- 'Avoid Optimize Final'
-- 'Low Cardinality Partitioning Key'
-- 'Multi Tenancy'
-- 'Usage Limits'
-'title': '概述'
-'hide_title': true
-'description': 'ClickHouse Cloud 中最佳实践部分的着陆页'
-'doc_type': 'landing-page'
+slug: /cloud/bestpractices
+keywords: ['Cloud', '最佳实践', '批量插入', '异步插入', '避免变更操作', '避免 Nullable 列', '避免 Optimize Final', '低基数分区键', '多租户', '使用限制']
+title: '概览'
+hide_title: true
+description: 'ClickHouse Cloud 最佳实践章节的入口页'
+doc_type: 'landing-page'
 ---
 
-import TableOfContents from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
+import TableOfContents from '@site/docs/best-practices/_snippets/_table_of_contents.md';
 
 
-# Best Practices in ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
+# ClickHouse Cloud 最佳实践 {#best-practices-in-clickhouse-cloud}
 
-本节提供了您希望遵循的最佳实践，以充分利用 ClickHouse Cloud。
+本节提供了帮助您充分发挥 ClickHouse Cloud 性能的最佳实践。
 
-| 页面                                                     | 描述                                                                    |
-|----------------------------------------------------------|-------------------------------------------------------------------------|
-| [Usage Limits](/cloud/bestpractices/usage-limits)| 探索 ClickHouse 的限制。                                                  |
-| [Multi tenancy](/cloud/bestpractices/multi-tenancy)| 了解实现多租户的不同策略。                                               |
+| 页面                                                | 描述                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| [使用限制](/cloud/bestpractices/usage-limits)   | 探索 ClickHouse 的各项限制。                            |
+| [多租户](/cloud/bestpractices/multi-tenancy) | 了解实现多租户的不同策略。 |
 
-这些是适用于所有 ClickHouse 部署的标准最佳实践的补充。
+这些最佳实践是对所有 ClickHouse 部署通用最佳实践的补充。
 
 <TableOfContents />

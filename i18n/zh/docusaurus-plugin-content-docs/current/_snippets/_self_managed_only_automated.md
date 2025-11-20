@@ -1,7 +1,7 @@
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 :::note
-此页面不适用于 [ClickHouse Cloud](https://clickhouse.com/cloud)。此处文档记录的流程在 ClickHouse Cloud 服务中是自动化的。
+此页面不适用于 [ClickHouse Cloud](https://clickhouse.com/cloud)。此处记录的操作步骤已在 ClickHouse Cloud 服务中实现自动化。
 :::

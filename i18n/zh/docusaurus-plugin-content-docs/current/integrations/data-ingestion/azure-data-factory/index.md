@@ -1,17 +1,13 @@
 ---
-'slug': '/integrations/azure-data-factory'
-'description': '将 Azure 数据引入 ClickHouse'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-'title': '将 Azure 数据引入 ClickHouse'
-'doc_type': 'guide'
+slug: /integrations/azure-data-factory
+description: '将 Azure 数据导入 ClickHouse'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data']
+title: '将 Azure 数据导入 ClickHouse'
+doc_type: 'guide'
 ---
 
-| 页面                                                                                 | 描述                                                                                                                                                                         |
+| Page                                                                              | Description                                                                                                                                                                 |
 |-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [概述](./overview.md)                                                            | 概述了将 Azure 数据导入 ClickHouse 的两种方法                                                                                                                             |
-| [使用 ClickHouse 的 azureBlobStorage 表函数](./using_azureblobstorage.md)          | 选项 1 - 一种高效且简单的方法，通过 `azureBlobStorage` 表函数将数据从 Azure Blob 存储或 Azure 数据湖存储复制到 ClickHouse                                                     |
-| [使用 ClickHouse 的 HTTP 接口](./using_http_interface.md)                         | 选项 2 - 而不是让 ClickHouse 从 Azure 拉取数据，而是让 Azure 数据工厂通过其 HTTP 接口将数据推送到 ClickHouse                                                               |
+| [Overview](./overview.md)                                                         | 将 Azure 数据导入 ClickHouse 的两种方法概览                                                                                                                                |
+| [Using ClickHouse's azureBlobStorage table function](./using_azureblobstorage.md) | 方案 1 —— 使用 `azureBlobStorage` 表函数，以高效且简便的方式将数据从 Azure Blob Storage 或 Azure Data Lake Storage 复制到 ClickHouse                                         |
+| [Using ClickHouse's HTTP interface](./using_http_interface.md)                    | 方案 2 —— 不由 ClickHouse 从 Azure 拉取数据，而是通过其 HTTP 接口由 Azure Data Factory 将数据推送到 ClickHouse                                                              |

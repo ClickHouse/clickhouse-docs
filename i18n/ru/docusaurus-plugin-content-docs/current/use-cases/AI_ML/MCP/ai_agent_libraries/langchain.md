@@ -1,97 +1,106 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/langchain'
-'sidebar_label': 'Сборка Langchain'
-'title': 'Как использовать ClickHouse MCP сервер для создания LangChain/LangGraph
-  AI API.'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать API LangChain/LangGraph AI, который может использовать
-  ClickHouse MCP сервер и проводить взаимодействие с SQL playground ClickHouse.'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'LangChain'
-- 'LangGraph'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/langchain
+sidebar_label: 'Интеграция LangChain'
+title: 'Как создать AI‑агента LangChain/LangGraph с использованием сервера ClickHouse MCP.'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать AI‑агента LangChain/LangGraph, который может взаимодействовать с SQL‑песочницей ClickHouse с помощью сервера ClickHouse MCP.'
+keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
+
+
 # Как создать AI-агента LangChain/LangGraph с использованием ClickHouse MCP Server
 
-В этом руководстве вы узнаете, как создать AI-агента [LangChain/LangGraph](https://github.com/langchain-ai/langgraph), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+В этом руководстве вы узнаете, как создать AI-агента [LangChain/LangGraph](https://github.com/langchain-ai/langgraph),
+который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример ноутбука
-Этот пример можно найти в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb).
+:::note Пример блокнота
+Этот пример доступен в виде блокнота в [репозитории examples](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
-- У вас должна быть установлена Python на вашем компьютере.
-- У вас должен быть установлен `pip` на вашем компьютере.
-- Вам нужен API-ключ Anthropic или API-ключ от другого провайдера LLM.
 
-Вы можете выполнить следующие шаги как из вашего Python REPL, так и из скрипта.
+
+## Предварительные требования {#prerequisites}
+
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ Anthropic или API-ключ другого провайдера LLM.
+
+Следующие шаги можно выполнить как из Python REPL, так и с помощью скрипта.
 
 <VerticalStepper headerLevel="h2">
 
-## Установить библиотеки {#install-libraries}
 
-Установите необходимые библиотеки, запустив следующие команды:
+## Установка библиотек {#install-libraries}
+
+Установите необходимые библиотеки, выполнив следующие команды:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q langchain-mcp-adapters
-!pip install -q langgraph
-!pip install -q "langchain[anthropic]"
+pip install -q --upgrade pip
+pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
 ```
 
-## Настроить учетные данные {#setup-credentials}
 
-Затем вам нужно предоставить свой API-ключ Anthropic:
+## Настройка учетных данных {#setup-credentials}
+
+Теперь вам нужно указать свой API‑ключ Anthropic:
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API‑ключ Anthropic:")
 ```
 
-```response title="Response"
-Enter Anthropic API Key: ········
+```response title="Ответ"
+Введите API‑ключ Anthropic: ········
 ```
 
 :::note Использование другого провайдера LLM
-Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM, 
-вы можете найти инструкции по настройке ваших учетных данных в [документации Langchain Providers](https://python.langchain.com/docs/integrations/providers/)
+Если у вас нет API‑ключа Anthropic и вы хотите использовать другого провайдера LLM,
+инструкции по настройке учетных данных можно найти в [документации LangChain по провайдерам](https://python.langchain.com/docs/integrations/providers/)
 :::
 
-## Инициализировать MCP Server {#initialize-mcp-and-agent}
 
-Теперь настройте ClickHouse MCP Server так, чтобы он указывал на SQL-песочницу ClickHouse:
+## Инициализация MCP-сервера {#initialize-mcp-and-agent}
+
+Теперь настройте MCP-сервер ClickHouse для подключения к тестовой среде ClickHouse SQL:
 
 ```python
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-server_params = StdioServerParameters(
-    command="uv",
-    args=[
-        "run",
-        "--with", "mcp-clickhouse",
-        "--python", "3.13",
-        "mcp-clickhouse"
-    ],
-    env={
-        "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-        "CLICKHOUSE_PORT": "8443",
-        "CLICKHOUSE_USER": "demo",
-        "CLICKHOUSE_PASSWORD": "",
-        "CLICKHOUSE_SECURE": "true"
-    }
-)
 ```
 
-## Настроить обработчик потоков {#configure-the-stream-handler}
 
-При работе с Langchain и ClickHouse MCP Server результаты запросов часто возвращаются как потоки данных, а не как один ответ. Для больших наборов данных или сложных аналитических запросов, которые могут потребовать времени для обработки, важно настроить обработчик потоков. Без надлежащей обработки, этот потоковый вывод может быть трудным для работы в вашем приложении.
+server_params = StdioServerParameters(
+command="uv",
+args=[
+"run",
+"--with", "mcp-clickhouse",
+"--python", "3.13",
+"mcp-clickhouse"
+],
+env={
+"CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+"CLICKHOUSE_PORT": "8443",
+"CLICKHOUSE_USER": "demo",
+"CLICKHOUSE_PASSWORD": "",
+"CLICKHOUSE_SECURE": "true"
+}
+)
 
-Настройте обработчик для потокового вывода, чтобы его было легче потреблять:
+````
+## Настройка обработчика потока {#configure-the-stream-handler}
+
+При работе с Langchain и сервером ClickHouse MCP результаты запросов часто
+возвращаются в виде потоковых данных, а не единого ответа. Для больших наборов данных или
+сложных аналитических запросов, обработка которых может занять некоторое время, важно настроить
+обработчик потока. Без должной обработки этот потоковый вывод может быть трудным
+для работы в вашем приложении.
+
+Настройте обработчик для потокового вывода, чтобы его было проще потреблять:
 
 ```python
 class UltraCleanStreamHandler:
@@ -119,8 +128,8 @@ class UltraCleanStreamHandler:
                     self.in_text_generation = True
                 elif isinstance(content, list):
                     for item in content:
-                        if (isinstance(item, dict) and 
-                            item.get('type') == 'text' and 
+                        if (isinstance(item, dict) and
+                            item.get('type') == 'text' and
                             'partial_json' not in str(item)):
                             text = item.get('text', '')
                             if text and not text.startswith('{"'):
@@ -139,11 +148,12 @@ class UltraCleanStreamHandler:
         elif event == "on_tool_end":
             print(" ✅", end="", flush=True)
             self.last_was_tool = True
-```
+````
 
-## Вызвать агента {#call-the-agent}
 
-Наконец, вызовите вашего агента и спросите его, кто внес больше всего кода в ClickHouse:
+## Вызов агента {#call-the-agent}
+
+Наконец, вызовите агента и спросите его, кто внёс больше всего кода в ClickHouse:
 
 ```python
 async with stdio_client(server_params) as (read, write):
@@ -152,9 +162,9 @@ async with stdio_client(server_params) as (read, write):
         tools = await load_mcp_tools(session)
         agent = create_react_agent("anthropic:claude-sonnet-4-0", tools)
 
-        handler = UltraCleanStreamHandler()        
+        handler = UltraCleanStreamHandler()
         async for chunk in agent.astream_events(
-            {"messages": [{"role": "user", "content": "Who's committed the most code to ClickHouse?"}]}, 
+            {"messages": [{"role": "user", "content": "Who's committed the most code to ClickHouse?"}]},
             version="v1"
         ):
             handler.handle_chunk(chunk)
@@ -162,31 +172,38 @@ async with stdio_client(server_params) as (read, write):
         print("\n")
 ```
 
-Вы должны увидеть ответ, подобный приведенному ниже:
+Вы должны увидеть ответ, аналогичный приведённому ниже:
 
-```response title="Response"
-I'll help you find who has committed the most code to ClickHouse by exploring the available databases and tables to locate git commit data.
-🔧 list_databases ✅ I can see there's a `git` database which likely contains git commit information. Let me explore the tables in that database:
-🔧 list_tables ✅ Perfect! I can see the `clickhouse_commits` table in the git database contains ClickHouse commit data with 80,644 commits. This table has information about each commit including the author, lines added/deleted, files modified, etc. Let me query this table to find who has committed the most code based on different metrics.
-🔧 run_select_query ✅ Let me also look at just the lines added to see who has contributed the most new code:
-🔧 run_select_query ✅ Based on the ClickHouse git commit data, **Alexey Milovidov** has committed the most code to ClickHouse by several measures:
+```response title="Ответ"
+Я помогу вам найти, кто внёс больше всего кода в ClickHouse, изучив доступные базы данных и таблицы для поиска данных о git-коммитах.
+🔧 list_databases ✅ Я вижу базу данных `git`, которая, вероятно, содержит информацию о git-коммитах. Давайте изучим таблицы в этой базе данных:
+🔧 list_tables ✅ Отлично! Я вижу, что таблица `clickhouse_commits` в базе данных git содержит данные о коммитах ClickHouse — всего 80 644 коммита. Эта таблица содержит информацию о каждом коммите, включая автора, добавленные/удалённые строки, изменённые файлы и т. д. Давайте запросим эту таблицу, чтобы найти, кто внёс больше всего кода на основе различных метрик.
+🔧 run_select_query ✅ Давайте также посмотрим только на добавленные строки, чтобы увидеть, кто внёс больше всего нового кода:
+🔧 run_select_query ✅ На основе данных git-коммитов ClickHouse **Alexey Milovidov** внёс больше всего кода в ClickHouse по нескольким показателям:
 
-## Key Statistics:
+```
 
-1. **Most Total Lines Changed**: Alexey Milovidov with **1,696,929 total lines changed** (853,049 added + 843,880 deleted)
-2. **Most Lines Added**: Alexey Milovidov with **853,049 lines added**
-3. **Most Commits**: Alexey Milovidov with **15,375 commits**
-4. **Most Files Changed**: Alexey Milovidov with **73,529 files changed**
 
-## Top Contributors by Lines Added:
+## Основные показатели:
 
-1. **Alexey Milovidov**: 853,049 lines added (15,375 commits)
-2. **s-kat**: 541,609 lines added (50 commits) 
-3. **Nikolai Kochetov**: 219,020 lines added (4,218 commits)
-4. **alesapin**: 193,566 lines added (4,783 commits)
-5. **Vitaly Baranov**: 168,807 lines added (1,152 commits)
+1. **Больше всего изменённых строк всего**: Alexey Milovidov — **1 696 929 изменённых строк всего** (853 049 добавлено + 843 880 удалено)
+2. **Больше всего добавленных строк**: Alexey Milovidov — **853 049 добавленных строк**
+3. **Больше всего коммитов**: Alexey Milovidov — **15 375 коммитов**
+4. **Больше всего изменённых файлов**: Alexey Milovidov — **73 529 изменённых файлов**
 
-Alexey Milovidov is clearly the most prolific contributor to ClickHouse, which makes sense as he is one of the original creators and lead developers of the project. His contribution dwarfs others both in terms of total code volume and number of commits, with nearly 16,000 commits and over 850,000 lines of code added to the project.
+
+
+## Топ-контрибьюторы по количеству добавленных строк:
+
+1. **Alexey Milovidov**: 853 049 добавленных строк (15 375 коммитов)
+2. **s-kat**: 541 609 добавленных строк (50 коммитов)
+3. **Nikolai Kochetov**: 219 020 добавленных строк (4 218 коммитов)
+4. **alesapin**: 193 566 добавленных строк (4 783 коммитов)
+5. **Vitaly Baranov**: 168 807 добавленных строк (1 152 коммитов)
+
+Alexey Milovidov явно является самым продуктивным контрибьютором в ClickHouse, что логично, поскольку он один из создателей и ведущих разработчиков проекта. Его вклад значительно превосходит вклад других как по общему объёму кода, так и по количеству коммитов: почти 16 000 коммитов и более 850 000 добавленных строк кода в проекте.
+
 ```
 
 </VerticalStepper>
+```

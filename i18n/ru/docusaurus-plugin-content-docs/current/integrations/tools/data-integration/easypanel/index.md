@@ -1,11 +1,12 @@
 ---
-slug: '/integrations/easypanel'
-sidebar_label: Easypanel
-description: 'Вы можете использовать его для развертывания ClickHouse на вашем собственном'
-title: 'Развертывание ClickHouse на Easypanel'
+sidebar_label: 'Easypanel'
+slug: /integrations/easypanel
 keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
-doc_type: guide
+description: 'С его помощью вы можете развернуть ClickHouse на собственном сервере.'
+title: 'Развертывание ClickHouse в Easypanel'
+doc_type: 'guide'
 ---
+
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
@@ -13,13 +14,15 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Easypanel](https://easypanel.io) — это современная панель управления сервером. Вы можете использовать её для развертывания ClickHouse на вашем собственном сервере.
+[Easypanel](https://easypanel.io) — это современная панель управления сервером. С её помощью вы можете развернуть ClickHouse на собственном сервере.
 
-[![Развернуть на Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
+[![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
+
+
 
 ## Инструкции {#instructions}
 
-1. Создайте ВМ, которая работает под управлением Ubuntu на вашем облачном провайдере.
+1. Создайте виртуальную машину с Ubuntu у вашего облачного провайдера.
 2. Установите Easypanel, следуя инструкциям с сайта.
 3. Создайте новый проект.
-4. Установите ClickHouse, используя специализированный шаблон.
+4. Установите ClickHouse, используя выделенный шаблон.

@@ -1,9 +1,10 @@
 ---
-'slug': '/guides/developer/understanding-query-execution-with-the-analyzer'
-'sidebar_label': 'クエリ実行の理解とアナライザー'
-'title': 'クエリ実行の理解とアナライザー'
-'description': 'ClickHouseがどのようにあなたのクエリを実行するかを理解するためにアナライザーを使用する方法について説明します'
-'doc_type': 'guide'
+slug: /guides/developer/understanding-query-execution-with-the-analyzer
+sidebar_label: 'アナライザで理解するクエリ実行'
+title: 'アナライザで理解するクエリ実行'
+description: 'ClickHouse がクエリをどのように実行するかを理解するために、アナライザをどのように活用できるかを説明します'
+doc_type: 'guide'
+keywords: ['query execution', 'analyzer', 'query optimization', 'explain', 'performance']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -14,9 +15,9 @@ import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
 
-# クエリ実行を理解するためのアナライザー
+# analyzer を使ってクエリ実行を理解する
 
-ClickHouseはクエリを非常に迅速に処理しますが、クエリの実行は単純な話ではありません。`SELECT`クエリがどのように実行されるかを理解してみましょう。それを示すために、ClickHouseのテーブルにデータを追加しましょう：
+ClickHouse はクエリを非常に高速に処理しますが、クエリの実行は決して単純ではありません。`SELECT` クエリがどのように実行されるのかを理解してみましょう。その説明のために、ClickHouse のテーブルにいくつかデータを追加してみます。
 
 ```sql
 CREATE TABLE session_events(
@@ -34,11 +35,12 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000;
 ```
 
-ClickHouseにデータが追加されたので、いくつかのクエリを実行し、それらの実行を理解したいと思います。クエリの実行は多くのステップに分解されます。クエリ実行の各ステップは、対応する`EXPLAIN`クエリを用いて分析したりトラブルシューティングしたりできます。これらのステップは以下のチャートに要約されています：
+ClickHouse にいくつかデータが入ったので、クエリを実行し、その実行内容を理解していきます。クエリの実行は多くのステップに分解されます。クエリ実行の各ステップは、対応する `EXPLAIN` クエリを使って分析およびトラブルシューティングできます。これらのステップは、以下の図にまとめられています。
 
-<Image img={analyzer1} alt="Explain query steps" size="md"/>
+<Image img={analyzer1} alt="EXPLAIN クエリのステップ" size="md" />
 
-クエリの実行中に各エンティティがどのように動作するかを見てみましょう。いくつかのクエリを取り上げ、それらを`EXPLAIN`文を使って調べます。
+クエリ実行中に各エンティティがどのように動作するかを見ていきましょう。いくつかのクエリを取り上げ、それらを `EXPLAIN` ステートメントを使って詳しく見ていきます。
+
 
 ## パーサー {#parser}
 
@@ -65,21 +67,22 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 └────────────────────────────────────────────────────┘
 ```
 
-出力は、以下に示すように可視化できる抽象構文木です：
+出力は抽象構文木であり、以下のように可視化できます：
 
-<Image img={analyzer2} alt="AST output" size="md"/>
+<Image img={analyzer2} alt='AST出力' size='md' />
 
-各ノードには対応する子があり、全体の木はクエリの全体的な構造を表します。これはクエリを処理するための論理的な構造です。エンドユーザーの視点から見ると（クエリの実行に関心がない限り）、それほど役に立つものではありません。このツールは主に開発者によって使用されます。
+各ノードには対応する子要素があり、ツリー全体でクエリの全体構造を表現します。これはクエリ処理を支援するための論理構造です。エンドユーザーの観点からは（クエリ実行に関心がない限り）、特に有用というわけではありません。このツールは主に開発者によって使用されます。
+
 
 ## アナライザー {#analyzer}
 
-ClickHouseには現在、アナライザーのための2つのアーキテクチャがあります。古いアーキテクチャを使用するには、`enable_analyzer=0`を設定します。新しいアーキテクチャはデフォルトで有効になっています。ここでは新しいアーキテクチャのみについて説明します。古いアーキテクチャは新しいアナライザーが一般公開されると非推奨になります。
+ClickHouseには現在、アナライザーに2つのアーキテクチャがあります。`enable_analyzer=0`を設定することで、古いアーキテクチャを使用できます。新しいアーキテクチャはデフォルトで有効になっています。新しいアナライザーが一般提供されると古いアーキテクチャは非推奨となるため、ここでは新しいアーキテクチャのみを説明します。
 
 :::note
-新しいアーキテクチャは、ClickHouseのパフォーマンスを改善するためのより良いフレームワークを提供するはずです。しかし、これはクエリ処理ステップの基本的なコンポーネントであるため、一部のクエリに対して逆に悪影響を与える可能性もあり、[知られている非互換性](/operations/analyzer#known-incompatibilities)もあります。クエリまたはユーザーのレベルで`enable_analyzer`の設定を変更することで、古いアナライザーに戻すことができます。
+新しいアーキテクチャは、ClickHouseのパフォーマンスを向上させるためのより優れたフレームワークを提供します。ただし、クエリ処理ステップの基本的なコンポーネントであるため、一部のクエリに悪影響を及ぼす可能性があり、[既知の非互換性](/operations/analyzer#known-incompatibilities)も存在します。クエリレベルまたはユーザーレベルで`enable_analyzer`設定を変更することで、古いアナライザーに戻すことができます。
 :::
 
-アナライザーはクエリ実行の重要なステップです。ASTを受け取り、それをクエリツリーに変換します。ASTに対するクエリツリーの主な利点は、多くのコンポーネントが解決されることです。たとえば、どのテーブルから読み込むかが分かりますし、エイリアスも解決され、木は使用される異なるデータ型を知っています。これらのすべての利点を活かして、アナライザーは最適化を適用できます。これらの最適化は「パス」を介して行われます。すべてのパスは異なる最適化を探します。すべてのパスを[こちら](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)で見ることができます。次に、以前のクエリを用いてこれを実際に見てみましょう：
+アナライザーはクエリ実行における重要なステップです。ASTを受け取り、クエリツリーに変換します。ASTに対するクエリツリーの主な利点は、ストレージなど多くのコンポーネントが解決されることです。どのテーブルから読み取るかも判明し、エイリアスも解決され、ツリーは使用されるさまざまなデータ型を把握します。これらすべての利点により、アナライザーは最適化を適用できます。これらの最適化は「パス」を介して機能します。各パスは異なる最適化を探します。すべてのパスは[こちら](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)で確認できます。前述のクエリで実際に見てみましょう:
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
@@ -126,11 +129,12 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-2つの実行の間で、エイリアスとプロジェクションの解決を見ることができます。
+2つの実行の間で、エイリアスと射影の解決を確認できます。
+
 
 ## プランナー {#planner}
 
-プランナーはクエリツリーを受け取り、それからクエリプランを構築します。クエリツリーは特定のクエリで何をしたいかを教えてくれ、クエリプランはそれをどのように行うかを示します。追加の最適化は、クエリプランの一部として行われます。`EXPLAIN PLAN`または`EXPLAIN`を使用してクエリプランを見ることができます（`EXPLAIN`は`EXPLAIN PLAN`を実行します）。
+プランナーはクエリツリーを受け取り、そこからクエリプランを構築します。クエリツリーは特定のクエリで何を実行したいかを示し、クエリプランはそれをどのように実行するかを示します。クエリプランの一部として追加の最適化が行われます。クエリプランを確認するには`EXPLAIN PLAN`または`EXPLAIN`を使用できます(`EXPLAIN`は`EXPLAIN PLAN`を実行します)。
 
 ```sql
 EXPLAIN PLAN WITH
@@ -148,7 +152,7 @@ SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, cou
 └──────────────────────────────────────────────────┘
 ```
 
-これによりいくつかの情報が得られますが、もっと得られるかもしれません。たとえば、プロジェクションが必要なカラム名を知りたいかもしれません。クエリにヘッダーを追加できます：
+これである程度の情報は得られますが、さらに詳細な情報を取得できます。例えば、プロジェクションが必要なカラム名を知りたい場合があります。クエリにヘッダーを追加できます:
 
 ```SQL
 EXPLAIN header = 1
@@ -184,7 +188,7 @@ GROUP BY type
 └──────────────────────────────────────────────────┘
 ```
 
-これで、最後のプロジェクション（`minimum_date`、`maximum_date`、および`percentage`）のために作成する必要があるカラム名がわかりましたが、実行する必要があるすべてのアクションの詳細も欲しいかもしれません。`actions=1`を設定することでそれが可能です。
+これで最後のプロジェクションで作成する必要があるカラム名(`minimum_date`、`maximum_date`、`percentage`)がわかりましたが、実行する必要があるすべてのアクションの詳細も確認したい場合があります。`actions=1`を設定することで確認できます。
 
 ```sql
 EXPLAIN actions = 1
@@ -200,19 +204,22 @@ SELECT
 FROM session_events
 GROUP BY type
 
+```
+
+
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
-│ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
-│          INPUT : 1 -> min(timestamp) DateTime : 1                                                                                          │
-│          INPUT : 2 -> max(timestamp) DateTime : 2                                                                                          │
-│          INPUT : 3 -> count() UInt64 : 3                                                                                                   │
-│          COLUMN Const(Nullable(UInt64)) -> total_rows Nullable(UInt64) : 4                                                                 │
-│          COLUMN Const(UInt8) -> 100 UInt8 : 5                                                                                              │
-│          ALIAS min(timestamp) :: 1 -> minimum_date DateTime : 6                                                                            │
-│          ALIAS max(timestamp) :: 2 -> maximum_date DateTime : 1                                                                            │
-│          FUNCTION divide(count() :: 3, total_rows :: 4) -> divide(count(), total_rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count(), total_rows) :: 2, 100 :: 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
-│          ALIAS multiply(divide(count(), total_rows), 100) :: 4 -> percentage Nullable(Float64) : 5                                         │
+│ Actions: INPUT :: 0 -&gt; type String : 0                                                                                                     │
+│          INPUT : 1 -&gt; min(timestamp) DateTime : 1                                                                                          │
+│          INPUT : 2 -&gt; max(timestamp) DateTime : 2                                                                                          │
+│          INPUT : 3 -&gt; count() UInt64 : 3                                                                                                   │
+│          COLUMN Const(Nullable(UInt64)) -&gt; total&#95;rows Nullable(UInt64) : 4                                                                 │
+│          COLUMN Const(UInt8) -&gt; 100 UInt8 : 5                                                                                              │
+│          ALIAS min(timestamp) :: 1 -&gt; minimum&#95;date DateTime : 6                                                                            │
+│          ALIAS max(timestamp) :: 2 -&gt; maximum&#95;date DateTime : 1                                                                            │
+│          FUNCTION divide(count() :: 3, total&#95;rows :: 4) -&gt; divide(count(), total&#95;rows) Nullable(Float64) : 2                               │
+│          FUNCTION multiply(divide(count(), total&#95;rows) :: 2, 100 :: 5) -&gt; multiply(divide(count(), total&#95;rows), 100) Nullable(Float64) : 4 │
+│          ALIAS multiply(divide(count(), total&#95;rows), 100) :: 4 -&gt; percentage Nullable(Float64) : 5                                         │
 │ Positions: 0 6 1 5                                                                                                                         │
 │   Aggregating                                                                                                                              │
 │   Keys: type                                                                                                                               │
@@ -228,21 +235,24 @@ GROUP BY type
 │         Arguments: none                                                                                                                    │
 │   Skip merging: 0                                                                                                                          │
 │     Expression (Before GROUP BY)                                                                                                           │
-│     Actions: INPUT :: 0 -> timestamp DateTime : 0                                                                                          │
-│              INPUT :: 1 -> type String : 1                                                                                                 │
+│     Actions: INPUT :: 0 -&gt; timestamp DateTime : 0                                                                                          │
+│              INPUT :: 1 -&gt; type String : 1                                                                                                 │
 │     Positions: 0 1                                                                                                                         │
-│       ReadFromMergeTree (default.session_events)                                                                                           │
+│       ReadFromMergeTree (default.session&#95;events)                                                                                           │
 │       ReadType: Default                                                                                                                    │
 │       Parts: 1                                                                                                                             │
 │       Granules: 1                                                                                                                          │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
 ```
 
-これで、使用されるすべての入力、関数、エイリアス、およびデータ型が表示されます。プランナーが適用するいくつかの最適化を見ることができます[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)です。
+使用されているすべての入力、関数、エイリアス、およびデータ型を確認できるようになりました。プランナーが適用する最適化の一部は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
+```
+
 
 ## クエリパイプライン {#query-pipeline}
 
-クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランに非常に似ていますが、木ではなくグラフです。これはClickHouseがクエリをどのように実行するか、どのリソースが使用されるかを強調します。クエリパイプラインを分析することは、入力/出力に関してボトルネックがどこにあるかを見るために非常に役立ちます。前のクエリを取り上げ、それを基にクエリパイプラインの実行を見てみましょう：
+クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常に似ていますが、ツリーではなくグラフである点が異なります。これにより、ClickHouseがクエリをどのように実行し、どのリソースが使用されるかが明確になります。クエリパイプラインを分析することは、入出力の観点からボトルネックがどこにあるかを特定するのに非常に有用です。前述のクエリを使用して、クエリパイプラインの実行を見てみましょう:
 
 ```sql
 EXPLAIN PIPELINE
@@ -271,7 +281,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-かっこ内にはクエリプランのステップがあり、その横にプロセッサがあります。これは素晴らしい情報ですが、グラフであるため、そのように可視化すると良いでしょう。設定`graph`を1に設定し、出力形式をTSVに指定できます：
+括弧内はクエリプランのステップで、その隣にプロセッサが表示されます。これは有用な情報ですが、グラフであることを考えると、視覚化できると便利です。`graph`設定を1に設定し、出力フォーマットをTSVに指定することができます:
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -332,11 +342,11 @@ digraph
 }
 ```
 
-この出力をコピーして[こちら](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、次のようなグラフが生成されます：
+この出力をコピーして[こちら](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、次のグラフが生成されます:
 
-<Image img={analyzer3} alt="Graph output" size="md"/>
+<Image img={analyzer3} alt='グラフ出力' size='md' />
 
-白い長方形はパイプラインノードに対応し、灰色の長方形はクエリプランのステップに対応し、`x`の後に続く数字は使用される入力/出力の数です。コンパクトな形式で表示したくない場合は、常に`compact=0`を追加できます：
+白い長方形はパイプラインノードに対応し、灰色の長方形はクエリプランのステップに対応し、`x`の後に続く数字は使用されている入出力の数に対応します。コンパクトな形式で表示したくない場合は、`compact=0`を追加できます:
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -353,6 +363,7 @@ FROM session_events
 GROUP BY type
 FORMAT TSV
 ```
+
 
 ```response
 digraph
@@ -374,9 +385,9 @@ digraph
 }
 ```
 
-<Image img={analyzer4} alt="Compact graph output" size="md" />
+<Image img={analyzer4} alt="コンパクトなグラフ出力" size="md" />
 
-ClickHouseはなぜテーブルから複数のスレッドを使用して読み取らないのでしょうか？テーブルにデータを追加してみましょう：
+なぜ ClickHouse はテーブルの読み取りに複数のスレッドを使わないのでしょうか？テーブルにさらにデータを追加してみましょう。
 
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
@@ -386,7 +397,7 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000000;
 ```
 
-さて、再度`EXPLAIN`クエリを実行しましょう：
+では、もう一度 `EXPLAIN` クエリを実行してみます。
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -433,10 +444,11 @@ digraph
 }
 ```
 
-<Image img={analyzer5} alt="Parallel graph output" size="md" />
+<Image img={analyzer5} alt="並列グラフ出力" size="md" />
 
-実行者は、データのボリュームが十分に高くなかったため、操作を並列化しないことを決定しました。行を追加することで、実行者はグラフに示されるように複数のスレッドを使用することを決定しました。
+この場合、executor はデータ量が十分でないため処理を並列化しませんでした。行数を増やすと、グラフに示されているように複数スレッドを使用するようになりました。
 
-## 実行者 {#executor}
 
-最終的に、クエリ実行の最後のステップは実行者によって行われます。実行者はクエリパイプラインを取得し、それを実行します。`SELECT`、`INSERT`、または`INSERT SELECT`を行うかどうかによって、異なるタイプの実行者があります。
+## Executor {#executor}
+
+最後に、クエリ実行の最終ステップはExecutorによって行われます。Executorはクエリパイプラインを受け取り、それを実行します。`SELECT`、`INSERT`、`INSERT SELECT`のいずれを実行するかによって、異なるタイプのExecutorが存在します。

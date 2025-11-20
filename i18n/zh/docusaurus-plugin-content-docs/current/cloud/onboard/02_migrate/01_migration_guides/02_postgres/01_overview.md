@@ -1,53 +1,53 @@
 ---
-'slug': '/migrations/postgresql/overview'
-'title': '比较 PostgreSQL 和 ClickHouse'
-'description': '从 PostgreSQL 迁移到 ClickHouse 的指南'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'migrate'
-- 'migration'
-'sidebar_label': '概述'
-'doc_type': 'guide'
+slug: /migrations/postgresql/overview
+title: 'PostgreSQL 与 ClickHouse 对比'
+description: '从 PostgreSQL 迁移到 ClickHouse 的指南'
+keywords: ['postgres', 'postgresql', 'migrate', 'migration']
+sidebar_label: '概览'
+doc_type: 'guide'
 ---
 
 
-# 比较 ClickHouse 和 PostgreSQL
+
+# ClickHouse 与 PostgreSQL 对比
+
+
 
 ## 为什么使用 ClickHouse 而不是 Postgres? {#why-use-clickhouse-over-postgres}
 
-TLDR：因为 ClickHouse 是为快速分析而设计的，特别是 `GROUP BY` 查询，作为一个 OLAP 数据库，而 Postgres 是一个为事务工作负载设计的 OLTP 数据库。
+简而言之:ClickHouse 是专为快速分析设计的 OLAP 数据库,尤其擅长 `GROUP BY` 查询,而 Postgres 是为事务性工作负载设计的 OLTP 数据库。
 
-OLTP，或在线事务处理数据库，是为管理事务信息而设计的。这些数据库的主要目标，Postgres 是经典的例子，是确保工程师能够将一批更新提交到数据库，并能确保该批更新——整体上——要么成功，要么失败。这些类型的事务保证与 ACID 属性是 OLTP 数据库的主要焦点，也是 Postgres 的巨大优势。考虑到这些要求，OLTP 数据库在用于大数据集的分析查询时通常会遇到性能限制。
+OLTP,即在线事务处理数据库,专门用于管理事务性信息。这类数据库的主要目标(Postgres 是其中的经典代表)是确保工程师可以向数据库提交一批更新操作,并保证这些操作作为一个整体要么全部成功,要么全部失败。这种具有 ACID 属性的事务性保证是 OLTP 数据库的核心关注点,也是 Postgres 的一大优势。然而,正是由于这些特性,OLTP 数据库在处理大规模数据集的分析查询时通常会遇到性能瓶颈。
 
-OLAP，或在线分析处理数据库，旨在满足这些需求——管理分析工作负载。这些数据库的主要目标是确保工程师能够有效地查询和聚合庞大的数据集。像 ClickHouse 这样的实时 OLAP 系统允许在数据实时摄取时进行这种分析。
+OLAP,即在线分析处理数据库,正是为了满足分析工作负载的需求而设计的。这类数据库的主要目标是确保工程师能够高效地查询和聚合海量数据集。像 ClickHouse 这样的实时 OLAP 系统支持在数据实时摄取的同时进行分析。
 
-有关 ClickHouse 和 PostgreSQL 更深入比较，请参见 [这里](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts)。
+有关 ClickHouse 和 PostgreSQL 的更深入比较,请参阅[此处](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts)。
 
-要查看 ClickHouse 和 Postgres 在分析查询上的潜在性能差异，请查看 [在 ClickHouse 中重写 PostgreSQL 查询](/migrations/postgresql/rewriting-queries)。
+要了解 ClickHouse 和 Postgres 在分析查询方面的潜在性能差异,请参阅[在 ClickHouse 中重写 PostgreSQL 查询](/migrations/postgresql/rewriting-queries)。
+
 
 ## 迁移策略 {#migration-strategies}
 
-从 PostgreSQL 迁移到 ClickHouse 的正确策略取决于您的用例、基础架构和数据要求。一般而言，对于大多数现代用例，实时变更数据捕获 (CDC) 是最佳方法，而手动批量加载后跟定期更新适合于更简单的场景或一次性迁移。
+从 PostgreSQL 迁移到 ClickHouse 时,合适的策略取决于您的使用场景、基础设施和数据需求。通常情况下,实时变更数据捕获(CDC)是大多数现代使用场景的最佳方法,而手动批量加载后进行定期更新则适用于较简单的场景或一次性迁移。
 
-以下部分描述了两种主要的迁移策略：**实时 CDC** 和 **手动批量加载 + 定期更新**。
+下文介绍了两种主要的迁移策略:**实时 CDC** 和 **手动批量加载 + 定期更新**。
 
 ### 实时复制 (CDC) {#real-time-replication-cdc}
 
-变更数据捕获 (CDC) 是保持两个数据库之间同步表的过程。它是从 PostgreSQL 迁移的最有效的方法，但由于它处理近乎实时的 PostgreSQL 到 ClickHouse 的插入、更新和删除，因此更复杂。它非常适合实时分析非常重要的用例。
+变更数据捕获(CDC)是在两个数据库之间保持表同步的过程。它是大多数 PostgreSQL 迁移场景中最高效的方法,但也更复杂,因为它需要以近实时的方式处理从 PostgreSQL 到 ClickHouse 的插入、更新和删除操作。它非常适合对实时分析有较高要求的使用场景。
 
-实时变更数据捕获 (CDC) 可以通过 [ClickPipes](/integrations/clickpipes/postgres/deduplication) 在 ClickHouse 中实现，如果您正在使用 ClickHouse Cloud，或者如果您运行的是本地 ClickHouse，可以使用 [PeerDB](https://github.com/PeerDB-io/peerdb)。这些解决方案处理实时数据同步的复杂性，包括初始加载，通过捕获来自 PostgreSQL 的插入、更新和删除并在 ClickHouse 中复制它们。这种方法确保 ClickHouse 中的数据始终是最新和准确的，而无需手动干预。
+如果您使用 ClickHouse Cloud,可以通过 [ClickPipes](/integrations/clickpipes/postgres/deduplication) 在 ClickHouse 中实现实时变更数据捕获(CDC);如果您在本地部署 ClickHouse,则可以使用 [PeerDB](https://github.com/PeerDB-io/peerdb)。这些解决方案通过捕获 PostgreSQL 的插入、更新和删除操作并在 ClickHouse 中复制它们,处理实时数据同步的复杂性,包括初始数据加载。这种方法确保 ClickHouse 中的数据始终保持最新和准确,无需手动干预。
 
 ### 手动批量加载 + 定期更新 {#manual-bulk-load-periodic-updates}
 
-在某些情况下，像手动批量加载后跟定期更新这样的更简单的方法可能就足够了。此策略非常适合一次性迁移或不要求实时复制的情况。它涉及通过直接 SQL `INSERT` 命令或导出和导入 CSV 文件将数据从 PostgreSQL 批量加载到 ClickHouse。初始迁移后，您可以通过定期同步来自 PostgreSQL 的更改周期性地更新 ClickHouse 中的数据。
+在某些情况下,采用手动批量加载后进行定期更新这样更直接的方法可能就足够了。这种策略非常适合一次性迁移或不需要实时复制的场景。它通过直接执行 SQL `INSERT` 命令或导出和导入 CSV 文件的方式,将数据从 PostgreSQL 批量加载到 ClickHouse。初始迁移完成后,您可以定期从 PostgreSQL 同步变更来更新 ClickHouse 中的数据。
 
-批量加载过程简单灵活，但缺乏实时更新的缺点。一旦初始数据在 ClickHouse 中，更新不会立即反映，因此您必须安排定期更新以同步来自 PostgreSQL 的更改。这种方法适用于对时间不太敏感的用例，但它引入了数据在 PostgreSQL 中更改和这些更改出现在 ClickHouse 中之间的延迟。
+批量加载过程简单灵活,但缺点是无法实时更新。一旦初始数据加载到 ClickHouse,更新不会立即反映,因此您必须定期安排同步任务以获取 PostgreSQL 的变更。这种方法适用于对时效性要求不高的使用场景,但它会在 PostgreSQL 中数据变更与这些变更出现在 ClickHouse 中之间产生延迟。
 
-### 选择哪个策略? {#which-strategy-to-choose}
+### 选择哪种策略? {#which-strategy-to-choose}
 
-对于大多数需要在 ClickHouse 中保持最新数据的应用程序，建议采用通过 ClickPipes 实现的实时 CDC 方法。它提供了连续的数据同步，设置和维护最小。另一方面，手动批量加载加上定期更新，适合于更简单的一次性迁移或实时更新不太关键的工作负载。
+对于大多数需要在 ClickHouse 中获取最新数据的应用程序,通过 ClickPipes 进行实时 CDC 是推荐的方法。它以最少的配置和维护工作提供持续的数据同步。另一方面,对于较简单的一次性迁移或对实时更新要求不高的工作负载,手动批量加载加定期更新是一个可行的选择。
 
 ---
 
-**[在这里开始 PostgreSQL 迁移指南](/migrations/postgresql/dataset)。**
+**[从这里开始 PostgreSQL 迁移指南](/migrations/postgresql/dataset)。**

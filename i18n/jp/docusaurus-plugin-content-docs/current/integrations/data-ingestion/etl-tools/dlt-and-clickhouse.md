@@ -1,63 +1,65 @@
 ---
-'sidebar_label': 'dlt'
-'keywords':
-- 'clickhouse'
-- 'dlt'
-- 'connect'
-- 'integrate'
-- 'etl'
-- 'data integration'
-'description': 'dlt統合を使ってClickhouseにデータをロードする'
-'title': 'dltをClickHouseに接続'
-'slug': '/integrations/data-ingestion/etl-tools/dlt-and-clickhouse'
-'doc_type': 'guide'
+sidebar_label: 'dlt'
+keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration']
+description: 'dlt 連携を使用して ClickHouse にデータをロードする'
+title: 'dlt を ClickHouse と接続する'
+slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
+doc_type: 'guide'
 ---
 
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# dltをClickHouseに接続する
+# dlt を ClickHouse に接続する
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
-<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> は、様々な乱雑なデータソースから、よく構造化されたライブデータセットにデータをロードするためにPythonスクリプトに追加できるオープンソースライブラリです。
+<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> は、Python スクリプトに組み込んで、さまざまな（しばしば乱雑な）データソースからデータを取得し、よく構造化されたライブデータセットへとロードできるオープンソースライブラリです。
 
-## ClickHouseでdltをインストール {#install-dlt-with-clickhouse}
 
-### `dlt`ライブラリをClickHouse依存関係とともにインストールする方法: {#to-install-the-dlt-library-with-clickhouse-dependencies}
+
+## ClickHouseでdltをインストールする {#install-dlt-with-clickhouse}
+
+### ClickHouse依存関係を含む`dlt`ライブラリのインストール: {#to-install-the-dlt-library-with-clickhouse-dependencies}
+
 ```bash
 pip install "dlt[clickhouse]"
 ```
 
+
 ## セットアップガイド {#setup-guide}
 
-### 1. dltプロジェクトの初期化 {#1-initialize-the-dlt-project}
+<VerticalStepper headerLevel="h3">
 
-以下のように、新しい`dlt`プロジェクトを初期化します:
+### dltプロジェクトの初期化 {#1-initialize-the-dlt-project}
+
+まず、以下のコマンドで新しい`dlt`プロジェクトを初期化します:
+
 ```bash
 dlt init chess clickhouse
 ```
 
 :::note
-このコマンドは、ソースとしてチェスを、宛先としてClickHouseを使用して、パイプラインを初期化します。
+このコマンドは、chessをソース、ClickHouseをデスティネーションとしてパイプラインを初期化します。
 :::
 
-上記のコマンドは、`.dlt/secrets.toml`やClickHouseのための要件ファイルを含むいくつかのファイルとディレクトリを生成します。要件ファイルに指定された必要な依存関係を次のようにして実行することでインストールできます:
+上記のコマンドを実行すると、`.dlt/secrets.toml`やClickHouse用のrequirementsファイルなど、複数のファイルとディレクトリが生成されます。requirementsファイルに記載された必要な依存関係は、以下のコマンドでインストールできます:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-または、`pip install dlt[clickhouse]`を使用して、`dlt`ライブラリとClickHouse宛先用の必要な依存関係をインストールします。
+または`pip install dlt[clickhouse]`を実行することで、`dlt`ライブラリとClickHouseをデスティネーションとして使用するために必要な依存関係をインストールできます。
 
-### 2. ClickHouseデータベースのセットアップ {#2-setup-clickhouse-database}
+### ClickHouseデータベースのセットアップ {#2-setup-clickhouse-database}
 
-ClickHouseにデータをロードするには、ClickHouseデータベースを作成する必要があります。以下はそのための大まかな手順です:
+ClickHouseにデータをロードするには、ClickHouseデータベースを作成する必要があります。以下は実行すべき手順の概要です:
 
-1. 既存のClickHouseデータベースを使用するか、新しいデータベースを作成できます。
+1. 既存のClickHouseデータベースを使用するか、新しいデータベースを作成します。
 
-2. 新しいデータベースを作成するには、`clickhouse-client`コマンドラインツールまたは選択したSQLクライアントを使用してClickHouseサーバーに接続します。
+2. 新しいデータベースを作成する場合は、`clickhouse-client`コマンドラインツールまたは任意のSQLクライアントを使用してClickHouseサーバーに接続します。
 
-3. 新しいデータベース、ユーザーを作成し、必要な権限を付与するために次のSQLコマンドを実行します:
+3. 以下のSQLコマンドを実行して、新しいデータベースとユーザーを作成し、必要な権限を付与します:
 
 ```bash
 CREATE DATABASE IF NOT EXISTS dlt;
@@ -67,83 +69,97 @@ GRANT SELECT ON INFORMATION_SCHEMA.COLUMNS TO dlt;
 GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 ```
 
-### 3. 認証情報の追加 {#3-add-credentials}
+### 認証情報の追加 {#3-add-credentials}
 
 次に、`.dlt/secrets.toml`ファイルにClickHouseの認証情報を以下のように設定します:
 
 ```bash
 [destination.clickhouse.credentials]
-database = "dlt"                         # The database name you created
-username = "dlt"                         # ClickHouse username, default is usually "default"
-password = "Dlt*12345789234567"          # ClickHouse password if any
-host = "localhost"                       # ClickHouse server host
-port = 9000                              # ClickHouse HTTP port, default is 9000
-http_port = 8443                         # HTTP Port to connect to ClickHouse server's HTTP interface. Defaults to 8443.
-secure = 1                               # Set to 1 if using HTTPS, else 0.
+database = "dlt"                         # 作成したデータベース名
+username = "dlt"                         # ClickHouseのユーザー名、デフォルトは通常"default"
+password = "Dlt*12345789234567"          # ClickHouseのパスワード(設定されている場合)
+host = "localhost"                       # ClickHouseサーバーのホスト
+port = 9000                              # ClickHouseのネイティブTCPポート、デフォルトは9000
+http_port = 8443                         # ClickHouseサーバーのHTTPインターフェースに接続するためのHTTPポート。デフォルトは8443
+secure = 1                               # HTTPSを使用する場合は1、それ以外は0に設定
 
 [destination.clickhouse]
-dataset_table_separator = "___"          # Separator for dataset table names from dataset.
+dataset_table_separator = "___"          # データセットテーブル名の区切り文字
 ```
 
-:::note
-HTTP_PORT
-`http_port`パラメータは、ClickHouseサーバーのHTTPインターフェースに接続する際に使用するポート番号を指定します。これは、ネイティブTCPプロトコルに使用されるデフォルトのポート9000とは異なります。
+:::note HTTP_PORT
+`http_port`パラメータは、ClickHouseサーバーのHTTPインターフェースに接続する際に使用するポート番号を指定します。これは、ネイティブTCPプロトコルで使用されるデフォルトポート9000とは異なります。
 
-外部ステージングを使用しない場合（すなわち、パイプラインでステージングパラメータを設定しない場合）には、`http_port`を設定する必要があります。これは、組み込みのClickHouseローカルストレージステージングが、HTTPを介してClickHouseと通信する<a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse content</a>ライブラリを使用しているためです。
+外部ステージングを使用していない場合(つまり、パイプラインでstagingパラメータを設定していない場合)は、`http_port`を設定する必要があります。これは、組み込みのClickHouseローカルストレージステージングが<a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse-connect</a>ライブラリを使用しており、このライブラリがHTTP経由でClickHouseと通信するためです。
 
-指定されたポートでHTTP接続を受け入れるようにClickHouseサーバーが構成されていることを確認してください。例えば、`http_port = 8443`を設定した場合、ClickHouseはポート8443でHTTPリクエストを待っている必要があります。外部ステージングを使用している場合は、clickhouse-connectが使用されないため、`http_port`パラメータを省略できます。
+ClickHouseサーバーが`http_port`で指定されたポートでHTTP接続を受け入れるように設定されていることを確認してください。例えば、`http_port = 8443`と設定した場合、ClickHouseはポート8443でHTTPリクエストをリッスンしている必要があります。外部ステージングを使用している場合は、clickhouse-connectが使用されないため、`http_port`パラメータを省略できます。
 :::
 
-`clickhouse-driver`ライブラリが使用するのと似たデータベース接続文字列を渡すことができます。上記の認証情報は次のようになります:
+`clickhouse-driver`ライブラリで使用されるものと同様のデータベース接続文字列を渡すこともできます。上記の認証情報は次のようになります:
+
 
 ```bash
-
-# keep it at the top of your toml file, before any section starts.
+# tomlファイルの先頭、セクションが始まる前に記述してください。
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
-## 書き込みの方法 {#write-disposition}
+</VerticalStepper>
 
-すべての[書き込み方法](https://dlthub.com/docs/general-usage/incremental-loading#choosing-a-write-disposition)がサポートされています。
 
-dltライブラリの書き込み方法は、データを宛先にどのように書き込むかを定義します。書き込み方法には次の3種類があります：
+## 書き込みディスポジション {#write-disposition}
 
-**Replace**: この方法は、リソースからのデータで宛先のデータを置き換えます。すべてのクラスとオブジェクトを削除し、データをロードする前にスキーマを再作成します。詳細については<a href="https://dlthub.com/docs/general-usage/full-loading">こちら</a>をご覧ください。
+すべての[書き込みディスポジション](https://dlthub.com/docs/general-usage/incremental-loading#choosing-a-write-disposition)がサポートされています。
 
-**Merge**: この書き込み方法は、リソースのデータと宛先のデータをマージします。`merge`方法では、リソースの`primary_key`を指定する必要があります。詳細については<a href="https://dlthub.com/docs/general-usage/incremental-loading">こちら</a>をご覧ください。
+dltライブラリの書き込みディスポジションは、データを宛先にどのように書き込むかを定義します。書き込みディスポジションには3つのタイプがあります:
 
-**Append**: これはデフォルトの方法です。データは、宛先の既存データに追加され、`primary_key`フィールドは無視されます。
+**Replace**: このディスポジションは、宛先のデータをリソースからのデータで置き換えます。データをロードする前に、すべてのクラスとオブジェクトを削除し、スキーマを再作成します。詳細については<a href="https://dlthub.com/docs/general-usage/full-loading">こちら</a>をご覧ください。
 
-## データのロード {#data-loading}
-データは、データソースに応じて最も効率的な方法を使用してClickHouseにロードされます：
+**Merge**: この書き込みディスポジションは、リソースからのデータを宛先のデータとマージします。`merge`ディスポジションの場合、リソースに`primary_key`を指定する必要があります。詳細については<a href="https://dlthub.com/docs/general-usage/incremental-loading">こちら</a>をご覧ください。
 
-- ローカルファイルに関しては、`clickhouse-connect`ライブラリを使用して、`INSERT`コマンドを使用してClickHouseテーブルにファイルを直接ロードします。
-- リモートストレージ（`S3`、`Google Cloud Storage`、`Azure Blob Storage`など）のファイルでは、ClickHouseテーブル関数（s3、gcs、azureBlobStorageなど）が使用され、ファイルを読み込み、データをテーブルに挿入します。
+**Append**: これはデフォルトのディスポジションです。`primary_key`フィールドを無視して、宛先の既存データにデータを追加します。
+
+
+## データ読み込み {#data-loading}
+
+データソースに応じて最も効率的な方法でClickHouseにデータを読み込みます：
+
+- ローカルファイルの場合、`clickhouse-connect`ライブラリを使用し、`INSERT`コマンドでClickHouseテーブルに直接ファイルを読み込みます。
+- `S3`、`Google Cloud Storage`、`Azure Blob Storage`などのリモートストレージ内のファイルの場合、s3、gcs、azureBlobStorageなどのClickHouseテーブル関数を使用してファイルを読み取り、データをテーブルに挿入します。
+
 
 ## データセット {#datasets}
 
-`Clickhouse`は1つのデータベースに複数のデータセットをサポートしていませんが、`dlt`は様々な理由からデータセットに依存しています。`Clickhouse`を`dlt`と共に機能させるために、`Clickhouse`データベース内に`dlt`によって生成されたテーブルは、データセット名で接頭辞が付けられ、設定可能な`dataset_table_separator`によって区切られます。さらに、データを含まない特別なセンチネルテーブルが作成され、`dlt`が`Clickhouse`宛先に既に存在する仮想データセットを認識できるようになります。
+`ClickHouse`は1つのデータベース内で複数のデータセットをサポートしていませんが、`dlt`は複数の理由によりデータセットに依存しています。`ClickHouse`を`dlt`と連携させるため、`ClickHouse`データベース内で`dlt`が生成するテーブルには、設定可能な`dataset_table_separator`で区切られたデータセット名がプレフィックスとして付与されます。さらに、データを含まない特殊なセンチネルテーブルが作成され、`dlt`が`ClickHouse`デスティネーション内にどの仮想データセットが既に存在するかを認識できるようにします。
+
 
 ## サポートされているファイル形式 {#supported-file-formats}
 
-- <a href="https://dlthub.com/docs/dlt-ecosystem/file-formats/jsonl">jsonl</a>は、直接のロードとステージングの両方において推奨される形式です。
-- <a href="https://dlthub.com/docs/dlt-ecosystem/file-formats/parquet">parquet</a>は、直接のロードとステージングの両方をサポートしています。
+- <a href='https://dlthub.com/docs/dlt-ecosystem/file-formats/jsonl'>jsonl</a>
+  は、直接ロードとステージングの両方で推奨される形式です。
+- <a href='https://dlthub.com/docs/dlt-ecosystem/file-formats/parquet'>
+    parquet
+  </a>
+  は、直接ロードとステージングの両方でサポートされています。
 
-`clickhouse`宛先には、デフォルトのSQL宛先からいくつかの特定の偏差があります：
+`clickhouse`デスティネーションには、デフォルトのSQLデスティネーションからいくつかの特定の相違点があります:
 
-1. `Clickhouse`には実験的な`object`データ型がありますが、若干予測不可能であることが明らかになったため、dlt Clickhouse宛先では複雑なデータ型をテキスト列としてロードします。この機能が必要な場合は、私たちのSlackコミュニティに連絡し、追加を検討します。
-2. `Clickhouse`は`time`データ型をサポートしていません。時間は`text`列にロードされます。
-3. `Clickhouse`は`binary`データ型をサポートしていません。そのため、バイナリデータは`text`列にロードされます。`jsonl`からのロードでは、バイナリデータはbase64文字列になります。parquetからロードするとき、`binary`オブジェクトは`text`に変換されます。
-5. `Clickhouse`は、nullでない populatedなテーブルにカラムを追加することを許可しています。
-6. `Clickhouse`は、floatまたはdoubleデータ型を使用している場合、特定の条件下で丸めエラーを生成する可能性があります。丸めエラーが許容できない場合は、decimalデータ型を使用してください。例えば、`jsonl`にて12.7001の値をdouble列にロードすると、予測可能な丸めエラーが発生します。
+1. `Clickhouse`には実験的な`object`データ型がありますが、動作が不安定であることが確認されているため、dlt clickhouseデスティネーションは複合データ型をテキストカラムにロードします。この機能が必要な場合は、Slackコミュニティにお問い合わせいただければ、追加を検討いたします。
+2. `Clickhouse`は`time`データ型をサポートしていません。時刻データは`text`カラムにロードされます。
+3. `Clickhouse`は`binary`データ型をサポートしていません。代わりに、バイナリデータは`text`カラムにロードされます。`jsonl`からロードする場合、バイナリデータはbase64文字列になり、parquetからロードする場合、`binary`オブジェクトは`text`に変換されます。
+4. `Clickhouse`は、データが格納されているテーブルに対して、NOT NULL制約のあるカラムを追加することができます。
+5. `Clickhouse`は、floatまたはdoubleデータ型を使用する際、特定の条件下で丸め誤差が発生する可能性があります。丸め誤差が許容できない場合は、必ずdecimalデータ型を使用してください。例えば、ローダーファイル形式を`jsonl`に設定してdoubleカラムに値12.7001をロードすると、予測可能な丸め誤差が発生します。
+
 
 ## サポートされているカラムヒント {#supported-column-hints}
-ClickHouseは次の<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">カラムヒント</a>をサポートしています：
 
-- `primary_key` - カラムを主キーの一部としてマークします。複数のカラムがこのヒントを持つことで、複合主キーを作成できます。
+ClickHouseは以下の<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">カラムヒント</a>をサポートしています：
+
+- `primary_key` - カラムをプライマリキーの一部としてマークします。複数のカラムにこのヒントを指定することで、複合プライマリキーを作成できます。
+
 
 ## テーブルエンジン {#table-engine}
-デフォルトでは、ClickHouseでは`ReplicatedMergeTree`テーブルエンジンを使用してテーブルが作成されます。clickhouseアダプタを使用して、代替のテーブルエンジンを`table_engine_type`で指定できます：
+
+デフォルトでは、ClickHouseのテーブルは`ReplicatedMergeTree`テーブルエンジンを使用して作成されます。clickhouseアダプターの`table_engine_type`を使用することで、別のテーブルエンジンを指定できます:
 
 ```bash
 from dlt.destinations.adapters import clickhouse_adapter
@@ -155,44 +171,52 @@ def my_resource():
 clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 ```
 
-サポートされている値は次のとおりです：
+サポートされている値:
 
-- `merge_tree` - `MergeTree`エンジンを使用してテーブルを作成します。
-- `replicated_merge_tree` （デフォルト） - `ReplicatedMergeTree`エンジンを使用してテーブルを作成します。
+- `merge_tree` - `MergeTree`エンジンを使用してテーブルを作成
+- `replicated_merge_tree`(デフォルト) - `ReplicatedMergeTree`エンジンを使用してテーブルを作成
+
 
 ## ステージングサポート {#staging-support}
 
-ClickHouseは、Amazon S3、Google Cloud Storage、Azure Blob Storageをファイルのステージング宛先としてサポートしています。
+ClickHouseは、ファイルステージング先としてAmazon S3、Google Cloud Storage、Azure Blob Storageをサポートしています。
 
-`dlt`は、Parquetまたはjsonlファイルをステージング場所にアップロードし、ClickHouseテーブル関数を使用して、ステージングされたファイルから直接データをロードします。
+`dlt`は、ParquetまたはJSONLファイルをステージングロケーションにアップロードし、ClickHouseのテーブル関数を使用してステージングされたファイルから直接データをロードします。
 
-ステージング宛先の認証情報を構成する方法については、ファイルシステムのドキュメントを参照してください：
+ステージング先の認証情報を設定する方法については、filesystemドキュメントを参照してください:
 
-- <a href="https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#aws-s3">Amazon S3</a>
-- <a href="https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#google-storage">Google Cloud Storage</a>
-- <a href="https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#azure-blob-storage">Azure Blob Storage</a>
+- <a href='https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#aws-s3'>
+    Amazon S3
+  </a>
+- <a href='https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#google-storage'>
+    Google Cloud Storage
+  </a>
+- <a href='https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#azure-blob-storage'>
+    Azure Blob Storage
+  </a>
 
-ステージングが有効な状態でパイプラインを実行するには：
+ステージングを有効にしてパイプラインを実行するには:
 
 ```bash
 pipeline = dlt.pipeline(
   pipeline_name='chess_pipeline',
   destination='clickhouse',
-  staging='filesystem',  # add this to activate staging
+  staging='filesystem',  # ステージングを有効にするにはこれを追加
   dataset_name='chess_data'
 )
 ```
 
-### Google Cloud Storageをステージングエリアとして使用する {#using-google-cloud-storage-as-a-staging-area}
-dltは、ClickHouseにデータをロードする際にGoogle Cloud Storage（GCS）をステージングエリアとして使用することをサポートしています。これは、ClickHouseの<a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCSテーブル関数</a>によって自動的に処理され、dltが内部で使用します。
+### ステージング領域としてGoogle Cloud Storageを使用する {#using-google-cloud-storage-as-a-staging-area}
 
-clickhouseのGCSテーブル関数は、ハッシュベースのメッセージ認証コード（HMAC）キーを使用した認証のみをサポートしています。これを有効にするために、GCSはAmazon S3 APIをエミュレートするS3互換モードを提供しています。ClickHouseは、これを利用してGCSバケットにS3統合を通じてアクセスします。
+dltは、ClickHouseへのデータロード時にステージング領域としてGoogle Cloud Storage（GCS）を使用することをサポートしています。これは、dltが内部で使用するClickHouseの<a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCSテーブル関数</a>によって自動的に処理されます。
 
-dltでHMAC認証を使用したGCSステージングを設定するには：
+ClickHouseのGCSテーブル関数は、ハッシュベースメッセージ認証コード（HMAC）キーを使用した認証のみをサポートしています。これを有効にするため、GCSはAmazon S3 APIをエミュレートするS3互換モードを提供しています。ClickHouseはこれを利用して、S3統合を介してGCSバケットへのアクセスを可能にしています。
 
-1. <a href="https://cloud.google.com/storage/docs/authentication/managing-hmackeys#create">Google Cloudガイド</a>に従って、GCSサービスアカウントのHMACキーを作成します。
+dltでHMAC認証を使用したGCSステージングを設定するには:
 
-2. dltプロジェクトのClickHouse宛先設定で、HMACキーとともに`client_email`、`project_id`、`private_key`を設定します`config.toml`に：
+1. <a href="https://cloud.google.com/storage/docs/authentication/managing-hmackeys#create">Google Cloudガイド</a>に従って、GCSサービスアカウント用のHMACキーを作成します。
+
+2. dltプロジェクトのClickHouse宛先設定の`config.toml`で、HMACキーとサービスアカウントの`client_email`、`project_id`、`private_key`を設定します:
 
 ```bash
 [destination.filesystem]
@@ -214,17 +238,19 @@ gcp_access_key_id = "JFJ$$*f2058024835jFffsadf"
 gcp_secret_access_key = "DFJdwslf2hf57)%$02jaflsedjfasoi"
 ```
 
-注意：HMACキー`bashgcp_access_key_id`と`gcp_secret_access_key`に加え、サービスアカウントの`client_email`、`project_id`、`private_key`を`[destination.filesystem.credentials]`の下に提供する必要があります。これは、GCSステージングサポートが一時的な回避策として実装されており、まだ最適化されていないためです。
+注意: HMACキー（`gcp_access_key_id`と`gcp_secret_access_key`）に加えて、`[destination.filesystem.credentials]`の下にサービスアカウントの`client_email`、`project_id`、`private_key`を提供する必要があります。これは、GCSステージングサポートが現在一時的な回避策として実装されており、まだ最適化されていないためです。
 
-dltはこれらの認証情報をClickHouseに渡し、認証とGCSアクセスを処理させます。
+dltはこれらの認証情報をClickHouseに渡し、ClickHouseが認証とGCSアクセスを処理します。
 
-将来的にClickHouse dlt宛先のGCSステージングのセットアップを簡素化し改善するための作業が進行中です。適切なGCSステージングサポートは、以下のGitHub課題で追跡されています：
+将来的にClickHouse dlt宛先のGCSステージング設定を簡素化および改善するための作業が進行中です。適切なGCSステージングサポートは、以下のGitHub issueで追跡されています:
 
-- ファイルシステム宛先<a href="https://github.com/dlt-hub/dlt/issues/1272">が機能</a>するようにgcsのS3互換モードで
-- Google Cloud Storageステージングエリア<a href="https://github.com/dlt-hub/dlt/issues/1181">のサポート</a>
+- filesystem宛先をS3互換モードのGCSで<a href="https://github.com/dlt-hub/dlt/issues/1272">動作</a>させる
+- Google Cloud Storageステージング領域の<a href="https://github.com/dlt-hub/dlt/issues/1181">サポート</a>
 
-### Dbtサポート {#dbt-support}
+### dbtサポート {#dbt-support}
+
 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a>との統合は、dbt-clickhouseを介して一般的にサポートされています。
 
 ### `dlt`状態の同期 {#syncing-of-dlt-state}
-この宛先は、<a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a>状態の同期を完全にサポートしています。
+
+この宛先は、<a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a>状態同期を完全にサポートしています。

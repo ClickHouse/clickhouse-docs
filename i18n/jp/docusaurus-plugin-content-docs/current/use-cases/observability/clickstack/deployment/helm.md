@@ -1,82 +1,92 @@
 ---
-'slug': '/use-cases/observability/clickstack/deployment/helm'
-'title': 'Helm'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 2
-'description': 'Helmを使ったClickStackのデプロイ - ClickHouseの可観測スタック'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/deployment/helm
+title: "Helm"
+pagination_prev: null
+pagination_next: null
+sidebar_position: 2
+description: "Helmを使用したClickStackのデプロイ - ClickHouse Observability Stack"
+doc_type: "guide"
+keywords:
+  [
+    "ClickStack Helm chart",
+    "Helm ClickHouse deployment",
+    "HyperDX Helm installation",
+    "Kubernetes observability stack",
+    "ClickStack Kubernetes deployment"
+  ]
 ---
 
-import Image from '@theme/IdealImage';
-import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.png';
-import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
-import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
+import Image from "@theme/IdealImage"
+import hyperdx_24 from "@site/static/images/use-cases/observability/hyperdx-24.png"
+import hyperdx_login from "@site/static/images/use-cases/observability/hyperdx-login.png"
+import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
 
-The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
+HyperDXのHelmチャートは[こちら](https://github.com/hyperdxio/helm-charts)で提供されており、本番環境へのデプロイには**推奨される**方法です。
 
-By default, the Helm chart provisions all core components, including:
+デフォルトでは、Helmチャートは以下を含むすべてのコアコンポーネントをプロビジョニングします:
 
-* **ClickHouse**
-* **HyperDX**
-* **OpenTelemetry (OTel) collector**
-* **MongoDB** (for persistent application state)
+- **ClickHouse**
+- **HyperDX**
+- **OpenTelemetry (OTel) コレクター**
+- **MongoDB** (永続的なアプリケーション状態の保存用)
 
-However, it can be easily customized to integrate with an existing ClickHouse deployment - for example, one hosted in **ClickHouse Cloud**.
+ただし、既存のClickHouseデプロイメント(例えば**ClickHouse Cloud**でホストされているもの)と統合するように簡単にカスタマイズできます。
 
-The chart supports standard Kubernetes best practices, including:
+このチャートは、以下を含む標準的なKubernetesのベストプラクティスをサポートしています:
 
-- Environment-specific configuration via `values.yaml`
-- Resource limits and pod-level scaling
-- TLS and ingress configuration
-- Secrets management and authentication setup
+- `values.yaml`による環境固有の設定
+- リソース制限とポッドレベルのスケーリング
+- TLSとIngressの設定
+- シークレット管理と認証設定
 
-### Suitable for {#suitable-for}
+### 適用対象 {#suitable-for}
 
-* Proof of concepts
-* Production
+- 概念実証
+- 本番環境
 
-## Deployment steps {#deployment-steps}
-<br/>
+
+## デプロイ手順 {#deployment-steps}
+
+<br />
 
 <VerticalStepper headerLevel="h3">
 
-### Prerequisites {#prerequisites}
+### 前提条件 {#prerequisites}
 
-- [Helm](https://helm.sh/) v3+
-- Kubernetes cluster (v1.20+ recommended)
-- `kubectl` configured to interact with your cluster
+- [Helm](https://helm.sh/) v3以上
+- Kubernetesクラスタ（v1.20以上を推奨）
+- クラスタと連携するように設定された`kubectl`
 
-### Add the HyperDX Helm repository {#add-the-hyperdx-helm-repository}
+### HyperDX Helmリポジトリの追加 {#add-the-hyperdx-helm-repository}
 
-Add the HyperDX Helm repository:
+HyperDX Helmリポジトリを追加します：
 
 ```shell
 helm repo add hyperdx https://hyperdxio.github.io/helm-charts
 helm repo update
 ```
 
-### Installing HyperDX {#installing-hyperdx}
+### HyperDXのインストール {#installing-hyperdx}
 
-To install the HyperDX chart with default values:
+デフォルト値でHyperDXチャートをインストールするには：
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2
 ```
 
-### Verify the installation {#verify-the-installation}
+### インストールの確認 {#verify-the-installation}
 
-Verify the installation:
+インストールを確認します：
 
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
-When all pods are ready, proceed.
+すべてのPodの準備が完了したら、次に進みます。
 
-### Forward ports {#forward-ports}
+### ポートフォワーディング {#forward-ports}
 
-ポートフォワーディングを使用することで、HyperDXにアクセスして設定することができます。プロダクションにデプロイするユーザーは、適切なネットワークアクセス、TLS終端、およびスケーラビリティを保証するために、代わりにサービスをイングレスまたはロードバランサーを介して公開するべきです。ポートフォワーディングは、ローカル開発や一時的な管理タスクには適していますが、長期的または高可用性の環境には最適ではありません。
+ポートフォワーディングにより、HyperDXへのアクセスとセットアップが可能になります。本番環境にデプロイする場合は、適切なネットワークアクセス、TLS終端、スケーラビリティを確保するため、Ingressまたはロードバランサーでサービスを公開してください。ポートフォワーディングは、ローカル開発や単発の管理タスクに適しており、長期運用や高可用性環境には適していません。
 
 ```shell
 kubectl port-forward \
@@ -84,36 +94,37 @@ kubectl port-forward \
   8080:3000
 ```
 
-### Navigate to the UI {#navigate-to-the-ui}
+### UIへのアクセス {#navigate-to-the-ui}
 
-[http://localhost:8080](http://localhost:8080)を訪れて、HyperDXのUIにアクセスします。
+[http://localhost:8080](http://localhost:8080)にアクセスして、HyperDX UIを開きます。
 
-ユーザーを作成し、要件を満たすユーザー名とパスワードを提供します。
+要件を満たすユーザー名とパスワードを入力してユーザーを作成します。
 
-<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+<Image img={hyperdx_login} alt='HyperDX UI' size='lg' />
 
-`Create`をクリックすると、HelmチャートでデプロイされたClickHouseインスタンスに対してデータソースが作成されます。
+`Create`をクリックすると、HelmチャートでデプロイされたClickHouseインスタンス用のデータソースが作成されます。
 
-:::note デフォルト接続のオーバーライド
-統合されたClickHouseインスタンスへのデフォルト接続をオーバーライドできます。詳細については、["Using ClickHouse Cloud"](#using-clickhouse-cloud)を参照してください。
+:::note デフォルト接続の上書き
+統合されたClickHouseインスタンスへのデフォルト接続を上書きできます。詳細については、["ClickHouse Cloudの使用"](#using-clickhouse-cloud)を参照してください。
 :::
 
-代替のClickHouseインスタンスの使用例については、["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
+代替のClickHouseインスタンスを使用する例については、["ClickHouse Cloud接続の作成"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
 
-### Customizing values (optional) {#customizing-values}
+### 値のカスタマイズ（オプション） {#customizing-values}
 
-`--set`フラグを使用して設定をカスタマイズできます。たとえば：
+`--set`フラグを使用して設定をカスタマイズできます。例：
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
+```
 
-Alternatively, edit the `values.yaml`. To retrieve the default values:
+または、`values.yaml`を編集します。デフォルト値を取得するには：
 
 ```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 
-設定例:
+設定例：
 
 ```yaml
 replicaCount: 2
@@ -139,13 +150,13 @@ ingress:
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-### Using secrets (optional) {#using-secrets}
+### シークレットの使用（オプション） {#using-secrets}
 
-APIキーやデータベース資格情報などの機密データを処理するために、Kubernetesシークレットを使用します。HyperDX Helmチャートは、デフォルトのシークレットファイルを提供しており、それを変更してクラスターに適用できます。
+APIキーやデータベース認証情報などの機密データを扱うには、Kubernetesシークレットを使用します。HyperDX Helmチャートは、変更してクラスタに適用できるデフォルトのシークレットファイルを提供しています。
 
-#### Using pre-configured secrets {#using-pre-configured-secrets}
+#### 事前設定されたシークレットの使用 {#using-pre-configured-secrets}
 
-Helmチャートには、[`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml)にあるデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレットを管理するための基本構造を提供します。
+Helmチャートには、[`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml)に配置されたデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレット管理の基本構造を提供します。
 
 シークレットを手動で適用する必要がある場合は、提供された`secrets.yaml`テンプレートを変更して適用します：
 
@@ -161,22 +172,23 @@ data:
   API_KEY: <base64-encoded-api-key>
 ```
 
-シークレットをクラスターに適用します：
+シークレットをクラスタに適用します：
 
 ```shell
 kubectl apply -f secrets.yaml
 ```
 
-#### Creating a custom secret {#creating-a-custom-secret}
+#### カスタムシークレットの作成 {#creating-a-custom-secret}
 
-好みで、カスタムのKubernetesシークレットを手動で作成できます：
+必要に応じて、Kubernetesシークレットを手動で作成することもできます：
 
 ```shell
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
 
-#### Referencing a secret {#referencing-a-secret}
+
+#### シークレットの参照 {#referencing-a-secret}
 
 `values.yaml`でシークレットを参照するには：
 
@@ -191,23 +203,27 @@ hyperdx:
 
 </VerticalStepper>
 
-## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-ClickHouse Cloudを使用する場合、HelmチャートでデプロイされたClickHouseインスタンスを無効にし、Cloudの資格情報を指定します：
+## ClickHouse Cloudの使用 {#using-clickhouse-cloud}
+
+ClickHouse Cloudを使用する場合は、HelmチャートによってデプロイされたClickHouseインスタンスを無効化し、Cloudの認証情報を指定します:
+
 
 ```shell
-
-# specify ClickHouse Cloud credentials
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
+# ClickHouse Cloud の認証情報を指定する
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # 完全な https URL
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-
-
-# how to overwrite default connection
-helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
 ```
 
-代わりに、`values.yaml`ファイルを使用します：
+
+# デフォルト接続設定を上書きする方法
+
+helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
+
+````
+
+または、`values.yaml`ファイルを使用します:
 
 ```yaml
 clickhouse:
@@ -226,92 +242,96 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "External ClickHouse",
+        "name": "外部ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
-        "username": "your-username",
-        "password": "your-password"
+        "username": "あなたのユーザー名",
+        "password": "あなたのパスワード"
       }
     ]
-```
+````
+
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
-
-# or if installed...
-
+# またはインストール済みの場合...
 # helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-## Production notes {#production-notes}
 
-デフォルトでは、このチャートはClickHouseとOTelコレクタもインストールします。ただし、プロダクション環境では、ClickHouseとOTelコレクタを別々に管理することをお勧めします。
+## 本番環境での注意事項 {#production-notes}
 
-ClickHouseとOTelコレクタを無効にするには、次の値を設定します：
+デフォルトでは、このチャートはClickHouseとOTelコレクターもインストールします。ただし、本番環境では、ClickHouseとOTelコレクターを別々に管理することを推奨します。
+
+ClickHouseとOTelコレクターを無効にするには、以下の値を設定します:
 
 ```shell
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
 ```
 
-## Task configuration {#task-configuration}
 
-デフォルトでは、チャートにはcronjobとして設定された1つのタスクがあります。これはアラートが発生すべきかどうかを確認します。その設定オプションは以下の通りです：
+## タスク設定 {#task-configuration}
 
-| パラメーター | 説明 | デフォルト |
-|-----------|-------------|---------|
-| `tasks.enabled` | クラスターでのcronタスクの有効/無効を設定します。デフォルトでは、HyperDXイメージはプロセス内でcronタスクを実行します。クラスター内の別のcronタスクを使用したい場合はtrueに変更します。 | `false` |
-| `tasks.checkAlerts.schedule` | check-alertsタスクのcronスケジュール | `*/1 * * * *` |
-| `tasks.checkAlerts.resources` | check-alertsタスクのリソース要求と制限 | `values.yaml`参照 |
+デフォルトでは、チャート設定にcronjobとして1つのタスクが存在し、アラートを発火すべきかどうかをチェックする役割を担います。以下はその設定オプションです:
 
-## Upgrading the chart {#upgrading-the-chart}
+| パラメータ                     | 説明                                                                                                                                                                         | デフォルト           |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `tasks.enabled`               | クラスタ内のcronタスクを有効化/無効化します。デフォルトでは、HyperDXイメージはプロセス内でcronタスクを実行します。クラスタ内で別個のcronタスクを使用したい場合はtrueに変更してください。 | `false`           |
+| `tasks.checkAlerts.schedule`  | check-alertsタスクのcronスケジュール                                                                                                                                             | `*/1 * * * *`     |
+| `tasks.checkAlerts.resources` | check-alertsタスクのリソース要求と制限                                                                                                                              | `values.yaml`を参照 |
 
-新しいバージョンにアップグレードするには：
+
+## チャートのアップグレード {#upgrading-the-chart}
+
+新しいバージョンにアップグレードする場合:
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-利用可能なチャートバージョンを確認するには：
+利用可能なチャートバージョンを確認する場合:
 
 ```shell
 helm search repo hyperdx
 ```
 
-## Uninstalling HyperDX {#uninstalling-hyperdx}
 
-デプロイメントを削除するには：
+## HyperDXのアンインストール {#uninstalling-hyperdx}
+
+デプロイメントを削除するには:
 
 ```shell
 helm uninstall my-hyperdx
 ```
 
-これにより、リリースに関連付けられたすべてのリソースが削除されますが、永続データ（ある場合）は残る可能性があります。
+これにより、リリースに関連付けられたすべてのリソースが削除されますが、永続データ(存在する場合)は残ることがあります。
 
-## Troubleshooting {#troubleshooting}
 
-### Checking logs {#checking-logs}
+## トラブルシューティング {#troubleshooting}
+
+### ログの確認 {#checking-logs}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=hdx-oss-v2
 ```
 
-### Debugging a failed install {#debugging-a-failed-instance}
+### インストール失敗のデバッグ {#debugging-a-failed-instance}
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2 --debug --dry-run
 ```
 
-### Verifying deployment {#verifying-deployment}
+### デプロイメントの検証 {#verifying-deployment}
 
 ```shell
 kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
 ```
 
-<JSONSupport/>
+<JSONSupport />
 
-ユーザーは、次の環境変数をパラメーターまたは`values.yaml`を介して設定できます。例えば、
+ユーザーはこれらの環境変数をパラメータまたは `values.yaml` のいずれかで設定できます。例:
 
-*values.yaml*
+_values.yaml_
 
 ```yaml
 hyperdx:
@@ -327,7 +347,7 @@ otel:
       value: "--feature-gates=clickhouse.json"
 ```
 
-または`--set`経由で：
+または `--set` 経由で:
 
 ```shell
 helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \

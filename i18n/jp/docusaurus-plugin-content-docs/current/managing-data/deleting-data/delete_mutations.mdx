@@ -1,18 +1,19 @@
 ---
-'slug': '/managing-data/delete_mutations'
-'sidebar_label': '削除変異'
-'title': '削除変異'
-'hide_title': false
-'description': 'ページは削除変異について説明しています - テーブルデータを削除によって操作するALTER クエリ'
-'doc_type': 'reference'
+slug: /managing-data/delete_mutations
+sidebar_label: 'Delete mutations'
+title: '削除ミューテーション'
+hide_title: false
+description: '削除を通じてテーブルデータを操作する ALTER クエリについて説明するページ'
+keywords: ['delete mutations', 'ALTER TABLE DELETE', 'data mutations', 'data parts rewrite', 'ReplacingMergeTree']
+doc_type: 'reference'
 ---
 
-import DeleteMutations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/delete.md';
-
-Delete mutations refers to `ALTER` クエリで、テーブルデータを削除する操作を行います。特に `ALTER TABLE DELETE` のようなクエリです。このようなクエリを実行すると、データ部分の新しい変異バージョンが生成されます。これは、これらのステートメントがミューテーションの前に挿入されたすべてのデータのために全体のデータ部分の書き直しを引き起こすことを意味し、大量の書き込みリクエストにつながります。
+削除ミューテーションとは、削除によってテーブルデータを操作する `ALTER` クエリを指します。代表的なものは `ALTER TABLE DELETE` などのクエリです。このようなクエリを実行すると、データパーツの新しいミューテーション後バージョンが生成されます。これは、そのミューテーションより前に挿入されたすべてのデータについて、データパーツ全体が書き換えられることを意味し、大量の書き込みリクエストにつながります。
 
 :::info
-削除を行う場合、デフォルトの MergeTree テーブルエンジンの代わりに、[ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) のような専門的なテーブルエンジンを使用することで、大量の書き込みリクエストを回避できます。
+削除処理については、デフォルトの MergeTree テーブルエンジンの代わりに [ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) といった専用テーブルエンジンを使用することで、このような大量の書き込みリクエストを回避できます。
 :::
 
-<DeleteMutations/>
+import DeleteMutations from '@site/docs/sql-reference/statements/alter/delete.md';
+
+<DeleteMutations />

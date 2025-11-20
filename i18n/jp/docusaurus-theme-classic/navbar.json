@@ -1,6 +1,6 @@
 {
   "logo.alt": {
-    "message": "クリックハウス",
-    "description": "The alt text of navbar logo"
+    "message": "ClickHouse",
+    "description": "ナビゲーションバーのロゴ用代替テキスト"
   }
 }

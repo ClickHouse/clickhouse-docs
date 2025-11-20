@@ -1,17 +1,16 @@
 ---
-'slug': '/guides/developer/cascading-materialized-views'
-'title': 'カスケード マテリアライズド ビュー'
-'description': 'ソース テーブルから複数の Materialized View を使用する方法。'
-'keywords':
-- 'materialized view'
-- 'aggregation'
-'doc_type': 'guide'
+slug: /guides/developer/cascading-materialized-views
+title: 'カスケードマテリアライズドビュー'
+description: '1つのソーステーブルから複数のマテリアライズドビューを利用する方法。'
+keywords: ['materialized view', 'aggregation']
+doc_type: 'guide'
 ---
 
 
-# カスケード マテリアライズド ビュー
 
-この例では、マテリアライズド ビューを作成し、次に1つ目のマテリアライズド ビューに対して2つ目のマテリアライズド ビューをカスケードする方法を示します。このページでは、その方法、多くの可能性、および制限について説明します。異なるユースケースは、2つ目のマテリアライズド ビューをソースとして使用することで、マテリアライズド ビューを作成することによって対応できます。
+# カスケード型マテリアライズドビュー
+
+この例では、まずマテリアライズドビューを作成し、そのうえで 2 つ目のマテリアライズドビューを最初のビューに対してカスケードさせる方法を示します。このページでは、その手順、多様な活用パターン、および制約について説明します。さまざまなユースケースに対して、2 つ目のマテリアライズドビューをソースとして使用するマテリアライズドビューを作成することで対応できます。
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -19,24 +18,26 @@
 
 例:
 
-特定のドメイン名の時間ごとのビュー数を持つ偽のデータセットを使用します。
+ドメイン名のグループごとに、1 時間あたりのビュー数を持つ架空のデータセットを使用します。
 
-私たちの目標
+目的
 
-1. 各ドメイン名に対して、月ごとに集計されたデータが必要です。
-2. 各ドメイン名に対して、年ごとに集計されたデータも必要です。
+1. 各ドメイン名について、月ごとに集約されたデータが必要です。
+2. 各ドメイン名について、年ごとに集約されたデータも必要です。
 
-これらのオプションのいずれかを選択できます:
+次のいずれかの方法を選択できます:
 
-- SELECT リクエスト中にデータを読み込み、集計するクエリを書く
-- データを新しいフォーマットに変換するために、取り込み時に準備する
-- 特定の集計に向けて取り込み時にデータを準備する。
+- `SELECT` 実行時にデータを読み取りながら集約するクエリを書く
+- 取り込み時にデータを新しい形式に整形する
+- 取り込み時にデータを特定の集約結果の形に整形する
 
-マテリアライズド ビューを使用してデータを準備することで、ClickHouse が処理するデータと計算の量を制限でき、SELECT リクエストを高速化することができます。
+マテリアライズドビューを使ってあらかじめデータを準備しておくことで、ClickHouse が処理すべきデータ量と計算量を抑えられ、`SELECT` リクエストを高速化できます。
 
-## マテリアライズド ビューのためのソーステーブル {#source-table-for-the-materialized-views}
 
-ソーステーブルを作成します。私たちの目標は、個々の行ではなく集計データを報告することなので、データを解析し、情報をマテリアライズド ビューに渡し、実際の入ってくるデータを破棄します。これにより、私たちの目標が達成され、ストレージの節約にもなりますので、`Null` テーブルエンジンを使用します。
+
+## マテリアライズドビューのソーステーブル {#source-table-for-the-materialized-views}
+
+ソーステーブルを作成します。今回の目的は個々の行ではなく集約データのレポート作成であるため、データを解析してマテリアライズドビューに情報を渡した後、実際の受信データは破棄することができます。これにより目的を達成しつつストレージを節約できるため、`Null`テーブルエンジンを使用します。
 
 ```sql
 CREATE DATABASE IF NOT EXISTS analytics;
@@ -53,12 +54,13 @@ ENGINE = Null
 ```
 
 :::note
-Null テーブルにマテリアライズド ビューを作成できます。そのため、テーブルに書き込まれたデータはビューに影響を及ぼしますが、元の生データは依然として破棄されます。
+Nullテーブル上にマテリアライズドビューを作成することができます。テーブルに書き込まれたデータはビューに反映されますが、元の生データは破棄されます。
 :::
 
-## 月次集計テーブルとマテリアライズド ビュー {#monthly-aggregated-table-and-materialized-view}
 
-最初のマテリアライズド ビューでは、`Target` テーブルを作成する必要があります。この例では、`analytics.monthly_aggregated_data` とし、月ごとおよびドメイン名ごとのビューの合計を保存します。
+## 月次集計テーブルとマテリアライズドビュー {#monthly-aggregated-table-and-materialized-view}
+
+最初のマテリアライズドビューでは、`Target`テーブルを作成する必要があります。この例では`analytics.monthly_aggregated_data`を作成し、月とドメイン名ごとのビュー数の合計を格納します。
 
 ```sql
 CREATE TABLE analytics.monthly_aggregated_data
@@ -71,7 +73,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY (domain_name, month)
 ```
 
-データをターゲットテーブルに転送するマテリアライズド ビューは次のようになります。
+ターゲットテーブルへデータを転送するマテリアライズドビューは次のようになります:
 
 ```sql
 CREATE MATERIALIZED VIEW analytics.monthly_aggregated_data_mv
@@ -87,11 +89,12 @@ GROUP BY
     month
 ```
 
-## 年次集計テーブルとマテリアライズド ビュー {#yearly-aggregated-table-and-materialized-view}
 
-次に、前述のターゲットテーブル `monthly_aggregated_data` にリンクされた2つ目のマテリアライズド ビューを作成します。
+## 年次集計テーブルとマテリアライズドビュー {#yearly-aggregated-table-and-materialized-view}
 
-まず、各ドメイン名に対して年ごとに集計されたビューの合計を保存する新しいターゲットテーブルを作成します。
+次に、前のターゲットテーブル `monthly_aggregated_data` にリンクする2つ目のマテリアライズドビューを作成します。
+
+まず、各ドメイン名について年単位で集計されたビュー数の合計を格納する新しいターゲットテーブルを作成します。
 
 ```sql
 CREATE TABLE analytics.year_aggregated_data
@@ -104,11 +107,11 @@ ENGINE = SummingMergeTree()
 ORDER BY (domain_name, year)
 ```
 
-このステップがカスケードを定義します。`FROM` ステートメントは `monthly_aggregated_data` テーブルを使用します。これは、データフローが次のようになることを意味します。
+このステップでカスケードを定義します。`FROM` 句で `monthly_aggregated_data` テーブルを使用するため、データフローは次のようになります:
 
-1. データが `hourly_data` テーブルに来ます。
-2. ClickHouse は受け取ったデータを最初のマテリアライズド ビュー `monthly_aggregated_data` テーブルに転送します。
-3. 最後に、ステップ2で受け取ったデータが `year_aggregated_data` に転送されます。
+1. データが `hourly_data` テーブルに到着します。
+2. ClickHouseは受信したデータを最初のマテリアライズドビュー `monthly_aggregated_data` テーブルに転送します。
+3. 最後に、ステップ2で受信したデータが `year_aggregated_data` に転送されます。
 
 ```sql
 CREATE MATERIALIZED VIEW analytics.year_aggregated_data_mv
@@ -125,16 +128,17 @@ GROUP BY
 ```
 
 :::note
-マテリアライズド ビューを使用する際の一般的な誤解は、テーブルからデータが読み取られることです。これが `Materialized views` の動作方式ではありません。転送されるデータは挿入されたブロックであり、テーブル内の最終結果ではありません。
+マテリアライズドビューを使用する際のよくある誤解は、データがテーブルから読み取られるというものです。しかし、`マテリアライズドビュー` はそのような動作をしません。転送されるデータは挿入されたブロックであり、テーブル内の最終結果ではありません。
 
-この例では、`monthly_aggregated_data` で使用されるエンジンが CollapsingMergeTree と仮定します。2つ目のマテリアライズド ビュー `year_aggregated_data_mv` に転送されるデータは、崩壊したテーブルの最終結果ではなく、`SELECT ... GROUP BY` で定義されたフィールドを持つデータブロックを転送します。
+この例で、`monthly_aggregated_data` で使用されているエンジンがCollapsingMergeTreeであると仮定しましょう。2つ目のマテリアライズドビュー `year_aggregated_data_mv` に転送されるデータは、折りたたまれたテーブルの最終結果ではなく、`SELECT ... GROUP BY` で定義されたフィールドを持つデータブロックになります。
 
-CollapsingMergeTree、ReplacingMergeTree、または SummingMergeTree を使用し、カスケード マテリアライズド ビューを作成する予定がある場合は、ここで述べる制限を理解する必要があります。
+CollapsingMergeTree、ReplacingMergeTree、またはSummingMergeTreeを使用していて、カスケードマテリアライズドビューを作成する予定がある場合は、ここで説明されている制限事項を理解しておく必要があります。
 :::
+
 
 ## サンプルデータ {#sample-data}
 
-データを挿入してカスケード マテリアライズド ビューをテストする時が来ました:
+それでは、データを挿入してカスケードマテリアライズドビューをテストしてみましょう:
 
 ```sql
 INSERT INTO analytics.hourly_data (domain_name, event_time, count_views)
@@ -144,7 +148,7 @@ VALUES ('clickhouse.com', '2019-01-01 10:00:00', 1),
        ('clickhouse.com', '2020-01-01 00:00:00', 6);
 ```
 
-`analytics.hourly_data` の内容を SELECT すると、テーブルエンジンが `Null` であるため、データは処理されましたが次のようになります。
+`analytics.hourly_data`の内容をSELECTすると、テーブルエンジンが`Null`であるため以下のような結果が表示されますが、データは処理されています。
 
 ```sql
 SELECT * FROM analytics.hourly_data
@@ -156,14 +160,15 @@ Ok.
 0 rows in set. Elapsed: 0.002 sec.
 ```
 
-小さなデータセットを使用して、期待される結果とを比較して確認できるようにしています。小さなデータセットでフローが正しいことを確認できたら、大量のデータに移行することができます。
+ここでは小規模なデータセットを使用して、期待する結果と比較しながら動作を確認できるようにしています。小規模なデータセットで処理フローが正しく動作することを確認したら、大量のデータでの運用に移行できます。
+
 
 ## 結果 {#results}
 
-ターゲットテーブルで `sumCountViews` フィールドを選択してクエリを実行すると、バイナリ表現が表示される場合があります (一部の端末では) 。値が数値としてではなく、AggregateFunction タイプとして保存されるためです。
-集計の最終結果を取得するには、`-Merge` サフィックスを使用する必要があります。
+`sumCountViews`フィールドを選択してターゲットテーブルをクエリすると、（一部のターミナルでは）バイナリ表現が表示されます。これは、値が数値ではなくAggregateFunction型として格納されているためです。
+集計の最終結果を取得するには、`-Merge`サフィックスを使用する必要があります。
 
-次のクエリで AggregateFunction に保存されている特殊文字を確認できます:
+次のクエリで、AggregateFunctionに格納されている特殊文字を確認できます：
 
 ```sql
 SELECT sumCountViews FROM analytics.monthly_aggregated_data
@@ -179,7 +184,7 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 3 rows in set. Elapsed: 0.003 sec.
 ```
 
-代わりに、`Merge` サフィックスを使用して `sumCountViews` 値を取得してみましょう:
+代わりに、`Merge`サフィックスを使用して`sumCountViews`の値を取得してみましょう：
 
 ```sql
 SELECT
@@ -195,7 +200,7 @@ FROM analytics.monthly_aggregated_data;
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-`AggregatingMergeTree` では、`AggregateFunction` を `sum` として定義したため、`sumMerge` を使用できます。`AggregateFunction` に対して `avg` 関数を使用する場合は `avgMerge` を使用することになり、同様に進めます。
+`AggregatingMergeTree`では`AggregateFunction`を`sum`として定義しているため、`sumMerge`を使用できます。`AggregateFunction`に対して`avg`関数を使用する場合は`avgMerge`を使用し、同様に他の関数についても対応するMerge関数を使用します。
 
 ```sql
 SELECT
@@ -208,9 +213,9 @@ GROUP BY
     month
 ```
 
-これで、マテリアライズド ビューが私たちの定義した目標に応えているか確認できます。
+これで、マテリアライズドビューが定義した目標を満たしていることを確認できます。
 
-ターゲットテーブル `monthly_aggregated_data` にデータが保存されたので、各ドメイン名の月ごとに集計されたデータを取得できます。
+ターゲットテーブル`monthly_aggregated_data`にデータが格納されたので、各ドメイン名について月ごとに集計されたデータを取得できます：
 
 ```sql
 SELECT
@@ -233,7 +238,7 @@ GROUP BY
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-各ドメイン名の年ごとに集計されたデータは次のとおりです。
+各ドメイン名について年ごとに集計されたデータ：
 
 ```sql
 SELECT
@@ -255,11 +260,12 @@ GROUP BY
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-## 複数のソーステーブルを単一のターゲットテーブルに組み合わせる {#combining-multiple-source-tables-to-single-target-table}
 
-マテリアライズド ビューは、複数のソーステーブルを同じ宛先テーブルに組み合わせるためにも使用できます。これは、`UNION ALL` ロジックに似たマテリアライズド ビューを作成するのに便利です。
+## 複数のソーステーブルを単一のターゲットテーブルに統合する {#combining-multiple-source-tables-to-single-target-table}
 
-まず、異なるメトリックの異なるセットを表す2つのソーステーブルを作成します。
+マテリアライズドビューを使用して、複数のソーステーブルを同一の宛先テーブルに統合することもできます。これは、`UNION ALL` ロジックに類似したマテリアライズドビューを作成する際に有用です。
+
+まず、異なるメトリクスセットを表す2つのソーステーブルを作成します:
 
 ```sql
 CREATE TABLE analytics.impressions
@@ -277,7 +283,7 @@ CREATE TABLE analytics.clicks
 ;
 ```
 
-次に、メトリックの結合セットを持つ `Target` テーブルを作成します。
+次に、統合されたメトリクスセットを持つ `Target` テーブルを作成します:
 
 ```sql
 CREATE TABLE analytics.daily_overview
@@ -289,7 +295,7 @@ CREATE TABLE analytics.daily_overview
 ) ENGINE = AggregatingMergeTree ORDER BY (on_date, domain_name)
 ```
 
-同じ `Target` テーブルを指す2つのマテリアライズド ビューを作成します。欠落している列を明示的に含める必要はありません。
+同じ `Target` テーブルを指す2つのマテリアライズドビューを作成します。欠落しているカラムを明示的に含める必要はありません:
 
 ```sql
 CREATE MATERIALIZED VIEW analytics.daily_impressions_mv
@@ -299,7 +305,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
-    0 clicks         ---<<<--- if you omit this, it will be the same 0
+    0 clicks         ---<<<--- これを省略しても、同じく0になります
 FROM
     analytics.impressions
 GROUP BY
@@ -314,7 +320,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS clicks,
-    0 impressions    ---<<<--- if you omit this, it will be the same 0
+    0 impressions    ---<<<--- これを省略しても、同じく0になります
 FROM
     analytics.clicks
 GROUP BY
@@ -323,7 +329,7 @@ GROUP BY
 ;
 ```
 
-今、値を挿入すると、その値は `Target` テーブルのそれぞれのコラムに集計されます。
+これで値を挿入すると、それらの値は `Target` テーブルの各カラムに集約されます:
 
 ```sql
 INSERT INTO analytics.impressions (domain_name, event_time)
@@ -340,7 +346,7 @@ VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
 ;
 ```
 
-`Target` テーブル内の結合されたインプレッションとクリック:
+`Target` テーブル内で統合されたインプレッションとクリック:
 
 ```sql
 SELECT
@@ -356,7 +362,7 @@ GROUP BY
 ;
 ```
 
-このクエリは次のような結果を出力するはずです:
+このクエリは次のような出力を返します:
 
 ```response
 ┌────on_date─┬─domain_name────┬─impressions─┬─clicks─┐

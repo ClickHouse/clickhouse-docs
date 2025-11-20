@@ -1,15 +1,17 @@
 ---
-'slug': '/use-cases/observability/clickstack/migration'
-'title': '从其他可观察性解决方案迁移到 ClickStack'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_label': '迁移指南'
-'description': '从其他可观察性解决方案迁移到 ClickStack'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/migration
+title: '从其他可观测性解决方案迁移到 ClickStack'
+pagination_prev: null
+pagination_next: null
+sidebar_label: '迁移指南'
+description: '从其他可观测性解决方案迁移到 ClickStack'
+doc_type: 'guide'
+keywords: ['migrate to ClickStack', 'ClickStack migration guide
+', 'ClickStack migration from Elastic', 'ELK']
 ---
 
-该部分提供了从各种可观察性解决方案迁移到 ClickStack 的全面指南。每个指南都包含详细的说明，指导您在保持操作持续性的同时过渡数据、代理和工作流程。
+本节提供从多种可观测性解决方案迁移到 ClickStack 的完整指南。每篇指南都包含迁移数据、Agent 和工作流的详细步骤，同时确保业务运行不中断。
 
-| 技术 | 描述 |
+| Technology | Description |
 |------------|-------------|
-| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | 完整的指南，涵盖从 Elastic Stack 迁移到 ClickStack 的数据迁移、代理过渡和搜索功能 |
+| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | 从 Elastic Stack 迁移到 ClickStack 的完整指南，涵盖数据迁移、Agent 迁移以及搜索功能 |

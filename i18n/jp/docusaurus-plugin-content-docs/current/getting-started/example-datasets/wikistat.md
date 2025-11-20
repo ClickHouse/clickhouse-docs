@@ -1,20 +1,22 @@
 ---
-'description': 'WikiStat データセットを探索してください。0.5兆レコードが含まれています。'
-'sidebar_label': 'WikiStat'
-'slug': '/getting-started/example-datasets/wikistat'
-'title': 'WikiStat'
-'doc_type': 'reference'
+description: '0.5 兆件のレコードを含む WikiStat データセットを探索します。'
+sidebar_label: 'WikiStat'
+slug: /getting-started/example-datasets/wikistat
+title: 'WikiStat'
+doc_type: 'guide'
+keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews']
 ---
 
-データセットには0.5兆レコードが含まれています。
+このデータセットには 0.5 兆件のレコードが含まれています。
 
-FOSDEM 2023のビデオをご覧ください: https://www.youtube.com/watch?v=JlcI2Vfz_uk
+FOSDEM 2023 の動画をご覧ください: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-そしてプレゼンテーション: https://presentations.clickhouse.com/fosdem2023/
+発表スライドはこちら: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
-データソース: https://dumps.wikimedia.org/other/pageviews/
+データソース: [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
-リンクのリストを取得する:
+リンク一覧の取得:
+
 ```shell
 for i in {2015..2023}; do
   for j in {01..12}; do
@@ -25,13 +27,14 @@ for i in {2015..2023}; do
 done | sort | uniq | tee links.txt
 ```
 
-データをダウンロードする:
+データのダウンロード：
+
 ```shell
 sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikimedia.org/other/pageviews/\1/\1-\2/\0!' \
   links.txt | xargs -P3 wget --continue
 ```
 
-（約3日かかります）
+(約3日かかります)
 
 テーブルを作成する:
 
@@ -48,7 +51,7 @@ ENGINE = MergeTree
 ORDER BY (path, time);
 ```
 
-データをロードする:
+データのロード：
 
 ```shell
 clickhouse-local --query "
@@ -65,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-またはクリーンなデータをロードする:
+または、クレンジング済みデータを読み込む場合:
 
 ```sql
 INSERT INTO wikistat WITH

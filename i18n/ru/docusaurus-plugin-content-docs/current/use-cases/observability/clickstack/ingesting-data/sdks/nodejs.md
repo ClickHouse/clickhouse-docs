@@ -1,42 +1,47 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nodejs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 5
-'description': 'Node.js SDK для ClickStack - Стек наблюдаемости ClickHouse'
-'title': 'Node.js'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nodejs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 5
+description: 'Node.js SDK для ClickStack — стека наблюдаемости ClickHouse'
+title: 'Node.js'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack использует стандарт OpenTelemetry для сбора телеметрических данных (журналы, метрики, трассировки и исключения). Трассировки автоматически генерируются с помощью автоматического инструментирования, поэтому ручное инструментирование не требуется для получения ценности от трассировки.
+ClickStack использует стандарт OpenTelemetry для сбора телеметрических данных (логов, метрик,
+трейсов и исключений). Трейсы автоматически создаются с помощью автоматической инструментации, поэтому ручная
+инструментация не требуется, чтобы извлечь пользу из трассировки.
 
-Этот гид охватывает:
+В это руководство входят:
 
-- **Журналы**
-- **Метрики**
-- **Трассировки**
-- **Исключения**
+* **Логи**
+* **Метрики**
+* **Трейсы**
+* **Исключения**
+
 
 ## Начало работы {#getting-started}
 
 ### Установка пакета инструментирования HyperDX OpenTelemetry {#install-hyperdx-opentelemetry-instrumentation-package}
 
-Используйте следующую команду для установки [пакета ClickStack OpenTelemetry](https://www.npmjs.com/package/@hyperdx/node-opentelemetry).
+Используйте следующую команду, чтобы установить [пакет ClickStack OpenTelemetry](https://www.npmjs.com/package/@hyperdx/node-opentelemetry).
 
 <Tabs groupId="install">
 <TabItem value="npm" label="NPM" default>
 
 ```shell
-npm install @hyperdx/node-opentelemetry 
+npm install @hyperdx/node-opentelemetry
 ```
 
 </TabItem>
 <TabItem value="yarn" label="Yarn" default>
 
 ```shell
-yarn add @hyperdx/node-opentelemetry 
+yarn add @hyperdx/node-opentelemetry
 ```
 
 </TabItem>
@@ -44,215 +49,224 @@ yarn add @hyperdx/node-opentelemetry
 
 ### Инициализация SDK {#initializin-the-sdk}
 
-Чтобы инициализировать SDK, вам нужно вызвать функцию `init` в начале точки входа вашего приложения.
+Чтобы инициализировать SDK, необходимо вызвать функцию `init` в начале файла — точки входа вашего приложения.
 
 <Tabs groupId="initialize">
 <TabItem value="require" label="require" default>
 
 ```javascript
-const HyperDX = require('@hyperdx/node-opentelemetry');
+const HyperDX = require("@hyperdx/node-opentelemetry")
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-service'
-});
+  apiKey: "YOUR_INGESTION_API_KEY",
+  service: "my-service"
+})
 ```
 
 </TabItem>
 <TabItem value="import" label="import">
 
 ```javascript
-import * as HyperDX from '@hyperdx/node-opentelemetry';
+import * as HyperDX from "@hyperdx/node-opentelemetry"
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-service'
-});
+  apiKey: "YOUR_INGESTION_API_KEY",
+  service: "my-service"
+})
 ```
 
 </TabItem>
 </Tabs>
 
-Это автоматически захватит трассировку, метрики и журналы вашего приложения на Node.js.
+Это позволит автоматически собирать трассировки, метрики и логи из вашего Node.js‑приложения.
 
-### Настройка сбора журналов {#setup-log-collection}
+### Настройка сбора логов {#setup-log-collection}
 
-По умолчанию журналы `console.*` собираются автоматически. Если вы используете логгер
-такой как `winston` или `pino`, вам нужно будет добавить транспорт к вашему логгеру, чтобы
-отправить журналы в ClickStack. Если вы используете другой тип логгера,
-[свяжитесь с нами](mailto:support@clickhouse.com) или изучите одно из наших интеграций
-платформы, если это применимо (например, [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes)).
+По умолчанию логи `console.*` собираются автоматически. Если вы используете логгер
+вроде `winston` или `pino`, необходимо добавить в логгер транспорт,
+чтобы отправлять логи в ClickStack. Если вы используете другой тип логгера,
+[свяжитесь с нами](mailto:support@clickhouse.com) или изучите одну из наших платформенных
+интеграций, если это применимо (например, [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes)).
 
 <Tabs groupId="logging">
 <TabItem value="Winston" label="Winston" default>
 
-Если вы используете `winston` в качестве вашего логгера, вам нужно будет добавить следующий транспорт к вашему логгеру.
+Если вы используете `winston` в качестве логгера, вам нужно добавить в него следующий транспорт.
 
 ```typescript
-import winston from 'winston';
-import * as HyperDX from '@hyperdx/node-opentelemetry';
+import winston from "winston"
+import * as HyperDX from "@hyperdx/node-opentelemetry"
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
   transports: [
     new winston.transports.Console(),
-    HyperDX.getWinstonTransport('info', { // Send logs info and above
-      detectResources: true,
-    }),
-  ],
-});
+    HyperDX.getWinstonTransport("info", {
+      // Send logs info and above
+      detectResources: true
+    })
+  ]
+})
 
-export default logger;
+export default logger
 ```
 
 </TabItem>
 <TabItem value="Pino" label="Pino">
 
-Если вы используете `pino` в качестве вашего логгера, вам нужно будет добавить следующий транспорт к вашему логгеру и указать `mixin` для корреляции журналов с трассировками.
+Если вы используете `pino` в качестве логгера, вам нужно добавить в него следующий транспорт и указать `mixin`, чтобы связывать логи с трассировками.
 
 ```typescript
-import pino from 'pino';
-import * as HyperDX from '@hyperdx/node-opentelemetry';
+import pino from "pino"
+import * as HyperDX from "@hyperdx/node-opentelemetry"
 
 const logger = pino(
-    pino.transport({
+  pino.transport({
     mixin: HyperDX.getPinoMixinFunction,
     targets: [
-        HyperDX.getPinoTransport('info', { // Send logs info and above
-        detectResources: true,
-        }),
-    ],
-    }),
-);
+      HyperDX.getPinoTransport("info", {
+        // Send logs info and above
+        detectResources: true
+      })
+    ]
+  })
+)
 
-export default logger;
+export default logger
 ```
 
 </TabItem>
 
 <TabItem value="console.log" label="console.log">
-По умолчанию методы `console.*` поддерживаются из коробки. Дополнительная конфигурация не требуется. 
+По умолчанию методы `console.*` поддерживаются «из коробки». Дополнительная настройка не требуется.
 
-Вы можете отключить это, установив переменную окружения `HDX_NODE_CONSOLE_CAPTURE` в 0 или передав `consoleCapture: false` в функцию `init`.
+Вы можете отключить это, установив переменную окружения `HDX_NODE_CONSOLE_CAPTURE` в значение 0 или передав `consoleCapture: false` в функцию `init`.
 
 </TabItem>
 </Tabs>
 
 ### Настройка сбора ошибок {#setup-error-collection}
 
-SDK ClickStack может автоматически захватывать необработанные исключения и ошибки в вашем приложении с полным стек-трейсом и контекстом кода. 
+SDK ClickStack может автоматически собирать необработанные исключения и ошибки в вашем приложении с полным стеком вызовов и контекстом кода.
 
-Чтобы включить это, вам нужно добавить следующий код в конце вашего промежуточного программного обеспечения обработки ошибок приложения или вручную захватить исключения с помощью функции `recordException`.
+Чтобы включить эту возможность, необходимо добавить следующий код в конец middleware обработки ошибок вашего приложения или вручную перехватывать исключения с помощью функции `recordException`.
 
 <Tabs groupId="setup">
 <TabItem value="Express" label="Express" default>
 
 ```javascript
-const HyperDX = require('@hyperdx/node-opentelemetry');
+const HyperDX = require("@hyperdx/node-opentelemetry")
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-service'
-});
-const app = express();
+  apiKey: "YOUR_INGESTION_API_KEY",
+  service: "my-service"
+})
+const app = express()
 
-// Add your routes, etc.
+// Добавьте ваши маршруты и т. п.
 
-// Add this after all routes,
-// but before any and other error-handling middlewares are defined
-HyperDX.setupExpressErrorHandler(app);
+// Добавьте это после всех маршрутов,
+// но до определения любых других middleware для обработки ошибок
+HyperDX.setupExpressErrorHandler(app)
 
-app.listen(3000);
+app.listen(3000)
 ```
+
 
 </TabItem>
 <TabItem value="Koa" label="Koa">
 
 ```javascript
-const Koa = require("koa");
-const Router = require("@koa/router");
-const HyperDX = require('@hyperdx/node-opentelemetry');
+const Koa = require("koa")
+const Router = require("@koa/router")
+const HyperDX = require("@hyperdx/node-opentelemetry")
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
-    service: 'my-service'
-});
+  apiKey: "ВАШ_API_КЛЮЧ_ДЛЯ_ПРИЕМА_ДАННЫХ",
+  service: "my-service"
+})
 
-const router = new Router();
-const app = new Koa();
+const router = new Router()
+const app = new Koa()
 
-HyperDX.setupKoaErrorHandler(app);
+HyperDX.setupKoaErrorHandler(app)
 
-// Add your routes, etc.
+// Добавьте свои маршруты и т. д.
 
-app.listen(3030);
+app.listen(3030)
 ```
 
 </TabItem>
-<TabItem value="Manual" label="Manual">
+<TabItem value="Manual" label="Вручную">
 
 ```javascript
-const HyperDX = require('@hyperdx/node-opentelemetry');
+const HyperDX = require("@hyperdx/node-opentelemetry")
 
 function myErrorHandler(error, req, res, next) {
-    // This can be used anywhere in your application
-    HyperDX.recordException(error);
+  // Можно использовать в любом месте приложения
+  HyperDX.recordException(error)
 }
 ```
 
 </TabItem>
 </Tabs>
 
+
 ## Устранение неполадок {#troubleshooting}
 
-Если у вас возникли проблемы с SDK, вы можете включить подробное логирование, установив
-переменную окружения `OTEL_LOG_LEVEL` в `debug`.
+Если у вас возникли проблемы с SDK, можно включить подробное логирование, установив
+переменную окружения `OTEL_LOG_LEVEL` в значение `debug`.
 
 ```shell
 export OTEL_LOG_LEVEL=debug
 ```
 
+
 ## Расширенная конфигурация инструментирования {#advanced-instrumentation-configuration}
 
-### Захват консольных журналов {#capture-console-logs}
+### Захват логов консоли {#capture-console-logs}
 
-По умолчанию SDK ClickStack будет захватывать консольные журналы. Вы можете отключить это, установив 
-переменную окружения `HDX_NODE_CONSOLE_CAPTURE` в 0.
+По умолчанию ClickStack SDK захватывает логи консоли. Вы можете отключить эту функцию,
+установив переменную окружения `HDX_NODE_CONSOLE_CAPTURE` в значение 0.
 
 ```sh copy
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-### Присоединение информации о пользователе или метаданных {#attach-user-information-or-metadata}
+### Добавление информации о пользователе или метаданных {#attach-user-information-or-metadata}
 
-Чтобы легко пометить все события, связанные с данным атрибутом или идентификатором (например, идентификатор пользователя или электронная почта), вы можете вызвать функцию `setTraceAttributes`, которая пометит каждый
-журнал/спан, связанный с текущей трассировкой, после вызова с объявленными атрибутами. Рекомендуется вызывать эту функцию как можно раньше в пределах данного запроса/трассировки (например, как можно раньше в стеке промежуточного программного обеспечения Express).
+Чтобы легко пометить все события, связанные с определенным атрибутом или идентификатором (например, ID пользователя
+или email), вы можете вызвать функцию `setTraceAttributes`, которая пометит каждый
+лог/span, связанный с текущей трассировкой после вызова, объявленными
+атрибутами. Рекомендуется вызывать эту функцию как можно раньше в рамках
+данного запроса/трассировки (например, как можно раньше в стеке middleware Express).
 
-Это удобный способ убедиться, что все журналы/спаны автоматически помечены
-правильными идентификаторами для дальнейшего поиска, вместо того чтобы вручную
-помечать и передавать идентификаторы самим.
+Это удобный способ гарантировать, что все логи/span автоматически помечаются
+правильными идентификаторами для последующего поиска, вместо необходимости вручную
+помечать и распространять идентификаторы самостоятельно.
 
-`userId`, `userEmail`, `userName` и `teamName` будут заполнять интерфейс сессий
+`userId`, `userEmail`, `userName` и `teamName` заполнят интерфейс сессий
 соответствующими значениями, но могут быть опущены. Любые другие дополнительные значения
 могут быть указаны и использованы для поиска событий.
 
 ```typescript
-import * as HyperDX from '@hyperdx/node-opentelemetry';
+import * as HyperDX from "@hyperdx/node-opentelemetry"
 
 app.use((req, res, next) => {
-  // Get user information from the request...
+  // Получение информации о пользователе из запроса...
 
-  // Attach user information to the current trace
+  // Добавление информации о пользователе к текущей трассировке
   HyperDX.setTraceAttributes({
     userId,
-    userEmail,
-  });
+    userEmail
+  })
 
-  next();
-});
+  next()
+})
 ```
 
-Убедитесь, что вы включили бета-режим, установив переменную окружения `HDX_NODE_BETA_MODE` в 1 или передав `betaMode: true` в функцию `init`, чтобы
-включить атрибуты трассировки.
+Убедитесь, что включен бета-режим, установив переменную окружения `HDX_NODE_BETA_MODE`
+в значение 1 или передав `betaMode: true` в функцию `init` для
+включения атрибутов трассировки.
 
 ```shell
 export HDX_NODE_BETA_MODE=1
@@ -260,21 +274,22 @@ export HDX_NODE_BETA_MODE=1
 
 ### Google Cloud Run {#google-cloud-run}
 
-Если вы запускаете свое приложение на Google Cloud Run, Cloud Trace
-автоматически вставляет заголовки выборки в входящие запросы, в настоящее время
-ограничивая трассировки до выборки 0.1 запроса в секунду для каждой инстанции.
+Если вы запускаете приложение на Google Cloud Run, Cloud Trace
+автоматически внедряет заголовки выборки во входящие запросы, в настоящее время
+ограничивая выборку трассировок до 0,1 запроса в секунду для каждого экземпляра.
 
-Пакет `@hyperdx/node-opentelemetry` по умолчанию перезаписывает скорость выборки на 1.0.
+Пакет `@hyperdx/node-opentelemetry` переопределяет частоту выборки на 1.0 по
+умолчанию.
 
 Чтобы изменить это поведение или настроить другие установки OpenTelemetry, вы
 можете вручную настроить переменные окружения
-`OTEL_TRACES_SAMPLER=parentbased_always_on` и `OTEL_TRACES_SAMPLER_ARG=1`, чтобы
-достигнуть того же результата.
+`OTEL_TRACES_SAMPLER=parentbased_always_on` и `OTEL_TRACES_SAMPLER_ARG=1` для
+достижения того же результата.
 
-Чтобы узнать больше и заставить трассировку конкретных запросов, пожалуйста, обратитесь к
+Для получения дополнительной информации и принудительной трассировки конкретных запросов обратитесь к
 [документации Google Cloud Run](https://cloud.google.com/run/docs/trace).
 
-### Автоинструментированные библиотеки {#auto-instrumented-libraries}
+### Автоматически инструментируемые библиотеки {#auto-instrumented-libraries}
 
 Следующие библиотеки будут автоматически инструментированы (трассированы) SDK:
 
@@ -296,22 +311,22 @@ export HDX_NODE_BETA_MODE=1
 - [`redis`](https://www.npmjs.com/package/redis)
 - [`winston`](https://www.npmjs.com/package/winston)
 
+
 ## Альтернативная установка {#alternative-installation}
 
 ### Запуск приложения с помощью ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
 
-В качестве альтернативы, вы можете автоинструментировать ваше приложение без каких-либо изменений в коде, используя CLI `opentelemetry-instrument` или используя
-флаг Node.js `--require`. Установка CLI открывает более широкий спектр автоинструментированных библиотек и фреймворков.
+Также можно автоматически инструментировать приложение без изменения кода, используя CLI `opentelemetry-instrument` или флаг `--require` Node.js. Установка через CLI обеспечивает доступ к более широкому набору автоматически инструментируемых библиотек и фреймворков.
 
 <Tabs groupId="cli">
-<TabItem value="npx" label="Используя NPX" default>
+<TabItem value="npx" label="Использование NPX" default>
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
-<TabItem value="custom" label="Пользовательская точка входа (например, Nodemon, ts-node и т.д.)">
+<TabItem value="custom" label="Пользовательская точка входа (например, Nodemon, ts-node и т. д.)">
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
@@ -319,38 +334,39 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-no
 
 </TabItem>
 
-<TabItem value="code_import" label="Импорт кода">
+<TabItem value="code_import" label="Импорт в коде">
 
 ```javascript
-// Import this at the very top of the first file loaded in your application
-// You'll still specify your API key via the `HYPERDX_API_KEY` environment variable
-import { initSDK } from '@hyperdx/node-opentelemetry';
+// Импортируйте это в самом начале первого файла, загружаемого в приложении
+// API-ключ по-прежнему указывается через переменную окружения `HYPERDX_API_KEY`
+import { initSDK } from "@hyperdx/node-opentelemetry"
 
 initSDK({
-    consoleCapture: true, // optional, default: true
-    additionalInstrumentations: [], // optional, default: []
-});
+  consoleCapture: true, // опционально, по умолчанию: true
+  additionalInstrumentations: [] // опционально, по умолчанию: []
+})
 ```
 
 </TabItem>
 
 </Tabs>
 
-_Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса в приложении HyperDX, это может быть любое имя, которое вы хотите._
+_Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации сервиса в приложении HyperDX; можно указать любое имя._
 
 ### Включение захвата исключений {#enabling-exception-capturing}
 
-Чтобы включить захват необработанных исключений, вам нужно установить переменную окружения `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` в 1.
+Чтобы включить захват необработанных исключений, установите переменную окружения `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` в значение 1.
 
 ```shell
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
-После этого, чтобы автоматически захватывать исключения из Express, Koa или вручную ловить исключения, следуйте инструкциям в разделе [Настройка сбора ошибок](#setup-error-collection) выше.
+После этого для автоматического захвата исключений из Express, Koa или для ручного перехвата исключений следуйте инструкциям в разделе [Настройка сбора ошибок](#setup-error-collection) выше.
 
-### Автоинструментированные библиотеки {#auto-instrumented-libraries-2}
+### Автоматически инструментируемые библиотеки {#auto-instrumented-libraries-2}
 
-Следующие библиотеки будут автоматически инструментированы (трассированы) с помощью вышеуказанных методов установки:
+Следующие библиотеки будут автоматически инструментированы (трассированы) при использовании указанных выше методов установки:
+
 
 - [`amqplib`](https://www.npmjs.com/package/amqplib)
 - [`AWS Lambda Functions`](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-handler.html)

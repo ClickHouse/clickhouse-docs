@@ -1,50 +1,51 @@
 ---
-'slug': '/use-cases/data-lake/unity-catalog'
-'sidebar_label': 'Unity Catalog'
-'title': 'Unity Catalog'
-'pagination_prev': null
-'pagination_next': null
-'description': 'このガイドでは、ClickHouseとUnity Catalogを使用してS3バケット内のデータをクエリする手順について説明します。'
-'keywords':
-- 'Unity'
-- 'Data Lake'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/unity-catalog
+sidebar_label: 'Unity catalog'
+title: 'Unity カタログ'
+pagination_prev: null
+pagination_next: null
+description: 'このガイドでは、ClickHouse と Unity カタログを使用して
+ S3 バケット内のデータをクエリする方法を順を追って説明します。'
+keywords: ['Unity', 'Data Lake']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<ExperimentalBadge/>
+<BetaBadge />
 
 :::note
-Unity Catalogとの統合は、管理されたテーブルおよび外部テーブルで機能します。
-この統合は現在AWSでのみサポートされています。
+Unity Catalog との連携は、マネージドテーブルと外部テーブルの両方で利用できます。
+この連携は現在、AWS 上でのみサポートされています。
 :::
 
-ClickHouseは、複数のカタログ（Unity、Glue、Polarisなど）との統合をサポートしています。このガイドでは、ClickHouseを使用してDatabricksによって管理されているデータにクエリを実行する手順を説明します。[Unity Catalog](https://www.databricks.com/product/unity-catalog)を使用します。
+ClickHouse は、複数のカタログ（Unity、Glue、Polaris など）との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
 
-Databricksは、ラキハウスに対して複数のデータ形式をサポートしています。ClickHouseを使用すると、Unity CatalogのテーブルにDeltaとIcebergの両方としてクエリを実行できます。
+Databricks は、レイクハウスに対して複数のデータ形式をサポートしています。ClickHouse を使用すると、Unity Catalog のテーブルに対して、Delta と Iceberg の両方の形式でクエリを実行できます。
 
 :::note
-この機能は実験的であるため、次のコマンドを使用して有効にする必要があります:
+この機能は実験的なため、次の設定で有効化する必要があります：
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
-## DatabricksにおけるUnityの設定 {#configuring-unity-in-databricks}
 
-ClickHouseがUnityカタログと相互作用できるようにするには、Unity Catalogが外部リーダーとの相互作用を許可するように設定されていることを確認する必要があります。これを達成するには、[「Unity Catalogへの外部データアクセスを有効にする」](https://docs.databricks.com/aws/en/external-access/admin)ガイドに従います。
+## DatabricksでのUnityの設定 {#configuring-unity-in-databricks}
 
-外部アクセスを有効にするだけでなく、統合を設定している主体が、テーブルを含むスキーマに対して`EXTERNAL USE SCHEMA`の[特権](https://docs.databricks.com/aws/en/external-access/admin#external-schema)を持っていることを確認してください。
+ClickHouseがUnityカタログと連携できるようにするには、Unity Catalogが外部リーダーとの連携を許可するように設定されていることを確認する必要があります。これは、["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin)ガイドに従うことで実現できます。
 
-カタログの設定が完了したら、ClickHouseのための認証情報を生成する必要があります。Unityとの相互作用モードに応じて、2つの異なる方法を使用できます。
+外部アクセスを有効にすることに加えて、統合を設定するプリンシパルが、テーブルを含むスキーマに対して`EXTERNAL USE SCHEMA`[権限](https://docs.databricks.com/aws/en/external-access/admin#external-schema)を持っていることを確認してください。
 
-* Icebergクライアントの場合、[サービス プリンシパル](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m)として認証を使用します。
+カタログの設定が完了したら、ClickHouse用の認証情報を生成する必要があります。Unityとの連携モードに応じて、2つの異なる方法を使用できます。
 
-* Deltaクライアントの場合、パーソナル アクセス トークン（[PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)）を使用します。
+- Icebergクライアントの場合は、[サービスプリンシパル](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m)として認証を使用します。
+
+- Deltaクライアントの場合は、Personal Access Token（[PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)）を使用します。
+
 
 ## Unity CatalogとClickHouseの接続を作成する {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
-Unity Catalogの設定と認証が整ったら、ClickHouseとUnity Catalog間に接続を確立します。
+Unity Catalogの設定と認証が完了したら、ClickHouseとUnity Catalogの間に接続を確立します。
 
 ### Deltaの読み取り {#read-delta}
 
@@ -59,13 +60,14 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 ```sql
 CREATE DATABASE unity
 ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
-SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
+SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace',
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
 
-## ClickHouseを使用してUnityカタログテーブルにクエリを実行する {#querying-unity-catalog-tables-using-clickhouse}
 
-接続が確立されたので、Unityカタログを介してクエリを開始できます。たとえば:
+## ClickHouseを使用したUnity Catalogテーブルのクエリ {#querying-unity-catalog-tables-using-clickhouse}
+
+接続が確立されたので、Unity Catalogを介してクエリを開始できます。例：
 
 ```sql
 USE unity;
@@ -107,7 +109,7 @@ SHOW TABLES;
 └────────────────────────────────────────────────────┘
 ```
 
-Icebergクライアントを使用している場合、Uniformが有効なDeltaテーブルのみが表示されます:
+Icebergクライアントを使用している場合、Uniformが有効化されたDeltaテーブルのみが表示されます：
 
 ```sql
 SHOW TABLES
@@ -117,17 +119,17 @@ SHOW TABLES
 └────────────────────┘
 ```
 
-テーブルをクエリするには:
+テーブルをクエリするには：
 
 ```sql
 SELECT count(*) FROM `uniform.delta_hits`
 ```
 
-:::note バックティックが必要
-ClickHouseは1つの名前空間しかサポートしていないため、バックティックが必要です。
+:::note バッククォートが必要
+ClickHouseは複数のネームスペースをサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルのDDLを確認するには:
+テーブルのDDLを確認するには：
 
 ```sql
 SHOW CREATE TABLE `uniform.delta_hits`
@@ -153,9 +155,10 @@ ENGINE = Iceberg('s3://<path>);
 
 ```
 
-## データレイクからClickHouseへのデータの読み込み {#loading-data-from-your-data-lake-into-clickhouse}
 
-DatabricksからClickHouseにデータを読み込む必要がある場合、最初にローカルのClickHouseテーブルを作成します:
+## Data LakeからClickHouseへのデータ読み込み {#loading-data-from-your-data-lake-into-clickhouse}
+
+DatabricksからClickHouseにデータを読み込む場合は、まずローカルのClickHouseテーブルを作成します:
 
 ```sql
 CREATE TABLE hits
@@ -178,7 +181,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-次に、`INSERT INTO SELECT`を介してUnity Catalogテーブルからデータを読み込みます:
+次に、`INSERT INTO SELECT`を使用してUnity Catalogテーブルからデータを読み込みます:
 
 ```sql
 INSERT INTO hits SELECT * FROM unity_uniform.`uniform.delta_hits`;

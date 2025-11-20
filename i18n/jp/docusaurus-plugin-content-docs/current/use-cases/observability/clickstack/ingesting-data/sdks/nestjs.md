@@ -1,16 +1,17 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nestjs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 4
-'description': 'NestJS SDK for ClickStack - ClickHouse 可观察性栈'
-'title': 'NestJS'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nestjs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 4
+description: 'ClickStack 用 NestJS SDK - ClickHouse Observability Stack'
+title: 'NestJS'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-The ClickStack NestJS統合により、ロガーを作成するか、デフォルトのロガーを使用してClickStackにログを送信できます（[nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)により提供されています）。
+ClickStack の NestJS 向けインテグレーションを利用すると、`nest-winston`（[nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) を利用）を基盤としたロガーを作成するか、既定のロガーを使用して、ログを ClickStack に送信できます。
 
-**このガイドでは以下を統合します：**
+**このガイドで扱うインテグレーション対象:**
 
 <table>
   <tbody>
@@ -22,11 +23,13 @@ The ClickStack NestJS統合により、ロガーを作成するか、デフォ�
   </tbody>
 </table>
 
-_メトリクスやAPM/トレースを送信するには、対応する言語統合をアプリケーションに追加する必要があります。_
+_メトリクスや APM／トレースを送信するには、対象のプログラミング言語向けインテグレーションをアプリケーションにも追加する必要があります。_
 
-## 始めに {#getting-started}
 
-`HyperDXNestLoggerModule`をルートの`AppModule`にインポートし、`forRoot()`メソッドを使用して構成します。
+
+## はじめに {#getting-started}
+
+ルートの `AppModule` に `HyperDXNestLoggerModule` をインポートし、`forRoot()` メソッドで設定を行います。
 
 ```javascript
 import { Module } from '@nestjs/common';
@@ -44,7 +47,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 export class AppModule {}
 ```
 
-その後、winstonインスタンスは、プロジェクト全体で`HDX_LOGGER_MODULE_PROVIDER`インジェクショントークンを使用して注入できるようになります：
+設定後、`HDX_LOGGER_MODULE_PROVIDER` インジェクショントークンを使用して、プロジェクト全体でwinstonインスタンスをインジェクトできるようになります。
 
 ```javascript
 import { Controller, Inject } from '@nestjs/common';
@@ -63,17 +66,17 @@ export class CatsController {
 }
 ```
 
-### Nestロガーの置き換え（ブートストラッピング用にも） {#replacing-the-nest-logger}
+### Nestロガーの置き換え（ブートストラップ時も含む） {#replacing-the-nest-logger}
 
 :::note 重要
-これを行うことで、依存性注入を放棄することになります。つまり、`forRoot`および`forRootAsync`は必要なく、使用すべきではありません。メインモジュールからそれらを削除してください。
+この方法を使用すると、依存性注入を利用しないことになります。つまり、`forRoot` と `forRootAsync` は不要となり、使用すべきではありません。メインモジュールからこれらを削除してください。
 :::
 
-依存性注入を使用することには一つの小さな欠点があります。Nestはまずアプリケーションをブートストラップする必要があります（モジュールやプロバイダーをインスタンス化し、依存関係を注入など）が、このプロセス中に`HyperDXNestLogger`のインスタンスはまだ利用できず、Nestは内部ロガーにフォールバックします。
+依存性注入の使用には1つの小さな欠点があります。Nestはまずアプリケーションをブートストラップする必要があり（モジュールとプロバイダーのインスタンス化、依存関係のインジェクションなど）、このプロセス中は `HyperDXNestLogger` のインスタンスがまだ利用できないため、Nestは内部ロガーにフォールバックします。
 
-1つの解決策は、アプリケーションライフサイクルの外側でロガーを作成し、`createLogger`関数を使用してこれを`NestFactory.create`に渡すことです。Nestは私たちのカスタムロガー（`createLogger`メソッドによって返される同じインスタンス）をLoggerクラスにラップし、すべての呼び出しをそれにフォワードします：
+解決策の1つは、`createLogger` 関数を使用してアプリケーションのライフサイクル外でロガーを作成し、それを `NestFactory.create` に渡すことです。Nestはカスタムロガー（`createLogger` メソッドが返すのと同じインスタンス）をLoggerクラスでラップし、すべての呼び出しをそれに転送します。
 
-`main.ts`ファイルでロガーを作成します
+`main.ts` ファイルでロガーを作成します
 
 ```javascript
 import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
@@ -91,18 +94,18 @@ async function bootstrap() {
 bootstrap();
 ```
 
-メインモジュールを変更してLoggerサービスを提供します：
+メインモジュールを変更してLoggerサービスを提供します。
 
 ```javascript
-import { Logger, Module } from '@nestjs/common';
+import { Logger, Module } from "@nestjs/common"
 
 @Module({
-  providers: [Logger],
+  providers: [Logger]
 })
 export class AppModule {}
 ```
 
-その後、`@nestjs/common`からのLoggerで型ヒントを付けて単純にロガーを注入します：
+その後、`@nestjs/common` のLoggerで型ヒントを指定するだけで、ロガーをインジェクトできます。
 
 ```javascript
 import { Controller, Logger } from '@nestjs/common';

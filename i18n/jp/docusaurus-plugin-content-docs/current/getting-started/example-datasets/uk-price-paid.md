@@ -1,18 +1,19 @@
 ---
-'description': 'よく実行するクエリのパフォーマンスを向上させるためにプロジェクションを使用する方法を学びます。これは、イングランドとウェールズの不動産に対して支払われた価格に関するデータを含むUK
-  property datasetです。'
-'sidebar_label': 'UK Property Prices'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/uk-price-paid'
-'title': '英国の不動産価格データセット'
-'doc_type': 'tutorial'
+description: 'イングランドおよびウェールズの不動産物件に支払われた価格データを含む UK property データセットを使って、頻繁に実行するクエリのパフォーマンスを向上させるための projection の使い方を学びます'
+sidebar_label: 'UK property prices'
+slug: /getting-started/example-datasets/uk-price-paid
+title: 'UK property prices データセット'
+doc_type: 'guide'
+keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'getting started']
 ---
 
-このデータには、イングランドとウェールズにおける不動産の価格が含まれています。データは1995年以降利用可能で、未圧縮の状態でデータセットのサイズは約4 GiB（ClickHouseでは約278 MiBのみを消費します）。
+このデータには、イングランドおよびウェールズの不動産物件に支払われた価格が含まれています。1995 年以降のデータが利用可能で、非圧縮状態でのデータセットのサイズは約 4 GiB です（ClickHouse では約 278 MiB に収まります）。
 
 - 出典: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
 - フィールドの説明: https://www.gov.uk/guidance/about-the-price-paid-data
-- HM土地登記データを含む © Crown copyright and database right 2021。このデータはOpen Government Licence v3.0の下でライセンスされています。
+- HM Land Registry のデータを含みます © Crown copyright and database right 2021。このデータは Open Government Licence v3.0 の下でライセンスされています。
+
+
 
 ## テーブルの作成 {#create-table}
 
@@ -40,17 +41,19 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
+
 ## データの前処理と挿入 {#preprocess-import-data}
 
-`url` 関数を使用してデータをClickHouseにストリーミングします。まず、いくつかの受信データを前処理する必要があります。これには以下が含まれます：
-- `postcode` を2つの異なるカラム - `postcode1` と `postcode2` に分割します。これはストレージとクエリにとって適しています
-- `time` フィールドを00:00の時間のみを含むため、日付に変換します
-- 分析に必要ないため、[UUid](../../sql-reference/data-types/uuid.md) フィールドを無視します
-- [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用して、`type` と `duration` をより読みやすい `Enum` フィールドに変換します
-- `is_new` フィールドを単一文字列（`Y`/`N`）から [UInt8](/sql-reference/data-types/int-uint) フィールドに0または1として変換します
-- 最後の2つのカラムを削除します。すべて同じ値（0）を持っているためです
+`url`関数を使用してClickHouseにデータをストリーミングします。まず、受信データの一部を前処理する必要があります。これには以下が含まれます：
 
-`url` 関数は、ウェブサーバーからデータをClickHouseのテーブルにストリーミングします。以下のコマンドは、`uk_price_paid` テーブルに500万行を挿入します：
+- `postcode`を2つの異なるカラム（`postcode1`と`postcode2`）に分割します。これにより、ストレージとクエリの効率が向上します
+- `time`フィールドを日付に変換します。このフィールドには00:00の時刻のみが含まれているためです
+- [UUid](../../sql-reference/data-types/uuid.md)フィールドは分析に不要なため無視します
+- [transform](../../sql-reference/functions/other-functions.md#transform)関数を使用して、`type`と`duration`をより読みやすい`Enum`フィールドに変換します
+- `is_new`フィールドを単一文字の文字列（`Y`/`N`）から0または1の値を持つ[UInt8](/sql-reference/data-types/int-uint)フィールドに変換します
+- 最後の2つのカラムはすべて同じ値（0）を持つため削除します
+
+`url`関数は、Webサーバーからデータをストリーミングし、ClickHouseテーブルに挿入します。以下のコマンドは、`uk_price_paid`テーブルに500万行を挿入します：
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -91,18 +94,19 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-データの挿入を待ちます。ネットワーク速度によっては、1分か2分かかります。
+データの挿入が完了するまでお待ちください。ネットワーク速度によっては1～2分程度かかります。
+
 
 ## データの検証 {#validate-data}
 
-挿入された行数を確認して、うまくいったかどうかを確認しましょう：
+挿入された行数を確認して、正常に動作したか検証しましょう:
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリが実行された時点で、データセットには27,450,499行がありました。ClickHouseでのテーブルのストレージサイズを見てみましょう：
+このクエリを実行した時点で、データセットには27,450,499行が含まれていました。ClickHouseでのテーブルのストレージサイズを確認してみましょう:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -110,13 +114,14 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-テーブルのサイズは221.43 MiBに過ぎないことに注意してください！
+テーブルのサイズはわずか221.43 MiBです!
+
 
 ## クエリを実行する {#run-queries}
 
-データを分析するためにいくつかのクエリを実行しましょう：
+データを分析するためにいくつかのクエリを実行してみましょう:
 
-### クエリ1. 年ごとの平均価格 {#average-price}
+### クエリ1. 年別の平均価格 {#average-price}
 
 ```sql runnable
 SELECT
@@ -129,7 +134,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### クエリ2. ロンドンにおける年ごとの平均価格 {#average-price-london}
+### クエリ2. ロンドンにおける年別の平均価格 {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -143,9 +148,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に何かが起こりました！しかし、それは驚きではないでしょう...
+2020年に住宅価格に何かが起こりました！しかし、それはおそらく驚くことではないでしょう...
 
-### クエリ3. 最も高価な地域 {#most-expensive-neighborhoods}
+### クエリ3. 最も高額な地域 {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT
@@ -164,10 +169,11 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## プロジェクションを使ったクエリの高速化 {#speeding-up-queries-with-projections}
 
-プロジェクションを使用することで、これらのクエリを高速化できます。このデータセットの例については、["プロジェクション"](/data-modeling/projections) を参照してください。
+## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
+
+プロジェクションを使用してこれらのクエリを高速化できます。このデータセットを使用した例については、["プロジェクション"](/data-modeling/projections)を参照してください。
 
 ### プレイグラウンドで試す {#playground}
 
-データセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。
+このデータセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。

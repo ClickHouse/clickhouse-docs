@@ -1,111 +1,121 @@
 ---
-'description': 'Запустите ClickHouse за минуту, исследуйте несколько примеров данных
-  и стройте ваше решение'
-'keywords':
-- 'clickhouse'
-- 'quick start'
-'sidebar_label': 'Быстрый старт'
-'sidebar_position': 0
-'slug': '/get-started/quick-start'
-'title': 'Быстрый старт'
-'doc_type': 'landing-page'
+description: 'Начните работу с ClickHouse за несколько минут, изучите примеры данных и создайте своё решение'
+keywords: ['clickhouse', 'быстрый старт']
+sidebar_label: 'Быстрый старт'
+sidebar_position: 0
+slug: /get-started/quick-start
+title: 'Быстрый старт'
+doc_type: 'landing-page'
 ---
+
 import {CardSecondary, CardPromotion} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link';
 
-<div style={{
-    display: 'inline-flex',
-    flexDirection: 'column',
+<div
+  style={{
+display: 'inline-flex',
+flexDirection: 'column',
+width: '100%',
+maxWidth: 'calc(700px + 1rem)'
+}}
+>
+  <div
+    style={{
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '1rem',
+    marginBottom: '1rem',
     width: '100%',
-    maxWidth: 'calc(700px + 1rem)'
-}}>
-    <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: '1rem',
-        marginBottom: '1rem',
-        width: '100%',
+    '@media (max-width: 996px)': {
+        flexDirection: 'column'
+    }
+}}
+  >
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
         '@media (max-width: 996px)': {
-            flexDirection: 'column'
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
         }
-    }}>
-        <div style={{
-            flex: '1 1 300px',
-            minWidth: '0',
-            maxWidth: '100%',
-            '@media (max-width: 996px)': {
-                width: '100%',
-                maxWidth: 'none',
-                flex: '1 1 auto'
-            }
-        }}>
-            <Link to="/getting-started/quick-start/cloud" style={{textDecoration: 'none', width: '100%'}}>
-            <CardSecondary
-                badgeState="success"
-                badgeText="рекомендуется"
-                description="Начните работу с ClickHouse Cloud за считанные минуты.
-          Мы проведем вас через процесс создания сервиса ClickHouse,
-          подключения к ClickHouse и добавления данных в ваш сервис с помощью
-          CDC, SQL консоли, локального клиента или загрузки файла.
-          "
-                icon="cloud"
-                infoText="Начать"
-                infoUrl="clickhouse.com/docs/getting-started/quick-start/cloud"
-                title="Быстрый старт в облаке"
-                style={{width: '100%', height: '100%'}}
-            />
-            </Link>
-        </div>
-        <div style={{
-            flex: '1 1 300px',
-            minWidth: '0',
-            maxWidth: '100%',
-            '@media (max-width: 996px)': {
-                width: '100%',
-                maxWidth: 'none',
-                flex: '1 1 auto'
-            }
-        }}>
-            <Link to="/getting-started/quick-start/oss" style={{textDecoration: 'none', width: '100%'}}>
-            <CardSecondary
-                badgeState="success"
-                description="Начните работу с OSS ClickHouse за считанные минуты. Вы
-          научитесь устанавливать сервер и клиент ClickHouse локально, создавать таблицу
-          и вставлять в нее пример данных, а также изучите множество способов
-          загрузки собственных данных в ClickHouse.
-          "
-                icon="server"
-                infoText="Начать"
-                infoUrl="clickhouse.com/docs/getting-started/quick-start/oss"
-                title="Быстрый старт OSS"
-                style={{width: '100%', height: '100%'}}
-            />
-            </Link>
-        </div>
+    }}
+    >
+      <Link to="/getting-started/quick-start/cloud" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          badgeText="рекомендуется"
+          description="Начните работу с ClickHouse Cloud за считанные минуты.
+Мы проведём вас через создание сервиса ClickHouse,
+подключение к ClickHouse и добавление данных в ваш сервис через
+CDC, SQL-консоль, локальный клиент или загрузку файлов.
+"
+          icon="cloud"
+          infoText="Начать работу"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/cloud"
+          title="Быстрый старт в облаке"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
     </div>
-    <div style={{
-        width: '100%',
+
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
         '@media (max-width: 996px)': {
-            maxWidth: '100%',
-            margin: '0'
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
         }
-    }}>
-        <Link to="/cloud/overview" style={{textDecoration: 'none', width: '100%'}}>
-          <CardPromotion
-              icon="question"
-              label="Не уверены, что выбрать? Нажмите здесь, чтобы узнать о различиях между Cloud и OSS ClickHouse"
-              style={{
-                  display: 'flex',
-                  flex: '1',
-                  width: '100%',
-                  minHeight: 'auto',
-                  alignItems: 'flex-start',
-                  padding: '1rem',
-                  boxSizing: 'border-box',
-                  cursor: 'pointer'
-              }}
-          />
-        </Link>
+    }}
+    >
+      <Link to="/getting-started/quick-start/oss" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          description="Начните работу с OSS ClickHouse за считанные минуты. Вы
+узнаете, как установить сервер и клиент ClickHouse локально, создать
+таблицу и вставить в неё пример данных, а также изучите различные способы,
+как загрузить свои данные в ClickHouse.
+"
+          icon="server"
+          infoText="Начать работу"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/oss"
+          title="Быстрый старт в OSS"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
     </div>
+  </div>
+
+  <div
+    style={{
+    width: '100%',
+    '@media (max-width: 996px)': {
+        maxWidth: '100%',
+        margin: '0'
+    }
+}}
+  >
+    <Link to="/cloud/overview" style={{textDecoration: 'none', width: '100%'}}>
+      <CardPromotion
+        icon="question"
+        label="Не уверены, что выбрать? Нажмите здесь, чтобы узнать о различиях между облачным и OSS-вариантами ClickHouse"
+        style={{
+              display: 'flex',
+              flex: '1',
+              width: '100%',
+              minHeight: 'auto',
+              alignItems: 'flex-start',
+              padding: '1rem',
+              boxSizing: 'border-box',
+              cursor: 'pointer'
+          }}
+      />
+    </Link>
+  </div>
 </div>

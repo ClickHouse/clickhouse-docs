@@ -1,876 +1,571 @@
 {
   "theme.NotFound.title": {
-    "message": "找不到页面",
-    "description": "404页面的标题"
+    "message": "页面未找到",
+    "description": "404 页面标题"
+  },
+  "topNav.navItems.Products": {
+    "message": "产品"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "解决方案"
+  },
+  "topNav.navItems.Docs": {
+    "message": "文档"
+  },
+  "topNav.navItems.Resources": {
+    "message": "资源"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "价格"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "联系我们"
   },
   "theme.admonition.note": {
-    "message": "备注",
-    "description": "用于Note警告的默认标签（:::note）"
+    "message": "注意",
+    "description": "用于 Note 提示块（:::note）的默认标签"
   },
   "theme.admonition.tip": {
     "message": "提示",
-    "description": "用于Tip警告的默认标签（:::tip)"
+    "description": "用于 Tip 提示块（:::tip）的默认标签"
   },
   "theme.admonition.danger": {
     "message": "危险",
-    "description": "用于Danger警告的默认标签（:::danger)"
+    "description": "用于 Danger 提示块（:::danger）的默认标签"
   },
   "theme.admonition.info": {
     "message": "信息",
-    "description": "用于Info警告的默认标签（:::info)"
+    "description": "用于 Info 提示块（:::info）的默认标签"
   },
   "theme.admonition.caution": {
     "message": "警告",
-    "description": "用于Caution警告的默认标签（:::caution)"
+    "description": "用于 Caution 提示块（:::caution）的默认标签"
   },
   "theme.admonition.experimental": {
-    "message": "实验性",
-    "description": "用于实验性警告的默认标签（:::experimental)"
+    "message": "实验性（试验性功能）",
+    "description": "用于 Experimental 注意框（:::experimental）的默认标签"
   },
   "theme.admonition.obsolete": {
-    "message": "已过时",
-    "description": "用于已过时警告的默认标签（:::obsolete)"
+    "message": "已废弃",
+    "description": "用于 Obsolete 警示块（:::obsolete）的默认标签"
   },
   "theme.blog.title": {
     "message": "知识库"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
-    "message": "页面路径",
-    "description": "The ARIA label for the breadcrumbs"
+    "message": "面包屑导航",
+    "description": "面包屑导航的 ARIA 无障碍标签"
   },
   "theme.docs.DocCard.categoryDescription": {
-    "message": "{count} 个项目",
-    "description": "The default description for a category card in the generated index about how many items this category includes"
+    "message": "{count} 个条目",
+    "description": "在生成的索引中，用于说明该类别包含多少个项目的类别卡片默认描述文本"
   },
   "theme.navbar.mobileVersionsDropdown.label": {
-    "message": "选择版本",
-    "description": "The label for the navbar versions dropdown on mobile view"
+    "message": "版本",
+    "description": "移动端视图中导航栏版本下拉列表的标签"
   },
   "theme.SearchBar.seeAll": {
-    "message": "查看全部 {count} 个结果"
+    "message": "查看全部 {count} 条结果"
   },
   "theme.SearchPage.documentsFound.plurals": {
-    "message": "找到 {count} 份文档",
-    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    "message": "找到 1 条文档|找到 {count} 条文档",
+    "description": "用于“{count} 个文档已找到”的复数形式标签。请根据中文所支持的复数形式，提供相应的多种形式（使用“|”分隔），详见：https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
   },
   "theme.SearchPage.existingResultsTitle": {
-    "message": "{query}的搜索结果",
-    "description": "The search page title for non-empty query"
+    "message": "“{query}”的搜索结果",
+    "description": "非空查询时的搜索页面标题"
   },
   "theme.SearchPage.emptyResultsTitle": {
-    "message": "在文档中搜索",
-    "description": "The search page title for empty query"
+    "message": "搜索文档",
+    "description": "空查询时的搜索页标题"
   },
   "theme.SearchPage.inputPlaceholder": {
-    "message": "在此输入搜索关键词",
-    "description": "The placeholder for search page input"
+    "message": "在此输入搜索词",
+    "description": "搜索页面输入框的占位提示"
   },
   "theme.SearchPage.inputLabel": {
     "message": "搜索",
-    "description": "The ARIA label for search page input"
+    "description": "搜索页面搜索框的 ARIA 标签"
   },
   "theme.SearchPage.algoliaLabel": {
-    "message": "通过 Algolia 搜索",
-    "description": "The ARIA label for Algolia mention"
+    "message": "Algolia 搜索",
+    "description": "Algolia 提及的 ARIA 无障碍标签"
   },
   "theme.SearchPage.noResultsText": {
-    "message": "未找到任何结果",
-    "description": "The paragraph for empty search result"
+    "message": "未找到结果",
+    "description": "空搜索结果时显示的段落"
   },
   "theme.SearchPage.fetchingNewResults": {
-    "message": "正在获取新的搜索结果...",
-    "description": "The paragraph for fetching new search results"
+    "message": "正在获取新结果…",
+    "description": "用于获取新搜索结果的段落"
+  },
+  "topNav.navItems.products.clickhouse_cloud_1": {
+    "message": "充分发挥 ClickHouse 的最佳用法。"
+  },
+  "topNav.navItems.products.clickhouse_cloud_2": {
+    "message": "适用于 AWS、GCP 和 Azure。"
+  },
+  "topNav.navItems.products.byoc_1": {
+    "message": "自有云环境"
+  },
+  "topNav.navItems.products.byoc_2": {
+    "message": "一项全托管的 ClickHouse Cloud 服务，"
+  },
+  "topNav.navItems.products.byoc_3": {
+    "message": "部署在您自己的 AWS 账户里。"
+  },
+  "topNav.navItems.products.oss": {
+    "message": "使用开源快速启动数据库"
+  },
+  "topNav.navItems.products.oss_2": {
+    "message": "ClickHouse"
+  },
+  "topNav.navItems.products.integrations": {
+    "message": "查看 100 多种集成方式"
+  },
+  "topNav.navItems.resources.User stories": {
+    "message": "用户故事"
+  },
+  "topNav.navItems.resources.Blog": {
+    "message": "博客"
+  },
+  "topNav.navItems.resources.Learning and Certification": {
+    "message": "学习与认证"
+  },
+  "topNav.navItems.resources.ClickHouse Academy": {
+    "message": "ClickHouse 学院"
+  },
+  "topNav.navItems.resources.Free live training": {
+    "message": "免费直播培训"
+  },
+  "topNav.navItems.resources.ClickHouse Certification": {
+    "message": "ClickHouse 认证"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "对比"
+  },
+  "topNav.navItems.resources.BigQuery": {
+    "message": "BigQuery"
+  },
+  "topNav.navItems.resources.PostgreSQL": {
+    "message": "PostgreSQL"
+  },
+  "topNav.navItems.resources.Redshift": {
+    "message": "Redshift"
+  },
+  "topNav.navItems.resources.Rockset": {
+    "message": "Rockset"
+  },
+  "topNav.navItems.resources.Snowflake": {
+    "message": "Snowflake"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "视频"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "示例"
+  },
+  "topNav.navItems.use_cases.Real-time analytics": {
+    "message": "实时分析"
+  },
+  "topNav.navItems.use_cases.Machine learning and GenAI": {
+    "message": "机器学习与生成式 AI"
+  },
+  "topNav.navItems.use_cases.Business intelligence": {
+    "message": "数据仓库"
+  },
+  "topNav.navItems.use_cases.Logs, events, and traces": {
+    "message": "可观测性"
+  },
+  "topNav.navItems.use_cases.All use cases": {
+    "message": "所有使用案例"
   },
   "theme.blog.sidebar.navAriaLabel": {
-    "message": "最近博客导航",
-    "description": "The ARIA label for recent posts in the blog sidebar"
+    "message": "博客最新文章导览",
+    "description": "博客侧栏中“最新文章”区域的 ARIA 标签"
   },
   "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
-    "message": "切换可折叠的侧边栏类别 '{label}'",
-    "description": "The ARIA label to toggle the collapsible sidebar category"
+    "message": "切换可折叠侧边栏分类“{label}”",
+    "description": "用于切换可折叠侧边栏类别的 ARIA 标签"
   },
   "theme.NavBar.navAriaLabel": {
-    "message": "主导航",
-    "description": "The ARIA label for the main navigation"
+    "message": "主页",
+    "description": "主导航的 ARIA 无障碍标签"
   },
   "theme.navbar.mobileLanguageDropdown.label": {
-    "message": "选择语言",
-    "description": "The label for the mobile language switcher dropdown"
+    "message": "语言",
+    "description": "移动端语言切换下拉框的标签"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "本说明文档借助 AI 翻译完成"
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "发现翻译有问题？欢迎反馈，帮助我们改进翻译。"
+  },
+  "Report an issue": {
+    "message": "提交问题"
   },
   "theme.blog.post.readMore": {
     "message": "阅读更多",
-    "description": "The label used in blog post item excerpts to link to full blog posts"
+    "description": "在博客文章摘要中，用于链接至完整博客文章的标签文本"
   },
   "theme.blog.post.readMoreLabel": {
-    "message": "阅读 {title} 的全文",
-    "description": "The ARIA label for the link to full blog posts from excerpts"
+    "message": "进一步了解 {title}",
+    "description": "用于从摘要跳转到完整博客文章的链接的 ARIA 标签"
   },
   "theme.blog.post.readingTime.plurals": {
-    "message": "阅读需 {readingTime} 分钟",
-    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    "message": "预计阅读 1 分钟 | 预计阅读 {readingTime} 分钟",
+    "description": "“{readingTime} 分钟阅读”的复数形式标签。请根据你的语言所支持的复数形式数量，尽可能提供多种复数形式变体（用“|”分隔）（参见 https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html）"
   },
   "theme.docs.breadcrumbs.home": {
-    "message": "主页",
-    "description": "The ARIA label for the home page in the breadcrumbs"
+    "message": "首页",
+    "description": "面包屑导航中首页的 ARIA 标签"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
     "message": "收起侧边栏",
-    "description": "The title attribute for collapse button of doc sidebar"
+    "description": "文档侧边栏折叠按钮的标题属性"
   },
   "theme.docs.sidebar.collapseButtonAriaLabel": {
     "message": "收起侧边栏",
-    "description": "The title attribute for collapse button of doc sidebar"
+    "description": "文档侧边栏折叠按钮的标题属性"
   },
   "theme.docs.sidebar.navAriaLabel": {
     "message": "文档侧边栏",
-    "description": "The ARIA label for the sidebar navigation"
+    "description": "侧边栏导航的 ARIA 无障碍标签"
   },
   "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
     "message": "关闭导航栏",
-    "description": "The ARIA label for close button of mobile sidebar"
+    "description": "移动端侧边栏“关闭”按钮的 ARIA 标签"
   },
   "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
     "message": "← 返回主菜单",
-    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+    "description": "移动端导航栏侧边栏二级菜单中，用于返回主菜单的“返回”按钮标签（特别是在显示文档侧边栏时使用）"
   },
   "theme.ErrorPageContent.title": {
-    "message": "页面已崩溃。",
-    "description": "The title of the fallback page when the page crashed"
+    "message": "此页面发生崩溃。",
+    "description": "页面崩溃时后备页面的标题"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
     "message": "返回顶部",
-    "description": "The ARIA label for the back to top button"
+    "description": "“返回顶部”按钮的 ARIA 标签"
   },
   "theme.blog.archive.title": {
-    "message": "历史博文",
-    "description": "The page & hero title of the blog archive page"
+    "message": "存档",
+    "description": "博客归档页的页面标题和主视觉标题"
   },
   "theme.blog.archive.description": {
-    "message": "历史博文",
-    "description": "The page & hero description of the blog archive page"
+    "message": "存档",
+    "description": "博客归档页的页面与首屏区域描述"
   },
   "theme.blog.paginator.navAriaLabel": {
-    "message": "博客列表分页导航",
-    "description": "The ARIA label for the blog pagination"
+    "message": "博客列表页导航",
+    "description": "博客分页的 ARIA 无障碍标签"
   },
   "theme.blog.paginator.newerEntries": {
-    "message": "较新的博文",
-    "description": "The label used to navigate to the newer blog posts page (previous page)"
+    "message": "更新的条目",
+    "description": "用于跳转到较新博文页面（上一页）的标签"
   },
   "theme.blog.paginator.olderEntries": {
-    "message": "较旧的博文",
-    "description": "The label used to navigate to the older blog posts page (next page)"
+    "message": "更早的记录",
+    "description": "用于跳转到更早博客文章页面（下一页）的标签"
   },
   "theme.blog.post.paginator.navAriaLabel": {
-    "message": "博文分页导航",
-    "description": "The ARIA label for the blog posts pagination"
+    "message": "博客文章页导航",
+    "description": "博客文章分页的 ARIA 无障碍标签"
   },
   "theme.blog.post.paginator.newerPost": {
-    "message": "较新一篇",
-    "description": "The blog post button label to navigate to the newer/previous post"
+    "message": "下一篇文章",
+    "description": "用于跳转到较新/较早博文的按钮标签"
   },
   "theme.blog.post.paginator.olderPost": {
-    "message": "较旧一篇",
-    "description": "The blog post button label to navigate to the older/next post"
+    "message": "上一篇文章",
+    "description": "用于导航到更早/下一篇博文的按钮标签"
   },
   "theme.tags.tagsPageLink": {
-    "message": "查看所有标签",
-    "description": "The label of the link targeting the tag list page"
+    "message": "查看全部标签",
+    "description": "指向标签列表页的链接文字"
   },
   "theme.colorToggle.ariaLabel": {
-    "message": "切换浅色/深色模式（当前为{mode}）",
-    "description": "The ARIA label for the navbar color mode toggle"
+    "message": "在深色模式和浅色模式之间切换（当前为 {mode}）",
+    "description": "导航栏配色模式切换按钮的 ARIA 标签"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
-    "message": "深色模式",
-    "description": "The name for the dark color mode"
+    "message": "暗色模式",
+    "description": "深色主题名称"
   },
   "theme.colorToggle.ariaLabel.mode.light": {
-    "message": "浅色模式",
-    "description": "The name for the light color mode"
+    "message": "明亮模式",
+    "description": "浅色主题名称"
   },
   "theme.docs.DocCard.categoryDescription.plurals": {
-    "message": "{count} 个项目",
-    "description": "The default description for a category card in the generated index about how many items this category includes"
+    "message": "1 个条目|{count} 个条目",
+    "description": "在生成的索引中，用于显示该类别所含条目数量的类别卡片默认说明文本。"
   },
   "theme.docs.paginator.navAriaLabel": {
-    "message": "文档选项卡",
-    "description": "The ARIA label for the docs pagination"
+    "message": "文档页",
+    "description": "文档分页的 ARIA 无障碍标签"
   },
   "theme.docs.paginator.previous": {
     "message": "上一页",
-    "description": "The label used to navigate to the previous doc"
+    "description": "用于跳转到上一页文档的标签"
   },
   "theme.docs.paginator.next": {
-    "message": "下一页",
-    "description": "The label used to navigate to the next doc"
+    "message": "下一步",
+    "description": "用于跳转到下一篇文档的标签文本"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "已标记 1 个文档|已标记 {count} 个文档",
+    "description": "“{count} 个文档已打标签”这一标签的复数形式。请根据你的语言所支持的复数形式数量，提供相应数量的变体（用“|”分隔）。详见：https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "标记为“{tagName}”的 {nDocsTagged} 个文档",
+    "description": "文档标签页面的标题"
   },
   "theme.docs.versionBadge.label": {
     "message": "版本：{versionLabel}"
   },
   "theme.docs.versions.unreleasedVersionLabel": {
-    "message": "此为 {siteTitle} {versionLabel} 版尚未发行的文档。",
-    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+    "message": "这是尚未发布的 {siteTitle} {versionLabel} 版本的文档。",
+    "description": "用于提示用户当前正在浏览未发布文档版本的标签"
   },
   "theme.docs.versions.unmaintainedVersionLabel": {
-    "message": "此为 {siteTitle} {versionLabel} 版的文档，目前已不再积极维护。",
-    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+    "message": "这是 {siteTitle} {versionLabel} 的文档，目前已不再进行主动维护。",
+    "description": "用于提示用户当前正在浏览未维护文档版本的标记"
   },
   "theme.docs.versions.latestVersionSuggestionLabel": {
-    "message": "最新的文档请参阅 {latestVersionLink} ({versionLabel})。",
-    "description": "The label used to tell the user to check the latest version"
+    "message": "最新文档请参阅 {latestVersionLink}（{versionLabel}）。",
+    "description": "用于提示用户检查最新版本的标签文本"
   },
   "theme.docs.versions.latestVersionLinkLabel": {
     "message": "最新版本",
-    "description": "The label used for the latest version suggestion link label"
-  },
-  "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "{count} 篇文档带有标签",
-    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.docs.tagDocListPageTitle": {
-    "message": "带有「{tagName}」标签的{nDocsTagged}",
-    "description": "The title of the page for a docs tag"
+    "description": "用于“最新版本”建议链接的标签文本"
   },
   "theme.common.editThisPage": {
     "message": "编辑此页",
-    "description": "The link label to edit the current page"
+    "description": "用于编辑当前页面的链接文本标签"
   },
   "theme.common.headingLinkTitle": {
-    "message": "{heading}的直接链接",
-    "description": "Title for link to heading"
+    "message": "直接链接到 {heading}",
+    "description": "标题链接的标题"
   },
   "theme.lastUpdated.atDate": {
-    "message": "于 {date} ",
-    "description": "The words used to describe on which date a page has been last updated"
+    "message": " 于 {date}",
+    "description": "用于描述页面最后更新时间的措辞"
   },
   "theme.lastUpdated.byUser": {
-    "message": "由 {user} ",
-    "description": "The words used to describe by who the page has been last updated"
+    "message": " 由 {user}",
+    "description": "用于描述最近一次由谁更新此页面的文字"
   },
   "theme.lastUpdated.lastUpdatedAtBy": {
-    "message": "最后{byUser}{atDate}更新",
-    "description": "The sentence used to display when a page has been last updated, and by who"
+    "message": "上次更新：{atDate}{byUser}",
+    "description": "用于显示页面上次更新时间及更新者的文本"
   },
   "theme.tags.tagsListLabel": {
     "message": "标签：",
-    "description": "The label alongside a tag list"
+    "description": "标签列表旁边的标签"
   },
   "theme.admonition.warning": {
-    "message": "注意",
-    "description": "The default label used for the Warning admonition (:::warning)"
+    "message": "警告",
+    "description": "用于 Warning 告警块（:::warning）的默认标签"
   },
   "theme.AnnouncementBar.closeButtonAriaLabel": {
     "message": "关闭",
-    "description": "The ARIA label for close button of announcement bar"
+    "description": "公告栏关闭按钮的 ARIA 无障碍标签"
   },
   "theme.CodeBlock.copied": {
-    "message": "复制成功",
-    "description": "The copied button label on code blocks"
+    "message": "已复制",
+    "description": "代码块中“复制”按钮的标签"
   },
   "theme.CodeBlock.copyButtonAriaLabel": {
     "message": "复制代码到剪贴板",
-    "description": "The ARIA label for copy code blocks button"
+    "description": "“复制代码块”按钮的 ARIA 标签"
   },
   "theme.CodeBlock.copy": {
     "message": "复制",
-    "description": "The copy button label on code blocks"
+    "description": "代码块中“复制”按钮的标签"
   },
   "theme.CodeBlock.wordWrapToggle": {
-    "message": "切换自动换行",
-    "description": "The title attribute for toggle word wrapping button of code block lines"
+    "message": "切换自动折行",
+    "description": "代码块中用于切换代码行换行方式按钮的 title 属性"
   },
   "theme.DocSidebarItem.expandCategoryAriaLabel": {
-    "message": "展开侧边栏分类 '{label}'",
-    "description": "The ARIA label to expand the sidebar category"
+    "message": "展开侧边栏分类“{label}”",
+    "description": "用于展开侧边栏分类的 ARIA 标签"
   },
   "theme.DocSidebarItem.collapseCategoryAriaLabel": {
-    "message": "折叠侧边栏分类 '{label}'",
-    "description": "The ARIA label to collapse the sidebar category"
+    "message": "折叠侧边栏分类“{label}”",
+    "description": "用于收起侧边栏分类的 ARIA 标签"
   },
   "theme.NotFound.p1": {
-    "message": "我们找不到您要找的页面。",
-    "description": "The first paragraph of the 404 page"
+    "message": "未找到您要查找的内容。",
+    "description": "404 页面上的第一段"
   },
   "theme.NotFound.p2": {
-    "message": "请联系原始链接的所有者，并告知他们链接已损坏。",
-    "description": "The 2nd paragraph of the 404 page"
+    "message": "请联系将您引导至原始 URL 的网站所有者，并告知他们该链接已失效。",
+    "description": "404 页面中的第二段落"
   },
   "theme.TOCCollapsible.toggleButtonLabel": {
-    "message": "本页总览",
-    "description": "The label used by the button on the collapsible TOC component"
+    "message": "本页内容",
+    "description": "折叠目录组件中按钮上显示的标签文本"
   },
   "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
-    "message": "切换导航栏",
-    "description": "The ARIA label for hamburger menu button of mobile navigation"
+    "message": "切换导航",
+    "description": "移动端导航中汉堡菜单按钮的 ARIA 标签"
   },
   "theme.docs.sidebar.expandButtonTitle": {
     "message": "展开侧边栏",
-    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+    "description": "文档侧边栏展开按钮的 ARIA 无障碍标签和 title 属性"
   },
   "theme.docs.sidebar.expandButtonAriaLabel": {
-    "message": "展开侧边栏",
-    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+    "message": "展开侧栏",
+    "description": "文档侧边栏展开按钮的 ARIA 标签和 title 属性"
   },
   "theme.SearchBar.label": {
     "message": "搜索",
-    "description": "The ARIA label and placeholder for search button"
+    "description": "搜索按钮的 ARIA 标签和占位文本"
   },
   "theme.SearchModal.searchBox.resetButtonTitle": {
-    "message": "清除查询",
-    "description": "The label and ARIA label for search box reset button"
+    "message": "清空查询",
+    "description": "搜索框重置按钮的可见文本和 ARIA 标签"
   },
   "theme.SearchModal.searchBox.cancelButtonText": {
     "message": "取消",
-    "description": "The label and ARIA label for search box cancel button"
+    "description": "搜索框取消按钮的可见文本标签和 ARIA 标签"
   },
   "theme.SearchModal.startScreen.recentSearchesTitle": {
-    "message": "最近搜索",
-    "description": "The title for recent searches"
+    "message": "最近使用",
+    "description": "最近搜索的标题"
   },
   "theme.SearchModal.startScreen.noRecentSearchesText": {
-    "message": "没有最近搜索",
-    "description": "The text when no recent searches"
+    "message": "暂无最近搜索",
+    "description": "没有最近搜索时显示的文本"
   },
   "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
-    "message": "保存这个搜索",
-    "description": "The label for save recent search button"
+    "message": "保存此搜索",
+    "description": "“保存最近搜索”按钮的文字标签"
   },
   "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
-    "message": "从历史记录中删除这个搜索",
-    "description": "The label for remove recent search button"
+    "message": "从历史记录中移除该搜索",
+    "description": "“清除最近搜索”按钮的标签"
   },
   "theme.SearchModal.startScreen.favoriteSearchesTitle": {
     "message": "收藏",
-    "description": "The title for favorite searches"
+    "description": "常用搜索的标题"
   },
   "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
-    "message": "从收藏列表中删除这个搜索",
-    "description": "The label for remove favorite search button"
+    "message": "从收藏夹中移除此搜索",
+    "description": "“移除收藏搜索”按钮的标签"
   },
   "theme.SearchModal.errorScreen.titleText": {
-    "message": "无法获取结果",
-    "description": "The title for error screen of search modal"
+    "message": "无法获取查询结果",
+    "description": "搜索弹窗错误页面的标题"
   },
   "theme.SearchModal.errorScreen.helpText": {
-    "message": "您可能需要检查网络连接。",
-    "description": "The help text for error screen of search modal"
+    "message": "您可能需要检查一下网络连接。",
+    "description": "搜索弹窗错误页面的帮助文本"
   },
   "theme.SearchModal.footer.selectText": {
     "message": "选择",
-    "description": "The explanatory text of the action for the enter key"
+    "description": "Enter 键动作的说明文本"
   },
   "theme.SearchModal.footer.selectKeyAriaLabel": {
     "message": "Enter 键",
-    "description": "The ARIA label for the Enter key button that makes the selection"
+    "description": "用于执行选择操作的 Enter 键按钮的 ARIA 标签"
   },
   "theme.SearchModal.footer.navigateText": {
-    "message": "导航",
-    "description": "The explanatory text of the action for the Arrow up and Arrow down key"
+    "message": "浏览",
+    "description": "用于说明向上箭头键和向下箭头键行为的说明文本"
   },
   "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
-    "message": "向上键",
-    "description": "The ARIA label for the Arrow up key button that makes the navigation"
+    "message": "上箭头",
+    "description": "用于导航的“向上箭头”按键按钮的 ARIA 标签"
   },
   "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
-    "message": "向下键",
-    "description": "The ARIA label for the Arrow down key button that makes the navigation"
+    "message": "下箭头",
+    "description": "用于执行导航操作的“向下箭头”按键按钮的 ARIA 标签"
   },
   "theme.SearchModal.footer.closeText": {
     "message": "关闭",
-    "description": "The explanatory text of the action for Escape key"
+    "description": "Esc 键操作的说明文本"
   },
   "theme.SearchModal.footer.closeKeyAriaLabel": {
     "message": "Esc 键",
-    "description": "The ARIA label for the Escape key button that close the modal"
+    "description": "用于关闭模态窗口的 Escape 键按钮的 ARIA 标签"
   },
   "theme.SearchModal.footer.searchByText": {
-    "message": "搜索提供",
-    "description": "The text explain that the search is making by Algolia"
+    "message": "搜索方式",
+    "description": "本文说明搜索功能由 Algolia 提供"
   },
   "theme.SearchModal.noResultsScreen.noResultsText": {
-    "message": "没有结果：",
-    "description": "The text explains that there are no results for the following search"
+    "message": "无结果",
+    "description": "本文说明以下搜索没有任何结果"
   },
   "theme.SearchModal.noResultsScreen.suggestedQueryText": {
     "message": "试试搜索",
-    "description": "The text for the suggested query when no results are found for the following search"
+    "description": "当以下搜索无结果时显示的推荐查询文本"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
-    "message": "认为这个查询应该有结果吗？",
-    "description": "The text for the question where the user thinks there are missing results"
+    "message": "认为这个查询应该会返回结果吗？",
+    "description": "当用户认为搜索结果不完整时显示的问题文案"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
-    "message": "请告知我们。",
-    "description": "The text for the link to report missing results"
+    "message": "请联系我们。",
+    "description": "“报告缺失结果”链接上显示的文本"
   },
   "theme.SearchModal.placeholder": {
     "message": "搜索文档",
-    "description": "The placeholder of the input of the DocSearch pop-up modal"
+    "description": "DocSearch 弹出模态窗口中输入框的占位提示文本"
   },
   "theme.blog.post.plurals": {
-    "message": "{count} 篇博文",
-    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+    "message": "1 篇帖子|{count} 篇帖子",
+    "description": "“{count} 篇文章”的复数标签。请根据你的语言所支持的复数形式数量，提供相应数量的复数写法（用 “|” 分隔）。详见：https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
   },
   "theme.blog.tagTitle": {
-    "message": "{nPosts} 包含标签{tagName}",
-    "description": "The title of the page for a blog tag"
+    "message": "标记为“{tagName}”的 {nPosts} 篇文章",
+    "description": "博客标签页面的标题"
   },
   "theme.blog.author.pageTitle": {
-    "message": "{authorName} - {nPosts}",
-    "description": "The title of the page for a blog author"
+    "message": "{authorName} - {nPosts} 篇",
+    "description": "博客作者页面标题"
   },
   "theme.blog.authorsList.pageTitle": {
     "message": "作者",
-    "description": "作者页面的标题"
+    "description": "作者页标题"
   },
   "theme.blog.authorsList.viewAll": {
-    "message": "查看所有作者",
-    "description": "指向博客作者页面的链接标签"
+    "message": "查看全部作者",
+    "description": "指向博客作者页面的链接文字标签"
   },
   "theme.blog.author.noPosts": {
     "message": "该作者尚未发布任何文章。",
-    "description": "对于没有博客文章的作者显示的文本"
+    "description": "针对尚未发布任何博文的作者所显示的文本"
   },
   "theme.contentVisibility.unlistedBanner.title": {
-    "message": "未列出页面",
-    "description": "The unlisted content banner title"
+    "message": "未公开的页面",
+    "description": "未列出内容横幅标题"
   },
   "theme.contentVisibility.unlistedBanner.message": {
-    "message": "此页面未列出。搜索引擎不会对其索引，只有拥有直接链接的用户才能访问。",
-    "description": "The unlisted content banner message"
+    "message": "此页面未被公开列出。搜索引擎不会对其进行索引，只有持有直接链接的用户才能访问。",
+    "description": "未公开内容横幅消息"
   },
   "theme.contentVisibility.draftBanner.title": {
-    "message": "草稿页面",
+    "message": "草稿页",
     "description": "草稿内容横幅标题"
   },
   "theme.contentVisibility.draftBanner.message": {
-    "message": "此页面是草稿。它仅在开发环境中可见，并将从生产环境中排除。",
-    "description": "草稿内容横幅消息"
+    "message": "本页面目前为草稿。它只会在开发环境中可见，并且不会被包含在生产构建中。",
+    "description": "草稿内容横幅提示"
   },
   "theme.ErrorPageContent.tryAgain": {
     "message": "重试",
-    "description": "The label of the button to try again rendering when the React error boundary captures an error"
+    "description": "当 React 错误边界捕获到错误时，用于重试渲染的按钮标签"
   },
   "theme.common.skipToMainContent": {
     "message": "跳到主要内容",
-    "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+    "description": "用于无障碍访问的“跳到内容”标签，允许用户通过键盘 Tab/Enter 导航快速跳转到主内容区"
   },
   "theme.tags.tagsPageTitle": {
     "message": "标签",
-    "description": "The title of the tag list page"
-  },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "开始工作",
-    "description": "Getting Started"
-  },
-  "sidebar.dropdownCategories.category.description.Getting Started": {
-    "message": "了解如何使用 ClickHouse",
-    "description": "Learn how to use ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
-    "message": "介绍",
-    "description": "Introduction"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
-    "message": "ClickHouse 介绍",
-    "description": "An introduction to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
-    "message": "入门指南",
-    "description": "Starter Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
-    "message": "在这里开始学习 ClickHouse",
-    "description": "Start here when learning ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
-    "message": "基本概念",
-    "description": "Concepts"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
-    "message": "需要了解的关键概念",
-    "description": "Core concepts to know"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
-    "message": "迁移指南",
-    "description": "Migration Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
-    "message": "将数据库迁移到 ClickHouse",
-    "description": "Migrate your database to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
-    "message": "使用指南",
-    "description": "Use Case Guides"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
-    "message": "ClickHouse 的典型用例",
-    "description": "Common use case guides for ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
-    "message": "示例数据集",
-    "description": "Example datasets"
-  },
-  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
-    "message": "有用的数据集和教程",
-    "description": "Helpful datasets and tutorials"
-  },
-  "sidebar.dropdownCategories.category.Cloud": {
-    "message": "云",
-    "description": "Cloud"
-  },
-  "sidebar.dropdownCategories.category.description.Cloud": {
-    "message": "部署 ClickHouse 的最快方法",
-    "description": "The fastest way to deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started": {
-    "message": "开始工作",
-    "description": "Get Started"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
-    "message": "快速开始使用 ClickHouse Cloud",
-    "description": "Start quickly with ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
-    "message": "管理云",
-    "description": "Managing Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
-    "message": "管理您的 ClickHouse Cloud 服务",
-    "description": "Manage your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
-    "message": "云 API",
-    "description": "Cloud API"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
-    "message": "自动化您的 ClickHouse Cloud 服务",
-    "description": "Automate your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
-    "message": "云参考",
-    "description": "Cloud Reference"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
-    "message": "ClickHouse Cloud 如何工作",
-    "description": "Understanding how ClickHouse Cloud works"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
-    "message": "最佳实践",
-    "description": "Best Practices"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
-    "message": "如何最大限度地利用 ClickHouse Cloud",
-    "description": "How to get the most out of ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Security": {
-    "message": "安全性",
-    "description": "Security"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Security.description": {
-    "message": "保护您的 ClickHouse Cloud 服务",
-    "description": "Secure your ClickHouse Cloud services"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
-    "message": "迁移到云",
-    "description": "Migrating to Cloud"
-  },
-  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
-    "message": "将数据库迁移到 ClickHouse Cloud",
-    "description": "Migrate your database to ClickHouse Cloud"
-  },
-  "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "管理数据",
-    "description": "Manage Data"
-  },
-  "sidebar.dropdownCategories.category.description.Manage Data": {
-    "message": "如何管理 ClickHouse 中的数据",
-    "description": "How to manage data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
-    "message": "数据核心概念",
-    "description": "Core Data Concepts"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
-    "message": "了解 ClickHouse 的内部概念",
-    "description": "Understand internal concepts in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
-    "message": "更新数据",
-    "description": "Updating Data"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
-    "message": "在 ClickHouse 中更新和替换数据",
-    "description": "Updating and replacing data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
-    "message": "删除数据",
-    "description": "Deleting data"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
-    "message": "在 ClickHouse 中删除数据",
-    "description": "Deleting data in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
-    "message": "数据建模",
-    "description": "Data Modeling"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
-    "message": "优化模式和数据模型",
-    "description": "Optimize your schema and data model"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
-    "message": "性能和优化",
-    "description": "Performance and Optimizations"
-  },
-  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
-    "message": "帮助您优化 ClickHouse 的指南",
-    "description": "Guides to help you optimize ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "服务器管理",
-    "description": "Server Admin"
-  },
-  "sidebar.dropdownCategories.category.description.Server Admin": {
-    "message": "管理和部署 ClickHouse",
-    "description": "Manage and deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
-    "message": "部署和扩展",
-    "description": "Deployments and Scaling"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
-    "message": "如何部署 ClickHouse",
-    "description": "How to deploy ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
-    "message": "安全性和认证",
-    "description": "Security and Authentication"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
-    "message": "保护您的 ClickHouse 部署",
-    "description": "Secure your ClickHouse deployment"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Settings": {
-    "message": "设置",
-    "description": "Settings"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
-    "message": "配置 ClickHouse",
-    "description": "Configure ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
-    "message": "工具和实用程序",
-    "description": "Tools and Utilities"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
-    "message": "帮助您管理 ClickHouse 的工具",
-    "description": "Tools to help you manage ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
-    "message": "系统表",
-    "description": "System Tables"
-  },
-  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
-    "message": "用于管理 ClickHouse 的元数据表",
-    "description": "Metadata tables to help you manage ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Reference": {
-    "message": "参考",
-    "description": "Reference"
-  },
-  "sidebar.dropdownCategories.category.description.Reference": {
-    "message": "ClickHouse 功能的参考文档",
-    "description": "Reference documentation for ClickHouse features"
-  },
-  "sidebar.dropdownCategories.category.Reference.Introduction": {
-    "message": "介绍",
-    "description": "Introduction"
-  },
-  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
-    "message": "了解 ClickHouse 语法",
-    "description": "Learn ClickHouse syntax"
-  },
-  "sidebar.dropdownCategories.category.Reference.Functions": {
-    "message": "函数",
-    "description": "Functions"
-  },
-  "sidebar.dropdownCategories.category.Reference.Functions.description": {
-    "message": "数百个内置函数，帮助您分析数据",
-    "description": "Hundreds of built-in functions to help you analyze your data"
-  },
-  "sidebar.dropdownCategories.category.Reference.Engines": {
-    "message": "引擎",
-    "description": "Engines"
-  },
-  "sidebar.dropdownCategories.category.Reference.Engines.description": {
-    "message": "选择合适的表和数据库引擎",
-    "description": "Use the right table and database engines for your data"
-  },
-  "sidebar.dropdownCategories.category.Reference.Other Features": {
-    "message": "其他功能",
-    "description": "Other Features"
-  },
-  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
-    "message": "了解 ClickHouse 的其他功能",
-    "description": "Learn about other features in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations": {
-    "message": "集成",
-    "description": "Integrations"
-  },
-  "sidebar.dropdownCategories.category.description.Integrations": {
-    "message": "ClickHouse 的集成、客户端和驱动程序",
-    "description": "Integrations, clients, and drivers to use with ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
-    "message": "所有集成",
-    "description": "All Integrations"
-  },
-  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
-    "message": "ClickHouse 与数据库和其他应用程序的集成",
-    "description": "Integrate ClickHouse with other databases and applications"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
-    "message": "编程语言客户端",
-    "description": "Language Clients"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
-    "message": "使用您喜欢的语言与 ClickHouse 一起工作",
-    "description": "Use your favorite language to work with ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
-    "message": "ClickPipes",
-    "description": "ClickPipes"
-  },
-  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
-    "message": "将数据加载到 ClickHouse 的最简单方法",
-    "description": "The easiest way to ingest data into ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
-    "message": "本地客户端和接口",
-    "description": "Native Clients & Interfaces"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
-    "message": "选择客户端和接口以连接到 ClickHouse",
-    "description": "Choose a client and interface to connect to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
-    "message": "数据源",
-    "description": "Data Sources"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
-    "message": "从各种来源加载数据到 ClickHouse",
-    "description": "Load data into ClickHouse from your preferred source"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
-    "message": "数据可视化",
-    "description": "Data Visualization"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
-    "message": "将 ClickHouse 连接到您的可视化工具",
-    "description": "Connect ClickHouse to your favorite visualization tool"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
-    "message": "数据格式",
-    "description": "Data Formats"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
-    "message": "探索 ClickHouse 支持的数据格式",
-    "description": "Explore data formats supported by ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
-    "message": "数据加载",
-    "description": "Data Ingestion"
-  },
-  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
-    "message": "使用各种 ELT 工具将数据加载到 ClickHouse",
-    "description": "Ingest data into ClickHouse with a range of ELT tools"
-  },
-  "sidebar.dropdownCategories.category.chDB": {
-    "message": "chDB",
-    "description": "chDB"
-  },
-  "sidebar.dropdownCategories.category.description.chDB": {
-    "message": "chDB 是嵌入式 ClickHouse 版本",
-    "description": "chDB is an embedded version of ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
-    "message": "学习 chDB",
-    "description": "Learn chDB"
-  },
-  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
-    "message": "如何使用 chDB",
-    "description": "Learn how to use chDB"
-  },
-  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
-    "message": "编程语言集成",
-    "description": "Language Integrations"
-  },
-  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
-    "message": "使用编程语言客户端连接到 chDB",
-    "description": "Connect to chDB using a language client"
-  },
-  "sidebar.dropdownCategories.category.chDB.Guides": {
-    "message": "指南",
-    "description": "Guides"
-  },
-  "sidebar.dropdownCategories.category.chDB.Guides.description": {
-    "message": "帮助您使用 chDB 的指南",
-    "description": "Guides to help you use chDB"
-  },
-  "sidebar.dropdownCategories.category.About": {
-    "message": "关于项目",
-    "description": "About"
-  },
-  "sidebar.dropdownCategories.category.description.About": {
-    "message": "了解更多关于 ClickHouse",
-    "description": "Learn more about ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Adopters": {
-    "message": "使用 ClickHouse 的公司",
-    "description": "Adopters"
-  },
-  "sidebar.dropdownCategories.category.About.Adopters.description": {
-    "message": "使用 ClickHouse 的公司",
-    "description": "ClickHouse adopters"
-  },
-  "sidebar.dropdownCategories.category.About.Changelogs": {
-    "message": "更改日志",
-    "description": "Changelogs"
-  },
-  "sidebar.dropdownCategories.category.About.Changelogs.description": {
-    "message": "查看 ClickHouse 的最新更改",
-    "description": "View the latest changes in ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Support": {
-    "message": "支持",
-    "description": "Support"
-  },
-  "sidebar.dropdownCategories.category.About.Support.description": {
-    "message": "从 ClickHouse 工程师那里获得支持",
-    "description": "Get support from ClickHouse engineers"
-  },
-  "sidebar.dropdownCategories.category.About.Development and Contributing": {
-    "message": "开发和贡献",
-    "description": "Development and Contributing"
-  },
-  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
-    "message": "如何为 ClickHouse 做出贡献",
-    "description": "Learn how to contribute to ClickHouse"
-  },
-  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
-    "message": "Как внести вклад в ClickHouse",
-    "description": "Learn how to contribute to ClickHouse"
-  },
-  "This documentation is translated with the help of AI": {
-    "message": "本文档在人工智能的帮助下进行翻译"
-  },
-  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
-    "message": "发现翻译问题？报告翻译问题，帮助我们改进翻译。"
-  },
-  "Report an issue": {
-    "message": "报告问题"
+    "description": "标签列表页面的标题"
   }
 }

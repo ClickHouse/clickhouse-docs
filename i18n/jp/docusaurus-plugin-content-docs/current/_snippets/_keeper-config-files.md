@@ -1,7 +1,6 @@
+:::important ベストプラクティス
+ClickHouse Keeper を設定ファイルの編集によって構成する場合は、次の点に留意してください:
 
-
-:::important best practices
-ClickHouse Keeperを構成するために構成ファイルを編集する際は、以下のことを行うべきです：
 - `/etc/clickhouse-keeper/keeper_config.xml` をバックアップする
 - `/etc/clickhouse-keeper/keeper_config.xml` ファイルを編集する
 :::

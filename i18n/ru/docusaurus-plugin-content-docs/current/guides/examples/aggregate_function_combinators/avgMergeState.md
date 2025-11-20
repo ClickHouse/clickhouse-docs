@@ -1,26 +1,37 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMergeState'
-sidebar_label: avgMergeState
-description: 'Пример использования комбиниатора avgMergeState'
-title: avgMergeState
-keywords: ['avg', 'MergeState', 'комбинатор', 'примеры', 'avgMergeState']
-doc_type: reference
+title: 'avgMergeState'
+description: 'Пример использования комбинирующей функции avgMergeState'
+keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
+sidebar_label: 'avgMergeState'
+doc_type: 'reference'
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
 # avgMergeState {#avgMergeState}
 
+
 ## Описание {#description}
 
-Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для объединения частичных агрегатных состояний типа `AverageFunction(avg, T)` и возврата нового промежуточного состояния агрегации.
+Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state)
+может применяться к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
+для слияния частичных агрегатных состояний типа `AverageFunction(avg, T)` и
+возврата нового промежуточного состояния агрегации.
+
 
 ## Пример использования {#example-usage}
 
-Комбинатор `MergeState` особенно полезен в сценариях агрегации с несколькими уровнями, где вы хотите объединить предагрегированные состояния и сохранить их как состояния (вместо их финализации) для дальнейшей обработки. Чтобы проиллюстрировать это, рассмотрим пример, в котором мы преобразуем показания производительности отдельных серверов в иерархические агрегации на нескольких уровнях: уровень сервера → уровень региона → уровень дата-центра.
+Комбинатор `MergeState` особенно полезен в сценариях многоуровневой агрегации,
+когда требуется объединить предварительно агрегированные состояния и сохранить их в виде
+состояний (а не финализировать) для дальнейшей обработки. Для иллюстрации рассмотрим
+пример, в котором мы преобразуем индивидуальные метрики производительности серверов
+в иерархические агрегации на нескольких уровнях: уровень сервера → уровень региона
+→ уровень дата-центра.
 
-Сначала создадим таблицу для хранения необработанных данных:
+Сначала создадим таблицу для хранения исходных данных:
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -35,7 +46,8 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-Создадим целевую таблицу агрегации на уровне сервера и определим инкрементное материализованное представление, которое будет действовать как триггер вставки для неё:
+Создадим целевую таблицу для агрегации на уровне сервера и определим инкрементальное
+материализованное представление, выполняющее роль триггера вставки в неё:
 
 ```sql
 CREATE TABLE server_performance
@@ -59,7 +71,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-То же самое мы сделаем для уровня региона и уровня дата-центра:
+Сделаем то же самое для уровней региона и дата-центра:
 
 ```sql
 CREATE TABLE region_performance
@@ -80,7 +92,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- datacenter level table and materialized view
+-- таблица и материализованное представление уровня дата-центра
 
 CREATE TABLE datacenter_performance
 (
@@ -99,7 +111,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-Затем вставим образцы необработанных данных в исходную таблицу:
+Затем вставим примеры исходных данных в исходную таблицу:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -114,61 +126,67 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 
 Напишем три запроса для каждого из уровней:
 
+
 <Tabs>
-  <TabItem value="Уровень сервиса" label="Уровень сервиса" default>
-```sql
-SELECT
-    server_id,
-    region,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM server_performance
-GROUP BY server_id, region
-ORDER BY region, server_id;
-```
-```response
-┌─server_id─┬─region─────┬─avg_response_ms─┐
-│       301 │ eu-central │             145 │
-│       302 │ eu-central │             155 │
-│       101 │ us-east    │             125 │
-│       102 │ us-east    │             115 │
-│       201 │ us-west    │              95 │
-│       202 │ us-west    │             105 │
-└───────────┴────────────┴─────────────────┘
-```
+  <TabItem value="Service level" label="Уровень сервиса" default>
+    ```sql
+    SELECT
+        server_id,
+        region,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM server_performance
+    GROUP BY server_id, region
+    ORDER BY region, server_id;
+    ```
+
+    ```response
+    ┌─server_id─┬─region─────┬─avg_response_ms─┐
+    │       301 │ eu-central │             145 │
+    │       302 │ eu-central │             155 │
+    │       101 │ us-east    │             125 │
+    │       102 │ us-east    │             115 │
+    │       201 │ us-west    │              95 │
+    │       202 │ us-west    │             105 │
+    └───────────┴────────────┴─────────────────┘
+    ```
   </TabItem>
-  <TabItem value="Региональный уровень" label="Региональный уровень">
-```sql
-SELECT
-    region,
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM region_performance
-GROUP BY region, datacenter
-ORDER BY datacenter, region;
-```
-```response
-┌─region─────┬─datacenter─┬────avg_response_ms─┐
-│ us-east    │ dc1        │ 121.66666666666667 │
-│ us-west    │ dc1        │                100 │
-│ eu-central │ dc2        │                150 │
-└────────────┴────────────┴────────────────────┘
-```
+
+  <TabItem value="Regional level" label="Региональный уровень">
+    ```sql
+    SELECT
+        region,
+        datacenter,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM region_performance
+    GROUP BY region, datacenter
+    ORDER BY datacenter, region;
+    ```
+
+    ```response
+    ┌─region─────┬─datacenter─┬────avg_response_ms─┐
+    │ us-east    │ dc1        │ 121.66666666666667 │
+    │ us-west    │ dc1        │                100 │
+    │ eu-central │ dc2        │                150 │
+    └────────────┴────────────┴────────────────────┘
+    ```
   </TabItem>
-  <TabItem value="Уровень дата-центра" label="Уровень дата-центра">
-```sql
-SELECT
-    datacenter,
-    avgMerge(avg_response_time) AS avg_response_ms
-FROM datacenter_performance
-GROUP BY datacenter
-ORDER BY datacenter;
-```
-```response
-┌─datacenter─┬─avg_response_ms─┐
-│ dc1        │             113 │
-│ dc2        │             150 │
-└────────────┴─────────────────┘
-```
+
+  <TabItem value="Datacenter level" label="Уровень дата-центра">
+    ```sql
+    SELECT
+        datacenter,
+        avgMerge(avg_response_time) AS avg_response_ms
+    FROM datacenter_performance
+    GROUP BY datacenter
+    ORDER BY datacenter;
+    ```
+
+    ```response
+    ┌─datacenter─┬─avg_response_ms─┐
+    │ dc1        │             113 │
+    │ dc2        │             150 │
+    └────────────┴─────────────────┘
+    ```
   </TabItem>
 </Tabs>
 
@@ -181,7 +199,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Давайте проверим производительность на уровне дата-центра снова. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
+Давайте снова проверим производительность на уровне дата-центра. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
 
 ```sql
 SELECT
@@ -199,7 +217,9 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
+
 ## См. также {#see-also}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

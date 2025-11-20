@@ -1,67 +1,85 @@
 ---
-slug: '/integrations/clickpipes/postgres/source/crunchy-postgres'
 sidebar_label: 'Crunchy Bridge Postgres'
-description: 'Настройте Crunchy Bridge Postgres как источник для ClickPipes'
+description: 'Настройка Crunchy Bridge Postgres в качестве источника для ClickPipes'
+slug: /integrations/clickpipes/postgres/source/crunchy-postgres
 title: 'Руководство по настройке источника Crunchy Bridge Postgres'
-doc_type: guide
+keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
+doc_type: 'guide'
 ---
+
 import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/firewall_rules_crunchy_bridge.png'
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника Postgres для Crunchy Bridge
+# Руководство по настройке источника данных Crunchy Bridge Postgres
 
-ClickPipes поддерживает версии Postgres 12 и выше.
+ClickPipes поддерживает Postgres версии 12 и более новых.
+
+
 
 ## Включение логической репликации {#enable-logical-replication}
 
-Crunchy Bridge поставляется с включенной логической репликацией по [умолчанию](https://docs.crunchybridge.com/how-to/logical-replication). Убедитесь, что нижеуказанные параметры настроены правильно. Если нет, скорректируйте их соответственно.
+В Crunchy Bridge логическая репликация включена по [умолчанию](https://docs.crunchybridge.com/how-to/logical-replication). Убедитесь, что указанные ниже параметры настроены правильно. При необходимости скорректируйте их.
 
 ```sql
-SHOW wal_level; -- should be logical
-SHOW max_wal_senders; -- should be 10
-SHOW max_replication_slots; -- should be 10
+SHOW wal_level; -- должно быть logical
+SHOW max_wal_senders; -- должно быть 10
+SHOW max_replication_slots; -- должно быть 10
 ```
+
 
 ## Создание пользователя ClickPipes и предоставление разрешений {#creating-clickpipes-user-and-granting-permissions}
 
-Подключитесь к вашему Crunchy Bridge Postgres через пользователя `postgres` и выполните следующие команды:
+Подключитесь к вашей базе данных Crunchy Bridge Postgres под пользователем `postgres` и выполните следующие команды:
 
 1. Создайте пользователя Postgres исключительно для ClickPipes.
 
-```sql
-CREATE USER clickpipes_user PASSWORD 'some-password';
-```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
-2. Предоставьте доступ только для чтения к схеме, из которой вы реплицируете таблицы, пользователю `clickpipes_user`. Пример ниже показывает, как предоставить разрешения для схемы `public`. Если вы хотите предоставить доступ к нескольким схемам, вы можете выполнить эти три команды для каждой схемы.
+2. Предоставьте доступ только для чтения к схеме, из которой реплицируются таблицы, пользователю `clickpipes_user`. В примере ниже показано предоставление разрешений для схемы `public`. Если необходимо предоставить доступ к нескольким схемам, выполните эти три команды для каждой схемы.
 
-```sql
-GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
-3. Предоставьте этому пользователю доступ к репликации:
+3. Предоставьте этому пользователю права на репликацию:
 
-```sql
-ALTER ROLE clickpipes_user REPLICATION;
-```
+   ```sql
+    ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-4. Создайте публикацию, которую вы будете использовать для создания MIRROR (репликации) в будущем.
+4. Создайте публикацию, которая будет использоваться для создания MIRROR (репликации) в дальнейшем.
 
-```sql
-CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+   ```sql
+   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   ```
+
 
 ## Добавление IP-адресов ClickPipes в белый список {#safe-list-clickpipes-ips}
 
-Добавьте в белый список [IP-адреса ClickPipes](../../index.md#list-of-static-ips), добавив правила брандмауэра в Crunchy Bridge.
+Добавьте [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в белый список, настроив правила межсетевого экрана в Crunchy Bridge.
 
-<Image size="lg" img={firewall_rules_crunchy_bridge} alt="Где найти правила брандмауэра в Crunchy Bridge?" border/>
+<Image
+  size='lg'
+  img={firewall_rules_crunchy_bridge}
+  alt='Где найти правила межсетевого экрана в Crunchy Bridge?'
+  border
+/>
 
-<Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="Добавьте правила брандмауэра для ClickPipes" border/>
+<Image
+  size='lg'
+  img={add_firewall_rules_crunchy_bridge}
+  alt='Добавление правил межсетевого экрана для ClickPipes'
+  border
+/>
+
 
 ## Что дальше? {#whats-next}
 
-Теперь вы можете [создать свой ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud. Не забудьте записать данные подключения, которые вы использовали при настройке вашего экземпляра Postgres, так как они понадобятся вам в процессе создания ClickPipe.
+Теперь вы можете [создать ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud.
+Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся при создании ClickPipe.

@@ -1,17 +1,14 @@
 ---
-'slug': '/use-cases/AI/MCP/remote_mcp'
-'sidebar_label': 'ClickHouse Cloud リモート MCP'
-'title': 'ClickHouse Cloud リモート MCP サーバーを有効にする'
-'pagination_prev': null
-'pagination_next': null
-'description': 'このガイドでは、ClickHouse Cloud リモート MCP を有効にし、使用する方法について説明します。'
-'keywords':
-- 'AI'
-- 'ClickHouse Cloud'
-- 'MCP'
-'show_related_blogs': true
-'sidebar_position': 1
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/remote_mcp
+sidebar_label: 'ClickHouse Cloud リモート MCP'
+title: 'ClickHouse Cloud リモート MCP サーバーを有効にする'
+pagination_prev: null
+pagination_next: null
+description: 'このガイドでは、ClickHouse Cloud リモート MCP の有効化と利用方法について説明します'
+keywords: ['AI', 'ClickHouse Cloud', 'MCP']
+show_related_blogs: true
+sidebar_position: 1
+doc_type: 'ガイド'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
@@ -28,33 +25,35 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 # ClickHouse Cloud リモート MCP サーバーの有効化
 
-> このガイドでは、ClickHouse Cloud リモート MCP サーバーを有効化して使用する方法を説明します。この例では Claude Code を MCP クライアントとして使用しますが、MCP をサポートする任意の LLM クライアントを使用できます。
+> このガイドでは、ClickHouse Cloud リモート MCP サーバーの有効化と使用方法について説明します。本例では MCP クライアントとして Claude Code を使用しますが、MCP に対応している LLM クライアントであれば使用可能です。
 
 <VerticalStepper headerLevel="h2">
 
-## ClickHouse Cloud サービス用のリモート MCP サーバーを有効化する {#enable-remote-mcp-server}
 
-1. ClickHouse Cloud サービスに接続し、`Connect` ボタンをクリックして、サービスのリモート MCP サーバーを有効にします。
+## ClickHouse CloudサービスのリモートMCPサーバーを有効にする {#enable-remote-mcp-server}
 
-<Image img={img1} alt="接続モーダルで MCP を選択" size="md"/>
+1. ClickHouse Cloudサービスに接続し、`Connect`ボタンをクリックして、サービスのリモートMCPサーバーを有効にします
 
-<Image img={img2} alt="MCP サーバーを有効化" size="md"/>
+<Image img={img1} alt='接続モーダルでMCPを選択' size='md' />
 
-2. `Connect` ビューまたは下部から ClickHouse Cloud MCP サーバーの URL をコピーします。
+<Image img={img2} alt='MCPサーバーを有効にする' size='md' />
+
+2. `Connect`ビューまたは以下からClickHouse Cloud MCPサーバーのURLをコピーします
 
 ```bash
 https://mcp.clickhouse.cloud/mcp
 ```
 
-## Claude Code に ClickHouse MCP サーバーを追加する {#add-clickhouse-mcp-server-claude-code}
 
-1. 作業ディレクトリで、次のコマンドを実行して Claude Code に ClickHouse Cloud MCP サーバーの設定を追加します。この例では、Claude Code の設定内で MCP サーバーを `clickhouse_cloud` と名付けました。
+## Claude CodeへのClickHouse MCPサーバーの追加 {#add-clickhouse-mcp-server-claude-code}
+
+1. 作業ディレクトリで以下のコマンドを実行し、ClickHouse Cloud MCPサーバーの設定をClaude Codeに追加します。この例では、Claude Code設定内のMCPサーバーに`clickhouse_cloud`という名前を付けています
 
 ```bash
 claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
 ```
 
-1b. 使用する MCP クライアントによっては、JSON 設定を直接編集することもできます。
+1b. 使用するMCPクライアントによっては、JSON設定ファイルを直接編集することもできます
 
 ```json
 {
@@ -66,34 +65,36 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 }
 ```
 
-2. 作業ディレクトリで Claude Code を起動します。
+2. 作業ディレクトリでClaude Codeを起動します
 
 ```bash
 [user@host ~/Documents/repos/mcp_test] $ claude
 ```
 
-## OAuth を介して ClickHouse Cloud に認証する {#authenticate-via-oauth}
 
-1. Claude Code は最初のセッションでブラウザウィンドウを開きます。それ以外の場合、Claude Code で `/mcp` コマンドを実行し、`clickhouse_cloud` MCP サーバーを選択することで接続をトリガーすることもできます。
+## OAuthによるClickHouse Cloudへの認証 {#authenticate-via-oauth}
 
-2. ClickHouse Cloud の資格情報を使用して認証します。
+1. Claude Codeは初回セッション時にブラウザウィンドウを開きます。それ以外の場合は、Claude Codeで `/mcp` コマンドを実行し、`clickhouse_cloud` MCPサーバーを選択することで接続を開始できます
 
-<Image img={img3} alt="OAuth 接続フロー" size="sm"/>
+2. ClickHouse Cloudの認証情報を使用して認証を行います
 
-<Image img={img4} alt="OAuth 接続フロー成功" size="sm"/>
+<Image img={img3} alt='OAuth接続フロー' size='sm' />
 
-## Claude Code から ClickHouse Cloud リモート MCP サーバーを使用する {#use-rempte-mcp-from-claude-code}
+<Image img={img4} alt='OAuth接続フロー成功' size='sm' />
 
-1. Claude Code でリモート MCP サーバーが接続されていることを確認します。
 
-<Image img={img5} alt="Claude Code MCP 成功" size="md"/>
+## Claude CodeからClickHouse Cloud Remote MCPサーバーを使用する {#use-rempte-mcp-from-claude-code}
 
-<Image img={img6} alt="Claude Code MCP 詳細" size="md"/>
+1. Claude CodeでリモートMCPサーバーが接続されていることを確認します
 
-2. おめでとうございます！ Claude Code から ClickHouse Cloud リモート MCP サーバーを使用できるようになりました。
+<Image img={img5} alt='Claude Code MCP success' size='md' />
 
-<Image img={img7} alt="Claude Code MCP 使用法" size="md"/>
+<Image img={img6} alt='Claude Code MCP Details' size='md' />
 
-この例では Claude Code を使用しましたが、同様の手順に従うことで MCP をサポートする任意の LLM クライアントを使用できます。
+2. 完了です!これでClaude CodeからClickHouse Cloud Remote MCPサーバーを使用できるようになりました
+
+<Image img={img7} alt='Claude Code MCP Usage' size='md' />
+
+この例ではClaude Codeを使用していますが、同様の手順でMCPをサポートする任意のLLMクライアントを使用できます。
 
 </VerticalStepper>

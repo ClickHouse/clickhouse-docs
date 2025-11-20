@@ -1,16 +1,17 @@
 ---
-'title': 'スキーマ変更の伝播サポート'
-'slug': '/integrations/clickpipes/mysql/schema-changes'
-'description': 'ページは、ソーステーブル内でClickPipesによって検出可能なスキーマ変更タイプを説明します'
-'doc_type': 'reference'
+title: 'スキーマ変更の伝播サポート'
+slug: /integrations/clickpipes/mysql/schema-changes
+description: 'ClickPipes がソーステーブルで検出可能なスキーマ変更タイプについて説明するページ'
+doc_type: 'reference'
+keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-ClickPipes for MySQL は、ソーステーブルのスキーマ変更を検出でき、場合によっては自動的に変更を宛先テーブルに伝播させることができます。各 DDL 操作の処理方法は以下の通りに記載されています。
+MySQL 向け ClickPipes は、ソーステーブルのスキーマ変更を検出し、場合によってはその変更を自動的に宛先テーブルへ伝播できます。各種 DDL 操作の扱いは次のとおりです。
 
-[//]: # "TODO Extend this page with behavior on rename, data type changes, and truncate + guidance on how to handle incompatible schema changes."
+[//]: # "TODO このページを、リネーム、データ型の変更、truncate に対する動作、および非互換なスキーマ変更の扱いに関するガイダンスで拡張する。"
 
-| スキーマ変更タイプ                                                                   | 挙動                                   |
+| Schema Change Type                                                                  | Behaviour                             |
 | ----------------------------------------------------------------------------------- | ------------------------------------- |
-| 新しいカラムの追加 (`ALTER TABLE ADD COLUMN ...`)                                   | 自動的に伝播されます。新しいカラムは、スキーマ変更後に複製されたすべての行に対して populated されます。                                                                         |
-| デフォルト値付きの新しいカラムの追加 (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 自動的に伝播されます。新しいカラムは、スキーマ変更後に複製されたすべての行に対して populated されますが、既存の行は全体テーブルのリフレッシュなしにはデフォルト値を表示しません。|
-| 既存のカラムの削除 (`ALTER TABLE DROP COLUMN ...`)                                  | 検出されますが、**伝播されません**。削除されたカラムは、スキーマ変更後に複製されたすべての行に対して `NULL` に populated されます。                                                                |
+| Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | 自動的に伝播されます。新しいカラムには、スキーマ変更以後にレプリケートされたすべての行で値が設定されます。                                                                         |
+| Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 自動的に伝播されます。新しいカラムには、スキーマ変更以後にレプリケートされたすべての行で値が設定されますが、既存の行には、テーブル全体を再読み込みしない限りデフォルト値は反映されません。 |
+| Dropping an existing column (`ALTER TABLE DROP COLUMN ...`)                         | 検出はされますが、**伝播はされません**。削除されたカラムには、スキーマ変更以後にレプリケートされたすべての行で `NULL` が設定されます。                                                                |

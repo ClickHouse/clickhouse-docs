@@ -1,31 +1,32 @@
 ---
-'slug': '/examples/aggregate-function-combinators/argMaxIf'
-'title': 'argMaxIf'
-'description': 'argMaxIf コンビネータを使用した例'
-'keywords':
-- 'argMax'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'argMaxIf'
-'sidebar_label': 'argMaxIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/argMaxIf'
+title: 'argMaxIf'
+description: 'argMaxIf コンビネータの利用例'
+keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
+sidebar_label: 'argMaxIf'
+doc_type: 'reference'
 ---
+
 
 
 # argMaxIf {#argmaxif}
 
-## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMax`](/sql-reference/aggregate-functions/reference/argmax) 関数に適用して、条件が真である行に対する `val` の最大値に対応する `arg` の値を見つけるために、`argMaxIf` 集約コンビネータ関数を使用します。
+## Description {#description}
 
-`argMaxIf` 関数は、特定の条件を満たす行のみのデータセット内で最大値に関連する値を見つける必要がある場合に便利です。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+関数に適用することで、条件が真となる行において `val` の最大値に対応する `arg` の値を取得できます。
+これには `argMaxIf` 集約コンビネータ関数を使用します。
+
+`argMaxIf` 関数は、データセット内の最大値に関連付けられた値を取得する際に、
+特定の条件を満たす行のみを対象としたい場合に有用です。
+
 
 ## 使用例 {#example-usage}
 
-この例では、製品の販売に関するサンプルデータセットを使用して、`argMaxIf` の動作を示します。販売回数が少なくとも10回の製品に対して、最も高い価格を持つ製品名を見つけます。
+この例では、製品売上のサンプルデータセットを使用して `argMaxIf` の動作を実演します。最高価格の製品名を検索しますが、対象は少なくとも10回販売された製品のみとします。
 
-```sql title="Query"
+```sql title="クエリ"
 CREATE TABLE product_sales
 (
     product_name String,
@@ -44,15 +45,17 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-`argMaxIf` 関数は、販売回数が少なくとも10回 (sales_count >= 10) のすべての製品の中で、最も高い価格を持つ製品名を返します。この場合、人気のある製品の中で最も高い価格 (999.99) を持つ 'Laptop' を返します。
+`argMaxIf` 関数は、少なくとも10回販売された全製品（sales_count >= 10）の中で最高価格の製品名を返します。この場合、人気製品の中で最高価格（999.99）であるため、'Laptop' が返されます。
 
-```response title="Response"
+```response title="レスポンス"
    ┌─most_expensi⋯lar_product─┐
 1. │ Laptop                   │
    └──────────────────────────┘
 ```
 
-## 参照 {#see-also}
+
+## 関連項目 {#see-also}
+
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)

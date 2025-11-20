@@ -1,21 +1,14 @@
 ---
-'title': '言語統合インデックス'
-'slug': '/chdb/install'
-'description': 'chDB 言語統合のインデックスページ'
-'keywords':
-- 'python'
-- 'NodeJS'
-- 'Go'
-- 'Rust'
-- 'Bun'
-- 'C'
-- 'C++'
-'doc_type': 'landing-page'
+title: '言語連携インデックス'
+slug: /chdb/install
+description: 'chDB の言語連携用インデックスページ'
+keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
+doc_type: 'landing-page'
 ---
 
-以下に、chDBをセットアップするための手順が、以下の言語とランタイムのために提供されています。
+以下の言語およびランタイム向けに、chDB のセットアップ手順をまとめたドキュメントがあります。
 
-| 言語                                   | API リファレンス                     |
+| Language                               | API Reference                       |
 |----------------------------------------|-------------------------------------|
 | [Python](/chdb/install/python) | [Python API](/chdb/api/python) |
 | [NodeJS](/chdb/install/nodejs) |                                     |

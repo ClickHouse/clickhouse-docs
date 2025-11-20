@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started'
-'title': 'ClickStackの始め方'
-'sidebar_label': '始め方'
-'pagination_prev': null
-'pagination_next': 'use-cases/observability/clickstack/example-datasets/index'
-'description': 'ClickStackの始め方 - ClickHouseの可観測性スタック'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/getting-started
+title: 'ClickStack 入門'
+sidebar_label: 'はじめに'
+pagination_prev: null
+pagination_next: use-cases/observability/clickstack/example-datasets/index
+description: 'ClickStack 入門 - ClickHouse Observability スタック'
+doc_type: 'guide'
+keywords: ['ClickStack', 'getting started', 'Docker deployment', 'HyperDX UI', 'ClickHouse Cloud', 'local deployment']
 ---
 
 import Image from '@theme/IdealImage';
@@ -22,36 +23,37 @@ import delete_connection from '@site/static/images/use-cases/observability/delet
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
-Getting started with **ClickStack** is straightforward thanks to the availability of prebuilt Docker images. These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
+**ClickStack** は、あらかじめ用意された Docker イメージが利用できるため、簡単に使い始めることができます。これらのイメージは公式の ClickHouse の Debian パッケージに基づいており、さまざまなユースケースに対応できるよう、複数のディストリビューションが提供されています。
 
-## Local deployment {#local-deployment}
 
-The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:
+## ローカルデプロイメント {#local-deployment}
+
+最もシンプルなオプションは、スタックのすべてのコアコンポーネントをバンドルした**単一イメージディストリビューション**です：
 
 - **HyperDX UI**
-- **OpenTelemetry (OTel) collector**
+- **OpenTelemetry (OTel) コレクター**
 - **ClickHouse**
 
-This all-in-one image allows you to launch the full stack with a single command, making it ideal for testing, experimentation, or quick local deployments.
+このオールインワンイメージを使用すると、単一のコマンドでフルスタックを起動できるため、テスト、実験、または迅速なローカルデプロイメントに最適です。
 
 <VerticalStepper headerLevel="h3">
 
-### Deploy stack with docker {#deploy-stack-with-docker}
+### Dockerでスタックをデプロイする {#deploy-stack-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318) and the HyperDX UI (on port 8080).
+以下のコマンドは、OpenTelemetryコレクター（ポート4317および4318）とHyperDX UI（ポート8080）を実行します。
 
 ```shell
 docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-:::note Persisting data and settings
-データと設定をコンテナの再起動にわたって持続させるために、ユーザーは上記のdockerコマンドを変更して `/data/db`, `/var/lib/clickhouse` および `/var/log/clickhouse-server` のパスをマウントすることができます。
+:::note データと設定の永続化
+コンテナの再起動後もデータと設定を永続化するには、上記のdockerコマンドを変更して、パス `/data/db`、`/var/lib/clickhouse`、および `/var/log/clickhouse-server` をマウントします。
 
-例えば：
+例：
+
 
 ```shell
-
-# modify command to mount paths
+# パスをマウントするコマンドを変更
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -61,59 +63,61 @@ docker run \
   -v "$(pwd)/.volumes/ch_logs:/var/log/clickhouse-server" \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
+
 :::
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
+### HyperDX UIへのアクセス {#navigate-to-hyperdx-ui}
 
-[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを利用します。
+[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを開きます。
 
-ユーザーを作成し、複雑さの要件を満たすユーザー名とパスワードを提供します。
+複雑性要件を満たすユーザー名とパスワードを入力してユーザーを作成します。
 
-<Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
+<Image img={hyperdx_login} alt='HyperDX UI' size='lg' />
 
-HyperDXはローカルクラスターに自動的に接続し、ログ、トレース、メトリクス、およびセッションのデータソースを作成します。これにより、すぐに製品を探索できます。
+HyperDXはローカルクラスタに自動的に接続し、ログ、トレース、メトリクス、セッションのデータソースを作成します。これにより、すぐに製品を試すことができます。
 
-### Explore the product {#explore-the-product}
+### 製品の探索 {#explore-the-product}
 
-スタックがデプロイされると、私たちの同じデータセットのいずれかを試してみてください。
+スタックをデプロイしたら、サンプルデータセットのいずれかを試してください。
 
-ローカルクラスターを引き続き使用するには：
+ローカルクラスタを引き続き使用する場合:
 
-- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - 公開デモからのサンプルデータセットをロードします。単純な問題を診断します。
-- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - ローカルファイルをロードし、OSXまたはLinuxでローカルOTelコレクターを使用してシステムを監視します。
+- [サンプルデータセット](/use-cases/observability/clickstack/getting-started/sample-data) - 公開デモからサンプルデータセットを読み込みます。簡単な問題を診断します。
+- [ローカルファイルとメトリクス](/use-cases/observability/clickstack/getting-started/local-data) - ローカルのOTelコレクタを使用して、OSXまたはLinux上でローカルファイルを読み込み、システムを監視します。
 
-<br/>
-または、デモクラスターに接続して、より大きなデータセットを探索できます：
+<br />
+または、より大規模なデータセットを探索できるデモクラスタに接続することもできます:
 
-- [Remote demo dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data) - デモClickHouseサービス内のデモデータセットを探索します。
+- [リモートデモデータセット](/use-cases/observability/clickstack/getting-started/remote-demo-data) - デモClickHouseサービスでデモデータセットを探索します。
 
 </VerticalStepper>
 
-## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
-ユーザーはClickHouse Cloudに対してClickStackをデプロイでき、完全に管理された安全なバックエンドを利用しつつ、取り込み、スキーマ、および可観測性ワークフローに対する完全なコントロールを保持できます。
+## ClickHouse Cloudでのデプロイ {#deploy-with-clickhouse-cloud}
+
+ユーザーはClickHouse Cloudに対してClickStackをデプロイすることで、フルマネージドで安全なバックエンドの利点を享受しながら、データ取り込み、スキーマ、および可観測性ワークフローを完全に制御できます。
 
 <VerticalStepper headerLevel="h3">
 
-### Create a ClickHouse Cloud service {#create-a-service}
+### ClickHouse Cloudサービスの作成 {#create-a-service}
 
-[ClickHouse Cloudのスターターガイド](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)をフォローしてサービスを作成します。
+サービスを作成するには、[ClickHouse Cloudのクイックスタートガイド](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)に従ってください。
 
-### Copy connection details {#copy-cloud-connection-details}
+### 接続情報のコピー {#copy-cloud-connection-details}
 
-HyperDXの接続情報を見つけるには、ClickHouse Cloudコンソールに移動し、サイドバーの<b>Connect</b>ボタンをクリックします。
+HyperDXの接続情報を確認するには、ClickHouse Cloudコンソールに移動し、サイドバーの<b>Connect</b>ボタンをクリックします。
 
-HTTP接続の詳細、具体的にはHTTPSエンドポイント(`endpoint`)とパスワードをコピーします。
+HTTP接続情報、特にHTTPSエンドポイント(`endpoint`)とパスワードをコピーします。
 
-<Image img={connect_cloud} alt="Connect Cloud" size="md"/>
+<Image img={connect_cloud} alt='Connect Cloud' size='md' />
 
-:::note Deploying to production
-HyperDXに接続するために`default`ユーザーを使用しますが、[本番環境に移行する際](/use-cases/observability/clickstack/production#create-a-user)には専用のユーザーを作成することをお勧めします。
+:::note 本番環境へのデプロイ
+HyperDXの接続には`default`ユーザーを使用しますが、[本番環境に移行する](/use-cases/observability/clickstack/production#create-a-user)際には専用ユーザーの作成を推奨します。
 :::
 
-### Deploy with docker {#deploy-with-docker}
+### Dockerでのデプロイ {#deploy-with-docker}
 
-ターミナルを開いて、上記でコピーした認証情報をエクスポートします：
+ターミナルを開き、上記でコピーした認証情報をエクスポートします:
 
 ```shell
 export CLICKHOUSE_USER=default
@@ -121,75 +125,76 @@ export CLICKHOUSE_ENDPOINT=<YOUR HTTPS ENDPOINT>
 export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
 ```
 
-次のdockerコマンドを実行します：
+以下のDockerコマンドを実行します:
 
 ```shell
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-これにより、OpenTelemetryコレクター（ポート4317および4318）とHyperDX UI（ポート8080）が公開されます。
+これにより、OpenTelemetryコレクター(ポート4317および4318)とHyperDX UI(ポート8080)が公開されます。
 
-### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui-cloud}
+### HyperDX UIへのアクセス {#navigate-to-hyperdx-ui-cloud}
 
-[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを利用します。
+[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。
 
-ユーザーを作成し、複雑さの要件を満たすユーザー名とパスワードを提供します。
+複雑性要件を満たすユーザー名とパスワードを指定してユーザーを作成します。
 
-<Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
+<Image img={hyperdx_login} alt='HyperDX Login' size='lg' />
 
-### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
+### ClickHouse Cloud接続の作成 {#create-a-cloud-connection}
 
-`Team Settings`に移動し、`Local Connection`の`Edit`をクリックします：
+`Team Settings`に移動し、`Local Connection`の`Edit`をクリックします:
 
-<Image img={edit_connection} alt="Edit Connection" size="lg"/>
+<Image img={edit_connection} alt='Edit Connection' size='lg' />
 
-接続名を`Cloud`に変更し、次のフォームにClickHouse Cloudサービスの認証情報を入力し、`Save`をクリックします：
+接続名を`Cloud`に変更し、ClickHouse Cloudサービスの認証情報を入力してフォームを完成させた後、`Save`をクリックします:
 
-<Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
+<Image img={edit_cloud_connection} alt='Create Cloud connection' size='lg' />
 
-### Explore the product {#explore-the-product-cloud}
+### 製品の探索 {#explore-the-product-cloud}
 
-スタックがデプロイされると、私たちの同じデータセットのいずれかを試してみてください。
+スタックがデプロイされたら、以下のサンプルデータセットを試してみてください。
 
-- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - 公開デモからのサンプルデータセットをロードします。単純な問題を診断します。
-- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - ローカルファイルをロードし、OSXまたはLinuxでローカルOTelコレクターを使用してシステムを監視します。
+- [サンプルデータセット](/use-cases/observability/clickstack/getting-started/sample-data) - 公開デモからサンプルデータセットを読み込み、簡単な問題を診断します。
+- [ローカルファイルとメトリクス](/use-cases/observability/clickstack/getting-started/local-data) - ローカルOTelコレクターを使用して、macOSまたはLinux上でローカルファイルを読み込み、システムを監視します。
 
 </VerticalStepper>
 
-## Local mode {#local-mode}
+
+## ローカルモード {#local-mode}
 
 ローカルモードは、認証なしでHyperDXをデプロイする方法です。
 
 認証はサポートされていません。
 
-このモードは、認証や設定の持続が必要ないクイックテスト、開発、デモ、およびデバッグのユースケースに使用することを意図しています。
+このモードは、認証や設定の永続化が不要な、クイックテスト、開発、デモ、デバッグなどのユースケースでの使用を想定しています。
 
-### Hosted version {#hosted-version}
+### ホスト版 {#hosted-version}
 
-ローカルモードで利用できるHyperDXのホスティング版を[play.hyperdx.io](https://play.hyperdx.io)で使用できます。
+[play.hyperdx.io](https://play.hyperdx.io)で、ローカルモードのHyperDXホスト版を利用できます。
 
-### Self-hosted version {#self-hosted-version}
+### セルフホスト版 {#self-hosted-version}
 
 <VerticalStepper headerLevel="h3">
 
-### Run with docker {#run-local-with-docker}
+### Dockerで実行 {#run-local-with-docker}
 
-セルフホスティングのローカルモードイメージは、OpenTelemetryコレクターとClickHouseサーバーが事前に設定されています。これにより、アプリケーションからのテレメトリーデータを消費し、HyperDXで視覚化するための外部設定が最小限に抑えられます。セルフホスティング版を開始するには、適切なポートをフォワードしてDockerコンテナを実行します：
+セルフホスト版のローカルモードイメージには、OpenTelemetryコレクターとClickHouseサーバーが事前設定されています。これにより、アプリケーションからのテレメトリデータを取り込み、最小限の外部セットアップでHyperDXで可視化することが容易になります。セルフホスト版を開始するには、適切なポートをフォワードしてDockerコンテナを実行するだけです:
 
 ```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 
-ローカルモードには認証が含まれていないため、ユーザーを作成するように促されることはありません。
+ローカルモードには認証が含まれていないため、ユーザー作成を求められることはありません。
 
-### Complete connection credentials {#complete-connection-credentials}
+### 接続認証情報の入力 {#complete-connection-credentials}
 
-自身の**外部ClickHouseクラスタ**に接続するには、接続資格情報を手動で入力できます。
+独自の**外部ClickHouseクラスター**に接続するには、接続認証情報を手動で入力できます。
 
-代わりに、製品をすぐに探索するために**Connect to Demo Server**をクリックして事前にロードされたデータセットにアクセスし、設定なしでClickStackを試すことができます。
+または、製品を素早く試すために、**Connect to Demo Server**をクリックして、事前にロードされたデータセットにアクセスし、セットアップ不要でClickStackを試すこともできます。
 
-<Image img={hyperdx_2} alt="Credentials" size="md"/>
+<Image img={hyperdx_2} alt='Credentials' size='md' />
 
-デモサーバーに接続している場合、ユーザーは[デモデータセットの指示](/use-cases/observability/clickstack/getting-started/remote-demo-data)に従ってデータセットを探索できます。
+デモサーバーに接続する場合、ユーザーは[デモデータセット手順](/use-cases/observability/clickstack/getting-started/remote-demo-data)を使用してデータセットを探索できます。
 
 </VerticalStepper>

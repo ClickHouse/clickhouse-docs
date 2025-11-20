@@ -1,44 +1,48 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/deno'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'Deno SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'Deno'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/deno
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'Deno SDK для ClickStack — стек наблюдаемости ClickHouse'
+title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
-Это руководство включает в себя следующее:
+
+В этом руководстве рассматривается интеграция следующих компонентов:
 
 - **Логи**
 
 :::note
-На данный момент поддерживается только логирование OpenTelemetry. Для поддержки трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
+В настоящее время поддерживается только OpenTelemetry Logging. Для поддержки трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
 :::
+
+
 
 ## Логирование {#logging}
 
-Логирование поддерживается путем экспорта пользовательского логгера для модуля `std/log`.
+Логирование поддерживается путём экспорта пользовательского логгера для модуля `std/log`.
 
 **Пример использования:**
 
 ```typescript
-import * as log from 'https://deno.land/std@0.203.0/log/mod.ts';
-import { OpenTelemetryHandler } from 'npm:@hyperdx/deno';
+import * as log from "https://deno.land/std@0.203.0/log/mod.ts"
+import { OpenTelemetryHandler } from "npm:@hyperdx/deno"
 
 log.setup({
   handlers: {
-    otel: new OpenTelemetryHandler('DEBUG'),
+    otel: new OpenTelemetryHandler("DEBUG")
   },
 
   loggers: {
-    'my-otel-logger': {
-      level: 'DEBUG',
-      handlers: ['otel'],
-    },
-  },
-});
+    "my-otel-logger": {
+      level: "DEBUG",
+      handlers: ["otel"]
+    }
+  }
+})
 
-log.getLogger('my-otel-logger').info('Hello from Deno!');
+log.getLogger("my-otel-logger").info("Hello from Deno!")
 ```
 
 ### Запуск приложения {#run-the-application}

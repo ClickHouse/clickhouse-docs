@@ -1,69 +1,76 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks'
-'pagination_prev': null
-'pagination_next': null
-'description': '言語SDKはClickStackのための - ClickHouseの可観測性スタック'
-'title': '言語SDK'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack 向け言語 SDK - ClickHouse Observability Stack'
+title: '言語 SDK'
+doc_type: 'guide'
+keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs ClickStack', 'application instrumentation SDKs
+', 'telemetry collection SDKs']
 ---
 
-データは通常、**OpenTelemetry (OTel) コレクター**を介して ClickStack に送信されます。これは、言語 SDK から直接、またはインフラストラクチャメトリックやログを収集するエージェントとして機能する中間の OpenTelemetry コレクターを通じて行われます。
+データは通常、**OpenTelemetry (OTel) コレクター** を経由して ClickStack に送信されます。送信元は、言語 SDK から直接の場合もあれば、インフラストラクチャのメトリクスやログを収集するエージェントとして動作する中間の OpenTelemetry コレクター経由の場合もあります。
 
-言語 SDK は、アプリケーション内からテレメトリを収集する責任があります。特に、**トレース**と**ログ**を収集し、OTLP エンドポイントを介して OpenTelemetry コレクターにエクスポートし、ClickHouse への取り込みを処理します。
+言語 SDK は、アプリケーション内部からのテレメトリ、特に **トレース** と **ログ** を収集し、このデータを OTLP エンドポイント経由で OpenTelemetry コレクターにエクスポートする役割を担います。OpenTelemetry コレクターが、そのデータを ClickHouse に取り込む処理を行います。
 
-ブラウザベースの環境では、SDK は、ユーザーセッションのリプレイを可能にするために、UI イベント、クリック、ナビゲーションを含む**セッションデータ**を収集する責任もあります。
+ブラウザベースの環境では、SDK が **セッションデータ** の収集も担う場合があり、UI イベント、クリック、ナビゲーションなどを収集することで、ユーザーセッションのリプレイを可能にします。 
+
+
 
 ## 仕組み {#how-it-works}
 
-1. アプリケーションは ClickStack SDK（例：Node.js、Python、Go）を使用します。これらの SDK は、拡張された機能と使いやすさの向上を備えた OpenTelemetry SDK に基づいています。
-2. SDK は OTLP（HTTP または gRPC）を介してトレースとログを収集し、エクスポートします。
-3. OpenTelemetry コレクターはテレメトリを受信し、構成されたエクスポーターを介して ClickHouse に書き込みます。
+1. アプリケーションはClickStack SDK(Node.js、Python、Goなど)を使用します。これらのSDKはOpenTelemetry SDKをベースに、追加機能と使いやすさの向上が施されています。
+2. SDKはOTLP(HTTPまたはgRPC)経由でトレースとログを収集し、エクスポートします。
+3. OpenTelemetryコレクターがテレメトリを受信し、設定されたエクスポーターを介してClickHouseに書き込みます。
 
-## 対応言語 {#supported-languages}
 
-:::note OpenTelemetry 互換性
-ClickStack は、拡張されたテレメトリと機能を持つ独自の言語 SDK を提供していますが、既存の OpenTelemetry SDK をシームレスに使用することもできます。
+## サポート言語 {#supported-languages}
+
+:::note OpenTelemetry互換性
+ClickStackは強化されたテレメトリと機能を備えた独自の言語SDKを提供していますが、既存のOpenTelemetry SDKもシームレスに使用できます。
 :::
 
-<br/>
+<br />
 
-| 言語         | 説明                                   | リンク                                                                   |
-|--------------|----------------------------------------|-------------------------------------------------------------------------|
-| AWS Lambda   | AWS Lambda 関数の計測               | [ドキュメント](/use-cases/observability/clickstack/sdks/aws_lambda)    |
-| ブラウザ     | ブラウザベースのアプリケーション用の JavaScript SDK | [ドキュメント](/use-cases/observability/clickstack/sdks/browser)      |
-| Elixir       | Elixir アプリケーション               | [ドキュメント](/use-cases/observability/clickstack/sdks/elixir)       |
-| Go           | Go アプリケーションとマイクロサービス | [ドキュメント](/use-cases/observability/clickstack/sdks/golang)       |
-| Java         | Java アプリケーション                 | [ドキュメント](/use-cases/observability/clickstack/sdks/java)         |
-| NestJS       | NestJS アプリケーション               | [ドキュメント](/use-cases/observability/clickstack/sdks/nestjs)       |
-| Next.js      | Next.js アプリケーション              | [ドキュメント](/use-cases/observability/clickstack/sdks/nextjs)       |
-| Node.js      | サーバーサイドアプリケーション用の JavaScript 実行環境 | [ドキュメント](/use-cases/observability/clickstack/sdks/nodejs)      |
-| Deno         | Deno アプリケーション                 | [ドキュメント](/use-cases/observability/clickstack/sdks/deno)         |
-| Python       | Python アプリケーションとウェブサービス | [ドキュメント](/use-cases/observability/clickstack/sdks/python)       |
-| React Native  | React Native モバイルアプリケーション  | [ドキュメント](/use-cases/observability/clickstack/sdks/react-native) |
-| Ruby         | Ruby on Rails アプリケーションとウェブサービス | [ドキュメント](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
+| 言語     | 説明                                     | リンク                                                                    |
+| ------------ | ----------------------------------------------- | ----------------------------------------------------------------------- |
+| AWS Lambda   | AWS Lambda関数のインストルメンテーション            | [ドキュメント](/use-cases/observability/clickstack/sdks/aws_lambda)    |
+| Browser      | ブラウザベースアプリケーション向けJavaScript SDK   | [ドキュメント](/use-cases/observability/clickstack/sdks/browser)       |
+| Elixir       | Elixirアプリケーション                             | [ドキュメント](/use-cases/observability/clickstack/sdks/elixir)        |
+| Go           | Goアプリケーションおよびマイクロサービス               | [ドキュメント](/use-cases/observability/clickstack/sdks/golang)        |
+| Java         | Javaアプリケーション                               | [ドキュメント](/use-cases/observability/clickstack/sdks/java)          |
+| NestJS       | NestJSアプリケーション                             | [ドキュメント](/use-cases/observability/clickstack/sdks/nestjs)        |
+| Next.js      | Next.jsアプリケーション                            | [ドキュメント](/use-cases/observability/clickstack/sdks/nextjs)        |
+| Node.js      | サーバーサイドアプリケーション向けJavaScriptランタイム | [ドキュメント](/use-cases/observability/clickstack/sdks/nodejs)        |
+| Deno         | Denoアプリケーション                               | [ドキュメント](/use-cases/observability/clickstack/sdks/deno)          |
+| Python       | Pythonアプリケーションおよびウェブサービス            | [ドキュメント](/use-cases/observability/clickstack/sdks/python)        |
+| React Native | React Nativeモバイルアプリケーション                | [ドキュメント](/use-cases/observability/clickstack/sdks/react-native)  |
+| Ruby         | Ruby on Railsアプリケーションおよびウェブサービス     | [ドキュメント](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
-## API キーによるセキュリティ {#securing-api-key}
 
-OTel コレクターを介して ClickStack にデータを送信するには、SDK で取り込み API キーを指定する必要があります。これは、SDK の `init` 関数を使用するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数を設定することで行うことができます。
+## APIキーによるセキュリティ保護 {#securing-api-key}
+
+OTelコレクター経由でClickStackにデータを送信するには、SDKでインジェストAPIキーを指定する必要があります。これは、SDKの`init`関数または`OTEL_EXPORTER_OTLP_HEADERS`環境変数のいずれかで設定できます:
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-この API キーは HyperDX アプリケーションによって生成され、`Team Settings → API Keys` のアプリ内で利用可能です。
+このAPIキーはHyperDXアプリケーションによって生成され、アプリ内の`Team Settings → API Keys`から利用できます。
 
-ほとんどの [言語 SDK](/use-cases/observability/clickstack/sdks) や OpenTelemetry をサポートするテレメトリライブラリでは、アプリケーション内で `OTEL_EXPORTER_OTLP_ENDPOINT` 環境変数を設定するか、SDK の初期化時に指定するだけで済みます。
+OpenTelemetryをサポートするほとんどの[言語SDK](/use-cases/observability/clickstack/sdks)およびテレメトリライブラリでは、アプリケーション内で`OTEL_EXPORTER_OTLP_ENDPOINT`環境変数を設定するか、SDKの初期化時に指定できます:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-## Kubernetes との統合 {#kubernetes-integration}
 
-すべての SDK は、Kubernetes 環境で実行されているときに Kubernetes メタデータ（ポッド名、ネームスペースなど）との自動関連付けをサポートしています。これにより、次のことが可能になります。
+## Kubernetes統合 {#kubernetes-integration}
 
-- サービスに関連するポッドとノードの Kubernetes メトリックを表示する
-- アプリケーションのログとトレースをインフラストラクチャメトリックと関連付ける
-- Kubernetes クラスター全体のリソース使用量とパフォーマンスを追跡する
+すべてのSDKは、Kubernetes環境で実行する際に、Kubernetesメタデータ(Pod名、Namespace など)との自動相関をサポートしています。これにより、以下のことが可能になります:
 
-この機能を有効にするには、OpenTelemetry コレクターを構成してリソースタグをポッドに転送する必要があります。詳細な設定手順については、[Kubernetes 統合ガイド](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods)を参照してください。
+- サービスに関連付けられたPodおよびNodeのKubernetesメトリクスの表示
+- アプリケーションログおよびトレースとインフラストラクチャメトリクスの相関付け
+- Kubernetesクラスタ全体でのリソース使用状況とパフォーマンスの追跡
+
+この機能を有効にするには、OpenTelemetryコレクターを設定してリソースタグをPodに転送してください。詳細なセットアップ手順については、[Kubernetes統合ガイド](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)を参照してください。

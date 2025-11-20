@@ -1,18 +1,12 @@
 ---
-'sidebar_label': '概述'
-'sidebar_position': 1
-'slug': '/integrations/migration/overview'
-'keywords':
-- 'clickhouse'
-- 'migrate'
-- 'migration'
-- 'migrating'
-- 'data'
-'title': '将数据迁移到 ClickHouse'
-'description': '页面描述了可用于将数据迁移到 ClickHouse 的选项'
-'doc_type': 'guide'
+sidebar_label: '概览'
+sidebar_position: 1
+slug: /integrations/migration/overview
+keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
+title: '将数据迁移到 ClickHouse'
+description: '介绍可用于将数据迁移到 ClickHouse 的各类选项'
+doc_type: 'guide'
 ---
-
 
 # 将数据迁移到 ClickHouse
 
@@ -30,11 +24,11 @@
 
 <br/>
 
-根据您数据当前所在的位置，有几种将数据迁移到 ClickHouse Cloud 的选项：
+根据当前数据所在的位置，有多种方式将数据迁移到 ClickHouse Cloud：
 
-- [自管理到云](/cloud/migration/clickhouse-to-cloud)：使用 `remoteSecure` 函数传输数据
-- [其他 DBMS](/cloud/migration/clickhouse-local)：使用 [clickhouse-local] ETL 工具和适合您当前 DBMS 的 ClickHouse 表函数
-- [任何地方!](/cloud/migration/etl-tool-to-clickhouse)：使用与各种不同数据源连接的众多流行 ETL/ELT 工具之一
-- [对象存储](/integrations/migration/object-storage-to-clickhouse)：轻松将数据从 S3 插入 ClickHouse
+- [自管集群迁移到 Cloud](/cloud/migration/clickhouse-to-cloud)：使用 `remoteSecure` 函数传输数据
+- [从其他 DBMS 迁移](/cloud/migration/clickhouse-local)：使用 [clickhouse-local] ETL 工具以及适用于当前 DBMS 的 ClickHouse 表函数
+- [从任意数据源迁移！](/cloud/migration/etl-tool-to-clickhouse)：使用众多流行的 ETL/ELT 工具之一连接各种不同的数据源
+- [对象存储](/integrations/migration/object-storage-to-clickhouse)：轻松将 S3 中的数据写入 ClickHouse
 
-在示例 [从 Redshift 迁移](/migrations/redshift/migration-guide) 中，我们展示了三种将数据迁移到 ClickHouse 的不同方法。
+在示例 [从 Redshift 迁移](/migrations/redshift/migration-guide) 中，我们展示了三种将数据迁移到 ClickHouse 的方法。

@@ -1,39 +1,42 @@
 ---
-'slug': '/use-cases/observability/clickstack/event_patterns'
-'title': '与 ClickStack 的事件模式'
-'sidebar_label': '事件模式'
-'pagination_prev': null
-'pagination_next': null
-'description': '与 ClickStack 的事件模式'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/event_patterns
+title: 'ClickStack 中的事件模式'
+sidebar_label: '事件模式'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack 中的事件模式'
+doc_type: 'guide'
+keywords: ['clickstack', 'event patterns', 'log analysis', 'pattern matching', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
 import event_patterns from '@site/static/images/use-cases/observability/event_patterns.png';
 import event_patterns_highlight from '@site/static/images/use-cases/observability/event_patterns_highlight.png';
 
-Event patterns in ClickStack 允许您通过自动聚类相似的消息，快速理解大量的日志或追踪，因此您只需审查少量有意义的组，而无需逐条查找数百万个单独的事件。
+ClickStack 中的事件模式可以通过自动将相似消息聚类在一起，帮助你快速理解海量日志或追踪数据，因此你无需在数百万条单个事件中逐条排查，只需审查少量有代表性的事件分组即可。
 
-<Image img={event_patterns} alt="事件模式" size="lg"/>
+<Image img={event_patterns} alt="事件模式" size="lg" />
 
-这使得识别哪些错误或警告是新的，哪些是重复出现的，以及哪些导致日志量激增变得更加容易。由于模式是动态生成的，您无需定义正则表达式或维护解析规则 - ClickStack 会自动适应您的事件，无论其格式如何。
+这使你更容易发现哪些错误或警告是新的、哪些是反复出现的，以及哪些导致了日志量的突然飙升。由于这些模式是动态生成的，你不需要定义正则表达式或维护解析规则——ClickStack 会自动适配你的事件，而不受其格式限制。
 
-除了事件响应，这种高层次的视图还帮助您识别噪声日志源，这些源可以被修剪以减少成本，发现服务产生的不同类型的日志，以及更快速地回答系统是否已经发出您关心的信号。
+除了用于事故响应之外，这种宏观视图还可以帮助你识别可以削减以降低成本的噪声日志来源，了解某个服务会产生的不同类型日志，并更快地判断系统是否已经发出了你所关心的关键信号。
+
 
 ## 访问事件模式 {#accessing-event-patterns}
 
-事件模式可以直接通过 ClickStack 中的 **Search** 面板访问。  
+事件模式可直接通过 ClickStack 中的**搜索**面板访问。
 
-从左上角的 **Analysis Mode** 选择器中，选择 **Event Patterns** 以切换到聚类相似事件的视图，而不是标准结果表。  
+在左上角的**分析模式**选择器中,选择**事件模式**即可从标准结果表切换到相似事件的聚类视图。
 
-<Image img={event_patterns_highlight} alt="事件模式" size="lg"/>
+<Image img={event_patterns_highlight} alt='事件模式' size='lg' />
 
-这为默认的 **Results Table** 提供了一种替代方案，允许用户滚动浏览每个单独的日志或追踪。
+这提供了默认**结果表**的替代方案,结果表允许用户逐条滚动浏览每个日志或跟踪记录。
+
 
 ## 建议 {#recommendations}
 
-事件模式在应用于 **缩小的子集** 数据时效果最佳。例如，在启用事件模式之前过滤到单个服务，通常会比在数千个服务上同时应用模式更易于浮现出相关和有趣的消息。  
+事件模式在应用于数据的**缩小子集**时最为有效。例如,在启用事件模式之前先筛选到单个服务,通常会比在数千个服务上同时应用模式更容易发现相关且有价值的消息。
 
-它们对于总结错误消息尤为强大，其中重复的错误（具有不同的 ID 或有效负载）被聚合成简明的集群。  
+事件模式对于汇总错误消息也特别有用,可以将具有不同 ID 或负载的重复错误分组为简洁的集群。
 
-有关实时示例，请查看事件模式在 [Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns) 中的使用情况。
+有关实际示例,请参阅[远程演示数据集](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns)中如何使用事件模式。

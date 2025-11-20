@@ -1,38 +1,52 @@
 ---
-slug: '/integrations/omni'
-sidebar_label: Omni
-description: 'Omni является корпоративной платформой для бизнес-аналитики, data'
-title: Omni
+sidebar_label: 'Omni'
+slug: /integrations/omni
 keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
-doc_type: guide
+description: 'Omni — это корпоративная платформа для BI, дата‑приложений и встроенной аналитики, которая помогает в режиме реального времени исследовать данные и делиться результатами.'
+title: 'Omni'
+doc_type: 'guide'
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import omni_01 from '@site/static/images/integrations/data-visualization/omni_01.png';
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
 # Omni
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
-Omni может подключаться к ClickHouse Cloud или локальному развертыванию через официальный источник данных ClickHouse.
+Omni может подключаться к ClickHouse Cloud или к локальному развёртыванию через официальный источник данных ClickHouse.
+
+
 
 ## 1. Соберите данные для подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
-## 2. Создайте источник данных ClickHouse {#2-create-a-clickhouse-data-source}
 
-Перейдите в Админ -> Подключения и нажмите кнопку "Добавить подключение" в правом верхнем углу.
+## 2. Создание источника данных ClickHouse {#2-create-a-clickhouse-data-source}
 
-<Image size="lg" img={omni_01} alt="Интерфейс администратора Omni, показывающий кнопку Добавить подключение в разделе Подключения" border />
-<br/>
+Перейдите в раздел Admin → Connections и нажмите кнопку «Add Connection» в правом верхнем углу.
 
-Выберите `ClickHouse`. Введите свои учетные данные в форме.
+<Image
+  size='lg'
+  img={omni_01}
+  alt='Административный интерфейс Omni с кнопкой Add Connection в разделе Connections'
+  border
+/>
+<br />
 
-<Image size="lg" img={omni_02} alt="Интерфейс настройки подключения Omni для ClickHouse, показывающий поля формы для ввода учетных данных" border />
-<br/>
+Выберите `ClickHouse`. Введите учётные данные в форму.
+
+<Image
+  size='lg'
+  img={omni_02}
+  alt='Интерфейс настройки подключения Omni для ClickHouse с полями формы учётных данных'
+  border
+/>
+<br />
 
 Теперь вы можете выполнять запросы и визуализировать данные из ClickHouse в Omni.

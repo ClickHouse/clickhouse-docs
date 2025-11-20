@@ -1,10 +1,14 @@
 ---
-'sidebar_label': 'EMQX'
-'sidebar_position': 1
-'slug': '/integrations/emqx'
-'description': 'ClickHouseとのEMQXの紹介'
-'title': 'EMQXとClickHouseの統合'
-'doc_type': 'guide'
+sidebar_label: 'EMQX'
+sidebar_position: 1
+slug: /integrations/emqx
+description: 'ClickHouse と EMQX の概要'
+title: 'ClickHouse と EMQX の連携'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_ingestion'
+keywords: ['EMQX ClickHouse integration', 'MQTT ClickHouse connector', 'EMQX Cloud ClickHouse', 'IoT data ClickHouse', 'MQTT broker ClickHouse']
 ---
 
 import emqx_cloud_artitecture from '@site/static/images/integrations/data-ingestion/emqx/emqx-cloud-artitecture.png';
@@ -36,49 +40,81 @@ import clickhouse_result from '@site/static/images/integrations/data-ingestion/e
 import Image from '@theme/IdealImage';
 
 
+# EMQX と ClickHouse の統合
 
-# EMQXとClickHouseの統合
+
 
 ## EMQXへの接続 {#connecting-emqx}
 
-[EMQX](https://www.emqx.com/en/try?product=enterprise) は、高性能なリアルタイムメッセージ処理エンジンを備えたオープンソースのMQTTブローカーで、IoTデバイス向けに大規模なイベントストリーミングを提供します。最もスケーラブルなMQTTブローカーとして、EMQXはあらゆる規模で任意のデバイスを接続するのを助けます。IoTデータをどこにでも移動し、処理します。
+[EMQX](https://www.emqx.com/en/try?product=enterprise)は、高性能なリアルタイムメッセージ処理エンジンを備えたオープンソースのMQTTブローカーで、大規模なIoTデバイスのイベントストリーミングを実現します。最もスケーラブルなMQTTブローカーとして、EMQXはあらゆる規模であらゆるデバイスを接続できます。IoTデータをどこでも移動・処理できます。
 
-[EMQX Cloud](https://www.emqx.com/en/try?product=cloud) は、 [EMQ](https://www.emqx.com/en) がホストするIoTドメイン向けのMQTTメッセージングミドルウェア製品です。EMQX Cloudは、世界初の完全に管理されたMQTT 5.0クラウドメッセージングサービスであり、MQTTメッセージングサービス用のワンストップO&Mコロケーションと独自の隔離された環境を提供します。あらゆるモノがインターネットで接続される時代に、EMQX CloudはIoTドメインの業界アプリケーションを迅速に構築し、IoTデータの収集、伝送、計算、および永続化を容易にします。
+[EMQX Cloud](https://www.emqx.com/en/try?product=cloud)は、[EMQ](https://www.emqx.com/en)がホストするIoTドメイン向けのMQTTメッセージングミドルウェア製品です。世界初のフルマネージドMQTT 5.0クラウドメッセージングサービスとして、EMQX CloudはMQTTメッセージングサービス向けのワンストップ運用管理コロケーションと独自の分離環境を提供します。IoT(Internet of Everything)時代において、EMQX CloudはIoTドメインの業界アプリケーションを迅速に構築し、IoTデータの収集、転送、計算、永続化を容易に行うことができます。
 
-クラウドプロバイダーが提供するインフラストラクチャを使用することで、EMQX Cloudは世界中の数十の国と地域にサービスを提供し、5Gおよびあらゆるモノがインターネットで接続されるアプリケーション向けに、低コストで安全かつ信頼性のあるクラウドサービスを提供します。
+クラウドプロバイダーが提供するインフラストラクチャを活用し、EMQX Cloudは世界中の数十の国と地域にサービスを提供し、5GおよびIoT(Internet of Everything)アプリケーション向けに低コストで安全かつ信頼性の高いクラウドサービスを提供しています。
 
-<Image img={emqx_cloud_artitecture} size="lg" border alt="EMQX Cloud Architecture diagram showing cloud infrastructure components" />
+<Image
+  img={emqx_cloud_artitecture}
+  size='lg'
+  border
+  alt='クラウドインフラストラクチャコンポーネントを示すEMQX Cloudアーキテクチャ図'
+/>
 
 ### 前提条件 {#assumptions}
 
-* あなたは、非常に軽量なパブリッシュ/サブスクライブメッセージ輸送プロトコルとして設計された[MQTTプロトコル](https://mqtt.org/)に精通しています。
-* あなたは、リアルタイムメッセージ処理エンジンとしてEMQXまたはEMQX Cloudを使用し、IoTデバイス向けに大規模なイベントストリーミングを実現しています。
-* デバイスデータを永続化するためのClickhouse Cloudインスタンスを準備済みです。
-* 私たちは、EMQX CloudにMQTTデータを公開するために、MQTTクライアントテストツールとして[MQTT X](https://mqttx.app/)を使用します。他の方法でMQTTブローカーに接続することも可能です。
+- [MQTTプロトコル](https://mqtt.org/)に精通していること。MQTTは、非常に軽量なパブリッシュ/サブスクライブ型メッセージング転送プロトコルとして設計されています。
+- 大規模なIoTデバイスのイベントストリーミングを実現するリアルタイムメッセージ処理エンジンとして、EMQXまたはEMQX Cloudを使用していること。
+- デバイスデータを永続化するためのClickHouse Cloudインスタンスを準備していること。
+- EMQX Cloudのデプロイメントに接続してMQTTデータをパブリッシュするためのMQTTクライアントテストツールとして[MQTT X](https://mqttx.app/)を使用します。MQTTブローカーに接続する他の方法でも同様に機能します。
+
 
 ## ClickHouse Cloudサービスの取得 {#get-your-clickhouse-cloudservice}
 
-この設定中に、AWSのN.バージニア（us-east-1）にClickHouseインスタンスを展開し、同じ地域にEMQX Cloudインスタンスも展開しました。
+このセットアップでは、ClickHouseインスタンスをAWSのバージニア北部(us-east-1)にデプロイし、EMQX Cloudインスタンスも同じリージョンにデプロイしました。
 
-<Image img={clickhouse_cloud_1} size="sm" border alt="ClickHouse Cloud Service Deployment interface showing AWS region selection" />
+<Image
+  img={clickhouse_cloud_1}
+  size='sm'
+  border
+  alt='AWSリージョン選択を表示するClickHouse Cloudサービスデプロイメント画面'
+/>
 
-設定プロセス中に接続設定にも注意を払う必要があります。このチュートリアルでは「Anywhere」を選択しましたが、特定の場所を申し込む場合は、EMQX Cloudデプロイメントから取得した[NATゲートウェイ](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html)のIPアドレスをホワイトリストに追加する必要があります。
+セットアップ中は、接続設定にも注意する必要があります。このチュートリアルでは「Anywhere」を選択しますが、特定の場所を指定する場合は、EMQX Cloudデプロイメントから取得した[NATゲートウェイ](https://docs.emqx.com/en/cloud/latest/vas/nat-gateway.html)のIPアドレスをホワイトリストに追加する必要があります。
 
-<Image img={clickhouse_cloud_2} size="sm" border alt="ClickHouse Cloud Connection Settings showing IP access configuration" />
+<Image
+  img={clickhouse_cloud_2}
+  size='sm'
+  border
+  alt='IPアクセス設定を表示するClickHouse Cloud接続設定画面'
+/>
 
-次に、将来使用するためにユーザー名とパスワードを保存する必要があります。
+次に、ユーザー名とパスワードを保存しておきます。
 
-<Image img={clickhouse_cloud_3} size="sm" border alt="ClickHouse Cloud Credentials screen showing username and password" />
+<Image
+  img={clickhouse_cloud_3}
+  size='sm'
+  border
+  alt='ユーザー名とパスワードを表示するClickHouse Cloud認証情報画面'
+/>
 
-その後、稼働中のClickhouseインスタンスが取得できます。「接続」をクリックしてClickhouse Cloudのインスタンス接続アドレスを取得します。
+その後、実行中のClickHouseインスタンスが利用可能になります。「Connect」をクリックして、ClickHouse Cloudのインスタンス接続アドレスを取得します。
 
-<Image img={clickhouse_cloud_4} size="lg" border alt="ClickHouse Cloud Running Instance dashboard with connection options" />
+<Image
+  img={clickhouse_cloud_4}
+  size='lg'
+  border
+  alt='接続オプションを表示するClickHouse Cloud実行中インスタンスダッシュボード'
+/>
 
-「SQLコンソールに接続」をクリックして、EMQX Cloudとの統合のためにデータベースとテーブルを作成します。
+「Connect to SQL Console」をクリックして、EMQX Cloudとの統合用のデータベースとテーブルを作成します。
 
-<Image img={clickhouse_cloud_5} size="lg" border alt="ClickHouse Cloud SQL Console interface" />
+<Image
+  img={clickhouse_cloud_5}
+  size='lg'
+  border
+  alt='ClickHouse Cloud SQLコンソール画面'
+/>
 
-以下のSQLステートメントを参照するか、実際の状況に応じてSQLを修正できます。
+以下のSQL文を参照するか、実際の状況に応じて修正してください。
 
 ```sql
 CREATE TABLE emqx.temp_hum
@@ -93,87 +129,139 @@ ENGINE = MergeTree()
 PRIMARY KEY (client_id, timestamp)
 ```
 
-<Image img={clickhouse_cloud_6} size="lg" border alt="ClickHouse Cloud Create Database and Table SQL query execution" />
+<Image
+  img={clickhouse_cloud_6}
+  size='lg'
+  border
+  alt='ClickHouse Cloudでのデータベースおよびテーブル作成SQLクエリの実行'
+/>
 
-## EMQX Cloud上にMQTTサービスを作成 {#create-an-mqtt-service-on-emqx-cloud}
 
-EMQX Cloud上に専用のMQTTブローカーを作成するのは、数クリックで簡単です。
+## EMQX CloudでMQTTサービスを作成する {#create-an-mqtt-service-on-emqx-cloud}
 
-### アカウントを取得 {#get-an-account}
+EMQX Cloud上で専用のMQTTブローカーを作成するのは、数回のクリックで簡単に行えます。
 
-EMQX Cloudは、標準デプロイメントとプロフェッショナルデプロイメントの両方に対して、すべてのアカウントに14日間の無料トライアルを提供しています。
+### アカウントを取得する {#get-an-account}
 
-[EMQX Cloud signup](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud) ページから始めて、新しいユーザーの場合は無料登録をクリックしてアカウントを登録します。
+EMQX Cloudは、すべてのアカウントに対してスタンダードデプロイメントとプロフェッショナルデプロイメントの両方で14日間の無料トライアルを提供しています。
 
-<Image img={emqx_cloud_sign_up} size="lg" border alt="EMQX Cloud Signup Page with registration form" />
+EMQX Cloudを初めて利用する場合は、[EMQX Cloudサインアップ](https://accounts.emqx.com/signup?continue=https%3A%2F%2Fwww.emqx.com%2Fen%2Fcloud)ページにアクセスし、「start free」をクリックしてアカウントを登録してください。
 
-### MQTTクラスターの作成 {#create-an-mqtt-cluster}
+<Image
+  img={emqx_cloud_sign_up}
+  size='lg'
+  border
+  alt='登録フォームを含むEMQX Cloudサインアップページ'
+/>
 
-ログインしたら、アカウントメニューの「Cloud console」をクリックし、新しいデプロイメントを作成するための緑色のボタンを見ることができます。
+### MQTTクラスタを作成する {#create-an-mqtt-cluster}
 
-<Image img={emqx_cloud_create_1} size="lg" border alt="EMQX Cloud Create Deployment Step 1 showing deployment options" />
+ログイン後、アカウントメニューの「Cloud console」をクリックすると、新しいデプロイメントを作成するための緑色のボタンが表示されます。
 
-このチュートリアルでは、Professionalデプロイメントを使用します。プロ版のみがデータ統合機能を提供し、単一行のコードを書くことなくMQTTデータをClickHouseに直接送ることができます。
+<Image
+  img={emqx_cloud_create_1}
+  size='lg'
+  border
+  alt='デプロイメントオプションを表示するEMQX Cloudデプロイメント作成ステップ1'
+/>
 
-プロ版を選択し、`N.Virginial`地域を選択して「今すぐ作成」をクリックします。数分で完全に管理されたMQTTブローカーを取得できます：
+このチュートリアルでは、Professionalデプロイメントを使用します。Pro版のみがデータ統合機能を提供しており、コードを一行も書かずにMQTTデータを直接ClickHouseに送信できるためです。
 
-<Image img={emqx_cloud_create_2} size="lg" border alt="EMQX Cloud Create Deployment Step 2 showing region selection" />
+Pro版を選択し、`N.Virginia`リージョンを選んで`Create Now`をクリックしてください。わずか数分で、フルマネージドのMQTTブローカーが利用可能になります:
 
-今、パネルをクリックしてクラスターのビューに移動します。このダッシュボードでは、MQTTブローカーの概要を見ることができます。
+<Image
+  img={emqx_cloud_create_2}
+  size='lg'
+  border
+  alt='リージョン選択を表示するEMQX Cloudデプロイメント作成ステップ2'
+/>
 
-<Image img={emqx_cloud_overview} size="lg" border alt="EMQX Cloud Overview Dashboard showing broker metrics" />
+次に、パネルをクリックしてクラスタビューに移動します。このダッシュボードでは、MQTTブローカーの概要が表示されます。
 
-### クライアント認証情報の追加 {#add-client-credential}
+<Image
+  img={emqx_cloud_overview}
+  size='lg'
+  border
+  alt='ブローカーメトリクスを表示するEMQX Cloud概要ダッシュボード'
+/>
 
-EMQX Cloudはデフォルトで匿名接続を許可していないため、MQTTクライアントツールでこのブローカーにデータを送信できるように、クライアント認証情報を追加する必要があります。
+### クライアント認証情報を追加する {#add-client-credential}
 
-左メニューの「Authentication & ACL」をクリックし、サブメニューで「Authentication」をクリックします。右側の「追加」ボタンをクリックし、後でMQTT接続用のユーザー名とパスワードを入力します。ここでは、ユーザー名として`emqx`、パスワードとして`xxxxxx`を使用します。
+EMQX Cloudはデフォルトで匿名接続を許可していないため、MQTTクライアントツールを使用してこのブローカーにデータを送信できるように、クライアント認証情報を追加する必要があります。
 
-<Image img={emqx_cloud_auth} size="lg" border alt="EMQX Cloud Authentication Setup interface for adding credentials" />
+左側のメニューで「Authentication & ACL」をクリックし、サブメニューで「Authentication」をクリックします。右側の「Add」ボタンをクリックして、後でMQTT接続に使用するユーザー名とパスワードを設定します。ここでは、ユーザー名に`emqx`、パスワードに`xxxxxx`を使用します。
 
-「確認」をクリックすると、完全に管理されたMQTTブローカーが準備されます。
+<Image
+  img={emqx_cloud_auth}
+  size='lg'
+  border
+  alt='認証情報を追加するためのEMQX Cloud認証設定インターフェース'
+/>
 
-### NATゲートウェイの有効化 {#enable-nat-gateway}
+「Confirm」をクリックすると、フルマネージドのMQTTブローカーの準備が完了します。
 
-ClickHouse統合の設定を開始する前に、最初にNATゲートウェイを有効にする必要があります。デフォルトではMQTTブローカーはプライベートVPC内に展開されており、公開ネットワーク経由でサードパーティシステムにデータを送信することができません。
+### NATゲートウェイを有効にする {#enable-nat-gateway}
 
-概要ページに戻り、ページの下部にスクロールするとNATゲートウェイウィジェットを見ることができます。購読ボタンをクリックし、指示に従ってください。NATゲートウェイは付加価値サービスですが、14日間の無料トライアルも提供しています。
+ClickHouse統合の設定を開始する前に、まずNATゲートウェイを有効にする必要があります。デフォルトでは、MQTTブローカーはプライベートVPCにデプロイされており、パブリックネットワーク経由でサードパーティシステムにデータを送信できません。
 
-<Image img={emqx_cloud_nat_gateway} size="lg" border alt="EMQX Cloud NAT Gateway Configuration panel" />
+概要ページに戻り、ページの下部までスクロールすると、NATゲートウェイウィジェットが表示されます。Subscribeボタンをクリックして、指示に従ってください。NATゲートウェイは付加価値サービスですが、14日間の無料トライアルも提供されています。
 
-作成が完了すると、ウィジェットに公開IPアドレスが表示されます。ClickHouse Cloudの設定中に「特定の場所から接続する」を選択した場合は、このIPアドレスをホワイトリストに追加する必要があることに注意してください。
+<Image
+  img={emqx_cloud_nat_gateway}
+  size='lg'
+  border
+  alt='EMQX Cloud NATゲートウェイ設定パネル'
+/>
+
+作成が完了すると、ウィジェット内にパブリックIPアドレスが表示されます。ClickHouse Cloudのセットアップ時に「特定の場所から接続する」を選択した場合は、このIPアドレスをホワイトリストに追加する必要があることに注意してください。
+
 
 ## EMQX CloudとClickHouse Cloudの統合 {#integration-emqx-cloud-with-clickhouse-cloud}
 
-[EMQX Cloudデータ統合](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow)は、EMQXメッセージフローおよびデバイスイベントの処理と応答のためのルールを構成するために使用されます。データ統合は、明確で柔軟な「構成可能」アーキテクチャソリューションを提供するだけでなく、開発プロセスを簡素化し、ユーザーの使いやすさを向上させ、ビジネスシステムとEMQX Cloud間の結合度を低下させます。また、EMQX Cloudの独自機能のカスタマイズに優れたインフラストラクチャを提供します。
+[EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow)は、EMQXメッセージフローとデバイスイベントを処理・応答するためのルールを設定するために使用されます。Data Integrationsは、明確で柔軟な「設定可能な」アーキテクチャソリューションを提供するだけでなく、開発プロセスを簡素化し、ユーザビリティを向上させ、ビジネスシステムとEMQX Cloud間の結合度を低減します。また、EMQX Cloud固有の機能をカスタマイズするための優れたインフラストラクチャも提供します。
 
-<Image img={emqx_cloud_data_integration} size="lg" border alt="EMQX Cloud Data Integration Options showing available connectors" />
+<Image
+  img={emqx_cloud_data_integration}
+  size='lg'
+  border
+  alt='利用可能なコネクタを表示するEMQX Cloud Data Integrationオプション'
+/>
 
-EMQX Cloudは、人気のデータシステムと30以上のネイティブ統合を提供しています。ClickHouseもその一つです。
+EMQX Cloudは、主要なデータシステムとの30以上のネイティブ統合を提供しています。ClickHouseもその1つです。
 
-<Image img={data_integration_clickhouse} size="lg" border alt="EMQX Cloud ClickHouse Data Integration connector details" />
+<Image
+  img={data_integration_clickhouse}
+  size='lg'
+  border
+  alt='EMQX Cloud ClickHouse Data Integrationコネクタの詳細'
+/>
 
 ### ClickHouseリソースの作成 {#create-clickhouse-resource}
 
-左メニューの「データ統合」をクリックし、「すべてのリソースを表示」をクリックします。データ永続性セクションでClickHouseを見つけるか、ClickHouseを検索します。
+左側のメニューで「Data Integrations」をクリックし、「View All Resources」をクリックします。Data PersistenceセクションでClickHouseを見つけるか、ClickHouseを検索できます。
 
-ClickHouseカードをクリックして、新しいリソースを作成します。
+ClickHouseカードをクリックして新しいリソースを作成します。
 
-- 注：このリソース用のメモを追加します。
-- サーバーアドレス：これはClickHouse Cloudサービスのアドレスです。ポートを忘れないようにしてください。
-- データベース名：上記の手順で作成した`emqx`。
-- ユーザー：ClickHouse Cloudサービスへの接続用のユーザー名。
-- キー：接続用のパスワード。
+- Note: このリソースのメモを追加します。
+- Server address: ClickHouse Cloudサービスのアドレスです。ポート番号を忘れないでください。
+- Database name: 上記の手順で作成した`emqx`です。
+- User: ClickHouse Cloudサービスに接続するためのユーザー名です。
+- Key: 接続用のパスワードです。
 
-<Image img={data_integration_resource} size="lg" border alt="EMQX Cloud ClickHouse Resource Setup form with connection details" />
+<Image
+  img={data_integration_resource}
+  size='lg'
+  border
+  alt='接続詳細を含むEMQX Cloud ClickHouseリソース設定フォーム'
+/>
 
 ### 新しいルールの作成 {#create-a-new-rule}
 
-リソースの作成中にポップアップが表示され、「新規」をクリックするとルール作成ページに移動します。
+リソースの作成中にポップアップが表示され、「New」をクリックするとルール作成ページに移動します。
 
-EMQXは、サードパーティシステムに送信する前に、生のMQTTメッセージを変換して強化する強力な[ルールエンジン](https://docs.emqx.com/en/cloud/latest/rule_engine/rules.html)を提供します。
+EMQXは、サードパーティシステムに送信する前に、生のMQTTメッセージを変換・拡張できる強力な[ルールエンジン](https://docs.emqx.com/en/cloud/latest/rule_engine/rules.html)を提供しています。
 
-このチュートリアルで使用されるルールは以下の通りです：
+このチュートリアルで使用するルールは次のとおりです:
 
 ```sql
 SELECT
@@ -186,101 +274,153 @@ FROM
 "temp_hum/emqx"
 ```
 
-これは、`temp_hum/emqx`トピックからメッセージを読み取り、クライアントID、トピック、タイムスタンプ情報を追加してJSONオブジェクトを強化します。
+このルールは`temp_hum/emqx`トピックからメッセージを読み取り、client_id、topic、timestampの情報を追加してJSONオブジェクトを拡張します。
 
-したがって、トピックに送信する生のJSONは：
+したがって、トピックに送信する生のJSONは次のようになります:
 
 ```bash
 {"temp": 28.5, "hum": 0.68}
 ```
 
-<Image img={data_integration_rule_1} size="md" border alt="EMQX Cloud Data Integration Rule Creation Step 1 showing SQL query" />
+<Image
+  img={data_integration_rule_1}
+  size='md'
+  border
+  alt='SQLクエリを表示するEMQX Cloud Data Integrationルール作成ステップ1'
+/>
 
-SQLテストを使用して結果をテストすることができます。
+SQLテストを使用してテストし、結果を確認できます。
 
-<Image img={data_integration_rule_2} size="md" border alt="EMQX Cloud Data Integration Rule Creation Step 2 showing test results" />
+<Image
+  img={data_integration_rule_2}
+  size='md'
+  border
+  alt='テスト結果を表示するEMQX Cloud Data Integrationルール作成ステップ2'
+/>
 
-「次へ」ボタンをクリックします。このステップでは、EMQX Cloudに対して、どのように洗練されたデータをClickHouseデータベースに挿入するかを指示します。
+次に「NEXT」ボタンをクリックします。このステップでは、処理されたデータをClickHouseデータベースに挿入する方法をEMQX Cloudに指示します。
 
-### 応答アクションの追加 {#add-a-response-action}
+### レスポンスアクションの追加 {#add-a-response-action}
 
-リソースが1つだけの場合、'Resource' と 'Action Type' を変更する必要はありません。
-SQLテンプレートを設定するだけです。ここで使用する例は次の通りです：
+リソースが1つしかない場合は、「Resource」と「Action Type」を変更する必要はありません。
+SQLテンプレートを設定するだけです。このチュートリアルで使用する例は次のとおりです:
 
 ```bash
 INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_id}', ${timestamp}, '${topic}', ${temp}, ${hum})
 ```
 
-<Image img={data_integration_rule_action} size="md" border alt="EMQX Cloud Data Integration Rule Action Setup with SQL template" />
+<Image
+  img={data_integration_rule_action}
+  size='md'
+  border
+  alt='SQLテンプレートを含むEMQX Cloud Data Integrationルールアクション設定'
+/>
 
-これは、Clickhouseにデータを挿入するためのテンプレートであり、ここで変数が使用されていることがわかります。
+これはClickHouseにデータを挿入するためのテンプレートで、ここで変数が使用されていることがわかります。
 
-### ルールの詳細を表示 {#view-rules-details}
+### ルール詳細の表示 {#view-rules-details}
 
-「確認」をクリックし、「詳細を表示」をクリックします。今、すべては正しく設定されているはずです。ルールの詳細ページからデータ統合が機能しているのを確認できます。
+「Confirm」と「View Details」をクリックします。これですべての設定が完了しました。ルール詳細ページからデータ統合が機能していることを確認できます。
 
-<Image img={data_integration_details} size="md" border alt="EMQX Cloud Data Integration Rule Details showing configuration summary" />
+<Image
+  img={data_integration_details}
+  size='md'
+  border
+  alt='設定サマリーを表示するEMQX Cloud Data Integrationルール詳細'
+/>
 
 `temp_hum/emqx`トピックに送信されたすべてのMQTTメッセージは、ClickHouse Cloudデータベースに永続化されます。
 
-## ClickHouseへのデータの保存 {#saving-data-into-clickhouse}
 
-私たちは温度と湿度のデータをシミュレーションし、MQTT Xを介してこれらのデータをEMQX Cloudに報告し、その後、EMQX Cloudデータ統合を使用してClickHouse Cloudにデータを保存します。
+## ClickHouseへのデータ保存 {#saving-data-into-clickhouse}
 
-<Image img={work_flow} size="lg" border alt="EMQX Cloud to ClickHouse Workflow diagram showing data flow" />
+温度と湿度のデータをシミュレートし、MQTT Xを介してEMQX Cloudに送信します。その後、EMQX Cloud Data Integrationsを使用してClickHouse Cloudにデータを保存します。
 
-### EMQX CloudにMQTTメッセージを公開 {#publish-mqtt-messages-to-emqx-cloud}
+<Image
+  img={work_flow}
+  size='lg'
+  border
+  alt='EMQX CloudからClickHouseへのワークフロー図（データフローを表示）'
+/>
 
-任意のMQTTクライアントまたはSDKを使用してメッセージを公開できます。このチュートリアルでは、[MQTT X](https://mqttx.app/) を使用し、EMQが提供するユーザーフレンドリーなMQTTクライアントアプリケーションです。
+### EMQX CloudへのMQTTメッセージの送信 {#publish-mqtt-messages-to-emqx-cloud}
 
-<Image img={mqttx_overview} size="lg" border alt="MQTTX Overview showing the client interface" />
+任意のMQTTクライアントまたはSDKを使用してメッセージを送信できます。このチュートリアルでは、EMQが提供するユーザーフレンドリーなMQTTクライアントアプリケーションである[MQTT X](https://mqttx.app/)を使用します。
 
-MQTTXで「新規接続」をクリックし、接続フォームを埋めます：
+<Image
+  img={mqttx_overview}
+  size='lg'
+  border
+  alt='MQTTXの概要（クライアントインターフェースを表示）'
+/>
 
-- 名前：接続名。任意の名前を使用してください。
-- ホスト：MQTTブローカー接続アドレス。EMQX Cloudの概要ページから取得できます。
-- ポート：MQTTブローカー接続ポート。EMQX Cloudの概要ページから取得できます。
-- ユーザー名/パスワード：上で作成した認証情報を使用します。このチュートリアルでは`emqx`と`xxxxxx`です。
+MQTTXで「New Connection」をクリックし、接続フォームに入力します：
 
-<Image img={mqttx_new} size="lg" border alt="MQTTX New Connection Setup form with connection details" />
+- Name: 接続名。任意の名前を使用できます。
+- Host: MQTTブローカーの接続アドレス。EMQX Cloudの概要ページから取得できます。
+- Port: MQTTブローカーの接続ポート。EMQX Cloudの概要ページから取得できます。
+- Username/Password: 上記で作成した認証情報を使用します。このチュートリアルでは`emqx`と`xxxxxx`になります。
 
-右上の「接続」ボタンをクリックすると、接続が確立されるはずです。
+<Image
+  img={mqttx_new}
+  size='lg'
+  border
+  alt='MQTTX新規接続設定フォーム（接続詳細を含む）'
+/>
+
+右上の「Connect」ボタンをクリックすると、接続が確立されます。
 
 これで、このツールを使用してMQTTブローカーにメッセージを送信できます。
-入力：
+入力項目：
+
 1. ペイロード形式を「JSON」に設定します。
-2. トピックを設定：`temp_hum/emqx`（ルールで設定したトピック）
-3. JSONボディ：
+2. トピックを`temp_hum/emqx`に設定します（ルールで設定したトピック）
+3. JSON本文：
 
 ```bash
 {"temp": 23.1, "hum": 0.68}
 ```
 
-右の送信ボタンをクリックします。温度値を変更してMQTTブローカーにさらに多くのデータを送信することができます。
+右側の送信ボタンをクリックします。温度値を変更して、さらに多くのデータをMQTTブローカーに送信できます。
 
-EMQX Cloudに送信されたデータは、ルールエンジンによって処理され、ClickHouse Cloudに自動的に挿入されるはずです。
+EMQX Cloudに送信されたデータは、ルールエンジンによって処理され、ClickHouse Cloudに自動的に挿入されます。
 
-<Image img={mqttx_publish} size="lg" border alt="MQTTX Publish MQTT Messages interface showing message composition" />
+<Image
+  img={mqttx_publish}
+  size='lg'
+  border
+  alt='MQTTX MQTTメッセージ送信インターフェース（メッセージ構成を表示）'
+/>
 
-### ルールモニタリングの表示 {#view-rules-monitoring}
+### ルール監視の表示 {#view-rules-monitoring}
 
-ルールモニタリングを確認し、成功数を1つ追加します。
+ルール監視を確認し、成功数が1つ増加していることを確認します。
 
-<Image img={rule_monitor} size="lg" border alt="EMQX Cloud Rule Monitoring dashboard showing message processing metrics" />
+<Image
+  img={rule_monitor}
+  size='lg'
+  border
+  alt='EMQX Cloudルール監視ダッシュボード（メッセージ処理メトリクスを表示）'
+/>
 
 ### 永続化されたデータの確認 {#check-the-data-persisted}
 
-今、ClickHouse Cloudでのデータを確認する時です。理想的には、MQTTXを使用して送信されたデータはEMQX Cloudに渡り、ネイティブデータ統合の助けを借りてClickHouse Cloudのデータベースに永続化されます。
+次に、ClickHouse Cloud上のデータを確認します。MQTTXを使用して送信したデータは、EMQX Cloudに送られ、ネイティブデータ統合によってClickHouse Cloudのデータベースに永続化されます。
 
-ClickHouse CloudパネルのSQLコンソールに接続するか、任意のクライアントツールを使用してClickHouseからデータを取得します。このチュートリアルではSQLコンソールを使用しました。
+ClickHouse CloudパネルのSQLコンソールに接続するか、任意のクライアントツールを使用してClickHouseからデータを取得できます。このチュートリアルでは、SQLコンソールを使用しました。
 次のSQLを実行します：
 
 ```bash
 SELECT * FROM emqx.temp_hum;
 ```
 
-<Image img={clickhouse_result} size="lg" border alt="ClickHouse Query Results showing persisted IoT data" />
+<Image
+  img={clickhouse_result}
+  size='lg'
+  border
+  alt='ClickHouseクエリ結果（永続化されたIoTデータを表示）'
+/>
 
 ### まとめ {#summary}
 
-コードを書かずに、EMQX CloudからClickHouse CloudにMQTTデータを移動しました。EMQX CloudとClickHouse Cloudを使用すると、インフラ管理は必要なく、データがClickHouse Cloudに安全に保存されたIoTアプリケーションの作成に集中できます。
+コードを一切記述することなく、MQTTデータをEMQX CloudからClickHouse Cloudに移動できるようになりました。EMQX CloudとClickHouse Cloudを使用することで、インフラストラクチャを管理する必要がなく、ClickHouse Cloudに安全に保存されたデータを使用してIoTアプリケーションの開発に集中できます。

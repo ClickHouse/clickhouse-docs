@@ -1,35 +1,37 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArrayIf'
-sidebar_label: uniqArrayIf
-description: 'Пример использования комбиниратора uniqArrayIf'
-title: uniqArrayIf
+title: 'uniqArrayIf'
+description: 'Пример использования комбинирования uniqArrayIf'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
-doc_type: reference
+sidebar_label: 'uniqArrayIf'
+doc_type: 'reference'
 ---
+
+
+
 # uniqArrayIf {#uniqarrayif}
+
 
 ## Описание {#description}
 
-Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) могут быть применены к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-для подсчета количества уникальных значений в массивах для строк, где 
-условие истинно, с использованием агрегатной комбинаторной функции `uniqArrayIf`.
+Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) можно применять к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+для подсчёта количества уникальных значений в массивах для строк, удовлетворяющих
+заданному условию, используя агрегатную функцию-комбинатор `uniqArrayIf`.
 
-:::note
--`If` и -`Array` могут быть комбинированы. Однако, `Array` должен быть первым, затем `If`.
+:::note Комбинаторы `-If` и `-Array` можно комбинировать. Однако `Array` должен идти первым, затем `If`.
 :::
 
-Это полезно, когда вам нужно подсчитать уникальные элементы в массиве на основе 
-определенных условий без необходимости использования `arrayJoin`.
+Это удобно, когда требуется подсчитать уникальные элементы в массиве на основе
+определённых условий без необходимости использовать `arrayJoin`.
 
-## Пример использования {#example-usage}
 
-### Подсчет уникальных продуктов, просмотренных по типу сегмента и уровню вовлеченности {#count-unique-products}
+## Примеры использования {#example-usage}
 
-В этом примере мы используем таблицу с данными пользовательских сессий покупок для подсчета 
-количества уникальных продуктов, просмотренных пользователями определенного сегмента и с 
-метрикой вовлеченности по времени, проведенному в сессии.
+### Подсчет уникальных просмотренных товаров по типу сегмента и уровню вовлеченности {#count-unique-products}
 
-```sql title="Query"
+В этом примере мы используем таблицу с данными о покупательских сессиях пользователей для подсчета количества уникальных товаров, просмотренных пользователями определенного сегмента с учетом метрики вовлеченности — времени, проведенного в сессии.
+
+```sql title="Запрос"
 CREATE TABLE user_shopping_sessions
 (
     session_date Date,
@@ -46,14 +48,14 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- Count unique products viewed by segment type and engagement level
-SELECT 
+-- Подсчет уникальных просмотренных товаров по типу сегмента и уровню вовлеченности
+SELECT
     session_date,
-    -- Count unique products viewed in long sessions by new customers
+    -- Подсчет уникальных товаров, просмотренных новыми клиентами в длительных сессиях
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,
-    -- Count unique products viewed by returning customers
+    -- Подсчет уникальных товаров, просмотренных возвращающимися клиентами
     uniqArrayIf(viewed_products, user_segment = 'returning') AS returning_customer_products,
-    -- Count unique products viewed across all sessions
+    -- Подсчет уникальных товаров, просмотренных во всех сессиях
     uniqArray(viewed_products) AS total_unique_products
 FROM user_shopping_sessions
 GROUP BY session_date
@@ -61,7 +63,7 @@ ORDER BY session_date
 FORMAT Vertical;
 ```
 
-```response title="Response"
+```response title="Результат"
 Row 1:
 ──────
 session_date:                2024-01-01
@@ -77,7 +79,9 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
+
 ## См. также {#see-also}
+
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [Комбинатор `Array`](/sql-reference/aggregate-functions/combinators#-array)
+- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)

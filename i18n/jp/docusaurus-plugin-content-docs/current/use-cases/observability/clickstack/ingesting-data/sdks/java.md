@@ -1,16 +1,17 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/java'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 3
-'description': 'Java SDK for ClickStack - ClickHouse 可观察性栈'
-'title': 'Java'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/java
+pagination_prev: null
+pagination_next: null
+sidebar_position: 3
+description: 'ClickStack 向け Java SDK - ClickHouse Observability Stack'
+title: 'Java'
+doc_type: 'guide'
+keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
-ClickStackは、テレメトリデータ（ログとトレース）を収集するためにOpenTelemetry標準を使用しています。トレースは自動計測により自動生成されるため、トレースから価値を得るために手動計測は必要ありません。
+ClickStack は、テレメトリデータ（ログとトレース）を収集するために OpenTelemetry 標準を使用します。トレースは自動インスツルメンテーションによって自動生成されるため、トレースを活用するために手動でインスツルメンテーションを行う必要はありません。
 
-**このガイドは次のものを統合します：**
+**このガイドで扱う統合対象:**
 
 <table>
   <tbody>
@@ -22,23 +23,25 @@ ClickStackは、テレメトリデータ（ログとトレース）を収集す�
   </tbody>
 </table>
 
+
+
 ## はじめに {#getting-started}
 
 :::note
-現在、この統合は**Java 8+**と専ら互換性があります。
+現在、この統合は **Java 8以降** のみに対応しています
 :::
 
-### OpenTelemetry Javaエージェントをダウンロードする {#download-opentelemtry-java-agent}
+### OpenTelemetry Javaエージェントのダウンロード {#download-opentelemtry-java-agent}
 
-[`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)をダウンロードし、お好みのディレクトリにJARファイルを配置します。JARファイルにはエージェントと計測ライブラリが含まれています。また、次のコマンドを使用してエージェントをダウンロードすることもできます：
+[`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)をダウンロードし、任意のディレクトリに配置してください。このJARファイルには、エージェントと計装ライブラリが含まれています。以下のコマンドでエージェントをダウンロードすることもできます:
 
 ```shell
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-### 環境変数を設定する {#configure-environment-variables}
+### 環境変数の設定 {#configure-environment-variables}
 
-その後、テレメトリをClickStackに送信するために、シェルで以下の環境変数を設定する必要があります：
+次に、テレメトリをClickStackに送信するために、シェルで以下の環境変数を設定する必要があります:
 
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
@@ -49,14 +52,16 @@ OTEL_LOGS_EXPORTER=otlp \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
-_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリ内でサービスを識別するために使用されます。任意の名前を使用できます。_
+_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
 
-`OTEL_EXPORTER_OTLP_HEADERS`環境変数には、`Team Settings → API Keys`のHyperDXアプリで入手可能なAPIキーが含まれています。
+`OTEL_EXPORTER_OTLP_HEADERS`環境変数には、HyperDXアプリの`Team Settings → API Keys`から取得できるAPIキーを設定します。
 
-### OpenTelemetry Javaエージェントを使用してアプリケーションを実行する {#run-the-application-with-otel-java-agent}
+### OpenTelemetry Javaエージェントを使用したアプリケーションの実行 {#run-the-application-with-otel-java-agent}
 
 ```shell
 java -jar target/<APPLICATION_JAR_FILE>
 ```
-<br/>
-Java OpenTelemetryの計測についての詳細は、こちらをお読みください: [https://opentelemetry.io/docs/instrumentation/java/](https://opentelemetry.io/docs/instrumentation/java/)
+
+<br />
+Java OpenTelemetry計装の詳細については、以下を参照してください:
+[https://opentelemetry.io/docs/instrumentation/java/](https://opentelemetry.io/docs/instrumentation/java/)

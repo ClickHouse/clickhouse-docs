@@ -1,18 +1,21 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data/schemas'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStack 使用的表和模式 - ClickHouse 可观察性堆栈'
-'sidebar_label': '表和模式'
-'title': 'ClickStack 使用的表和模式'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/ingesting-data/schemas
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack 使用的表和模式 - ClickHouse 可观测性栈'
+sidebar_label: '表和模式'
+title: 'ClickStack 使用的表和模式'
+doc_type: 'reference'
+keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-The ClickStack OpenTelemetry (OTel) collector uses the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) to create tables in ClickHouse and insert data.
+ClickStack OpenTelemetry (OTel) 收集器使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并写入数据。
 
-The following tables are created for each data type in the `default` database. Users can change this target database by modifying the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` for the image hosting the OTel collector.
+在 `default` 数据库中，会为每种数据类型创建下列表。用户可以通过修改运行 OTel 收集器的镜像所使用的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库。
 
-## Logs {#logs}
+
+
+## 日志 {#logs}
 
 ```sql
 CREATE TABLE otel_logs
@@ -48,7 +51,8 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-## Traces {#traces}
+
+## 链路追踪 {#traces}
 
 ```sql
 CREATE TABLE otel_traces
@@ -87,9 +91,10 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
-## Metrics {#metrics}
 
-### Gauge metrics {#gauge}
+## 指标 {#metrics}
+
+### Gauge 指标 {#gauge}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -127,7 +132,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Sum metrics {#sum}
+### Sum 指标 {#sum}
+
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -167,7 +173,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Histogram metrics {#histogram}
+### 直方图指标 {#histogram}
+
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -211,11 +218,12 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Exponential histograms {#exponential-histograms}
+### 指数直方图 {#exponential-histograms}
 
 :::note
-HyperDX 目前不支持获取/显示指数直方图指标。用户可以在指标源中配置它们，但未来将会有支持。
+HyperDX 目前暂不支持获取/显示指数直方图指标。用户可以在指标源中进行配置,后续版本将提供支持。
 :::
+
 
 ```sql
 CREATE TABLE otel_metrics_exponentialhistogram (
@@ -264,7 +272,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Summary table {#summary-table}
+### 汇总表 {#summary-table}
+
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -300,7 +309,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-## Sessions {#sessions}
+
+## 会话 {#sessions}
 
 ```sql
 CREATE TABLE hyperdx_sessions

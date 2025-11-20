@@ -1,10 +1,11 @@
 ---
-'sidebar_label': 'リファレンス'
-'description': 'Kafka ClickPipesによってサポートされているフォーマット、ソース、配信セマンティクス、認証、実験的機能に関する詳細'
-'slug': '/integrations/clickpipes/kafka/reference'
-'sidebar_position': 1
-'title': 'リファレンス'
-'doc_type': 'reference'
+sidebar_label: 'リファレンス'
+description: 'Kafka ClickPipes がサポートするフォーマット、ソース、配信セマンティクス、認証、および実験的機能の詳細'
+slug: /integrations/clickpipes/kafka/reference
+sidebar_position: 1
+title: 'リファレンス'
+doc_type: 'reference'
+keywords: ['kafka reference', 'clickpipes', 'data sources', 'avro', 'virtual columns']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -17,86 +18,100 @@ import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
 
-# 参照
+# リファレンス
+
+
 
 ## サポートされているデータソース {#supported-data-sources}
 
-| 名称                   | ロゴ| 種類     | ステータス         | 説明                                                                                                |
-|----------------------|----|---------|-------------------|-----------------------------------------------------------------------------------------------------|
-| Apache Kafka         |<Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>| ストリーミング | 安定           | ClickPipes を設定し、Apache Kafka から ClickHouse Cloud にストリーミングデータを取り込み始めます。        |
-| Confluent Cloud      |<Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>| ストリーミング | 安定           | Confluent と ClickHouse Cloud の強力な統合を通じて、その力を解き放ちます。                          |
-| Redpanda             |<Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>| ストリーミング | 安定           | ClickPipes を設定し、Redpanda から ClickHouse Cloud にストリーミングデータを取り込み始めます。        |
-| AWS MSK              |<Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>| ストリーミング | 安定           | ClickPipes を設定し、AWS MSK から ClickHouse Cloud にストリーミングデータを取り込み始めます。         |
-| Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>| ストリーミング | 安定           | ClickPipes を設定し、Azure Event Hubs から ClickHouse Cloud にストリーミングデータを取り込み始めます。|
-| WarpStream           |<Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>| ストリーミング | 安定           | ClickPipes を設定し、WarpStream から ClickHouse Cloud にストリーミングデータを取り込み始めます。      |
+| 名前             | ロゴ                                                                                        | タイプ      | ステータス | 説明                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------- | --------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| Apache Kafka     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/> | Streaming | Stable | ClickPipesを設定して、Apache KafkaからClickHouse Cloudへのストリーミングデータの取り込みを開始できます。     |
+| Confluent Cloud  | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>            | Streaming | Stable | 直接統合を通じて、ConfluentとClickHouse Cloudを組み合わせた強力な機能を活用できます。          |
+| Redpanda         | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                | Streaming | Stable | ClickPipesを設定して、RedpandaからClickHouse Cloudへのストリーミングデータの取り込みを開始できます。         |
+| AWS MSK          | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>        | Streaming | Stable | ClickPipesを設定して、AWS MSKからClickHouse Cloudへのストリーミングデータの取り込みを開始できます。          |
+| Azure Event Hubs | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>      | Streaming | Stable | ClickPipesを設定して、Azure Event HubsからClickHouse Cloudへのストリーミングデータの取り込みを開始できます。 |
+| WarpStream       | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                | Streaming | Stable | ClickPipesを設定して、WarpStreamからClickHouse Cloudへのストリーミングデータの取り込みを開始できます。       |
+
 
 ## サポートされているデータ形式 {#supported-data-formats}
 
-サポートされている形式は次の通りです:
+サポートされている形式は以下の通りです:
+
 - [JSON](/integrations/data-formats/json/overview)
 - [AvroConfluent](/interfaces/formats/AvroConfluent)
 
+
 ## サポートされているデータ型 {#supported-data-types}
 
-### 標準 {#standard-types-support}
+### 標準型 {#standard-types-support}
 
-現在 ClickPipes でサポートされている標準の ClickHouse データ型は次の通りです:
+以下の標準ClickHouseデータ型が現在ClickPipesでサポートされています:
 
-- 基本的な数値型 - \[U\]Int8/16/32/64, Float32/64, および BFloat16
-- 大きな整数型 - \[U\]Int128/256
-- 小数タイプ
-- ブーリアン
-- 文字列
-- 固定文字列
-- 日付、Date32
-- 日時、DateTime64（UTC タイムゾーンのみ）
+- 基本数値型 - \[U\]Int8/16/32/64、Float32/64、およびBFloat16
+- 大整数型 - \[U\]Int128/256
+- Decimal型
+- Boolean
+- String
+- FixedString
+- Date、Date32
+- DateTime、DateTime64(UTCタイムゾーンのみ)
 - Enum8/Enum16
 - UUID
 - IPv4
 - IPv6
-- すべての ClickHouse LowCardinality 型
-- 上記の任意の型を使用したキーと値のある Map（Nullable を含む）
-- 上記の任意の型を使用した要素を持つ Tuple および Array（Nullable を含む、1 階層の深さのみ）
-- SimpleAggregateFunction 型（AggregatingMergeTree または SummingMergeTree の宛先用）
+- すべてのClickHouse LowCardinality型
+- 上記の型(Nullableを含む)をキーと値に使用するMap
+- 上記の型(Nullableを含む、1レベルの深さのみ)を要素に使用するTupleとArray
+- SimpleAggregateFunction型(AggregatingMergeTreeまたはSummingMergeTreeの宛先用)
 
 ### Avro {#avro}
 
-#### サポートされている Avro データ型 {#supported-avro-data-types}
-ClickPipes は、すべての Avro プリミティブおよび複合型、`time-millis`、`time-micros`、`local-timestamp-millis`、`local_timestamp-micros`、および `duration` を除くすべての Avro ロジカル型をサポートしています。Avro `record` 型は Tuple に変換され、`array` 型は Array に、`map` は Map（文字列キーのみ）に変換されます。一般的に、ここにリストされた変換 [here](/interfaces/formats/Avro#data-type-mapping) が利用可能です。ClickPipes は型変換時にオーバーフローや精度損失をチェックしないため、Avro 数値型については厳密な型一致を使用することをお勧めします。
-また、すべての Avro 型は `String` カラムに挿入でき、その場合は有効な JSON 文字列として表されます。
+#### サポートされているAvroデータ型 {#supported-avro-data-types}
 
-#### Nullable 型と Avro ユニオン {#nullable-types-and-avro-unions}
-Avro の Nullable 型は、`(T, null)` または `(null, T)` のユニオンスキーマを使用して定義され、ここで T は基本 Avro 型です。スキーマ推論の際には、そのようなユニオンは ClickHouse の「Nullable」カラムにマッピングされます。ClickHouse は `Nullable(Array)`、`Nullable(Map)`、または `Nullable(Tuple)` 型をサポートしないため注意してください。これらの型の Avro null ユニオンは、非 nullable バージョンにマッピングされます（Avro Record 型は ClickHouse の名前付き Tuple にマッピングされます）。これらの型の Avro "null" は次のように挿入されます:
-- null の Avro 配列用の空の Array
-- null の Avro Map 用の空の Map
-- null の Avro Record 用のすべてのデフォルト/ゼロ値を持つ名前付き Tuple
+ClickPipesは、すべてのAvroプリミティブ型と複合型、および`time-millis`、`time-micros`、`local-timestamp-millis`、`local_timestamp-micros`、`duration`を除くすべてのAvro論理型をサポートしています。Avroの`record`型はTupleに、`array`型はArrayに、`map`はMap(文字列キーのみ)に変換されます。一般的に、[こちら](/interfaces/formats/Avro#data-type-mapping)に記載されている変換が利用可能です。ClickPipesは型変換時にオーバーフローや精度損失をチェックしないため、Avro数値型には厳密な型マッチングを使用することを推奨します。
+また、すべてのAvro型は`String`カラムに挿入でき、その場合は有効なJSON文字列として表現されます。
 
-#### Variant 型のサポート {#variant-type-support}
-ClickPipes は次の条件下で Variant 型をサポートしています:
-- Avro ユニオン。Avro スキーマに複数の非 nullable 型を持つユニオンが含まれている場合、ClickPipes は適切な Variant 型を推測します。それ以外の場合、Avro データに対する Variant 型はサポートされていません。
-- JSON フィールド。ソースデータストリームの任意の JSON フィールドに対して手動で Variant 型（例: `Variant(String, Int64, DateTime)`）を指定できます。ClickPipes が正しい Variant サブタイプを判断する方法のため、Variant 定義には整数または日時型が1つだけ使用可能です - 例: `Variant(Int64, UInt32)` はサポートされていません。
+#### Nullable型とAvroユニオン {#nullable-types-and-avro-unions}
 
-#### JSON 型のサポート {#json-type-support}
-ClickPipes は次の状況で JSON 型をサポートします:
-- Avro Record 型は常に JSON カラムに割り当てることができます。
-- Avro String および Bytes 型は、カラムが実際に JSON String オブジェクトを保持している場合に JSON カラムに割り当てることができます。
-- 常に JSON オブジェクトである JSON フィールドは JSON 宛先カラムに割り当てることができます。
+AvroにおけるNullable型は、Tが基本Avro型である`(T, null)`または`(null, T)`のユニオンスキーマを使用して定義されます。スキーマ推論時、このようなユニオンはClickHouseの「Nullable」カラムにマッピングされます。ClickHouseは`Nullable(Array)`、`Nullable(Map)`、または`Nullable(Tuple)`型をサポートしていないことに注意してください。これらの型に対するAvro nullユニオンは非Nullable版にマッピングされます(Avro Record型はClickHouseの名前付きTupleにマッピングされます)。これらの型に対するAvroの「null」は次のように挿入されます:
 
-目的の JSON 型への宛先カラムは手動で変更する必要があることに注意してください。固定またはスキップされたパスを含みます。
+- nullのAvro配列に対しては空のArray
+- nullのAvro Mapに対しては空のMap
+- nullのAvro Recordに対してはすべてデフォルト/ゼロ値を持つ名前付きTuple
 
-## Kafka バーチャルカラム {#kafka-virtual-columns}
+#### Variant型のサポート {#variant-type-support}
 
-次のバーチャルカラムは Kafka 互換のストリーミングデータソースに対してサポートされています。新しい宛先テーブルを作成する際には、`Add Column` ボタンを使用してバーチャルカラムを追加できます。
+ClickPipesは以下の状況でVariant型をサポートします:
 
-| 名称              | 説明                                        | 推奨データ型     |
-|------------------|-------------------------------------------|------------------|
-| `_key`           | Kafka メッセージキー                      | `String`         |
-| `_timestamp`     | Kafka タイムスタンプ（ミリ秒精度）        | `DateTime64(3)`  |
-| `_partition`     | Kafka パーティション                       | `Int32`          |
-| `_offset`        | Kafka オフセット                          | `Int64`          |
-| `_topic`         | Kafka トピック                           | `String`         |
-| `_header_keys`   | レコードヘッダのキーの並列配列            | `Array(String)`  |
-| `_header_values` | レコードヘッダのヘッダの並列配列          | `Array(String)`  |
-| `_raw_message`   | 完全な Kafka メッセージ                    | `String`         |
+- Avroユニオン。Avroスキーマに複数の非null型を持つユニオンが含まれている場合、ClickPipesは適切なvariant型を推論します。Variant型はAvroデータに対してはこれ以外の場合はサポートされていません。
+- JSONフィールド。ソースデータストリーム内の任意のJSONフィールドに対して、Variant型(例:`Variant(String, Int64, DateTime)`)を手動で指定できます。ClickPipesが使用する正しいvariantサブタイプを決定する方法のため、Variant定義では1つの整数型または日時型のみを使用できます。例えば、`Variant(Int64, UInt32)`はサポートされていません。
 
-`_raw_message` カラムは JSON データにのみ推奨されることに注意してください。JSON 文字列のみが必要なユースケースでは（ClickHouse の [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用して下流のマテリアライズドビューを補充する場合など）、すべての「非バーチャル」カラムを削除すると ClickPipes のパフォーマンスが向上する可能性があります。
+#### JSON型のサポート {#json-type-support}
+
+ClickPipesは以下の状況でJSON型をサポートします:
+
+- Avro Record型は常にJSONカラムに割り当てることができます。
+- Avro StringおよびBytes型は、カラムが実際にJSON Stringオブジェクトを保持している場合、JSONカラムに割り当てることができます。
+- 常にJSONオブジェクトであるJSONフィールドは、JSON宛先カラムに割り当てることができます。
+
+固定パスやスキップされたパスを含め、宛先カラムを希望するJSON型に手動で変更する必要があることに注意してください。
+
+
+## Kafka仮想カラム {#kafka-virtual-columns}
+
+Kafka互換のストリーミングデータソースでは、以下の仮想カラムがサポートされています。新しい宛先テーブルを作成する際、`Add Column`ボタンを使用して仮想カラムを追加できます。
+
+| 名前             | 説明                                     | 推奨データ型 |
+| ---------------- | ----------------------------------------------- | --------------------- |
+| `_key`           | Kafkaメッセージキー                               | `String`              |
+| `_timestamp`     | Kafkaタイムスタンプ(ミリ秒精度)         | `DateTime64(3)`       |
+| `_partition`     | Kafkaパーティション                                 | `Int32`               |
+| `_offset`        | Kafkaオフセット                                    | `Int64`               |
+| `_topic`         | Kafkaトピック                                     | `String`              |
+| `_header_keys`   | レコードヘッダー内のキーの並列配列    | `Array(String)`       |
+| `_header_values` | レコードヘッダー内の値の並列配列 | `Array(String)`       |
+| `_raw_message`   | 完全なKafkaメッセージ                              | `String`              |
+
+`_raw_message`カラムはJSONデータに対してのみ推奨されることに注意してください。
+JSON文字列のみが必要なユースケース(下流のマテリアライズドビューにデータを投入するためにClickHouseの[`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions)関数を使用する場合など)では、すべての「非仮想」カラムを削除することでClickPipesのパフォーマンスが向上する可能性があります。

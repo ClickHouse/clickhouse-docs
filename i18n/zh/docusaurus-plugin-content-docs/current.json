@@ -1,734 +1,734 @@
 {
   "version.label": {
-    "message": "下一个",
-    "description": "The label for version current"
+    "message": "下一步",
+    "description": "当前版本的标签"
   },
   "sidebar.docs.category.Introduction": {
     "message": "介绍",
-    "description": "The label for category Introduction in sidebar docs"
+    "description": "文档侧边栏中“Introduction”分类的标签"
   },
   "sidebar.docs.category.Concepts": {
-    "message": "概念",
-    "description": "The label for category Concepts in sidebar docs"
+    "message": "基础概念",
+    "description": "侧边栏文档中“概念”分类的标签"
   },
   "sidebar.docs.category.FAQ": {
     "message": "常见问题",
-    "description": "The label for category FAQ in sidebar docs"
+    "description": "侧边栏文档中“FAQ”分类的标签"
   },
   "sidebar.docs.category.Starter Guides": {
     "message": "入门指南",
-    "description": "The label for category Starter Guides in sidebar docs"
+    "description": "侧边栏文档中“入门指南”类别的标签"
   },
   "sidebar.docs.category.Use Case Guides": {
-    "message": "用例指南",
-    "description": "The label for category Use Case Guides in sidebar docs"
+    "message": "使用场景指南",
+    "description": "侧边栏文档中“Use Case Guides”分类的标签"
   },
   "sidebar.docs.category.Observability": {
-    "message": "可观察性",
-    "description": "The label for category Observability in sidebar docs"
+    "message": "可观测性",
+    "description": "文档侧边栏中“Observability”分类的标签"
   },
   "sidebar.docs.category.Migration Guides": {
     "message": "迁移指南",
-    "description": "The label for category Migration Guides in sidebar docs"
+    "description": "侧边栏文档中“迁移指南”分类的标签"
   },
   "sidebar.docs.category.BigQuery": {
     "message": "BigQuery",
-    "description": "The label for category BigQuery in sidebar docs"
+    "description": "文档侧边栏中 BigQuery 分类的标签"
   },
   "sidebar.docs.category.PostgreSQL": {
     "message": "PostgreSQL",
-    "description": "The label for category PostgreSQL in sidebar docs"
+    "description": "文档侧边栏中 PostgreSQL 分类的标签"
   },
   "sidebar.docs.category.Example Datasets": {
     "message": "示例数据集",
-    "description": "The label for category Example Datasets in sidebar docs"
+    "description": "文档侧边栏中“示例数据集”分类的标签"
   },
   "sidebar.docs.doc.Introduction": {
-    "message": "介绍",
-    "description": "The label for the doc item Introduction in sidebar docs, linking to the doc migrations/postgres/overview"
+    "message": "简介",
+    "description": "侧边栏中指向文档 migrations/postgres/overview 的 “Introduction” 文档条目标籤"
   },
   "sidebar.docs.doc.Rockset": {
     "message": "Rockset",
-    "description": "The label for the doc item Rockset in sidebar docs, linking to the doc integrations/migration/rockset"
+    "description": "侧边栏中名为 Rockset 的文档条目的标签，链接到文档 integrations/migration/rockset"
   },
   "sidebar.cloud.category.Get Started": {
-    "message": "开始使用",
-    "description": "The label for category Get Started in sidebar cloud"
+    "message": "快速入门",
+    "description": "云端侧边栏中“入门”类别的标签"
   },
   "sidebar.cloud.category.Managing Cloud": {
-    "message": "管理云",
-    "description": "The label for category Managing Cloud in sidebar cloud"
+    "message": "管理云服务",
+    "description": "云侧边栏中“Managing Cloud”类别的标签"
   },
   "sidebar.cloud.category.Backups": {
     "message": "备份",
-    "description": "The label for category Backups in sidebar cloud"
+    "description": "云端侧边栏中“备份”分类的标签"
   },
   "sidebar.cloud.category.Monitoring": {
     "message": "监控",
-    "description": "The label for category Monitoring in sidebar cloud"
+    "description": "云端侧边栏中“监控”类别的标签"
   },
   "sidebar.cloud.category.Billing": {
-    "message": "账单",
-    "description": "The label for category Billing in sidebar cloud"
+    "message": "计费",
+    "description": "云端侧边栏中“Billing”分类的标签"
   },
   "sidebar.cloud.category.Marketplace": {
-    "message": "市场",
-    "description": "The label for category Marketplace in sidebar cloud"
+    "message": "应用市场",
+    "description": "云控制台侧边栏中“Marketplace”类别的标签"
   },
   "sidebar.cloud.category.Jan 2025 Changes FAQ": {
-    "message": "2025年1月更改常见问题",
-    "description": "The label for category Jan 2025 Changes FAQ in sidebar cloud"
+    "message": "2025 年 1 月变更常见问题解答",
+    "description": "云侧边栏中“2025 年 1 月变更常见问题”类别的标签"
   },
   "sidebar.cloud.category.Cloud API": {
     "message": "云 API",
-    "description": "The label for category Cloud API in sidebar cloud"
+    "description": "云控制台侧边栏中“Cloud API”类别的标签"
   },
   "sidebar.cloud.category.API Reference": {
-    "message": "API 参考",
-    "description": "The label for category API Reference in sidebar cloud"
+    "message": "API 参考文档",
+    "description": "云侧边栏中“API Reference”分类的标签"
   },
   "sidebar.cloud.category.Cloud Reference ": {
-    "message": "云参考",
-    "description": "The label for category Cloud Reference  in sidebar cloud"
+    "message": "云服务参考 ",
+    "description": "cloud 侧边栏中“Cloud Reference”类别的标签"
   },
   "sidebar.cloud.category.Changelogs": {
-    "message": "变更日志",
-    "description": "The label for category Changelogs in sidebar cloud"
+    "message": "更新日志",
+    "description": "云端侧边栏中“Changelogs”分类的标签"
   },
   "sidebar.cloud.category.Release Notes": {
-    "message": "版本说明",
-    "description": "The label for category Release Notes in sidebar cloud"
+    "message": "发行说明",
+    "description": "云侧边栏中“发行说明”类别的标签"
   },
   "sidebar.cloud.category.Best Practices": {
     "message": "最佳实践",
-    "description": "The label for category Best Practices in sidebar cloud"
+    "description": "cloud 侧边栏中“最佳实践”类别的标签"
   },
   "sidebar.cloud.category.Security": {
     "message": "安全",
-    "description": "The label for category Security in sidebar cloud"
+    "description": "云侧边栏中“Security”类别的标签"
   },
   "sidebar.cloud.category.Cloud Access Management": {
-    "message": "云访问管理",
-    "description": "The label for category Cloud Access Management in sidebar cloud"
+    "message": "云端访问管理",
+    "description": "云侧边栏中“Cloud Access Management”类别的标签"
   },
   "sidebar.cloud.category.Connectivity": {
-    "message": "连接性",
-    "description": "The label for category Connectivity in sidebar cloud"
+    "message": "连接",
+    "description": "云侧边栏中“Connectivity”类别的标签"
   },
   "sidebar.cloud.category.Private Networking": {
     "message": "私有网络",
-    "description": "The label for category Private Networking in sidebar cloud"
+    "description": "云控制台侧边栏中“Private Networking”类别的标签"
   },
   "sidebar.cloud.category.Privacy and Compliance": {
-    "message": "隐私和合规性",
-    "description": "The label for category Privacy and Compliance in sidebar cloud"
+    "message": "隐私与合规性",
+    "description": "云侧边栏中“隐私与合规”类别的标签"
   },
   "sidebar.cloud.category.Migrating to Cloud": {
-    "message": "迁移到云",
-    "description": "The label for category Migrating to Cloud in sidebar cloud"
+    "message": "迁移到云端",
+    "description": "cloud 侧边栏中“迁移到云端”类别的标签"
   },
   "sidebar.cloud.link.Rockset": {
     "message": "Rockset",
-    "description": "The label for link Rockset in sidebar cloud, linking to /migrations/rockset"
+    "description": "云侧边栏中指向 /migrations/rockset 的 Rockset 链接标签"
   },
   "sidebar.sqlreference.category.Introduction": {
     "message": "介绍",
-    "description": "The label for category Introduction in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Introduction”分类的标签"
   },
   "sidebar.sqlreference.category.Data Types": {
     "message": "数据类型",
-    "description": "The label for category Data Types in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“数据类型”分类的标签"
   },
   "sidebar.sqlreference.category.Special Data Types": {
-    "message": "特殊数据类型",
-    "description": "The label for category Special Data Types in sidebar sqlreference"
+    "message": "特殊类型",
+    "description": "侧边栏 sqlreference 中“特殊数据类型”分类的标签"
   },
   "sidebar.sqlreference.category.Statements": {
     "message": "语句",
-    "description": "The label for category Statements in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Statements”分类的标签"
   },
   "sidebar.sqlreference.category.SELECT": {
     "message": "SELECT",
-    "description": "The label for category SELECT in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中 “SELECT” 分类的标签"
   },
   "sidebar.sqlreference.category.CREATE": {
     "message": "CREATE",
-    "description": "The label for category CREATE in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中 “CREATE” 分类的标签"
   },
   "sidebar.sqlreference.category.ALTER": {
     "message": "ALTER",
-    "description": "The label for category ALTER in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中 ALTER 类别的标签"
   },
   "sidebar.sqlreference.category.Engines": {
     "message": "引擎",
-    "description": "The label for category Engines in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Engines”分类的标签"
   },
   "sidebar.sqlreference.category.Database Engines": {
     "message": "数据库引擎",
-    "description": "The label for category Database Engines in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Database Engines”分类的标签"
   },
   "sidebar.sqlreference.category.Table Engines": {
     "message": "表引擎",
-    "description": "The label for category Table Engines in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“表引擎”分类的标签"
   },
   "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "MergeTree 家族",
-    "description": "The label for category MergeTree Family in sidebar sqlreference"
+    "message": "MergeTree 系列",
+    "description": "侧边栏 sqlreference 中 “MergeTree Family” 分类的标签"
   },
   "sidebar.sqlreference.category.Log Family": {
-    "message": "日志家族",
-    "description": "The label for category Log Family in sidebar sqlreference"
+    "message": "Log 系列引擎",
+    "description": "侧边栏 sqlreference 中“日志系列”类别的标签"
   },
   "sidebar.sqlreference.category.Integrations": {
     "message": "集成",
-    "description": "The label for category Integrations in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Integrations”分类的标签"
   },
   "sidebar.sqlreference.category.Special": {
-    "message": "特殊",
-    "description": "The label for category Special in sidebar sqlreference"
+    "message": "特别",
+    "description": "侧边栏 sqlreference 中 “Special” 类别的标签"
   },
   "sidebar.sqlreference.category.Functions": {
     "message": "函数",
-    "description": "The label for category Functions in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Functions”分类的标签"
   },
   "sidebar.sqlreference.category.Regular Functions": {
-    "message": "常规函数",
-    "description": "The label for category Regular Functions in sidebar sqlreference"
+    "message": "常用函数",
+    "description": "侧边栏 sqlreference 中“常规函数”类别的标签"
   },
   "sidebar.sqlreference.category.Geo": {
     "message": "地理",
-    "description": "The label for category Geo in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“Geo”类别的标签"
   },
   "sidebar.sqlreference.category.Aggregate Functions": {
     "message": "聚合函数",
-    "description": "The label for category Aggregate Functions in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“聚合函数”分类的标签"
   },
   "sidebar.sqlreference.category.Table Functions": {
-    "message": "表函数",
-    "description": "The label for category Table Functions in sidebar sqlreference"
+    "message": "表引擎函数",
+    "description": "侧边栏 sqlreference 中“表函数”分类的标签"
   },
   "sidebar.sqlreference.category.Window Functions": {
     "message": "窗口函数",
-    "description": "The label for category Window Functions in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“窗口函数”类别的标签"
   },
   "sidebar.sqlreference.category.Other Features": {
-    "message": "其他功能",
-    "description": "The label for category Other Features in sidebar sqlreference"
+    "message": "其他特性",
+    "description": "sqlreference 侧边栏中“其他功能”类别的标签"
   },
   "sidebar.sqlreference.category.Operators": {
     "message": "运算符",
-    "description": "The label for category Operators in sidebar sqlreference"
+    "description": "侧边栏 sqlreference 中“运算符”类别的标签"
   },
   "sidebar.integrations.category.Language Clients": {
-    "message": "语言客户端",
-    "description": "The label for category Language Clients in sidebar integrations"
+    "message": "各语言客户端",
+    "description": "侧边栏“集成”中“语言客户端”类别的标签"
   },
   "sidebar.integrations.category.Java": {
     "message": "Java",
-    "description": "The label for category Java in sidebar integrations"
+    "description": "侧边栏“集成”中的 Java 类别标签"
   },
   "sidebar.integrations.category.Third-party Clients": {
     "message": "第三方客户端",
-    "description": "The label for category Third-party Clients in sidebar integrations"
+    "description": "侧边栏“集成”部分中的“第三方客户端”类别标签"
   },
   "sidebar.integrations.category.ClickPipes": {
     "message": "ClickPipes",
-    "description": "The label for category ClickPipes in sidebar integrations"
+    "description": "侧边栏“集成”中 ClickPipes 分类的标签"
   },
   "sidebar.integrations.category.ClickPipes for Postgres": {
-    "message": "Postgres 的 ClickPipes",
-    "description": "The label for category ClickPipes for Postgres in sidebar integrations"
+    "message": "适用于 Postgres 的 ClickPipes",
+    "description": "侧边栏“集成”中的“ClickPipes for Postgres”类别标签"
   },
   "sidebar.integrations.category.Source": {
     "message": "源",
-    "description": "The label for category Source in sidebar integrations"
+    "description": "侧边栏集成中“来源”类别的标签"
   },
   "sidebar.integrations.category.Native Clients & Interfaces": {
     "message": "原生客户端和接口",
-    "description": "The label for category Native Clients & Interfaces in sidebar integrations"
+    "description": "侧边栏“集成”中“Native Clients & Interfaces”类别的标签"
   },
   "sidebar.integrations.category.Drivers and Interfaces": {
-    "message": "驱动程序和接口",
-    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+    "message": "驱动程序与接口",
+    "description": "侧边栏“集成”中的“驱动和接口”分类标签"
   },
   "sidebar.integrations.category.Data Sources": {
     "message": "数据源",
-    "description": "The label for category Data Sources in sidebar integrations"
+    "description": "侧边栏“集成”中“数据源”分类的标签"
   },
   "sidebar.integrations.category.AWS S3": {
     "message": "AWS S3",
-    "description": "The label for category AWS S3 in sidebar integrations"
+    "description": "侧边栏“集成”中“AWS S3”类别的标签"
   },
   "sidebar.integrations.category.Kafka": {
     "message": "Kafka",
-    "description": "The label for category Kafka in sidebar integrations"
+    "description": "侧边栏“集成”中的 Kafka 分类标签"
   },
   "sidebar.integrations.category.Apache Spark": {
     "message": "Apache Spark",
-    "description": "The label for category Apache Spark in sidebar integrations"
+    "description": "侧边栏“集成”中 Apache Spark 分类的标签"
   },
   "sidebar.integrations.category.Data Visualization": {
     "message": "数据可视化",
-    "description": "The label for category Data Visualization in sidebar integrations"
+    "description": "侧边栏集成中“数据可视化”分类的标签"
   },
   "sidebar.integrations.category.Grafana": {
     "message": "Grafana",
-    "description": "The label for category Grafana in sidebar integrations"
+    "description": "侧边栏“集成”中的 Grafana 分类标签"
   },
   "sidebar.integrations.category.Tableau": {
     "message": "Tableau",
-    "description": "The label for category Tableau in sidebar integrations"
+    "description": "侧边栏“集成”中 Tableau 分类的标签"
   },
   "sidebar.integrations.category.Data Formats": {
     "message": "数据格式",
-    "description": "The label for category Data Formats in sidebar integrations"
+    "description": "侧边栏“集成”中“数据格式”类别的标签"
   },
   "sidebar.integrations.category.JSON": {
     "message": "JSON",
-    "description": "The label for category JSON in sidebar integrations"
+    "description": "侧边栏“集成”中 JSON 类别的标签"
   },
   "sidebar.integrations.category.View All Formats": {
-    "message": "查看所有格式",
-    "description": "The label for category View All Formats in sidebar integrations"
+    "message": "查看全部格式",
+    "description": "侧边栏“集成”中“查看所有格式”类别的标签"
   },
   "sidebar.integrations.category.Arrow": {
     "message": "Arrow",
-    "description": "The label for category Arrow in sidebar integrations"
+    "description": "侧边栏“集成”中 Arrow 分类的标签"
   },
   "sidebar.integrations.category.Avro": {
     "message": "Avro",
-    "description": "The label for category Avro in sidebar integrations"
+    "description": "侧边栏集成中“Avro”分类的标签"
   },
   "sidebar.integrations.category.CSV": {
     "message": "CSV",
-    "description": "The label for category CSV in sidebar integrations"
+    "description": "侧边栏“CSV”集成类别的标签"
   },
   "sidebar.integrations.category.CustomSeparated": {
     "message": "CustomSeparated",
-    "description": "The label for category CustomSeparated in sidebar integrations"
+    "description": "侧边栏集成中“CustomSeparated”类别的标签"
   },
   "sidebar.integrations.category.LineAsString": {
     "message": "LineAsString",
-    "description": "The label for category LineAsString in sidebar integrations"
+    "description": "侧边栏集成中 LineAsString 分类的标签"
   },
   "sidebar.integrations.category.Parquet": {
     "message": "Parquet",
-    "description": "The label for category Parquet in sidebar integrations"
+    "description": "侧边栏“集成”中 Parquet 类别的标签"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "Pretty",
-    "description": "The label for category Pretty in sidebar integrations"
+    "message": "漂亮",
+    "description": "侧边栏集成中“Pretty”分类的标签"
   },
   "sidebar.integrations.category.Protobuf": {
     "message": "Protobuf",
-    "description": "The label for category Protobuf in sidebar integrations"
+    "description": "侧边栏“集成”中的 Protobuf 分类标签"
   },
   "sidebar.integrations.category.RowBinary": {
     "message": "RowBinary",
-    "description": "The label for category RowBinary in sidebar integrations"
+    "description": "侧边栏集成中“RowBinary”分类的标签"
   },
   "sidebar.integrations.category.TabSeparated": {
     "message": "TabSeparated",
-    "description": "The label for category TabSeparated in sidebar integrations"
+    "description": "侧边栏集成中“TabSeparated”分类的标签"
   },
   "sidebar.integrations.category.Template": {
-    "message": "Template",
-    "description": "The label for category Template in sidebar integrations"
+    "message": "模板",
+    "description": "侧边栏集成中“模板”分类的标签"
   },
   "sidebar.integrations.category.Data Ingestion": {
-    "message": "数据摄取",
-    "description": "The label for category Data Ingestion in sidebar integrations"
+    "message": "数据导入",
+    "description": "侧边栏“集成”中“数据摄入”类别的标签"
   },
   "sidebar.integrations.category.Google Dataflow": {
     "message": "Google Dataflow",
-    "description": "The label for category Google Dataflow in sidebar integrations"
+    "description": "侧边栏集成中 “Google Dataflow” 分类的标签"
   },
   "sidebar.integrations.category.Dataflow Templates": {
     "message": "Dataflow 模板",
-    "description": "The label for category Dataflow Templates in sidebar integrations"
+    "description": "侧边栏集成中“Dataflow 模板”分类的标签"
   },
   "sidebar.integrations.category.Tools": {
     "message": "工具",
-    "description": "The label for category Tools in sidebar integrations"
+    "description": "侧边栏集成中“工具”类别的标签"
   },
   "sidebar.integrations.category.SQL Clients": {
     "message": "SQL 客户端",
-    "description": "The label for category SQL Clients in sidebar integrations"
+    "description": "侧边栏“集成”中 SQL 客户端类别的标签"
   },
   "sidebar.integrations.category.Data Integrations": {
     "message": "数据集成",
-    "description": "The label for category Data Integrations in sidebar integrations"
+    "description": "侧边栏“集成”中的“数据集成”分类标签"
   },
   "sidebar.integrations.category.Misc": {
     "message": "其他",
-    "description": "The label for category Misc in sidebar integrations"
+    "description": "侧边栏集成中“杂项”类别的标签"
   },
   "sidebar.integrations.doc.Overview": {
     "message": "概述",
-    "description": "The label for the doc item Overview in sidebar integrations, linking to the doc integrations/language-clients/java/index"
+    "description": "侧边栏 integrations 中，指向文档 integrations/language-clients/java/index 的 “Overview” 文档项标签"
   },
   "sidebar.integrations.doc.Third-party Libraries": {
     "message": "第三方库",
-    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc interfaces/third-party/integrations"
+    "description": "侧边栏“integrations”中名为“Third-party Libraries”的文档项的标签，链接到文档 interfaces/third-party/integrations"
   },
   "sidebar.managingData.category.Core Concepts": {
     "message": "核心概念",
-    "description": "The label for category Core Concepts in sidebar managingData"
+    "description": "侧边栏 managingData 中“Core Concepts”分类的标签"
   },
   "sidebar.managingData.category.Updating Data": {
     "message": "更新数据",
-    "description": "The label for category Updating Data in sidebar managingData"
+    "description": "侧边栏 managingData 中“Updating Data”分类的标签"
   },
   "sidebar.managingData.category.Deleting Data": {
     "message": "删除数据",
-    "description": "The label for category Deleting Data in sidebar managingData"
+    "description": "侧边栏 managingData 中“删除数据”分类的标签"
   },
   "sidebar.managingData.category.Data Modeling": {
     "message": "数据建模",
-    "description": "The label for category Data Modeling in sidebar managingData"
+    "description": "侧边栏 managingData 中“数据建模”类别的标签"
   },
   "sidebar.managingData.category.Dictionary": {
     "message": "字典",
-    "description": "The label for category Dictionary in sidebar managingData"
+    "description": "侧边栏 managingData 中“Dictionary”分类的标签"
   },
   "sidebar.managingData.category.Materialized Views": {
     "message": "物化视图",
-    "description": "The label for category Materialized Views in sidebar managingData"
+    "description": "在 managingData 侧边栏中，“物化视图”类别的标签"
   },
   "sidebar.managingData.category.Data Compression": {
     "message": "数据压缩",
-    "description": "The label for category Data Compression in sidebar managingData"
+    "description": "侧边栏 managingData 中“数据压缩”分类的标签"
   },
   "sidebar.managingData.category.Advanced Guides": {
-    "message": "高级指南",
-    "description": "The label for category Advanced Guides in sidebar managingData"
+    "message": "进阶指南",
+    "description": "“管理数据”侧边栏中“高级指南”类别的标签"
   },
   "sidebar.managingData.category.Performance and Optimizations": {
-    "message": "性能和优化",
-    "description": "The label for category Performance and Optimizations in sidebar managingData"
+    "message": "性能与优化",
+    "description": "侧边栏 managingData 中“Performance and Optimizations”分类的标签"
   },
   "sidebar.managingData.doc.Lightweight Updates": {
-    "message": "轻量级更新",
-    "description": "The label for the doc item Lightweight Updates in sidebar managingData, linking to the doc guides/developer/lightweight-update"
+    "message": "轻量更新",
+    "description": "侧边栏 managingData 中指向文档 guides/developer/lightweight-update 的文档项 “Lightweight Updates” 的标签"
   },
   "sidebar.managingData.doc.ReplacingMergeTree": {
     "message": "ReplacingMergeTree",
-    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc migrations/postgres/replacing-merge-tree"
+    "description": "侧边栏 managingData 中，指向文档 migrations/postgres/replacing-merge-tree 的文档项 ReplacingMergeTree 的标签"
   },
   "sidebar.managingData.doc.Lightweight Deletes": {
-    "message": "轻量级删除",
-    "description": "The label for the doc item Lightweight Deletes in sidebar managingData, linking to the doc guides/developer/lightweight-delete"
+    "message": "轻量删除",
+    "description": "侧边栏 managingData 中链接到文档 guides/developer/lightweight-delete 的文档条目 “Lightweight Deletes” 的标签"
   },
   "sidebar.aboutClickHouse.category.About ClickHouse": {
     "message": "关于 ClickHouse",
-    "description": "The label for category About ClickHouse in sidebar aboutClickHouse"
+    "description": "侧边栏中“关于 ClickHouse”类别的标签：aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Changelogs": {
-    "message": "变更日志",
-    "description": "The label for category Changelogs in sidebar aboutClickHouse"
+    "message": "更新日志",
+    "description": "“关于 ClickHouse” 侧边栏中的 “Changelogs” 分类标签"
   },
   "sidebar.aboutClickHouse.category.Changelog": {
-    "message": "变更记录",
-    "description": "The label for category Changelog in sidebar aboutClickHouse"
+    "message": "更新日志",
+    "description": "侧边栏中“关于 ClickHouse”部分下“更新日志”分类的标签"
   },
   "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
-    "message": "变更记录",
-    "description": "The generated-index page title for category Changelog in sidebar aboutClickHouse"
+    "message": "更新日志",
+    "description": "关于 ClickHouse 侧边栏中“Changelog”分类的自动生成索引页标题"
   },
   "sidebar.aboutClickHouse.category.Development and Contributing": {
-    "message": "开发与贡献",
-    "description": "The label for category Development and Contributing in sidebar aboutClickHouse"
+    "message": "开发与贡献指南",
+    "description": "aboutClickHouse 侧边栏中“Development and Contributing”分类的标签"
   },
   "sidebar.aboutClickHouse.category.Native Protocol": {
-    "message": "原生协议",
-    "description": "The label for category Native Protocol in sidebar aboutClickHouse"
+    "message": "本机协议",
+    "description": "关于 ClickHouse 侧边栏中“Native Protocol”分类的标签"
   },
   "sidebar.aboutClickHouse.category.FAQ": {
     "message": "常见问题",
-    "description": "The label for category FAQ in sidebar aboutClickHouse"
+    "description": "关于 ClickHouse 侧边栏中“FAQ”分类的标签"
   },
   "sidebar.serverAdmin.category.Manage and Deploy": {
     "message": "管理与部署",
-    "description": "The label for category Manage and Deploy in sidebar serverAdmin"
+    "description": "侧边栏 serverAdmin 中“管理与部署”分类的标签"
   },
   "sidebar.serverAdmin.category.Deployment and Scaling": {
-    "message": "部署与扩展",
-    "description": "The label for category Deployment and Scaling in sidebar serverAdmin"
+    "message": "部署与扩容",
+    "description": "侧边栏 serverAdmin 中“部署与伸缩”类别的标签"
   },
   "sidebar.serverAdmin.category.Settings": {
     "message": "设置",
-    "description": "The label for category Settings in sidebar serverAdmin"
+    "description": "服务器管理侧边栏中“Settings”类别的标签"
   },
   "sidebar.serverAdmin.category.System Tables": {
     "message": "系统表",
-    "description": "The label for category System Tables in sidebar serverAdmin"
+    "description": "serverAdmin 侧边栏中“系统表”类别的标签"
   },
   "sidebar.serverAdmin.category.Security and Authentication": {
-    "message": "安全与认证",
-    "description": "The label for category Security and Authentication in sidebar serverAdmin"
+    "message": "安全与身份验证",
+    "description": "侧边栏 serverAdmin 中“安全与身份验证”类别的标签"
   },
   "sidebar.serverAdmin.category.External Authenticators": {
-    "message": "外部认证器",
-    "description": "The label for category External Authenticators in sidebar serverAdmin"
+    "message": "外部身份验证器",
+    "description": "侧边栏 serverAdmin 中“External Authenticators”分类的标签"
   },
   "sidebar.serverAdmin.category.SSL": {
     "message": "SSL",
-    "description": "The label for category SSL in sidebar serverAdmin"
+    "description": "侧边栏 serverAdmin 中“SSL”分类的标签"
   },
   "sidebar.serverAdmin.category.LDAP": {
     "message": "LDAP",
-    "description": "The label for category LDAP in sidebar serverAdmin"
+    "description": "侧边栏 serverAdmin 中“LDAP”分类的标签"
   },
   "sidebar.serverAdmin.category.Tools and Utilities": {
-    "message": "工具与实用程序",
-    "description": "The label for category Tools and Utilities in sidebar serverAdmin"
+    "message": "工具与实用工具",
+    "description": "侧边栏 serverAdmin 中“工具与实用程序”类别的标签"
   },
   "sidebar.chdb.category.chDB": {
     "message": "chDB",
-    "description": "The label for category chDB in sidebar chdb"
+    "description": "侧边栏 chdb 中 chDB 分类的标签"
   },
   "sidebar.chdb.category.Language Integrations": {
     "message": "语言集成",
-    "description": "The label for category Language Integrations in sidebar chdb"
+    "description": "chdb 侧边栏中“Language Integrations”分类的标签"
   },
   "sidebar.chdb.category.Developer Guides": {
-    "message": "开发者指南",
-    "description": "The label for category Developer Guides in sidebar chdb"
+    "message": "开发指南",
+    "description": "chdb 侧边栏中“Developer Guides”类别的标签"
   },
   "sidebar.chdb.category.Technical Reference": {
     "message": "技术参考",
-    "description": "The label for category Technical Reference in sidebar chdb"
+    "description": "chdb 侧边栏中“Technical Reference”类别的标签"
   },
   "sidebar.chdb.category.Integrations": {
     "message": "集成",
-    "description": "The label for category Integrations in sidebar chdb"
+    "description": "chdb 侧边栏中“Integrations”类别的标签"
   },
   "sidebar.chdb.category.About chDB": {
-    "message": "关于 chDB",
-    "description": "The label for category About chDB in sidebar chdb"
+    "message": "chDB 简介",
+    "description": "chdb 侧边栏中 “About chDB” 分类的标签"
   },
   "sidebar.chdb.link.JupySQL": {
     "message": "JupySQL",
-    "description": "The label for link JupySQL in sidebar chdb, linking to https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
+    "description": "chdb 侧边栏中指向 https://jupysql.ploomber.io/en/latest/integrations/chdb.html 的 JupySQL 链接标签"
   },
   "sidebar.chdb.link.chdb-lambda": {
     "message": "chdb-lambda",
-    "description": "The label for link chdb-lambda in sidebar chdb, linking to https://github.com/chdb-io/chdb-lambda"
+    "description": "侧边栏 chdb 中指向 https://github.com/chdb-io/chdb-lambda 的 chdb-lambda 链接标签"
   },
   "sidebar.chdb.link.chdb-cli": {
     "message": "chdb-cli",
-    "description": "The label for link chdb-cli in sidebar chdb, linking to https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
+    "description": "侧边栏 chdb 中指向 https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli 的 chdb-cli 链接标签"
   },
   "sidebar.chdb.link.Discord": {
     "message": "Discord",
-    "description": "The label for link Discord in sidebar chdb, linking to https://discord.gg/Njw5YXSPPc"
+    "description": "chdb 侧边栏中指向 https://discord.gg/Njw5YXSPPc 的 Discord 链接标签"
   },
   "sidebar.chdb.link.Birth of chDB": {
-    "message": "chDB的诞生",
-    "description": "The label for link Birth of chDB in sidebar chdb, linking to https://auxten.com/the-birth-of-chdb/"
+    "message": "chDB 的诞生",
+    "description": "侧边栏 chdb 中指向 https://auxten.com/the-birth-of-chdb/ 的链接，其标签为 “Birth of chDB”"
   },
   "sidebar.chdb.link.Joining ClickHouse, Inc.": {
-    "message": "加入 ClickHouse, Inc.",
-    "description": "The label for link Joining ClickHouse, Inc. in sidebar chdb, linking to https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
+    "message": "加入 ClickHouse",
+    "description": "侧边栏 chdb 中链接“Joining ClickHouse, Inc.”的标签，链接到 https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
   },
   "sidebar.chdb.link.Team and Contributors": {
-    "message": "团队和贡献者",
-    "description": "The label for link Team and Contributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
+    "message": "团队与贡献者",
+    "description": "侧边栏 chdb 中“Team and Contributors”链接的标签，其链接目标为 https://github.com/chdb-io/chdb#contributors"
   },
   "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "快速入门",
-    "description": "The label for category Getting Started in sidebar dropdownCategories"
+    "message": "快速开始",
+    "description": "侧边栏下拉菜单中“Getting Started”分类的标签"
   },
   "sidebar.dropdownCategories.category.Cloud": {
-    "message": "云",
-    "description": "The label for category Cloud in sidebar dropdownCategories"
+    "message": "云服务",
+    "description": "侧边栏下拉菜单中“Cloud”分类的标签"
   },
   "sidebar.dropdownCategories.category.Manage Data": {
     "message": "管理数据",
-    "description": "The label for category Manage Data in sidebar dropdownCategories"
+    "description": "侧边栏下拉菜单中“管理数据”类别的标签"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
     "message": "服务器管理",
-    "description": "The label for category Server Admin in sidebar dropdownCategories"
+    "description": "侧边栏下拉菜单中“Server Admin”分类的标签"
   },
   "sidebar.dropdownCategories.category.Reference": {
-    "message": "参考",
-    "description": "The label for category Reference in sidebar dropdownCategories"
+    "message": "参考资料",
+    "description": "侧边栏下拉菜单中“Reference”分类的标签"
   },
   "sidebar.dropdownCategories.category.Integrations": {
     "message": "集成",
-    "description": "The label for category Integrations in sidebar dropdownCategories"
+    "description": "侧边栏下拉菜单中“Integrations”分类的标签"
   },
   "sidebar.dropdownCategories.category.chDB": {
     "message": "chDB",
-    "description": "The label for category chDB in sidebar dropdownCategories"
+    "description": "侧边栏下拉菜单中 chDB 类别的标签"
   },
   "sidebar.dropdownCategories.category.About": {
-    "message": "关于",
-    "description": "The label for category About in sidebar dropdownCategories"
+    "message": "简介",
+    "description": "侧边栏下拉菜单中“About”类别的标签"
   },
   "sidebar.dropdownCategories.link.Introduction": {
     "message": "介绍",
-    "description": "The label for link Introduction in sidebar dropdownCategories, linking to /sql-reference"
+    "description": "侧边栏下拉菜单中“Introduction”链接的标签，指向 /sql-reference"
   },
   "sidebar.dropdownCategories.link.Starter Guides": {
     "message": "入门指南",
-    "description": "The label for link Starter Guides in sidebar dropdownCategories, linking to /starter-guides"
+    "description": "侧边栏下拉菜单中指向 /starter-guides 的“Starter Guides”链接标签"
   },
   "sidebar.dropdownCategories.link.Concepts": {
     "message": "概念",
-    "description": "The label for link Concepts in sidebar dropdownCategories, linking to /concepts"
+    "description": "侧边栏下拉菜单中“概念（Concepts）”链接的标签，指向 /concepts"
   },
   "sidebar.dropdownCategories.link.Migration Guides": {
     "message": "迁移指南",
-    "description": "The label for link Migration Guides in sidebar dropdownCategories, linking to /migrations/migrations"
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /migrations/migrations 的 “Migration Guides” 链接标签"
   },
   "sidebar.dropdownCategories.link.Use Case Guides": {
     "message": "用例指南",
-    "description": "The label for link Use Case Guides in sidebar dropdownCategories, linking to /use-cases"
+    "description": "侧边栏下拉菜单中指向 /use-cases 的 “Use Case Guides” 链接标签"
   },
   "sidebar.dropdownCategories.link.Example datasets": {
     "message": "示例数据集",
-    "description": "The label for link Example datasets in sidebar dropdownCategories, linking to /getting-started/example-datasets"
+    "description": "侧边栏下拉菜单 dropdownCategories 中“示例数据集”链接的标签，链接到 /getting-started/example-datasets"
   },
   "sidebar.dropdownCategories.link.Get Started": {
-    "message": "开始使用",
-    "description": "The label for link Get Started in sidebar dropdownCategories, linking to /cloud/get-started/"
+    "message": "快速入门",
+    "description": "侧边栏类别下拉菜单中“Get Started”链接的标签，指向 /cloud/get-started/"
   },
   "sidebar.dropdownCategories.link.Managing Cloud": {
-    "message": "管理云",
-    "description": "The label for link Managing Cloud in sidebar dropdownCategories, linking to /cloud/bestpractices"
+    "message": "管理云服务",
+    "description": "侧边栏下拉菜单中指向 /cloud/bestpractices 的“Managing Cloud”链接标签"
   },
   "sidebar.dropdownCategories.link.Cloud API": {
     "message": "云 API",
-    "description": "The label for link Cloud API in sidebar dropdownCategories, linking to /cloud/manage/cloud-api/"
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /cloud/manage/cloud-api/ 的 “Cloud API” 链接标签"
   },
   "sidebar.dropdownCategories.link.Cloud Reference": {
-    "message": "云参考",
-    "description": "The label for link Cloud Reference in sidebar dropdownCategories, linking to /cloud/reference/"
+    "message": "云端参考",
+    "description": "侧边栏下拉菜单中“Cloud Reference”链接的标签，指向 /cloud/reference/"
   },
   "sidebar.dropdownCategories.link.Best Practices": {
     "message": "最佳实践",
-    "description": "The label for link Best Practices in sidebar dropdownCategories, linking to /cloud/bestpractices/"
+    "description": "侧边栏下拉菜单 dropdownCategories 中名为“Best Practices”的链接标签，指向 /cloud/bestpractices/"
   },
   "sidebar.dropdownCategories.link.Security": {
     "message": "安全",
-    "description": "The label for link Security in sidebar dropdownCategories, linking to /cloud/security/"
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /cloud/security/ 的 “Security” 链接标签"
   },
   "sidebar.dropdownCategories.link.Migrating to Cloud": {
-    "message": "迁移到云",
-    "description": "The label for link Migrating to Cloud in sidebar dropdownCategories, linking to /integrations/migration"
+    "message": "迁移到云端",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /integrations/migration 的“迁移到云端”链接的标签"
   },
   "sidebar.dropdownCategories.link.Core Data Concepts": {
     "message": "核心数据概念",
-    "description": "The label for link Core Data Concepts in sidebar dropdownCategories, linking to /managing-data/core-concepts"
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /managing-data/core-concepts 的 “Core Data Concepts” 链接的标签"
   },
   "sidebar.dropdownCategories.link.Updating Data": {
-    "message": "更新数据",
-    "description": "The label for link Updating Data in sidebar dropdownCategories, linking to /updating-data"
+    "message": "数据更新",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /updating-data 的“Updating Data”链接的标签"
   },
   "sidebar.dropdownCategories.link.Deleting data": {
     "message": "删除数据",
-    "description": "The label for link Deleting data in sidebar dropdownCategories, linking to /managing-data/deleting-data/overview"
+    "description": "侧边栏下拉菜单中“删除数据”链接的标签，指向 /managing-data/deleting-data/overview"
   },
   "sidebar.dropdownCategories.link.Data Modeling": {
     "message": "数据建模",
-    "description": "The label for link Data Modeling in sidebar dropdownCategories, linking to /data-modeling/overview"
+    "description": "侧边栏下拉菜单中指向 /data-modeling/overview 的“Data Modeling”链接标签"
   },
   "sidebar.dropdownCategories.link.Performance and Optimizations": {
-    "message": "性能和优化",
-    "description": "The label for link Performance and Optimizations in sidebar dropdownCategories, linking to /operations/overview"
+    "message": "性能与优化",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /operations/overview 的 “Performance and Optimizations” 链接标签"
   },
   "sidebar.dropdownCategories.link.Deployments and Scaling": {
-    "message": "部署和扩展",
-    "description": "The label for link Deployments and Scaling in sidebar dropdownCategories, linking to /deployment-guides/index"
+    "message": "部署与扩缩",
+    "description": "侧边栏下拉菜单 dropdownCategories 中，指向 /deployment-guides/index 的 “Deployments and Scaling” 链接的标签"
   },
   "sidebar.dropdownCategories.link.Security and Authentication": {
-    "message": "安全与认证",
-    "description": "The label for link Security and Authentication in sidebar dropdownCategories, linking to /security-and-authentication"
+    "message": "安全与身份认证",
+    "description": "侧边栏下拉菜单中指向 /security-and-authentication 的 “Security and Authentication” 链接标签"
   },
   "sidebar.dropdownCategories.link.Settings": {
     "message": "设置",
-    "description": "The label for link Settings in sidebar dropdownCategories, linking to /operations/settings"
+    "description": "侧边栏下拉菜单中指向 /operations/settings 的“Settings”链接标签"
   },
   "sidebar.dropdownCategories.link.Tools and Utilities": {
-    "message": "工具与实用程序",
-    "description": "The label for link Tools and Utilities in sidebar dropdownCategories, linking to /operations/utilities"
+    "message": "工具与实用工具",
+    "description": "侧边栏下拉菜单 dropdownCategories 中，指向 /operations/utilities 的 “Tools and Utilities” 链接的标签"
   },
   "sidebar.dropdownCategories.link.System Tables": {
     "message": "系统表",
-    "description": "The label for link System Tables in sidebar dropdownCategories, linking to /operations/system-tables"
+    "description": "侧边栏下拉菜单中指向 /operations/system-tables 的 “System Tables” 链接标签"
   },
   "sidebar.dropdownCategories.link.Functions": {
     "message": "函数",
-    "description": "The label for link Functions in sidebar dropdownCategories, linking to /sql-reference/functions"
+    "description": "侧边栏下拉菜单中指向 /sql-reference/functions 的“函数”链接标签"
   },
   "sidebar.dropdownCategories.link.Engines": {
     "message": "引擎",
-    "description": "The label for link Engines in sidebar dropdownCategories, linking to /engines"
+    "description": "侧边栏下拉菜单中指向 /engines 的 “Engines” 链接的标签"
   },
   "sidebar.dropdownCategories.link.Other Features": {
-    "message": "其他功能",
-    "description": "The label for link Other Features in sidebar dropdownCategories, linking to /sql-reference/operators"
+    "message": "其他特性",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /sql-reference/operators 的“Other Features”链接标签"
   },
   "sidebar.dropdownCategories.link.All Integrations": {
-    "message": "所有集成",
-    "description": "The label for link All Integrations in sidebar dropdownCategories, linking to /integrations"
+    "message": "全部集成",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /integrations 的“所有集成”链接标签"
   },
   "sidebar.dropdownCategories.link.Language Clients": {
     "message": "语言客户端",
-    "description": "The label for link Language Clients in sidebar dropdownCategories, linking to /integrations/language-clients"
+    "description": "侧边栏下拉菜单中指向 /integrations/language-clients 的“Language Clients”链接标签"
   },
   "sidebar.dropdownCategories.link.ClickPipes": {
     "message": "ClickPipes",
-    "description": "The label for link ClickPipes in sidebar dropdownCategories, linking to /integrations/clickpipes"
+    "description": "侧边栏下拉菜单中指向 /integrations/clickpipes 的「ClickPipes」链接标签"
   },
   "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
-    "message": "原生客户端和接口",
-    "description": "The label for link Native Clients & Interfaces in sidebar dropdownCategories, linking to /interfaces/"
+    "message": "原生客户端与接口",
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /interfaces/ 的 “Native Clients &amp; Interfaces” 链接的标签文本"
   },
   "sidebar.dropdownCategories.link.Data Sources": {
     "message": "数据源",
-    "description": "The label for link Data Sources in sidebar dropdownCategories, linking to /integrations/index"
+    "description": "侧边栏下拉菜单中指向 /integrations/index 的 “Data Sources” 链接标签"
   },
   "sidebar.dropdownCategories.link.Data Visualization": {
     "message": "数据可视化",
-    "description": "The label for link Data Visualization in sidebar dropdownCategories, linking to /integrations/data-visualization"
+    "description": "侧边栏下拉菜单中指向 /integrations/data-visualization 的“Data Visualization”链接标签"
   },
   "sidebar.dropdownCategories.link.Data Formats": {
     "message": "数据格式",
-    "description": "The label for link Data Formats in sidebar dropdownCategories, linking to /integrations/data-formats"
+    "description": "侧边栏下拉菜单中指向 /integrations/data-formats 的“Data Formats”链接标签文本"
   },
   "sidebar.dropdownCategories.link.Data Ingestion": {
-    "message": "数据摄取",
-    "description": "The label for link Data Ingestion in sidebar dropdownCategories, linking to /integrations/data-ingestion-overview"
+    "message": "数据写入",
+    "description": "侧边栏下拉菜单 dropdownCategories 中，指向 /integrations/data-ingestion-overview 的 “Data Ingestion” 链接的标签"
   },
   "sidebar.dropdownCategories.link.Learn chDB": {
-    "message": "学习 chDB",
-    "description": "The label for link Learn chDB in sidebar dropdownCategories, linking to /chdb"
+    "message": "chDB 学习",
+    "description": "侧边栏下拉菜单中指向 /chdb 的 “Learn chDB” 链接标签"
   },
   "sidebar.dropdownCategories.link.Language Integrations": {
     "message": "语言集成",
-    "description": "The label for link Language Integrations in sidebar dropdownCategories, linking to /chdb/install"
+    "description": "侧边栏下拉菜单 dropdownCategories 中指向 /chdb/install 的“Language Integrations”链接的标签"
   },
   "sidebar.dropdownCategories.link.Guides": {
     "message": "指南",
-    "description": "The label for link Guides in sidebar dropdownCategories, linking to /chdb/guides"
+    "description": "侧边栏下拉菜单中指向 /chdb/guides 的 “Guides” 链接标签"
   },
   "sidebar.dropdownCategories.link.Adopters": {
-    "message": "用户",
-    "description": "The label for link Adopters in sidebar dropdownCategories, linking to /about-us/adopters"
+    "message": "采用方",
+    "description": "侧边栏下拉菜单 dropdownCategories 中名为 “Adopters” 的链接标签，指向 /about-us/adopters"
   },
   "sidebar.dropdownCategories.link.Changelogs": {
-    "message": "变更日志",
-    "description": "The label for link Changelogs in sidebar dropdownCategories, linking to /whats-new/security-changelog"
+    "message": "更新日志",
+    "description": "侧边栏下拉菜单中“Changelogs”链接的标签，链接到 /whats-new/security-changelog"
   },
   "sidebar.dropdownCategories.link.Support": {
     "message": "支持",
-    "description": "The label for link Support in sidebar dropdownCategories, linking to /about-us/support"
+    "description": "侧边栏下拉菜单中指向 /about-us/support 的“Support”链接的标签"
   },
   "sidebar.dropdownCategories.link.Development and Contributing": {
-    "message": "开发与贡献",
-    "description": "The label for link Development and Contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+    "message": "开发与贡献指南",
+    "description": "侧边栏下拉菜单 dropdownCategories 中，指向 /development/developer-instruction 的 “Development and Contributing” 链接的标签"
   }
 }

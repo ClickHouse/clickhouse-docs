@@ -1,10 +1,8 @@
+## 管理者権限のテスト {#test-admin-privileges}
 
+ユーザー `default` からログアウトし、ユーザー `clickhouse_admin` として再度ログインします。
 
-## テスト管理者権限 {#test-admin-privileges}
-
-ユーザー `default` からログアウトし、ユーザー `clickhouse_admin` として再ログインします。
-
-これらはすべて成功するべきです:
+以下のすべてが成功するはずです:
 
 ```sql
 SHOW GRANTS FOR clickhouse_admin;
@@ -34,15 +32,16 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
+
 ## 非管理者ユーザー {#non-admin-users}
 
-ユーザーは必要な権限を持っているべきであり、全員が管理者ユーザーであってはいけません。この文書の残りの部分では、例示的なシナリオと必要な役割を提供します。
+ユーザーには必要な権限のみを付与すべきであり、全員を管理者ユーザーにする必要はありません。本ドキュメントの以降のセクションでは、具体的なシナリオ例と必要なロールについて説明します。
 
 ### 準備 {#preparation}
 
-例で使用するために、これらのテーブルとユーザーを作成します。
+以下の例で使用するテーブルとユーザーを作成します。
 
-#### サンプルデータベース、テーブル、行の作成 {#creating-a-sample-database-table-and-rows}
+#### サンプルデータベース、テーブル、および行の作成 {#creating-a-sample-database-table-and-rows}
 
 <VerticalStepper headerLevel="h5">
 
@@ -64,7 +63,7 @@ ENGINE MergeTree
 ORDER BY id;
 ```
 
-##### サンプル行を使ってテーブルをポピュレートする {#populate}
+##### テーブルへのサンプル行の投入 {#populate}
 
 ```sql
 INSERT INTO db1.table1
@@ -76,14 +75,14 @@ VALUES
    (4, 'B', 'def');
 ```
 
-##### テーブルを検証する {#verify}
+##### テーブルの確認 {#verify}
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT *
 FROM db1.table1
 ```
 
-```response title="Response"
+```response title="レスポンス"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -94,98 +93,106 @@ Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 └────┴─────────┴─────────┘
 ```
 
-##### `column_user` を作成する {#create-a-user-with-restricted-access-to-columns}
+##### `column_user`の作成 {#create-a-user-with-restricted-access-to-columns}
 
-特定のカラムへのアクセスを制限するために使われる通常のユーザーを作成します:
+特定の列へのアクセス制限を実演するための通常ユーザーを作成します:
 
 ```sql
 CREATE USER column_user IDENTIFIED BY 'password';
 ```
 
-##### `row_user` を作成する {#create-a-user-with-restricted-access-to-rows-with-certain-values}
+##### `row_user`の作成 {#create-a-user-with-restricted-access-to-rows-with-certain-values}
 
-特定の値を持つ行へのアクセスを制限するために使われる通常のユーザーを作成します:
-   
+特定の値を持つ行へのアクセス制限を実演するための通常ユーザーを作成します:
+
 ```sql
 CREATE USER row_user IDENTIFIED BY 'password';
 ```
-   
+
 </VerticalStepper>
 
-#### 役割の作成 {#creating-roles}
+#### ロールの作成 {#creating-roles}
 
-この例に基づいて:
+この一連の例では:
 
-- カラムや行に対するさまざまな権限のための役割が作成されます
-- 権限が役割に付与されます
-- ユーザーが各役割に割り当てられます
+- 列や行など、異なる権限に対応するロールを作成します
+- ロールに権限を付与します
+- 各ロールにユーザーを割り当てます
 
-役割は、各ユーザーを個別に管理するのではなく、特定の権限のためにユーザーのグループを定義するために使用されます。
+ロールは、各ユーザーを個別に管理する代わりに、特定の権限に対するユーザーグループを定義するために使用されます。
 
-1. データベース `db1` のテーブル `table1` で `column1` のみを表示できるようにこの役割のユーザーを制限する役割を作成します:
+<VerticalStepper headerLevel="h5">
 
-```sql
-CREATE ROLE column1_users;
-```
+##### データベース`db1`の`table1`において`column1`のみを参照できるようにユーザーを制限するロールの作成: {#create-column-role}
 
-2. `column1` の表示を許可する権限を設定します
+    ```sql
+    CREATE ROLE column1_users;
+    ```
 
-```sql
-GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
-```
+##### `column1`の参照を許可する権限の設定 {#set-column-privileges}
 
-3. `column_user` ユーザーを `column1_users` 役割に追加します
+    ```sql
+    GRANT SELECT(id, column1) ON db1.table1 TO column1_users;
+    ```
 
-```sql
-GRANT column1_users TO column_user;
-```
+##### `column_user`ユーザーを`column1_users`ロールに追加 {#add-column-user-to-role}
 
-4. この役割のユーザーを選択された行、つまり `column1` に `'A'` を含む行のみを見ることができるように制限する役割を作成します
+    ```sql
+    GRANT column1_users TO column_user;
+    ```
 
-```sql
-CREATE ROLE A_rows_users;
-```
+##### 選択された行のみを参照できるようにユーザーを制限するロールの作成(この例では、`column1`に`A`を含む行のみ) {#create-row-role}
 
-5. `row_user` を `A_rows_users` 役割に追加します
+    ```sql
+    CREATE ROLE A_rows_users;
+    ```
 
-```sql
-GRANT A_rows_users TO row_user;
-```
+##### `row_user`を`A_rows_users`ロールに追加 {#add-row-user-to-role}
 
-6. `column1` が `A` の値を持っている場所のみを表示するポリシーを作成します
+    ```sql
+    GRANT A_rows_users TO row_user;
+    ```
 
-```sql
-CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
-```
+##### `column1`の値が`A`である行のみの参照を許可するポリシーの作成 {#create-row-policy}
 
-7. データベースとテーブルに対する権限を設定します
+    ```sql
+    CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users;
+    ```
 
-```sql
-GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
-```
+##### データベースとテーブルへの権限の設定 {#set-db-table-privileges}
 
-8. 他の役割がすべての行にアクセスできるように明示的な権限を付与します
+    ```sql
+    GRANT SELECT(id, column1, column2) ON db1.table1 TO A_rows_users;
+    ```
 
-```sql
-CREATE ROW POLICY allow_other_users_filter 
-ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
-```
+##### 他のロールが引き続き全ての行にアクセスできるように明示的な権限を付与 {#grant-other-roles-access}
+
+    ```sql
+    CREATE ROW POLICY allow_other_users_filter
+    ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
+    ```
+
 
     :::note
-    テーブルにポリシーを添付すると、システムはそのポリシーを適用し、定義されたユーザーと役割のみがテーブルで操作を行うことができます。他のユーザーはすべての操作を拒否されます。他のユーザーや役割に通常または他の種類のアクセスを許可するためには、別のポリシーを定義する必要があります。
+    テーブルにポリシーをアタッチすると、システムはそのポリシーを適用し、定義されたユーザーとロールのみがテーブルに対する操作を実行できるようになります。それ以外のすべてのユーザーは、すべての操作が拒否されます。制限的な行ポリシーを他のユーザーに適用しないようにするには、他のユーザーとロールが通常のアクセスまたは別のタイプのアクセスを持てるように、別のポリシーを定義する必要があります。
     :::
+
+</VerticalStepper>
+
 
 ## 検証 {#verification}
 
-### カラム制限ユーザーでの役割権限のテスト {#testing-role-privileges-with-column-restricted-user}
+### カラム制限ユーザーでのロール権限のテスト {#testing-role-privileges-with-column-restricted-user}
 
-1. `clickhouse_admin` ユーザーを使用して ClickHouse クライアントにログインします
+<VerticalStepper headerLevel="h5">
+
+##### `clickhouse_admin` ユーザーを使用してClickHouseクライアントにログインする {#login-admin-user}
 
 ```bash
 clickhouse-client --user clickhouse_admin --password password
 ```
 
-2. 管理者ユーザーでデータベース、テーブル、すべての行へのアクセスを確認します。
+##### 管理者ユーザーでデータベース、テーブル、およびすべての行へのアクセスを確認する {#verify-admin-access}
 
 ```sql
 SELECT *
@@ -203,13 +210,13 @@ Query id: f5e906ea-10c6-45b0-b649-36334902d31d
 └────┴─────────┴─────────┘
 ```
 
-3. `column_user` ユーザーを使用して ClickHouse クライアントにログインします
+##### `column_user` ユーザーを使用してClickHouseクライアントにログインする {#login-column-user}
 
 ```bash
 clickhouse-client --user column_user --password password
 ```
 
-4. すべてのカラムを使用した `SELECT` をテストします
+##### すべてのカラムを使用した `SELECT` をテストする {#test-select-all-columns}
 
 ```sql
 SELECT *
@@ -222,17 +229,17 @@ Query id: 5576f4eb-7450-435c-a2d6-d6b49b7c4a23
 0 rows in set. Elapsed: 0.006 sec.
 
 Received exception from server (version 22.3.2):
-Code: 497. DB::Exception: Received from localhost:9000. 
-DB::Exception: column_user: Not enough privileges. 
-To execute this query it's necessary to have grant 
+Code: 497. DB::Exception: Received from localhost:9000.
+DB::Exception: column_user: Not enough privileges.
+To execute this query it's necessary to have grant
 SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
 ```
 
-   :::note
-   すべてのカラムが指定されたため、アクセスが拒否され、ユーザーは `id` と `column1` のみにアクセスできます。
-   :::
+:::note
+すべてのカラムが指定されており、ユーザーは `id` と `column1` のみにアクセス権を持つため、アクセスが拒否されます
+:::
 
-5. 指定されたカラムのみを使用した `SELECT` クエリを検証します:
+##### 許可されたカラムのみを指定した `SELECT` クエリを確認する {#verify-allowed-columns}
 
 ```sql
 SELECT
@@ -252,15 +259,19 @@ Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 └────┴─────────┘
 ```
 
-### 行制限ユーザーでの役割権限のテスト {#testing-role-privileges-with-row-restricted-user}
+</VerticalStepper>
 
-1. `row_user` を使用して ClickHouse クライアントにログインします
+### 行制限ユーザーでのロール権限のテスト {#testing-role-privileges-with-row-restricted-user}
+
+<VerticalStepper headerLevel="h5">
+
+##### `row_user` を使用してClickHouseクライアントにログインする {#login-row-user}
 
 ```bash
 clickhouse-client --user row_user --password password
 ```
 
-2. 利用可能な行を表示します
+##### 利用可能な行を表示する {#view-available-rows}
 
 ```sql
 SELECT *
@@ -276,41 +287,46 @@ Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
 └────┴─────────┴─────────┘
 ```
 
-   :::note
-   上記の2行のみが返されることを確認します。`column1` に値 `B` の行は除外されるべきです。
-   :::
+:::note
+上記の2行のみが返されることを確認してください。`column1` に値 `B` を持つ行は除外されます。
+:::
 
-## ユーザーと役割の修正 {#modifying-users-and-roles}
+</VerticalStepper>
 
-ユーザーには必要な権限の組み合わせのために複数の役割を割り当てることができます。複数の役割を使用する場合、システムは役割を組み合わせて権限を決定します。その結果、役割の権限は累積されます。
 
-たとえば、`role1` が `column1` のみを選択することを許可し、`role2` が `column1` と `column2` の選択を許可する場合、ユーザーは両方のカラムにアクセスできます。
+## ユーザーとロールの変更 {#modifying-users-and-roles}
 
-1. 管理者アカウントを使用して、デフォルトの役割で行とカラムの両方で制限された新しいユーザーを作成します
+ユーザーには、必要な権限の組み合わせとして複数のロールを割り当てることができます。複数のロールを使用する場合、システムはロールを組み合わせて権限を決定し、ロールの権限は累積的に適用されます。
+
+例えば、`role1`が`column1`のみのSELECTを許可し、`role2`が`column1`と`column2`のSELECTを許可する場合、ユーザーは両方の列にアクセスできます。
+
+<VerticalStepper headerLevel="h5">
+
+##### 管理者アカウントを使用して、デフォルトロールで行と列の両方を制限する新しいユーザーを作成 {#create-restricted-user}
 
 ```sql
 CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
 ```
 
-2. `A_rows_users` 役割の以前の権限を削除します
+##### `A_rows_users`ロールの既存の権限を削除 {#remove-prior-privileges}
 
 ```sql
 REVOKE SELECT(id, column1, column2) ON db1.table1 FROM A_rows_users;
 ```
 
-3. `A_row_users` 役割が `column1` からのみ選択できるようにします
+##### `A_row_users`ロールに`column1`のみのSELECTを許可 {#allow-column1-select}
 
 ```sql
 GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
 ```
 
-4. `row_and_column_user` を使用して ClickHouse クライアントにログインします
+##### `row_and_column_user`を使用してClickHouseクライアントにログイン {#login-restricted-user}
 
 ```bash
 clickhouse-client --user row_and_column_user --password password;
 ```
 
-5. すべてのカラムでテストします:
+##### すべての列でテスト: {#test-all-columns-restricted}
 
 ```sql
 SELECT *
@@ -322,14 +338,14 @@ Query id: 8cdf0ff5-e711-4cbe-bd28-3c02e52e8bc4
 
 0 rows in set. Elapsed: 0.005 sec.
 
-Received exception from server (version 22.3.2):
-Code: 497. DB::Exception: Received from localhost:9000. 
-DB::Exception: row_and_column_user: Not enough privileges. 
-To execute this query it's necessary to have grant 
-SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
+サーバーから例外を受信しました (version 22.3.2):
+Code: 497. DB::Exception: Received from localhost:9000.
+DB::Exception: row_and_column_user: 権限が不足しています。
+このクエリを実行するには、
+SELECT(id, column1, column2) ON db1.table1 の権限が必要です。(ACCESS_DENIED)
 ```
 
-6. 限定された許可されたカラムでテストします:
+##### 許可された列のみでテスト: {#test-limited-columns}
 
 ```sql
 SELECT
@@ -347,11 +363,14 @@ Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
 └────┴─────────┘
 ```
 
+</VerticalStepper>
+
+
 ## トラブルシューティング {#troubleshooting}
 
-権限が交差または結合して予期しない結果を引き起こす場合があるため、以下のコマンドを管理者アカウントを使用して問題を絞り込むために使用できます。
+権限が交差または組み合わさることで予期しない結果が生じる場合があります。以下のコマンドを管理者アカウントで使用することで、問題を絞り込むことができます。
 
-### ユーザーの付与と役割の一覧 {#listing-the-grants-and-roles-for-a-user}
+### ユーザーの権限とロールの一覧表示 {#listing-the-grants-and-roles-for-a-user}
 
 ```sql
 SHOW GRANTS FOR row_and_column_user
@@ -365,7 +384,7 @@ Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 └──────────────────────────────────────────────────────────┘
 ```
 
-### ClickHouse の役割を一覧表示 {#list-roles-in-clickhouse}
+### ClickHouseのロール一覧 {#list-roles-in-clickhouse}
 
 ```sql
 SHOW ROLES
@@ -380,7 +399,7 @@ Query id: 1e21440a-18d9-4e75-8f0e-66ec9b36470a
 └─────────────────┘
 ```
 
-### ポリシーを表示する {#display-the-policies}
+### ポリシーの表示 {#display-the-policies}
 
 ```sql
 SHOW ROW POLICIES
@@ -395,7 +414,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### ポリシーがどのように定義されているかと現在の権限を表示 {#view-how-a-policy-was-defined-and-current-privileges}
+### ポリシーの定義内容と現在の権限の確認 {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -409,21 +428,22 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 役割、ポリシー、ユーザーを管理するための例コマンド {#example-commands-to-manage-roles-policies-and-users}
 
-以下のコマンドを使用できます:
+## ロール、ポリシー、ユーザーを管理するコマンド例 {#example-commands-to-manage-roles-policies-and-users}
 
-- 権限を削除する
-- ポリシーを削除する
-- ユーザーを役割から割り当て解除する
-- ユーザーと役割を削除する
+以下のコマンドを使用して次の操作を実行できます:
+
+- 権限の削除
+- ポリシーの削除
+- ロールからのユーザー割り当て解除
+- ユーザーとロールの削除
   <br />
 
 :::tip
-これらのコマンドは管理者ユーザーまたは `default` ユーザーとして実行してください
+これらのコマンドは管理者ユーザーまたは `default` ユーザーで実行してください
 :::
 
-### 役割から権限を削除する {#remove-privilege-from-a-role}
+### ロールから権限を削除する {#remove-privilege-from-a-role}
 
 ```sql
 REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
@@ -435,13 +455,13 @@ REVOKE SELECT(column1, id) ON db1.table1 FROM A_rows_users;
 DROP ROW POLICY A_row_filter ON db1.table1;
 ```
 
-### ユーザーの役割からの割り当て解除 {#unassign-a-user-from-a-role}
+### ロールからユーザーの割り当てを解除する {#unassign-a-user-from-a-role}
 
 ```sql
 REVOKE A_rows_users FROM row_user;
 ```
 
-### 役割を削除する {#delete-a-role}
+### ロールを削除する {#delete-a-role}
 
 ```sql
 DROP ROLE A_rows_users;
@@ -453,6 +473,7 @@ DROP ROLE A_rows_users;
 DROP USER row_user;
 ```
 
+
 ## まとめ {#summary}
 
-この記事では、SQL ユーザーと役割を作成する基本を示し、ユーザーと役割の権限を設定および修正する手順を提供しました。各項目についての詳細情報は、ユーザーガイドとリファレンスドキュメントを参照してください。
+本記事では、SQLユーザーとロールの作成の基本について説明し、ユーザーとロールに対する権限の設定および変更手順を示しました。各項目の詳細については、ユーザーガイドおよびリファレンスドキュメントを参照してください。

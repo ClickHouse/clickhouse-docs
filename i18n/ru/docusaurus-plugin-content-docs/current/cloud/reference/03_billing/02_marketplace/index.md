@@ -1,21 +1,19 @@
 ---
-'slug': '/cloud/manage/marketplace/'
-'title': 'Marketplace'
-'description': 'Страница оглавления Marketplace'
-'keywords':
-- 'Marketplace Billing'
-- 'AWS'
-- 'GCP'
-'doc_type': 'landing-page'
+slug: /cloud/manage/marketplace/
+title: 'Marketplace'
+description: 'Оглавление раздела Marketplace'
+keywords: ['Marketplace Billing', 'AWS', 'GCP']
+doc_type: 'landing-page'
 ---
-Этот раздел описывает темы, связанные с выставлением счетов для Marketplace.
 
-| Страница                                                                                                             | Описание                                                                                                                                                                                                                                     |
-|---------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Выставление счетов в Marketplace](/cloud/marketplace/marketplace-billing)                                       | Часто задаваемые вопросы по выставлению счетов в Marketplace.                                                                                                                                                                            |
-| [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)                                         | Начните работу с ClickHouse Cloud на AWS Marketplace через PAYG (оплата по мере использования) Публичное предложение.                                                                                                                         |
-| [AWS Marketplace Коммированный контракт](/cloud/billing/marketplace/aws-marketplace-committed-contract)          | Начните работу с ClickHouse Cloud на AWS Marketplace через коммированный контракт. Коммированный контракт, также известный как Частное предложение, позволяет клиентам обязаться тратить определённую сумму на ClickHouse Cloud в течение времени.   |
-| [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)                                         | Начните работу с ClickHouse Cloud на GCP Marketplace через PAYG (оплата по мере использования) Публичное предложение.                                                                                                                         |
-| [GCP Marketplace Коммированный контракт](/cloud/billing/marketplace/gcp-marketplace-committed-contract)          | Начните работу с ClickHouse Cloud на GCP Marketplace через коммированный контракт. Коммированный контракт, также известный как Частное предложение, позволяет клиентам обязаться тратить определённую сумму на ClickHouse Cloud в течение времени.   |
-| [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)                                     | Начните работу с ClickHouse Cloud на Azure Marketplace через PAYG (оплата по мере использования) Публичное предложение.                                                                                                                      |
-| [Azure Marketplace Коммированный контракт](/cloud/billing/marketplace/azure-marketplace-committed-contract)      | Начните работу с ClickHouse Cloud на Azure Marketplace через коммированный контракт. Коммированный контракт, также известный как Частное предложение, позволяет клиентам обязаться тратить определённую сумму на ClickHouse Cloud в течение времени. |
+В этом разделе рассматриваются вопросы, связанные с выставлением счетов в Marketplace.
+
+| Page                                                                                                                | Description                                                                                                                                                                                                                                    |
+|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Marketplace Billing](/cloud/marketplace/marketplace-billing)                                               | Ответы на часто задаваемые вопросы по выставлению счетов в Marketplace.                                                                                                                                                                       |
+| [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)                                     | Как начать работу с ClickHouse Cloud в AWS Marketplace с использованием публичного предложения PAYG (Pay-as-you-go).                                                                                                                          |
+| [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)         | Как начать работу с ClickHouse Cloud в AWS Marketplace по договору с обязательствами (committed contract). Такой договор, также известный как Private Offer, позволяет клиентам взять обязательство потратить определённую сумму на ClickHouse Cloud за определённый период времени.   |
+| [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)                                     | Как начать работу с ClickHouse Cloud в GCP Marketplace с использованием публичного предложения PAYG (Pay-as-you-go).                                                                                                                          |
+| [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)         | Как начать работу с ClickHouse Cloud в GCP Marketplace по договору с обязательствами (committed contract). Такой договор, также известный как Private Offer, позволяет клиентам взять обязательство потратить определённую сумму на ClickHouse Cloud за определённый период времени.   |
+| [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)                                 | Как начать работу с ClickHouse Cloud в Azure Marketplace с использованием публичного предложения PAYG (Pay-as-you-go).                                                                                                                        |
+| [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)     | Как начать работу с ClickHouse Cloud в Azure Marketplace по договору с обязательствами (committed contract). Такой договор, также известный как Private Offer, позволяет клиентам взять обязательство потратить определённую сумму на ClickHouse Cloud за определённый период времени. |

@@ -1,36 +1,38 @@
 ---
-slug: '/getting-started/example-datasets/stackoverflow'
+description: 'Анализ данных Stack Overflow в ClickHouse'
 sidebar_label: 'Stack Overflow'
-sidebar_position: 1
-description: 'Анализ данных Stack Overflow с помощью ClickHouse'
-title: 'Анализ данных Stack Overflow с помощью ClickHouse'
-doc_type: reference
+slug: /getting-started/example-datasets/stackoverflow
+title: 'Анализ данных Stack Overflow в ClickHouse'
+keywords: ['StackOverflow']
 show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
-Этот набор данных содержит все `Posts`, `Users`, `Votes`, `Comments`, `Badges`, `PostHistory` и `PostLinks`, которые когда-либо происходили на Stack Overflow.
+Этот набор данных содержит все `Posts`, `Users`, `Votes`, `Comments`, `Badges`, `PostHistory` и `PostLinks`, которые когда-либо появлялись на Stack Overflow.
 
-Пользователи могут либо загрузить заранее подготовленные версии данных в формате Parquet, содержащие каждое сообщение до апреля 2024 года, либо загрузить последние данные в формате XML и загрузить их. Stack Overflow периодически предоставляет обновления этих данных - исторически каждые 3 месяца.
+Пользователи могут либо скачать заранее подготовленные версии данных в формате Parquet, содержащие все сообщения по апрель 2024 года включительно, либо скачать последние данные в формате XML и загрузить их. Stack Overflow периодически публикует обновления этих данных — исторически каждые 3 месяца.
 
-Следующая диаграмма показывает схему доступных таблиц в формате Parquet.
+На следующей диаграмме показана схема доступных таблиц в формате Parquet.
 
-<Image img={stackoverflow} alt="Схема Stack Overflow" size="md"/>
+<Image img={stackoverflow} alt="Схема Stack Overflow" size="md" />
 
 Описание схемы этих данных можно найти [здесь](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede).
 
+
 ## Предварительно подготовленные данные {#pre-prepared-data}
 
-Мы предоставляем копию этих данных в формате Parquet, актуальную на апрель 2024 года. Хотя для ClickHouse это небольшие данные с точки зрения количества строк (60 миллионов сообщений), этот набор данных содержит значительные объемы текста и большие строковые колонки.
+Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Хотя для ClickHouse этот набор данных небольшой по количеству строк (60 миллионов постов), он содержит значительные объемы текста и большие столбцы типа String.
 
 ```sql
 CREATE DATABASE stackoverflow
 ```
 
-Следующие временные показатели относятся к кластеру ClickHouse Cloud с 24 vCPU и 96 GiB, расположенного в `eu-west-2`. Набор данных находится в `eu-west-3`.
+Приведенные ниже показатели времени выполнения получены на кластере ClickHouse Cloud с 96 ГиБ памяти и 24 vCPU, расположенном в регионе `eu-west-2`. Набор данных находится в регионе `eu-west-3`.
 
-### Сообщения {#posts}
+### Посты {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -67,7 +69,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 265.466 sec. Processed 59.82 million rows, 38.07 GB (225.34 thousand rows/s., 143.42 MB/s.)
 ```
 
-Сообщения также доступны по годам, например, [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
+Посты также доступны по годам, например: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 ### Голоса {#votes}
 
@@ -89,7 +91,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
-Голоса также доступны по годам, например, [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+Голоса также доступны по годам, например: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 ### Комментарии {#comments}
 
@@ -112,7 +114,8 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
-Комментарии также доступны по годам, например, [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
+
+Комментарии также доступны по годам, например: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 ### Пользователи {#users}
 
@@ -160,7 +163,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### Связи сообщений {#postlinks}
+### Связи между постами {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -179,7 +182,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### История сообщений {#posthistory}
+### История постов {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -203,11 +206,12 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-## Оригинальный набор данных {#original-dataset}
 
-Оригинальный набор данных доступен в сжатом (7zip) формате XML по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) - файлы с префиксом `stackoverflow.com*`.
+## Исходный набор данных {#original-dataset}
 
-### Загрузка {#download}
+Исходный набор данных доступен в сжатом формате XML (7zip) по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) — файлы с префиксом `stackoverflow.com*`.
+
+### Скачивание {#download}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -219,13 +223,13 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-Эти файлы занимают до 35 ГБ и могут загружаться около 30 минут в зависимости от скорости интернет-соединения - сервер загрузки ограничивает скорость до примерно 20 МБ/с.
+Размер этих файлов достигает 35 ГБ, и их скачивание может занять около 30 минут в зависимости от скорости интернет-соединения — сервер ограничивает скорость загрузки примерно до 20 МБ/сек.
 
-### Конвертация в JSON {#convert-to-json}
+### Преобразование в JSON {#convert-to-json}
 
-На момент написания ClickHouse не поддерживает XML в качестве входного формата. Чтобы загрузить данные в ClickHouse, мы сначала конвертируем их в NDJSON.
+На момент написания ClickHouse не имеет встроенной поддержки XML в качестве входного формата. Для загрузки данных в ClickHouse их необходимо сначала преобразовать в NDJSON.
 
-Для конвертации XML в JSON мы рекомендуем инструментарий [`xq`](https://github.com/kislyuk/yq) для Linux, простой оберткой `jq` для XML-документов.
+Для преобразования XML в JSON рекомендуется использовать инструмент [`xq`](https://github.com/kislyuk/yq) для Linux — простую обёртку `jq` для работы с XML-документами.
 
 Установите xq и jq:
 
@@ -234,27 +238,27 @@ sudo apt install jq
 pip install yq
 ```
 
-Следующие шаги применимы ко всем вышеупомянутым файлам. Мы используем файл `stackoverflow.com-Posts.7z` в качестве примера. Измените его по мере необходимости.
+Следующие шаги применимы к любому из перечисленных выше файлов. В качестве примера используется файл `stackoverflow.com-Posts.7z`. При необходимости внесите изменения.
 
-Извлеките файл с помощью [p7zip](https://p7zip.sourceforge.net/). Это создаст единственный xml файл - в этом случае `Posts.xml`.
+Распакуйте файл с помощью [p7zip](https://p7zip.sourceforge.net/). В результате будет создан один XML-файл — в данном случае `Posts.xml`.
 
-> Файлы сжимаются примерно в 4.5 раз. При сжатии 22 ГБ файл сообщений требует около 97 ГБ в разжатом виде.
+> Файлы сжаты примерно в 4,5 раза. При размере 22 ГБ в сжатом виде файл с постами требует около 97 ГБ в распакованном виде.
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-Следующая команда разделяет xml файл на файлы, каждый из которых содержит 10000 строк.
+Следующая команда разделяет XML-файл на несколько файлов, каждый из которых содержит 10 000 строк.
+
 
 ```bash
 mkdir posts
 cd posts
-
-# the following splits the input xml file into sub files of 10000 rows
+# следующая команда разбивает входной xml-файл на подфайлы по 10000 строк
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-После выполнения вышеуказанных команд у вас будет набор файлов, каждый из которых содержит 10000 строк. Это обеспечивает ненагрузку памяти для следующей команды (конвертация XML в JSON выполняется в памяти).
+После выполнения приведённой выше команды у пользователей будет набор файлов, каждый из 10 000 строк. Это гарантирует, что накладные расходы по памяти для следующей команды не будут чрезмерными (преобразование XML в JSON выполняется в памяти).
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
@@ -262,15 +266,16 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 
 Вышеуказанная команда создаст один файл `posts.json`.
 
-Загрузите его в ClickHouse с помощью следующей команды. Обратите внимание, что схема указана для файла `posts.json`. Это необходимо будет скорректировать в соответствии с типом данных для выравнивания с целевой таблицей.
+Загрузите данные в ClickHouse следующей командой. Обратите внимание, что схема задана для файла `posts.json`. Её необходимо скорректировать с учётом типов данных, чтобы она соответствовала целевой таблице.
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
+
 ## Примеры запросов {#example-queries}
 
-Несколько простых вопросов, чтобы начать.
+Несколько простых запросов для начала.
 
 ### Самые популярные теги на Stack Overflow {#most-popular-tags-on-stack-overflow}
 
@@ -297,13 +302,13 @@ LIMIT 10
 │ css        │  803755 │
 └────────────┴─────────┘
 
-10 rows in set. Elapsed: 1.013 sec. Processed 59.82 million rows, 1.21 GB (59.07 million rows/s., 1.19 GB/s.)
-Peak memory usage: 224.03 MiB.
+10 строк в наборе. Время выполнения: 1.013 сек. Обработано 59.82 млн строк, 1.21 ГБ (59.07 млн строк/с, 1.19 ГБ/с).
+Пиковое потребление памяти: 224.03 Миб.
 ```
 
 ### Пользователь с наибольшим количеством ответов (активные аккаунты) {#user-with-the-most-answers-active-accounts}
 
-Аккаунт требует `UserId`.
+У аккаунта должен быть указан `UserId`.
 
 ```sql
 SELECT
@@ -323,11 +328,11 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
-Peak memory usage: 206.45 MiB.
+5 строк в наборе. Время выполнения: 0.154 сек. Обработано 35.83 млн строк, 193.39 МБ (232.33 млн строк/с, 1.25 ГБ/с).
+Пиковое потребление памяти: 206.45 Миб.
 ```
 
-### Сообщения, связанные с ClickHouse, с наибольшим количеством просмотров {#clickhouse-related-posts-with-the-most-views}
+### Самые просматриваемые сообщения, связанные с ClickHouse {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -353,11 +358,12 @@ LIMIT 10
 │ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
-Peak memory usage: 240.01 MiB.
+10 строк в наборе. Время выполнения: 0.472 сек. Обработано 59.82 млн строк, 1.91 ГБ (126.63 млн строк/с, 4.03 ГБ/с).
+Пиковое потребление памяти: 240.01 Миб.
 ```
 
-### Самые спорные сообщения {#most-controversial-posts}
+
+### Самые спорные публикации {#most-controversial-posts}
 
 ```sql
 SELECT
@@ -391,6 +397,7 @@ LIMIT 3
 Peak memory usage: 6.05 GiB.
 ```
 
-## Атрибуция {#attribution}
 
-Мы благодарим Stack Overflow за предоставление этих данных под лицензией `cc-by-sa 4.0`, признавая их усилия и оригинальный источник данных по адресу [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange).
+## Благодарности {#attribution}
+
+Мы благодарим Stack Overflow за предоставление этих данных по лицензии `cc-by-sa 4.0` и признаём их вклад. Исходные данные доступны по адресу [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange).

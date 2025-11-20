@@ -1,14 +1,10 @@
 ---
-'description': '安装 ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'install'
-- 'getting started'
-- 'quick start'
-'sidebar_label': '安装'
-'slug': '/install'
-'title': '安装 ClickHouse'
-'doc_type': 'guide'
+description: "安装 ClickHouse"
+keywords: ['clickhouse', 'install', 'getting started', 'quick start']
+sidebar_label: '安装'
+slug: /install
+title: "安装 ClickHouse"
+doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
@@ -23,13 +19,13 @@ import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 
-# 安装说明
+# 安装指南
 
 <CardPrimary
     alignContent="center"
-    description="立即开始构建，无需调整和扩展您的集群。我们负责大小调整、安全性、可靠性和升级。"
+    description="立即开始构建，而无需为集群容量和扩展操心。我们会为你处理容量规划、弹性伸缩、安全性、可靠性以及升级。"
     icon="cloud"
-    infoText="免费开始"
+    infoText="免费开始使用"
     infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
     isSelected
     onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
@@ -37,9 +33,10 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
     title="ClickHouse Cloud"
     topBadgeText="推荐"
 />
+
 <br/>
 
-或者，选择以下平台、发行版和安装方法，以查看 Opensource ClickHouse 的安装说明：
+或者，在下方选择平台、发行版和安装方式，以查看开源版 ClickHouse 的安装说明：
 
 <InstallSelector
     windows={<Windows/>}

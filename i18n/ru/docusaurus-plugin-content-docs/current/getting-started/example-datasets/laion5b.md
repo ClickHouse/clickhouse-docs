@@ -1,41 +1,40 @@
 ---
-'description': 'Набор данных содержит 100 миллионов векторов из набора данных LAION
-  5B'
-'sidebar_label': 'Набор данных LAION 5B'
-'slug': '/getting-started/example-datasets/laion-5b-dataset'
-'title': 'Набор данных LAION 5B'
-'keywords':
-- 'semantic search'
-- 'vector similarity'
-- 'approximate nearest neighbours'
-- 'embeddings'
-'doc_type': 'reference'
+description: 'Набор данных, содержащий 100 миллионов векторов из LAION 5B'
+sidebar_label: 'Набор данных LAION 5B'
+slug: /getting-started/example-datasets/laion-5b-dataset
+title: 'Набор данных LAION 5B'
+keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
+doc_type: 'guide'
 ---
+
 import search_results_image from '@site/static/images/getting-started/example-datasets/laion5b_visualization_1.png'
 import Image from '@theme/IdealImage';
 
+
 ## Введение {#introduction}
 
-Набор данных [LAION 5b](https://laion.ai/blog/laion-5b/) содержит 5.85 миллиарда векторов изображений и текста и связанную с ними метаинформацию об изображениях. Векторы были сгенерированы с использованием модели `Open AI CLIP` [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14). Размерность каждого вектора составляет `768`.
+[Датасет LAION 5b](https://laion.ai/blog/laion-5b/) содержит 5,85 миллиарда эмбеддингов изображений и текста, а также связанные метаданные изображений. Эмбеддинги были сгенерированы с использованием модели `Open AI CLIP` [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14). Размерность каждого вектора эмбеддинга составляет `768`.
 
-Этот набор данных можно использовать для моделирования проектирования, масштабирования и производительности для крупномасштабного, реального приложения векторного поиска. Набор данных может использоваться как для поиска по тексту, так и для поиска по изображениям.
+Этот датасет можно использовать для моделирования архитектуры, определения размеров и оценки производительности крупномасштабного приложения векторного поиска в реальных условиях. Датасет подходит как для поиска изображений по тексту, так и для поиска изображений по изображениям.
 
-## Подробности о наборе данных {#dataset-details}
 
-Полный набор данных доступен в виде смеси файлов `npy` и `Parquet` на [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/).
+## Детали набора данных {#dataset-details}
 
-ClickHouse предоставил подмножество из 100 миллионов векторов в корзине `S3`.
-Корзина `S3` содержит 10 файлов `Parquet`, каждый из которых заполнен 10 миллионами строк.
+Полный набор данных доступен в виде файлов `npy` и `Parquet` на [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)
 
-Рекомендуем пользователям сначала провести оценку размера, чтобы оценить требования к хранилищу и памяти для этого набора данных, обратившись к [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+ClickHouse предоставил подмножество из 100 миллионов векторов в бакете `S3`.
+Бакет `S3` содержит 10 файлов `Parquet`, каждый из которых содержит 10 миллионов строк.
+
+Рекомендуется сначала провести оценку размеров для определения требований к хранилищу и памяти для этого набора данных, обратившись к [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+
 
 ## Шаги {#steps}
 
 <VerticalStepper headerLevel="h3">
 
-### Создать таблицу {#create-table}
+### Создание таблицы {#create-table}
 
-Создайте таблицу `laion_5b_100m` для хранения векторов и связанных с ними атрибутов:
+Создайте таблицу `laion_5b_100m` для хранения эмбеддингов и связанных с ними атрибутов:
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -59,10 +58,10 @@ CREATE TABLE laion_5b_100m
 ) ENGINE = MergeTree ORDER BY (id)
 ```
 
-`id` — это просто возрастающее целое число. Дополнительные атрибуты могут использоваться в предикатах для понимания
-поиска по сходству векторов в сочетании с постфильтрацией/предфильтрацией, как объяснено в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
+`id` — это просто инкрементное целое число. Дополнительные атрибуты можно использовать в предикатах для реализации
+векторного поиска по сходству в сочетании с пост-фильтрацией/пре-фильтрацией, как описано в [документации](../../engines/table-engines/mergetree-family/annindexes.md)
 
-### Загрузить данные {#load-table}
+### Загрузка данных {#load-table}
 
 Чтобы загрузить набор данных из всех файлов `Parquet`, выполните следующий SQL-запрос:
 
@@ -72,7 +71,7 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 
 Загрузка 100 миллионов строк в таблицу займет несколько минут.
 
-В качестве альтернативы, можно выполнить отдельные SQL-запросы для загрузки конкретного числа файлов/строк.
+Также можно выполнить отдельные SQL-запросы для загрузки определенного количества файлов/строк.
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -80,21 +79,24 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 ⋮
 ```
 
-### Выполнить поиск по сходству векторов методом грубой силы {#run-a-brute-force-vector-similarity-search}
+### Выполнение векторного поиска по сходству методом полного перебора {#run-a-brute-force-vector-similarity-search}
 
-Поиск KNN (k - ближайшие соседи) или поиск методом грубой силы включает в себя расчет расстояния каждого вектора в наборе данных до поискового вектора и затем упорядочивание расстояний для получения ближайших соседей. Мы можем использовать один из векторов из самого набора данных в качестве поискового вектора. Например:
+Поиск KNN (k ближайших соседей) или поиск методом полного перебора включает вычисление расстояния от каждого вектора в наборе данных
+до поискового вектора эмбеддинга с последующей сортировкой расстояний для получения ближайших соседей. В качестве поискового вектора
+можно использовать один из векторов самого набора данных. Например:
 
-```sql title="Query"
-SELECT id, url 
+```sql title="Запрос"
+SELECT id, url
 FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
-The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
+Вектор в строке с id = 9999 является эмбеддингом изображения ресторана-деликатеса.
 ```
 
+
 ```response title="Response"
-    ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
  1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
  2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
  3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
@@ -116,53 +118,56 @@ The vector in the row with id = 9999 is the embedding for an image of a Deli res
 19. │ 57525607 │ https://knoji.com/images/logo/mcalistersdelicom.jpg                                                                                                                                                                               │
 20. │ 15785896 │ https://www.groupnimb.com/mimg/merimg/mcalister-s-deli_1446088739.jpg                                                                                                                                                             │
     └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-#highlight-next-line
-20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
 ```
 
-Обратите внимание на задержку запроса, чтобы мы могли сравнить её с задержкой запроса ANN (с использованием векторного индекса).
-При 100 миллионах строк вышеуказанный запрос без векторного индекса может занять несколько секунд/минут.
+#highlight-next-line
+20 строк в наборе. Затрачено: 3.968 сек. Обработано 100.38 млн строк, 320.81 ГБ (25.30 млн строк/с., 80.84 ГБ/с.)
 
-### Создать индекс сходства векторов {#build-vector-similarity-index}
+````
 
-Запустите следующий SQL, чтобы определить и создать индекс сходства векторов в колонке `vector` таблицы `laion_5b_100m`:
+Запишите задержку выполнения запроса, чтобы сравнить её с задержкой запроса ANN (с использованием векторного индекса).
+При 100 миллионах строк приведённый выше запрос без векторного индекса может выполняться от нескольких секунд до нескольких минут.
+
+### Построение индекса векторного сходства {#build-vector-similarity-index}
+
+Выполните следующий SQL-запрос для определения и построения индекса векторного сходства для столбца `vector` таблицы `laion_5b_100m`:
 
 ```sql
 ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
 
 ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
-```
+````
 
 Параметры и соображения производительности для создания индекса и поиска описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
-В приведенном выше операторе используются значения 64 и 512 соответственно для гиперпараметров HNSW `M` и `ef_construction`.
-Пользователям необходимо внимательно подбирать оптимальные значения для этих параметров, оценивая время создания индекса и качество результатов поиска в соответствии с выбранными значениями.
+Приведённая выше инструкция использует значения 64 и 512 соответственно для гиперпараметров HNSW `M` и `ef_construction`.
+Пользователям необходимо тщательно подбирать оптимальные значения для этих параметров, оценивая время построения индекса и качество результатов поиска
+для выбранных значений.
 
-Создание и сохранение индекса может занять несколько часов для полного набора данных в 100 миллионов, в зависимости от количества доступных ядер CPU и пропускной способности хранилища.
+Построение и сохранение индекса для полного набора данных из 100 миллионов записей может занять несколько часов в зависимости от количества доступных ядер процессора и пропускной способности хранилища.
 
-### Выполнить поиск ANN {#perform-ann-search}
+### Выполнение ANN-поиска {#perform-ann-search}
 
-Как только индекс сходства векторов был построен, запросы векторного поиска будут автоматически использовать индекс:
+После построения индекса векторного сходства запросы векторного поиска будут автоматически использовать индекс:
 
 ```sql title="Query"
-SELECT id, url 
+SELECT id, url
 FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
 ```
 
-Первоначальная загрузка векторного индекса в память может занять несколько секунд/минут.
+Первоначальная загрузка векторного индекса в память может занять от нескольких секунд до нескольких минут.
 
-### Генерировать векторы для поискового запроса {#generating-embeddings-for-search-query}
+### Генерация эмбеддингов для поискового запроса {#generating-embeddings-for-search-query}
 
 Векторы эмбеддингов набора данных `LAION 5b` были сгенерированы с использованием модели `OpenAI CLIP` `ViT-L/14`.
 
-Пример скрипта на Python представлен ниже, чтобы продемонстрировать, как программно сгенерировать
-векторы эмбеддингов с использованием API `CLIP`. Вектор поискового эмбеддинга
-затем передается в качестве аргумента функции [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) в запросе `SELECT`.
+Ниже приведён пример скрипта на Python, демонстрирующий программную генерацию
+векторов эмбеддингов с использованием API `CLIP`. Вектор эмбеддинга для поиска
+затем передаётся в качестве аргумента функции [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) в запросе `SELECT`.
 
-Чтобы установить пакет `clip`, пожалуйста, обратитесь к [репозиторию OpenAI на GitHub](https://github.com/openai/clip).
+Для установки пакета `clip` обратитесь к [репозиторию OpenAI на GitHub](https://github.com/openai/clip).
 
 ```python
 import torch
@@ -174,30 +179,35 @@ import clickhouse_connect
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-L/14", device=device)
 
+```
 
-# Search for images that contain both a dog and a cat
+
+# Поиск изображений с собакой и кошкой
+
 text = clip.tokenize(["a dog and a cat"]).to(device)
 
 with torch.no_grad():
-    text_features = model.encode_text(text)
-    np_arr = text_features.detach().cpu().numpy()
+text_features = model.encode_text(text)
+np_arr = text_features.detach().cpu().numpy()
 
-    # Pass ClickHouse credentials here
+    # Укажите здесь учетные данные ClickHouse
     chclient = clickhouse_connect.get_client()
 
     params = {'v1': list(np_arr[0])}
     result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
                             parameters=params)
 
-    # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
+    # Запись результатов в простую HTML-страницу для открытия в браузере. Некоторые URL могут быть устаревшими.
     print("<html>")
     for r in result.result_rows:
         print("<img src = ", r[1], 'width="200" height="200">')
     print("</html>")
+
 ```
 
-Результат вышеуказанного поиска показан ниже:
+Результат поиска показан ниже:
 
-<Image img={search_results_image} alt="Результаты поиска по сходству векторов" size="md"/>
+<Image img={search_results_image} alt="Результаты векторного поиска по сходству" size="md"/>
 
 </VerticalStepper>
+```

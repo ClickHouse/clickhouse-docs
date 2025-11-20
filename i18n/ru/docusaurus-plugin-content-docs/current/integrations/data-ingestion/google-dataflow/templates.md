@@ -1,11 +1,13 @@
 ---
-slug: '/integrations/google-dataflow/templates'
-sidebar_label: Шаблоны
+sidebar_label: 'Шаблоны'
+slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: 'пользователи могут принимать данные в ClickHouse с помощью Шаблонов'
+description: 'Пользователи могут загружать данные в ClickHouse с помощью шаблонов Google Dataflow'
 title: 'Шаблоны Google Dataflow'
-doc_type: guide
+doc_type: 'guide'
+keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']
 ---
+
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
@@ -13,19 +15,25 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Шаблоны Google Dataflow предоставляют удобный способ выполнения предустановленных, готовых к использованию конвейеров данных без необходимости написания пользовательского кода. Эти шаблоны разработаны для упрощения распространённых задач обработки данных и созданы с использованием [Apache Beam](https://beam.apache.org/), используя коннекторы, такие как `ClickHouseIO`, для бесшовной интеграции с базами данных ClickHouse. Запуская эти шаблоны на Google Dataflow, вы можете достичь высокомасштабируемой, распределённой обработки данных с минимальными усилиями.
+Шаблоны Google Dataflow предоставляют удобный способ запуска готовых конвейеров обработки данных без необходимости писать собственный код. Эти шаблоны разработаны для упрощения типовых задач обработки данных и построены на базе [Apache Beam](https://beam.apache.org/), используя такие коннекторы, как `ClickHouseIO`, для бесшовной интеграции с базами данных ClickHouse. Запуская эти шаблоны в Google Dataflow, вы можете выполнять высокомасштабируемую, распределённую обработку данных при минимальных усилиях.
+
+
 
 ## Зачем использовать шаблоны Dataflow? {#why-use-dataflow-templates}
 
-- **Простота использования**: Шаблоны устраняют необходимость кодирования, предлагая преднастроенные конвейеры, адаптированные к конкретным случаям использования.
-- **Масштабируемость**: Dataflow обеспечивает эффективное масштабирование вашего конвейера, обрабатывая большие объёмы данных с помощью распределённой обработки.
-- **Экономия средств**: Платите только за ресурсы, которые вы используете, с возможностью оптимизации затрат на выполнение конвейера.
+- **Простота использования**: Шаблоны избавляют от необходимости писать код, предоставляя готовые конвейеры, настроенные под конкретные задачи.
+- **Масштабируемость**: Dataflow обеспечивает эффективное масштабирование конвейера, обрабатывая большие объемы данных с помощью распределенной обработки.
+- **Экономическая эффективность**: Оплата только за фактически потребленные ресурсы с возможностью оптимизации затрат на выполнение конвейера.
+
 
 ## Как запустить шаблоны Dataflow {#how-to-run-dataflow-templates}
 
-На сегодняшний день официальный шаблон ClickHouse доступен через Google Cloud Console, CLI или Dataflow REST API. Для подробных пошаговых инструкций обратитесь к [Руководству по запуску конвейера Google Dataflow из шаблона](https://cloud.google.com/dataflow/docs/templates/provided-templates).
+В настоящее время официальный шаблон ClickHouse доступен через Google Cloud Console, CLI или Dataflow REST API.
+Подробные пошаговые инструкции см. в [руководстве Google Dataflow по запуску конвейера из шаблона](https://cloud.google.com/dataflow/docs/templates/provided-templates).
+
 
 ## Список шаблонов ClickHouse {#list-of-clickhouse-templates}
-* [BigQuery To ClickHouse](./templates/bigquery-to-clickhouse)
-* [GCS To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (скоро!)
-* [Pub Sub To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (скоро!)
+
+- [BigQuery в ClickHouse](./templates/bigquery-to-clickhouse)
+- [GCS в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (скоро!)
+- [Pub/Sub в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (скоро!)

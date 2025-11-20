@@ -1,14 +1,15 @@
 ---
-'slug': '/managing-data/truncate'
-'sidebar_label': 'テーブルを切り捨てる'
-'title': 'テーブルを切り捨てる'
-'hide_title': false
-'description': '切り捨ては、テーブルまたはDATABASE内のデータを削除することを可能にしますが、その存在は保持されます。'
-'doc_type': 'reference'
+slug: /managing-data/truncate
+sidebar_label: 'テーブルの切り捨て'
+title: 'テーブルの切り捨て'
+hide_title: false
+description: 'TRUNCATE を使用すると、テーブルやデータベース内のデータのみを削除し、オブジェクト自体は保持できます。'
+doc_type: 'reference'
+keywords: ['truncate', 'delete data', 'remove data', 'clear table', 'table maintenance']
 ---
 
-import Truncate from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
+TRUNCATE を使用すると、テーブルやデータベース内のデータのみを削除し、オブジェクト自体は保持できます。これは軽量な操作であり、取り消すことはできません。
 
-Truncate は、テーブルまたはデータベース内のデータを削除することを可能にしますが、その存在は保持します。これは軽量な操作であり、元に戻すことはできません。
+import Truncate from '@site/docs/sql-reference/statements/truncate.md';
 
-<Truncate/>
+<Truncate />

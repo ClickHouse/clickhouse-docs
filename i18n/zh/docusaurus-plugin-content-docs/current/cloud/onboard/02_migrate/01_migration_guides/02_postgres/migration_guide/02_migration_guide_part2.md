@@ -1,36 +1,36 @@
 ---
-'slug': '/migrations/postgresql/rewriting-queries'
-'title': '重写 PostgreSQL 查询'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'rewriting queries'
-'description': '关于从 PostgreSQL 迁移到 ClickHouse 的指南的第 2 部分'
-'sidebar_label': '第 2 部分'
-'doc_type': 'guide'
+slug: /migrations/postgresql/rewriting-queries
+title: '重写 PostgreSQL 查询'
+keywords: ['postgres', 'postgresql', 'rewriting queries']
+description: '从 PostgreSQL 迁移到 ClickHouse 指南的第 2 部分'
+sidebar_label: '第 2 部分'
+doc_type: 'guide'
 ---
 
-> 这是将 PostgreSQL 迁移到 ClickHouse 的指南的 **第二部分**。通过一个实际的示例，它演示了如何使用实时复制 (CDC) 方法高效地完成迁移。许多涵盖的概念也适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
+> 这是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，演示如何采用实时复制（CDC）的方法高效完成迁移。文中介绍的许多概念同样适用于从 PostgreSQL 向 ClickHouse 手动执行批量数据传输的场景。
 
-您的 PostgreSQL 设置中的大多数 SQL 查询在 ClickHouse 中应该可以无修改地运行，并且执行速度更快。
+大多数在 PostgreSQL 环境中使用的 SQL 查询在 ClickHouse 中无需修改即可运行，而且通常会执行得更快。
+
+
 
 ## 使用 CDC 进行去重 {#deduplication-cdc}
 
-在使用 CDC 进行实时复制时，请注意，更新和删除可能导致重复行。为了解决这个问题，您可以使用涉及视图和可刷新的物化视图的技术。
+在使用 CDC 进行实时复制时,请注意更新和删除操作可能会产生重复行。为了处理这种情况,您可以使用视图和可刷新物化视图等技术。
 
-请参考本 [指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)，了解如何在使用实时复制和 CDC 进行迁移时，将您的应用程序从 PostgreSQL 迁移到 ClickHouse，降低摩擦。
+请参阅此[指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres),了解如何在使用 CDC 进行实时复制迁移时,以最小代价将应用程序从 PostgreSQL 迁移到 ClickHouse。
+
 
 ## 在 ClickHouse 中优化查询 {#optimize-queries-in-clickhouse}
 
-虽然可以在最小查询重写的情况下进行迁移，但建议利用 ClickHouse 的特性显著简化查询并进一步改善查询性能。
+虽然可以在最少查询重写的情况下进行迁移,但建议充分利用 ClickHouse 的特性来显著简化查询并进一步提升查询性能。
 
-这里的示例涵盖了常见的查询模式，并展示了如何在 ClickHouse 中优化它们。它们使用完整的 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)（截至 2024 年 4 月）在 PostgreSQL 和 ClickHouse 中的等效资源（8 核心，32GiB 内存）。
+这里的示例涵盖了常见的查询模式,并展示了如何使用 ClickHouse 对其进行优化。这些示例在 PostgreSQL 和 ClickHouse 的等效资源(8 核,32GiB 内存)上使用完整的 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)(截至 2024 年 4 月)。
 
-> 为了简单起见，下面的查询省略了使用数据去重的技术。
+> 为简单起见,下面的查询省略了数据去重技术的使用。
 
-> 此处的计数会略有不同，因为 PostgreSQL 数据仅包含满足外键引用完整性的行。ClickHouse 不强加这样的约束，因此拥有完整的数据集，例如，包括匿名用户。
+> 这里的计数会略有不同,因为 Postgres 数据仅包含满足外键引用完整性的行。ClickHouse 不施加此类约束,因此拥有完整的数据集,例如包括匿名用户。
 
-用户（提问超过 10 个）中获得最多浏览量的用户：
+获得最多浏览量的用户(提出超过 10 个问题):
 
 ```sql
 -- ClickHouse
@@ -50,8 +50,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
-Peak memory usage: 510.71 MiB.
+返回 5 行。耗时:0.360 秒。处理了 2437 万行,140.45 MB(6773 万行/秒,390.38 MB/秒)。
+峰值内存使用:510.71 MiB。
 ```
 
 ```sql
@@ -72,10 +72,10 @@ LIMIT 5;
  J. Pablo Fern&#225;ndez |      12446818
  Matt                   |       12298764
 
-Time: 107620.508 ms (01:47.621)
+时间:107620.508 毫秒(01:47.621)
 ```
 
-哪些 `tags` 收到的 `views` 最多：
+哪些 `tags` 获得最多的 `views`:
 
 ```sql
 --ClickHouse
@@ -94,7 +94,7 @@ LIMIT 5
 │ android       │ 4258320338 │
 └────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
+返回 5 行。耗时:0.908 秒。处理了 5982 万行,1.45 GB(6587 万行/秒,1.59 GB/秒)。
 ```
 
 ```sql
@@ -128,12 +128,13 @@ LIMIT 5;
  android        | 4186216900
 (5 rows)
 
-Time: 112508.083 ms (01:52.508)
+时间:112508.083 毫秒(01:52.508)
 ```
 
 **聚合函数**
 
-在可能的情况下，用户应利用 ClickHouse 的聚合函数。下面我们展示了使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每年最受欢迎的问题。
+在可能的情况下,用户应充分利用 ClickHouse 的聚合函数。下面我们展示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每年浏览量最高的问题。
+
 
 ```sql
 --ClickHouse
@@ -148,13 +149,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                   2008
-MostViewedQuestionTitle: How to find the index for a given item in a list?
+MostViewedQuestionTitle: 如何查找列表中给定项的索引?
 MaxViewCount:           6316987
 
 Row 2:
 ──────
 Year:                   2009
-MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
+MostViewedQuestionTitle: 如何撤销 Git 中最近的本地提交?
 MaxViewCount:           13962748
 
 ...
@@ -162,20 +163,20 @@ MaxViewCount:           13962748
 Row 16:
 ───────
 Year:                   2023
-MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
+MostViewedQuestionTitle: 每次使用 pip 3 时如何解决 "error: externally-managed-environment" 错误?
 MaxViewCount:           506822
 
 Row 17:
 ───────
 Year:                   2024
-MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
+MostViewedQuestionTitle: 警告 "第三方 cookie 将被阻止。在 Issues 选项卡中了解更多信息"
 MaxViewCount:           66975
 
-17 rows in set. Elapsed: 0.677 sec. Processed 24.37 million rows, 1.86 GB (36.01 million rows/s., 2.75 GB/s.)
-Peak memory usage: 554.31 MiB.
+返回 17 行。耗时:0.677 秒。处理了 2437 万行,1.86 GB(每秒 3601 万行,2.75 GB/秒)
+峰值内存使用量:554.31 MiB。
 ```
 
-这比等效的 PostgreSQL 查询显著更简单（且更快）：
+这比等效的 Postgres 查询要简单得多（而且更快）：
 
 ```sql
 --Postgres
@@ -197,21 +198,21 @@ WHERE rn = 1
 ORDER BY Year;
  year |                                                 mostviewedquestiontitle                                                 | maxviewcount
 ------+-----------------------------------------------------------------------------------------------------------------------+--------------
- 2008 | How to find the index for a given item in a list?                                                                       |       6316987
- 2009 | How do I undo the most recent local commits in Git?                                                                     |       13962748
+ 2008 | 如何查找列表中指定项的索引?                                                                       |       6316987
+ 2009 | 如何撤销 Git 中最近的本地提交?                                                                     |       13962748
 
 ...
 
- 2023 | How do I solve "error: externally-managed-environment" every time I use pip 3?                                          |       506822
- 2024 | Warning "Third-party cookie will be blocked. Learn more in the Issues tab"                                              |       66975
+ 2023 | 每次使用 pip 3 时如何解决"error: externally-managed-environment"错误?                                          |       506822
+ 2024 | 警告"第三方 cookie 将被阻止。在 Issues 选项卡中了解更多信息"                                              |       66975
 (17 rows)
 
 Time: 125822.015 ms (02:05.822)
 ```
 
-**条件和数组**
+**条件与数组**
 
-条件和数组函数使查询简单得多。以下查询计算了 2022 年到 2023 年之间出现超过 10000 次的标签，其百分比增长最大。请注意，以下的 ClickHouse 查询因条件、数组函数以及在 HAVING 和 SELECT 子句中重用别名的能力而变得简明扼要。
+条件函数和数组函数可以显著简化查询。下面的查询会计算从 2022 年到 2023 年间，出现次数超过 10000 次且百分比增幅最大的标签。请注意，由于使用了条件、数组函数，以及在 HAVING 和 SELECT 子句中复用别名的能力，下面这条 ClickHouse 查询语句非常简洁。
 
 ```sql
 --ClickHouse
@@ -233,10 +234,13 @@ LIMIT 5
 │ azure         │       11996 │         14049 │ -14.613139725247349 │
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
-
-5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)
-Peak memory usage: 403.04 MiB.
 ```
+
+
+5 行数据已返回。耗时：0.247 秒。已处理 5.08 百万行，155.73 MB（20.58 百万行/秒，630.61 MB/秒）。
+峰值内存使用量：403.04 MiB。
+
+````
 
 ```sql
 --Postgres
@@ -272,6 +276,6 @@ LIMIT 5;
 (5 rows)
 
 Time: 116750.131 ms (01:56.750)
-```
+````
 
-[单击这里访问第三部分](/migrations/postgresql/data-modeling-techniques)
+[点击查看第 3 部分](/migrations/postgresql/data-modeling-techniques)

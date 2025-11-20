@@ -1,17 +1,18 @@
 ---
-slug: '/chdb/install'
-description: 'Индексация страница для интеграций языка chDB'
-title: 'Индекс интеграций языков'
+title: 'Индекс языковых интеграций'
+slug: /chdb/install
+description: 'Индекс языковых интеграций chDB'
 keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']
-doc_type: landing-page
+doc_type: 'landing-page'
 ---
+
 Инструкции по настройке chDB доступны ниже для следующих языков и сред выполнения:
 
-| Язык                                   | Справка по API                     |
+| Language                               | API Reference                       |
 |----------------------------------------|-------------------------------------|
 | [Python](/chdb/install/python) | [Python API](/chdb/api/python) |
 | [NodeJS](/chdb/install/nodejs) |                                     |
 | [Go](/chdb/install/go)         |                                     |
 | [Rust](/chdb/install/rust)     |                                     |
 | [Bun](/chdb/install/bun)       |                                     |
-| [C и C++](/chdb/install/c)     |                                     |
+| [C and C++](/chdb/install/c)   |                                     |

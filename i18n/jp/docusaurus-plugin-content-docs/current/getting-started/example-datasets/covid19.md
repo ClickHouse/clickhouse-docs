@@ -1,23 +1,23 @@
 ---
-'description': 'COVID-19 オープンデータは、COVID-19 の疫学データおよび人口統計、経済、政府の対応などの関連要因を含む大規模なオープンソース
-  DATABASE です。'
-'sidebar_label': 'COVID-19 オープンデータ'
-'slug': '/getting-started/example-datasets/covid19'
-'title': 'COVID-19 オープンデータ'
-'doc_type': 'reference'
+description: 'COVID-19 Open-Data は、COVID-19 の疫学データと、人口統計、経済、政府対応などの関連要因を含む、大規模なオープンソースデータベースです'
+sidebar_label: 'COVID-19 open-data'
+slug: /getting-started/example-datasets/covid19
+title: 'COVID-19 Open-Data'
+keywords: ['COVID-19 data', 'epidemiological data', 'health dataset', 'example dataset', 'getting started']
+doc_type: 'guide'
 ---
 
-COVID-19 Open-Dataは、最大規模のCovid-19疫学データベースを構築し、強力な一連の拡張変数を提供することを試みています。これには、人口統計、経済、疫学、地理、健康、入院、移動、政府の対応、天候などに関するオープンで公的にソースされたライセンスデータが含まれています。
+COVID-19 Open-Data は、最大規模の Covid-19 疫学データベースの構築を目指しており、さらに強力で網羅的な共変量セットも提供します。人口統計、経済、疫学、地理、健康、入院、モビリティ、政府対応、天候などに関連する、オープンかつ公開ソースでライセンスされたデータを含みます。
 
-詳細はGitHubの[こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data)にあります。
+詳細は GitHub の[こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data)にあります。
 
-このデータをClickHouseに挿入するのは簡単です...
+このデータを ClickHouse に挿入するのは簡単です…
 
 :::note
-次のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud)の**Production**インスタンスで実行されました。ローカルインストールでも簡単に実行できます。
+以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されたものです。ローカル環境へのインストールでも簡単に実行できます。
 :::
 
-1. データがどのようなものか見てみましょう:
+1. まず、データの内容を見てみましょう。
 
 ```sql
 DESCRIBE url(
@@ -26,7 +26,7 @@ DESCRIBE url(
 );
 ```
 
-CSVファイルには10列あります:
+この CSV ファイルには 10 列あります。
 
 ```response
 ┌─name─────────────────┬─type─────────────┐
@@ -42,10 +42,10 @@ CSVファイルには10列あります:
 │ cumulative_tested    │ Nullable(Int64)  │
 └──────────────────────┴──────────────────┘
 
-10 rows in set. Elapsed: 0.745 sec.
+10行が設定されています。経過時間: 0.745秒
 ```
 
-2. では、いくつかの行を表示してみましょう:
+2. では、いくつか行を見てみましょう：
 
 ```sql
 SELECT *
@@ -53,7 +53,8 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-`url`関数はCSVファイルからデータを簡単に読み取ることができることに注意してください:
+`url` 関数を使うと、CSV ファイルからデータを簡単に読み込めることがわかります。
+
 
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
@@ -67,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. データの内容が分かったので、テーブルを作成します:
+3. データの内容が分かったので、テーブルを作成します：
 
 ```sql
 CREATE TABLE covid19 (
@@ -86,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 次のコマンドは、`covid19`テーブルに全データセットを挿入します:
+4. 次のコマンドで、`covid19` テーブルにデータセット全体を挿入します。
 
 ```sql
 INSERT INTO covid19
@@ -108,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. かなり迅速に行われます - 挿入された行数を見てみましょう:
+5. かなり速く終わります - 何行挿入されたか確認してみましょう：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -117,11 +118,11 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 12.53 million                   │
+│ 1253万                          │
 └─────────────────────────────────┘
 ```
 
-6. Covid-19の総ケース数が記録された数を確認しましょう:
+6. 新型コロナウイルス感染症（COVID-19）の累計症例数を確認してみましょう。
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -130,11 +131,12 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 1.39 billion                               │
+│ 13.9億                                      │
 └────────────────────────────────────────────┘
 ```
 
-7. 日付に多くの0があることに気付くでしょう - これは、週末やその日ごとに数字が報告されなかった日々によるものです。ウィンドウ関数を使用して、新しいケースの毎日の平均をスムーズにします:
+
+7. 日付データには 0 が多く含まれていることに気づくでしょう。これは週末か、あるいは毎日数値が報告されなかった日です。ウィンドウ関数を使って、新規症例数の1日あたりの平均値を平滑化できます。
 
 ```sql
 SELECT
@@ -145,7 +147,7 @@ SELECT
 FROM covid19;
 ```
 
-8. このクエリは、各場所の最新の値を決定します。すべての国が毎日報告しているわけではないので、`max(date)`を使用することはできません。代わりに`ROW_NUMBER`を使って最後の行を取得します:
+8. このクエリでは、各地域ごとに最新の値を取得します。すべての国が毎日報告しているわけではないため、`max(date)` は使えません。そのため、`ROW_NUMBER` を使って最後の行を取得します。
 
 ```sql
 WITH latest_deaths_data AS
@@ -164,7 +166,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. `lagInFrame`を使用して、毎日の新しいケースの`LAG`を判定します。このクエリでは、`US_DC`のロケーションでフィルタリングします:
+9. `lagInFrame` を使用して、各日の新規症例数の `LAG` を求めることができます。次のクエリでは、`US_DC` のロケーションでフィルターしています。
 
 ```sql
 SELECT
@@ -176,7 +178,7 @@ FROM covid19
 WHERE location_key = 'US_DC';
 ```
 
-レスポンスは以下のようになります:
+レスポンスは次のようになります：
 
 ```response
 ┌─confirmed_cases_delta─┬─new_confirmed─┬─location_key─┬───────date─┐
@@ -198,7 +200,7 @@ WHERE location_key = 'US_DC';
 │                     3 │            21 │ US_DC        │ 2020-03-23 │
 ```
 
-10. このクエリは、毎日の新しいケースの変化率を計算し、結果セットに単純な`increase`または`decrease`の列を含めます:
+10. このクエリは、日ごとの新規症例数の変化率を計算し、結果セットに単純な `increase` または `decrease` 列を含めます。
 
 ```sql
 WITH confirmed_lag AS (
@@ -221,15 +223,16 @@ SELECT
   new_confirmed,
   percent_change,
   CASE
-    WHEN percent_change > 0 THEN 'increase'
-    WHEN percent_change = 0 THEN 'no change'
-    ELSE 'decrease'
+    WHEN percent_change > 0 THEN '増加'
+    WHEN percent_change = 0 THEN '変化なし'
+    ELSE '減少'
   END AS trend
 FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
 ```
 
-結果は以下のようになります:
+結果は次のようになります。
+
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
@@ -263,5 +266,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-[GitHubリポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data)で述べたように、このデータセットは2022年9月15日以降は更新されていません。
+[GitHub リポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data) で述べられているとおり、このデータセットは 2022 年 9 月 15 日以降、更新されていません。
 :::

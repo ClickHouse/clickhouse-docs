@@ -1,20 +1,23 @@
 ---
-'slug': '/guides/developer/dynamic-column-selection'
-'sidebar_label': '动态列选择'
-'title': '动态列选择'
-'description': '在 ClickHouse 中使用替代查询语言'
-'doc_type': 'guide'
+slug: /guides/developer/dynamic-column-selection
+sidebar_label: '动态列选择'
+title: '动态列选择'
+description: '在 ClickHouse 中使用替代查询语言'
+doc_type: 'guide'
+keywords: ['dynamic column selection', 'regular expressions', 'APPLY modifier', 'advanced queries', 'developer guide']
 ---
 
-[动态列选择](/docs/sql-reference/statements/select#dynamic-column-selection) 是一个强大但未被充分利用的 ClickHouse 功能，它允许您使用正则表达式选择列，而无需单独命名每一列。您还可以使用 `APPLY` 修饰符将函数应用于匹配的列，这使其在数据分析和转换任务中极其有用。
+[动态列选择](/docs/sql-reference/statements/select#dynamic-column-selection) 是 ClickHouse 中一个功能强大但尚未被充分利用的特性，它允许你使用正则表达式来选择列，而无需逐一写出每个列名。你还可以使用 `APPLY` 修饰符对所有匹配的列应用函数，这使得该功能在数据分析和数据转换任务中极其有用。
 
-我们将通过 [纽约出租车数据集](/docs/getting-started/example-datasets/nyc-taxi) 来学习如何使用此功能，您也可以在 [ClickHouse SQL 游乐场](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) 中找到该数据集。
+我们将借助 [纽约出租车数据集](/docs/getting-started/example-datasets/nyc-taxi) 来学习如何使用这一特性，你也可以在 [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) 中找到该数据集。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-## 选择匹配模式的列  {#selecting-columns}
 
-让我们从一个常见场景开始：从纽约出租车数据集中选择仅包含 `_amount` 的列。我们可以使用 `COLUMNS` 表达式和正则表达式，而无需手动输入每个列名：
+
+## 选择匹配模式的列 {#selecting-columns}
+
+让我们从一个常见场景开始:从 NYC 出租车数据集中仅选择包含 `_amount` 的列。无需手动输入每个列名,我们可以使用 `COLUMNS` 表达式配合正则表达式来实现:
 
 ```sql
 FROM nyc_taxi.trips
@@ -22,9 +25,9 @@ SELECT COLUMNS('.*_amount')
 LIMIT 10;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7&run_query=true)
 
-该查询返回前 10 行，但仅返回名称匹配模式 `.*_amount`（以 "_amount" 结尾的任意字符）的列。
+此查询返回前 10 行数据,但仅包含列名匹配模式 `.*_amount`(任意字符后跟 "\_amount")的列。
 
 ```text
     ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐
@@ -42,16 +45,16 @@ LIMIT 10;
 ```
 
 假设我们还想返回包含 `fee` 或 `tax` 的列。
-我们可以更新正则表达式以包含这些内容：
+我们可以更新正则表达式来包含这些条件:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax')
 FROM nyc_taxi.trips
-ORDER BY rand() 
+ORDER BY rand()
 LIMIT 3;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKRlJPTSBueWNfdGF4aS50cmlwcwpPUkRFUiBCWSByYW5kKCkgCkxJTUlUIDM7&run_query=true)
 
 ```text
    ┌─fare_amount─┬─mta_tax─┬─tip_amount─┬─tolls_amount─┬─ehail_fee─┬─total_amount─┐
@@ -61,19 +64,20 @@ LIMIT 3;
    └─────────────┴─────────┴────────────┴──────────────┴───────────┴──────────────┘
 ```
 
-## 选择多个模式  {#selecting-multiple-patterns}
 
-我们可以在单个查询中组合多个列模式：
+## 选择多个模式 {#selecting-multiple-patterns}
+
+我们可以在单个查询中组合多个列模式:
 
 ```sql
-SELECT 
+SELECT
     COLUMNS('.*_amount'),
     COLUMNS('.*_date.*')
 FROM nyc_taxi.trips
 LIMIT 5;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7&run_query=true)
+> [在 SQL Playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7&run_query=true)
 
 ```text
    ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┬─pickup_date─┬─────pickup_datetime─┬─dropoff_date─┬────dropoff_datetime─┐
@@ -85,17 +89,18 @@ LIMIT 5;
    └─────────────┴────────────┴──────────────┴──────────────┴─────────────┴─────────────────────┴──────────────┴─────────────────────┘
 ```
 
-## 对所有列应用函数  {#applying-functions}
 
-我们还可以使用 [`APPLY`](/sql-reference/statements/select) 修饰符在每一列上应用函数。
-例如，如果我们想找到每一列的最大值，可以运行以下查询：
+## 对所有列应用函数 {#applying-functions}
+
+我们还可以使用 [`APPLY`](/sql-reference/statements/select) 修饰符对每一列应用函数。
+例如,如果我们想找到这些列各自的最大值,可以运行以下查询:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(max)
 FROM nyc_taxi.trips;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkobWF4KQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkobWF4KQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
 
 ```text
    ┌─max(fare_amount)─┬─max(mta_tax)─┬─max(tip_amount)─┬─max(tolls_amount)─┬─max(ehail_fee)─┬─max(total_amount)─┐
@@ -103,14 +108,14 @@ FROM nyc_taxi.trips;
    └──────────────────┴──────────────┴─────────────────┴───────────────────┴────────────────┴───────────────────┘
 ```
 
-或者，也许我们想看看平均值：
+或者,我们也可以查看平均值:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg)
 FROM nyc_taxi.trips
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw&run_query=true)
 
 ```text
    ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
@@ -118,14 +123,14 @@ FROM nyc_taxi.trips
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-这些值包含很多小数位，但幸运的是，我们可以通过链接函数来解决这个问题。在这种情况下，我们将应用 avg 函数，后跟 round 函数：
+这些值包含很多小数位,但我们可以通过链式调用函数来解决。在这种情况下,我们将先应用 avg 函数,然后应用 round 函数:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
 FROM nyc_taxi.trips;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKSBBUFBMWShyb3VuZCkKRlJPTSBueWNfdGF4aS50cmlwczs&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount))─┬─round(avg(mta_tax))─┬─round(avg(tip_amount))─┬─round(avg(tolls_amount))─┬─round(avg(ehail_fee))─┬─round(avg(total_amount))─┐
@@ -133,14 +138,15 @@ FROM nyc_taxi.trips;
    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
 ```
 
-但这会将平均值四舍五入为整数。如果我们想四舍五入到两位小数，我们也可以这样做。除了接受函数，`APPLY` 修饰符还接受一个 lambda，这给了我们灵活性，以便让 round 函数将我们的平均值四舍五入到两位小数：
+但这会将平均值四舍五入为整数。如果我们想四舍五入到指定的小数位数,比如 2 位小数,也可以实现。除了接受函数外,`APPLY` 修饰符还接受 lambda 表达式,这使我们能够灵活地让 round 函数将平均值四舍五入到 2 位小数:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
 FROM nyc_taxi.trips;
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw&run_query=true)
+
+> [在 SQL playground 中试运行此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
@@ -148,23 +154,24 @@ FROM nyc_taxi.trips;
    └────────────────────────────┴────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-## 替换列  {#replacing-columns}
 
-到目前为止都很好。但是假设我们想调整其中一个值，同时保持其他值不变。例如，也许我们想将总金额翻倍，并将 MTA 税除以 1.1。我们可以使用 [`REPLACE`](/sql-reference/statements/select) 修饰符来做到这一点，它将在替换一列的同时保持其他列不变。
+## 替换列 {#replacing-columns}
+
+到目前为止一切顺利。但假设我们想要调整其中一个值,同时保持其他值不变。例如,我们可能想要将总金额翻倍,并将 MTA 税除以 1.1。我们可以使用 [`REPLACE`](/sql-reference/statements/select) 修饰符来实现这一点,它会替换指定的列,同时保持其他列不变。
 
 ```sql
-FROM nyc_taxi.trips 
-SELECT 
+FROM nyc_taxi.trips
+SELECT
   COLUMNS('.*_amount|fee|tax')
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  ) 
+  )
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
+> [在 SQL Playground 中尝试此查询](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐
@@ -172,23 +179,24 @@ SELECT
    └────────────────────────────┴──────────────────────────┴───────────────────────────┴─────────────────────────────┴──────────────────────────┴──────────────────────────┘
 ```
 
-## 排除列  {#excluding-columns}
 
-我们还可以选择通过使用 [`EXCEPT`](/sql-reference/statements/select) 修饰符来排除一个字段。例如，要删除 `tolls_amount` 列，我们可以写出以下查询：
+## 排除列 {#excluding-columns}
+
+我们还可以使用 [`EXCEPT`](/sql-reference/statements/select) 修饰符来排除字段。例如,要移除 `tolls_amount` 列,可以编写以下查询:
 
 ```sql
-FROM nyc_taxi.trips 
-SELECT 
+FROM nyc_taxi.trips
+SELECT
   COLUMNS('.*_amount|fee|tax') EXCEPT(tolls_amount)
   REPLACE(
     total_amount*2 AS total_amount,
     mta_tax/1.1 AS mta_tax
-  ) 
+  )
   APPLY(avg)
   APPLY(col -> round(col, 2));
 ```
 
-> [在 SQL 游乐场中尝试此查询](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgRVhDRVBUKHRvbGxzX2Ftb3VudCkKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=RlJPTSBueWNfdGF4aS50cmlwcyAKU0VMRUNUIAogIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgRVhDRVBUKHRvbGxzX2Ftb3VudCkKICBSRVBMQUNFKAogICAgdG90YWxfYW1vdW50KjIgQVMgdG90YWxfYW1vdW50LAogICAgbXRhX3RheC8xLjEgQVMgbXRhX3RheAogICkgCiAgQVBQTFkoYXZnKQogIEFQUExZKGNvbCAtPiByb3VuZChjb2wsIDIpKTs&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(di⋯, 1.1)), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(mu⋯nt, 2)), 2)─┐

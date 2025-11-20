@@ -1,52 +1,57 @@
 ---
-'description': 'データセットには、ホテル、レストラン、カフェのメニューに関する歴史的データの130万件のレコードが含まれており、料理とその価格が記載されています。'
-'sidebar_label': 'ニューヨーク公立図書館「メニューに何があるか？」データセット'
-'slug': '/getting-started/example-datasets/menus'
-'title': 'ニューヨーク公立図書館「メニューに何があるか？」データセット'
-'doc_type': 'reference'
+description: 'ホテル、レストラン、カフェのメニューに関する歴史的データ130万件を収録したデータセットで、料理とその価格が含まれます。'
+sidebar_label: 'New York Public Library「what''s on the menu?」データセット'
+slug: /getting-started/example-datasets/menus
+title: 'New York Public Library「What''s on the Menu?」データセット'
+doc_type: 'guide'
+keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-The dataset is created by the New York Public Library. It contains historical data on the menus of hotels, restaurants and cafes with the dishes along with their prices.
+このデータセットは New York Public Library によって作成されました。ホテル、レストラン、カフェのメニューに関する歴史的データが含まれており、料理とその価格が収録されています。
 
-Source: http://menus.nypl.org/data
-The data is in public domain.
+出典: http://menus.nypl.org/data  
+このデータはパブリックドメインです。
 
-The data is from library's archive and it may be incomplete and difficult for statistical analysis. Nevertheless it is also very yummy.
-The size is just 1.3 million records about dishes in the menus — it's a very small data volume for ClickHouse, but it's still a good example.
+このデータは図書館のアーカイブに由来するものであり、不完全であったり、統計分析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
+このデータセットには、メニューに含まれる料理に関するレコードが約 130 万件含まれており、ClickHouse にとっては非常に小さなデータ量ですが、依然として有用なサンプルです。
 
-## Download the dataset {#download-dataset}
 
-Run the command:
+
+## データセットのダウンロード {#download-dataset}
+
+次のコマンドを実行します：
+
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-
-# Option: Validate the checksum
+# オプション: チェックサムの検証
 md5sum 2021_08_01_07_01_17_data.tgz
-
-# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
+# チェックサムは次の値と一致する必要があります: db6126724de939a5481e3160a2d67d15
 ```
 
-Replace the link to the up to date link from http://menus.nypl.org/data if needed.
-Download size is about 35 MB.
+必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。
+ダウンロードサイズは約 35 MB です。
 
-## Unpack the dataset {#unpack-dataset}
+
+## データセットの展開 {#unpack-dataset}
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
 ```
 
-Uncompressed size is about 150 MB.
+展開後のサイズは約150 MBです。
 
-The data is normalized consisted of four tables:
-- `Menu` — Information about menus: the name of the restaurant, the date when menu was seen, etc.
-- `Dish` — Information about dishes: the name of the dish along with some characteristic.
-- `MenuPage` — Information about the pages in the menus, because every page belongs to some menu.
-- `MenuItem` — An item of the menu. A dish along with its price on some menu page: links to dish and menu page.
+データは正規化されており、4つのテーブルで構成されています:
 
-## Create the tables {#create-tables}
+- `Menu` — メニューに関する情報: レストラン名、メニューが確認された日付など。
+- `Dish` — 料理に関する情報: 料理名とその特性。
+- `MenuPage` — メニュー内のページに関する情報。各ページは特定のメニューに属します。
+- `MenuItem` — メニュー項目。メニューページ上の料理とその価格を含み、料理とメニューページへのリンクを持ちます。
 
-We use [Decimal](../../sql-reference/data-types/decimal.md) data type to store prices.
+
+## テーブルの作成 {#create-tables}
+
+価格を保存するために[Decimal](../../sql-reference/data-types/decimal.md)データ型を使用します。
 
 ```sql
 CREATE TABLE dish
@@ -111,9 +116,10 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-## Import the data {#import-data}
 
-Upload data into ClickHouse, run:
+## データのインポート {#import-data}
+
+ClickHouseにデータをアップロードするには、次のコマンドを実行します:
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -122,20 +128,22 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-We use [CSVWithNames](../../interfaces/formats.md#csvwithnames) format as the data is represented by CSV with header.
+データはヘッダー付きCSVで表現されているため、[CSVWithNames](/interfaces/formats/CSVWithNames)形式を使用します。
 
-We disable `format_csv_allow_single_quotes` as only double quotes are used for data fields and single quotes can be inside the values and should not confuse the CSV parser.
+データフィールドにはダブルクォートのみが使用され、シングルクォートは値の内部に含まれる可能性があるため、CSVパーサーが混乱しないように`format_csv_allow_single_quotes`を無効にします。
 
-We disable [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default) as our data does not have [NULL](/operations/settings/formats#input_format_null_as_default). Otherwise ClickHouse will try to parse `\N` sequences and can be confused with `\` in data.
+データに[NULL](/operations/settings/formats#input_format_null_as_default)が含まれていないため、[input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)を無効にします。有効にした場合、ClickHouseは`\N`シーケンスを解析しようとし、データ内の`\`と混同する可能性があります。
 
-The setting [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) allows to parse [DateTime](../../sql-reference/data-types/datetime.md)  fields in wide variety of formats. For example, ISO-8601 without seconds like '2000-01-01 01:02' will be recognized. Without this setting only fixed DateTime format is allowed.
+[date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)設定を使用すると、[DateTime](../../sql-reference/data-types/datetime.md)フィールドをさまざまな形式で解析できます。例えば、'2000-01-01 01:02'のような秒を含まないISO-8601形式も認識されます。この設定を指定しない場合、固定のDateTime形式のみが許可されます。
 
-## Denormalize the data {#denormalize-data}
 
-Data is presented in multiple tables in [normalized form](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms). It means you have to perform [JOIN](/sql-reference/statements/select/join) if you want to query, e.g. dish names from menu items.
-For typical analytical tasks it is way more efficient to deal with pre-JOINed data to avoid doing `JOIN` every time. It is called "denormalized" data.
+## データの非正規化 {#denormalize-data}
 
-We will create a table `menu_item_denorm` where will contain all the data JOINed together:
+データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに格納されています。つまり、メニュー項目から料理名などをクエリする際には、[JOIN](/sql-reference/statements/select/join)を実行する必要があります。
+
+一般的な分析タスクでは、毎回`JOIN`を実行するのを避けるため、事前にJOINされたデータを扱う方がはるかに効率的です。これは「非正規化」データと呼ばれます。
+
+すべてのデータをJOINして格納する`menu_item_denorm`テーブルを作成します:
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -182,15 +190,16 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-## Validate the data {#validate-data}
 
-Query:
+## データの検証 {#validate-data}
+
+クエリ:
 
 ```sql
 SELECT count() FROM menu_item_denorm;
 ```
 
-Result:
+結果:
 
 ```text
 ┌─count()─┐
@@ -198,11 +207,12 @@ Result:
 └─────────┘
 ```
 
-## Run some queries {#run-queries}
 
-### Averaged historical prices of dishes {#query-averaged-historical-prices}
+## クエリを実行する {#run-queries}
 
-Query:
+### 料理の歴史的平均価格 {#query-averaged-historical-prices}
+
+クエリ:
 
 ```sql
 SELECT
@@ -216,7 +226,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Result:
+結果:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
@@ -240,11 +250,11 @@ Result:
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-Take it with a grain of salt.
+参考程度にご覧ください。
 
-### Burger prices {#query-burger-prices}
+### バーガーの価格 {#query-burger-prices}
 
-Query:
+クエリ:
 
 ```sql
 SELECT
@@ -258,7 +268,8 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Result:
+結果:
+
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
@@ -279,9 +290,9 @@ Result:
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-### Vodka {#query-vodka}
+### ウォッカ {#query-vodka}
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -311,13 +322,13 @@ Result:
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-To get vodka we have to write `ILIKE '%vodka%'` and this definitely makes a statement.
+ウォッカのデータを取得するには、`ILIKE '%vodka%'` と記述する必要があります。これで確かにインパクトのあるクエリになります。
 
-### Caviar {#query-caviar}
+### キャビア {#query-caviar}
 
-Let's print caviar prices. Also let's print a name of any dish with caviar.
+キャビアの価格を出力してみましょう。また、キャビアを含む任意の料理の名前も出力します。
 
-Query:
+クエリ：
 
 ```sql
 SELECT
@@ -333,6 +344,7 @@ ORDER BY d ASC;
 ```
 
 Result:
+
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -354,8 +366,9 @@ Result:
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-At least they have caviar with vodka. Very nice.
+少なくともウォッカにはキャビアが付いている。なかなかいいね。
 
-## Online playground {#playground}
 
-The data is uploaded to ClickHouse Playground, [example](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B).
+## オンラインプレイグラウンド {#playground}
+
+データはClickHouse Playgroundにアップロードされています（[例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)）。

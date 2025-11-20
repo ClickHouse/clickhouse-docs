@@ -1,22 +1,30 @@
 ---
 slug: '/examples/aggregate-function-combinators/countIf'
-sidebar_label: countIf
-description: 'Пример использования комбиниратора countIf'
-title: countIf
+title: 'countIf'
+description: 'Пример использования комбинатора countIf'
 keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
-doc_type: reference
+sidebar_label: 'countIf'
+doc_type: 'reference'
 ---
+
+
+
 # countIf {#countif}
+
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count), чтобы подсчитать количество строк, где условие истинно, используя агрегационную функцию-комбинатор `countIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`count`](/sql-reference/aggregate-functions/reference/count)
+для подсчёта количества строк, удовлетворяющих условию,
+с помощью агрегатной функции-комбинатора `countIf`.
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит попытки входа пользователей, и мы использовали `countIf`, чтобы подсчитать количество успешных входов.
+В этом примере мы создадим таблицу для хранения попыток входа пользователей
+и используем `countIf` для подсчёта успешных входов.
 
-```sql title="Query"
+```sql title="Запрос"
 CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
@@ -38,15 +46,17 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-Функция `countIf` будет считать только строки, где `is_successful = 1` для каждого пользователя.
+Функция `countIf` подсчитывает только те строки, где `is_successful = 1`, для каждого пользователя.
 
-```response title="Response"
+```response title="Результат"
    ┌─user_id─┬─successful_logins─┐
 1. │       1 │                 2 │
 2. │       2 │                 2 │
    └─────────┴───────────────────┘
 ```
 
-## Смотрите также {#see-also}
+
+## См. также {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If комбинатор`](/sql-reference/aggregate-functions/combinators#-if)
+- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)

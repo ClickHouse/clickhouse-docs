@@ -1,23 +1,29 @@
 ---
-'sidebar_label': '正規表現とテンプレート'
-'sidebar_position': 3
-'slug': '/integrations/data-formats/templates-regexp'
-'title': 'ClickHouseにおけるテンプレートと正規表現を使用したカスタムテキストデータのインポートとエクスポート'
-'description': 'ClickHouseでカスタムテキストをテンプレートと正規表現を使用してインポートおよびエクスポートする方法を説明するページ'
-'doc_type': 'guide'
+sidebar_label: '正規表現とテンプレート'
+sidebar_position: 3
+slug: /integrations/data-formats/templates-regexp
+title: 'ClickHouse でテンプレートと正規表現を使ってカスタムテキストデータをインポート／エクスポートする'
+description: 'ClickHouse でテンプレートと正規表現を使ってカスタムテキストデータをインポートおよびエクスポートする方法を説明するページ'
+doc_type: 'guide'
+keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
 
-# カスタムテキストデータのインポートとエクスポート（テンプレートと正規表現を使用） 
 
-私たちはしばしばカスタムテキストフォーマットのデータを扱う必要があります。それは非標準フォーマット、無効なJSON、または壊れたCSVである可能性があります。CSVやJSONのような標準パーサーは、すべてのケースで機能するわけではありません。しかし、ClickHouseは強力なテンプレートと正規表現形式を提供しているため、私たちはここで問題を解決できます。
+# ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする
 
-## テンプレートに基づくインポート {#importing-based-on-a-template}
-次の [ログファイル](assets/error.log) からデータをインポートしたいとしましょう：
+非標準フォーマット、無効な JSON、壊れた CSV など、カスタムテキスト形式のデータを扱わなければならないことがよくあります。こうしたケースでは、CSV や JSON といった標準パーサーがそのまま使えるとは限りません。しかし ClickHouse には、強力な Template フォーマットと Regex フォーマットが用意されており、これらの問題に対応できます。
+
+
+
+## テンプレートベースのインポート {#importing-based-on-a-template}
+
+次の[ログファイル](assets/error.log)からデータをインポートしたいとします:
 
 ```bash
 head error.log
 ```
+
 ```response
 2023/01/15 14:51:17 [error]  client: 7.2.8.1, server: example.com "GET /apple-touch-icon-120x120.png HTTP/1.1"
 2023/01/16 06:02:09 [error]  client: 8.4.2.7, server: example.com "GET /apple-touch-icon-120x120.png HTTP/1.1"
@@ -25,13 +31,14 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-このデータをインポートするために、[テンプレート](/interfaces/formats.md/#format-template)形式を使用できます。入力データの各行の値プレースホルダーを含むテンプレート文字列を定義する必要があります：
+このデータをインポートするには[Template](/interfaces/formats/Template)フォーマットを使用できます。入力データの各行に対して、値のプレースホルダーを含むテンプレート文字列を定義する必要があります:
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
-データをインポートするためのテーブルを作成しましょう：
+データをインポートするテーブルを作成しましょう:
+
 ```sql
 CREATE TABLE error_log
 (
@@ -44,15 +51,15 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-与えられたテンプレートを使用してデータをインポートするには、まずテンプレート文字列をファイル ([row.template](assets/row.template)) に保存する必要があります：
+指定したテンプレートを使用してデータをインポートするには、テンプレート文字列をファイルに保存する必要があります(この例では[row.template](assets/row.template)):
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-`${name:escaping}`形式でカラムの名前とエスケープルールを定義します。ここで、CSV、JSON、エスケープされたもの、または引用符で囲まれたものなど、[それぞれのエスケープルール](/interfaces/formats.md/#format-template)を実装する複数のオプションがあります。
+カラム名とエスケープルールを`${name:escaping}`形式で定義します。CSV、JSON、Escaped、Quotedなど、[それぞれのエスケープルール](/interfaces/formats/Template)を実装する複数のオプションが利用可能です。
 
-次に、データをインポートする際に `format_template_row` 設定オプションの引数としてこのファイルを使用できます（*ファイルの最後に**余分な `\n` シンボルが**あってはいけません*）：
+これで、データをインポートする際に指定したファイルを`format_template_row`設定オプションの引数として使用できます(_注意: テンプレートファイルとデータファイルはファイル末尾に余分な`\n`記号を**含めないでください**_):
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'
@@ -60,7 +67,7 @@ SETTINGS format_template_row = 'row.template'
 FORMAT Template
 ```
 
-そして、データがテーブルにロードされたことを確認できます：
+データがテーブルに正しく読み込まれたことを確認できます:
 
 ```sql
 SELECT
@@ -69,6 +76,7 @@ SELECT
 FROM error_log
 GROUP BY request
 ```
+
 ```response
 ┌─request──────────────────────────────────────────┬─count()─┐
 │ GET /img/close.png HTTP/1.1                      │     176 │
@@ -80,18 +88,21 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### ホワイトスペースのスキップ {#skipping-whitespaces}
-テンプレート内の区切り文字間のホワイトスペースをスキップする [TemplateIgnoreSpaces](/interfaces/formats.md/#templateignorespaces) を使用することを考慮してください：
+### 空白文字のスキップ {#skipping-whitespaces}
+
+テンプレート内の区切り文字間の空白文字をスキップできる[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)の使用を検討してください:
+
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
+
 ## テンプレートを使用したデータのエクスポート {#exporting-data-using-templates}
 
-また、テンプレートを使用して任意のテキストフォーマットにデータをエクスポートすることもできます。この場合、2つのファイルを作成する必要があります：
+テンプレートを使用して、任意のテキスト形式にデータをエクスポートすることもできます。この場合、2つのファイルを作成する必要があります:
 
-[結果セットテンプレート](assets/output.results) は、全体の結果セットのレイアウトを定義します：
+結果セット全体のレイアウトを定義する[結果セットテンプレート](assets/output.results):
 
 ```response
 == Top 10 IPs ==
@@ -99,13 +110,13 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-ここでは、`rows_read` と `time` は各リクエストに対して利用可能なシステムメトリックです。`data` は生成された行を示し（`${data}` はこのファイルの最初のプレースホルダーとして常に置く必要があります）、これは [**行テンプレートファイル**](assets/output.rows) に定義されたテンプレートに基づいています：
+ここで、`rows_read`と`time`は各リクエストで利用可能なシステムメトリクスです。一方、`data`は生成された行を表します(`${data}`は常にこのファイルの最初のプレースホルダーとして配置する必要があります)。これは[**行テンプレートファイル**](assets/output.rows)で定義されたテンプレートに基づいています:
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
 ```
 
-次に、これらのテンプレートを使用して次のクエリをエクスポートしましょう：
+それでは、これらのテンプレートを使用して次のクエリをエクスポートしましょう:
 
 ```sql
 SELECT
@@ -132,7 +143,8 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 ```
 
 ### HTMLファイルへのエクスポート {#exporting-to-html-files}
-テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。与えられた [resultset](assets/html.results) と [row](assets/html.row) フォーマットに基づいてHTMLファイルを生成しましょう：
+
+テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md)句を使用してファイルにエクスポートすることもできます。指定された[結果セット](assets/html.results)と[行](assets/html.row)形式に基づいてHTMLファイルを生成しましょう:
 
 ```sql
 SELECT
@@ -147,9 +159,9 @@ SETTINGS format_template_resultset = 'html.results',
 
 ### XMLへのエクスポート {#exporting-to-xml}
 
-テンプレート形式を使用して、XMLを含むありとあらゆるテキストフォーマットファイルを生成できます。関連するテンプレートを配置し、エクスポートを行ってください。
+テンプレート形式は、XMLを含むあらゆるテキスト形式ファイルの生成に使用できます。関連するテンプレートを配置してエクスポートを実行するだけです。
 
-メタデータを含む標準XML結果を取得するために、[XML](/interfaces/formats.md/#xml)形式の使用も検討してください：
+また、メタデータを含む標準的なXML結果を取得するには、[XML](/interfaces/formats/XML)形式の使用も検討してください:
 
 ```sql
 SELECT *
@@ -157,6 +169,7 @@ FROM error_log
 LIMIT 3
 FORMAT XML
 ```
+
 ```xml
 <?xml version='1.0' encoding='UTF-8' ?>
 <result>
@@ -189,9 +202,10 @@ FORMAT XML
 
 ```
 
+
 ## 正規表現に基づくデータのインポート {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats.md/#data-format-regexp)形式は、入力データをより複雑な方法で解析する必要がある場合に対応します。今回は、ファイル名とプロトコルをキャプチャしてそれらを別々のカラムに保存するために、私たちの [error.log](assets/error.log) サンプルファイルを解析しましょう。まず、これを準備するための新しいテーブルを作成します：
+[Regexp](/interfaces/formats/Regexp)フォーマットは、入力データをより複雑な方法で解析する必要がある高度なケースに対応します。[error.log](assets/error.log)のサンプルファイルを解析しますが、今回はファイル名とプロトコルをキャプチャして別々のカラムに保存します。まず、そのための新しいテーブルを準備しましょう:
 
 ```sql
 CREATE TABLE error_log
@@ -206,7 +220,7 @@ ENGINE = MergeTree
 ORDER BY (host, file, time)
 ```
 
-次に、正規表現に基づいてデータをインポートできます：
+これで正規表現に基づいてデータをインポートできます:
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'
@@ -215,11 +229,12 @@ SETTINGS
 FORMAT Regexp
 ```
 
-ClickHouseは、各キャプチャグループのデータをその順序に基づいて関連するカラムに挿入します。データを確認してみましょう：
+ClickHouseは各キャプチャグループのデータを順序に基づいて対応するカラムに挿入します。データを確認してみましょう:
 
 ```sql
 SELECT * FROM error_log LIMIT 5
 ```
+
 ```response
 ┌────────────────time─┬─ip──────┬─host────────┬─file─────────────────────────┬─protocol─┐
 │ 2023-01-15 13:00:01 │ 3.5.9.2 │ example.com │ apple-touch-icon-120x120.png │ HTTP/1.1 │
@@ -230,15 +245,16 @@ SELECT * FROM error_log LIMIT 5
 └─────────────────────┴─────────┴─────────────┴──────────────────────────────┴──────────┘
 ```
 
-デフォルトでは、ClickHouseは一致しない行がある場合にエラーを発生させます。一致しない行をスキップしたい場合は、[format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched)オプションを使用して有効にしてください：
+デフォルトでは、ClickHouseはマッチしない行がある場合にエラーを発生させます。マッチしない行をスキップしたい場合は、[format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched)オプションを使用して有効にしてください:
 
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
 
+
 ## その他のフォーマット {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームをカバーするために、多くのフォーマット（テキストおよびバイナリ）のサポートを導入しています。以下の記事で、より多くのフォーマットやそれらとの作業方法を探求してください：
+ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットと使用方法について詳しく確認できます：
 
 - [CSVおよびTSVフォーマット](csv-tsv.md)
 - [Parquet](parquet.md)
@@ -247,4 +263,4 @@ ClickHouseは、さまざまなシナリオやプラットフォームをカバ�
 - [ネイティブおよびバイナリフォーマット](binary.md)
 - [SQLフォーマット](sql.md)
 
-また、Clickhouseサーバーを必要とせずにローカル/リモートファイルで作業するためのポータブルフル機能ツール [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) も確認してください。
+また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせず、ローカル/リモートファイルを操作できるポータブルでフル機能を備えたツールです。

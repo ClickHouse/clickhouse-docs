@@ -1,39 +1,38 @@
 ---
-'description': '使用ClickHouse分析Stack Overflow数据'
-'sidebar_label': 'Stack Overflow'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/stackoverflow'
-'title': '使用ClickHouse分析Stack Overflow数据'
-'keywords':
-- 'StackOverflow'
-'show_related_blogs': true
-'doc_type': 'reference'
+description: '使用 ClickHouse 分析 Stack Overflow 数据'
+sidebar_label: 'Stack Overflow'
+slug: /getting-started/example-datasets/stackoverflow
+title: '使用 ClickHouse 分析 Stack Overflow 数据'
+keywords: ['StackOverflow']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
-该数据集包含在 Stack Overflow 上发生的所有 `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory` 和 `PostLinks`。
+该数据集包含在 Stack Overflow 上产生的所有 `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory` 和 `PostLinks` 记录。
 
-用户可以下载经过预处理的 Parquet 版本数据，这些数据包含截至 2024 年 4 月的每一篇帖子，或者下载最新的 XML 格式数据并加载。在历史上，Stack Overflow 定期提供这些数据更新——通常每 3 个月一次。
+用户可以下载预生成的 Parquet 格式数据（其中包含截至 2024 年 4 月的所有帖子），或者下载最新的 XML 格式数据并自行加载。Stack Overflow 会定期更新这些数据——历史上大约每 3 个月更新一次。
 
-以下图表显示了假设 Parquet 格式的可用表的架构。
+下图展示了在使用 Parquet 格式时可用数据表的架构。
 
-<Image img={stackoverflow} alt="Stack Overflow schema" size="md"/>
+<Image img={stackoverflow} alt="Stack Overflow 架构" size="md" />
 
-有关此数据架构的描述可以在 [这里](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede) 找到。
+该数据的架构说明可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
+
 
 ## 预准备数据 {#pre-prepared-data}
 
-我们提供这一数据的 Parquet 格式副本，最新版本截至 2024 年 4 月。尽管就行数（6000万条帖子）而言对于 ClickHouse 来说数据量较小，但该数据集包含大量文本和大的字符串列。
+我们提供了该数据的 Parquet 格式副本,数据更新至 2024 年 4 月。虽然对于 ClickHouse 来说行数相对较少(6000 万条帖子),但该数据集包含大量文本和较大的 String 列。
 
 ```sql
 CREATE DATABASE stackoverflow
 ```
 
-以下时间为位于 `eu-west-2` 的 96 GiB、24 vCPU ClickHouse Cloud 集群的时间。数据集位于 `eu-west-3`。
+以下时间统计基于位于 `eu-west-2` 的 96 GiB、24 vCPU ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
 
-### Posts {#posts}
+### 帖子 {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -70,9 +69,9 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 265.466 sec. Processed 59.82 million rows, 38.07 GB (225.34 thousand rows/s., 143.42 MB/s.)
 ```
 
-帖子也可以按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
+帖子数据也可按年份获取,例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-### Votes {#votes}
+### 投票 {#votes}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -92,9 +91,9 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
-投票也可以按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+投票数据也可按年份获取,例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
-### Comments {#comments}
+### 评论 {#comments}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -115,9 +114,10 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
-评论也可以按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
-### Users {#users}
+评论数据也可按年份获取,例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
+
+### 用户 {#users}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -143,7 +143,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-### Badges {#badges}
+### 徽章 {#badges}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -163,7 +163,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### PostLinks {#postlinks}
+### 帖子链接 {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -182,7 +182,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### PostHistory {#posthistory}
+### 帖子历史 {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -206,9 +206,10 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
+
 ## 原始数据集 {#original-dataset}
 
-原始数据集以压缩的 (7zip) XML 格式可在 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 获取 - 文件前缀为 `stackoverflow.com*`。
+原始数据集以压缩的 (7zip) XML 格式提供,可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 获取 - 文件前缀为 `stackoverflow.com*`。
 
 ### 下载 {#download}
 
@@ -222,58 +223,59 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-这些文件最大可达 35GB，下载时间约为 30 分钟，具体取决于网络连接 - 下载服务器的速度限制在约 20MB/秒。
+这些文件最大可达 35GB,根据网络连接情况,下载可能需要约 30 分钟 - 下载服务器限速约为 20MB/秒。
 
 ### 转换为 JSON {#convert-to-json}
 
-在撰写时，ClickHouse 还不支持 XML 作为输入格式。为了将数据加载到 ClickHouse 中，我们首先将其转换为 NDJSON。
+截至本文撰写时,ClickHouse 尚未原生支持 XML 输入格式。要将数据加载到 ClickHouse 中,我们首先需要将其转换为 NDJSON。
 
-要将 XML 转换为 JSON，我们推荐使用 [`xq`](https://github.com/kislyuk/yq) Linux 工具，这是一个用于 XML 文档的简单 `jq` 封装。
+要将 XML 转换为 JSON,我们推荐使用 [`xq`](https://github.com/kislyuk/yq) Linux 工具,这是一个用于 XML 文档的简单 `jq` 封装工具。
 
-安装 xq 和 jq：
+安装 xq 和 jq:
 
 ```bash
 sudo apt install jq
 pip install yq
 ```
 
-以下步骤适用于上述任何文件。我们以 `stackoverflow.com-Posts.7z` 文件为例，按需修改。
+以下步骤适用于上述任何文件。我们以 `stackoverflow.com-Posts.7z` 文件为例。请根据需要进行修改。
 
-使用 [p7zip](https://p7zip.sourceforge.net/) 提取文件。这将生成一个 XML 文件 - 在此案例中为 `Posts.xml`。
+使用 [p7zip](https://p7zip.sourceforge.net/) 解压文件。这将生成一个单独的 xml 文件 - 在本例中为 `Posts.xml`。
 
-> 文件压缩比例约为4.5x。在22GB压缩后，帖子文件解压后需要大约97G。
+> 文件的压缩比约为 4.5 倍。压缩后为 22GB 的 posts 文件,解压后需要约 97GB 空间。
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-以下将 XML 文件拆分为每个包含 10000 行的文件。
+以下命令将 xml 文件拆分为多个文件,每个文件包含 10000 行。
+
 
 ```bash
 mkdir posts
 cd posts
-
-# the following splits the input xml file into sub files of 10000 rows
+# 以下命令将输入的 XML 文件拆分为每个 10000 行的子文件
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-运行上述命令后，用户将获得一组每个包含 10000 行的文件。这确保了下一个命令的内存开销不会过大（XML 到 JSON 的转换是在内存中进行的）。
+在运行完上述命令后，用户将会得到一组文件，每个文件包含 10000 行。这样可以确保下一条命令的内存开销不会过大（XML 到 JSON 的转换是在内存中完成的）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-上述命令将生成一个名为 `posts.json` 的文件。
+上述命令会生成一个 `posts.json` 文件。
 
-使用以下命令加载到 ClickHouse 中。请注意，为 `posts.json` 文件指定了架构。这需要根据数据类型进行调整，以便与目标表对齐。
+使用以下命令将其加载到 ClickHouse。注意，这里为 `posts.json` 文件显式指定了表结构（schema）。需要根据各字段的数据类型进行相应调整，以与目标表的定义保持一致。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
+
 ## 示例查询 {#example-queries}
 
-一些简单的问题供您入门。
+以下是一些简单的查询示例,帮助您快速入门。
 
 ### Stack Overflow 上最受欢迎的标签 {#most-popular-tags-on-stack-overflow}
 
@@ -304,9 +306,9 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-### 回答最多的用户（活跃账户） {#user-with-the-most-answers-active-accounts}
+### 回答数最多的用户(活跃账户) {#user-with-the-most-answers-active-accounts}
 
-账户需要 `UserId`。
+账户需要有 `UserId`。
 
 ```sql
 SELECT
@@ -330,7 +332,7 @@ LIMIT 5
 Peak memory usage: 206.45 MiB.
 ```
 
-### 点击屋相关帖子中浏览量最多的 {#clickhouse-related-posts-with-the-most-views}
+### 浏览量最高的 ClickHouse 相关帖子 {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -359,6 +361,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
 Peak memory usage: 240.01 MiB.
 ```
+
 
 ### 最具争议的帖子 {#most-controversial-posts}
 
@@ -390,10 +393,11 @@ LIMIT 3
 │ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
-Peak memory usage: 6.05 GiB.
+返回 3 行。耗时:4.779 秒。处理了 2.988 亿行,3.16 GB(每秒 6252 万行,661.05 MB/秒)
+峰值内存使用:6.05 GiB。
 ```
 
-## 归属 {#attribution}
 
-我们感谢 Stack Overflow 在 `cc-by-sa 4.0` 许可下提供此数据，承认他们的努力以及数据的原始来源，链接为 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange)。
+## 归属声明 {#attribution}
+
+我们感谢 Stack Overflow 在 `cc-by-sa 4.0` 许可证下提供此数据,并对其所做的贡献以及数据原始来源 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 表示感谢。

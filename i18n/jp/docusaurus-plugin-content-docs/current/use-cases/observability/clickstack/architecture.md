@@ -1,64 +1,70 @@
 ---
-'slug': '/use-cases/observability/clickstack/architecture'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackのアーキテクチャ - ClickHouse可観測スタック'
-'title': 'アーキテクチャ'
-'doc_type': 'reference'
+slug: /use-cases/observability/clickstack/architecture
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack のアーキテクチャ - ClickHouse オブザーバビリティスタック'
+title: 'アーキテクチャ'
+doc_type: 'reference'
+keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', 'OpenTelemetry collector', 'MongoDB', 'system design']
 ---
 
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-architecture.png';
 
-The ClickStack architecture is built around three core components: **ClickHouse**, **HyperDX**, and a **OpenTelemetry (OTel) collector**. A **MongoDB** instance provides storage for the application state. Together, they provide a high-performance, open-source observability stack optimized for logs, metrics, and traces.
+ClickStack のアーキテクチャは、**ClickHouse**、**HyperDX**、そして **OpenTelemetry (OTel) コレクター**という 3 つのコアコンポーネントを中心に構築されています。**MongoDB** インスタンスはアプリケーションの状態を保存するためのストレージを提供します。これらを組み合わせることで、ログ、メトリクス、トレースに最適化された高性能なオープンソースのオブザーバビリティスタックが実現されます。
 
-## Architecture overview {#architecture-overview}
 
-<Image img={architecture} alt="Architecture" size="lg"/>
+## アーキテクチャ概要 {#architecture-overview}
 
-## ClickHouse: the database engine {#clickhouse}
+<Image img={architecture} alt='アーキテクチャ' size='lg' />
 
-ClickStackの中心には、スケールにおけるリアルタイム分析のために設計された列指向データベースであるClickHouseがあります。これにより、観測データの取り込みとクエリ処理が可能になります。
 
-- テラバイトのイベントに対する1秒未満での検索
-- 毎日数十億の高カーディナリティレコードの取り込み
-- 観測データの少なくとも10倍の高圧縮率
-- 動的スキーマの進化を許可する半構造化JSONデータのネイティブサポート
+## ClickHouse: データベースエンジン {#clickhouse}
+
+ClickStackの中核を担うのはClickHouseです。大規模なリアルタイム分析向けに設計されたカラム指向データベースで、オブザーバビリティデータの取り込みとクエリを実現し、以下を可能にします:
+
+- 数テラバイトのイベントに対するサブセカンド検索
+- 1日あたり数十億件の高カーディナリティレコードの取り込み
+- オブザーバビリティデータに対して最低10倍の高圧縮率
+- 半構造化JSONデータのネイティブサポートによる動的なスキーマ進化の実現
 - 数百の組み込み分析関数を備えた強力なSQLエンジン
 
-ClickHouseは観測データを広いイベントとして処理し、単一の統一構造内でログ、メトリクス、およびトレースの深い相関を可能にします。
+ClickHouseはオブザーバビリティデータをワイドイベントとして処理することで、ログ、メトリクス、トレースを単一の統合構造内で深く相関させることができます。
 
-## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
 
-ClickStackには、オープンで標準化された方法でテレメトリを取り込むために事前に構成されたOpenTelemetry (OTel) コレクターが含まれています。ユーザーは、以下の方法でOTLPプロトコルを使用してデータを送信できます。
+## OpenTelemetryコレクター：データ取り込み {#open-telemetry-collector}
 
-- gRPC (ポート `4317`)
-- HTTP (ポート `4318`)
+ClickStackには、オープンで標準化された方法でテレメトリを取り込むための事前設定済みOpenTelemetry（OTel）コレクターが含まれています。ユーザーは、OTLPプロトコルを使用して以下の方法でデータを送信できます：
 
-コレクターは、効率的なバッチでテレメトリをClickHouseにエクスポートします。データソースごとに最適化されたテーブルスキーマをサポートし、すべての信号タイプにわたるスケーラブルなパフォーマンスを保証します。
+- gRPC（ポート`4317`）
+- HTTP（ポート`4318`）
 
-## HyperDX: the interface {#hyperdx}
+コレクターは、テレメトリを効率的なバッチでClickHouseにエクスポートします。データソースごとに最適化されたテーブルスキーマをサポートし、すべてのシグナルタイプにわたってスケーラブルなパフォーマンスを実現します。
 
-HyperDXはClickStackのユーザーインターフェースです。以下の機能を提供します。
 
-- 自然言語およびLuceneスタイルの検索
-- リアルタイムデバッグ用のライブテーリング
-- ログ、メトリクス、およびトレースの統一ビュー
-- フロントエンドの観測用のセッションリプレイ
-- ダッシュボードの作成およびアラート設定
+## HyperDX: インターフェース {#hyperdx}
+
+HyperDXはClickStackのユーザーインターフェースです。以下の機能を提供します:
+
+- 自然言語およびLucene形式の検索
+- リアルタイムデバッグのためのライブテーリング
+- ログ、メトリクス、トレースの統合ビュー
+- フロントエンド可観測性のためのセッションリプレイ
+- ダッシュボードの作成とアラートの設定
 - 高度な分析のためのSQLクエリインターフェース
 
-ClickHouse専用に設計されたHyperDXは、強力な検索機能と直感的なワークフローを組み合わせており、ユーザーが異常を見つけ、問題を調査し、迅速に洞察を得られるようにします。
+ClickHouse専用に設計されたHyperDXは、強力な検索機能と直感的なワークフローを組み合わせ、ユーザーが異常を検知し、問題を調査し、迅速にインサイトを獲得できるようにします。
 
-## MongoDB: application state {#mongo}
 
-ClickStackは、以下のアプリケーションレベルの状態を保存するためにMongoDBを使用します。
+## MongoDB: アプリケーション状態 {#mongo}
+
+ClickStackはMongoDBを使用してアプリケーションレベルの状態を保存します。これには以下が含まれます：
 
 - ダッシュボード
 - アラート
 - ユーザープロファイル
-- 保存されたビジュアライゼーション
+- 保存された可視化
 
-イベントデータから状態を分離することで、パフォーマンスとスケーラビリティが確保され、バックアップと構成が簡素化されます。
+状態とイベントデータを分離することで、パフォーマンスとスケーラビリティを確保しながら、バックアップと設定を簡素化します。
 
-このモジュラーアーキテクチャにより、ClickStackは迅速で柔軟なオープンソースの観測プラットフォームを提供できます。
+このモジュラーアーキテクチャにより、ClickStackは高速で柔軟性があり、オープンソースですぐに使える可観測性プラットフォームを提供します。

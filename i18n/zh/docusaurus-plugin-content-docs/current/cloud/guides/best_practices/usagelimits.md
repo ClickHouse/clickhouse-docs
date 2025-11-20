@@ -1,33 +1,34 @@
 ---
-'slug': '/cloud/bestpractices/usage-limits'
-'sidebar_label': '服务限制'
-'title': '使用限制'
-'description': '描述了 ClickHouse Cloud 中推荐的使用限制'
-'doc_type': 'reference'
+slug: /cloud/bestpractices/usage-limits
+sidebar_label: 'Service limits'
+title: '使用限制'
+description: '描述 ClickHouse Cloud 中推荐的使用限制'
+doc_type: 'reference'
+keywords: ['usage limits', 'quotas', 'best practices', 'resource management', 'cloud features']
 ---
 
-虽然 ClickHouse 以其速度和可靠性而闻名，但在特定的操作参数内才能实现最佳性能。例如，拥有过多的表、数据库或分片可能会对性能产生负面影响。为了防止这种情况，ClickHouse Cloud 在多个操作维度上强制实施限制。以下是这些保护措施的详细信息。
+虽然 ClickHouse 以其速度和可靠性著称，但只有在特定的运行参数范围内才能获得最佳性能。比如，表、数据库或数据分片（parts）过多都会对性能产生负面影响。为避免这种情况，ClickHouse Cloud 在多个运行维度上设置了限制。下方列出了这些“护栏”的详细信息。
 
 :::tip
-如果您遇到了这些保护措施中的一个，可能是您以未优化的方式实现了您的用例。请联系我们的支持团队，我们将乐意帮助您完善用例，以避免超过这些保护措施，或者一起探讨如何以受控制的方式增加这些限制。
+如果你触及了这些护栏中的某一项，很可能说明你的用例实现方式尚未优化。请联系我们的支持团队，我们会协助你优化用例，以避免超出这些护栏，或者与你一起评估如何在可控的方式下提高这些限制。
 :::
 
-| 维度                           | 限制                                                      |
+| Dimension                     | Limit                                                      |
 |-------------------------------|------------------------------------------------------------|
-| **数据库**                     | 1000                                                       |
-| **表**                         | 5000                                                       |
-| **列**                         | ∼1000（宽格式优于紧凑格式）                                 |
-| **分区**                       | 50k                                                        |
-| **分区片段**                   | 100k 在整个实例中                                         |
-| **分区片段大小**               | 150gb                                                      |
-| **每个组织的服务**            | 20（软限制）                                             |
-| **每个数据仓库的服务**        | 5（软限制）                                              |
-| **每个服务的副本**            | 20（软限制）                                             |  
-| **低基数**                     | 10k 或更少                                               |
-| **每个表的主键**               | 4-5 个足够过滤数据的主键                                   |
-| **查询并发**                   | 1000（每个副本）                                        |
-| **批量导入**                   | 大于 1M 的任何数据将由系统按 1M 行块进行拆分              |
+| **Databases**                 | 1000                                                       |
+| **Tables**                    | 5000                                                       |
+| **Columns**                   | ∼1000（更推荐使用宽表而非紧凑表）                          |
+| **Partitions**                | 50k                                                        |
+| **Parts**                     | 整个实例最多 100k                                          |
+| **Part size**                 | 150gb                                                      |
+| **Services per organization** | 20（软限制）                                               |
+| **Services per warehouse**    | 5（软限制）                                                |
+| **Replicas per service**      | 20（软限制）                                               |  
+| **Low cardinality**           | 10k 或更少                                                 |
+| **Primary keys in a table**   | 4–5 个，且能够充分过滤数据                                 |
+| **Query concurrency**         | 1000（每个副本）                                          |
+| **Batch ingest**              | 任何 &gt; 1M 的写入会被系统拆分为 1M 行的块                |
 
 :::note
-对于单副本服务，数据库的最大数量限制为 100，表的最大数量限制为 500。此外，基础层服务的存储限制为 1 TB。
+对于 Single Replica Services，数据库的最大数量限制为 100，表的最大数量限制为 500。除此之外，Basic Tier Services 的存储容量限制为 1 TB。
 :::

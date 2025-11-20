@@ -1,15 +1,18 @@
 ---
-slug: '/integrations/clickpipes/postgres/maintenance'
-sidebar_label: 'Окна техобслуживания'
-description: 'Условия обслуживания ClickPipes для Postgres.'
-title: 'Окна техобслуживания для ClickPipes для Postgres'
-doc_type: reference
+sidebar_label: 'Плановые окна обслуживания'
+description: 'Плановые окна обслуживания для ClickPipes для Postgres.'
+slug: /integrations/clickpipes/postgres/maintenance
+title: 'Плановые окна обслуживания для ClickPipes для Postgres'
+doc_type: 'reference'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
-# Окна обслуживания для ClickPipes для Postgres
 
-Планируется окно обслуживания для Postgres ClickPipes:
-- **Дата:** 17 апреля 2025
-- **Время:** 07:00 - 08:00 UTC
+# Окна обслуживания ClickPipes для Postgres
 
-В это время ваши Postgres Pipes будут временно недоступны. 
-ClickPipes будут доступны снова после окна обслуживания и вернутся к нормальным операциям.
+Запланировано окно обслуживания ClickPipes для Postgres:
+
+- **Дата:** 17 апреля 2025 г.
+- **Время:** 07:00–08:00 UTC
+
+В этот период ваши Postgres Pipes будут недоступны в течение короткого времени.
+После завершения окна обслуживания ClickPipes снова станут доступны и возобновят нормальную работу.

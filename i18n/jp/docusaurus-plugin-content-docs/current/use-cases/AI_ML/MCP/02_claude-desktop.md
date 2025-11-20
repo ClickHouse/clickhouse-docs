@@ -1,16 +1,13 @@
 ---
-'slug': '/use-cases/AI/MCP/claude-desktop'
-'sidebar_label': 'Claude Desktopを統合する'
-'title': 'Claude Desktopを使用してClickHouse MCPサーバーを設定する'
-'pagination_prev': null
-'pagination_next': null
-'description': 'このガイドでは、ClickHouse MCPサーバーとClaude Desktopを設定する方法を説明します。'
-'keywords':
-- 'AI'
-- 'Librechat'
-- 'MCP'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/claude-desktop
+sidebar_label: 'Claude Desktop を連携する'
+title: 'Claude Desktop と ClickHouse MCP サーバーのセットアップ'
+pagination_prev: null
+pagination_next: null
+description: 'このガイドでは、Claude Desktop と ClickHouse MCP サーバーを連携して使用するためのセットアップ方法を説明します。'
+keywords: ['AI', 'Librechat', 'MCP']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
@@ -22,35 +19,48 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# ClickHouse MCPサーバーをClaude Desktopで使用する
+# Claude DesktopでClickHouse MCPサーバーを使用する
 
-> このガイドでは、uvを使用してClickHouse MCPサーバーにClaude Desktopを設定し、ClickHouseのサンプルデータセットに接続する方法を説明します。
+> このガイドでは、uvを使用してClaude DesktopでClickHouse MCPサーバーをセットアップし、
+> ClickHouseのサンプルデータセットに接続する方法について説明します。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width='768'
+  height='432'
+  src='https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q'
+  title='YouTube動画プレーヤー'
+  frameborder='0'
+  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  referrerpolicy='strict-origin-when-cross-origin'
+  allowfullscreen
+></iframe>
 
 <VerticalStepper headerLevel="h2">
 
+
 ## uvのインストール {#install-uv}
 
-このガイドの指示に従うには、[uv](https://docs.astral.sh/uv/)をインストールする必要があります。  
-uvを使用したくない場合は、MCP Server構成を更新して代替のパッケージマネージャを使用する必要があります。
+本ガイドの手順を実行するには、[uv](https://docs.astral.sh/uv/)をインストールする必要があります。
+uvを使用しない場合は、別のパッケージマネージャーを使用するようMCP Serverの設定を更新する必要があります。
+
 
 ## Claude Desktopのダウンロード {#download-claude-desktop}
 
-Claude Desktopアプリをインストールする必要もあり、[Claude Desktopのウェブサイト](https://claude.ai/desktop)からダウンロードできます。
+Claude Desktopアプリのインストールも必要です。[Claude Desktopウェブサイト](https://claude.ai/desktop)からダウンロードできます。
+
 
 ## ClickHouse MCPサーバーの設定 {#configure-clickhouse-mcp-server}
 
-Claude Desktopをインストールしたら、[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を設定する時間です。  
-これは、[Claude Desktopの設定ファイル](https://claude.ai/docs/configuration)を介して行えます。
+Claude Desktopのインストールが完了したら、[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を設定します。
+設定は[Claude Desktop設定ファイル](https://claude.ai/docs/configuration)を通じて行います。
 
-このファイルを見つけるには、まず設定ページに移動し（Macでは`Cmd+,`）、左側のメニューから`Developer`タブをクリックします。  
-次に、`Edit config`ボタンをクリックする必要がある次の画面が表示されます：
+このファイルを見つけるには、まず設定ページ(Macでは`Cmd+,`)を開き、左側のメニューから`Developer`タブをクリックします。
+次の画面が表示されるので、`Edit config`ボタンをクリックします:
 
-<Image img={ClaudeDesktopConfig} alt="Claude Desktopの設定" size="md" />
+<Image img={ClaudeDesktopConfig} alt='Claude Desktop設定' size='md' />
 
-これにより、設定ファイル（`claude_desktop_config.json`）が含まれているディレクトリに移動します。  
-そのファイルを最初に開いたときは、以下の内容が含まれている可能性があります：
+これにより、設定ファイル(`claude_desktop_config.json`)を含むディレクトリが開きます。
+初めてこのファイルを開くと、次のような内容になっているはずです:
 
 ```json
 {
@@ -58,8 +68,8 @@ Claude Desktopをインストールしたら、[ClickHouse MCPサーバー](http
 }
 ```
 
-`mcpServers`辞書は、MCPサーバーの名前をキーとして受け取り、設定オプションの辞書を値として受け取ります。  
-たとえば、ClickHouse Playgroundに接続するClickHouse MCPサーバーの設定は次のようになります：
+`mcpServers`ディクショナリは、MCPサーバーの名前をキーとし、設定オプションのディクショナリを値として受け取ります。
+例えば、ClickHouse Playgroundに接続するClickHouse MCPサーバーの設定は次のようになります:
 
 ```json
 {
@@ -89,36 +99,41 @@ Claude Desktopをインストールしたら、[ClickHouse MCPサーバー](http
 }
 ```
 
-設定を更新したら、変更を適用するためにClaude Desktopを再起動する必要があります。 
+設定を更新したら、変更を反映するためにClaude Desktopを再起動する必要があります。
 
 :::warning
-`uv`をインストールした方法に応じて、Claude Desktopを再起動する際に次のエラーが発生することがあります：
+`uv`のインストール方法によっては、Claude Desktopの再起動時に次のエラーが表示される場合があります:
 
 ```text
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
-その場合、`command`を`uv`のフルパスに更新する必要があります。たとえば、Cargoを介してインストールした場合は、`/Users/<username>/.cargo/bin/uv`となります。
+この場合は、`command`を`uv`のフルパスに更新する必要があります。例えば、Cargo経由でインストールした場合は`/Users/<username>/.cargo/bin/uv`になります。
 :::
 
-## ClickHouse MCPサーバーを使用する {#using-clickhouse-mcp-server}
 
-Claude Desktopを再起動したら、`Search and tools`アイコンをクリックしてClickHouse MCPサーバーを見つけることができます：
+## ClickHouse MCPサーバーの使用 {#using-clickhouse-mcp-server}
 
-<Image img={FindMCPServers} alt="MCPサーバーを見つける" size="md" />
-<br/>
+Claude Desktopを再起動したら、`Search and tools`アイコンをクリックしてClickHouse MCPサーバーを見つけることができます:
 
-次に、すべてまたは一部のツールを無効にするかどうかを選択できます。
+<Image img={FindMCPServers} alt='MCPサーバーを見つける' size='md' />
+<br />
 
-これで、ClickHouse MCPサーバーを使用する結果をもたらすClaudeへの質問を行う準備が整いました。  
-たとえば、`SQLプレイグラウンドで最も興味深いデータセットは何ですか？`と尋ねることができます。
+その後、すべてのツールまたは一部のツールを無効にするかどうかを選択できます。
 
-Claudeは、MCPサーバーの各ツールを初めて呼び出す際に、その使用を確認するように求めます：
+これで、ClickHouse MCPサーバーを使用する質問をClaudeに尋ねる準備が整いました。
+例えば、`SQLプレイグラウンドで最も興味深いデータセットは何ですか?`と尋ねることができます。
 
-<Image img={MCPPermission} alt="list_databasesツールの使用許可を与える" size="md" />
+Claudeは、MCPサーバー内の各ツールが初めて呼び出されるときに、その使用を確認するよう求めます:
 
-以下は、ClickHouse MCPサーバーへのいくつかのツール呼び出しを含む会話の一部です：
+<Image
+  img={MCPPermission}
+  alt='list_databasesツールの使用許可を与える'
+  size='md'
+/>
 
-<Image img={ClaudeConversation} alt="Claudeの会話" size="md" />
+以下は、ClickHouse MCPサーバーへのいくつかのツール呼び出しを含む会話の一部です:
+
+<Image img={ClaudeConversation} alt='Claudeとの会話' size='md' />
 
 </VerticalStepper>

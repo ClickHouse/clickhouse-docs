@@ -1,41 +1,36 @@
 ---
-'sidebar_label': 'Rust'
-'sidebar_position': 5
-'keywords':
-- 'clickhouse'
-- 'rs'
-- 'rust'
-- 'cargo'
-- 'crate'
-- 'http'
-- 'client'
-- 'connect'
-- 'integrate'
-'slug': '/integrations/rust'
-'description': 'ClickHouse に接続するための公式 Rust クライアント。'
-'title': 'ClickHouse Rust クライアント'
-'doc_type': 'reference'
+sidebar_label: 'Rust'
+sidebar_position: 5
+keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
+slug: /integrations/rust
+description: 'ClickHouse への接続用公式 Rust クライアント。'
+title: 'ClickHouse Rust クライアント'
+doc_type: 'reference'
 ---
 
 
-# ClickHouse Rustクライアント
 
-ClickHouseに接続するための公式のRustクライアントで、元々は[Paul Loyd](https://github.com/loyd)によって開発されました。クライアントのソースコードは[GitHubリポジトリ](https://github.com/ClickHouse/clickhouse-rs)で入手可能です。
+# ClickHouse Rust クライアント
+
+ClickHouse に接続するための公式 Rust クライアントで、もともと [Paul Loyd](https://github.com/loyd) によって開発されました。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
+
+
 
 ## 概要 {#overview}
 
-* 行のエンコード/デコードには`serde`を使用しています。
-* `serde`属性をサポートしています：`skip_serializing`、`skip_deserializing`、`rename`。
-* HTTPトランスポートでは[`RowBinary`](/interfaces/formats#rowbinary)フォーマットを使用します。
-  * TCP経由で[`Native`](/interfaces/formats#native)に切り替える計画があります。
-* TLSをサポートしています（`native-tls`および`rustls-tls`機能を通じて）。
-* 圧縮と解凍をサポートしています（LZ4）。
-* データの選択や挿入、DDLの実行、およびクライアント側のバッチ処理のためのAPIを提供しています。
-* ユニットテスト用の便利なモックを提供しています。
+- 行のエンコード/デコードに`serde`を使用します。
+- `serde`属性（`skip_serializing`、`skip_deserializing`、`rename`）をサポートしています。
+- HTTPトランスポート上で[`RowBinary`](/interfaces/formats/RowBinary)フォーマットを使用します。
+  - TCP上で[`Native`](/interfaces/formats/Native)に切り替える計画があります。
+- TLSをサポートしています（`native-tls`および`rustls-tls`機能を使用）。
+- 圧縮と解凍（LZ4）をサポートしています。
+- データの選択または挿入、DDLの実行、クライアント側のバッチ処理のためのAPIを提供します。
+- ユニットテスト用の便利なモックを提供します。
+
 
 ## インストール {#installation}
 
-クレートを使用するには、`Cargo.toml`に以下を追加してください：
+このクレートを使用するには、`Cargo.toml`に以下を追加します：
 
 ```toml
 [dependencies]
@@ -45,52 +40,58 @@ clickhouse = "0.12.2"
 clickhouse = { version = "0.12.2", features = ["test-util"] }
 ```
 
-詳細は、[crates.ioページ](https://crates.io/crates/clickhouse)もご覧ください。
+参照：[crates.ioページ](https://crates.io/crates/clickhouse)
 
-## Cargo機能 {#cargo-features}
 
-* `lz4`（デフォルトで有効）— `Compression::Lz4`および`Compression::Lz4Hc(_)`バリアントを有効にします。有効にされた場合、デフォルトで全てのクエリに`Compression::Lz4`が使用されますが、`WATCH`を除きます。
-* `native-tls` — `hyper-tls`を通じて`HTTPS`スキーマのURLをサポートし、OpenSSLにリンクします。
-* `rustls-tls` — `hyper-rustls`を通じて`HTTPS`スキーマのURLをサポートし、OpenSSLにリンクしません。
-* `inserter` — `client.inserter()`を有効にします。
-* `test-util` — モックを追加します。詳細は[こちらの例](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)をご覧ください。これは`dev-dependencies`でのみ使用してください。
-* `watch` — `client.watch`機能を有効にします。詳細は対応するセクションを参照してください。
-* `uuid` — [uuid](https://docs.rs/uuid)クレートで作業するために`serde::uuid`を追加します。
-* `time` — [time](https://docs.rs/time)クレートで作業するために`serde::time`を追加します。
+## Cargoフィーチャー {#cargo-features}
+
+- `lz4`(デフォルトで有効) — `Compression::Lz4`および`Compression::Lz4Hc(_)`バリアントを有効にします。有効にすると、`WATCH`を除くすべてのクエリでデフォルトで`Compression::Lz4`が使用されます。
+- `native-tls` — `hyper-tls`を介して`HTTPS`スキーマのURLをサポートします。OpenSSLに対してリンクされます。
+- `rustls-tls` — `hyper-rustls`を介して`HTTPS`スキーマのURLをサポートします。OpenSSLに対してリンクされません。
+- `inserter` — `client.inserter()`を有効にします。
+- `test-util` — モックを追加します。[サンプル](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)を参照してください。`dev-dependencies`でのみ使用してください。
+- `watch` — `client.watch`機能を有効にします。詳細については該当するセクションを参照してください。
+- `uuid` — [uuid](https://docs.rs/uuid)クレートと連携するために`serde::uuid`を追加します。
+- `time` — [time](https://docs.rs/time)クレートと連携するために`serde::time`を追加します。
 
 :::important
-ClickHouseに`HTTPS` URLを介して接続する場合、`native-tls`または`rustls-tls`のいずれかの機能を有効にする必要があります。両方が有効にされている場合は、`rustls-tls`機能が優先されます。
+`HTTPS` URLを介してClickHouseに接続する場合、`native-tls`または`rustls-tls`フィーチャーのいずれかを有効にする必要があります。
+両方が有効になっている場合、`rustls-tls`フィーチャーが優先されます。
 :::
+
 
 ## ClickHouseバージョンの互換性 {#clickhouse-versions-compatibility}
 
-このクライアントはLTSまたはそれ以降のバージョンのClickHouseと、ClickHouse Cloudに対応しています。
+このクライアントは、ClickHouseのLTS版以降のバージョン、およびClickHouse Cloudと互換性があります。
 
-v22.6より古いClickHouseサーバーは、行バイナリを[一部の稀なケースで不正確に処理します](https://github.com/ClickHouse/ClickHouse/issues/37420)。 v0.11以上を使用し、`wa-37420`機能を有効にすることでこの問題を解決できます。ただし注意：この機能は新しいClickHouseバージョンでは使用しないでください。
+v22.6より前のClickHouseサーバーは、[一部のまれなケースでRowBinaryを正しく処理しません](https://github.com/ClickHouse/ClickHouse/issues/37420)。
+この問題を解決するには、v0.11以降を使用し、`wa-37420`機能を有効にします。注意: この機能は新しいバージョンのClickHouseでは使用しないでください。
+
 
 ## 例 {#examples}
 
-クライアントのさまざまな使用シナリオをカバーすることを目指しており、[例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples)はクライアントリポジトリでご覧いただけます。概要は[例のREADME](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview)で入手可能です。
+クライアントリポジトリの[examples](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples)では、クライアントの様々な使用シナリオを網羅しています。概要は[examples README](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview)で確認できます。
 
-例や以下の文書に不明な点や欠落がある場合は、[お問い合わせ](./rust.md#contact-us)ください。
+例や以下のドキュメントで不明な点や不足している内容がある場合は、お気軽に[お問い合わせください](./rust.md#contact-us)。
 
-## 使用法 {#usage}
+
+## 使用方法 {#usage}
 
 :::note
-[ch2rs](https://github.com/ClickHouse/ch2rs)クレートは、ClickHouseから行タイプを生成するのに役立ちます。
+[ch2rs](https://github.com/ClickHouse/ch2rs) クレートは、ClickHouseから行型を生成する際に便利です。
 :::
 
 ### クライアントインスタンスの作成 {#creating-a-client-instance}
 
 :::tip
-作成したクライアントを再利用するか、クローンして基盤となるhyper接続プールを再利用してください。
+基盤となるhyperコネクションプールを再利用するため、作成したクライアントを再利用するか、クローンしてください。
 :::
 
 ```rust
 use clickhouse::Client;
 
 let client = Client::default()
-    // should include both protocol and port
+    // プロトコルとポートの両方を含める必要があります
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
@@ -99,17 +100,17 @@ let client = Client::default()
 
 ### HTTPSまたはClickHouse Cloud接続 {#https-or-clickhouse-cloud-connection}
 
-HTTPSは`rustls-tls`または`native-tls`のCargo機能のいずれかで動作します。
+HTTPSは`rustls-tls`または`native-tls`のいずれかのcargoフィーチャーで動作します。
 
-通常通りにクライアントを作成してください。この例では、環境変数を使用して接続詳細を保存しています：
+次に、通常通りクライアントを作成します。この例では、環境変数を使用して接続情報を保存しています:
 
 :::important
-URLにはプロトコルとポートの両方を含める必要があります。例：`https://instance.clickhouse.cloud:8443`。
+URLにはプロトコルとポートの両方を含める必要があります。例: `https://instance.clickhouse.cloud:8443`
 :::
 
 ```rust
 fn read_env_var(key: &str) -> String {
-    env::var(key).unwrap_or_else(|_| panic!("{key} env variable should be set"))
+    env::var(key).unwrap_or_else(|_| panic!("{key} 環境変数を設定する必要があります"))
 }
 
 let client = Client::default()
@@ -118,8 +119,9 @@ let client = Client::default()
     .with_password(read_env_var("CLICKHOUSE_PASSWORD"));
 ```
 
-詳細は次の通りです：
-- クライアントリポジトリの[ClickHouse Cloudの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)は、オンプレミスのHTTPS接続にも適用可能です。
+関連項目:
+
+- クライアントリポジトリの[ClickHouse CloudでのHTTPSの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。これはオンプレミスのHTTPS接続にも適用できます。
 
 ### 行の選択 {#selecting-rows}
 
@@ -145,15 +147,15 @@ let mut cursor = client
 while let Some(row) = cursor.next().await? { .. }
 ```
 
-* プレースホルダー`?fields`は`no, name`（`Row`のフィールド）に置き換えられます。
-* プレースホルダー`?`は以下の`bind()`呼び出しの値に置き換えられます。
-* 最初の行またはすべての行を取得するために便利な`fetch_one::<Row>()`および`fetch_all::<Row>()`メソッドが使用できます。
-* テーブル名をバインドするために`sql::Identifier`を使用できます。
+- プレースホルダー`?fields`は`no, name`（`Row`のフィールド）に置き換えられます。
+- プレースホルダー`?`は、後続の`bind()`呼び出しの値に置き換えられます。
+- 便利な`fetch_one::<Row>()`および`fetch_all::<Row>()`メソッドを使用して、それぞれ最初の行またはすべての行を取得できます。
+- `sql::Identifier`を使用してテーブル名をバインドできます。
 
-注意：レスポンス全体がストリームされるため、カーソルは行を生成した後でもエラーを返すことがあります。この場合、`query(...).with_option("wait_end_of_query", "1")`を試して、サーバー側でのレスポンスバッファリングを有効にしてください。[詳細](/interfaces/http/#response-buffering)もご覧ください。`buffer_size`オプションも便利です。
+注意: レスポンス全体がストリーミングされるため、カーソルは一部の行を生成した後でもエラーを返す可能性があります。このような状況が発生した場合は、`query(...).with_option("wait_end_of_query", "1")`を使用してサーバー側でレスポンスバッファリングを有効にすることができます。[詳細](/interfaces/http/#response-buffering)。`buffer_size`オプションも有用です。
 
 :::warning
-行を選択する際に`wait_end_of_query`を使用する際は注意してください。サーバー側でのメモリ消費が増加し、全体のパフォーマンスが低下する可能性があります。
+行を選択する際は`wait_end_of_query`を慎重に使用してください。サーバー側でのメモリ消費量が増加し、全体的なパフォーマンスが低下する可能性があります。
 :::
 
 ### 行の挿入 {#inserting-rows}
@@ -174,13 +176,14 @@ insert.write(&MyRow { no: 1, name: "bar".into() }).await?;
 insert.end().await?;
 ```
 
-* `end()`が呼び出されない場合、`INSERT`は中止されます。
-* 行はストリームとして徐々に送信され、ネットワーク負荷を分散します。
-* ClickHouseは、すべての行が同じパーティションに収まる場合にのみバッチを原子的に挿入します。この際、行の数は[`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size)よりも少ない必要があります。
+- `end()`が呼び出されない場合、`INSERT`は中止されます。
+- 行はネットワーク負荷を分散するためにストリームとして段階的に送信されます。
+- ClickHouseは、すべての行が同じパーティションに収まり、その数が[`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size)未満の場合にのみ、バッチをアトミックに挿入します。
 
 ### 非同期挿入（サーバー側バッチ処理） {#async-insert-server-side-batching}
 
-[ClickHouseの非同期挿入](/optimize/asynchronous-inserts)を使用して、クライアント側のデータバッチ処理を回避できます。これは、単に`insert`メソッド（またはクライアントインスタンス自体に）に`async_insert`オプションを提供することで行えます。
+[ClickHouseの非同期挿入](/optimize/asynchronous-inserts)を使用して、受信データのクライアント側バッチ処理を回避できます。これは、`insert`メソッドに`async_insert`オプションを指定するだけで実現できます（または`Client`インスタンス自体に指定することで、すべての`insert`呼び出しに影響を与えることもできます）。
+
 
 ```rust
 let client = Client::default()
@@ -189,12 +192,13 @@ let client = Client::default()
     .with_option("wait_for_async_insert", "0");
 ```
 
-詳細は次の通りです：
-- クライアントリポジトリの[非同期挿入の例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)をご覧ください。
+関連項目:
 
-### Inserter機能（クライアント側バッチ処理） {#inserter-feature-client-side-batching}
+- クライアントリポジトリの[非同期インサートの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)
 
-`inserter`のCargo機能が必要です。
+### Inserter機能(クライアント側バッチ処理) {#inserter-feature-client-side-batching}
+
+`inserter` cargoフィーチャーが必要です。
 
 ```rust
 let mut inserter = client.inserter("some")?
@@ -213,33 +217,35 @@ if stats.rows > 0 {
     );
 }
 
-// don't forget to finalize the inserter during the application shutdown
-// and commit the remaining rows. `.end()` will provide stats as well.
+// アプリケーションのシャットダウン時にinserterを終了し、
+// 残りの行をコミットすることを忘れないでください。`.end()`は統計情報も提供します。
 inserter.end().await?;
 ```
 
-* `Inserter`は、いずれかのしきい値（`max_bytes`、`max_rows`、`period`）に達した場合、`commit()`内でアクティブな挿入を終了します。
-* アクティブな`INSERT`を終了する間隔は、並行する挿入者による負荷のスパイクを避けるために`with_period_bias`を使用して調整できます。
-* `Inserter::time_left()`は、現在の期間が終了する時を検出するために使用できます。ストリームがアイテムをまれに発生する場合は、制限を再確認するために`Inserter::commit()`を再度呼び出してください。
-* 時間のしきい値は、[quanta](https://docs.rs/quanta)クレートを使用して`inserter`を高速化します。`test-util`が有効な場合は使用されません（したがって、カスタムテストで`tokio::time::advance()`による時間管理が可能です）。
-* `commit()`コール間のすべての行は、同じ`INSERT`文で挿入されます。
+- `Inserter`は、いずれかの閾値(`max_bytes`、`max_rows`、`period`)に達すると、`commit()`でアクティブなインサートを終了します。
+- アクティブな`INSERT`の終了間隔は、`with_period_bias`を使用してずらすことができ、並列inserterによる負荷スパイクを回避できます。
+- `Inserter::time_left()`を使用して、現在の期間がいつ終了するかを検出できます。ストリームがまれにしかアイテムを出力しない場合は、`Inserter::commit()`を再度呼び出して制限を確認してください。
+- 時間閾値は[quanta](https://docs.rs/quanta)クレートを使用して実装され、`inserter`を高速化します。`test-util`が有効な場合は使用されません(したがって、カスタムテストでは`tokio::time::advance()`で時間を管理できます)。
+- `commit()`呼び出し間のすべての行は、同じ`INSERT`文で挿入されます。
 
 :::warning
-挿入を終了/確定する場合は、フラッシュを忘れないでください：
+インサートを終了/完了する場合は、フラッシュを忘れないでください:
+
 ```rust
 inserter.end().await?;
 ```
+
 :::
 
 ### DDLの実行 {#executing-ddls}
 
-単一ノードの展開では、次のようにDDLを実行するだけで十分です。
+シングルノードデプロイメントでは、次のようにDDLを実行するだけで十分です:
 
 ```rust
 client.query("DROP TABLE IF EXISTS some").execute().await?;
 ```
 
-ただし、負荷分散装置またはClickHouse Cloudを使用したクラスター展開では、`wait_end_of_query`オプションを使用して、すべてのレプリカでDDLが適用されるのを待つことをお勧めします。これは次のように行うことができます。
+ただし、ロードバランサーを使用したクラスタデプロイメントやClickHouse Cloudでは、`wait_end_of_query`オプションを使用して、DDLがすべてのレプリカに適用されるまで待機することを推奨します。これは次のように実行できます:
 
 ```rust
 client
@@ -251,23 +257,23 @@ client
 
 ### ClickHouse設定 {#clickhouse-settings}
 
-`with_option`メソッドを使用して、さまざまな[ClickHouse設定](/operations/settings/settings)を適用できます。例として：
+`with_option`メソッドを使用して、さまざまな[ClickHouse設定](/operations/settings/settings)を適用できます。例:
 
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // This setting will be applied to this particular query only;
-    // it will override the global client setting.
+    // この設定は、この特定のクエリにのみ適用されます。
+    // グローバルクライアント設定を上書きします。
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
 ```
 
-`query`に加えて、`insert`および`inserter`メソッドでも同様に機能します。また、クライアントインスタンス上で同じメソッドを呼び出すことで、すべてのクエリに対してグローバル設定を設定できます。
+`query`に加えて、`insert`および`inserter`メソッドでも同様に機能します。さらに、`Client`インスタンスで同じメソッドを呼び出して、すべてのクエリのグローバル設定を設定できます。
 
 ### クエリID {#query-id}
 
-`.with_option`を使用することで、クエリをClickHouseのクエリログで識別するための`query_id`オプションを設定できます。
+`.with_option`を使用して、`query_id`オプションを設定し、ClickHouseクエリログでクエリを識別できます。
 
 ```rust
 let numbers = client
@@ -280,14 +286,15 @@ let numbers = client
 `query`に加えて、`insert`および`inserter`メソッドでも同様に機能します。
 
 :::danger
-`query_id`を手動で設定する場合は、一意であることを確認してください。UUIDは良い選択です。
+`query_id`を手動で設定する場合は、一意であることを確認してください。UUIDはこの目的に適しています。
 :::
 
-詳細は、クライアントリポジトリの[query_id例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)をご覧ください。
+関連項目: クライアントリポジトリの[query_idの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)
 
 ### セッションID {#session-id}
 
-`query_id`と同様に、`session_id`を設定して同一のセッション内でステートメントを実行できます。`session_id`は、クライアントレベルでグローバルに設定することも、`query`、`insert`、または`inserter`呼び出しごとに設定することもできます。
+
+`query_id`と同様に、`session_id`を設定することで、同じセッション内でステートメントを実行できます。`session_id`は、クライアントレベルでグローバルに設定するか、`query`、`insert`、または`inserter`の各呼び出しごとに設定できます。
 
 ```rust
 let client = Client::default()
@@ -296,14 +303,14 @@ let client = Client::default()
 ```
 
 :::danger
-クラスター展開の場合、「スティッキーセッション」がないため、特定のクラスターノードに接続してこの機能を適切に利用する必要があります。たとえば、ラウンドロビン負荷分散装置は、後続のリクエストが同じClickHouseノードで処理されることを保証しません。
+クラスター構成のデプロイメントでは、「スティッキーセッション」が存在しないため、この機能を適切に利用するには_特定のクラスターノード_に接続する必要があります。例えば、ラウンドロビン方式のロードバランサーでは、後続のリクエストが同じClickHouseノードで処理されることが保証されないためです。
 :::
 
-詳細は、クライアントリポジトリの[session_id例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs)をご覧ください。
+参照: クライアントリポジトリの[session_idの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs)
 
 ### カスタムHTTPヘッダー {#custom-http-headers}
 
-プロキシ認証を使用している場合やカスタムヘッダーを渡す必要がある場合は、次のようにできます。
+プロキシ認証を使用している場合や、カスタムヘッダーを渡す必要がある場合は、次のように設定できます:
 
 ```rust
 let client = Client::default()
@@ -311,24 +318,24 @@ let client = Client::default()
     .with_header("X-My-Header", "hello");
 ```
 
-詳細は、クライアントリポジトリの[カスタムHTTPヘッダーの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs)をご覧ください。
+参照: クライアントリポジトリの[カスタムHTTPヘッダーの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs)
 
 ### カスタムHTTPクライアント {#custom-http-client}
 
-これは、基盤となるHTTP接続プール設定を微調整するのに役立ちます。
+これは、基盤となるHTTP接続プールの設定を調整する際に役立ちます。
 
 ```rust
 use hyper_util::client::legacy::connect::HttpConnector;
 use hyper_util::client::legacy::Client as HyperClient;
 use hyper_util::rt::TokioExecutor;
 
-let connector = HttpConnector::new(); // or HttpsConnectorBuilder
+let connector = HttpConnector::new(); // または HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // For how long keep a particular idle socket alive on the client side (in milliseconds).
-    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
-    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
+    // クライアント側で特定のアイドルソケットを維持する時間(ミリ秒単位)。
+    // ClickHouseサーバーのKeepAliveタイムアウトよりもかなり短く設定することが推奨されます。
+    // デフォルトでは、23.11以前のバージョンでは3秒、それ以降は10秒です。
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // Sets the maximum idle Keep-Alive connections allowed in the pool.
+    // プール内で許可されるアイドル状態のKeep-Alive接続の最大数を設定します。
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -336,25 +343,27 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 ```
 
 :::warning
-この例はレガシーHyper APIに依存しており、将来的に変更される可能性があります。
+この例はレガシーのHyper APIに依存しており、将来変更される可能性があります。
 :::
 
-詳細は、クライアントリポジトリの[カスタムHTTPクライアントの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs)をご覧ください。
+参照: クライアントリポジトリの[カスタムHTTPクライアントの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs)
+
 
 ## データ型 {#data-types}
 
 :::info
-追加の例もご覧ください：
-* [よりシンプルなClickHouseデータ型](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
-* [コンテナのようなClickHouseデータ型](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
-:::
+以下の追加例も参照してください:
 
-* `(U)Int(8|16|32|64|128)`は、対応する`(u|i)(8|16|32|64|128)`型またはそれを囲む新しい型にマッピングされます。
-* `(U)Int256`は直接サポートされていませんが、[回避策](https://github.com/ClickHouse/clickhouse-rs/issues/48)があります。
-* `Float(32|64)`は、対応する`f(32|64)`型またはそれを囲む新しい型にマッピングされます。
-* `Decimal(32|64|128)`は、対応する`i(32|64|128)`型またはそれを囲む新しい型にマッピングされます。符号付き小数点数の実装には、[`fixnum`](https://github.com/loyd/fixnum)を使用するのが便利です。
-* `Boolean`は、`bool`またはそれを囲む新しい型にマッピングされます。
-* `String`は、`&str`、`&[u8]`、`String`、`Vec<u8>`、または[`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html)などの任意の文字列またはバイト型にマッピングされます。新しい型もサポートされています。バイトを格納するためには、[`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/)を使用することを検討してください。こちらの方が効率的です。
+- [シンプルなClickHouseデータ型](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_simple.rs)
+- [コンテナ型のClickHouseデータ型](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
+  :::
+
+- `(U)Int(8|16|32|64|128)` は対応する `(u|i)(8|16|32|64|128)` 型、またはそれらを囲むnewtypeとマッピングされます。
+- `(U)Int256` は直接サポートされていませんが、[回避策](https://github.com/ClickHouse/clickhouse-rs/issues/48)が存在します。
+- `Float(32|64)` は対応する `f(32|64)` 型、またはそれらを囲むnewtypeとマッピングされます。
+- `Decimal(32|64|128)` は対応する `i(32|64|128)` 型、またはそれらを囲むnewtypeとマッピングされます。符号付き固定小数点数の実装として [`fixnum`](https://github.com/loyd/fixnum) や他の実装を使用する方が便利です。
+- `Boolean` は `bool` 型、またはそれを囲むnewtypeとマッピングされます。
+- `String` は任意の文字列型またはバイト型(例: `&str`、`&[u8]`、`String`、`Vec<u8>`、[`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html))とマッピングされます。newtypeもサポートされています。バイトを格納する場合は、より効率的な [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/) の使用を検討してください。
 
 ```rust
 #[derive(Row, Debug, Serialize, Deserialize)]
@@ -368,7 +377,7 @@ struct MyRow<'a> {
 }
 ```
 
-* `FixedString(N)`は、バイトの配列としてサポートされています。例：`[u8; N]`。
+- `FixedString(N)` はバイト配列(例: `[u8; N]`)としてサポートされています。
 
 ```rust
 #[derive(Row, Debug, Serialize, Deserialize)]
@@ -377,7 +386,7 @@ struct MyRow {
 }
 ```
 
-* `Enum(8|16)`は、[`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/)を使用してサポートされています。
+- `Enum(8|16)` は [`serde_repr`](https://docs.rs/serde_repr/latest/serde_repr/) を使用してサポートされています。
 
 ```rust
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -397,7 +406,7 @@ enum Level {
 }
 ```
 
-* `UUID`は、`serde::uuid`を使用して[`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html)にマッピングされます。`uuid`機能が必要です。
+- `UUID` は `serde::uuid` を使用して [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html) とマッピングされます。`uuid` フィーチャーが必要です。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -407,8 +416,8 @@ struct MyRow {
 }
 ```
 
-* `IPv6`は、[`std::net::Ipv6Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv6Addr.html)にマッピングされます。
-* `IPv4`は、[`std::net::Ipv4Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv4Addr.html)を使用して、`serde::ipv4`でマッピングされます。
+- `IPv6` は [`std::net::Ipv6Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv6Addr.html) とマッピングされます。
+- `IPv4` は `serde::ipv4` を使用して [`std::net::Ipv4Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv4Addr.html) とマッピングされます。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -418,7 +427,7 @@ struct MyRow {
 }
 ```
 
-* `Date`は、`u16`またはそれを囲む新しい型にマッピングされ、`1970-01-01`以降の日数を表します。また、[`time::Date`](https://docs.rs/time/latest/time/struct.Date.html)は、`serde::time::date`を使用してサポートされており、`time`機能が必要です。
+- `Date` は `u16` 型またはそれを囲むnewtypeとマッピングされ、`1970-01-01` からの経過日数を表します。また、[`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) は `serde::time::date` を使用してサポートされており、`time` フィーチャーが必要です。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -429,7 +438,8 @@ struct MyRow {
 }
 ```
 
-* `Date32`は、`i32`またはそれを囲む新しい型にマッピングされ、`1970-01-01`以降の日数を表します。また、[`time::Date`](https://docs.rs/time/latest/time/struct.Date.html)は、`serde::time::date32`を使用してサポートされており、`time`機能が必要です。
+- `Date32` は `i32` 型またはそれを囲むnewtypeとマッピングされ、`1970-01-01` からの経過日数を表します。また、[`time::Date`](https://docs.rs/time/latest/time/struct.Date.html) は `serde::time::date32` を使用してサポートされており、`time` フィーチャーが必要です。
+
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -440,7 +450,7 @@ struct MyRow {
 }
 ```
 
-* `DateTime`は、`u32`またはそれを囲む新しい型にマッピングされ、UNIXエポック以降の経過秒数を表します。また、[`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)は、`serde::time::datetime`を使用してサポートされており、`time`機能が必要です。
+* `DateTime` は、`u32` またはそれを包んだ newtype と相互にマッピングされ、UNIX エポックからの経過秒数を表します。また、`time` フィーチャが必要な `serde::time::datetime` を使用することで、[`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) もサポートされます。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -451,28 +461,28 @@ struct MyRow {
 }
 ```
 
-* `DateTime64(_)`は、`i32`またはそれを囲む新しい型にマッピングされ、UNIXエポック以降の経過時間を表します。また、[`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)は、`serde::time::datetime64::*`を使用してサポートされており、`time`機能が必要です。
+* `DateTime64(_)` は `i32` またはそれをラップした newtype との相互変換に対応し、UNIX エポックからの経過時間を表します。また、`time` フィーチャが有効な場合、`serde::time::datetime64::*` を利用することで [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) もサポートされます。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
+    ts: i64, // `DateTime64(X)` に応じて経過秒/マイクロ秒/ミリ秒/ナノ秒
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
-    dt64s: OffsetDateTime,  // `DateTime64(0)`
+    dt64s: OffsetDateTime,  // `DateTime64(0)` (秒単位)
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
-    dt64ms: OffsetDateTime, // `DateTime64(3)`
+    dt64ms: OffsetDateTime, // `DateTime64(3)` (ミリ秒単位)
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
-    dt64us: OffsetDateTime, // `DateTime64(6)`
+    dt64us: OffsetDateTime, // `DateTime64(6)` (マイクロ秒単位)
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
-    dt64ns: OffsetDateTime, // `DateTime64(9)`
+    dt64ns: OffsetDateTime, // `DateTime64(9)` (ナノ秒単位)
 }
 ```
 
-* `Tuple(A, B, ...)`は、`(A, B, ...)`またはそれを囲む新しい型にマッピングされます。
-* `Array(_)`は、任意のスライス（例：`Vec<_>`、`&[_]`）にマッピングされます。新しい型もサポートされています。
-* `Map(K, V)`は`Array((K, V))`のように振る舞います。
-* `LowCardinality(_)`はシームレスにサポートされています。
-* `Nullable(_)`は、`Option<_>`にマッピングされます。`clickhouse::serde::*`ヘルパーには`::option`を追加してください。
+* `Tuple(A, B, ...)` は `(A, B, ...)` またはそれを包む newtype との相互変換が可能です。
+* `Array(_)` は任意のスライス（例: `Vec<_>`, `&[_]`）との相互変換が可能です。newtype もサポートされています。
+* `Map(K, V)` は `Array((K, V))` と同様に動作します。
+* `LowCardinality(_)` はシームレスにサポートされています。
+* `Nullable(_)` は `Option<_>` との相互変換が可能です。`clickhouse::serde::*` のヘルパーを使う場合は `::option` を追加してください。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -482,7 +492,8 @@ struct MyRow {
 }
 ```
 
-* `Nested`は、名前の付け替えを使って複数の配列を提供することでサポートされています。
+* `Nested` は、命名規則に従った複数の配列によって表現できます。
+
 ```rust
 // CREATE TABLE test(items Nested(name String, count UInt32))
 #[derive(Row, Serialize, Deserialize)]
@@ -494,7 +505,8 @@ struct MyRow {
 }
 ```
 
-* `Geo`型がサポートされています。`Point`はタプル`(f64, f64)`のように振る舞い、他の型はポイントのスライスです。
+* `Geo` 型がサポートされています。`Point` はタプル `(f64, f64)` と同様に動作し、その他の型はすべて `Point` のスライスです。
+
 ```rust
 type Point = (f64, f64);
 type Ring = Vec<Point>;
@@ -514,20 +526,23 @@ struct MyRow {
 }
 ```
 
-* `Variant`、 `Dynamic`、(新しい)`JSON`データ型はまだサポートされていません。
+* `Variant`、`Dynamic`、（新しい）`JSON` データ型はまだサポートされていません。
 
-## モッキング {#mocking}
-このクレートは、CHサーバーのモックを作成し、DDL、`SELECT`、`INSERT`、および`WATCH`クエリをテストするためのユーティリティを提供します。この機能は、`test-util`機能を使用して有効化できます。これは**開発依存性**としてのみ使用してください。
 
-[例](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)をご覧ください。
+## モック {#mocking}
+
+このクレートは、ClickHouseサーバーをモックし、DDL、`SELECT`、`INSERT`、`WATCH`クエリをテストするためのユーティリティを提供します。この機能は`test-util`フィーチャーで有効化できます。開発依存関係としてのみ使用してください。
+
+[サンプル](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)を参照してください。
+
 
 ## トラブルシューティング {#troubleshooting}
 
 ### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
 
-`CANNOT_READ_ALL_DATA`エラーの最も一般的な原因は、アプリケーション側の行定義がClickHouseの定義と一致しないことです。
+`CANNOT_READ_ALL_DATA` エラーの最も一般的な原因は、アプリケーション側の行定義がClickHouseの定義と一致していないことです。
 
-以下のテーブルを考慮してください：
+以下のテーブルを例に考えてみましょう:
 
 ```sql
 CREATE OR REPLACE TABLE event_log (id UInt32)
@@ -535,22 +550,22 @@ ENGINE = MergeTree
 ORDER BY timestamp
 ```
 
-次に、アプリケーション側で`EventLog`が不一致の型で定義されていると、例えば以下のようになります：
+次に、アプリケーション側で `EventLog` が型不一致で定義されている場合、例えば:
 
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- should be u32 instead!
+    id: String, // <- u32であるべきです!
 }
 ```
 
-データを挿入すると、次のエラーが発生することがあります：
+データを挿入する際に、以下のエラーが発生する可能性があります:
 
 ```response
 Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
-この例では、`EventLog`構造体の正しい定義によって解決されます：
+この例では、`EventLog` 構造体を正しく定義することで修正できます:
 
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
@@ -559,11 +574,13 @@ struct EventLog {
 }
 ```
 
-## 既知の制限 {#known-limitations}
 
-* `Variant`、 `Dynamic`、(新しい)`JSON`データ型はまだサポートされていません。
-* サーバー側のパラメータバインディングはまだサポートされていません。これに関しては[この問題](https://github.com/ClickHouse/clickhouse-rs/issues/142)で進捗を追跡できます。
+## 既知の制限事項 {#known-limitations}
+
+- `Variant`、`Dynamic`、(新しい) `JSON` データ型は現在サポートされていません。
+- サーバーサイドのパラメータバインディングは現在サポートされていません。進捗状況については[この issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) を参照してください。
+
 
 ## お問い合わせ {#contact-us}
 
-質問や支援が必要な場合は、[Community Slack](https://clickhouse.com/slack)または[GitHub issues](https://github.com/ClickHouse/clickhouse-rs/issues)を通じてお気軽にお問い合わせください。
+ご質問やサポートが必要な場合は、[Community Slack](https://clickhouse.com/slack)または[GitHub issues](https://github.com/ClickHouse/clickhouse-rs/issues)よりお気軽にお問い合わせください。

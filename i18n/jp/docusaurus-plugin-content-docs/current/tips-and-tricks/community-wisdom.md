@@ -1,42 +1,45 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/community-wisdom'
-'sidebar_label': 'コミュニティの知恵'
-'doc_type': 'landing-page'
-'keywords':
-- 'database tips'
-- 'community wisdom'
-- 'production troubleshooting'
-- 'performance optimization'
-- 'database debugging'
-- 'clickhouse guides'
-- 'real world examples'
-- 'database best practices'
-- 'meetup insights'
-- 'production lessons'
-- 'interactive tutorials'
-- 'database solutions'
-'title': 'ClickHouse コミュニティの知恵'
-'description': '実際のシナリオと学んだ教訓を通じて ClickHouse コミュニティから学びましょう'
+sidebar_position: 1
+slug: /tips-and-tricks/community-wisdom
+sidebar_label: 'コミュニティの知見'
+doc_type: 'landing-page'
+keywords: [
+  'database tips',
+  'community wisdom',
+  'production troubleshooting',
+  'performance optimization',
+  'database debugging',
+  'clickhouse guides',
+  'real world examples',
+  'database best practices',
+  'meetup insights',
+  'production lessons',
+  'interactive tutorials',
+  'database solutions'
+]
+title: 'ClickHouse コミュニティの知見'
+description: 'ClickHouse コミュニティから、実際のユースケースとそこから得られた知見を学びましょう'
 ---
 
 
-# ClickHouseコミュニティの知恵: ミートアップからのヒントとコツ {#community-wisdom}
 
-*これらのインタラクティブなガイドは、数百の生産展開からの集合的な知恵を表しています。各実行可能な例は、実際のGitHubイベントデータを使用してClickHouseのパターンを理解するのに役立ちます - これらの概念を実践して一般的な間違いを避け、成功を加速させましょう。*
+# ClickHouseコミュニティの知見：ミートアップから得られたヒントとコツ {#community-wisdom}
 
-この集められた知識を、最適なClickHouse体験のための[ベストプラクティス](/best-practices)ガイドと組み合わせてください。
+_これらのインタラクティブガイドは、数百の本番環境デプロイメントから得られた集合知を表しています。各実行可能な例では、実際のGitHubイベントデータを使用してClickHouseのパターンを理解できます。これらの概念を実践することで、よくある間違いを回避し、成功を加速させることができます。_
 
-## 問題特化型クイックジャンプ {#problem-specific-quick-jumps}
+この収集された知見を[ベストプラクティス](/best-practices)ガイドと組み合わせることで、最適なClickHouse体験を実現できます。
 
-| 問題 | ドキュメント | 説明 |
-|-------|---------|-------------|
-| **生産の問題**   | [デバッグの洞察](./debugging-insights.md) | コミュニティの生産デバッグのヒント |
-| **遅いクエリ**       | [パフォーマンス最適化](./performance-optimization.md) | パフォーマンスを最適化する |
-| **マテリアライズドビュー** | [MVの二刃の剣](./materialized-views.md) | 10倍のストレージインスタンスを避ける |
-| **パーツが多すぎる**     | [パーツが多すぎる](./too-many-parts.md) | 'パーツが多すぎる'エラーとパフォーマンスの低下への対処 |
-| **コストが高すぎる**         | [コスト最適化](./cost-optimization.md) | コストを最適化する |
-| **成功事例**    | [成功事例](./success-stories.md) | ClickHouseの成功事例の例 |
 
-**最終更新:** 2024-2025年のコミュニティミートアップの洞察に基づく  
-**貢献:** 間違いを見つけたか、新しいレッスンがありますか？コミュニティの貢献を歓迎します
+## 問題別クイックジャンプ {#problem-specific-quick-jumps}
+
+| 問題                  | ドキュメント                                                  | 説明                                                    |
+| ---------------------- | --------------------------------------------------------- | -------------------------------------------------------------- |
+| **本番環境の問題**   | [デバッグインサイト](./debugging-insights.md)             | コミュニティによる本番環境デバッグのヒント                            |
+| **遅いクエリ**       | [パフォーマンス最適化](./performance-optimization.md) | パフォーマンスの最適化                                           |
+| **マテリアライズドビュー** | [MVの諸刃の剣](./materialized-views.md)          | ストレージ容量が10倍になる事態を回避                                    |
+| **パーツ数過多**     | [パーツ数過多](./too-many-parts.md)                     | 'Too Many Parts'エラーとパフォーマンス低下への対処 |
+| **高コスト**         | [コスト最適化](./cost-optimization.md)               | コストの最適化                                                  |
+| **成功事例**    | [成功事例](./success-stories.md)                   | ClickHouseの成功事例                 |
+
+**最終更新:** 2024年から2025年にかけてのコミュニティミートアップのインサイトに基づく  
+**貢献について:** 誤りを見つけた、または新しい知見がありますか？コミュニティからの貢献を歓迎します

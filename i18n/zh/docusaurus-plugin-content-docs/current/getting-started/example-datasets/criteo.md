@@ -1,14 +1,15 @@
 ---
-'description': '来自 Criteo 的一 TB 点击日志'
-'sidebar_label': 'Criteo 的 TB 点击日志'
-'slug': '/getting-started/example-datasets/criteo'
-'title': 'Criteo 的 TB 点击日志'
-'doc_type': 'reference'
+description: '来自 Criteo 的 1TB 点击日志'
+sidebar_label: 'Criteo 1TB 点击日志'
+slug: /getting-started/example-datasets/criteo
+keywords: ['Criteo click logs', 'advertising data', 'click-through data', 'terabyte dataset', 'getting started']
+title: '来自 Criteo 的 1TB 点击日志'
+doc_type: 'guide'
 ---
 
-下载数据来自 http://labs.criteo.com/downloads/download-terabyte-click-logs/
+从 [http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/) 下载数据。
 
-创建一个表以导入日志到：
+创建一个用于导入日志的表：
 
 ```sql
 CREATE TABLE criteo_log (
@@ -113,7 +114,8 @@ PARTITION BY toYYYYMM(date)
 ORDER BY (date, icat1)
 ```
 
-从原始日志转换数据并放入第二个表：
+将原始日志中的数据转换后写入第二个表：
+
 
 ```sql
 INSERT INTO

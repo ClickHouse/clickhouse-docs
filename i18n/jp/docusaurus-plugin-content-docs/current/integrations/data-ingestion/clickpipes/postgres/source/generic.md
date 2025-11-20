@@ -1,115 +1,137 @@
 ---
-'sidebar_label': 'Generic Postgres'
-'description': '任意の Postgres インスタンスを ClickPipes のソースとして設定します'
-'slug': '/integrations/clickpipes/postgres/source/generic'
-'title': '汎用 Postgres ソース設定ガイド'
-'doc_type': 'guide'
+sidebar_label: '汎用 Postgres'
+description: '任意の Postgres インスタンスを ClickPipes のソースとして設定する'
+slug: /integrations/clickpipes/postgres/source/generic
+title: '汎用 Postgres ソース設定ガイド'
+doc_type: 'guide'
+keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
 
-# Generic Postgres source setup guide
+
+# 一般的な Postgres ソース設定ガイド
 
 :::info
 
-サポートされているプロバイダーの1つを使用している場合（サイドバーに記載）、そのプロバイダーの具体的なガイドを参照してください。
+サイドバーに表示されているサポート対象プロバイダーのいずれかを使用している場合は、そのプロバイダー専用のガイドを参照してください。
 
 :::
 
-ClickPipesはPostgresバージョン12以降をサポートしています。
+ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
-## Enable logical replication {#enable-logical-replication}
 
-1. Postgresインスタンスでレプリケーションを有効にするには、以下の設定が行われていることを確認する必要があります：
 
-```sql
-wal_level = logical
-```
-   同じことを確認するには、以下のSQLコマンドを実行できます：
-```sql
-SHOW wal_level;
-```
+## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-   出力は`logical`であるべきです。そうでない場合は、次のコマンドを実行してください：
-```sql
-ALTER SYSTEM SET wal_level = logical;
-```
+1. Postgresインスタンスでレプリケーションを有効にするには、以下の設定が正しく設定されていることを確認する必要があります：
 
-2. さらに、Postgresインスタンスに設定することが推奨される以下の設定があります：
-```sql
-max_wal_senders > 1
-max_replication_slots >= 4
-```
-   同じことを確認するには、以下のSQLコマンドを実行できます：
-```sql
-SHOW max_wal_senders;
-SHOW max_replication_slots;
-```
+   ```sql
+   wal_level = logical
+   ```
 
-   値が推薦される値に一致しない場合は、以下のSQLコマンドを実行して設定できます：
-```sql
-ALTER SYSTEM SET max_wal_senders = 10;
-ALTER SYSTEM SET max_replication_slots = 10;
-```
-3. 上記のように構成に変更を加えた場合は、変更を有効にするためにPostgresインスタンスを再起動する必要があります。
+   確認するには、以下のSQLコマンドを実行します：
 
-## Creating a user with permissions and publication {#creating-a-user-with-permissions-and-publication}
+   ```sql
+   SHOW wal_level;
+   ```
 
-CDCに適した必要な権限を持つClickPipes用の新しいユーザーを作成し、レプリケーションに使用する公開を作成しましょう。
+   出力は`logical`である必要があります。そうでない場合は、以下を実行します：
 
-このためには、Postgresインスタンスに接続し、以下のSQLコマンドを実行できます：
+   ```sql
+   ALTER SYSTEM SET wal_level = logical;
+   ```
+
+2. さらに、Postgresインスタンスには以下の設定を行うことを推奨します：
+
+   ```sql
+   max_wal_senders > 1
+   max_replication_slots >= 4
+   ```
+
+   確認するには、以下のSQLコマンドを実行します：
+
+   ```sql
+   SHOW max_wal_senders;
+   SHOW max_replication_slots;
+   ```
+
+   値が推奨値と一致しない場合は、以下のSQLコマンドを実行して設定します：
+
+   ```sql
+   ALTER SYSTEM SET max_wal_senders = 10;
+   ALTER SYSTEM SET max_replication_slots = 10;
+   ```
+
+3. 上記の設定を変更した場合は、変更を有効にするためにPostgresインスタンスを**必ず再起動**する必要があります。
+
+
+## パーミッションとパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
+
+CDC に必要なパーミッションを持つ ClickPipes 用の新しいユーザーを作成し、
+レプリケーションに使用するパブリケーションも作成しましょう。
+
+そのためには、Postgres インスタンスに接続して以下の SQL コマンドを実行します:
+
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Give replication permission to the USER
+-- ユーザーにレプリケーション権限を付与
   ALTER USER clickpipes_user REPLICATION;
 
--- Create a publication. We will use this when creating the pipe
+-- パブリケーションを作成。パイプ作成時にこれを使用します
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
+
 :::note
 
-`clickpipes_user`および`clickpipes_password`を希望するユーザー名とパスワードに置き換えてください。
+`clickpipes_user` と `clickpipes_password` を任意のユーザー名とパスワードに置き換えてください。
 
 :::
 
-## Enabling connections in pg_hba.conf to the ClickPipes User {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
-セルフサービスの場合は、以下の手順に従ってClickPipesのIPアドレスからClickPipesユーザーへの接続を許可する必要があります。マネージドサービスを使用している場合は、プロバイダーの文書に従って同様のことができます。
+## pg_hba.confでClickPipesユーザーへの接続を有効にする {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
-1. `pg_hba.conf`ファイルに必要な変更を加えて、ClickPipesのIPアドレスからClickPipesユーザーへの接続を許可します。`pg_hba.conf`ファイルの例のエントリーは次のようになります：
-```response
-host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
-```
+セルフホスティング環境の場合、以下の手順に従ってClickPipes IPアドレスからClickPipesユーザーへの接続を許可する必要があります。マネージドサービスを使用している場合は、プロバイダーのドキュメントに従って同様の設定を行ってください。
 
-2. 変更を有効にするためにPostgreSQLインスタンスをリロードします：
-```sql
-SELECT pg_reload_conf();
-```
+1. `pg_hba.conf`ファイルに必要な変更を加えて、ClickPipes IPアドレスからClickPipesユーザーへの接続を許可します。`pg_hba.conf`ファイルのエントリ例は次のようになります：
 
-## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+   ```response
+   host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
+   ```
 
-これは、大きなトランザクション/コミットがレプリケーションスロットをドロップさせないようにするために推奨される構成変更です。
+2. 変更を反映させるためにPostgreSQLインスタンスをリロードします：
+   ```sql
+   SELECT pg_reload_conf();
+   ```
 
-`max_slot_wal_keep_size`パラメータを高い値（最低100GBまたは`102400`）に増加させることができます。これは`postgresql.conf`ファイルを更新することによって行います。
+
+## `max_slot_wal_keep_size` の増加 {#increase-max_slot_wal_keep_size}
+
+これは、大規模なトランザクション/コミットによってレプリケーションスロットが削除されることを防ぐための推奨設定変更です。
+
+`postgresql.conf` ファイルを更新することで、PostgreSQL インスタンスの `max_slot_wal_keep_size` パラメータをより大きな値(少なくとも 100GB または `102400`)に増やすことができます。
 
 ```sql
 max_slot_wal_keep_size = 102400
 ```
 
-変更を有効にするためにPostgresインスタンスをリロードできます：
+変更を有効にするには、Postgres インスタンスをリロードします:
+
 ```sql
 SELECT pg_reload_conf();
 ```
 
 :::note
 
-この値に関するより良い推奨を得るには、ClickPipesチームに問い合わせてください。
+この値の推奨設定については、ClickPipes チームにお問い合わせください。
 
 :::
 
-## What's next? {#whats-next}
 
-これで [ClickPipeを作成](../index.md) し、PostgresインスタンスからClickHouse Cloudにデータを取り込むことができます。Postgresインスタンスを設定する際に使用した接続詳細をメモしておくことを忘れないでください。ClickPipeの作成プロセス中に必要になります。
+## 次のステップ {#whats-next}
+
+これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
+ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず控えておいてください。

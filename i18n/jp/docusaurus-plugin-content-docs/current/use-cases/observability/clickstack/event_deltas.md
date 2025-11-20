@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/event_deltas'
-'title': 'ClickStackによるイベントデルタ'
-'sidebar_label': 'イベントデルタ'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackによるイベントデルタ'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/event_deltas
+title: 'ClickStack によるイベントデルタ'
+sidebar_label: 'イベントデルタ'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack によるイベントデルタ'
+doc_type: 'guide'
+keywords: ['clickstack', 'event deltas', 'change tracking', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -16,52 +17,95 @@ import event_deltas_selected from '@site/static/images/use-cases/observability/e
 import event_deltas_issue from '@site/static/images/use-cases/observability/event_deltas_issue.png';
 import event_deltas_outliers from '@site/static/images/use-cases/observability/event_deltas_outliers.png';
 import event_deltas_separation from '@site/static/images/use-cases/observability/event_deltas_separation.png';
+import event_deltas_customization from '@site/static/images/use-cases/observability/event_deltas_customization.png';
 import event_deltas_inappropriate from '@site/static/images/use-cases/observability/event_deltas_inappropriate.png';
 
-Event Deltas in ClickStackは、トレースの特徴を自動的に分析して、パフォーマンスが低下した際に何が変わったのかを明らかにするトレース焦点の機能です。コーパス内の通常のトレースと遅いトレースの待機時間分布を比較することで、ClickStackは、新しいデプロイメントバージョン、特定のエンドポイント、または特定のユーザーIDなど、どの属性が違いと最も相関しているかを強調します。
+ClickStack における Event Deltas はトレースに特化した機能で、パフォーマンスが悪化した際に「何が変わったのか」を明らかにするため、トレースの属性を自動的に分析します。1 つのコーパス内で通常時と遅いトレースのレイテンシ分布を比較することで、新しいデプロイバージョン、特定のエンドポイント、特定のユーザー ID などのうち、どの属性が差分と最も強く相関しているかを ClickStack がハイライトします。
 
-手動でトレースデータを選別する代わりに、イベントデルタは2つのデータサブセット間の待機時間の違いを引き起こす主要な属性を浮かび上がらせ、回帰の診断を容易にし、根本原因を特定しやすくします。この機能により、生のトレースを可視化し、パフォーマンスの変動に影響を与える要因を即座に確認でき、インシデント対応を加速し、平均解決時間を短縮します。
+トレースデータを手作業で丹念に追いかける代わりに、Event Deltas は 2 つのデータサブセット間でレイテンシの差異を生み出している主要な属性を表面化し、リグレッションの診断と根本原因の特定をはるかに容易にします。この機能により、生のトレースを可視化しつつ、パフォーマンス変化に影響している要因を即座に把握できるため、インシデント対応を加速し、平均復旧時間を短縮できます。
 
-<Image img={event_deltas} alt="イベントデータ" size="lg"/>
+<Image img={event_deltas} alt="Event Deltas" size="lg" />
 
-## イベントデルタの使用 {#using-event-deltas}
 
-イベントデルタは、ClickStack内で`Trace`タイプのソースを選択する際に、**Search**パネルから直接利用可能です。
+## Event Deltasの使用 {#using-event-deltas}
 
-左上の**Analysis Mode**セレクタから、**Event Deltas**（`Trace`ソースが選択されている）を選んで、スパンを行として表示する標準結果テーブルから切り替えます。
+Event Deltasは、ClickStackで`Trace`タイプのソースを選択した際に、**Search**パネルから直接利用できます。
 
-<Image img={event_deltas_no_selected} alt="イベントデータが選択されていない" size="lg"/>
+左上の**Analysis Mode**セレクターから**Event Deltas**を選択すると(`Trace`ソースが選択された状態で)、スパンを行として表示する標準の結果テーブルから切り替わります。
 
-このビューは、時間に対するスパンの分布を表示し、待機時間がボリュームとどのように変動するかを示します。縦軸は待機時間を表し、色付けは特定のポイントでのトレースの密度を示します。明るい黄色の領域は、高いトレース濃度に対応します。この可視化により、ユーザーは待機時間とカウントの両方にわたるスパンの分布を迅速に確認でき、パフォーマンスの変化や異常を特定しやすくなります。
+<Image
+  img={event_deltas_no_selected}
+  alt='Event Deltasが選択されていない状態'
+  size='lg'
+/>
 
-<Image img={event_deltas_highlighted} alt="イベントデータが強調表示されている" size="lg"/>
+このビューは、時間経過に伴うスパンの分布を表示し、レイテンシがボリュームとともにどのように変化するかを示します。縦軸はレイテンシを表し、色付けは特定のポイントにおけるトレースの密度を示します。明るい黄色の領域は、トレースの集中度が高いことを表しています。この可視化により、ユーザーはレイテンシとカウントの両方にわたってスパンがどのように分布しているかを素早く確認でき、パフォーマンスの変化や異常を特定しやすくなります。
 
-その後、ユーザーは可視化の領域を選択し（理想的には、長い持続時間のスパンと十分な密度を持つもの）、**Filter by Selection**を選択します。これにより、分析のための「外れ値」が指定されます。イベントデルタは、選択した外れ値のサブセットにおけるこれらのスパンに最も関連するカラムとキー値を特定します。意義のある外れ値を持つ領域に焦点を当てることで、ClickStackは全体のコーパスからこのサブセットを区別するユニークな値を強調し、観察されたパフォーマンスの違いと最も相関する属性を明らかにします。
+<Image
+  img={event_deltas_highlighted}
+  alt='Event Deltasがハイライトされた状態'
+  size='lg'
+/>
 
-<Image img={event_deltas_selected} alt="イベントデータが選択されている" size="lg"/>
+ユーザーは可視化の領域を選択できます。理想的には、より長い期間のスパンと十分な密度を持つ領域を選択し、その後**Filter by Selection**を実行します。これにより、分析対象となる「外れ値」が指定されます。Event Deltasは、データセットの残りの部分と比較して、この外れ値サブセット内のスパンに最も関連する列とキー値を特定します。意味のある外れ値を持つ領域に焦点を当てることで、ClickStackはこのサブセットを全体のコーパスから区別する固有の値を強調表示し、観測されたパフォーマンス差と最も相関性の高い属性を明らかにします。
 
-各カラムについて、ClickStackは選択された外れ値のサブセットに対して強く偏った値を特定します。言い換えれば、カラムに値が出現した場合、それが外れ値の中で主に発生している場合は重要として強調されます。 最も強い偏りのあるカラムは最初にリストされ、異常なスパンと通常の挙動を区別します。
+<Image img={event_deltas_selected} alt='Event Deltasが選択された状態' size='lg' />
 
-<Image img={event_deltas_outliers} alt="イベントデータの外れ値" size="lg"/>
+各列について、ClickStackは選択された外れ値サブセットに強く偏った値を特定します。言い換えれば、列に値が現れた際、その値が全体のデータセット(正常値)ではなく主に外れ値内に出現する場合、それは重要なものとして強調表示されます。最も強い偏りを持つ列が最初にリストされ、異常なスパンと最も強く関連する属性を明らかにし、ベースライン動作から区別します。
 
-上の例では、`SpanAttributes.app.payment.card_type`カラムが浮かび上がっています。ここでは、イベントデルタ分析が、内れつの`29%`がMasterCardを使用し、外れ値では`0%`、外れ値の`100%`がVisaを使用していることを示しています。これは、Visaカードタイプが異常な高待機時間トレースと強く関連していることを示唆しており、MasterCardは通常のサブセット内にのみ存在するようです。
+<Image img={event_deltas_outliers} alt='Event Deltasの外れ値' size='lg' />
 
-<Image img={event_deltas_issue} alt="イベントデータの問題" size="lg"/>
+上記の例では、`SpanAttributes.app.payment.card_type`列が明らかになっています。ここで、Event Deltas分析は、正常値の`29%`がMasterCardを使用し、外れ値では`0%`であることを示しています。一方、外れ値の`100%`がVisaを使用しており、正常値では`71%`です。これは、Visaカードタイプが異常な高レイテンシのトレースと強く関連していることを示唆しており、MasterCardは正常なサブセットにのみ現れています。
 
-逆に、内れつと独占的に関連している値も興味深い場合があります。上の例では、エラー`Visa Cash Full`は内れつにのみ発生し、外れ値のスパンには完全に存在しません。このような場合待機時間は常に約50ミリ秒未満であり、このエラーは低待機時間に関連していることを示唆しています。
+<Image img={event_deltas_issue} alt='Event Deltasの問題' size='lg' />
 
-## イベントデルタの動作原理 {#how-event-deltas-work}
+逆に、正常値のみに関連する値も興味深い場合があります。上記の例では、エラー`Visa Cash Full`は正常値にのみ現れ、外れ値のスパンには全く存在しません。これが発生する場合、レイテンシは常に約50ミリ秒未満であり、このエラーが低レイテンシと関連していることを示唆しています。
 
-イベントデルタは、選択された外れ値領域と内れつ領域の2つのクエリを発行することによって機能します。各クエリは適切な持続時間と時間ウィンドウに制限されます。両方の結果セットからイベントのサンプルが検査され、値の高い集中が外れ値に主に発生しているカラムが特定されます。値の100%が外れ値のサブセットにのみ発生するカラムが最初に表示され、観察された違いに最も責任を持つ属性を強調します。
+
+## Event Deltasの仕組み {#how-event-deltas-work}
+
+Event Deltasは2つのクエリを発行して動作します。1つは選択された外れ値領域に対するクエリ、もう1つは正常値領域に対するクエリです。各クエリは適切な期間と時間枠に制限されます。次に、両方の結果セットからイベントのサンプルが検査され、外れ値に偏って出現する値の集中度が高いカラムが特定されます。値の100%が外れ値サブセットにのみ出現するカラムが最初に表示され、観測された差異の主な原因となっている属性が強調されます。
+
+
+## グラフのカスタマイズ {#customizing-the-graph}
+
+グラフの上部には、ヒートマップの生成方法をカスタマイズするためのコントロールがあります。これらのフィールドを調整すると、ヒートマップがリアルタイムで更新され、任意の測定可能な値と時系列での頻度との関係を可視化し比較することができます。
+
+**デフォルト設定**
+
+デフォルトでは、可視化に以下が使用されます:
+
+- **Y軸**: `Duration` — レイテンシ値を縦方向に表示
+- **色（Z軸）**: `count()` — 時系列（X軸）におけるリクエスト数を表現
+
+この設定では、時系列でのレイテンシ分布が表示され、色の濃淡が各範囲内に含まれるイベント数を示します。
+
+**パラメータの調整**
+
+これらのパラメータを変更することで、データのさまざまな側面を探索できます:
+
+- **Value**: Y軸にプロットする内容を制御します。例えば、`Duration`をエラー率やレスポンスサイズなどのメトリクスに置き換えることができます。
+- **Count**: 色のマッピングを制御します。`count()`（バケットごとのイベント数）から、`avg()`、`sum()`、`p95()`などの他の集計関数、または`countDistinct(field)`のようなカスタム式に切り替えることができます。
+
+<Image
+  img={event_deltas_customization}
+  alt='イベントデルタのカスタマイズ'
+  size='lg'
+/>
+
 
 ## 推奨事項 {#recommendations}
 
-イベントデルタは、特定のサービスに焦点を当てた分析で最も効果を発揮します。複数のサービス間の待機時間は大きく異なる場合があるため、外れ値のために最も責任があるカラムと値を特定するのが難しくなります。イベントデルタを有効にする前に、待機時間の分布が似ていると予想されるセットにスパンをフィルタリングします。最も有用なインサイトのためには、待機時間の広範な変動が予測されないセットを分析することを目指し、通常であるケース（例：2つの異なるサービス）を避けます。
+Event Deltasは、特定のサービスに焦点を絞った分析を行う場合に最も効果を発揮します。複数のサービス間ではレイテンシが大きく異なる可能性があるため、外れ値の主な原因となっている列や値を特定することが困難になります。Event Deltasを有効にする前に、レイテンシの分布が類似していると予想されるセットにスパンをフィルタリングしてください。最も有用な洞察を得るには、レイテンシの大きな変動が想定されないセットを分析対象とし、それが通常の状態である場合(例:2つの異なるサービス)は避けるようにしてください。
 
-範囲を選択する際に、ユーザーは明確な遅延と速い持続時間の分布があるサブセットを狙うべきです。これにより、高待機時間のスパンを分析のためにクリーンに分離できます。例えば、以下に選択された領域は、分析のために遅いスパンのセットを明確に捕らえています。
+領域を選択する際は、遅い期間と速い期間の明確な分布が見られるサブセットを選ぶようにしてください。これにより、高レイテンシのスパンを分析用に明確に分離できます。例えば、以下で選択されている領域は、分析対象となる遅いスパンのセットを明確に捉えています。
 
-<Image img={event_deltas_separation} alt="イベントデータの分離" size="lg"/>
+<Image img={event_deltas_separation} alt='Event Deltas Separation' size='lg' />
 
-逆に、以下のデータセットはイベントデルタを用いて有用に分析するのが困難です。
+逆に、以下のデータセットはEvent Deltasを使った有用な分析が困難です。
 
-<Image img={event_deltas_inappropriate} alt="イベントデータの不適切な分離" size="lg"/>
+<Image
+  img={event_deltas_inappropriate}
+  alt='Event Deltas Poor seperation'
+  size='lg'
+/>

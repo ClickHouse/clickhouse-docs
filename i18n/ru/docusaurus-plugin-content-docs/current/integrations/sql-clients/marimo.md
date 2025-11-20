@@ -1,10 +1,12 @@
 ---
-slug: '/integrations/marimo'
-sidebar_label: marimo
-description: 'marimo — это блокнот Python нового поколения для взаимодействия с'
+slug: /integrations/marimo
+sidebar_label: 'marimo'
+description: 'marimo — это Python-ноутбук нового поколения для работы с данными'
 title: 'Использование marimo с ClickHouse'
-doc_type: guide
+doc_type: 'guide'
+keywords: ['marimo', 'notebook', 'data analysis', 'python', 'visualization']
 ---
+
 import Image from '@theme/IdealImage';
 import marimo_connect from '@site/static/images/integrations/sql-clients/marimo/clickhouse-connect.gif';
 import add_db_panel from '@site/static/images/integrations/sql-clients/marimo/panel-arrow.png';
@@ -21,9 +23,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[marimo](https://marimo.io/) — это открытая реактивная записная книжка для Python с встроенным SQL. Когда вы выполняете ячейку или взаимодействуете с элементом интерфейса, marimo автоматически запускает затронутые ячейки (или помечает их как устаревшие), поддерживая согласованность кода и выводов и предотвращая ошибки до их возникновения. Каждая записная книжка marimo хранится в виде чистого Python, исполняется как скрипт и может быть развернута как приложение.
+[marimo](https://marimo.io/) — это открытый реактивный ноутбук для Python со встроенной поддержкой SQL. Когда вы запускаете ячейку или взаимодействуете с элементом интерфейса, marimo автоматически выполняет связанные ячейки (или помечает их как устаревшие), поддерживая согласованность кода и результатов и предотвращая ошибки ещё до их появления. Каждый ноутбук marimo хранится как чистый Python, может выполняться как скрипт и развёртываться как приложение.
 
 <Image img={marimo_connect} size="md" border alt="Подключение к ClickHouse" />
+
+
 
 ## 1. Установка marimo с поддержкой SQL {#install-marimo-sql}
 
@@ -31,29 +35,42 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
-Это должно открыть веб-браузер, работающий на localhost.
+
+После этого должен открыться веб-браузер на localhost.
+
 
 ## 2. Подключение к ClickHouse. {#connect-to-clickhouse}
 
-Перейдите на панель источников данных в левой части редактора marimo и нажмите на 'Добавить базу данных'.
+Перейдите на панель источников данных в левой части редактора marimo и нажмите «Add database».
 
-<Image img={add_db_panel} size="sm" border alt="Добавить новую базу данных" />
+<Image img={add_db_panel} size='sm' border alt='Добавить новую базу данных' />
 
 Вам будет предложено заполнить данные базы данных.
 
-<Image img={add_db_details} size="md" border alt="Заполните данные базы данных" />
+<Image
+  img={add_db_details}
+  size='md'
+  border
+  alt='Заполнить данные базы данных'
+/>
 
-Затем у вас будет ячейка, которую можно запустить для установления соединения.
+После этого появится ячейка, которую можно запустить для установки соединения.
 
-<Image img={run_cell} size="md" border alt="Запустите ячейку для подключения к ClickHouse" />
+<Image
+  img={run_cell}
+  size='md'
+  border
+  alt='Запустить ячейку для подключения к ClickHouse'
+/>
+
 
 ## 3. Выполнение SQL {#run-sql}
 
-После того как вы настроите соединение, вы можете создать новую SQL ячейку и выбрать движок clickhouse.
+После настройки соединения вы можете создать новую SQL-ячейку и выбрать движок clickhouse.
 
-<Image img={choose_sql_engine} size="md" border alt="Выберите SQL движок" />
+<Image img={choose_sql_engine} size='md' border alt='Выбор SQL-движка' />
 
-Для этого руководства мы используем набор данных такси Нью-Йорка.
+В этом руководстве мы будем использовать набор данных New York Taxi.
 
 ```sql
 CREATE TABLE trips (
@@ -109,14 +126,19 @@ FROM gcs(
 SELECT * FROM trips LIMIT 1000;
 ```
 
-<Image img={results} size="lg" border alt="Результаты в датафрейме" />
+<Image img={results} size='lg' border alt='Результаты в виде датафрейма' />
 
-Теперь вы можете просмотреть результаты в датафрейме. Я хочу визуализировать самые дорогие высадки с заданного места посадки. marimo предлагает несколько компонентов пользовательского интерфейса, которые помогут вам. Я буду использовать выпадающий список для выбора места и altair для построения графиков.
+Теперь вы можете просматривать результаты в виде датафрейма. Давайте визуализируем самые дорогие высадки из заданной точки посадки. marimo предоставляет несколько UI-компонентов для этого. Мы используем выпадающий список для выбора местоположения и altair для построения графиков.
 
-<Image img={dropdown_cell_chart} size="lg" border alt="Комбинация выпадающего списка, таблицы и графика" />
+<Image
+  img={dropdown_cell_chart}
+  size='lg'
+  border
+  alt='Комбинация выпадающего списка, таблицы и графика'
+/>
 
-Реактивная модель выполнения marimo также распространяется на SQL-запросы, поэтому изменения в вашем SQL автоматически запускают вычисления для зависимых ячеек (или, при необходимости, помечают ячейки как устаревшие для затратных вычислений). Поэтому график и таблица изменяются, когда запрос обновляется.
+Реактивная модель выполнения marimo распространяется на SQL-запросы, поэтому изменения в SQL автоматически запускают последующие вычисления для зависимых ячеек (или опционально помечают ячейки как устаревшие для ресурсоёмких вычислений). Таким образом, график и таблица изменяются при обновлении запроса.
 
-Вы также можете переключить вид приложения, чтобы получить чистый интерфейс для изучения ваших данных.
+Вы также можете переключиться в режим App View для удобного интерфейса исследования данных.
 
-<Image img={run_app_view} size="md" border alt="Запустите вид приложения" />
+<Image img={run_app_view} size='md' border alt='Запуск режима приложения' />

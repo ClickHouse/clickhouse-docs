@@ -1,34 +1,37 @@
 ---
-'description': '数据集包含 130 万条历史数据记录，记录了酒店、餐馆和咖啡馆的菜单及其价格。'
-'sidebar_label': '纽约公共图书馆 "菜单上的内容？" 数据集'
-'slug': '/getting-started/example-datasets/menus'
-'title': '纽约公共图书馆 "菜单上的内容？" 数据集'
-'doc_type': 'reference'
+description: '包含 130 万条记录的数据集，收录了酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。'
+sidebar_label: '纽约公共图书馆 “What''s on the Menu?” 数据集'
+slug: /getting-started/example-datasets/menus
+title: '纽约公共图书馆 “What''s on the Menu?” 数据集'
+doc_type: 'guide'
+keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-数据集由纽约公共图书馆创建。它包含酒店、餐馆和咖啡馆菜单的历史数据，包括菜肴及其价格。
+该数据集由纽约公共图书馆（New York Public Library）创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
 
-来源： http://menus.nypl.org/data  
-数据处于公有领域。
+来源：http://menus.nypl.org/data  
+这些数据属于公共领域。
 
-数据来自图书馆的档案，可能并不完整，且对统计分析来说较为困难。尽管如此，它也非常美味。  
-数据的大小大约为 130 万条关于菜单中的菜肴记录 — 对于 ClickHouse 而言，这是一小部分数据量，但仍然是一个很好的示例。
+这些数据来自图书馆档案，可能并不完整，也不太适合统计分析。不过它也非常“诱人”。  
+其规模仅约为 130 万条菜单菜品记录——对 ClickHouse 来说数据量非常小，但仍然是一个很好的示例。
+
+
 
 ## 下载数据集 {#download-dataset}
 
-运行命令：
+运行以下命令：
+
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-
-# Option: Validate the checksum
+# 可选：验证校验和
 md5sum 2021_08_01_07_01_17_data.tgz
-
-# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
+# 校验和应为：db6126724de939a5481e3160a2d67d15
 ```
 
-如有需要，将链接替换为 http://menus.nypl.org/data 上的最新链接。  
+如有需要，请将链接替换为来自 [http://menus.nypl.org/data](http://menus.nypl.org/data) 的最新链接。
 下载大小约为 35 MB。
+
 
 ## 解压数据集 {#unpack-dataset}
 
@@ -36,17 +39,19 @@ md5sum 2021_08_01_07_01_17_data.tgz
 tar xvf 2021_08_01_07_01_17_data.tgz
 ```
 
-解压后的大小约为 150 MB。
+解压后大小约为 150 MB。
 
-数据经过规范化，包含四个表：
-- `Menu` — 关于菜单的信息：餐厅的名称、菜单出现的日期等。
-- `Dish` — 关于菜肴的信息：菜肴的名称及一些特征。
-- `MenuPage` — 关于菜单页的信息，因为每一页属于某个菜单。
-- `MenuItem` — 菜单的一项。某个菜单页上的菜肴及其价格：指向菜肴和菜单页的链接。
+数据已规范化,由四个表组成:
+
+- `Menu` — 菜单信息:餐厅名称、菜单查看日期等。
+- `Dish` — 菜品信息:菜品名称及一些特征。
+- `MenuPage` — 菜单页面信息,每个页面都属于某个菜单。
+- `MenuItem` — 菜单项。某个菜单页面上的菜品及其价格:关联到菜品和菜单页面。
+
 
 ## 创建表 {#create-tables}
 
-我们使用 [Decimal](../../sql-reference/data-types/decimal.md) 数据类型来存储价格。
+我们使用 [Decimal](../../sql-reference/data-types/decimal.md) 数据类型存储价格。
 
 ```sql
 CREATE TABLE dish
@@ -111,9 +116,10 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
+
 ## 导入数据 {#import-data}
 
-将数据上传至 ClickHouse，运行：
+将数据上传到 ClickHouse,运行以下命令:
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -122,20 +128,21 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-我们使用 [CSVWithNames](../../interfaces/formats.md#csvwithnames) 格式，因为数据以带表头的 CSV 表示。
+我们使用 [CSVWithNames](/interfaces/formats/CSVWithNames) 格式,因为数据以带标题的 CSV 形式表示。
 
-我们禁用 `format_csv_allow_single_quotes`，因为数据字段仅使用双引号，而单引号可以在值内使用，不应干扰 CSV 解析器。
+我们禁用 `format_csv_allow_single_quotes`,因为数据字段仅使用双引号,而单引号可能出现在值内部,不应干扰 CSV 解析器。
 
-我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据没有 [NULL](/operations/settings/formats#input_format_null_as_default)。否则 ClickHouse 将尝试解析 `\N` 序列，可能会与数据中的 `\` 混淆。
+我们禁用 [input_format_null_as_default](/operations/settings/formats#input_format_null_as_default),因为我们的数据不包含 [NULL](/operations/settings/formats#input_format_null_as_default)。否则 ClickHouse 会尝试解析 `\N` 序列,并可能与数据中的 `\` 产生混淆。
 
-设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，ISO-8601 格式（没有秒，如 '2000-01-01 01:02'）将被识别。没有此设置时，仅允许固定的 DateTime 格式。
+设置 [date_time_input_format best_effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如,不带秒的 ISO-8601 格式(如 '2000-01-01 01:02')将被识别。如果不使用此设置,则仅允许固定的 DateTime 格式。
 
-## 非规范化数据 {#denormalize-data}
 
-数据以多个表的形式以 [规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms) 呈现。这意味着如果要查询菜单项中的菜肴名称，您必须执行 [JOIN](/sql-reference/statements/select/join)。  
-对于典型的分析任务，预先联接的数据更高效，以避免每次都进行 `JOIN`。这被称为“非规范化”数据。
+## 反规范化数据 {#denormalize-data}
 
-我们将创建一个名为 `menu_item_denorm` 的表，包含所有联接的数据：
+数据以[规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)存储在多个表中。这意味着如果要查询数据(例如从菜单项中查询菜品名称),就必须执行 [JOIN](/sql-reference/statements/select/join) 操作。
+对于典型的分析任务,处理预先 JOIN 的数据要高效得多,可以避免每次都执行 `JOIN` 操作。这种数据称为"反规范化"数据。
+
+我们将创建一个表 `menu_item_denorm`,其中包含所有 JOIN 后的数据:
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -182,6 +189,7 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
+
 ## 验证数据 {#validate-data}
 
 查询：
@@ -198,9 +206,10 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## 运行一些查询 {#run-queries}
 
-### 平均历史菜肴价格 {#query-averaged-historical-prices}
+## 运行查询 {#run-queries}
+
+### 菜品历史平均价格 {#query-averaged-historical-prices}
 
 查询：
 
@@ -240,7 +249,7 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-对此要持保留态度。
+数据仅供参考。
 
 ### 汉堡价格 {#query-burger-prices}
 
@@ -259,6 +268,7 @@ ORDER BY d ASC;
 ```
 
 结果：
+
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
@@ -311,11 +321,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-要获得伏特加，我们必须写 `ILIKE '%vodka%'`，这绝对构成了一种声明。
+要查出伏特加，我们必须写上 `ILIKE '%vodka%'`，这本身就已经很能说明问题了。
 
 ### 鱼子酱 {#query-caviar}
 
-让我们打印鱼子酱的价格。同时打印任何带有鱼子酱的菜肴的名称。
+我们来输出鱼子酱的价格，同时再输出任意一道包含鱼子酱的菜名。
 
 查询：
 
@@ -333,6 +343,7 @@ ORDER BY d ASC;
 ```
 
 结果：
+
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -354,8 +365,9 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-至少他们有鱼子酱与伏特加。非常好。
+至少他们还有鱼子酱配伏特加，真不错。
 
-## 在线游乐场 {#playground}
+
+## 在线演练场 {#playground}
 
 数据已上传至 ClickHouse Playground，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

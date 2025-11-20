@@ -1,22 +1,29 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
-sidebar_label: sumIf
-description: 'Пример использования комбинации sumIf'
-title: sumIf
+title: 'sumIf'
+description: 'Пример использования комбинатора sumIf'
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
-doc_type: reference
+sidebar_label: 'sumIf'
+doc_type: 'reference'
 ---
+
+
+
 # sumIf {#sumif}
+
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы значений для строк, где условие истинно, используя агрегатную функцию комбинатора `sumIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
+для вычисления суммы значений строк, удовлетворяющих условию,
+с помощью агрегатной функции-комбинатора `sumIf`.
+
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `sumIf` для расчета общей суммы продаж для успешных транзакций.
+В этом примере мы создадим таблицу, в которой хранятся данные о продажах с флагами успешности, и используем функцию `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
 
-```sql title="Query"
+```sql title="Запрос"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -36,20 +43,21 @@ SELECT
 FROM sales;
 ```
 
-Функция `sumIf` будет суммировать только те суммы, где `is_successful = 1`. В этом случае она суммирует: 100.50 + 200.75 + 300.00 + 175.25.
+Функция `sumIf` просуммирует только те значения, для которых `is_successful = 1`.
+В этом случае будет вычислена сумма: 100.50 + 200.75 + 300.00 + 175.25.
 
-```response title="Response"
+```response title="Результат"
    ┌─total_successful_sales─┐
 1. │                  776.50 │
    └───────────────────────┘
 ```
 
-### Расчет торгового объема по направлению цены {#calculate-trading-vol-price-direction}
+### Расчёт торгового объёма по направлению изменения цены {#calculate-trading-vol-price-direction}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по направлению цены за первую половину 2002 года.
+В этом примере мы используем таблицу `stock`, доступную в [демо-среде ClickHouse](https://sql.clickhouse.com/), чтобы вычислить торговый объём по направлению изменения цены за первое полугодие 2002 года.
 
-```sql title="Query"
-SELECT 
+```sql title="Запрос"
+SELECT
     toStartOfMonth(date) AS month,
     formatReadableQuantity(sumIf(volume, price > open)) AS volume_on_up_days,
     formatReadableQuantity(sumIf(volume, price < open)) AS volume_on_down_days,
@@ -63,24 +71,27 @@ ORDER BY month;
 
 ```markdown
     ┌──────month─┬─volume_on_up_days─┬─volume_on_down_days─┬─volume_on_neutral_days─┬─total_volume──┐
- 1. │ 2002-01-01 │ 26.07 billion     │ 30.74 billion       │ 781.80 million         │ 57.59 billion │
- 2. │ 2002-02-01 │ 20.84 billion     │ 29.60 billion       │ 642.36 million         │ 51.09 billion │
- 3. │ 2002-03-01 │ 28.81 billion     │ 23.57 billion       │ 762.60 million         │ 53.14 billion │
- 4. │ 2002-04-01 │ 24.72 billion     │ 30.99 billion       │ 763.92 million         │ 56.47 billion │
- 5. │ 2002-05-01 │ 25.09 billion     │ 30.57 billion       │ 858.57 million         │ 56.52 billion │
- 6. │ 2002-06-01 │ 29.10 billion     │ 30.88 billion       │ 875.71 million         │ 60.86 billion │
- 7. │ 2002-07-01 │ 32.27 billion     │ 41.73 billion       │ 747.32 million         │ 74.75 billion │
- 8. │ 2002-08-01 │ 28.57 billion     │ 27.49 billion       │ 1.17 billion           │ 57.24 billion │
- 9. │ 2002-09-01 │ 23.37 billion     │ 31.02 billion       │ 775.66 million         │ 55.17 billion │
-10. │ 2002-10-01 │ 38.57 billion     │ 34.05 billion       │ 956.48 million         │ 73.57 billion │
-11. │ 2002-11-01 │ 34.90 billion     │ 25.47 billion       │ 998.34 million         │ 61.37 billion │
-12. │ 2002-12-01 │ 22.99 billion     │ 28.65 billion       │ 1.14 billion           │ 52.79 billion │
+
+1.  │ 2002-01-01 │ 26.07 млрд │ 30.74 млрд │ 781.80 млн │ 57.59 млрд │
+2.  │ 2002-02-01 │ 20.84 млрд │ 29.60 млрд │ 642.36 млн │ 51.09 млрд │
+3.  │ 2002-03-01 │ 28.81 млрд │ 23.57 млрд │ 762.60 млн │ 53.14 млрд │
+4.  │ 2002-04-01 │ 24.72 млрд │ 30.99 млрд │ 763.92 млн │ 56.47 млрд │
+5.  │ 2002-05-01 │ 25.09 млрд │ 30.57 млрд │ 858.57 млн │ 56.52 млрд │
+6.  │ 2002-06-01 │ 29.10 млрд │ 30.88 млрд │ 875.71 млн │ 60.86 млрд │
+7.  │ 2002-07-01 │ 32.27 млрд │ 41.73 млрд │ 747.32 млн │ 74.75 млрд │
+8.  │ 2002-08-01 │ 28.57 млрд │ 27.49 млрд │ 1.17 млрд │ 57.24 млрд │
+9.  │ 2002-09-01 │ 23.37 млрд │ 31.02 млрд │ 775.66 млн │ 55.17 млрд │
+10. │ 2002-10-01 │ 38.57 млрд │ 34.05 млрд │ 956.48 млн │ 73.57 млрд │
+11. │ 2002-11-01 │ 34.90 млрд │ 25.47 млрд │ 998.34 млн │ 61.37 млрд │
+12. │ 2002-12-01 │ 22.99 млрд │ 28.65 млрд │ 1.14 млрд │ 52.79 млрд │
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Расчет торгового объема по символу акции {#calculate-trading-volume}
+### Расчёт торгового объёма по тикеру {#calculate-trading-volume}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по символу акции в 2006 году для трех крупнейших технологических компаний в то время.
+
+В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы вычислить торговый объём по тикеру в 2006 году для трёх крупнейших на тот момент технологических компаний.
 
 ```sql title="Query"
 SELECT 
@@ -113,6 +124,8 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
+
 ## См. также {#see-also}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)

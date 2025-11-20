@@ -1,54 +1,61 @@
 ---
-slug: '/best-practices/use-json-where-appropriate'
-sidebar_label: 'Использование JSON'
+slug: /best-practices/use-json-where-appropriate
 sidebar_position: 10
-description: 'Страница описывает когда использовать JSON'
-title: 'Используйте JSON, где это уместно'
-doc_type: reference
+sidebar_label: 'Using JSON'
+title: 'Используйте JSON, когда это уместно'
+description: 'Страница, описывающая, когда следует использовать JSON'
+keywords: ['JSON']
 show_related_blogs: true
+doc_type: 'reference'
 ---
-ClickHouse теперь предлагает родной тип колонки JSON, предназначенный для полуструктурированных и динамических данных. Важно уточнить, что **это тип колонки, а не формат данных** — вы можете вставлять JSON в ClickHouse как строку или через поддерживаемые форматы, такие как [JSONEachRow](/docs/interfaces/formats/JSONEachRow), но это не подразумевает использования типа колонки JSON. Пользователи должны использовать тип JSON только когда структура их данных динамична, а не когда они просто хранят JSON.
+
+ClickHouse теперь предлагает нативный тип столбца JSON, предназначенный для полуструктурированных и динамических данных. Важно уточнить, что **это тип столбца, а не формат данных** — вы можете вставлять JSON в ClickHouse как строку или через поддерживаемые форматы, такие как [JSONEachRow](/interfaces/formats/JSONEachRow), но это само по себе не означает использование типа столбца JSON. Тип JSON следует использовать только тогда, когда структура данных действительно динамическая, а не просто в случаях, когда данные хранятся в формате JSON.
+
+
 
 ## Когда использовать тип JSON {#when-to-use-the-json-type}
 
 Используйте тип JSON, когда ваши данные:
 
-* Имеют **непредсказуемые ключи**, которые могут меняться со временем.
-* Содержат **значения с различными типами** (например, путь может иногда содержать строку, иногда число).
-* Требуют гибкости схемы, где строгая типизация невозможна.
+- Имеют **непредсказуемые ключи**, которые могут изменяться со временем.
+- Содержат **значения разных типов** (например, путь может содержать то строку, то число).
+- Требуют гибкости схемы в случаях, когда строгая типизация невозможна.
 
-Если структура ваших данных известна и последовательна, в редких случаях потребуется тип JSON, даже если ваши данные находятся в формате JSON. В частности, если ваши данные имеют:
+Если структура данных известна и стабильна, необходимость в типе JSON возникает редко, даже если данные представлены в формате JSON. В частности, если ваши данные имеют:
 
-* **Плоскую структуру с известными ключами**: используйте стандартные типы колонок, например, String.
-* **Предсказуемую вложенность**: используйте типы Tuple, Array или Nested для этих структур.
-* **Предсказуемую структуру с различными типами**: рассмотрите использование типов Dynamic или Variant.
+- **Плоскую структуру с известными ключами**: используйте стандартные типы столбцов, например String.
+- **Предсказуемую вложенность**: используйте типы Tuple, Array или Nested для таких структур.
+- **Предсказуемую структуру с разными типами**: рассмотрите вместо этого типы Dynamic или Variant.
 
-Вы также можете комбинировать подходы - например, используйте статические колонки для предсказуемых полей верхнего уровня и одну колонку JSON для динамической части полезной нагрузки.
+Вы также можете комбинировать подходы — например, использовать статические столбцы для предсказуемых полей верхнего уровня и один столбец JSON для динамической части данных.
 
-## Соображения и советы по использованию JSON {#considerations-and-tips-for-using-json}
 
-Тип JSON обеспечивает эффективное колонковое хранение, упрощая пути в подколонки. Но с гибкостью приходит ответственность. Чтобы использовать его эффективно:
+## Рекомендации и советы по использованию JSON {#considerations-and-tips-for-using-json}
 
-* **Указывайте типы путей**, используя [подсказки в определении колонки](/sql-reference/data-types/newjson), чтобы указать типы для известных подколонок, избегая ненужного вывода типов.
-* **Пропускайте пути**, если вам не нужны значения, с помощью [SKIP и SKIP REGEXP](/sql-reference/data-types/newjson), чтобы снизить объем хранения и улучшить производительность.
-* **Избегайте установки [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) слишком высоко** - большие значения увеличивают потребление ресурсов и снижают эффективность. Как правило, держите его ниже 10 000.
+Тип JSON обеспечивает эффективное колоночное хранение путём преобразования путей в подколонки. Но с гибкостью приходит и ответственность. Для эффективного использования:
 
-:::note Подсказки типов 
-Подсказки типов предлагают больше, чем просто способ избежать ненужного вывода типов - они полностью устраняют косвенность хранения и обработки. Пути JSON с подсказками типов всегда хранятся так же, как традиционные колонки, минуя необходимость в [**дискриминаторных колонках**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) или динамическом разрешении во время выполнения запроса. Это означает, что при хорошо определенных подсказках типов вложенные поля JSON достигают такой же производительности и эффективности, как если бы они были смоделированы как поля верхнего уровня с самого начала. В результате, для наборов данных, которые в основном последовательны, но все же выигрывают от гибкости JSON, подсказки типов предоставляют удобный способ сохранить производительность, не требуя перестройки вашей схемы или конвейера ввода данных.
+- **Указывайте типы путей** с помощью [подсказок в определении колонки](/sql-reference/data-types/newjson), чтобы задать типы для известных подколонок и избежать ненужного вывода типов.
+- **Пропускайте пути**, если значения не нужны, используя [SKIP и SKIP REGEXP](/sql-reference/data-types/newjson) для сокращения объёма хранения и повышения производительности.
+- **Избегайте установки слишком высокого значения [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json)**—большие значения увеличивают потребление ресурсов и снижают эффективность. Как правило, рекомендуется держать его ниже 10 000.
+
+:::note Подсказки типов
+Подсказки типов — это не просто способ избежать ненужного вывода типов, они полностью устраняют косвенность хранения и обработки. Пути JSON с подсказками типов всегда хранятся так же, как обычные колонки, исключая необходимость в [**колонках-дискриминаторах**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) или динамическом разрешении во время выполнения запроса. Это означает, что при правильно определённых подсказках типов вложенные поля JSON достигают той же производительности и эффективности, как если бы они были смоделированы как поля верхнего уровня с самого начала. В результате для наборов данных, которые в основном согласованы, но всё же выигрывают от гибкости JSON, подсказки типов предоставляют удобный способ сохранить производительность без необходимости реструктурировать схему или конвейер загрузки данных.
 :::
 
-## Расширенные функции {#advanced-features}
 
-* Колонки JSON **могут использоваться в первичных ключах**, как и любые другие колонки. Кодеки не могут быть указаны для подколонки.
-* Они поддерживают инспекцию с помощью функций, таких как [`JSONAllPathsWithTypes()` и `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions).
-* Вы можете читать вложенные подобъекты с помощью синтаксиса `.^`.
-* Синтаксис запросов может отличаться от стандартного SQL и может требовать специального приведения типов или операторов для вложенных полей.
+## Расширенные возможности {#advanced-features}
 
-Для дополнительного руководства смотрите [документацию по JSON ClickHouse](/sql-reference/data-types/newjson) или изучите наш пост в блоге [ Новый мощный тип данных JSON для ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse).
+- Колонки JSON **могут использоваться в первичных ключах** так же, как и любые другие колонки. Для подколонок нельзя указать кодеки.
+- Они поддерживают интроспекцию с помощью функций [`JSONAllPathsWithTypes()` и `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions).
+- Вложенные подобъекты можно читать с использованием синтаксиса `.^`.
+- Синтаксис запросов может отличаться от стандартного SQL и может требовать специального приведения типов или операторов для вложенных полей.
+
+Дополнительную информацию см. в [документации ClickHouse по JSON](/sql-reference/data-types/newjson) или в статье блога [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse).
+
 
 ## Примеры {#examples}
 
-Рассмотрим следующий пример JSON, представляющий строку из набора данных [Python PyPI](https://clickpy.clickhouse.com/):
+Рассмотрим следующий пример JSON, представляющий строку из [датасета Python PyPI](https://clickpy.clickhouse.com/):
 
 ```json
 {
@@ -63,7 +70,7 @@ ClickHouse теперь предлагает родной тип колонки 
 }
 ```
 
-Предположим, эта схема статична, и типы могут быть чётко определены. Даже если данные находятся в формате NDJSON (JSON-строка на строку), нет необходимости использовать тип JSON для такой схемы. Просто определите схему с классическими типами.
+Предположим, что эта схема статична и типы данных могут быть чётко определены. Даже если данные представлены в формате NDJSON (по одной JSON-строке на строку файла), нет необходимости использовать тип JSON для такой схемы. Достаточно определить схему с использованием классических типов.
 
 ```sql
 CREATE TABLE pypi (
@@ -80,14 +87,14 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-и вставьте строки JSON:
+и вставить JSON-строки:
 
 ```sql
 INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-Рассмотрим набор данных [arXiv](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download), содержащий 2,5 миллиона научных статей. Каждая строка в этом наборе данных, распределенном как NDJSON, представляет собой опубликованную научную работу. Пример строки представлен ниже:
+Рассмотрим [датасет arXiv](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download), содержащий 2,5 млн научных статей. Каждая строка в этом датасете, распространяемом в формате NDJSON, представляет опубликованную научную работу. Пример строки показан ниже:
 
 ```json
 {
@@ -113,17 +120,11 @@ INSERT INTO pypi FORMAT JSONEachRow
     }
   ],
   "update_date": "2022-11-07",
-  "authors_parsed": [
-    [
-      "Lemire",
-      "Daniel",
-      ""
-    ]
-  ]
+  "authors_parsed": [["Lemire", "Daniel", ""]]
 }
 ```
 
-Хотя JSON здесь сложен, с вложенными структурами, он предсказуем. Количество и типы полей не будут изменяться. Хотя мы могли бы использовать тип JSON для этого примера, мы также можем просто явно определить структуру, используя [Tuples](/sql-reference/data-types/tuple) и [Nested](/sql-reference/data-types/nested-data-structures/nested) типы:
+Хотя JSON здесь сложный, с вложенными структурами, он предсказуем. Количество и типы полей не изменятся. Хотя для этого примера можно использовать тип JSON, мы также можем явно определить структуру, используя типы [Tuple](/sql-reference/data-types/tuple) и [Nested](/sql-reference/data-types/nested-data-structures/nested):
 
 ```sql
 CREATE TABLE arxiv
@@ -147,28 +148,29 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-Снова мы можем вставить данные как JSON:
+Снова можно вставить данные в формате JSON:
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-Предположим, добавлена другая колонка под названием `tags`. Если это была бы просто строка, мы могли бы смоделировать её как `Array(String)`, но предположим, что пользователи могут добавлять произвольные структуры тегов с различными типами (обратите внимание, что score может быть строкой или целым числом). Наш изменённый документ JSON:
+Предположим, что добавлен ещё один столбец `tags`. Если бы это был просто список строк, мы могли бы представить его как `Array(String)`, но давайте предположим, что пользователи могут добавлять произвольные структуры тегов со смешанными типами (обратите внимание, что `score` может быть строкой или целым числом). Наш модифицированный JSON-документ:
 
 ```sql
 {
  "id": "2101.11408",
  "submitter": "Daniel Lemire",
  "authors": "Daniel Lemire",
- "title": "Number Parsing at a Gigabyte per Second",
- "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+ "title": "Парсинг чисел со скоростью гигабайт в секунду",
+ "comments": "Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/",
  "journal-ref": "Software: Practice and Experience 51 (8), 2021",
  "doi": "10.1002/spe.2984",
  "report-no": null,
  "categories": "cs.DS cs.MS",
  "license": "http://creativecommons.org/licenses/by/4.0/",
- "abstract": "With disks and networks providing gigabytes per second ....\n",
+ "abstract": "Поскольку диски и сети обеспечивают пропускную способность в гигабайты в секунду ....\n",
  "versions": [
  {
    "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -189,18 +191,18 @@ INSERT INTO arxiv FORMAT JSONEachRow
  ],
  "tags": {
    "tag_1": {
-     "name": "ClickHouse user",
+     "name": "Пользователь ClickHouse",
      "score": "A+",
-     "comment": "A good read, applicable to ClickHouse"
+     "comment": "Полезное чтение, применимо к ClickHouse"
    },
    "28_03_2025": {
      "name": "professor X",
      "score": 10,
-     "comment": "Didn't learn much",
+     "comment": "Мало что нового узнал",
      "updates": [
        {
          "name": "professor X",
-         "comment": "Wolverine found more interesting"
+         "comment": "Росомаха счёл более интересным"
        }
      ]
    }
@@ -208,7 +210,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-В этом случае мы могли бы смоделировать документы arXiv как все JSON или просто добавить колонку JSON `tags`. Мы предоставляем оба примера ниже:
+В этом случае мы могли бы представить документы arXiv либо целиком в формате JSON, либо просто добавить JSON-столбец `tags`. Ниже мы приводим оба примера:
 
 ```sql
 CREATE TABLE arxiv
@@ -220,14 +222,15 @@ ORDER BY doc.update_date
 ```
 
 :::note
-Мы указываем подсказку типа для колонки `update_date` в определении JSON, так как мы используем её в порядке/первичном ключе. Это помогает ClickHouse знать, что эта колонка не будет нулевой и гарантирует, что он знает, какую подколонку `update_date` использовать (для каждого типа может быть несколько подколонок, так что иначе это будет неоднозначно).
+Мы указываем подсказку типа для столбца `update_date` в JSON-определении, так как используем его в сортировке/первичном ключе. Это помогает ClickHouse понять, что этот столбец не может быть `null`, и гарантирует, что система знает, какой подкстолбец `update_date` использовать (их может быть несколько для каждого типа, поэтому без подсказки возникает неоднозначность).
 :::
 
-Мы можем вставить в эту таблицу и просмотреть впоследствии выведенную схему с помощью функции [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) и формата вывода [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow):
+Мы можем вставить данные в эту таблицу и просмотреть затем выведенную схему с помощью функции [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) и формата вывода [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow):
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Разбор чисел со скоростью гигабайта в секунду","comments":"Программное обеспечение доступно по адресам https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"Когда диски и сети обеспечивают гигабайты в секунду ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Хорошее чтение, применимое к ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Мало чему научился","updates":[{"name":"professor X","comment":"Wolverine нашёл более интересным"}]}}}
 ```
 
 ```sql
@@ -260,10 +263,10 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-1 row in set. Elapsed: 0.003 sec.
+1 строка в наборе. Затрачено: 0.003 сек.
 ```
 
-В качестве альтернативы мы могли бы смоделировать это, используя нашу предыдущую схему и колонку JSON `tags`. Это обычно предпочтительно, минимизируя вывод, необходимый ClickHouse:
+В качестве альтернативы мы могли бы смоделировать это, используя нашу предыдущую схему и JSON-столбец `tags`. В целом такой подход предпочтительнее, так как сводит к минимуму объем рассуждений, которые ClickHouse должен выполнять сам:
 
 ```sql
 CREATE TABLE arxiv
@@ -290,10 +293,11 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Парсинг чисел со скоростью гигабайт в секунду","comments":"Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"Учитывая, что диски и сети обеспечивают гигабайты в секунду ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Полезное чтение, применимо к ClickHouse"},"28_03_2025":{"name":"профессор X","score":10,"comment":"Мало что узнал","updates":[{"name":"профессор X","comment":"Росомаха нашёл это более интересным"}]}}}
 ```
 
-Теперь мы можем вывести типы подколонки tags.
+
+Теперь мы можем вывести типы подстолбцов `tags`.
 
 ```sql
 SELECT JSONAllPathsWithTypes(tags)
@@ -312,5 +316,5 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-1 row in set. Elapsed: 0.002 sec.
+Получена 1 строка. Прошло: 0.002 сек.
 ```

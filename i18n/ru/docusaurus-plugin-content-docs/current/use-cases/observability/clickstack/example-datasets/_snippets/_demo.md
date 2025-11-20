@@ -1,15 +1,15 @@
-import Image from '@theme/IdealImage';
-import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
+import Image from "@theme/IdealImage"
+import architecture from "@site/static/images/use-cases/observability/hyperdx-demo/architecture.png"
 
-### Архитектура демо {#demo-architecture}
+### Архитектура демонстрации {#demo-architecture}
 
-Демо состоит из микросервисов, написанных на различных языках программирования, которые общаются друг с другом по gRPC и HTTP, а также генератора нагрузки, который использует Locust для имитации пользовательского трафика. Исходный код для этого демо был изменен, чтобы использовать [инструментацию ClickStack](/use-cases/observability/clickstack/sdks).
+Демонстрация состоит из микросервисов, написанных на различных языках программирования, которые взаимодействуют друг с другом по протоколам gRPC и HTTP, а также генератора нагрузки, использующего Locust для имитации пользовательского трафика. Исходный код этой демонстрации был модифицирован для использования [инструментария ClickStack](/use-cases/observability/clickstack/sdks).
 
-<Image img={architecture} alt="Архитектура" size="lg"/>
+<Image img={architecture} alt='Архитектура' size='lg' />
 
-_Кредит: https://opentelemetry.io/docs/demo/architecture/_
+_Источник: https://opentelemetry.io/docs/demo/architecture/_
 
-Дополнительные детали о демо можно найти в:
+Дополнительную информацию о демонстрации можно найти в:
 
 - [документации OpenTelemetry](https://opentelemetry.io/docs/demo/)
-- [форк, поддерживаемый ClickStack](https://github.com/ClickHouse/opentelemetry-demo)
+- [поддерживаемом форке ClickStack](https://github.com/ClickHouse/opentelemetry-demo)

@@ -1,10 +1,11 @@
 ---
-'slug': '/guides/developer/deduplication'
-'sidebar_label': '重複排除戦略'
-'sidebar_position': 3
-'description': '頻繁な upserts、更新、削除を行う必要がある場合は、重複排除を使用してください.'
-'title': '重複排除戦略'
-'doc_type': 'guide'
+slug: /guides/developer/deduplication
+sidebar_label: '重複排除の戦略'
+sidebar_position: 3
+description: 'upsert・update・delete を頻繁に実行する必要がある場合は、重複排除を利用します。'
+title: '重複排除の戦略'
+keywords: ['deduplication strategies', 'data deduplication', 'upserts', 'updates and deletes', 'developer guide']
+doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
@@ -13,35 +14,38 @@ import Image from '@theme/IdealImage';
 
 # 重複排除戦略
 
-**重複排除**とは、***データセットの重複行を削除するプロセス***を指します。OLTPデータベースでは、各行にユニークな主キーがあるため、これを簡単に実行できますが、それには遅い挿入のコストが伴います。挿入された行は、最初に検索され、見つかった場合は置き換えられる必要があります。
+**重複排除（Deduplication）** とは、***データセットから重複した行を削除する処理*** を指します。OLTP データベースでは、各行が一意の `primary key` を持つため、重複排除は容易に行えますが、その代償として挿入処理は遅くなります。挿入される各行は、まず既存データを検索し、見つかった場合はその行を置き換える必要があります。
 
-ClickHouseは、データ挿入の速度を重視して設計されています。ストレージファイルは不変であり、ClickHouseは行を挿入する前に既存の主キーを確認しないため、重複排除には少し手間がかかります。これにより、重複排除は即時ではなく、**最終的**であり、いくつかの副作用があります：
+ClickHouse はデータ挿入時の速度を重視して設計されています。ストレージファイルはイミュータブルであり、行を挿入する前に既存の `primary key` の有無を ClickHouse は確認しません。そのため、重複排除には追加の処理が必要になります。また、重複排除は即時に行われるのではなく、**最終的に（eventual）** 行われるため、いくつかの副作用があります：
 
-- あらゆる時点において、テーブルには重複（同じソートキーを持つ行）が存在する可能性があります。
-- 重複行の実際の削除は、パーツのマージ中に発生します。
-- クエリは、重複の可能性を考慮する必要があります。
+- 任意の時点では、テーブル内に依然として重複行（同じソートキーを持つ行）が存在し得る
+- 実際の重複行の削除はパーツのマージ処理中に行われる
+- クエリでは重複が存在する可能性を考慮する必要がある
 
 <div class='transparent-table'>
 
 |||
 |------|----|
-|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouseは、重複排除やその他の多くのトピックについて無料のトレーニングを提供しています。 [データの削除と更新トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) は、良い出発点になります。|
+|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse は重複排除を含む多くのトピックについて無料トレーニングを提供しています。[Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) から学習を始めるのがおすすめです。|
 
 </div>
 
+
+
 ## 重複排除のオプション {#options-for-deduplication}
 
-重複排除は、次のテーブルエンジンを使用してClickHouseで実装されています：
+ClickHouseでは、以下のテーブルエンジンを使用して重複排除を実装します:
 
-1. `ReplacingMergeTree` テーブルエンジン：このテーブルエンジンを使用すると、同じソートキーを持つ重複行がマージ中に削除されます。`ReplacingMergeTree` は、クエリが最後に挿入された行を返すようにしたい場合に、upsertの動作を模倣するための良いオプションです。
+1. `ReplacingMergeTree`テーブルエンジン: このテーブルエンジンでは、マージ時に同じソートキーを持つ重複行が削除されます。`ReplacingMergeTree`は、upsert動作(最後に挿入された行をクエリで返したい場合)をエミュレートするのに適したオプションです。
 
-2. 行の崩壊：`CollapsingMergeTree` および `VersionedCollapsingMergeTree` テーブルエンジンは、既存の行が「キャンセルされ」、新しい行が挿入されるロジックを使用します。これらは、`ReplacingMergeTree` よりも実装が複雑ですが、データがまだマージされているかどうかを気にすることなく、クエリや集計を簡単に記述できます。これらの2つのテーブルエンジンは、データを頻繁に更新する必要がある場合に便利です。
+2. 行の折りたたみ: `CollapsingMergeTree`と`VersionedCollapsingMergeTree`テーブルエンジンは、既存の行を「キャンセル」して新しい行を挿入するロジックを使用します。これらは`ReplacingMergeTree`よりも実装が複雑ですが、データがマージ済みかどうかを気にすることなく、クエリや集計をよりシンプルに記述できます。これら2つのテーブルエンジンは、データを頻繁に更新する必要がある場合に有用です。
 
-以下でこれらの技術の両方を説明します。詳細については、無料のオンデマンド [データの削除と更新トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) をご覧ください。
+以下では、これら両方の手法について説明します。詳細については、無料のオンデマンド[データの削除と更新トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)をご覧ください。
 
-## UpsertsのためのReplacingMergeTreeの使用 {#using-replacingmergetree-for-upserts}
 
-Hacker Newsのコメントが含まれ、コメントが表示された回数を示す `views` カラムを持つテーブルの簡単な例を見てみましょう。記事が公開されるときに新しい行を挿入し、値が増加する場合に1日に1回、総表示回数で新しい行をupsertします：
+## アップサートにおけるReplacingMergeTreeの使用 {#using-replacingmergetree-for-upserts}
+
+Hacker Newsのコメントを格納するテーブルに、コメントの閲覧回数を表すviewsカラムがある簡単な例を見てみましょう。記事が公開されたときに新しい行を挿入し、閲覧数が増加した場合は1日1回、合計閲覧数で新しい行をアップサートするとします:
 
 ```sql
 CREATE TABLE hackernews_rmt (
@@ -54,7 +58,7 @@ ENGINE = ReplacingMergeTree
 PRIMARY KEY (author, id)
 ```
 
-2つの行を挿入しましょう：
+2行を挿入してみましょう:
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
@@ -62,7 +66,7 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 0)
 ```
 
-`views` カラムを更新するために、同じ主キーで新しい行を挿入します（`views` カラムの新しい値に注意してください）：
+`views`カラムを更新するには、同じプライマリキーで新しい行を挿入します(`views`カラムの新しい値に注目してください):
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
@@ -70,7 +74,7 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 200)
 ```
 
-テーブルは現在4行あります：
+テーブルには現在4行が存在します:
 
 ```sql
 SELECT *
@@ -88,7 +92,7 @@ FROM hackernews_rmt
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-出力の上の別々のボックスは、裏側の2つのパーツを示しています - このデータはまだマージされていないため、重複行はまだ削除されていません。`SELECT` クエリで `FINAL` キーワードを使用しましょう。これにより、クエリ結果の論理的なマージが生じます：
+出力の上記の別々のボックスは、内部的な2つのパートを示しています - このデータはまだマージされていないため、重複行はまだ削除されていません。`SELECT`クエリで`FINAL`キーワードを使用してみましょう。これにより、クエリ結果の論理的なマージが実行されます:
 
 ```sql
 SELECT *
@@ -103,17 +107,15 @@ FINAL
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-結果には2行のみが含まれており、最後に挿入された行が返されます。
+結果には2行のみが含まれ、最後に挿入された行が返されます。
 
 :::note
-`FINAL` を使用するのは、データが少量の場合は問題ありません。大量のデータを扱う場合、 
-`FINAL` を使用するのはおそらく最良の選択肢ではありません。カラムの最新の値を見つけるための 
-より良いオプションについて議論しましょう。
+`FINAL`の使用は、少量のデータの場合は問題なく機能します。大量のデータを扱う場合、`FINAL`の使用はおそらく最適な選択肢ではありません。カラムの最新値を取得するためのより良い方法について説明しましょう。
 :::
 
 ### FINALの回避 {#avoiding-final}
 
-両方のユニーク行の `views` カラムを再度更新しましょう：
+両方のユニークな行について、`views`カラムを再度更新してみましょう:
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
@@ -121,12 +123,13 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 250)
 ```
 
-テーブルには6行あります。なぜなら、実際のマージはまだ発生していないからです（`FINAL` を使用したときのクエリ時のマージのみです）。
+テーブルには現在6行が存在します。これは、実際のマージがまだ発生していないためです(`FINAL`を使用したときのクエリ時のマージのみが実行されました)。
 
 ```sql
 SELECT *
 FROM hackernews_rmt
 ```
+
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
@@ -143,8 +146,7 @@ FROM hackernews_rmt
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-`FINAL` の代わりにビジネスロジックを使用しましょう - `views` カラムは常に増加することがわかっているので、 
-選択したいカラムでグループ化した後、`max` 関数を使用して最大値を持つ行を選択できます：
+`FINAL` を使う代わりに、ビジネスロジックを活用しましょう。`views` カラムは常に増加することがわかっているので、対象のカラムでグループ化したあとに `max` 関数を使って、最大の値を持つ行を選択できます。
 
 ```sql
 SELECT
@@ -158,22 +160,23 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ This is post #2 │        250 │
-│  1 │ ricardo │ This is post #1 │        150 │
+│  2 │ ch_fan  │ これは投稿 #2 です │        250 │
+│  1 │ ricardo │ これは投稿 #1 です │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 
-上記のクエリに示されたようにグループ化することは、実際には `FINAL` キーワードを使用するよりも (クエリ性能という点で) より効率的です。
+上記のクエリのようにグルーピングを行う方が、`FINAL` キーワードを使用するよりも（クエリパフォーマンスの観点から）実際には効率的な場合があります。
 
-私たちの [データの削除と更新トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs) では、`ReplacingMergeTree` を使用した `version` カラムについてのこの例を詳しく説明しています。
+[Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)では、この例をさらに掘り下げ、`ReplacingMergeTree` で `version` 列を使用する方法などについて解説しています。
 
-## カラムを頻繁に更新するためのCollapsingMergeTreeの使用 {#using-collapsingmergetree-for-updating-columns-frequently}
 
-カラムの更新は、既存の行を削除し、新しい値で置き換えることを含みます。すでに見たように、ClickHouseではこの種の変異は _最終的に_ 発生します - マージ中にです。多くの行を更新する必要がある場合、`ALTER TABLE..UPDATE` を避けて、代わりに新しいデータを既存のデータと一緒に挿入する方が実際には効率的である場合があります。データが古いか新しいかを示すカラムを追加することもできます… 実際にこの動作をうまく実装しているテーブルエンジンがあり、古いデータを自動的に削除します。どのように機能するか見てみましょう。
+## 頻繁に更新されるカラムに対するCollapsingMergeTreeの使用 {#using-collapsingmergetree-for-updating-columns-frequently}
 
-外部システムを使用してHacker Newsコメントの表示回数を追跡しており、数時間ごとにデータをClickHouseにプッシュしたいとします。古い行を削除し、新しい行が各Hacker Newsコメントの新しい状態を表すことを希望します。この動作を実装するために`CollapsingMergeTree`を使用できます。
+カラムの更新には、既存の行を削除して新しい値で置き換える処理が含まれます。すでに見てきたように、ClickHouseにおけるこのタイプの変更は_最終的に_、つまりマージ時に発生します。更新する行が多数ある場合、`ALTER TABLE..UPDATE`を使用せず、既存データと並行して新しいデータを挿入する方が実際には効率的です。データが古いか新しいかを示すカラムを追加することもできますが、実はこの動作を非常にうまく実装しているテーブルエンジンが既に存在します。特に、古いデータを自動的に削除してくれる点が優れています。その仕組みを見ていきましょう。
 
-表示回数を保存するためのテーブルを定義しましょう：
+外部システムを使用してHacker Newsコメントの閲覧数を追跡し、数時間ごとにClickHouseにデータをプッシュするとします。古い行を削除し、新しい行が各Hacker Newsコメントの新しい状態を表すようにしたい場合、この動作を実装するために`CollapsingMergeTree`を使用できます。
+
+閲覧数を保存するテーブルを定義しましょう:
 
 ```sql
 CREATE TABLE hackernews_views (
@@ -186,22 +189,22 @@ ENGINE = CollapsingMergeTree(sign)
 PRIMARY KEY (id, author)
 ```
 
-`hackernews_views` テーブルには、**サイン**カラムとして呼ばれる `Int8` カラムがあることに注意してください。サインカラムの名前は任意ですが、`Int8` データ型が必要であり、サインカラム名は `CollapsingMergeTree` テーブルのコンストラクタに渡されます。
+`hackernews_views`テーブルには、**signカラム**と呼ばれる`Int8`型のsignという名前のカラムがあることに注目してください。signカラムの名前は任意ですが、`Int8`データ型は必須であり、このカラム名が`CollapsingMergeTree`テーブルのコンストラクタに渡されていることに注意してください。
 
-`CollapsingMergeTree` テーブルのサインカラムとは何ですか？ 行の _状態_ を表し、サインカラムは1または-1のみを持つことができます。以下のように機能します：
+`CollapsingMergeTree`テーブルのsignカラムとは何でしょうか。これは行の_状態_を表し、signカラムは1または-1のみを取ることができます。その仕組みは次のとおりです:
 
-- 2つの行が同じ主キー（またはそれが主キーと異なる場合は同じソート順）を持ち、サインカラムの値が異なる場合、最後に挿入された +1 の行が状態行となり、他の行は互いにキャンセルされます。
-- 互いにキャンセルされる行はマージ中に削除されます。
-- 対応するペアがない行は保持されます。
+- 2つの行が同じプライマリキー(またはプライマリキーと異なる場合はソート順)を持ち、signカラムの値が異なる場合、+1で挿入された最後の行が状態行となり、他の行は互いに相殺されます
+- 互いに相殺される行はマージ時に削除されます
+- 対応するペアがない行は保持されます
 
-`hackernews_views` テーブルに行を追加しましょう。この主キーの唯一の行なので、状態を1に設定します：
+`hackernews_views`テーブルに行を追加しましょう。このプライマリキーに対する唯一の行であるため、状態を1に設定します:
 
 ```sql
 INSERT INTO hackernews_views VALUES
    (123, 'ricardo', 0, 1)
 ```
 
-次に、`views` カラムを変更したいとします。既存の行をキャンセルする行と、新しい状態を含む行の2行を挿入します：
+次に、viewsカラムを変更したいとします。2つの行を挿入します。1つは既存の行を相殺するもの、もう1つは行の新しい状態を含むものです:
 
 ```sql
 INSERT INTO hackernews_views VALUES
@@ -209,7 +212,7 @@ INSERT INTO hackernews_views VALUES
    (123, 'ricardo', 150, 1)
 ```
 
-テーブルには、主キー `(123, 'ricardo')` を持つ3行があります：
+テーブルには現在、プライマリキー`(123, 'ricardo')`を持つ3つの行があります:
 
 ```sql
 SELECT *
@@ -226,7 +229,7 @@ FROM hackernews_views
 └─────┴─────────┴───────┴──────┘
 ```
 
-`FINAL` を追加すると、現在の状態行が返されることに注意してください：
+`FINAL`を追加すると現在の状態行が返されることに注目してください:
 
 ```sql
 SELECT *
@@ -240,24 +243,26 @@ FINAL
 └─────┴─────────┴───────┴──────┘
 ```
 
-もちろん、大きなテーブルで `FINAL` を使用することは推奨されません。
+ただし、大規模なテーブルでは`FINAL`の使用は推奨されません。
 
 :::note
-例において `views` カラムに渡された値は実際には必要ありませんし、古い行の `views` の現在の値と一致する必要もありません。実際には、主キーと-1だけで行をキャンセルすることが可能です：
+この例で`views`カラムに渡される値は実際には必要ありませんし、古い行の`views`の現在値と一致する必要もありません。実際、プライマリキーと-1だけで行を相殺できます:
 
 ```sql
 INSERT INTO hackernews_views(id, author, sign) VALUES
    (123, 'ricardo', -1)
 ```
+
 :::
 
-## 複数のスレッドからのリアルタイム更新 {#real-time-updates-from-multiple-threads}
 
-`CollapsingMergeTree` テーブルでは、行がサインカラムを使用して互いにキャンセルし、行の状態は最後に挿入された行によって決定されます。しかし、行が順番に挿入されない場合、異なるスレッドから行を挿入していると、これは問題になる可能性があります。この状況では、「最後」の行を使用することは機能しません。
+## 複数スレッドからのリアルタイム更新 {#real-time-updates-from-multiple-threads}
 
-ここで `VersionedCollapsingMergeTree` が便利になります - これは、`CollapsingMergeTree` と同様に行をキャンセルしますが、最後に挿入された行を保持する代わりに、指定したバージョンカラムの最大値を持つ行を保持します。
+`CollapsingMergeTree`テーブルでは、符号列を使用して行同士が相殺され、行の状態は最後に挿入された行によって決定されます。しかし、異なるスレッドから行を挿入する場合、行が順不同で挿入される可能性があるため、問題が発生することがあります。このような状況では、「最後の」行を使用する方法は機能しません。
 
-例を見てみましょう。Hacker Newsのコメントの表示回数を追跡したいとし、データが頻繁に更新されるとします。レポートには、強制的にまたはマージを待つことなく最新の値を使用したいです。私たちは、`CollapsedMergeTree` に似たテーブルから始めますが、行の状態のバージョンを保存するカラムを追加します：
+ここで`VersionedCollapsingMergeTree`が役立ちます。`CollapsingMergeTree`と同様に行を相殺しますが、最後に挿入された行を保持する代わりに、指定したバージョン列の値が最も高い行を保持します。
+
+例を見てみましょう。Hacker Newsコメントの閲覧数を追跡し、データが頻繁に更新されるとします。マージを強制したり待機したりすることなく、レポートで最新の値を使用したいと考えています。`CollapsingMergeTree`と同様のテーブルから始めますが、行の状態のバージョンを格納する列を追加します:
 
 ```sql
 CREATE TABLE hackernews_views_vcmt (
@@ -271,13 +276,13 @@ ENGINE = VersionedCollapsingMergeTree(sign, version)
 PRIMARY KEY (id, author)
 ```
 
-テーブルは `VersionsedCollapsingMergeTree` をエンジンとして使用し、**サインカラム**と**バージョンカラム**を渡していることに注意してください。以下のように機能します：
+このテーブルは`VersionedCollapsingMergeTree`をエンジンとして使用し、**符号列**と**バージョン列**を渡していることに注意してください。テーブルの動作は次のとおりです:
 
-- 同じ主キーとバージョンを持つ行の各ペアを削除し、サインが異なる場合。
-- 行が挿入された順序は重要ではありません。
-- バージョンカラムが主キーの一部でない場合、ClickHouseはそれを暗黙的に主キーとして最後のフィールドに追加します。
+- 同じプライマリキーとバージョンを持ち、異なる符号を持つ各行のペアを削除します
+- 行が挿入された順序は関係ありません
+- バージョン列がプライマリキーの一部でない場合、ClickHouseは最後のフィールドとしてプライマリキーに暗黙的に追加することに注意してください
 
-クエリを書く際にも同様のロジックを使用します - 主キーでグループ化し、まだ削除されていないキャンセルされた行を回避する賢いロジックを使用します。`hackernews_views_vcmt` テーブルにいくつかの行を追加しましょう：
+クエリを記述する際も同じタイプのロジックを使用します。プライマリキーでグループ化し、相殺されたがまだ削除されていない行を回避するための巧妙なロジックを使用します。`hackernews_views_vcmt`テーブルにいくつかの行を追加してみましょう:
 
 ```sql
 INSERT INTO hackernews_views_vcmt VALUES
@@ -286,7 +291,7 @@ INSERT INTO hackernews_views_vcmt VALUES
    (3, 'kenny', 0, 1, 1)
 ```
 
-次に、2つの行を更新し、そのうちの1つを削除します。行をキャンセルするには、以前のバージョン番号を含めることを忘れないでください（それが主キーの一部であるため）：
+次に、2つの行を更新し、1つを削除します。行を相殺するには、以前のバージョン番号を必ず含めてください(プライマリキーの一部であるため):
 
 ```sql
 INSERT INTO hackernews_views_vcmt VALUES
@@ -297,7 +302,7 @@ INSERT INTO hackernews_views_vcmt VALUES
    (3, 'kenny', 1000, 1, 2)
 ```
 
-以前と同じクエリを実行し、サインカラムに基づいて巧みに値を加算および減算します：
+符号列に基づいて値を巧妙に加算および減算する、以前と同じクエリを実行します:
 
 ```sql
 SELECT
@@ -310,7 +315,7 @@ HAVING sum(sign) > 0
 ORDER BY id ASC
 ```
 
-結果は2行になります：
+結果は2行です:
 
 ```response
 ┌─id─┬─author──┬─sum(multiply(views, sign))─┐
@@ -319,13 +324,13 @@ ORDER BY id ASC
 └────┴─────────┴────────────────────────────┘
 ```
 
-テーブルのマージを強制しましょう：
+テーブルのマージを強制してみましょう:
 
 ```sql
 OPTIMIZE TABLE hackernews_views_vcmt
 ```
 
-結果には2行だけが存在するはずです：
+結果には2行のみが含まれるはずです:
 
 ```sql
 SELECT *
@@ -339,10 +344,11 @@ FROM hackernews_views_vcmt
 └────┴─────────┴───────┴──────┴─────────┘
 ```
 
-複数のクライアントやスレッドから行を挿入する際に重複排除を実装したい場合、`VersionedCollapsingMergeTree` テーブルは非常に便利です。
+`VersionedCollapsingMergeTree`テーブルは、複数のクライアントやスレッドから行を挿入する際に重複排除を実装したい場合に非常に便利です。
 
-## なぜ行が重複排除されないのか？ {#why-arent-my-rows-being-deduplicated}
 
-挿入された行が重複排除されない理由の一つは、`INSERT` 文で非冪等関数または式を使用している場合です。例えば、`createdAt DateTime64(3) DEFAULT now()` カラムを持つ行を挿入している場合、各行には `createdAt` カラムのユニークなデフォルト値が設定されるため、行がユニークであることが保証されます。MergeTree / ReplicatedMergeTree テーブルエンジンは、各挿入された行がユニークなチェックサムを生成するため、行を重複排除することができません。
+## 行が重複排除されないのはなぜですか？ {#why-arent-my-rows-being-deduplicated}
 
-この場合、同じバッチの複数の挿入が同じ行の再挿入を引き起こさないように、各バッチの行に対して独自の `insert_deduplication_token` を指定することができます。この設定の使用方法についての詳細は、 [insert_deduplication_tokenに関するドキュメント](/operations/settings/settings#insert_deduplication_token) を参照してください。
+挿入された行が重複排除されない理由の1つは、`INSERT`文で非冪等な関数や式を使用している場合です。例えば、`createdAt DateTime64(3) DEFAULT now()`というカラムを持つ行を挿入している場合、各行の`createdAt`カラムに一意のデフォルト値が設定されるため、行は必ず一意になります。挿入される各行が一意のチェックサムを生成するため、MergeTree / ReplicatedMergeTreeテーブルエンジンは行を重複排除できません。
+
+この場合、各バッチに対して独自の`insert_deduplication_token`を指定することで、同じバッチを複数回挿入しても同じ行が再挿入されないようにすることができます。この設定の使用方法の詳細については、[`insert_deduplication_token`のドキュメント](/operations/settings/settings#insert_deduplication_token)を参照してください。

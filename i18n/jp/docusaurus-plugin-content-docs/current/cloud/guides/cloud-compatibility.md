@@ -1,55 +1,65 @@
 ---
-'slug': '/whats-new/cloud-compatibility'
-'sidebar_label': 'クラウドの互換性'
-'title': 'クラウドの互換性'
-'description': 'このガイドは、ClickHouse Cloudで期待される機能的及び運用的なことの概要を提供します。'
-'doc_type': 'guide'
+slug: /whats-new/cloud-compatibility
+sidebar_label: 'クラウド互換性'
+title: 'クラウド互換性'
+description: 'このガイドでは、ClickHouse Cloud の機能面および運用面における互換性の概要を説明します。'
+keywords: ['ClickHouse Cloud', 'compatibility']
+doc_type: 'guide'
 ---
+
 
 
 # ClickHouse Cloud 互換性ガイド
 
-このガイドでは、ClickHouse Cloud の機能的および運用的な期待について説明します。ClickHouse Cloud はオープンソースの ClickHouse ディストリビューションに基づいていますが、アーキテクチャや実装にいくつかの違いがある場合があります。この背景については、[ClickHouse Cloud の構築方法に関するこのブログ](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year)を読むことをお勧めします。
+このガイドでは、ClickHouse Cloud における機能面および運用面での挙動について、概要を説明します。ClickHouse Cloud はオープンソース版の ClickHouse ディストリビューションを基盤としていますが、アーキテクチャや実装には一部相違点が存在する場合があります。背景知識として、[ClickHouse Cloud をどのように構築したか](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) を解説したこのブログ記事も、参考として興味深い内容になっています。
 
-## ClickHouse Cloud アーキテクチャ {#clickhouse-cloud-architecture}
-ClickHouse Cloud は運用のオーバーヘッドを大幅に簡素化し、スケールで ClickHouse を運用するためのコストを削減します。デプロイメントのサイズを事前に決定する必要はなく、高可用性のためにレプリケーションを設定する必要もなく、データを手動でシャードする必要もなく、ワークロードが増加したときにサーバーをスケーリングアップしたり、使用していないときにスケーリングダウンする必要もありません。これらはすべて当社が対応します。
 
-これらの利点は、ClickHouse Cloud の基盤となるアーキテクチャの選択に起因しています。
-- コンピュートとストレージを分離し、別々の次元で自動的にスケーリングできるため、静的なインスタンス構成でストレージやコンピュートを過剰にプロビジョニングする必要がありません。
-- オブジェクトストアの上に構築された階層型ストレージとマルチレベルのキャッシングにより、事実上制限のないスケーリングと良好な価格/性能比が提供されるため、ストレージパーティションのサイズを事前に決定し、高いストレージコストを心配する必要がありません。
-- 高可用性はデフォルトで有効になっており、レプリケーションは透過的に管理されるため、アプリケーションの構築やデータの分析に集中できます。
-- 変動する継続的なワークロードの自動スケーリングはデフォルトで有効になっているため、サービスのサイズを事前に決定したり、ワークロードが増加したときにサーバーをスケーリングアップしたり、アクティビティが少ないときに手動でサーバーをスケーリングダウンする必要がありません。
-- 不定期なワークロードに対してはデフォルトでシームレスなハイバーネーションが有効になっています。活動が停止した後、コンピュートリソースを自動的に一時停止し、新しいクエリが到着したときに再び透過的に開始しますので、アイドルリソースに対して料金を支払う必要がありません。
-- 高度なスケーリング制御により、追加のコスト管理のための自動スケーリング最大値や、特定のパフォーマンス要件を持つアプリケーションのための自動スケーリング最小値を設定できます。
+
+## ClickHouse Cloudアーキテクチャ {#clickhouse-cloud-architecture}
+
+ClickHouse Cloudは運用上のオーバーヘッドを大幅に簡素化し、ClickHouseを大規模に運用するコストを削減します。デプロイメントのサイズを事前に決定したり、高可用性のためにレプリケーションを設定したり、データを手動でシャーディングしたり、ワークロードが増加したときにサーバーをスケールアップしたり、使用していないときにスケールダウンしたりする必要はありません。これらはすべて当社が対応します。
+
+これらのメリットは、ClickHouse Cloudの基盤となるアーキテクチャ上の選択によってもたらされます:
+
+- コンピュートとストレージが分離されているため、それぞれ独立してスケールでき、静的なインスタンス構成でストレージやコンピュートを過剰にプロビジョニングする必要がありません。
+- オブジェクトストア上の階層型ストレージと多層キャッシングにより、事実上無制限のスケーリングと優れたコストパフォーマンスを実現するため、ストレージパーティションのサイズを事前に決定したり、高額なストレージコストを心配したりする必要がありません。
+- 高可用性がデフォルトで有効になっており、レプリケーションは透過的に管理されるため、アプリケーションの構築やデータ分析に集中できます。
+- 変動する継続的なワークロードに対する自動スケーリングがデフォルトで有効になっているため、サービスのサイズを事前に決定したり、ワークロードが増加したときにサーバーをスケールアップしたり、アクティビティが少ないときに手動でサーバーをスケールダウンしたりする必要がありません。
+- 断続的なワークロードに対するシームレスな休止状態がデフォルトで有効になっています。非アクティブな期間の後、コンピュートリソースを自動的に一時停止し、新しいクエリが到着すると透過的に再起動するため、アイドル状態のリソースに対して料金を支払う必要がありません。
+- 高度なスケーリング制御により、追加のコスト管理のための自動スケーリングの上限設定や、特殊なパフォーマンス要件を持つアプリケーション向けにコンピュートリソースを確保するための自動スケーリングの下限設定が可能です。
+
 
 ## 機能 {#capabilities}
-ClickHouse Cloud では、オープンソースの ClickHouse ディストリビューションにおけるキュレーションされた機能セットにアクセスできます。以下のテーブルでは、現在 ClickHouse Cloud で無効になっているいくつかの機能を記述しています。
 
-### DDL 構文 {#ddl-syntax}
-ほとんどの場合、ClickHouse Cloud の DDL 構文はセルフマネージドのインストールで利用可能なものと一致するはずです。いくつかの顕著な例外があります：
-- `CREATE AS SELECT` のサポートは、現在利用できません。回避策として、`CREATE ... EMPTY ... AS SELECT` を使用し、その後そのテーブルにデータを挿入することをお勧めします（例については[こちらのブログ](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)を参照してください）。
-- 一部の実験的な構文は無効になっている場合があります。たとえば、`ALTER TABLE ... MODIFY QUERY` ステートメント。
-- セキュリティ上の理由から、一部のイントロスペクション機能が無効になっている場合があります。たとえば、`addressToLine` SQL 関数。
-- ClickHouse Cloud では `ON CLUSTER` パラメータを使用しないでください - これらは不要です。これらは主に無効な関数ですが、[マクロ](/operations/server-configuration-parameters/settings#macros)を使用しようとするとエラーが発生する可能性があります。マクロは ClickHouse Cloud では動作しないことが多く、不要です。
+ClickHouse Cloudは、ClickHouseのオープンソース版で提供される厳選された機能セットへのアクセスを提供します。以下の表は、現時点でClickHouse Cloudで無効化されている一部の機能について説明しています。
+
+### DDL構文 {#ddl-syntax}
+
+ClickHouse CloudのDDL構文は、ほとんどの場合、セルフマネージド環境で利用可能なものと一致します。いくつかの注目すべき例外があります:
+
+- `CREATE AS SELECT`のサポートは、現在利用できません。回避策として、`CREATE ... EMPTY ... AS SELECT`を使用してからそのテーブルにデータを挿入することを推奨します(例については[このブログ](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)を参照してください)。
+- 一部の実験的な構文は無効化されている場合があります。例えば、`ALTER TABLE ... MODIFY QUERY`ステートメントなどです。
+- セキュリティ上の理由から、一部のイントロスペクション機能が無効化されている場合があります。例えば、`addressToLine` SQL関数などです。
+- ClickHouse Cloudでは`ON CLUSTER`パラメータを使用しないでください。これらは不要です。これらはほとんどの場合何も実行しない関数ですが、[マクロ](/operations/server-configuration-parameters/settings#macros)を使用しようとするとエラーが発生する可能性があります。マクロはClickHouse Cloudでは正常に動作しないことが多く、また不要です。
 
 ### データベースおよびテーブルエンジン {#database-and-table-engines}
 
-ClickHouse Cloud では、デフォルトで高可用性のあるレプリケートされたサービスが提供されます。その結果、すべてのデータベースおよびテーブルエンジンは「レプリケート」となります。「レプリケート」を指定する必要はありません - たとえば、`ReplicatedMergeTree` と `MergeTree` は ClickHouse Cloud では同一です。
+ClickHouse Cloudは、デフォルトで高可用性のレプリケートされたサービスを提供します。その結果、すべてのデータベースおよびテーブルエンジンは「Replicated」となります。「Replicated」を指定する必要はありません。例えば、ClickHouse Cloudで使用する場合、`ReplicatedMergeTree`と`MergeTree`は同一です。
 
 **サポートされているテーブルエンジン**
 
-- ReplicatedMergeTree（指定がない場合のデフォルト）
+- ReplicatedMergeTree(何も指定されていない場合のデフォルト)
 - ReplicatedSummingMergeTree
 - ReplicatedAggregatingMergeTree
 - ReplicatedReplacingMergeTree
 - ReplicatedCollapsingMergeTree
 - ReplicatedVersionedCollapsingMergeTree
-- MergeTree（ReplicatedMergeTree に変換される）
-- SummingMergeTree（ReplicatedSummingMergeTree に変換される）
-- AggregatingMergeTree（ReplicatedAggregatingMergeTree に変換される）
-- ReplacingMergeTree（ReplicatedReplacingMergeTree に変換される）
-- CollapsingMergeTree（ReplicatedCollapsingMergeTree に変換される）
-- VersionedCollapsingMergeTree（ReplicatedVersionedCollapsingMergeTree に変換される）
+- MergeTree(ReplicatedMergeTreeに変換されます)
+- SummingMergeTree(ReplicatedSummingMergeTreeに変換されます)
+- AggregatingMergeTree(ReplicatedAggregatingMergeTreeに変換されます)
+- ReplacingMergeTree(ReplicatedReplacingMergeTreeに変換されます)
+- CollapsingMergeTree(ReplicatedCollapsingMergeTreeに変換されます)
+- VersionedCollapsingMergeTree(ReplicatedVersionedCollapsingMergeTreeに変換されます)
 - URL
 - View
 - MaterializedView
@@ -67,13 +77,17 @@ ClickHouse Cloud では、デフォルトで高可用性のあるレプリケー
 - S3
 
 ### インターフェース {#interfaces}
-ClickHouse Cloud は HTTPS、ネイティブインターフェース、および [MySQL ワイヤプロトコル](/interfaces/mysql) をサポートします。Postgres などの他のインターフェースのサポートも間もなく登場します。
 
-### 辞書 {#dictionaries}
-辞書は、ClickHouse でのルックアップを加速するための一般的な方法です。現在、ClickHouse Cloud は PostgreSQL、MySQL、リモートおよびローカルの ClickHouse サーバー、Redis、MongoDB、および HTTP ソースからの辞書をサポートしています。
+ClickHouse Cloudは、HTTPS、ネイティブインターフェース、および[MySQLワイヤープロトコル](/interfaces/mysql)をサポートしています。Postgresなどのより多くのインターフェースのサポートは近日中に提供予定です。
+
+### ディクショナリ {#dictionaries}
+
+ディクショナリは、ClickHouseでルックアップを高速化するための一般的な方法です。ClickHouse Cloudは現在、PostgreSQL、MySQL、リモートおよびローカルのClickHouseサーバー、Redis、MongoDB、HTTPソースからのディクショナリをサポートしています。
 
 ### フェデレーテッドクエリ {#federated-queries}
-クラウド内でのクロスクラスター通信や、外部のセルフマネージド ClickHouse クラスターとの通信のために、フェデレーテッド ClickHouse クエリをサポートしています。現在、ClickHouse Cloud は以下の統合エンジンを使用したフェデレーテッドクエリをサポートしています：
+
+クラウド内のクラスター間通信、および外部のセルフマネージドClickHouseクラスターとの通信のために、フェデレーテッドClickHouseクエリをサポートしています。ClickHouse Cloudは現在、以下の統合エンジンを使用したフェデレーテッドクエリをサポートしています:
+
 - Deltalake
 - Hudi
 - MySQL
@@ -83,44 +97,54 @@ ClickHouse Cloud は HTTPS、ネイティブインターフェース、および
 - PostgreSQL
 - S3
 
-SQLite、ODBC、JDBC、Redis、HDFS、および Hive などの一部の外部データベースおよびテーブルエンジンとのフェデレーテッドクエリはまだサポートされていません。
+SQLite、ODBC、JDBC、Redis、HDFS、Hiveなどの一部の外部データベースおよびテーブルエンジンを使用したフェデレーテッドクエリは、まだサポートされていません。
 
 ### ユーザー定義関数 {#user-defined-functions}
 
-ユーザー定義関数は ClickHouse の最近の機能です。現在、ClickHouse Cloud は SQL UDF のみをサポートしています。
+ユーザー定義関数は、ClickHouseの比較的新しい機能です。ClickHouse Cloudは現在、SQL UDFのみをサポートしています。
 
 ### 実験的機能 {#experimental-features}
 
-実験的機能は ClickHouse Cloud サービスで無効にされており、サービスデプロイメントの安定性を確保しています。
+実験的機能は、サービスデプロイメントの安定性を確保するため、ClickHouse Cloudサービスでは無効化されています。
 
 ### Kafka {#kafka}
 
-[Kafka テーブルエンジン](/integrations/data-ingestion/kafka/index.md) は ClickHouse Cloud では一般に利用可能ではありません。代わりに、Kafka 接続コンポーネントを ClickHouse サービスから切り離すアーキテクチャに依存することをお勧めします。データを Kafka ストリームから取得するために [ClickPipes](https://clickhouse.com/cloud/clickpipes) をお勧めします。あるいは、[Kafka ユーザーガイド](/integrations/data-ingestion/kafka/index.md) に記載されているプッシュベースの代替案を検討してください。
+[Kafkaテーブルエンジン](/integrations/data-ingestion/kafka/index.md)は、ClickHouse Cloudでは一般提供されていません。代わりに、関心の分離を実現するために、Kafka接続コンポーネントをClickHouseサービスから分離するアーキテクチャに依存することを推奨します。Kafkaストリームからデータを取得するには、[ClickPipes](https://clickhouse.com/cloud/clickpipes)を推奨します。または、[Kafkaユーザーガイド](/integrations/data-ingestion/kafka/index.md)に記載されているプッシュベースの代替手段を検討してください。
 
 ### 名前付きコレクション {#named-collections}
 
-[名前付きコレクション](/operations/named-collections) は現在 ClickHouse Cloud ではサポートされていません。
+[名前付きコレクション](/operations/named-collections)は、現在ClickHouse Cloudではサポートされていません。
 
-## 運用デフォルトと考慮事項 {#operational-defaults-and-considerations}
-以下は ClickHouse Cloud サービスのデフォルト設定です。場合によっては、これらの設定はサービスの正しい動作を確保するために固定されており、他の場合には調整可能です。
 
-### 運用制限 {#operational-limits}
+## 運用上のデフォルト設定と考慮事項 {#operational-defaults-and-considerations}
+
+以下は、ClickHouse Cloudサービスのデフォルト設定です。これらの設定の一部は、サービスの正常な動作を保証するために固定されており、その他は調整可能です。
+
+### 運用上の制限 {#operational-limits}
 
 #### `max_parts_in_total: 10,000` {#max_parts_in_total-10000}
-MergeTree テーブルの `max_parts_in_total` 設定のデフォルト値は 100,000 から 10,000 に引き下げられました。この変更の理由は、大量のデータパーツがクラウド内のサービスの起動時間を遅くする可能性があることが観察されたためです。大量のパーツは、通常は誤って選択されるあまりにも細かいパーティションキーを示すことが多く、回避すべきです。デフォルトの変更により、これらのケースを早期に検出できるようになります。
+
+MergeTreeテーブルの`max_parts_in_total`設定のデフォルト値は、100,000から10,000に引き下げられました。この変更の理由は、大量のデータパーツがクラウド環境でのサービス起動時間の遅延を引き起こす可能性があることを確認したためです。大量のパーツは通常、パーティションキーが細かすぎることを示しており、これは多くの場合誤って設定されるため避けるべきです。このデフォルト値の変更により、このようなケースをより早期に検出できるようになります。
 
 #### `max_concurrent_queries: 1,000` {#max_concurrent_queries-1000}
-このサーバーごとの設定を、デフォルトの `100` から `1000` に引き上げて、より多くの同時処理を可能にしました。この設定により、オファーされたティアサービスに対しては `レプリカの数 * 1,000` の同時クエリが可能になります。Basic ティアサービスの場合は単一のレプリカに制限され `1000` の同時クエリが、Scale と Enterprise の場合は構成されたレプリカの数に応じて `1000+` の同時クエリが許可されます。
+
+このサーバーごとの設定をデフォルトの`100`から`1000`に引き上げ、より高い同時実行性を実現しています。
+これにより、提供される各ティアサービスでは`レプリカ数 * 1,000`の同時クエリが可能になります。
+Basicティアサービスでは単一レプリカに制限され`1000`の同時クエリ、ScaleおよびEnterpriseティアでは設定されたレプリカ数に応じて`1000以上`の同時クエリが可能です。
 
 #### `max_table_size_to_drop: 1,000,000,000,000` {#max_table_size_to_drop-1000000000000}
-テーブル/パーティションを最大 1TB までドロップできるようにするために、この設定を 50GB から引き上げました。
+
+この設定を50GBから引き上げ、最大1TBまでのテーブル/パーティションの削除を可能にしています。
 
 ### システム設定 {#system-settings}
-ClickHouse Cloud は可変ワークロードに合わせてチューニングされており、そのためほとんどのシステム設定は現時点では設定可能ではありません。ほとんどのユーザーにとってシステム設定をチューニングする必要はないと考えていますが、高度なシステムチューニングについて質問がある場合は、ClickHouse Cloud サポートにお問い合わせください。
+
+ClickHouse Cloudは可変ワークロードに最適化されているため、現時点ではほとんどのシステム設定は変更できません。大多数のユーザーにとってシステム設定の調整は不要と考えていますが、高度なシステムチューニングに関するご質問がある場合は、ClickHouse Cloudサポートまでお問い合わせください。
 
 ### 高度なセキュリティ管理 {#advanced-security-administration}
-ClickHouse サービスの作成の一環として、デフォルトのデータベースと、このデータベースへの広範な権限を持つデフォルトのユーザーを作成します。この初期ユーザーは、追加のユーザーを作成し、そのユーザーにこのデータベースの権限を割り当てることができます。この他に、Kerberos、LDAP、または SSL X.509 証明書認証を使用してデータベース内で次のセキュリティ機能を有効にする機能は現時点でサポートされていません。
+
+ClickHouseサービスの作成時に、デフォルトデータベースと、このデータベースに対する広範な権限を持つデフォルトユーザーを作成します。この初期ユーザーは、追加のユーザーを作成し、このデータベースへの権限を割り当てることができます。これ以外に、Kerberos、LDAP、またはSSL X.509証明書認証を使用してデータベース内でセキュリティ機能を有効にする機能は、現時点ではサポートされていません。
+
 
 ## ロードマップ {#roadmap}
 
-クラウドで実行可能な UDF のサポートを導入し、多くの他の機能の需要を評価しています。フィードバックがあり、特定の機能にリクエストしたい場合は、[こちらから提出してください](https://console.clickhouse.cloud/support)。
+ClickHouse Cloudにおける実行可能UDFのサポートを導入中であり、その他多くの機能に対する需要を評価しています。フィードバックや特定の機能のリクエストがある場合は、[こちらから送信してください](https://console.clickhouse.cloud/support)。

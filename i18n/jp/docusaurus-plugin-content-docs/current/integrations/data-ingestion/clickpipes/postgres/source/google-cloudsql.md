@@ -1,9 +1,10 @@
 ---
-'sidebar_label': 'Google Cloud SQL'
-'description': 'Google Cloud SQL Postgres インスタンスを ClickPipes のソースとして設定する'
-'slug': '/integrations/clickpipes/postgres/source/google-cloudsql'
-'title': 'Google Cloud SQL Postgres ソース設定ガイド'
-'doc_type': 'guide'
+sidebar_label: 'Google Cloud SQL'
+description: 'ClickPipes のソースとして使用する Google Cloud SQL Postgres インスタンスをセットアップする'
+slug: /integrations/clickpipes/postgres/source/google-cloudsql
+title: 'Google Cloud SQL Postgres ソース設定ガイド'
+doc_type: 'guide'
+keywords: ['google cloud sql', 'postgres', 'clickpipes', 'logical decoding', 'firewall']
 ---
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
@@ -21,83 +22,125 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-サポートされているプロバイダのいずれかを使用している場合（サイドバーを参照）、そのプロバイダのための特定のガイドを参照してください。
+サイドバーに表示されているサポート対象プロバイダーのいずれかを利用している場合は、そのプロバイダー専用のガイドを参照してください。
 
 :::
 
-## サポートされている Postgres バージョン {#supported-postgres-versions}
 
-Postgres 12 以降はすべて
 
-## 論理レプリケーションを有効にする {#enable-logical-replication}
+## サポートされているPostgresバージョン {#supported-postgres-versions}
 
-**以下の手順を実行する必要はありません** `cloudsql.logical_decoding` がオンで、`wal_sender_timeout` が 0 の場合。これらの設定は、他のデータレプリケーションツールから移行する場合には主に事前に構成されているはずです。
+Postgres 12以降
 
-1. 概要ページの **編集** ボタンをクリックします。
 
-<Image img={edit_button} alt="Cloud SQL Postgres の編集ボタン" size="lg" border/>
+## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-2. フラグに移動し、`cloudsql.logical_decoding` をオンにし、`wal_sender_timeout` を 0 に変更します。これらの変更には Postgres サーバーの再起動が必要です。
+`cloudsql.logical_decoding`が有効で、`wal_sender_timeout`が0に設定されている場合、以下の手順を実行する**必要はありません**。これらの設定は、他のデータレプリケーションツールから移行する場合、通常は事前に構成されています。
 
-<Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding をオンに変更" size="lg" border/>
-<Image img={cloudsql_logical_decoding2} alt="cloudsql.logical_decoding と wal_sender_timeout の変更" size="lg" border/>
-<Image img={cloudsql_logical_decoding3} alt="サーバーを再起動" size="lg" border/>
+1. 概要ページの**編集**ボタンをクリックします。
 
-## ClickPipes ユーザーの作成と権限の付与 {#creating-clickpipes-user-and-granting-permissions}
+<Image
+  img={edit_button}
+  alt='Cloud SQL Postgresの編集ボタン'
+  size='lg'
+  border
+/>
 
-管理ユーザーを通じて Cloud SQL Postgres に接続し、以下のコマンドを実行してください：
+2. フラグに移動し、`cloudsql.logical_decoding`を有効に、`wal_sender_timeout`を0に変更します。これらの変更を適用するには、Postgresサーバーの再起動が必要です。
 
-1. ClickPipes 専用の Postgres ユーザーを作成します。
+<Image
+  img={cloudsql_logical_decoding1}
+  alt='cloudsql.logical_decodingを有効に変更'
+  size='lg'
+  border
+/>
+<Image
+  img={cloudsql_logical_decoding2}
+  alt='cloudsql.logical_decodingとwal_sender_timeoutを変更済み'
+  size='lg'
+  border
+/>
+<Image img={cloudsql_logical_decoding3} alt='サーバーの再起動' size='lg' border />
 
-```sql
-CREATE USER clickpipes_user PASSWORD 'some-password';
-```
 
-2. テーブルをレプリケートするスキーマに対して、`clickpipes_user` に読み取り専用アクセスを提供します。以下の例は `public` スキーマの権限を設定する方法を示しています。複数のスキーマにアクセスを付与したい場合は、それぞれのスキーマに対してこれらの 3 つのコマンドを実行できます。
+## ClickPipesユーザーの作成と権限の付与 {#creating-clickpipes-user-and-granting-permissions}
 
-```sql
-GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+管理者ユーザーでCloud SQL Postgresに接続し、以下のコマンドを実行します:
 
-3. このユーザーにレプリケーションアクセスを付与します：
+1. ClickPipes専用のPostgresユーザーを作成します。
 
-```sql
-ALTER ROLE clickpipes_user REPLICATION;
-```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
-4. 将来的に MIRROR（レプリケーション）を作成するために使用する公開を作成します。
+2. レプリケーション元のスキーマに対する読み取り専用アクセスを`clickpipes_user`に付与します。以下の例では`public`スキーマの権限設定を示しています。複数のスキーマにアクセス権を付与する場合は、各スキーマに対してこれら3つのコマンドを実行してください。
 
-```sql
-CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
-[//]: # (TODO Add SSH Tunneling)
+3. このユーザーにレプリケーションアクセスを付与します:
 
-## ClickPipes の IP をファイアウォールに追加する {#add-clickpipes-ips-to-firewall}
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-以下の手順に従って、ClickPipes の IP をネットワークに追加してください。
+4. 今後MIRROR(レプリケーション)の作成に使用するパブリケーションを作成します。
+
+   ```sql
+   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
+   ```
+
+[//]: # "TODO Add SSH Tunneling"
+
+
+## ClickPipes IPをファイアウォールに追加 {#add-clickpipes-ips-to-firewall}
+
+ClickPipes IPをネットワークに追加するには、以下の手順に従ってください。
 
 :::note
 
-SSH トンネリングを使用している場合は、[ClickPipes の IP](../../index.md#list-of-static-ips) をジャンプサーバー/バスティオンのファイアウォールルールに追加する必要があります。
+SSHトンネリングを使用している場合は、ジャンプサーバー/踏み台サーバーのファイアウォールルールに[ClickPipes IP](../../index.md#list-of-static-ips)を追加する必要があります。
 
 :::
 
-1. **接続** セクションに移動します。
+1. **Connections**セクションに移動します
 
-<Image img={connections} alt="Cloud SQL の接続セクション" size="lg" border/>
+<Image
+  img={connections}
+  alt='Cloud SQLのConnectionsセクション'
+  size='lg'
+  border
+/>
 
-2. ネットワーキングのサブセクションに移動します。
+2. Networkingサブセクションに移動します
 
-<Image img={connections_networking} alt="Cloud SQL のネットワーキングのサブセクション" size="lg" border/>
+<Image
+  img={connections_networking}
+  alt='Cloud SQLのNetworkingサブセクション'
+  size='lg'
+  border
+/>
 
-3. [ClickPipes の公衆 IP](../../index.md#list-of-static-ips) を追加します。
+3. [ClickPipesのパブリックIP](../../index.md#list-of-static-ips)を追加します
 
-<Image img={firewall1} alt="ClickPipes ネットワークをファイアウォールに追加" size="lg" border/>
-<Image img={firewall2} alt="ファイアウォールに追加された ClickPipes ネットワーク" size="lg" border/>
+<Image
+  img={firewall1}
+  alt='ClickPipesネットワークをファイアウォールに追加'
+  size='lg'
+  border
+/>
+<Image
+  img={firewall2}
+  alt='ファイアウォールに追加されたClickPipesネットワーク'
+  size='lg'
+  border
+/>
 
-## 次は何？ {#whats-next}
 
-これで [ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud にデータを取り込むことができます。Postgres インスタンスを設定する際に使用した接続詳細をメモしておくことを忘れないでください。ClickPipe の作成プロセス中にそれらが必要となります。
+## 次のステップ {#whats-next}
+
+これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
+ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず控えておいてください。

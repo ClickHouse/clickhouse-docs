@@ -1,22 +1,22 @@
 {
   "link.item.label.Trademark": {
-    "message": "Торговая марка",
-    "description": "The label of footer link with label=Trademark linking to https://clickhouse.com/legal/trademark-policy"
+    "message": "Товарный знак",
+    "description": "Надпись ссылки в подвале с label=Trademark, ведущей на https://clickhouse.com/legal/trademark-policy"
   },
   "link.item.label.Privacy": {
     "message": "Конфиденциальность",
-    "description": "The label of footer link with label=Privacy linking to https://clickhouse.com/legal/privacy-policy"
+    "description": "Метка ссылки в футере с label=Privacy, ведущей на https://clickhouse.com/legal/privacy-policy"
   },
   "link.item.label.Security": {
     "message": "Безопасность",
-    "description": "The label of footer link with label=Security linking to https://trust.clickhouse.com/"
+    "description": "Метка ссылки в подвале страницы с label=Security, ведущей на https://trust.clickhouse.com/"
   },
   "link.item.label.Terms of Service": {
     "message": "Условия обслуживания",
-    "description": "The label of footer link with label=Terms of Service linking to https://clickhouse.com/legal/agreements/terms-of-service"
+    "description": "Метка ссылки в нижнем колонтитуле с label=Terms of Service, ведущей на https://clickhouse.com/legal/agreements/terms-of-service"
   },
   "copyright": {
-    "message": "\u001a 2016&ndash;2025 ClickHouse, Inc.",
-    "description": "The footer copyright"
+    "message": "© 2016&ndash;2025 ClickHouse, Inc.",
+    "description": "Авторские права в футере"
   }
 }

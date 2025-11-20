@@ -1,66 +1,76 @@
 ---
-'sidebar_label': 'FAQ'
-'description': 'MongoDBのためのClickPipesに関するよくある質問。'
-'slug': '/integrations/clickpipes/mongodb/faq'
-'sidebar_position': 2
-'title': 'ClickPipes for MongoDB FAQ'
-'doc_type': 'reference'
+sidebar_label: 'FAQ'
+description: 'ClickPipes for MongoDB に関するよくある質問'
+slug: /integrations/clickpipes/mongodb/faq
+sidebar_position: 2
+title: 'ClickPipes for MongoDB FAQ'
+doc_type: 'reference'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
+
 
 
 # ClickPipes for MongoDB FAQ
 
-### JSONデータ型の個々のフィールドをクエリできますか？ {#can-i-query-for-individual-fields-in-the-json-datatype}
+### JSON データ型の個別フィールドをクエリできますか？ {#can-i-query-for-individual-fields-in-the-json-datatype}
 
-直接フィールドにアクセスする場合、例えば`{"user_id": 123}`のように、**ドット表記**を使用できます：
+`{"user_id": 123}` のような直接的なフィールドアクセスには、**ドット記法**を使用できます：
+
 ```sql
 SELECT doc.user_id as user_id FROM your_table;
 ```
-ネストされたオブジェクトフィールドに直接アクセスするには、例えば`{"address": { "city": "San Francisco", "state": "CA" }}`のように、`^`演算子を使用します：
+
+`{"address": { "city": "San Francisco", "state": "CA" }}` のようなネストされたオブジェクトフィールドへの直接アクセスには、`^` 演算子を使用します：
+
 ```sql
 SELECT doc.^address.city AS city FROM your_table;
 ```
-集約を行うには、`CAST`関数または`::`構文でフィールドを適切な型にキャストします：
+
+集計処理では、`CAST` 関数または `::` 構文を使用してフィールドを適切な型にキャストします：
+
 ```sql
 SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 ```
-JSONの操作に関する詳細は、[JSONの操作ガイド](./quickstart)をご覧ください。
 
-### ClickHouseでネストされたMongoDBドキュメントをフラット化するにはどうすればよいですか？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
+JSON の操作について詳しくは、[JSON 操作ガイド](./quickstart)を参照してください。
 
-MongoDBドキュメントはデフォルトでJSON型としてClickHouseにレプリケートされ、ネストされた構造を保持します。このデータをフラット化するためのいくつかのオプションがあります。データをカラムにフラット化したい場合は、通常のビュー、マテリアライズドビュー、またはクエリ時アクセスを使用できます。
+### ClickHouse でネストされた MongoDB ドキュメントをフラット化するにはどうすればよいですか？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
-1. **通常のビュー**: 通常のビューを使用してフラット化ロジックをカプセル化します。
-2. **マテリアライズドビュー**: 小規模なデータセットの場合は、[`FINAL`修飾子](/sql-reference/statements/select/from#final-modifier)を使用して定期的にデータをフラット化し、重複を排除することができるリフレッシュ可能なマテリアライズドビューを使用できます。大規模なデータセットには、リアルタイムでデータをフラット化し、クエリ時にデータを重複排除するために、`FINAL`なしのインクリメンタルマテリアライズドビューの使用をお勧めします。
-3. **クエリ時アクセス**: フラット化する代わりに、ドット表記を使用してクエリ内でネストされたフィールドに直接アクセスします。
+MongoDB ドキュメントはデフォルトで ClickHouse に JSON 型としてレプリケートされ、ネスト構造が保持されます。このデータをフラット化するにはいくつかのオプションがあります。データをカラムにフラット化したい場合は、通常のビュー、マテリアライズドビュー、またはクエリ時アクセスを使用できます。
 
-詳細な例については、[JSONの操作ガイド](./quickstart)をご覧ください。
+1. **通常のビュー**：通常のビューを使用してフラット化ロジックをカプセル化します。
+2. **マテリアライズドビュー**：小規模なデータセットの場合、[`FINAL` 修飾子](/sql-reference/statements/select/from#final-modifier)を使用した更新可能なマテリアライズドビューで定期的にデータをフラット化および重複排除できます。大規模なデータセットの場合は、`FINAL` を使用せずにインクリメンタルマテリアライズドビューを使用してリアルタイムでデータをフラット化し、クエリ時にデータを重複排除することを推奨します。
+3. **クエリ時アクセス**：フラット化する代わりに、ドット記法を使用してクエリ内でネストされたフィールドに直接アクセスします。
 
-### 公開IPがないMongoDBデータベースやプライベートネットワークに接続できますか？ {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
+詳細な例については、[JSON 操作ガイド](./quickstart)を参照してください。
 
-公開IPがないMongoDBデータベースやプライベートネットワークに接続するためにAWS PrivateLinkをサポートしています。現在、Azure Private LinkおよびGCP Private Service Connectはサポートしていません。
+### パブリック IP を持たない、またはプライベートネットワーク内にある MongoDB データベースに接続できますか？ {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
-### MongoDBデータベースからデータベース/テーブルを削除した場合はどうなりますか？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
+パブリック IP を持たない、またはプライベートネットワーク内にある MongoDB データベースへの接続には AWS PrivateLink をサポートしています。Azure Private Link および GCP Private Service Connect は現在サポートされていません。
 
-MongoDBからデータベース/テーブルを削除すると、ClickPipesは引き続き実行されますが、削除されたデータベース/テーブルは変更のレプリケーションを停止します。ClickHouseの対応するテーブルは保持されます。
+### MongoDB データベースからデータベース/テーブルを削除するとどうなりますか？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
-### MongoDB CDCコネクタはトランザクションをどのように処理しますか？ {#how-does-mongodb-cdc-connector-handle-transactions}
+MongoDB からデータベース/テーブルを削除すると、ClickPipes は実行を継続しますが、削除されたデータベース/テーブルの変更のレプリケーションは停止します。ClickHouse 内の対応するテーブルは保持されます。
 
-トランザクション内の各ドキュメント変更は、ClickHouseに個別に処理されます。変更はoplogに現れる順序で適用され、コミットされた変更のみがClickHouseにレプリケートされます。MongoDBのトランザクションがロールバックされた場合、その変更は変更ストリームには現れません。
+### MongoDB CDC Connector はトランザクションをどのように処理しますか？ {#how-does-mongodb-cdc-connector-handle-transactions}
 
-詳細な例については、[JSONの操作ガイド](./quickstart)をご覧ください。
+トランザクション内の各ドキュメント変更は個別に ClickHouse に処理されます。変更は oplog に現れる順序で適用され、コミットされた変更のみが ClickHouse にレプリケートされます。MongoDB トランザクションがロールバックされた場合、それらの変更は変更ストリームに表示されません。
 
-### `resume of change stream was not possible, as the resume point may no longer be in the oplog.`エラーをどのように処理しますか？ {#resume-point-may-no-longer-be-in-the-oplog-error}
+その他の例については、[JSON 操作ガイド](./quickstart)を参照してください。
 
-このエラーは通常、oplogが切り詰められ、ClickPipeが予想されるポイントで変更ストリームを再開できない場合に発生します。この問題を解決するには、[ClickPipeを再同期](./resync.md)してください。この問題が再発しないように、[oplog保持期間を延長することをお勧めします](./source/atlas#enable-oplog-retention)（またはセルフマネージドMongoDBを利用している場合は[こちら](./source/generic#enable-oplog-retention)を参照してください）。
+### `resume of change stream was not possible, as the resume point may no longer be in the oplog.` エラーにはどのように対処すればよいですか？ {#resume-point-may-no-longer-be-in-the-oplog-error}
 
-### レプリケーションはどのように管理されていますか？ {#how-is-replication-managed}
+このエラーは通常、oplog が切り詰められ、ClickPipe が期待されるポイントで変更ストリームを再開できない場合に発生します。この問題を解決するには、[ClickPipe を再同期](./resync.md)してください。この問題の再発を防ぐには、[oplog 保持期間を延長する](./source/atlas#enable-oplog-retention)ことを推奨します（セルフマネージド MongoDB を使用している場合は[こちら](./source/generic#enable-oplog-retention)）。
 
-MongoDBのネイティブなChange Streams APIを使用して、データベースの変更を追跡します。Change Streams APIはMongoDBのoplog（操作ログ）を利用して、データベース変更の再開可能なストリームを提供します。ClickPipeはMongoDBの再開トークンを使用してoplog内の位置を追跡し、すべての変更がClickHouseにレプリケートされることを確実にします。
+### レプリケーションはどのように管理されますか？ {#how-is-replication-managed}
 
-### どの読み取り優先順位を使用すべきですか？ {#which-read-preference-should-i-use}
+データベースの変更を追跡するために MongoDB のネイティブ Change Streams API を使用しています。Change Streams API は、MongoDB の oplog（操作ログ）を活用して、再開可能なデータベース変更のストリームを提供します。ClickPipe は MongoDB の再開トークンを使用して oplog 内の位置を追跡し、すべての変更が ClickHouse にレプリケートされることを保証します。
 
-使用する読み取り優先順位は特定のユースケースによります。プライマリノードへの負荷を最小限に抑えたい場合は、`secondaryPreferred`読み取り優先順位の使用をお勧めします。インジェスト遅延を最適化したい場合は、`primaryPreferred`読み取り優先順位の使用をお勧めします。詳細については、[MongoDBのドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1)をご覧ください。
+### どの読み取り優先設定を使用すればよいですか？ {#which-read-preference-should-i-use}
 
-### MongoDB ClickPipeはシャーディッドクラスターをサポートしていますか？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
-はい、MongoDB ClickPipeはレプリカセットとシャーディッドクラスターの両方をサポートしています。
+使用する読み取り優先設定は、特定のユースケースによって異なります。プライマリノードの負荷を最小限に抑えたい場合は、`secondaryPreferred` 読み取り優先設定の使用を推奨します。取り込みレイテンシを最適化したい場合は、`primaryPreferred` 読み取り優先設定の使用を推奨します。詳細については、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1)を参照してください。
+
+
+### MongoDB ClickPipeはシャードクラスターをサポートしていますか？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
+
+はい、MongoDB ClickPipeはレプリカセットとシャードクラスターの両方をサポートしています。

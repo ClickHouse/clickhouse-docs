@@ -1,27 +1,30 @@
 ---
-'sidebar_label': 'Java Runner'
-'slug': '/integrations/google-dataflow/java-runner'
-'sidebar_position': 2
-'description': 'ユーザーは Google Dataflow Java Runner を使用して ClickHouse にデータを取り込むことができます'
-'title': 'Dataflow Java Runner'
-'doc_type': 'guide'
+sidebar_label: 'Java Runner'
+slug: /integrations/google-dataflow/java-runner
+sidebar_position: 2
+description: 'ユーザーは Google Dataflow Java Runner を使用して ClickHouse にデータをインポートできます'
+title: 'Dataflow Java Runner'
+doc_type: 'guide'
+keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO connector']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Dataflow Java runner
+# Dataflow Java ランナー
 
 <ClickHouseSupportedBadge/>
 
-Dataflow Java Runner は、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービスで実行できるようにします。このアプローチは最大の柔軟性を提供し、高度な ETL ワークフローに適しています。
+Dataflow Java ランナーを使用すると、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービス上で実行できます。この方法は柔軟性が非常に高く、高度な ETL ワークフローに適しています。
 
-## 仕組み {#how-it-works}
+
+
+## 動作の仕組み {#how-it-works}
 
 1. **パイプラインの実装**
-   Java Runner を使用するには、`ClickHouseIO` - 当社の公式 Apache Beam コネクタを使用して Beam パイプラインを実装する必要があります。`ClickHouseIO` の使用方法に関するコード例や指示については、[ClickHouse Apache Beam](/integrations/apache-beam) をご覧ください。
+   Java Runnerを使用するには、ClickHouseの公式Apache Beamコネクタである`ClickHouseIO`を使用してBeamパイプラインを実装する必要があります。`ClickHouseIO`の使用方法に関するコード例と手順については、[ClickHouse Apache Beam](/integrations/apache-beam)を参照してください。
 
 2. **デプロイ**
-   パイプラインが実装され、構成されたら、Google Cloud のデプロイツールを使用して Dataflow にデプロイできます。デプロイメントの包括的な手順については、[Google Cloud Dataflow ドキュメント - Java Pipeline](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java)をご参照ください。
+   パイプラインの実装と設定が完了したら、Google Cloudのデプロイツールを使用してDataflowにデプロイできます。詳細なデプロイ手順については、[Google Cloud Dataflowドキュメント - Javaパイプライン](https://cloud.google.com/dataflow/docs/quickstarts/create-pipeline-java)を参照してください。
 
-**注**: このアプローチは、Beam フレームワークに対する理解とコーディングの専門知識が必要です。ノーコードソリューションを好む場合は、[ClickHouse の定義済みテンプレート](./templates) の使用を検討してください。
+**注意**: このアプローチは、Beamフレームワークに関する知識とコーディングスキルを前提としています。ノーコードソリューションをご希望の場合は、[ClickHouseの事前定義済みテンプレート](./templates)の使用をご検討ください。

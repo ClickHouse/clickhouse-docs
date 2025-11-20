@@ -1,53 +1,55 @@
 ---
-'title': '如何查询远程 ClickHouse 服务器'
-'sidebar_label': '查询远程 ClickHouse'
-'slug': '/chdb/guides/query-remote-clickhouse'
-'description': '在本指南中，我们将学习如何从 chDB 查询远程 ClickHouse 服务器。'
-'keywords':
-- 'chdb'
-- 'clickhouse'
-'doc_type': 'guide'
+title: '如何查询远程 ClickHouse 服务器'
+sidebar_label: '查询远程 ClickHouse'
+slug: /chdb/guides/query-remote-clickhouse
+description: '在本指南中，我们将学习如何使用 chDB 查询远程 ClickHouse 服务器。'
+keywords: ['chdb', 'clickhouse']
+doc_type: 'guide'
 ---
 
-在本指南中，我们将学习如何从 chDB 查询远程 ClickHouse 服务器。
+在本指南中，我们将学习如何使用 chDB 查询远程 ClickHouse 服务器。
+
+
 
 ## 设置 {#setup}
 
-让我们先创建一个虚拟环境：
+首先创建一个虚拟环境:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。
-确保您的版本为 2.0.2 或更高：
+现在安装 chDB。
+请确保版本为 2.0.2 或更高版本:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-接下来，我们将安装 pandas 和 ipython：
+接下来安装 pandas 和 ipython:
 
 ```bash
 pip install pandas ipython
 ```
 
-我们将使用 `ipython` 来运行指南中的命令，您可以通过运行以下命令来启动它：
+我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过以下命令启动:
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您喜欢的笔记本中使用这些代码。
+您也可以在 Python 脚本或您常用的 notebook 中使用这些代码。
+
 
 ## ClickPy 简介 {#an-intro-to-clickpy}
 
 我们将要查询的远程 ClickHouse 服务器是 [ClickPy](https://clickpy.clickhouse.com)。
-ClickPy 跟踪所有 PyPI 包的下载，并通过用户界面让您探索包的统计信息。
-底层数据库可以通过 `play` 用户进行查询。
+ClickPy 跟踪所有 PyPI 包的下载情况,并允许您通过 UI 界面浏览包的统计信息。
+底层数据库可使用 `play` 用户进行查询。
 
 您可以在 [其 GitHub 仓库](https://github.com/ClickHouse/clickpy) 中了解更多关于 ClickPy 的信息。
+
 
 ## 查询 ClickPy ClickHouse 服务 {#querying-the-clickpy-clickhouse-service}
 
@@ -58,18 +60,18 @@ import chdb
 ```
 
 我们将使用 `remoteSecure` 函数来查询 ClickPy。
-此函数至少需要主机名、表名和用户名。
+该函数至少需要主机名、表名和用户名这三个参数。
 
-我们可以写以下查询，以返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai) 每天的下载次数，结果为 Pandas DataFrame：
- 
+我们可以编写以下查询，以 Pandas DataFrame 的形式返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai)的每日下载量：
+
 ```python
 query = """
 SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'openai'
@@ -95,7 +97,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-现在我们来做同样的事情，以返回 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载次数：
+现在让我们用同样的方式返回 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载量：
 
 ```python
 query = """
@@ -103,8 +105,8 @@ SELECT
     toStartOfDay(date)::Date32 AS x,
     sum(count) AS y
 FROM remoteSecure(
-  'clickpy-clickhouse.clickhouse.com', 
-  'pypi.pypi_downloads_per_day', 
+  'clickpy-clickhouse.clickhouse.com',
+  'pypi.pypi_downloads_per_day',
   'play'
 )
 WHERE project = 'scikit-learn'
@@ -130,14 +132,15 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
+
 ## 合并 Pandas DataFrames {#merging-pandas-dataframes}
 
-我们现在有两个 DataFrame，我们可以根据日期（即 `x` 列）将它们合并在一起，如下所示：
+现在我们有两个 DataFrames,可以基于日期(即 `x` 列)将它们合并,如下所示:
 
 ```python
 df = openai_df.merge(
-  sklearn_df, 
-  on="x", 
+  sklearn_df,
+  on="x",
   suffixes=("_openai", "_sklearn")
 )
 df.head(n=5)
@@ -152,7 +155,7 @@ df.head(n=5)
 4  2018-03-02         5      23842
 ```
 
-然后，我们可以计算 Open AI 下载与 `scikit-learn` 下载的比例，如下所示：
+然后我们可以计算 OpenAI 下载量与 `scikit-learn` 下载量的比率,如下所示:
 
 ```python
 df['ratio'] = df['y_openai'] / df['y_sklearn']
@@ -168,10 +171,11 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
+
 ## 查询 Pandas DataFrames {#querying-pandas-dataframes}
 
-接下来，假设我们想要找到下载比例最高和最低的日期。
-我们可以返回到 chDB 并计算这些值：
+接下来,假设我们想要找出比率最优和最差的日期。
+我们可以回到 chDB 来计算这些值:
 
 ```python
 chdb.query("""
@@ -188,4 +192,4 @@ FROM Python(df)
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 
-如果您想了解更多关于查询 Pandas DataFrames 的信息，请参见 [Pandas DataFrames 开发者指南](querying-pandas.md)。
+如果您想了解更多关于查询 Pandas DataFrames 的信息,请参阅 [Pandas DataFrames 开发者指南](querying-pandas.md)。

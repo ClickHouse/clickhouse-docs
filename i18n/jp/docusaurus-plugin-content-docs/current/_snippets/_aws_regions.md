@@ -1,6 +1,4 @@
-
-
-| Region       | VPCサービス名                                            | AZ IDs                       |
+| リージョン   | VPC サービス名                                              | AZ ID                        |
 |--------------|-------------------------------------------------------------|------------------------------|
 |ap-south-1    | com.amazonaws.vpce.ap-south-1.vpce-svc-0a786406c7ddc3a1b    | aps1-az1 aps1-az2 aps1-az3   |
 |ap-southeast-1| com.amazonaws.vpce.ap-southeast-1.vpce-svc-0a8b096ec9d2acb01| apse1-az1 apse1-az2 apse1-az3|

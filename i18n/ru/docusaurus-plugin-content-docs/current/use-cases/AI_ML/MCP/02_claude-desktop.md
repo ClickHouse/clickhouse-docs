@@ -1,18 +1,15 @@
 ---
-'slug': '/use-cases/AI/MCP/claude-desktop'
-'sidebar_label': 'Интеграция Claude Desktop'
-'title': 'Настройка сервера ClickHouse MCP с Claude Desktop'
-'pagination_prev': null
-'pagination_next': null
-'description': 'В этом руководстве объясняется, как настроить Claude Desktop с сервером
-  ClickHouse MCP.'
-'keywords':
-- 'AI'
-- 'Librechat'
-- 'MCP'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/claude-desktop
+sidebar_label: 'Интеграция с Claude Desktop'
+title: 'Настройка сервера ClickHouse MCP для Claude Desktop'
+pagination_prev: null
+pagination_next: null
+description: 'В этом руководстве объясняется, как настроить Claude Desktop для работы с сервером ClickHouse MCP.'
+keywords: ['AI', 'Librechat', 'MCP']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
@@ -22,35 +19,48 @@ import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permissio
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
 
-# Использование сервера ClickHouse MCP с Claude Desktop
+# Использование MCP-сервера ClickHouse с Claude Desktop
 
-> В этом руководстве объясняется, как настроить Claude Desktop с сервером ClickHouse MCP, используя uv, и подключить его к примерным наборам данных ClickHouse.
+> В этом руководстве описывается, как настроить Claude Desktop с MCP-сервером ClickHouse с помощью uv
+> и подключить его к примерам наборов данных ClickHouse.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe
+  width='768'
+  height='432'
+  src='https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q'
+  title='Видеоплеер YouTube'
+  frameborder='0'
+  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+  referrerpolicy='strict-origin-when-cross-origin'
+  allowfullscreen
+></iframe>
 
 <VerticalStepper headerLevel="h2">
 
+
 ## Установка uv {#install-uv}
 
-Вам нужно установить [uv](https://docs.astral.sh/uv/), чтобы следовать инструкциям в этом руководстве.  
-Если вы не хотите использовать uv, вам необходимо обновить конфигурацию MCP Server, чтобы использовать альтернативный менеджер пакетов.
+Для выполнения инструкций из этого руководства необходимо установить [uv](https://docs.astral.sh/uv/).
+Если вы не хотите использовать uv, необходимо обновить конфигурацию MCP Server для использования альтернативного менеджера пакетов.
 
-## Скачивание Claude Desktop {#download-claude-desktop}
 
-Также вам нужно установить приложение Claude Desktop, которое можно скачать с [веб-сайта Claude Desktop](https://claude.ai/desktop).
+## Загрузите Claude Desktop {#download-claude-desktop}
+
+Вам также потребуется установить приложение Claude Desktop, которое можно скачать с [сайта Claude Desktop](https://claude.ai/desktop).
+
 
 ## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
-После установки Claude Desktop пора настроить [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).  
-Мы можем сделать это через [файл конфигурации Claude Desktop](https://claude.ai/docs/configuration).
+После установки Claude Desktop необходимо настроить [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
+Это можно сделать через [конфигурационный файл Claude Desktop](https://claude.ai/docs/configuration).
 
-Чтобы найти этот файл, сначала перейдите на страницу настроек (`Cmd+,` на Mac), затем нажмите на вкладку `Developer` в левом меню.  
-Вы увидите следующий экран, на котором нужно нажать на кнопку `Edit config`:
+Чтобы найти этот файл, сначала перейдите на страницу настроек (`Cmd+,` на Mac), а затем нажмите на вкладку `Developer` в левом меню.
+После этого вы увидите следующий экран, на котором нужно нажать кнопку `Edit config`:
 
-<Image img={ClaudeDesktopConfig} alt="Конфигурация Claude Desktop" size="md" />
+<Image img={ClaudeDesktopConfig} alt='Конфигурация Claude Desktop' size='md' />
 
-Это приведет вас к директории, содержащей файл конфигурации (`claude_desktop_config.json`).  
-В первый раз, когда вы откроете этот файл, он, вероятно, будет содержать следующее содержимое:
+Это откроет директорию с конфигурационным файлом (`claude_desktop_config.json`).
+При первом открытии файл, скорее всего, будет содержать следующее:
 
 ```json
 {
@@ -58,8 +68,8 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 }
 ```
 
-Словарь `mcpServers` принимает имя сервера MCP в качестве ключа и словарь параметров конфигурации в качестве значения.  
-Например, конфигурация сервера ClickHouse MCP, подключающаяся к ClickHouse Playground, будет выглядеть следующим образом:
+Словарь `mcpServers` принимает имя MCP-сервера в качестве ключа и словарь параметров конфигурации в качестве значения.  
+Например, конфигурация сервера ClickHouse MCP для подключения к ClickHouse Playground будет выглядеть следующим образом:
 
 ```json
 {
@@ -89,36 +99,41 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 }
 ```
 
-После обновления конфигурации вам нужно будет перезапустить Claude Desktop, чтобы изменения вступили в силу.
+После обновления конфигурации необходимо перезапустить Claude Desktop, чтобы изменения вступили в силу.
 
 :::warning
-В зависимости от того, как вы установили `uv`, вы можете получить следующую ошибку при перезапуске Claude Desktop:
+В зависимости от способа установки `uv` при перезапуске Claude Desktop может возникнуть следующая ошибка:
 
 ```text
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
-Если это произойдет, вам нужно будет обновить `command`, чтобы указать полный путь к `uv`. Например, если вы установили его через Cargo, это будет `/Users/<username>/.cargo/bin/uv`
+В этом случае необходимо обновить параметр `command`, указав полный путь к `uv`. Например, если установка выполнена через Cargo, путь будет `/Users/<username>/.cargo/bin/uv`
 :::
 
-## Использование сервера ClickHouse MCP {#using-clickhouse-mcp-server}
 
-После перезагрузки Claude Desktop вы можете найти сервер ClickHouse MCP, нажав на иконку `Search and tools`:
+## Использование MCP-сервера ClickHouse {#using-clickhouse-mcp-server}
 
-<Image img={FindMCPServers} alt="Найти серверы MCP" size="md" />
-<br/>
+После перезапуска Claude Desktop вы можете найти MCP-сервер ClickHouse, нажав на значок `Search and tools`:
 
-Вы можете выбрать, отключить ли все или некоторые инструменты.
+<Image img={FindMCPServers} alt='Поиск MCP-серверов' size='md' />
+<br />
 
-Теперь мы готовы задать Claude несколько вопросов, что приведет к использованию сервера ClickHouse MCP.  
-Например, мы можем спросить его `Какой самый интересный набор данных в SQL playground?`.
+Затем вы можете выбрать, отключить ли все инструменты или только некоторые из них.
 
-Claude попросит нас подтвердить использование каждого инструмента на сервере MCP в первый раз, когда он будет вызван:
+Теперь мы готовы задать Claude несколько вопросов, которые приведут к использованию MCP-сервера ClickHouse.
+Например, можно спросить `What's the most interesting dataset in the SQL playground?`.
 
-<Image img={MCPPermission} alt="Предоставить разрешение на использование инструмента list_databases" size="md" />
+Claude попросит подтвердить использование каждого инструмента MCP-сервера при первом вызове:
 
-Ниже вы можете увидеть часть разговора, который включает в себя несколько вызовов инструментов к серверу ClickHouse MCP:
+<Image
+  img={MCPPermission}
+  alt='Предоставление разрешения на использование инструмента list_databases'
+  size='md'
+/>
 
-<Image img={ClaudeConversation} alt="Разговор Claude" size="md" />
+Ниже показана часть диалога, включающая несколько вызовов инструментов MCP-сервера ClickHouse:
+
+<Image img={ClaudeConversation} alt='Диалог с Claude' size='md' />
 
 </VerticalStepper>

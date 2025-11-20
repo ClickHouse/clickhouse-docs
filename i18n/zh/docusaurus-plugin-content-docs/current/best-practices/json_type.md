@@ -1,57 +1,61 @@
 ---
-'slug': '/best-practices/use-json-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': '使用 JSON'
-'title': '在适当的地方使用 JSON'
-'description': '页面描述何时使用 JSON'
-'keywords':
-- 'JSON'
-'show_related_blogs': true
-'doc_type': 'reference'
+slug: /best-practices/use-json-where-appropriate
+sidebar_position: 10
+sidebar_label: 'Using JSON'
+title: '在合适的场景下使用 JSON'
+description: '说明何时应使用 JSON 的页面'
+keywords: ['JSON']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
-ClickHouse 现在提供了一种原生的 JSON 列类型，旨在处理半结构化和动态数据。重要的是要澄清，这**是一种列类型，而不是一种数据格式**——您可以将 JSON 作为字符串插入到 ClickHouse 中，或通过支持的格式，如 [JSONEachRow](/docs/interfaces/formats/JSONEachRow)，但这并不意味着使用 JSON 列类型。用户应仅在数据结构动态时使用 JSON 类型，而不是仅仅因为他们存储 JSON。
+ClickHouse 现在提供了原生的 `JSON` 列类型，用于处理半结构化和动态数据。需要特别说明的是，**这是一种列类型，而不是一种数据格式**——你可以以字符串形式向 ClickHouse 插入 JSON，或者通过诸如 [JSONEachRow](/interfaces/formats/JSONEachRow) 之类的受支持格式插入，但这并不代表你在使用 `JSON` 列类型。只有在数据结构本身是动态的情况下，用户才应该使用 `JSON` 类型，而不是仅仅因为存储的数据碰巧是 JSON。
+
+
 
 ## 何时使用 JSON 类型 {#when-to-use-the-json-type}
 
-当您的数据：
+在以下情况下使用 JSON 类型:
 
-* 具有 **不可预测的键**，可能会随着时间而变化。
-* 包含 **具有不同类型的值**（例如，路径有时可能包含字符串，有时可能是数字）。
-* 需要模式灵活性，严格类型不可行的情况下。
+- 数据具有**不可预测的键**,这些键可能随时间变化。
+- 数据包含**类型可变的值**(例如,某个路径有时包含字符串,有时包含数字)。
+- 需要模式灵活性,严格类型化不可行时。
 
-如果您的数据结构已知且一致，通常没有必要使用 JSON 类型，即使您的数据是 JSON 格式。具体而言，如果您的数据具有：
+如果数据结构已知且一致,即使数据采用 JSON 格式,通常也不需要使用 JSON 类型。具体来说,如果数据具有以下特征:
 
-* **已知键的扁平结构**：使用标准列类型，例如 String。
-* **可预测的嵌套**：使用 Tuple、Array 或 Nested 类型来处理这些结构。
-* **具有不同类型的可预测结构**：可以考虑使用 Dynamic 或 Variant 类型。
+- **具有已知键的扁平结构**:使用标准列类型,例如 String。
+- **可预测的嵌套结构**:对这些结构使用 Tuple、Array 或 Nested 类型。
+- **结构可预测但类型可变**:考虑改用 Dynamic 或 Variant 类型。
 
-您还可以混合使用方法 - 例如，使用静态列来处理可预测的顶级字段，并使用单个 JSON 列来处理有效负载的动态部分。
+您也可以混合使用多种方法——例如,对可预测的顶层字段使用静态列,对数据负载的动态部分使用单个 JSON 列。
 
-## 使用 JSON 的注意事项和提示 {#considerations-and-tips-for-using-json}
 
-JSON 类型通过将路径扁平化为子列来实现高效的列式存储。但灵活性也带来了责任。要有效使用它：
+## 使用 JSON 的注意事项和技巧 {#considerations-and-tips-for-using-json}
 
-* **指定路径类型**，使用 [列定义中的提示](/sql-reference/data-types/newjson) 为已知子列指定类型，以避免不必要的类型推断。
-* **跳过不需要的路径**，使用 [SKIP 和 SKIP REGEXP](/sql-reference/data-types/newjson) 来减少存储并提高性能。
-* **避免将 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) 设置得过高** - 大值会增加资源消耗并降低效率。作为经验法则，保持在 10,000 以下。
+JSON 类型通过将路径展平为子列来实现高效的列式存储。但灵活性意味着责任。要有效使用它：
+
+- **指定路径类型**：使用[列定义中的类型提示](/sql-reference/data-types/newjson)为已知子列指定类型，避免不必要的类型推断。
+- **跳过路径**：如果不需要某些值，可使用 [SKIP 和 SKIP REGEXP](/sql-reference/data-types/newjson) 来减少存储并提高性能。
+- **避免将 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) 设置得过高**——较大的值会增加资源消耗并降低效率。根据经验法则，应将其保持在 10,000 以下。
 
 :::note 类型提示
-类型提示不仅仅是避免不必要的类型推断，还完全消除存储和处理间接性。具有类型提示的 JSON 路径总是像传统列一样存储，避免了在查询时需要 [**区分符列**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) 或动态解析。这意味着，使用良好定义的类型提示，嵌套的 JSON 字段可以实现与它们从一开始就作为顶级字段建模时相同的性能和效率。因此，对于大部分一致但仍然受益于 JSON 灵活性的数据集，类型提示提供了一种便捷的方式来保持性能，而不需要重构您的模式或摄取管道。
+类型提示不仅仅是避免不必要类型推断的方法——它们完全消除了存储和处理的间接层。带有类型提示的 JSON 路径始终像传统列一样存储，无需使用[**判别列**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)或在查询时进行动态解析。这意味着通过明确定义的类型提示，嵌套的 JSON 字段可以达到与从一开始就建模为顶级字段相同的性能和效率。因此，对于大部分结构一致但仍需要 JSON 灵活性的数据集，类型提示提供了一种便捷的方式来保持性能，而无需重构模式或数据摄取管道。
 :::
 
-## 高级功能 {#advanced-features}
 
-* JSON 列 **可以像其他列一样用于主键**。子列不能指定编码。
-* 它们支持通过 [`JSONAllPathsWithTypes()` 和 `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) 函数进行自省。
-* 您可以使用 `.^` 语法读取嵌套的子对象。
-* 查询语法可能与标准 SQL 不同，可能需要为嵌套字段特别的转换或运算符。
+## 高级特性 {#advanced-features}
 
-有关更多指导，请参见 [ClickHouse JSON 文档](/sql-reference/data-types/newjson) 或浏览我们的博客文章 [ClickHouse 的新强大 JSON 数据类型](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
+- JSON 列**可以像其他列一样用于主键**。子列无法指定编解码器。
+- 支持通过 [`JSONAllPathsWithTypes()` 和 `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) 等函数进行内省。
+- 可以使用 `.^` 语法读取嵌套的子对象。
+- 查询语法可能与标准 SQL 不同,嵌套字段可能需要特殊的类型转换或运算符。
+
+如需更多指导,请参阅 [ClickHouse JSON 文档](/sql-reference/data-types/newjson)或浏览我们的博客文章[ClickHouse 的新型强大 JSON 数据类型](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
+
 
 ## 示例 {#examples}
 
-考虑以下 JSON 样本，表示来自 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 的一行：
+考虑以下 JSON 示例,它表示 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 中的一行数据:
 
 ```json
 {
@@ -66,7 +70,7 @@ JSON 类型通过将路径扁平化为子列来实现高效的列式存储。但
 }
 ```
 
-假设这个结构是静态的，并且可以明确定义类型。即使数据是 NDJSON 格式（每行一个 JSON），对于这样的结构也不需要使用 JSON 类型。只需使用经典类型定义模式即可。
+假设此模式是静态的,且类型可以明确定义。即使数据采用 NDJSON 格式(每行一个 JSON 对象),也无需为此类模式使用 JSON 类型。只需使用常规类型定义模式即可。
 
 ```sql
 CREATE TABLE pypi (
@@ -83,14 +87,14 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-并插入 JSON 行：
+然后插入 JSON 数据行:
 
 ```sql
 INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-考虑 [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)，其中包含 250 万篇学术论文。该数据集中每一行，按 NDJSON 格式分发，代表一篇已发表的学术论文。以下是一个示例行：
+再看包含 250 万篇学术论文的 [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)。该数据集以 NDJSON 格式分发,其中每一行表示一篇已发表的学术论文。下面是一个示例行:
 
 ```json
 {
@@ -116,17 +120,11 @@ INSERT INTO pypi FORMAT JSONEachRow
     }
   ],
   "update_date": "2022-11-07",
-  "authors_parsed": [
-    [
-      "Lemire",
-      "Daniel",
-      ""
-    ]
-  ]
+  "authors_parsed": [["Lemire", "Daniel", ""]]
 }
 ```
 
-尽管这里的 JSON 是复杂的，具有嵌套结构，但它是可预测的。字段的数量和类型不会改变。虽然我们可以在这个示例中使用 JSON 类型，但我们也可以简单地使用 [Tuples](/sql-reference/data-types/tuple) 和 [Nested](/sql-reference/data-types/nested-data-structures/nested) 类型明确地定义结构：
+虽然这里的 JSON 结构复杂且包含嵌套结构,但它是可预测的。字段的数量和类型不会改变。虽然我们可以在此示例中使用 JSON 类型,但也可以使用 [Tuple](/sql-reference/data-types/tuple) 和 [Nested](/sql-reference/data-types/nested-data-structures/nested) 类型显式定义结构:
 
 ```sql
 CREATE TABLE arxiv
@@ -150,28 +148,29 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-我们还可以将数据作为 JSON 插入：
+同样,我们可以将数据作为 JSON 插入:
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-假设添加了另一个名为 `tags` 的列。如果这只是一个字符串列表，我们可以建模为 `Array(String)`，但假设用户可以添加任意标签结构，混合类型（注意 score 是字符串或整数）。我们的修改 JSON 文档：
+假设又添加了一列名为 `tags`。如果它只是一个字符串列表，我们可以将其建模为 `Array(String)`，但在这里我们假设用户可以添加包含混合类型的任意标签结构（注意 `score` 既可以是字符串也可以是整数）。我们修改后的 JSON 文档如下：
 
 ```sql
 {
  "id": "2101.11408",
  "submitter": "Daniel Lemire",
  "authors": "Daniel Lemire",
- "title": "Number Parsing at a Gigabyte per Second",
- "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+ "title": "每秒千兆字节的数字解析",
+ "comments": "软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/",
  "journal-ref": "Software: Practice and Experience 51 (8), 2021",
  "doi": "10.1002/spe.2984",
  "report-no": null,
  "categories": "cs.DS cs.MS",
  "license": "http://creativecommons.org/licenses/by/4.0/",
- "abstract": "With disks and networks providing gigabytes per second ....\n",
+ "abstract": "随着磁盘和网络提供每秒千兆字节的吞吐量....\n",
  "versions": [
  {
    "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -192,18 +191,18 @@ INSERT INTO arxiv FORMAT JSONEachRow
  ],
  "tags": {
    "tag_1": {
-     "name": "ClickHouse user",
+     "name": "ClickHouse 用户",
      "score": "A+",
-     "comment": "A good read, applicable to ClickHouse"
+     "comment": "值得一读,适用于 ClickHouse"
    },
    "28_03_2025": {
-     "name": "professor X",
+     "name": "X 教授",
      "score": 10,
-     "comment": "Didn't learn much",
+     "comment": "收获不大",
      "updates": [
        {
-         "name": "professor X",
-         "comment": "Wolverine found more interesting"
+         "name": "X 教授",
+         "comment": "金刚狼觉得更有趣"
        }
      ]
    }
@@ -211,7 +210,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-在这种情况下，我们可以将 arXiv 文档建模为全部 JSON 或者仅添加一个 JSON `tags` 列。我们在下面提供两种示例：
+在这种情况下，我们可以将 arXiv 文档建模为全部使用 JSON，或者只需添加一个 JSON 类型的 `tags` 列。下面我们提供这两种示例：
 
 ```sql
 CREATE TABLE arxiv
@@ -223,14 +222,15 @@ ORDER BY doc.update_date
 ```
 
 :::note
-我们在 JSON 定义中为 `update_date` 列提供了一个类型提示，因为我们在排序/主键中使用它。这有助于 ClickHouse 知道该列不会为空，并确保它知道要使用哪个 `update_date` 子列（对于每种类型可能会有多个，因此否则会产生歧义）。
+我们在 JSON 定义中为 `update_date` 列提供了类型提示，因为我们在排序键/主键中使用它。这有助于 ClickHouse 确定该列不会为 null，并确保它知道应使用哪个 `update_date` 子列（对于每种类型可能都会有多个子列，否则会产生歧义）。
 :::
 
-我们可以将数据插入此表，并使用 [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 函数和 [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 输出格式查看随后的推断模式：
+我们可以向该表插入数据，并使用 [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 函数和 [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 输出格式查看随后推断出的模式：
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"每秒千兆字节的数字解析","comments":"软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"随着磁盘和网络提供每秒千兆字节的速度....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse 用户","score":"A+","comment":"值得一读,适用于 ClickHouse"},"28_03_2025":{"name":"X 教授","score":10,"comment":"收获不大","updates":[{"name":"X 教授","comment":"金刚狼觉得更有趣"}]}}}
 ```
 
 ```sql
@@ -266,7 +266,7 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-或者，我们可以使用之前的模式和一个 JSON `tags` 列来建模。这通常是更优选的，最小化 ClickHouse 所需的推断：
+或者，我们也可以使用之前的 schema 和一个 JSON `tags` 列来建模。这种方式通常更被推荐，因为它可以将 ClickHouse 所需的推断工作量降到最低：
 
 ```sql
 CREATE TABLE arxiv
@@ -293,10 +293,11 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"每秒千兆字节的数字解析速度","comments":"软件地址：https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"随着磁盘和网络提供每秒千兆字节的传输速度....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse 用户","score":"A+","comment":"值得一读，适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"Wolverine 认为更有意思"}]}}}
 ```
 
-现在我们可以推断子列 tags 的类型。
+
+我们现在可以推断出子列 `tags` 的各个子字段类型。
 
 ```sql
 SELECT JSONAllPathsWithTypes(tags)

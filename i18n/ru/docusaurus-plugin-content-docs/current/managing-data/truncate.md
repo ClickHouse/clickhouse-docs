@@ -1,13 +1,15 @@
 ---
-slug: '/managing-data/truncate'
-sidebar_label: 'Обрезать таблицу'
-description: 'Трамбовать позволяет данные в таблице или базе данных быть удаленными,'
-title: 'Обрезать таблицу'
-doc_type: reference
+slug: /managing-data/truncate
+sidebar_label: 'Очистка таблицы'
+title: 'Очистка таблицы'
 hide_title: false
+description: 'TRUNCATE позволяет удалить данные из таблицы или базы данных, не удаляя сами объекты.'
+doc_type: 'reference'
+keywords: ['truncate', 'delete data', 'remove data', 'clear table', 'table maintenance']
 ---
-import Truncate from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/truncate.md';
 
-`Truncate` позволяет удалить данные в таблице или базе данных, при этом сохраняя их существование. Это легковесная операция, которую нельзя отменить.
+TRUNCATE позволяет удалить данные из таблицы или базы данных, не удаляя сами объекты. Это легковесная операция, которую невозможно отменить.
 
-<Truncate/>
+import Truncate from '@site/docs/sql-reference/statements/truncate.md';
+
+<Truncate />

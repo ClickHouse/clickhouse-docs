@@ -1,14 +1,14 @@
 {
   "title": {
     "message": "База знаний ClickHouse",
-    "description": "The title for the blog used in SEO"
+    "description": "Заголовок блога, используемый в целях SEO"
   },
   "description": {
     "message": "База знаний",
-    "description": "The description for the blog used in SEO"
+    "description": "Описание блога для целей SEO"
   },
   "sidebar.title": {
     "message": "Все статьи базы знаний",
-    "description": "The label for the left sidebar"
+    "description": "Подпись для левой боковой панели"
   }
 }

@@ -1,125 +1,130 @@
 ---
-'slug': '/migrations/postgresql/appendix'
-'title': '附录'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'data types'
-- 'types'
-'description': '与从 PostgreSQL 迁移相关的其他信息'
-'doc_type': 'reference'
+slug: /migrations/postgresql/appendix
+title: '付録'
+keywords: ['postgres', 'postgresql', 'data types', 'types']
+description: 'PostgreSQL からの移行に関する追加情報'
+doc_type: 'reference'
 ---
 
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 
 
-## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
+## PostgresとClickHouse:同等の概念と異なる概念 {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
-OLTPシステムから来たユーザーで、ACIDトランザクションに慣れている方は、ClickHouseがパフォーマンスと引き換えにこれらを完全に提供しない意図的な妥協をしていることに留意する必要があります。ClickHouseのセマンティクスは、正しく理解されていれば高い耐久性保証と高い書き込みスループットを提供します。PostgresからClickHouseに移行する前にユーザーが熟知しておくべきいくつかの重要な概念を以下に示します。
+ACIDトランザクションに慣れたOLTPシステムから移行するユーザーは、ClickHouseがパフォーマンスと引き換えにこれらを完全には提供しないという意図的なトレードオフを行っていることを認識する必要があります。ClickHouseのセマンティクスは、適切に理解すれば高い耐久性保証と高い書き込みスループットを実現できます。以下では、PostgresからClickHouseを使用する前にユーザーが理解しておくべき重要な概念をいくつか紹介します。
 
-### Shards vs replicas {#shards-vs-replicas}
+### シャードとレプリカ {#shards-vs-replicas}
 
-シャーディングとレプリケーションは、ストレージやコンピュータがパフォーマンスのボトルネックとなったときに、1つのPostgresインスタンスを超えてスケーリングするために使用される2つの戦略です。Postgresにおけるシャーディングは、大規模なデータベースを複数のノードに分割し、小さく管理しやすい部分にすることを含みます。しかし、Postgresはネイティブでシャーディングをサポートしていません。代わりに、Postgresは[Coltus](https://www.citusdata.com/)のような拡張機能を使用することで、水平にスケール可能な分散データベースになります。このアプローチでは、Postgresがトランザクションレートとデータセットの規模を拡大し、いくつかのマシンに負荷を分散することが可能になります。シャードは、トランザクショナルまたは分析的なワークロードタイプに柔軟性を提供するために、行ベースまたはスキーマベースであることができます。シャーディングは、複数のマシンにわたる調整と一貫性の保証が必要であるため、データ管理とクエリ実行において重要な複雑さをもたらす可能性があります。
+シャーディングとレプリケーションは、ストレージやコンピュートがパフォーマンスのボトルネックになった際に、単一のPostgresインスタンスを超えてスケーリングするための2つの戦略です。Postgresにおけるシャーディングは、大規模なデータベースを複数のノードにわたってより小さく管理しやすい断片に分割することを意味します。ただし、Postgresはシャーディングをネイティブにサポートしていません。代わりに、[Citus](https://www.citusdata.com/)などの拡張機能を使用してシャーディングを実現でき、Postgresを水平スケーリング可能な分散データベースにすることができます。このアプローチにより、Postgresは複数のマシンに負荷を分散することで、より高いトランザクションレートとより大きなデータセットを処理できるようになります。シャードは、トランザクション型や分析型などのワークロードタイプに柔軟性を提供するために、行ベースまたはスキーマベースにすることができます。シャーディングは、複数のマシン間での調整と一貫性保証が必要となるため、データ管理とクエリ実行の面で大きな複雑さをもたらす可能性があります。
 
-シャードとは異なり、レプリカはプライマリノードからのすべてまたは一部のデータを含む追加のPostgresインスタンスです。レプリカは、高速な読み込み性能やHA（高可用性）シナリオなど、さまざまな理由で使用されます。物理レプリケーションは、すべてのデータベース、テーブル、インデックスを含むデータベース全体または重要な部分を別のサーバーにコピーする、Postgresのネイティブ機能です。これは、プライマリノードからレプリカにWALセグメントをTCP/IP経由でストリーミングすることを含みます。それに対して、論理レプリケーションは、`INSERT`、`UPDATE`、`DELETE`操作に基づく変更をストリーミングする高レベルの抽象機能です。物理レプリケーションに同じ結果が適用される可能性がありますが、特定のテーブルと操作をターゲットにするためのより大きな柔軟性と、データ変換、異なるPostgresバージョンのサポートが可能です。
+シャードとは異なり、レプリカはプライマリノードからのデータの全部または一部を含む追加のPostgresインスタンスです。レプリカは、読み取りパフォーマンスの向上やHA(高可用性)シナリオなど、さまざまな理由で使用されます。物理レプリケーションはPostgresのネイティブ機能であり、すべてのデータベース、テーブル、インデックスを含むデータベース全体または重要な部分を別のサーバーにコピーすることを含みます。これには、プライマリノードからレプリカへTCP/IP経由でWALセグメントをストリーミングすることが含まれます。対照的に、論理レプリケーションは、`INSERT`、`UPDATE`、`DELETE`操作に基づいて変更をストリーミングする、より高いレベルの抽象化です。物理レプリケーションと同じ結果が得られる場合もありますが、特定のテーブルや操作をターゲットにしたり、データ変換を行ったり、異なるPostgresバージョンをサポートしたりするための、より大きな柔軟性が実現されます。
 
-**対照的に、ClickHouseのシャードとレプリカは、データの分散と冗長性に関する2つの重要な概念です**。ClickHouseのレプリカは、Postgresのレプリカに類似していると考えられますが、レプリケーションは最終的に一貫しており、プライマリの概念はありません。ShardingはPostgresと異なり、ネイティブでサポートされています。
+**対照的に、ClickHouseのシャードとレプリカは、データ分散と冗長性に関連する2つの重要な概念です**。ClickHouseのレプリカはPostgresのレプリカに類似していると考えることができますが、レプリケーションは結果整合性であり、プライマリという概念はありません。シャーディングは、Postgresとは異なり、ネイティブにサポートされています。
 
-シャードは、テーブルデータの一部です。少なくとも1つのシャードがあります。データを複数のサーバーにシャーディングすることで、クエリを並行して実行するための単一サーバーの容量を超えた場合に負荷を分散できます。ユーザーは、異なるサーバーでテーブルのシャードを手動で作成し、データを直接挿入することができます。あるいは、データのルーティング先であるシャードを定義するシャーディングキーを持つ分散テーブルを使用することもできます。シャーディングキーはランダムであったり、ハッシュ関数の出力であったりします。重要な点は、シャードが複数のレプリカで構成される可能性があることです。
+シャードはテーブルデータの一部です。常に少なくとも1つのシャードが存在します。複数のサーバーにデータをシャーディングすることで、単一サーバーの容量を超えた場合に負荷を分散でき、すべてのシャードを使用してクエリを並列実行できます。ユーザーは異なるサーバー上のテーブルに対して手動でシャードを作成し、直接データを挿入できます。あるいは、分散テーブルをシャーディングキーとともに使用して、どのシャードにデータがルーティングされるかを定義できます。シャーディングキーはランダムにすることも、ハッシュ関数の出力にすることもできます。重要なのは、シャードは複数のレプリカで構成できることです。
 
-レプリカは、データのコピーです。ClickHouseには、常にデータの少なくとも1つのコピーがあります。そのため、レプリカの最少数は1です。データの2つ目のレプリカを追加することで、障害耐性が提供され、クエリをさらに処理するためのコンピュートが追加される可能性があります（[Parallel Replicas](https://clickhouse.com/blog/clickhouse-release-23-03#parallel-replicas-for-utilizing-the-full-power-of-your-replicas-nikita-mikhailov)を使用して、単一のクエリのためにコンピュートを分散させ、待ち時間を短縮することもできます）。レプリケーションは、データを異なるサーバー間で同期させるためにClickHouseを可能にする[ReplicatedMergeTreeテーブルエンジン](/engines/table-engines/mergetree-family/replication)を使用して実現されます。レプリケーションは物理的です：ノード間で転送されるのは圧縮されたパーツだけで、クエリではありません。
+レプリカはデータのコピーです。ClickHouseは常にデータの少なくとも1つのコピーを持っているため、レプリカの最小数は1です。データの2つ目のレプリカを追加することで、耐障害性が提供され、より多くのクエリを処理するための追加のコンピュートが得られる可能性があります([並列レプリカ](https://clickhouse.com/blog/clickhouse-release-23-03#parallel-replicas-for-utilizing-the-full-power-of-your-replicas-nikita-mikhailov)を使用して、単一のクエリのコンピュートを分散し、レイテンシを低減することもできます)。レプリカは[ReplicatedMergeTreeテーブルエンジン](/engines/table-engines/mergetree-family/replication)によって実現され、ClickHouseが異なるサーバー間でデータの複数のコピーを同期状態に保つことを可能にします。レプリケーションは物理的です:ノード間で転送されるのは圧縮されたパーツのみであり、クエリではありません。
 
-要約すると、レプリカは冗長性と信頼性（および潜在的に分散処理）を提供するデータのコピーであり、シャードは分散処理と負荷分散を可能にするデータのサブセットです。
+要約すると、レプリカは冗長性と信頼性(および潜在的に分散処理)を提供するデータのコピーであり、シャードは分散処理と負荷分散を可能にするデータのサブセットです。
 
-> ClickHouse Cloudは、S3にバックアップされた1つのデータコピーを使用し、複数のコンピュートレプリカを持ちます。このデータは、すべてのレプリカノードで利用可能で、それぞれのノードにはローカルSSDキャッシュがあります。これは、メタデータレプリケーションにのみ依存し、ClickHouse Keeperを通じて行われます。
+> ClickHouse Cloudは、S3にバックアップされた単一のデータコピーを複数のコンピュートレプリカとともに使用します。データは各レプリカノードで利用可能であり、各ノードはローカルSSDキャッシュを持っています。これはClickHouse Keeperを通じたメタデータレプリケーションのみに依存しています。
 
-## Eventual consistency {#eventual-consistency}
 
-ClickHouseは、内部レプリケーションメカニズムを管理するためにClickHouse Keeper（C++ ZooKeeper実装、ZooKeeperも使用可能）を使用しており、主にメタデータストレージに焦点を当てて、最終的一貫性を保証しています。Keeperは、分散環境内での各挿入に対して一意の順次番号を割り当てるために使用されます。これは、操作間での順序と一貫性を維持するために重要です。このフレームワークは、マージや変異のようなバックグラウンド操作も処理し、これらの作業がすべてのレプリカ間で同じ順序で実行されることを保証しながら分配されることを確保します。メタデータに加えて、Keeperは、保存されたデータパーツのチェックサムを追跡するためのレプリケーションの包括的な制御センターとして機能し、レプリカ間の分散通知システムとしても作用します。
+## 結果整合性 {#eventual-consistency}
 
-ClickHouseにおけるレプリケーションプロセスは、(1) データが任意のレプリカに挿入される際に始まります。このデータは、そのチェックサムと共に(2) ディスクに書き込まれます。書き込まれた後、レプリカは(3) この新しいデータパートをKeeperに登録し、一意のブロック番号を割り当て、新しいパートの詳細をログに記録しようとします。他のレプリカは(4) レプリケーションログに新しいエントリを検出すると、(5) 内部HTTPプロトコルを介して対応するデータパートをダウンロードし、ZooKeeperにリストされているチェックサムと照合します。この方法は、すべてのレプリカが異なる処理速度や潜在的な遅延にもかかわらず、最終的には一貫して最新のデータを保持することを保証します。さらに、このシステムは複数の操作を同時に処理できるため、データ管理プロセスの最適化、システムのスケーラビリティの向上、ハードウェアの不整合への堅牢性を実現します。
+ClickHouseは、内部レプリケーション機構の管理にClickHouse Keeper（C++によるZooKeeper実装。ZooKeeperも使用可能）を使用しており、主にメタデータの保存と結果整合性の確保に重点を置いています。Keeperは、分散環境内の各挿入操作に対して一意の連番を割り当てるために使用されます。これは、操作全体で順序と整合性を維持するために不可欠です。このフレームワークは、マージやミューテーションなどのバックグラウンド操作も処理し、これらの作業を分散しながら、すべてのレプリカで同じ順序で実行されることを保証します。メタデータに加えて、Keeperは、保存されたデータパーツのチェックサムの追跡を含む、レプリケーションの包括的な制御センターとして機能し、レプリカ間の分散通知システムとしても動作します。
 
-<Image img={postgresReplicas} size="md" alt="Eventual consistency"/>
+ClickHouseのレプリケーションプロセスは、(1) いずれかのレプリカにデータが挿入されると開始されます。このデータは、生の挿入形式のまま、(2) チェックサムとともにディスクに書き込まれます。書き込みが完了すると、レプリカは (3) 一意のブロック番号を割り当て、新しいパーツの詳細をログに記録することで、この新しいデータパーツをKeeperに登録しようとします。他のレプリカは、(4) レプリケーションログ内の新しいエントリを検出すると、(5) 内部HTTPプロトコルを介して対応するデータパーツをダウンロードし、ZooKeeperに記載されているチェックサムと照合して検証します。この方法により、処理速度の違いや潜在的な遅延にもかかわらず、すべてのレプリカが最終的に一貫性のある最新のデータを保持することが保証されます。さらに、このシステムは複数の操作を同時に処理でき、データ管理プロセスを最適化し、システムのスケーラビリティとハードウェアの不一致に対する堅牢性を実現します。
 
-ClickHouse Cloudは、ストレージとコンピュートアーキテクチャの分離に適応した[クラウド最適化されたレプリケーションメカニズム](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)を使用しています。共有オブジェクトストレージにデータを保存することで、データはノード間で物理的にレプリケートする必要なしに、すべてのコンピュートノードに自動的に利用可能になります。代わりに、Keeperはメタデータ（オブジェクトストレージにどのデータが存在するか）だけをコンピュートノード間で共有するために使用されます。
+<Image img={postgresReplicas} size='md' alt='結果整合性' />
 
-PostgreSQLは、ClickHouseとは異なるレプリケーション戦略を採用しており、主にストリーミングレプリケーションを使用しています。これには、データがプライマリから1つ以上のレプリカノードに継続的にストリーミングされるプライマリレプリカモデルが含まれます。このタイプのレプリケーションは、ほぼリアルタイムの一貫性を保証し、同期または非同期であり、可用性と一貫性のバランスを管理者に提供します。ClickHouseとは異なり、PostgreSQLは、ノード間でデータオブジェクトや変更をストリーミングするために、論理レプリケーションとデコーディングを使用したWAL（Write-Ahead Logging）に依存しています。PostgreSQLでのこのアプローチはより単純ですが、ClickHouseがKeeperを用いた複雑な分散操作の調整と最終的一貫性を通じて達成するレベルのスケーラビリティや障害耐性を提供しない場合があります。
+なお、ClickHouse Cloudは、ストレージとコンピュートの分離アーキテクチャに適応した[クラウド最適化レプリケーション機構](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates)を使用しています。共有オブジェクトストレージにデータを保存することで、ノード間でデータを物理的にレプリケートする必要なく、すべてのコンピュートノードでデータが自動的に利用可能になります。代わりに、Keeperはコンピュートノード間でメタデータ（オブジェクトストレージ内のどこにどのデータが存在するか）のみを共有するために使用されます。
 
-## User implications {#user-implications}
+PostgreSQLは、ClickHouseとは異なるレプリケーション戦略を採用しており、主にストリーミングレプリケーションを使用します。これは、プライマリから1つ以上のレプリカノードにデータが継続的にストリーミングされるプライマリ・レプリカモデルを採用しています。このタイプのレプリケーションは、ほぼリアルタイムの整合性を保証し、同期または非同期で動作するため、管理者は可用性と整合性のバランスを制御できます。ClickHouseとは異なり、PostgreSQLは、ノード間でデータオブジェクトと変更をストリーミングするために、論理レプリケーションとデコードを備えたWAL（Write-Ahead Logging）に依存しています。PostgreSQLのこのアプローチはより直接的ですが、ClickHouseが分散操作の調整と結果整合性のためにKeeperを複雑に使用することで実現する、高度に分散された環境における同レベルのスケーラビリティと耐障害性を提供できない可能性があります。
 
-ClickHouseでは、データを1つのレプリカに書き込み、別のレプリカから実際にレプリケートされていないデータを読み取る可能性があるダーティリードの可能性が、Keeperを通じて管理される最終的な一貫性のレプリケーションモデルから生じます。このモデルは、分散システム全体でのパフォーマンスとスケーラビリティを強調し、レプリカが独立して機能し、非同期で同期することを可能にします。その結果、新たに挿入されたデータは、レプリケーション遅延やシステム全体の変更が伝播する時間に応じて、すべてのレプリカで即座に表示されない可能性があります。
 
-逆に、PostgreSQLのストリーミングレプリケーションモデルは、通常、プライマリが少なくとも1つのレプリカがデータの受領を確認するまで待機する同期レプリケーションオプションを使用することで、ダーティリードを防ぐことができることが多いです。これにより、トランザクションがコミットされると、他のレプリカでデータの可用性が保証されます。プライマリの故障時には、レプリカがクエリがコミットされたデータを表示し、より厳密な一貫性のレベルを維持します。
+## ユーザーへの影響 {#user-implications}
 
-## Recommendations {#recommendations}
+ClickHouseでは、ダーティリード（あるレプリカにデータを書き込んだ後、別のレプリカからまだ複製されていない可能性のあるデータを読み取ること）が発生する可能性があります。これは、Keeperによって管理される結果整合性レプリケーションモデルに起因します。このモデルは、分散システム全体でのパフォーマンスとスケーラビリティを重視しており、レプリカが独立して動作し、非同期で同期することを可能にします。その結果、新しく挿入されたデータは、レプリケーションラグや変更がシステム全体に伝播するまでの時間によって、すべてのレプリカで即座に可視化されない場合があります。
 
-ClickHouseに新しく参加するユーザーは、これらの違いを理解しておくべきです。これらの違いが、レプリケートされた環境において顕著になるからです。通常、最終的な一貫性は、数十億、いや数兆のデータポイントにわたる分析には十分であり、メトリックがより安定しているか、または推定が十分である場合に該当します。また、新しいデータも高レートで連続して挿入されます。
+対照的に、PostgreSQLのストリーミングレプリケーションモデルでは、同期レプリケーションオプションを使用することでダーティリードを防ぐことができます。このオプションでは、プライマリがトランザクションをコミットする前に、少なくとも1つのレプリカがデータの受信を確認するまで待機します。これにより、トランザクションがコミットされた時点で、そのデータが別のレプリカで利用可能であることが保証されます。プライマリに障害が発生した場合でも、レプリカはクエリがコミット済みデータを参照できることを保証し、より厳格な一貫性レベルを維持します。
 
-読み取りの一貫性を高めるオプションがいくつかありますが、どちらの例も複雑さが増すか、オーバーヘッドが生じます。これはクエリ性能を低下させ、ClickHouseのスケーラビリティを高めるのがより難しくなります。**私たちは、絶対に必要な場合のみ、これらのアプローチを取ることを推奨します。**
 
-## Consistent routing {#consistent-routing}
+## 推奨事項 {#recommendations}
 
-最終的な一貫性の制限のいくつかを克服するために、ユーザーはクライアントが同じレプリカにルーティングされることを保証できます。これは、複数のユーザーがClickHouseをクエリして結果がリクエスト間で決定論的である必要がある場合に便利です。結果は新しいデータが挿入されると異なることがありますが、同じレプリカにクエリを実行することによって、一貫したビューが確保されます。
+ClickHouseを初めて使用するユーザーは、レプリケーション環境で現れるこれらの違いを認識しておく必要があります。通常、数十億、場合によっては数兆のデータポイントを扱う分析では、結果整合性で十分です。このような環境では、メトリクスが比較的安定しているか、新しいデータが高速で継続的に挿入される中で推定値で十分であることが多いためです。
 
-これは、アーキテクチャと、ClickHouse OSSまたはClickHouse Cloudを使用しているかどうかに応じて、いくつかの方法で達成できます。
+必要に応じて、読み取りの整合性を高めるためのいくつかのオプションが存在します。いずれの方法も複雑性またはオーバーヘッドの増加を伴い、クエリパフォーマンスが低下し、ClickHouseのスケーリングがより困難になります。**これらのアプローチは、絶対に必要な場合にのみ使用することを推奨します。**
+
+
+## 一貫したルーティング {#consistent-routing}
+
+結果整合性の制限を克服するために、クライアントを同じレプリカにルーティングすることができます。これは、複数のユーザーがClickHouseにクエリを実行する際に、リクエスト間で結果の一貫性を保つ必要がある場合に有用です。新しいデータが挿入されると結果は変わる可能性がありますが、同じレプリカに対してクエリを実行することで、一貫したビューを確保できます。
+
+これは、アーキテクチャやClickHouse OSSとClickHouse Cloudのどちらを使用しているかに応じて、複数のアプローチで実現できます。
+
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
-ClickHouse Cloudは、S3にバックアップされた1つのデータコピーを使用し、複数のコンピュートレプリカを持ちます。このデータは、各レプリカノードでアクセス可能で、それぞれのノードにはローカルSSDキャッシュがあります。このため、一貫した結果を確保するには、ユーザーが同じノードに一貫してルーティングされることを保証する必要があります。
+ClickHouse Cloudは、S3にバックアップされた単一のデータコピーと複数のコンピュートレプリカを使用します。データは各レプリカノードで利用可能であり、各ノードにはローカルSSDキャッシュがあります。一貫した結果を保証するため、ユーザーは同じノードへの一貫したルーティングを確保するだけで済みます。
 
-ClickHouse Cloudサービスのノードへの通信は、プロキシを介して行われます。HTTPおよびネイティブプロトコルの接続は、オープンされている期間に同じノードにルーティングされます。ほとんどのクライアントからのHTTP 1.1接続の場合、これはKeep-Aliveウィンドウに依存します。これは、ほとんどのクライアントで構成可能です（例：Node Js）。これはまた、サーバー側の構成が必要であり、クライアントよりも高く、ClickHouse Cloudでは10秒に設定されています。
+ClickHouse Cloudサービスのノードへの通信は、プロキシを介して行われます。HTTPおよびNativeプロトコル接続は、接続が開いている期間中、同じノードにルーティングされます。ほとんどのクライアントからのHTTP 1.1接続の場合、これはKeep-Aliveウィンドウに依存します。これは、Node.jsなどのほとんどのクライアントで設定可能です。また、サーバー側の設定も必要であり、クライアント側よりも高い値に設定され、ClickHouse Cloudでは10秒に設定されています。
 
-接続間で一貫したルーティングを確保するには、接続プールを使用している場合や、接続が期限切れになった場合に、ユーザーは同じ接続が使用されることを確保するか（ネイティブでは簡単）、またはスティッキーエンドポイントの公開をリクエストできます。これにより、クラスター内の各ノードに固有のエンドポイントのセットが提供され、クライアントはクエリが決定論的にルーティングされることを保証できます。
+接続プールを使用する場合や接続が期限切れになる場合など、接続間で一貫したルーティングを確保するために、ユーザーは同じ接続を使用するか(Nativeプロトコルの場合はより簡単)、スティッキーエンドポイントの公開を要求することができます。これにより、クラスタ内の各ノードに対するエンドポイントのセットが提供され、クライアントがクエリを確定的にルーティングできるようになります。
 
-> スティッキーエンドポイントへのアクセスについてはサポートまでお問い合わせください。
+> スティッキーエンドポイントへのアクセスについては、サポートにお問い合わせください。
+
 
 ## ClickHouse OSS {#clickhouse-oss}
 
-OSSでこの動作を実現するには、シャードとレプリカのトポロジー、及びクエリ用に[Distributedテーブル](/engines/table-engines/special/distributed)を使用しているかどうかに依存します。
+OSSでこの動作を実現できるかどうかは、シャードとレプリカのトポロジー、およびクエリに[Distributedテーブル](/engines/table-engines/special/distributed)を使用しているかどうかによって異なります。
 
-シャードとレプリカが1つだけである場合（ClickHouseが垂直スケールするため一般的）、ユーザーはクライアントレイヤーでノードを選択し、レプリカに直接クエリを実行することで、決定論的に選択したことが確認できます。
+シャードが1つでレプリカが複数ある場合(ClickHouseは垂直スケールするため一般的な構成)、ユーザーはクライアント層でノードを選択し、レプリカに直接クエリを実行することで、決定論的な選択を保証します。
 
-分散テーブルを使用せずに、複数のシャードとレプリカのトポロジーを持つことも可能ですが、これらの高度なデプロイメントは通常、自分専用のルーティングインフラを持っています。そのため、シャードが1つ以上のデプロイメントがDistributedテーブルを使用していることを前提とします（Distributedテーブルは単一シャードのデプロイメントでも使用可能ですが、通常は不要です）。
+複数のシャードとレプリカを持つトポロジーはDistributedテーブルなしでも可能ですが、このような高度なデプロイメントでは通常、独自のルーティングインフラストラクチャを持っています。そのため、複数のシャードを持つデプロイメントではDistributedテーブルを使用していると想定します(Distributedテーブルは単一シャードのデプロイメントでも使用できますが、通常は不要です)。
 
-この場合、ユーザーは、`session_id`や`user_id`などのプロパティに基づいて、一貫したノードルーティングが実施されていることを確認する必要があります。設定は、[`prefer_localhost_replica=0`](/operations/settings/settings#prefer_localhost_replica)、[`load_balancing=in_order`](/operations/settings/settings#load_balancing)が[クエリに設定されていること](/operations/settings/query-level)を確認します。これにより、ローカルシャードのレプリカが優先され、それ以外は設定にリストされたレプリカが優先されます - 同じ数のエラーがある限り、エラーが高い場合はランダムに選択されるフォールオーバーが発生します。[`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing)もこの決定論的なシャードの選択の代替手段として使用できます。
+この場合、ユーザーは`session_id`や`user_id`などのプロパティに基づいて一貫したノードルーティングが実行されるようにする必要があります。設定[`prefer_localhost_replica=0`](/operations/settings/settings#prefer_localhost_replica)、[`load_balancing=in_order`](/operations/settings/settings#load_balancing)を[クエリで設定](/operations/settings/query-level)する必要があります。これにより、シャードのローカルレプリカが優先され、それ以外の場合は設定にリストされている順にレプリカが優先されます(エラー数が同じ場合)。エラーが多い場合は、ランダム選択によるフェイルオーバーが発生します。決定論的なシャード選択の代替として、[`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing)も使用できます。
 
-> Distributedテーブルを作成すると、ユーザーはクラスターを指定します。このクラスター定義は、config.xmlで指定されており、シャード（およびそのレプリカ）がリストされているため、各ノードから使用される順序を制御できるようになります。これを使用して、ユーザーは選択が決定論的であることを確保できます。
+> Distributedテーブルを作成する際、ユーザーはクラスターを指定します。config.xmlで指定されるこのクラスター定義には、シャード(とそのレプリカ)がリストされ、各ノードから使用される順序をユーザーが制御できるようになります。これにより、ユーザーは選択が決定論的であることを保証できます。
 
-## Sequential consistency {#sequential-consistency}
 
-特別なケースでは、ユーザーは順次一致が必要になることがあります。
+## シーケンシャル整合性 {#sequential-consistency}
 
-データベースにおける順次一致は、データベース上の操作が何らかの順次の順序で実行されているように見え、この順序はデータベースと相互作用するすべてのプロセス間で一貫していることを意味します。これは、すべての操作が、その呼び出しと完了の間に瞬時に効果を及ぼし、すべての操作がどのプロセスにも視認される単一の合意された順序を持つことを意味します。
+例外的なケースでは、ユーザーはシーケンシャル整合性が必要になる場合があります。
 
-ユーザーの観点から見ると、これは通常、ClickHouseにデータを書き込み、データを読み取る際に、最新の挿入された行が返されることを保証する必要があるとして現れます。
-これは、いくつかの方法（好ましい順序で）で達成できます。
+データベースにおけるシーケンシャル整合性とは、データベースに対する操作が何らかの順序で実行されているように見え、この順序がデータベースとやり取りするすべてのプロセス間で一貫していることを指します。これは、すべての操作が呼び出しから完了までの間に瞬時に効果を発揮するように見え、すべてのプロセスによって観測されるすべての操作に対して単一の合意された順序が存在することを意味します。
 
-1. **同じノードに読み書きする** - ネイティブプロトコルまたは[HTTPを介して書き込み/読み取りを行うセッション](/interfaces/http#default-database)を使用している場合、同じレプリカに接続する必要があります。このシナリオでは、書き込みを行い、そのノードから直接読み取るため、読み取りは常に一貫します。
-2. **レプリカを手動で同期する** - 1つのレプリカに書き込み、別のレプリカから読み取る場合、読み取り前に`SYSTEM SYNC REPLICA LIGHTWEIGHT`を使用できます。
-3. **順次一貫性を有効にする** - クエリ設定[`select_sequential_consistency = 1`](/operations/settings/settings#select_sequential_consistency)によって。有効化されたOSSでは、設定`insert_quorum = 'auto'`も指定する必要があります。
+ユーザーの観点からは、これは通常、ClickHouseにデータを書き込み、データを読み取る際に最新の挿入された行が返されることを保証する必要性として現れます。
+これはいくつかの方法で実現できます(優先順位順):
+
+1. **同じノードへの読み書き** - ネイティブプロトコルを使用している場合、または[HTTPを介して読み書きを行うセッション](/interfaces/http#default-database)を使用している場合、同じレプリカに接続されている必要があります。このシナリオでは、書き込みを行っているノードから直接読み取りを行うため、読み取りは常に整合性が保たれます。
+1. **レプリカを手動で同期** - あるレプリカに書き込み、別のレプリカから読み取る場合、読み取りの前に`SYSTEM SYNC REPLICA LIGHTWEIGHT`を実行できます。
+1. **シーケンシャル整合性を有効化** - クエリ設定[`select_sequential_consistency = 1`](/operations/settings/settings#select_sequential_consistency)を使用します。OSSでは、設定`insert_quorum = 'auto'`も指定する必要があります。
 
 <br />
 
-これらの設定を有効にするための詳細は[こちら](/cloud/reference/shared-merge-tree#consistency)をご覧ください。
+これらの設定を有効にする詳細については、[こちら](/cloud/reference/shared-merge-tree#consistency)を参照してください。
 
-> 順次一貫性を使用すると、ClickHouse Keeperに対する負荷が増加します。その結果、書き込みおよび読み取りが遅くなる可能性があります。ClickHouse Cloudで主なテーブルエンジンとして使用されるSharedMergeTreeは、順次一貫性が[オーバーヘッドが少なく、よりスケールしやすいです](/cloud/reference/shared-merge-tree#consistency)。OSSユーザーは、このアプローチを注意深く使用し、Keeperの負荷を測定する必要があります。
+> シーケンシャル整合性の使用は、ClickHouse Keeperに大きな負荷をかけます。その結果、挿入と読み取りが遅くなる可能性があります。ClickHouse Cloudでメインテーブルエンジンとして使用されているSharedMergeTreeでは、シーケンシャル整合性は[オーバーヘッドが少なく、よりスケールします](/cloud/reference/shared-merge-tree#consistency)。OSSユーザーはこのアプローチを慎重に使用し、Keeperの負荷を測定する必要があります。
 
-## Transactional (ACID) support {#transactional-acid-support}
 
-PostgreSQLから移行するユーザーは、そのACID（Atomicity, Consistency, Isolation, Durability）特性に対する強力なサポートに慣れており、トランザクションデータベースとして信頼できる選択肢となっています。PostgreSQLの原子性は、各トランザクションが単一のユニットとして扱われ、完全に成功するか完全にロールバックされることを保証し、部分的な更新を防ぎます。一貫性は、すべてのデータベーストランザクションが有効な状態に導く制約、トリガー、ルールを強制することによって維持されます。Read CommittedからSerializableまでの隔離レベルがPostgreSQLでサポートされており、並行トランザクションによって行われた変更の可視性を細かく制御できます。最後に、耐障害性は、トランザクションがコミットされると、システム障害が発生してもそこに留まることを保証する書き込み前ログ（WAL）によって達成されます。
+## トランザクション（ACID）サポート {#transactional-acid-support}
 
-これらの特性は、真実のソースとして機能するOLTPデータベースに一般的です。
+PostgreSQLから移行するユーザーは、ACID（原子性、一貫性、分離性、永続性）特性に対する堅牢なサポートに慣れているかもしれません。これによりPostgreSQLはトランザクションデータベースとして信頼性の高い選択肢となっています。PostgreSQLにおける原子性は、各トランザクションが単一の単位として扱われ、完全に成功するか完全にロールバックされるかのいずれかとなることで、部分的な更新を防ぎます。一貫性は、制約、トリガー、ルールを適用することで維持され、すべてのデータベーストランザクションが有効な状態に導かれることを保証します。PostgreSQLでは、Read CommittedからSerializableまでの分離レベルがサポートされており、同時実行トランザクションによる変更の可視性を細かく制御できます。最後に、永続性は先行書き込みログ（WAL）によって実現され、トランザクションがコミットされた後は、システム障害が発生した場合でもその状態が維持されることを保証します。
 
-強力ですが、これは固有の制限を伴い、PBスケールの課題を生じさせます。ClickHouseは、高い書き込みスループットを維持しながら、大規模な分析クエリを提供するために、これらの特性を妥協します。
+これらの特性は、信頼できる情報源として機能するOLTPデータベースに共通するものです。
 
-ClickHouseは[制限された設定の下で](./guides/developer/transactional)ACID特性を提供しています - 最も単純な場合は、1つのパーティションを持つMergeTreeテーブルエンジンのレプリケートされていないインスタンスを使用するときです。ユーザーは、これらのケース以外ではこれらの特性を期待しないべきであり、これらが要件でないことを確認する必要があります。
+強力である一方、これには本質的な制限があり、ペタバイト規模の実現を困難にします。ClickHouseは、高い書き込みスループットを維持しながら大規模で高速な分析クエリを提供するために、これらの特性においてトレードオフを行っています。
 
-## Compression {#compression}
+ClickHouseは[限定的な構成](/guides/developer/transactional)下でACID特性を提供します。最も単純なケースは、1つのパーティションを持つMergeTreeテーブルエンジンの非レプリケーションインスタンスを使用する場合です。ユーザーは、これらのケース以外ではこれらの特性を期待すべきではなく、これらが要件でないことを確認する必要があります。
 
-ClickHouseの列指向ストレージは、Postgresと比較した場合に圧縮が大幅に向上することを意味します。以下は、両方のデータベースでのStack Overflowテーブルに対するストレージ要件を比較したものです：
 
-```sql title="Query (Postgres)"
+## 圧縮 {#compression}
+
+ClickHouseのカラム指向ストレージにより、Postgresと比較して圧縮率が大幅に向上します。以下は、両データベースにおけるすべてのStack Overflowテーブルのストレージ要件を比較した例です：
+
+```sql title="クエリ (Postgres)"
 SELECT
     schemaname,
     tablename,
@@ -131,7 +136,7 @@ WHERE
     schemaname = 'public';
 ```
 
-```sql title="Query (ClickHouse)"
+```sql title="クエリ (ClickHouse)"
 SELECT
         `table`,
         formatReadableSize(sum(data_compressed_bytes)) AS compressed_size
@@ -140,7 +145,7 @@ WHERE (database = 'stackoverflow') AND active
 GROUP BY `table`
 ```
 
-```response title="Response"
+```response title="レスポンス"
 ┌─table───────┬─compressed_size─┐
 │ posts       │ 25.17 GiB       │
 │ users       │ 846.57 MiB      │
@@ -152,43 +157,44 @@ GROUP BY `table`
 └─────────────┴─────────────────┘
 ```
 
-圧縮の最適化および測定に関する詳細は[こちら](/data-compression/compression-in-clickhouse)に記載されています。
+圧縮の最適化と測定に関する詳細については、[こちら](/data-compression/compression-in-clickhouse)をご覧ください。
 
-## Data type mappings {#data-type-mappings}
 
-次の表は、Postgresのデータ型に対応するClickHouseのデータ型を示しています。
+## データ型マッピング {#data-type-mappings}
 
-| Postgresデータ型 | ClickHouse型 |
-| --- | --- |
-| `DATE` | [Date](/sql-reference/data-types/date) |
-| `TIMESTAMP` | [DateTime](/sql-reference/data-types/datetime) |
-| `REAL` | [Float32](/sql-reference/data-types/float) |
-| `DOUBLE` | [Float64](/sql-reference/data-types/float) |
-| `DECIMAL, NUMERIC` | [Decimal](/sql-reference/data-types/decimal) |
-| `SMALLINT` | [Int16](/sql-reference/data-types/int-uint) |
-| `INTEGER` | [Int32](/sql-reference/data-types/int-uint) |
-| `BIGINT` | [Int64](/sql-reference/data-types/int-uint) |
-| `SERIAL` | [UInt32](/sql-reference/data-types/int-uint) |
-| `BIGSERIAL` | [UInt64](/sql-reference/data-types/int-uint) |
-| `TEXT, CHAR, BPCHAR` | [String](/sql-reference/data-types/string) |
-| `INTEGER` | Nullable([Int32](/sql-reference/data-types/int-uint)) |
-| `ARRAY` | [Array](/sql-reference/data-types/array) |
-| `FLOAT4` | [Float32](/sql-reference/data-types/float) |
-| `BOOLEAN` | [Bool](/sql-reference/data-types/boolean) |
-| `VARCHAR` | [String](/sql-reference/data-types/string) |
-| `BIT` | [String](/sql-reference/data-types/string) |
-| `BIT VARYING` | [String](/sql-reference/data-types/string) |
-| `BYTEA` | [String](/sql-reference/data-types/string) |
-| `NUMERIC` | [Decimal](/sql-reference/data-types/decimal) |
-| `GEOGRAPHY` | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon) |
-| `GEOMETRY` | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon) |
-| `INET` | [IPv4](/sql-reference/data-types/ipv4), [IPv6](/sql-reference/data-types/ipv6) |
-| `MACADDR` | [String](/sql-reference/data-types/string) |
-| `CIDR` | [String](/sql-reference/data-types/string) |
-| `HSTORE` | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant)) |
-| `UUID` | [UUID](/sql-reference/data-types/uuid) |
-| `ARRAY<T>` | [ARRAY(T)](/sql-reference/data-types/array) |
-| `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
-| `JSONB` | [String](/sql-reference/data-types/string) |
+以下の表は、PostgresとClickHouseの対応するデータ型を示しています。
 
-*\* ClickHouseにおけるJSONの製品サポートは開発中です。現在、ユーザーはJSONをStringにマッピングし、[JSON関数](/sql-reference/functions/json-functions)を使用するか、予測可能な構造の場合にはJSONを[タプル](/sql-reference/data-types/tuple)や[Nested](/sql-reference/data-types/nested-data-structures/nested)に直接マッピングすることができます。JSONに関する詳細は[こちら](/integrations/data-formats/json/overview)をご覧ください。*
+| Postgresデータ型   | ClickHouse型                                                                                                                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DATE`               | [Date](/sql-reference/data-types/date)                                                                                                                                                                                               |
+| `TIMESTAMP`          | [DateTime](/sql-reference/data-types/datetime)                                                                                                                                                                                       |
+| `REAL`               | [Float32](/sql-reference/data-types/float)                                                                                                                                                                                           |
+| `DOUBLE`             | [Float64](/sql-reference/data-types/float)                                                                                                                                                                                           |
+| `DECIMAL, NUMERIC`   | [Decimal](/sql-reference/data-types/decimal)                                                                                                                                                                                         |
+| `SMALLINT`           | [Int16](/sql-reference/data-types/int-uint)                                                                                                                                                                                          |
+| `INTEGER`            | [Int32](/sql-reference/data-types/int-uint)                                                                                                                                                                                          |
+| `BIGINT`             | [Int64](/sql-reference/data-types/int-uint)                                                                                                                                                                                          |
+| `SERIAL`             | [UInt32](/sql-reference/data-types/int-uint)                                                                                                                                                                                         |
+| `BIGSERIAL`          | [UInt64](/sql-reference/data-types/int-uint)                                                                                                                                                                                         |
+| `TEXT, CHAR, BPCHAR` | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `INTEGER`            | Nullable([Int32](/sql-reference/data-types/int-uint))                                                                                                                                                                                |
+| `ARRAY`              | [Array](/sql-reference/data-types/array)                                                                                                                                                                                             |
+| `FLOAT4`             | [Float32](/sql-reference/data-types/float)                                                                                                                                                                                           |
+| `BOOLEAN`            | [Bool](/sql-reference/data-types/boolean)                                                                                                                                                                                            |
+| `VARCHAR`            | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `BIT`                | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `BIT VARYING`        | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `BYTEA`              | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `NUMERIC`            | [Decimal](/sql-reference/data-types/decimal)                                                                                                                                                                                         |
+| `GEOGRAPHY`          | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon)                               |
+| `GEOMETRY`           | [Point](/sql-reference/data-types/geo#point), [Ring](/sql-reference/data-types/geo#ring), [Polygon](/sql-reference/data-types/geo#polygon), [MultiPolygon](/sql-reference/data-types/geo#multipolygon)                               |
+| `INET`               | [IPv4](/sql-reference/data-types/ipv4), [IPv6](/sql-reference/data-types/ipv6)                                                                                                                                                       |
+| `MACADDR`            | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `CIDR`               | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+| `HSTORE`             | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant))                                                                                                     |
+| `UUID`               | [UUID](/sql-reference/data-types/uuid)                                                                                                                                                                                               |
+| `ARRAY<T>`           | [ARRAY(T)](/sql-reference/data-types/array)                                                                                                                                                                                          |
+| `JSON*`              | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
+| `JSONB`              | [String](/sql-reference/data-types/string)                                                                                                                                                                                           |
+
+_\* ClickHouseにおけるJSONの本番環境サポートは開発中です。現在、ユーザーはJSONをString型にマッピングして[JSON関数](/sql-reference/functions/json-functions)を使用するか、構造が予測可能な場合はJSONを[Tuple](/sql-reference/data-types/tuple)や[Nested](/sql-reference/data-types/nested-data-structures/nested)に直接マッピングすることができます。JSONの詳細については[こちら](/integrations/data-formats/json/overview)をご覧ください。_

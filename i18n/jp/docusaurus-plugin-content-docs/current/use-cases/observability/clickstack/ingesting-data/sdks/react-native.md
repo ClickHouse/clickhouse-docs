@@ -1,65 +1,70 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/react-native'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 7
-'description': 'React Native SDK for ClickStack - ClickHouse オブザーバビリティスタック'
-'title': 'React Native'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/react-native
+pagination_prev: null
+pagination_next: null
+sidebar_position: 7
+description: 'ClickStack 用 React Native SDK - ClickHouse Observability Stack'
+title: 'React Native'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-The ClickStack React Native SDKを使用すると、React Nativeアプリケーションを計測してイベントをClickStackに送信することができます。これにより、モバイルネットワークリクエストや例外をバックエンドイベントと一緒に1つのタイムラインで表示することが可能になります。
+ClickStack React Native SDK を使用すると、React Native アプリケーションに
+計測処理を組み込み、イベントを ClickStack に送信できます。これにより、モバイルのネットワークリクエストや
+例外を、バックエンドのイベントと合わせて 1 つのタイムライン上で確認できます。
 
-このガイドは以下を統合しています：
+このガイドで統合する内容:
 
-- **XHR/Fetchリクエスト**
+- **XHR/Fetch リクエスト**
 
-## 始め方 {#getting-started}
 
-### NPMを使用してインストール {#install-via-npm}
 
-次のコマンドを使用して[ClickStack React Nativeパッケージ](https://www.npmjs.com/package/@hyperdx/otel-react-native)をインストールします。
+## はじめに {#getting-started}
+
+### NPMによるインストール {#install-via-npm}
+
+以下のコマンドを使用して[ClickStack React Nativeパッケージ](https://www.npmjs.com/package/@hyperdx/otel-react-native)をインストールします。
 
 ```shell
 npm install @hyperdx/otel-react-native
 ```
 
-### ClickStackを初期化 {#initialize-clickstack}
+### ClickStackの初期化 {#initialize-clickstack}
 
-ライブラリはアプリライフサイクルの早い段階で初期化してください：
+アプリケーションのライフサイクルのできるだけ早い段階でライブラリを初期化します:
 
 ```javascript
-import { HyperDXRum } from '@hyperdx/otel-react-native';
+import { HyperDXRum } from "@hyperdx/otel-react-native"
 
 HyperDXRum.init({
-  service: 'my-rn-app',
-  apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-});
+  service: "my-rn-app",
+  apiKey: "<YOUR_INGESTION_API_KEY>",
+  tracePropagationTargets: [/api.myapp.domain/i] // フロントエンドからバックエンドへのリクエストのトレースをリンクするために設定
+})
 ```
 
-### ユーザー情報またはメタデータを添付する（オプション） {#attach-user-information-metadata}
+### ユーザー情報またはメタデータの付加（オプション） {#attach-user-information-metadata}
 
-ユーザー情報を添付することで、HyperDX内のセッションやイベントを検索/フィルタリングすることができるようになります。これはクライアントセッション中の任意のポイントで呼び出すことができます。現在のクライアントセッションおよびその後に送信されるすべてのイベントは、ユーザー情報に関連付けられます。
+ユーザー情報を付加することで、HyperDX内でセッションやイベントを検索・フィルタリングできるようになります。この処理はクライアントセッション中のどの時点でも呼び出すことができます。現在のクライアントセッションと、この呼び出し後に送信されるすべてのイベントは、ユーザー情報と関連付けられます。
 
-`userEmail`、`userName`、および`teamName`は、セッションUIに対応する値で埋められますが、指定しなくても構いません。他の追加の値も指定でき、それらを使用してイベントを検索することができます。
+`userEmail`、`userName`、`teamName`は、セッションUIに対応する値を表示しますが、省略することもできます。その他の追加の値を指定して、イベントの検索に使用することもできます。
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
   userId: user.id,
   userEmail: user.email,
   userName: user.name,
-  teamName: user.team.name,
-  // Other custom properties...
-});
+  teamName: user.team.name
+  // その他のカスタムプロパティ...
+})
 ```
 
-### 低バージョンを計測する {#instrument-lower-versions}
+### 旧バージョンの計装 {#instrument-lower-versions}
 
-React Nativeのバージョンが0.68未満のアプリケーションを計測するには、`metro.config.js`ファイルを編集して、メトロがブラウザ特有のパッケージを使用するように強制します。例えば：
+React Native 0.68未満のバージョンで動作するアプリケーションを計装するには、`metro.config.js`ファイルを編集して、metroにブラウザ固有のパッケージを使用させます。例:
 
 ```javascript
-const defaultResolver = require('metro-resolver');
+const defaultResolver = require("metro-resolver")
 
 module.exports = {
   resolver: {
@@ -67,57 +72,58 @@ module.exports = {
       const resolved = defaultResolver.resolve(
         {
           ...context,
-          resolveRequest: null,
+          resolveRequest: null
         },
         moduleName,
-        platform,
-      );
+        platform
+      )
 
       if (
-        resolved.type === 'sourceFile' &&
-        resolved.filePath.includes('@opentelemetry')
+        resolved.type === "sourceFile" &&
+        resolved.filePath.includes("@opentelemetry")
       ) {
         resolved.filePath = resolved.filePath.replace(
-          'platform\\node',
-          'platform\\browser',
-        );
-        return resolved;
+          "platform\\node",
+          "platform\\browser"
+        )
+        return resolved
       }
 
-      return resolved;
-    },
+      return resolved
+    }
   },
   transformer: {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: true,
-      },
-    }),
-  },
-};
+        inlineRequires: true
+      }
+    })
+  }
+}
 ```
 
-## ビューのナビゲーション {#view-navigation}
 
-[react-navigation](https://github.com/react-navigation/react-navigation)バージョン5と6がサポートされています。
+## ビューナビゲーション {#view-navigation}
 
-以下の例では、ナビゲーションを計測する方法を示しています：
+[react-navigation](https://github.com/react-navigation/react-navigation) バージョン5および6がサポートされています。
+
+以下の例では、ナビゲーションを計装する方法を示します：
 
 ```javascript
-import { startNavigationTracking } from '@hyperdx/otel-react-native';
+import { startNavigationTracking } from "@hyperdx/otel-react-native"
 
 export default function App() {
-  const navigationRef = useNavigationContainerRef();
+  const navigationRef = useNavigationContainerRef()
   return (
     <NavigationContainer
       ref={navigationRef}
       onReady={() => {
-        startNavigationTracking(navigationRef);
+        startNavigationTracking(navigationRef)
       }}
     >
       <Stack.Navigator>...</Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
 ```

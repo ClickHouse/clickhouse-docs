@@ -1,40 +1,44 @@
 ---
-'slug': '/native-protocol/basics'
-'sidebar_position': 1
-'title': '基础'
-'description': '原生协议基础'
-'doc_type': 'guide'
+slug: /native-protocol/basics
+sidebar_position: 1
+title: '基础知识'
+description: 'Native 协议基础知识'
+keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
+doc_type: 'guide'
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 
 # 基础
 
 :::note
-客户端协议参考正在进行中。
+客户端协议参考文档仍在编写中。
 
-大多数示例仅在 Go 中提供。
+目前大部分示例仅提供 Go 版本。
 :::
 
-本文档描述了 ClickHouse TCP 客户端的二进制协议。
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-## Varint {#varint}
+本文档介绍 ClickHouse TCP 客户端的二进制协议。
 
-对于长度、数据包代码和其他情况使用 *无符号 varint* 编码。
+
+## 变长整数（Varint） {#varint}
+
+对于长度、数据包代码等场景，使用 _无符号变长整数（unsigned varint）_ 编码。
 使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
 
 :::note
-*有符号* varint 不被使用。
+不使用 _有符号_ 变长整数。
 :::
+
 
 ## 字符串 {#string}
 
-可变长度的字符串编码为 *(长度, 值)*，其中 *长度* 为 [varint](#varint)，*值* 为 utf8 字符串。
+可变长度字符串编码为 _(length, value)_ 格式,其中 _length_ 为 [varint](#varint),_value_ 为 UTF-8 字符串。
 
 :::important
-验证长度以防止 OOM：
+验证长度以防止内存溢出(OOM):
 
 `0 ≤ len < MAX`
 :::
@@ -45,12 +49,12 @@ import TabItem from '@theme/TabItem';
 ```go
 s := "Hello, world!"
 
-// Writing string length as uvarint.
+// 将字符串长度写入为 uvarint。
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Writing string value.
+// 写入字符串值。
 buf = append(buf, s...)
 ```
 
@@ -63,13 +67,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Read length.
+// 读取长度。
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Check n to prevent OOM or runtime exception in make().
+// 检查 n 以防止 OOM 或 make() 中的运行时异常。
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -114,21 +118,23 @@ data := []byte{
 </TabItem>
 </Tabs>
 
+
 ## 整数 {#integers}
 
 :::tip
-ClickHouse 使用 **小端** 方式表示固定大小的整数。
+ClickHouse 对固定大小的整数使用**小端序（Little Endian）**。
 :::
 
 ### Int32 {#int32}
+
 ```go
 v := int32(1000)
 
-// Encode.
+// 编码
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Decode.
+// 解码
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
@@ -150,6 +156,7 @@ fmt.Println(d) // 1000
 </TabItem>
 </Tabs>
 
-## 布尔值 {#boolean}
 
-布尔值由单个字节表示，`1` 为 `true`，`0` 为 `false`。
+## Boolean {#boolean}
+
+布尔值用单字节表示，`1` 表示 `true`，`0` 表示 `false`。

@@ -1,40 +1,35 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgResample'
-'title': 'avgResample'
-'description': '使用 avg 的 Resample 组合器的示例'
-'keywords':
-- 'avg'
-- 'Resample'
-- 'combinator'
-- 'examples'
-- 'avgResample'
-'sidebar_label': 'avgResample'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgResample'
+title: 'avgResample'
+description: '将 Resample 组合子与 avg 一起使用的示例'
+keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
+sidebar_label: 'avgResample'
+doc_type: 'reference'
 ---
+
 
 
 # countResample {#countResample}
 
-## Description {#description}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-组合器可以应用于[`count`](/sql-reference/aggregate-functions/reference/count)
-聚合函数，以在固定数量的时间间隔（`N`）中计数指定键列的值。
+## 描述 {#description}
 
-## Example usage {#example-usage}
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 组合器可应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 聚合函数,用于在固定数量的区间(`N`)中统计指定键列的值。
 
-### Basic example {#basic-example}
 
-让我们来看一个例子。我们将创建一个包含员工的 `name`、`age` 和
-`wage` 的表，并插入一些数据：
+## 使用示例 {#example-usage}
+
+### 基础示例 {#basic-example}
+
+让我们看一个示例。我们将创建一个包含员工 `name`(姓名)、`age`(年龄)和 `wage`(工资)的表,并向其中插入一些数据:
 
 ```sql
-CREATE TABLE employee_data 
+CREATE TABLE employee_data
 (
     name String,
     age UInt8,
     wage Float32
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -47,10 +42,8 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们获取年龄在 `[30,60)` 
-和 `[60,75)` 区间内的人的平均工资（`[` 是排除的，`)` 是包含的）。由于我们对年龄使用整数 
-表示，因此获得的年龄在 `[30, 59]` 和 `[60,74]` 区间内。 
-为此，我们将 `Resample` 组合器应用于 `avg` 聚合函数。
+让我们获取年龄位于区间 `[30,60)` 和 `[60,75)` 的人员的平均工资(`[` 表示不包含边界,`)` 表示包含边界)。由于我们使用整数表示年龄,因此实际得到的年龄区间为 `[30, 59]` 和 `[60,74]`。
+为此,我们将 `Resample` 组合器应用于 `avg` 聚合函数。
 
 ```sql
 WITH avg_wage AS
@@ -69,6 +62,8 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## See also {#see-also}
+
+## 另请参阅 {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [`Resample 组合器`](/sql-reference/aggregate-functions/combinators#-resample)

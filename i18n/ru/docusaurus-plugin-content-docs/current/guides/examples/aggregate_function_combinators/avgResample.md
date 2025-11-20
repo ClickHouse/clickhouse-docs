@@ -1,34 +1,39 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
-sidebar_label: avgResample
-description: 'Пример использования комбиниатора Resample с avg'
-title: avgResample
+title: 'avgResample'
+description: 'Пример использования комбинатора Resample с avg'
 keywords: ['avg', 'Resample', 'комбинатор', 'примеры', 'avgResample']
-doc_type: reference
+sidebar_label: 'avgResample'
+doc_type: 'reference'
 ---
+
+
+
 # countResample {#countResample}
+
 
 ## Описание {#description}
 
-Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-может быть применен к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
-для подсчета значений заданной ключевой колонки в фиксированном количестве
+Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+можно применить к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
+для подсчёта значений указанного ключевого столбца в заданном количестве
 интервалов (`N`).
 
-## Пример использования {#example-usage}
 
-### Простой пример {#basic-example}
+## Примеры использования {#example-usage}
 
-Давайте рассмотрим пример. Мы создадим таблицу, которая содержит `name`, `age` и
-`wage` сотрудников и вставим в нее некоторые данные:
+### Базовый пример {#basic-example}
+
+Рассмотрим пример. Создадим таблицу, которая содержит `name` (имя), `age` (возраст) и
+`wage` (зарплату) сотрудников, и вставим в неё некоторые данные:
 
 ```sql
-CREATE TABLE employee_data 
+CREATE TABLE employee_data
 (
     name String,
     age UInt8,
     wage Float32
-) 
+)
 ENGINE = MergeTree()
 ORDER BY tuple()
 
@@ -41,10 +46,10 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-Теперь давайте получим среднюю заработную плату людей, чей возраст находится в интервалах `[30,60)` 
-и `[60,75)` (`[` исключает, а `)` включает). Поскольку мы используем целочисленное 
-представление возраста, мы получаем возраст в интервалах `[30, 59]` и `[60,74]`. 
-Для этого мы применяем комбинатор `Resample` к агрегатной функции `avg`.
+Получим среднюю зарплату людей, чей возраст находится в интервалах `[30,60)`
+и `[60,75)` (`[` — включающая граница, `)` — исключающая). Поскольку мы используем целочисленное
+представление для возраста, получаем возраста в интервалах `[30, 59]` и `[60,74]`.
+Для этого применим комбинатор `Resample` к агрегатной функции `avg`.
 
 ```sql
 WITH avg_wage AS
@@ -63,6 +68,8 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
+
 ## См. также {#see-also}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+- [Комбинатор `Resample`](/sql-reference/aggregate-functions/combinators#-resample)

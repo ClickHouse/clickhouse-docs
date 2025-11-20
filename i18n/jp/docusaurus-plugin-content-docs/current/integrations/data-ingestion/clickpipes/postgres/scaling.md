@@ -1,64 +1,73 @@
 ---
-'title': 'OpenAPIを使用したDB ClickPipesのスケーリング'
-'description': 'OpenAPIを使用したDB ClickPipesのスケーリングに関するドキュメント'
-'slug': '/integrations/clickpipes/postgres/scaling'
-'sidebar_label': 'スケーリング'
-'doc_type': 'guide'
+title: 'OpenAPI を使用した DB ClickPipes のスケーリング'
+description: 'OpenAPI を使用した DB ClickPipes のスケーリングに関するドキュメント'
+slug: /integrations/clickpipes/postgres/scaling
+sidebar_label: 'スケーリング'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-:::caution このAPIはほとんどのユーザーには必要ありません
-DB ClickPipesのデフォルト設定は、ほとんどのワークロードに対処できるように設計されています。ワークロードのスケーリングが必要だと思われる場合は、[サポートケース](https://clickhouse.com/support/program)を開いていただければ、ユースケースに最適な設定を案内します。
+:::caution ほとんどのユーザーにはこの API は不要です
+DB ClickPipes のデフォルト設定は、ほとんどのワークロードをそのまま処理できるように設計されています。ご利用のワークロードでスケーリングが必要と思われる場合は、[サポートケース](https://clickhouse.com/support/program) を作成していただければ、ユースケースに最適な設定についてご案内します。
 :::
 
-スケーリングAPIが役立つ場合：
-- 大規模な初期ロード（4 TB以上）
-- 適度な量のデータをできるだけ早く移行すること
-- 同じサービスの下で8つ以上のCDC ClickPipesをサポートすること
+スケーリング API が有用となるケース:
+- 大規模な初回ロード（4 TB 超）
+- 中規模データを可能な限り短時間で移行したい場合
+- 同一サービスで 8 を超える CDC ClickPipes をサポートする場合
 
-スケールアップを試みる前に考慮すべきこと：
-- ソースDBに十分な可用容量があることを確認する
-- ClickPipeを作成する際に[初期ロードの並列処理とパーティション設定](/integrations/clickpipes/postgres/parallel_initial_load)をまず調整する
-- ソース上でCDCの遅延を引き起こしている可能性のある[長時間実行中のトランザクション](/integrations/clickpipes/postgres/sync_control#transactions)を確認する
+スケールアップを試みる前に、次の点を検討してください:
+- ソース DB に十分な空きキャパシティがあることの確認
+- ClickPipe 作成時に、まず [初回ロードの並列度とパーティション分割](/integrations/clickpipes/postgres/parallel_initial_load) を調整すること
+- CDC の遅延要因となり得る、ソース側の[長時間実行トランザクション](/integrations/clickpipes/postgres/sync_control#transactions) を確認すること
 
-**スケールを増加させると、ClickPipesの計算コストも比例して増加します。** 初期ロードのためだけにスケールアップしている場合は、スナップショットが完了した後にスケールダウンすることが重要です。想定外の料金を避けるために。料金の詳細については、[Postgres CDC料金](/cloud/reference/billing/clickpipes)をご覧ください。
+**スケールを増やすと、それに比例して ClickPipes のコンピュートコストも増加します。** 初回ロードのためだけにスケールアップする場合は、スナップショット完了後にスケールを戻して予期しない課金を避けることが重要です。料金の詳細については、[Postgres CDC の料金](/cloud/reference/billing/clickpipes) を参照してください。
 
-## このプロセスの前提条件 {#prerequisites}
 
-開始する前に必要なもの：
-1. ターゲットClickHouse CloudサービスでAdmin権限のある[ClickHouse APIキー](/cloud/manage/openapi)
-2. かつてサービスにプロビジョニングされたDB ClickPipe（Postgres、MySQLまたはMongoDB）。CDCインフラが最初のClickPipeと共に作成され、その時点以降からスケーリングエンドポイントが利用可能になります。
 
-## DB ClickPipesをスケールする手順 {#cdc-scaling-steps}
+## この手順の前提条件 {#prerequisites}
 
-コマンドを実行する前に、次の環境変数を設定してください：
+開始する前に、以下が必要です：
+
+1. 対象のClickHouse Cloudサービスに対する管理者権限を持つ[ClickHouse APIキー](/cloud/manage/openapi)
+2. サービス内で事前にプロビジョニングされたDB ClickPipe（Postgres、MySQL、またはMongoDB）。CDCインフラストラクチャは最初のClickPipeの作成時に構築され、その時点からスケーリングエンドポイントが利用可能になります。
+
+
+## DB ClickPipesのスケーリング手順 {#cdc-scaling-steps}
+
+コマンドを実行する前に、以下の環境変数を設定してください:
 
 ```bash
-ORG_ID=<Your ClickHouse organization ID>
-SERVICE_ID=<Your ClickHouse service ID>
-KEY_ID=<Your ClickHouse key ID>
-KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<ClickHouse組織ID>
+SERVICE_ID=<ClickHouseサービスID>
+KEY_ID=<ClickHouseキーID>
+KEY_SECRET=<ClickHouseキーシークレット>
 ```
 
-現在のスケーリング設定を取得する（オプション）：
+現在のスケーリング設定を取得します(オプション):
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-
-# example result:
-{
-  "result": {
-    "replicaCpuMillicores": 2000,
-    "replicaMemoryGb": 8
-  },
-  "requestId": "04310d9e-1126-4c03-9b05-2aa884dbecb7",
-  "status": 200
-}
 ```
 
-希望するスケーリングを設定します。サポートされている構成は、1〜24 CPUコアで、メモリ（GB）はコア数の4倍に設定されています：
+
+# 実行結果の例:
+
+{
+"result": {
+"replicaCpuMillicores": 2000,
+"replicaMemoryGb": 8
+},
+"requestId": "04310d9e-1126-4c03-9b05-2aa884dbecb7",
+"status": 200
+}
+
+````
+
+希望するスケーリングを設定します。サポートされる構成は、1～24個のCPUコアで、メモリ（GB）はコア数の4倍です:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
@@ -72,23 +81,29 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 -X PATCH -H "Content-Type: application/json" \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 -d @cdc_scaling.json | jq
-```
+````
 
-設定が伝播するのを待ちます（通常3〜5分）。スケーリングが完了すると、GETエンドポイントは新しい値を反映します：
+設定が反映されるまで待ちます（通常3～5分）。スケーリング完了後、GETエンドポイントに新しい値が反映されます:
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
+```
 
-# example result:
+
+# 結果の例:
+
 {
-  "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
-  },
-  "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
-  "status": 200
+"result": {
+"replicaCpuMillicores": 24000,
+"replicaMemoryGb": 96
+},
+"requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
+"status": 200
 }
+
+```
+
 ```

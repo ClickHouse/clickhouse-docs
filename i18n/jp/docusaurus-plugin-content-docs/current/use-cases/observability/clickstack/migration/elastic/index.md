@@ -1,23 +1,22 @@
 ---
-'slug': '/use-cases/observability/clickstack/migration/elastic'
-'title': 'ElasticからClickStackへの移行'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ElasticからClickHouse Observability Stackへの移行に関するランディングページ'
-'show_related_blogs': true
-'keywords':
-- 'Elasticsearch'
-'doc_type': 'landing-page'
+slug: /use-cases/observability/clickstack/migration/elastic
+title: 'Elastic から ClickStack への移行'
+pagination_prev: null
+pagination_next: null
+description: 'Elastic から ClickHouse Observability Stack への移行用ランディングページ'
+show_related_blogs: true
+keywords: ['Elasticsearch']
+doc_type: 'landing-page'
 ---
 
-このガイドは、Elastic Stack から ClickStack への移行に関する包括的なアプローチを提供します。リスクを最小限に抑えながら、ClickHouse の観測可能性ワークロードにおける強みを活用する並行運用戦略に重点を置いています。
+このガイドでは、Elastic Stack から ClickStack へ移行するための包括的な手順を説明します。リスクを最小限に抑えつつ、オブザーバビリティ系ワークロードにおける ClickHouse の強みを活かすための並行運用戦略に焦点を当てています。
 
-| セクション | 説明 |
+| Section | Description |
 |---------|-------------|
-| [はじめに](/use-cases/observability/clickstack/migration/elastic/intro) | 移行プロセスと主要な考慮事項の概要 |
-| [概念](/use-cases/observability/clickstack/migration/elastic/concepts) | Elastic と ClickStack の間の同等の概念の理解 |
-| [タイプ](/use-cases/observability/clickstack/migration/elastic/types) | Elasticsearch タイプを ClickHouse の同等物にマッピング |
-| [検索](/use-cases/observability/clickstack/migration/elastic/search) | 検索機能とクエリ構文の比較 |
-| [データの移行](/use-cases/observability/clickstack/migration/elastic/migrating-data) | データ移行と並行運用のための戦略 |
-| [エージェントの移行](/use-cases/observability/clickstack/migration/elastic/migrating-agents) | Elastic エージェントから OpenTelemetry への移行 |
-| [SDK の移行](/use-cases/observability/clickstack/migration/elastic/migrating-sdks) | Elastic APM エージェントを OpenTelemetry SDK に置き換える |
+| [Introduction](/use-cases/observability/clickstack/migration/elastic/intro) | 移行プロセスの概要と主要な検討事項 |
+| [Concepts](/use-cases/observability/clickstack/migration/elastic/concepts) | Elastic と ClickStack 間の対応する概念の理解 |
+| [Types](/use-cases/observability/clickstack/migration/elastic/types) | Elasticsearch の型を ClickHouse の対応する型へマッピング |
+| [Search](/use-cases/observability/clickstack/migration/elastic/search) | 検索機能とクエリ構文の比較 |
+| [Migrating Data](/use-cases/observability/clickstack/migration/elastic/migrating-data) | データ移行と並行運用のための戦略 |
+| [Migrating Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents) | Elastic エージェントから OpenTelemetry への移行 |
+| [Migrating SDKs](/use-cases/observability/clickstack/migration/elastic/migrating-sdks) | Elastic APM エージェントを OpenTelemetry SDK に置き換え |

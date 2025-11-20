@@ -1,63 +1,72 @@
 ---
-slug: '/chdb/guides/clickhouse-local'
-sidebar_label: 'Использование базы данных clickhouse-local'
-description: 'Узнайте, как использовать базу данных clickhouse-local с chDB'
 title: 'Использование базы данных clickhouse-local'
+sidebar_label: 'Использование базы данных clickhouse-local'
+slug: /chdb/guides/clickhouse-local
+description: 'Узнайте, как использовать базу данных clickhouse-local с chDB'
 keywords: ['chdb', 'clickhouse-local']
-doc_type: guide
+doc_type: 'guide'
 ---
-[clickhouse-local](/operations/utilities/clickhouse-local) — это CLI с встроенной версией ClickHouse. Он предоставляет пользователям мощь ClickHouse без необходимости установки сервера. В этом руководстве мы научимся использовать базу данных clickhouse-local из chDB.
+
+[clickhouse-local](/operations/utilities/clickhouse-local) — это CLI со встроенной версией ClickHouse.
+Он предоставляет пользователям возможности ClickHouse без необходимости устанавливать сервер.
+В этом руководстве мы рассмотрим, как использовать базу данных clickhouse-local из chDB.
+
+
 
 ## Настройка {#setup}
 
-Сначала создадим виртуальную среду:
+Сначала создадим виртуальное окружение:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-А теперь мы установим chDB. Убедитесь, что у вас версия 2.0.2 или выше:
+Теперь установим chDB.
+Убедитесь, что используется версия 2.0.2 или выше:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-И теперь мы установим [ipython](https://ipython.org/):
+Далее установим [ipython](https://ipython.org/):
 
 ```bash
 pip install ipython
 ```
 
-Мы будем использовать `ipython` для выполнения команд в оставшейся части руководства, который можно запустить, выполнив:
+Для выполнения команд в остальной части руководства мы будем использовать `ipython`. Запустить его можно следующей командой:
 
 ```bash
 ipython
 ```
 
+
 ## Установка clickhouse-local {#installing-clickhouse-local}
 
-Скачивание и установка clickhouse-local такие же, как [скачивание и установка ClickHouse](/install). Мы можем сделать это, выполнив следующую команду:
+Загрузка и установка clickhouse-local выполняется так же, как [загрузка и установка ClickHouse](/install).
+Для этого выполните следующую команду:
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-Чтобы запустить clickhouse-local с данными, которые сохраняются в директорию, нам нужно передать `--path`:
+Чтобы запустить clickhouse-local с сохранением данных в каталог, необходимо указать параметр `--path`:
 
 ```bash
 ./clickhouse -m --path demo.chdb
 ```
 
-## Прием данных в clickhouse-local {#ingesting-data-into-clickhouse-local}
 
-По умолчанию база данных сохраняет данные только в памяти, поэтому нам нужно создать именованную базу данных, чтобы убедиться, что любые данные, которые мы загружаем, сохраняются на диске.
+## Загрузка данных в clickhouse-local {#ingesting-data-into-clickhouse-local}
+
+База данных по умолчанию хранит данные только в памяти, поэтому нужно создать именованную базу данных, чтобы загружаемые данные сохранялись на диске.
 
 ```sql
 CREATE DATABASE foo;
 ```
 
-Давайте создадим таблицу и вставим несколько случайных чисел:
+Создадим таблицу и вставим в неё случайные числа:
 
 ```sql
 CREATE TABLE foo.randomNumbers
@@ -66,7 +75,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-Давайте напишем запрос, чтобы увидеть, какие данные у нас есть:
+Напишем запрос, чтобы посмотреть, какие данные у нас получились:
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -77,11 +86,13 @@ FROM foo.randomNumbers
 └───────────────────────────────────────┘
 ```
 
-После того как вы это сделали, убедитесь, что вы `exit;` из CLI, так как только один процесс может держать блокировку на этой директории. Если мы этого не сделаем, мы получим следующую ошибку, когда попробуем подключиться к базе данных из chDB:
+После этого обязательно выполните `exit;` для выхода из CLI, так как только один процесс может удерживать блокировку этого каталога.
+Если этого не сделать, при попытке подключения к базе данных из chDB возникнет следующая ошибка:
 
 ```text
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
+
 
 ## Подключение к базе данных clickhouse-local {#connecting-to-a-clickhouse-local-database}
 
@@ -91,13 +102,13 @@ ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another s
 from chdb import session as chs
 ```
 
-Инициализируйте сессию, указывая на `demo..chdb`:
+Инициализируйте сессию, указав путь к `demo.chdb`:
 
 ```python
 sess = chs.Session("demo.chdb")
 ```
 
-Затем мы можем выполнить тот же запрос, который возвращает квантиль чисел:
+Теперь можно выполнить тот же запрос, который возвращает квантили чисел:
 
 ```python
 sess.query("""
@@ -110,7 +121,7 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-Мы также можем вставить данные в эту базу данных из chDB:
+Также можно вставлять данные в эту базу данных из chDB:
 
 ```python
 sess.query("""
@@ -123,4 +134,4 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-Затем мы можем повторно выполнить запрос на квантиль из chDB или clickhouse-local.
+После этого можно повторно выполнить запрос квантилей из chDB или clickhouse-local.

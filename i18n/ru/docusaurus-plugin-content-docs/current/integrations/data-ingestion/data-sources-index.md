@@ -1,16 +1,17 @@
 ---
-slug: '/integrations/data-sources/index'
-description: 'Обзор страницы datasource'
-title: 'Источники данных'
+slug: /integrations/data-sources/index
 keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
-doc_type: landing-page
+description: 'Обзор источников данных'
+title: 'Источники данных'
+doc_type: 'landing-page'
 ---
+
 # Источники данных
 
-ClickHouse позволяет легко загружать данные в вашу базу данных из различных источников. 
-Дополнительную информацию смотрите на страницах, перечисленных ниже:
+ClickHouse позволяет легко загружать данные в базу данных из различных источников.
+Дополнительную информацию см. на страницах, перечисленных ниже:
 
-| Источник данных                                                               |
+| Источник данных                                                              |
 |-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |

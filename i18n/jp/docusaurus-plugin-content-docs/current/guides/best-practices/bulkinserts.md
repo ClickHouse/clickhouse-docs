@@ -1,11 +1,12 @@
 ---
-'slug': '/optimize/bulk-inserts'
-'sidebar_label': 'バルクインサート'
-'title': 'バルクインサート'
-'description': 'より多くのデータを含む少量のインサートを送信することで、必要な書き込みの数を減らすことができます。'
-'doc_type': 'guide'
+slug: /optimize/bulk-inserts
+sidebar_label: 'バルク挿入'
+title: 'バルク挿入'
+description: '1回あたりにより多くのデータを含む挿入回数を減らすことで、必要な書き込み処理の回数を削減できます。'
+keywords: ['bulk insert', 'batch insert', 'insert optimization']
+doc_type: 'guide'
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
+import Content from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
 
 <Content />

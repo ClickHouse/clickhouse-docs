@@ -1,42 +1,45 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/community-wisdom'
-'sidebar_label': '社区智慧'
-'doc_type': 'landing-page'
-'keywords':
-- 'database tips'
-- 'community wisdom'
-- 'production troubleshooting'
-- 'performance optimization'
-- 'database debugging'
-- 'clickhouse guides'
-- 'real world examples'
-- 'database best practices'
-- 'meetup insights'
-- 'production lessons'
-- 'interactive tutorials'
-- 'database solutions'
-'title': 'ClickHouse社区智慧'
-'description': '通过实际案例和经验教训，从ClickHouse社区中学习'
+sidebar_position: 1
+slug: /tips-and-tricks/community-wisdom
+sidebar_label: '社区经验'
+doc_type: 'landing-page'
+keywords: [
+  '数据库技巧',
+  '社区经验',
+  '生产环境故障排查',
+  '性能优化',
+  '数据库调试',
+  'ClickHouse 指南',
+  '真实案例',
+  '数据库最佳实践',
+  '线下活动洞见',
+  '生产环境实践经验',
+  '交互式教程',
+  '数据库解决方案'
+]
+title: 'ClickHouse 社区经验'
+description: '结合真实场景与实践经验，向 ClickHouse 社区学习'
 ---
 
 
-# ClickHouse 社区智慧：来自会议的技巧与窍门 {#community-wisdom}
 
-*这些互动指南代表了数百次生产部署的集体智慧。每个可运行的示例帮助您使用真实的 GitHub 事件数据理解 ClickHouse 模式 - 练习这些概念以避免常见错误，加速您的成功。*
+# ClickHouse 社区智慧：来自线下交流会的技巧与诀窍 {#community-wisdom}
 
-将这些收集到的知识与我们的 [最佳实践](/best-practices) 指南结合，获得最佳的 ClickHouse 体验。
+_这些交互式指南汇集了数百个生产环境部署的集体智慧。每个可运行示例都使用真实的 GitHub 事件数据帮助您理解 ClickHouse 的使用模式——通过实践这些概念来避免常见错误，加速您的成功。_
 
-## 特定问题的快速跳转 {#problem-specific-quick-jumps}
+将这些知识与我们的[最佳实践](/best-practices)指南相结合,以获得最佳的 ClickHouse 使用体验。
 
-| 问题      | 文档                              | 描述                                     |
-|-----------|----------------------------------|----------------------------------------|
-| **生产问题**   | [调试见解](./debugging-insights.md)       | 社区生产调试技巧                          |
-| **慢查询**       | [性能优化](./performance-optimization.md)       | 优化性能                                 |
-| **物化视图** | [MV 双刃剑](./materialized-views.md)   | 避免 10 倍存储实例                        |
-| **过多分区片段**     | [过多分区片段](./too-many-parts.md)      | 解决“过多分区片段”错误和性能下降问题         |
-| **高成本**         | [成本优化](./cost-optimization.md)         | 优化成本                                 |
-| **成功案例**    | [成功案例](./success-stories.md)         | ClickHouse 在成功使用案例中的示例          |
 
-**最后更新：** 根据 2024-2025 年社区会议的见解  
-**贡献：** 发现错误或有新的经验教训？欢迎社区贡献
+## 特定问题快速跳转 {#problem-specific-quick-jumps}
+
+| 问题                  | 文档                                                  | 描述                                                    |
+| ---------------------- | --------------------------------------------------------- | -------------------------------------------------------------- |
+| **生产环境问题**   | [调试洞察](./debugging-insights.md)             | 社区生产环境调试技巧                            |
+| **慢查询**       | [性能优化](./performance-optimization.md) | 优化性能                                           |
+| **物化视图** | [物化视图的双刃剑](./materialized-views.md)          | 避免存储空间膨胀 10 倍                                    |
+| **分区过多**     | [分区过多](./too-many-parts.md)                     | 解决"分区过多"错误和性能下降问题 |
+| **成本过高**         | [成本优化](./cost-optimization.md)               | 优化成本                                                  |
+| **成功案例**    | [成功案例](./success-stories.md)                   | ClickHouse 成功应用案例                 |
+
+**最后更新：** 基于 2024-2025 年社区聚会的洞察  
+**贡献：** 发现错误或有新的经验教训?欢迎社区贡献

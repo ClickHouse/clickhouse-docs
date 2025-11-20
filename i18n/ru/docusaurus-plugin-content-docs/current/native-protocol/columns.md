@@ -1,98 +1,117 @@
 ---
-slug: '/native-protocol/columns'
+slug: /native-protocol/columns
 sidebar_position: 4
-description: 'Типы колонок для нативного протокола'
-title: 'Типы колонок'
-doc_type: reference
+title: 'Типы столбцов'
+description: 'Типы столбцов в нативном протоколе'
+keywords: ['native protocol columns', 'column types', 'data types', 'protocol data types', 'binary encoding']
+doc_type: 'reference'
 ---
-# Типы колонок
 
-Смотрите [Типы данных](/sql-reference/data-types/) для общего справочника.
+
+
+# Типы столбцов
+
+Общую справочную информацию см. в разделе [Типы данных](/sql-reference/data-types/).
+
+
 
 ## Числовые типы {#numeric-types}
 
 :::tip
 
-Кодирование числовых типов соответствует размещению в памяти процессоров little endian, таких как AMD64 или ARM64.
+Кодирование числовых типов соответствует расположению данных в памяти процессоров с прямым порядком байтов (little endian), таких как AMD64 или ARM64.
 
-Это позволяет реализовать очень эффективное кодирование и декодирование.
+Это обеспечивает очень эффективное кодирование и декодирование.
 
 :::
 
 ### Целые числа {#integers}
 
-Строка Int и UInt размером 8, 16, 32, 64, 128 или 256 бит, в little endian.
+Последовательность типов Int и UInt разрядностью 8, 16, 32, 64, 128 или 256 бит в прямом порядке байтов (little endian).
 
 ### Числа с плавающей точкой {#floats}
 
-Float32 и Float64 в двоичном представлении IEEE 754.
+Типы Float32 и Float64 в двоичном представлении IEEE 754.
 
-## Строка {#string}
 
-Просто массив строк, т.е. (len, value).
+## String {#string}
+
+Представляет собой массив String, т.е. (длина, значение).
+
 
 ## FixedString(N) {#fixedstringn}
 
-Массив последовательностей длиной N байт.
+Массив N-байтовых последовательностей.
+
 
 ## IP {#ip}
 
 IPv4 является псевдонимом числового типа `UInt32` и представлен как UInt32.
 
-IPv6 является псевдонимом `FixedString(16)` и представлен как двоичное значение напрямую.
+IPv6 является псевдонимом типа `FixedString(16)` и представлен непосредственно в двоичном виде.
 
-## Кортеж {#tuple}
 
-Кортеж — это просто массив колонок. Например, Tuple(String, UInt8) — это всего лишь две колонки, закодированные последовательно.
+## Tuple {#tuple}
+
+Tuple — это массив столбцов. Например, Tuple(String, UInt8) представляет собой два столбца,
+закодированных последовательно.
+
 
 ## Map {#map}
 
-`Map(K, V)` состоит из трех колонок: `Offsets ColUInt64, Keys K, Values V`.
+`Map(K, V)` состоит из трёх столбцов: `Offsets ColUInt64, Keys K, Values V`.
 
-Количество строк в колонках `Keys` и `Values` равно последнему значению из `Offsets`.
+Количество строк в столбцах `Keys` и `Values` соответствует последнему значению из `Offsets`.
 
-## Массив {#array}
 
-`Array(T)` состоит из двух колонок: `Offsets ColUInt64, Data T`.
+## Array {#array}
 
-Количество строк в `Data` равно последнему значению из `Offsets`.
+`Array(T)` состоит из двух столбцов: `Offsets ColUInt64, Data T`.
+
+Количество строк в `Data` равно последнему значению в `Offsets`.
+
 
 ## Nullable {#nullable}
 
 `Nullable(T)` состоит из `Nulls ColUInt8, Values T` с одинаковым количеством строк.
 
 ```go
-// Nulls is nullable "mask" on Values column.
-// For example, to encode [null, "", "hello", null, "world"]
+// Nulls — это "маска" nullable для столбца Values.
+// Например, для кодирования [null, "", "hello", null, "world"]
 //      Values: ["", "", "hello", "", "world"] (len: 5)
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
+
 ## UUID {#uuid}
 
-Псевдоним `FixedString(16)`, значение UUID представлено в двоичном формате.
+Псевдоним для `FixedString(16)`, значение UUID представлено в двоичном виде.
+
 
 ## Enum {#enum}
 
-Псевдоним `Int8` или `Int16`, при этом каждое целое число соответствует какому-то строковому значению.
+Псевдоним для `Int8` или `Int16`, но каждое целое число сопоставляется со строковым значением (`String`).
+
 
 ## Тип `LowCardinality` {#low-cardinality}
 
-`LowCardinality(T)` состоит из `Index T, Keys K`, где `K` — это один из (UInt8, UInt16, UInt32, UInt64) в зависимости от размера `Index`.
+`LowCardinality(T)` состоит из `Index T, Keys K`,
+где `K` — это один из типов (UInt8, UInt16, UInt32, UInt64) в зависимости от размера `Index`.
 
 ```go
-// Index (i.e. dictionary) column contains unique values, Keys column contains
-// sequence of indexes in Index column that represent actual values.
+// Столбец Index (т.е. словарь) содержит уникальные значения, столбец Keys содержит
+// последовательность индексов в столбце Index, представляющих фактические значения.
 //
-// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
-// be encoded as:
+// Например, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] может
+// быть закодирован как:
 //      Index: ["Eko", "Amadela"] (String)
 //      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
-// The CardinalityKey is chosen depending on Index size, i.e. maximum value
-// of chosen type should be able to represent any index of Index element.
+// CardinalityKey выбирается в зависимости от размера Index, т.е. максимальное значение
+// выбранного типа должно позволять представить любой индекс элемента Index.
 ```
+
 
 ## Bool {#bool}
 
-Псевдоним `UInt8`, где `0` — это false, а `1` — это true.
+Псевдоним для `UInt8`, где `0` означает ложь, а `1` — истину.

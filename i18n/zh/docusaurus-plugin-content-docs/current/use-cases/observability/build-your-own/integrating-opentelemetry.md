@@ -1,12 +1,10 @@
 ---
-'title': '整合 OpenTelemetry'
-'description': '整合 OpenTelemetry 和 ClickHouse 以实现可观察性'
-'slug': '/observability/integrating-opentelemetry'
-'keywords':
-- 'Observability'
-- 'OpenTelemetry'
-'show_related_blogs': true
-'doc_type': 'guide'
+title: '集成 OpenTelemetry'
+description: '集成 OpenTelemetry 与 ClickHouse 实现可观测性'
+slug: /observability/integrating-opentelemetry
+keywords: ['Observability', 'OpenTelemetry']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
@@ -19,108 +17,126 @@ import observability_9 from '@site/static/images/use-cases/observability/observa
 import Image from '@theme/IdealImage';
 
 
-# 集成 OpenTelemetry 以进行数据收集
+# 集成 OpenTelemetry 进行数据采集
 
-任何可观察性解决方案都需要收集和导出日志和跟踪的手段。为此，ClickHouse 推荐[OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
+任何可观测性解决方案都需要具备收集和导出日志及追踪数据的能力。为此，ClickHouse 推荐使用 [OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
 
-“OpenTelemetry 是一个可观察性框架和工具包，旨在创建和管理遥测数据，例如跟踪、度量和日志。”
+“OpenTelemetry 是一个可观测性框架和工具集，用于创建和管理诸如追踪、指标和日志等遥测数据。”
 
-与 ClickHouse 或 Prometheus 不同，OpenTelemetry 不是一个可观察性后端，而是专注于遥测数据的生成、收集、管理和导出。虽然 OpenTelemetry 的初衷是让用户能够轻松使用特定语言的 SDK 对他们的应用程序或系统进行仪器化，但它已经扩展到通过 OpenTelemetry 收集器收集日志——一个接收、处理和导出遥测数据的代理或代理。
+与 ClickHouse 或 Prometheus 不同，OpenTelemetry 不是一个可观测性后端，而是专注于遥测数据的生成、收集、管理和导出。OpenTelemetry 的最初目标是让用户能够使用各种语言的 SDK 轻松为其应用或系统进行埋点，但它已经扩展为可通过 OpenTelemetry Collector 收集日志——一个用于接收、处理并导出遥测数据的代理或中继组件。
+
+
 
 ## ClickHouse 相关组件 {#clickhouse-relevant-components}
 
-OpenTelemetry 包含多个组件。除了提供数据和 API 规范、标准化协议以及字段/列的命名约定外，OTel 还提供了两种功能，这些功能对于使用 ClickHouse 构建可观察性解决方案至关重要：
+OpenTelemetry 由多个组件组成。除了提供数据和 API 规范、标准化协议以及字段/列的命名约定之外,OTel 还提供了两项对于使用 ClickHouse 构建可观测性解决方案至关重要的能力:
 
-- [OpenTelemetry 收集器](https://opentelemetry.io/docs/collector/) 是一个代理，它接收、处理并导出遥测数据。基于 ClickHouse 的解决方案使用该组件来进行日志收集和事件处理，然后进行批处理和插入。
-- [语言 SDK](https://opentelemetry.io/docs/languages/) 实现了规范、API 和遥测数据的导出。这些 SDK 有效确保在应用程序的代码中正确记录跟踪，生成组成的跨度并确保上下文通过元数据在服务之间传播，从而形成分布式跟踪并确保跨度可以相关联。这些 SDK 得到了自动实现公共库和框架的生态系统的补充，因此用户不需要更改他们的代码即可获得开箱即用的仪器。
+- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) 是一个代理,用于接收、处理和导出遥测数据。基于 ClickHouse 的解决方案使用该组件进行日志收集和事件处理,然后再批量插入数据。
+- [语言 SDK](https://opentelemetry.io/docs/languages/) 实现了规范、API 和遥测数据的导出。这些 SDK 能够有效确保在应用程序代码中正确记录追踪信息,生成组成 span 并确保上下文通过元数据在服务之间传播 - 从而形成分布式追踪并确保 span 之间可以关联。这些 SDK 还配套了一个生态系统,可以自动集成常见的库和框架,这意味着用户无需修改代码即可获得开箱即用的插桩能力。
 
-一个基于 ClickHouse 的可观察性解决方案利用了这两种工具。
-## 分发 {#distributions}
+基于 ClickHouse 的可观测性解决方案充分利用了这两种工具。
 
-OpenTelemetry 收集器有[多种分发](https://github.com/open-telemetry/opentelemetry-collector-releases?tab=readme-ov-file)。文件日志接收器和 ClickHouse 导出器——对于 ClickHouse 解决方案所需的，只存在于[OpenTelemetry Collector Contrib Distro](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)。
 
-此分发包含许多组件，允许用户尝试各种配置。但是，在生产环境中，建议将收集器限制为仅包含环境所需的组件。这么做的一些原因包括：
+## 发行版 {#distributions}
 
-- 减少收集器的大小，减小收集器的部署时间
-- 通过减少可用攻击面提高收集器的安全性
+OpenTelemetry Collector 有[多个发行版](https://github.com/open-telemetry/opentelemetry-collector-releases?tab=readme-ov-file)。ClickHouse 解决方案所需的 filelog 接收器和 ClickHouse 导出器仅包含在 [OpenTelemetry Collector Contrib Distro](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib) 中。
 
-构建[自定义收集器](https://opentelemetry.io/docs/collector/custom-collector/)可以使用[OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder)实现。
-## 使用 OTel 收集数据 {#ingesting-data-with-otel}
-### 收集器部署角色 {#collector-deployment-roles}
+该发行版包含众多组件,允许用户试验各种配置。但在生产环境中运行时,建议将 Collector 限制为仅包含环境所需的组件。这样做的原因包括:
 
-为收集日志并将其插入 ClickHouse，建议使用 OpenTelemetry 收集器。OpenTelemetry 收集器可以以两种主要角色进行部署：
+- 减小 Collector 的体积,缩短部署时间
+- 通过减少可攻击面来提高 Collector 的安全性
 
-- **代理** - 代理实例在边缘收集数据，例如在服务器或 Kubernetes 节点上，或直接从应用程序接收事件——这些应用程序使用 OpenTelemetry SDK 进行了仪器化。在后者的情况下，代理实例与应用程序一起运行或与应用程序在同一主机上运行（例如作为边车或 DaemonSet）。代理可以将其数据直接发送到 ClickHouse，也可以发送到网关实例。在前一种情况下，这被称为[代理部署模式](https://opentelemetry.io/docs/collector/deployment/agent/)。
-- **网关** - 网关实例提供独立的服务（例如，在 Kubernetes 中的部署），通常按集群、数据中心或区域配置。这些实例通过单个 OTLP 端点接收来自应用程序（或其他收集器作为代理）的事件。通常会部署一组网关实例，并使用开箱即用的负载均衡器在它们之间分配负载。如果所有代理和应用程序将其信号发送到此单一端点，则通常称为[网关部署模式](https://opentelemetry.io/docs/collector/deployment/gateway/)。
+可以使用 [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder) 来构建[自定义 Collector](https://opentelemetry.io/docs/collector/custom-collector/)。
 
-以下假设一个简单的代理收集器，将其事件直接发送到 ClickHouse。有关使用网关及其适用时机的更多详细信息，请参阅[与网关的扩展](#scaling-with-gateways)。
+
+## 使用 OTel 采集数据 {#ingesting-data-with-otel}
+
+### Collector 部署角色 {#collector-deployment-roles}
+
+为了收集日志并将其插入 ClickHouse,我们建议使用 OpenTelemetry Collector。OpenTelemetry Collector 可以部署为两种主要角色:
+
+- **Agent** - Agent 实例在边缘收集数据,例如在服务器或 Kubernetes 节点上,或直接从使用 OpenTelemetry SDK 进行插桩的应用程序接收事件。在后一种情况下,Agent 实例与应用程序一起运行或在应用程序所在的同一主机上运行(例如作为 Sidecar 或 DaemonSet)。Agent 可以将数据直接发送到 ClickHouse 或发送到 Gateway 实例。在前一种情况下,这被称为 [Agent 部署模式](https://opentelemetry.io/docs/collector/deployment/agent/)。
+- **Gateway** - Gateway 实例提供独立服务(例如 Kubernetes 中的部署),通常按集群、数据中心或区域部署。这些实例通过单个 OTLP 端点从应用程序(或作为 Agent 的其他 Collector)接收事件。通常会部署一组 Gateway 实例,使用开箱即用的负载均衡器在它们之间分配负载。如果所有 Agent 和应用程序都将信号发送到这个单一端点,这通常被称为 [Gateway 部署模式](https://opentelemetry.io/docs/collector/deployment/gateway/)。
+
+下面我们假设使用一个简单的 Agent Collector,将其事件直接发送到 ClickHouse。有关使用 Gateway 的更多详细信息以及何时适用,请参阅[使用 Gateway 进行扩展](#scaling-with-gateways)。
+
 ### 收集日志 {#collecting-logs}
 
-使用收集器的主要优点是它可以让你的服务快速卸载数据，让收集器负责额外处理，例如重试、批处理、加密或甚至敏感数据过滤。
+使用 Collector 的主要优势在于它允许您的服务快速卸载数据,将重试、批处理、加密甚至敏感数据过滤等额外处理工作交给 Collector 来处理。
 
-收集器使用术语[接收器](https://opentelemetry.io/docs/collector/configuration/#receivers)、[处理器](https://opentelemetry.io/docs/collector/configuration/#processors)和[导出器](https://opentelemetry.io/docs/collector/configuration/#exporters)来描述其三个主要处理阶段。接收器用于数据收集，可以是基于拉取或推送。处理器提供执行转换和消息丰富的能力。导出器负责将数据发送到下游服务。虽然理论上可以将该服务发送到另一个收集器，但我们假设所有数据直接发送到 ClickHouse，以进行以下初步讨论。
+Collector 使用 [Receiver](https://opentelemetry.io/docs/collector/configuration/#receivers)、[Processor](https://opentelemetry.io/docs/collector/configuration/#processors) 和 [Exporter](https://opentelemetry.io/docs/collector/configuration/#exporters) 这三个术语来表示其三个主要处理阶段。Receiver 用于数据收集,可以是拉取或推送方式。Processor 提供对消息进行转换和丰富的能力。Exporter 负责将数据发送到下游服务。虽然理论上该服务可以是另一个 Collector,但在下面的初步讨论中,我们假设所有数据都直接发送到 ClickHouse。
 
-<Image img={observability_3} alt="收集日志" size="md"/>
+<Image img={observability_3} alt='Collecting logs' size='md' />
 
-我们建议用户熟悉完整的接收器、处理器和导出器集合。
+我们建议用户熟悉完整的 Receiver、Processor 和 Exporter 集合。
 
-收集器提供两个主要接收器用于收集日志：
+Collector 提供两种主要的 Receiver 来收集日志:
 
-**通过 OTLP** - 在这种情况下，日志通过 OTLP 协议直接从 OpenTelemetry SDK 发送（推送）到收集器。[OpenTelemetry 演示](https://opentelemetry.io/docs/demo/)采用这种方法，每种语言中的 OTLP 导出器假定 local 收集器端点。在这种情况下，收集器必须配置为使用 OTLP 接收器——请参见上面的[演示以获取配置](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12)。该方法的优势是日志数据将自动包含 Trace Id，从而允许用户稍后识别特定日志的跟踪，反之亦然。
+**通过 OTLP** - 在这种情况下,日志通过 OTLP 协议从 OpenTelemetry SDK 直接发送(推送)到 Collector。[OpenTelemetry 演示](https://opentelemetry.io/docs/demo/)采用了这种方法,每种语言中的 OTLP Exporter 都假定有一个本地 Collector 端点。在这种情况下,Collector 必须配置 OTLP Receiver——请参阅上述[演示的配置](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12)。这种方法的优势在于日志数据将自动包含 Trace ID,允许用户稍后识别特定日志的 Trace,反之亦然。
 
-<Image img={observability_4} alt="通过 otlp 收集日志" size="md"/>
+<Image img={observability_4} alt='Collecting logs via otlp' size='md' />
 
-此方法要求用户使用其[适当语言的 SDK](https://opentelemetry.io/docs/languages/)对代码进行仪器化。
+这种方法要求用户使用[相应的语言 SDK](https://opentelemetry.io/docs/languages/) 对其代码进行插桩。
 
-- **通过文件日志接收器抓取** - 此接收器在磁盘上跟踪文件并形成日志消息，将这些消息发送到 ClickHouse。此接收器处理复杂任务，例如检测多行消息、处理日志回滚、检查点以实现重启的健壮性以及提取结构。此接收器还能够跟踪 Docker 和 Kubernetes 容器日志，可以作为 helm 图表部署，[从中提取结构](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/)并丰富其中的 pod 详细信息。
+- **通过 Filelog Receiver 抓取** - 该 Receiver 跟踪磁盘上的文件并生成日志消息,将这些消息发送到 ClickHouse。该 Receiver 处理复杂任务,例如检测多行消息、处理日志轮转、设置检查点以实现重启的健壮性以及提取结构。该 Receiver 还能够跟踪 Docker 和 Kubernetes 容器日志,可作为 Helm Chart 部署,[从中提取结构](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/)并使用 Pod 详细信息对其进行丰富。
 
-<Image img={observability_5} alt="文件日志接收器" size="md"/>
+<Image img={observability_5} alt='File log receiver' size='md' />
 
-**大多数部署将使用上述接收器的组合。我们建议用户阅读[收集器文档](https://opentelemetry.io/docs/collector/)并熟悉基本概念，以及[配置结构](https://opentelemetry.io/docs/collector/configuration/)和[安装方法](https://opentelemetry.io/docs/collector/installation/)。**
+**大多数部署将使用上述 Receiver 的组合。我们建议用户阅读 [Collector 文档](https://opentelemetry.io/docs/collector/)并熟悉基本概念,以及[配置结构](https://opentelemetry.io/docs/collector/configuration/)和[安装方法](https://opentelemetry.io/docs/collector/installation/)。**
 
-:::note 提示: `otelbin.io`
-[`otelbin.io`](https://www.otelbin.io/) 对于验证和可视化配置非常有用。
+
+:::note 提示：`otelbin.io`
+[`otelbin.io`](https://www.otelbin.io/) 是一个用于验证和可视化配置的实用工具。
 :::
-## 结构化日志与非结构化日志 {#structured-vs-unstructured}
 
-日志可以是结构化的或非结构化的。
 
-结构化日志将使用 JSON 等数据格式，定义元数据字段，例如 http 代码和源 IP 地址。
+
+## 结构化与非结构化 {#structured-vs-unstructured}
+
+日志可以是结构化的,也可以是非结构化的。
+
+结构化日志采用 JSON 等数据格式,定义 HTTP 状态码和源 IP 地址等元数据字段。
 
 ```json
 {
-    "remote_addr":"54.36.149.41",
-    "remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET",
-    "request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1",
-    "status":"200",
-    "size":"30577",
-    "referer":"-",
-    "user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"
+  "remote_addr": "54.36.149.41",
+  "remote_user": "-",
+  "run_time": "0",
+  "time_local": "2019-01-22 00:26:14.000",
+  "request_type": "GET",
+  "request_path": "\/filter\/27|13 ,27|  5 ,p53",
+  "request_protocol": "HTTP\/1.1",
+  "status": "200",
+  "size": "30577",
+  "referer": "-",
+  "user_agent": "Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"
 }
 ```
 
-非结构化日志虽然也通常具有通过正则表达式模式提取的某种内在结构，但将日志纯粹表示为字符串。
+非结构化日志虽然通常也具有可通过正则表达式模式提取的固有结构,但会将日志纯粹表示为字符串。
 
 ```response
 54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
 /filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
 ```
 
-我们建议用户在可能的情况下使用结构化日志并以 JSON（即 ndjson）记录。这将简化后续日志的处理，无论是通过[收集器处理器](https://opentelemetry.io/docs/collector/configuration/#processors)在发送到 ClickHouse 之前，还是在插入时使用物化视图。结构化日志最终将节省后续处理资源，减少 ClickHouse 解决方案中所需的 CPU。
+我们建议用户尽可能采用结构化日志记录,并以 JSON(即 ndjson)格式记录日志。这将简化后续的日志处理工作,无论是在使用 [Collector 处理器](https://opentelemetry.io/docs/collector/configuration/#processors)发送到 ClickHouse 之前,还是在插入时使用物化视图进行处理。结构化日志最终将节省后续处理资源,降低 ClickHouse 解决方案所需的 CPU 开销。
+
 ### 示例 {#example}
 
-作为示例，我们提供了一个结构化（JSON）和一个非结构化日志数据集，每个数据集大约有 1000 万行，可以在以下链接中获得：
+为了演示目的,我们提供了结构化(JSON)和非结构化日志数据集,每个数据集约有 1000 万行,可从以下链接获取:
 
 - [非结构化](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)
 - [结构化](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)
 
-我们将在下面的示例中使用结构化数据集。确保下载并解压此文件以重现以下示例。
+下面的示例中使用结构化数据集。请确保下载并解压此文件以重现以下示例。
 
-以下是 OTel 收集器的简单配置，它读取磁盘上的这些文件，使用文件日志接收器，并将结果消息输出到 stdout。由于我们的日志是结构化的，我们使用[`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md)操作符。请修改访问结构化.log 文件的路径。
+以下是 OTel Collector 的一个简单配置,它使用 filelog 接收器读取磁盘上的这些文件,并将结果消息输出到 stdout。由于我们的日志是结构化的,因此使用 [`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md) 操作符。请修改 access-structured.log 文件的路径。
 
-:::note 请考虑使用 ClickHouse 进行解析
-下面的示例提取了日志中的时间戳。这需要使用 `json_parser` 操作符，该操作符将整个日志行转换为 JSON 字符串，并将结果放置在 `LogAttributes` 中。这可能是计算密集型的，并且[可以在 ClickHouse 中更高效地完成](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。可以在[这里](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==)找到相应的非结构化示例，该示例使用[`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md)来实现这一点。
+:::note 考虑使用 ClickHouse 进行解析
+下面的示例从日志中提取时间戳。这需要使用 `json_parser` 操作符,它将整个日志行转换为 JSON 字符串,并将结果放入 `LogAttributes` 中。这可能会消耗大量计算资源,[在 ClickHouse 中可以更高效地完成](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。使用 [`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) 实现此功能的等效非结构化示例可以在[这里](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==)找到。
 :::
+
 
 **[config-structured-logs.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_1*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Blogging%5D%7E)**
 
@@ -150,15 +166,16 @@ service:
       exporters: [logging]
 ```
 
-用户可以遵循[官方说明](https://opentelemetry.io/docs/collector/installation/)在本地安装收集器。重要的是，确保说明已修改为使用[contrib 分发](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)（其中包含 `filelog` 接收器），例如而不是 `otelcol_0.102.1_darwin_arm64.tar.gz`，用户将下载 `otelcol-contrib_0.102.1_darwin_arm64.tar.gz`。发布版本可以在[这里](https://github.com/open-telemetry/opentelemetry-collector-releases/releases)找到。
+用户可以按照[官方说明](https://opentelemetry.io/docs/collector/installation/)在本地安装 collector。需要特别注意的是，应将说明中的安装包替换为包含 `filelog` receiver 的 [contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)，例如，用户应下载 `otelcol-contrib_0.102.1_darwin_arm64.tar.gz`，而不是 `otelcol_0.102.1_darwin_arm64.tar.gz`。发布版本可在[此处](https://github.com/open-telemetry/opentelemetry-collector-releases/releases)找到。
 
-安装后，可以使用以下命令运行 OTel 收集器：
+安装完成后，可以使用以下命令运行 OTel Collector：
 
 ```bash
 ./otelcol-contrib --config config-logs.yaml
 ```
 
-假设使用结构化日志，输出中的消息将采用以下形式：
+在使用结构化日志的情况下，输出中的消息将呈现如下形式：
+
 
 ```response
 LogRecord #98
@@ -185,32 +202,37 @@ Span ID:
 Flags: 0
 ```
 
-上面的日志消息表示由 OTel 收集器生成的单个日志消息。我们将在后面的部分将这些相同的消息导入 ClickHouse。
+上述内容表示由 OTel collector 生成的一条日志消息。我们会在后续章节中将这些相同的消息写入 ClickHouse。
 
-日志消息的完整架构，以及如果使用其他接收器可能存在的额外列，维护在[这里](https://opentelemetry.io/docs/specs/otel/logs/data-model/)。**我们强烈建议用户熟悉此架构。**
+日志消息的完整 schema，以及在使用其他 receivers 时可能出现的附加列，维护在[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)。**我们强烈建议用户熟悉该 schema。**
 
-关键在于日志行本身作为字符串保存在 `Body` 字段内，但 JSON 已通过 `json_parser` 自动提取到 `Attributes` 字段。此同一[操作符](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available)已用于将时间戳提取到适当的 `Timestamp` 列。有关使用 OTel 处理日志的建议，请参阅[处理](#processing---filtering-transforming-and-enriching)。
+这里的关键点在于，日志行本身作为字符串存储在 `Body` 字段中，而 JSON 则在 `json_parser` 的作用下被自动提取到 Attributes 字段中。使用同一个[operator](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available) 还可以将时间戳提取到相应的 `Timestamp` 列。关于使用 OTel 处理日志的建议，请参阅 [Processing](#processing---filtering-transforming-and-enriching)。
 
-:::note 操作符
-操作符是日志处理的最基本单位。每个操作符履行单一责任，例如从文件中读取行或从字段解析 JSON。操作符然后在管道中链接在一起以实现所需的结果。
+:::note Operators
+Operators 是日志处理的最基本单元。每个 operator 仅承担一个职责，例如从文件中读取行，或者从字段中解析 JSON。然后将多个 operators 串联成一个 pipeline，以实现所需的处理结果。
 :::
 
-上述消息没有 `TraceID` 或 `SpanID` 字段。如果存在，例如在用户实现[分布式跟踪](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces)的情况，使用上面显示的相同技术可以从 JSON 中提取这些字段。
+上述消息没有 `TraceID` 或 `SpanID` 字段。如果这些字段存在，例如在用户实现[分布式追踪](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces)的场景中，则可以使用与上面相同的技术从 JSON 中提取这些字段。
 
-对于需要收集本地或 Kubernetes 日志文件的用户，我们建议用户熟悉[文件日志接收器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration)可用的配置选项，以及[偏移量](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking)和[多行日志解析的处理](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing)。
+对于需要采集本地或 Kubernetes 日志文件的用户，我们建议熟悉 [filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) 提供的配置选项，以及 [offsets](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) 和[多行日志解析的处理方式](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing)。
+
+
 ## 收集 Kubernetes 日志 {#collecting-kubernetes-logs}
 
-对于 Kubernetes 日志的收集，我们建议参考[OpenTelemetry 文档指南](https://opentelemetry.io/docs/kubernetes/)。建议使用[Kubernetes 属性处理器](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor)来丰富日志和指标，并添加 pod 元数据。这可能会产生动态元数据，例如存储在列 `ResourceAttributes` 中的标签。 ClickHouse 目前为此列使用类型 `Map(String, String)`。有关处理和优化此类型的更多详细信息，请参见[使用 Maps](/use-cases/observability/schema-design#using-maps)和[从地图中提取](/use-cases/observability/schema-design#extracting-from-maps)。
-## 收集跟踪 {#collecting-traces}
+对于 Kubernetes 日志的收集,我们推荐参考 [OpenTelemetry 文档指南](https://opentelemetry.io/docs/kubernetes/)。建议使用 [Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) 通过 Pod 元数据来丰富日志和指标。这可能会生成动态元数据(例如标签),并存储在 `ResourceAttributes` 列中。ClickHouse 目前对该列使用 `Map(String, String)` 类型。有关如何处理和优化此类型的更多详细信息,请参阅[使用 Map](/use-cases/observability/schema-design#using-maps) 和[从 Map 中提取数据](/use-cases/observability/schema-design#extracting-from-maps)。
 
-对于希望对代码进行仪器并收集跟踪的用户，我们建议遵循官方[OTel 文档](https://opentelemetry.io/docs/languages/)。
 
-为了将事件发送到 ClickHouse，用户需要部署 OTel 收集器以通过相应的接收器通过 OTLP 协议接收跟踪事件。OpenTelemetry 演示提供了一个[为每种受支持语言进行仪器的示例](https://opentelemetry.io/docs/demo/)并将事件发送到收集器。下面显示了一个适当的收集器配置示例，该配置将事件输出到 stdout：
+## 收集追踪数据 {#collecting-traces}
+
+对于需要对代码进行插桩并收集追踪数据的用户,我们建议参考官方的 [OTel 文档](https://opentelemetry.io/docs/languages/)。
+
+为了将事件传递到 ClickHouse,用户需要部署一个 OTel collector,通过相应的接收器来接收基于 OTLP 协议的追踪事件。OpenTelemetry 演示提供了[各种支持语言的插桩示例](https://opentelemetry.io/docs/demo/)以及向 collector 发送事件的方法。下面展示了一个将事件输出到 stdout 的 collector 配置示例:
+
 ### 示例 {#example-1}
 
-由于跟踪必须通过 OTLP 接收，因此我们使用[`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)工具生成跟踪数据。请遵循[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)的说明进行安装。
+由于追踪数据必须通过 OTLP 接收,我们使用 [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) 工具来生成追踪数据。请按照[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)的说明进行安装。
 
-以下配置在 OTLP 接收器上接收跟踪事件，然后将其发送到 stdout。
+以下配置在 OTLP 接收器上接收追踪事件,然后将它们发送到 stdout。
 
 [config-traces.xml](https://www.otelbin.io/#config=receivers%3A*N_otlp%3A*N___protocols%3A*N_____grpc%3A*N_______endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N__timeout%3A_1s*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*Nservice%3A*N_pipelines%3A*N__traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Blogging%5D%7E)
 
@@ -234,19 +256,19 @@ service:
       exporters: [logging]
 ```
 
-通过以下命令运行此配置：
+通过以下命令运行此配置:
 
 ```bash
 ./otelcol-contrib --config config-traces.yaml
 ```
 
-通过 `telemetrygen` 发送跟踪事件到收集器：
+通过 `telemetrygen` 向 collector 发送追踪事件:
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
-这将产生类似于下面示例的跟踪消息，并输出到 stdout：
+这将输出类似于下面示例的追踪消息到 stdout:
 
 ```response
 Span #86
@@ -264,29 +286,32 @@ Attributes:
         -> peer.service: Str(telemetrygen-client)
 ```
 
-上述内容表示由 OTel 收集器生成的单条跟踪消息。我们将在后面的部分将这些相同的消息导入 ClickHouse。
+上述内容代表由 OTel collector 生成的单个追踪消息。我们将在后续章节中将这些消息导入到 ClickHouse。
 
-跟踪消息的完整架构在[这里](https://opentelemetry.io/docs/concepts/signals/traces/)中维护。我们强烈建议用户熟悉此架构。
-## 处理 - 过滤、转换和丰富 {#processing---filtering-transforming-and-enriching}
+追踪消息的完整模式维护在[此处](https://opentelemetry.io/docs/concepts/signals/traces/)。我们强烈建议用户熟悉此模式。
 
-如前面的示例中所示，设置日志事件的时间戳后，用户无疑希望过滤、转换和丰富事件消息。这可以通过 OpenTelemetry 中的多个功能实现：
 
-- **处理器** - 处理器从[接收器获取数据并修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/)它，然后将其发送到导出器。处理器按配置的顺序应用于收集器配置的 `processors` 部分。这些是可选的，但通常建议的最小集是[通常推荐](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。在将 OTel 收集器与 ClickHouse 一起使用时，我们建议将处理器限制为：
+## 处理 - 过滤、转换和增强 {#processing---filtering-transforming-and-enriching}
 
-  - [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md)用于防止收集器出现内存不足的情况。请参阅[估算资源](#estimating-resources)以获取建议。
-  - 任何基于上下文的丰富处理器。例如，[Kubernetes 属性处理器](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor)允许使用 k8s 元数据自动设置跨度、指标和日志资源属性，例如使用其源 pod id 丰富事件。
-  - 如果需要跟踪，也可以使用[尾部或头部采样](https://opentelemetry.io/docs/concepts/sampling/)。
-  - [基本过滤](https://opentelemetry.io/docs/collector/transforming-telemetry/) - 如果无法通过操作符实现，则丢弃不需要的事件（见下文）。
-  - [批处理](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - 在与 ClickHouse 交互时确保数据以批处理形式发送时是必需的。请参见[“导出到 ClickHouse”](#exporting-to-clickhouse)。
+如前面设置日志事件时间戳的示例所示,用户通常需要对事件消息进行过滤、转换和增强。这可以通过 OpenTelemetry 中的多种功能来实现:
 
-- **操作符** - [操作符](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md)提供了接收器中可用的最基本的处理单元。支持基本解析，允许设置如 Severity 和 Timestamp 等字段。此处支持 JSON 和正则表达式解析，以及事件过滤和基本转换。我们建议在此处执行事件过滤。
+- **处理器(Processors)** - 处理器接收由[接收器收集的数据并对其进行修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/),然后再将其发送到导出器。处理器按照收集器配置中 `processors` 部分配置的顺序应用。这些处理器是可选的,但[通常建议](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)使用最小集合。在将 OTel 收集器与 ClickHouse 配合使用时,我们建议将处理器限制为以下几种:
+  - [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) 用于防止收集器出现内存溢出的情况。有关建议,请参阅[资源估算](#estimating-resources)。
+  - 任何基于上下文进行增强的处理器。例如,[Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) 允许使用 k8s 元数据自动设置 span、指标和日志的资源属性,例如使用源 pod id 增强事件。
+  - 如果跟踪需要,[尾部或头部采样](https://opentelemetry.io/docs/concepts/sampling/)。
+  - [基本过滤](https://opentelemetry.io/docs/collector/transforming-telemetry/) - 如果无法通过操作符完成(见下文),则丢弃不需要的事件。
+  - [批处理(Batching)](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - 在使用 ClickHouse 时至关重要,以确保数据以批量方式发送。请参阅["导出到 ClickHouse"](#exporting-to-clickhouse)。
 
-我们建议用户避免大量使用操作符或[转换处理器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md)进行事件处理。这可能会产生相当大的内存和 CPU 开销，尤其是 JSON 解析。在 ClickHouse 中进行所有处理在插入时间使用物化视图是可能的，虽然有一些例外，特别是上下文感知的丰富，例如添加 k8s 元数据。有关更多详细信息，请参见[使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
+- **操作符(Operators)** - [操作符](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md)提供接收器可用的最基本的处理单元。支持基本解析,允许设置严重性(Severity)和时间戳(Timestamp)等字段。这里支持 JSON 和正则表达式解析,以及事件过滤和基本转换。我们建议在此处执行事件过滤。
 
-如果通过 OTel 收集器进行处理，我们建议在网关实例中进行转换，并最小化在代理实例中进行的工作。这将确保在边缘运行的代理（例如服务器）所需的资源尽可能少。通常，我们看到用户仅执行过滤（以最小化不必要的网络使用）、时间戳设置（通过操作符）和需要上下文的丰富处理。例如，如果网关实例位于不同的 Kubernetes 集群中，k8s 丰富将需要在代理中发生。
+我们建议用户避免使用操作符或[转换处理器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md)进行过多的事件处理。这些可能会产生相当大的内存和 CPU 开销,尤其是 JSON 解析。可以在 ClickHouse 中使用物化视图和列在插入时完成所有处理,但有一些例外 - 特别是上下文感知的增强,例如添加 k8s 元数据。有关更多详细信息,请参阅[使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
+
+如果使用 OTel 收集器进行处理,我们建议在网关实例上进行转换,并最小化在代理实例上完成的任何工作。这将确保在服务器上运行的边缘代理所需的资源尽可能少。通常,我们看到用户仅执行过滤(以最小化不必要的网络使用)、时间戳设置(通过操作符)以及需要代理中上下文的增强。例如,如果网关实例位于不同的 Kubernetes 集群中,则需要在代理中进行 k8s 增强。
+
 ### 示例 {#example-2}
 
-以下配置显示了对非结构化日志文件的收集。请注意使用操作符从日志行中提取结构（`regex_parser`）以及过滤事件，以及使用处理器批处理事件并限制内存使用。
+以下配置显示了非结构化日志文件的收集。请注意使用操作符从日志行中提取结构(`regex_parser`)和过滤事件,以及使用处理器批处理事件和限制内存使用。
+
 
 [config-unstructured-logs-with-processor.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-unstructured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_regex*_parser*N_______regex%3A_*%22%5E*C*QP*Lip*G%5B*Bd.%5D*P*D*Bs*P-*Bs*P-*Bs*P*B%5B*C*QP*Ltimestamp*G%5B%5E*B%5D%5D*P*D*B%5D*Bs*P%22*C*QP*Lmethod*G%5BA-Z%5D*P*D*Bs*P*C*QP*Lurl*G%5B%5E*Bs%5D*P*D*Bs*PHTTP%2F%5B%5E*Bs%5D*P%22*Bs*P*C*QP*Lstatus*G*Bd*P*D*Bs*P*C*QP*Lsize*G*Bd*P*D*Bs*P%22*C*QP*Lreferrer*G%5B%5E%22%5D***D%22*Bs*P%22*C*QP*Luser*_agent*G%5B%5E%22%5D***D%22*%22*N_______timestamp%3A*N_________parse*_from%3A_attributes.timestamp*N_________layout%3A_*%22*.d%2F*.b%2F*.Y%3A*.H%3A*.M%3A*.S_*.z*%22*N_________*H22%2FJan%2F2019%3A03%3A56%3A14_*P0330*N*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_1s*N___send*_batch*_size%3A_100*N_memory*_limiter%3A*N___check*_interval%3A_1s*N___limit*_mib%3A_2048*N___spike*_limit*_mib%3A_256*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%2C_memory*_limiter%5D*N_____exporters%3A_%5Blogging%5D%7E)
 
@@ -325,15 +350,17 @@ service:
 ```bash
 ./otelcol-contrib --config config-unstructured-logs-with-processor.yaml
 ```
+
+
 ## 导出到 ClickHouse {#exporting-to-clickhouse}
 
-导出器将数据发送到一个或多个后端或目的地。导出器可以是基于拉取或推送的。为了将事件发送到 ClickHouse，用户需要使用基于推送的[ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md)。
+导出器负责将数据发送到一个或多个后端或目标位置。导出器可以基于拉取或推送模式。要将事件发送到 ClickHouse,需要使用基于推送模式的 [ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md)。
 
 :::note 使用 OpenTelemetry Collector Contrib
-ClickHouse 导出器是[OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main)的一部分，而不是核心分发。用户可以使用 contrib 分发或[构建自己的收集器](https://opentelemetry.io/docs/collector/custom-collector/)。
+ClickHouse 导出器是 [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main) 的一部分,而非核心发行版。用户可以直接使用 contrib 发行版,也可以[构建自定义收集器](https://opentelemetry.io/docs/collector/custom-collector/)。
 :::
 
-下面是完整的配置文件。
+完整配置文件示例如下。
 
 [clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
 
@@ -347,7 +374,7 @@ receivers:
       - type: json_parser
         timestamp:
           parse_from: attributes.time_local
-          layout: '%Y-%m-%d %H:%M:%S'
+          layout: "%Y-%m-%d %H:%M:%S"
   otlp:
     protocols:
       grpc:
@@ -385,103 +412,111 @@ service:
       exporters: [clickhouse]
 ```
 
-请注意以下关键设置：
+请注意以下关键配置项:
 
-- **管道** - 上述配置突出了使用[管道](https://opentelemetry.io/docs/collector/configuration/#pipelines)，其中包含一组接收器、处理器和导出器，分别用于日志和跟踪。
-- **端点** - 通过 `endpoint` 参数配置与 ClickHouse 的通信。连接字符串 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` 会导致通过 TCP 进行通信。如果用户出于流量切换原因更喜欢 HTTP，可以按照[这里](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)所述修改此连接字符串。有关完整的连接详细信息，以及在此连接字符串中指定用户名和密码的能力，请参见[这里](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
 
-**重要:** 请注意，以上连接字符串同时启用了压缩（lz4）以及异步插入。我们建议始终启用两者。有关异步插入的更多详细信息，请参见[批处理](#batching)。应该始终指定压缩，并且在旧版本的导出器中默认情况下不会启用。
+* **pipelines** - 上述配置重点展示了对 [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines) 的使用。每个 pipeline 由一组 receivers、processors 和 exporters 组成，分别用于 logs 和 traces。
+* **endpoint** - 与 ClickHouse 的通信通过 `endpoint` 参数进行配置。连接字符串 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` 会使通信通过 TCP 进行。如果用户出于流量切换等原因更偏好 HTTP，可按照[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)所述修改该连接字符串。完整的连接配置详情（包括在此连接字符串中指定用户名和密码的方式）在[这里](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)进行了说明。
 
-- **ttl** - 此值确定数据保留多长时间。更多详细信息见“管理数据”。此值应指定为小时的时间单位，例如 72h。我们在下面的示例中禁用 TTL，因为我们的数据来自 2019 年，并且如果插入将被 ClickHouse 立即删除。
-- **traces_table_name** 和 **logs_table_name** - 决定日志和跟踪表的名称。
-- **create_schema** - 决定启动时是否创建默认模式的表。默认情况下设置为 true 以便于入门。用户应将其设置为 false 并定义自己的架构。
-- **database** - 目标数据库。
-- **retry_on_failure** - 设置以确定是否应尝试失败的批次。
-- **batch** - 批处理处理器确保事件以批处理形式发送。我们建议的值约为 5000，并超时为 5 秒。达到这两个值中的任何一个将触发批量刷新到导出器。降低这些值将意味着较低延迟的管道，数据可以更早获得查询，但会导致更多连接和批量发送到 ClickHouse。如果用户不使用[异步插入](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，则不建议这样做，因为这可能会导致[分区片段过多](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)的问题。相反，如果用户正在使用异步插入，则可用于查询的数据的可用性也将取决于异步插入设置——尽管数据将更早地从连接器刷新。有关更多详细信息，请参见[批处理](#batching)。
-- **sending_queue** - 控制发送队列的大小。队列中的每个项目都包含一个批次。如果由于 ClickHouse 不可访问但事件仍在到达而超过此队列，批次将被丢弃。
+**Important:** 请注意，上述连接字符串同时启用了压缩（lz4）以及异步插入。我们建议始终启用这两项。有关异步插入的更多细节，请参见 [Batching](#batching)。压缩应始终显式指定，在较旧版本的 exporter 中不会默认启用。
 
-假设用户已提取结构化日志文件并且有一个正在运行的[本地 ClickHouse 实例](/install)（使用默认身份验证），用户可以通过以下命令运行此配置：
+* **ttl** - 此处的值决定数据保留多长时间。更多细节见 “Managing data”。应以小时为时间单位指定，例如 72h。我们在下面的示例中禁用了 TTL，因为我们的数据来自 2019 年，如果插入，ClickHouse 会立刻将其删除。
+* **traces&#95;table&#95;name** 和 **logs&#95;table&#95;name** - 决定 logs 和 traces 表的名称。
+* **create&#95;schema** - 决定在启动时是否使用默认 schema 创建表。入门时默认为 true。用户应将其设置为 false 并自行定义 schema。
+* **database** - 目标数据库。
+* **retry&#95;on&#95;failure** - 用于确定是否应重试失败批次的设置。
+* **batch** - `batch` 处理器确保以批次方式发送事件。我们建议批大小约为 5000，超时时间为 5s。两者中任一条件先满足时，都会触发批次刷新并发送到 exporter。减小这些值将带来更低延迟的 pipeline，使数据更早可供查询，但代价是会向 ClickHouse 发送更多连接和批次。如果用户未使用 [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，则不建议这样做，因为这可能在 ClickHouse 中导致 [too many parts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) 问题。相反，如果用户正在使用异步插入，则数据可用性也将取决于异步插入设置——尽管数据仍会更早从 connector 刷新出去。更多细节请参见 [Batching](#batching)。
+* **sending&#95;queue** - 控制发送队列的大小。队列中的每个条目包含一个批次。如果该队列被占满，例如由于 ClickHouse 不可达而事件仍持续到达，则批次将被丢弃。
+
+假设用户已经抽取了结构化日志文件，并且有一个运行中的[本地 ClickHouse 实例](/install)（使用默认认证），则可以通过以下命令运行此配置：
 
 ```bash
 ./otelcol-contrib --config clickhouse-config.yaml
 ```
 
-要将跟踪数据发送到此收集器，请使用 `telemetrygen` 工具运行以下命令：
+要将跟踪数据发送到此采集器，请使用 `telemetrygen` 工具运行以下命令：
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
-一旦运行，通过简单查询确认日志事件是否存在：
+运行后，通过一个简单查询确认日志事件已经存在：
 
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
+
 
 Row 1:
 ──────
-Timestamp:              2019-01-22 06:46:14.000000000
+Timestamp: 2019-01-22 06:46:14.000000000
 TraceId:
 SpanId:
-TraceFlags:             0
+TraceFlags: 0
 SeverityText:
-SeverityNumber:         0
+SeverityNumber: 0
 ServiceName:
-Body:                   {"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
+Body: {"remote_addr":"109.230.70.66","remote_user":"-","run_time":"0","time_local":"2019-01-22 06:46:14.000","request_type":"GET","request_path":"\/image\/61884\/productModel\/150x150","request_protocol":"HTTP\/1.1","status":"200","size":"1684","referer":"https:\/\/www.zanbil.ir\/filter\/p3%2Cb2","user_agent":"Mozilla\/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko\/20100101 Firefox\/64.0"}
 ResourceSchemaUrl:
 ResourceAttributes: {}
 ScopeSchemaUrl:
 ScopeName:
 ScopeVersion:
-ScopeAttributes:        {}
-LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
+ScopeAttributes: {}
+LogAttributes: {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
 
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
 
-Likewise, for trace events, users can check the `otel_traces` table:
+同样,对于追踪事件,用户可以查询 `otel_traces` 表:
 
-SELECT *
+SELECT \*
 FROM otel_traces
 LIMIT 1
 FORMAT Vertical
 
 Row 1:
 ──────
-Timestamp:              2024-06-20 11:36:41.181398000
-TraceId:                00bba81fbd38a242ebb0c81a8ab85d8f
-SpanId:                 beef91a2c8685ace
+Timestamp: 2024-06-20 11:36:41.181398000
+TraceId: 00bba81fbd38a242ebb0c81a8ab85d8f
+SpanId: beef91a2c8685ace
 ParentSpanId:
 TraceState:
-SpanName:               lets-go
-SpanKind:               SPAN_KIND_CLIENT
-ServiceName:            telemetrygen
+SpanName: lets-go
+SpanKind: SPAN_KIND_CLIENT
+ServiceName: telemetrygen
 ResourceAttributes: {'service.name':'telemetrygen'}
-ScopeName:              telemetrygen
+ScopeName: telemetrygen
 ScopeVersion:
-SpanAttributes:         {'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
-Duration:               123000
-StatusCode:             STATUS_CODE_UNSET
+SpanAttributes: {'peer.service':'telemetrygen-server','net.peer.ip':'1.2.3.4'}
+Duration: 123000
+StatusCode: STATUS_CODE_UNSET
 StatusMessage:
-Events.Timestamp:   []
-Events.Name:            []
-Events.Attributes:  []
-Links.TraceId:          []
-Links.SpanId:           []
-Links.TraceState:   []
-Links.Attributes:   []
-```
-## 开箱即用的架构 {#out-of-the-box-schema}
+Events.Timestamp: []
+Events.Name: []
+Events.Attributes: []
+Links.TraceId: []
+Links.SpanId: []
+Links.TraceState: []
+Links.Attributes: []
 
-默认情况下，ClickHouse 导出程序为日志和跟踪创建了目标日志表。这可以通过设置 `create_schema` 禁用。此外，日志表和跟踪表的名称可以通过上述设置从默认的 `otel_logs` 和 `otel_traces` 修改。
+```
+
+```
+
+
+## 开箱即用的表结构 {#out-of-the-box-schema}
+
+默认情况下,ClickHouse 导出器会为日志和追踪分别创建目标表。可以通过 `create_schema` 设置禁用此功能。此外,日志表和追踪表的名称可以通过上述设置从默认的 `otel_logs` 和 `otel_traces` 进行修改。
 
 :::note
-在下面的架构中，我们假设已启用 TTL，时间为 72小时。
+在下面的表结构中,我们假设 TTL 已设置为 72 小时。
 :::
 
-日志的默认架构如下所示（`otelcol-contrib v0.102.1`）：
+日志的默认表结构如下所示(`otelcol-contrib v0.102.1`):
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -517,18 +552,21 @@ TTL toDateTime(Timestamp) + toIntervalDay(3)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-这些列与 OTel 官方规范中记录的日志相对应，具体文档见 [这里](https://opentelemetry.io/docs/specs/otel/logs/data-model/)。
+这里的列与 OTel 官方日志规范相对应,文档见[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)。
 
-关于此架构的一些重要说明：
+关于此表结构的几个重要说明:
 
-- 默认情况下，表按日期分区，使用 `PARTITION BY toDate(Timestamp)`。这使得删除过期数据更高效。
-- TTL 设置为 `TTL toDateTime(Timestamp) + toIntervalDay(3)`，并对应于收集器配置中设置的值。 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 表示只有在所有包含的行过期时，整个部分才会被删除。这比在部分内删除行更高效，因为后者涉及高开销的删除。我们建议始终设置此项。有关更多细节，请参见 [使用 TTL 进行数据管理](/observability/managing-data#data-management-with-ttl-time-to-live)。
-- 表使用经典的 [`MergeTree` 引擎](/engines/table-engines/mergetree-family/mergetree)。这对于日志和跟踪是推荐的，不应更改。
-- 表按 `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` 排序。这意味着查询将针对 `ServiceName`、`SeverityText`、`Timestamp` 和 `TraceId` 上的过滤器进行优化 - 列表中前面的列过滤速度会比后面的列快，例如按 `ServiceName` 过滤的速度显著快于按 `TraceId` 过滤。用户应根据预期的访问模式修改此排序 - 请参见 [选择主键](/use-cases/observability/schema-design#choosing-a-primary-ordering-key)。
-- 上述架构对列应用了 `ZSTD(1)`。这为日志提供了最佳的压缩。用户可以增加 ZSTD 压缩级别（高于默认的 1）以实现更好的压缩，尽管这通常没有好处。增加此值将在插入时（在压缩期间）导致更大的 CPU 开销，尽管解压缩（从而查询）应该保持可比较。有关更多详情，请参见 [这里](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)。同时，对 `Timestamp` 应用了额外的 [增量编码](/sql-reference/statements/create/table#delta)，旨在减少其在磁盘上的大小。
-- 注意 [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) 和 [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) 是映射。用户应该熟悉它们之间的区别。有关如何访问这些映射及优化访问键的方法，请参见 [使用映射](/use-cases/observability/schema-design#using-maps)。
-- 这里的大多数其他类型，例如 `ServiceName` 作为 LowCardinality，都经过了优化。请注意，`Body` 在我们的示例日志中是 JSON，存储为字符串。
-- 对映射的键和值以及 `Body` 列应用了布隆过滤器。这些旨在提高访问这些列的查询时间，但通常不是必需的。请参见 [二级/数据跳过索引](/use-cases/observability/schema-design#secondarydata-skipping-indices)。
+
+- 默认情况下，表通过 `PARTITION BY toDate(Timestamp)` 按日期进行分区。这样可以高效地删除已过期的数据。
+- 通过 `TTL toDateTime(Timestamp) + toIntervalDay(3)` 设置 TTL，对应于在采集器配置中设置的值。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 表示仅在某个数据 part 中包含的所有行都已过期时才整块删除该 part。相比在 part 内逐行删除（这会触发代价高昂的删除操作），这种方式更高效。我们建议始终启用该设置。更多详情参见 [使用 TTL 进行数据管理](/observability/managing-data#data-management-with-ttl-time-to-live)。
+- 该表使用经典的 [`MergeTree` 引擎](/engines/table-engines/mergetree-family/mergetree)。这对于日志和追踪数据是推荐选项，一般无需更改。
+- 表按 `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` 排序。这意味着针对 `ServiceName`、`SeverityText`、`Timestamp` 和 `TraceId` 的过滤查询会得到优化——列表中越靠前的列，过滤速度越快，例如按 `ServiceName` 过滤会明显快于按 `TraceId` 过滤。用户应根据预期的访问模式调整这一排序，参见 [选择主键](/use-cases/observability/schema-design#choosing-a-primary-ordering-key)。
+- 上述 schema 将 `ZSTD(1)` 应用于列。这为日志提供了最佳压缩率。用户可以将 ZSTD 压缩级别提高到默认值 1 之上以获得更好的压缩效果，但这通常收益有限。提高该值会在插入时（压缩期间）带来更高的 CPU 开销，不过解压（以及查询）性能应基本相当。更多细节参见[此文](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)。此外，对 Timestamp 还应用了额外的 [delta 编码](/sql-reference/statements/create/table#delta)，以减少其磁盘占用。
+- 请注意 [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) 和 [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) 是 map。用户应熟悉它们之间的差异。关于如何访问这些 map 以及如何优化对其中键的访问，参见 [使用 Map](/use-cases/observability/schema-design#using-maps)。
+- 这里的大多数其他类型，例如将 `ServiceName` 定义为 LowCardinality，都是经过优化的。请注意，在我们的示例日志中为 JSON 的 `Body` 被存储为 String。
+- Bloom filter 应用于 map 的键和值，以及 `Body` 列。这些旨在加速访问这些列的查询，但通常不是必需的。参见 [二级/数据跳过索引](/use-cases/observability/schema-design#secondarydata-skipping-indices)。
+
+
 
 ```sql
 CREATE TABLE default.otel_traces
@@ -569,70 +607,81 @@ TTL toDateTime(Timestamp) + toIntervalDay(3)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-同样，这将与记录在 [这里](https://opentelemetry.io/docs/specs/otel/trace/api/) 中的 OTel 官方规范对应的跟踪列相关联。这里的架构采用了与上述日志架构相同的许多设置，并且具有适用于跨度的附加链接列。
+同样，这将与对应于 OTel 官方规范中 traces 的那些列相对应，相关文档见[此处](https://opentelemetry.io/docs/specs/otel/trace/api/)。此处的 schema 复用了上文日志 schema 的许多设置，并额外增加了针对 span 的链接（Link）专用列。
 
-我们建议用户禁用自动架构创建并手动创建他们的表。这允许修改主键和次键，并提供了引入额外列以优化查询性能的机会。有关更多详细信息，请参见 [架构设计](/use-cases/observability/schema-design)。
-## 优化插入 {#optimizing-inserts}
+我们建议用户禁用自动 schema 创建功能，改为手动创建表。这样可以调整主键和二级键，并有机会引入更多列以优化查询性能。更多细节请参阅 [Schema 设计](/use-cases/observability/schema-design)。
 
-为了在获得强一致性保证的同时实现高插入性能，用户应在通过收集器将可观测性数据插入 ClickHouse 时遵循简单规则。正确配置 OTel 收集器后，遵循以下规则应简单明了。这还可以避免用户第一次使用 ClickHouse 时遇到的 [常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
+
+## 优化插入操作 {#optimizing-inserts}
+
+为了在保证强一致性的同时实现高插入性能,用户在通过采集器向 ClickHouse 插入可观测性数据时应遵循一些简单的规则。通过正确配置 OTel 采集器,遵循以下规则应该非常简单。这也可以避免用户首次使用 ClickHouse 时遇到的[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
+
 ### 批处理 {#batching}
 
-默认情况下，发送到 ClickHouse 的每个插入会导致 ClickHouse 立即创建一个包含来自插入的数据以及其他需要存储的元数据的存储部分。因此，发送较少的插入而每个插入包含更多的数据，相比于发送更多的插入而每个插入包含较少的数据，将减少所需的写入次数。我们建议每次插入相当大的批次，至少为 1,000 行。有关更多详细信息，请 [点击这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
+默认情况下,每次向 ClickHouse 发送插入操作都会导致 ClickHouse 立即创建一个存储部分,其中包含插入的数据以及需要存储的其他元数据。因此,发送少量包含更多数据的插入操作,相比发送大量包含较少数据的插入操作,可以减少所需的写入次数。我们建议每次以较大的批次插入数据,至少 1,000 行。更多详情请参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
 
-默认情况下，对 ClickHouse 的插入是同步的，如果相同则为幂等的。对于 MergeTree 引擎系列的表，ClickHouse 默认会自动 [去重插入](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着在以下情况下，插入是宽容的：
+默认情况下,向 ClickHouse 的插入操作是同步的,并且在内容相同时具有幂等性。对于 MergeTree 引擎系列的表,ClickHouse 默认会自动[对插入进行去重](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着插入操作在以下情况下具有容错性:
 
-- (1) 如果接收数据的节点出现问题，插入查询将超时（或获取更具体的错误），且不会收到确认。
-- (2) 如果数据已由节点写入，但由于网络中断无法将确认返回给查询的发送者，则发送者将收到超时或网络错误。
+- (1) 如果接收数据的节点出现问题,插入查询将超时(或返回更具体的错误)并且不会收到确认。
+- (2) 如果数据已被节点写入,但由于网络中断无法将确认返回给查询发送者,发送者将收到超时或网络错误。
 
-从收集器的角度来看，(1) 和 (2) 可能很难区分。然而，在这两种情况下，未确认的插入可以立即重试。只要重试的插入查询包含相同的数据且顺序相同，如果（未确认的）原始插入成功，ClickHouse 将会自动忽略重试的插入。
+从采集器的角度来看,(1) 和 (2) 可能难以区分。然而,在这两种情况下,未确认的插入操作都可以立即重试。只要重试的插入查询包含相同顺序的相同数据,如果(未确认的)原始插入操作成功,ClickHouse 将自动忽略重试的插入。
 
-我们建议用户使用之前配置中显示的 [批处理器](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) 满足以上要求。这确保插入以满足这些要求的一致批次的行发送。如果预计收集器将具有高吞吐量（每秒事件），并且每个插入可以发送至少 5000 个事件，这通常是管道中所需的唯一批处理。在这种情况下，收集器将在批处理器的 `timeout` 到达之前刷新批次，确保管道的端到端延迟保持较低，并且批次保持一致的大小。
+我们建议用户使用前面配置中展示的[批处理器](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)来满足上述要求。这可以确保插入操作以满足上述要求的一致行批次发送。如果采集器预期具有高吞吐量(每秒事件数),并且每次插入至少可以发送 5000 个事件,这通常是管道中唯一需要的批处理。在这种情况下,采集器将在批处理器的 `timeout` 到达之前刷新批次,确保管道的端到端延迟保持较低且批次大小一致。
+
 ### 使用异步插入 {#use-asynchronous-inserts}
 
-通常，当收集器的吞吐量较低时，用户被迫发送较小的批次，但仍希望数据在最低的端到端延迟内到达 ClickHouse。在这种情况下，当批处理器的 `timeout` 到期时会发送小批次。这可能会导致问题，并且在需要异步插入时出现。这种情况通常发生在 **处于代理角色的收集器被配置为直接发送到 ClickHouse**。网关通过充当聚合器可以缓解此问题 - 请参见 [使用网关进行扩展](#scaling-with-gateways)。
+通常,当采集器的吞吐量较低时,用户被迫发送较小的批次,但他们仍然期望数据在最小的端到端延迟内到达 ClickHouse。在这种情况下,当批处理器的 `timeout` 到期时会发送小批次。这可能会导致问题,此时需要使用异步插入。这种情况通常出现在**代理角色的采集器配置为直接发送到 ClickHouse** 时。网关通过充当聚合器可以缓解此问题 - 请参见[使用网关进行扩展](#scaling-with-gateways)。
 
-如果不能保证大批次，用户可以通过使用 [异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) Delegating 到 ClickHouse 来进行批处理。使用异步插入，数据首先插入缓冲区，然后稍后或异步写入数据库存储。
+如果无法保证大批次,用户可以使用[异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)将批处理委托给 ClickHouse。使用异步插入时,数据首先插入到缓冲区中,然后再异步写入数据库存储。
 
-<Image img={observability_6} alt="Async inserts" size="md"/>
+<Image img={observability_6} alt='异步插入' size='md' />
 
-开启 [异步插入](/optimize/asynchronous-inserts#enabling-asynchronous-inserts) 时，当 ClickHouse ① 接收到插入查询时，查询的数据会首先 ② 立即写入一个内存缓冲区。当 ③ 下一个缓冲区刷新发生时，缓冲区的数据会 [排序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) 并作为一个部分写入数据库存储。注意，在刷新到数据库存储之前，数据不能通过查询搜索；缓冲区刷新是 [可配置的](/optimize/asynchronous-inserts)。
+[启用异步插入](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)后,当 ClickHouse ① 接收到插入查询时,查询的数据 ② 首先立即写入内存缓冲区。当 ③ 下一次缓冲区刷新发生时,缓冲区的数据会被[排序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)并作为一个部分写入数据库存储。请注意,在刷新到数据库存储之前,数据无法被查询检索;缓冲区刷新是[可配置的](/optimize/asynchronous-inserts)。
 
-要为收集器启用异步插入，请在连接字符串中添加 `async_insert=1`。我们建议用户使用 `wait_for_async_insert=1`（默认值）以获得交付保证 - 详情请见 [这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
+要为采集器启用异步插入,请在连接字符串中添加 `async_insert=1`。我们建议用户使用 `wait_for_async_insert=1`(默认值)以获得交付保证 - 更多详情请参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
-异步插入的数据在 ClickHouse 缓存被刷新后插入。这发生在超过 [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) 或自第一次 INSERT 查询以来经过 [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) 毫秒后。如果 `async_insert_stale_timeout_ms` 设置为非零值，则在上次查询以来的 `async_insert_stale_timeout_ms 毫秒` 后插入数据。用户可以调整这些设置以控制管道的端到端延迟。更多可用于调整缓冲区刷新的设置记录在 [这里](/operations/settings/settings#async_insert)。通常，默认设置是合适的。
+
+来自异步插入的数据会在 ClickHouse 缓冲区被刷新时写入。刷新会在超过 [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) 时触发，或者在自首次 INSERT 查询之后经过 [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) 毫秒时触发。如果将 `async_insert_stale_timeout_ms` 设置为非零值，则会在自上一次查询之后经过 `async_insert_stale_timeout_ms` 毫秒后插入数据。用户可以调节这些设置来控制其管道的端到端延迟。可用于调优缓冲区刷新的更多设置记录在[此处](/operations/settings/settings#async_insert)。通常情况下，默认值已经足够合适。
 
 :::note 考虑自适应异步插入
-在低数量代理同时使用、吞吐量低而对端到端延迟要求严格的情况下，[自适应异步插入](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) 可能会很有用。一般而言，这些不适用于高吞吐量的可观测性用例，如 ClickHouse 所示。
+在代理数量较少、吞吐量较低但对端到端延迟有严格要求的场景下，[自适应异步插入](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) 可能会有用。通常，对于 ClickHouse 中常见的高吞吐量可观测性场景，这些并不适用。
 :::
 
-最后，使用异步插入时，与 ClickHouse 的同步插入相关的之前的去重行为默认未启用。如有需要，请查看设置 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)。
+最后，使用异步插入时，ClickHouse 之前与同步插入相关的去重行为默认不会启用。如有需要，请参阅设置 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)。
 
-有关配置此功能的完整信息，请见 [这里](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，并在 [这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) 深入了解。
+有关配置此功能的完整说明可在[此处](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)找到，更深入的介绍见[这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
+
+
+
 ## 部署架构 {#deployment-architectures}
 
-使用 OTel 收集器与 Clickhouse 时，可能有几种部署架构。我们将在下面描述每种架构以及其可能适用的情况。
-### 仅代理 {#agents-only}
+在 ClickHouse 中使用 OTel 采集器时,可以采用多种部署架构。下文将介绍每种架构及其适用场景。
 
-在仅代理的架构中，用户将 OTel 收集器部署为代理到边缘。这些代理接收来自本地应用程序（例如，作为边车容器）的跟踪，并从服务器和 Kubernetes 节点收集日志。在此模式下，代理将数据直接发送到 ClickHouse。
+### 仅代理模式 {#agents-only}
 
-<Image img={observability_7} alt="Agents only" size="md"/>
+在仅代理模式架构中,用户将 OTel 采集器作为代理部署到边缘。这些代理从本地应用程序接收追踪数据(例如作为 sidecar 容器),并从服务器和 Kubernetes 节点收集日志。在此模式下,代理直接将数据发送到 ClickHouse。
 
-此架构适合小型到中型的部署。其主要优点是它不需要额外的硬件，并且保持 ClickHouse 可观测性解决方案的总资源占用最小，应用程序与收集器之间的映射简单。
+<Image img={observability_7} alt='Agents only' size='md' />
 
-一旦代理数量超过几百，用户应该考虑迁移到基于网关的架构。此架构有几个缺点，使其难以扩展：
+此架构适用于中小规模部署。其主要优势在于无需额外硬件,可将 ClickHouse 可观测性解决方案的总体资源占用降至最低,且应用程序与采集器之间具有简单的映射关系。
 
-- **连接扩展** - 每个代理将与 ClickHouse 建立连接。虽然 ClickHouse 能够维持数百（如果不是数千个）并发插入连接，但这最终将成为限制因素，并使插入效率降低 - 也就是说，ClickHouse 维护连接所需的资源会更多。使用网关可以最小化连接数量并提高插入效率。
-- **边缘处理** - 在此架构中，必须在边缘或 ClickHouse 中执行任何转换或事件处理。这不仅限制了代理的功能，还可能意味着复杂的 ClickHouse 物化视图或将大量计算推向边缘 - 在那里可能会影响关键服务且资源稀缺。
-- **小批次和延迟** - 代理收集器可能单独收集的事件非常有限。这通常意味着它们需要配置为在设定的时间间隔内刷新以满足交付 SLA。这可能会导致收集器向 ClickHouse 发送小批次。虽然这是一个缺点，但可以通过异步插入来缓解 - 请参见 [优化插入](#optimizing-inserts)。
-### 使用网关进行扩展 {#scaling-with-gateways}
+当代理数量超过数百个时,用户应考虑迁移到基于网关的架构。此架构存在以下几个不利于扩展的缺点:
 
-OTel 收集器可以作为网关实例部署，以解决上述限制。这些提供独立服务，通常每个数据中心或每个区域。这些通过单个 OTLP 端点接收来自应用程序（或其他处于代理角色的收集器）的事件。通常会部署一组网关实例，并使用开箱即用的负载均衡器在它们之间分配负载。
+- **连接扩展性** - 每个代理都会与 ClickHouse 建立连接。虽然 ClickHouse 能够维护数百(甚至数千)个并发插入连接,但这最终会成为限制因素,并降低插入效率 - 即 ClickHouse 需要使用更多资源来维护连接。使用网关可以最大限度减少连接数,提高插入效率。
+- **边缘处理** - 在此架构中,所有转换或事件处理都必须在边缘或 ClickHouse 中执行。这不仅具有局限性,还可能意味着需要使用复杂的 ClickHouse 物化视图,或将大量计算推送到边缘 - 而边缘可能运行着关键服务且资源紧张。
+- **小批量与延迟** - 单个代理采集器可能收集的事件很少。这通常意味着需要将其配置为按固定时间间隔刷新,以满足交付 SLA 要求。这可能导致采集器向 ClickHouse 发送小批量数据。虽然这是一个缺点,但可以通过异步插入来缓解 - 请参阅[优化插入](#optimizing-inserts)。
 
-<Image img={observability_8} alt="Scaling with gateways" size="md"/>
+### 使用网关扩展 {#scaling-with-gateways}
 
-此架构的目标是将计算密集型处理卸载掉代理，从而最大限度地减少它们的资源使用。这些网关可以执行原本需要由代理完成的转换任务。此外，通过聚合来自多个代理的事件，网关可以确保将大批次发送到 ClickHouse - 实现高效插入。这些网关收集器可以随着添加更多代理和增加事件吞吐量而轻松扩展。下面显示的是一个示例网关配置，以及一个关联的代理配置，后者消耗示例结构化日志文件。注意使用 OTLP 作为代理和网关之间的通信。
+可以将 OTel 采集器部署为网关实例以解决上述限制。这些网关提供独立服务,通常按数据中心或区域部署。它们通过单个 OTLP 端点从应用程序(或其他充当代理角色的采集器)接收事件。通常会部署一组网关实例,并使用开箱即用的负载均衡器在它们之间分配负载。
+
+<Image img={observability_8} alt='Scaling with gateways' size='md' />
+
+此架构的目标是将计算密集型处理从代理卸载,从而最大限度减少其资源使用。这些网关可以执行原本需要由代理完成的转换任务。此外,通过聚合来自多个代理的事件,网关可以确保向 ClickHouse 发送大批量数据 - 从而实现高效插入。随着添加更多代理和事件吞吐量的增加,这些网关采集器可以轻松扩展。下面展示了一个网关配置示例,以及相关的代理配置(用于消费示例结构化日志文件)。请注意代理和网关之间使用 OTLP 进行通信。
 
 [clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+
 
 ```yaml
 receivers:
@@ -644,7 +693,7 @@ receivers:
       - type: json_parser
         timestamp:
           parse_from: attributes.time_local
-          layout: '%Y-%m-%d %H:%M:%S'
+          layout: "%Y-%m-%d %H:%M:%S"
 processors:
   batch:
     timeout: 5s
@@ -653,11 +702,11 @@ exporters:
   otlp:
     endpoint: localhost:4317
     tls:
-      insecure: true # Set to false if you are using a secure connection
+      insecure: true # 如果使用安全连接,请设置为 false
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
+      address: 0.0.0.0:9888 # 已修改,因为同一主机上运行 2 个采集器
   pipelines:
     logs:
       receivers: [filelog]
@@ -701,39 +750,42 @@ service:
       exporters: [clickhouse]
 ```
 
-这些配置可以使用以下命令运行。
+可以使用以下命令运行这些配置。
 
 ```bash
 ./otelcol-contrib --config clickhouse-gateway-config.yaml
 ./otelcol-contrib --config clickhouse-agent-config.yaml
 ```
 
-此架构的主要缺点是管理一组收集器的相关成本和开销。
+这种架构的主要缺点是管理一组采集器所带来的相关成本和开销。
 
-有关管理较大基于网关的架构及相关学习的示例，我们推荐这篇 [博客文章](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog)。
+关于管理更大规模的基于网关的架构及相关实践经验,我们推荐阅读这篇[博客文章](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog)。
+
 ### 添加 Kafka {#adding-kafka}
 
-读者可能会注意到上述架构没有使用 Kafka 作为消息队列。
+读者可能会注意到,上述架构并未使用 Kafka 作为消息队列。
 
-使用 Kafka 阈列作为消息缓冲区是一种在日志架构中常见的设计模式，被 ELK 堆栈推广。它提供了几个好处；主要是，它有助于提供更强的消息交付保证，并有助于处理背压。消息从收集代理发送到 Kafka，然后写入磁盘。在理论上，集群 Kafka 实例应该提供高吞吐量的消息缓冲，因为将数据线性写入磁盘所需的计算开销小于解析和处理消息 - 例如，在 Elastic 中，标记化和索引会产生较大的开销。通过将数据从代理处移开，您还会减少由于源的日志轮换而丢失消息的风险。最后，它还提供了一些消息重放和跨区域复制功能，这可能对某些用例具有吸引力。
 
-然而，ClickHouse 可以非常快速地处理数据插入 - 在中等硬件上可达每秒数百万行。ClickHouse 的背压是 **罕见的**。通常，利用 Kafka 阈列意味着增加架构复杂性和成本。如果您能够接受日志不需要与银行交易和其他关键数据相同的交付保证的原则，我们建议避免 Kafka 的复杂性。
+使用 Kafka 队列作为消息缓冲区是日志架构中常见的设计模式,由 ELK 技术栈推广开来。它提供了一些优势;主要是帮助提供更强的消息传递保证并帮助处理背压问题。消息从采集代理发送到 Kafka 并写入磁盘。理论上,集群化的 Kafka 实例应该能够提供高吞吐量的消息缓冲区,因为将数据顺序写入磁盘比解析和处理消息产生的计算开销更小——例如在 Elasticsearch 中,分词和索引会产生显著的开销。通过将数据从代理移出,您还可以降低因源端日志轮转而丢失消息的风险。最后,它提供了一些消息重放和跨区域复制功能,这对某些用例可能很有吸引力。
 
-但是，如果您需要高交付保证或重放数据的能力（潜在的多源），Kafka 可以成为一个有用的架构补充。
+然而,ClickHouse 可以非常快速地处理数据插入——在中等硬件上每秒可处理数百万行。来自 ClickHouse 的背压**很少见**。通常,使用 Kafka 队列意味着更多的架构复杂性和成本。如果您能够接受日志不需要像银行交易和其他关键任务数据那样的传递保证这一原则,我们建议避免引入 Kafka 的复杂性。
 
-<Image img={observability_9} alt="Adding kafka" size="md"/>
+但是,如果您需要高传递保证或重放数据的能力(可能发送到多个目标),Kafka 可以成为一个有用的架构补充。
 
-在这种情况下，可以通过 [Kafka 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) 配置 OTel 代理将数据发送到 Kafka。网关实例转而使用 [Kafka 接收器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) 消费消息。对于更多详细信息，我们推荐 Confluent 和 OTel 文档。
-### 资源估算 {#estimating-resources}
+<Image img={observability_9} alt='添加 kafka' size='md' />
 
-OTel 收集器的资源需求将取决于事件吞吐量、消息大小和执行的处理量。OpenTelemetry 项目维护了 [基准测试用户](https://opentelemetry.io/docs/collector/benchmarks/) 可用以估算资源需求。
+在这种情况下,可以配置 OTel 代理通过 [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) 将数据发送到 Kafka。网关实例则使用 [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) 消费消息。我们建议参考 Confluent 和 OTel 文档以获取更多详细信息。
 
-[根据我们的经验](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)，具有 3 个核心和 12GB RAM 的网关实例可以处理大约每秒 60,000 个事件。这假设有一个负责重命名字段的最小处理管道，并且没有正则表达式。
+### 估算资源 {#estimating-resources}
 
-对于负责将事件运输到网关的代理实例，仅需设置事件的时间戳，我们建议根据预期的每秒日志数量进行规模调整。以下数字代表用户可以作为起点使用的近似数字：
+OTel 采集器的资源需求取决于事件吞吐量、消息大小和执行的处理量。OpenTelemetry 项目维护了[基准测试](https://opentelemetry.io/docs/collector/benchmarks/),用户可以使用它来估算资源需求。
 
-| 日志率        | 收集器代理所需的资源 |
-|---------------|---------------------|
-| 1k/秒        | 0.2 CPU, 0.2 GiB    |
-| 5k/秒        | 0.5 CPU, 0.5 GiB    |
-| 10k/秒       | 1 CPU, 1 GiB        |
+[根据我们的经验](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview),一个具有 3 个核心和 12GB RAM 的网关实例可以处理每秒约 6 万个事件。这假设使用最小化的处理管道,仅负责重命名字段且不使用正则表达式。
+
+对于负责将事件发送到网关并仅设置事件时间戳的代理实例,我们建议用户根据预期的每秒日志数进行资源配置。以下是用户可以作为起点的大致数值:
+
+| 日志速率 | 采集器代理资源 |
+| ------------ | ---------------------------- |
+| 1k/秒    | 0.2CPU, 0.2GiB               |
+| 5k/秒    | 0.5 CPU, 0.5GiB              |
+| 10k/秒   | 1 CPU, 1GiB                  |

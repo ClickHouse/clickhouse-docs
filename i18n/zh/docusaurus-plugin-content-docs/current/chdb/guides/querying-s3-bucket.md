@@ -1,57 +1,58 @@
 ---
-'title': '如何在 S3 存储桶中查询数据'
-'sidebar_label': '在 S3 中查询数据'
-'slug': '/chdb/guides/querying-s3'
-'description': '学习如何使用 chDB 在 S3 存储桶中查询数据。'
-'keywords':
-- 'chdb'
-- 's3'
-'doc_type': 'guide'
+title: '如何查询 S3 存储桶中的数据'
+sidebar_label: '在 S3 中查询数据'
+slug: /chdb/guides/querying-s3
+description: '了解如何使用 chDB 查询 S3 存储桶中的数据。'
+keywords: ['chdb', 's3']
+doc_type: 'guide'
 ---
 
-很多世界上的数据存储在 Amazon S3 桶中。
+全球有大量数据存储在 Amazon S3 存储桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
+
+
 
 ## 设置 {#setup}
 
-首先让我们创建一个虚拟环境：
+首先创建一个虚拟环境:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。
-确保你有版本 2.0.2 或更高版本：
+然后安装 chDB。
+请确保版本为 2.0.2 或更高:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-现在我们要安装 IPython：
+接下来安装 IPython:
 
 ```bash
 pip install ipython
 ```
 
-我们将使用 `ipython` 运行本指南其余部分中的命令，你可以通过运行以下命令来启动它：
+我们将使用 `ipython` 运行本指南后续部分的命令,可以通过以下方式启动:
 
 ```bash
 ipython
 ```
 
-你也可以在 Python 脚本或你喜欢的笔记本中使用这些代码。
+您也可以在 Python 脚本或您常用的 notebook 中使用这些代码。
 
-## 列出 S3 桶中的文件 {#listing-files-in-an-s3-bucket}
 
-让我们首先列出 [一个包含亚马逊评论的 S3 桶](/getting-started/example-datasets/amazon-reviews) 中的所有文件。
-为此，我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3) 并传入文件的路径或一组文件的通配符。
+## 列出 S3 存储桶中的文件 {#listing-files-in-an-s3-bucket}
+
+让我们从列出[包含 Amazon 评论数据的 S3 存储桶](/getting-started/example-datasets/amazon-reviews)中的所有文件开始。
+为此,我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3),并传入文件路径或使用通配符指定文件集。
 
 :::tip
-如果你仅传入桶名称，它将抛出异常。
+如果仅传入存储桶名称,将会抛出异常。
 :::
 
-我们还将使用 [`One`](/interfaces/formats#data-format-one) 输入格式，这样文件不会被解析，而是每个文件返回一行，我们可以通过 `_file` 虚拟列访问文件，通过 `_path` 虚拟列访问路径。
+我们还将使用 [`One`](/interfaces/formats/One) 输入格式,使文件不被解析,而是每个文件返回单行数据,这样我们可以通过 `_file` 虚拟列访问文件名,通过 `_path` 虚拟列访问路径。
 
 ```python
 import chdb
@@ -78,19 +79,20 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-这个桶仅包含 Parquet 文件。
+该存储桶仅包含 Parquet 文件。
 
-## 查询 S3 桶中的文件 {#querying-files-in-an-s3-bucket}
 
-接下来，让我们学习如何查询这些文件。
-如果我们想统计每个文件中的行数，可以运行以下查询：
+## 查询 S3 存储桶中的文件 {#querying-files-in-an-s3-bucket}
+
+接下来,我们将学习如何查询这些文件。
+如果要统计每个文件的行数,可以运行以下查询:
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount    
+    formatReadableQuantity(count) AS readableCount
 FROM s3('s3://datasets-documentation/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
@@ -110,21 +112,21 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-我们也可以传入 S3 桶的 HTTP URI，并获得相同的结果：
+我们也可以传入 S3 存储桶的 HTTP URI,将获得相同的结果:
 
 ```python
 chdb.query("""
 SELECT
     _file,
     count() AS count,
-    formatReadableQuantity(count) AS readableCount    
+    formatReadableQuantity(count) AS readableCount
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/*.parquet')
 GROUP BY ALL
 SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-让我们使用 `DESCRIBE` 子句查看这些 Parquet 文件的架构：
+接下来使用 `DESCRIBE` 子句查看这些 Parquet 文件的架构:
 
 ```python
 chdb.query("""
@@ -153,7 +155,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-现在让我们计算基于评论数量的 top 产品类别，以及计算平均星级评分：
+现在我们根据评论数量计算排名靠前的产品类别,并计算平均星级评分:
 
 ```python
 chdb.query("""
@@ -164,25 +166,27 @@ LIMIT 10
 """, 'PrettyCompact')
 ```
 
+
 ```text
     ┌─product_category─┬──reviews─┬──avg─┐
- 1. │ Toys             │  4864056 │ 4.21 │
- 2. │ Apparel          │  5906085 │ 4.11 │
- 3. │ Luggage          │   348644 │ 4.22 │
- 4. │ Kitchen          │  4880297 │ 4.21 │
- 5. │ Books            │ 19530930 │ 4.34 │
- 6. │ Outdoors         │  2302327 │ 4.24 │
- 7. │ Video            │   380596 │ 4.19 │
- 8. │ Grocery          │  2402365 │ 4.31 │
- 9. │ Shoes            │  4366757 │ 4.24 │
-10. │ Jewelry          │  1767667 │ 4.14 │
+ 1. │ 玩具             │  4864056 │ 4.21 │
+ 2. │ 服装             │  5906085 │ 4.11 │
+ 3. │ 箱包             │   348644 │ 4.22 │
+ 4. │ 厨房用品         │  4880297 │ 4.21 │
+ 5. │ 图书             │ 19530930 │ 4.34 │
+ 6. │ 户外用品         │  2302327 │ 4.24 │
+ 7. │ 视频             │   380596 │ 4.19 │
+ 8. │ 食品杂货         │  2402365 │ 4.31 │
+ 9. │ 鞋类             │  4366757 │ 4.24 │
+10. │ 珠宝首饰         │  1767667 │ 4.14 │
     └──────────────────┴──────────┴──────┘
 ```
 
-## 查询私有 S3 桶中的文件 {#querying-files-in-a-private-s3-bucket}
 
-如果我们要查询私有 S3 桶中的文件，我们需要传入访问密钥和秘密。
-我们可以将这些凭证传递给 `s3` 表函数：
+## 查询私有 S3 存储桶中的文件 {#querying-files-in-a-private-s3-bucket}
+
+如果要查询私有 S3 存储桶中的文件,需要传入访问密钥和密钥。
+可以将这些凭证传递给 `s3` 表函数:
 
 ```python
 chdb.query("""
@@ -194,7 +198,7 @@ LIMIT 10
 ```
 
 :::note
-这个查询将不起作用，因为这是一个公共桶！
+此查询无法运行,因为这是一个公共存储桶!
 :::
 
-另一种方法是使用 [命名集合](/operations/named-collections)，但这种方法尚不支持 chDB。
+另一种方法是使用[命名集合](/operations/named-collections),但 chDB 目前尚不支持此方法。

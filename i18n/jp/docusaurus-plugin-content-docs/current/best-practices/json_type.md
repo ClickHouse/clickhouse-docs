@@ -1,57 +1,61 @@
 ---
-'slug': '/best-practices/use-json-where-appropriate'
-'sidebar_position': 10
-'sidebar_label': 'JSONの使用'
-'title': '適切な場所でJSONを使用する'
-'description': 'JSONを使用するタイミングを説明するページ'
-'keywords':
-- 'JSON'
-'show_related_blogs': true
-'doc_type': 'reference'
+slug: /best-practices/use-json-where-appropriate
+sidebar_position: 10
+sidebar_label: 'JSON の使用'
+title: '適切な場面で JSON を使用する'
+description: 'JSON をいつ使用すべきかを説明するページ'
+keywords: ['JSON']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
-ClickHouseは、半構造化および動的データを目的としたネイティブなJSONカラムタイプを提供しています。**これはデータフォーマットではなくカラムタイプである**ことを明確にすることが重要です。JSONを文字列として挿入することや、[JSONEachRow](/docs/interfaces/formats/JSONEachRow)のようなサポートされているフォーマットを通じて挿入することができますが、それはJSONカラムタイプを使うことを意味しません。ユーザーは、データの構造が動的な場合のみJSONタイプを使用するべきであり、単にJSONを保存するためだけには使用すべきではありません。
+ClickHouse では現在、半構造化データおよび動的なデータ向けに設計されたネイティブな JSON カラム型を提供しています。**これはカラム型であり、データ形式ではない**ことを明確にしておくことが重要です。JSON は文字列として、あるいは [JSONEachRow](/interfaces/formats/JSONEachRow) などのサポートされているフォーマットを介して ClickHouse に挿入できますが、それは JSON カラム型を使用していることを意味しません。JSON 型は、データの構造が動的な場合にのみ使用すべきであり、単に JSON を保存しているという理由だけで使用すべきではありません。
 
-## JSONタイプを使用すべき時 {#when-to-use-the-json-type}
 
-データが以下の条件を満たす場合、JSONタイプを使用します：
 
-* **予測不可能なキー**があり、時間とともに変化する可能性がある。
-* **さまざまな型の値**が含まれる（例：パスには時々文字列が含まれ、時々数値が含まれることがある）。
-* 厳密な型付けが実現不可能なスキーマの柔軟性が必要である。
+## JSON型を使用する場合 {#when-to-use-the-json-type}
 
-データ構造が既知で一貫している場合、データがJSON形式であってもJSONタイプを使用する必要はまれです。具体的には、データに次のような特徴がある場合：
+以下のような場合にJSON型を使用します：
 
-* **既知のキーを持つフラットな構造**：標準のカラムタイプ（例：String）を使用します。
-* **予測可能なネスティング**：これらの構造にはTuple、Array、またはNestedタイプを使用します。
-* **さまざまな型を持つ予測可能な構造**：代わりにDynamicまたはVariantタイプを考慮します。
+- 時間の経過とともに変化する可能性のある**予測不可能なキー**を持つ
+- **型が変化する値**を含む（例：あるパスが文字列を含む場合もあれば、数値を含む場合もある）
+- 厳密な型付けが現実的でない場合に、スキーマの柔軟性が必要
 
-アプローチを組み合わせることも可能です - たとえば、予測可能なトップレベルのフィールドには静的カラムを、ペイロードの動的セクションには単一のJSONカラムを使用します。
+データ構造が既知で一貫している場合、データがJSON形式であってもJSON型が必要になることはほとんどありません。具体的には、データが以下のような場合です：
+
+- **既知のキーを持つフラットな構造**：標準的なカラム型（例：String）を使用
+- **予測可能なネスト構造**：これらの構造にはTuple、Array、またはNested型を使用
+- **型が変化する予測可能な構造**：代わりにDynamic型またはVariant型の使用を検討
+
+アプローチを組み合わせることもできます。例えば、予測可能なトップレベルのフィールドには静的カラムを使用し、ペイロードの動的なセクションには単一のJSONカラムを使用します。
+
 
 ## JSONを使用する際の考慮事項とヒント {#considerations-and-tips-for-using-json}
 
-JSONタイプは、パスをサブカラムにフラット化することによって効率的な列指向ストレージを可能にします。しかし柔軟性には責任が伴います。効果的に使用するためには：
+JSON型はパスをサブカラムに平坦化することで効率的なカラムナストレージを実現します。しかし、柔軟性には責任が伴います。効果的に使用するには:
 
-* **パスの型を指定する** [カラム定義におけるヒント](/sql-reference/data-types/newjson)を使用して、既知のサブカラムの型を指定し、不必要な型推論を避けます。
-* **値が必要ないパスはスキップする** [SKIPおよびSKIP REGEXP](/sql-reference/data-types/newjson)を使用して、ストレージを削減し、パフォーマンスを向上させます。
-* **[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json)を高く設定しない** - 大きな値はリソース消費を増加させ、効率を低下させます。目安として10,000未満に保ってください。
+- **パスの型を指定する** [カラム定義でのヒント](/sql-reference/data-types/newjson)を使用して既知のサブカラムの型を指定し、不要な型推論を回避します。
+- **パスをスキップする** 値が不要な場合は、[SKIPとSKIP REGEXP](/sql-reference/data-types/newjson)を使用してストレージを削減しパフォーマンスを向上させます。
+- **[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json)を高く設定しすぎない**—大きな値はリソース消費を増加させ効率を低下させます。経験則として、10,000未満に保つことを推奨します。
 
-:::note タイプヒント
-タイプヒントは、不必要な型推論を回避する方法以上のものを提供します。型ヒントのあるJSONパスは、常に従来のカラムのようにストレージされ、[**ディスクリミネータカラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)やクエリ時の動的解決の必要を回避します。これにより、型ヒントが明確に定義されている場合、ネストされたJSONフィールドは、最初からトップレベルのフィールドとしてモデル化されたかのように、同じパフォーマンスと効率を実現します。その結果、ほぼ一貫しているがJSONの柔軟性を上手く活用するデータセットにとって、型ヒントはスキーマやインジェストパイプラインを再構築することなくパフォーマンスを保持する便利な方法を提供します。
+:::note 型ヒント
+型ヒントは不要な型推論を回避する手段以上のものを提供します—ストレージと処理の間接参照を完全に排除します。型ヒント付きのJSONパスは常に従来のカラムと同様に格納され、クエリ時の[**識別子カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)や動的解決の必要性を回避します。つまり、適切に定義された型ヒントを使用すると、ネストされたJSONフィールドは最初からトップレベルフィールドとしてモデル化された場合と同じパフォーマンスと効率を実現します。その結果、ほぼ一貫性のあるデータセットでありながらJSONの柔軟性の恩恵を受ける場合、型ヒントはスキーマや取り込みパイプラインを再構築することなくパフォーマンスを維持する便利な方法を提供します。
 :::
+
 
 ## 高度な機能 {#advanced-features}
 
-* JSONカラムは他のカラムのように**主キーに使用できます**。サブカラムにコーデックを指定することはできません。
-* [`JSONAllPathsWithTypes()`および`JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions)のような関数を介してインストロスペクションをサポートします。
-* `.^`構文を使用してネストされたサブオブジェクトを読み取ることができます。
-* クエリ構文は標準SQLとは異なる場合があり、ネストされたフィールドに対して特別なキャストや演算子が必要になる場合があります。
+- JSON列は他の列と同様に**プライマリキーで使用できます**。サブカラムに対してコーデックを指定することはできません。
+- [`JSONAllPathsWithTypes()`や`JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions)などの関数によるイントロスペクションをサポートしています。
+- `.^`構文を使用してネストされたサブオブジェクトを読み取ることができます。
+- クエリ構文は標準SQLと異なる場合があり、ネストされたフィールドに対して特別なキャストや演算子が必要になることがあります。
 
-追加のガイダンスについては、[ClickHouse JSONドキュメント](/sql-reference/data-types/newjson)を参照するか、私たちのブログ記事[ClickHouseのための新しい強力なJSONデータタイプ](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)を探求してください。
+詳細なガイダンスについては、[ClickHouse JSONドキュメント](/sql-reference/data-types/newjson)を参照するか、ブログ記事[A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)をご覧ください。
+
 
 ## 例 {#examples}
 
-以下のJSONサンプルを考えます。これは、[Python PyPIデータセット](https://clickpy.clickhouse.com/)の行を表しています。
+[Python PyPIデータセット](https://clickpy.clickhouse.com/)の1行を表す以下のJSONサンプルを考えてみましょう:
 
 ```json
 {
@@ -66,7 +70,7 @@ JSONタイプは、パスをサブカラムにフラット化することによ�
 }
 ```
 
-このスキーマが静的で、型が明確に定義できると仮定します。データがNDJSON形式（行ごとのJSON）であっても、そのようなスキーマのためにJSONタイプを使う必要はありません。クラシックな型でスキーマを定義するだけです。
+このスキーマが静的で、型が明確に定義できると仮定します。データがNDJSON形式(1行につき1つのJSON)であっても、このようなスキーマにJSON型を使用する必要はありません。従来の型でスキーマを定義するだけで十分です。
 
 ```sql
 CREATE TABLE pypi (
@@ -83,14 +87,14 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-そしてJSON行を挿入します：
+そしてJSON行を挿入します:
 
 ```sql
 INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)には250万の学術論文が含まれています。このデータセット内の各行は、発表された学術論文を表しています。下記に例を示します：
+250万件の学術論文を含む[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を考えてみましょう。NDJSONとして配布されるこのデータセットの各行は、公開された学術論文を表しています。以下に行の例を示します:
 
 ```json
 {
@@ -116,17 +120,11 @@ INSERT INTO pypi FORMAT JSONEachRow
     }
   ],
   "update_date": "2022-11-07",
-  "authors_parsed": [
-    [
-      "Lemire",
-      "Daniel",
-      ""
-    ]
-  ]
+  "authors_parsed": [["Lemire", "Daniel", ""]]
 }
 ```
 
-ここでのJSONは複雑で、ネストされた構造を持っていますが、予測可能です。フィールドの数と型は変化しません。この例にはJSONタイプを使用することができますが、[Tuples](/sql-reference/data-types/tuple)や[Nested](/sql-reference/data-types/nested-data-structures/nested)タイプを使用して構造を明示的に定義することもできます：
+ここでのJSONはネストされた構造を持ち複雑ですが、予測可能です。フィールドの数と型は変わりません。この例ではJSON型を使用することもできますが、[Tuple](/sql-reference/data-types/tuple)型と[Nested](/sql-reference/data-types/nested-data-structures/nested)型を使用して構造を明示的に定義することもできます:
 
 ```sql
 CREATE TABLE arxiv
@@ -150,28 +148,29 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-再び、データをJSONとして挿入できます：
+同様に、データをJSONとして挿入できます:
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-別のカラムとして`tags`が追加されたと仮定します。もしこれが単なる文字列のリストであったなら、`Array(String)`としてモデル化できますが、ユーザーが混合型の任意のタグ構造を追加できると仮定しましょう（スコアが文字列または整数であることに注目してください）。私たちの修正されたJSONドキュメント：
+`tags` という別のカラムが追加されたとします。これが単なる文字列のリストであれば `Array(String)` として表現できますが、ここではユーザーが任意のタグ構造を追加でき、しかも型が混在していると仮定しましょう（`score` が文字列または整数になり得る点に注目してください）。修正後の JSON ドキュメントは次のとおりです。
 
 ```sql
 {
  "id": "2101.11408",
  "submitter": "Daniel Lemire",
  "authors": "Daniel Lemire",
- "title": "Number Parsing at a Gigabyte per Second",
- "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+ "title": "毎秒ギガバイトの数値パース処理",
+ "comments": "ソフトウェアは https://github.com/fastfloat/fast_float および\n  https://github.com/lemire/simple_fastfloat_benchmark/ で入手可能",
  "journal-ref": "Software: Practice and Experience 51 (8), 2021",
  "doi": "10.1002/spe.2984",
  "report-no": null,
  "categories": "cs.DS cs.MS",
  "license": "http://creativecommons.org/licenses/by/4.0/",
- "abstract": "With disks and networks providing gigabytes per second ....\n",
+ "abstract": "ディスクとネットワークが毎秒ギガバイトのスループットを提供する環境において....\n",
  "versions": [
  {
    "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -192,18 +191,18 @@ INSERT INTO arxiv FORMAT JSONEachRow
  ],
  "tags": {
    "tag_1": {
-     "name": "ClickHouse user",
+     "name": "ClickHouseユーザー",
      "score": "A+",
-     "comment": "A good read, applicable to ClickHouse"
+     "comment": "有益な内容で、ClickHouseに適用可能",
    },
    "28_03_2025": {
      "name": "professor X",
      "score": 10,
-     "comment": "Didn't learn much",
+     "comment": "あまり得るものがなかった",
      "updates": [
        {
          "name": "professor X",
-         "comment": "Wolverine found more interesting"
+         "comment": "ウルヴァリンの方がより興味深かった",
        }
      ]
    }
@@ -211,7 +210,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-この場合、arXivの文書をすべてJSONとしてモデル化するか、単にJSONの`tags`カラムを追加することができます。以下に両方の例を示します：
+この場合、arXiv のドキュメントをすべて JSON としてモデリングすることも、JSON 型の `tags` 列を追加することもできます。以下に両方の例を示します。
 
 ```sql
 CREATE TABLE arxiv
@@ -223,14 +222,15 @@ ORDER BY doc.update_date
 ```
 
 :::note
-JSON定義内の`update_date`カラムに型ヒントを提供します。これは、順序付け/主キーで使用するためです。これにより、クリックハウスがこのカラムがnullにならないことを知り、どの`update_date`サブカラムを使用するべきかを確認できます（各型に対して複数存在する可能性があるため、それ以外は曖昧になります）。
+`update_date` 列は並び替え/主キーで使用するため、JSON 定義内で型ヒントを指定しています。これにより ClickHouse はこの列が null にならないことを把握でき、どの `update_date` サブカラムを使うべきかを判断できます（型ごとに複数存在しうるため、そのままでは曖昧になります）。
 :::
 
-このテーブルに挿入し、その後推測されたスキーマを[`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes)関数と[`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow)出力フォーマットを使用して確認できます：
+このテーブルに対してデータを挿入し、その後に推論されたスキーマを [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 関数と [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 出力フォーマットを使って確認できます。
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"毎秒ギガバイトの数値パース処理","comments":"ソフトウェアは https://github.com/fastfloat/fast_float および\n  https://github.com/lemire/simple_fastfloat_benchmark/ で入手可能","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"ディスクとネットワークが毎秒ギガバイトのスループットを提供する環境において....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouseユーザー","score":"A+","comment":"有益な内容で、ClickHouseに適用可能"},"28_03_2025":{"name":"professor X","score":10,"comment":"得られる知見は少なかった","updates":[{"name":"professor X","comment":"Wolverineの方がより興味深かった"}]}}}
 ```
 
 ```sql
@@ -266,7 +266,7 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-あるいは、以前のスキーマとJSONの`tags`カラムを使ってモデル化することができます。これは一般的に推奨され、クリックハウスによる推論を最小限にします：
+別の方法として、先ほどのスキーマと JSON の `tags` 列を使ってこれをモデリングすることもできます。こちらの方が一般的に好ましく、ClickHouse が行うべき推論を最小限に抑えられます。
 
 ```sql
 CREATE TABLE arxiv
@@ -293,10 +293,11 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"毎秒ギガバイトの数値パース処理","comments":"ソフトウェアは https://github.com/fastfloat/fast_float および\n  https://github.com/lemire/simple_fastfloat_benchmark/ で入手可能","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"ディスクとネットワークが毎秒ギガバイトのスループットを提供する環境において....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouseユーザー","score":"A+","comment":"有益な内容で、ClickHouseに適用可能"},"28_03_2025":{"name":"professor X","score":10,"comment":"得られる知見は少なかった","updates":[{"name":"professor X","comment":"Wolverineの方がより興味深かった"}]}}}
 ```
 
-私たちは、サブカラムの型を推測できるようになりました。
+
+これでサブカラム `tags` の型を推論できるようになりました。
 
 ```sql
 SELECT JSONAllPathsWithTypes(tags)

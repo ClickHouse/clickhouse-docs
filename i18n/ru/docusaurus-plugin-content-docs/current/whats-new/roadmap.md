@@ -1,17 +1,22 @@
 ---
-slug: '/whats-new/roadmap'
+title: 'Дорожная карта'
+slug: /whats-new/roadmap
 sidebar_position: 50
 description: 'Текущие и прошлые дорожные карты ClickHouse'
-title: Roadmap
-doc_type: landing-page
+doc_type: 'landing-page'
+keywords: ['roadmap', 'future features', 'development plans', 'upcoming releases', 'product direction']
 ---
-## Current roadmap {#current-roadmap}
 
-The current roadmap is published for open discussion:
+
+
+## Текущий план развития {#current-roadmap}
+
+Текущий план развития опубликован для открытого обсуждения:
 
 - [2025](https://github.com/ClickHouse/ClickHouse/issues/74046)
 
-## Previous roadmaps {#previous-roadmaps}
+
+## Предыдущие планы развития {#previous-roadmaps}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

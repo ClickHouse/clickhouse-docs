@@ -1,9 +1,14 @@
 ---
-'slug': '/integrations/dbeaver'
-'sidebar_label': 'DBeaver'
-'description': 'DBeaverはマルチプラットフォームのDATABASEツールです。'
-'title': 'DBeaverをClickHouseに接続する'
-'doc_type': 'guide'
+slug: /integrations/dbeaver
+sidebar_label: 'DBeaver'
+description: 'DBeaver はマルチプラットフォーム対応のデータベースツールです。'
+title: 'DBeaver を ClickHouse に接続する'
+doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'sql_client'
+  - website: 'https://github.com/dbeaver/dbeaver'
+keywords: ['DBeaver', 'database management', 'SQL client', 'JDBC connection', 'multi-platform']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,69 +22,95 @@ import dbeaver_query_log_select from '@site/static/images/integrations/sql-clien
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Connect DBeaver to ClickHouse
+# DBeaver を ClickHouse に接続する
 
 <ClickHouseSupportedBadge/>
 
-DBeaverは複数のバージョンで利用可能です。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。さまざまなバージョンと機能については [こちら](https://dbeaver.com/edition/) をご覧ください。 DBeaverはJDBCを使用してClickHouseに接続します。
+DBeaver には複数のエディションがあります。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。各エディションと機能の一覧は[こちら](https://dbeaver.com/edition/)を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
 
 :::note
-ClickHouseの`Nullable`カラムのサポートを改善するために、DBeaverのバージョン23.1.0以上を使用してください。
+ClickHouse の `Nullable` カラムのサポートが改善された DBeaver バージョン 23.1.0 以降を使用してください。
 :::
 
-## 1. Gather your ClickHouse details {#1-gather-your-clickhouse-details}
 
-DBeaverはHTTP(S)経由でJDBCを使用してClickHouseに接続します。必要な情報は以下の通りです：
+
+## 1. ClickHouseの接続情報を収集する {#1-gather-your-clickhouse-details}
+
+DBeaverはHTTP(S)経由のJDBCを使用してClickHouseに接続します。次の情報が必要です:
 
 - エンドポイント
 - ポート番号
 - ユーザー名
 - パスワード
 
-## 2. Download DBeaver {#2-download-dbeaver}
 
-DBeaverは https://dbeaver.io/download/ からダウンロードできます。
+## 2. DBeaverのダウンロード {#2-download-dbeaver}
 
-## 3. Add a database {#3-add-a-database}
+DBeaverは https://dbeaver.io/download/ から入手できます。
 
-- **Database > New Database Connection** メニューまたは **Database Navigator** の **New Database Connection** アイコンを使用して **Connect to a database** ダイアログを表示します：
 
-<Image img={dbeaver_add_database} size="md" border alt="Add a new database" />
+## 3. データベースを追加する {#3-add-a-database}
 
-- **Analytical** を選択し、次に **ClickHouse** を選択します：
+- **Database > New Database Connection**メニュー、または**Database Navigator**の**New Database Connection**アイコンを使用して、**Connect to a database**ダイアログを表示します：
 
-- JDBC URLを構築します。**Main** タブでホスト、ポート、ユーザー名、パスワード、データベースを設定します：
+<Image img={dbeaver_add_database} size='md' border alt='新しいデータベースを追加' />
 
-<Image img={dbeaver_host_port} size="md" border alt="Set the hostname, port, user, password, and database name" />
+- **Analytical**を選択し、次に**ClickHouse**を選択します：
 
-- デフォルトでは **SSL > Use SSL** プロパティは未設定ですが、ClickHouse CloudまたはHTTPポートでSSLが必要なサーバーに接続する場合は、**SSL > Use SSL** をオンにします：
+- JDBC URLを構築します。**Main**タブでHost、Port、Username、Password、Databaseを設定します：
 
-<Image img={dbeaver_use_ssl} size="md" border alt="Enable SSL if required" />
+<Image
+  img={dbeaver_host_port}
+  size='md'
+  border
+  alt='ホスト名、ポート、ユーザー、パスワード、データベース名を設定'
+/>
+
+- デフォルトでは**SSL > Use SSL**プロパティは無効になっています。ClickHouse CloudまたはHTTPポートでSSLが必要なサーバーに接続する場合は、**SSL > Use SSL**を有効にします：
+
+<Image img={dbeaver_use_ssl} size='md' border alt='必要に応じてSSLを有効化' />
 
 - 接続をテストします：
 
-<Image img={dbeaver_test_connection} size="md" border alt="Test the connection" />
+<Image
+  img={dbeaver_test_connection}
+  size='md'
+  border
+  alt='接続をテスト'
+/>
 
-DBeaverがClickHouseドライバーがインストールされていないことを検出した場合は、ダウンロードを提案します：
+DBeaverがClickHouseドライバーがインストールされていないことを検出すると、ダウンロードを提案します：
 
-<Image img={dbeaver_download_driver} size="md" border alt="Download the ClickHouse driver" />
+<Image
+  img={dbeaver_download_driver}
+  size='md'
+  border
+  alt='ClickHouseドライバーをダウンロード'
+/>
 
-- ドライバーをダウンロードした後、再度接続を **Test** します：
+- ドライバーをダウンロードした後、再度接続を**テスト**します：
 
-<Image img={dbeaver_test_connection} size="md" border alt="Test the connection" />
+<Image
+  img={dbeaver_test_connection}
+  size='md'
+  border
+  alt='接続をテスト'
+/>
 
-## 4. Query ClickHouse {#4-query-clickhouse}
+
+## 4. ClickHouseへのクエリ実行 {#4-query-clickhouse}
 
 クエリエディタを開いてクエリを実行します。
 
-- 接続を右クリックし、**SQL Editor > Open SQL Script** を選択してクエリエディタを開きます：
+- 接続を右クリックし、**SQL Editor > Open SQL Script**を選択してクエリエディタを開きます：
 
-<Image img={dbeaver_sql_editor} size="md" border alt="Open the SQL editor" />
+<Image img={dbeaver_sql_editor} size='md' border alt='SQLエディタを開く' />
 
-- `system.query_log` に対する例のクエリ：
+- `system.query_log`に対するクエリの例：
 
-<Image img={dbeaver_query_log_select} size="md" border alt="A sample query" />
+<Image img={dbeaver_query_log_select} size='md' border alt='サンプルクエリ' />
 
-## Next steps {#next-steps}
 
-DBeaverの機能については [DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki) を、ClickHouseの機能については [ClickHouse documentation](https://clickhouse.com/docs) をご覧ください。
+## 次のステップ {#next-steps}
+
+DBeaverの機能について詳しくは[DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki)を、ClickHouseの機能について詳しくは[ClickHouseドキュメント](https://clickhouse.com/docs)をご参照ください。

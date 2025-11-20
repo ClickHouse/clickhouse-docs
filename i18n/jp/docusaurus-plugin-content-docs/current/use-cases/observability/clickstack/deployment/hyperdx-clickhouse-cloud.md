@@ -1,66 +1,102 @@
 ---
-'slug': '/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud'
-'title': 'ClickHouse Cloud'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 1
-'description': 'ClickHouse CloudでClickStackをデプロイする'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud
+title: "ClickHouse Cloud"
+pagination_prev: null
+pagination_next: null
+sidebar_position: 1
+description: "ClickHouse CloudでClickStackをデプロイする"
+doc_type: "guide"
+keywords:
+  ["clickstack", "deployment", "setup", "configuration", "observability"]
 ---
 
-import Image from '@theme/IdealImage';
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-import BetaBadge from '@theme/badges/BetaBadge';
-import cloud_connect from '@site/static/images/use-cases/observability/clickhouse_cloud_connection.png';
-import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx_cloud.png';
-import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/hyperdx_cloud_landing.png';
-import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
-import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
-import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import Image from "@theme/IdealImage"
+import PrivatePreviewBadge from "@theme/badges/PrivatePreviewBadge"
+import BetaBadge from "@theme/badges/BetaBadge"
+import cloud_connect from "@site/static/images/use-cases/observability/clickhouse_cloud_connection.png"
+import hyperdx_cloud from "@site/static/images/use-cases/observability/hyperdx_cloud.png"
+import hyperdx_cloud_landing from "@site/static/images/use-cases/observability/hyperdx_cloud_landing.png"
+import hyperdx_cloud_datasource from "@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png"
+import hyperdx_create_new_source from "@site/static/images/use-cases/observability/hyperdx_create_new_source.png"
+import hyperdx_create_trace_datasource from "@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png"
+import read_only from "@site/static/images/clickstack/read-only-access.png"
+import { TrackedLink } from "@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink"
+import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge />
 
-このオプションは、ClickHouse Cloudを使用しているユーザー向けに設計されています。このデプロイメントパターンでは、ClickHouseとHyperDXの両方がClickHouse Cloudでホストされており、ユーザーがセルフホスティングする必要のあるコンポーネントの数が最小限に抑えられます。
+::::note[プライベートプレビュー]
+この機能はClickHouse Cloudのプライベートプレビュー段階です。優先アクセスをご希望の組織は、
 
-インフラ管理の削減に加え、このデプロイメントパターンでは認証がClickHouse Cloud SSO/SAMLと統合されています。セルフホスト型のデプロイメントとは異なり、ダッシュボード、保存された検索、ユーザー設定、アラートなどのアプリケーションステートを保存するためのMongoDBインスタンスをプロビジョニングする必要もありません。
+<TrackedLink
+  href='https://clickhouse.com/cloud/clickstack-private-preview'
+  eventName='docs.clickstack_deployment.waitlist_cta'
+>
+  ウェイトリストに登録
+</TrackedLink>
+してください。
 
-このモードでは、データの取り込みは完全にユーザーに委ねられています。ユーザーは、自分自身のホストされたOpenTelemetryコレクター、クライアントライブラリからの直接取り込み、ClickHouseネイティブのテーブルエンジン（KafkaやS3など）、ETLパイプライン、またはClickHouse Cloudの管理された取り込みサービスであるClickPipesを使用して、ClickHouse Cloudにデータを取り込むことができます。このアプローチは、ClickStackを操作する最もシンプルで高性能な方法を提供します。
+ClickHouse Cloudが初めての方は、
 
-### 適した用途 {#suitable-for}
+<TrackedLink
+  href='/docs/cloud/overview'
+  eventName='docs.clickstack_deployment.cloud_learn_more_cta'
+>
+  こちら
+</TrackedLink>
+で詳細を確認するか、
+<TrackedLink
+  href='https://clickhouse.cloud/signUp'
+  eventName='docs.clickstack_deployment.cloud_signup_cta'
+  target='_blank'
+  rel='noopener noreferrer'
+>
+  無料トライアルに登録
+</TrackedLink>
+して開始してください。::::
 
-このデプロイメントパターンは、以下のシナリオに最適です：
+このオプションは、ClickHouse Cloudを使用しているユーザー向けに設計されています。このデプロイメントパターンでは、ClickHouseとHyperDXの両方がClickHouse Cloudでホストされるため、ユーザーがセルフホストする必要があるコンポーネントの数を最小限に抑えられます。
 
-1. 既にClickHouse Cloudに可観測性データがあり、HyperDXを使用して視覚化したい場合。
-2. 大規模な可観測性デプロイメントを運用しており、ClickHouse CloudのClickStackの専用パフォーマンスとスケーラビリティが必要な場合。
-3. すでにClickHouse Cloudを分析に使用しており、ClickStackの計測ライブラリを使用してアプリケーションに計測機能を追加したい場合 — 同じクラスターにデータを送信します。この場合、可観測性のワークロードのためにコンピュートを孤立化するために、[warehouses](/cloud/reference/warehouses)の使用をお勧めします。
+インフラストラクチャ管理の負担を軽減するだけでなく、このデプロイメントパターンでは認証がClickHouse Cloud SSO/SAMLと統合されます。セルフホスト型デプロイメントとは異なり、ダッシュボード、保存された検索、ユーザー設定、アラートなどのアプリケーション状態を保存するためのMongoDBインスタンスをプロビジョニングする必要もありません。
 
-## デプロイメント手順 {#deployment-steps}
+このモードでは、データ取り込みは完全にユーザーに委ねられます。独自にホストしたOpenTelemetryコレクター、クライアントライブラリからの直接取り込み、ClickHouseネイティブのテーブルエンジン(KafkaやS3など)、ETLパイプライン、またはClickHouse Cloudのマネージド取り込みサービスであるClickPipesを使用して、ClickHouse Cloudにデータを取り込むことができます。このアプローチは、ClickStackを運用する最もシンプルで高性能な方法を提供します。
 
-以下のガイドは、すでにClickHouse Cloudサービスを作成したことを前提としています。サービスを作成していない場合は、クイックスタートガイドの「["ClickHouseサービスを作成する"](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)」ステップに従ってください。
+### 適用対象 {#suitable-for}
+
+このデプロイメントパターンは、以下のシナリオに最適です:
+
+1. すでにClickHouse Cloudにオブザーバビリティデータがあり、HyperDXを使用して可視化したい場合
+2. 大規模なオブザーバビリティデプロイメントを運用しており、ClickHouse CloudでClickStackの専用パフォーマンスとスケーラビリティが必要な場合
+3. すでに分析にClickHouse Cloudを使用しており、ClickStackインストルメンテーションライブラリを使用してアプリケーションを計装し、同じクラスターにデータを送信したい場合。この場合、オブザーバビリティワークロード用のコンピュートを分離するために[ウェアハウス](/cloud/reference/warehouses)の使用を推奨します
+
+
+## デプロイ手順 {#deployment-steps}
+
+以下のガイドは、すでにClickHouse Cloudサービスを作成済みであることを前提としています。サービスをまだ作成していない場合は、クイックスタートガイドの[「ClickHouseサービスを作成する」](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)の手順に従ってください。
 
 <VerticalStepper headerLevel="h3">
 
-### サービスの資格情報をコピーする（オプション） {#copy-service-credentials}
+### サービス認証情報のコピー（オプション） {#copy-service-credentials}
 
-**可視化したい既存の可観測性イベントがある場合、この手順はスキップできます。**
+**サービスで可視化したい既存のオブザーバビリティイベントがある場合、この手順はスキップできます。**
 
-メインサービスのリストに移動し、HyperDXで可視化するための可観測性イベントを配信する予定のサービスを選択します。
+メインのサービス一覧に移動し、HyperDXで可視化するためのオブザーバビリティイベントを格納するサービスを選択します。
 
-ナビゲーションメニューから`Connect`ボタンを押します。モーダルが開き、さまざまなインターフェースや言語を介して接続する方法に関する一連の指示とともに、サービスの資格情報が提供されます。ドロップダウンから`HTTPS`を選択し、接続エンドポイントと資格情報を記録します。
+ナビゲーションメニューから`Connect`ボタンを押します。モーダルが開き、サービスの認証情報と、さまざまなインターフェースや言語での接続方法の手順が表示されます。ドロップダウンから`HTTPS`を選択し、接続エンドポイントと認証情報を記録します。
 
-<Image img={cloud_connect} alt="ClickHouse Cloud connect" size="lg"/>
+<Image img={cloud_connect} alt='ClickHouse Cloud接続' size='lg' />
 
-### Open Telemetryコレクターをデプロイする（オプション） {#deploy-otel-collector}
+### Open Telemetry Collectorのデプロイ（オプション） {#deploy-otel-collector}
 
-**可視化したい既存の可観測性イベントがある場合、この手順はスキップできます。**
+**サービスで可視化したい既存のオブザーバビリティイベントがある場合、この手順はスキップできます。**
 
-この手順では、Open Telemetry（OTel）スキーマを使用してテーブルが作成され、HyperDXでデータソースをシームレスに作成できるようになります。これにより、[sample datasets](/use-cases/observability/clickstack/sample-datasets)を読み込むために使用できるOLTPエンドポイントが提供され、OTelイベントをClickStackに送信できます。
+この手順により、Open Telemetry（OTel）スキーマでテーブルが作成され、HyperDXでデータソースをシームレスに作成できるようになります。また、[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)の読み込みやClickStackへのOTelイベント送信に使用できるOTLPエンドポイントも提供されます。
 
-:::note 標準Open Telemetryコレクターの使用
-以下の指示は、ClickStack配布版の代わりにOTelコレクターの標準配布版を使用しています。後者は設定のためにOpAMPサーバーを必要とします。これは現在、プライベートプレビューではサポートされていません。以下の設定は、コレクターのClickStack配布版で使用されているバージョンを再現し、イベントを送信できるOTLPエンドポイントを提供します。
+:::note 標準Open Telemetry Collectorの使用
+以下の手順では、ClickStackディストリビューションではなく、OTel Collectorの標準ディストリビューションを使用します。後者は設定にOpAMPサーバーが必要ですが、現在プライベートプレビューではサポートされていません。以下の設定は、ClickStackディストリビューションのCollectorで使用されているバージョンを再現し、イベントを送信できるOTLPエンドポイントを提供します。
 :::
 
-OTelコレクターの設定をダウンロードします：
+OTel Collectorの設定をダウンロードします：
 
 ```bash
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
@@ -68,6 +104,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
 
 <details>
 <summary>otel-cloud-config.yaml</summary>
+
 
 ```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
 receivers:
@@ -217,21 +254,23 @@ service:
       receivers: [routing/logs]
       processors: [memory_limiter, batch]
       exporters: [clickhouse/rrweb]
+```
 
 ```
 
 </details>
 
-次のDockerコマンドを使用してコレクターをデプロイし、以前に記録した接続設定に応じて環境変数を設定します。使用するオペレーティングシステムに応じた適切なコマンドを使う必要があります。
+以下のDockerコマンドを使用してコレクターをデプロイします。事前に記録した接続設定を各環境変数に設定し、オペレーティングシステムに応じた適切なコマンドを使用してください。
+```
+
 
 ```bash
-
-# modify to your cloud endpoint
+# クラウドエンドポイントを設定してください
 export CLICKHOUSE_ENDPOINT=
 export CLICKHOUSE_PASSWORD=
-
-# optionally modify 
+# 必要に応じて変更してください 
 export CLICKHOUSE_DATABASE=default
+```
 
 
 # osx
@@ -249,88 +288,101 @@ docker run --rm -it \
   --config /etc/otel/config.yaml
 
 
-# linux command
+
+# Linux コマンド
+
 
 
 # docker run --network=host --rm -it \
 
-#   -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+# -e CLICKHOUSE&#95;ENDPOINT=${CLICKHOUSE_ENDPOINT} \
 
-#   -e CLICKHOUSE_USER=default \
+# -e CLICKHOUSE&#95;USER=default \
 
-#   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+# -e CLICKHOUSE&#95;PASSWORD=${CLICKHOUSE_PASSWORD} \
 
-#   -e CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE} \
+# -e CLICKHOUSE&#95;DATABASE=${CLICKHOUSE_DATABASE} \
 
-#   --user 0:0 \
+# --user 0:0 \
 
-#   -v "$(pwd)/otel-cloud-config.yaml":/etc/otel/config.yaml \
+# -v &quot;$(pwd)/otel-cloud-config.yaml&quot;:/etc/otel/config.yaml \
 
-#   -v /var/log:/var/log:ro \
+# -v /var/log:/var/log:ro \
 
-#   -v /private/var/log:/private/var/log:ro \
+# -v /private/var/log:/private/var/log:ro \
 
-#   otel/opentelemetry-collector-contrib:latest \
+# otel/opentelemetry-collector-contrib:latest \
 
-#   --config /etc/otel/config.yaml
+# --config /etc/otel/config.yaml
+
 ```
 
 :::note
-本番環境では、取り込み用の専用ユーザーを作成し、データベースや必要なテーブルへのアクセス権限を制限することをお勧めします。詳細については、「["データベースと取り込みユーザー"](/use-cases/observability/clickstack/production#database-ingestion-user)」を参照してください。
+本番環境では、取り込み専用のユーザーを作成し、必要なデータベースとテーブルへのアクセス権限を制限することを推奨します。詳細については、["データベースと取り込みユーザー"](/use-cases/observability/clickstack/production#database-ingestion-user)を参照してください。
 :::
 
-### HyperDXに接続する {#connect-to-hyperdx}
+### HyperDXへの接続 {#connect-to-hyperdx}
 
-サービスを選択し、次に左メニューから`HyperDX`を選択します。
+サービスを選択し、左側のメニューから`HyperDX`を選択します。
 
 <Image img={hyperdx_cloud} alt="ClickHouse Cloud HyperDX" size="lg"/>
 
-ユーザーを作成する必要はなく、自動的に認証され、データソースを作成するように求められます。
+ユーザーを作成する必要はなく、自動的に認証された後、データソースの作成を求められます。
 
-HyperDXインターフェースを探索したいだけのユーザーには、OTelデータを使用する[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)をお勧めします。
+HyperDXインターフェースのみを試したいユーザーには、OTelデータを使用した[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)を推奨します。
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX Landing" size="lg"/>
 
-### データソースを作成する {#create-a-datasource}
+### ユーザー権限 {#user-permissions}
 
-HyperDXはOpen Telemetryネイティブですが、Open Telemetry専用ではありません - ユーザーは希望する場合、自分のテーブルスキーマを使用できます。
+HyperDXにアクセスするユーザーは、ClickHouse Cloudコンソールの認証情報を使用して自動的に認証されます。アクセスは、サービス設定で構成されたSQLコンソール権限によって制御されます。
 
-#### Open Telemetryスキーマを使用する {#using-otel-schemas}
+#### ユーザーアクセスの設定方法 {#configure-access}
 
-上記のOTelコレクターを使用してClickHouse内にデータベースとテーブルを作成している場合は、作成ソースモデル内のすべてのデフォルト値を保持し、`Table`フィールドに`otel_logs`の値を入力してログソースを作成します。他のすべての設定は自動で検出され、`Save New Source`をクリックできます。
+1. ClickHouse Cloudコンソールでサービスに移動します
+2. **Settings** → **SQL Console Access**に進みます
+3. 各ユーザーに適切な権限レベルを設定します:
+   - **Service Admin → Full Access** - アラートを有効にするために必要
+   - **Service Read Only → Read Only** - 可観測性データの表示とダッシュボードの作成が可能
+   - **No access** - HyperDXにアクセスできません
+
+<Image img={read_only} alt="ClickHouse Cloud Read Only"/>
+
+:::important アラートには管理者アクセスが必要です
+アラートを有効にするには、**Service Admin**権限(SQL Console Accessドロップダウンで**Full Access**にマッピングされます)を持つ少なくとも1人のユーザーが、HyperDXに少なくとも1回ログインする必要があります。これにより、アラートクエリを実行する専用ユーザーがデータベースにプロビジョニングされます。
+:::
+
+### データソースの作成 {#create-a-datasource}
+
+HyperDXはOpen Telemetryネイティブですが、Open Telemetry専用ではありません。ユーザーは必要に応じて独自のテーブルスキーマを使用できます。
+
+#### Open Telemetryスキーマの使用  {#using-otel-schemas}
+
+上記のOTelコレクターを使用してClickHouse内にデータベースとテーブルを作成している場合は、ソース作成モデル内のすべてのデフォルト値を保持し、`Table`フィールドに`otel_logs`という値を入力してログソースを作成します。その他の設定はすべて自動検出されるため、`Save New Source`をクリックできます。
 
 <Image img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
 
-トレースおよびOTelメトリクスのソースを作成するために、ユーザーは上部メニューから`Create New Source`を選択できます。
+トレースとOTelメトリクスのソースを作成するには、上部メニューから`Create New Source`を選択します。
 
 <Image img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 
-ここから、必要なソースタイプを選択し、次に適切なテーブル（トレースの場合は`otel_traces`テーブルを選択）を選択します。すべての設定は自動で検出されるはずです。
+ここから、必要なソースタイプを選択し、続いて適切なテーブルを選択します。例えば、トレースの場合は`otel_traces`テーブルを選択します。すべての設定は自動検出されます。
 
 <Image img={hyperdx_create_trace_datasource} alt="HyperDX create trace source" size="lg"/>
 
 :::note ソースの相関
-ClickStackのログやトレースなどの異なるデータソースは、お互いに相関させることができます。これを有効にするには、各ソースで追加の設定が必要です。たとえば、ログソースでは、対応するトレースソースを指定することができ、トレースソースではその逆が可能です。詳細については、「["相関ソース"](/use-cases/observability/clickstack/config#correlated-sources)」を参照してください。
+ClickStackの異なるデータソース(ログやトレースなど)は、相互に関連付けることができます。これを有効にするには、各ソースで追加の設定が必要です。例えば、ログソースでは対応するトレースソースを指定でき、トレースソースではその逆が可能です。詳細については、["相関ソース"](/use-cases/observability/clickstack/config#correlated-sources)を参照してください。
 :::
 
-#### カスタムスキーマを使用する {#using-custom-schemas}
+#### カスタムスキーマの使用 {#using-custom-schemas}
 
-データを持つ既存のサービスにHyperDXを接続しようとするユーザーは、必要に応じてデータベースとテーブルの設定を完了できます。テーブルがClickHouseのOpen Telemetryスキーマに準拠している場合、設定は自動で検出されます。
+データを持つ既存のサービスにHyperDXを接続したいユーザーは、必要に応じてデータベースとテーブルの設定を完了できます。テーブルがClickHouse用のOpen Telemetryスキーマに準拠している場合、設定は自動検出されます。
 
-独自のスキーマを使用する場合は、必須フィールドを指定してログソースを作成することをお勧めします — 詳細については、「["ログソース設定"](/use-cases/observability/clickstack/config#logs)」を参照してください。
+独自のスキーマを使用する場合は、必要なフィールドが指定されていることを確認してログソースを作成することを推奨します。詳細については、["ログソース設定"](/use-cases/observability/clickstack/config#logs)を参照してください。
 
 </VerticalStepper>
 
-## JSONタイプのサポート {#json-type-support}
+<JSONSupport/>
 
-<BetaBadge/>
-
-ClickStackは、バージョン`2.0.4`から[JSONタイプ](/interfaces/formats/JSON)のベータサポートを提供しています。
-
-このタイプの利点については、[JSONタイプの利点](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type)を参照してください。
-
-JSONタイプのサポートを有効にするには、ユーザーは以下の環境変数を設定する必要があります：
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - OTelコレクターでのサポートを有効にし、JSONタイプを使用してスキーマが作成されることを保証します。
-
-さらに、ユーザーはsupport@clickhouse.comに問い合わせて、JSONがClickHouse Cloudサービスの両方で有効になっていることを確認する必要があります。
+さらに、ユーザーはsupport@clickhouse.comに連絡して、ClickHouse CloudサービスでJSONが有効になっていることを確認する必要があります。
+```
