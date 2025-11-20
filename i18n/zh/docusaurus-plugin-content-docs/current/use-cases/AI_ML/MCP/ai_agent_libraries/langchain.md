@@ -4,7 +4,7 @@ sidebar_label: '集成 LangChain'
 title: '如何使用 ClickHouse MCP Server 构建 LangChain/LangGraph AI Agent'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 ClickHouse 的 MCP Server 构建一个能够与 ClickHouse SQL playground 交互的 LangChain/LangGraph AI Agent。'
+description: '了解如何使用 ClickHouse 的 MCP Server 构建一个可以与 ClickHouse SQL Playground 交互的 LangChain/LangGraph AI Agent。'
 keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,13 +12,12 @@ doc_type: 'guide'
 
 
 
-# 如何使用 ClickHouse MCP Server 构建 LangChain/LangGraph AI 智能体
+# 如何使用 ClickHouse MCP Server 构建 LangChain/LangGraph AI Agent
 
-在本指南中，你将学习如何构建一个 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 智能体，
-使其可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+在本指南中，你将学习如何使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 构建一个可以与 [ClickHouse SQL playground](https://sql.clickhouse.com/) 交互的 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI agent。
 
 :::note 示例笔记本
-该示例以笔记本形式收录在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb) 中。
+该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb)中以笔记本形式查看。
 :::
 
 
@@ -36,7 +35,7 @@ doc_type: 'guide'
 
 ## 安装依赖库 {#install-libraries}
 
-通过运行以下命令安装所需的依赖库:
+运行以下命令安装所需的依赖库:
 
 ```python
 pip install -q --upgrade pip
@@ -46,7 +45,7 @@ pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
 
 ## 设置凭证 {#setup-credentials}
 
-接下来,您需要提供 Anthropic API 密钥:
+接下来，您需要提供 Anthropic API 密钥:
 
 ```python
 import os, getpass
@@ -58,14 +57,14 @@ Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥,并希望使用其他 LLM 提供商,
-可以在 [Langchain Providers 文档](https://python.langchain.com/docs/integrations/providers/) 中查看设置凭证的相关说明
+如果您没有 Anthropic API 密钥，且希望使用其他 LLM 提供商，
+可以在 [Langchain Providers 文档](https://python.langchain.com/docs/integrations/providers/)中查看设置凭证的相关说明
 :::
 
 
 ## 初始化 MCP 服务器 {#initialize-mcp-and-agent}
 
-现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 演练环境:
+现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 演练场：
 
 ```python
 from mcp import ClientSession, StdioServerParameters
@@ -96,7 +95,7 @@ env={
 
 在使用 Langchain 和 ClickHouse MCP Server 时,查询结果通常以流式数据形式返回,而非单次响应。对于大型数据集或需要较长处理时间的复杂分析查询,配置流处理器至关重要。如果没有正确处理,这种流式输出在应用程序中可能难以使用。
 
-配置流式输出处理器,以便更易于使用:
+配置流式输出的处理器以便于使用:
 
 ```python
 class UltraCleanStreamHandler:
@@ -149,7 +148,7 @@ class UltraCleanStreamHandler:
 
 ## 调用代理 {#call-the-agent}
 
-最后,调用您的代理并询问谁向 ClickHouse 提交了最多代码:
+最后，调用您的代理并询问谁向 ClickHouse 提交了最多代码：
 
 ```python
 async with stdio_client(server_params) as (read, write):
@@ -168,24 +167,24 @@ async with stdio_client(server_params) as (read, write):
         print("\n")
 ```
 
-您应该会看到类似以下的响应:
+您应该会看到类似以下的响应：
 
 ```response title="Response"
-我将通过探索可用的数据库和表来帮助您查找谁向 ClickHouse 提交了最多代码,以定位 git 提交数据。
-🔧 list_databases ✅ 我可以看到有一个 `git` 数据库,其中可能包含 git 提交信息。让我探索该数据库中的表:
-🔧 list_tables ✅ 完美!我可以看到 git 数据库中的 `clickhouse_commits` 表包含 ClickHouse 提交数据,共有 80,644 次提交。该表包含每次提交的信息,包括作者、添加/删除的行数、修改的文件等。让我查询此表,根据不同的指标找出谁提交了最多代码。
-🔧 run_select_query ✅ 让我也看看仅添加的行数,以了解谁贡献了最多新代码:
-🔧 run_select_query ✅ 根据 ClickHouse git 提交数据,**Alexey Milovidov** 从多个指标来看向 ClickHouse 提交了最多代码:
+我将通过探索可用的数据库和表来帮助您查找谁向 ClickHouse 提交了最多代码，以定位 git 提交数据。
+🔧 list_databases ✅ 我看到有一个 `git` 数据库，其中可能包含 git 提交信息。让我探索该数据库中的表：
+🔧 list_tables ✅ 完美！我看到 git 数据库中的 `clickhouse_commits` 表包含 ClickHouse 提交数据，共有 80,644 次提交。该表包含每次提交的信息，包括作者、添加/删除的行数、修改的文件等。让我查询此表，根据不同指标找出谁提交了最多代码。
+🔧 run_select_query ✅ 让我也查看一下仅添加的行数，看看谁贡献了最多新代码：
+🔧 run_select_query ✅ 根据 ClickHouse git 提交数据，**Alexey Milovidov** 从多个指标来看向 ClickHouse 提交了最多代码：
 
 ```
 
 
 ## 关键统计数据：
 
-1. **代码总变更行数最多**：Alexey Milovidov，**共变更 1,696,929 行代码**（新增 853,049 行 + 删除 843,880 行）
-2. **新增代码行数最多**：Alexey Milovidov，**新增 853,049 行代码**
-3. **提交次数最多**：Alexey Milovidov，**15,375 次提交**
-4. **变更文件数量最多**：Alexey Milovidov，**变更 73,529 个文件**
+1. **总代码变更行数最多**：Alexey Milovidov，**共变更 1,696,929 行代码**（新增 853,049 行 + 删除 843,880 行）
+2. **新增代码行数最多**：Alexey Milovidov，**共新增 853,049 行代码**
+3. **提交次数最多**：Alexey Milovidov，**共提交 15,375 次**
+4. **变更文件数最多**：Alexey Milovidov，**共变更 73,529 个文件**
 
 
 
@@ -197,7 +196,7 @@ async with stdio_client(server_params) as (read, write):
 4. **alesapin**：新增 193,566 行代码（4,783 次提交）
 5. **Vitaly Baranov**：新增 168,807 行代码（1,152 次提交）
 
-Alexey Milovidov 显然是对 ClickHouse 贡献最为突出的开发者，这也合乎情理，因为他是该项目的最初创建者之一和主要开发负责人之一。无论从代码总量还是提交次数来看，他的贡献都遥遥领先：接近 16,000 次提交，以及为项目新增超过 850,000 行代码。
+Alexey Milovidov 显然是对 ClickHouse 贡献最为突出的开发者，这也合乎情理，因为他是该项目的最初创建者之一并担任核心开发负责人。他在代码总量和提交次数上都远远领先于其他人，累计接近 16,000 次提交，并向项目中新增了超过 850,000 行代码。
 
 ```
 

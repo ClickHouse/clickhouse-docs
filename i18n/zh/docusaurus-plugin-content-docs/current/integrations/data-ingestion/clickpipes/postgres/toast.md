@@ -6,7 +6,7 @@ doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-在将数据从 PostgreSQL 复制到 ClickHouse 时，了解 TOAST（The Oversized-Attribute Storage Technique）列的限制和特殊注意事项非常重要。本指南将帮助你在复制过程中识别并正确处理 TOAST 列。
+在将数据从 PostgreSQL 复制到 ClickHouse 时，了解 TOAST（The Oversized-Attribute Storage Technique）列的限制和特殊注意事项非常重要。本文将帮助你在复制过程中识别并正确处理 TOAST 列。
 
 
 
@@ -35,20 +35,20 @@ WHERE c.relname = 'your_table_name'
   AND a.attnum > 0;
 ```
 
-此查询将返回可能被 TOAST 化的列的名称和数据类型。但需要注意的是,此查询仅根据数据类型和存储属性识别符合 TOAST 存储条件的列。要确定这些列是否实际包含 TOAST 化的数据,还需要考虑这些列中的值是否超过大小阈值。数据是否实际被 TOAST 化取决于这些列中存储的具体内容。
+此查询将返回可能被 TOAST 处理的列的名称和数据类型。但需要注意的是,此查询仅根据数据类型和存储属性识别符合 TOAST 存储条件的列。要确定这些列是否实际包含 TOAST 数据,还需要考虑这些列中的值是否超过了大小阈值。数据是否实际进行 TOAST 处理取决于这些列中存储的具体内容。
 
 
 ## 确保正确处理 TOAST 列 {#ensuring-proper-handling-of-toast-columns}
 
-为确保在复制过程中正确处理 TOAST 列,应将表的 `REPLICA IDENTITY` 设置为 `FULL`。这会指示 PostgreSQL 在 WAL 中包含 UPDATE 和 DELETE 操作的完整旧行数据,确保所有列值(包括 TOAST 列)都可用于复制。
+为确保在复制过程中正确处理 TOAST 列,应将表的 `REPLICA IDENTITY` 设置为 `FULL`。这将指示 PostgreSQL 在 WAL 中包含 UPDATE 和 DELETE 操作的完整旧行数据,从而确保所有列值(包括 TOAST 列)可用于复制。
 
-可以使用以下 SQL 命令将 `REPLICA IDENTITY` 设置为 `FULL`:
+您可以使用以下 SQL 命令将 `REPLICA IDENTITY` 设置为 `FULL`:
 
 ```sql
 ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
-有关设置 `REPLICA IDENTITY FULL` 时的性能考量,请参阅[这篇博客文章](https://xata.io/blog/replica-identity-full-performance)。
+有关设置 `REPLICA IDENTITY FULL` 时的性能考量,请参阅[此博客文章](https://xata.io/blog/replica-identity-full-performance)。
 
 
 ## 未设置 REPLICA IDENTITY FULL 时的复制行为 {#replication-behavior-when-replica-identity-full-is-not-set}

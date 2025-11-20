@@ -11,10 +11,10 @@ keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integra
 
 В этом руководстве рассматривается интеграция следующих компонентов:
 
-- **Логи**
+- **Журналы (логи)**
 
 :::note
-В настоящее время поддерживается только OpenTelemetry Logging. Для поддержки трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
+В настоящее время поддерживается только OpenTelemetry Logging. О поддержке трассировки см. [следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
 :::
 
 

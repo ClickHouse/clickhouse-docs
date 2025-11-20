@@ -3,7 +3,7 @@ title: 'Что означает «ClickHouse»?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/dbms-naming
-description: 'Что означает «ClickHouse»'
+description: 'Что означает «ClickHouse»?'
 doc_type: 'reference'
 keywords: ['ClickHouse name', 'clickstream', 'data warehouse', 'database naming', 'ClickHouse history']
 ---
@@ -14,7 +14,7 @@ keywords: ['ClickHouse name', 'clickstream', 'data warehouse', 'database naming'
 
 Это комбинация слов «**Click**stream» (поток кликов) и «Data ware**House**» (хранилище данных). Название происходит от первоначального сценария использования в Yandex.Metrica, где ClickHouse должен был хранить записи обо всех кликах пользователей со всего Интернета — эту задачу он выполняет и по сей день. Подробнее об этом сценарии использования можно прочитать на странице [история ClickHouse](../../about-us/history.md).
 
-Эта двухчастная структура названия имеет два следствия:
+Такое двухчастное название имеет два следствия:
 
 - Единственный правильный способ написания Click**H**ouse — с заглавной буквой H.
 - Если необходимо использовать аббревиатуру, применяйте **CH**. По историческим причинам в Китае также популярно сокращение CK — в основном потому, что одна из первых презентаций о ClickHouse на китайском языке использовала именно эту форму.

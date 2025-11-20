@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-metrics
-title: 'ClickStack を用いた PostgreSQL メトリクスの監視'
+title: 'ClickStack による PostgreSQL メトリクスの監視'
 sidebar_label: 'PostgreSQL メトリクス'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いた PostgreSQL メトリクスの監視'
+description: 'ClickStack による PostgreSQL メトリクスの監視'
 doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'metrics', 'OTEL', 'ClickStack', 'database monitoring']
 ---
@@ -19,12 +19,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 # ClickStackによるPostgreSQLメトリクスの監視 {#postgres-metrics-clickstack}
 
-:::note[TL;DR]
-本ガイドでは、OpenTelemetryコレクターのPostgreSQLレシーバーを設定し、ClickStackを使用してPostgreSQLのパフォーマンスメトリクスを監視する方法を説明します。以下の内容を学習できます:
+:::note[要約]
+本ガイドでは、OpenTelemetryコレクターのPostgreSQLレシーバーを設定することで、ClickStackを使用してPostgreSQLのパフォーマンスメトリクスを監視する方法を説明します。以下について学習します:
 
 - PostgreSQLメトリクスを収集するためのOTelコレクターの設定
 - カスタム設定を使用したClickStackのデプロイ
-- 事前構築されたダッシュボードを使用したPostgreSQLパフォーマンス(トランザクション、接続、データベースサイズ、キャッシュヒット率)の可視化
+- 事前構築されたダッシュボードを使用したPostgreSQLパフォーマンスの可視化(トランザクション、接続、データベースサイズ、キャッシュヒット率)
 
 本番環境のPostgreSQLデータベースを設定する前に統合をテストする場合は、サンプルメトリクスを含むデモデータセットが利用可能です。
 
@@ -41,25 +41,25 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 ##### 前提条件 {#prerequisites}
 
 - 実行中のClickStackインスタンス
-- 既存のPostgreSQLインストール(バージョン9.6以降)
-- ClickStackからPostgreSQLへのネットワークアクセス(デフォルトポート5432)
+- 既存のPostgreSQLインストール（バージョン9.6以降）
+- ClickStackからPostgreSQLへのネットワークアクセス（デフォルトポート5432）
 - 適切な権限を持つPostgreSQL監視ユーザー
 
 <VerticalStepper headerLevel="h4">
 
 #### 監視ユーザーに必要な権限があることを確認 {#monitoring-permissions}
 
-PostgreSQLレシーバーには、統計ビューへの読み取りアクセス権を持つユーザーが必要です。監視ユーザーに`pg_monitor`ロールを付与してください:
+PostgreSQLレシーバーには、統計ビューへの読み取りアクセス権を持つユーザーが必要です。監視ユーザーに`pg_monitor`ロールを付与してください：
 
 ```sql
 GRANT pg_monitor TO your_monitoring_user;
 ```
 
-#### カスタムOTelコレクター設定の作成 {#create-custom-config}
+#### カスタムOTelコレクター設定を作成 {#create-custom-config}
 
-ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetryコレクター設定を拡張できます。
+ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースとなるOpenTelemetryコレクター設定を拡張できます。
 
-`postgres-metrics.yaml`を作成します:
+`postgres-metrics.yaml`を作成します：
 
 ```yaml
 receivers:
@@ -98,12 +98,12 @@ service:
 ```
 
 :::note
-`tls: insecure: true`設定は、開発/テスト環境でSSL検証を無効にします。SSLが有効な本番環境のPostgreSQLでは、この行を削除するか、適切な証明書を設定してください。
+`tls: insecure: true`設定は、開発/テスト環境でSSL検証を無効にします。SSLが有効な本番環境のPostgreSQLの場合は、この行を削除するか、適切な証明書を設定してください。
 :::
 
 #### カスタム設定でClickStackをデプロイ {#deploy-clickstack}
 
-カスタム設定をマウントします:
+カスタム設定をマウントします：
 
 ```bash
 docker run -d \
@@ -117,13 +117,13 @@ docker run -d \
   clickhouse/clickstack:latest
 ```
 
-#### メトリクス収集の検証 {#verify-metrics}
+#### メトリクス収集を検証 {#verify-metrics}
 
-設定完了後、HyperDXにログインしてメトリクスが送信されていることを確認します:
+設定完了後、HyperDXにログインしてメトリクスが送信されていることを確認します：
 
 1. メトリクスエクスプローラーに移動
-2. postgresql.で始まるメトリクスを検索(例: postgresql.backends、postgresql.commits)
-3. 設定した収集間隔でメトリクスデータポイントが表示されます
+2. postgresql.で始まるメトリクスを検索（例：postgresql.backends、postgresql.commits）
+3. 設定した収集間隔でメトリクスデータポイントが表示されることを確認
 
 メトリクスの送信が確認できたら、[ダッシュボードと可視化](#dashboards)セクションに進んで、事前構築済みダッシュボードをインポートしてください。
 
@@ -132,7 +132,7 @@ docker run -d \
 
 ## デモデータセット {#demo-dataset}
 
-本番環境を構成する前にPostgreSQLメトリクス統合をテストしたいユーザー向けに、実際のPostgreSQLメトリクスパターンを含む事前生成済みデータセットを提供しています。
+本番環境を構成する前にPostgreSQLメトリクス統合をテストしたいユーザー向けに、実際のPostgreSQLメトリクスパターンを再現した事前生成済みデータセットを提供しています。
 
 :::note[データベースレベルのメトリクスのみ]
 このデモデータセットには、サンプルデータを軽量に保つため、データベースレベルのメトリクスのみが含まれています。テーブルおよびインデックスのメトリクスは、実際のPostgreSQLデータベースを監視する際に自動的に収集されます。
@@ -142,11 +142,11 @@ docker run -d \
 
 #### サンプルメトリクスデータセットのダウンロード {#download-sample}
 
-事前生成済みのメトリクスファイル(実際のパターンを含む24時間分のPostgreSQLメトリクス)をダウンロードします:
+事前生成済みのメトリクスファイル(実際のパターンを再現した24時間分のPostgreSQLメトリクス)をダウンロードします:
 
 
 ```bash
-# ゲージメトリクス（接続数、データベースサイズ）をダウンロード
+# ゲージメトリクス（接続数、データベースサイズ）のダウンロード
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 ```
 
@@ -158,10 +158,10 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ````
 
 データセットには以下のような実際の運用パターンが含まれています：
-- **朝の接続スパイク（08:00）** - ログインラッシュ
-- **キャッシュパフォーマンスの問題（11:00）** - Blocks_readのスパイク
-- **アプリケーションのバグ（14:00-14:30）** - ロールバック率が15%に急増
-- **デッドロックインシデント（14:15、16:30）** - 稀なデッドロック
+- **朝の接続急増（08:00）** - ログインラッシュ
+- **キャッシュパフォーマンスの問題（11:00）** - blocks_readの急増
+- **アプリケーションバグ（14:00-14:30）** - ロールバック率が15%に急増
+- **デッドロック発生（14:15、16:30）** - 稀なデッドロック
 
 #### ClickStackの起動 {#start-clickstack}
 
@@ -175,9 +175,9 @@ docker run -d --name clickstack-postgres-demo \
 
 ClickStackが完全に起動するまで約30秒待機します。
 
-#### ClickStackへのメトリクスの読み込み {#load-metrics}
+#### ClickStackへのメトリクスのロード {#load-metrics}
 
-メトリクスをClickHouseに直接読み込みます：
+メトリクスをClickHouseに直接ロードします：
 
 
 ```bash
@@ -229,7 +229,7 @@ ClickStackを使用したPostgreSQLの監視を開始できるよう、PostgreSQ
 
 #### ダッシュボードを表示 {#created-dashboard}
 
-すべての可視化が事前設定された状態でダッシュボードが作成されます:
+すべての可視化が事前設定されたダッシュボードが作成されます:
 
 <Image img={example_dashboard} alt='PostgreSQLメトリクスダッシュボード' />
 
@@ -244,13 +244,13 @@ ClickStackを使用したPostgreSQLの監視を開始できるよう、PostgreSQ
 
 ### カスタム設定が読み込まれない {#troubleshooting-not-loading}
 
-環境変数が設定されているか確認してください:
+環境変数が設定されているか確認します:
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
-カスタム設定ファイルがマウントされているか確認してください:
+カスタム設定ファイルがマウントされているか確認します:
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
@@ -258,13 +258,13 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 
 ### HyperDXにメトリクスが表示されない {#no-metrics}
 
-PostgreSQLにアクセス可能か確認してください:
+PostgreSQLにアクセス可能か確認します:
 
 ```bash
 docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d postgres -c "SELECT 1"
 ```
 
-OTel Collectorのログを確認してください:
+OTelコレクターのログを確認します:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
@@ -272,13 +272,13 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgr
 
 ### 認証エラー {#auth-errors}
 
-パスワードが正しく設定されているか確認してください:
+パスワードが正しく設定されているか確認します:
 
 ```bash
 docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 ```
 
-認証情報を直接テストしてください:
+認証情報を直接テストします:
 
 ```bash
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
@@ -287,11 +287,11 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 
 ## 次のステップ {#next-steps}
 
-PostgreSQLメトリクス監視を設定した後:
+PostgreSQLメトリクス監視の設定後:
 
-- 重要なしきい値（接続数上限、高いロールバック率、低いキャッシュヒット率）に対して[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- `pg_stat_statements`拡張機能でクエリレベルの監視を有効にする
-- 異なるエンドポイントとサービス名でレシーバー設定を複製し、複数のPostgreSQLインスタンスを監視する
+- 重要なしきい値（接続数制限、高いロールバック率、低いキャッシュヒット率）に対して[アラート](/use-cases/observability/clickstack/alerts)を設定します
+- `pg_stat_statements`拡張機能を使用してクエリレベルの監視を有効化します
+- 異なるエンドポイントとサービス名でレシーバー設定を複製することで、複数のPostgreSQLインスタンスを監視します
 
 
 ## 本番環境への移行 {#going-to-production}

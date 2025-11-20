@@ -3,7 +3,7 @@ slug: /faq/integration/oracle-odbc
 title: 'Что делать, если у меня возникают проблемы с кодировками при использовании Oracle через ODBC?'
 toc_hidden: true
 toc_priority: 20
-description: 'На этой странице рассказывается, что делать, если у вас возникают проблемы с кодировками при использовании Oracle через ODBC'
+description: 'На этой странице приводятся рекомендации, что делать, если у вас возникают проблемы с кодировками при использовании Oracle через ODBC'
 doc_type: 'guide'
 keywords: ['oracle', 'odbc', 'encoding', 'integration', 'external dictionary']
 ---

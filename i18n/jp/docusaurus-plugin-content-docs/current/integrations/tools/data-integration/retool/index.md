@@ -2,7 +2,7 @@
 sidebar_label: 'Retool'
 slug: /integrations/retool
 keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
-description: 'リッチなユーザーインターフェースを備えた Web およびモバイルアプリをすばやく構築し、複雑なタスクを自動化し、AI を統合できます。これらはすべて、あなたのデータを基盤として動作します。'
+description: 'リッチなユーザーインターフェースを備えた Web およびモバイルアプリをすばやく構築し、複雑なタスクを自動化し、AI と統合できます ― すべてはあなたのデータを基盤としています。'
 title: 'Retool を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -48,7 +48,7 @@ Retoolアカウントにログインし、_Resources_タブに移動します。
 <Image img={retool_03} size='lg' border alt='適切なドライバの選択' />
 <br />
 
-ClickHouseの認証情報を次の形式で入力します：`jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`
+ClickHouseの認証情報を次の形式で入力します：`jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`。
 インスタンスでSSLが必要な場合、またはClickHouse Cloudを使用している場合は、接続文字列に`&ssl=true`を追加して、`jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`のようにします。
 
 <Image img={retool_04} size='lg' border alt='認証情報の指定' />
@@ -59,4 +59,4 @@ ClickHouseの認証情報を次の形式で入力します：`jdbc:clickhouse://
 <Image img={retool_05} size='lg' border alt='接続のテスト' />
 <br />
 
-これで、ClickHouseリソースを使用してアプリの構築を進めることができます。
+これで、ClickHouseリソースを使用してアプリケーションに進むことができるようになります。

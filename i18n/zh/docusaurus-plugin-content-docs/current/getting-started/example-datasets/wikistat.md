@@ -9,9 +9,9 @@ keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews
 
 该数据集包含 0.5 万亿条记录。
 
-观看 FOSDEM 2023 的视频： [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+查看 FOSDEM 2023 的视频： [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-以及演示文稿： [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+以及相关演示： [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
 数据来源： [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
@@ -36,7 +36,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
 
 （大约需要 3 天）
 
-创建表：
+创建一个表：
 
 ```sql
 CREATE TABLE wikistat
@@ -51,7 +51,7 @@ ENGINE = MergeTree
 ORDER BY (path, time);
 ```
 
-数据加载：
+加载数据：
 
 ```shell
 clickhouse-local --query "

@@ -1,8 +1,8 @@
 ---
 slug: /native-protocol/basics
 sidebar_position: 1
-title: '基础知识'
-description: 'Native 协议基础知识'
+title: '基础'
+description: '原生协议基础知识'
 keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
 doc_type: 'guide'
 ---
@@ -12,24 +12,24 @@ doc_type: 'guide'
 # 基础
 
 :::note
-客户端协议参考文档仍在编写中。
+客户端协议参考文档正在编写中。
 
-目前大部分示例仅提供 Go 版本。
+大多数示例目前仅提供 Go 实现。
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-本文档介绍 ClickHouse TCP 客户端的二进制协议。
+本文档介绍了 ClickHouse TCP 客户端使用的二进制协议。
 
 
-## 变长整数（Varint） {#varint}
+## Varint {#varint}
 
-对于长度、数据包代码等场景，使用 _无符号变长整数（unsigned varint）_ 编码。
+对于长度、数据包代码等场景,使用 _无符号 varint_ 编码。
 使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
 
 :::note
-不使用 _有符号_ 变长整数。
+不使用 _有符号_ varint。
 :::
 
 
@@ -38,7 +38,7 @@ import TabItem from '@theme/TabItem';
 可变长度字符串编码为 _(length, value)_ 格式,其中 _length_ 为 [varint](#varint),_value_ 为 UTF-8 字符串。
 
 :::important
-验证长度以防止内存溢出(OOM):
+验证长度以防止内存溢出 (OOM):
 
 `0 ≤ len < MAX`
 :::

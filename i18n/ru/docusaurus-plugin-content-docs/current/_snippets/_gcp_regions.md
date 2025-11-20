@@ -1,4 +1,4 @@
-| Регион       | Service Attachment                                          | Частный DNS-домен           |
+| Регион       | Присоединённый сервис (Service Attachment)                  | Частный домен DNS            |
 |--------------|-------------------------------------------------------------|------------------------------|
 |`asia-southeast1`| `projects/dataplane-production/regions/asia-southeast1/serviceAttachments/production-asia-southeast1-clickhouse-cloud`| `asia-southeast1.p.gcp.clickhouse.cloud`|
 |`europe-west4`| `projects/dataplane-production/regions/europe-west4/serviceAttachments/production-europe-west4-clickhouse-cloud`| `europe-west4.p.gcp.clickhouse.cloud` |

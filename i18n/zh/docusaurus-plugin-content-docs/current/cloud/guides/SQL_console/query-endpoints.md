@@ -1,7 +1,7 @@
 ---
 sidebar_title: '查询 API 端点'
 slug: /cloud/get-started/query-endpoints
-description: '从已保存的查询轻松创建 REST API 端点'
+description: '基于已保存查询轻松创建 REST API 端点'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
 title: '查询 API 端点'
 doc_type: 'guide'
@@ -20,39 +20,39 @@ import TabItem from '@theme/TabItem';
 
 # 设置查询 API 端点
 
-**Query API Endpoints** 功能允许你在 ClickHouse Cloud 控制台中，直接基于任意已保存的 SQL 查询创建一个 API 端点。你可以通过 HTTP 访问这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
+**Query API Endpoints** 功能允许你在 ClickHouse Cloud 控制台中，基于任意已保存的 SQL 查询直接创建一个 API 端点。这样，你就可以通过 HTTP 访问这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到你的 ClickHouse Cloud 服务。
 
 
 
 ## 前置条件 {#quick-start-guide}
 
-在继续之前,请确保您具备:
+在继续之前，请确保您具备：
 
 - 具有适当权限的 API 密钥
 - Admin Console 角色
 
-如果您还没有 API 密钥,可以按照本指南[创建 API 密钥](/cloud/manage/openapi)。
+如果您还没有 API 密钥，可以按照本指南[创建 API 密钥](/cloud/manage/openapi)。
 
 :::note 最低权限要求
-要查询 API 端点,API 密钥需要具有 `Member` 组织角色以及 `Query Endpoints` 服务访问权限。数据库角色在创建端点时配置。
+要查询 API 端点，API 密钥需要具有 `Member` 组织角色以及 `Query Endpoints` 服务访问权限。数据库角色在创建端点时配置。
 :::
 
 <VerticalStepper headerLevel="h3">
 
 ### 创建已保存的查询 {#creating-a-saved-query}
 
-如果您已有保存的查询,可以跳过此步骤。
+如果您已有保存的查询，可以跳过此步骤。
 
-打开一个新的查询标签页。为了演示目的,我们将使用 [youtube 数据集](/getting-started/example-datasets/youtube-dislikes),该数据集包含约 45 亿条记录。
-按照["创建表"](/getting-started/example-datasets/youtube-dislikes#create-the-table)部分的步骤在您的 Cloud 服务上创建表并插入数据。
+打开一个新的查询标签页。为了演示目的，我们将使用 [youtube 数据集](/getting-started/example-datasets/youtube-dislikes)，该数据集包含约 45 亿条记录。
+按照["创建表"](/getting-started/example-datasets/youtube-dislikes#create-the-table)部分的步骤在您的 Cloud 服务上创建表并向其中插入数据。
 
 :::tip 使用 `LIMIT` 限制行数
-示例数据集教程会插入大量数据 - 46.5 亿行,这可能需要较长时间来插入。
-为了本指南的目的,我们建议使用 `LIMIT` 子句插入较少量的数据,
+示例数据集教程会插入大量数据 - 46.5 亿行，这可能需要较长时间来插入。
+为了本指南的目的，我们建议使用 `LIMIT` 子句插入较少量的数据，
 例如 1000 万行。
 :::
 
-作为示例查询,我们将返回用户输入的 `year` 参数中按每个视频平均观看次数排名前 10 的上传者。
+作为示例查询，我们将返回在用户输入的 `year` 参数中按每个视频平均观看次数排名前 10 的上传者。
 
 ```sql
 WITH sum(view_count) AS view_sum,
@@ -72,15 +72,15 @@ ORDER BY per_upload desc
   LIMIT 10
 ```
 
-请注意,此查询包含一个参数(`year`),在上面的代码片段中已突出显示。
+请注意，此查询包含一个参数（`year`），在上面的代码片段中已突出显示。
 您可以使用花括号 `{ }` 以及参数类型来指定查询参数。
-SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式,并为每个参数提供输入框。
+SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，并为每个参数提供输入框。
 
-让我们快速运行此查询以确保其正常工作,在 SQL 编辑器右侧的查询变量输入框中指定年份 `2010`:
+让我们快速运行此查询以确保其正常工作，在 SQL 编辑器右侧的查询变量输入框中指定年份 `2010`：
 
 <Image img={endpoints_testquery} size='md' alt='测试示例查询' />
 
-接下来,保存查询:
+接下来，保存查询：
 
 <Image img={endpoints_savequery} size='md' alt='保存示例查询' />
 
@@ -88,23 +88,23 @@ SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式,并
 
 ### 配置查询 API 端点 {#configuring-the-query-api-endpoint}
 
-查询 API 端点可以直接从查询视图中配置,点击 **Share** 按钮并选择 `API Endpoint`。
-系统将提示您指定哪些 API 密钥可以访问该端点:
+查询 API 端点可以直接从查询视图中配置，方法是点击 **Share** 按钮并选择 `API Endpoint`。
+系统将提示您指定哪些 API 密钥应该能够访问该端点：
 
 <Image img={endpoints_configure} size='md' alt='配置查询端点' />
 
-选择 API 密钥后,系统将要求您:
+选择 API 密钥后，系统将要求您：
 
-- 选择将用于运行查询的数据库角色(`Full access`、`Read only` 或 `Create a custom role`)
-- 指定跨源资源共享(CORS)允许的域
+- 选择将用于运行查询的数据库角色（`Full access`、`Read only` 或 `Create a custom role`）
+- 指定跨源资源共享（CORS）允许的域
 
-选择这些选项后,查询 API 端点将自动完成配置。
+选择这些选项后，查询 API 端点将自动完成配置。
 
-系统将显示一个示例 `curl` 命令,以便您可以发送测试请求:
+系统将显示一个示例 `curl` 命令，以便您可以发送测试请求：
 
 <Image img={endpoints_completed} size='md' alt='端点 curl 命令' />
 
-为方便起见,界面中显示的 curl 命令如下:
+为方便起见，界面中显示的 curl 命令如下：
 
 ```bash
 curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
@@ -112,15 +112,15 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 
 ### 查询 API 参数 {#query-api-parameters}
 
-查询中的查询参数可以使用语法 `{parameter_name: type}` 指定。这些参数将被自动检测,示例请求负载将包含一个 `queryVariables` 对象,您可以通过该对象传递这些参数。
+查询中的查询参数可以使用语法 `{parameter_name: type}` 指定。这些参数将被自动检测，示例请求负载将包含一个 `queryVariables` 对象，您可以通过该对象传递这些参数。
 
 ### 测试和监控 {#testing-and-monitoring}
 
-创建查询 API 端点后,您可以使用 `curl` 或任何其他 HTTP 客户端测试其是否正常工作:
+创建查询 API 端点后，您可以使用 `curl` 或任何其他 HTTP 客户端测试其是否正常工作：
 
 <Image img={endpoints_curltest} size='md' alt='端点 curl 测试' />
 
-发送第一个请求后,**Share** 按钮右侧应立即出现一个新按钮。点击它将打开一个包含查询监控数据的弹出窗口:
+发送第一个请求后，**Share** 按钮右侧应立即出现一个新按钮。点击它将打开一个包含查询监控数据的弹出窗口：
 
 <Image img={endpoints_monitoring} size='sm' alt='端点监控' />
 
@@ -130,7 +130,7 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 ## 实现细节 {#implementation-details}
 
 此端点用于执行已保存的 Query API 端点上的查询。
-支持多版本、灵活的响应格式、参数化查询以及可选的流式响应(仅版本 2)。
+支持多个版本、灵活的响应格式、参数化查询以及可选的流式响应(仅版本 2)。
 
 **端点:**
 
@@ -150,12 +150,12 @@ POST /query-endpoints/{queryEndpointId}/run
 
 - 不包含复杂嵌套数据的简单查询
 - 参数可以轻松进行 URL 编码
-- 利用 HTTP GET 语义获得缓存优势
+- 利用 HTTP GET 语义的缓存优势
 
 **何时使用 POST:**
 
 - 复杂的查询变量(数组、对象、大字符串)
-- 出于安全/隐私考虑优先使用请求体
+- 出于安全/隐私考虑需要使用请求体时
 - 流式文件上传或大数据传输
 
 ### 身份验证 {#authentication}
@@ -248,7 +248,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### 基本请求 {#basic-request}
 
-**Query API 端点 SQL:**
+**查询 API 端点 SQL：**
 
 ```sql
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
@@ -371,7 +371,7 @@ fetch(
 
 ### 使用查询变量和版本 2 的 JSONCompactEachRow 格式请求 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**Query API 端点 SQL:**
+**查询 API 端点 SQL：**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
@@ -623,13 +623,13 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
 > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
 ...
-> Stream ended.
+> 流结束。
 ```
 
 </TabItem>
 </Tabs>
 
-### 将文件流插入表中 {#insert-a-stream-from-a-file-into-a-table}
+### 从文件流式插入数据到表 {#insert-a-stream-from-a-file-into-a-table}
 
 创建文件 `./samples/my_first_table_2024-07-11.csv`,内容如下:
 

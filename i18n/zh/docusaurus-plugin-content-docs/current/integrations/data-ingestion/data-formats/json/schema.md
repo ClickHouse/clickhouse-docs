@@ -1,7 +1,7 @@
 ---
-title: '设计 JSON 模式'
+title: '设计 JSON 架构'
 slug: /integrations/data-formats/json/schema
-description: '如何设计最优的 JSON 模式'
+description: '如何最佳地设计 JSON 架构'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
 score: 20
 doc_type: 'guide'
@@ -15,7 +15,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 
 # 设计你的 schema
 
-虽然可以使用[模式推断](/integrations/data-formats/json/inference)为 JSON 数据建立初始 schema，并直接在（例如 S3 中的）JSON 数据文件上执行查询，但用户仍应为其数据设计一个经过优化且可版本化的 schema。下面我们将讨论对 JSON 结构建模的推荐方法。
+虽然可以使用[模式推断](/integrations/data-formats/json/inference)为 JSON 数据建立初始 schema，并对位于 S3 等位置的 JSON 数据文件进行就地查询，但用户仍应为其数据建立经过优化且具备版本管理的 schema。下面我们将讨论对 JSON 结构建模的推荐方法。
 
 
 
@@ -24,13 +24,13 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 为 JSON 定义模式的主要任务是确定每个键的值的适当类型。我们建议用户对 JSON 层次结构中的每个键递归应用以下规则,以确定每个键的适当类型。
 
 1. **基本类型** - 如果键的值是基本类型,无论它是子对象的一部分还是位于根级别,请确保根据通用模式[设计最佳实践](/data-modeling/schema-design)和[类型优化规则](/data-modeling/schema-design#optimizing-types)选择其类型。基本类型的数组,例如下面的 `phone_numbers`,可以建模为 `Array(<type>)`,例如 `Array(String)`。
-2. **静态与动态** - 如果键的值是复杂对象,即对象或对象数组,请确定它是否会发生变化。很少添加新键的对象,其中新键的添加可以预测并通过 [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 进行模式变更来处理,可以视为**静态**。这包括某些 JSON 文档中可能只提供键的子集的对象。频繁添加新键和/或不可预测的对象应视为**动态**。**这里的例外是具有数百或数千个子键的结构,为了方便起见可以视为动态**。
+2. **静态与动态** - 如果键的值是复杂对象,即对象或对象数组,请确定它是否会发生变化。很少添加新键的对象,其中新键的添加可以预测并通过 [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 进行模式变更来处理,可以视为**静态**。这包括某些 JSON 文档中可能仅提供部分键的对象。频繁添加新键和/或不可预测的对象应视为**动态**。**这里的例外是具有数百或数千个子键的结构,为了方便起见可以视为动态**。
 
 要确定值是**静态**还是**动态**,请参阅下面的相关章节[**处理静态对象**](/integrations/data-formats/json/schema#handling-static-structures)和[**处理动态对象**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)。
 
 <p></p>
 
-**重要提示:** 上述规则应递归应用。如果确定键的值是动态的,则无需进一步评估,可以遵循[**处理动态对象**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)中的指南。如果对象是静态的,请继续评估子键,直到键值是基本类型或遇到动态键为止。
+**重要提示:**上述规则应递归应用。如果确定键的值是动态的,则无需进一步评估,可以遵循[**处理动态对象**](/integrations/data-formats/json/schema#handling-semi-structured-dynamic-structures)中的指南。如果对象是静态的,请继续评估子键,直到键值为基本类型或遇到动态键为止。
 
 为了说明这些规则,我们使用以下表示一个人的 JSON 示例:
 
@@ -82,20 +82,20 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 应用这些规则:
 
 - 根级别的键 `name`、`username`、`email`、`website` 可以表示为 `String` 类型。列 `phone_numbers` 是 `Array(String)` 类型的数组基本类型,`dob` 和 `id` 的类型分别为 `Date` 和 `UInt32`。
-- 不会向 `address` 对象添加新键(只会添加新的地址对象),因此可以将其视为**静态**。如果我们递归,除了 `geo` 之外,所有子列都可以视为基本类型(类型为 `String`)。`geo` 也是一个静态结构,包含两个 `Float32` 列:`lat` 和 `lng`。
+- 不会向 `address` 对象添加新键(只会添加新的地址对象),因此可以将其视为**静态**。如果我们递归,除了 `geo` 之外,所有子列都可以视为基本类型(类型为 `String`)。`geo` 也是一个静态结构,包含两个 `Float32` 列:`lat` 和 `lon`。
 - `tags` 列是**动态**的。我们假设可以向此对象添加任意类型和结构的新标签。
 - `company` 对象是**静态**的,最多始终包含指定的 3 个键。子键 `name` 和 `catchPhrase` 的类型为 `String`。键 `labels` 是**动态**的。我们假设可以向此对象添加新的任意标签。值始终是字符串类型的键值对。
 
 
 :::note
-具有数百或数千个静态键的结构也可以视为动态结构，因为在实际场景中很难为这些键逐一静态声明列。不过，在可能的情况下，应[跳过不需要的路径](#using-type-hints-and-skipping-paths)，以同时节省存储空间和推断开销。
+具有上百或上千个静态键的结构在实践中可以视为动态结构，因为几乎不可能为这些键静态声明所有列。不过，在可能的情况下，应[跳过不需要的路径](#using-type-hints-and-skipping-paths)，以同时节省存储和推断开销。
 :::
 
 
 
 ## 处理静态结构 {#handling-static-structures}
 
-我们建议使用命名元组(即 `Tuple`)来处理静态结构。对象数组可以使用元组数组(即 `Array(Tuple)`)来保存。在元组内部,列及其对应的类型应遵循相同的定义规则。这样可以通过嵌套 Tuple 来表示嵌套对象,如下所示。
+我们建议使用命名元组(即 `Tuple`)来处理静态结构。对象数组可以使用元组数组(即 `Array(Tuple)`)来保存。在元组内部,列及其各自的类型应使用相同的规则定义。这样可以通过嵌套的 Tuple 来表示嵌套对象,如下所示。
 
 为了说明这一点,我们使用之前的 JSON 人员示例,省略动态对象:
 
@@ -127,7 +127,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 }
 ```
 
-该表的模式定义如下:
+该表的模式如下所示:
 
 ```sql
 CREATE TABLE people
@@ -155,7 +155,7 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
-在上面的示例中,虽然数据量很少,但如下所示,我们可以通过点分隔的名称来查询元组列。
+在上面的示例中,虽然数据量很少,但如下所示,我们可以通过用句点分隔的名称来查询元组列。
 
 ```sql
 SELECT
@@ -205,7 +205,7 @@ ORDER BY company.name
 即使 JSON 对象是结构化的,它们通常也是稀疏的,只提供已知键的一个子集。幸运的是,`Tuple` 类型不要求 JSON 负载中包含所有列。如果未提供,将使用默认值。
 
 
-考虑我们之前的 `people` 表和以下稀疏 JSON,其中缺少 `suite`、`geo`、`phone_numbers` 和 `catchPhrase` 键。
+考虑我们之前的 `people` 表和以下稀疏 JSON,缺少 `suite`、`geo`、`phone_numbers` 和 `catchPhrase` 键。
 
 ```json
 {
@@ -228,7 +228,7 @@ ORDER BY company.name
 }
 ```
 
-可以看到,该行可以成功插入:
+可以看到该行能够成功插入:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -276,14 +276,14 @@ FORMAT PrettyJSONEachRow
 ```
 
 :::note 区分空值和 null
-如果需要区分值为空和未提供值的情况,可以使用 [Nullable](/sql-reference/data-types/nullable) 类型。除非绝对必要,否则[应避免使用](/best-practices/select-data-types#avoid-nullable-columns),因为它会对这些列的存储和查询性能产生负面影响。
+如果需要区分值为空和未提供的情况,可以使用 [Nullable](/sql-reference/data-types/nullable) 类型。除非绝对必要,否则[应避免使用](/best-practices/select-data-types#avoid-nullable-columns),因为它会对这些列的存储和查询性能产生负面影响。
 :::
 
 ### 处理新列 {#handling-new-columns}
 
-虽然当 JSON 键是静态时,结构化方法最为简单,但如果可以规划 schema 的变更,即提前知道新键并相应修改 schema,这种方法仍然适用。
+虽然当 JSON 键是静态时结构化方法最简单,但如果可以规划 schema 的变更,即提前知道新键并相应修改 schema,这种方法仍然适用。
 
-请注意,默认情况下,ClickHouse 会忽略 payload 中提供但 schema 中不存在的 JSON 键。考虑以下添加了 `nickname` 键的修改后 JSON payload:
+注意,ClickHouse 默认会忽略 payload 中提供但 schema 中不存在的 JSON 键。考虑以下添加了 `nickname` 键的修改后 JSON payload:
 
 ```json
 {
@@ -314,19 +314,19 @@ FORMAT PrettyJSONEachRow
 }
 ```
 
-该 JSON 可以成功插入,`nickname` 键将被忽略:
+该 JSON 可以成功插入,`nickname` 键会被忽略:
 
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
-Ok.
+好的。
 
-已插入 1 行。耗时：0.002 秒。
+1 行数据。耗时：0.002 秒。
 ```
 
-可以使用 [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 命令向表的模式中添加列。可以通过 `DEFAULT` 子句指定默认值，在后续插入时如果未为该列显式提供值，将使用该默认值。对于在该默认值创建之前已插入、且缺少该列值的行，查询时也会返回这个默认值。如果未指定 `DEFAULT` 值，则会使用该数据类型的默认值。
+可以使用 [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) 命令向表结构中添加列。可以通过 `DEFAULT` 子句指定默认值，如果在后续插入时未指定该列的值，则会使用该默认值。对于在该默认值定义之前插入、因此不包含此列值的行，查询时也会返回该默认值。如果未指定 `DEFAULT` 值，则会使用该数据类型的默认值。
 
 例如：
 
@@ -351,7 +351,7 @@ SELECT id, nickname FROM people
 │  1 │ no_nickname │
 └────┴─────────────┘
 
-2 rows in set. Elapsed: 0.001 sec.
+返回 2 行。耗时：0.001 秒。
 ```
 
 
@@ -462,10 +462,10 @@ SELECT id, nickname FROM people
 }
 ```
 
-鉴于对象之间 `company.labels` 列在键和类型方面的动态特性,我们有几种选项来建模这些数据:
+鉴于对象之间 `company.labels` 列在键和类型方面的动态特性,我们有几种选项来对这些数据建模:
 
 - **单个 JSON 列** - 将整个模式表示为单个 `JSON` 列,允许其下的所有结构都是动态的。
-- **针对性 JSON 列** - 仅对 `company.labels` 列使用 `JSON` 类型,对所有其他列保留上面使用的结构化模式。
+- **针对性 JSON 列** - 仅对 `company.labels` 列使用 `JSON` 类型,对所有其他列保留上述使用的结构化模式。
 
 虽然第一种方法[与之前的方法不一致](#static-vs-dynamic-json),但单个 JSON 列方法对于原型设计和数据工程任务很有用。
 
@@ -474,8 +474,8 @@ SELECT id, nickname FROM people
 严格的模式具有许多优势:
 
 
-- **数据验证** – 强制使用严格的模式可以避免特定结构之外的列爆炸风险。
-- **避免列爆炸风险** - 尽管 JSON 类型可以扩展到数千列,其中子列作为专用列存储,但这可能导致列文件爆炸,即创建过多的列文件从而影响性能。为了缓解这一问题,JSON 使用的底层 [Dynamic 类型](/sql-reference/data-types/dynamic)提供了 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) 参数,该参数限制作为单独列文件存储的唯一路径数量。一旦达到阈值,额外的路径将使用紧凑编码格式存储在共享列文件中,在支持灵活数据摄取的同时保持性能和存储效率。但是,访问此共享列文件的性能不如专用列。需要注意的是,JSON 列可以与[类型提示](#using-type-hints-and-skipping-paths)一起使用。"提示"列将提供与专用列相同的性能。
+- **数据验证** – 强制使用严格的模式可以避免列爆炸的风险(特定结构除外)。
+- **避免列爆炸风险** - 尽管 JSON 类型可以扩展到数千列,其中子列作为专用列存储,但这可能导致列文件爆炸,即创建过多的列文件从而影响性能。为了缓解这一问题,JSON 使用的底层 [Dynamic 类型](/sql-reference/data-types/dynamic) 提供了 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) 参数,该参数限制作为单独列文件存储的唯一路径数量。一旦达到阈值,额外的路径将使用紧凑编码格式存储在共享列文件中,在支持灵活数据摄取的同时保持性能和存储效率。但是,访问此共享列文件的性能不如访问专用列。需要注意的是,JSON 列可以与[类型提示](#using-type-hints-and-skipping-paths)一起使用。带"提示"的列将提供与专用列相同的性能。
 - **更简单的路径和类型内省** - 尽管 JSON 类型支持[内省函数](/sql-reference/data-types/newjson#introspection-functions)来确定已推断的类型和路径,但静态结构可能更容易探索,例如使用 `DESCRIBE`。
 
 ### 单个 JSON 列 {#single-json-column}
@@ -500,10 +500,10 @@ ORDER BY json.username;
 ```
 
 :::note
-我们在 JSON 定义中为 `username` 列提供了[类型提示](#using-type-hints-and-skipping-paths),因为我们在排序键/主键中使用它。这有助于 ClickHouse 知道此列不会为空,并确保它知道要使用哪个 `username` 子列(每种类型可能有多个,否则会产生歧义)。
+我们在 JSON 定义中为 `username` 列提供了[类型提示](#using-type-hints-and-skipping-paths),因为我们在排序键/主键中使用它。这有助于 ClickHouse 知道此列不会为 null,并确保它知道要使用哪个 `username` 子列(每种类型可能有多个,否则会产生歧义)。
 :::
 
-可以使用 `JSONAsObject` 格式将行插入到上表中:
+可以使用 `JSONAsObject` 格式将行插入到上述表中:
 
 ```sql
 INSERT INTO people FORMAT JSONAsObject
@@ -533,7 +533,7 @@ json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street
 ──────
 json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
 
-返回 2 行。用时:0.005 秒。
+2 行结果集。耗时:0.005 秒。
 
 ````
 
@@ -585,7 +585,7 @@ FORMAT PrettyJsonEachRow
  }
 }
 
-返回 2 行。用时:0.009 秒。
+2 行结果集。耗时:0.009 秒。
 ````
 
 有关内省函数的完整列表,请参阅["内省函数"](/sql-reference/data-types/newjson#introspection-functions)
@@ -600,13 +600,13 @@ SELECT json.name, json.email FROM people
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
 └──────────────────────┴───────────────────────┘
 
-返回 2 行。用时:0.006 秒。
+2 行结果集。耗时:0.006 秒。
 ```
 
-注意,行中缺失的列将返回 `NULL`。
+注意,行中缺失的列会返回 `NULL`。
 
 
-此外,对于类型相同的路径会创建单独的子列。例如,`company.labels.type` 同时存在 `String` 和 `Array(Nullable(String))` 类型的子列。虽然两者都会在可能的情况下返回,但我们可以使用 `.:` 语法来指定特定的子列:
+此外,系统会为相同类型的路径创建独立的子列。例如,`company.labels.type` 同时存在 `String` 和 `Array(Nullable(String))` 类型的子列。虽然在可能的情况下两者都会返回,但我们可以使用 `.:` 语法来指定特定的子列:
 
 ```sql
 SELECT json.company.labels.type
@@ -630,7 +630,7 @@ FROM people
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
-要返回嵌套的子对象,需要使用 `^` 符号。这是一个设计选择,旨在避免读取大量列 - 除非明确请求。不使用 `^` 访问的对象将返回 `NULL`,如下所示:
+要返回嵌套的子对象,必须使用 `^` 符号。这是一个设计决策,旨在避免读取大量列 - 除非明确请求。不使用 `^` 访问的对象将返回 `NULL`,如下所示:
 
 ```sql
 -- 默认情况下不会返回子对象
@@ -658,9 +658,9 @@ FROM people
 
 ### 指定 JSON 列 {#targeted-json-column}
 
-虽然在原型设计和数据工程挑战中很有用,但我们建议在生产环境中尽可能使用显式架构。
+虽然在原型开发和数据工程场景中很有用,但我们建议在生产环境中尽可能使用显式架构。
 
-我们之前的示例可以使用单个 `JSON` 列来建模 `company.labels` 列。
+我们之前的示例可以通过为 `company.labels` 列使用单个 `JSON` 列来建模。
 
 ```sql
 CREATE TABLE people
@@ -680,7 +680,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-我们可以使用 `JSONEachRow` 格式向此表插入数据:
+我们可以使用 `JSONEachRow` 格式向该表插入数据:
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -694,7 +694,7 @@ INSERT INTO people FORMAT JSONEachRow
 ```
 
 
-1 row in set. Elapsed: 0.440 sec.
+返回 1 行。用时：0.440 秒。
 
 ````
 
@@ -703,7 +703,7 @@ SELECT *
 FROM people
 FORMAT Vertical
 
-第 1 行：
+行 1：
 ──────
 id:            2
 name:          Analytica Rowe
@@ -716,7 +716,7 @@ company:       ('Streamlined analytics at scale','FastData Inc.','{"dissolved":"
 dob:           1992-07-15
 tags:          {"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}
 
-第 2 行：
+行 2：
 ──────
 id:            1
 name:          Clicky McCliickHouse
@@ -729,7 +729,7 @@ company:       ('The real-time data warehouse for analytics','ClickHouse','{"emp
 dob:           2007-03-31
 tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}
 
-2 rows in set. Elapsed: 0.005 sec.
+返回 2 行。用时：0.005 秒。
 ````
 
 可以使用[内省函数](/sql-reference/data-types/newjson#introspection-functions)来确定 `company.labels` 列推断出的路径和类型。
@@ -755,12 +755,12 @@ FORMAT PrettyJsonEachRow
  }
 }
 
-2 rows in set. Elapsed: 0.003 sec.
+返回 2 行。用时：0.003 秒。
 ```
 
 ### 使用类型提示和跳过路径 {#using-type-hints-and-skipping-paths}
 
-类型提示允许我们为路径及其子列指定类型，从而避免不必要的类型推断。请参考以下示例，我们为 JSON 列 `company.labels` 中的 JSON 键 `dissolved`、`employees` 和 `founded` 指定了类型：
+类型提示允许我们为路径及其子列指定类型，从而避免不必要的类型推断。请参考以下示例，其中我们为 JSON 列 `company.labels` 中的 JSON 键 `dissolved`、`employees` 和 `founded` 指定了类型
 
 ```sql
 CREATE TABLE people
@@ -794,7 +794,7 @@ ORDER BY username
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-1 row in set. Elapsed: 0.450 sec.
+返回 1 行。用时：0.450 秒。
 
 ```
 
@@ -833,7 +833,7 @@ FORMAT PrettyJsonEachRow
 2 rows in set. Elapsed: 0.003 sec.
 ````
 
-此外,我们可以使用 [`SKIP` 和 `SKIP REGEXP`](/sql-reference/data-types/newjson) 参数跳过 JSON 中不想存储的路径,以减少存储空间并避免对不需要的路径进行不必要的类型推断。例如,假设我们对上述数据使用单个 JSON 列,可以跳过 `address` 和 `company` 路径:
+此外,我们可以使用 [`SKIP` 和 `SKIP REGEXP`](/sql-reference/data-types/newjson) 参数跳过 JSON 中不需要存储的路径,以减少存储空间并避免对不需要的路径进行不必要的类型推断。例如,假设我们对上述数据使用单个 JSON 列,可以跳过 `address` 和 `company` 路径:
 
 ```sql
 CREATE TABLE people
@@ -925,27 +925,27 @@ FORMAT PrettyJSONEachRow
 
 #### 使用类型提示优化性能 {#optimizing-performance-with-type-hints}
 
-类型提示不仅可以避免不必要的类型推断,还能完全消除存储和处理的间接层,同时允许指定[最优原始类型](/data-modeling/schema-design#optimizing-types)。带有类型提示的 JSON 路径始终像传统列一样存储,无需使用[**判别列**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)或在查询时进行动态解析。
+类型提示不仅能够避免不必要的类型推断,还能完全消除存储和处理的间接层,同时允许指定[最优基本类型](/data-modeling/schema-design#optimizing-types)。带有类型提示的 JSON 路径始终像传统列一样存储,无需使用[**判别列**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)或在查询时进行动态解析。
 
-这意味着通过明确定义的类型提示,嵌套 JSON 键可以达到与从一开始就建模为顶级列相同的性能和效率。
+这意味着通过明确定义的类型提示,嵌套的 JSON 键可以达到与从一开始就建模为顶级列相同的性能和效率。
 
-因此,对于大部分结构一致但仍需要 JSON 灵活性的数据集,类型提示提供了一种便捷方式来保持性能,而无需重构模式或数据摄取管道。
+因此,对于大部分结构一致但仍需要 JSON 灵活性的数据集,类型提示提供了一种便捷的方式来保持性能,而无需重构模式或数据摄取管道。
 
 ### 配置动态路径 {#configuring-dynamic-paths}
 
-ClickHouse 将每个 JSON 路径作为子列存储在真正的列式布局中,实现与传统列相同的性能优势——如压缩、SIMD 加速处理和最小磁盘 I/O。JSON 数据中的每个唯一路径和类型组合都可以成为磁盘上独立的列文件。
+ClickHouse 将每个 JSON 路径作为子列存储在真正的列式布局中,从而实现与传统列相同的性能优势——例如压缩、SIMD 加速处理和最小化磁盘 I/O。JSON 数据中的每个唯一路径和类型组合都可以成为磁盘上独立的列文件。
 
 <Image img={json_column_per_type} size="md" alt="Column per JSON path" />
 
-例如,当插入两个具有不同类型的 JSON 路径时,ClickHouse 将每个[具体类型的值存储在不同的子列中](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)。这些子列可以独立访问,最大限度减少不必要的 I/O。请注意,当查询具有多种类型的列时,其值仍作为单个列式响应返回。
+例如,当插入两个具有不同类型的 JSON 路径时,ClickHouse 将每个[具体类型的值存储在不同的子列中](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)。这些子列可以独立访问,从而最大限度地减少不必要的 I/O。请注意,当查询具有多种类型的列时,其值仍作为单个列式响应返回。
 
-此外,通过利用偏移量,ClickHouse 确保这些子列保持密集,不会为缺失的 JSON 路径存储默认值。这种方法最大化压缩效果并进一步减少 I/O。
+此外,通过利用偏移量,ClickHouse 确保这些子列保持密集,不会为缺失的 JSON 路径存储默认值。这种方法最大化了压缩效果并进一步减少了 I/O。
 
 <Image img={json_offsets} size="md" alt="JSON offsets" />
 
-然而,在具有高基数或高度可变 JSON 结构的场景中——例如遥测管道、日志或机器学习特征存储——这种行为可能导致列文件数量激增。每个新的唯一 JSON 路径都会产生一个新列文件,该路径下的每个类型变体都会产生一个额外的列文件。虽然这对读取性能最优,但会带来运维挑战:文件描述符耗尽、内存使用增加,以及由于大量小文件导致的合并速度变慢。
+然而,在具有高基数或高度可变 JSON 结构的场景中——例如遥测管道、日志或机器学习特征存储——这种行为可能导致列文件数量激增。每个新的唯一 JSON 路径都会产生一个新的列文件,该路径下的每个类型变体都会产生一个额外的列文件。虽然这对读取性能是最优的,但它带来了运维挑战:文件描述符耗尽、内存使用增加,以及由于大量小文件导致的合并速度变慢。
 
-为了缓解这个问题,ClickHouse 引入了溢出子列的概念:一旦不同 JSON 路径的数量超过阈值,额外的路径将使用紧凑编码格式存储在单个共享文件中。该文件仍然可查询,但不具备专用子列的性能特性。
+为了缓解这一问题,ClickHouse 引入了溢出子列的概念:一旦不同 JSON 路径的数量超过阈值,额外的路径将使用紧凑编码格式存储在单个共享文件中。该文件仍然可查询,但不具有专用子列的相同性能特性。
 
 <Image img={shared_json_column} size="md" alt="Shared JSON column" />
 
@@ -963,6 +963,6 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-**避免将此参数设置得过高**——较大的取值会增加资源消耗并降低效率。一般而言，应将其控制在 10,000 以下。对于结构高度动态的工作负载，使用类型提示和 `SKIP` 参数来限制实际写入和存储的内容。
+**避免将此参数设置得过高**——较大的取值会增加资源消耗并降低效率。一般建议将其控制在 10,000 以下。对于结构高度动态的工作负载，请使用类型提示和 `SKIP` 参数来限制实际存储的内容。
 
-如果你对这种新列类型的实现细节感兴趣，建议阅读我们的详细博文[《用于 ClickHouse 的全新强大 JSON 数据类型》](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
+如果你对这一新列类型的实现感兴趣，建议阅读我们的详细博文[《ClickHouse 中一种强大的全新 JSON 数据类型》](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。

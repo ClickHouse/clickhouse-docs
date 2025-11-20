@@ -1,6 +1,6 @@
 ---
 title: '故障排查'
-description: '安装故障排查指南'
+description: '安装疑难排解指南'
 slug: /guides/troubleshooting
 doc_type: 'guide'
 keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnostics']
@@ -69,7 +69,7 @@ sudo apt-get autoclean
 
 可能的问题:缓存错误,可能是在 2022 年 9 月更新 GPG 密钥后损坏。
 
-解决方案是清理 Yum 的缓存和 lib 目录:
+解决方案是清理 Yum 的缓存和库目录:
 
 ```shell
 sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec rm -rf {} +
@@ -94,7 +94,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 sudo service clickhouse-server status
 ```
 
-如果服务器未运行,请使用以下命令启动：
+如果服务器未运行，请使用以下命令启动：
 
 ```shell
 sudo service clickhouse-server start
@@ -104,24 +104,24 @@ sudo service clickhouse-server start
 
 `clickhouse-server` 的主日志默认位于 `/var/log/clickhouse-server/clickhouse-server.log`。
 
-如果服务器成功启动,您应该看到以下字符串：
+如果服务器成功启动，您应该看到以下字符串：
 
 - `<Information> Application: starting up.` — 服务器已启动。
 - `<Information> Application: Ready for connections.` — 服务器正在运行并准备接受连接。
 
-如果 `clickhouse-server` 因配置错误启动失败,您应该看到带有错误描述的 `<Error>` 字符串。例如：
+如果 `clickhouse-server` 因配置错误启动失败，您应该看到带有错误描述的 `<Error>` 字符串。例如：
 
 ```plaintext
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-如果在文件末尾没有看到错误,请从以下字符串开始查看整个文件：
+如果在文件末尾没有看到错误，请从以下字符串开始查看整个文件：
 
 ```plaintext
 <Information> Application: starting up.
 ```
 
-如果您尝试在服务器上启动第二个 `clickhouse-server` 实例,您会看到以下日志：
+如果您尝试在服务器上启动第二个 `clickhouse-server` 实例，您会看到以下日志：
 
 ```plaintext
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -139,7 +139,7 @@ Revision: 54413
 
 #### 查看 systemd 日志 {#see-systemd-logs}
 
-如果在 `clickhouse-server` 日志中找不到任何有用信息或没有日志,您可以使用以下命令查看 `systemd` 日志：
+如果在 `clickhouse-server` 日志中找不到任何有用信息或没有任何日志，您可以使用以下命令查看 `systemd` 日志：
 
 ```shell
 sudo journalctl -u clickhouse-server
@@ -151,14 +151,14 @@ sudo journalctl -u clickhouse-server
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-此命令使用自动启动脚本的标准参数将服务器作为交互式应用程序启动。在此模式下,`clickhouse-server` 会在控制台中打印所有事件消息。
+此命令使用自动启动脚本的标准参数将服务器作为交互式应用程序启动。在此模式下，`clickhouse-server` 会在控制台中打印所有事件消息。
 
 ### 配置参数 {#configuration-parameters}
 
 检查：
 
 1. Docker 设置：
-   - 如果您在 IPv6 网络中的 Docker 中运行 ClickHouse,请确保设置了 `network=host`。
+   - 如果您在 IPv6 网络中的 Docker 中运行 ClickHouse，请确保设置了 `network=host`。
 
 1. 端点设置。
    - 检查 [listen_host](/operations/server-configuration-parameters/settings#listen_host) 和 [tcp_port](/operations/server-configuration-parameters/settings#tcp_port) 设置。
@@ -171,7 +171,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
    - 检查：
      - [tcp_port_secure](/operations/server-configuration-parameters/settings#tcp_port_secure) 设置。
      - [SSL 证书](/operations/server-configuration-parameters/settings#openssl)设置。
-   - 连接时使用正确的参数。例如,在使用 `clickhouse_client` 时使用 `port_secure` 参数。
+   - 连接时使用正确的参数。例如，在使用 `clickhouse_client` 时使用 `port_secure` 参数。
 
 1. 用户设置：
    - 您可能使用了错误的用户名或密码。
@@ -193,6 +193,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
 ## 查询处理效率 {#efficiency-of-query-processing}
 
-如果您发现 ClickHouse 运行过慢,需要对查询的服务器资源和网络负载进行性能分析。
+如果您发现 ClickHouse 运行过慢,需要对查询所占用的服务器资源和网络负载进行性能分析。
 
 您可以使用 clickhouse-benchmark 工具来分析查询性能。该工具会显示每秒处理的查询数量、每秒处理的行数以及查询处理时间的百分位数。

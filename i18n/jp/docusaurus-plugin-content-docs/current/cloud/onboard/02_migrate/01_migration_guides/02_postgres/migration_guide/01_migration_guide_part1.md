@@ -11,7 +11,7 @@ doc_type: 'guide'
 import postgres_stackoverflow_schema from '@site/static/images/migrations/postgres-stackoverflow-schema.png';
 import Image from '@theme/IdealImage';
 
-> これは、PostgreSQL から ClickHouse への移行ガイドの **パート 1** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）アプローチで、どのように効率的に移行を行うかを示します。ここで取り上げる多くの概念は、PostgreSQL から ClickHouse への手動による一括データ転送にも適用できます。
+> これは、PostgreSQL から ClickHouse への移行ガイドの **パート 1** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）方式で、どのように効率的に移行を行えるかを示します。ここで扱う多くの概念は、PostgreSQL から ClickHouse への手動によるバルクデータ転送にも適用できます。
 
 
 ## データセット {#dataset}
@@ -26,11 +26,11 @@ PostgreSQLからClickHouseへの典型的な移行例を示すために、[こ�
 
 _PostgreSQLでテーブルを作成するためのDDLコマンドは[こちら](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==)から入手できます。_
 
-このスキーマは必ずしも最適ではありませんが、主キー、外部キー、パーティショニング、インデックスなど、PostgreSQLの主要な機能を活用しています。
+このスキーマは必ずしも最適ではありませんが、主キー、外部キー、パーティショニング、インデックスなど、PostgreSQLの一般的な機能を活用しています。
 
-これらの各概念をClickHouseの対応する機能に移行していきます。
+これらの各概念をClickHouseの同等機能に移行します。
 
-移行手順をテストするためにこのデータセットをPostgreSQLインスタンスに投入したいユーザー向けに、DDLと共にダウンロード可能な`pg_dump`形式のデータを提供しています。その後のデータロードコマンドを以下に示します:
+移行手順をテストするためにこのデータセットをPostgreSQLインスタンスに投入したいユーザー向けに、DDLと共にダウンロード可能な`pg_dump`形式でデータを提供しており、その後のデータロードコマンドを以下に示します:
 
 
 ```bash
@@ -51,11 +51,11 @@ psql < posts.sql
 # posthistory
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
-psql &lt; posthistory.sql
+psql < posthistory.sql
 
 
 
-# comments（コメント）
+# comments
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
@@ -139,7 +139,7 @@ PostgreSQLから手動でデータをロードする場合、まずClickHouseで
 
 PostgreSQLとClickHouseの間でデータ型が異なる場合があります。各テーブルカラムの同等の型を確立するには、[Postgresテーブル関数](/sql-reference/table-functions/postgresql)と共に`DESCRIBE`コマンドを使用できます。次のコマンドはPostgreSQLの`posts`テーブルを記述します。環境に応じて変更してください：
 
-```sql title="クエリ"
+```sql title="Query"
 DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 SETTINGS describe_compact_output = 1
 ```
@@ -180,26 +180,26 @@ ORDER BY tuple()
 COMMENT '最適化された型'
 ```
 
-PostgresSQL からデータを読み込み、ClickHouse に挿入するシンプルな `INSERT INTO SELECT` で、これを埋めることができます。
+PostgresSQL からデータを読み取り、ClickHouse に挿入する単純な `INSERT INTO SELECT` を使って、これにデータを投入できます。
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
-増分ロードはスケジュールすることもできます。Postgres テーブルが挿入のみを受け取り、単調増加する id または timestamp が存在する場合、ユーザーは上記のテーブル関数アプローチを用いて増分をロードできます。つまり、`SELECT` に対して `WHERE` 句を適用できます。このアプローチは、常に同じ列が更新されることが保証されている場合には、更新の取り込みにも利用できます。一方で、削除を反映させるには完全な再ロードが必要となり、テーブルが大きくなるにつれて実現が難しくなる可能性があります。
+増分ロードはスケジューリングすることもできます。Postgres テーブルが挿入のみを受け付け、かつ単調に増加する id またはタイムスタンプが存在する場合、ユーザーは上記のテーブル関数アプローチを利用して増分をロードできます。つまり、`SELECT` に対して `WHERE` 句を適用できます。このアプローチは、常に同じカラムが更新されることが保証されている場合には、更新をサポートするためにも利用できます。一方で削除をサポートするには完全な再ロードが必要となりますが、テーブルが大きくなるにつれてこれは困難になる可能性があります。
 
 ここでは、`CreationDate` を使用した初回ロードと増分ロードを示します（行が更新された場合、この値も更新されると仮定します）。
 
 ```sql
--- 初回データ投入
+-- 初期ロード
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
 
-> ClickHouse は、`=`, `!=`, `>`,`>=`, `<`, `<=`, `IN` といった単純な `WHERE` 句を PostgreSQL サーバーへプッシュダウンします。変更セットを識別するために使用される列にインデックスを作成しておくことで、増分ロードをより効率的に実行できます。
+> ClickHouse は、`=`, `!=`, `>`,`>=`, `<`, `<=`, `IN` といった単純な `WHERE` 句を PostgreSQL サーバーにプッシュダウンします。そのため、変更セットの特定に使用するカラムにインデックスを作成しておくことで、増分ロードをより効率的に行うことができます。
 
-> クエリレプリケーションを使用する場合に UPDATE 操作を検出する 1 つの方法として、[`XMIN` system column](https://www.postgresql.org/docs/9.1/ddl-system-columns.html)（トランザクション ID）をウォーターマークとして利用することが挙げられます。この列の値の変化は更新があったことを示すため、その変更を宛先テーブルに適用できます。このアプローチを採用するユーザーは、`XMIN` の値がラップアラウンドし得ること、そして比較には全表スキャンが必要となるため変更追跡がより複雑になることを理解しておく必要があります。
+> クエリレプリケーションを使用する場合に UPDATE 操作を検出する 1 つの方法として、[`XMIN` システムカラム](https://www.postgresql.org/docs/9.1/ddl-system-columns.html)（トランザクション ID）をウォーターマークとして利用することが挙げられます。このカラムの値が変化していれば変更があったことを示すため、その変更を宛先テーブルに反映できます。この方法を採用するユーザーは、`XMIN` の値がラップアラウンドする可能性があること、また比較には全表スキャンが必要となり、変更追跡がより複雑になることに留意してください。
 
-[パート 2 はこちら](/migrations/postgresql/rewriting-queries)
+[Part 2 はこちら](/migrations/postgresql/rewriting-queries)

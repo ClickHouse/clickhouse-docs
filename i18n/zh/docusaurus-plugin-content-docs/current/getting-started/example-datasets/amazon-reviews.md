@@ -1,16 +1,16 @@
 ---
-description: '超过 1.5 亿条 Amazon 商品的客户评论'
-sidebar_label: 'Amazon 客户评论'
+description: '超过 1.5 亿条 Amazon 商品的客户评价'
+sidebar_label: 'Amazon 客户评价'
 slug: /getting-started/example-datasets/amazon-reviews
-title: 'Amazon 客户评论'
+title: 'Amazon 客户评价'
 doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-此数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以 snappy 压缩的 Parquet 文件形式存储在 AWS S3 中，压缩后总大小为 49GB。下面将逐步演示如何将其导入 ClickHouse。
+该数据集包含超过 1.5 亿条 Amazon 商品的客户评价。数据以 Snappy 压缩的 Parquet 文件形式存储在 AWS S3 中，压缩后总大小为 49GB。下面将逐步演示如何将其导入 ClickHouse。
 
 :::note
-下面的查询是在一个 **生产** 等级的 ClickHouse Cloud 实例上执行的。更多信息请参阅
+下面的查询是在 ClickHouse Cloud 的 **Production** 实例上执行的。更多信息请参阅
 ["Playground 规格说明"](/getting-started/playground#specifications)。
 :::
 
@@ -18,7 +18,7 @@ keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'exa
 
 ## 加载数据集 {#loading-the-dataset}
 
-1. 无需将数据插入 ClickHouse,我们可以直接就地查询。让我们获取一些行,看看它们的内容:
+1. 无需将数据插入 ClickHouse,我们可以直接查询。让我们获取一些行数据,看看它们的内容:
 
 ```sql
 SELECT *
@@ -26,7 +26,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-行数据如下所示:
+行数据如下:
 
 ```response
 Row 1:
@@ -36,7 +36,7 @@ marketplace:       US
 customer_id:       25444946 -- 2544 万
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 9.08 亿
+product_parent:    908181913 -- 9.0818 亿
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -44,8 +44,8 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   外壳坚固,符合我的保护需求
-review_body:       我不指望防水功能(我把底部的橡胶密封条拆掉了,因为它让我很烦)。但外壳很坚固,符合我的保护需求。
+review_headline:   保护壳坚固,符合我的保护需求
+review_body:       我不指望防水功能(我把底部的橡胶密封条拆掉了,因为它们让我很烦)。但保护壳很坚固,符合我的保护需求。
 
 Row 2:
 ──────
@@ -54,7 +54,7 @@ marketplace:       US
 customer_id:       1974568 -- 197 万
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 9.51 亿
+product_parent:    951208259 -- 9.5121 亿
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -72,7 +72,7 @@ marketplace:       US
 customer_id:       24803564 -- 2480 万
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 5.25 亿
+product_parent:    524588109 -- 5.2459 亿
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -81,10 +81,10 @@ total_votes:       0
 vine:              false
 verified_purchase: true
 review_headline:   但总体而言这个保护壳相当坚固,为手机提供了良好的保护
-review_body:       前面板一开始有点难固定到手机上,但总体而言这个保护壳相当坚固,为手机提供了良好的保护,这正是我需要的。我会再次购买这个保护壳。
+review_body:       前面板一开始有点难固定到手机上,但总体而言这个保护壳相当坚固,为手机提供了良好的保护,这正是我所需要的。我会再次购买这个保护壳。
 ```
 
-2. 让我们定义一个名为 `amazon_reviews` 的新 `MergeTree` 表来在 ClickHouse 中存储这些数据:
+2. 让我们定义一个名为 `amazon_reviews` 的新 `MergeTree` 表,用于在 ClickHouse 中存储这些数据:
 
 ```sql
 CREATE DATABASE amazon
@@ -129,14 +129,14 @@ FROM s3Cluster('default',
 在 ClickHouse Cloud 中，集群名称为 `default`。将 `default` 替换为你的集群名称……或者如果你没有集群，可以使用 `s3` 表函数（而不是 `s3Cluster`）。
 :::
 
-5. 该查询执行得很快——平均每秒处理约 300,000 行。大约 5 分钟内，你就应该能看到所有行都已插入：
+5. 该查询执行得很快——平均每秒大约 300,000 行。大约 5 分钟内，你就应该能看到所有行都已插入：
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. 来看看我们的数据占用了多大空间：
+6. 来看看我们的数据占用多少空间：
 
 ```sql runnable
 SELECT
@@ -152,7 +152,7 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-原始数据大约为 70G，但在 ClickHouse 中压缩后只占用约 30G 空间。
+原始数据大约为 70G，但在 ClickHouse 中压缩后仅占用约 30G。
 
 
 ## 示例查询 {#example-queries}
@@ -227,7 +227,7 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-请注意处理如此大量数据的查询时间。查询结果也很有趣!
+请注意处理如此大量数据的查询时间。查询结果也很有意思!
 
 12. 我们可以再次运行相同的查询,但这次我们在评论中搜索 **awesome**:
 

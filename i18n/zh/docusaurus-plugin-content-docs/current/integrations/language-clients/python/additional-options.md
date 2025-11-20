@@ -17,7 +17,7 @@ ClickHouse Connect 为高级使用场景提供了多种附加选项。
 
 ## 全局设置 {#global-settings}
 
-有少量设置可以全局控制 ClickHouse Connect 的行为。可以通过顶层 `common` 包访问这些设置:
+有少量设置可以全局控制 ClickHouse Connect 的行为。可以从顶层 `common` 包访问这些设置:
 
 ```python
 from clickhouse_connect import common
@@ -35,18 +35,18 @@ common.get_setting('invalid_setting_action')
 
 | 设置名称                        | 默认值 | 选项                 | 描述                                                                                                                                                                                                                                                   |
 | ----------------------------------- | ------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| autogenerate_session_id             | True    | True, False             | 为每个客户端会话自动生成新的 UUID(1) 会话 ID(如果未提供)。如果未提供会话 ID(无论是在客户端级别还是查询级别),ClickHouse 将为每个查询生成一个随机的内部 ID。                                            |
+| autogenerate_session_id             | True    | True, False             | 为每个客户端会话自动生成新的 UUID(1) 会话 ID(如果未提供)。如果未提供会话 ID(无论是在客户端级别还是查询级别),ClickHouse 将为每个查询生成随机的内部 ID。                                            |
 | dict_parameter_format               | 'json'  | 'json', 'map'           | 控制参数化查询是将 Python 字典转换为 JSON 还是 ClickHouse Map 语法。`json` 用于插入 JSON 列,`map` 用于 ClickHouse Map 列。                                                              |
 | invalid_setting_action              | 'error' | 'drop', 'send', 'error' | 当提供无效或只读设置时(无论是针对客户端会话还是查询)采取的操作。如果为 `drop`,该设置将被忽略;如果为 `send`,该设置将被发送到 ClickHouse;如果为 `error`,将在客户端抛出 ProgrammingError。 |
-| max_connection_age                  | 600     |                         | HTTP Keep Alive 连接保持打开/重用的最大秒数。这可以防止连接集中到负载均衡器/代理后面的单个 ClickHouse 节点上。默认为 10 分钟。                                                     |
+| max_connection_age                  | 600     |                         | HTTP Keep Alive 连接保持打开/重用的最大秒数。这可以防止连接集中到负载均衡器/代理后面的单个 ClickHouse 节点。默认为 10 分钟。                                                     |
 | product_name                        |         |                         | 与查询一起传递给 ClickHouse 的字符串,用于跟踪使用 ClickHouse Connect 的应用程序。格式应为 &lt;product name;&gl/&lt;product version&gt;。                                                                                       |
-| readonly                            | 0       | 0, 1                    | 用于 19.17 之前版本的隐式 "read_only" ClickHouse 设置。可以设置为与 ClickHouse "read_only" 值匹配,以便与非常旧的 ClickHouse 版本兼容。                                                                  |
+| readonly                            | 0       | 0, 1                    | 用于 19.17 之前版本的隐含 "read_only" ClickHouse 设置。可以设置为与 ClickHouse "read_only" 值匹配,以允许与非常旧的 ClickHouse 版本配合使用。                                                                  |
 | send_os_user                        | True    | True, False             | 在发送到 ClickHouse 的客户端信息(HTTP User-Agent 字符串)中包含检测到的操作系统用户。                                                                                                                                                 |
-| send_integration_tags               | True    | True, False             | 在发送到 ClickHouse 的客户端信息(HTTP User-Agent 字符串)中包含使用的集成库/版本(例如 Pandas/SQLAlchemy 等)。                                                                                                               |
+| send_integration_tags               | True    | True, False             | 在发送到 ClickHouse 的客户端信息(HTTP User-Agent 字符串)中包含所使用的集成库/版本(例如 Pandas/SQLAlchemy 等)。                                                                                                               |
 | use_protocol_version                | True    | True, False             | 使用客户端协议版本。这对于 `DateTime` 时区列是必需的,但与当前版本的 chproxy 不兼容。                                                                                                                               |
 | max_error_size                      | 1024    |                         | 客户端错误消息中返回的最大字符数。将此设置设为 0 可获取完整的 ClickHouse 错误消息。默认为 1024 个字符。                                                                                  |
-| http_buffer_size                    | 10MB    |                         | 用于 HTTP 流式查询的内存缓冲区大小(以字节为单位)。                                                                                                                                                                                    |
-| preserve_pandas_datetime_resolution | False   | True, False             | 当设为 True 且使用 pandas 2.x 时,保留 datetime64/timedelta64 数据类型的分辨率(例如 's'、'ms'、'us'、'ns')。如果为 False(或在 pandas &lt;2.x 上),则强制转换为纳秒('ns')分辨率以保持兼容性。                                              |
+| http_buffer_size                    | 10MB    |                         | 用于 HTTP 流式查询的"内存"缓冲区大小(以字节为单位)。                                                                                                                                                                                    |
+| preserve_pandas_datetime_resolution | False   | True, False             | 当为 True 且使用 pandas 2.x 时,保留 datetime64/timedelta64 数据类型分辨率(例如 's'、'ms'、'us'、'ns')。如果为 False(或在 pandas &lt;2.x 上),则强制转换为纳秒('ns')分辨率以保持兼容性。                                              |
 
 
 ## 压缩 {#compression}
@@ -55,7 +55,7 @@ ClickHouse Connect 支持对查询结果和插入数据使用 lz4、zstd、brotl
 
 要接收压缩数据,ClickHouse 服务器的 `enable_http_compression` 必须设置为 1,或者用户必须具有按查询更改该设置的权限。
 
-压缩由调用 `clickhouse_connect.get_client` 工厂方法时的 `compress` 参数控制。默认情况下,`compress` 设置为 `True`,这将触发默认压缩设置。对于使用 `query`、`query_np` 和 `query_df` 客户端方法执行的查询,ClickHouse Connect 将添加包含 `lz4`、`zstd`、`br`(brotli,如果已安装 brotli 库)、`gzip` 和 `deflate` 编码的 `Accept-Encoding` 请求头(对于大多数请求,ClickHouse 服务器将返回 `zstd` 压缩的响应数据。)对于插入操作,默认情况下 ClickHouse Connect 将使用 `lz4` 压缩插入数据块,并发送 `Content-Encoding: lz4` HTTP 请求头。
+压缩由调用 `clickhouse_connect.get_client` 工厂方法时的 `compress` 参数控制。默认情况下,`compress` 设置为 `True`,这将触发默认压缩设置。对于使用 `query`、`query_np` 和 `query_df` 客户端方法执行的查询,ClickHouse Connect 将添加包含 `lz4`、`zstd`、`br`(brotli,如果已安装 brotli 库)、`gzip` 和 `deflate` 编码的 `Accept-Encoding` 请求头(对于 `query` 客户端方法以及间接使用的 `query_np` 和 `query_df`)。(对于大多数请求,ClickHouse 服务器将返回 `zstd` 压缩的响应数据。)对于插入操作,默认情况下 ClickHouse Connect 将使用 `lz4` 压缩来压缩插入块,并发送 `Content-Encoding: lz4` HTTP 请求头。
 
 `get_client` 的 `compress` 参数也可以设置为特定的压缩方法,可选值为 `lz4`、`zstd`、`br` 或 `gzip`。该方法将同时用于插入和查询结果(如果 ClickHouse 服务器支持)。所需的 `zstd` 和 `lz4` 压缩库现在默认随 ClickHouse Connect 一起安装。如果指定 `br`/brotli,则必须单独安装 brotli 库。
 
@@ -66,9 +66,9 @@ ClickHouse Connect 支持对查询结果和插入数据使用 lz4、zstd、brotl
 
 ## HTTP 代理支持 {#http-proxy-support}
 
-ClickHouse Connect 通过 `urllib3` 库提供基本的 HTTP 代理支持。它能够识别标准的 `HTTP_PROXY` 和 `HTTPS_PROXY` 环境变量。需要注意的是,使用这些环境变量将对所有通过 `clickhouse_connect.get_client` 方法创建的客户端生效。如需为单个客户端单独配置代理,可以在调用 get_client 方法时使用 `http_proxy` 或 `https_proxy` 参数。有关 HTTP 代理支持实现的详细信息,请参阅 [urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies) 文档。
+ClickHouse Connect 通过 `urllib3` 库提供基本的 HTTP 代理支持。它能够识别标准的 `HTTP_PROXY` 和 `HTTPS_PROXY` 环境变量。请注意,使用这些环境变量将对所有通过 `clickhouse_connect.get_client` 方法创建的客户端生效。如需为单个客户端单独配置代理,可以在调用 get_client 方法时使用 `http_proxy` 或 `https_proxy` 参数。有关 HTTP 代理支持实现的详细信息,请参阅 [urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies) 文档。
 
-要使用 SOCKS 代理,可以将 `urllib3` 的 `SOCKSProxyManager` 作为 `pool_mgr` 参数传递给 `get_client`。需要注意的是,这需要安装 PySocks 库,可以直接安装或通过 `urllib3` 依赖项的 `[socks]` 选项安装。
+要使用 SOCKS 代理,可以将 `urllib3` 的 `SOCKSProxyManager` 作为 `pool_mgr` 参数传递给 `get_client`。请注意,这需要安装 PySocks 库,可以直接安装或通过 `urllib3` 依赖项的 `[socks]` 选项安装。
 
 
 ## "旧版" JSON 数据类型 {#old-json-data-type}

@@ -6,23 +6,23 @@ keywords: ['json', 'schema', 'inference', 'schema inference']
 doc_type: 'guide'
 ---
 
-ClickHouse は JSON データの構造を自動的に判別できます。これを利用すると、ディスク上の JSON データや S3 バケット内の JSON データを `clickhouse-local` で直接クエリしたり、ClickHouse にデータをロードする前にスキーマを自動的に作成したりできます。
+ClickHouse は JSON データの構造を自動的に判別できます。これにより、`clickhouse-local` を使ってディスク上や S3 バケット上の JSON データを直接クエリしたり、データを ClickHouse にロードする前にスキーマを自動生成したりできます。
 
 
 
-## 型推論を使用するタイミング {#when-to-use-type-inference}
+## 型推論を使用する場合 {#when-to-use-type-inference}
 
-- **一貫した構造** - 型を推論する元となるデータに、必要なすべてのキーが含まれている必要があります。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[最大バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることに基づいています。サンプル後の追加カラムを含むデータは無視され、クエリできません。
-- **一貫した型** - 特定のキーのデータ型には互換性が必要です。つまり、ある型から別の型への自動変換が可能である必要があります。
+- **一貫した構造** - 型を推論する元となるデータに、必要なすべてのキーが含まれていること。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[最大バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることに基づいています。サンプル後の追加カラムを含むデータは無視され、クエリできません。
+- **一貫した型** - 特定のキーのデータ型に互換性があること。つまり、ある型から別の型への自動変換が可能である必要があります。
 
 新しいキーが追加され、同じパスに対して複数の型が存在する可能性がある、より動的なJSONを扱う場合は、[「半構造化データと動的データの操作」](/integrations/data-formats/json/inference#working-with-semi-structured-data)を参照してください。
 
 
 ## 型の検出 {#detecting-types}
 
-以下では、JSONが一貫した構造を持ち、各パスに対して単一の型が存在することを前提としています。
+以下では、JSONが一貫した構造を持ち、各パスに対して単一の型を持つことを前提としています。
 
-これまでの例では、`NDJSON`形式の[Python PyPIデータセット](https://clickpy.clickhouse.com/)のシンプル版を使用してきました。このセクションでは、ネストされた構造を持つより複雑なデータセットである[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探索します。このデータセットには250万件の学術論文が含まれています。`NDJSON`として配布されるこのデータセットの各行は、公開された学術論文を表しています。以下に行の例を示します:
+これまでの例では、`NDJSON`形式の[Python PyPIデータセット](https://clickpy.clickhouse.com/)のシンプル版を使用していました。このセクションでは、ネストされた構造を持つより複雑なデータセットである[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探索します。このデータセットには250万件の学術論文が含まれています。`NDJSON`として配布されるこのデータセットの各行は、公開された学術論文を表しています。以下に行の例を示します:
 
 ```json
 {
@@ -89,14 +89,14 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note nullの回避
-多くのカラムがNullableとして検出されていることがわかります。絶対に必要でない限り、[Nullable型の使用は推奨しません](/sql-reference/data-types/nullable#storage-features)。[schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)を使用して、Nullableが適用される条件の動作を制御できます。
+多くのカラムがNullableとして検出されていることがわかります。絶対に必要でない限り、[Nullable型の使用は推奨しません](/sql-reference/data-types/nullable#storage-features)。[schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)を使用して、Nullableが適用されるタイミングの動作を制御できます。
 :::
 
 ほとんどのカラムが自動的に`String`として検出され、`update_date`カラムは正しく`Date`として検出されていることがわかります。`versions`カラムはオブジェクトのリストを格納するために`Array(Tuple(created String, version String))`として作成され、`authors_parsed`はネストされた配列のために`Array(Array(String))`として定義されています。
 
 
 :::note 型検出の制御
-日付および datetime の自動検出は、それぞれ設定 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) と [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) によって制御できます（どちらもデフォルトで有効です）。オブジェクトをタプルとして推論する処理は、設定 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) によって制御されます。数値の自動検出など、JSON のスキーマ推論を制御するその他の設定については[こちら](/interfaces/schema-inference#text-formats)を参照してください。
+日付と日時の自動検出は、それぞれ設定 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) および [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) によって制御できます（どちらもデフォルトで有効です）。オブジェクトをタプルとして推論する処理は、設定 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) によって制御されます。数値の自動検出など、JSON のスキーマ推論を制御する他の設定については[こちら](/interfaces/schema-inference#text-formats)を参照してください。
 :::
 
 
@@ -150,7 +150,7 @@ LIMIT 1 BY year
 
 ## テーブルの作成 {#creating-tables}
 
-スキーマ推論を利用してテーブルのスキーマを作成できます。以下の`CREATE AS EMPTY`コマンドは、テーブルのDDLを推論し、テーブルを作成します。このコマンドではデータの読み込みは行われません：
+スキーマ推論を利用してテーブルのスキーマを作成できます。以下の`CREATE AS EMPTY`コマンドは、テーブルのDDLを推論し、テーブルを作成します。このコマンドではデータの読み込みは行われません:
 
 ```sql
 CREATE TABLE arxiv
@@ -161,7 +161,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 SETTINGS schema_inference_make_columns_nullable = 0
 ```
 
-テーブルスキーマを確認するには、`SHOW CREATE TABLE`コマンドを使用します：
+テーブルスキーマを確認するには、`SHOW CREATE TABLE`コマンドを使用します:
 
 ```sql
 SHOW CREATE TABLE arxiv
@@ -187,11 +187,11 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-上記がこのデータの正しいスキーマです。スキーマ推論は、データをサンプリングし、行ごとにデータを読み取ることに基づいています。カラム値はフォーマットに従って抽出され、再帰的パーサーとヒューリスティックを使用して各値の型が決定されます。スキーマ推論でデータから読み取られる最大行数とバイト数は、設定[`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（デフォルトは25000）と[`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（デフォルトは32MB）によって制御されます。検出が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているヒントを提供できます。
+上記がこのデータの正しいスキーマです。スキーマ推論は、データをサンプリングし、行ごとにデータを読み取ることに基づいています。カラム値はフォーマットに従って抽出され、再帰的パーサーとヒューリスティックを使用して各値の型が決定されます。スキーマ推論でデータから読み取られる最大行数とバイト数は、設定[`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)(デフォルトは25000)と[`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)(デフォルトは32MB)によって制御されます。検出が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているヒントを提供できます。
 
 ### スニペットからのテーブル作成 {#creating-tables-from-snippets}
 
-上記の例では、S3上のファイルを使用してテーブルスキーマを作成しています。単一行のスニペットからスキーマを作成したい場合もあります。これは、以下に示すように[format](/sql-reference/table-functions/format)関数を使用して実現できます：
+上記の例では、S3上のファイルを使用してテーブルスキーマを作成しています。単一行のスニペットからスキーマを作成したい場合もあります。これは、以下に示すように[format](/sql-reference/table-functions/format)関数を使用して実現できます:
 
 ```sql
 CREATE TABLE arxiv
@@ -280,7 +280,7 @@ FORMAT PrettyJSONEachRow
 
 ## エラーの処理 {#handling-errors}
 
-データに不備がある場合があります。例えば、特定のカラムの型が正しくない場合や、JSON オブジェクトの形式が不適切な場合などです。このような場合、[`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) および [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) の設定を使用することで、データが挿入エラーを引き起こす際に一定数の行を無視できます。また、スキーマ推論を補助するために[ヒント](/operations/settings/formats#schema_inference_hints)を提供することも可能です。
+データに不備がある場合があります。例えば、特定のカラムの型が正しくない場合や、JSONオブジェクトのフォーマットが不適切な場合などです。このような場合、[`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num)および[`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio)の設定を使用することで、データが挿入エラーを引き起こす際に一定数の行をスキップできます。また、スキーマ推論を補助するために[ヒント](/operations/settings/formats#schema_inference_hints)を指定することも可能です。
 
 
 ## 半構造化データと動的データの操作 {#working-with-semi-structured-data}
@@ -310,7 +310,7 @@ JSONが多数の一意なキーを持ち、同じキーに対して複数の型�
 }
 ```
 
-このデータのサンプルは、改行区切りのJSON形式で公開されています。このファイルに対してスキーマ推論を試みると、パフォーマンスが低く、非常に冗長なレスポンスが返されることがわかります。
+このデータのサンプルは、改行区切りのJSON形式で公開されています。このファイルに対してスキーマ推論を試みると、パフォーマンスが低く、非常に冗長な応答が返されることがわかります。
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
@@ -379,8 +379,8 @@ Elapsed: 0.755 sec.
 
 
 サーバー (バージョン 24.12.1) から例外を受信しました:
-Code: 636. DB::Exception: sql-clickhouse.clickhouse.com:9440 から受信しました。DB::Exception: JSON 形式のファイルからはテーブル構造を抽出できません。エラー:
-Code: 53. DB::Exception: 行 1 の列 &#39;a&#39; に対して自動推定された型 Tuple(b Int64) が、前の行で定義された型 Int64 と異なります。この列の型は、設定 schema&#95;inference&#95;hints を使用して指定できます。
+コード: 636. DB::Exception: sql-clickhouse.clickhouse.com:9440 から受信。DB::Exception: テーブル構造を JSON 形式のファイルから抽出できません。エラー:
+コード: 53. DB::Exception: 行 1 のカラム &#39;a&#39; に対して自動的に推論された型 Tuple(b Int64) が、前の行で定義された型 Int64 と異なります。このカラムの型は、設定 schema&#95;inference&#95;hints を使用して指定できます。
 
 ````
 

@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 
 ## 简介 {#introduction}
 
-[Amazon Redshift](https://aws.amazon.com/redshift/) 是 Amazon Web Services 提供的一款流行的云数据仓库解决方案。本指南介绍了将数据从 Redshift 实例迁移到 ClickHouse 的不同方法。我们将介绍三种方案:
+[Amazon Redshift](https://aws.amazon.com/redshift/) 是 Amazon Web Services 提供的一款流行的云数据仓库解决方案。本指南介绍了将数据从 Redshift 实例迁移到 ClickHouse 的不同方法。我们将涵盖三种方案:
 
 <Image
   img={redshiftToClickhouse}
@@ -21,38 +21,38 @@ import Image from '@theme/IdealImage';
 
 从 ClickHouse 实例的角度来看,您可以:
 
-1. 使用第三方 ETL/ELT 工具或服务将数据 **[推送(PUSH)](#push-data-from-redshift-to-clickhouse)** 到 ClickHouse
+1. 使用第三方 ETL/ELT 工具或服务将数据**[推送](#push-data-from-redshift-to-clickhouse)**到 ClickHouse
 
-2. 利用 ClickHouse JDBC Bridge 从 Redshift **[拉取(PULL)](#pull-data-from-redshift-to-clickhouse)** 数据
+2. 利用 ClickHouse JDBC Bridge 从 Redshift **[拉取](#pull-data-from-redshift-to-clickhouse)**数据
 
-3. 使用 S3 对象存储,通过"先卸载后加载"的逻辑进行 **[中转(PIVOT)](#pivot-data-from-redshift-to-clickhouse-using-s3)**
+3. 使用 S3 对象存储,通过"先卸载后加载"的逻辑进行**[中转](#pivot-data-from-redshift-to-clickhouse-using-s3)**
 
 :::note
-本教程中我们使用 Redshift 作为数据源。但是,这里介绍的迁移方法并不仅限于 Redshift,类似的步骤可以应用于任何兼容的数据源。
+在本教程中,我们使用 Redshift 作为数据源。但是,这里介绍的迁移方法并不仅限于 Redshift,类似的步骤可以应用于任何兼容的数据源。
 :::
 
 
 ## 从 Redshift 推送数据到 ClickHouse {#push-data-from-redshift-to-clickhouse}
 
-在推送场景中,基本思路是利用第三方工具或服务(自定义代码或 [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT))将数据发送到您的 ClickHouse 实例。例如,您可以使用 [Airbyte](https://www.airbyte.com/) 等软件在 Redshift 实例(作为数据源)和 ClickHouse(作为目标)之间迁移数据([参见我们的 Airbyte 集成指南](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
+在推送场景中,核心思路是利用第三方工具或服务(自定义代码或 [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT))将数据发送到您的 ClickHouse 实例。例如,您可以使用 [Airbyte](https://www.airbyte.com/) 等软件在 Redshift 实例(作为数据源)和 ClickHouse(作为目标)之间迁移数据([参见我们的 Airbyte 集成指南](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
 
 <Image
   img={push}
   size='md'
-  alt='从 Redshift 推送到 ClickHouse'
+  alt='推送 Redshift 到 ClickHouse'
   background='white'
 />
 
 ### 优点 {#pros}
 
-- 可以利用 ETL/ELT 软件现有的连接器生态。
+- 可以利用 ETL/ELT 软件现有的连接器目录。
 - 内置数据同步能力(追加/覆盖/增量逻辑)。
 - 支持数据转换场景(例如,参见我们的 [dbt 集成指南](/integrations/data-ingestion/etl-tools/dbt/index.md))。
 
 ### 缺点 {#cons}
 
 - 用户需要搭建和维护 ETL/ELT 基础设施。
-- 在架构中引入第三方组件,可能成为潜在的扩展性瓶颈。
+- 在架构中引入第三方组件,可能成为潜在的可扩展性瓶颈。
 
 
 ## 从 Redshift 拉取数据到 ClickHouse {#pull-data-from-redshift-to-clickhouse}
@@ -153,7 +153,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 
 #### 从 Redshift 导入数据到 ClickHouse {#import-data-from-redshift-to-clickhouse}
 
-下面,我们展示使用 `INSERT INTO ... SELECT` 语句导入数据
+下面我们演示使用 `INSERT INTO ... SELECT` 语句导入数据
 
 
 ```sql
@@ -173,7 +173,7 @@ Query id: c7c4c44b-cdb2-49cf-b319-4e569976ab05
 
 Ok.
 
-返回 0 行。耗时：0.233 秒。
+0 rows in set. Elapsed: 0.233 sec.
 ```
 
 ```sql
@@ -186,7 +186,7 @@ Query id: 9d3a688d-b45a-40f4-a7c7-97d93d7149f1
 
 Ok.
 
-返回 0 行。耗时：4.498 秒。处理了 49.99 千行，2.49 MB（11.11 千行/秒，554.27 KB/秒）。
+0 rows in set. Elapsed: 4.498 sec. Processed 49.99 thousand rows, 2.49 MB (11.11 thousand rows/s., 554.27 KB/s.)
 ```
 
 </VerticalStepper>
@@ -257,7 +257,7 @@ EMPTY AS
 SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
 ```
 
-当数据采用包含数据类型信息的格式(如 Parquet)时,此方法效果尤佳。
+当数据采用包含数据类型信息的格式(如 Parquet)时,此方法效果尤其好。
 
 #### 将 S3 文件加载到 ClickHouse {#load-s3-files-into-clickhouse}
 
@@ -277,7 +277,7 @@ Ok.
 ```
 
 :::note
-此示例使用 CSV 作为中间格式。但是,对于生产工作负载,我们建议使用 Apache Parquet 作为大规模迁移的最佳选择,因为它自带压缩功能,可以节省存储成本并缩短传输时间。(默认情况下,每个行组使用 SNAPPY 压缩)。ClickHouse 还利用 Parquet 的列式存储特性来加速数据摄取。
+此示例使用 CSV 作为中间格式。但是,对于生产环境工作负载,我们建议使用 Apache Parquet 作为大规模迁移的最佳选择,因为它自带压缩功能,可以节省存储成本并缩短传输时间。(默认情况下,每个行组使用 SNAPPY 压缩)。ClickHouse 还利用 Parquet 的列式存储特性来加速数据摄取。
 :::
 
 </VerticalStepper>

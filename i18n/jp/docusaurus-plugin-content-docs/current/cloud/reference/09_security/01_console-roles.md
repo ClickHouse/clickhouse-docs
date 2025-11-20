@@ -2,7 +2,7 @@
 sidebar_label: 'コンソールのロールと権限'
 slug: /cloud/security/console-roles
 title: 'コンソールのロールと権限'
-description: 'このページでは、ClickHouse Cloud コンソールにおける標準ロールと、それに対応する権限について説明します'
+description: 'このページでは、ClickHouse Cloud コンソールにおける標準ロールと、それぞれに付与される権限について説明します'
 doc_type: 'reference'
 keywords: ['console roles', 'permissions', 'access control', 'security', 'rbac']
 ---
@@ -11,7 +11,7 @@ keywords: ['console roles', 'permissions', 'access control', 'security', 'rbac']
 
 ## 組織ロール {#organization-roles}
 
-組織ロールの割り当て手順については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
+組織ロールの割り当て方法については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
 
 ClickHouseには、ユーザー管理のための4つの組織レベルロールがあります。デフォルトでサービスへのアクセス権を持つのは管理者ロールのみです。その他のロールでサービスを操作するには、サービスレベルロールと組み合わせる必要があります。
 

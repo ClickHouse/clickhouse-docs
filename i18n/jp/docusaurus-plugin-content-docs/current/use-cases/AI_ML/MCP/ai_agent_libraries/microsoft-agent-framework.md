@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework
-sidebar_label: 'Microsoft Agent Framework の統合'
+sidebar_label: 'Microsoft Agent Framework を統合する'
 title: 'Microsoft Agent Framework と ClickHouse MCP Server で AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Microsoft Agent Framework と ClickHouse MCP Server を使って AI エージェントを構築する方法を学びます'
+description: 'Microsoft Agent Framework と ClickHouse MCP Server で AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'Microsoft']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,9 +14,9 @@ doc_type: 'guide'
 
 # Microsoft Agent Framework と ClickHouse MCP Server を使って AI エージェントを構築する方法
 
-このガイドでは、[Microsoft Agent Framework](https://github.com/microsoft/agent-framework) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と [ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を通じて ClickHouse と対話できる AI エージェントの作成方法を説明します。
+このガイドでは、[Microsoft Agent Framework](https://github.com/microsoft/agent-framework) を使用して、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントの構築方法を学びます。
 
-:::note サンプルノートブック
+:::note Example notebook
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/microsoft-agent-framework/microsoft-agent-framework.ipynb) 内のノートブックとして参照できます。
 :::
 
@@ -24,9 +24,9 @@ doc_type: 'guide'
 
 ## 前提条件 {#prerequisites}
 
-- システムにPythonがインストールされていること
-- システムに`pip`がインストールされていること
-- OpenAI APIキーを取得していること
+- システムにPythonがインストールされている必要があります。
+- システムに`pip`がインストールされている必要があります。
+- OpenAI APIキーが必要です
 
 以下の手順は、Python REPLまたはスクリプトから実行できます。
 
@@ -119,15 +119,15 @@ User: Tell me about UK property prices over the last five years
 - 指標: 月次中央値価格、平均価格、取引件数(支払価格記録)。
 - 対象期間: 2020年10月1日から2025年8月1日までの月(本日から過去5年間)。
 
-主要な発見
+主要な知見
 - 中央値価格は£255,000(2020年10月)から£294,500(2025年8月)に上昇 — 5年間で約+15.4%の増加。
   - 中央値の年平均成長率(CAGR)≈ +2.9%。
 - 平均価格は約£376,538(2020年10月)から£364,653(2025年8月)にわずかに下落 — 5年間で≈ −3.2%の減少。
   - 平均価格のCAGR ≈ −0.6%。
-- この乖離(中央値は上昇、平均はわずかに下落)は、取引構成の変化(超高額売却の減少やその他の構成効果)を示唆しています。これは、平均が外れ値に敏感である一方、中央値はそうではないためです。
+- この乖離(中央値は上昇、平均はわずかに下落)は、取引構成の変化(超高額売却の減少やその他の構成効果)を示唆しています。平均は外れ値に敏感ですが、中央値はそうではないためです。
 
 データにおける注目すべきパターンと出来事
-- 2020年から2021年にかけての強い上昇(中央値と平均の両方で確認可能)は、この期間に見られたパンデミック後/印紙税/需要主導の市場急騰と一致しています。
+- 2020年から2021年にかけての大幅な上昇(中央値と平均の両方で確認可能)は、この期間に見られたパンデミック後/印紙税/需要主導の市場急騰と一致しています。
 - 2022年半ばごろに平均価格がピーク(平均値~£440k)に達し、その後2022年から2023年にかけて全般的に軟化し、2023年から2024年ごろに安定化。
 - 一部の月は大きな変動や異常な件数を示しています(例: 2021年6月は非常に高い取引件数、2025年3月は高い中央値を示すが2025年4月から5月は低い件数)。最近の月(2025年半ば)はテーブル内の取引件数が大幅に少なくなっています — これは最新月の報告が不完全であることを示すことが多く、最近の月次数値は慎重に扱う必要があることを意味します。
 
@@ -135,19 +135,19 @@ User: Tell me about UK property prices over the last five years
 - 2020年10月: 中央値£255,000、平均£376,538、取引件数89,125
 - 2022年8月: 平均ピーク~£441,209(中央値~£295,000)
 - 2025年3月: 中央値~£314,750(最も高い中央値の一つ)
-- 2025年8月: 中央値£294,500、平均£364,653、取引件数18,815(低い件数 — おそらく不完全)
+- 2025年8月: 中央値£294,500、平均£364,653、取引件数18,815(低件数 — おそらく不完全)
 
 注意事項
 - これらは取引価格(Price Paidデータセット)です — 実際の住宅「価値」は異なる場合があります。
-- 平均は構成と外れ値に敏感です。売却される物件の種類の変化(例: フラットと一戸建ての混合、地域の混合)は、平均と中央値に異なる影響を与えます。
+- 平均は構成と外れ値に敏感です。売却される物件の種類の変化(例: フラットと戸建住宅の混合、地域の混合)は、平均と中央値に異なる影響を与えます。
 - 最近の月は不完全な場合があります。異常に低い取引件数を示す月は慎重に扱う必要があります。
 - これは全国集計です — 地域差は大きい可能性があります。
 
 ご希望であれば、以下のことができます:
-- 時系列での中央値と平均のチャートを作成。
-- 前年比の比較や、異なる開始/終了月のCAGRを計算。
-- 地域/郡/町、物件タイプ(フラット、テラスハウス、セミデタッチド、デタッチド)、または価格帯別に分析を細分化。
-- 過去5年間の価格上昇率が最も高い/低い地域のテーブルを表示。
+- 時系列での中央値と平均のチャートを作成する。
+- 前年比を比較するか、異なる開始/終了月のCAGRを計算する。
+- 地域/郡/町、物件タイプ(フラット、テラスハウス、セミデタッチド、戸建)、または価格帯別に分析を細分化する。
+- 過去5年間の価格上昇率が最も高い/低い地域の表を表示する。
 
 ```
 

@@ -4,7 +4,7 @@ sidebar_label: 'Claude Agent SDK を統合する'
 title: 'Claude Agent SDK と ClickHouse MCP Server で AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Claude Agent SDK と ClickHouse MCP Server を使って AI エージェントを構築する方法を学ぶ'
+description: 'Claude Agent SDK と ClickHouse MCP Server で AI エージェントを構築する方法を紹介します'
 keywords: ['ClickHouse', 'MCP', 'Claude']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,19 +14,19 @@ doc_type: 'guide'
 
 # Claude Agent SDK と ClickHouse MCP Server を使って AI エージェントを構築する方法
 
-このガイドでは、[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) を使い、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して構築する方法を説明します。
+このガイドでは、[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と [ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して対話できる AI エージェントの構築方法を説明します。
 
-:::note Example notebook
-この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) にあるノートブックとして参照できます。
+:::note 例のノートブック
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 内のノートブックとして参照できます。
 :::
 
 
 
 ## 前提条件 {#prerequisites}
 
-- システムにPythonがインストールされている必要があります。
-- システムに`pip`がインストールされている必要があります。
-- Anthropic APIキーが必要です。
+- システムにPythonがインストールされていること
+- システムに`pip`がインストールされていること
+- Anthropic APIキーを取得していること
 
 以下の手順は、Python REPLまたはスクリプトから実行できます。
 
@@ -72,7 +72,7 @@ env = {
 
 ## MCPサーバーとClaude Agent SDKエージェントの初期化 {#initialize-mcp-and-agent}
 
-ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するよう設定し、
+ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するように設定し、
 エージェントを初期化して質問してみます:
 
 ```python
@@ -120,15 +120,15 @@ async for message in query(prompt="Tell me something interesting about UK proper
 ```response title="Response"
 🤖 ClickHouseデータベースにクエリを実行して、イギリスの不動産販売に関する興味深い情報を見つけます。
 
-まず、利用可能なデータベースを確認します:
+まず、利用可能なデータベースを確認しましょう:
 🛠️ mcp__mcp-clickhouse__list_databases {}
-🤖 素晴らしい!「uk」データベースがあります。利用可能なテーブルを確認します:
+🤖 素晴らしい!「uk」データベースがあります。利用可能なテーブルを確認しましょう:
 🛠️ mcp__mcp-clickhouse__list_tables {'database': 'uk'}
-🤖 完璧です!`uk_price_paid`テーブルには3000万件以上の不動産販売記録があります。興味深い情報を見つけてみます:
+🤖 完璧です!`uk_price_paid`テーブルには3000万件以上の不動産販売記録があります。興味深い情報を見つけましょう:
 🛠️ mcp__mcp-clickhouse__run_select_query {'query': "\nSELECT \n    street,\n    town,\n    max(price) as max_price,\n    min(price) as min_price,\n    max(price) - min(price) as price_difference,\n    count() as sales_count\nFROM uk.uk_price_paid\nWHERE street != ''\nGROUP BY street, town\nHAVING sales_count > 100\nORDER BY price_difference DESC\nLIMIT 1\n"}
-🤖 興味深い発見がありました:**ロンドンのBaker Street**(そう、あの有名なシャーロック・ホームズの通りです!)は、100件以上の販売実績がある通りの中で最大の価格幅を持っています - 物件は最低**£2,500**から最高**£594.3 million**で販売されており、その差は£594 millionを超える驚異的な金額です!
+🤖 興味深い発見があります:**ロンドンのBaker Street**(そう、あの有名なシャーロック・ホームズの通りです!)は、100件以上の販売実績がある通りの中で最大の価格幅を持っています - 物件は最低**£2,500**から最高**£594.3 million**で販売されており、その差は£594 millionを超える驚異的な金額です!
 
-Baker StreetはMaryleboneのような富裕地区を通るロンドンで最も名高い住所の一つであり、このデータセットには541件の販売記録があることを考えると、納得できる結果です。
+Baker StreetはMaryleboneのような富裕地域を通るロンドンで最も名高い住所の一つであり、このデータセットには541件の販売記録があることを考えると、納得できる結果です。
 ```
 
 </VerticalStepper>

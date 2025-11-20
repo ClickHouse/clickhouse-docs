@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
-description: 'quantilesTimingIf コンビネーターの使用例'
+description: 'quantilesTimingIf コンビネーターの利用例'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
@@ -63,7 +63,7 @@ GROUP BY endpoint;
 ```
 
 `quantilesTimingIf`関数は、成功したリクエスト(is_successful = 1)に対してのみ分位数を計算します。
-返される配列には、以下の分位数が順番に含まれます:
+返される配列には、以下の分位数が順に含まれます:
 
 - 0 (最小値)
 - 0.25 (第1四分位数)

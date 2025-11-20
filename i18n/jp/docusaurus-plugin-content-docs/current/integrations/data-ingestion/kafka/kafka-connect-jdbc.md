@@ -17,11 +17,11 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 このコネクタは、データがシンプルでintなどのプリミティブデータ型で構成されている場合にのみ使用してください。mapなどのClickHouse固有の型はサポートされていません。
 :::
 
-本例では、Kafka ConnectのConfluent distributionを使用します。
+本例では、Kafka ConnectのConfluent版を使用します。
 
-以下では、単一のKafkaトピックからメッセージを取得し、ClickHouseテーブルに行を挿入するシンプルなインストール方法を説明します。Kafka環境をお持ちでない方には、充実した無料プランを提供しているConfluent Cloudをお勧めします。
+以下では、単一のKafkaトピックからメッセージを取得し、ClickHouseテーブルに行を挿入するシンプルなインストール方法を説明します。Kafka環境をお持ちでない方には、充実した無料プランを提供しているConfluent Cloudを推奨します。
 
-JDBCコネクタにはスキーマが必要です(JDBCコネクタではプレーンなJSONやCSVは使用できません)。スキーマは各メッセージにエンコードすることもできますが、関連するオーバーヘッドを回避するために[Confluent schema registryの使用が強く推奨されます](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)。提供されている挿入スクリプトは、メッセージから自動的にスキーマを推測し、レジストリに挿入します。このため、このスクリプトは他のデータセットにも再利用できます。Kafkaのキーは文字列であることが前提となります。Kafkaスキーマの詳細については、[こちら](https://docs.confluent.io/platform/current/schema-registry/index.html)をご覧ください。
+JDBCコネクタにはスキーマが必要です(JDBCコネクタではプレーンなJSONやCSVは使用できません)。スキーマは各メッセージにエンコードすることもできますが、関連するオーバーヘッドを回避するため、[Confluentスキーマレジストリの使用が強く推奨されます](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)。提供されている挿入スクリプトは、メッセージから自動的にスキーマを推論し、レジストリに挿入します。このため、このスクリプトは他のデータセットにも再利用できます。Kafkaのキーは文字列であることを前提としています。Kafkaスキーマの詳細については[こちら](https://docs.confluent.io/platform/current/schema-registry/index.html)をご覧ください。
 
 ### ライセンス {#license}
 
@@ -43,11 +43,11 @@ KafkaからClickHouseへデータを送信するには、コネクタのSinkコ�
 
 #### 2. JDBCドライバのダウンロードとインストール {#2-download-and-install-the-jdbc-driver}
 
-ClickHouse JDBCドライバ`clickhouse-jdbc-<version>-shaded.jar`を[こちら](https://github.com/ClickHouse/clickhouse-java/releases)からダウンロードしてインストールします。[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers)の詳細に従って、Kafka Connectにインストールしてください。他のドライバも動作する可能性がありますが、テストされていません。
+ClickHouse JDBCドライバ`clickhouse-jdbc-<version>-shaded.jar`を[こちら](https://github.com/ClickHouse/clickhouse-java/releases)からダウンロードしてインストールしてください。[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers)の詳細に従って、Kafka Connectにインストールしてください。他のドライバも動作する可能性がありますが、テストされていません。
 
 :::note
 
-よくある問題:ドキュメントではjarファイルを`share/java/kafka-connect-jdbc/`にコピーすることを推奨しています。Connectがドライバを見つけられない問題が発生した場合は、ドライバを`share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/`にコピーしてください。または、`plugin.path`を変更してドライバを含めることもできます(以下を参照)。
+よくある問題: ドキュメントではjarファイルを`share/java/kafka-connect-jdbc/`にコピーすることを推奨していますが、Connectがドライバを見つけられない問題が発生した場合は、ドライバを`share/confluent-hub-components/confluentinc-kafka-connect-jdbc/lib/`にコピーしてください。または、`plugin.path`を変更してドライバを含めることもできます。詳細は以下を参照してください。
 
 :::
 
@@ -58,10 +58,10 @@ ClickHouse JDBCドライバ`clickhouse-jdbc-<version>-shaded.jar`を[こちら](
 以下のパラメータは、ClickHouseでJDBCコネクタを使用する際に関連します。完全なパラメータリストは[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html)で確認できます:
 
 
-- `_connection.url_` - `jdbc:clickhouse://<clickhouse host>:<clickhouse http port>/<target database>` の形式で指定します
+- `_connection.url_` - `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>` の形式で指定します
 - `connection.user` - ターゲットデータベースへの書き込み権限を持つユーザー
-- `table.name.format` - データを挿入するClickHouseテーブル。事前に作成されている必要があります。
-- `batch.size` - 1回のバッチで送信する行数。適切に大きな値を設定してください。ClickHouseの[推奨事項](/sql-reference/statements/insert-into#performance-considerations)では、最小値として1000を検討してください。
+- `table.name.format`- データを挿入するClickHouseテーブル。事前に作成されている必要があります。
+- `batch.size` - 1回のバッチで送信する行数。適切に大きな値を設定してください。ClickHouseの[推奨事項](/sql-reference/statements/insert-into#performance-considerations)では、最小値として1000を設定することを推奨しています。
 - `tasks.max` - JDBC Sinkコネクタは1つ以上のタスクの実行をサポートしています。パフォーマンス向上に利用できます。バッチサイズと合わせて、パフォーマンス改善の主要な手段となります。
 - `value.converter.schemas.enable` - スキーマレジストリを使用する場合はfalseに、メッセージにスキーマを埋め込む場合はtrueに設定します。
 - `value.converter` - データ型に応じて設定します。例えば、JSONの場合は`io.confluent.connect.json.JsonSchemaConverter`を指定します。
@@ -71,20 +71,20 @@ ClickHouse JDBCドライバ`clickhouse-jdbc-<version>-shaded.jar`を[こちら](
 - `auto.evolve` - 将来的にサポートされる可能性はありますが、現時点ではfalseに設定することを推奨します。
 - `insert.mode` - "insert"に設定します。他のモードは現在サポートされていません。
 - `key.converter` - キーの型に応じて設定します。
-- `value.converter` - トピック上のデータの型に基づいて設定します。このデータはサポートされているスキーマ(JSON、Avro、またはProtobuf形式)を持つ必要があります。
+- `value.converter` - トピック上のデータ型に基づいて設定します。このデータはサポートされているスキーマ（JSON、Avro、またはProtobuf形式）を持つ必要があります。
 
-テスト用にサンプルデータセットを使用する場合は、以下を設定してください:
+テスト用にサンプルデータセットを使用する場合は、以下の設定を行ってください：
 
 - `value.converter.schemas.enable` - スキーマレジストリを使用するためfalseに設定します。各メッセージにスキーマを埋め込む場合はtrueに設定します。
 - `key.converter` - "org.apache.kafka.connect.storage.StringConverter"に設定します。文字列キーを使用します。
 - `value.converter` - "io.confluent.connect.json.JsonSchemaConverter"に設定します。
-- `value.converter.schema.registry.url` - スキーマサーバーのURLを設定し、`value.converter.schema.registry.basic.auth.user.info`パラメータでスキーマサーバーの認証情報も設定します。
+- `value.converter.schema.registry.url` - スキーマサーバーのURLを設定し、`value.converter.schema.registry.basic.auth.user.info`パラメータでスキーマサーバーの認証情報を指定します。
 
-Githubサンプルデータの設定ファイル例は[こちら](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink)で確認できます。これはConnectがスタンドアロンモードで実行され、KafkaがConfluent Cloudでホストされていることを前提としています。
+Githubサンプルデータの設定ファイル例は[こちら](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink)で確認できます（Connectがスタンドアロンモードで実行され、KafkaがConfluent Cloudでホストされていることを前提としています）。
 
 #### 4. ClickHouseテーブルの作成 {#4-create-the-clickhouse-table}
 
-テーブルが作成されていることを確認し、以前の例から既に存在する場合は削除してください。縮小版Githubデータセットと互換性のある例を以下に示します。現在サポートされていないArray型やMap型が含まれていないことに注意してください:
+テーブルが作成されていることを確認し、以前の例から既に存在する場合は削除してください。縮小版Githubデータセットと互換性のある例を以下に示します。現在サポートされていないArray型やMap型が含まれていないことに注意してください：
 
 
 ```sql
@@ -137,7 +137,7 @@ python producer.py -c github.config
 
 Kafka Connectはメッセージの消費を開始し、ClickHouseに行を挿入します。「[JDBC Compliant Mode] Transaction is not supported.」という警告は想定されるものであり、無視して構いません。
 
-ターゲットテーブル「Github」に対する簡単な読み取りでデータの挿入を確認できます。
+ターゲットテーブル「Github」に対する単純な読み取りでデータ挿入を確認できます。
 
 ```sql
 SELECT count() FROM default.github;
@@ -152,8 +152,8 @@ SELECT count() FROM default.github;
 ### 推奨される関連資料 {#recommended-further-reading}
 
 
-* [Kafka Sink の設定パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
+* [Kafka Sink 構成パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)
-* [Kafka Connect JDBC Sink Deep Dive: プライマリキーの扱い方](https://rmoff.net/2021/03/12/kafka-connect-jdbc-sink-deep-dive-working-with-primary-keys/)
-* [Kafka Connect in Action: JDBC Sink](https://www.youtube.com/watch?v=b-3qN_tlYR4&t=981s) - 文章より動画で学びたい方向け。
+* [Kafka Connect JDBC Sink 詳解: プライマリキーの扱い](https://rmoff.net/2021/03/12/kafka-connect-jdbc-sink-deep-dive-working-with-primary-keys/)
+* [Kafka Connect in Action: JDBC Sink](https://www.youtube.com/watch?v=b-3qN_tlYR4&t=981s) - 文章で読むより動画で学びたい方向け。
 * [Kafka Connect Deep Dive – Converters and Serialization Explained](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)

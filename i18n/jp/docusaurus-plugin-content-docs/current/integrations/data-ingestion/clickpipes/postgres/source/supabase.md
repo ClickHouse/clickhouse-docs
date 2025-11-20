@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Supabase Postgres'
-description: 'ClickPipes のソースとして Supabase インスタンスを構成する'
+description: 'ClickPipes のソースとして Supabase インスタンスをセットアップする'
 slug: /integrations/clickpipes/postgres/source/supabase
-title: 'Supabase ソース構成ガイド'
+title: 'Supabase ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -14,11 +14,11 @@ import Image from '@theme/IdealImage';
 
 # Supabase ソースセットアップガイド
 
-このガイドでは、ClickPipes で利用するために Supabase Postgres をセットアップする方法を説明します。
+このガイドでは、ClickPipes で利用するための Supabase Postgres のセットアップ方法を説明します。
 
 :::note
 
-ClickPipes は、シームレスなレプリケーションのために IPv6 をネイティブサポートしており、Supabase と連携できます。
+ClickPipes は、シームレスなレプリケーションを実現するために、IPv6 経由で Supabase をネイティブサポートしています。
 
 :::
 
@@ -29,7 +29,7 @@ ClickPipes は、シームレスなレプリケーションのために IPv6 を
 CDC に適した必要な権限を持つ ClickPipes 用の新しいユーザーを作成し、
 レプリケーションに使用するパブリケーションも作成しましょう。
 
-Supabase プロジェクトの **SQL Editor** に移動してください。
+そのためには、Supabase プロジェクトの **SQL Editor** に移動してください。
 ここで、以下の SQL コマンドを実行します:
 
 ```sql
@@ -56,7 +56,7 @@ Supabase プロジェクトの **SQL Editor** に移動してください。
 
 :::note
 
-`clickpipes_user` と `clickpipes_password` を任意のユーザー名とパスワードに置き換えてください。
+`clickpipes_user` と `clickpipes_password` を、任意のユーザー名とパスワードに置き換えてください。
 
 また、ClickPipes でミラーを作成する際には、同じパブリケーション名を使用してください。
 
@@ -69,7 +69,7 @@ Supabase プロジェクトの **SQL Editor** に移動してください。
 
 この手順を実行すると Supabase データベースが再起動され、短時間のダウンタイムが発生する可能性があります。
 
-[Supabase ドキュメント](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)に従って、Supabase データベースの `max_slot_wal_keep_size` パラメータをより大きな値(最低 100GB または `102400`)に増やすことができます。
+[Supabase Docs](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters) に従って、Supabase データベースの `max_slot_wal_keep_size` パラメータをより大きな値(最低 100GB または `102400`)に増やすことができます。
 
 この値の推奨設定については、ClickPipes チームにお問い合わせください。
 
@@ -80,7 +80,7 @@ Supabase プロジェクトの **SQL Editor** に移動してください。
 
 Supabaseプロジェクトの`Project Settings` -> `Database`（`Configuration`配下）に移動します。
 
-**重要**: このページで`Display connection pooler`を無効にし、`Connection parameters`セクションに移動してパラメータをメモまたはコピーしてください。
+**重要**: このページで`Display connection pooler`を無効にし、`Connection parameters`セクションに移動してパラメータをメモまたはコピーします。
 
 <Image
   img={supabase_connection_details}
@@ -99,7 +99,7 @@ CDCベースのレプリケーションではコネクションプーラーが�
 
 ## RLSに関する注意事項 {#note-on-rls}
 
-ClickPipes Postgresユーザーは、RLSポリシーによる制限を受けないようにする必要があります。制限されるとデータの欠落につながる可能性があります。以下のコマンドを実行することで、ユーザーのRLSポリシーを無効化できます:
+ClickPipes Postgresユーザーは、RLSポリシーによる制限を受けないようにする必要があります。制限されるとデータの欠落につながる可能性があります。以下のコマンドを実行することで、ユーザーのRLSポリシーを無効化できます。
 
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
@@ -109,4 +109,4 @@ ALTER USER clickpipes_user BYPASSRLS;
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず控えておいてください。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

@@ -4,7 +4,7 @@ sidebar_label: 'Hive'
 title: 'Hive'
 hide_title: true
 description: '介绍 Hive 表引擎的页面'
-doc_type: '参考'
+doc_type: 'reference'
 keywords: ['hive', 'table engine', 'integration']
 ---
 

@@ -1,9 +1,9 @@
 ---
-description: 'Установка ClickHouse в Redhat/CentOS Linux'
+description: 'Установка ClickHouse на Linux Redhat/CentOS'
 keywords: ['ClickHouse', 'install', 'Redhat', 'CentOS', 'rpm']
 sidebar_label: 'Redhat/CentOS'
 slug: /install/redhat
-title: 'Установка ClickHouse в дистрибутивах Linux на базе rpm'
+title: 'Установка ClickHouse на Linux-дистрибутивах на базе rpm'
 hide_title: true
 doc_type: 'guide'
 ---

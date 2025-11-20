@@ -3,7 +3,7 @@ slug: /integrations/nats
 sidebar_label: 'NATS'
 title: 'NATS'
 hide_title: true
-description: 'Страница, описывающая интеграцию с системой NATS'
+description: 'Страница, описывающая интеграцию с механизмом NATS'
 doc_type: 'reference'
 keywords: ['nats', 'message queue', 'streaming', 'integration', 'data ingestion']
 ---

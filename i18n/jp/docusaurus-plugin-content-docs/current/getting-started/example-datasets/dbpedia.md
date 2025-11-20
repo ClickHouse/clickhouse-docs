@@ -1,5 +1,5 @@
 ---
-description: 'Wikipedia の記事 100 万件とそれらのベクトル埋め込みを含むデータセット'
+description: 'Wikipedia の 100 万件の記事とそれらのベクトル埋め込みを含むデータセット'
 sidebar_label: 'dbpedia データセット'
 slug: /getting-started/example-datasets/dbpedia-dataset
 title: 'dbpedia データセット'
@@ -7,15 +7,15 @@ keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbou
 doc_type: 'guide'
 ---
 
-[dbpedia データセット](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) には、Wikipedia の記事 100 万件と、OpenAI の [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) モデルを用いて生成された、それぞれの記事のベクトル埋め込みが含まれています。
+[dbpedia データセット](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) には、Wikipedia の 100 万件の記事と、それらに対して OpenAI の [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) モデルを用いて生成されたベクトル埋め込みが含まれています。
 
-このデータセットは、ベクトル埋め込み、ベクトル類似検索、および生成 AI を理解するための優れた入門用データセットです。このデータセットを用いて、ClickHouse における[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)と、シンプルながら強力な Q&A アプリケーションを紹介します。
+このデータセットは、ベクトル埋め込み、ベクトル類似度検索、および生成 AI を理解するための優れた入門用データセットです。このデータセットを利用して、ClickHouse における [近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md) と、シンプルながら強力な Q&A アプリケーションを紹介します。
 
 
 
 ## データセットの詳細 {#dataset-details}
 
-このデータセットには、[huggingface.co](https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/)に配置された26個の`Parquet`ファイルが含まれています。ファイル名は`0.parquet`、`1.parquet`、...、`25.parquet`です。データセットのサンプル行を確認するには、こちらの[Hugging Faceページ](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M)をご覧ください。
+このデータセットには、[huggingface.co](https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/)上に配置された26個の`Parquet`ファイルが含まれています。ファイル名は`0.parquet`、`1.parquet`、...、`25.parquet`となっています。データセットのサンプル行を確認するには、こちらの[Hugging Faceページ](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M)をご覧ください。
 
 
 ## テーブルの作成 {#create-table}
@@ -34,7 +34,7 @@ CREATE TABLE dbpedia
 ```
 
 
-## テーブルへのデータロード {#load-table}
+## テーブルのロード {#load-table}
 
 すべてのParquetファイルからデータセットをロードするには、以下のシェルコマンドを実行してください:
 
@@ -66,22 +66,21 @@ FROM dbpedia
 
 ## セマンティック検索 {#semantic-search}
 
-推奨資料: ["Vector embeddings
-" OpenAPI guide](https://platform.openai.com/docs/guides/embeddings)
+推奨資料: ["Vector embeddings" OpenAI guide](https://platform.openai.com/docs/guides/embeddings)
 
-ベクトル埋め込みを使用したセマンティック検索（_類似度検索_とも呼ばれます）には、以下のステップが含まれます:
+ベクトル埋め込みを使用したセマンティック検索(_類似検索_とも呼ばれます)には、以下の手順が含まれます:
 
-- ユーザーから自然言語での検索クエリを受け付ける（例: _"景色の良い鉄道の旅について教えて"_、_"ヨーロッパを舞台にしたサスペンス小説"_ など）
+- ユーザーから自然言語での検索クエリを受け付ける(例: _"景色の良い鉄道の旅について教えて"_、_"ヨーロッパを舞台にしたサスペンス小説"_ など)
 - LLMモデルを使用して検索クエリの埋め込みベクトルを生成する
-- データセット内で検索埋め込みベクトルに対する最近傍を見つける
+- データセット内で検索埋め込みベクトルの最近傍を見つける
 
-_最近傍_とは、ユーザークエリに関連する結果である文書、画像、またはコンテンツを指します。
-取得された結果は、生成AIアプリケーションにおけるRetrieval Augmented Generation（RAG）への重要な入力となります。
+_最近傍_とは、ユーザークエリに関連する結果となるドキュメント、画像、またはコンテンツのことです。
+取得された結果は、生成AIアプリケーションにおけるRetrieval Augmented Generation(RAG)の重要な入力となります。
 
 
 ## ブルートフォースベクトル類似検索の実行 {#run-a-brute-force-vector-similarity-search}
 
-KNN（k近傍法）検索またはブルートフォース検索は、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得する手法です。`dbpedia`データセットでは、セマンティック検索を視覚的に確認する簡単な方法として、データセット自体の埋め込みベクトルを検索ベクトルとして使用できます。例：
+KNN（k近傍法）検索またはブルートフォース検索では、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得します。`dbpedia`データセットでは、セマンティック検索を視覚的に確認する簡単な方法として、データセット自体の埋め込みベクトルを検索ベクトルとして使用できます。例：
 
 ```sql title="クエリ"
 SELECT id, title
@@ -117,7 +116,8 @@ LIMIT 20
 20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
-クエリレイテンシを記録しておき、ANN（ベクトルインデックスを使用）のクエリレイテンシと比較できるようにしてください。また、OSファイルキャッシュがコールド状態の場合と`max_threads=1`の場合のクエリレイテンシも記録し、実際の計算リソース使用量とストレージ帯域幅使用量を把握してください（数百万のベクトルを含む本番データセットに外挿することを想定してください）。
+クエリレイテンシを記録し、ANN（ベクトルインデックス使用）のクエリレイテンシと比較できるようにしてください。
+また、実際の計算リソース使用量とストレージ帯域幅使用量を把握するために、OSファイルキャッシュがコールド状態の場合と`max_threads=1`の場合のクエリレイテンシも記録してください（数百万のベクトルを含む本番環境のデータセットに外挿してください！）
 
 
 ## ベクトル類似度インデックスの構築 {#build-vector-similarity-index}
@@ -137,9 +137,9 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 
 ## ANN検索の実行 {#perform-ann-search}
 
-_近似最近傍探索_（Approximate Nearest Neighbours、ANN）は、厳密なベクトル検索よりもはるかに高速に結果を計算する技術群（例:グラフやランダムフォレストなどの特殊なデータ構造）を指します。結果の精度は通常、実用上「十分」です。多くの近似手法では、結果の精度と検索時間のトレードオフを調整するパラメータが提供されています。
+_近似最近傍探索_（Approximate Nearest Neighbours、ANN）は、厳密なベクトル検索よりもはるかに高速に結果を計算する技術群（例：グラフやランダムフォレストなどの特殊なデータ構造）を指します。結果の精度は通常、実用上「十分」です。多くの近似手法では、結果の精度と検索時間のトレードオフを調整するためのパラメータが提供されています。
 
-ベクトル類似度インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
+ベクトル類似性インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します：
 
 ```sql title="クエリ"
 SELECT
@@ -184,19 +184,19 @@ LIMIT 20
 
 ## 検索クエリの埋め込みベクトル生成 {#generating-embeddings-for-search-query}
 
-これまでに見てきた類似検索クエリでは、`dbpedia`テーブル内の既存のベクトルの1つを検索ベクトルとして使用していました。実際のアプリケーションでは、自然言語で入力されるユーザークエリに対して検索ベクトルを生成する必要があります。検索ベクトルは、データセットの埋め込みベクトル生成に使用したものと同じLLMモデルを使用して生成する必要があります。
+これまでに見てきた類似検索クエリは、`dbpedia`テーブル内の既存のベクトルの1つを検索ベクトルとして使用しています。実際のアプリケーションでは、自然言語で記述される可能性のあるユーザー入力クエリに対して検索ベクトルを生成する必要があります。検索ベクトルは、データセットの埋め込みベクトル生成に使用したものと同じLLMモデルを使用して生成する必要があります。
 
-以下に、`text-embedding-3-large`モデルを使用して埋め込みベクトルを生成するためにOpenAI APIをプログラムから呼び出す方法を示すPythonスクリプトの例を示します。生成された検索用埋め込みベクトルは、`SELECT`クエリ内の`cosineDistance()`関数に引数として渡されます。
+以下に、`text-embedding-3-large`モデルを使用して埋め込みベクトルを生成するためにOpenAI APIをプログラムから呼び出す方法を示すPythonスクリプトの例を示します。生成された検索埋め込みベクトルは、`SELECT`クエリ内の`cosineDistance()`関数の引数として渡されます。
 
-このスクリプトを実行するには、環境変数`OPENAI_API_KEY`にOpenAI APIキーを設定する必要があります。OpenAI APIキーは、https://platform.openai.com で登録することで取得できます。
+このスクリプトを実行するには、環境変数`OPENAI_API_KEY`にOpenAI APIキーを設定する必要があります。OpenAI APIキーは、https://platform.openai.com で登録後に取得できます。
 
 ```python
 import sys
 from openai import OpenAI
 import clickhouse_connect
 
-ch_client = clickhouse_connect.get_client(compress=False) # Pass ClickHouse credentials
-openai_client = OpenAI() # Set OPENAI_API_KEY environment variable
+ch_client = clickhouse_connect.get_client(compress=False) # ClickHouseの認証情報を渡す
+openai_client = OpenAI() # OPENAI_API_KEY環境変数を設定
 
 def get_embedding(text, model):
   text = text.replace("\n", " ")
@@ -228,7 +228,7 @@ while True:
 
 上記の例では、ClickHouseを使用したセマンティック検索とドキュメント検索を実演しました。次に、非常にシンプルながら高い可能性を秘めた生成AIのサンプルアプリケーションを紹介します。
 
-このアプリケーションは以下のステップを実行します:
+このアプリケーションは以下のステップを実行します：
 
 1. ユーザーから_トピック_を入力として受け取る
 2. `text-embedding-3-large`モデルでOpenAI APIを呼び出し、_トピック_の埋め込みベクトルを生成する
@@ -258,7 +258,7 @@ Enter your question : Which country has hosted the world cup most times
 $
 ```
 
-コード:
+コード：
 
 ```Python
 import sys
@@ -266,8 +266,8 @@ import time
 from openai import OpenAI
 import clickhouse_connect
 
-ch_client = clickhouse_connect.get_client(compress=False) # ここにClickHouseの認証情報を渡す
-openai_client = OpenAI() # OPENAI_API_KEY環境変数を設定する
+ch_client = clickhouse_connect.get_client(compress=False) # ClickHouseの認証情報をここに渡す
+openai_client = OpenAI() # 環境変数OPENAI_API_KEYを設定
 
 def get_embedding(text, model):
   text = text.replace("\n", " ")
@@ -287,7 +287,7 @@ while True:
     params = {'v1':embedding, 'v2':100}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # マッチするすべての記事/ドキュメントを収集
+    # マッチングしたすべての記事/ドキュメントを収集
     results = ""
     for row in result.result_rows:
         results = results + row[2]
@@ -298,12 +298,12 @@ while True:
     # OpenAI Chat API用のプロンプト
     query = f"""以下のコンテンツを使用して、後続の質問に回答してください。回答が見つからない場合は、「わかりません」と記述してください。
 
-コンテンツ:
+コンテンツ：
 \"\"\"
 {results}
 \"\"\"
 
-質問: {question}"""
+質問：{question}"""
 
     GPT_MODEL = "gpt-3.5-turbo"
     response = openai_client.chat.completions.create(
@@ -315,7 +315,7 @@ while True:
        temperature=0,
     )
 
-    # 質問への回答を出力!
+    # 質問への回答を出力！
     print(response.choices[0].message.content)
     print("\n")
 ```

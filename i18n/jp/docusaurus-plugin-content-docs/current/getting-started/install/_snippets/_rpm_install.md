@@ -1,27 +1,27 @@
-# RPMベースのディストリビューションへのClickHouseのインストール {#from-rpm-packages}
+# rpmベースのディストリビューションへのClickHouseのインストール {#from-rpm-packages}
 
-> **CentOS**、**RedHat**、およびその他すべてのRPMベースのLinuxディストリビューションには、公式のプリコンパイル済み`rpm`パッケージを使用することを推奨します。
+> **CentOS**、**RedHat**、およびその他すべてのrpmベースのLinuxディストリビューションには、公式のプリコンパイル済み`rpm`パッケージを使用することを推奨します。
 
 <VerticalStepper>
 
 
 ## RPMリポジトリのセットアップ {#setup-the-rpm-repository}
 
-以下のコマンドを実行して公式リポジトリを追加します:
+以下のコマンドを実行して公式リポジトリを追加してください:
 
 ```bash
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo
 ```
 
-`zypper`パッケージマネージャーを使用するシステム(openSUSE、SLES)の場合は、以下を実行します:
+`zypper`パッケージマネージャーを使用するシステム(openSUSE、SLES)の場合は、以下を実行してください:
 
 ```bash
 sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
 sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
-以下の手順では、使用しているパッケージマネージャーに応じて`yum install`を`zypper install`に置き換えることができます。
+以下の手順では、使用しているパッケージマネージャーに応じて`yum install`を`zypper install`に置き換えてください。
 
 
 ## ClickHouseサーバーとクライアントのインストール {#install-clickhouse-server-and-client-1}
@@ -44,7 +44,7 @@ sudo yum install clickhouse-server-22.8.7.34
 
 ## ClickHouseサーバーの起動 {#start-clickhouse-server-1}
 
-ClickHouseサーバーを起動するには、次のコマンドを実行します:
+ClickHouseサーバーを起動するには、以下を実行します:
 
 ```bash
 sudo systemctl enable clickhouse-server
@@ -52,13 +52,13 @@ sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
 ```
 
-ClickHouseクライアントを起動するには、次のコマンドを実行します:
+ClickHouseクライアントを起動するには、以下を実行します:
 
 ```sql
 clickhouse-client
 ```
 
-サーバーにパスワードを設定した場合は、次のコマンドを実行する必要があります:
+サーバーにパスワードを設定した場合は、以下を実行する必要があります:
 
 ```bash
 clickhouse-client --password
@@ -69,8 +69,8 @@ clickhouse-client --password
 
 :::tip
 本番環境では、ClickHouse Keeperを専用ノードで実行することを強く推奨します。
-テスト環境で、ClickHouse ServerとClickHouse Keeperを同じサーバー上で実行する場合は、
-ClickHouse KeeperはClickHouse serverに含まれているため、別途インストールする必要はありません。
+テスト環境において、ClickHouse ServerとClickHouse Keeperを同じサーバー上で実行する場合、
+ClickHouse Keeperは別途インストールする必要はありません。ClickHouse serverに含まれているためです。
 :::
 
 スタンドアロンのClickHouse Keeperサーバーに`clickhouse-keeper`をインストールするには、次のコマンドを実行します:

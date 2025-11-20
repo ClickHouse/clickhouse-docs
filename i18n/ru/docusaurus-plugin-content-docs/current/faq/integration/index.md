@@ -4,7 +4,7 @@ sidebar_position: 1
 sidebar_label: 'Интеграция ClickHouse с другими системами'
 keywords: ['clickhouse', 'faq', 'questions', 'integrations']
 title: 'Вопросы об интеграции ClickHouse с другими системами'
-description: 'Целевая страница со списком вопросов по интеграции ClickHouse с другими системами'
+description: 'Страница со списком вопросов, связанных с интеграцией ClickHouse с другими системами'
 doc_type: 'landing-page'
 ---
 
@@ -19,5 +19,5 @@ doc_type: 'landing-page'
 - [Что делать, если возникают проблемы с кодировками при подключении к Oracle через ODBC?](/faq/integration/oracle-odbc.md)
 
 :::info Не нашли то, что искали?
-Загляните в нашу [Базу знаний](/knowledgebase/) и посмотрите также множество полезных статей в этой документации.
+Загляните в нашу [Базу знаний](/knowledgebase/) и просмотрите множество полезных статей в этой документации.
 :::

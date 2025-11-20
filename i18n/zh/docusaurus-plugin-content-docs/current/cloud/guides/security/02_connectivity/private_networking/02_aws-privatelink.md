@@ -1,6 +1,6 @@
 ---
 title: 'AWS PrivateLink'
-description: '本文档介绍如何通过 AWS PrivateLink 连接到 ClickHouse Cloud。'
+description: '本文档介绍如何通过 AWS PrivateLink 连接 ClickHouse Cloud。'
 slug: /manage/security/aws-privatelink
 keywords: ['PrivateLink']
 doc_type: 'guide'
@@ -23,12 +23,12 @@ import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
-你可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在不将流量暴露到公网上的情况下，在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接。本文档概述了使用 AWS PrivateLink 连接到 ClickHouse Cloud 的步骤。
+你可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在不将流量暴露到公共互联网的情况下，在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接。本文档说明了使用 AWS PrivateLink 连接到 ClickHouse Cloud 的具体步骤。
 
-若要将对 ClickHouse Cloud 服务的访问限制为仅通过 AWS PrivateLink 地址，请按照 ClickHouse Cloud 提供的 [IP 访问列表](/cloud/security/setting-ip-filters) 说明进行配置。
+若希望只允许通过 AWS PrivateLink 地址访问你的 ClickHouse Cloud 服务，请按照 ClickHouse Cloud 文档中 [IP Access Lists](/cloud/security/setting-ip-filters) 的说明进行配置。
 
 :::note
-ClickHouse Cloud 支持从以下区域发起的[跨区域 PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/)：
+ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazon.com/about-aws/whats-new/2024/11/aws-privatelink-across-region-connectivity/)：
 - sa-east-1
 - il-central-1
 - me-central-1
@@ -58,32 +58,31 @@ ClickHouse Cloud 支持从以下区域发起的[跨区域 PrivateLink](https://a
 - us-west-1
 - us-east-2
 - us-east-1
-
-计费说明：AWS 会就跨区域数据传输向用户收费，价格信息见[此处](https://aws.amazon.com/privatelink/pricing/)。
+费用说明：AWS 会就跨区域数据传输收取费用，定价请见[此处](https://aws.amazon.com/privatelink/pricing/)。
 :::
 
 **请完成以下步骤以启用 AWS PrivateLink**：
-1. 获取 Endpoint 的 “Service name”。
+1. 获取 Endpoint 的“Service name”。
 1. 创建 AWS Endpoint。
-1. 将 “Endpoint ID” 添加到 ClickHouse Cloud 组织。
-1. 将 “Endpoint ID” 添加到 ClickHouse 服务允许列表中。
+1. 将“Endpoint ID”添加到 ClickHouse Cloud 组织。
+1. 将“Endpoint ID”添加到 ClickHouse 服务允许列表。
 
-可以在[这里](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
+可在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 
 
 
 ## 重要注意事项 {#considerations}
 
-ClickHouse 会尝试对您的服务进行分组,以便在 AWS 区域内重用相同的已发布[服务端点](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview)。但是,这种分组并不保证,尤其是当您将服务分散在多个 ClickHouse 组织中时。
-如果您已经为 ClickHouse 组织中的其他服务配置了 PrivateLink,由于这种分组机制,您通常可以跳过大部分步骤,直接进入最后一步:将 ClickHouse "Endpoint ID" 添加到 ClickHouse 服务允许列表中。
+ClickHouse 会尝试对您的服务进行分组,以便在 AWS 区域内重用相同的已发布[服务端点](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview)。但是,这种分组并不保证,特别是当您将服务分散在多个 ClickHouse 组织中时。
+如果您已经为 ClickHouse 组织中的其他服务配置了 PrivateLink,由于这种分组机制,您通常可以跳过大部分步骤,直接进入最后一步:将 ClickHouse "端点 ID" 添加到 ClickHouse 服务允许列表中。
 
 
 ## 此流程的前提条件 {#prerequisites}
 
-在开始之前,您需要准备:
+在开始之前，您需要准备：
 
-1. AWS 账户。
-1. 具有在 ClickHouse 端创建和管理私有端点必要权限的 [ClickHouse API 密钥](/cloud/manage/openapi)。
+1. 您的 AWS 账户。
+1. 具有在 ClickHouse 端创建和管理私有端点所需权限的 [ClickHouse API 密钥](/cloud/manage/openapi)。
 
 
 ## 步骤 {#steps}
@@ -148,7 +147,7 @@ jq .result
 ### 创建 AWS 端点 {#create-aws-endpoint}
 
 :::important
-本节介绍通过 AWS PrivateLink 配置 ClickHouse 的特定细节。提供的 AWS 特定步骤仅作为参考指导您查找相关内容,但这些步骤可能会随时间变化而不另行通知。请根据您的具体使用场景考虑 AWS 配置。
+本节介绍通过 AWS PrivateLink 配置 ClickHouse 的特定细节。AWS 相关步骤仅作为参考指导您查找相关内容,但这些步骤可能会随时间变化而不另行通知。请根据您的具体使用场景考虑 AWS 配置。
 
 请注意,ClickHouse 不负责配置所需的 AWS VPC 端点、安全组规则或 DNS 记录。
 
@@ -221,7 +220,7 @@ Resources:
         - sg-security_group_id3
 ```
 
-创建 VPC 端点后,请记录 `Endpoint ID` 值,您将在后续步骤中需要用到它。
+创建 VPC 端点后,请记录 `Endpoint ID` 值;您将在后续步骤中用到它。
 
 #### 选项 3:Terraform {#option-3-terraform}
 
@@ -241,7 +240,7 @@ resource "aws_vpc_endpoint" "this" {
 }
 ```
 
-创建 VPC 端点后,请记录 `Endpoint ID` 值,您将在后续步骤中需要用到它。
+创建 VPC 端点后,请记录 `Endpoint ID` 值;您将在后续步骤中用到它。
 
 #### 为端点设置私有 DNS 名称 {#set-private-dns-name-for-endpoint}
 
@@ -249,7 +248,7 @@ resource "aws_vpc_endpoint" "this" {
 配置 DNS 有多种方式。请根据您的具体使用场景设置 DNS。
 :::
 
-您需要将从[获取端点"Service name"](#obtain-endpoint-service-info)步骤中获取的"DNS name"指向 AWS 端点网络接口。这可以确保您的 VPC/网络中的服务/组件能够正确解析它。
+您需要将从[获取端点"Service name"](#obtain-endpoint-service-info)步骤中获取的"DNS name"指向 AWS 端点网络接口。这可确保您的 VPC/网络中的服务/组件能够正确解析它。
 
 ### 将"Endpoint ID"添加到 ClickHouse 服务允许列表 {#add-endpoint-id-to-services-allow-list}
 
@@ -272,14 +271,14 @@ resource "aws_vpc_endpoint" "this" {
 
 #### 选项 2:API {#option-2-api-2}
 
-您需要为每个应通过 PrivateLink 访问的实例将端点 ID 添加到允许列表中。
+您需要为每个应通过 PrivateLink 访问的实例将端点 ID 添加到允许列表。
 
 使用[创建 AWS 端点](#create-aws-endpoint)步骤中的数据设置 `ENDPOINT_ID` 环境变量。
 
-在运行任何命令之前,请设置以下环境变量:
+在运行任何命令之前设置以下环境变量:
 
 ```bash
-REGION=<您的区域代码,使用 AWS 格式,例如:us-west-2>
+REGION=<使用 AWS 格式的区域代码,例如:us-west-2>
 PROVIDER=aws
 KEY_ID=<您的 ClickHouse 密钥 ID>
 KEY_SECRET=<您的 ClickHouse 密钥密文>
@@ -307,7 +306,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 ```
 
 
-从允许列表中移除端点 ID:
+从允许列表中删除端点 ID：
 
 ```bash
 cat <<EOF | tee pl_config.json
@@ -332,9 +331,9 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 
 #### 获取私有 DNS 主机名 {#getting-private-dns-hostname}
 
-##### 选项 1:ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-3}
+##### 方式 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-3}
 
-在 ClickHouse Cloud 控制台中,导航至 **Settings**。点击 **Set up private endpoint** 按钮。在打开的弹出窗口中,复制 **DNS Name**。
+在 ClickHouse Cloud 控制台中,导航至 **Settings**。点击 **Set up private endpoint** 按钮。在打开的浮窗中,复制 **DNS Name**。
 
 <Image
   img={aws_private_link_ped_nsname}
@@ -343,15 +342,15 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
   border
 />
 
-##### 选项 2:API {#option-2-api-3}
+##### 方式 2：API {#option-2-api-3}
 
-在运行任何命令之前设置以下环境变量:
+在运行任何命令之前,请设置以下环境变量：
 
 ```bash
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥密文>
-ORG_ID=<您的 ClickHouse 组织 ID>
-INSTANCE_ID=<您的 ClickHouse 服务名称>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 您可以从[步骤](#option-2-api)中获取 `INSTANCE_ID`。
@@ -362,7 +361,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 jq .result
 ```
 
-输出应类似于:
+输出结果应类似于：
 
 ```result
 {
@@ -371,7 +370,7 @@ jq .result
 }
 ```
 
-在此示例中,通过 `privateDnsHostname` 主机名的连接将路由到 PrivateLink,但通过 `endpointServiceId` 主机名的连接将通过互联网路由。
+在此示例中,通过 `privateDnsHostname` 主机名的连接将路由到 PrivateLink,而通过 `endpointServiceId` 主机名的连接将通过互联网路由。
 
 
 ## 故障排除 {#troubleshooting}
@@ -393,17 +392,17 @@ jq .result
 
 ### 连接被对端重置 {#connection-reset-by-peer}
 
-- 很可能端点 ID 未添加到服务允许列表,请参阅[此步骤](#add-endpoint-id-to-services-allow-list)
+- 很可能端点 ID 未添加到服务允许列表,请访问[此步骤](#add-endpoint-id-to-services-allow-list)
 
 ### 检查端点过滤器 {#checking-endpoint-filters}
 
 在运行任何命令之前,请设置以下环境变量:
 
 ```bash
-KEY_ID=<Key ID>
-KEY_SECRET=<Key secret>
+KEY_ID=<密钥 ID>
+KEY_SECRET=<密钥密文>
 ORG_ID=<请设置 ClickHouse 组织 ID>
-INSTANCE_ID=<Instance ID>
+INSTANCE_ID=<实例 ID>
 ```
 
 您可以从[此步骤](#option-2-api)中获取 `INSTANCE_ID`。
@@ -417,10 +416,10 @@ jq .result.privateEndpointIds
 
 ### 连接到远程数据库 {#connecting-to-a-remote-database}
 
-假设您尝试在 ClickHouse Cloud 中使用 [MySQL](/sql-reference/table-functions/mysql) 或 [PostgreSQL](/sql-reference/table-functions/postgresql) 表函数,并连接到托管在 Amazon Web Services (AWS) VPC 中的数据库。AWS PrivateLink 无法用于安全地建立此连接。PrivateLink 是单向连接,它允许您的内部网络或 Amazon VPC 安全地连接到 ClickHouse Cloud,但不允许 ClickHouse Cloud 连接到您的内部网络。
+假设您尝试在 ClickHouse Cloud 中使用 [MySQL](/sql-reference/table-functions/mysql) 或 [PostgreSQL](/sql-reference/table-functions/postgresql) 表函数,并连接到托管在 Amazon Web Services (AWS) VPC 中的数据库。AWS PrivateLink 无法用于安全地建立此连接。PrivateLink 是单向连接。它允许您的内部网络或 Amazon VPC 安全地连接到 ClickHouse Cloud,但不允许 ClickHouse Cloud 连接到您的内部网络。
 
 根据 [AWS PrivateLink 文档](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/aws-privatelink.html):
 
 > 当您有客户端/服务器设置,希望允许一个或多个消费者 VPC 单向访问服务提供商 VPC 中的特定服务或实例集时,请使用 AWS PrivateLink。只有消费者 VPC 中的客户端可以发起到服务提供商 VPC 中服务的连接。
 
-为此,请配置您的 AWS 安全组以允许从 ClickHouse Cloud 到您的内部/私有数据库服务的连接。请查看 [ClickHouse Cloud 区域的默认出站 IP 地址](/manage/data-sources/cloud-endpoints-api),以及[可用的静态 IP 地址](https://api.clickhouse.cloud/static-ips.json)。
+为此,请配置您的 AWS 安全组以允许从 ClickHouse Cloud 到您的内部/私有数据库服务的连接。请查看 [ClickHouse Cloud 区域的默认出口 IP 地址](/manage/data-sources/cloud-endpoints-api)以及[可用的静态 IP 地址](https://api.clickhouse.cloud/static-ips.json)。

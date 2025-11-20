@@ -1,8 +1,8 @@
 # Установка ClickHouse с помощью Docker
 
-Руководство с [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/)
-приведено ниже для удобства. Доступные образы Docker основаны на
-официальных deb-пакетах ClickHouse.
+Руководство на [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/)
+приведено ниже для удобства. Представленные образы Docker используют
+официальные deb-пакеты ClickHouse.
 
 Команда `docker pull`:
 
@@ -17,7 +17,7 @@ docker pull clickhouse/clickhouse-server
 - Теги веток, такие как `22.2`, указывают на последний релиз соответствующей ветки.
 - Теги полных версий, такие как `22.2.3` и `22.2.3.5`, указывают на соответствующий релиз.
 - Тег `head` собирается из последнего коммита в ветку по умолчанию.
-- Каждый тег имеет необязательный суффикс `-alpine`, указывающий, что образ собран на основе `alpine`.
+- Каждый тег имеет опциональный суффикс `-alpine`, который указывает, что образ собран на основе `alpine`.
 
 ### Совместимость {#compatibility}
 
@@ -86,7 +86,7 @@ echo 'SELECT version()' | curl 'http://localhost:18123/?password=changeme' --dat
 ```
 
 Или разрешив контейнеру использовать [порты хоста напрямую](https://docs.docker.com/network/host/) с помощью `--network=host`
-(это также позволяет достичь более высокой производительности сети):
+(также позволяет достичь более высокой производительности сети):
 
 ```bash
 docker run -d --network=host --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
@@ -120,9 +120,9 @@ docker run -d \
 
 ## Возможности Linux {#linear-capabilities}
 
-ClickHouse обладает расширенной функциональностью, для использования которой необходимо включить несколько [возможностей Linux](https://man7.org/linux/man-pages/man7/capabilities.7.html).
+ClickHouse имеет расширенную функциональность, для использования которой необходимо включить несколько [возможностей Linux](https://man7.org/linux/man-pages/man7/capabilities.7.html)
 
-Они являются необязательными и могут быть включены с помощью следующих [аргументов командной строки docker](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
+Они являются опциональными и могут быть включены с помощью следующих [аргументов командной строки docker](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
 
 ```bash
 docker run -d \
@@ -130,7 +130,7 @@ docker run -d \
     --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
 ```
 
-Дополнительную информацию см. в разделе ["Настройка возможностей CAP_IPC_LOCK и CAP_SYS_NICE в Docker"](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker)
+Для получения дополнительной информации см. ["Настройка возможностей CAP_IPC_LOCK и CAP_SYS_NICE в Docker"](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker)
 
 
 ## Конфигурация {#configuration}
@@ -153,11 +153,11 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit nofile=262144:262144 -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
 ```
 
-При использовании образа с подключенными локальными директориями необходимо указать пользователя для сохранения корректных прав владения файлами. Используйте аргумент `--user` и смонтируйте `/var/lib/clickhouse` и `/var/log/clickhouse-server` внутри контейнера. В противном случае образ выдаст ошибку и не запустится.
+При использовании образа с подключенными локальными директориями необходимо указать пользователя для сохранения корректных прав владения файлами. Используйте аргумент `--user` и подключите `/var/lib/clickhouse` и `/var/log/clickhouse-server` внутри контейнера. В противном случае образ выдаст ошибку и не запустится.
 
 ### Запуск сервера от имени root {#start-server-from-root}
 
-Запуск сервера от имени root полезен в случаях, когда включено пространство имен пользователей (user namespace).
+Запуск сервера от имени root полезен в случаях, когда включено пространство имен пользователя (user namespace).
 Для этого выполните:
 
 ```bash
@@ -174,7 +174,7 @@ docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLIC
 
 #### Управление пользователем `default` {#managing-default-user}
 
-У пользователя `default` по умолчанию отключен сетевой доступ, если не заданы переменные `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` или `CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT`.
+У пользователя `default` по умолчанию отключен сетевой доступ, если не установлены переменные `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` или `CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT`.
 
 Существует способ сделать пользователя `default` доступным без защиты, установив переменную окружения `CLICKHOUSE_SKIP_USER_SETUP` в значение 1:
 
@@ -185,7 +185,7 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 
 ## Как расширить этот образ {#how-to-extend-image}
 
-Чтобы выполнить дополнительную инициализацию в образе, производном от данного, добавьте один или несколько скриптов `*.sql`, `*.sql.gz` или `*.sh` в каталог `/docker-entrypoint-initdb.d`. После того как точка входа вызовет `initdb`, будут выполнены все файлы `*.sql`, запущены все исполняемые скрипты `*.sh` и загружены все неисполняемые скрипты `*.sh`, найденные в этом каталоге, для выполнения дополнительной инициализации перед запуском службы.  
+Чтобы выполнить дополнительную инициализацию в образе, производном от данного, добавьте один или несколько скриптов `*.sql`, `*.sql.gz` или `*.sh` в каталог `/docker-entrypoint-initdb.d`. После того как точка входа вызовет `initdb`, будут выполнены все файлы `*.sql`, запущены все исполняемые скрипты `*.sh` и выполнен source для всех неисполняемых скриптов `*.sh`, найденных в этом каталоге, для дальнейшей инициализации перед запуском службы.  
 Также можно указать переменные окружения `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD`, которые будут использоваться для clickhouse-client во время инициализации.
 
 Например, чтобы добавить ещё одного пользователя и базу данных, добавьте следующее в `/docker-entrypoint-initdb.d/init-db.sh`:

@@ -2,7 +2,7 @@
 sidebar_label: 'Postgres から ClickHouse へのデータ取り込み'
 description: 'Postgres を ClickHouse Cloud にシームレスに接続します。'
 slug: /integrations/clickpipes/postgres
-title: 'Postgres から ClickHouse へのデータ取り込み（CDC 利用）'
+title: 'Postgres から ClickHouse へのデータ取り込み（CDC を使用）'
 keywords: ['PostgreSQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
 doc_type: 'guide'
 integration:
@@ -13,18 +13,18 @@ integration:
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.png';
-import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg';
-import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg';
-import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg';
-import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg';
-import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg';
+import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.png'
+import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
+import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
+import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
+import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
+import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
 
 # Postgres から ClickHouse へのデータ取り込み（CDC の利用）
 
-ClickPipes を使用することで、ソースとなる Postgres データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの Postgres データベースは、オンプレミス環境のほか、Amazon RDS、Google Cloud SQL, Azure Database for Postgres, Supabase などを含むクラウド上でホストされたものを利用できます。
+ClickPipes を使用して、ソースとなる Postgres データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの Postgres データベースは、オンプレミス環境だけでなく、Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase などを含むクラウド上にホストすることもできます。
 
 
 
@@ -52,7 +52,7 @@ ClickPipes を使用することで、ソースとなる Postgres データベ�
 
 :::warning
 
-PgBouncer、RDS Proxy、Supabase Poolerなどのプロキシは、CDCベースのレプリケーションではサポートされていません。ClickPipesのセットアップ時にはこれらを使用せず、実際のPostgresデータベースの接続情報を追加してください。
+PgBouncer、RDS Proxy、Supabase PoolerなどのPostgresプロキシは、CDCベースのレプリケーションではサポートされていません。ClickPipesのセットアップではこれらを使用せず、実際のPostgresデータベースの接続情報を追加してください。
 
 :::
 
@@ -98,7 +98,7 @@ ClickHouse Cloudアカウントにログインしていることを確認して�
 #### (オプション) AWS Private Linkのセットアップ {#optional-setting-up-aws-private-link}
 
 ソースPostgresデータベースがAWS上でホストされている場合、AWS Private Linkを使用して接続できます。これは、データ転送をプライベートに保ちたい場合に便利です。
-[接続をセットアップするためのセットアップガイド](/integrations/clickpipes/aws-privatelink)に従ってください。
+[セットアップガイドに従って接続を設定](/integrations/clickpipes/aws-privatelink)できます。
 
 #### (オプション) SSHトンネリングのセットアップ {#optional-setting-up-ssh-tunneling}
 
@@ -118,7 +118,7 @@ ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホスト�
 
 :::
 
-接続詳細を入力したら、「Next」をクリックします。
+接続詳細の入力が完了したら、「Next」をクリックします。
 
 ### レプリケーション設定の構成 {#configuring-the-replication-settings}
 
@@ -135,8 +135,8 @@ ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホスト�
 
 必要に応じて詳細設定を構成できます。各設定の簡単な説明を以下に示します:
 
-- **Sync interval**: ClickPipesがソースデータベースに変更をポーリングする間隔です。これは宛先ClickHouseサービスに影響を与えるため、コストに敏感なユーザーには、この値を高く(`3600`以上)保つことをお勧めします。
-- **Parallel threads for initial load**: 初期スナップショットを取得するために使用される並列ワーカーの数です。多数のテーブルがあり、初期スナップショットを取得するために使用される並列ワーカーの数を制御したい場合に便利です。この設定はテーブルごとに適用されます。
+- **Sync interval**: ClickPipesがソースデータベースの変更をポーリングする間隔です。これは宛先ClickHouseサービスに影響を与えるため、コストに敏感なユーザーには、この値を高く(`3600`以上)保つことをお勧めします。
+- **Parallel threads for initial load**: 初期スナップショットの取得に使用される並列ワーカーの数です。多数のテーブルがあり、初期スナップショットの取得に使用される並列ワーカーの数を制御したい場合に便利です。この設定はテーブルごとに適用されます。
 - **Pull batch size**: 1回のバッチで取得する行数です。これはベストエフォート設定であり、すべてのケースで保証されるわけではありません。
 - **Snapshot number of rows per partition**: 初期スナップショット中に各パーティションで取得される行数です。テーブルに多数の行があり、各パーティションで取得される行数を制御したい場合に便利です。
 - **Snapshot number of tables in parallel**: 初期スナップショット中に並列で取得されるテーブルの数です。多数のテーブルがあり、並列で取得されるテーブルの数を制御したい場合に便利です。
@@ -156,18 +156,18 @@ ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホスト�
 7. ソースPostgresデータベースからレプリケートするテーブルを選択できます。テーブルの選択時に、宛先ClickHouseデータベースでのテーブル名の変更や、特定のカラムの除外も可能です。
 
    :::warning
-   ClickHouseでPostgresのプライマリキーとは異なる順序キーを定義する場合は、関連する[考慮事項](/integrations/clickpipes/postgres/ordering_keys)をすべて必ず確認してください
+   ClickHouseでPostgresのプライマリキーとは異なるオーダリングキーを定義する場合は、関連するすべての[考慮事項](/integrations/clickpipes/postgres/ordering_keys)を必ずお読みください
    :::
 
 ### 権限を確認してClickPipeを開始する {#review-permissions-and-start-the-clickpipe}
 
-8. 権限のドロップダウンから「Full access」ロールを選択し、「Complete Setup」をクリックします。
+8. 権限ドロップダウンから「Full access」ロールを選択し、「Complete Setup」をクリックします。
 
    <Image img={ch_permissions} alt='権限を確認' size='lg' border />
 
 
 ## 次のステップ {#whats-next}
 
-PostgreSQLからClickHouse CloudへデータをレプリケートするClickPipeの設定が完了したら、最適なパフォーマンスを実現するためのデータのクエリとモデリング方法に集中できます。要件に最適な戦略を評価するには[移行ガイド](/migrations/postgresql/overview)を、CDCワークロードのベストプラクティスについては[重複排除戦略(CDCを使用)](/integrations/clickpipes/postgres/deduplication)および[順序キー](/integrations/clickpipes/postgres/ordering_keys)のページを参照してください。
+PostgreSQLからClickHouse CloudへデータをレプリケートするためのClickPipeの設定が完了したら、最適なパフォーマンスを実現するためのデータのクエリ方法とモデリング方法に集中できます。要件に最も適した戦略を評価するには[移行ガイド](/migrations/postgresql/overview)を、CDCワークロードのベストプラクティスについては[重複排除戦略(CDCを使用)](/integrations/clickpipes/postgres/deduplication)および[順序キー](/integrations/clickpipes/postgres/ordering_keys)のページを参照してください。
 
 PostgreSQL CDCに関するよくある質問やトラブルシューティングについては、[Postgres FAQページ](/integrations/clickpipes/postgres/faq)を参照してください。

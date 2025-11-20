@@ -31,10 +31,10 @@ Elastic Stack 提供了多种可观测性数据采集代理,具体包括:
 
 ## 推荐的迁移路径 {#prefered-migration-path}
 
-在条件允许的情况下,我们建议迁移到 [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/) 来收集所有日志、指标和追踪数据,并将收集器以[代理角色部署在边缘](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)。这是发送数据最高效的方式,可以避免架构复杂性和数据转换。
+我们建议在可能的情况下迁移到 [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/) 来收集所有日志、指标和追踪数据,并将收集器[以代理角色部署在边缘](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)。这是最高效的数据发送方式,可以避免架构复杂性和数据转换。
 
 :::note 为什么选择 OpenTelemetry Collector?
-OpenTelemetry Collector 为可观测性数据采集提供了一个可持续且厂商中立的解决方案。我们了解到一些组织运行着数千甚至数万个 Elastic 代理。对于这些用户而言,保持与现有代理基础设施的兼容性可能至关重要。本文档旨在为此提供支持,同时也帮助团队逐步过渡到基于 OpenTelemetry 的采集方式。
+OpenTelemetry Collector 为可观测性数据采集提供了可持续且供应商中立的解决方案。我们了解到一些组织运行着数千甚至数万个 Elastic 代理。对于这些用户而言,保持与现有代理基础设施的兼容性可能至关重要。本文档旨在为此提供支持,同时帮助团队逐步过渡到基于 OpenTelemetry 的数据收集方式。
 :::
 
 
@@ -42,7 +42,7 @@ OpenTelemetry Collector 为可观测性数据采集提供了一个可持续且�
 
 所有数据通过 **OpenTelemetry (OTel) 收集器**实例接入 ClickStack,该实例作为日志、指标、追踪和会话数据的主要入口。我们建议为此实例使用官方的 [ClickStack 发行版](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector)收集器,除非它已[包含在您的 ClickStack 部署模型中](/use-cases/observability/clickstack/deployment)。
 
-用户可以通过[语言 SDK](/use-cases/observability/clickstack/sdks) 或数据收集代理(例如处于[代理](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)角色的 OTel 收集器,或其他技术如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/))向此收集器发送数据,这些代理负责收集基础设施指标和日志。
+用户可以通过[语言 SDK](/use-cases/observability/clickstack/sdks) 或数据收集代理(例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel 收集器,或其他技术如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/))向此收集器发送数据,这些代理负责收集基础设施指标和日志。
 
 **我们假定此收集器在所有代理迁移步骤中均可用**。
 
@@ -53,7 +53,7 @@ OpenTelemetry Collector 为可观测性数据采集提供了一个可持续且�
 
 **目前此选项仅在 Filebeat 上经过测试,因此仅适用于日志场景。**
 
-Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/reference/ecs),该模式目前[正在合并到 ClickStack 所使用的 OpenTelemetry](https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/0199-support-elastic-common-schema-in-opentelemetry.md) 规范中。然而,这些[模式仍然存在显著差异](https://www.elastic.co/docs/reference/ecs/ecs-otel-alignment-overview),用户目前需要负责在将数据摄取到 ClickStack 之前将 ECS 格式的事件转换为 OpenTelemetry 格式。
+Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/reference/ecs),该模式目前[正在合并到 ClickStack 所使用的 OpenTelemetry](https://github.com/open-telemetry/opentelemetry-specification/blob/main/oteps/0199-support-elastic-common-schema-in-opentelemetry.md) 规范中。然而,这些[模式仍存在显著差异](https://www.elastic.co/docs/reference/ecs/ecs-otel-alignment-overview),用户目前需要负责在将事件导入 ClickStack 之前将 ECS 格式的事件转换为 OpenTelemetry 格式。
 
 我们建议使用 [Vector](https://vector.dev) 执行此转换,这是一个轻量级、高性能的可观测性数据管道,支持一种名为 Vector Remap Language (VRL) 的强大转换语言。
 
@@ -126,7 +126,7 @@ resource_keys = ["host", "cloud", "agent", "service"]
 
 
 
-# 为资源字段和日志记录字段分别创建对象
+# 为 resource 和 log record 字段分别创建对象
 resource_obj = {}
 log_record_obj = {}
 
@@ -156,7 +156,7 @@ is_resource = true
 }
 
 
-# 分别单独展开这两个对象
+# 分别将两个对象扁平化
 flattened_resources = flatten(resource_obj, separator: ".")
 flattened_logs = flatten(log_record_obj, separator: ".")
 
@@ -202,7 +202,7 @@ log_attributes = push(log_attributes, attribute)
 }
 
 
-# 获取 timeUnixNano 的时间戳(转换为纳秒)
+# 获取 timeUnixNano 时间戳（转换为纳秒）
 
 timestamp_nano = if exists(.@timestamp) {
 to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
@@ -254,15 +254,15 @@ to_string!(.body)
 
 </details>
 
-最后,转换后的事件可以通过 OTLP 协议经由 OpenTelemetry collector 发送到 ClickStack。这需要在 Vector 中配置一个 OTLP sink,该 sink 接收来自 `remap_filebeat` 转换的事件作为输入:
+最后,转换后的事件可以通过 OpenTelemetry collector 经由 OTLP 协议发送到 ClickStack。这需要在 Vector 中配置一个 OTLP sink,该 sink 从 `remap_filebeat` 转换接收事件作为输入:
 
 ```yaml
 sinks:
   otlp:
     type: opentelemetry
-    inputs: [remap_filebeat] # 接收来自 remap 转换的事件 - 见下文
+    inputs: [remap_filebeat] # 从 remap 转换接收事件 - 见下文
     protocol:
-      type: http  # 使用端口 4317 时请使用 "grpc"
+      type: http  # 端口 4317 使用 "grpc"
       uri: http://localhost:4318/v1/logs # OTel collector 的日志端点
       method: post
       encoding:
@@ -274,11 +274,11 @@ sinks:
         authorization: ${YOUR_INGESTION_API_KEY}
 ````
 
-此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该密钥。
+此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 HyperDX 应用的 `Team Settings → API Keys` 下找到该密钥。
 
-<Image img={ingestion_key} alt='Ingestion keys' size='lg' />
+<Image img={ingestion_key} alt='摄取密钥' size='lg' />
 
-完整的最终配置如下所示:
+完整配置如下所示:
 
 ```yaml
 sources:
@@ -304,7 +304,7 @@ sinks:
     type: opentelemetry
     inputs: [remap_filebeat]
     protocol:
-      type: http # 使用端口 4317 时请使用 "grpc"
+      type: http # 端口 4317 使用 "grpc"
       uri: http://localhost:4318/v1/logs
       method: post
       encoding:
@@ -317,7 +317,7 @@ sinks:
 
 ### 配置 Filebeat {#configure-filebeat}
 
-现有的 Filebeat 安装只需修改配置以将事件发送到 Vector。这需要配置 Logstash 输出 - 同样,可以选择性地配置 TLS:
+现有的 Filebeat 安装只需修改配置,将事件发送到 Vector 即可。这需要配置一个 Logstash 输出 - 同样,可以选择性地配置 TLS:
 
 
 ```yaml
@@ -330,7 +330,7 @@ output.logstash:
   # HTTPS 服务器验证的根证书列表
   #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-  # SSL 客户端认证证书
+  # SSL 客户端身份验证证书
   #ssl.certificate: "/etc/pki/client/cert.pem"
 
   # 客户端证书私钥
@@ -361,19 +361,19 @@ Elastic Agent 将不同的 Elastic Beats 整合到单个软件包中。该代理
 
 #### 配置 Elastic Agent {#configure-elastic-agent}
 
-需要配置 Elastic Agent 通过 Logstash 协议 Lumberjack 发送数据。这是一种[支持的部署模式](https://www.elastic.co/docs/manage-data/ingest/ingest-reference-architectures/ls-networkbridge),可以集中配置,或者在不使用 Fleet 部署时[通过代理配置文件 `elastic-agent.yaml`](https://www.elastic.co/docs/reference/fleet/logstash-output) 进行配置。
+需要配置 Elastic Agent 通过 Logstash 协议 Lumberjack 发送数据。这是一种[受支持的部署模式](https://www.elastic.co/docs/manage-data/ingest/ingest-reference-architectures/ls-networkbridge),可以集中配置,或者在不使用 Fleet 部署时[通过代理配置文件 `elastic-agent.yaml`](https://www.elastic.co/docs/reference/fleet/logstash-output) 进行配置。
 
 通过 Kibana 进行集中配置可以通过添加 [Fleet 输出](https://www.elastic.co/docs/reference/fleet/fleet-settings#output-settings)来实现。
 
-<Image img={add_logstash_output} alt='添加 Logstash 输出' size='md' />
+<Image img={add_logstash_output} alt='Add Logstash output' size='md' />
 
-然后可以在[代理策略](https://www.elastic.co/docs/reference/fleet/agent-policy)中使用此输出。这样,使用该策略的所有代理都会自动将数据发送到 Vector。
+然后可以在[代理策略](https://www.elastic.co/docs/reference/fleet/agent-policy)中使用此输出。这将自动使所有使用该策略的代理将其数据发送到 Vector。
 
-<Image img={agent_output_settings} alt='代理设置' size='md' />
+<Image img={agent_output_settings} alt='Agent settings' size='md' />
 
-由于这需要配置基于 TLS 的安全通信,我们建议参考指南 ["为 Logstash 输出配置 SSL/TLS"](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output),用户可以假设其 Vector 实例承担 Logstash 的角色来遵循该指南。
+由于这需要配置通过 TLS 进行安全通信,我们推荐参考指南 ["为 Logstash 输出配置 SSL/TLS"](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output),用户可以假设其 Vector 实例承担 Logstash 的角色来遵循该指南。
 
-请注意,这需要用户在 Vector 中配置 Logstash 源以启用双向 TLS。使用[指南中生成](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs)的密钥和证书来正确配置输入。
+请注意,这要求用户在 Vector 中配置 Logstash 源以使用双向 TLS。使用[指南中生成](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs)的密钥和证书来正确配置输入。
 
 ```yaml
 sources:
@@ -396,10 +396,10 @@ sources:
 Elastic Agent 包含一个嵌入式 EDOT Collector,允许您一次性对应用程序和基础设施进行插桩,并将数据发送到多个供应商和后端。
 
 :::note 代理集成和编排
-运行随 Elastic Agent 分发的 EDOT collector 的用户将无法使用[代理提供的现有集成](https://www.elastic.co/docs/reference/fleet/manage-integrations)。此外,collector 无法由 Fleet 集中管理 - 这要求用户以[独立模式运行代理](https://www.elastic.co/docs/reference/fleet/configure-standalone-elastic-agents),自行管理配置。
+运行随 Elastic Agent 分发的 EDOT collector 的用户将无法利用[代理提供的现有集成](https://www.elastic.co/docs/reference/fleet/manage-integrations)。此外,collector 无法由 Fleet 集中管理 - 这要求用户以[独立模式运行代理](https://www.elastic.co/docs/reference/fleet/configure-standalone-elastic-agents),自行管理配置。
 :::
 
-要使用 EDOT collector 运行 Elastic Agent,请参阅[官方 Elastic 指南](https://www.elastic.co/docs/reference/fleet/otel-agent-transform)。与指南中指示的配置 Elastic 端点不同,删除现有的 `exporters` 并配置 OTLP 输出 - 将数据发送到 ClickStack OpenTelemetry collector。例如,exporters 的配置变为:
+要使用 EDOT collector 运行 Elastic Agent,请参阅 [Elastic 官方指南](https://www.elastic.co/docs/reference/fleet/otel-agent-transform)。与指南中指示的配置 Elastic 端点不同,删除现有的 `exporters` 并配置 OTLP 输出 - 将数据发送到 ClickStack OpenTelemetry collector。例如,exporters 的配置变为:
 
 ```yaml
 exporters:
@@ -417,11 +417,11 @@ exporters:
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg" />
 
-如果已将 Vector 配置为使用双向 TLS，并且证书和密钥是按照指南 [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output) 中的步骤生成的，则需要相应地配置 `otlp` 导出器，例如：
+如果 Vector 已配置为使用双向 TLS，并且证书和密钥是通过指南 [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output) 中的步骤生成的，则需要相应地对 `otlp` 导出器进行配置，例如：
 
 ```yaml
 exporters:
-  # 导出器,用于将日志和指标发送到 Elasticsearch 托管的 OTLP 输入端点
+  # 导出器，用于将日志和指标发送到 Elasticsearch 托管的 OTLP 输入
   otlp:
     endpoint: localhost:4317
     headers:

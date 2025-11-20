@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 # JSON のエクスポート
 
-インポートに使用できる JSON 形式のほとんどは、エクスポートにも使用できます。最も一般的なのは [`JSONEachRow`](/interfaces/formats/JSONEachRow) です。
+インポートに使用できるほとんどの JSON 形式は、エクスポートにも使用できます。最も一般的なのは [`JSONEachRow`](/interfaces/formats/JSONEachRow) です。
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -22,7 +22,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-あるいは、[`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) を使用して、列名を省略することでディスク使用量を削減できます。
+または、カラム名を省略してディスク使用量を節約するために [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) を使用することもできます。
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -37,7 +37,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## データ型を文字列としてオーバーライドする {#overriding-data-types-as-strings}
 
-ClickHouseはデータ型を尊重し、標準に従ってJSONをエクスポートします。ただし、すべての値を文字列としてエンコードする必要がある場合は、[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)フォーマットを使用できます：
+ClickHouseはデータ型を尊重し、標準に従ってJSONをエクスポートします。ただし、すべての値を文字列としてエンコードする必要がある場合は、[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)フォーマットを使用できます:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -49,7 +49,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-これで、数値カラムである`hits`が文字列としてエンコードされます。文字列としてのエクスポートはすべてのJSON\*フォーマットでサポートされています。`JSONStrings\*`および`JSONCompactStrings\*`フォーマットをご利用ください：
+これで、`hits`数値カラムが文字列としてエンコードされます。文字列としてのエクスポートはすべてのJSON\*フォーマットでサポートされています。`JSONStrings\*`および`JSONCompactStrings\*`フォーマットをご確認ください:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -64,7 +64,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## データと共にメタデータをエクスポートする {#exporting-metadata-together-with-data}
 
-アプリケーションで広く使用されている一般的な[JSON](/interfaces/formats/JSON)フォーマットは、結果データだけでなく、カラムの型とクエリの統計情報もエクスポートします:
+アプリケーションで広く使用されている一般的な[JSON](/interfaces/formats/JSON)フォーマットは、結果データだけでなく、カラム型とクエリ統計情報もエクスポートします:
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -102,7 +102,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-[JSONCompact](/interfaces/formats/JSONCompact)フォーマットは同じメタデータを出力しますが、データ自体はコンパクトな形式で表現されます:
+[JSONCompact](/interfaces/formats/JSONCompact)フォーマットは同じメタデータを出力しますが、データ自体はコンパクトな形式を使用します:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -142,7 +142,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 
 ## JSONデータと構造をエクスポートするコンパクトな方法 {#compact-way-to-export-json-data-and-structure}
 
-データとその構造を効率的に出力するには、[`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)フォーマットを使用します:
+データとその構造を効率的に出力するには、[`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)形式を使用します:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
@@ -156,7 +156,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-このフォーマットでは、カラム名と型を含む2つのヘッダー行が先頭に付加されたコンパクトなJSON形式が使用されます。このフォーマットは、別のClickHouseインスタンス(または他のアプリケーション)へのデータ取り込みに利用できます。
+この形式では、列名と型を含む2つのヘッダー行が先頭に付加されたコンパクトなJSON形式が使用されます。この形式は、別のClickHouseインスタンス(または他のアプリケーション)へのデータ取り込みに使用できます。
 
 
 ## JSONをファイルにエクスポートする {#exporting-json-to-a-file}
@@ -171,7 +171,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
-ClickHouseは約3700万件のレコードをJSONファイルにエクスポートするのにわずか2秒しかかかりませんでした。`COMPRESSION`句を使用することで、エクスポート時に圧縮を有効にすることもできます:
+ClickHouseは約3700万件のレコードをJSONファイルにエクスポートするのにわずか2秒しかかかりませんでした。また、`COMPRESSION`句を使用して、エクスポート時に圧縮を有効にすることもできます:
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
@@ -181,7 +181,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
-処理時間は長くなりますが、はるかに小さい圧縮ファイルが生成されます:
+処理には時間がかかりますが、はるかに小さい圧縮ファイルが生成されます:
 
 ```bash
 2.2G    out.json

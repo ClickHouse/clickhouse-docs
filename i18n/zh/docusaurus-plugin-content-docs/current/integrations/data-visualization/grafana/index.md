@@ -2,15 +2,15 @@
 sidebar_label: '快速入门'
 sidebar_position: 1
 slug: /integrations/grafana
-description: '在 Grafana 中使用 ClickHouse 的介绍'
-title: 'Grafana 的 ClickHouse 数据源插件'
+description: '在 Grafana 中使用 ClickHouse 的入门介绍'
+title: '用于 Grafana 的 ClickHouse 数据源插件'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
-keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
+keywords: ['Grafana', '数据可视化', '仪表板', '插件', '数据源']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
@@ -23,12 +23,12 @@ import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Grafana 的 ClickHouse 数据源插件
+# 用于 Grafana 的 ClickHouse 数据源插件
 
 <ClickHouseSupportedBadge/>
 
-借助 Grafana，你可以通过仪表板探索和共享所有数据。
-Grafana 需要安装一个插件才能连接到 ClickHouse，该插件可以在其 UI 中轻松完成安装。
+借助 Grafana，您可以通过仪表板探索并共享所有数据。
+Grafana 需要一个插件才能连接到 ClickHouse，并且可以在其 UI 中轻松完成安装。
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
@@ -44,7 +44,7 @@ Grafana 需要安装一个插件才能连接到 ClickHouse，该插件可以在�
 
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -64,7 +64,7 @@ Grafana 不会验证查询的安全性。查询可以包含任何 SQL 语句,包
 
 ## 3. 安装 Grafana 的 ClickHouse 插件 {#3--install-the-clickhouse-plugin-for-grafana}
 
-在 Grafana 连接 ClickHouse 之前,需要先安装相应的 Grafana 插件。假设您已登录 Grafana,请按以下步骤操作:
+在 Grafana 能够连接到 ClickHouse 之前,您需要安装相应的 Grafana 插件。假设您已登录 Grafana,请按照以下步骤操作:
 
 1. 在侧边栏的 **Connections** 页面中,选择 **Add new connection** 选项卡。
 
@@ -77,7 +77,7 @@ Grafana 不会验证查询的安全性。查询可以包含任何 SQL 语句,包
      border
    />
 
-3. 在下一个页面中,点击 **Install** 按钮:
+3. 在下一个页面上,点击 **Install** 按钮:
 
    <Image size='md' img={install} alt='安装 ClickHouse 插件' border />
 
@@ -123,7 +123,7 @@ Grafana 不会验证查询的安全性。查询可以包含任何 SQL 语句,包
 
 有关配置的更多详细信息,请参阅[插件配置](./config.md)文档。
 
-如果您需要查找本文档未涵盖的更多信息,请访问 [GitHub 上的插件代码仓库](https://github.com/grafana/clickhouse-datasource)。
+如果您需要查找本文档中未涵盖的更多信息,请访问 [GitHub 上的插件代码仓库](https://github.com/grafana/clickhouse-datasource)。
 
 
 ## 升级插件版本 {#upgrading-plugin-versions}

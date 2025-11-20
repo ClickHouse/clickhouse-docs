@@ -1,15 +1,20 @@
-* `config.d` 目录中包含 ClickHouse 服务器配置文件 `config.xml`，用于为每个 ClickHouse 节点定义自定义配置。该配置会与每次安装 ClickHouse 时自带的默认配置文件 `config.xml` 合并。
-* `users.d` 目录中包含用户配置文件 `users.xml`，用于定义用户级的自定义配置。该配置会与每次安装 ClickHouse 时自带的默认 `users.xml` 配置文件合并。
+* `config.d` 目录包含 ClickHouse 服务器配置文件 `config.xml`，
+  在该文件中可以为每个 ClickHouse 节点定义自定义配置。此自定义配置会与
+  每次安装 ClickHouse 时自带的默认配置文件 `config.xml` 合并。
+* `users.d` 目录包含用户配置文件 `users.xml`，在该文件中可以为用户定义
+  自定义配置。此自定义配置会与每次安装 ClickHouse 时自带的默认
+  ClickHouse 用户配置文件 `users.xml` 合并。
 
 :::tip 自定义配置目录
-在编写自己的配置时，最佳实践是使用 `config.d` 和 `users.d` 目录，而不是直接修改
-`/etc/clickhouse-server/config.xml` 和 `/etc/clickhouse-server/users.xml` 中的默认配置。
+在编写自己的配置时，推荐的最佳实践是使用 `config.d` 和 `users.d` 目录，
+而不是直接修改 `/etc/clickhouse-server/config.xml` 和
+`etc/clickhouse-server/users.xml` 中的默认配置。
 
-这行
+该行
 
 ```xml
 <clickhouse replace="true">
 ```
 
-确保在 `config.d` 和 `users.d` 目录中定义的配置节会覆盖默认 `config.xml` 和 `users.xml` 文件中定义的配置节。
+确保在 `config.d` 和 `users.d` 目录中定义的配置节会覆盖 `config.xml` 和 `users.xml` 默认文件中定义的配置节。
 :::

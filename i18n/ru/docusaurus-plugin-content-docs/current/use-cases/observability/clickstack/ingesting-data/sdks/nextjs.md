@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'SDK Next.js для ClickStack — стек наблюдаемости ClickHouse'
+description: 'SDK Next.js для ClickStack — стека наблюдаемости ClickHouse'
 title: 'Next.js'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
@@ -12,17 +12,17 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack может получать нативные трассировки OpenTelemetry из ваших
-[безсерверных функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+ClickStack может получать нативные трассы OpenTelemetry из ваших
+[серверлесс-функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
 в Next 13.2+.
 
-В это руководство входят:
+В этом руководстве интегрируются:
 
-* **Журналы консоли**
-* **Трейсы**
+* **Console Logs**
+* **Traces**
 
 :::note
-Если вам нужна запись пользовательских сессий или мониторинг на стороне браузера, вместо этого установите [браузерную интеграцию](/use-cases/observability/clickstack/sdks/browser).
+Если вам нужен session replay или мониторинг на стороне браузера, вместо этого установите [Browser integration](/use-cases/observability/clickstack/sdks/browser).
 :::
 
 
@@ -96,7 +96,7 @@ export async function register() {
 ### Настройка переменных окружения {#configure-environment-variables}
 
 Если вы отправляете трассировки напрямую в ClickStack, необходимо запустить сервер Next.js
-со следующими переменными окружения, чтобы направить спаны в OTel-коллектор:
+со следующими переменными окружения, чтобы направить спаны в коллектор OTel:
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \

@@ -3,7 +3,7 @@ sidebar_label: '使用 clickhouse-local'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
 title: '使用 clickhouse-local 迁移到 ClickHouse'
-description: '介绍如何使用 clickhouse-local 迁移到 ClickHouse 的指南'
+description: '使用 clickhouse-local 迁移到 ClickHouse 的指南'
 doc_type: 'guide'
 ---
 
@@ -20,37 +20,40 @@ import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.
 
 # 使用 clickhouse-local 迁移到 ClickHouse
 
-<Image img={ch_local_01} size='sm' alt='迁移自管 ClickHouse' background='white' />
+<Image img={ch_local_01} size='sm' alt='迁移自管 ClickHouse 实例' background='white' />
 
-你可以使用 ClickHouse，或者更具体地说，[`clickhouse-local`](/operations/utilities/clickhouse-local.md)，作为 ETL 工具，将数据从你当前的数据库系统迁移到 ClickHouse Cloud。前提是，你当前的数据库系统要么有 ClickHouse 提供的[集成引擎](/engines/table-engines/#integration-engines)或对应的[表函数](/sql-reference/table-functions/)，要么有系统厂商提供的 JDBC 或 ODBC 驱动可用。
+你可以使用 ClickHouse，更具体地说是 [`clickhouse-local`](/operations/utilities/clickhouse-local.md)，
+作为 ETL 工具，将数据从当前的数据库系统迁移到 ClickHouse Cloud，只要你的当前数据库系统要么有 ClickHouse 提供的 [集成引擎（integration engine）](/engines/table-engines/#integration-engines) 或 [表函数（table function）](/sql-reference/table-functions/)，
+要么有厂商提供的 JDBC 驱动或 ODBC 驱动可用即可。
 
-我们有时将这种迁移方式称为“枢纽”方法，因为它通过一个中间的枢纽点或跳点，将数据从源数据库迁移到目标数据库。例如，如果出于安全要求，在私有或内部网络中只允许出站连接，那么可能就需要使用这种方法：你需要使用 clickhouse-local 从源数据库拉取数据，然后将数据推送到目标 ClickHouse 数据库，clickhouse-local 在其中充当枢纽点。
+我们有时将这种迁移方法称为“pivot”方法，因为它通过一个中间 pivot 点（跳板）来把数据从源数据库迁移到目标数据库。比如，如果出于安全要求，在私有或内部网络中只允许向外的出站连接，那么你可能必须使用 clickhouse-local 从源数据库拉取数据，然后再将数据推送到目标 ClickHouse 数据库，此时 clickhouse-local 就充当了这个 pivot 点。
 
-ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb) 和 [SQLite](/engines/table-engines/integrations/sqlite) 提供了集成引擎以及（可动态创建集成引擎的）表函数。对于其他所有常见的数据库系统，通常由系统厂商提供相应的 JDBC 或 ODBC 驱动。
+ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb) 和 [SQLite](/engines/table-engines/integrations/sqlite) 提供了集成引擎和表函数（可按需动态创建集成引擎）。
+对于所有其他主流数据库系统，系统厂商通常都会提供可用的 JDBC 或 ODBC 驱动。
 
 
 
-## 什么是 clickhouse-local? {#what-is-clickhouse-local}
+## 什么是 clickhouse-local？ {#what-is-clickhouse-local}
 
 <Image
   img={ch_local_02}
   size='lg'
-  alt='迁移自管理 ClickHouse'
+  alt='迁移自管理的 ClickHouse'
   background='white'
 />
 
-通常,ClickHouse 以集群形式运行,即多个 ClickHouse 数据库引擎实例以分布式方式在不同服务器上运行。
+通常，ClickHouse 以集群形式运行，即多个 ClickHouse 数据库引擎实例以分布式方式在不同服务器上运行。
 
-在单服务器环境中,ClickHouse 数据库引擎作为 `clickhouse-server` 程序的一部分运行。数据库访问配置(路径、用户、安全性等)通过服务器配置文件进行设置。
+在单服务器环境中，ClickHouse 数据库引擎作为 `clickhouse-server` 程序的一部分运行。数据库访问控制（路径、用户、安全性等）通过服务器配置文件进行配置。
 
-`clickhouse-local` 工具允许您以命令行工具的形式独立使用 ClickHouse 数据库引擎,对大量输入和输出数据进行高速 SQL 处理,无需配置和启动 ClickHouse 服务器。
+`clickhouse-local` 工具允许您以独立的命令行工具方式使用 ClickHouse 数据库引擎，对大量输入和输出数据进行高速 SQL 处理，无需配置和启动 ClickHouse 服务器。
 
 
 ## 安装 clickhouse-local {#installing-clickhouse-local}
 
 您需要一台主机来运行 `clickhouse-local`,该主机需要能够通过网络访问您当前的源数据库系统和 ClickHouse Cloud 目标服务。
 
-在该主机上,根据您的操作系统下载相应的 `clickhouse-local` 构建版本:
+在该主机上,根据您计算机的操作系统下载相应的 `clickhouse-local` 构建版本:
 
 <Tabs groupId="os">
 <TabItem value="linux" label="Linux" >
@@ -99,7 +102,7 @@ curl https://clickhouse.com/ | sh
 
 ## 示例 1:使用集成引擎从 MySQL 迁移到 ClickHouse Cloud {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
 
-我们将使用[集成表引擎](/engines/table-engines/integrations/mysql/)(由 [mysql 表函数](/sql-reference/table-functions/mysql/)即时创建)从源 MySQL 数据库读取数据,并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote/)将数据写入您的 ClickHouse Cloud 服务上的目标表。
+我们将使用[集成表引擎](/engines/table-engines/integrations/mysql/)(由 [mysql 表函数](/sql-reference/table-functions/mysql/)动态创建)从源 MySQL 数据库读取数据,并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote/)将数据写入您的 ClickHouse Cloud 服务上的目标表。
 
 <Image
   img={ch_local_03}
@@ -123,7 +126,7 @@ CREATE TABLE db.table ...
 ```
 
 :::note
-ClickHouse Cloud 目标表的结构必须与源 MySQL 表的结构保持一致(列名和顺序必须相同,列数据类型必须兼容)。
+ClickHouse Cloud 目标表的结构和源 MySQL 表的结构必须保持一致(列名和顺序必须相同,列数据类型必须兼容)。
 :::
 
 ### 在 clickhouse-local 主机上:{#on-the-clickhouse-local-host-machine}
@@ -138,11 +141,11 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 ```
 
 :::note
-数据不会在 `clickhouse-local` 主机上本地存储。相反,数据从源 MySQL 表读取后会立即写入 ClickHouse Cloud 服务上的目标表。
+`clickhouse-local` 主机上不会本地存储任何数据。数据从源 MySQL 表读取后会立即写入 ClickHouse Cloud 服务上的目标表。
 :::
 
 
-## 示例 2：使用 JDBC 桥接从 MySQL 迁移到 ClickHouse Cloud {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
+## 示例 2:使用 JDBC 桥接器从 MySQL 迁移到 ClickHouse Cloud {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 我们将使用 [JDBC 集成表引擎](/engines/table-engines/integrations/jdbc.md)(由 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 动态创建)结合 [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 和 MySQL JDBC 驱动程序从源 MySQL 数据库读取数据,并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote.md)将数据写入您的 ClickHouse Cloud 服务上的目标表。
 

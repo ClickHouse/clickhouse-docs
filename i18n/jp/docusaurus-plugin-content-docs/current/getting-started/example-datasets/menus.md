@@ -1,25 +1,25 @@
 ---
-description: 'ホテル、レストラン、カフェのメニューに関する歴史的データ130万件を収録したデータセットで、料理とその価格が含まれます。'
-sidebar_label: 'New York Public Library「what''s on the menu?」データセット'
+description: 'ホテル、レストラン、カフェのメニューについて、料理とその価格を含む130万件の履歴データを収録したデータセット。'
+sidebar_label: 'New York Public Library 「What''s on the Menu?」 データセット'
 slug: /getting-started/example-datasets/menus
-title: 'New York Public Library「What''s on the Menu?」データセット'
+title: 'New York Public Library 「What''s on the Menu?」 データセット'
 doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-このデータセットは New York Public Library によって作成されました。ホテル、レストラン、カフェのメニューに関する歴史的データが含まれており、料理とその価格が収録されています。
+このデータセットは New York Public Library によって作成されました。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理とその価格が収録されています。
 
 出典: http://menus.nypl.org/data  
 このデータはパブリックドメインです。
 
-このデータは図書館のアーカイブに由来するものであり、不完全であったり、統計分析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
-このデータセットには、メニューに含まれる料理に関するレコードが約 130 万件含まれており、ClickHouse にとっては非常に小さなデータ量ですが、依然として有用なサンプルです。
+このデータは図書館のアーカイブ由来であり、欠損があったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
+メニューに含まれる料理に関するレコードはわずか 130 万件であり、ClickHouse にとっては非常に小さなデータ量ですが、良いサンプルとして利用できます。
 
 
 
 ## データセットのダウンロード {#download-dataset}
 
-次のコマンドを実行します：
+次のコマンドを実行してください:
 
 
 ```bash
@@ -43,10 +43,10 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 
 データは正規化されており、4つのテーブルで構成されています:
 
-- `Menu` — メニューに関する情報: レストラン名、メニューが確認された日付など。
-- `Dish` — 料理に関する情報: 料理名とその特性。
-- `MenuPage` — メニュー内のページに関する情報。各ページは特定のメニューに属します。
-- `MenuItem` — メニュー項目。メニューページ上の料理とその価格を含み、料理とメニューページへのリンクを持ちます。
+- `Menu` — メニューに関する情報:レストラン名、メニューが確認された日付など。
+- `Dish` — 料理に関する情報:料理名といくつかの特性。
+- `MenuPage` — メニュー内のページに関する情報。各ページは特定のメニューに属しています。
+- `MenuItem` — メニューの項目。特定のメニューページ上の料理とその価格:料理とメニューページへのリンク。
 
 
 ## テーブルの作成 {#create-tables}
@@ -128,22 +128,22 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --date_time_input_format best_effort --query "INSERT INTO menu_item FORMAT CSVWithNames" < MenuItem.csv
 ```
 
-データはヘッダー付きCSVで表現されているため、[CSVWithNames](/interfaces/formats/CSVWithNames)形式を使用します。
+データはヘッダー付きのCSVで表現されているため、[CSVWithNames](/interfaces/formats/CSVWithNames)形式を使用します。
 
 データフィールドにはダブルクォートのみが使用され、シングルクォートは値の内部に含まれる可能性があるため、CSVパーサーが混乱しないように`format_csv_allow_single_quotes`を無効にします。
 
 データに[NULL](/operations/settings/formats#input_format_null_as_default)が含まれていないため、[input_format_null_as_default](/operations/settings/formats#input_format_null_as_default)を無効にします。有効にした場合、ClickHouseは`\N`シーケンスを解析しようとし、データ内の`\`と混同する可能性があります。
 
-[date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)設定を使用すると、[DateTime](../../sql-reference/data-types/datetime.md)フィールドをさまざまな形式で解析できます。例えば、'2000-01-01 01:02'のような秒を含まないISO-8601形式も認識されます。この設定を指定しない場合、固定のDateTime形式のみが許可されます。
+[date_time_input_format best_effort](/operations/settings/formats#date_time_input_format)設定を使用すると、[DateTime](../../sql-reference/data-types/datetime.md)フィールドを多様な形式で解析できます。例えば、'2000-01-01 01:02'のような秒を含まないISO-8601形式も認識されます。この設定を使用しない場合、固定されたDateTime形式のみが許可されます。
 
 
 ## データの非正規化 {#denormalize-data}
 
-データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに格納されています。つまり、メニュー項目から料理名などをクエリする際には、[JOIN](/sql-reference/statements/select/join)を実行する必要があります。
+データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに分散されています。そのため、メニュー項目から料理名などをクエリする際には、[JOIN](/sql-reference/statements/select/join)を実行する必要があります。
 
-一般的な分析タスクでは、毎回`JOIN`を実行するのを避けるため、事前にJOINされたデータを扱う方がはるかに効率的です。これは「非正規化」データと呼ばれます。
+一般的な分析タスクでは、毎回`JOIN`を実行するのを避けるため、事前にJOINされたデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
 
-すべてのデータをJOINして格納する`menu_item_denorm`テーブルを作成します:
+すべてのデータをJOINした結果を格納する`menu_item_denorm`テーブルを作成します:
 
 ```sql
 CREATE TABLE menu_item_denorm
@@ -250,9 +250,9 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-参考程度にご覧ください。
+この結果は参考程度にとどめてください。
 
-### バーガーの価格 {#query-burger-prices}
+### ハンバーガーの価格 {#query-burger-prices}
 
 クエリ:
 
@@ -292,7 +292,7 @@ ORDER BY d ASC;
 
 ### ウォッカ {#query-vodka}
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -306,7 +306,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Result:
+結果:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
@@ -322,13 +322,13 @@ Result:
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-ウォッカのデータを取得するには、`ILIKE '%vodka%'` と記述する必要があります。これで確かにインパクトのあるクエリになります。
+ウォッカのレコードを取得するには `ILIKE '%vodka%'` と記述する必要があり、これは間違いなく印象的な表現です。
 
 ### キャビア {#query-caviar}
 
-キャビアの価格を出力してみましょう。また、キャビアを含む任意の料理の名前も出力します。
+キャビアの価格を表示します。あわせて、キャビアを含む任意の料理名も表示します。
 
-クエリ：
+クエリ:
 
 ```sql
 SELECT
@@ -343,7 +343,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Result:
+結果:
 
 
 ```text
@@ -366,7 +366,7 @@ Result:
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-少なくともウォッカにはキャビアが付いている。なかなかいいね。
+少なくともウォッカにキャビアが付いている。いいね。
 
 
 ## オンラインプレイグラウンド {#playground}

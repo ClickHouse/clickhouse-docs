@@ -3,15 +3,17 @@ slug: /use-cases/observability/clickstack/sdks/react-native
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: '适用于 ClickStack 的 React Native SDK - ClickHouse 可观测性技术栈'
+description: 'ClickStack 的 React Native SDK - ClickHouse 可观测性技术栈'
 title: 'React Native'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-ClickStack React Native SDK 允许你在 React Native 应用中进行埋点，将事件发送到 ClickStack。借此，你可以在同一时间轴中，将移动端的网络请求和异常与后端事件一并查看。
+ClickStack React Native SDK 允许你在 React Native 应用中进行埋点，
+将事件发送到 ClickStack。借此，你可以在同一时间轴中同时查看
+移动端的网络请求和异常，以及后端事件。
 
-本指南集成：
+本指南集成以下内容：
 
 - **XHR/Fetch 请求**
 
@@ -29,7 +31,7 @@ npm install @hyperdx/otel-react-native
 
 ### 初始化 ClickStack {#initialize-clickstack}
 
-在应用生命周期中尽早初始化该库:
+在应用程序生命周期中尽早初始化该库:
 
 ```javascript
 import { HyperDXRum } from "@hyperdx/otel-react-native"
@@ -43,10 +45,10 @@ HyperDXRum.init({
 
 ### 附加用户信息或元数据(可选) {#attach-user-information-metadata}
 
-附加用户信息后,您可以在 HyperDX 中搜索和过滤会话及事件。
+附加用户信息可让您在 HyperDX 中搜索/过滤会话和事件。
 此方法可在客户端会话期间的任意时刻调用。当前客户端会话以及调用后发送的所有事件都将与用户信息关联。
 
-`userEmail`、`userName` 和 `teamName` 将在会话 UI 中填充相应的值,但可以省略。您可以指定任何其他附加值并用于搜索事件。
+`userEmail`、`userName` 和 `teamName` 将在会话 UI 中填充相应的值,但可以省略。可以指定任何其他附加值并用于搜索事件。
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
@@ -60,8 +62,8 @@ HyperDXRum.setGlobalAttributes({
 
 ### 对低版本进行插桩 {#instrument-lower-versions}
 
-要对运行在 0.68 以下版本 React Native 的应用程序进行插桩,
-请编辑 `metro.config.js` 文件以强制 metro 使用浏览器特定的包。例如:
+要对运行在低于 0.68 版本的 React Native 上的应用程序进行插桩,
+请编辑您的 `metro.config.js` 文件以强制 metro 使用浏览器特定的包。例如:
 
 ```javascript
 const defaultResolver = require("metro-resolver")

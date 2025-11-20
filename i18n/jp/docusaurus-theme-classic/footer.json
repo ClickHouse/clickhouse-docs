@@ -1,19 +1,19 @@
 {
   "link.item.label.Trademark": {
     "message": "商標",
-    "description": "label=Trademark のフッターリンク（https://clickhouse.com/legal/trademark-policy へのリンク）の表示ラベル"
+    "description": "label=Trademarkで https://clickhouse.com/legal/trademark-policy にリンクするフッターリンクのラベル"
   },
   "link.item.label.Privacy": {
     "message": "プライバシー",
-    "description": "https://clickhouse.com/legal/privacy-policy へリンクする、ラベル「Privacy」のフッターリンクのラベル"
+    "description": "label=Privacyとして https://clickhouse.com/legal/privacy-policy にリンクするフッターリンクのラベル"
   },
   "link.item.label.Security": {
     "message": "セキュリティ",
-    "description": "ラベルが「Security」で、https://trust.clickhouse.com/ にリンクしているフッターリンクのラベル"
+    "description": "label=Security として https://trust.clickhouse.com/ にリンクするフッターリンクのラベル"
   },
   "link.item.label.Terms of Service": {
     "message": "利用規約",
-    "description": "label=Terms of Service で https://clickhouse.com/legal/agreements/terms-of-service にリンクするフッターリンクのラベル"
+    "description": "label=Terms of Serviceで https://clickhouse.com/legal/agreements/terms-of-service にリンクするフッターリンクのラベル"
   },
   "copyright": {
     "message": "© 2016&ndash;2025 ClickHouse, Inc.",

@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMergeState'
 title: 'avgMergeState'
-description: 'avgMergeState 結合子の使用例'
+description: 'avgMergeState コンビネータの利用例'
 keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
 sidebar_label: 'avgMergeState'
 doc_type: 'reference'
@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 ## 使用例 {#example-usage}
 
-`MergeState`コンビネータは、事前集計された状態を結合し、最終化せずに状態として保持したまま、さらなる処理を行いたい多段階集計のシナリオで特に有用です。例として、個々のサーバーのパフォーマンスメトリクスを複数レベルにわたる階層的な集計に変換する例を見ていきます：サーバーレベル → リージョンレベル → データセンターレベル。
+`MergeState`コンビネータは、事前集計された状態を結合し、最終化せずに状態として保持したまま、さらなる処理を行う多段階集計シナリオで特に有用です。これを説明するために、個々のサーバーのパフォーマンスメトリクスを複数レベルにわたる階層的な集計に変換する例を見ていきます:サーバーレベル → リージョンレベル → データセンターレベル。
 
-まず、生データを格納するテーブルを作成します：
+まず、生データを格納するテーブルを作成します:
 
 ```sql
 CREATE TABLE raw_server_metrics
@@ -41,7 +41,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-次に、サーバーレベルの集計先テーブルを作成し、それに対する挿入トリガーとして機能するインクリメンタルマテリアライズドビューを定義します：
+次に、サーバーレベルの集計先テーブルを作成し、それに対する挿入トリガーとして機能するインクリメンタルマテリアライズドビューを定義します:
 
 ```sql
 CREATE TABLE server_performance
@@ -65,7 +65,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-リージョンレベルとデータセンターレベルについても同様に行います：
+リージョンレベルとデータセンターレベルについても同様に行います:
 
 ```sql
 CREATE TABLE region_performance
@@ -105,7 +105,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-次に、サンプルの生データをソーステーブルに挿入します：
+次に、サンプルの生データをソーステーブルに挿入します:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -118,11 +118,11 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 302, 'eu-central', 'dc2', 155);
 ```
 
-各レベルに対して3つのクエリを記述します：
+各レベルに対して3つのクエリを記述します:
 
 
 <Tabs>
-  <TabItem value="Service level" label="Service level" default>
+  <TabItem value="Service level" label="サービスレベル" default>
     ```sql
     SELECT
         server_id,
@@ -145,7 +145,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     ```
   </TabItem>
 
-  <TabItem value="Regional level" label="Regional level">
+  <TabItem value="Regional level" label="リージョンレベル">
     ```sql
     SELECT
         region,
@@ -165,7 +165,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     ```
   </TabItem>
 
-  <TabItem value="Datacenter level" label="Datacenter level">
+  <TabItem value="Datacenter level" label="データセンターレベル">
     ```sql
     SELECT
         datacenter,
@@ -184,7 +184,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
   </TabItem>
 </Tabs>
 
-さらにデータを挿入できます。
+さらにデータを挿入できます:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -193,7 +193,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-データセンターレベルでのパフォーマンスをもう一度確認してみましょう。集計チェーン全体が自動的に更新されたことに注目してください。
+データセンターレベルのパフォーマンスをもう一度確認してみましょう。集約チェーン全体が自動的に更新されたことに注目してください。
 
 ```sql
 SELECT

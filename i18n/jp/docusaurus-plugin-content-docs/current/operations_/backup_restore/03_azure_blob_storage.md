@@ -1,8 +1,8 @@
 ---
-description: 'Azure Blob Storage エンドポイントとの間のバックアップおよび復元の詳細'
+description: 'Azure Blob Storage エンドポイントへのバックアップおよびそこからのリストアに関する詳細'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: 'Azure Blob Storage へのバックアップおよびそこからの復元'
+title: 'Azure Blob Storage へのバックアップおよび Azure Blob Storage からのリストア'
 doc_type: 'guide'
 ---
 
@@ -17,7 +17,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 <Syntax />
 
 
-## AzureBlobStorageエンドポイントを使用したBACKUP / RESTOREの設定 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
+## AzureBlobStorageエンドポイントを使用するBACKUP / RESTOREの設定 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
 AzureBlobStorageコンテナにバックアップを書き込むには、以下の情報が必要です:
 

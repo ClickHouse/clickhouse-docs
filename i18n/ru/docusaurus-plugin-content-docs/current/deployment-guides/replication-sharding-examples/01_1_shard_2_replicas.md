@@ -3,7 +3,7 @@ slug: /architecture/replication
 sidebar_label: 'Репликация'
 sidebar_position: 10
 title: 'Репликация данных'
-description: 'Страница с описанием примерной архитектуры с пятью серверами. Два используются для размещения копий данных, а остальные — для координации репликации данных'
+description: 'Страница с примером архитектуры из пяти серверов. Два используются для хранения копий данных, остальные — для координации репликации'
 doc_type: 'guide'
 keywords: ['replication', 'high availability', 'cluster setup', 'data redundancy', 'fault tolerance']
 ---
@@ -23,14 +23,14 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> В этом примере вы узнаете, как развернуть простой кластер ClickHouse,
-> который выполняет репликацию данных. Настроено пять серверов. Два используются для
-> хранения копий данных. Оставшиеся три сервера используются для координации
+> В этом примере вы узнаете, как настроить простой кластер ClickHouse,
+> в котором данные реплицируются. Настроено пять серверов. Два из них используются
+> для хранения копий данных. Остальные три сервера используются для координации
 > репликации данных.
 
-Архитектура кластера, который вы будете настраивать, показана ниже:
+Архитектура настраиваемого кластера показана ниже:
 
-<Image img={ReplicationArchitecture} size="md" alt="Схема архитектуры для 1 шарда и 2 реплик с ReplicatedMergeTree" />
+<Image img={ReplicationArchitecture} size="md" alt="Диаграмма архитектуры для 1 шарда и 2 реплик с ReplicatedMergeTree" />
 
 <DedicatedKeeperServers />
 
@@ -38,7 +38,7 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 ## Предварительные требования {#pre-requisites}
 
 - Вы уже настроили [локальный сервер ClickHouse](/install)
-- Вы знакомы с базовыми концепциями конфигурации ClickHouse, такими как [файлы конфигурации](/operations/configuration-files)
+- Вы знакомы с базовыми концепциями конфигурации ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
 - У вас установлен Docker
 
 <VerticalStepper level="h2">
@@ -50,7 +50,7 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 
 В этом руководстве для настройки кластера ClickHouse используется [Docker Compose](https://docs.docker.com/compose/). Эту конфигурацию можно адаптировать для работы на отдельных локальных машинах, виртуальных машинах или облачных инстансах.
 
-Выполните следующие команды для создания структуры каталогов:
+Выполните следующие команды для создания структуры каталогов для этого примера:
 
 ```bash
 mkdir cluster_1S_2R
@@ -59,7 +59,7 @@ cd cluster_1S_2R
 ```
 
 
-# Создать директории clickhouse-keeper
+# Создание каталогов clickhouse-keeper
 
 for i in {01..03}; do
 mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
@@ -156,9 +156,9 @@ done
 
 ### Настройка сервера {#server-setup}
 
-Теперь измените каждый пустой конфигурационный файл `config.xml`, расположенный по пути
+Теперь отредактируйте каждый пустой файл конфигурации `config.xml`, расположенный в
 `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Выделенные
-ниже строки необходимо изменить для каждого узла:
+ниже строки необходимо изменить для каждого узла индивидуально:
 
 ```xml
 <clickhouse replace="true">
@@ -231,12 +231,12 @@ done
 
 Каждый раздел приведенного выше конфигурационного файла подробно описан ниже.
 
-#### Сеть и логирование {#networking}
+#### Сеть и журналирование {#networking}
 
 <ListenHost />
 
-Логирование настраивается в блоке `<logger>`. Данная конфигурация создает
-отладочный лог с ротацией при достижении размера 1000M (максимум 3 файла):
+Журналирование настраивается в блоке `<logger>`. Данная конфигурация создает
+отладочный журнал с ротацией при достижении размера 1000M, сохраняя три версии:
 
 ```xml
 <logger>
@@ -248,13 +248,13 @@ done
 </logger>
 ```
 
-Дополнительную информацию о настройке логирования см. в комментариях
+Дополнительную информацию о настройке журналирования см. в комментариях
 стандартного [конфигурационного файла](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml) ClickHouse.
 
 #### Конфигурация кластера {#cluster-configuration}
 
 Конфигурация кластера задается в блоке `<remote_servers>`.
-Здесь определяется имя кластера `cluster_1S_2R`.
+Здесь определено имя кластера `cluster_1S_2R`.
 
 
 Блок `<cluster_1S_2R></cluster_1S_2R>` определяет структуру кластера
@@ -267,11 +267,11 @@ done
 
 ```xml
 <remote_servers>
-    <!-- имя кластера (не должно содержать точки) -->
+    <!-- имя кластера (не должно содержать точек) -->
     <cluster_1S_2R>
         <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
         <shard>
-            <!-- Опционально. Записывать ли данные только на одну из реплик. По умолчанию: false (записывать данные на все реплики). -->
+            <!-- Необязательный параметр. Определяет, записывать ли данные только на одну из реплик. По умолчанию: false (записывать данные на все реплики). -->
             <internal_replication>true</internal_replication>
             <replica>
                 <host>clickhouse-01</host>
@@ -291,7 +291,7 @@ done
 #### Конфигурация Keeper {#keeper-config-explanation}
 
 Секция `<ZooKeeper>` указывает ClickHouse, где запущен ClickHouse Keeper (или ZooKeeper).
-Поскольку мы используем кластер ClickHouse Keeper, необходимо указать каждый узел `<node>` кластера
+Поскольку используется кластер ClickHouse Keeper, необходимо указать каждый узел `<node>` кластера
 вместе с его именем хоста и номером порта с помощью тегов `<host>` и `<port>` соответственно.
 
 Настройка ClickHouse Keeper описана на следующем шаге руководства.
@@ -315,13 +315,13 @@ done
 
 :::note
 Хотя можно запускать ClickHouse Keeper на том же сервере, что и ClickHouse Server,
-в производственных средах мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных хостах.
+в производственных средах настоятельно рекомендуется запускать ClickHouse Keeper на выделенных хостах.
 :::
 
 #### Конфигурация макросов {#macros-config-explanation}
 
-Кроме того, секция `<macros>` используется для определения подстановок параметров для
-реплицируемых таблиц. Они перечислены в `system.macros` и позволяют использовать подстановки
+Кроме того, секция `<macros>` используется для определения подстановок параметров
+в реплицируемых таблицах. Они перечислены в `system.macros` и позволяют использовать подстановки
 вида `{shard}` и `{replica}` в запросах.
 
 ```xml
@@ -333,7 +333,7 @@ done
 ```
 
 :::note
-Они будут определены индивидуально в зависимости от структуры кластера.
+Эти значения определяются индивидуально в зависимости от структуры кластера.
 :::
 
 ### Конфигурация пользователей {#user-config}
@@ -382,7 +382,7 @@ done
 ```
 
 
-| Directory                                                 | File                                                                                                                                                                             |
+| Каталог                                                  | Файл                                                                                                                                                                             |
 |-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml)    |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml)    |
@@ -402,7 +402,7 @@ done
 
 <KeeperConfig />
 
-| Директория                                              | Файл                                                                                                                                                                                         |
+| Каталог                                               | Файл                                                                                                                                                                                         |
 | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
 | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
@@ -416,23 +416,23 @@ done
 ## Проверка настройки {#test-the-setup}
 
 Убедитесь, что Docker запущен на вашем компьютере.
-Запустите кластер с помощью команды `docker-compose up` из корневого каталога `cluster_1S_2R`:
+Запустите кластер командой `docker-compose up` из корневого каталога `cluster_1S_2R`:
 
 ```bash
 docker-compose up -d
 ```
 
-После этого Docker должен начать скачивать образы ClickHouse и Keeper,
-а затем запустить контейнеры:
+Вы увидите, как Docker начнёт загружать образы ClickHouse и Keeper,
+а затем запустит контейнеры:
 
 ```bash
 [+] Running 6/6
- ✔ Network cluster_1s_2r_default   Created
- ✔ Container clickhouse-keeper-03  Started
- ✔ Container clickhouse-keeper-02  Started
- ✔ Container clickhouse-keeper-01  Started
- ✔ Container clickhouse-01         Started
- ✔ Container clickhouse-02         Started
+ ✔ Network cluster_1s_2r_default   Создана
+ ✔ Container clickhouse-keeper-03  Запущен
+ ✔ Container clickhouse-keeper-02  Запущен
+ ✔ Container clickhouse-keeper-01  Запущен
+ ✔ Container clickhouse-01         Запущен
+ ✔ Container clickhouse-02         Запущен
 ```
 
 Чтобы убедиться, что кластер работает, подключитесь к `clickhouse-01` или `clickhouse-02` и выполните
@@ -444,13 +444,13 @@ docker-compose up -d
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-Если подключение прошло успешно, вы увидите приглашение клиента ClickHouse:
+Если подключение прошло успешно, вы увидите приглашение командной строки клиента ClickHouse:
 
 ```response
 cluster_1S_2R node 1 :)
 ```
 
-Выполните следующий запрос, чтобы проверить, какие топологии кластера определены для каких хостов:
+Выполните следующий запрос, чтобы проверить, какие топологии кластеров определены для каких хостов:
 
 ```sql title="Query"
 SELECT 
@@ -489,15 +489,16 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus />
 
-На этом вы успешно развернули кластер ClickHouse с одним шардом и двумя репликами.
-На следующем шаге вы создадите таблицу в этом кластере.
+На этом этапе вы успешно развернули кластер ClickHouse с одним шардом и двумя репликами.
+На следующем шаге вы создадите таблицу в кластере.
 
 
 ## Создание базы данных {#creating-a-database}
 
 Теперь, когда вы убедились, что кластер правильно настроен и работает,
-вы создадите ту же таблицу, что и в руководстве по примеру набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
-Набор данных содержит около 30 миллионов строк с ценами на недвижимость в Англии и Уэльсе с 1995 года.
+вы создадите ту же таблицу, что использовалась в руководстве по примеру набора данных [UK property prices](/getting-started/example-datasets/uk-price-paid).
+Набор данных содержит около 30 миллионов строк с ценами на недвижимость
+в Англии и Уэльсе с 1995 года.
 
 Подключитесь к клиенту каждого хоста, выполнив следующие команды в отдельных вкладках
 или окнах терминала:
@@ -533,7 +534,7 @@ ON CLUSTER cluster_1S_2R;
 ```
 
 Вы можете снова выполнить тот же запрос из клиента на каждом хосте,
-чтобы убедиться, что база данных была создана на всех узлах кластера, несмотря на то, что
+чтобы убедиться, что база данных была создана на всем кластере, несмотря на то, что
 запрос был выполнен только на `clickhouse-01`:
 
 ```sql
@@ -582,7 +583,7 @@ ENGINE = ReplicatedMergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-Обратите внимание, что запрос идентичен запросу, использованному в исходной инструкции `CREATE` из
+Обратите внимание, что этот запрос идентичен запросу, использованному в исходной инструкции `CREATE` из
 руководства по примеру набора данных [цен на недвижимость в Великобритании](/getting-started/example-datasets/uk-price-paid),
 за исключением конструкции `ON CLUSTER` и использования движка `ReplicatedMergeTree`.
 
@@ -612,7 +613,7 @@ SHOW TABLES IN uk;
 Поскольку набор данных большой и его полная загрузка занимает несколько минут,
 для начала мы вставим только небольшое подмножество.
 
-Вставьте меньшее подмножество данных с помощью следующего запроса на `clickhouse-01`:
+Вставьте меньшее подмножество данных с помощью следующего запроса из `clickhouse-01`:
 
 ```sql
 INSERT INTO uk.uk_price_paid_local
@@ -675,7 +676,7 @@ FROM uk.uk_price_paid_local
 ```
 
 Чтобы продемонстрировать, что происходит при отказе одного из хостов, создайте простую тестовую базу данных
-и тестовую таблицу на любом из хостов:
+и тестовую таблицу с любого из хостов:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_1S_2R;
@@ -731,13 +732,13 @@ SELECT * FROM test.test_table;
    └────┴────────────────────┘
 ```
 
-Теперь запустите `clickhouse-01` с помощью следующей команды (после этого вы можете снова выполнить `docker-compose ps`, чтобы подтвердить):
+Теперь перезапустите `clickhouse-01` следующей командой (для проверки можно снова выполнить `docker-compose ps`):
 
 ```sql
 docker start clickhouse-01
 ```
 
-Query the test table again from `clickhouse-01` after running `docker exec -it clickhouse-01 clickhouse-client`:
+Запросите тестовую таблицу снова из `clickhouse-01` после выполнения `docker exec -it clickhouse-01 clickhouse-client`:
 
 ```sql title="Запрос"
 SELECT * FROM test.test_table
@@ -750,8 +751,8 @@ SELECT * FROM test.test_table
    └────┴────────────────────┘
 ```
 
-Если на этом этапе вы хотите загрузить полный набор данных о ценах на недвижимость в Великобритании для экспериментов,
-to play around with, you can run the following queries to do so:
+Если на этом этапе вы хотите загрузить полный набор данных о ценах на недвижимость в Великобритании
+для экспериментов, выполните следующие запросы:
 
 ```sql
 TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
@@ -793,9 +794,9 @@ FROM url(
     ) SETTINGS max_http_get_redirects=10;
 ```
 
-Query the table from `clickhouse-02` or `clickhouse-01`:
+Запросите таблицу из `clickhouse-02` или `clickhouse-01`:
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT count(*) FROM uk.uk_price_paid_local;
 ```
 
@@ -812,16 +813,16 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 
 Преимущество данной топологии кластера заключается в том, что при наличии двух реплик
 ваши данные хранятся на двух отдельных хостах. Если один хост выходит из строя, другая реплика
-продолжает обслуживать данные без потерь. Это исключает единые точки
+продолжает обслуживать данные без потерь. Это устраняет единые точки
 отказа на уровне хранилища.
 
-Когда один хост выходит из строя, оставшаяся реплика по-прежнему может:
+Когда один хост выходит из строя, оставшаяся реплика по-прежнему способна:
 
 - Обрабатывать запросы на чтение без прерываний
 - Принимать новые записи (в зависимости от настроек согласованности)
 - Поддерживать доступность сервиса для приложений
 
-Когда вышедший из строя хост возвращается в работу, он может:
+Когда вышедший из строя хост возвращается в работу, он способен:
 
 - Автоматически синхронизировать недостающие данные с работающей реплики
 - Возобновить нормальную работу без ручного вмешательства

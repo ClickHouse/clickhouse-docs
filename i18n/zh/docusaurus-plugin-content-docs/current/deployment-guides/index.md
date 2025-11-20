@@ -1,14 +1,14 @@
 ---
 slug: /deployment-guides/index
-title: '部署指南总览'
-description: '部署与扩展章节的入口页'
-keywords: ['deployment guides', 'scaling', 'cluster deployment', 'replication', 'fault tolerance']
+title: '部署指南概述'
+description: '部署和扩展章节的导航页'
+keywords: ['部署指南', '扩展', '集群部署', '复制', '容错']
 doc_type: 'landing-page'
 ---
 
 # 部署与扩展
 
-本节包含以下主题：
+本节涵盖以下主题：
 
 | 主题                                                            |
 |------------------------------------------------------------------|

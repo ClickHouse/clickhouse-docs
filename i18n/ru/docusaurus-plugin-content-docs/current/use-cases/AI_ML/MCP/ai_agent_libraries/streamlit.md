@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/streamlit-agent
 sidebar_label: 'Интеграция со Streamlit'
-title: 'Как создать AI-агента на ClickHouse с использованием Streamlit'
+title: 'Как создать AI-агента на базе ClickHouse с помощью Streamlit'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать веб-агента AI с помощью Streamlit и сервера ClickHouse MCP'
+description: 'Узнайте, как создать веб-ориентированного AI-агента с помощью Streamlit и ClickHouse MCP Server'
 keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,9 +12,9 @@ doc_type: 'guide'
 
 
 
-# Как создать AI-агента на ClickHouse с помощью Streamlit
+# Как создать AI-агента на базе ClickHouse с помощью Streamlit
 
-В этом руководстве вы узнаете, как создать веб-агента с AI с помощью [Streamlit](https://streamlit.io/), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
+В этом руководстве вы узнаете, как создать веб-агента на базе AI с помощью [Streamlit](https://streamlit.io/), который сможет взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
 
 :::note Пример приложения
 В этом примере создаётся полноценное веб-приложение с чат-интерфейсом для выполнения запросов к данным в ClickHouse.
@@ -82,7 +82,7 @@ export ANTHROPIC_API_KEY="your_api_key_here"
 
 :::note Использование другого провайдера LLM
 Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
-инструкции по настройке учетных данных можно найти в [документации Agno "Integrations"](https://docs.agentops.ai/v2/integrations/ag2)
+инструкции по настройке учетных данных можно найти в [документации Agno «Integrations»](https://docs.agentops.ai/v2/integrations/ag2)
 :::
 
 
@@ -164,14 +164,14 @@ async def stream_clickhouse_agent(message):
 
 ## Добавление синхронных функций-обёрток {#add-wrapper-functions}
 
-Добавьте вспомогательные функции для обработки асинхронной потоковой передачи данных в Streamlit:
+Добавьте вспомогательные функции для обработки асинхронной потоковой передачи в Streamlit:
 
 ```python
 def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # Сигнал завершения потока
+        queue.put(None)  # Sentinel to end stream
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -231,6 +231,6 @@ uv run \
 
 Это откроет веб-браузер и перейдет на адрес `http://localhost:8501`, где вы
 сможете взаимодействовать с AI-агентом и задавать ему вопросы о примерах наборов данных,
-доступных в SQL playground ClickHouse.
+доступных в SQL-песочнице ClickHouse.
 
 </VerticalStepper>

@@ -2,8 +2,8 @@
 sidebar_label: 'Easypanel'
 slug: /integrations/easypanel
 keywords: ['clickhouse', 'Easypanel', 'deployment', 'integrate', 'install']
-description: 'ClickHouse を自前のサーバーにデプロイするために使用できます。'
-title: 'Easypanel での ClickHouse デプロイ'
+description: 'Easypanel を使用して、独自サーバー上に ClickHouse をデプロイできます。'
+title: 'Easypanel を使って ClickHouse をデプロイする'
 doc_type: 'guide'
 ---
 
@@ -14,7 +14,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Easypanel](https://easypanel.io) はモダンなサーバーコントロールパネルです。これを使って自前のサーバーに ClickHouse をデプロイできます。
+[Easypanel](https://easypanel.io) はモダンなサーバーコントロールパネルです。これを使って、自身のサーバー上に ClickHouse をデプロイできます。
 
 [![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 

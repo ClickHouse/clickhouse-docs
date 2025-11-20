@@ -2,7 +2,7 @@
 sidebar_label: 'BYOC セキュリティプレイブック'
 slug: /cloud/security/audit-logging/byoc-security-playbook
 title: 'BYOC セキュリティプレイブック'
-description: 'このページでは、お客様が潜在的なセキュリティイベントを識別するために利用できる方法を説明します'
+description: 'このページでは、お客様が潜在的なセキュリティインシデントを特定するために利用できる方法を紹介します'
 doc_type: 'guide'
 keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
 ---
@@ -16,12 +16,12 @@ ClickHouseは、セキュリティ共同責任モデルに基づいてBring Your
 
 ## ClickHouse認証情報が侵害された可能性 {#compromised-clickhouse-credentials}
 
-認証情報ベースの攻撃を検出するクエリや悪意のある活動を調査するクエリについては、[データベース監査ログ](/cloud/security/audit-logging/database-audit-log)のドキュメントを参照してください。
+認証情報ベースの攻撃を検出するクエリや、悪意のある活動を調査するクエリについては、[データベース監査ログ](/cloud/security/audit-logging/database-audit-log)のドキュメントを参照してください。
 
 
 ## アプリケーション層のサービス拒否攻撃 {#application-layer-dos-attack}
 
-サービス拒否（DoS）攻撃を実行する方法は様々です。特定のペイロードによってClickHouseインスタンスをクラッシュさせることを目的とした攻撃の場合、システムを実行可能な状態に復旧するか、システムを再起動してアクセスを制限し、制御を回復してください。攻撃に関する詳細情報を取得するには、以下のクエリを使用して[system.crash_log](/operations/system-tables/crash_log)を確認してください。
+サービス拒否（DoS）攻撃を実行する方法は様々です。特定のペイロードによってClickHouseインスタンスをクラッシュさせることを目的とした攻撃の場合、システムを実行可能な状態に復旧するか、システムを再起動してアクセスを制限し、制御を取り戻してください。攻撃に関する詳細情報を取得するには、以下のクエリを使用して[system.crash_log](/operations/system-tables/crash_log)を確認してください。
 
 ```sql
 SELECT *
@@ -29,18 +29,18 @@ FROM clusterAllReplicas('default',system.crash_log)
 ```
 
 
-## ClickHouseが作成したAWSロールの侵害 {#compromised-clickhouse-created-aws-roles}
+## 侵害されたClickHouse作成のAWSロール {#compromised-clickhouse-created-aws-roles}
 
 ClickHouseはシステム機能を有効化するために事前作成されたロールを使用します。本セクションでは、お客様がCloudTrailを有効化したAWS環境を使用しており、CloudTrailログにアクセス可能であることを前提としています。
 
-インシデントが侵害されたロールに起因する可能性がある場合は、ClickHouseのIAMロールおよびアクションに関連するCloudTrailとCloudWatchのアクティビティを確認してください。IAMロールの一覧については、セットアップ時に提供される[CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles)スタックまたはTerraformモジュールを参照してください。
+インシデントが侵害されたロールに起因する可能性がある場合は、ClickHouse IAMロールおよびアクションに関連するCloudTrailとCloudWatchのアクティビティを確認してください。IAMロールの一覧については、セットアップ時に提供される[CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles)スタックまたはTerraformモジュールを参照してください。
 
 
 ## EKSクラスタへの不正アクセス {#unauthorized-access-eks-cluster}
 
-ClickHouse BYOCはEKS内で実行されます。このセクションでは、お客様がAWSでCloudTrailとCloudWatchを使用しており、ログにアクセスできることを前提としています。
+ClickHouse BYOCはEKS内で実行されます。このセクションでは、お客様がAWSでCloudTrailとCloudWatchを使用しており、ログへのアクセス権限を持っていることを前提としています。
 
-EKSクラスタが侵害された結果としてインシデントが発生した可能性がある場合は、EKS CloudWatchログ内で以下のクエリを使用して特定の脅威を特定してください。
+インシデントが侵害されたEKSクラスタに起因する可能性がある場合は、EKS CloudWatchログ内で以下のクエリを使用して特定の脅威を特定してください。
 
 ユーザー名別のKubernetes API呼び出し数を一覧表示
 
@@ -49,7 +49,7 @@ fields user.username
 | stats count(*) as count by user.username
 ```
 
-ユーザーがClickHouseエンジニアであるかを識別
+ユーザーがClickHouseエンジニアであるかを確認
 
 ```sql
 fields @timestamp,user.extra.sessionName.0, requestURI, verb,userAgent, @message, @logStream, @log

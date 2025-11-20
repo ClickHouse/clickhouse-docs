@@ -2,7 +2,7 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes 可将 ClickHouse 连接到 DynamoDB。'
+description: 'ClickPipes 允许你将 ClickHouse 与 DynamoDB 连接。'
 keywords: ['DynamoDB']
 title: '从 DynamoDB 到 ClickHouse 的 CDC'
 show_related_blogs: true
@@ -21,11 +21,11 @@ import Image from '@theme/IdealImage';
 
 <ExperimentalBadge/>
 
-本页介绍如何使用 ClickPipes 将 DynamoDB 的 CDC 设置到 ClickHouse。此集成包含两个组件：
+本页介绍如何使用 ClickPipes 配置从 DynamoDB 到 ClickHouse 的 CDC。此集成包含两个组件：
 1. 通过 S3 ClickPipes 获取初始快照
-2. 通过 Kinesis ClickPipes 实时更新
+2. 通过 Kinesis ClickPipes 获取实时更新
 
-数据将写入 `ReplacingMergeTree`。此表引擎常用于 CDC 场景，以便支持更新操作。关于这一模式的更多内容可参考以下博客文章：
+数据将会导入到 `ReplacingMergeTree` 表中。该表引擎常用于 CDC 场景，以便可以执行更新操作。关于这一模式的更多信息，请参阅以下博客文章：
 
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
@@ -47,8 +47,8 @@ import Image from '@theme/IdealImage';
 
 ## 2. 创建快照 {#2-create-the-snapshot}
 
-接下来,我们将创建 DynamoDB 表的快照。这可以通过 AWS 导出到 S3 来实现。相关的 AWS 指南请参见[此处](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)。
-**您需要选择 DynamoDB JSON 格式进行"完全导出"。**
+接下来,我们将创建 DynamoDB 表的快照。这可以通过 AWS 导出到 S3 来实现。相关 AWS 指南请参见[此处](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html)。
+**您需要以 DynamoDB JSON 格式执行"完全导出"(Full export)。**
 
 <Image img={dynamodb_s3_export} size='md' alt='DynamoDB S3 导出' border />
 
@@ -73,7 +73,7 @@ import Image from '@theme/IdealImage';
 }
 ```
 
-可以看到数据采用嵌套格式。在将数据加载到 ClickHouse 之前,需要先将其展平。这可以通过在物化视图中使用 ClickHouse 的 `JSONExtract` 函数来实现。
+可以看到数据采用嵌套格式。在将数据加载到 ClickHouse 之前,我们需要将其展平。这可以通过在物化视图中使用 ClickHouse 的 `JSONExtract` 函数来完成。
 
 我们需要创建三个表:
 
@@ -99,7 +99,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* 最终展平数据表 */
+/* 最终展平数据的表 */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,
@@ -113,16 +113,16 @@ ORDER BY id;
 目标表有以下几个要求:
 
 - 该表必须是 `ReplacingMergeTree` 表
-- 该表必须包含 `version` 列
+- 该表必须有一个 `version` 列
   - 在后续步骤中,我们将把 Kinesis 流中的 `ApproximateCreationDateTime` 字段映射到 `version` 列。
 - 该表应使用分区键作为排序键(通过 `ORDER BY` 指定)
   - 具有相同排序键的行将根据 `version` 列进行去重。
 
 ### 创建快照 ClickPipe {#create-the-snapshot-clickpipe}
 
-现在您可以创建一个 ClickPipe 来将快照数据从 S3 加载到 ClickHouse。请按照[此处](/integrations/clickpipes/object-storage)的 S3 ClickPipe 指南操作,但使用以下设置:
+现在您可以创建一个 ClickPipe 来将快照数据从 S3 加载到 ClickHouse。请遵循[此处](/integrations/clickpipes/object-storage)的 S3 ClickPipe 指南,但使用以下设置:
 
-- **摄取路径**: 您需要找到 S3 中导出的 json 文件的路径。路径格式如下:
+- **摄取路径**: 您需要找到 S3 中导出的 json 文件的路径。该路径格式如下:
 
 ```text
 https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
@@ -139,7 +139,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 现在我们可以设置 Kinesis ClickPipe 来捕获 Kinesis 流中的实时变更。请参考 Kinesis ClickPipe 指南[此处](/integrations/data-ingestion/clickpipes/kinesis.md),并使用以下配置:
 
 - **Stream**: 步骤 1 中使用的 Kinesis 流
-- **Table**: 您的目标表(例如上述示例中的 `default.destination`)
+- **Table**: 目标表(例如上述示例中的 `default.destination`)
 - **Flatten object**: true
 - **Column mappings**:
   - `ApproximateCreationDateTime`: `version`

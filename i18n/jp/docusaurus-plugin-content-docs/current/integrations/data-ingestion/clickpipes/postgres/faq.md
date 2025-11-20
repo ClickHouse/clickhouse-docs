@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'FAQ'
-description: 'ClickPipes for Postgres に関するよくある質問'
+description: 'ClickPipes for Postgresに関するよくある質問'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
@@ -34,7 +34,7 @@ ClickPipes for Postgresを使用してテーブルをレプリケートするに
 
 - **主キー**: 最も簡単な方法は、テーブルに主キーを定義することです。これにより各行に一意の識別子が提供され、更新や削除を追跡する上で重要です。この場合、REPLICA IDENTITYは`DEFAULT`（デフォルトの動作）に設定できます。
 - **レプリカアイデンティティ**: テーブルに主キーがない場合は、レプリカアイデンティティを設定できます。レプリカアイデンティティを`FULL`に設定すると、行全体が変更の識別に使用されます。または、テーブルに一意インデックスが存在する場合はそれを使用するように設定し、REPLICA IDENTITYを`USING INDEX index_name`に設定することもできます。
-  レプリカアイデンティティをFULLに設定するには、次のSQLコマンドを使用します：
+  レプリカアイデンティティをFULLに設定するには、次のSQLコマンドを使用します:
 
 ```sql
 ALTER TABLE your_table_name REPLICA IDENTITY FULL;
@@ -44,7 +44,7 @@ REPLICA IDENTITY FULLは、変更されていないTOASTカラムのレプリケ
 
 `REPLICA IDENTITY FULL`の使用は、特に主キーがなく頻繁に更新や削除が行われるテーブルの場合、パフォーマンスへの影響やWALの増加速度が速くなる可能性があることに注意してください。これは、各変更に対してより多くのデータをログに記録する必要があるためです。テーブルの主キーやレプリカアイデンティティの設定について疑問がある場合や支援が必要な場合は、サポートチームにお問い合わせください。
 
-主キーもレプリカアイデンティティも定義されていない場合、ClickPipesはそのテーブルの変更をレプリケートできず、レプリケーション処理中にエラーが発生する可能性があることに注意が必要です。そのため、ClickPipeを設定する前に、テーブルスキーマを確認し、これらの要件を満たしていることを確認することを推奨します。
+主キーもレプリカアイデンティティも定義されていない場合、ClickPipesはそのテーブルの変更をレプリケートできず、レプリケーション処理中にエラーが発生する可能性があることに注意してください。そのため、ClickPipeを設定する前に、テーブルスキーマを確認し、これらの要件を満たしていることを確認することを推奨します。
 
 ### Postgres CDCの一部としてパーティションテーブルはサポートされていますか？ {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
@@ -52,7 +52,7 @@ REPLICA IDENTITY FULLは、変更されていないTOASTカラムのレプリケ
 
 ### パブリックIPを持たない、またはプライベートネットワーク内にあるPostgresデータベースに接続できますか？ {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
-はい！ClickPipes for Postgresは、プライベートネットワーク内のデータベースに接続する2つの方法を提供しています：
+はい！ClickPipes for Postgresは、プライベートネットワーク内のデータベースに接続する2つの方法を提供しています:
 
 1. **SSHトンネリング**
    - ほとんどのユースケースで適切に機能します
@@ -60,7 +60,7 @@ REPLICA IDENTITY FULLは、変更されていないTOASTカラムのレプリケ
    - すべてのリージョンで動作します
 
 2. **AWS PrivateLink**
-   - 3つのAWSリージョンで利用可能：
+   - 3つのAWSリージョンで利用可能:
      - us-east-1
      - us-east-2
      - eu-central-1
@@ -70,50 +70,50 @@ REPLICA IDENTITY FULLは、変更されていないTOASTカラムのレプリケ
 
 ### UPDATEとDELETEはどのように処理されますか？ {#how-do-you-handle-updates-and-deletes}
 
-ClickPipes for PostgresはPostgresからのINSERTとUPDATEの両方を、異なるバージョンを持つ新しい行として（`_peerdb_`バージョン列を使用して）ClickHouseに取り込みます。ReplacingMergeTreeテーブルエンジンは、順序キー(ORDER BY列)に基づいてバックグラウンドで定期的に重複排除を実行し、最新の`_peerdb_`バージョンを持つ行のみを保持します。
+ClickPipes for PostgresはPostgresからのINSERTとUPDATEの両方を、異なるバージョンを持つ新しい行として（`_peerdb_`バージョン列を使用して）ClickHouseに取り込みます。ReplacingMergeTreeテーブルエンジンは、順序キー（ORDER BY列）に基づいてバックグラウンドで定期的に重複排除を実行し、最新の`_peerdb_`バージョンを持つ行のみを保持します。
 
 PostgresからのDELETEは、削除済みとしてマークされた新しい行として（`_peerdb_is_deleted`列を使用して）伝播されます。重複排除プロセスは非同期であるため、一時的に重複が表示される場合があります。これに対処するには、クエリレイヤーで重複排除を処理する必要があります。
 
-また、デフォルトでは、PostgresはDELETE操作時にプライマリキーまたはレプリカアイデンティティの一部ではない列の値を送信しないことに注意してください。DELETE時に完全な行データを取得したい場合は、[REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY)をFULLに設定できます。
+また、デフォルトでは、PostgresはDELETE操作時に主キーまたはレプリカアイデンティティの一部ではない列の値を送信しないことに注意してください。DELETE時に完全な行データを取得したい場合は、[REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY)をFULLに設定できます。
 
-詳細については、以下を参照してください:
+詳細については、以下を参照してください：
 
 - [ReplacingMergeTreeテーブルエンジンのベストプラクティス](https://docs.peerdb.io/bestpractices/clickhouse_datamodeling#replacingmergetree-table-engine)
 - [PostgresからClickHouseへのCDC内部構造に関するブログ](https://clickhouse.com/blog/postgres-to-clickhouse-data-modeling-tips)
 
-### PostgreSQLでプライマリキー列を更新できますか？ {#can-i-update-primary-key-columns-in-postgresql}
+### PostgreSQLで主キー列を更新できますか？ {#can-i-update-primary-key-columns-in-postgresql}
 
 :::warning
-デフォルトでは、PostgreSQLでのプライマリキーの更新はClickHouseで適切に再現できません。
+PostgreSQLでの主キー更新は、デフォルトではClickHouseで適切に再現できません。
 
-この制限は、`ReplacingMergeTree`の重複排除が`ORDER BY`列(通常はプライマリキーに対応)に基づいて動作するために存在します。PostgreSQLでプライマリキーが更新されると、既存の行の更新ではなく、異なるキーを持つ新しい行としてClickHouseに表示されます。これにより、古いプライマリキー値と新しいプライマリキー値の両方がClickHouseテーブルに存在する可能性があります。
+この制限は、`ReplacingMergeTree`の重複排除が`ORDER BY`列（通常は主キーに対応）に基づいて動作するために存在します。PostgreSQLで主キーが更新されると、既存の行の更新ではなく、異なるキーを持つ新しい行としてClickHouseに表示されます。これにより、古い主キー値と新しい主キー値の両方がClickHouseテーブルに存在する可能性があります。
 :::
 
-プライマリキー列の更新は、プライマリキーが不変の識別子として意図されているため、PostgreSQLデータベース設計では一般的な慣行ではないことに注意してください。ほとんどのアプリケーションは設計上プライマリキーの更新を避けているため、この制限は典型的なユースケースではほとんど遭遇しません。
+主キー列の更新は、主キーが不変の識別子として意図されているため、PostgreSQLデータベース設計における一般的な慣行ではないことに注意してください。ほとんどのアプリケーションは設計上主キーの更新を避けているため、この制限は典型的なユースケースではほとんど遭遇しません。
 
-プライマリキー更新の処理を有効にできる実験的な設定がありますが、パフォーマンスへの大きな影響を伴うため、慎重な検討なしに本番環境での使用は推奨されません。
+主キー更新の処理を有効にできる実験的な設定がありますが、パフォーマンスへの重大な影響を伴うため、慎重な検討なしに本番環境での使用は推奨されません。
 
-PostgreSQLでプライマリキー列を更新し、それらの変更をClickHouseに適切に反映させる必要があるユースケースの場合は、具体的な要件と潜在的な解決策について議論するため、[db-integrations-support@clickhouse.com](mailto:db-integrations-support@clickhouse.com)のサポートチームまでお問い合わせください。
+PostgreSQLで主キー列を更新し、それらの変更をClickHouseに適切に反映させる必要があるユースケースの場合は、[db-integrations-support@clickhouse.com](mailto:db-integrations-support@clickhouse.com)のサポートチームまでご連絡いただき、具体的な要件と潜在的な解決策についてご相談ください。
 
 ### スキーマ変更はサポートされていますか？ {#do-you-support-schema-changes}
 
 詳細については、[ClickPipes for Postgres: スキーマ変更の伝播サポート](./schema-changes)ページを参照してください。
 
-### ClickPipes for Postgres CDCのコストはどのくらいですか？ {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
+### ClickPipes for Postgres CDCの費用はいくらですか？ {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
 詳細な価格情報については、[メイン請求概要ページのClickPipes for Postgres CDC価格セクション](/cloud/reference/billing/clickpipes)を参照してください。
 
 ### レプリケーションスロットのサイズが増加している、または減少しない場合、何が問題でしょうか？ {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
-Postgresレプリケーションスロットのサイズが増加し続けている、または減少しない場合、通常は**WAL(Write-Ahead Log)レコードがCDCパイプラインまたはレプリケーションプロセスによって十分に速く消費(または「再生」)されていない**ことを意味します。以下は最も一般的な原因とその対処方法です。
+Postgresレプリケーションスロットのサイズが増加し続けている、または減少しない場合、通常は**WAL（先行書き込みログ）レコードがCDCパイプラインまたはレプリケーションプロセスによって十分な速度で消費（または「再生」）されていない**ことを意味します。以下は最も一般的な原因とその対処方法です。
 
 1. **データベースアクティビティの急激な増加**
    - 大規模なバッチ更新、一括挿入、または重要なスキーマ変更により、大量のWALデータが迅速に生成される可能性があります。
-   - レプリケーションスロットは、これらのWALレコードが消費されるまで保持するため、サイズの一時的な急増を引き起こします。
+   - レプリケーションスロットは、これらのWALレコードが消費されるまで保持するため、サイズが一時的に急増します。
 
 2. **長時間実行されるトランザクション**
-   - オープンなトランザクションは、トランザクション開始以降に生成されたすべてのWALセグメントをPostgresに保持させるため、スロットサイズが劇的に増加する可能性があります。
-   - トランザクションが無期限にオープンのままにならないように、`statement_timeout`と`idle_in_transaction_session_timeout`を適切な値に設定してください:
+   - 開いているトランザクションは、トランザクションが開始されてから生成されたすべてのWALセグメントをPostgresに保持させるため、スロットサイズが劇的に増加する可能性があります。
+   - トランザクションが無期限に開いたままにならないように、`statement_timeout`と`idle_in_transaction_session_timeout`を適切な値に設定してください：
      ```sql
      SELECT
          pid,
@@ -136,7 +136,7 @@ Postgresレプリケーションスロットのサイズが増加し続けてい
 
 4. **VACUUMおよびVACUUM ANALYZE**
    - データベースの健全性には必要ですが、これらの操作は追加のWALトラフィックを生成する可能性があります。特に大きなテーブルをスキャンする場合は顕著です。
-   - autovacuumのチューニングパラメータを使用するか、手動のVACUUM操作をオフピーク時にスケジュールすることを検討してください。
+   - autovacuumのチューニングパラメータを使用するか、手動VACUUM操作をオフピーク時にスケジュールすることを検討してください。
 
 5. **レプリケーションコンシューマーがスロットをアクティブに読み取っていない**
    - CDCパイプライン(例:ClickPipes)または他のレプリケーションコンシューマーが停止、一時停止、またはクラッシュした場合、WALデータはスロット内に蓄積されます。
@@ -144,28 +144,28 @@ Postgresレプリケーションスロットのサイズが増加し続けてい
 
 このトピックの詳細については、ブログ記事をご覧ください:[Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it)
 
-### Postgresのデータ型はClickHouseにどのようにマッピングされますか? {#how-are-postgres-data-types-mapped-to-clickhouse}
+### PostgresのデータタイプはClickHouseにどのようにマッピングされますか? {#how-are-postgres-data-types-mapped-to-clickhouse}
 
-ClickPipes for PostgresはPostgresのデータ型をClickHouse側でできるだけネイティブにマッピングすることを目指しています。このドキュメントでは、各データ型とそのマッピングの包括的なリストを提供しています:[Data Type Matrix](https://docs.peerdb.io/datatypes/datatype-matrix)
+ClickPipes for PostgresはPostgresのデータタイプをClickHouse側で可能な限りネイティブにマッピングすることを目指しています。このドキュメントでは、各データタイプとそのマッピングの包括的なリストを提供しています:[Data Type Matrix](https://docs.peerdb.io/datatypes/datatype-matrix)
 
-### PostgresからClickHouseへデータをレプリケートする際に、独自のデータ型マッピングを定義できますか? {#can-i-define-my-own-data-type-mapping-while-replicating-data-from-postgres-to-clickhouse}
+### PostgresからClickHouseへデータをレプリケートする際に独自のデータタイプマッピングを定義できますか? {#can-i-define-my-own-data-type-mapping-while-replicating-data-from-postgres-to-clickhouse}
 
-現在、パイプの一部としてカスタムデータ型マッピングを定義することはサポートしていません。ただし、ClickPipesが使用するデフォルトのデータ型マッピングは非常にネイティブであることに注意してください。Postgresのほとんどのカラム型は、ClickHouse上のネイティブな同等物にできるだけ近い形でレプリケートされます。例えば、Postgresの整数配列型は、ClickHouseでも整数配列型としてレプリケートされます。
+現在、パイプの一部としてカスタムデータタイプマッピングを定義することはサポートしていません。ただし、ClickPipesが使用するデフォルトのデータタイプマッピングは高度にネイティブであることに注意してください。Postgresのほとんどのカラムタイプは、ClickHouse上のネイティブな同等物に可能な限り近い形でレプリケートされます。例えば、Postgresの整数配列タイプはClickHouseでも整数配列タイプとしてレプリケートされます。
 
-### PostgresからのJSONおよびJSONBカラムはどのようにレプリケートされますか? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
+### PostgresからJSONおよびJSONBカラムはどのようにレプリケートされますか? {#how-are-json-and-jsonb-columns-replicated-from-postgres}
 
-JSONおよびJSONBカラムは、ClickHouseではString型としてレプリケートされます。ClickHouseはネイティブな[JSON型](/sql-reference/data-types/newjson)をサポートしているため、必要に応じてClickPipesテーブル上にマテリアライズドビューを作成して変換を実行できます。または、Stringカラムに対して直接[JSON関数](/sql-reference/functions/json-functions)を使用することもできます。現在、JSONおよびJSONBカラムをClickHouseのJSON型に直接レプリケートする機能を積極的に開発中です。この機能は数か月以内に利用可能になる予定です。
+JSONおよびJSONBカラムはClickHouseではString型としてレプリケートされます。ClickHouseはネイティブな[JSON型](/sql-reference/data-types/newjson)をサポートしているため、必要に応じてClickPipesテーブル上にマテリアライズドビューを作成して変換を実行できます。または、Stringカラムに対して直接[JSON関数](/sql-reference/functions/json-functions)を使用することもできます。現在、JSONおよびJSONBカラムをClickHouseのJSON型に直接レプリケートする機能を積極的に開発中です。この機能は数か月以内に利用可能になる予定です。
 
-### ミラーが一時停止されたときに挿入はどうなりますか? {#what-happens-to-inserts-when-a-mirror-is-paused}
+### ミラーが一時停止されたときにインサートはどうなりますか? {#what-happens-to-inserts-when-a-mirror-is-paused}
 
 ミラーを一時停止すると、メッセージはソースPostgresのレプリケーションスロットにキューイングされ、バッファリングされて失われないことが保証されます。ただし、ミラーを一時停止して再開すると接続が再確立されるため、ソースによっては時間がかかる場合があります。
 
 このプロセス中、sync(Postgresからデータを取得してClickHouseのrawテーブルにストリーミング)とnormalize(rawテーブルからターゲットテーブルへ)の両方の操作が中止されます。ただし、永続的に再開するために必要な状態は保持されます。
 
-- syncの場合、途中でキャンセルされても、Postgresのconfirmed_flush_lsnは進められないため、次のsyncは中止されたものと同じ位置から開始され、データの一貫性が保証されます。
+- syncの場合、途中でキャンセルされてもPostgresのconfirmed_flush_lsnは進まないため、次のsyncは中止されたものと同じ位置から開始され、データの一貫性が保証されます。
 - normalizeの場合、ReplacingMergeTreeの挿入順序が重複排除を処理します。
 
-要約すると、一時停止中にsyncとnormalizeのプロセスは終了しますが、データの損失や不整合なしに再開できるため、安全に実行できます。
+要約すると、一時停止中にsyncとnormalizeのプロセスは終了しますが、データの損失や不整合なく再開できるため、安全に実行できます。
 
 ### ClickPipeの作成を自動化したり、APIまたはCLI経由で実行できますか? {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
@@ -186,9 +186,9 @@ Postgresバージョン13以前では、CTIDレンジスキャンが遅く、こ
 
 ### レプリケーションを設定する際、パブリケーションのスコープをどのように設定すべきですか? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-ClickPipesにパブリケーションを管理させる(追加の権限が必要)か、自分で作成することができます。ClickPipes管理のパブリケーションでは、パイプを編集する際にテーブルの追加と削除を自動的に処理します。自己管理する場合は、レプリケーションが必要なテーブルのみを含むようにパブリケーションのスコープを慎重に設定してください。不要なテーブルを含めると、PostgresのWALデコードが遅くなります。
+ClickPipesにパブリケーションを管理させる(追加の権限が必要)か、自分で作成することができます。ClickPipes管理のパブリケーションでは、パイプを編集する際にテーブルの追加と削除を自動的に処理します。自己管理する場合は、レプリケーションが必要なテーブルのみを含めるようにパブリケーションのスコープを慎重に設定してください。不要なテーブルを含めると、PostgresのWALデコードが遅くなります。
 
-パブリケーションにテーブルを含める場合は、そのテーブルに主キーまたは`REPLICA IDENTITY FULL`のいずれかが設定されていることを確認してください。主キーのないテーブルがある場合、すべてのテーブルに対してパブリケーションを作成すると、それらのテーブルでDELETEおよびUPDATE操作が失敗します。
+パブリケーションにテーブルを含める場合は、主キーまたは`REPLICA IDENTITY FULL`のいずれかが設定されていることを確認してください。主キーのないテーブルがある場合、すべてのテーブルに対してパブリケーションを作成すると、それらのテーブルでDELETEおよびUPDATE操作が失敗します。
 
 データベース内で主キーのないテーブルを特定するには、次のクエリを使用できます:
 
@@ -203,7 +203,7 @@ WHERE
     table_schema NOT IN ('information_schema', 'pg_catalog', 'pgq', 'londiste');
 ```
 
-主キーのないテーブルを扱う場合、2つのオプションがあります:
+主キーのないテーブルを扱う場合、2つの選択肢があります:
 
 1. **主キーのないテーブルをClickPipesから除外する**:
    主キーを持つテーブルのみでパブリケーションを作成します:
@@ -213,7 +213,7 @@ WHERE
    ```
 
 2. **主キーのないテーブルをClickPipesに含める**:
-   主キーのないテーブルを含める場合は、そのレプリカアイデンティティを`FULL`に変更する必要があります。これにより、UPDATEおよびDELETE操作が正しく動作することが保証されます:
+   主キーのないテーブルを含める場合は、レプリカアイデンティティを`FULL`に変更する必要があります。これにより、UPDATEおよびDELETE操作が正しく動作することが保証されます:
    ```sql
    ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
    ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
@@ -223,22 +223,22 @@ WHERE
 :::tip
 ClickPipesに管理させる代わりに手動でパブリケーションを作成する場合、`FOR ALL TABLES`でパブリケーションを作成することは推奨しません。これにより、PostgresからClickPipesへのトラフィックが増加し(パイプに含まれていない他のテーブルの変更を送信するため)、全体的な効率が低下します。
 
-手動で作成したパブリケーションの場合、パイプに追加する前に、必要なテーブルをパブリケーションに追加してください。
+手動で作成したパブリケーションの場合は、パイプに追加する前に、必要なテーブルをパブリケーションに追加してください。
 :::
 
 :::warning
-Postgresのリードレプリカ/ホットスタンバイからレプリケーションする場合、プライマリインスタンス上で独自のパブリケーションを作成する必要があります。これは自動的にスタンバイに伝播されます。この場合、スタンバイ上でパブリケーションを作成できないため、ClickPipeはパブリケーションを管理できません。
+Postgresのリードレプリカ/ホットスタンバイからレプリケーションする場合は、プライマリインスタンス上で独自のパブリケーションを作成する必要があります。これは自動的にスタンバイに伝播されます。この場合、スタンバイ上でパブリケーションを作成できないため、ClickPipeはパブリケーションを管理できません。
 :::
 
 ### 推奨される`max_slot_wal_keep_size`設定 {#recommended-max_slot_wal_keep_size-settings}
 
 - **最低限:** [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE)を設定して、少なくとも**2日分**のWALデータを保持します。
 - **大規模データベース(高トランザクション量)の場合:** 1日あたりのピークWAL生成量の少なくとも**2〜3倍**を保持します。
-- **ストレージに制約のある環境の場合:** レプリケーションの安定性を確保しながら、**ディスク容量の枯渇を回避する**ために、この設定を控えめに調整します。
+- **ストレージに制約のある環境の場合:** レプリケーションの安定性を確保しながら、**ディスク容量の枯渇を避ける**ために、この設定を控えめに調整します。
 
 #### 適切な値を計算する方法 {#how-to-calculate-the-right-value}
 
-適切な設定を決定するには、WAL生成レートを測定します:
+適切な設定を決定するには、WAL生成率を測定します:
 
 ##### PostgreSQL 10以降の場合 {#for-postgresql-10}
 
@@ -270,11 +270,11 @@ max_slot_wal_keep_size = 200GB
 
 `ReceiveMessage`はPostgresの論理デコーディングプロトコルにおける関数で、レプリケーションストリームからメッセージを読み取ります。EOF(End of File)エラーは、レプリケーションストリームからの読み取り中にPostgresサーバーへの接続が予期せず切断されたことを示します。
 
-これは回復可能な非致命的エラーです。ClickPipesは自動的に再接続を試み、レプリケーションプロセスを再開します。
+これは回復可能な、完全に致命的ではないエラーです。ClickPipesは自動的に再接続を試み、レプリケーションプロセスを再開します。
 
 このエラーはいくつかの理由で発生する可能性があります:
 
-- **wal_sender_timeoutが低い:** `wal_sender_timeout`が5分以上に設定されていることを確認してください。この設定は、接続を切断する前にサーバーがクライアントからの応答を待機する時間を制御します。タイムアウトが低すぎると、早期の切断につながる可能性があります。
+- **wal_sender_timeoutが低い:** `wal_sender_timeout`が5分以上に設定されていることを確認してください。この設定は、サーバーが接続を切断する前にクライアントからの応答を待機する時間を制御します。タイムアウトが低すぎると、早期の切断につながる可能性があります。
 - **ネットワークの問題:** 一時的なネットワークの中断により、接続が切断される可能性があります。
 - **Postgresサーバーの再起動:** Postgresサーバーが再起動またはクラッシュすると、接続が失われます。
 
@@ -284,7 +284,7 @@ ClickPipeを復旧する唯一の方法は、設定ページで再同期をト�
 
 レプリケーションスロット無効化の最も一般的な原因は、PostgreSQLデータベースの`max_slot_wal_keep_size`設定が低い(例: 数ギガバイト)ことです。この値を増やすことをお勧めします。`max_slot_wal_keep_size`のチューニングについては、[このセクション](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings)を参照してください。理想的には、レプリケーションスロットの無効化を防ぐために、少なくとも200GBに設定する必要があります。
 
-まれなケースですが、`max_slot_wal_keep_size`が設定されていない場合でもこの問題が発生することがあります。これはPostgreSQLの複雑でまれなバグによるものである可能性がありますが、原因は不明です。
+まれなケースですが、`max_slot_wal_keep_size`が設定されていない場合でもこの問題が発生することがあります。これはPostgreSQLの複雑でまれなバグによるものである可能性がありますが、原因は不明のままです。
 
 ### ClickPipeがデータを取り込んでいる間にClickHouseでメモリ不足(OOM)が発生しています。対処方法を教えてください。 {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
@@ -294,7 +294,7 @@ ClickHouseでOOMが発生する一般的な理由の1つは、サービスのリ
 
 - JOINの一般的な最適化手法として、右側のテーブルが非常に大きい`LEFT JOIN`がある場合、クエリを`RIGHT JOIN`を使用するように書き換え、より大きなテーブルを左側に移動します。これにより、クエリプランナーがよりメモリ効率的になります。
 
-- JOINのもう1つの最適化は、`サブクエリ`または`CTE`を通じてテーブルを明示的にフィルタリングし、これらのサブクエリ間で`JOIN`を実行することです。これにより、プランナーに行を効率的にフィルタリングして`JOIN`を実行する方法のヒントが提供されます。
+- JOINのもう1つの最適化は、`サブクエリ`または`CTE`を通じてテーブルを明示的にフィルタリングし、これらのサブクエリ間で`JOIN`を実行することです。これにより、プランナーに行を効率的にフィルタリングし、`JOIN`を実行する方法についてのヒントが提供されます。
 
 ### 初期ロード中に`invalid snapshot identifier`が表示されます。どうすればよいですか? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
@@ -362,7 +362,7 @@ PeerDBには現在、ソーステーブル識別子（スキーマ名または�
 
 ### ClickPipeでフェイルオーバーを有効にしたレプリケーションスロットを作成できますか？ {#failover-slot}
 
-はい、レプリケーションモードがCDCまたはSnapshot + CDCのPostgres ClickPipeの場合、ClickPipe作成時に`詳細設定`セクションで以下のスイッチを切り替えることで、フェイルオーバーを有効にしたレプリケーションスロットをClickPipesに作成させることができます。この機能を使用するには、Postgresバージョンが17以上である必要があります。
+はい、レプリケーションモードがCDCまたはSnapshot + CDCのPostgres ClickPipeの場合、ClickPipeの作成時に`詳細設定`セクションで以下のスイッチを切り替えることで、フェイルオーバーを有効にしたレプリケーションスロットをClickPipesに作成させることができます。この機能を使用するには、Postgresバージョンが17以上である必要があります。
 
 <Image img={failover_slot} border size='md' />
 

@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 # Supabase 源配置指南
 
-本指南介绍如何配置 Supabase Postgres，以便在 ClickPipes 中使用。
+本文档介绍如何为 ClickPipes 配置 Supabase Postgres 以供使用。
 
 :::note
 
@@ -28,8 +28,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 让我们为 ClickPipes 创建一个新用户,赋予其适用于 CDC 的必要权限,并创建一个用于复制的发布。
 
-为此,您可以前往 Supabase 项目的 **SQL 编辑器**。
-在这里,我们可以运行以下 SQL 命令:
+为此,您可以前往 Supabase 项目的 **SQL 编辑器**。在这里,我们可以运行以下 SQL 命令:
 
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
@@ -37,10 +36,10 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Give replication permission to the USER
+-- 授予用户复制权限
   ALTER USER clickpipes_user REPLICATION;
 
--- Create a publication. We will use this when creating the mirror
+-- 创建发布。我们将在创建镜像时使用它
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -70,35 +69,35 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 您可以按照 [Supabase 文档](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters) 将 Supabase 数据库的 `max_slot_wal_keep_size` 参数增加到更高的值(至少 100GB 或 `102400`)
 
-如需获得关于此值的更合适建议,您可以联系 ClickPipes 团队。
+如需获得关于此值的更佳建议,请联系 ClickPipes 团队。
 
 :::
 
 
-## Supabase 连接详情 {#connection-details-to-use-for-supabase}
+## 用于 Supabase 的连接详细信息 {#connection-details-to-use-for-supabase}
 
 前往您的 Supabase 项目的 `Project Settings` -> `Database`(位于 `Configuration` 下)。
 
-**重要提示**:在此页面禁用 `Display connection pooler`,然后前往 `Connection parameters` 部分记录或复制相关参数。
+**重要提示**:在此页面上禁用 `Display connection pooler`,然后前往 `Connection parameters` 部分并记录/复制参数。
 
 <Image
   img={supabase_connection_details}
   size='lg'
   border
-  alt='查找 Supabase 连接详情'
+  alt='定位 Supabase 连接详细信息'
   border
 />
 
 :::info
 
-CDC 复制不支持连接池,因此需要禁用该功能。
+基于 CDC 的复制不支持连接池,因此需要禁用。
 
 :::
 
 
 ## 关于 RLS 的注意事项 {#note-on-rls}
 
-ClickPipes Postgres 用户不能受 RLS 策略限制,否则会导致数据缺失。您可以通过运行以下命令为该用户禁用 RLS 策略:
+ClickPipes Postgres 用户不能受 RLS 策略限制,否则可能导致数据缺失。您可以通过运行以下命令为该用户禁用 RLS 策略:
 
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
@@ -107,5 +106,5 @@ ALTER USER clickpipes_user BYPASSRLS;
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 Postgres 实例时使用的连接详细信息,在创建 ClickPipe 时会用到这些信息。
+现在您可以[创建 ClickPipe](../index.md)，开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
+请务必记录设置 Postgres 实例时使用的连接信息，创建 ClickPipe 时需要用到这些信息。

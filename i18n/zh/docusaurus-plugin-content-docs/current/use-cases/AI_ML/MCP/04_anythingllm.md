@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: '集成 AnythingLLM'
-title: '使用 AnythingLLM 和 ClickHouse Cloud 配置 ClickHouse MCP 服务器'
+title: '使用 AnythingLLM 和 ClickHouse Cloud 设置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南说明如何使用 Docker 将 AnythingLLM 与 ClickHouse MCP 服务器进行集成。'
+description: '本指南介绍如何使用 Docker 将 AnythingLLM 与 ClickHouse MCP 服务器进行集成。'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -21,7 +21,7 @@ import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png'
 
 # 在 AnythingLLM 中使用 ClickHouse MCP 服务器
 
-> 本指南说明如何使用 Docker 设置 [AnythingLLM](https://anythingllm.com/) 与 ClickHouse MCP 服务器，
+> 本指南介绍如何使用 Docker 设置 [AnythingLLM](https://anythingllm.com/) 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
@@ -42,7 +42,7 @@ import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png'
 
 ## 拉取 AnythingLLM Docker 镜像 {#pull-anythingllm-docker-image}
 
-运行以下命令将 AnythingLLM Docker 镜像拉取到本地:
+运行以下命令将 AnythingLLM Docker 镜像拉取到您的机器:
 
 ```bash
 docker pull anythingllm/anythingllm
@@ -93,7 +93,7 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 }
 ```
 
-如果您想探索自己的数据,可以使用您自己 ClickHouse Cloud 服务的[主机地址、用户名和密码](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)。
+如果您想探索自己的数据,可以使用您的 ClickHouse Cloud 服务的[主机、用户名和密码](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)。
 
 
 ## 启动 AnythingLLM Docker 容器 {#start-anythingllm-docker-container}
@@ -119,8 +119,8 @@ mintplexlabs/anythingllm
 
 <Image img={ToolIcon} alt='工具图标' size='md' />
 
-点击 `Agent Skills`,然后查看 `MCP Servers` 部分。
-等待直到看到 `Mcp ClickHouse` 设置为 `On`。
+点击 `Agent Skills` 并查看 `MCP Servers` 部分。
+等待直到看到 `Mcp ClickHouse` 设置为 `On`
 
 <Image img={MCPServers} alt='MCP 服务器就绪' size='md' />
 

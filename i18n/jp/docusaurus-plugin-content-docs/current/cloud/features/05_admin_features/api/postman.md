@@ -2,7 +2,7 @@
 slug: /cloud/manage/postman
 sidebar_label: "Postmanを使用したプログラマティックAPIアクセス"
 title: "Postmanを使用したプログラマティックAPIアクセス"
-description: "このガイドでは、Postmanを使用してClickHouse Cloud APIをテストする方法について説明します"
+description: "このガイドでは、Postmanを使用してClickHouse Cloud APIをテストする方法を説明します"
 doc_type: "guide"
 keywords: ["api", "postman", "rest api", "クラウド管理", "統合"]
 ---
@@ -26,12 +26,12 @@ import postman15 from "@site/static/images/cloud/manage/postman/postman15.png"
 import postman16 from "@site/static/images/cloud/manage/postman/postman16.png"
 import postman17 from "@site/static/images/cloud/manage/postman/postman17.png"
 
-このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/)を使用してClickHouse Cloud APIをテストする方法について説明します。
+このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/)を使用してClickHouse Cloud APIをテストする方法を説明します。
 Postmanアプリケーションは、Webブラウザ内で使用することも、デスクトップにダウンロードして使用することもできます。
 
 ### アカウントの作成 {#create-an-account}
 
-- 無料アカウントは[https://www.postman.com](https://www.postman.com)で作成できます。
+- 無料アカウントは[https://www.postman.com](https://www.postman.com)で利用できます。
 
 <Image img={postman1} size='md' alt='Postmanサイト' border />
 
@@ -71,17 +71,17 @@ Postmanアプリケーションは、Webブラウザ内で使用することも�
 
 ### 認証の設定 {#set-authorization}
 
-- ドロップダウンメニューを開いて「Basic Auth」を選択します:
+- ドロップダウンメニューを切り替えて「Basic Auth」を選択します:
 
 <Image img={postman9} size='md' alt='Basic認証' border />
 
-- ClickHouse Cloud APIキーを設定した際に取得したユーザー名とパスワードを入力します:
+- ClickHouse Cloud APIキーを設定した際に受け取ったユーザー名とパスワードを入力します:
 
 <Image img={postman10} size='md' alt='認証情報' border />
 
 ### 変数の有効化 {#enable-variables}
 
-- [変数](https://learning.postman.com/docs/sending-requests/variables/)を使用すると、Postman内で値を保存して再利用できるため、APIテストが簡単になります。
+- [変数](https://learning.postman.com/docs/sending-requests/variables/)を使用すると、Postman内で値を保存および再利用でき、APIテストが容易になります。
 
 #### 組織IDとサービスIDの設定 {#set-the-organization-id-and-service-id}
 
@@ -100,7 +100,7 @@ Postmanアプリケーションは、Webブラウザ内で使用することも�
 
 <Image img={postman12} size='md' alt='組織の取得テスト' border />
 
-- 返された結果には、「status」: 200とともに組織の詳細が含まれているはずです。(組織情報がなく「status」400を受け取った場合、設定が正しくありません)。
+- 返された結果には、「status」: 200とともに組織の詳細が含まれているはずです(組織情報がない「status」400を受け取った場合、設定が正しくありません)。
 
 <Image img={postman13} size='md' alt='ステータス' border />
 
@@ -124,7 +124,7 @@ Postmanアプリケーションは、Webブラウザ内で使用することも�
 
 <Image img={postman16} size='md' alt='戻り値' border />
 
-- 返された結果には、「status」: 200とともに組織の詳細が含まれているはずです。(組織情報がなく「status」400を受け取った場合、設定が正しくありません)。
+- 返された結果には、「status」: 200とともに組織の詳細が含まれているはずです(組織情報がない「status」400を受け取った場合、設定が正しくありません)。
 
 ### 「サービスの詳細を取得」のテスト {#test-get-service-details}
 
@@ -134,4 +134,4 @@ Postmanアプリケーションは、Webブラウザ内で使用することも�
 
 <Image img={postman17} size='md' alt='サービスのリスト' border />
 
-- 返された結果には、「status」: 200とともにサービスのリストとその詳細が含まれているはずです。(サービス情報がなく「status」400を受け取った場合、設定が正しくありません)。
+- 返された結果には、「status」: 200とともにサービスのリストとその詳細が含まれているはずです(サービス情報がない「status」400を受け取った場合、設定が正しくありません)。

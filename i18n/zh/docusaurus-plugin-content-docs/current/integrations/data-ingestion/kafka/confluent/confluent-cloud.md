@@ -2,8 +2,8 @@
 sidebar_label: 'Confluent Cloud 上的 Kafka Connector Sink'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: '在 Confluent Cloud 中使用全托管 ClickHouse Connector Sink 的指南'
-title: '将 Confluent Cloud 与 ClickHouse 集成'
+description: '在 Confluent Cloud 上使用完全托管的 ClickHouse Connector Sink 指南'
+title: '集成 Confluent Cloud 与 ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
 integration:
@@ -16,7 +16,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 
 
-# 将 Confluent Cloud 与 ClickHouse 集成
+# 集成 Confluent Cloud 与 ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -49,7 +49,7 @@ import Image from '@theme/IdealImage';
 #### 重要说明 {#important-notes}
 
 - Kafka 主题名称必须与 ClickHouse 表名称相同。如需调整此设置,可使用转换器(例如 [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html))。
-- 更多分区并不总是意味着更高性能 - 有关更多详细信息和性能优化建议,请参阅我们即将发布的指南。
+- 更多分区并不总是意味着更高的性能 - 有关更多详细信息和性能优化建议,请参阅我们即将发布的指南。
 
 #### 收集连接详细信息 {#gather-your-connection-details}
 
@@ -69,7 +69,7 @@ import Image from '@theme/IdealImage';
 - ClickHouse 中将写入数据的数据库名称
 - Kafka 中用于向 ClickHouse 写入数据的主题名称
 
-Confluent Cloud UI 支持高级配置选项,可调整轮询间隔、批处理大小和其他参数以优化性能。
+Confluent Cloud 用户界面支持高级配置选项,可调整轮询间隔、批处理大小和其他参数以优化性能。
 
 #### 已知限制 {#known-limitations}
 

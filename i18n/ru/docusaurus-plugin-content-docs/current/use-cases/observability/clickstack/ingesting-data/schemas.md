@@ -11,7 +11,7 @@ keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 
 Коллектор ClickStack OpenTelemetry (OTel) использует [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) для создания таблиц в ClickHouse и записи данных.
 
-Следующие таблицы создаются для каждого типа данных в базе данных `default`. Пользователи могут изменить целевую базу данных, изменив переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` для образа, в котором запущен OTel-коллектор.
+Следующие таблицы создаются для каждого типа данных в базе данных `default`. Пользователи могут изменить эту целевую базу данных, настроив переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` для образа, в котором запущен коллектор OTel.
 
 
 
@@ -173,7 +173,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Метрики гистограмм {#histogram}
+### Метрики-гистограммы {#histogram}
 
 
 ```sql

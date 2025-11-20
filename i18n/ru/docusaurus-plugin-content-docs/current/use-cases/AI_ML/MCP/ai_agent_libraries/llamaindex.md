@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
 sidebar_label: 'Интеграция LlamaIndex'
-title: 'Как создать AI-агента LlamaIndex на базе ClickHouse MCP Server.'
+title: 'Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server'
 pagination_prev: null
 pagination_next: null
 description: 'Узнайте, как создать AI-агента LlamaIndex, который может взаимодействовать с ClickHouse MCP Server.'
@@ -12,24 +12,24 @@ doc_type: 'guide'
 
 
 
-# Как создать AI-агента LlamaIndex с помощью ClickHouse MCP Server
+# Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
-может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример ноутбука
-Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
+:::note Пример блокнота
+Этот пример доступен в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
 :::
 
 
 
 ## Предварительные требования {#prerequisites}
 
-- В вашей системе должен быть установлен Python.
-- В вашей системе должен быть установлен `pip`.
+- На вашей системе должен быть установлен Python.
+- На вашей системе должен быть установлен `pip`.
 - Вам потребуется API-ключ Anthropic или API-ключ другого провайдера LLM.
 
-Следующие шаги можно выполнить как из Python REPL, так и с помощью скрипта.
+Следующие шаги можно выполнить либо из Python REPL, либо с помощью скрипта.
 
 <VerticalStepper headerLevel="h2">
 
@@ -126,7 +126,7 @@ llm = Anthropic(model="claude-sonnet-4-0")
 
 ## Запуск агента {#run-agent}
 
-Теперь вы можете задать агенту вопрос:
+Наконец, вы можете задать агенту вопрос:
 
 ```python
 response = agent.query("What's the most popular repository?")
@@ -134,7 +134,7 @@ response = agent.query("What's the most popular repository?")
 
 Ответ довольно длинный, поэтому в примере ниже он сокращён:
 
-```response title="Ответ"
+```response title="Response"
 Added user message to memory: What's the most popular repository?
 === LLM Response ===
 I'll help you find the most popular repository. Let me first explore the available databases and tables to understand the data structure.

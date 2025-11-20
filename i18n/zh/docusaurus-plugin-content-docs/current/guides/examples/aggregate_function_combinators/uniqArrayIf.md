@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 函数，使用 `uniqArrayIf` 聚合组合器函数来统计满足条件的行中数组的唯一值数量。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 函数，通过 `uniqArrayIf` 聚合组合器函数来统计满足条件的行中数组内的唯一值数量。
 
 :::note `-If` 和 `-Array` 可以组合使用。但是，`Array` 必须在前，`If` 在后。
 :::
@@ -24,9 +24,9 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-### 按用户细分类型和参与度级别统计查看的唯一产品数 {#count-unique-products}
+### 按细分类型和参与度级别统计查看的唯一产品数 {#count-unique-products}
 
-在此示例中,我们将使用一个包含用户购物会话数据的表,统计特定用户细分中的用户查看的唯一产品数量,并结合会话时长作为参与度指标。
+在此示例中,我们将使用包含用户购物会话数据的表来统计特定用户细分中的用户查看的唯一产品数量,并结合会话时长这一参与度指标。
 
 ```sql title="查询"
 CREATE TABLE user_shopping_sessions
@@ -45,7 +45,7 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- 按用户细分类型和参与度级别统计查看的唯一产品数
+-- 按细分类型和参与度级别统计查看的唯一产品数
 SELECT
     session_date,
     -- 统计新客户在长时间会话中查看的唯一产品数

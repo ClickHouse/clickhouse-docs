@@ -12,12 +12,12 @@ keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'fronten
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack 浏览器 SDK 允许你对前端应用进行埋点，
-将事件发送到 ClickStack。这样你就可以在单一时间轴中，
-将网络请求和异常与后端事件一起查看。
+ClickStack 浏览器 SDK 允许你为前端应用添加埋点，
+将事件发送到 ClickStack。这样你就可以在同一时间轴中，
+将网络请求和异常与后端事件一并查看。
 
-此外，它会自动采集并关联会话回放数据，
-让你可以以可视化的方式逐步回放并调试用户在使用应用时所看到的内容。
+此外，它会自动捕获并关联会话回放数据，
+这样你可以以可视化方式逐步回放并调试用户在使用你的应用时所看到的内容。
 
 本指南涵盖以下内容：
 
@@ -27,7 +27,7 @@ ClickStack 浏览器 SDK 允许你对前端应用进行埋点，
 * **异常**
 
 
-## 快速开始 {#getting-started}
+## 快速入门 {#getting-started}
 
 <br />
 
@@ -60,11 +60,11 @@ HyperDX.init({
 </TabItem>
 <TabItem value="script_tag" label="脚本标签">
 
-**通过脚本标签安装（替代方案）**
+**通过脚本标签安装（替代方式）**
 
-您也可以通过脚本标签来包含和安装脚本,而不是通过 NPM 安装。这将暴露 `HyperDX` 全局变量,并且可以像使用 NPM 包一样使用它。
+您也可以通过脚本标签来包含和安装脚本，而不是通过 NPM 安装。这将暴露 `HyperDX` 全局变量，并且可以像使用 NPM 包一样使用它。
 
-如果您的网站目前没有使用打包工具构建,推荐使用此方法。
+如果您的站点当前未使用打包工具构建，建议使用此方式。
 
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
@@ -84,25 +84,24 @@ HyperDX.init({
 ### 选项 {#options}
 
 - `apiKey` - 您的 ClickStack 数据摄取 API 密钥。
-- `service` - 事件在 HyperDX UI 中显示的服务名称。
-- `tracePropagationTargets` - 用于匹配 HTTP 请求的正则表达式模式列表,以关联前端和后端追踪,它将为所有匹配任何模式的请求添加额外的 `traceparent` 头。应设置为您的后端 API 域名(例如 `api.yoursite.com`)。
-- `consoleCapture` - (可选)捕获所有控制台日志(默认为 `false`)。
-- `advancedNetworkCapture` - (可选)捕获完整的请求/响应头和正文(默认为 false)。
-- `url` - (可选)OpenTelemetry 收集器 URL,仅自托管实例需要。
-- `maskAllInputs` - (可选)是否在会话回放中屏蔽所有输入字段(默认为 `false`)。
-- `maskAllText` - (可选)是否在会话回放中屏蔽所有文本(默认为 `false`)。
-- `disableIntercom` - (可选)是否禁用 Intercom 集成(默认为 `false`)
-- `disableReplay` - (可选)是否禁用会话回放(默认为 `false`)
+- `service` - 事件将在 HyperDX UI 中显示的服务名称。
+- `tracePropagationTargets` - 用于匹配 HTTP 请求的正则表达式模式列表，以关联前端和后端追踪，它将为所有匹配任何模式的请求添加额外的 `traceparent` 头。应将其设置为您的后端 API 域名（例如 `api.yoursite.com`）。
+- `consoleCapture` - （可选）捕获所有控制台日志（默认为 `false`）。
+- `advancedNetworkCapture` - （可选）捕获完整的请求/响应头和正文（默认为 false）。
+- `url` - （可选）OpenTelemetry 收集器 URL，仅自托管实例需要。
+- `maskAllInputs` - （可选）是否在会话回放中屏蔽所有输入字段（默认为 `false`）。
+- `maskAllText` - （可选）是否在会话回放中屏蔽所有文本（默认为 `false`）。
+- `disableIntercom` - （可选）是否禁用 Intercom 集成（默认为 `false`）
+- `disableReplay` - （可选）是否禁用会话回放（默认为 `false`）
 
 
 ## 附加配置 {#additional-configuration}
 
 ### 附加用户信息或元数据 {#attach-user-information-or-metadata}
 
-附加用户信息后,您可以在 HyperDX UI 中搜索/过滤会话和事件。
-此方法可以在客户端会话期间的任意时刻调用。当前客户端会话以及调用后发送的所有事件都将与该用户信息关联。
+附加用户信息后,您可以在 HyperDX UI 中搜索和过滤会话及事件。该方法可在客户端会话期间的任意时刻调用。当前客户端会话以及调用后发送的所有事件都将与用户信息关联。
 
-`userEmail`、`userName` 和 `teamName` 将在会话 UI 中填充相应的值,但这些字段可以省略。您可以指定任何其他附加值并用于搜索事件。
+`userEmail`、`userName` 和 `teamName` 将在会话 UI 中填充相应的值,但这些字段可以省略。您可以指定任何其他附加值,并用于搜索事件。
 
 ```javascript
 HyperDX.setGlobalAttributes({
@@ -119,7 +118,7 @@ HyperDX.setGlobalAttributes({
 如果您使用 React,可以通过将错误边界组件传递给 `attachToReactErrorBoundary` 函数来自动捕获 React 错误边界内发生的错误。
 
 ```javascript
-// 导入您的 ErrorBoundary(我们以 react-error-boundary 为例)
+// 导入您的 ErrorBoundary(此处以 react-error-boundary 为例)
 import { ErrorBoundary } from "react-error-boundary"
 
 // 这将挂钩到 ErrorBoundary 组件并捕获其任何实例中发生的错误
@@ -142,7 +141,7 @@ HyperDX.addAction("Form-Completed", {
 
 ### 动态启用网络捕获 {#enable-network-capture-dynamically}
 
-要动态启用或禁用网络捕获,只需根据需要调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数。
+要动态启用或禁用网络捕获,只需根据需要调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数即可。
 
 ```javascript
 HyperDX.enableAdvancedNetworkCapture()
@@ -150,7 +149,7 @@ HyperDX.enableAdvancedNetworkCapture()
 
 ### 为 CORS 请求启用资源计时 {#enable-resource-timing-for-cors-requests}
 
-如果您的前端应用程序向不同域发起 API 请求,可以选择启用 `Timing-Allow-Origin` [标头](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)随请求一起发送。这将允许 ClickStack 通过 [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming) 捕获请求的细粒度资源计时信息,例如 DNS 查询、响应下载等。
+如果您的前端应用程序向不同的域发起 API 请求,可以选择启用 `Timing-Allow-Origin` [标头](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)随请求一起发送。这将允许 ClickStack 通过 [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming) 捕获请求的细粒度资源计时信息,例如 DNS 查询、响应下载等。
 
 如果您使用 `express` 和 `cors` 包,可以使用以下代码片段启用该标头:
 

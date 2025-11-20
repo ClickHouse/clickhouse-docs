@@ -1,14 +1,14 @@
 ---
 slug: /guides/developer/merge-table-function
-sidebar_label: 'Merge 表函数'
-title: 'Merge 表函数'
-description: '同时查询多张表。'
+sidebar_label: 'Merge table function'
+title: 'Merge table function'
+description: '同时查询多个表。'
 doc_type: 'reference'
 keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-[Merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge) 允许我们并行查询多张表。
-它通过创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表来实现这一点，并通过对这些表的列取并集并推导公共类型来确定该表的结构。
+[merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge) 允许我们并行查询多个表。
+它通过创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表来实现这一点，该临时表的结构是通过对各个表的列取并集并推导其公共数据类型来得到的。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -86,14 +86,14 @@ SETTINGS output_format_pretty_max_value_width=25;
 
 下面逐一说明这些差异:
 
-- 1970年代将 `winner_seed` 的类型从 `Nullable(String)` 更改为 `Nullable(UInt8)`,并将 `score` 从 `String` 更改为 `Array(String)`。
+- 1970年代将 `winner_seed` 的类型从 `Nullable(String)` 更改为 `Nullable(UInt8)`,将 `score` 从 `String` 更改为 `Array(String)`。
 - 1980年代将 `winner_seed` 和 `loser_seed` 从 `Nullable(UInt8)` 更改为 `Nullable(UInt16)`。
 - 1990年代将 `surface` 从 `String` 更改为 `Enum('Hard', 'Grass', 'Clay', 'Carpet')`,并添加了 `walkover` 和 `retirement` 列。
 
 
 ## 使用 merge 查询多个表 {#querying-multiple-tables}
 
-让我们编写一个查询来查找 John McEnroe 战胜 1 号种子选手的比赛:
+让我们编写一个查询,查找 John McEnroe 战胜种子排名第 1 位选手的比赛:
 
 ```sql
 SELECT loser_name, score
@@ -119,7 +119,7 @@ AND loser_seed = 1;
 └───────────────┴─────────────────────────────────┘
 ```
 
-接下来,假设我们想要过滤这些比赛,找出 McEnroe 种子排名为 3 号或更低的比赛。
+接下来,假设我们想要过滤这些比赛,找出 McEnroe 种子排名为第 3 位或更低的比赛。
 这稍微复杂一些,因为 `winner_seed` 在不同表中使用了不同的数据类型:
 
 ```sql
@@ -174,7 +174,7 @@ AND multiIf(
 └───────────────────┴───────────────┴───────────────┴─────────────┘
 ```
 
-我们还可以将此虚拟列用作查询的一部分,来统计 `walkover` 列的值:
+我们还可以将此虚拟列作为查询的一部分,用于统计 `walkover` 列的值:
 
 ```sql
 SELECT _table, walkover, count()
@@ -193,7 +193,7 @@ ORDER BY _table;
 └───────────────────┴──────────┴─────────┘
 ```
 
-可以看到,除了 `atp_matches_1990s` 之外,所有表的 `walkover` 列都是 `NULL`。
+可以看到,除了 `atp_matches_1990s` 之外,其他所有表的 `walkover` 列都是 `NULL`。
 我们需要更新查询,当 `walkover` 列为 `NULL` 时检查 `score` 列是否包含字符串 `W/O`:
 
 ```sql

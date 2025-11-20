@@ -2,14 +2,14 @@
 slug: /guides/developer/dynamic-column-selection
 sidebar_label: 'Dynamic column selection'
 title: '動的なカラム選択'
-description: 'ClickHouse で代替クエリ言語を使用する'
+description: 'ClickHouse で代替的なクエリ記述方法を使用する'
 doc_type: 'guide'
 keywords: ['dynamic column selection', 'regular expressions', 'APPLY modifier', 'advanced queries', 'developer guide']
 ---
 
-[動的なカラム選択](/docs/sql-reference/statements/select#dynamic-column-selection)は、ClickHouse の強力でありながらあまり活用されていない機能で、各カラムを個別に名前指定する代わりに、正規表現を使ってカラムを選択できます。さらに、`APPLY` 修飾子を使ってマッチしたカラムに関数を適用することもできるため、データ分析や変換といったタスクに非常に有用です。
+[動的なカラム選択](/docs/sql-reference/statements/select#dynamic-column-selection)は、各カラムを個別に名前指定するのではなく、正規表現を使ってカラムを選択できる、強力でありながらあまり活用されていない ClickHouse の機能です。`APPLY` 修飾子を使って、一致したカラムに関数を適用することもできるため、データ分析や変換タスクに非常に有用です。
 
-ここでは、この機能の使い方を、[New York taxis データセット](/docs/getting-started/example-datasets/nyc-taxi)を使って学んでいきます。このデータセットは [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) でも利用できます。
+ここでは、この機能の使い方を、[New York taxis データセット](/docs/getting-started/example-datasets/nyc-taxi)を題材に学びます。このデータセットは [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) でも参照できます。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -27,7 +27,7 @@ LIMIT 10;
 
 > [SQLプレイグラウンドでこのクエリを試す](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7&run_query=true)
 
-このクエリは最初の10行を返しますが、パターン`.*_amount`（任意の文字の後に"\_amount"が続く）に一致する名前のカラムのみが対象となります。
+このクエリは最初の10行を返しますが、パターン`.*_amount`(任意の文字の後に"\_amount"が続く)に一致する名前のカラムのみが対象となります。
 
 ```text
     ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐
@@ -44,7 +44,7 @@ LIMIT 10;
     └─────────────┴────────────┴──────────────┴──────────────┘
 ```
 
-`fee`または`tax`という用語を含むカラムも返したいとしましょう。
+次に、`fee`または`tax`という用語を含むカラムも返したいとします。
 これらを含めるように正規表現を更新できます。
 
 ```sql
@@ -92,8 +92,8 @@ LIMIT 5;
 
 ## すべてのカラムに関数を適用する {#applying-functions}
 
-[`APPLY`](/sql-reference/statements/select)修飾子を使用すると、すべてのカラムに対して関数を適用できます。
-例えば、各カラムの最大値を求めたい場合は、次のクエリを実行します:
+[`APPLY`](/sql-reference/statements/select)修飾子を使用すると、すべてのカラムに関数を適用できます。
+例えば、これらの各カラムの最大値を求めたい場合は、次のクエリを実行します:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(max)
@@ -123,7 +123,7 @@ FROM nyc_taxi.trips
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-これらの値には小数点以下の桁数が多く含まれていますが、関数を連鎖させることで調整できます。この例では、avg関数を適用した後にround関数を適用します:
+これらの値には小数点以下の桁が多く含まれていますが、関数を連鎖させることで調整できます。この場合、avg関数を適用した後にround関数を適用します:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
@@ -138,7 +138,7 @@ FROM nyc_taxi.trips;
    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
 ```
 
-ただし、これでは平均値が整数に丸められてしまいます。例えば小数点以下2桁に丸めたい場合も対応できます。`APPLY`修飾子は関数だけでなくラムダ式も受け取ることができるため、round関数を使って平均値を小数点以下2桁に丸めることが可能です:
+ただし、これでは平均値が整数に丸められてしまいます。例えば小数点以下2桁に丸めたい場合も対応できます。`APPLY`修飾子は関数だけでなくラムダ式も受け取ることができるため、round関数で平均値を小数点以下2桁に丸めることが可能です:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))
@@ -146,7 +146,7 @@ FROM nyc_taxi.trips;
 ```
 
 
-> [SQL playground でこのクエリを試してみる](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
+> [SQL Playground でこのクエリを試す](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkgYXZnIEFQUExZIHggLT4gcm91bmQoeCwgMikKRlJPTSBueWNfdGF4aS50cmlwcw\&run_query=true)
 
 ```text
    ┌─round(avg(fare_amount), 2)─┬─round(avg(mta_tax), 2)─┬─round(avg(tip_amount), 2)─┬─round(avg(tolls_amount), 2)─┬─round(avg(ehail_fee), 2)─┬─round(avg(total_amount), 2)─┐
@@ -157,7 +157,7 @@ FROM nyc_taxi.trips;
 
 ## カラムの置換 {#replacing-columns}
 
-ここまでは順調です。しかし、他の値はそのままにして、特定の値だけを調整したい場合を考えてみましょう。例えば、合計金額を2倍にし、MTA税を1.1で割りたいとします。これは[`REPLACE`](/sql-reference/statements/select)修飾子を使用することで実現できます。この修飾子は、他のカラムはそのままにして、指定したカラムのみを置換します。
+ここまでは順調です。しかし、他の値はそのままにして、特定の値だけを調整したい場合を考えてみましょう。例えば、合計金額を2倍にし、MTA税を1.1で割りたいとします。これは[`REPLACE`](/sql-reference/statements/select)修飾子を使用することで実現できます。この修飾子は、他のカラムはそのままにして、指定したカラムを置換します。
 
 ```sql
 FROM nyc_taxi.trips
@@ -182,7 +182,7 @@ SELECT
 
 ## カラムの除外 {#excluding-columns}
 
-[`EXCEPT`](/sql-reference/statements/select)修飾子を使用してフィールドを除外することもできます。例えば、`tolls_amount`カラムを除外するには、次のクエリを記述します:
+[`EXCEPT`](/sql-reference/statements/select)修飾子を使用してフィールドを除外することもできます。例えば、`tolls_amount`カラムを削除する場合は、次のクエリを記述します:
 
 ```sql
 FROM nyc_taxi.trips

@@ -1,17 +1,18 @@
 ---
-description: 'Hacker News のデータ 2,800 万行を含むデータセット。'
+description: '2,800万行の Hacker News データを含むデータセット。'
 sidebar_label: 'Hacker News'
 slug: /getting-started/example-datasets/hacker-news
 title: 'Hacker News データセット'
 doc_type: 'guide'
-keywords: ['サンプルデータセット', 'hacker news', 'サンプルデータ', 'テキスト分析', 'ベクトル検索']
+keywords: ['example dataset', 'hacker news', 'sample data', 'text analysis', 'vector search']
 ---
 
 
 
 # Hacker News データセット
 
-> このチュートリアルでは、CSV と Parquet の両方の形式から 2,800 万行の Hacker News データを ClickHouse のテーブルに取り込み、いくつかの簡単なクエリを実行してデータを探索します。
+> このチュートリアルでは、2,800 万行の Hacker News データを、CSV と Parquet の両形式から ClickHouse
+> テーブルに取り込み、いくつかの簡単なクエリを実行してデータを探索します。
 
 
 
@@ -92,14 +93,14 @@ descendants: 10
 [`file`](/sql-reference/functions/files/#file)演算子を使用すると、`CSVWithNames`形式のみを指定してローカルディスクからファイルを読み取ることができます。
 最も重要なのは、ファイルの内容からスキーマが自動的に推論されることです。
 また、`clickhouse-local`が拡張子からgzip形式を推論して圧縮ファイルを読み取れることにも注目してください。
-`Vertical`形式は、各カラムのデータをより見やすく表示するために使用されています。
+`Vertical`形式は、各列のデータをより見やすく表示するために使用されています。
 
-### スキーマ推論を使用したデータの読み込み {#loading-the-data}
+### スキーマ推論によるデータの読み込み {#loading-the-data}
 
 データ読み込みのための最もシンプルかつ強力なツールは`clickhouse-client`です。これは機能豊富なネイティブコマンドラインクライアントです。
-データを読み込む際には、再びスキーマ推論を活用し、ClickHouseにカラムの型を判定させることができます。
+データを読み込む際には、再びスキーマ推論を活用し、ClickHouseに列の型を判定させることができます。
 
-次のコマンドを実行してテーブルを作成し、リモートCSVファイルから直接データを挿入します。[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を介してコンテンツにアクセスします。
+次のコマンドを実行してテーブルを作成し、[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を介してリモートCSVファイルから直接データを挿入します。
 スキーマは自動的に推論されます:
 
 ```sql
@@ -144,7 +145,7 @@ INSERT INTO hackernews SELECT *
 FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames')
 ```
 
-単一のコマンドで ClickHouse に 2,800 万行の挿入が完了しました!
+単一のコマンドで ClickHouse に 2800 万行を挿入できました!
 
 ### データの探索 {#explore}
 
@@ -201,7 +202,7 @@ score: 1
 
 ### スキーマの定義 {#define-a-schema}
 
-最初の最適化として、各フィールドに型を定義することが挙げられます。
+明らかな最適化として、各フィールドに型を定義することが挙げられます。
 time フィールドを `DateTime` 型として宣言することに加えて、既存のデータセットを削除した後、以下の各フィールドに適切な型を定義します。
 ClickHouse では、データのプライマリキー id は `ORDER BY` 句で定義されます。
 
@@ -246,9 +247,9 @@ INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithName
 独自のクエリを作成する際の参考として、以下にいくつかのサンプルクエリを示します。
 
 
-#### Hacker Newsにおいて「ClickHouse」はどの程度話題になっているか？ {#how-pervasive}
+#### Hacker Newsで「ClickHouse」はどれほど話題になっているか? {#how-pervasive}
 
-`score`フィールドはストーリーの人気度を示す指標を提供し、`id`フィールドと`||`連結演算子を使用して元の投稿へのリンクを生成できます。
+scoreフィールドはストーリーの人気度を示す指標を提供し、`id`フィールドと`||`連結演算子を使用して元の投稿へのリンクを生成できます。
 
 ```sql title="クエリ"
 SELECT
@@ -311,7 +312,7 @@ url:         https://github.com/ClickHouse/ClickHouse
 hn_url:      https://news.ycombinator.com/item?id=27310247
 ```
 
-ClickHouseは時間の経過とともにより多く言及されるようになっているのでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を使用できるようになります。
+ClickHouseは時間の経過とともにより多く話題になっているでしょうか?ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を使用できるようになります。
 
 ```sql title="クエリ"
 SELECT
@@ -391,9 +392,9 @@ ORDER BY monthYear ASC
 └───────────┴──────────────────────────┘
 ```
 
-時間の経過とともにClickHouseの人気が高まっていることがわかります。
+ClickHouseの人気が時間とともに高まっていることがわかります。
 
-#### ClickHouse関連記事で最も多くコメントしているのは誰か？ {#top-commenters}
+#### ClickHouse関連記事のトップコメンテーターは誰か？ {#top-commenters}
 
 ```sql title="Query"
 SELECT
@@ -431,7 +432,7 @@ ORDER BY total_score DESC
 LIMIT 5
 ```
 
-```response title="応答"
+```response title="レスポンス"
 ┌─by───────┬─total_score─┬─total_sub_comments─┐
 │ zX41ZdbW │        571  │              50    │
 │ jetter   │        386  │              30    │
@@ -446,19 +447,19 @@ LIMIT 5
 
 ## Parquet {#parquet}
 
-ClickHouseの強みの一つは、多数の[フォーマット](/interfaces/formats)を扱える能力です。
-CSVは比較的理想的なユースケースを表していますが、データ交換において最も効率的というわけではありません。
+ClickHouseの強みの一つは、あらゆる数の[フォーマット](/interfaces/formats)を扱える能力です。
+CSVは比較的理想的なユースケースですが、データ交換において最も効率的というわけではありません。
 
-次に、効率的なカラム指向フォーマットであるParquetファイルからデータを読み込みます。
+次に、効率的なカラム指向フォーマットであるParquetファイルからデータをロードします。
 
 Parquetは最小限の型を持ち、ClickHouseはこれを尊重する必要があります。この型情報はフォーマット自体にエンコードされています。
-Parquetファイルに対する型推論は、必然的にCSVファイルとは若干異なるスキーマになります。
+Parquetファイルに対する型推論は、必然的にCSVファイルのスキーマとは若干異なるスキーマになります。
 
 <VerticalStepper headerLevel="h3">
 
 ### データの挿入 {#insert-the-data}
 
-次のクエリを実行して、同じデータをParquetフォーマットで読み込みます。再度url関数を使用してリモートデータを読み込みます:
+次のクエリを実行して、Parquetフォーマットで同じデータを読み込みます。再度url関数を使用してリモートデータを読み込みます:
 
 ```sql
 DROP TABLE IF EXISTS hackernews;
@@ -475,7 +476,7 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
 ```
 
 :::note ParquetにおけるNullキー
-Parquetフォーマットの条件として、データ内に実際には存在しない場合でも、キーが`NULL`である可能性を受け入れる必要があります。
+Parquetフォーマットの制約として、データ内には存在しなくても、キーが`NULL`である可能性を受け入れる必要があります。
 :::
 
 次のコマンドを実行して、推論されたスキーマを表示します:
@@ -499,7 +500,7 @@ Parquetフォーマットの条件として、データ内に実際には存在�
 └─────────────┴────────────────────────┴
 ```
 
-CSVファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、s3から直接データを挿入できます:
+CSVファイルの場合と同様に、選択した型をより細かく制御するためにスキーマを手動で指定し、s3から直接データを挿入できます:
 
 ```sql
 CREATE TABLE hackernews
@@ -573,21 +574,21 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
 ```
 
 
-インデックスの実体化には時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用してください）。
+インデックスの実体化には時間がかかります(インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用してください)。
 
-インデックスが作成されたら、クエリを再実行します：
+インデックスが作成されたら、クエリを再実行してください:
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse');
 ```
 
-インデックスを使用することで、クエリの実行時間がインデックスなしの0.843秒から0.248秒に短縮されたことに注目してください：
+インデックスを使用することで、クエリの実行時間がインデックスなしの0.843秒から0.248秒に短縮されたことに注目してください:
 
-```response title="Response"
+```response title="レスポンス"
 #highlight-next-line
-1行を返しました。経過時間：0.248秒。処理行数：454万行、1.79 GB（1834万行/秒、7.24 GB/秒）
+1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
 ┌─count()─┐
 │    1145 │
 └─────────┘
@@ -595,14 +596,14 @@ WHERE hasToken(lower(comment), 'clickhouse');
 
 [`EXPLAIN`](/sql-reference/statements/explain) 句を使用することで、このインデックスの追加によってクエリが約3.4倍高速化された理由を理解できます。
 
-```response text="Query"
+```response text="クエリ"
 EXPLAIN indexes = 1
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse')
 ```
 
-```response title="Response"
+```response title="レスポンス"
 ┌─explain─────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))     │
 │   Aggregating                                   │
@@ -624,21 +625,21 @@ WHERE hasToken(lower(comment), 'clickhouse')
 
 インデックスによって大量のグラニュールをスキップできるようになり、クエリが高速化されたことに注目してください。
 
-また、単一の用語、または複数の用語すべてを効率的に検索することも可能になりました：
+また、単一の用語、または複数の用語すべてを効率的に検索することも可能になりました:
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT count(*)
 FROM hackernews
 WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
 ```
 
-```response title="Response"
+```response title="レスポンス"
 ┌─count()─┐
 │    2177 │
 └─────────┘
 ```
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT count(*)
 FROM hackernews
 WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');

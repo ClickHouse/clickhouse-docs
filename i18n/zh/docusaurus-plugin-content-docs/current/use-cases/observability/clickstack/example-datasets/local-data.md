@@ -21,7 +21,7 @@ import hyperdx_23 from "@site/static/images/use-cases/observability/hyperdx-23.p
 **此示例仅适用于 macOS 和 Linux 系统**
 
 :::note ClickHouse Cloud 中的 HyperDX
-此样本数据集也可以与 ClickHouse Cloud 中的 HyperDX 配合使用,只需对流程进行少量调整即可。如果在 ClickHouse Cloud 中使用 HyperDX,用户需要在本地运行 OpenTelemetry 收集器,具体说明请参见[此部署模式的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)。
+此样本数据集也可以与 ClickHouse Cloud 中的 HyperDX 配合使用,只需对流程进行少量调整即可。如果在 ClickHouse Cloud 中使用 HyperDX,用户需要在本地运行 OpenTelemetry 收集器,具体说明请参见[此部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)。
 :::
 
 <VerticalStepper>
@@ -95,12 +95,12 @@ service:
         - clickhouse
 ```
 
-此配置用于收集 macOS 和 Linux 系统的系统日志和指标,并将结果发送到 ClickStack。该配置通过添加新的接收器和管道来扩展 ClickStack 采集器——您可以引用基础 ClickStack 采集器中已配置的现有 `clickhouse` 导出器和处理器(`memory_limiter`、`batch`)。
+此配置用于收集 macOS 和 Linux 系统的系统日志和指标,并将结果发送到 ClickStack。该配置通过添加新的接收器和管道来扩展 ClickStack 收集器——您可以引用基础 ClickStack 收集器中已配置的现有 `clickhouse` 导出器和处理器(`memory_limiter`、`batch`)。
 
 :::note 采集时间戳
-此配置会在采集时调整时间戳,为每个事件分配更新后的时间值。用户应当使用 OTel 处理器或操作符在日志文件中[预处理或解析时间戳](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching),以确保保留准确的事件时间。
+此配置会在采集时调整时间戳,为每个事件分配更新后的时间值。建议用户使用 OTel 处理器或操作符在日志文件中[预处理或解析时间戳](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching),以确保保留准确的事件时间。
 
-在此示例配置中,如果接收器或文件处理器配置为从文件开头开始读取,所有现有日志条目将被分配相同的调整后时间戳——即处理时间而非原始事件时间。任何追加到文件的新事件将获得接近其实际生成时间的时间戳。
+在此示例配置中,如果接收器或文件处理器配置为从文件开头开始读取,所有现有日志条目将被分配相同的调整后时间戳——即处理时间而非原始事件时间。任何追加到文件的新事件将接收接近其实际生成时间的时间戳。
 
 要避免此行为,您可以在接收器配置中将起始位置设置为 `end`。这样可以确保仅采集新条目,并为其分配接近真实到达时间的时间戳。
 :::
@@ -151,12 +151,12 @@ docker run -d \
 
 ## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
 
-如果是本地部署,请访问 [http://localhost:8080](http://localhost:8080) 来访问 HyperDX UI。如果在 ClickHouse Cloud 中使用 HyperDX,请从左侧菜单中选择您的服务和 `HyperDX`。
+如果是本地部署,请访问 [http://localhost:8080](http://localhost:8080) 访问 HyperDX UI。如果在 ClickHouse Cloud 中使用 HyperDX,请从左侧菜单选择您的服务和 `HyperDX`。
 
 
 ## 探索系统日志 {#explore-system-logs}
 
-搜索界面应显示本地系统日志。展开筛选器并选择 `system.log`：
+搜索界面将显示本地系统日志。展开筛选器并选择 `system.log`：
 
 <Image img={hyperdx_20} alt='HyperDX 本地日志' size='lg' />
 
@@ -167,13 +167,13 @@ docker run -d \
 
 通过左侧菜单导航到图表浏览器(Chart Explorer)。选择数据源 `Metrics`,并将聚合类型设置为 `Maximum`。
 
-在 `Select a Metric` 菜单中输入 `memory`,然后选择 `system.memory.utilization (Gauge)`。
+在 `Select a Metric` 菜单中,输入 `memory` 进行搜索,然后选择 `system.memory.utilization (Gauge)`。
 
 点击运行按钮,即可可视化内存利用率随时间的变化趋势。
 
 <Image img={hyperdx_21} alt='内存随时间变化' size='lg' />
 
-注意返回的数值为浮点数格式的百分比 `%`。为了更清晰地显示,请选择 `Set number format`。
+注意,返回的数值为浮点数形式的 `%`。为了更清晰地显示,请选择 `Set number format`。
 
 <Image img={hyperdx_22} alt='数字格式' size='lg' />
 

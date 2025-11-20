@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Open WebUI を統合する'
-title: 'Open WebUI と ClickHouse Cloud を使って ClickHouse MCP サーバーをセットアップする'
+title: 'Open WebUI と ClickHouse Cloud で ClickHouse MCP サーバーをセットアップする'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Docker を使用して ClickHouse MCP サーバーと組み合わせて Open WebUI をセットアップする方法を説明します。'
+description: 'このガイドでは、Docker を使用して ClickHouse MCP サーバーと連携する Open WebUI のセットアップ方法を説明します。'
 keywords: ['AI', 'Open WebUI', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -54,7 +54,7 @@ http://localhost:8080/ にアクセスすると、UIが表示されます。
 ## ClickHouse MCP Serverの設定 {#configure-clickhouse-mcp-server}
 
 ClickHouse MCP Serverをセットアップするには、MCP ServerをOpen APIエンドポイントに変換する必要があります。
-まず、ClickHouse SQL Playgroundに接続するための環境変数を設定します:
+まず、ClickHouse SQL Playgroundに接続するための環境変数を設定しましょう:
 
 ```bash
 export CLICKHOUSE_HOST="sql-clickhouse.clickhouse.com"
@@ -96,26 +96,26 @@ http://localhost:8000/docs にアクセスすると、作成されたエンド�
 ## OpenAIの設定 {#configure-openai}
 
 デフォルトでは、Open WebUIはOllamaモデルで動作しますが、OpenAI互換エンドポイントも追加できます。
-これらは設定メニューから構成できますが、今回は`Connections`タブをクリックします：
+これらは設定メニューから構成しますが、今回は`Connections`タブをクリックする必要があります:
 
-<Image img={Connections} alt='Open WebUI接続' size='md' />
+<Image img={Connections} alt='Open WebUI connections' size='md' />
 
-エンドポイントとOpenAIキーを追加します：
+エンドポイントとOpenAIキーを追加しましょう:
 
 <Image
   img={AddConnection}
-  alt='Open WebUI - OpenAIを接続として追加'
+  alt='Open WebUI - Add OpenAI as a connection'
   size='md'
 />
 
-これでOpenAIモデルが上部メニューで利用可能になります：
+OpenAIモデルは上部メニューで利用可能になります:
 
-<Image img={OpenAIModels} alt='Open WebUI - モデル' size='md' />
+<Image img={OpenAIModels} alt='Open WebUI - Models' size='md' />
 
 
 ## Open WebUIでClickHouse MCPサーバーとチャットする {#chat-to-clickhouse-mcp-server}
 
-その後、会話を開始すると、必要に応じてOpen WebUIがMCPサーバーを呼び出します:
+これで会話を開始でき、必要に応じてOpen WebUIがMCPサーバーを呼び出します:
 
 <Image
   img={Conversation}

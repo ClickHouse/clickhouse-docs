@@ -3,8 +3,8 @@ sidebar_label: 'Hashboard'
 sidebar_position: 132
 slug: /integrations/hashboard
 keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
-description: 'Hashboard は、リアルタイムデータ分析のために ClickHouse と容易に連携できる堅牢な分析プラットフォームです。'
-title: 'ClickHouse と Hashboard を接続する'
+description: 'Hashboard は、ClickHouse と容易に連携し、リアルタイムにデータ分析を実行できる堅牢な分析プラットフォームです。'
+title: 'ClickHouse を Hashboard に接続する'
 doc_type: 'guide'
 ---
 
@@ -18,20 +18,20 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Hashboard](https://hashboard.com) は、組織内の誰もがメトリクスを追跡し、行動につながるインサイトを得られる、対話型のデータ探索ツールです。Hashboard は ClickHouse データベースに対して常に最新の SQL クエリを発行し、セルフサービス型のアドホックなデータ探索ユースケースに特に有用です。
+[Hashboard](https://hashboard.com) は、組織内の誰もがメトリクスを追跡し、行動につながるインサイトを見つけられるインタラクティブなデータ探索ツールです。Hashboard は ClickHouse データベースに対してライブの SQL クエリを発行し、セルフサービス型のアドホックなデータ探索ユースケースに特に有用です。
 
-<Image size="md" img={hashboard_01} alt="インタラクティブなクエリビルダーと可視化を備えた Hashboard のデータエクスプローラーインターフェース" border />
+<Image size="md" img={hashboard_01} alt="インタラクティブなクエリビルダーと可視化を表示している Hashboard データエクスプローラーのインターフェース" border />
 
 <br/>
 
-このガイドでは、Hashboard を ClickHouse インスタンスに接続する手順を説明します。この情報は、Hashboard の [ClickHouse 連携ドキュメント](https://docs.hashboard.com/docs/database-connections/clickhouse) にも掲載されています。
+このガイドでは、Hashboard を ClickHouse インスタンスに接続する手順を説明します。この情報は Hashboard の [ClickHouse 連携ドキュメント](https://docs.hashboard.com/docs/database-connections/clickhouse) にも記載されています。
 
 
 
 ## 前提条件 {#pre-requisites}
 
-- 自社インフラストラクチャまたは[ClickHouse Cloud](https://clickhouse.com/)上でホストされているClickHouseデータベース
-- [Hashboardアカウント](https://hashboard.com/getAccess)とプロジェクト
+- 自社インフラストラクチャまたは[ClickHouse Cloud](https://clickhouse.com/)でホストされているClickHouseデータベース
+- [Hashboardアカウント](https://hashboard.com/getAccess)およびプロジェクト
 
 
 ## HashboardをClickHouseに接続する手順 {#steps-to-connect-hashboard-to-clickhouse}

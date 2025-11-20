@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumSimpleState'
 title: 'sumSimpleState'
-description: 'sumSimpleState コンビネーターを使用する例'
+description: 'sumSimpleState コンビネータの使用例'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
 sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
@@ -22,11 +22,11 @@ doc_type: 'reference'
 ### 賛成票と反対票の追跡 {#tracking-post-votes}
 
 投稿に対する投票を追跡するテーブルを使用した実用的な例を見てみましょう。
-各投稿について、賛成票、反対票、および総合スコアの累計を維持したいと考えています。`SimpleAggregateFunction`型とsumを使用することは、このユースケースに適しています。集計の完全な状態ではなく、累計のみを保存すればよいためです。その結果、より高速になり、部分的な集計状態のマージも不要になります。
+各投稿について、賛成票、反対票、および総合スコアの累計を維持します。このユースケースでは、集約の完全な状態ではなく累計のみを保存すればよいため、`SimpleAggregateFunction`型とsumの使用が適しています。その結果、処理が高速化され、部分的な集約状態のマージも不要になります。
 
 まず、生データ用のテーブルを作成します:
 
-```sql title="Query"
+```sql title="クエリ"
 CREATE TABLE raw_votes
 (
     post_id UInt32,
@@ -36,7 +36,7 @@ ENGINE = MergeTree()
 ORDER BY post_id;
 ```
 
-次に、集計データを格納するターゲットテーブルを作成します:
+次に、集約データを格納するターゲットテーブルを作成します:
 
 ```sql
 CREATE TABLE vote_aggregates

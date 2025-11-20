@@ -20,8 +20,7 @@ doc_type: 'landing-page'
 - [プライマリキーはどのように選べばよいですか？](../../guides/best-practices/sparse-primary-indexes.md)
 - [なぜ MapReduce のようなものを使わないのですか？](../../faq/general/mapreduce.md)
 - [ClickHouse にコードをコントリビュートするにはどうすればよいですか？](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
-- [What does "ClickHouse" mean?](../../faq/general/dbms-naming.md)
 
 :::info お探しの内容が見つかりませんか？
-[Knowledge Base](/knowledgebase/) を確認し、このドキュメント内の多数の有用な記事も参照してください。
+[Knowledge Base](/knowledgebase/) や、本ドキュメント内にある多くの有用な記事もぜひご覧ください。
 :::

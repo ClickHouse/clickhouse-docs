@@ -1,5 +1,5 @@
 ---
-description: '使用 curl 在任意平台快速安装 ClickHouse'
+description: '使用 curl 在任何平台上安装 ClickHouse'
 keywords: ['ClickHouse', 'install', 'quick', 'curl']
 sidebar_label: '快速安装'
 slug: /install/quick-install-curl

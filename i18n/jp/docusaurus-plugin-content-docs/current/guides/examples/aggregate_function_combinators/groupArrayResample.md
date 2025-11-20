@@ -17,8 +17,8 @@ doc_type: 'reference'
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 コンビネータを[`groupArray`](/sql-reference/aggregate-functions/reference/sum)集約関数に適用することで、
 指定されたキー列の範囲を固定数の区間（`N`）に分割し、
-各区間に含まれるデータポイントから代表値（最小キーに対応する値）を1つ選択して、
-結果の配列を構築できます。
+各区間に含まれるデータポイントから代表値（最小キーに対応する値）を1つ選択して
+結果配列を構築できます。
 これにより、すべての値を収集するのではなく、データのダウンサンプリングされたビューが作成されます。
 
 
@@ -44,12 +44,9 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間に含まれる人の名前を取得してみましょう。年齢には整数表現を使用しているため、実際の区間は`[30, 59]`と`[60,74]`になります。
+年齢が`[30,60)`と`[60,75)`の区間に含まれる人の名前を取得してみましょう。年齢には整数表現を使用しているため、実際には`[30, 59]`と`[60,74]`の区間になります。
 
-名前を配列に集約するには、`groupArray`集約関数を使用します。
-この関数は1つの引数を取ります。この例ではname列です。`groupArrayResample`
-関数はage列を使用して、年齢ごとに名前を集約します。必要な区間を定義するために、
-`groupArrayResample`関数に`30`、`75`、`30`を引数として渡します:
+名前を配列に集約するには、`groupArray`集約関数を使用します。この関数は1つの引数を取ります。今回の場合は、name列です。`groupArrayResample`関数は、age列を使用して年齢ごとに名前を集約します。必要な区間を定義するために、`groupArrayResample`関数に`30`、`75`、`30`を引数として渡します:
 
 ```sql
 SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data

@@ -11,7 +11,7 @@ VIEW view_name                  [AS view_name_in_backup] |
 ALL [EXCEPT {TABLES|DATABASES}...] } [,...]
 --- 
 [ON CLUSTER 'cluster_name']
---- バックアップ先/リストア元
+--- バックアップ先またはリストア元
 TO|FROM 
 File('<path>/<filename>') | 
 Disk('<disk_name>', '<path>/') | 
@@ -21,4 +21,4 @@ AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account
 [SETTINGS ...]
 ```
 
-**各コマンドの詳細については、[「コマンドの概要」](/operations/backup/overview/#command-summary) を参照してください。**
+**各コマンドの詳細については、[「コマンド一覧」](/operations/backup/overview/#command-summary)を参照してください。**

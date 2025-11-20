@@ -1,7 +1,7 @@
 ---
 slug: /integrations/marimo
 sidebar_label: 'marimo'
-description: 'marimo 是一款用于数据交互的下一代 Python 笔记本'
+description: 'marimo 是一款用于数据交互的新一代 Python 笔记本'
 title: '将 marimo 与 ClickHouse 搭配使用'
 doc_type: 'guide'
 keywords: ['marimo', 'notebook', 'data analysis', 'python', 'visualization']
@@ -19,11 +19,11 @@ import run_app_view from '@site/static/images/integrations/sql-clients/marimo/ru
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 将 marimo 与 ClickHouse 搭配使用
+# 在 ClickHouse 中使用 marimo
 
 <CommunityMaintainedBadge/>
 
-[marimo](https://marimo.io/) 是一款开源的 Python 响应式笔记本工具，内置 SQL 功能。当你运行某个单元格或与 UI 元素交互时，marimo 会自动运行受影响的单元格（或将其标记为已失效），从而保持代码与输出的一致性，并在问题发生前预防错误。每个 marimo 笔记本都以纯 Python 文件形式存储，可作为脚本执行，也可部署为应用。
+[marimo](https://marimo.io/) 是一款开源的 Python 响应式 notebook，内置 SQL 支持。当你运行某个单元格或与 UI 元素交互时，marimo 会自动运行受影响的单元格（或将其标记为已过期），从而保持代码与输出的一致性，并在问题发生前预防错误。每个 marimo notebook 都以纯 Python 的形式存储，可作为脚本执行，也可以部署为应用。
 
 <Image img={marimo_connect} size="md" border alt="连接到 ClickHouse" />
 
@@ -36,12 +36,12 @@ pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
 
-这将在 localhost 上打开一个 Web 浏览器。
+这将在本地主机上打开一个 Web 浏览器。
 
 
 ## 2. 连接到 ClickHouse {#connect-to-clickhouse}
 
-在 marimo 编辑器左侧导航到数据源面板,点击"Add database"。
+在 marimo 编辑器左侧导航至数据源面板,点击"Add database"。
 
 <Image img={add_db_panel} size='sm' border alt='添加新数据库' />
 
@@ -128,7 +128,7 @@ SELECT * FROM trips LIMIT 1000;
 
 <Image img={results} size='lg' border alt='数据框中的结果' />
 
-现在,您可以在数据框中查看结果。我们希望可视化从指定上车地点出发的最高费用下车地点。marimo 提供了多个 UI 组件来帮助您实现这一目标。我们将使用下拉菜单选择地点,并使用 Altair 进行图表绘制。
+现在,您可以在数据框中查看结果。我想可视化从指定上车地点出发的最高费用下车地点。marimo 提供了多个 UI 组件来帮助您。我将使用下拉菜单选择地点,并使用 Altair 进行图表绘制。
 
 <Image
   img={dropdown_cell_chart}
@@ -137,8 +137,8 @@ SELECT * FROM trips LIMIT 1000;
   alt='下拉菜单、表格和图表的组合'
 />
 
-marimo 的响应式执行模型扩展到 SQL 查询,因此对 SQL 的更改将自动触发依赖单元格的下游计算(或者可选择将单元格标记为过时状态以处理高开销的计算)。因此,当查询更新时,图表和表格会相应变化。
+marimo 的响应式执行模型扩展到 SQL 查询,因此对 SQL 的更改将自动触发依赖单元格的下游计算(或者可选择将单元格标记为过时以处理高开销的计算)。因此,当查询更新时,图表和表格也会随之变化。
 
-您还可以切换到应用视图,以获得一个简洁的界面来探索数据。
+您还可以切换到应用视图,以获得一个简洁的界面来探索您的数据。
 
 <Image img={run_app_view} size='md' border alt='运行应用视图' />

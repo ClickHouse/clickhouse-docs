@@ -20,7 +20,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <details>
   <summary>S3バケットとIAMユーザーの作成</summary>
 
-この記事では、AWS IAMユーザーの設定、S3バケットの作成、およびClickHouseでそのバケットをS3ディスクとして使用するための設定の基本について説明します。使用する権限についてはセキュリティチームと協議し、ここで示す内容を出発点として検討してください。
+この記事では、AWS IAMユーザーの設定、S3バケットの作成、およびClickHouseでそのバケットをS3ディスクとして使用するための設定方法の基本を説明します。使用する権限についてはセキュリティチームと協議し、これらを出発点として検討してください。
 
 ### AWS IAMユーザーの作成 {#create-an-aws-iam-user}
 
@@ -71,7 +71,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 6. **ユーザーの作成**を選択します
 
    :::note
-   ユーザーに権限がないという警告メッセージは無視できます。次のセクションでバケットに対するユーザーの権限を付与します
+   ユーザーに権限がないという警告メッセージは無視できます。次のセクションでバケットに対するユーザーの権限が付与されます
    :::
 
 <Image
@@ -105,7 +105,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-9. ARN（Amazon Resource Name）をコピーし、バケットのアクセスポリシーを設定する際に使用するために保存します。
+9. ARN(Amazon Resource Name)をコピーし、バケットのアクセスポリシーを設定する際に使用するために保存します。
 
 <Image
   size='md'
@@ -129,7 +129,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 2. バケット名を入力し、その他のオプションはデフォルトのままにします
    :::note
-   バケット名は組織内だけでなく、AWS全体で一意である必要があります。そうでない場合はエラーが発生します。
+   バケット名は組織内だけでなくAWS全体で一意である必要があります。そうでない場合はエラーが発生します。
    :::
 3. `パブリックアクセスをすべてブロック`を有効のままにします。パブリックアクセスは不要です。
 
@@ -208,7 +208,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-12. バケットポリシーを追加します。以下は例です：
+12. バケットポリシーを追加します。以下は例です:
 
 ```json
 {
@@ -231,17 +231,17 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 ```response
 |パラメータ | 説明 | 例の値 |
 |----------|-------------|----------------|
-|Version | ポリシーインタープリタのバージョン、そのままにしておく | 2012-10-17 |
+|Version | ポリシーインタープリタのバージョン、変更しない | 2012-10-17 |
 |Sid | ユーザー定義のポリシーID | abc123 |
-|Effect | ユーザーリクエストが許可されるか拒否されるか | Allow |
+|Effect | ユーザーリクエストを許可するか拒否するか | Allow |
 |Principal | 許可されるアカウントまたはユーザー | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | バケットで許可される操作 | s3:*|
-|Resource | バケット内で操作が許可されるリソース | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
+|Action | バケットで許可される操作| s3:*|
+|Resource | 操作が許可されるバケット内のリソース | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 ```
 
 :::note
-使用する権限を決定するには、セキュリティチームと協力してください。これらは出発点として考慮してください。
-ポリシーと設定の詳細については、AWSドキュメントを参照してください：
+使用する権限を決定するには、セキュリティチームと協力してください。これらは出発点として検討してください。
+ポリシーと設定の詳細については、AWSドキュメントを参照してください:
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html
 :::
 

@@ -1,9 +1,9 @@
 ---
 slug: /cloud/bestpractices
-keywords: ['Cloud', 'ベストプラクティス', '一括挿入', '非同期挿入', 'ミューテーションの回避', 'Nullable 列の回避', 'OPTIMIZE FINAL の回避', '低カーディナリティのパーティションキー', 'マルチテナンシー', '使用量上限']
+keywords: ['Cloud', 'Best Practices', 'Bulk Inserts', 'Asynchronous Inserts', 'Avoid Mutations', 'Avoid Nullable Columns', 'Avoid Optimize Final', 'Low Cardinality Partitioning Key', 'Multi Tenancy', 'Usage Limits']
 title: '概要'
 hide_title: true
-description: 'ClickHouse Cloud におけるベストプラクティスセクションのランディングページ'
+description: 'ClickHouse Cloud のベストプラクティスセクションのランディングページ'
 doc_type: 'landing-page'
 ---
 

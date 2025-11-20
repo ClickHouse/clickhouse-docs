@@ -11,7 +11,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 import AzureSettings from '@site/docs/operations_/backup_restore/_snippets/_azure_settings.md';
 import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
 
-> 本节整体介绍 ClickHouse 中的备份与恢复。关于各备份方法的更详细说明，请参阅侧边栏中相应方法的页面。
+> 本节将总体介绍 ClickHouse 中的备份与恢复。若要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
 
 ## 简介 {#introduction}
@@ -21,14 +21,14 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 表或删除错误集群上的表，以及导致数据处理错误或数据损坏的软件缺陷。
 
 在许多情况下，此类错误会影响所有副本。ClickHouse 内置了
-防护措施来防止某些类型的错误,例如[默认情况下](/operations/settings/settings#max_table_size_to_drop)
-您无法直接删除包含超过 50 GB 数据的 `MergeTree` 系列引擎表。然而,这些防护措施并不能涵盖所有可能的情况,
+防护措施来防止某些类型的错误，例如，[默认情况下](/operations/settings/settings#max_table_size_to_drop)
+您无法直接删除包含超过 50 GB 数据的 `MergeTree` 系列引擎表。然而，这些防护措施并不能涵盖所有可能的情况，
 问题仍然可能发生。
 
-为了有效减轻可能的人为错误,您应该**提前**仔细准备
+为了有效减轻可能的人为错误，您应该**提前**仔细准备
 数据备份和恢复策略。
 
-每家公司都有不同的可用资源和业务需求,因此
+每家公司都有不同的可用资源和业务需求，因此
 没有适用于所有情况的 ClickHouse 备份和恢复通用解决方案。适用于 1 GB 数据的方法可能不适用于数十 PB 的数据。存在多种可能的方法,各有优缺点,本文档部分将介绍这些方法。建议
 采用多种方法而不是仅使用一种方法,以弥补各自的
 不足。
@@ -38,7 +38,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 那么当您真正需要时,恢复很可能无法正常工作(或者至少
 需要的时间会超过业务所能容忍的范围)。因此,无论您选择哪种备份
 方法,都要确保同时自动化恢复过程,并在备用 ClickHouse 集群上定期
-练习。
+进行演练。
 :::
 
 以下页面详细介绍了 ClickHouse 中可用的各种备份和
@@ -82,9 +82,9 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 
 ## 并发与非并发备份 {#concurrent-vs-non-concurrent}
 
-默认情况下,ClickHouse 允许并发执行备份和恢复操作。这意味着您可以同时启动多个备份或恢复操作。不过,可以通过服务器级别的设置来禁用此行为。如果将这些设置设为 false,则集群每次只允许运行一个备份或恢复操作。这有助于避免资源争用或操作之间的潜在冲突。
+默认情况下,ClickHouse 允许并发执行备份和恢复操作。这意味着您可以同时启动多个备份或恢复操作。不过,ClickHouse 提供了服务器级别的配置选项来禁用此行为。如果将这些配置设为 false,则集群每次只允许运行一个备份或恢复操作。这有助于避免资源争用或操作之间的潜在冲突。
 
-要禁用并发备份/恢复,可以分别使用以下设置:
+要禁用并发备份/恢复,可以分别使用以下配置:
 
 ```xml
 <clickhouse>
@@ -95,7 +95,7 @@ import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_sett
 </clickhouse>
 ```
 
-这两个设置的默认值均为 true,因此默认允许并发备份/恢复。当集群上的这些设置为 false 时,集群每次只允许运行一个备份/恢复操作。
+这两个配置的默认值均为 true,因此默认允许并发备份/恢复。当集群上的这些配置设为 false 时,集群每次只允许运行一个备份/恢复操作。
 
 
 ## 压缩与非压缩备份 {#compressed-vs-uncompressed}
@@ -116,7 +116,7 @@ BACKUP TABLE test.table
 命名集合允许您存储键值对(如 S3 凭证、端点和设置),可在备份/恢复操作中重复使用。
 它们的作用包括:
 
-- 对非管理员用户隐藏凭证信息
+- 对非管理员用户隐藏凭证
 - 通过集中存储复杂配置简化命令
 - 保持操作的一致性
 - 避免凭证在查询日志中泄露
@@ -126,11 +126,11 @@ BACKUP TABLE test.table
 
 ## 备份系统表、日志表或访问管理表 {#system-backups}
 
-系统表也可以纳入您的备份和恢复工作流,但是否纳入取决于您的具体使用场景。
+系统表也可以纳入您的备份和恢复工作流中,但是否纳入取决于您的具体使用场景。
 
-存储历史数据的系统表,例如带有 `_log` 后缀的表(如 `query_log`、`part_log`),可以像其他表一样进行备份和恢复。如果您的使用场景依赖于分析历史数据——例如,使用 `query_log` 跟踪查询性能或调试问题——建议将这些表纳入备份策略。但是,如果不需要这些表中的历史数据,可以将它们排除以节省备份存储空间。
+存储历史数据的系统表,例如带有 `_log` 后缀的表(如 `query_log`、`part_log`),可以像其他表一样进行备份和恢复。如果您的使用场景依赖于分析历史数据——例如,使用 `query_log` 跟踪查询性能或调试问题——建议将这些表纳入您的备份策略中。但是,如果不需要这些表中的历史数据,可以将它们排除以节省备份存储空间。
 
-与访问管理相关的系统表,例如 users、roles、row_policies、settings_profiles 和 quotas,在备份和恢复操作期间会受到特殊处理。当这些表纳入备份时,它们的内容会被导出到一个特殊的 `accessXX.txt` 文件中,该文件封装了用于创建和配置访问实体的等效 SQL 语句。在恢复时,恢复过程会解析这些文件并重新应用 SQL 命令来重建用户、角色和其他配置。此功能确保 ClickHouse 集群的访问控制配置可以作为集群整体设置的一部分进行备份和恢复。
+与访问管理相关的系统表,例如 users、roles、row_policies、settings_profiles 和 quotas,在备份和恢复操作期间会接受特殊处理。当这些表纳入备份时,它们的内容会被导出到一个特殊的 `accessXX.txt` 文件中,该文件封装了用于创建和配置访问实体的等效 SQL 语句。在恢复时,恢复过程会解析这些文件并重新应用 SQL 命令来重建用户、角色和其他配置。此功能确保 ClickHouse 集群的访问控制配置可以作为集群整体设置的一部分进行备份和恢复。
 
 此功能仅适用于通过 SQL 命令管理的配置(称为["SQL 驱动的访问控制和账户管理"](/operations/access-rights#enabling-access-control))。在 ClickHouse 服务器配置文件(例如 `users.xml`)中定义的访问配置不包含在备份中,也无法通过此方法恢复。
 
@@ -147,7 +147,7 @@ BACKUP TABLE test.table
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | `BACKUP`                                                               | 创建指定对象的备份                                                                                                                |
 | `RESTORE`                                                              | 从备份中恢复对象                                                                                                                       |
-| `[ASYNC]`                                                              | 使操作异步执行(立即返回一个可供监控的 ID)                                                              |
+| `[ASYNC]`                                                              | 使操作异步运行(立即返回一个可供监控的 ID)                                                              |
 | `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | 备份/恢复指定表(可重命名)                                                                                                  |
 | `[PARTITION[S] partition_expr [,...]]`                                 | 仅备份/恢复表的指定分区                                                                                                 |
 | `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | 备份/恢复字典对象                                                                                                                |
@@ -158,7 +158,7 @@ BACKUP TABLE test.table
 | `ALL`                                                                  | 备份/恢复所有内容(所有数据库、表等)。在 ClickHouse 23.4 版本之前,`ALL` 仅适用于 `RESTORE` 命令。 |
 | `[EXCEPT {TABLES\|DATABASES}...]`                                      | 使用 `ALL` 时排除指定表或数据库                                                                                                |
 | `[ON CLUSTER 'cluster_name']`                                          | 在 ClickHouse 集群上执行备份/恢复操作                                                                                               |
-| `TO\|FROM`                                                             | 方向:`TO` 指定备份目标,`FROM` 指定恢复源                                                                                    |
+| `TO\|FROM`                                                             | 方向:`TO` 表示备份目标,`FROM` 表示恢复源                                                                                    |
 | `File('<path>/<filename>')`                                            | 存储到本地文件系统或从本地文件系统恢复                                                                                                              |
 | `Disk('<disk_name>', '<path>/')`                                       | 存储到已配置的磁盘或从已配置的磁盘恢复                                                                                                              |
 | `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | 存储到 Amazon S3 或 S3 兼容存储或从其恢复                                                                                             |
@@ -179,7 +179,7 @@ BACKUP TABLE test.table
 <AzureSettings />
 
 
-## 管理和故障排查 {#check-the-status-of-backups}
+## 管理与故障排查 {#check-the-status-of-backups}
 
 备份命令会返回 `id` 和 `status`,可以使用该 `id` 来获取备份状态。这对于检查长时间运行的 `ASYNC` 备份进度非常有用。以下示例展示了尝试覆盖现有备份文件时发生的失败情况:
 
@@ -192,7 +192,7 @@ BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
 │ 7678b0b3-f519-4e6e-811f-5a0781a4eb52 │ CREATING_BACKUP │
 └──────────────────────────────────────┴─────────────────┘
 
-返回 1 行。耗时:0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -218,10 +218,10 @@ error:             Code: 598. DB::Exception: Backup Disk('backups', '1.zip') alr
 start_time:        2022-08-30 09:21:46
 end_time:          2022-08-30 09:21:46
 
-返回 1 行。耗时:0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
-除了 [`system.backups`](/operations/system-tables/backups) 表之外,所有备份和恢复操作还会记录在系统日志表 [`system.backup_log`](/operations/system-tables/backup_log) 中:
+除了 [`system.backups`](/operations/system-tables/backups) 表之外,所有备份和恢复操作还会在系统日志表 [`system.backup_log`](/operations/system-tables/backup_log) 中进行跟踪:
 
 ```sql
 SELECT *
@@ -269,5 +269,5 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-返回 2 行。耗时:0.075 秒。
+2 rows in set. Elapsed: 0.075 sec.
 ```

@@ -7,7 +7,7 @@ keywords: ['chdb', 's3']
 doc_type: 'guide'
 ---
 
-全球有大量数据存储在 Amazon S3 存储桶中。
+世界上的大量数据都存储在 Amazon S3 存储桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
 
 
@@ -34,7 +34,7 @@ pip install "chdb>=2.0.2"
 pip install ipython
 ```
 
-我们将使用 `ipython` 运行本指南后续部分的命令,可以通过以下方式启动:
+本指南后续部分将使用 `ipython` 来运行命令,可以通过以下方式启动:
 
 ```bash
 ipython
@@ -46,13 +46,13 @@ ipython
 ## 列出 S3 存储桶中的文件 {#listing-files-in-an-s3-bucket}
 
 让我们从列出[包含 Amazon 评论数据的 S3 存储桶](/getting-started/example-datasets/amazon-reviews)中的所有文件开始。
-为此,我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3),并传入文件路径或使用通配符指定文件集。
+为此,我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3),并传入文件路径或使用通配符来匹配一组文件。
 
 :::tip
 如果仅传入存储桶名称,将会抛出异常。
 :::
 
-我们还将使用 [`One`](/interfaces/formats/One) 输入格式,使文件不被解析,而是每个文件返回单行数据,这样我们可以通过 `_file` 虚拟列访问文件名,通过 `_path` 虚拟列访问路径。
+我们还将使用 [`One`](/interfaces/formats/One) 输入格式,这样文件不会被解析,而是每个文件返回一行数据,我们可以通过 `_file` 虚拟列访问文件名,通过 `_path` 虚拟列访问路径。
 
 ```python
 import chdb
@@ -79,7 +79,7 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-该存储桶仅包含 Parquet 文件。
+此存储桶仅包含 Parquet 文件。
 
 
 ## 查询 S3 存储桶中的文件 {#querying-files-in-an-s3-bucket}
@@ -175,7 +175,7 @@ LIMIT 10
  4. │ 厨房用品         │  4880297 │ 4.21 │
  5. │ 图书             │ 19530930 │ 4.34 │
  6. │ 户外用品         │  2302327 │ 4.24 │
- 7. │ 视频             │   380596 │ 4.19 │
+ 7. │ 影音             │   380596 │ 4.19 │
  8. │ 食品杂货         │  2402365 │ 4.31 │
  9. │ 鞋类             │  4366757 │ 4.24 │
 10. │ 珠宝首饰         │  1767667 │ 4.14 │
@@ -185,7 +185,7 @@ LIMIT 10
 
 ## 查询私有 S3 存储桶中的文件 {#querying-files-in-a-private-s3-bucket}
 
-如果要查询私有 S3 存储桶中的文件,需要传入访问密钥和密钥。
+如果要查询私有 S3 存储桶中的文件,需要传入访问密钥和密文。
 可以将这些凭证传递给 `s3` 表函数:
 
 ```python

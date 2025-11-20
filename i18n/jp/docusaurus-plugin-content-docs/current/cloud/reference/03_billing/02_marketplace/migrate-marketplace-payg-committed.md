@@ -1,29 +1,29 @@
 ---
 slug: /cloud/billing/marketplace/migrate
-title: 'クラウドマーケットプレイスで従量課金制 (PAYG) からコミット済み利用額契約への課金移行'
-description: '従量課金制からコミット済み利用額契約への移行。'
+title: '従量課金制 (PAYG) からクラウドマーケットプレイスでのコミット済み利用契約への課金の移行'
+description: '従量課金制からコミット済み利用契約への移行。'
 keywords: ['marketplace', 'billing', 'PAYG', 'pay-as-you-go', 'committed spend contract']
 doc_type: 'guide'
 ---
 
 
 
-# クラウドマーケットプレイスで従量課金制（PAYG）からコミット支出契約への請求を移行する {#migrate-payg-to-committed}
+# クラウドマーケットプレイスでの従量課金制（PAYG）からコミット型契約への請求移行 {#migrate-payg-to-committed}
 
-ClickHouse組織が現在、アクティブなクラウドマーケットプレイスの従量課金制（PAYG）サブスクリプション（または注文）で請求されており、同じクラウドマーケットプレイスを通じてコミット支出契約による請求に移行する場合は、新しいオファーを承認した後、ご利用のクラウドサービスプロバイダーに応じて以下の手順を実行してください。
+ClickHouse組織が現在、クラウドマーケットプレイスの従量課金制（PAYG）サブスクリプション（または注文）で請求されており、同じクラウドマーケットプレイスを通じてコミット型契約による請求に移行する場合は、新しいオファーを承認してから、ご利用のクラウドサービスプロバイダーに応じて以下の手順を実行してください。
 
 
 ## 重要な注意事項 {#important-notes}
 
-マーケットプレイスのPAYGサブスクリプションをキャンセルしても、ClickHouse Cloudアカウント自体は削除されません。削除されるのはマーケットプレイス経由の請求関係のみです。キャンセル後、システムはマーケットプレイスを通じたClickHouse Cloudサービスの請求を停止します。(注:このプロセスは即座には完了せず、完了までに数分かかる場合があります)。
+マーケットプレイスのPAYGサブスクリプションをキャンセルしても、ClickHouse Cloudアカウント自体は削除されません。削除されるのはマーケットプレイス経由の請求関係のみです。キャンセル後、システムはマーケットプレイスを通じたClickHouse Cloudサービスの請求を停止します。(注: このプロセスは即座には完了せず、完了までに数分かかる場合があります)。
 
-マーケットプレイスのサブスクリプションがキャンセルされた後、ClickHouse組織にクレジットカードが登録されている場合、新しいマーケットプレイスのサブスクリプションが事前に紐付けられない限り、請求サイクルの終了時にそのカードに請求が行われます。
+マーケットプレイスサブスクリプションがキャンセルされた後、ClickHouse組織にクレジットカードが登録されている場合、新しいマーケットプレイスサブスクリプションが事前に紐付けられない限り、請求サイクルの終了時にそのカードに請求が行われます。
 
-キャンセル後にクレジットカードが設定されていない場合、有効なクレジットカードまたは新しいクラウドマーケットプレイスのサブスクリプションを組織に追加するまでに14日間の猶予期間があります。この期間内に支払い方法が設定されない場合、サービスは停止され、組織は[請求コンプライアンス](/manage/clickhouse-cloud-billing-compliance)違反と見なされます。
+キャンセル後にクレジットカードが設定されていない場合、有効なクレジットカードまたは新しいクラウドマーケットプレイスサブスクリプションを組織に追加するまでに14日間の猶予期間があります。その期間内に支払い方法が設定されない場合、サービスは停止され、組織は[請求コンプライアンス](/manage/clickhouse-cloud-billing-compliance)違反と見なされます。
 
-サブスクリプションがキャンセルされた後に発生した使用量は、次に設定された有効な支払い方法(プリペイドクレジット、マーケットプレイスのサブスクリプション、クレジットカードの順)に請求されます。
+サブスクリプションがキャンセルされた後に発生した使用量は、次に設定された有効な支払い方法(プリペイドクレジット、マーケットプレイスサブスクリプション、クレジットカードの優先順位)に請求されます。
 
-組織を新しいマーケットプレイスのサブスクリプションに設定する際にご質問やサポートが必要な場合は、ClickHouseの[サポート](https://clickhouse.com/support/program)までお問い合わせください。
+組織を新しいマーケットプレイスサブスクリプションに設定する際にご質問やサポートが必要な場合は、ClickHouse [サポート](https://clickhouse.com/support/program)までお問い合わせください。
 
 
 ## AWS Marketplace {#aws-marketplace}
@@ -46,24 +46,24 @@ ClickHouse 組織を PAYG サブスクリプションからコミット支出契
 
 > **注意:** サブスクリプションのキャンセルに関するサポートが必要な場合(例: キャンセルボタンが表示されない場合)は、[AWS サポート](https://support.console.aws.amazon.com/support/home#/)にお問い合わせください。
 
-次に、承認した新しい AWS コミット支出契約に ClickHouse 組織を構成するため、こちらの[手順](/cloud/billing/marketplace/aws-marketplace-committed-contract)に従ってください。
+次に、承認した新しい AWS コミット支出契約に ClickHouse 組織を設定するため、こちらの[手順](/cloud/billing/marketplace/aws-marketplace-committed-contract)に従ってください。
 
 
-## GCP マーケットプレイス {#gcp-marketplace}
+## GCP Marketplace {#gcp-marketplace}
 
-### GCP PAYG 注文のキャンセル手順 {#cancel-gcp-payg}
+### GCP PAYG注文のキャンセル手順 {#cancel-gcp-payg}
 
-1. **[Google Cloud マーケットプレイス コンソール](https://console.cloud.google.com/marketplace)にアクセスします:**
-   - 正しい GCP アカウントにログインし、適切なプロジェクトが選択されていることを確認してください
-2. **ClickHouse の注文を探します:**
+1. **[Google Cloud Marketplaceコンソール](https://console.cloud.google.com/marketplace)にアクセスします:**
+   - 正しいGCPアカウントにログインし、適切なプロジェクトが選択されていることを確認してください
+2. **ClickHouse注文を探します:**
    - 左側のメニューで「Your Orders」をクリックします
-   - アクティブな注文のリストから該当する ClickHouse の注文を見つけます
+   - アクティブな注文のリストから該当するClickHouse注文を見つけます
 3. **注文をキャンセルします:**
-   - 注文の右側にある三点メニューを見つけ、表示される手順に従って ClickHouse の注文をキャンセルします
+   - 注文の右側にある3点メニューを見つけ、表示される手順に従ってClickHouse注文をキャンセルします
 
-> **注意:** この注文のキャンセルに関してサポートが必要な場合は、[GCP サポート](https://cloud.google.com/support/docs/get-billing-support)にお問い合わせください。
+> **注意:** この注文のキャンセルについてサポートが必要な場合は、[GCPサポート](https://cloud.google.com/support/docs/get-billing-support)にお問い合わせください。
 
-次に、こちらの[手順](/cloud/billing/marketplace/gcp-marketplace-committed-contract)に従って、新しい GCP コミット支出契約に ClickHouse 組織を構成してください。
+次に、こちらの[手順](/cloud/billing/marketplace/gcp-marketplace-committed-contract)に従って、ClickHouse組織を新しいGCPコミット支出契約に構成してください。
 
 
 ## Azure Marketplace {#azure-marketplace}
@@ -77,14 +77,14 @@ ClickHouse 組織を PAYG サブスクリプションからコミット支出契
    - ClickHouse Cloud サブスクリプションをクリックして、サブスクリプションの詳細を開きます
    - 「サブスクリプションのキャンセル」ボタンを選択します
 
-> **注:** この注文のキャンセルに関してサポートが必要な場合は、Azure Portal でサポートチケットを開いてください。
+> **注:** この注文のキャンセルに関してサポートが必要な場合は、Azure Portal でサポートチケットを作成してください。
 
-次に、以下の[手順](/cloud/billing/marketplace/azure-marketplace-committed-contract)に従って、ClickHouse 組織を新しい Azure コミット支出契約に構成してください。
+次に、これらの[手順](/cloud/billing/marketplace/azure-marketplace-committed-contract)に従って、新しい Azure コミット支出契約に ClickHouse 組織を構成してください。
 
 
 ## コミット支出契約へのリンクに関する要件 {#linking-requirements}
 
 > **注意:** マーケットプレイスのコミット支出契約に組織をリンクするには、以下の条件を満たす必要があります:
 >
-> - 手順を実行するユーザーは、サブスクリプションを紐付けるClickHouse組織の管理者である必要があります
-> - 組織のすべての未払い請求書が支払い済みである必要があります(ご質問がある場合は、ClickHouse[サポート](https://clickhouse.com/support/program)までお問い合わせください)
+> - 手順を実行するユーザーは、サブスクリプションを紐付けるClickHouse組織の管理者ユーザーである必要があります
+> - 組織の未払い請求書がすべて支払われている必要があります(ご質問がある場合は、ClickHouse[サポート](https://clickhouse.com/support/program)までお問い合わせください)

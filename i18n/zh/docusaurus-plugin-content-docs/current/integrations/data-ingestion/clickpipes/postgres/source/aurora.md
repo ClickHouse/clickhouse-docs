@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon Aurora Postgres'
-description: '将 Amazon Aurora Postgres 配置为 ClickPipes 的数据源'
+description: '将 Amazon Aurora Postgres 配置为 ClickPipes 的源'
 slug: /integrations/clickpipes/postgres/source/aurora
-title: 'Aurora Postgres 数据源配置指南'
+title: 'Aurora Postgres 源配置指南'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS database', 'logical replication setup']
 ---
@@ -85,7 +85,7 @@ postgres=> SHOW wal_sender_timeout ;
   border
 />
 
-3. 重启您的 Aurora 集群以应用更改
+3. 重启 Aurora 集群以应用更改
 
 <Image img={reboot_rds} alt='重启 Aurora PostgreSQL' size='lg' border />
 
@@ -100,7 +100,7 @@ postgres=> SHOW wal_sender_timeout ;
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. 授予 schema 权限。以下示例展示了 `public` schema 的权限设置。对于每个需要复制的 schema,请重复执行这些命令:
+2. 授予 schema 权限。以下示例展示了 `public` schema 的权限设置。对每个需要复制的 schema 重复执行这些命令:
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -114,7 +114,7 @@ postgres=> SHOW wal_sender_timeout ;
    GRANT rds_replication TO clickpipes_user;
    ```
 
-4. 创建用于复制的 publication:
+4. 创建用于复制的发布:
 
    ```sql
    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
@@ -125,7 +125,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 ### 基于 IP 的访问控制 {#ip-based-access-control}
 
-如果您想限制对 Aurora 集群的流量访问,请将[文档中记录的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 Aurora 安全组的 `入站规则` 中。
+如果您想限制对 Aurora 集群的流量访问,请将[文档中记录的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 Aurora 安全组的 `Inbound rules` 中。
 
 <Image
   img={security_group_in_rds_postgres}
@@ -143,7 +143,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 ### 通过 AWS PrivateLink 进行私有访问 {#private-access-via-aws-privatelink}
 
-要通过私有网络连接到 Aurora 集群,您可以使用 AWS PrivateLink。请按照我们的 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来建立连接。
+要通过私有网络连接到您的 Aurora 集群,您可以使用 AWS PrivateLink。请按照我们的 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来建立连接。
 
 ### Aurora 特定注意事项 {#aurora-specific-considerations}
 
@@ -161,12 +161,12 @@ postgres=> SHOW wal_sender_timeout ;
 
 虽然 Aurora 提供了自动路由到适当实例的稳定端点,但以下是确保连接一致性的一些额外方法:
 
-1. 对于高可用性设置,请将应用程序配置为使用 Aurora 写入端点,该端点会自动指向当前的主实例。
+1. 对于高可用性设置,请将您的应用程序配置为使用 Aurora 写入端点,该端点会自动指向当前的主实例。
 
 2. 如果使用跨区域复制,请考虑为每个区域设置单独的 ClickPipes,以减少延迟并提高容错能力。
 
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Aurora PostgreSQL 集群中的数据导入到 ClickHouse Cloud。
-请务必记录设置 Aurora PostgreSQL 集群时使用的连接详细信息,因为在创建 ClickPipe 过程中需要用到这些信息。
+现在您可以[创建 ClickPipe](../index.md)，开始将 Aurora PostgreSQL 集群中的数据导入 ClickHouse Cloud。
+请务必记录设置 Aurora PostgreSQL 集群时使用的连接信息，创建 ClickPipe 时需要用到这些信息。

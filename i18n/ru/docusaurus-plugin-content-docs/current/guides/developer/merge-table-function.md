@@ -1,16 +1,16 @@
 ---
 slug: /guides/developer/merge-table-function
-sidebar_label: 'Функция таблицы Merge'
-title: 'Функция таблицы Merge'
+sidebar_label: 'Табличная функция Merge'
+title: 'Табличная функция Merge'
 description: 'Выполнение запросов к нескольким таблицам одновременно.'
 doc_type: 'reference'
 keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-[Функция таблицы Merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет выполнять запросы к нескольким таблицам параллельно.
-Для этого она создаёт временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и определяет её структуру как объединение столбцов исходных таблиц с выводом общих типов.
+[Табличная функция merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет выполнять запросы к нескольким таблицам параллельно.
+Для этого она создает временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и формирует ее структуру как объединение столбцов всех таблиц с приведением к общим типам.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 
@@ -18,9 +18,9 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 
 Мы научимся использовать эту функцию с помощью [набора данных по теннису Джеффа Сакмана](https://github.com/JeffSackmann/tennis_atp).
 Мы будем обрабатывать CSV-файлы, содержащие матчи начиная с 1960-х годов, но создадим немного различающиеся схемы для каждого десятилетия.
-Также мы добавим пару дополнительных столбцов для десятилетия 1990-х годов.
+Также мы добавим пару дополнительных столбцов для 1990-х годов.
 
-Операторы импорта показаны ниже:
+Операторы импорта приведены ниже:
 
 ```sql
 CREATE OR REPLACE TABLE atp_matches_1960s ORDER BY tourney_id AS
@@ -87,8 +87,8 @@ SETTINGS output_format_pretty_max_value_width=25;
 Рассмотрим различия:
 
 - В таблице 1970-х годов тип `winner_seed` изменяется с `Nullable(String)` на `Nullable(UInt8)`, а `score` — с `String` на `Array(String)`.
-- В таблице 1980-х годов типы `winner_seed` и `loser_seed` изменяются с `Nullable(UInt8)` на `Nullable(UInt16)`.
-- В таблице 1990-х годов тип `surface` изменяется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
+- В таблице 1980-х годов `winner_seed` и `loser_seed` изменяются с `Nullable(UInt8)` на `Nullable(UInt16)`.
+- В таблице 1990-х годов `surface` изменяется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
 
 
 ## Запрос данных из нескольких таблиц с помощью merge {#querying-multiple-tables}
@@ -120,7 +120,7 @@ AND loser_seed = 1;
 ```
 
 Теперь предположим, что нужно отфильтровать эти матчи, чтобы найти те, в которых Макинрой был посеян под номером 3 или ниже.
-Это немного сложнее, поскольку `winner_seed` использует разные типы данных в различных таблицах:
+Это немного сложнее, поскольку `winner_seed` имеет разные типы данных в различных таблицах:
 
 ```sql
 SELECT loser_name, score, winner_seed
@@ -134,7 +134,7 @@ AND multiIf(
 );
 ```
 
-Мы используем функцию [`variantType`](/docs/sql-reference/functions/other-functions#variantType) для проверки типа `winner_seed` для каждой строки, а затем [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) для извлечения фактического значения.
+Мы используем функцию [`variantType`](/docs/sql-reference/functions/other-functions#variantType) для проверки типа `winner_seed` в каждой строке, а затем [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) для извлечения фактического значения.
 Когда тип данных — `String`, мы приводим его к числу и затем выполняем сравнение.
 Результат выполнения запроса показан ниже:
 
@@ -214,7 +214,7 @@ GROUP BY ALL
 ORDER BY _table;
 ```
 
-Если базовый тип `score` — `Array(String)`, необходимо перебрать массив в поисках `W/O`, тогда как если тип — `String`, можно просто выполнить поиск `W/O` в строке.
+Если базовый тип `score` — `Array(String)`, необходимо пройти по массиву и найти `W/O`, тогда как если тип — `String`, можно просто выполнить поиск `W/O` в строке.
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

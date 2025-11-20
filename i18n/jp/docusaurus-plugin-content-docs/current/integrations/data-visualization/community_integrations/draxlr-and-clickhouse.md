@@ -3,7 +3,7 @@ sidebar_label: 'Draxlr'
 sidebar_position: 131
 slug: /integrations/draxlr
 keywords: ['clickhouse', 'Draxlr', 'connect', 'integrate', 'ui']
-description: 'Draxlr はデータの可視化と分析機能を備えたビジネスインテリジェンスツールです。'
+description: 'Draxlr は、データの可視化と分析のためのビジネスインテリジェンスツールです。'
 title: 'Draxlr を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -26,11 +26,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Draxlr は、ClickHouse データベースへの接続を簡単に行える直感的なインターフェイスを提供し、チームが数分でデータを探索・可視化し、インサイトを公開できるようにします。このガイドでは、接続を正しく確立するための手順を順を追って説明します。
+Draxlr は ClickHouse データベースへの直感的な接続インターフェイスを提供し、チームが数分でデータの探索や可視化、インサイトの公開を行えるようにします。本ガイドでは、接続を正しく確立するための手順を順を追って説明します。
 
 
 
-## 1. ClickHouse認証情報を取得する {#1-get-your-clickhouse-credentials}
+## 1. ClickHouseの認証情報を取得する {#1-get-your-clickhouse-credentials}
 
 <ConnectionDetails />
 
@@ -63,7 +63,7 @@ Draxlr は、ClickHouse データベースへの接続を簡単に行える直�
 
 2. 探索ページに移動し、テーブル内のデータを確認できます。
 
-3. フィルタの追加、結合の作成、ソートの適用などを行うことができます。
+3. フィルタの追加、結合の作成、データのソートなどを行うことができます。
 
 <Image
   size='md'
@@ -84,9 +84,9 @@ Draxlr は、ClickHouse データベースへの接続を簡単に行える直�
 
 ## 4. SQLクエリの使用 {#4-using-sql-queries}
 
-1. ナビゲーションバーの「Explore」ボタンをクリックします。
+1. ナビゲーションバーの Explore ボタンをクリックします。
 
-2. **Raw Query**ボタンをクリックし、テキストエリアにクエリを入力します。
+2. **Raw Query** ボタンをクリックし、テキストエリアにクエリを入力します。
 
 <Image
   size='md'
@@ -95,25 +95,25 @@ Draxlr は、ClickHouse データベースへの接続を簡単に行える直�
   border
 />
 
-3. **Execute Query**ボタンをクリックして結果を表示します。
+3. **Execute Query** ボタンをクリックして結果を表示します。
 
 
 ## 4. クエリの保存 {#4-saving-you-query}
 
-1. クエリを実行した後、**Save Query**ボタンをクリックします。
+1. クエリを実行した後、**Save Query** ボタンをクリックします。
 
 <Image
   size='md'
   img={draxlr_04}
-  alt='ダッシュボードオプション付きのDraxlrクエリ保存ダイアログ'
+  alt='ダッシュボードオプション付きのDraxlr保存クエリダイアログ'
   border
 />
 
-2. **Query Name**テキストボックスでクエリに名前を付け、分類用のフォルダを選択できます。
+2. **Query Name** テキストボックスでクエリに名前を付け、分類用のフォルダを選択できます。
 
-3. **Add to dashboard**オプションを使用して、結果をダッシュボードに追加することもできます。
+3. **Add to dashboard** オプションを使用して、結果をダッシュボードに追加することもできます。
 
-4. **Save**ボタンをクリックしてクエリを保存します。
+4. **Save** ボタンをクリックしてクエリを保存します。
 
 
 ## 5. ダッシュボードの構築 {#5-building-dashboards}
@@ -123,7 +123,7 @@ Draxlr は、ClickHouse データベースへの接続を簡単に行える直�
 <Image
   size='md'
   img={draxlr_06}
-  alt='Draxlr ダッシュボード管理インターフェース'
+  alt='Draxlrダッシュボード管理インターフェース'
   border
 />
 

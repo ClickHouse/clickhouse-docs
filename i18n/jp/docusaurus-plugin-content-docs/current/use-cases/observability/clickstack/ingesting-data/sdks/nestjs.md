@@ -3,15 +3,15 @@ slug: /use-cases/observability/clickstack/sdks/nestjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'ClickStack 用 NestJS SDK - ClickHouse Observability Stack'
+description: 'ClickStack用NestJS SDK - ClickHouse Observabilityスタック'
 title: 'NestJS'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-ClickStack の NestJS 向けインテグレーションを利用すると、`nest-winston`（[nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) を利用）を基盤としたロガーを作成するか、既定のロガーを使用して、ログを ClickStack に送信できます。
+ClickStack NestJS統合を使用すると、カスタムロガーを作成するか、デフォルトロガーを使用してClickStackにログを送信できます([nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)を使用)。
 
-**このガイドで扱うインテグレーション対象:**
+**本ガイドで統合される機能:**
 
 <table>
   <tbody>
@@ -23,13 +23,13 @@ ClickStack の NestJS 向けインテグレーションを利用すると、`nes
   </tbody>
 </table>
 
-_メトリクスや APM／トレースを送信するには、対象のプログラミング言語向けインテグレーションをアプリケーションにも追加する必要があります。_
+_メトリクスやAPM/トレースを送信する場合は、対応する言語統合もアプリケーションに追加する必要があります。_
 
 
 
 ## はじめに {#getting-started}
 
-ルートの `AppModule` に `HyperDXNestLoggerModule` をインポートし、`forRoot()` メソッドで設定を行います。
+ルートの `AppModule` に `HyperDXNestLoggerModule` をインポートし、`forRoot()` メソッドで設定します。
 
 ```javascript
 import { Module } from '@nestjs/common';
@@ -69,12 +69,12 @@ export class CatsController {
 ### Nestロガーの置き換え（ブートストラップ時も含む） {#replacing-the-nest-logger}
 
 :::note 重要
-この方法を使用すると、依存性注入を利用しないことになります。つまり、`forRoot` と `forRootAsync` は不要となり、使用すべきではありません。メインモジュールからこれらを削除してください。
+この方法を使用すると、依存性注入を使用しないことになるため、`forRoot` と `forRootAsync` は不要となり、使用すべきではありません。メインモジュールからこれらを削除してください。
 :::
 
 依存性注入の使用には1つの小さな欠点があります。Nestはまずアプリケーションをブートストラップする必要があり（モジュールとプロバイダーのインスタンス化、依存関係のインジェクションなど）、このプロセス中は `HyperDXNestLogger` のインスタンスがまだ利用できないため、Nestは内部ロガーにフォールバックします。
 
-解決策の1つは、`createLogger` 関数を使用してアプリケーションのライフサイクル外でロガーを作成し、それを `NestFactory.create` に渡すことです。Nestはカスタムロガー（`createLogger` メソッドが返すのと同じインスタンス）をLoggerクラスでラップし、すべての呼び出しをそれに転送します。
+1つの解決策は、`createLogger` 関数を使用してアプリケーションのライフサイクル外でロガーを作成し、それを `NestFactory.create` に渡すことです。Nestはカスタムロガー（`createLogger` メソッドが返すのと同じインスタンス）をLoggerクラスでラップし、すべての呼び出しをそれに転送します。
 
 `main.ts` ファイルでロガーを作成します
 

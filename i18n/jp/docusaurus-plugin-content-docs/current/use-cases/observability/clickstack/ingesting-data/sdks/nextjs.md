@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'ClickStack 向け Next.js SDK - ClickHouse オブザーバビリティスタック'
+description: 'ClickStack 向け Next.js SDK - ClickHouse オブザーバビリティ・スタック'
 title: 'Next.js'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
@@ -12,17 +12,17 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack は、Next 13.2+ の
+ClickStack は、Next 13.2 以降の
 [Next.js serverless functions](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
 からネイティブな OpenTelemetry トレースを取り込むことができます。
 
-このガイドで統合されるのは次の機能です:
+このガイドでは次のものを統合します:
 
-* **Console Logs**
-* **Traces**
+* **コンソールログ**
+* **トレース**
 
 :::note
-セッションリプレイやブラウザー側のモニタリングを行いたい場合は、代わりに [Browser integration](/use-cases/observability/clickstack/sdks/browser) をインストールしてください。
+セッションリプレイやブラウザ側のモニタリングを行いたい場合は、代わりに [Browser integration](/use-cases/observability/clickstack/sdks/browser) をインストールしてください。
 :::
 
 

@@ -3,7 +3,7 @@ slug: /faq/integration/json-import
 title: 'Как импортировать JSON в ClickHouse?'
 toc_hidden: true
 toc_priority: 11
-description: 'На этой странице описано, как импортировать JSON в ClickHouse'
+description: 'На этой странице показано, как импортировать данные в формате JSON в ClickHouse'
 keywords: ['JSON import', 'JSONEachRow format', 'data import', 'JSON ingestion', 'data formats']
 doc_type: 'guide'
 ---
@@ -34,7 +34,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 
 ## Полезные настройки {#useful-settings}
 
-- `input_format_skip_unknown_fields` позволяет вставлять JSON, даже если в нём есть дополнительные поля, отсутствующие в схеме таблицы (они будут отброшены).
+- `input_format_skip_unknown_fields` позволяет вставлять JSON, даже если в нём есть дополнительные поля, отсутствующие в схеме таблицы (такие поля будут отброшены).
 - `input_format_import_nested_json` позволяет вставлять вложенные JSON-объекты в столбцы типа [Nested](../../sql-reference/data-types/nested-data-structures/index.md).
 
 :::note

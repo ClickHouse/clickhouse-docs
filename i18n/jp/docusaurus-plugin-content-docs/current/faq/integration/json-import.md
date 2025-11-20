@@ -1,10 +1,10 @@
 ---
 slug: /faq/integration/json-import
-title: 'JSON を ClickHouse にインポートするには？'
+title: 'ClickHouseにJSONをインポートする方法'
 toc_hidden: true
 toc_priority: 11
-description: 'このページでは、JSON を ClickHouse にインポートする方法を紹介します'
-keywords: ['JSON import', 'JSONEachRow format', 'data import', 'JSON ingestion', 'data formats']
+description: 'このページでは、ClickHouseにJSONをインポートする方法を説明します'
+keywords: ['JSONインポート', 'JSONEachRow形式', 'データインポート', 'JSONの取り込み', 'データ形式']
 doc_type: 'guide'
 ---
 
@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 # ClickHouseにJSONをインポートする方法 {#how-to-import-json-into-clickhouse}
 
-ClickHouseは、幅広い[入出力データフォーマット](/interfaces/formats)をサポートしています。その中には複数のJSON形式が含まれていますが、データ取り込みで最も一般的に使用されるのは[JSONEachRow](/interfaces/formats/JSONEachRow)です。このフォーマットでは、1行につき1つのJSONオブジェクトを記述し、各オブジェクトを改行で区切ります。
+ClickHouseは、[入出力用の幅広いデータフォーマット](/interfaces/formats)をサポートしています。その中には複数のJSON形式がありますが、データ取り込みで最も一般的に使用されるのは[JSONEachRow](/interfaces/formats/JSONEachRow)です。このフォーマットでは、1行につき1つのJSONオブジェクトを想定しており、各オブジェクトは改行で区切られます。
 
 
 ## 例 {#examples}
@@ -38,5 +38,5 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 - `input_format_import_nested_json` は、ネストされたJSONオブジェクトを[Nested](../../sql-reference/data-types/nested-data-structures/index.md)型のカラムに挿入できるようにします。
 
 :::note
-設定は、HTTPインターフェースでは`GET`パラメータとして、`CLI`インターフェースでは`--`プレフィックス付きの追加コマンドライン引数として指定します。
+設定は、HTTPインターフェースでは`GET`パラメータとして、`CLI`インターフェースでは`--`を接頭辞とする追加のコマンドライン引数として指定されます。
 :::

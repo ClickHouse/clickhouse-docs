@@ -4,8 +4,8 @@ sidebar_label: 'Unity catalog'
 title: 'Unity catalog'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве мы шаг за шагом рассмотрим, как выполнять запросы
-к данным в бакетах S3 с помощью ClickHouse и Unity Catalog.'
+description: 'В этом руководстве мы рассмотрим, как выполнять запросы
+ к данным в корзинах S3 с помощью ClickHouse и Unity Catalog.'
 keywords: ['Unity', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
@@ -16,31 +16,31 @@ import BetaBadge from '@theme/badges/BetaBadge';
 <BetaBadge />
 
 :::note
-Интеграция с Unity Catalog работает как для управляемых, так и для внешних таблиц.
+Интеграция с Unity Catalog работает для управляемых и внешних таблиц.
 В настоящее время эта интеграция поддерживается только в AWS.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т.д.). В этом руководстве показано, как выполнять запросы к данным, управляемым Databricks, с помощью ClickHouse и [Unity Catalog](https://www.databricks.com/product/unity-catalog).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и др.). В этом руководстве описаны шаги по запросу данных, управляемых Databricks, с использованием ClickHouse и [Unity Catalog](https://www.databricks.com/product/unity-catalog).
 
-Databricks поддерживает несколько форматов данных для своего lakehouse. В ClickHouse вы можете выполнять запросы к таблицам Unity Catalog как в формате Delta, так и в формате Iceberg.
+Databricks поддерживает несколько форматов данных для своего lakehouse. С помощью ClickHouse можно запрашивать таблицы Unity Catalog как в формате Delta, так и в формате Iceberg.
 
 :::note
-Поскольку эта функция является экспериментальной, её необходимо включить с помощью:
+Поскольку эта функция является экспериментальной, её необходимо включить с помощью команды:
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
 
 ## Настройка Unity в Databricks {#configuring-unity-in-databricks}
 
-Чтобы ClickHouse мог взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен для работы с внешними клиентами. Это можно сделать, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
+Чтобы ClickHouse мог взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен для взаимодействия с внешним читателем. Это можно сделать, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
 
 Помимо включения внешнего доступа, убедитесь, что субъект, настраивающий интеграцию, имеет [привилегию](https://docs.databricks.com/aws/en/external-access/admin#external-schema) `EXTERNAL USE SCHEMA` для схемы, содержащей таблицы.
 
 После настройки каталога необходимо сгенерировать учетные данные для ClickHouse. В зависимости от режима взаимодействия с Unity можно использовать два различных метода:
 
-- Для клиентов Iceberg используйте аутентификацию через [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
+- Для клиентов Iceberg используйте аутентификацию как [сервисный принципал](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
 
-- Для клиентов Delta используйте Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
+- Для клиентов Delta используйте персональный токен доступа ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
 
 ## Создание подключения между Unity Catalog и ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
@@ -109,7 +109,7 @@ SHOW TABLES;
 └────────────────────────────────────────────────────┘
 ```
 
-При использовании клиента Iceberg будут отображаться только таблицы Delta с включённым Uniform:
+При использовании клиента Iceberg будут отображаться только таблицы Delta с включенным Uniform:
 
 ```sql
 SHOW TABLES
@@ -126,7 +126,7 @@ SELECT count(*) FROM `uniform.delta_hits`
 ```
 
 :::note Требуются обратные кавычки
-Обратные кавычки необходимы, так как ClickHouse не поддерживает более одного пространства имён.
+Обратные кавычки необходимы, так как ClickHouse не поддерживает более одного пространства имен.
 :::
 
 Чтобы просмотреть DDL таблицы:

@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'HTTP インターフェイスの使用'
 slug: /integrations/azure-data-factory/http-interface
-description: 'Azure Data Factory から ClickHouse へデータを取り込むために ClickHouse の HTTP インターフェイスを使用する'
+description: 'ClickHouse の HTTP インターフェイスを使用して Azure Data Factory から ClickHouse にデータを取り込む'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
-title: 'ClickHouse HTTP インターフェイスを使用して Azure のデータを ClickHouse に取り込む'
+title: 'ClickHouse HTTP インターフェイスを使用して Azure データを ClickHouse に取り込む'
 doc_type: 'guide'
 ---
 
@@ -38,27 +38,30 @@ import adfCopyDataDebugSuccess                  from '@site/static/images/integr
 
 # Azure Data FactoryでClickHouse HTTPインターフェースを使用する {#using-clickhouse-http-interface-in-azure-data-factory}
 
-[`azureBlobStorage`テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)は、Azure Blob StorageからClickHouseへデータを取り込むための高速で便利な方法です。ただし、以下の理由により、必ずしも適切とは限りません：
+[`azureBlobStorage`テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+は、Azure Blob StorageからClickHouseへデータを取り込むための高速で便利な方法です。ただし、以下の理由により、常に適しているとは限りません:
 
-- データがAzure Blob Storageに保存されていない場合があります。例えば、Azure SQL Database、Microsoft SQL Server、Cosmos DBなどに保存されている可能性があります。
-- セキュリティポリシーによってBlob Storageへの外部アクセスが完全に禁止されている場合があります。例えば、ストレージアカウントがパブリックエンドポイントなしでロックダウンされている場合などです。
+- データがAzure Blob Storageに保存されていない場合があります。例えば、Azure SQL Database、Microsoft SQL Server、またはCosmos DBに保存されている可能性があります。
+- セキュリティポリシーによりBlob Storageへの外部アクセスが完全に禁止されている場合があります。例えば、ストレージアカウントがパブリックエンドポイントなしでロックダウンされている場合などです。
 
-このような場合、Azure Data Factoryと[ClickHouse HTTPインターフェース](https://clickhouse.com/docs/interfaces/http)を組み合わせて使用することで、AzureサービスからClickHouseへデータを送信できます。
+このような場合、Azure Data Factoryと
+[ClickHouse HTTPインターフェース](https://clickhouse.com/docs/interfaces/http)
+を組み合わせて使用することで、AzureサービスからClickHouseへデータを送信できます。
 
-この方法はデータフローを逆転させます。ClickHouseがAzureからデータをプルするのではなく、Azure Data FactoryがClickHouseへデータをプッシュします。このアプローチでは通常、ClickHouseインスタンスがパブリックインターネットからアクセス可能である必要があります。
+この方法はデータフローを逆転させます。ClickHouseがAzureからデータを取得するのではなく、Azure Data FactoryがClickHouseへデータをプッシュします。このアプローチでは通常、ClickHouseインスタンスがパブリックインターネットからアクセス可能である必要があります。
 
 :::info
-Azure Data Factoryのセルフホステッド統合ランタイムを使用することで、ClickHouseインスタンスをインターネットに公開することなく運用できます。この設定により、プライベートネットワーク経由でデータを送信できます。ただし、これは本記事の範囲外です。詳細については、公式ガイドを参照してください：
+Azure Data Factoryのセルフホステッド統合ランタイムを使用することで、ClickHouseインスタンスをインターネットに公開せずに済ませることが可能です。この設定により、プライベートネットワーク経由でデータを送信できます。ただし、これは本記事の範囲外です。詳細については、公式ガイドを参照してください:
 [セルフホステッド統合ランタイムの作成と構成](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
 
-## ClickHouseをRESTサービスとして利用する {#turning-clickhouse-to-a-rest-service}
+## ClickHouseをRESTサービスに変換する {#turning-clickhouse-to-a-rest-service}
 
-Azure Data FactoryはJSON形式でHTTP経由で外部システムにデータを送信する機能をサポートしています。この機能を利用して、[ClickHouse HTTPインターフェース](https://clickhouse.com/docs/interfaces/http)を使用してClickHouseに直接データを挿入できます。
-詳細については、[ClickHouse HTTPインターフェースのドキュメント](https://clickhouse.com/docs/interfaces/http)を参照してください。
+Azure Data FactoryはJSON形式でHTTP経由で外部システムにデータを送信する機能をサポートしています。この機能を使用して、[ClickHouse HTTPインターフェース](https://clickhouse.com/docs/interfaces/http)を利用してClickHouseに直接データを挿入できます。
+詳細は[ClickHouse HTTPインターフェースのドキュメント](https://clickhouse.com/docs/interfaces/http)を参照してください。
 
-この例では、挿入先テーブルを指定し、入力データ形式をJSONとして定義し、より柔軟なタイムスタンプ解析を可能にするオプションを含めるだけで済みます。
+この例では、宛先テーブルを指定し、入力データ形式をJSONとして定義し、より柔軟なタイムスタンプ解析を可能にするオプションを含めるだけです。
 
 ```sql
 INSERT INTO my_table
@@ -68,7 +71,7 @@ SETTINGS
 FORMAT JSONEachRow
 ```
 
-このクエリをHTTPリクエストの一部として送信するには、ClickHouseエンドポイントのqueryパラメータにURLエンコードされた文字列として渡すだけです:
+このクエリをHTTPリクエストの一部として送信するには、ClickHouseエンドポイントのqueryパラメータにURLエンコードされた文字列として渡します。
 
 ```text
 https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date_time_input_format%3D%27best_effort%27%2C%20input_format_json_read_objects_as_strings%3D1%20FORMAT%20JSONEachRow%0A
@@ -88,22 +91,22 @@ curl \
 
 JSONオブジェクトの配列、またはJSON Lines(改行区切りのJSONオブジェクト)を送信することもできます。Azure Data FactoryはJSON配列形式を使用しており、これはClickHouseの`JSONEachRow`入力と完全に互換性があります。
 
-ご覧のとおり、このステップではClickHouse側で特別な設定を行う必要はありません。HTTPインターフェースはRESTライクなエンドポイントとして機能するために必要なすべてを既に提供しており、追加の設定は不要です。
+ご覧のとおり、このステップではClickHouse側で特別な操作を行う必要はありません。HTTPインターフェースはRESTライクなエンドポイントとして機能するために必要なすべてを既に提供しており、追加の設定は不要です。
 
-ClickHouseをRESTエンドポイントのように動作させることができたので、次はAzure Data Factoryを設定してこれを利用します。
+ClickHouseをRESTエンドポイントのように動作させることができたので、次はAzure Data Factoryを設定してこれを使用します。
 
 次のステップでは、Azure Data Factoryインスタンスを作成し、ClickHouseインスタンスへのリンクサービスを設定し、[RESTシンク](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)のデータセットを定義し、AzureからClickHouseにデータを送信するコピーデータアクティビティを作成します。
 
 
 ## Azure Data Factoryインスタンスの作成 {#create-an-azure-data-factory-instance}
 
-このガイドでは、Microsoft Azureアカウントへのアクセス権があり、サブスクリプションとリソースグループが既に構成されていることを前提としています。Azure Data Factoryが既に構成されている場合は、このステップをスキップして、既存のサービスを使用して次のステップに進むことができます。
+このガイドは、Microsoft Azureアカウントへのアクセス権があり、サブスクリプションとリソースグループが既に構成されていることを前提としています。Azure Data Factoryが既に構成されている場合は、このステップをスキップして、既存のサービスを使用して次のステップに進むことができます。
 
 1. [Microsoft Azure Portal](https://portal.azure.com/)にログインし、**リソースの作成**をクリックします。
 
    <Image img={azureHomePage} size='lg' alt='Azure Portalホームページ' border />
 
-2. 左側のカテゴリペインで**Analytics**を選択し、人気のサービスのリストから**Data Factory**をクリックします。
+2. 左側のカテゴリペインで**分析**を選択し、人気のサービスのリストから**Data Factory**をクリックします。
 
    <Image
      img={azureNewResourceAnalytics}
@@ -203,8 +206,8 @@ ClickHouseをRESTエンドポイントのように動作させることができ
      border
    />
 
-7. フィルター入力の横にある**"+"**をクリックして新しいパラメータを追加し、名前を
-   `pQuery`とし、型をStringに設定し、デフォルト値を`SELECT 1`に設定します。
+7. フィルター入力の横にある**"+"**をクリックして新しいパラメータを追加し、
+   `pQuery`という名前を付け、型をStringに設定し、デフォルト値を`SELECT 1`に設定します。
    **Save**をクリックします。
 
    <Image
@@ -252,11 +255,11 @@ ClickHouseをRESTエンドポイントのように動作させることができ
 
 ## ClickHouse HTTPインターフェース用の新しいデータセットの作成 {#creating-a-new-dataset-for-the-clickhouse-http-interface}
 
-ClickHouse HTTPインターフェース用のリンクサービスの設定が完了したので、Azure Data FactoryがClickHouseにデータを送信する際に使用するデータセットを作成できます。
+ClickHouse HTTPインターフェース用のリンクサービスを構成したので、Azure Data FactoryがClickHouseにデータを送信するために使用するデータセットを作成できます。
 
-この例では、[Environmental Sensors Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)の一部を挿入します。
+この例では、[環境センサーデータ](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)の一部を挿入します。
 
-1. お好みのClickHouseクエリコンソールを開きます。ClickHouse CloudのWeb UI、CLIクライアント、またはクエリを実行するために使用するその他のインターフェースのいずれでも構いません。ターゲットテーブルを作成します:
+1. 任意のClickHouseクエリコンソールを開きます。ClickHouse CloudのWeb UI、CLIクライアント、またはクエリ実行に使用するその他のインターフェースが利用できます。次に、ターゲットテーブルを作成します:
 
    ```sql
    CREATE TABLE sensors
@@ -271,21 +274,21 @@ ClickHouse HTTPインターフェース用のリンクサービスの設定が�
    ORDER BY (timestamp, sensor_id);
    ```
 
-2. Azure Data Factory Studioで、左側のペインから「Author」を選択します。「Dataset」項目にカーソルを合わせ、3点アイコンをクリックし、「New dataset」を選択します。
+2. Azure Data Factory Studioで、左側のペインから「Author」を選択します。「Dataset」項目にカーソルを合わせ、三点アイコンをクリックし、「New dataset」を選択します。
 
-   <Image img={adfNewDatasetItem} size='lg' alt='New Dataset Item' border />
+   <Image img={adfNewDatasetItem} size='lg' alt='新しいデータセット項目' border />
 
 3. 検索バーに**REST**と入力し、**REST**を選択して、**Continue**をクリックします。
    データセットの名前を入力し、前のステップで作成した**リンクサービス**を選択します。**OK**をクリックしてデータセットを作成します。
 
-   <Image img={adfNewDatasetPage} size='lg' alt='New Dataset Page' border />
+   <Image img={adfNewDatasetPage} size='lg' alt='新しいデータセットページ' border />
 
 4. 左側のFactory Resourcesペインの「Datasets」セクションに、新しく作成されたデータセットが表示されます。データセットを選択してプロパティを開きます。リンクサービスで定義された`pQuery`パラメータが表示されます。**Value**テキストフィールドをクリックします。次に、**Add dynamic content**をクリックします。
 
    <Image
      img={adfNewDatasetProperties}
      size='lg'
-     alt='New Dataset Properties'
+     alt='新しいデータセットのプロパティ'
      border
    />
 
@@ -300,54 +303,54 @@ ClickHouse HTTPインターフェース用のリンクサービスの設定が�
    ```
 
    :::danger
-   クエリ内のすべてのシングルクォート`'`は、2つのシングルクォート`''`に置き換える必要があります。これはAzure Data Factoryの式パーサーで必須です。エスケープしない場合、すぐにエラーが表示されないかもしれませんが、データセットを使用または保存しようとすると後で失敗します。例えば、`'best_effort'`は`''best_effort''`と記述する必要があります。
+   クエリ内のすべてのシングルクォート`'`は、2つのシングルクォート`''`に置き換える必要があります。これはAzure Data Factoryの式パーサーで必須です。エスケープしない場合、すぐにエラーが表示されないことがありますが、データセットを使用または保存しようとすると後で失敗します。例えば、`'best_effort'`は`''best_effort''`と記述する必要があります。
    :::
 
-   <Image img={adfNewDatasetQuery} size='xl' alt='New Dataset Query' border />
+   <Image img={adfNewDatasetQuery} size='xl' alt='新しいデータセットのクエリ' border />
 
-6. OKをクリックして式を保存します。「Test connection」をクリックします。すべてが正しく設定されていれば、「Connection successful」メッセージが表示されます。ページ上部の「Publish all」をクリックして変更を保存します。
+6. **OK**をクリックして式を保存します。**Test connection**をクリックします。すべてが正しく構成されている場合、「Connection successful」メッセージが表示されます。ページ上部の**Publish all**をクリックして変更を保存します。
    <Image
      img={adfNewDatasetConnectionSuccessful}
      size='xl'
-     alt='New Dataset Connection Successful'
+     alt='新しいデータセットの接続成功'
      border
    />
 
 ### サンプルデータセットのセットアップ {#setting-up-an-example-dataset}
 
-この例では、完全なEnvironmental Sensors Datasetは使用せず、[Sensors Dataset Sample](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv)で利用可能な小さなサブセットのみを使用します。
+この例では、完全な環境センサーデータセットは使用せず、[センサーデータセットサンプル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv)で利用可能な小さなサブセットのみを使用します。
 
 :::info
-このガイドを焦点を絞った内容に保つため、Azure Data Factoryでソースデータセットを作成する詳細な手順については説明しません。サンプルデータは、お好みのストレージサービスにアップロードできます。例えば、Azure Blob Storage、Microsoft SQL Server、またはAzure Data Factoryがサポートする別のファイル形式などです。
+このガイドを焦点を絞った内容に保つため、Azure Data Factoryでソースデータセットを作成する詳細な手順については説明しません。サンプルデータは、任意のストレージサービスにアップロードできます。例えば、Azure Blob Storage、Microsoft SQL Server、またはAzure Data Factoryがサポートする別のファイル形式などです。
 :::
 
-データセットをAzure Blob Storage(または他のお好みのストレージサービス)にアップロードします。次に、Azure Data Factory Studioで、Factory Resourcesペインに移動します。アップロードされたデータを参照する新しいデータセットを作成します。「Publish all」をクリックして変更を保存します。
+データセットをAzure Blob Storage(または他の任意のストレージサービス)にアップロードします。次に、Azure Data Factory Studioで、Factory Resourcesペインに移動します。アップロードされたデータを参照する新しいデータセットを作成します。**Publish all**をクリックして変更を保存します。
 
 
 ## ClickHouseへデータを転送するコピーアクティビティの作成 {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
 
 入力データセットと出力データセットの両方を設定したので、サンプルデータセットからClickHouseの`sensors`テーブルにデータを転送する**データのコピー**アクティビティを設定できます。
 
-1. **Azure Data Factory Studio**を開き、**作成タブ**に移動します。**Factory Resources**ペインで**Pipeline**にカーソルを合わせ、3点アイコンをクリックして**New pipeline**を選択します。
+1. **Azure Data Factory Studio**を開き、**作成タブ**に移動します。**ファクトリリソース**ペインで**パイプライン**にカーソルを合わせ、3点アイコンをクリックして、**新しいパイプライン**を選択します。
 
    <Image
      img={adfNewPipelineItem}
      size='lg'
-     alt='ADF新規パイプラインアイテム'
+     alt='ADF 新しいパイプライン項目'
      border
    />
 
-2. **アクティビティ**ペインで**移動と変換**セクションを展開し、**データのコピー**アクティビティをキャンバスにドラッグします。
+2. **アクティビティ**ペインで、**移動と変換**セクションを展開し、**データのコピー**アクティビティをキャンバスにドラッグします。
 
-   <Image img={adfNewCopyDataItem} size='lg' alt='新規コピーデータアイテム' border />
+   <Image img={adfNewCopyDataItem} size='lg' alt='新しいコピーデータ項目' border />
 
 3. **ソース**タブを選択し、先ほど作成したソースデータセットを選択します。
 
-   <Image img={adfCopyDataSource} size='lg' alt='データコピーのソース' border />
+   <Image img={adfCopyDataSource} size='lg' alt='データのコピー ソース' border />
 
-4. **シンク**タブに移動し、sensorsテーブル用に作成したClickHouseデータセットを選択します。**リクエストメソッド**をPOSTに設定します。**HTTP圧縮タイプ**が**なし**に設定されていることを確認してください。
+4. **シンク**タブに移動し、sensorsテーブル用に作成したClickHouseデータセットを選択します。**要求メソッド**をPOSTに設定します。**HTTP圧縮タイプ**が**なし**に設定されていることを確認してください。
    :::warning
-   Azure Data FactoryのデータコピーアクティビティではHTTP圧縮が正しく動作しません。有効にすると、Azureはゼロバイトのみで構成されるペイロードを送信します。これはサービスのバグである可能性があります。圧縮は必ず無効のままにしてください。
+   Azure Data Factoryのデータのコピーアクティビティでは、HTTP圧縮が正しく動作しません。有効にすると、Azureはゼロバイトのみで構成されるペイロードを送信します。これはサービスのバグである可能性があります。圧縮は必ず無効のままにしてください。
    :::
    :::info
    デフォルトのバッチサイズである10,000を維持するか、さらに増やすことを推奨します。詳細については、[挿入戦略の選択 / 同期の場合のバッチ挿入](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)を参照してください。
@@ -356,7 +359,7 @@ ClickHouse HTTPインターフェース用のリンクサービスの設定が�
    <Image
      img={adfCopyDataSinkSelectPost}
      size='lg'
-     alt='データコピーシンクでPOSTを選択'
+     alt='データのコピー シンク POST選択'
      border
    />
 
@@ -365,16 +368,16 @@ ClickHouse HTTPインターフェース用のリンクサービスの設定が�
    <Image
      img={adfCopyDataDebugSuccess}
      size='lg'
-     alt='データコピーのデバッグ成功'
+     alt='データのコピー デバッグ成功'
      border
    />
 
-6. 完了したら、**すべて公開**をクリックしてパイプラインとデータセットの変更を保存します。
+6. 完了したら、**すべて公開**をクリックして、パイプラインとデータセットの変更を保存します。
 
 
 ## 追加リソース {#additional-resources-1}
 
 - [HTTPインターフェース](https://clickhouse.com/docs/interfaces/http)
-- [Azure Data Factoryを使用したRESTエンドポイントとのデータのコピーと変換](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
+- [Azure Data Factoryを使用したRESTエンドポイントとの間でのデータのコピーと変換](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [挿入戦略の選択](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)
 - [セルフホスト統合ランタイムの作成と構成](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)

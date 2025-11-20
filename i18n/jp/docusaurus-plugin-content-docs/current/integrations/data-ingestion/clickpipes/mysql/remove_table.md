@@ -10,7 +10,7 @@ keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 import Image from '@theme/IdealImage';
 import remove_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/remove_table.png'
 
-場合によっては、MySQL ClickPipe から特定のテーブルを除外した方がよい場合があります。たとえば、あるテーブルが分析ワークロードに不要であれば、そのテーブルをスキップすることで、ClickHouse におけるストレージおよびレプリケーションコストを削減できます。
+場合によっては、MySQL ClickPipe から特定のテーブルを除外する方が理にかなう場合があります。たとえば、あるテーブルが分析ワークロードに不要であれば、それをスキップすることで、ClickHouse におけるストレージ消費量とレプリケーションコストを削減できます。
 
 
 ## 特定のテーブルを削除する手順 {#remove-tables-steps}
@@ -19,7 +19,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 1. パイプを[一時停止](./pause_and_resume.md)します。
 2. Edit Table Settingsをクリックします。
-3. テーブルを検索します - 検索バーで検索できます。
+3. テーブルを特定します - 検索バーで検索できます。
 4. 選択されているチェックボックスをクリックして、テーブルの選択を解除します。
    <br />
 

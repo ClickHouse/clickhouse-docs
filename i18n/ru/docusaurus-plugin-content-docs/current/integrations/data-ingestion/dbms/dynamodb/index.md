@@ -21,11 +21,11 @@ import Image from '@theme/IdealImage';
 
 <ExperimentalBadge/>
 
-На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с помощью ClickPipes. В этой интеграции есть два компонента:
-1. Начальный снапшот через S3 ClickPipes
-2. Обновления в реальном времени через Kinesis ClickPipes
+На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. В эту интеграцию входят два компонента:
+1. Начальный снимок через S3 ClickPipes
+2. Обновления в режиме реального времени через Kinesis ClickPipes
 
-Данные будут загружаться в таблицу на движке `ReplacingMergeTree`. Этот движок обычно используется для сценариев CDC, чтобы можно было применять операции обновления. Подробнее об этом паттерне можно прочитать в следующих статьях блога:
+Данные будут записываться в таблицу на движке `ReplacingMergeTree`. Этот движок таблиц обычно используется для сценариев CDC, чтобы можно было применять операции обновления. Подробнее об этом шаблоне можно узнать в следующих статьях блога:
 
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
@@ -78,10 +78,10 @@ import Image from '@theme/IdealImage';
 Необходимо создать три таблицы:
 
 1. Таблицу для хранения исходных данных из DynamoDB
-2. Таблицу для хранения итоговых преобразованных данных (целевая таблица)
+2. Таблицу для хранения итоговых данных в плоском формате (целевая таблица)
 3. Материализованное представление для преобразования данных в плоский формат
 
-Для приведенного выше примера данных DynamoDB таблицы ClickHouse будут выглядеть следующим образом:
+Для приведённого выше примера данных DynamoDB таблицы ClickHouse будут выглядеть следующим образом:
 
 ```sql
 /* Таблица снимка */
@@ -99,7 +99,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* Таблица для итоговых преобразованных данных */
+/* Таблица для итоговых данных в плоском формате */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,
@@ -129,9 +129,9 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
 
 - **Формат**: JSONEachRow
-- **Таблица**: Ваша таблица снимка (например, `default.snapshot` в примере выше)
+- **Таблица**: Ваша таблица снимка (например, `default.snapshot` в приведённом выше примере)
 
-После создания данные начнут заполняться в таблице снимка и целевой таблице. Не обязательно ждать завершения загрузки снимка перед переходом к следующему шагу.
+После создания данные начнут заполняться в таблице снимка и целевой таблице. Не обязательно ожидать завершения загрузки снимка перед переходом к следующему шагу.
 
 
 ## 4. Создание Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
@@ -150,7 +150,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 ## 5. Очистка (необязательно) {#5-cleanup-optional}
 
-После завершения работы ClickPipe со снимком можно удалить таблицу снимка и материализованное представление.
+После завершения работы ClickPipe для снимка вы можете удалить таблицу снимка и материализованное представление.
 
 ```sql
 DROP TABLE IF EXISTS "default"."snapshot";

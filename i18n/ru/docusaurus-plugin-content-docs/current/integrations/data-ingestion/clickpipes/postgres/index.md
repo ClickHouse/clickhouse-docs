@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Загрузка данных из Postgres в ClickHouse'
-description: 'Легко подключайте ваш Postgres к ClickHouse Cloud.'
+description: 'Легко подключайте Postgres к ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
 title: 'Загрузка данных из Postgres в ClickHouse (с использованием CDC)'
 keywords: ['PostgreSQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
@@ -24,13 +24,13 @@ import Image from '@theme/IdealImage';
 
 # Загрузка данных из Postgres в ClickHouse (с использованием CDC)
 
-Вы можете использовать ClickPipes для загрузки данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть размещена локально (on‑premises) или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
+Вы можете использовать ClickPipes для загрузки данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть развернута в локальной инфраструктуре или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
 
 
 
 ## Предварительные требования {#prerequisites}
 
-Для начала работы необходимо убедиться, что ваша база данных Postgres настроена корректно. В зависимости от используемого экземпляра Postgres вы можете воспользоваться одним из следующих руководств:
+Для начала работы необходимо убедиться, что ваша база данных Postgres настроена правильно. В зависимости от используемого экземпляра Postgres вы можете воспользоваться одним из следующих руководств:
 
 1. [Amazon RDS Postgres](./postgres/source/rds)
 
@@ -46,13 +46,13 @@ import Image from '@theme/IdealImage';
 
 7. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
 
-8. [Универсальный источник Postgres](./postgres/source/generic), если вы используете другого провайдера Postgres или самостоятельно развёрнутый экземпляр.
+8. [Универсальный источник Postgres](./postgres/source/generic), если вы используете другого провайдера Postgres или самостоятельно размещённый экземпляр.
 
-9. [TimescaleDB](./postgres/source/timescale), если вы используете расширение TimescaleDB в управляемом сервисе или самостоятельно развёрнутом экземпляре.
+9. [TimescaleDB](./postgres/source/timescale), если вы используете расширение TimescaleDB в управляемом сервисе или самостоятельно размещённом экземпляре.
 
 :::warning
 
-Прокси-серверы Postgres, такие как PgBouncer, RDS Proxy, Supabase Pooler и другие, не поддерживаются для репликации на основе CDC. Убедитесь, что вы НЕ используете их при настройке ClickPipes, а вместо этого указываете параметры подключения непосредственно к базе данных Postgres.
+Прокси-серверы Postgres, такие как PgBouncer, RDS Proxy, Supabase Pooler и другие, не поддерживаются для репликации на основе CDC. Убедитесь, что вы НЕ используете их для настройки ClickPipes, а вместо этого указываете параметры подключения непосредственно к базе данных Postgres.
 
 :::
 
@@ -61,54 +61,53 @@ import Image from '@theme/IdealImage';
 
 ## Создание ClickPipe {#creating-your-clickpipe}
 
-Убедитесь, что вы вошли в учетную запись ClickHouse Cloud. Если у вас еще нет учетной записи, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
+Убедитесь, что вы вошли в свою учетную запись ClickHouse Cloud. Если у вас еще нет учетной записи, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
 
 [//]: # "   TODO update image here"
 
 1. В консоли ClickHouse Cloud перейдите к вашему сервису ClickHouse Cloud.
 
-<Image img={cp_service} alt='ClickPipes service' size='lg' border />
+<Image img={cp_service} alt='Сервис ClickPipes' size='lg' border />
 
-2. Нажмите кнопку `Data Sources` в меню слева и выберите "Set up a ClickPipe"
+2. Выберите кнопку `Data Sources` в меню слева и нажмите "Set up a ClickPipe"
 
-<Image img={cp_step0} alt='Select imports' size='lg' border />
+<Image img={cp_step0} alt='Выбор импорта' size='lg' border />
 
 3. Выберите плитку `Postgres CDC`
 
-   <Image img={postgres_tile} alt='Select Postgres' size='lg' border />
+   <Image img={postgres_tile} alt='Выбор Postgres' size='lg' border />
 
 ### Добавление подключения к исходной базе данных Postgres {#adding-your-source-postgres-database-connection}
 
-4. Заполните параметры подключения к исходной базе данных Postgres, которую вы настроили на этапе предварительных требований.
+4. Заполните данные подключения для вашей исходной базы данных Postgres, которую вы настроили на этапе предварительных требований.
 
    :::info
 
-   Перед добавлением параметров подключения убедитесь, что вы добавили IP-адреса ClickPipes в белый список правил брандмауэра. Список IP-адресов ClickPipes можно найти [здесь](../index.md#list-of-static-ips).
-   Дополнительную информацию см. в руководствах по настройке исходной базы данных Postgres, ссылки на которые приведены [в начале этой страницы](#prerequisites).
+   Перед началом добавления данных подключения убедитесь, что вы добавили IP-адреса ClickPipes в белый список правил вашего брандмауэра. Список IP-адресов ClickPipes можно найти [здесь](../index.md#list-of-static-ips).
+   Для получения дополнительной информации обратитесь к руководствам по настройке исходной базы данных Postgres, ссылки на которые приведены [в начале этой страницы](#prerequisites).
 
    :::
 
    <Image
      img={postgres_connection_details}
-     alt='Fill in connection details'
+     alt='Заполнение данных подключения'
      size='lg'
      border
    />
 
 #### (Опционально) Настройка AWS Private Link {#optional-setting-up-aws-private-link}
 
-Вы можете использовать AWS Private Link для подключения к исходной базе данных Postgres, если она размещена на AWS. Это полезно, если вы
-хотите обеспечить конфиденциальность передачи данных.
-Следуйте [руководству по настройке подключения](/integrations/clickpipes/aws-privatelink).
+Вы можете использовать AWS Private Link для подключения к вашей исходной базе данных Postgres, если она размещена на AWS. Это полезно, если вы хотите обеспечить конфиденциальность передачи данных.
+Вы можете следовать [руководству по настройке подключения](/integrations/clickpipes/aws-privatelink).
 
 #### (Опционально) Настройка SSH-туннелирования {#optional-setting-up-ssh-tunneling}
 
-Вы можете указать параметры SSH-туннелирования, если исходная база данных Postgres недоступна публично.
+Вы можете указать параметры SSH-туннелирования, если ваша исходная база данных Postgres недоступна публично.
 
 1. Включите переключатель "Use SSH Tunnelling".
-2. Заполните параметры SSH-подключения.
+2. Заполните данные SSH-подключения.
 
-   <Image img={ssh_tunnel} alt='SSH tunneling' size='lg' border />
+   <Image img={ssh_tunnel} alt='SSH-туннелирование' size='lg' border />
 
 3. Для использования аутентификации на основе ключей нажмите "Revoke and generate key pair", чтобы сгенерировать новую пару ключей, и скопируйте сгенерированный публичный ключ на ваш SSH-сервер в `~/.ssh/authorized_keys`.
 4. Нажмите "Verify Connection" для проверки подключения.
@@ -119,7 +118,7 @@ import Image from '@theme/IdealImage';
 
 :::
 
-После заполнения параметров подключения нажмите "Next".
+После заполнения данных подключения нажмите "Next".
 
 ### Настройка параметров репликации {#configuring-the-replication-settings}
 
@@ -127,7 +126,7 @@ import Image from '@theme/IdealImage';
 
    <Image
      img={select_replication_slot}
-     alt='Select replication slot'
+     alt='Выбор слота репликации'
      size='lg'
      border
    />
@@ -136,11 +135,11 @@ import Image from '@theme/IdealImage';
 
 При необходимости вы можете настроить расширенные параметры. Краткое описание каждого параметра приведено ниже:
 
-- **Sync interval**: Интервал, с которым ClickPipes будет опрашивать исходную базу данных на предмет изменений. Это влияет на целевой сервис ClickHouse; для пользователей, чувствительных к затратам, рекомендуется устанавливать более высокое значение (более `3600`).
-- **Parallel threads for initial load**: Количество параллельных рабочих потоков, которые будут использоваться для получения начального снимка. Это полезно при большом количестве таблиц, когда требуется контролировать количество параллельных рабочих потоков для получения начального снимка. Этот параметр применяется для каждой таблицы.
+- **Sync interval**: Интервал, с которым ClickPipes будет опрашивать исходную базу данных на предмет изменений. Это влияет на целевой сервис ClickHouse; для пользователей, чувствительных к затратам, мы рекомендуем устанавливать более высокое значение (более `3600`).
+- **Parallel threads for initial load**: Количество параллельных рабочих потоков, которые будут использоваться для получения начального снимка. Это полезно, когда у вас большое количество таблиц и вы хотите контролировать количество параллельных рабочих потоков, используемых для получения начального снимка. Этот параметр применяется для каждой таблицы.
 - **Pull batch size**: Количество строк для получения в одном пакете. Это параметр типа best effort, который может не соблюдаться во всех случаях.
-- **Snapshot number of rows per partition**: Количество строк, которые будут получены в каждой партиции во время начального снимка. Это полезно при большом количестве строк в таблицах, когда требуется контролировать количество строк, получаемых в каждой партиции.
-- **Snapshot number of tables in parallel**: Количество таблиц, которые будут получены параллельно во время начального снимка. Это полезно при большом количестве таблиц, когда требуется контролировать количество таблиц, получаемых параллельно.
+- **Snapshot number of rows per partition**: Количество строк, которые будут получены в каждой партиции во время начального снимка. Это полезно, когда у вас большое количество строк в таблицах и вы хотите контролировать количество строк, получаемых в каждой партиции.
+- **Snapshot number of tables in parallel**: Количество таблиц, которые будут получены параллельно во время начального снимка. Это полезно, когда у вас большое количество таблиц и вы хотите контролировать количество таблиц, получаемых параллельно.
 
 ### Настройка таблиц {#configuring-the-tables}
 
@@ -148,7 +147,7 @@ import Image from '@theme/IdealImage';
 
    <Image
      img={select_destination_db}
-     alt='Select destination database'
+     alt='Выбор целевой базы данных'
      size='lg'
      border
    />
@@ -169,6 +168,6 @@ import Image from '@theme/IdealImage';
 
 ## Что дальше? {#whats-next}
 
-После настройки ClickPipe для репликации данных из PostgreSQL в ClickHouse Cloud вы можете сосредоточиться на запросах и моделировании данных для достижения оптимальной производительности. См. [руководство по миграции](/migrations/postgresql/overview) для оценки стратегии, наиболее подходящей для ваших требований, а также страницы [Стратегии дедупликации (с использованием CDC)](/integrations/clickpipes/postgres/deduplication) и [Ключи сортировки](/integrations/clickpipes/postgres/ordering_keys) с рекомендациями по работе с CDC.
+После настройки ClickPipe для репликации данных из PostgreSQL в ClickHouse Cloud вы можете сосредоточиться на запросах и моделировании данных для достижения оптимальной производительности. Обратитесь к [руководству по миграции](/migrations/postgresql/overview), чтобы определить, какая стратегия лучше всего подходит для ваших требований, а также к страницам [Стратегии дедупликации (с использованием CDC)](/integrations/clickpipes/postgres/deduplication) и [Ключи сортировки](/integrations/clickpipes/postgres/ordering_keys) для ознакомления с лучшими практиками работы с CDC.
 
-Ответы на распространённые вопросы о PostgreSQL CDC и устранении неполадок см. на [странице часто задаваемых вопросов по Postgres](/integrations/clickpipes/postgres/faq).
+Ответы на распространенные вопросы о PostgreSQL CDC и устранении неполадок см. на [странице часто задаваемых вопросов по Postgres](/integrations/clickpipes/postgres/faq).

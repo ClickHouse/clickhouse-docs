@@ -1,9 +1,9 @@
 ---
-description: 'Redhat/CentOS Linux へ ClickHouse をインストールする'
+description: 'Redhat/CentOS Linux への ClickHouse のインストール'
 keywords: ['ClickHouse', 'install', 'Redhat', 'CentOS', 'rpm']
 sidebar_label: 'Redhat/CentOS'
 slug: /install/redhat
-title: 'rpm ベースの Linux ディストリビューションへ ClickHouse をインストールする'
+title: 'rpm ベースの Linux ディストリビューションへの ClickHouse のインストール'
 hide_title: true
 doc_type: 'guide'
 ---

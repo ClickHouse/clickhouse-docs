@@ -13,50 +13,50 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 ## Установка с использованием community-формулы Homebrew {#install-using-community-homebrew-formula}
 
 Для установки ClickHouse на macOS с помощью [Homebrew](https://brew.sh/) можно использовать
-[формулу homebrew](https://formulae.brew.sh/cask/clickhouse) от сообщества ClickHouse.
+community-[формулу homebrew](https://formulae.brew.sh/cask/clickhouse) ClickHouse.
 
 ```bash
 brew install --cask clickhouse
 ```
 
 
-## Исправление ошибки верификации разработчика в macOS {#fix-developer-verification-error-macos}
+## Исправление ошибки проверки разработчика в macOS {#fix-developer-verification-error-macos}
 
-Если вы устанавливаете ClickHouse с помощью `brew`, вы можете столкнуться с ошибкой со стороны macOS.
-По умолчанию macOS не запускает приложения или инструменты, созданные неидентифицированным разработчиком.
+При установке ClickHouse с помощью `brew` вы можете столкнуться с ошибкой macOS.
+По умолчанию macOS не запускает приложения или инструменты, созданные неподтверждённым разработчиком.
 
-При попытке выполнить любую команду `clickhouse` вы можете увидеть эту ошибку:
+При попытке выполнить любую команду `clickhouse` может появиться следующая ошибка:
 
 <Image
   img={dev_error}
   size='sm'
-  alt='Диалог ошибки верификации разработчика в macOS'
+  alt='Диалоговое окно ошибки проверки разработчика macOS'
   border
 />
 
-Чтобы обойти эту ошибку верификации, вам нужно удалить приложение из карантина macOS: либо найдя соответствующую настройку в окне системных настроек, либо используя терминал, либо переустановив ClickHouse.
+Чтобы обойти эту ошибку проверки, необходимо удалить приложение из карантина macOS. Это можно сделать через соответствующую настройку в системных настройках, с помощью терминала или путём переустановки ClickHouse.
 
-### Процесс через системные настройки {#system-settings-process}
+### Через системные настройки {#system-settings-process}
 
-Самый простой способ удалить исполняемый файл `clickhouse` из карантина — это:
+Самый простой способ удалить исполняемый файл `clickhouse` из карантина:
 
 1. Откройте **Системные настройки**.
-1. Перейдите в **Конфиденциальность и безопасность**:
+1. Перейдите в раздел **Конфиденциальность и безопасность**:
 
    <Image
      img={privacy_default}
      size='md'
-     alt='Параметры конфиденциальности и безопасности macOS по умолчанию'
+     alt='Настройки конфиденциальности и безопасности macOS, вид по умолчанию'
      border
    />
 
-1. Прокрутите окно вниз, чтобы найти сообщение со словами: «clickhouse-macos-aarch64» заблокирован, поскольку он не от идентифицированного разработчика.
+1. Прокрутите окно вниз до сообщения \_"clickhouse-macos-aarch64" был заблокирован, так как он создан неподтверждённым разработчиком".
 1. Нажмите **Разрешить в любом случае**.
 
    <Image
      img={privacy_allow}
      size='md'
-     alt='Параметры конфиденциальности и безопасности macOS с кнопкой «Разрешить в любом случае»'
+     alt='Настройки конфиденциальности и безопасности macOS с кнопкой «Разрешить в любом случае»'
      border
    />
 
@@ -64,10 +64,10 @@ brew install --cask clickhouse
 
 Теперь вы сможете выполнять команды `clickhouse` в терминале.
 
-### Процесс через терминал {#terminal-process}
+### Через терминал {#terminal-process}
 
-Иногда нажатие кнопки «Разрешить в любом случае» не решает проблему, и в этом случае вы можете выполнить процесс с помощью командной строки.
-Или вы просто предпочитаете работать в терминале!
+Иногда нажатие кнопки `Разрешить в любом случае` не решает проблему. В таком случае можно выполнить эту процедуру через командную строку.
+Или вы просто предпочитаете работать в командной строке!
 
 Сначала узнайте, куда Homebrew установил исполняемый файл `clickhouse`:
 
@@ -75,13 +75,13 @@ brew install --cask clickhouse
 which clickhouse
 ```
 
-This should output something like:
+Вывод должен быть примерно таким:
 
 ```shell
 /opt/homebrew/bin/clickhouse
 ```
 
-Remove `clickhouse` from the quarantine bin by running `xattr -d com.apple.quarantine` followed by the path from the previous command:
+Удалите `clickhouse` из карантина, выполнив команду `xattr -d com.apple.quarantine` с указанием пути из предыдущей команды:
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
@@ -93,7 +93,7 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 clickhouse
 ```
 
-This should output something like:
+Вывод должен быть примерно таким:
 
 ```bash
 Use one of the following commands:

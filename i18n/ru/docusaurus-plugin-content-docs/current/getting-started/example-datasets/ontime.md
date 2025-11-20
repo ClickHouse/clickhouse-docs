@@ -1,13 +1,13 @@
 ---
-description: 'Набор данных, содержащий сведения о пунктуальности авиарейсов'
-sidebar_label: 'Набор данных о рейсах OnTime'
+description: 'Набор данных о пунктуальности авиарейсов'
+sidebar_label: 'Данные авиарейсов OnTime'
 slug: /getting-started/example-datasets/ontime
 title: 'OnTime'
 doc_type: 'guide'
 keywords: ['example dataset', 'flight data', 'sample data', 'airline performance', 'benchmark']
 ---
 
-Этот набор данных содержит данные Бюро транспортной статистики США (Bureau of Transportation Statistics).
+Этот набор данных содержит данные Бюро транспортной статистики (Bureau of Transportation Statistics).
 
 
 
@@ -142,24 +142,24 @@ CREATE TABLE `ontime`
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-Загрузка данных с использованием нескольких потоков:
+Загрузка данных в несколько потоков:
 
 ```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если на вашем сервере возникнет нехватка памяти или другие проблемы, удалите параметр `-P $(nproc)`)
+(если на вашем сервере недостаточно памяти или возникнут другие проблемы, удалите параметр `-P $(nproc)`)
 
 
 ## Импорт из сохранённой копии {#import-from-a-saved-copy}
 
-Также можно импортировать данные из сохранённой копии следующим запросом:
+Альтернативно можно импортировать данные из сохранённой копии следующим запросом:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-Снимок данных создан 2022-05-29.
+Снимок создан 2022-05-29.
 
 
 ## Запросы {#queries}
@@ -186,7 +186,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Количество рейсов с задержкой более 10 минут, по дням недели, за 2000–2008 годы
+Q2. Количество рейсов с задержкой более 10 минут, сгруппированных по дням недели, за 2000-2008 годы
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -196,7 +196,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. Количество задержек по аэропортам за 2000–2008 годы
+Q3. Количество задержек по аэропортам за 2000-2008 годы
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -207,7 +207,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. Количество задержек по перевозчикам за 2007 год
+Q4. Количество задержек по авиакомпаниям за 2007 год
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -217,7 +217,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержанных рейсов по перевозчикам за 2007 год
+Q5. Процент задержек по авиакомпаниям за 2007 год
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -253,7 +253,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. Предыдущий запрос для более широкого диапазона лет, 2000–2008
+Q6. Предыдущий запрос для более широкого диапазона лет, 2000-2008
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -322,7 +322,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Самые популярные направления по количеству городов с прямыми рейсами для различных диапазонов лет
+Q8. Самые популярные направления по количеству городов с прямым сообщением для различных диапазонов лет
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -397,7 +397,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Вы также можете поэкспериментировать с данными в Playground — [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
+Вы также можете поэкспериментировать с данными в Playground, см. [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
 
 Этот тест производительности был создан Вадимом Ткаченко. См.:
 

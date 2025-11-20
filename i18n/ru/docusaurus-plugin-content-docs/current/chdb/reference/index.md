@@ -1,7 +1,7 @@
 ---
 title: 'Техническая справка по chDB'
 slug: /chdb/reference
-description: 'Форматы данных в chDB'
+description: 'Форматы данных для chDB'
 keywords: ['chdb', 'data formats']
 doc_type: 'reference'
 ---

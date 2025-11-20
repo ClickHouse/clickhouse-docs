@@ -3,7 +3,7 @@ sidebar_label: 'Deepnote'
 sidebar_position: 11
 slug: /integrations/deepnote
 keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
-description: 'Эффективно выполняйте запросы к очень большим наборам данных и выполняйте анализ и моделирование в привычной среде ноутбука.'
+description: 'Эффективно выполняйте запросы к очень большим наборам данных, анализируйте и моделируйте их в привычной среде ноутбука.'
 title: 'Подключение ClickHouse к Deepnote'
 doc_type: 'guide'
 integration:
@@ -24,7 +24,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> — это совместный ноутбук для работы с данными, созданный для команд, которые исследуют данные и делятся результатами. Помимо совместимости с Jupyter, он работает в облаке и предоставляет вам единое место для совместной работы и эффективного управления проектами по Data Science.
+<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> — это совместный ноутбук для работы с данными, созданный для команд, которые хотят находить и совместно использовать инсайты. Помимо совместимости с Jupyter, он работает в облаке и предоставляет вам единую централизованную среду для совместной работы и эффективной работы над проектами в области data science.
 
 В этом руководстве предполагается, что у вас уже есть аккаунт Deepnote и запущенный экземпляр ClickHouse.
 
@@ -47,9 +47,9 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
    <ConnectionDetails />
 
-   <Image size='md' img={deepnote_02} alt='Диалоговое окно параметров ClickHouse' border />
+   <Image size='md' img={deepnote_02} alt='Диалог с параметрами ClickHouse' border />
 
-   **_ПРИМЕЧАНИЕ:_** Если подключение к ClickHouse защищено списком разрешённых IP-адресов, вам может потребоваться добавить IP-адреса Deepnote в список разрешённых. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
+   **_ПРИМЕЧАНИЕ:_** Если подключение к ClickHouse защищено списком разрешённых IP-адресов, вам может потребоваться добавить IP-адреса Deepnote в этот список. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 
 3. Поздравляем! Вы успешно интегрировали ClickHouse с Deepnote.
 
@@ -60,5 +60,5 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
    <Image size='lg' img={deepnote_03} alt='Диалоговое окно сведений ClickHouse' border />
 
-2. Теперь создайте новый блок запросов ClickHouse и выполните запрос к базе данных. Результаты запроса будут сохранены в виде DataFrame и помещены в переменную, указанную в SQL-блоке.
-3. Вы также можете преобразовать любой существующий [SQL-блок](https://docs.deepnote.com/features/sql-cells) в блок ClickHouse.
+2. Теперь создайте новый блок запросов ClickHouse и выполните запрос к базе данных. Результаты запроса будут сохранены как DataFrame и помещены в переменную, указанную в блоке SQL.
+3. Вы также можете преобразовать любой существующий [блок SQL](https://docs.deepnote.com/features/sql-cells) в блок ClickHouse.

@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMaxIf'
 title: 'argMaxIf'
-description: 'Пример использования комбинатора агрегатной функции argMaxIf'
-keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
+description: 'Пример использования комбинатора argMaxIf'
+keywords: ['argMax', 'if', 'комбинатор', 'примеры', 'argMaxIf']
 sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
@@ -23,9 +23,9 @@ doc_type: 'reference'
 условию.
 
 
-## Пример использования {#example-usage}
+## Example usage {#example-usage}
 
-В этом примере мы используем набор данных о продажах товаров, чтобы продемонстрировать работу функции `argMaxIf`. Мы найдем название товара с максимальной ценой среди товаров, которые были проданы не менее 10 раз.
+В этом примере мы используем набор данных о продажах товаров, чтобы продемонстрировать, как работает функция `argMaxIf`. Мы найдем название товара с максимальной ценой, но только среди товаров, которые были проданы не менее 10 раз.
 
 ```sql title="Запрос"
 CREATE TABLE product_sales
@@ -46,8 +46,7 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-Функция `argMaxIf` вернет название товара с максимальной ценой среди всех товаров, которые были проданы не менее 10 раз (sales_count >= 10).
-В данном случае она вернет 'Laptop', так как он имеет максимальную цену (999.99) среди популярных товаров.
+Функция `argMaxIf` вернет название товара с максимальной ценой среди всех товаров, которые были проданы не менее 10 раз (sales_count >= 10). В данном случае она вернет 'Laptop', так как он имеет максимальную цену (999.99) среди популярных товаров.
 
 ```response title="Результат"
    ┌─most_expensi⋯lar_product─┐

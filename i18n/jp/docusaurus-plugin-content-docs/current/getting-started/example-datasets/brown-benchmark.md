@@ -1,5 +1,5 @@
 ---
-description: '機械生成ログデータ向けの新しい分析ベンチマーク'
+description: 'マシン生成ログデータ向けの新しい分析ベンチマーク'
 sidebar_label: 'Brown University ベンチマーク'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Brown University ベンチマーク'
@@ -7,7 +7,7 @@ keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machi
 doc_type: 'guide'
 ---
 
-`MgBench` は機械生成ログデータ向けの新しい分析ベンチマークであり、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) によって開発されました。
+`MgBench` はマシン生成ログデータ向けの新しい分析ベンチマークであり、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) によって提案されています。
 
 データをダウンロード:
 
@@ -15,13 +15,13 @@ doc_type: 'guide'
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
-データを展開します：
+データを解凍します：
 
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-データベースとテーブルを作成する：
+データベースとテーブルを作成する:
 
 ```sql
 CREATE DATABASE mgbench;
@@ -86,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-データの挿入：
+データを挿入:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -102,7 +102,7 @@ USE mgbench;
 ```
 
 ```sql
--- Q1.1: 深夜0時以降の各WebサーバーにおけるCPU/ネットワーク使用率は？
+-- Q1.1: 深夜0時以降の各Webサーバーにおける CPU/ネットワーク使用率は？
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -127,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: 過去1日間でオフラインになったコンピュータラボのマシンは？
+-- Q1.2: 過去1日間でオフラインになっているコンピュータラボのマシンは？
 
 SELECT machine_name,
        log_time
@@ -174,7 +174,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 1ヶ月間で各サーバーがディスクI/Oでブロックされた頻度は？
+-- Q1.4: 1ヶ月間で、各サーバーがディスクI/Oでブロックされた頻度は？
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -189,7 +189,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 外部からアクセス可能なVMのうちメモリ不足が発生したものは？
+-- Q1.5: 外部からアクセス可能なVMのうち、メモリ不足が発生したものは？
 
 SELECT machine_name,
        dt,
@@ -240,7 +240,7 @@ LIMIT 10;
 ````
 
 ```sql
--- Q2.1: 過去2週間でサーバーエラーが発生したリクエストはどれか？
+-- Q2.1: 過去2週間でサーバーエラーを引き起こしたリクエストはどれですか?
 
 SELECT *
 FROM logs2
@@ -262,7 +262,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: 過去1ヶ月間のトップレベルリクエストの平均パス深度は？
+-- Q2.3: 過去1ヶ月間のトップレベルリクエストの平均パス深度は?
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -287,7 +287,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 過去3ヶ月間で、過度に多くのリクエストを行ったクライアントはどれか？
+-- Q2.4: 過去3ヶ月間で、過剰な数のリクエストを行ったクライアントはどれですか？
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -299,7 +299,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: 日次のユニークビジター数は？
+-- Q2.5: 日別のユニークビジター数は？
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -313,7 +313,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: 平均および最大データ転送速度（Gbps）は？
+-- Q2.6: 平均および最大データ転送速度(Gbps)は?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -350,7 +350,7 @@ ORDER BY ct DESC;
 ```
 
 
-以下のクエリ 3.5 では `UNION` を使用します。`SELECT` クエリ結果を結合する際のモードを設定します。この設定は、`UNION ALL` または `UNION DISTINCT` を明示的に指定せずに `UNION` を使用した場合にのみ適用されます。
+以下のクエリ 3.5 は `UNION` を使用します。`SELECT` クエリ結果を結合する方法（モード）を設定します。この設定は、`UNION ALL` または `UNION DISTINCT` を明示的に指定せずに `UNION` が使用された場合にのみ適用されます。
 
 ```sql
 SET union_default_mode = 'DISTINCT'
@@ -396,7 +396,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '冬季'
+       'WINTER'
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -404,14 +404,14 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '夏季'
+       'SUMMER'
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
 ```sql
--- Q3.6: 各デバイスカテゴリの月次電力消費量メトリクスは？
+-- Q3.6: 各デバイスカテゴリの月次電力消費メトリクスは？
 
 SELECT yr,
        mo,
@@ -455,4 +455,4 @@ ORDER BY yr,
          mo;
 ```
 
-このデータは、[Playground](https://sql.clickhouse.com) でのインタラクティブなクエリや、[example](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND) からも利用できます。
+このデータは、[Playground](https://sql.clickhouse.com) や [example](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND) でインタラクティブにクエリを実行して確認することもできます。

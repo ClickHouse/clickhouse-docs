@@ -2,7 +2,7 @@
 sidebar_label: 'Fabi.ai'
 slug: /integrations/fabi.ai
 keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'analytics']
-description: 'Fabi.ai は、共同作業に対応したオールインワンのデータ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます'
+description: 'Fabi.ai は、共同作業のためのオールインワン型データ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます。'
 title: 'ClickHouse を Fabi.ai に接続する'
 doc_type: 'guide'
 ---
@@ -20,9 +20,9 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> は、オールインワンのコラボレーティブなデータ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく迅速にダッシュボードやデータワークフローを構築できます。ClickHouse のスケーラビリティと高い処理性能を組み合わせることで、巨大なデータセットに対する高パフォーマンスなダッシュボードを、わずか数分で作成・共有できます。
+<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a> は、オールインワンの共同データ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます。ClickHouse のスケーラビリティと高いパフォーマンスと組み合わせることで、巨大なデータセット上に高性能なダッシュボードを数分で構築・共有できます。
 
-<Image size="md" img={fabi_01} alt="Fabi.ai のデータ探索およびワークフロープラットフォーム" border />
+<Image size="md" img={fabi_01} alt="Fabi.ai のデータ探索およびワークフロー向けプラットフォーム" border />
 
 
 
@@ -33,7 +33,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 ## Fabi.aiアカウントを作成してClickHouseに接続する {#connect-to-clickhouse}
 
-Fabi.aiアカウントにログインするか、新規作成してください: https://app.fabi.ai/
+Fabi.aiアカウントにログインまたは作成してください: https://app.fabi.ai/
 
 1. アカウントを初めて作成すると、データベースへの接続を求められます。既にアカウントをお持ちの場合は、任意のSmartbookの左側にあるデータソースパネルをクリックし、「Add Data Source」を選択してください。
 
@@ -46,11 +46,11 @@ Fabi.aiアカウントにログインするか、新規作成してください:
 3. これでClickHouseをFabi.aiに統合できました。
 
 
-## ClickHouseへのクエリ実行 {#querying-clickhouse}
+## ClickHouseへのクエリ {#querying-clickhouse}
 
 Fabi.aiをClickHouseに接続したら、任意の[Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks)に移動し、SQLセルを作成します。Fabi.aiインスタンスに接続されているデータソースが1つのみの場合、SQLセルは自動的にClickHouseがデフォルトとして設定されます。複数のデータソースがある場合は、ソースドロップダウンからクエリ対象のソースを選択できます。
 
-<Image size='lg' img={fabi_04} alt='ClickHouseへのクエリ実行' border />
+<Image size='lg' img={fabi_04} alt='ClickHouseへのクエリ' border />
 
 
 ## 追加リソース {#additional-resources}

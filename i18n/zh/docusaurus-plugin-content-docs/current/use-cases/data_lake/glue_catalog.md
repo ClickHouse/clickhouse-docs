@@ -1,11 +1,10 @@
 ---
 slug: /use-cases/data-lake/glue-catalog
-sidebar_label: 'AWS Glue 目录'
-title: 'AWS Glue 目录'
+sidebar_label: 'AWS Glue catalog'
+title: 'AWS Glue catalog'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将向您演示如何使用 ClickHouse 和 AWS Glue Data Catalog 查询
- 位于 S3 存储桶中的数据。'
+description: '本指南将介绍如何使用 ClickHouse 和 AWS Glue Data Catalog 查询 S3 存储桶中的数据。'
 keywords: ['Glue', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,10 +14,10 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个目录服务集成（Unity、Glue、Polaris 等）。在本指南中，我们将带你一步步完成使用 ClickHouse 和 Glue Data Catalog 查询 S3 存储桶中数据的操作。
+ClickHouse 支持与多种数据目录(Unity、Glue、Polaris 等)集成。本指南将介绍如何使用 ClickHouse 和 Glue Data Catalog 查询 S3 存储桶中的数据。
 
 :::note
-Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
+Glue 支持多种表格式,但此集成仅支持 Iceberg 表。
 :::
 
 
@@ -27,7 +26,7 @@ Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
 要连接到 Glue 目录,您需要确定目录所在的区域并提供访问密钥和密钥。
 
 :::note
-目前,Glue 目录仅支持访问密钥和密钥认证,但我们将在未来支持更多身份验证方式。
+目前,Glue 目录仅支持访问密钥和密钥,但我们将在未来支持其他身份验证方式。
 :::
 
 
@@ -201,9 +200,9 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 
 
 
-## 从数据湖加载数据到 ClickHouse {#loading-data-into-clickhouse}
+## 将数据湖中的数据加载到 ClickHouse {#loading-data-into-clickhouse}
 
-如果需要从 Databricks 加载数据到 ClickHouse,首先需要创建一个本地 ClickHouse 表:
+如果需要将 Databricks 中的数据加载到 ClickHouse,请先创建一个本地 ClickHouse 表:
 
 
 ```sql title="Query"
@@ -318,7 +317,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-然后从你的 Iceberg 表加载数据：
+然后从 Iceberg 表中加载数据：
 
 ```sql title="Query"
 INSERT INTO default.hits 

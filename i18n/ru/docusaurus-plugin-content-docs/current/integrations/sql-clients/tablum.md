@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
-description: 'TABLUM.IO — это SaaS-сервис для управления данными с поддержкой ClickHouse «из коробки».'
+description: 'TABLUM.IO — это SaaS-платформа для управления данными с готовой поддержкой ClickHouse.'
 title: 'Подключение TABLUM.IO к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -40,14 +40,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 2. Добавление коннектора ClickHouse {#2-add-a-clickhouse-connector}
 
-Подготовьте данные для подключения к ClickHouse, перейдите на вкладку **Connector** и укажите URL хоста, порт, имя пользователя, пароль, имя базы данных и имя коннектора. После заполнения этих полей нажмите кнопку **Test connection** для проверки подключения, затем нажмите **Save connector for me**, чтобы сохранить коннектор.
+Подготовьте данные для подключения к ClickHouse, перейдите на вкладку **Connector** и заполните URL хоста, порт, имя пользователя, пароль, имя базы данных и имя коннектора. После заполнения этих полей нажмите кнопку **Test connection** для проверки данных, затем нажмите **Save connector for me** для сохранения настроек.
 
 :::tip
-Убедитесь, что указан правильный порт **HTTP** и режим **SSL** настроен в соответствии с параметрами подключения.
+Убедитесь, что указан правильный порт **HTTP** и режим **SSL** настроен в соответствии с параметрами вашего подключения.
 :::
 
 :::tip
-Обычно используется порт 8443 при работе с TLS или 8123 без TLS.
+Обычно используется порт 8443 при использовании TLS или 8123 без использования TLS.
 :::
 
 <Image
@@ -60,7 +60,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 3. Выберите коннектор {#3-select-the-connector}
 
-Перейдите на вкладку **Dataset**. Выберите созданный ранее коннектор ClickHouse из выпадающего списка. В правой панели отобразится список доступных таблиц и схем.
+Перейдите на вкладку **Dataset**. Выберите созданный ранее коннектор ClickHouse в выпадающем списке. В правой панели отобразится список доступных таблиц и схем.
 
 <Image
   img={tablum_ch_2}
@@ -96,4 +96,4 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## Дополнительная информация {#learn-more}
 
-Больше информации о TABLUM.IO можно найти на https://tablum.io.
+Подробнее о TABLUM.IO можно узнать на сайте https://tablum.io.

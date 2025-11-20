@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'サービス稼働時間と SLA'
+sidebar_label: 'サービス稼働状況とSLA'
 slug: /cloud/manage/service-uptime
-title: 'サービス稼働時間'
-description: 'ユーザーはステータスページでリージョンごとの稼働時間を確認し、サービス障害に関するアラートを受信するように登録できるようになりました。'
+title: 'サービス稼働状況'
+description: 'ユーザーはステータスページでリージョンごとの稼働状況を確認し、サービス障害時のアラートを受信するように登録できるようになりました。'
 keywords: ['ClickHouse Cloud', 'service uptime', 'SLA', 'cloud reliability', 'status monitoring']
 doc_type: 'reference'
 ---

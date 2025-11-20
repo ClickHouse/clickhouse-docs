@@ -3,7 +3,7 @@ slug: /cloud/guides/data-masking
 sidebar_label: '数据脱敏'
 title: 'ClickHouse 中的数据脱敏'
 description: 'ClickHouse 数据脱敏指南'
-keywords: ['data masking']
+keywords: ['数据脱敏']
 doc_type: 'guide'
 ---
 
@@ -11,24 +11,24 @@ doc_type: 'guide'
 
 # ClickHouse 中的数据脱敏
 
-数据脱敏是一种数据保护技术，通过将原始数据替换为在保留其格式和结构的前提下去除所有个人身份信息（PII）或敏感信息的版本来实现。
+数据脱敏是一种数据保护技术,通过将原始数据替换为保持相同格式和结构但移除个人身份信息(PII)或敏感信息的版本来实现数据保护。
 
-本指南介绍如何在 ClickHouse 中进行数据脱敏。
+本指南将介绍如何在 ClickHouse 中实现数据脱敏。
 
 
 
 ## 使用字符串替换函数 {#using-string-functions}
 
-对于基本的数据脱敏场景,`replace` 系列函数提供了一种便捷的数据脱敏方式:
+对于基本的数据脱敏场景，`replace` 系列函数提供了一种便捷的数据脱敏方式：
 
 | 函数                                                                                 | 描述                                                                                                                                            |
 | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceOne)             | 将目标字符串中首次出现的模式替换为指定的替换字符串。                                                  |
-| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceAll)             | 将目标字符串中所有出现的模式替换为指定的替换字符串。                                                       |
-| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceRegexpOne) | 将目标字符串中首次匹配正则表达式模式(re2 语法)的子字符串替换为指定的替换字符串。 |
-| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceRegexpAll) | 将目标字符串中所有匹配正则表达式模式(re2 语法)的子字符串替换为指定的替换字符串。      |
+| [`replaceOne`](/sql-reference/functions/string-replace-functions#replaceOne)             | 将源字符串中首次出现的模式替换为指定的替换字符串。                                                  |
+| [`replaceAll`](/sql-reference/functions/string-replace-functions#replaceAll)             | 将源字符串中所有出现的模式替换为指定的替换字符串。                                                       |
+| [`replaceRegexpOne`](/sql-reference/functions/string-replace-functions#replaceRegexpOne) | 将源字符串中首次匹配正则表达式模式（re2 语法）的子字符串替换为指定的替换字符串。 |
+| [`replaceRegexpAll`](/sql-reference/functions/string-replace-functions#replaceRegexpAll) | 将源字符串中所有匹配正则表达式模式（re2 语法）的子字符串替换为指定的替换字符串。      |
 
-例如,可以使用 `replaceOne` 函数将姓名 "John Smith" 替换为占位符 `[CUSTOMER_NAME]`:
+例如，您可以使用 `replaceOne` 函数将姓名 "John Smith" 替换为占位符 `[CUSTOMER_NAME]`：
 
 ```sql title="查询"
 SELECT replaceOne(
@@ -44,7 +44,7 @@ SELECT replaceOne(
 └───────────────────────────────────────────────────┘
 ```
 
-更通用的做法是,可以使用 `replaceRegexpAll` 来替换任意客户姓名:
+更通用的做法是，您可以使用 `replaceRegexpAll` 来替换任意客户姓名：
 
 ```sql title="查询"
 SELECT
@@ -61,7 +61,7 @@ SELECT
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-或者可以使用 `replaceRegexpAll` 函数脱敏社会安全号码,仅保留最后 4 位数字。
+或者您可以使用 `replaceRegexpAll` 函数对社会保障号码进行脱敏，仅保留最后 4 位数字。
 
 ```sql title="查询"
 SELECT replaceRegexpAll(
@@ -71,7 +71,7 @@ SELECT replaceRegexpAll(
 ) AS masked_ssn;
 ```
 
-在上述查询中,`\3` 用于将第三个捕获组替换到结果字符串中,产生如下结果:
+在上述查询中，`\3` 用于将第三个捕获组替换到结果字符串中，产生如下结果：
 
 ```response title="响应"
 ┌─masked_ssn───────┐
@@ -82,13 +82,13 @@ SELECT replaceRegexpAll(
 
 ## 创建掩码视图 {#masked-views}
 
-[`VIEW`](/sql-reference/statements/create/view) 可以与前述字符串函数结合使用,在向用户呈现数据之前对包含敏感数据的列进行转换。
-这样,原始数据保持不变,而查询视图的用户只能看到掩码后的数据。
+[`VIEW`](/sql-reference/statements/create/view) 可以与前述字符串函数结合使用,在向用户呈现数据之前对包含敏感数据的列应用转换。
+通过这种方式,原始数据保持不变,查询视图的用户只能看到掩码后的数据。
 
 为了演示,假设我们有一个存储客户订单记录的表。
 我们希望确保一组员工可以查看这些信息,但不希望他们看到客户的完整信息。
 
-运行以下查询创建示例表 `orders` 并插入一些虚构的客户订单记录:
+运行以下查询创建示例表 `orders` 并向其中插入一些虚构的客户订单记录:
 
 ```sql
 CREATE TABLE orders (
@@ -126,7 +126,7 @@ SELECT
 FROM orders;
 ```
 
-在上述视图创建查询的 `SELECT` 子句中,我们使用 `replaceRegexpOne` 函数对 `name`、`email`、`phone` 和 `shipping_address` 字段定义转换,这些字段包含我们希望部分掩码的敏感信息。
+在上述视图创建查询的 `SELECT` 子句中,我们使用 `replaceRegexpOne` 对 `name`、`email`、`phone` 和 `shipping_address` 字段定义转换,这些字段包含我们希望部分掩码的敏感信息。
 
 从视图中查询数据:
 
@@ -145,38 +145,38 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
-请注意，从该视图返回的数据经过了部分掩码处理，用于隐藏敏感信息。
-你也可以创建多个视图，根据查看者对信息的权限级别，提供不同程度的脱敏/模糊处理。
+请注意,从视图返回的数据已部分脱敏,从而隐藏了敏感信息。
+您还可以创建多个视图,根据查看者的信息访问权限级别设置不同程度的脱敏。
 
-为了确保用户只能访问返回掩码数据的视图，而不能访问包含原始未掩码数据的表，你应当使用[基于角色的访问控制](/cloud/security/console-roles)，确保只有特定角色被授予从该视图执行 `SELECT` 的权限。
+为了确保用户只能访问返回脱敏数据的视图,而无法访问包含原始未脱敏数据的表,您应该使用[基于角色的访问控制](/cloud/security/console-roles)来确保特定角色仅被授予从视图中查询数据的权限。
 
-首先创建角色：
+首先创建角色:
 
 ```sql
 CREATE ROLE masked_orders_viewer;
 ```
 
-接下来，将该视图的 `SELECT` 权限授予该角色：
+接下来,将视图的 `SELECT` 权限授予该角色:
 
 ```sql
 GRANT SELECT ON masked_orders TO masked_orders_viewer;
 ```
 
-由于 ClickHouse 的角色是叠加生效的，你必须确保那些本应只看到脱敏视图的用户，不会通过任何角色在基础表上拥有 `SELECT` 权限。
+由于 ClickHouse 的角色权限是累加的,您必须确保那些只应看到掩码视图的用户,不会通过任何角色获得基表的 `SELECT` 权限。
 
-因此，为了安全起见，你应当显式撤销对基础表的访问权限：
+因此,为安全起见,您应该显式撤销基表的访问权限:
 
 ```sql
 REVOKE SELECT ON orders FROM masked_orders_viewer;
 ```
 
-最后，将该角色分配给相应的用户：
+最后,将角色分配给相应的用户:
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
 ```
 
-这可确保具有 `masked_orders_viewer` 角色的用户只能在该视图中看到已遮蔽的数据，而无法从表中看到原始未遮蔽的数据。
+这确保了具有 `masked_orders_viewer` 角色的用户只能查看视图中的脱敏数据,而无法访问表中原始的未脱敏数据。
 
 
 ## 使用 `MATERIALIZED` 列和列级访问限制 {#materialized-ephemeral-column-restrictions}
@@ -186,7 +186,7 @@ GRANT masked_orders_viewer TO your_user;
 在插入行时,这些列的值会根据指定的物化表达式自动计算,
 我们可以利用它们创建包含脱敏数据的新列。
 
-以之前的示例为例,现在我们将使用 `MATERIALIZED` 创建脱敏列,而不是为脱敏数据创建单独的 `VIEW`:
+以之前的示例为例,我们现在将使用 `MATERIALIZED` 创建脱敏列,而不是为脱敏数据创建单独的 `VIEW`:
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -214,7 +214,7 @@ INSERT INTO orders VALUES
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-如果您现在运行以下查询,将会看到脱敏数据在插入时被"物化"并与原始未脱敏数据一起存储。
+如果您现在运行以下查询,将会看到脱敏数据在插入时被"物化"并与原始的未脱敏数据一起存储。
 需要显式选择脱敏列,因为 ClickHouse 默认不会在 `SELECT *` 查询中自动包含物化列。
 
 ```sql title="查询"
@@ -239,22 +239,22 @@ ORDER BY user_id ASC
    └─────────┴───────────────┴───────────────────────────┴──────────────┴──────────────┴────────────┴────────────────────────────────────┴──────────────┴────────────────────┴──────────────┴────────────────────────────┘
 ```
 
-为了确保用户只能访问包含脱敏数据的列，你可以再次使用[基于角色的访问控制](/cloud/security/console-roles)，确保只有特定角色被授予从 `orders` 表中查询脱敏列的权限。
+为确保用户只能访问包含脱敏数据的列,您可以再次使用[基于角色的访问控制](/cloud/security/console-roles),以确保特定角色仅具有从 `orders` 表中查询脱敏列的权限。
 
-重新创建我们之前定义的角色：
+重新创建之前创建的角色:
 
 ```sql
 DROP ROLE IF EXISTS masked_order_viewer;
 CREATE ROLE masked_order_viewer;
 ```
 
-接下来，为 `orders` 表授予 `SELECT` 权限：
+接下来,授予 `orders` 表的 `SELECT` 权限:
 
 ```sql
 GRANT SELECT ON orders TO masked_data_reader;
 ```
 
-撤销对任意敏感列的访问权限：
+撤销对敏感列的访问权限:
 
 ```sql
 REVOKE SELECT(name) ON orders FROM masked_data_reader;
@@ -263,15 +263,15 @@ REVOKE SELECT(phone) ON orders FROM masked_data_reader;
 REVOKE SELECT(shipping_address) ON orders FROM masked_data_reader;
 ```
 
-最后，将该角色分配给合适的用户：
+最后,将角色分配给相应的用户:
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
 ```
 
-如果你只想在 `orders` 表中存储脱敏数据，
-可以将未脱敏的敏感列标记为 [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral)，
-这样就能确保此类列不会被写入到表中。
+如果您只想在 `orders` 表中存储脱敏后的数据,
+可以将敏感的未脱敏列标记为 [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral),
+这样可以确保这些列不会被存储到表中。
 
 
 ```sql
@@ -300,7 +300,7 @@ INSERT INTO orders (user_id, name, email, phone, total_amount, order_date, shipp
     (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
 ```
 
-如果我们再次运行相同的查询，现在你会看到，只有物化后的脱敏数据被插入到表中：
+如果我们运行与之前相同的查询,您会看到只有经过物化脱敏处理的数据被插入到表中:
 
 ```sql title="Query"
 SELECT

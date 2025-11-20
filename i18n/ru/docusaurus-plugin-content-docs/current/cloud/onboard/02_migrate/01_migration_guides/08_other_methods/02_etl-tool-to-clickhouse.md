@@ -3,7 +3,7 @@ sidebar_label: 'Использование стороннего ETL-инстру
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/etl-tool-to-clickhouse
 title: 'Использование стороннего ETL-инструмента'
-description: 'Страница, описывающая использование стороннего ETL-инструмента с ClickHouse'
+description: 'Страница о том, как использовать сторонний ETL-инструмент с ClickHouse'
 doc_type: 'guide'
 ---
 
@@ -13,12 +13,12 @@ import third_party_01 from '@site/static/images/integrations/migration/third-par
 
 # Использование стороннего ETL-инструмента
 
-<Image img={third_party_01} size='sm' alt='Миграция самоуправляемого ClickHouse' background='white' />
+<Image img={third_party_01} size='sm' alt='Миграция автономного ClickHouse' background='white' />
 
-Отличный вариант переноса данных из внешнего источника в ClickHouse — использовать один из многочисленных популярных ETL- и ELT-инструментов. В нашей документации рассматриваются следующие варианты:
+Отличный вариант переноса данных из внешнего источника в ClickHouse — использовать один из многих популярных ETL- и ELT-инструментов. У нас есть документация по следующим инструментам:
 
 - [Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)
 - [dbt](/integrations/data-ingestion/etl-tools/dbt/index.md)
 - [Vector](/integrations/data-ingestion/etl-tools/vector-to-clickhouse.md)
 
-Однако существует множество других ETL/ELT-инструментов, которые интегрируются с ClickHouse, поэтому обратитесь к документации вашего предпочитаемого инструмента за подробностями.
+Но существует много других ETL/ELT-инструментов, которые интегрируются с ClickHouse, поэтому обратитесь к документации вашего предпочитаемого инструмента за подробностями.

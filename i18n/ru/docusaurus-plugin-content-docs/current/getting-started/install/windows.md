@@ -1,9 +1,9 @@
 ---
-description: 'Установка ClickHouse на Windows с помощью WSL'
+description: 'Установка ClickHouse в Windows с помощью WSL'
 keywords: ['ClickHouse', 'install', 'Redhat', 'rpm']
 sidebar_label: 'Windows'
 slug: /install/windows
-title: 'Установка ClickHouse на Windows с помощью WSL'
+title: 'Установка ClickHouse в Windows с помощью WSL'
 hide_title: true
 doc_type: 'guide'
 ---

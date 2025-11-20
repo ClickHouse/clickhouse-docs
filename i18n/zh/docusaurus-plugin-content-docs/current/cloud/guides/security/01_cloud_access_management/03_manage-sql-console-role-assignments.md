@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
-sidebar_label: '管理 SQL 控制台角色分配'
-title: '管理 SQL 控制台角色分配'
-description: '介绍如何管理 SQL 控制台角色分配的指南'
+sidebar_label: '管理 SQL 控制台角色指派'
+title: '管理 SQL 控制台角色指派'
+description: '介绍如何管理 SQL 控制台角色指派的指南'
 doc_type: 'guide'
 keywords: ['sql console', 'role assignments', 'access management', 'permissions', 'security']
 ---
@@ -19,7 +19,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 
 # 配置 SQL 控制台角色分配
 
-> 本指南介绍如何配置 SQL 控制台角色分配,这些分配决定了控制台范围的访问权限以及用户在 Cloud 控制台中可以访问的功能。
+> 本指南介绍如何配置 SQL 控制台角色分配,这些分配决定了控制台范围的访问权限以及用户可以在 Cloud 控制台中访问的功能。
 
 <VerticalStepper headerLevel="h3">
 

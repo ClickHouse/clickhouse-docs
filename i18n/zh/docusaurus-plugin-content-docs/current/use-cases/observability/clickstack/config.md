@@ -3,8 +3,8 @@ slug: /use-cases/observability/clickstack/config
 title: '配置选项'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 的配置选项 - ClickHouse 可观测性栈'
-keywords: ['ClickStack 配置', '可观测性配置', 'HyperDX 设置', 'collector 配置', '环境变量']
+description: 'ClickStack 的配置选项——ClickHouse 可观测性技术栈'
+keywords: ['ClickStack configuration', 'observability configuration', 'HyperDX settings', 'collector configuration', 'environment variables']
 doc_type: 'reference'
 ---
 
@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import hyperdx_25 from '@site/static/images/use-cases/observability/hyperdx-25.png';
 import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.png';
 
-ClickStack 的每个组件都可以使用以下配置选项：
+ClickStack 的每个组件都支持以下配置选项：
 
 
 ## 修改设置 {#modifying-settings}
@@ -70,7 +70,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 \
 helm show values hyperdx/hdx-oss-v2 > values.yaml
 ```
 
-配置示例:
+示例配置:
 
 ```yaml
 replicaCount: 2
@@ -100,35 +100,35 @@ ingress:
 
 ### 数据源设置 {#datasource-settings}
 
-HyperDX 要求用户为每种可观测性数据类型/支柱定义数据源:
+HyperDX 需要用户为每种可观测性数据类型/支柱定义数据源:
 
 - `日志`
-- `追踪`
+- `链路追踪`
 - `指标`
 - `会话`
 
-可以在应用程序内通过 `Team Settings -> Sources` 进行配置,日志配置示例如下:
+此配置可以在应用程序内通过 `Team Settings -> Sources` 进行,日志配置示例如下:
 
-<Image img={hyperdx_25} alt='HyperDX Source configuration' size='lg' />
+<Image img={hyperdx_25} alt='HyperDX 数据源配置' size='lg' />
 
-每个数据源在创建时都需要指定至少一个表,以及一组允许 HyperDX 查询数据的列。
+每个数据源在创建时都需要至少指定一个表以及一组允许 HyperDX 查询数据的列。
 
-如果使用 ClickStack 分发的[默认 OpenTelemetry (OTel) 架构](/observability/integrating-opentelemetry#out-of-the-box-schema),这些列可以为每个数据源自动推断。如果[修改架构](#clickhouse)或使用自定义架构,用户需要指定并更新这些映射。
+如果使用 ClickStack 分发的[默认 OpenTelemetry (OTel) 模式](/observability/integrating-opentelemetry#out-of-the-box-schema),这些列可以为每个数据源自动推断。如果[修改模式](#clickhouse)或使用自定义模式,用户需要指定并更新这些映射。
 
 :::note
-ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)创建的架构。这些列名与[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)记录的 OTel 官方规范相对应。
+ClickStack 分发的 ClickHouse 默认模式是由 [OTel collector 的 ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)创建的模式。这些列名与[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)记录的 OTel 官方规范相对应。
 :::
 
-每个数据源的可用设置如下:
+每个数据源可用的设置如下:
 
 #### 日志 {#logs}
 
-| 设置                          | 描述                                                                                       | 必需 | 在默认架构中推断 | 推断值                                     |
+| 设置                          | 描述                                                                                       | 必需 | 在默认模式中推断 | 推断值                                     |
 | -------------------------------- | ------------------------------------------------------------------------------------------------- | -------- | -------------------------- | -------------------------------------------------- |
 | `Name`                           | 数据源名称。                                                                                      | 是      | 否                         | –                                                  |
 | `Server Connection`              | 服务器连接名称。                                                                           | 是      | 否                         | `Default`                                          |
 | `Database`                       | ClickHouse 数据库名称。                                                                         | 是      | 是                        | `default`                                          |
-| `Table`                          | 目标表名称。如果使用默认架构,设置为 `otel_logs`。                                  | 是      | 否                         |                                                    |
+| `Table`                          | 目标表名称。如果使用默认模式,设置为 `otel_logs`。                                  | 是      | 否                         |                                                    |
 | `Timestamp Column`               | 作为主键一部分的日期时间列或表达式。                                   | 是      | 是                        | `TimestampTime`                                    |
 | `Default Select`                 | 默认搜索结果中显示的列。                                                          | 是      | 是                        | `Timestamp`, `ServiceName`, `SeverityText`, `Body` |
 | `Service Name Expression`        | 服务名称的表达式或列。                                                        | 是      | 是                        | `ServiceName`                                      |
@@ -138,12 +138,12 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
 | `Resource Attributes Expression` | 资源级属性的表达式或列。                                               | 是      | 是                        | `ResourceAttributes`                               |
 | `Displayed Timestamp Column`     | UI 显示中使用的时间戳列。                                                              | 是      | 是                        | `ResourceAttributes`                               |
 | `Correlated Metric Source`       | 关联的指标数据源(例如 HyperDX metrics)。                                                      | 否       | 否                         | –                                                  |
-| `Correlated Trace Source`        | 关联的追踪数据源(例如 HyperDX traces)。                                                        | 否       | 否                         | –                                                  |
-| `Trace Id Expression`            | 用于提取追踪 ID 的表达式或列。                                                    | 是      | 是                        | `TraceId`                                          |
-| `Span Id Expression`             | 用于提取 span ID 的表达式或列。                                                     | 是      | 是                        | `SpanId`                                           |
+| `Correlated Trace Source`        | 关联的链路追踪数据源(例如 HyperDX traces)。                                                        | 否       | 否                         | –                                                  |
+| `Trace Id Expression`            | 用于提取链路追踪 ID 的表达式或列。                                                    | 是      | 是                        | `TraceId`                                          |
+| `Span Id Expression`             | 用于提取跨度 ID 的表达式或列。                                                     | 是      | 是                        | `SpanId`                                           |
 | `Implicit Column Expression`     | 未指定字段时用于全文搜索的列(Lucene 风格)。通常为日志正文。 | 是      | 是                        | `Body`                                             |
 
-#### 追踪 {#traces}
+#### 链路追踪 {#traces}
 
 
 | 设置                          | 描述                                                                                                                                        | 必需 | 默认模式中推断 | 推断值                                                                                        |
@@ -261,24 +261,24 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
   - **默认值：** `http://localhost`
   - **描述：** 前端应用的基础 URL。
   - **指南：**
-  - 在生产环境中设置为你的域名
+  - 生产环境中设置为你的域名
   - 必须包含协议（http/https）
-  - 不要包含末尾斜杠
+  - 末尾不要包含斜杠
 
 - `MONGO_URI`
   - **默认值：** `mongodb://db:27017/hyperdx`
   - **描述：** MongoDB 连接字符串。
   - **指南：**
-  - 在本地使用 Docker 开发时可使用默认值
-  - 生产环境请使用安全的连接字符串
-  - 如需身份验证需包含认证信息
+  - 使用 Docker 进行本地开发时可使用默认值
+  - 生产环境中使用安全的连接字符串
+  - 如需认证请包含认证信息
   - 示例：`mongodb://user:pass@host:port/db`
 
 - `MINER_API_URL`
   - **默认值：** `http://miner:5123`
   - **描述：** 日志模式挖掘服务的 URL。
   - **指南：**
-  - 在本地使用 Docker 开发时可使用默认值
+  - 使用 Docker 进行本地开发时可使用默认值
   - 生产环境中设置为你的 miner 服务 URL
   - 必须可从 API 服务访问
 
@@ -286,33 +286,33 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
   - **默认值：** `http://localhost:3000`
   - **描述：** 前端应用的 URL。
   - **指南：**
-  - 本地开发使用默认值
+  - 本地开发时使用默认值
   - 生产环境中设置为你的域名
   - 必须可从 API 服务访问
 
 - `OTEL_SERVICE_NAME`
   - **默认值：** `hdx-oss-api`
-  - **描述：** OpenTelemetry 插桩使用的服务名。
+  - **描述：** OpenTelemetry 插桩使用的服务名称。
   - **指南：**
-  - 为你的 HyperDX 服务使用具有描述性的名称。适用于 HyperDX 自行插桩的情况。
+  - 为你的 HyperDX 服务使用具有描述性的名称。适用于 HyperDX 自行插桩的场景。
   - 有助于在遥测数据中识别 HyperDX 服务
 
 - `NEXT_PUBLIC_OTEL_EXPORTER_OTLP_ENDPOINT`
   - **默认值：** `http://localhost:4318`
-  - **描述：** OpenTelemetry collector 端点。
+  - **描述：** OpenTelemetry Collector 端点。
   - **指南：**
-  - 在 HyperDX 自行插桩时生效
-  - 本地开发使用默认值
-  - 生产环境中设置为你的 collector URL
+  - 与 HyperDX 自行插桩相关
+  - 本地开发时使用默认值
+  - 生产环境中设置为你的 Collector URL
   - 必须可从你的 HyperDX 服务访问
 
 - `USAGE_STATS_ENABLED`
   - **默认值：** `true`
-  - **描述：** 控制使用统计数据收集的开关。
+  - **描述：** 用于开启或关闭使用统计信息采集。
   - **指南：**
-  - 设为 `false` 以禁用使用跟踪
-  - 对隐私敏感的部署很有用
-  - 默认值为 `true`，有助于改进产品
+  - 设置为 `false` 可关闭使用情况跟踪
+  - 适用于对隐私敏感的部署
+  - 默认值为 `true` 以便更好地改进产品
 
 - `IS_OSS`
   - **默认值：** `true`
@@ -327,28 +327,28 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
   - **描述：** 指示是否以本地模式运行。
   - **指南：**
   - 本地开发时设置为 `true`
-  - 会禁用某些生产功能
+  - 会禁用某些生产特性
   - 适用于测试和开发
 
 - `EXPRESS_SESSION_SECRET`
   - **默认值：** `hyperdx is cool 👋`
-  - **描述：** Express 会话管理使用的密钥。
+  - **描述：** 用于 Express 会话管理的密钥。
   - **指南：**
   - 生产环境中请修改
   - 使用强随机字符串
-  - 保持密钥机密并确保安全
+  - 保持密钥机密且安全
 
 - `ENABLE_SWAGGER`
   - **默认值：** `false`
-  - **描述：** 控制 Swagger API 文档的开关。
+  - **描述：** 用于开启或关闭 Swagger API 文档。
   - **指南：**
   - 设置为 `true` 以启用 API 文档
-  - 适用于开发与测试
-  - 生产环境中禁用
+  - 适用于开发和测试
+  - 生产环境中请禁用
 
 - `BETA_CH_OTEL_JSON_SCHEMA_ENABLED`
   - **默认值：** `false`
-  - **描述：** 启用 HyperDX 中 JSON 类型的 Beta 支持。另请参阅 [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) 以在 OTel collector 中启用 JSON 支持。
+  - **描述：** 启用 HyperDX 中 JSON 类型的 Beta 支持。参见 [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) 以在 OTel Collector 中启用 JSON 支持。
   - **指南：**
   - 设置为 `true` 以在 ClickStack 中启用 JSON 支持。
 
@@ -356,7 +356,7 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
 
 ## OpenTelemetry 收集器 {#otel-collector}
 
-详情请参阅 ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
+详情请参阅 ["ClickStack OpenTelemetry 收集器"](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
 
 - `CLICKHOUSE_ENDPOINT`
   - **默认值:** 独立镜像时为 _无(必需)_。如果是一体化或 Docker Compose 分发版,则设置为集成的 ClickHouse 实例。
@@ -369,7 +369,7 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
   - **默认值:** `default`
   - **描述:** 用于向 ClickHouse 实例进行身份验证的用户名。
   - **指导:**
-    - 确保用户具有 `INSERT` 和 `CREATE TABLE` 权限
+    - 确保该用户具有 `INSERT` 和 `CREATE TABLE` 权限
     - 建议为数据摄取创建专用用户
 
 - `CLICKHOUSE_PASSWORD`
@@ -388,7 +388,7 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
 
 - `OPAMP_SERVER_URL`
   - **默认值:** 独立镜像时为 _无(必需)_。如果是一体化或 Docker Compose 分发版,则指向已部署的 HyperDX 实例。
-  - **描述:** 用于管理收集器的 OpAMP 服务器 URL(例如 HyperDX 实例)。默认端口为 `4320`。
+  - **描述:** 用于管理收集器的 OpAMP 服务器的 URL(例如 HyperDX 实例)。默认端口为 `4320`。
   - **指导:**
     - 必须指向您的 HyperDX 实例
     - 启用动态配置和安全摄取
@@ -398,7 +398,7 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
   - **描述:** 收集器写入遥测数据的 ClickHouse 数据库。
   - **指导:**
     - 使用自定义数据库名称时设置
-    - 确保指定用户有权访问此数据库
+    - 确保指定的用户有权访问此数据库
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
   - **默认值:** `<空字符串>`
@@ -409,12 +409,12 @@ ClickStack 分发的 ClickHouse 默认架构是由 [OTel collector 的 ClickHous
 
 ## ClickHouse {#clickhouse}
 
-ClickStack 附带了一个为多 TB 规模设计的默认 ClickHouse 配置,用户可以根据自身工作负载自由修改和优化。
+ClickStack 附带了一个为多 TB 级规模设计的默认 ClickHouse 配置,但用户可以根据自己的工作负载自由修改和优化。
 
-要有效调优 ClickHouse,用户需要理解关键的存储概念,例如 [parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards),以及 [merges](/merges) 在插入时的执行机制。我们建议了解 [primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes) 和数据跳过索引的基础知识,以及 [managing data lifecycle](/observability/managing-data) 的技术,例如使用 TTL 生命周期管理。
+要有效调优 ClickHouse,用户应该理解关键的存储概念,例如 [parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards),以及 [merges](/merges) 如何在插入时发生。我们建议学习 [primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes) 和数据跳过索引的基础知识,以及[管理数据生命周期](/observability/managing-data)的技术,例如使用 TTL 生命周期。
 
-ClickStack 支持 [schema customization](/use-cases/observability/schema-design) - 用户可以修改列类型、提取新字段(例如从日志中提取)、应用编解码器和字典,以及使用投影加速查询。
+ClickStack 支持[模式定制](/use-cases/observability/schema-design) - 用户可以修改列类型、提取新字段(例如从日志中)、应用编解码器和字典,以及使用投影加速查询。
 
-此外,物化视图可用于[在数据摄取期间转换或过滤数据](/use-cases/observability/schema-design#materialized-columns),前提是数据写入视图的源表,且应用程序从目标表读取。
+此外,物化视图可用于[在数据摄取期间转换或过滤数据](/use-cases/observability/schema-design#materialized-columns),前提是数据写入视图的源表,并且应用程序从目标表读取。
 
 有关更多详细信息,请参阅 ClickHouse 文档中关于模式设计、索引策略和数据管理最佳实践的内容 - 其中大部分直接适用于 ClickStack 部署。

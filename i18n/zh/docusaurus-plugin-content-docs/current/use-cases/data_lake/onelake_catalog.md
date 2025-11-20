@@ -4,7 +4,7 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将向您逐步介绍如何在 Microsoft OneLake 中查询数据。'
+description: '在本指南中，我们将逐步演示如何在 Microsoft OneLake 中查询您的数据。'
 keywords: ['OneLake', 'Data Lake', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,12 +14,12 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个目录（OneLake、Unity、Glue、Polaris 等）集成。本指南将引导你完成使用 ClickHouse 和 [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) 查询存储在 Microsoft OneLake 中的数据的步骤。
+ClickHouse 支持与多个目录（catalog）（OneLake、Unity、Glue、Polaris 等）集成。本指南将带你一步步完成使用 ClickHouse 和 [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) 查询存储在 Microsoft OneLake 中的数据的过程。
 
-Microsoft OneLake 的 lakehouse 支持多种表格式。使用 ClickHouse，你可以查询 Iceberg 表。
+Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你可以查询 Iceberg 表。
 
 :::note
-由于此功能处于 beta 阶段，你需要通过以下语句将其启用：
+由于此功能处于 beta 阶段，你需要通过以下设置将其启用：
 `SET allow_database_iceberg = 1;`
 :::
 
@@ -33,7 +33,7 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。使用 ClickHouse，你�
 - 客户端密钥
 - 仓库 ID 和数据项 ID
 
-请参阅 [Microsoft OneLake 文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)了解如何查找这些值。
+有关如何查找这些值的帮助,请参阅 [Microsoft OneLake 文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)。
 
 
 ## 在 OneLake 和 ClickHouse 之间创建连接 {#creating-a-connection-between-unity-catalog-and-clickhouse}

@@ -1,11 +1,11 @@
 ---
-sidebar_label: '最初の Kafka ClickPipe の作成'
-description: '初めての Kafka ClickPipe を作成するためのステップバイステップガイド。'
+sidebar_label: '初めてのKafka ClickPipeの作成'
+description: '初めてのKafka ClickPipeを作成するためのステップバイステップガイド。'
 slug: /integrations/clickpipes/kafka/create-your-first-kafka-clickpipe
 sidebar_position: 1
-title: '初めての Kafka ClickPipe を作成する'
+title: '初めてのKafka ClickPipeの作成'
 doc_type: 'guide'
-keywords: ['kafka clickpipe の作成', 'kafka', 'clickpipes', 'データソース', 'セットアップガイド']
+keywords: ['create kafka clickpipe', 'kafka', 'clickpipes', 'data sources', 'setup guide']
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -54,8 +54,7 @@ Avroストリームには有効なスキーマが必要です。スキーマレ�
 
 ## リバースプライベートエンドポイントの設定（オプション） {#5-configure-reverse-private-endpoint}
 
-リバースプライベートエンドポイントを設定すると、ClickPipesがAWS PrivateLinkを使用してKafkaクラスタに接続できるようになります。
-
+AWS PrivateLinkを使用してClickPipesがKafkaクラスターに接続できるようにするには、リバースプライベートエンドポイントを設定します。
 詳細については、[AWS PrivateLinkドキュメント](../aws-privatelink.md)を参照してください。
 
 
@@ -79,9 +78,9 @@ Avroストリームには有効なスキーマが必要です。スキーマレ�
 
 ## 権限の設定 {#8-configure-permissions}
 
-ClickPipesは、宛先テーブルへのデータ書き込み用に専用ユーザーを作成します。この内部ユーザーには、カスタムロールまたは以下の事前定義されたロールのいずれかを割り当てることができます:
+ClickPipesは、宛先テーブルへのデータ書き込み用に専用ユーザーを作成します。この内部ユーザーには、カスタムロールまたは以下の事前定義されたロールのいずれかを選択できます:
 
-- `Full access`: クラスタへの完全なアクセス権限。宛先テーブルでマテリアライズドビューやディクショナリを使用する場合に有用です。
+- `Full access`: クラスタへの完全なアクセス権限。宛先テーブルでマテリアライズドビューやディクショナリを使用する場合に便利です。
 - `Only destination table`: 宛先テーブルへの`INSERT`権限のみ。
 
 <Image img={cp_step5} alt='権限' size='md' />
@@ -89,7 +88,7 @@ ClickPipesは、宛先テーブルへのデータ書き込み用に専用ユー�
 
 ## セットアップの完了 {#9-complete-setup}
 
-「Create ClickPipe」をクリックすると、ClickPipeが作成され実行されます。作成されたClickPipeはData Sourcesセクションに一覧表示されます。
+「Create ClickPipe」をクリックすると、ClickPipeが作成され実行されます。作成されたClickPipeはData Sourcesセクションに表示されます。
 
 <Image img={cp_overview} alt='概要を表示' size='md' />
 

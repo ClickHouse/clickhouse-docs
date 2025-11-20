@@ -1,35 +1,35 @@
 ---
 slug: /native-protocol/basics
 sidebar_position: 1
-title: '基本'
-description: 'ネイティブプロトコルの基本'
+title: '基礎'
+description: 'ネイティブプロトコルの基礎'
 keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
 doc_type: 'guide'
 ---
 
 
 
-# 基本事項
+# 基本
 
 :::note
 クライアントプロトコルのリファレンスは作成中です。
 
-サンプルのほとんどは Go のみで提供されています。
+ほとんどのサンプルコードは Go でのみ提供されています。
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-このドキュメントでは、ClickHouse の TCP クライアント向けのバイナリプロトコルについて説明します。
+このドキュメントでは、ClickHouse の TCP クライアント用バイナリプロトコルについて説明します。
 
 
 ## Varint {#varint}
 
-長さ、パケットコード、その他のケースでは、_unsigned varint_ エンコーディングが使用されます。
-[binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) および [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
+長さ、パケットコード、その他のケースでは、_符号なしvarint_エンコーディングが使用されます。
+[binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint)と[binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)を使用します。
 
 :::note
-_Signed_ varint は使用されません。
+_符号付き_varintは使用されません。
 :::
 
 
@@ -157,6 +157,6 @@ fmt.Println(d) // 1000
 </Tabs>
 
 
-## Boolean（ブール型） {#boolean}
+## Boolean {#boolean}
 
 ブール値は1バイトで表現され、`1`が`true`、`0`が`false`です。

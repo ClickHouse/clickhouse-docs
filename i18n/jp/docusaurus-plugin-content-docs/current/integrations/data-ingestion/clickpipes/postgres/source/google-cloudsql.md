@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Google Cloud SQL'
-description: 'ClickPipes のソースとして使用する Google Cloud SQL Postgres インスタンスをセットアップする'
+description: 'ClickPipes のソースとして Google Cloud SQL Postgres インスタンスを設定する'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
 title: 'Google Cloud SQL Postgres ソース設定ガイド'
 doc_type: 'guide'
@@ -18,11 +18,11 @@ import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 
-# Google Cloud SQL Postgres ソース設定ガイド
+# Google Cloud SQL Postgres ソースセットアップガイド
 
 :::info
 
-サイドバーに表示されているサポート対象プロバイダーのいずれかを利用している場合は、そのプロバイダー専用のガイドを参照してください。
+サイドバーに表示されているサポート対象プロバイダーのいずれかを使用している場合は、そのプロバイダー向けの個別ガイドを参照してください。
 
 :::
 
@@ -35,28 +35,28 @@ Postgres 12以降
 
 ## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-`cloudsql.logical_decoding`が有効で、`wal_sender_timeout`が0に設定されている場合、以下の手順を実行する**必要はありません**。これらの設定は、他のデータレプリケーションツールから移行する場合、通常は事前に構成されています。
+`cloudsql.logical_decoding` が on で `wal_sender_timeout` が 0 に設定されている場合、以下の手順を実行する**必要はありません**。これらの設定は、他のデータレプリケーションツールから移行する場合、ほとんど事前に設定されているはずです。
 
-1. 概要ページの**編集**ボタンをクリックします。
+1. 概要ページの **Edit** ボタンをクリックします。
 
 <Image
   img={edit_button}
-  alt='Cloud SQL Postgresの編集ボタン'
+  alt='Cloud SQL PostgreSQL の Edit ボタン'
   size='lg'
   border
 />
 
-2. フラグに移動し、`cloudsql.logical_decoding`を有効に、`wal_sender_timeout`を0に変更します。これらの変更を適用するには、Postgresサーバーの再起動が必要です。
+2. Flags に移動し、`cloudsql.logical_decoding` を on に、`wal_sender_timeout` を 0 に変更します。これらの変更には Postgres サーバーの再起動が必要です。
 
 <Image
   img={cloudsql_logical_decoding1}
-  alt='cloudsql.logical_decodingを有効に変更'
+  alt='cloudsql.logical_decoding を on に変更'
   size='lg'
   border
 />
 <Image
   img={cloudsql_logical_decoding2}
-  alt='cloudsql.logical_decodingとwal_sender_timeoutを変更済み'
+  alt='cloudsql.logical_decoding と wal_sender_timeout を変更済み'
   size='lg'
   border
 />
@@ -87,7 +87,7 @@ Postgres 12以降
    ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. 今後MIRROR(レプリケーション)の作成に使用するパブリケーションを作成します。
+4. 今後MIRROR(レプリケーション)を作成する際に使用するパブリケーションを作成します。
 
    ```sql
    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
@@ -96,13 +96,13 @@ Postgres 12以降
 [//]: # "TODO Add SSH Tunneling"
 
 
-## ClickPipes IPをファイアウォールに追加 {#add-clickpipes-ips-to-firewall}
+## ClickPipes IPをファイアウォールに追加する {#add-clickpipes-ips-to-firewall}
 
 ClickPipes IPをネットワークに追加するには、以下の手順に従ってください。
 
 :::note
 
-SSHトンネリングを使用している場合は、ジャンプサーバー/踏み台サーバーのファイアウォールルールに[ClickPipes IP](../../index.md#list-of-static-ips)を追加する必要があります。
+SSHトンネリングを使用している場合は、[ClickPipes IP](../../index.md#list-of-static-ips)をジャンプサーバー/踏み台サーバーのファイアウォールルールに追加する必要があります。
 
 :::
 
@@ -142,5 +142,5 @@ SSHトンネリングを使用している場合は、ジャンプサーバー/�
 
 ## 次のステップ {#whats-next}
 
-これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず控えておいてください。
+これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

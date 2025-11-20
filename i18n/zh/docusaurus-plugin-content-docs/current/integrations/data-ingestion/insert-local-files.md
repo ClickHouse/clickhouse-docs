@@ -1,9 +1,9 @@
 ---
-sidebar_label: '导入本地文件'
+sidebar_label: '插入本地文件'
 sidebar_position: 2
-title: '导入本地文件'
+title: '插入本地文件'
 slug: /integrations/data-ingestion/insert-local-files
-description: '了解如何导入本地文件'
+description: '了解如何插入本地文件'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
@@ -11,22 +11,22 @@ keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'cli
 
 # 插入本地文件
 
-你可以使用 `clickhouse-client` 将本地文件以流的方式导入到 ClickHouse 服务中。这样你就可以利用众多强大且便捷的 ClickHouse 函数对数据进行预处理。下面来看一个示例……
+你可以使用 `clickhouse-client` 以流式方式将本地文件导入到你的 ClickHouse 服务中。这样你就可以利用众多强大且便捷的 ClickHouse 函数对数据进行预处理。下面来看一个示例……
 
-1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，其中包含一些 Hacker News 评论，并且首行表头包含列名。插入数据时需要指定一个[输入格式](/interfaces/formats)，在我们的示例中是 `TabSeparatedWithNames`：
+1. 假设我们有一个名为 `comments.tsv` 的 TSV 文件，其中包含一些 Hacker News 评论，并且首行表头包含列名。插入数据时，你需要指定一种[输入格式](/interfaces/formats)，在本例中为 `TabSeparatedWithNames`：
 
 ```text
 id      type    author  timestamp       comment children
-19464423        comment adrianmonk      2019-03-22 16:58:19     “首先，这根本就是苹果和橙子的比较。监狱人口会带来相关的安全开支。你需要员工、设施、设备等来管理囚犯的行为（防止斗殴等）并防止他们逃脱。这两件事的目的不同，当然成本也就不同。<p>这就像说冰箱比微波炉贵一样。这毫无意义，因为它们的功能不同。”   []
-19464461        comment sneakernets     2019-03-22 17:01:10     “因为科学证据如此确凿，现在再讨论它已经是多此一举了。<p>但对于反疫苗者来说，这就像告诉某人你手里拿着的红苹果是红色的，他们却坚持说是绿色的。你无法和这样的人争论‘其优点’。” [19464582]
-19465288        comment derefr  2019-03-22 18:15:21     “因为我们讨论的是后端部署和运维领域的行话术语‘website’和‘webapp’，而不是它们的通用用法。词语在不同领域中可以有精确的行话含义<i>这些含义是不同的</i>。这就是运维人员通常划清界限的地方：一个web<i>site</i>是你可以部署到例如S3存储桶的东西，它将完全功能正常，而无需为它维护其他依赖项。<i>webapp</i>是<i>确实</i>有此类依赖项的东西，你需要设置和维护它们——例如数据库层。<p>但即使忽略这一点，我也因为前缀‘web.’而这样定义这些术语。Webapp不是‘web上的app’，而是‘由web驱动的app’。一个完全离线的JavaScript SPA只是<i>通过</i>web<i>提供</i>，<i>不是</i>web-app。它只是一个在浏览器中运行的程序，就像Flash或ActiveX或Java小程序是一个在浏览器中运行的程序一样。（Flash游戏是‘web游戏’吗？它通常被视为<i>浏览器游戏</i>，但那不是同一件事。）<p>我们已经有了一个术语来描述{Flash、ActiveX、Java}小程序：apps。离线JavaScript SPA也只是apps。我们不需要添加‘web’前缀；在这里它是无意义的。在任何这些情况下，如果你把完全相同的程序塞进Electron包装器而不是通过域名访问的S3存储桶，它显然在任何意义上都不是‘web app’。你的SPA将只是‘一个使用浏览器DOM作为图形工具包的JavaScript <i>app</i>’。嗯，在你把它放入Electron包装器之前，这也是一样真实的。<p>因此，‘web app’有一个特定的含义，超越了‘app’。你需要一些额外的东西。那额外的东西是一个后端，你的浏览器——由app的逻辑驱动——<i>通过web</i>与之交互。这就是使一个app成为‘web app’的东西。（这个定义有意涵盖了服务器渲染的动态HTML和客户端渲染的JavaScript SPA app。你不需要前端<i>app</i>；你只需要一个<i>web后端</i>，有些东西与之交互。那东西可以是浏览器直接，通过点击链接和提交表单；或者它可以是使用AJAX的JavaScript前端。）<p>因此，‘web site’是一个没有‘app’部分的‘web app’。如果上述定义中清楚了什么是‘app’，什么是‘web app’，那么你可以从一个减去另一个来推导出‘web非app’的定义。那就是website：由web后端驱动的东西，它不做任何app事情。如果我们决定‘app事情’基本上是‘存储状态’，那么一个‘site’是一个没有持久状态的‘app’。<p>由于这里的‘web’定义是关于后端的，因此‘web app’和‘web site’（web非app）之间的区别可能由后端的属性定义。所以区别在于web后端存储状态的能力。因此，一个‘web site’是一个后端不做app事情的‘web app’——即，不存储状态。”       []
-19465534        comment bduerst 2019-03-22 18:36:40     “包括Apple： <a href=""https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-users-icloud-services-personal-data-china-cybersecurity-law-privacy"" rel=""nofollow"">https:&#x2F;&#x2F;www.theguardian.com&#x2F;commentisfree&#x2F;2018&#x2F;mar&#x2F;04&#x2F;apple-...</a>”        []
-19466269        comment CalChris        2019-03-22 19:55:13     “&gt; 它有相同的A12 CPU ……在<i>片上系统</i>上配备3 GB RAM<p>实际上那是<i>封装上封装</i>。LPDDR4X DRAM被粘合（嗯，回流焊接）在A12 Bionic的背面。<p><a href=""https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blog&#x2F;apple-iphone-xs-teardown&#x2F;"" rel=""nofollow"">https:&#x2F;&#x2F;www.techinsights.com&#x2F;about-techinsights&#x2F;overview&#x2F;blo...</a><p><a href=""https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package"" rel=""nofollow"">https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Package_on_package</a>”       [19468341]
-19466980        comment onetimemanytime 2019-03-22 21:07:25     “&gt;&gt;<i>这里的荒谬在于，你不能利用房车所在的土地在其上建造一个工作室。</i><p>这是苹果和橙子的比较。获得建造工作室的许可会使该建筑永久合法化。而房车，他们可以用新法律驱逐，或者只是执行现有法律。”      []
-19467048        comment karambahh       2019-03-22 21:15:41     "我认为你在这里是在混淆两个完全不同的概念。<p>如果你将停车位改作他用(比如建造家庭住房或动物收容所),你并没有剥夺汽车的任何东西,它只是一块昂贵的大型金属,并不具有感知能力。<p>接下来,你可能会说这剥夺了车主随意停车的便利性。为了让一个人能有遮风挡雨的住所,我完全可以接受剥夺车主的这种便利。(这是我的亲身经历,就在几分钟前,我不得不把车停在离家1公里外的地方,因为市政府正在建造住房,限制了附近的停车位)<p>然后,有些人可能会说,在人类还在受苦的时候帮助动物是可耻的。这和«我们不能接纳更多移民,我们必须先照顾好'自己的'无家可归者»的思路如出一辙。<p>这是一个错误的二元对立。西方社会的不平等正在不断加剧。我个人的努力微不足道。我向人类或动物慈善事业的捐赠,相比我们所处的巨大不平等只是杯水车薪。但我们作为一个集体,通过捐赠、投票以及对我们所生活的世界保持关注,确实能够产生影响...<p>最后,从我个人的经历来看:我多次目睹极度贫困的人们不遗余力地向动物或人类表达团结互助。我也目睹了大量极其富有的人抱怨穷人的存在给他们带来不便,而他们的财富正是他们祖先剥削这些穷人的直接结果。"      [19467512]
+19464423        comment adrianmonk      2019-03-22 16:58:19     “从一开始这就是在比较风马牛不相及的两样东西。监狱关押人员是有安全成本的。你需要员工、设施、设备等来管理囚犯的行为（防止打架等），并防止他们越狱。两者承担的使命不同，所以成本当然也会不同。<p>这就像说冰箱比微波炉贵。这句话本身没有意义，因为它们负责的事情完全不同。”   []
+19464461        comment sneakernets     2019-03-22 17:01:10     “因为相关科学已经坚如磐石，再讨论下去纯属徒劳。<p>但对于反疫苗的人，这就像你告诉某人你手里这颗红苹果是红的，而他们却坚持说是绿的。对于这样的人，你没法就“优劣”展开论证。” [19464582]
+19465288        comment derefr  2019-03-22 18:15:21     “因为我们在讨论的是后端部署与运维行话里的“website”和“webapp”，而不是它们在日常用法中的含义。词语在不同学科中可能有精确的行话意义，<i>而且彼此不同</i>。运维人员往往会在这里划清界限：一个 web<i>site</i> 是可以部署到例如 S3 bucket 且能完全工作的东西，你无需为它维护其他依赖。一个 <i>webapp</i> 则是<i>确实</i>存在这类依赖，需要你去搭建和维护的——例如数据库层。<p>但即便不考虑这些，我也因“web”这个前缀而这样定义。webapp 不是“在 web 上的应用”，而是“由 web 提供支撑的应用”。一个完全离线、只是通过 web <i>提供</i>的 JavaScript SPA，<i>并不是</i> web-app。它只是一个在浏览器里运行的程序，就像 Flash、ActiveX 或 Java applet 一样。（Flash 游戏是“web 游戏”吗？通常被称为<i>浏览器游戏</i>，但那并非同一概念。）<p>我们已有术语来描述 {Flash、ActiveX、Java} 这类 applet：apps。离线的 JavaScript SPA 同样只是 apps。我们不需要再加上“web”前缀；在这里它无实际意义。在任何上述情形中，如果你把完全相同的程序，从放在域名前端的 S3 bucket，换成装进 Electron 打包里，从任何意义上看它都不再是“web app”。你的 SPA 只是“一个使用浏览器 DOM 作为图形工具包的 JavaScript <i>app</i>”。在放入 Electron 之前，这句话同样成立。<p>因此，“web app”在“app”之上有特定含义。你需要额外的东西。这个额外的东西就是后端（backend），由应用逻辑驱动的浏览器通过 web 与之交互。这就是让一个应用成为“web app”的原因。（该定义有意同时涵盖服务器端渲染的动态 HTML 和客户端渲染的 JavaScript SPA。你不必有前端<i>app</i>；你只需要一个有东西与之交互的<i>web 后端</i>。这个“东西”可以是浏览器直接通过点击链接和提交表单，也可以是使用 AJAX 的 JavaScript 前端。）<p>那么，“web site”就是没有“app”部分的“web app”。如果上文中“app”与“web app”的定义清楚，那么你可以由此推导出“web not-app”的定义。那就是 website：由 web 后端驱动但不执行任何应用行为的东西。如果我们认为“应用行为”基本上是“存储状态”，那么“site”就是没有持久状态的“app”。<p>既然此处对“web”的定义是关于后端的，那么“web app”和“web site”（web not-app）之间的区别，很可能由后端的属性来决定，即后端是否具备存储状态的能力。因此，“web site”可以被视为一种后端不执行应用行为——即不存储状态的“web app”。”       []
+19465534        comment bduerst 2019-03-22 18:36:40     “包括 Apple 在内：<a href="https://www.theguardian.com/commentisfree/2018/mar/04/apple-users-icloud-services-personal-data-china-cybersecurity-law-privacy" rel="nofollow">https://www.theguardian.com/commentisfree/2018/mar/04/apple-...</a>”        []
+19466269        comment CalChris        2019-03-22 19:55:13     “&gt; 它使用相同的 A12 CPU……在<i>系统级芯片（system-on-a-chip）</i>上带有 3 GB RAM。<p>实际上那是<i>封装叠层（package-on-package）</i>。LPDDR4X DRAM 被粘（准确说是回流焊接）在 A12 Bionic 的背面。<p><a href="https://www.techinsights.com/about-techinsights/overview/blog/apple-iphone-xs-teardown/" rel="nofollow">https://www.techinsights.com/about-techinsights/overview/blo...</a><p><a href="https://en.wikipedia.org/wiki/Package_on_package" rel="nofollow">https://en.wikipedia.org/wiki/Package_on_package</a>”       [19468341]
+19466980        comment onetimemanytime 2019-03-22 21:07:25     “&gt;&gt;<i>这里荒谬的是，你不能把房车所在的那块地拿来盖一个工作室。</i><p>完全是风马牛不相及。为工作室颁发的许可证会让那栋建筑在法律上获得合法地位，某种程度上可以长期存在。而房车，他们可以通过一部新法律把它赶走，或者只是开始严格执行现有法律。”      []
+19467048        comment karambahh       2019-03-22 21:15:41     "我认为你在这里是在拿苹果和橙子做比较。<p>如果你将停车位改作他用(比如建造家庭住房或动物收容所),你并没有剥夺汽车的任何东西,它只是一块昂贵的大型金属,并不具有感知能力。<p>接下来,你可能会说你剥夺了车主随意停车的便利性。为了让一个人能有遮风挡雨的地方,我完全可以接受剥夺车主的这种便利。(这是我的亲身经历,就在几分钟前,我不得不把车停在离家1公里远的地方,因为市政府正在建造住房,限制了附近的停车位)<p>然后,有些人可能会说,在人类还在受苦的时候帮助动物是可耻的。这和«我们不能接纳更多移民,我们必须先照顾好'自己的'无家可归者»的思路如出一辙。<p>这是一个错误的二元对立。西方社会的不平等正在不断加剧。我个人的努力微不足道。我向人类或动物慈善事业的捐赠,只是我们所处的巨大不平等山脉上的一个小凹痕。但我们作为一个集体,通过捐赠、投票以及对我们所生活的世界保持关注,确实能产生影响……<p>最后,完全是个人观察:我多次目睹极度贫困的人们不遗余力地向动物或人类表达团结。我也目睹了大量极其富有的人抱怨穷人的存在给他们带来不便,而他们的财富正是他们祖先剥削这些穷人的直接结果。"      [19467512]
 ```
 
-2. 现在让我们为 Hacker News 数据创建一张表：
+2. 让我们为 Hacker News 数据创建一个表：
 
 ```sql
 CREATE TABLE hackernews (
@@ -42,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. 我们希望将 `author` 列转换为小写，这可以通过 [`lower` 函数](/sql-reference/functions/string-functions#lower) 轻松实现。我们还希望将 `comment` 字符串拆分为词元，并将结果存储到 `tokens` 列中，这可以使用 [`extractAll` 函数](/sql-reference/functions/string-search-functions#extractAll) 实现。你可以在一个 `clickhouse-client` 命令中完成上述所有操作——注意 `comments.tsv` 文件是如何通过 `<` 运算符传递给 `clickhouse-client` 的：
+3. 我们希望将 `author` 列转换为小写，这可以通过 [`lower` 函数](/sql-reference/functions/string-functions#lower) 轻松完成。我们还希望将 `comment` 字符串拆分为词元，并将结果存储在 `tokens` 列中，这可以使用 [`extractAll` 函数](/sql-reference/functions/string-search-functions#extractAll) 来实现。你可以在一条 `clickhouse-client` 命令中完成以上所有操作——注意这里是如何使用 `<` 运算符将 `comments.tsv` 文件重定向输入到 `clickhouse-client` 的：
 
 ```bash
 clickhouse-client \
@@ -66,10 +66,10 @@ clickhouse-client \
 ```
 
 :::note
-这里 `input` 函数非常有用，因为它允许我们在向 `hackernews` 表插入数据的同时对其进行转换。传递给 `input` 的参数是传入原始数据的格式，你会在很多其他表函数中看到类似的用法（在这些函数中你需要为传入数据指定一个 schema）。
+`input` 函数在这里非常有用，因为它允许我们在将数据插入 `hackernews` 表的过程中对其进行转换。传递给 `input` 的参数是传入原始数据的格式，你会在许多其他表函数中看到这一点（在这些函数中，你需要为传入的数据指定一个 schema）。
 :::
 
-4. 就这样！数据已经导入到 ClickHouse 中了：
+4. 就这样！数据已经写入 ClickHouse：
 
 ```sql
 SELECT *
@@ -77,7 +77,7 @@ FROM hackernews
 LIMIT 7
 ```
 
-结果如下：
+结果为：
 
 
 ```response
@@ -90,7 +90,7 @@ LIMIT 7
 │ 5102 │ comment │ staunch      │ 2007-03-20 02:42:47 │ "Well this is exactly the kind of thing that isn't very obvious. It sounds like once you're wealthy there's a new set of rules you have to live by. It's a shame everyone has had to re-learn these things for themselves because a few bad apples can control their jealousy.<p>Very good to hear it's somewhere in your essay queue though. I'll try not to get rich before you write it, so I have some idea of what to expect :-)" │ []       │ ['Well','this','is','exactly','the','kind','of','thing','that','isn','t','very','obvious','It','sounds','like','once','you','re','wealthy','there','s','a','new','set','of','rules','you','have','to','live','by','It','s','a','shame','everyone','has','had','to','re','learn','these','things','for','themselves','because','a','few','bad','apples','can','control','their','jealousy','p','Very','good','to','hear','it','s','somewhere','in','your','essay','queue','though','I','ll','try','not','to','get','rich','before','you','write','it','so','I','have','some','idea','of','what','to','expect'] │
 ```
 
-5. 另一种方式是使用 `cat` 之类的工具，将文件通过流的方式传给 `clickhouse-client`。例如，下面的命令与使用 `<` 运算符所得到的结果相同：
+5. 另一种方式是使用 `cat` 这类工具将文件流式传输到 `clickhouse-client`。例如，下面的命令与使用 `<` 运算符的效果相同：
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -113,4 +113,4 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-访问 [`clickhouse-client`](/interfaces/cli) 文档页面，了解如何在本地操作系统上安装 `clickhouse-client` 的详细信息。
+请访问 [`clickhouse-client` 文档页面](/interfaces/cli)，了解如何在本地操作系统上安装 `clickhouse-client` 的详细信息。

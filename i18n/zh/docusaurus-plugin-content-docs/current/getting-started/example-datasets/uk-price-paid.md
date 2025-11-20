@@ -1,5 +1,5 @@
 ---
-description: '学习如何使用投影来提升常用查询的性能，这里使用 UK property 数据集，该数据集包含英格兰和威尔士房地产成交价格的数据'
+description: '了解如何使用投影来提升在英国房产数据集上的高频查询性能。该数据集包含英格兰和威尔士房地产成交价格相关的数据'
 sidebar_label: '英国房产价格'
 slug: /getting-started/example-datasets/uk-price-paid
 title: '英国房产价格数据集'
@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'getting started']
 ---
 
-该数据集包含英格兰和威尔士房地产成交价格数据。数据自 1995 年起可用，未压缩时数据集大小约为 4 GiB（在 ClickHouse 中仅约为 278 MiB）。
+该数据集包含英格兰和威尔士房地产成交价格数据。数据自 1995 年起可用，未压缩形式下的数据集大小约为 4 GiB（在 ClickHouse 中仅约占用 278 MiB）。
 
-- 来源：https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
-- 字段说明：https://www.gov.uk/guidance/about-the-price-paid-data
-- 包含 HM Land Registry 数据 © Crown copyright and database right 2021。本数据依据 Open Government Licence v3.0 许可协议授权使用。
+- 来源: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
+- 字段说明: https://www.gov.uk/guidance/about-the-price-paid-data
+- 包含 HM Land Registry 数据 © Crown copyright and database right 2021。该数据根据 Open Government Licence v3.0 授权使用。
 
 
 
@@ -53,7 +53,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 - 将 `is_new` 字段从单字符字符串(`Y`/`N`)转换为取值为 0 或 1 的 [UInt8](/sql-reference/data-types/int-uint) 字段
 - 删除最后两列,因为它们的值都相同(均为 0)
 
-`url` 函数将数据从 Web 服务器流式传输到您的 ClickHouse 表中。以下命令将 500 万行数据插入到 `uk_price_paid` 表中:
+`url` 函数将数据从 Web 服务器流式传输到您的 ClickHouse 表中。以下命令将 500 万行数据插入到 `uk_price_paid` 表:
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -99,14 +99,14 @@ FROM url(
 
 ## 验证数据 {#validate-data}
 
-让我们通过查看插入的行数来验证操作是否成功:
+让我们通过查看插入的行数来验证操作是否成功：
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-运行此查询时,数据集包含 27,450,499 行。接下来查看该表在 ClickHouse 中的存储大小:
+运行此查询时，数据集共有 27,450,499 行。接下来查看该表在 ClickHouse 中的存储大小：
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -114,7 +114,7 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-注意该表的大小仅为 221.43 MiB!
+注意该表的大小仅为 221.43 MiB！
 
 
 ## 运行查询 {#run-queries}
@@ -150,7 +150,7 @@ ORDER BY year
 
 2020 年房价发生了一些变化!但这可能并不令人意外...
 
-### 查询 3. 最昂贵的社区 {#most-expensive-neighborhoods}
+### 查询 3. 最昂贵的街区 {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT

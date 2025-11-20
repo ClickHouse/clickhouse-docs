@@ -2,7 +2,7 @@
 sidebar_label: 'Confluent Platform'
 sidebar_position: 1
 slug: /integrations/kafka/cloud/confluent
-description: 'Интеграция Kafka с Confluent Cloud'
+description: 'Подключение Kafka через Confluent Cloud'
 title: 'Интеграция Confluent Cloud с ClickHouse'
 doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse integration', 'Kafka ClickHouse connector', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
@@ -12,6 +12,6 @@ keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse integration', 'Ka
 
 Платформа Confluent предоставляет два варианта интеграции с ClickHouse:
 
-* [Sink-коннектор ClickHouse Connect в Confluent Cloud](./confluent-cloud.md)
-* [Sink-коннектор ClickHouse Connect на Confluent Platform](./custom-connector.md) с использованием функции пользовательских коннекторов
-* [HTTP Sink-коннектор для Confluent Platform](./kafka-connect-http.md), который интегрирует Apache Kafka с API через HTTP или HTTPS
+* [Коннектор ClickHouse Connect Sink в Confluent Cloud](./confluent-cloud.md)
+* [Коннектор ClickHouse Connect Sink в Confluent Platform](./custom-connector.md) с использованием функции пользовательских коннекторов
+* [HTTP Sink Connector для Confluent Platform](./kafka-connect-http.md), который интегрирует Apache Kafka с API по HTTP или HTTPS

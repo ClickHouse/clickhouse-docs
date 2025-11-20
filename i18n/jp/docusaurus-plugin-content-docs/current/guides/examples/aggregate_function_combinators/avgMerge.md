@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMerge'
 title: 'avgMerge'
-description: 'avgMerge 合成子の使用例'
+description: 'avgMerge コンビネーターの使用例'
 keywords: ['avg', 'merge', 'combinator', 'examples', 'avgMerge']
 sidebar_label: 'avgMerge'
 doc_type: 'reference'
@@ -14,7 +14,9 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`Merge`](/sql-reference/aggregate-functions/combinators#-state)コンビネータを[`avg`](/sql-reference/aggregate-functions/reference/avg)関数に適用することで、部分集約状態を結合し、最終結果を生成できます。
+[`Merge`](/sql-reference/aggregate-functions/combinators#-state) コンビネータを
+[`avg`](/sql-reference/aggregate-functions/reference/avg)
+関数に適用することで、部分集計状態を結合して最終結果を生成できます。
 
 
 ## 使用例 {#example-usage}

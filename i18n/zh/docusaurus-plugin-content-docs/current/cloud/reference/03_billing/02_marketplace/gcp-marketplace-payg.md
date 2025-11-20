@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-payg
 title: 'GCP Marketplace 按需付费 (PAYG)'
-description: '通过 GCP Marketplace 的按需付费（PAYG）模式订阅 ClickHouse Cloud。'
+description: '通过 GCP Marketplace（按需付费，PAYG）订阅 ClickHouse Cloud。'
 keywords: ['gcp', 'marketplace', 'billing', 'PAYG']
 doc_type: 'guide'
 ---
@@ -19,13 +19,13 @@ import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/ma
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 import Image from '@theme/IdealImage';
 
-通过 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上的 PAYG（按需付费）公共套餐开始使用 ClickHouse Cloud。
+通过 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上的按需付费（PAYG，Pay-as-you-go）公共优惠开始使用 ClickHouse Cloud。
 
 
 ## 前提条件 {#prerequisites}
 
 - 一个已由账单管理员授予购买权限的 GCP 项目。
-- 要在 GCP Marketplace 上订阅 ClickHouse Cloud,您必须使用具有购买权限的账号登录,并选择相应的项目。
+- 要在 GCP Marketplace 上订阅 ClickHouse Cloud,您必须使用具有购买权限的账户登录,并选择相应的项目。
 
 
 ## 注册步骤 {#steps-to-sign-up}
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
   border
 />
 
-2. 点击[产品列表](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud),然后点击 **Subscribe**。
+2. 点击[列表页](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud),然后点击 **Subscribe**。
 
 <Image
   img={gcp_marketplace_payg_2}
@@ -50,7 +50,7 @@ import Image from '@theme/IdealImage';
 
 3. 在下一个页面中配置订阅:
 
-- 套餐默认为 "ClickHouse Cloud"
+- 计划默认为 "ClickHouse Cloud"
 - 订阅周期为 "Monthly"
 - 选择相应的计费账户
 - 接受条款并点击 **Subscribe**
@@ -94,7 +94,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-如果您是 ClickHouse Cloud 新用户,请点击页面底部的 **Register**。系统将提示您创建新用户并验证邮箱。验证邮箱后,您可以前往 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
+如果您是 ClickHouse Cloud 新用户,请点击页面底部的 **Register**。系统将提示您创建新用户并验证邮箱。验证邮箱后,您可以关闭 ClickHouse Cloud 登录页面,然后在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
 
 <br />
 
@@ -131,7 +131,7 @@ import Image from '@theme/IdealImage';
 
 如果您已是 ClickHouse Cloud 用户,只需使用您的凭据登录即可。
 
-7. 成功登录后,系统将创建一个新的 ClickHouse Cloud 组织。该组织将关联到您的 GCP 计费账户,所有使用费用将通过您的 GCP 账户结算。
+7. 成功登录后,系统将创建一个新的 ClickHouse Cloud 组织。该组织将关联到您的 GCP 计费账户,所有使用量将通过您的 GCP 账户计费。
 
 8. 登录后,您可以确认计费已绑定到 GCP Marketplace,并开始配置您的 ClickHouse Cloud 资源。
 

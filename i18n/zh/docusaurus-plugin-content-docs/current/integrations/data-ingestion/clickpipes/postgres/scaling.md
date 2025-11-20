@@ -1,41 +1,41 @@
 ---
-title: '通过 OpenAPI 扩容 DB ClickPipes'
-description: '通过 OpenAPI 扩容 DB ClickPipes 的文档'
+title: '通过 OpenAPI 扩展 DB ClickPipes'
+description: '通过 OpenAPI 扩展 DB ClickPipes 的文档'
 slug: /integrations/clickpipes/postgres/scaling
-sidebar_label: '扩容'
+sidebar_label: 'Scaling'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 :::caution 大多数用户不需要这个 API
-DB ClickPipes 的默认配置开箱即用即可处理绝大多数工作负载。如果你认为你的工作负载需要扩容，请提交一个[支持工单](https://clickhouse.com/support/program)，我们会根据你的使用场景为你推荐最佳配置。
+DB ClickPipes 的默认配置旨在开箱即用地处理绝大部分工作负载。如果你认为你的工作负载需要扩展，请提交一个[支持工单](https://clickhouse.com/support/program)，我们会根据你的使用场景为你推荐最合适的配置。
 :::
 
-扩容 API 在以下情况可能会有用：
-- 体量较大的初始加载（超过 4 TB）
+扩展 API 在以下情况下可能有用：
+- 大规模初始加载（超过 4 TB）
 - 尽可能快速迁移中等规模的数据
 - 在同一服务下支持超过 8 个 CDC ClickPipes
 
 在尝试扩容之前，请先考虑：
 - 确保源数据库有足够的可用容量
-- 在创建 ClickPipe 时优先调整[初始加载的并行度和分区策略](/integrations/clickpipes/postgres/parallel_initial_load)
+- 在创建 ClickPipe 时，优先调整[初始加载并行度与分区](/integrations/clickpipes/postgres/parallel_initial_load)
 - 检查源端是否存在可能导致 CDC 延迟的[长事务](/integrations/clickpipes/postgres/sync_control#transactions)
 
-**提高扩容级别会按比例增加 ClickPipes 的计算成本。** 如果你仅仅是为了初始加载而进行扩容，那么在快照完成后务必缩减规模，以避免产生意外费用。有关定价的更多信息，请参阅 [Postgres CDC 定价](/cloud/reference/billing/clickpipes)。
+**提高扩展级别会按比例增加 ClickPipes 的计算成本。** 如果你仅为初始加载而扩容，务必在快照完成后缩容，以避免产生意外费用。有关定价的更多信息，请参阅 [Postgres CDC 定价](/cloud/reference/billing/clickpipes)。
 
 
 
-## 此流程的前提条件 {#prerequisites}
+## 此流程的前置条件 {#prerequisites}
 
-开始之前，您需要准备：
+在开始之前,您需要:
 
 1. 具有目标 ClickHouse Cloud 服务管理员权限的 [ClickHouse API 密钥](/cloud/manage/openapi)。
-2. 在服务中某个时间点已配置的数据库 ClickPipe(Postgres、MySQL 或 MongoDB)。CDC 基础设施会随第一个 ClickPipe 一起创建，扩展端点从那时起即可使用。
+2. 在服务中某个时间点已配置的数据库 ClickPipe(Postgres、MySQL 或 MongoDB)。CDC 基础设施会随第一个 ClickPipe 一同创建,扩展端点从此时起可用。
 
 
 ## 扩展 DB ClickPipes 的步骤 {#cdc-scaling-steps}
 
-在运行任何命令之前,设置以下环境变量:
+在运行任何命令之前设置以下环境变量：
 
 ```bash
 ORG_ID=<您的 ClickHouse 组织 ID>
@@ -44,7 +44,7 @@ KEY_ID=<您的 ClickHouse 密钥 ID>
 KEY_SECRET=<您的 ClickHouse 密钥密文>
 ```
 
-获取当前扩展配置(可选):
+获取当前扩展配置（可选）：
 
 ```bash
 curl --silent --user $KEY_ID:$KEY_SECRET \

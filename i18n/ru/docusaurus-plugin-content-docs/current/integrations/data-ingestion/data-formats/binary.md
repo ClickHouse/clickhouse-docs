@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Бинарный и Native'
+sidebar_label: 'Binary и Native'
 slug: /integrations/data-formats/binary-native
-title: 'Использование форматов Native и бинарного в ClickHouse'
-description: 'Страница, описывающая использование форматов Native и бинарного в ClickHouse'
+title: 'Использование форматов Binary и Native в ClickHouse'
+description: 'Страница с описанием использования форматов Binary и Native в ClickHouse'
 keywords: ['binary formats', 'native format', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'data formats', 'performance', 'compression']
 doc_type: 'guide'
 ---
@@ -10,17 +10,17 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Использование форматов Native и бинарных форматов в ClickHouse
+# Использование формата Native и других бинарных форматов в ClickHouse
 
-ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и более эффективное использование пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в бинарном виде.
+ClickHouse поддерживает несколько бинарных форматов, обеспечивающих более высокую производительность и более эффективное использование дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
 
-Для демонстрации мы будем использовать таблицу some_data ([DDL](assets/some_data.sql)) и [данные](assets/some_data.tsv); вы можете воспроизвести это на своём экземпляре ClickHouse.
+Для демонстрации мы будем использовать таблицу [some_data](assets/some_data.sql) и данные [some_data](assets/some_data.tsv); при желании вы можете воспроизвести это на своём экземпляре ClickHouse.
 
 
 
 ## Экспорт в нативном формате ClickHouse {#exporting-in-a-native-clickhouse-format}
 
-Наиболее эффективным форматом данных для экспорта и импорта данных между узлами ClickHouse является формат [Native](/interfaces/formats/Native). Экспорт выполняется с помощью конструкции `INTO OUTFILE`:
+Наиболее эффективным форматом данных для экспорта и импорта данных между узлами ClickHouse является формат [Native](/interfaces/formats/Native). Экспорт выполняется с использованием конструкции `INTO OUTFILE`:
 
 ```sql
 SELECT * FROM some_data
@@ -80,7 +80,7 @@ FORMAT Native
 
 ## Экспорт в RowBinary {#exporting-to-rowbinary}
 
-Другой поддерживаемый бинарный формат — [RowBinary](/interfaces/formats/RowBinary), который позволяет импортировать и экспортировать данные в виде бинарно представленных строк:
+Другой поддерживаемый бинарный формат — [RowBinary](/interfaces/formats/RowBinary), который позволяет импортировать и экспортировать данные в виде строк в бинарном представлении:
 
 ```sql
 SELECT * FROM some_data
@@ -124,7 +124,7 @@ FORMAT RowBinary
 
 ## Импорт одного бинарного значения с использованием RawBLOB {#importing-single-binary-value-using-rawblob}
 
-Предположим, что нам нужно прочитать целый бинарный файл и сохранить его в поле таблицы.
+Предположим, нам нужно прочитать целый бинарный файл и сохранить его в поле таблицы.
 Для этого можно использовать [формат RawBLOB](/interfaces/formats/RawBLOB). Этот формат можно использовать напрямую только с таблицей, состоящей из одного столбца:
 
 ```sql
@@ -159,7 +159,7 @@ INTO OUTFILE 'out.jpg'
 FORMAT RawBLOB
 ```
 
-Обратите внимание, что необходимо использовать `LIMIT 1`, поскольку экспорт более одного значения приведет к созданию поврежденного файла.
+Обратите внимание, что необходимо использовать `LIMIT 1`, поскольку экспорт более одного значения создаст поврежденный файл.
 
 
 ## MessagePack {#messagepack}
@@ -207,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-Эта команда сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf и вложенных сообщений. Для работы с одиночным сообщением Protocol Buffer рекомендуется использовать [ProtobufSingle](/interfaces/formats/ProtobufSingle) (в этом случае разделители длины будут опущены).
+Эта команда сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf и вложенных сообщений. Для работы с одним сообщением Protocol Buffer рекомендуется использовать [ProtobufSingle](/interfaces/formats/ProtobufSingle) (в этом случае разделители длины будут опущены).
 
 
 ## Cap'n Proto {#capn-proto}
 
 <CloudNotSupportedBadge />
 
-Другой популярный формат бинарной сериализации, поддерживаемый ClickHouse, — это [Cap'n Proto](https://capnproto.org/). Аналогично формату `Protobuf`, в нашем примере необходимо определить файл схемы ([`schema.capnp`](assets/schema.capnp)):
+Другой популярный формат бинарной сериализации, поддерживаемый ClickHouse, — это [Cap'n Proto](https://capnproto.org/). Как и в случае с форматом `Protobuf`, в нашем примере необходимо определить файл схемы ([`schema.capnp`](assets/schema.capnp)):
 
 ```response
 @0xec8ff1a10aa10dbe;

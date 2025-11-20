@@ -1,9 +1,9 @@
 ---
 title: '控制 Postgres ClickPipe 的同步'
-description: '用于控制 Postgres ClickPipe 同步的文档'
+description: '控制 Postgres ClickPipe 同步的文档'
 slug: /integrations/clickpipes/postgres/sync_control
 sidebar_label: '同步控制'
-keywords: ['sync control', 'postgres', 'clickpipes', 'batch size', 'sync interval']
+keywords: ['同步控制', 'postgres', 'clickpipes', '批处理大小', '同步间隔']
 doc_type: 'guide'
 ---
 
@@ -13,7 +13,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-本文档介绍在 ClickPipe 处于 **CDC（运行）模式** 时，如何控制 Postgres ClickPipe 的同步。
+本文档介绍了当 ClickPipe 处于 **CDC(运行中)模式**时,如何控制 Postgres ClickPipe 的同步。
 
 
 ## 概述 {#overview}
@@ -36,7 +36,7 @@ import Image from '@theme/IdealImage';
 默认值为 **100,000** 条记录。
 安全的最大值为 1000 万条。
 
-### 例外情况:源端的长时间运行事务 {#transactions}
+### 例外情况:源数据库上的长时间运行事务 {#transactions}
 
 当在源数据库上运行事务时,ClickPipe 会等待直到收到事务的 COMMIT 后才继续执行。这将**覆盖**同步间隔和拉取批次大小的设置。
 

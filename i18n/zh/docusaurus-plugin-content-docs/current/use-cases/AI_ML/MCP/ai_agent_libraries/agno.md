@@ -4,7 +4,7 @@ sidebar_label: '集成 Agno'
 title: '如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent'
 pagination_prev: null
 pagination_next: null
-description: '学习如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent'
+description: '了解如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent'
 keywords: ['ClickHouse', 'MCP', 'Agno']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,10 +14,11 @@ doc_type: 'guide'
 
 # 如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent
 
-在本指南中，你将学习如何使用 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)，构建一个可以与 [ClickHouse SQL playground](https://sql.clickhouse.com/) 交互的 [Agno](https://github.com/agno-agi/agno) AI agent。
+在本指南中，你将学习如何构建一个 [Agno](https://github.com/agno-agi/agno) AI agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与
+[ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
-:::note 示例笔记本
-该示例以笔记本形式收录在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) 中。
+:::note 示例 Notebook
+该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) 中以 Notebook 形式找到。
 :::
 
 
@@ -35,7 +36,7 @@ doc_type: 'guide'
 
 ## 安装库 {#install-libraries}
 
-通过运行以下命令安装 Agno 库：
+通过运行以下命令安装 Agno 库:
 
 ```python
 pip install -q --upgrade pip
@@ -44,7 +45,7 @@ pip install -q ipywidgets
 ```
 
 
-## 设置凭证 {#setup-credentials}
+## 设置凭据 {#setup-credentials}
 
 接下来,您需要提供 Anthropic API 密钥:
 
@@ -59,10 +60,10 @@ Enter Anthropic API Key: ········
 
 :::note 使用其他 LLM 提供商
 如果您没有 Anthropic API 密钥,并希望使用其他 LLM 提供商,
-可以在 [Agno 文档](https://docs.agno.com/concepts/models/introduction) 中查看设置凭证的说明
+可以在 [Agno 文档](https://docs.agno.com/concepts/models/introduction) 中查看设置凭据的说明
 :::
 
-接下来,定义连接到 ClickHouse SQL 演练环境所需的凭证:
+接下来,定义连接到 ClickHouse SQL 演练环境所需的凭据:
 
 ```python
 env = {
@@ -131,13 +132,13 @@ await agent.aprint_response("What's the most starred project in 2025?", stream=T
 ┃ 让我们创建一个查询来查找 2025 年获得星标最多的项目:根据查询结果,我可以回答您     ┃
 ┃ 关于 2025 年获得星标最多的项目的问题:                                                                ┃
 ┃                                                                                                                 ┃
-┃ 2025 年获得星标最多的项目是 deepseek-ai/DeepSeek-R1,该年度获得了 84,962 个星标。     ┃
+┃ 2025 年获得星标最多的项目是 deepseek-ai/DeepSeek-R1,该项目在当年获得了 84,962 个星标。     ┃
 ┃                                                                                                                 ┃
 ┃ 该项目 DeepSeek-R1 似乎是来自 DeepSeek AI 组织的一个与人工智能相关的代码仓库。它在  ┃
-┃ 2025 年获得了 GitHub 社区的广泛关注和欢迎,获得了该年度所有项目中最多的星标。    ┃
+┃ 2025 年获得了 GitHub 社区的广泛关注和欢迎,获得了当年所有项目中最多的星标。    ┃
 ┃                                                                                                                 ┃
 ┃ 值得注意的是,这些数据基于数据库中记录的 GitHub 事件,它代表的是  ┃
-┃ 2025 年期间累积的星标(WatchEvents)。如果考虑该项目的整个生命周期,   ┃
+┃ 专门在 2025 年期间累积的星标(WatchEvents)。如果考虑该项目的整个生命周期,   ┃
 ┃ 其星标总数可能会更高。                                                             ┃
 ┃                                                                                                                 ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛

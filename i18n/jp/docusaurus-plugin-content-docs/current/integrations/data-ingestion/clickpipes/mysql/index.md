@@ -18,21 +18,21 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# MySQL から ClickHouse へのデータ取り込み（CDC 利用）
+# MySQL から ClickHouse へのデータ取り込み（CDC の利用）
 
 <BetaBadge/>
 
 :::info
-ClickPipes を利用した MySQL から ClickHouse Cloud へのデータ取り込みは、現在パブリックベータです。
+ClickPipes を使用した MySQL から ClickHouse Cloud へのデータ取り込みは、現在パブリックベータです。
 :::
 
-ClickPipes を使用して、MySQL のソースデータベースから ClickHouse Cloud にデータを取り込むことができます。MySQL のソースデータベースは、オンプレミス環境に配置することも、Amazon RDS や Google Cloud SQL などのサービスを利用してクラウド上に配置することもできます。
+ClickPipes を使用すると、ソースの MySQL データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの MySQL データベースは、オンプレミス環境だけでなく、Amazon RDS や Google Cloud SQL などのクラウドサービス上にホストされているものでもかまいません。
 
 
 
 ## 前提条件 {#prerequisites}
 
-開始する前に、MySQLデータベースがbinlogレプリケーション用に正しく設定されていることを確認する必要があります。設定手順はMySQLのデプロイ方法によって異なるため、以下の該当するガイドを参照してください。
+開始するには、まずMySQLデータベースがbinlogレプリケーション用に正しく設定されていることを確認する必要があります。設定手順はMySQLのデプロイ方法によって異なるため、以下の該当するガイドに従ってください:
 
 1. [Amazon RDS MySQL](./mysql/source/rds)
 
@@ -46,7 +46,7 @@ ClickPipes を使用して、MySQL のソースデータベースから ClickHou
 
 6. [汎用MariaDB](./mysql/source/generic_maria)
 
-ソースMySQLデータベースの設定が完了したら、ClickPipeの作成に進むことができます。
+ソースMySQLデータベースの設定が完了したら、ClickPipeの作成を続行できます。
 
 
 ## ClickPipeの作成 {#create-your-clickpipe}
@@ -72,7 +72,7 @@ ClickHouse Cloudアカウントにログインしていることを確認して�
 4. 前提条件のステップで設定したソースMySQLデータベースの接続詳細を入力します。
 
    :::info
-   接続詳細の追加を開始する前に、ファイアウォールルールでClickPipesのIPアドレスをホワイトリストに登録していることを確認してください。次のページで[ClickPipesのIPアドレスリスト](../index.md#list-of-static-ips)を確認できます。
+   接続詳細の追加を開始する前に、ファイアウォールルールでClickPipes IPアドレスをホワイトリストに登録していることを確認してください。[ClickPipes IPアドレスのリスト](../index.md#list-of-static-ips)は次のページで確認できます。
    詳細については、[このページの上部](#prerequisites)にリンクされているソースMySQLセットアップガイドを参照してください。
    :::
 
@@ -96,7 +96,7 @@ ClickHouse Cloudアカウントにログインしていることを確認して�
 4. 「Verify Connection」をクリックして接続を検証します。
 
 :::note
-ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホストのファイアウォールルールで[ClickPipesのIPアドレス](../clickpipes#list-of-static-ips)をホワイトリストに登録してください。
+ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホストのファイアウォールルールで[ClickPipes IPアドレス](../clickpipes#list-of-static-ips)をホワイトリストに登録してください。
 :::
 
 接続詳細の入力が完了したら、`Next`をクリックします。
@@ -105,7 +105,7 @@ ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホスト�
 
 必要に応じて詳細設定を構成できます。各設定の簡単な説明を以下に示します:
 
-- **Sync interval**: ClickPipesがソースデータベースの変更をポーリングする間隔です。これは宛先ClickHouseサービスに影響を与えるため、コストに敏感なユーザーには、この値を高く設定すること(`3600`以上)を推奨します。
+- **Sync interval**: ClickPipesがソースデータベースの変更をポーリングする間隔です。これは宛先ClickHouseサービスに影響を与えるため、コストに敏感なユーザーには、この値を高めに設定すること(`3600`以上)を推奨します。
 - **Parallel threads for initial load**: 初期スナップショットの取得に使用される並列ワーカーの数です。多数のテーブルがあり、初期スナップショットの取得に使用される並列ワーカーの数を制御したい場合に便利です。この設定はテーブルごとに適用されます。
 - **Pull batch size**: 1回のバッチで取得する行数です。これはベストエフォート設定であり、すべてのケースで保証されるわけではありません。
 - **Snapshot number of rows per partition**: 初期スナップショット中に各パーティションで取得される行数です。テーブルに多数の行があり、各パーティションで取得される行数を制御したい場合に便利です。
@@ -137,4 +137,4 @@ ClickPipesがSSHトンネルを確立できるように、SSH踏み台ホスト�
 
 [//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
 
-MySQLからClickHouse CloudへデータをレプリケートするためのClickPipeの設定が完了したら、最適なパフォーマンスを実現するためのデータのクエリ方法とモデリング方法に集中できます。MySQL CDCに関するよくある質問やトラブルシューティングについては、[MySQL FAQsページ](/integrations/data-ingestion/clickpipes/mysql/faq.md)を参照してください。
+ClickPipeを使用してMySQLからClickHouse Cloudへのデータレプリケーションを設定した後は、最適なパフォーマンスを実現するためのデータのクエリとモデリング方法に注力できます。MySQL CDCに関するよくある質問とトラブルシューティングについては、[MySQL FAQページ](/integrations/data-ingestion/clickpipes/mysql/faq.md)を参照してください。

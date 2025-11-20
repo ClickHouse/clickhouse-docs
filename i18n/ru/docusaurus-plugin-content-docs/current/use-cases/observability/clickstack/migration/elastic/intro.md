@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/migration/elastic/intro
-title: 'Миграция на ClickStack с Elastic'
+title: 'Миграция на ClickStack из Elastic'
 pagination_prev: null
 pagination_next: null
 sidebar_label: 'Обзор'
 sidebar_position: 0
-description: 'Обзор миграции с Elastic на ClickHouse Observability Stack'
+description: 'Обзор миграции на стек наблюдаемости ClickHouse из Elastic'
 show_related_blogs: true
 keywords: ['Elasticsearch']
 doc_type: 'guide'
@@ -31,4 +31,4 @@ doc_type: 'guide'
 
 - Вы используете данные наблюдаемости в первую очередь для задач безопасности и нуждаетесь в продукте, ориентированном на SIEM.
 - Универсальное профилирование является критически важной частью вашего рабочего процесса.
-- Вам требуется платформа дашбордов для бизнес-аналитики (BI). ClickStack намеренно имеет специализированные визуальные рабочие процессы для SRE и разработчиков и не предназначен как инструмент бизнес-аналитики (BI). Для эквивалентных возможностей мы рекомендуем использовать [Grafana с плагином ClickHouse](/integrations/grafana) или [Superset](/integrations/superset).
+- Вам требуется платформа дашбордов для бизнес-аналитики (BI). ClickStack намеренно имеет специализированные визуальные процессы для SRE и разработчиков и не предназначен в качестве инструмента бизнес-аналитики (BI). Для эквивалентных возможностей мы рекомендуем использовать [Grafana с плагином ClickHouse](/integrations/grafana) или [Superset](/integrations/superset).

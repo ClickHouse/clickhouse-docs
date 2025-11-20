@@ -21,7 +21,7 @@ import hyperdx_24 from "@site/static/images/use-cases/observability/hyperdx-24.p
 import hyperdx_login from "@site/static/images/use-cases/observability/hyperdx-login.png"
 import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
 
-Helm-чарт для HyperDX можно найти [здесь](https://github.com/hyperdxio/helm-charts), и это **рекомендуемый** метод для production-развертываний.
+Helm-чарт для HyperDX можно найти [здесь](https://github.com/hyperdxio/helm-charts). Это **рекомендуемый** метод для развертывания в production-среде.
 
 По умолчанию Helm-чарт разворачивает все основные компоненты, включая:
 
@@ -30,7 +30,7 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 - **OpenTelemetry (OTel) collector**
 - **MongoDB** (для хранения состояния приложения)
 
-Однако его можно легко настроить для интеграции с существующим развертыванием ClickHouse — например, размещенным в **ClickHouse Cloud**.
+При этом его можно легко настроить для интеграции с существующим развертыванием ClickHouse — например, размещенным в **ClickHouse Cloud**.
 
 Чарт поддерживает стандартные практики Kubernetes, включая:
 
@@ -42,7 +42,7 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 ### Подходит для {#suitable-for}
 
 - Proof of concept (подтверждения концепции)
-- Production-использования
+- Production-развертываний
 
 
 ## Шаги развертывания {#deployment-steps}
@@ -82,11 +82,11 @@ helm install my-hyperdx hyperdx/hdx-oss-v2
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 ```
 
-Когда все поды будут готовы, переходите к следующему шагу.
+Когда все поды будут готовы, продолжайте.
 
 ### Перенаправление портов {#forward-ports}
 
-Перенаправление портов позволяет получить доступ к HyperDX и настроить его. При развертывании в продакшене следует предоставлять доступ к сервису через ingress или балансировщик нагрузки для обеспечения корректного сетевого доступа, терминации TLS и масштабируемости. Перенаправление портов лучше всего подходит для локальной разработки или разовых административных задач, а не для долгосрочных или высокодоступных окружений.
+Перенаправление портов позволяет получить доступ к HyperDX и настроить его. Пользователям, развертывающим в production-окружении, следует вместо этого предоставить доступ к сервису через ingress или балансировщик нагрузки для обеспечения корректного сетевого доступа, терминации TLS и масштабируемости. Перенаправление портов лучше всего подходит для локальной разработки или разовых административных задач, а не для долгосрочных или высокодоступных окружений.
 
 ```shell
 kubectl port-forward \
@@ -118,7 +118,7 @@ kubectl port-forward \
 helm install my-hyperdx hyperdx/hdx-oss-v2 --set key=value
 ```
 
-Альтернативно можно отредактировать файл `values.yaml`. Чтобы получить значения по умолчанию:
+Альтернативно, отредактируйте файл `values.yaml`. Чтобы получить значения по умолчанию:
 
 ```shell
 helm show values hyperdx/hdx-oss-v2 > values.yaml
@@ -152,13 +152,13 @@ helm install my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 
 ### Использование секретов (опционально) {#using-secrets}
 
-Для работы с конфиденциальными данными, такими как ключи API или учетные данные базы данных, используйте секреты Kubernetes. Helm-чарты HyperDX предоставляют файлы секретов по умолчанию, которые можно изменить и применить к вашему кластеру.
+Для работы с конфиденциальными данными, такими как ключи API или учетные данные базы данных, используйте секреты Kubernetes. Helm-чарты HyperDX предоставляют файлы секретов по умолчанию, которые вы можете изменить и применить к вашему кластеру.
 
 #### Использование предварительно настроенных секретов {#using-pre-configured-secrets}
 
 Helm-чарт включает шаблон секрета по умолчанию, расположенный в [`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml). Этот файл предоставляет базовую структуру для управления секретами.
 
-Если необходимо вручную применить секрет, измените и примените предоставленный шаблон `secrets.yaml`:
+Если вам нужно вручную применить секрет, измените и примените предоставленный шаблон `secrets.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -180,7 +180,7 @@ kubectl apply -f secrets.yaml
 
 #### Создание пользовательского секрета {#creating-a-custom-secret}
 
-При желании можно создать пользовательский секрет Kubernetes вручную:
+При желании вы можете создать пользовательский секрет Kubernetes вручную:
 
 ```shell
 kubectl create secret generic hyperdx-secret \
@@ -211,13 +211,13 @@ hyperdx:
 
 ```shell
 # укажите учетные данные ClickHouse Cloud
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # полный URL с https
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # полный URL-адрес https
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 
-# как переопределить стандартное подключение
+# как изменить подключение по умолчанию
 
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
 
@@ -276,7 +276,7 @@ helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickho
 
 | Параметр                      | Описание                                                                                                                                                                            | Значение по умолчанию |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `tasks.enabled`               | Включение/отключение cron-задач в кластере. По умолчанию образ HyperDX запускает cron-задачи внутри процесса. Установите значение true, если требуется использовать отдельную cron-задачу в кластере. | `false`               |
+| `tasks.enabled`               | Включение/отключение cron-задач в кластере. По умолчанию образ HyperDX запускает cron-задачи внутри процесса. Установите значение true, если хотите использовать отдельную cron-задачу в кластере. | `false`               |
 | `tasks.checkAlerts.schedule`  | Расписание cron для задачи проверки оповещений                                                                                                                                      | `*/1 * * * *`         |
 | `tasks.checkAlerts.resources` | Запросы и лимиты ресурсов для задачи проверки оповещений                                                                                                                            | См. `values.yaml`     |
 
@@ -298,13 +298,13 @@ helm search repo hyperdx
 
 ## Удаление HyperDX {#uninstalling-hyperdx}
 
-Для удаления развертывания выполните:
+Чтобы удалить развёртывание:
 
 ```shell
 helm uninstall my-hyperdx
 ```
 
-Эта команда удалит все ресурсы, связанные с релизом, однако постоянные данные (если они есть) могут сохраниться.
+Эта команда удалит все ресурсы, связанные с релизом, но постоянные данные (если они есть) могут сохраниться.
 
 
 ## Устранение неполадок {#troubleshooting}

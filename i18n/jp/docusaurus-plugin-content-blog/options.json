@@ -5,10 +5,10 @@
   },
   "description": {
     "message": "ナレッジベース",
-    "description": "SEO 用のブログ説明文"
+    "description": "SEO 用のブログ説明"
   },
   "sidebar.title": {
-    "message": "すべての KB 記事",
-    "description": "左サイドバーのラベル"
+    "message": "すべてのナレッジベース記事",
+    "description": "左側サイドバーのラベル"
   }
 }

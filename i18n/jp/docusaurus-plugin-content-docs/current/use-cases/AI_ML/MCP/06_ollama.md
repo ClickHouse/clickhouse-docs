@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ollama
-sidebar_label: 'Ollama を統合する'
-title: 'ClickHouse MCP サーバーと Ollama のセットアップ'
+sidebar_label: 'Ollama と連携する'
+title: 'ClickHouse MCP サーバーを Ollama と連携してセットアップする'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse MCP サーバーで Ollama をセットアップする方法を説明します。'
+description: 'このガイドでは、ClickHouse MCP サーバーと Ollama を連携してセットアップする方法を説明します。'
 keywords: ['AI', 'Ollama', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -24,7 +24,7 @@ import Image from '@theme/IdealImage';
 
 ## Ollamaのインストール {#install-ollama}
 
-Ollamaは、自分のマシン上で大規模言語モデル（LLM）を実行するためのライブラリです。
+Ollamaは、自身のマシン上で大規模言語モデル（LLM）を実行するためのライブラリです。
 [幅広いモデルが利用可能](https://ollama.com/library)で、使いやすいのが特徴です。
 
 Ollamaは、Mac、Windows、またはLinux向けに[ダウンロードページ](https://ollama.com/download)から入手できます。
@@ -96,23 +96,23 @@ ollama show qwen3
 
 ## MCPHostのインストール {#install-mcphost}
 
-本稿執筆時点(2025年7月)では、OllamaをMCP Serversと併用するネイティブ機能は提供されていません。
-ただし、[MCPHost](https://github.com/mark3labs/mcphost)を使用することで、OllamaモデルをMCP Serversで実行できます。
+本稿執筆時点(2025年7月)では、OllamaをMCPサーバーと併用するネイティブ機能は提供されていません。
+ただし、[MCPHost](https://github.com/mark3labs/mcphost)を使用することで、OllamaモデルをMCPサーバーで実行できます。
 
-MCPHostはGoアプリケーションであるため、マシンに[Goがインストール](https://go.dev/doc/install)されていることを確認してください。
+MCPHostはGoアプリケーションのため、マシンに[Goがインストール](https://go.dev/doc/install)されていることを確認してください。
 その後、以下のコマンドを実行してMCPHostをインストールします:
 
 ```bash
 go install github.com/mark3labs/mcphost@latest
 ```
 
-バイナリは`~/go/bin`にインストールされるため、このディレクトリがパスに含まれていることを確認してください。
+バイナリは`~/go/bin`にインストールされるため、このディレクトリがパスに含まれていることを確認する必要があります。
 
 
 ## ClickHouse MCPサーバーの設定 {#configure-clickhouse-mcp-server}
 
 MCPHostを使用して、YAMLまたはJSONファイルでMCPサーバーを設定できます。
-MCPHostは、ホームディレクトリ内の設定ファイルを次の順序で検索します:
+MCPHostは、ホームディレクトリ内の設定ファイルを以下の順序で検索します:
 
 1. `.mcphost.yml` または `.mcphost.json` (推奨)
 2. `.mcp.yml` または `.mcp.json` (後方互換性)
@@ -161,13 +161,13 @@ export CLICKHOUSE_PASSWORD=""
 
 ## MCPHostの実行 {#running-mcphost}
 
-ClickHouse MCPサーバーを設定したら、以下のコマンドでMCPHostを実行できます：
+ClickHouse MCPサーバーを設定したら、以下のコマンドでMCPHostを実行できます:
 
 ```bash
 mcphost --model ollama:qwen3
 ```
 
-特定の設定ファイルを使用する場合は、以下のようにします：
+特定の設定ファイルを使用する場合は、以下のようにします:
 
 ```bash
 mcphost --model ollama:qwen3 --config ~/.mcphost.json
@@ -177,7 +177,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 `--model`を指定しない場合、MCPHostは環境変数から`ANTHROPIC_API_KEY`を検索し、`anthropic:claude-sonnet-4-20250514`モデルを使用します。
 :::
 
-以下のような出力が表示されます：
+以下のような出力が表示されます:
 
 ```text
   ┃                                                                                     ┃
@@ -198,7 +198,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
   Enter your prompt (Type /help for commands, Ctrl+C to quit, ESC to cancel generation)
 ```
 
-`/servers`コマンドを使用すると、MCPサーバーの一覧を表示できます：
+`/servers`コマンドを使用してMCPサーバーの一覧を表示できます:
 
 ```text
   ┃                                                                                      ┃
@@ -209,7 +209,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
   ┃
 ```
 
-また、`/tools`コマンドで利用可能なツールの一覧を表示できます：
+また、`/tools`コマンドで利用可能なツールの一覧を表示できます:
 
 ```text
   ┃  ## Available Tools                                                                  ┃
@@ -223,6 +223,6 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 
 小規模なモデルを使用する場合（デフォルトのqwen3モデルは80億パラメータ）、実行してほしい内容をより具体的に指示する必要があります。
 例えば、特定のテーブルに対してすぐにクエリを実行するよう依頼するのではなく、まずデータベースとテーブルの一覧を表示するよう明示的に依頼する必要があります。
-大規模なモデル（例：qwen3:14b）を使用することでこの問題を部分的に軽減できますが、コンシューマー向けハードウェアでは実行速度が遅くなります。
+大規模なモデル（例: qwen3:14b）を使用することでこの問題を部分的に軽減できますが、コンシューマー向けハードウェアでは実行速度が遅くなります。
 
 </VerticalStepper>

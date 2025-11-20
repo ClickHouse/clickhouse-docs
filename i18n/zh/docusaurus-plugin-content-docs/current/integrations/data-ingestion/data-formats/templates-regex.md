@@ -10,9 +10,9 @@ keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 
 
 
-# 在 ClickHouse 中使用 Template 和 Regex 导入与导出自定义文本数据
+# 使用 ClickHouse 中的 Template 和 Regex 导入与导出自定义文本数据
 
-我们经常需要处理自定义文本格式的数据，比如非标准格式、无效的 JSON，或者损坏的 CSV。这种情况下，使用 CSV 或 JSON 等标准解析器并不总是有效。但 ClickHouse 为此提供了强大的 Template 和 Regex 格式来应对这些场景。
+我们经常需要处理自定义文本格式的数据，这些数据可能采用非标准格式、包含无效的 JSON，或者是损坏的 CSV。在这类场景下，使用 CSV 或 JSON 等标准解析器并不总是有效。不过，ClickHouse 提供了功能强大的 Template 和 Regex 格式，可以很好地应对这些情况。
 
 
 
@@ -31,13 +31,13 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-我们可以使用 [Template](/interfaces/formats/Template) 格式导入这些数据。需要为输入数据的每一行定义一个包含值占位符的模板字符串:
+我们可以使用 [Template](/interfaces/formats/Template) 格式来导入这些数据。需要为输入数据的每一行定义一个包含值占位符的模板字符串:
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
-首先创建一个用于导入数据的表:
+首先创建一个表来导入数据:
 
 ```sql
 CREATE TABLE error_log
@@ -51,15 +51,15 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-要使用指定模板导入数据,需要将模板字符串保存到文件中(本例中为 [row.template](assets/row.template)):
+要使用给定的模板导入数据,需要将模板字符串保存到文件中(在本例中为 [row.template](assets/row.template)):
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-我们使用 `${name:escaping}` 格式定义列名和转义规则。这里提供了多个选项,如 CSV、JSON、Escaped 或 Quoted,它们实现了[相应的转义规则](/interfaces/formats/Template)。
+我们以 `${name:escaping}` 格式定义列名和转义规则。这里提供了多个选项,如 CSV、JSON、Escaped 或 Quoted,它们实现了[相应的转义规则](/interfaces/formats/Template)。
 
-现在可以在导入数据时将该文件作为 `format_template_row` 设置选项的参数(_注意:模板文件和数据文件末尾**不应包含**额外的 `\n` 符号_):
+现在可以在导入数据时将该文件作为 `format_template_row` 设置选项的参数(_注意,模板文件和数据文件**不应该**在文件末尾包含额外的 `\n` 符号_):
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'
@@ -67,7 +67,7 @@ SETTINGS format_template_row = 'row.template'
 FORMAT Template
 ```
 
-验证数据已成功加载到表中:
+然后可以验证数据是否已成功加载到表中:
 
 ```sql
 SELECT
@@ -88,9 +88,9 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### 跳过空白符 {#skipping-whitespaces}
+### 跳过空白字符 {#skipping-whitespaces}
 
-可以考虑使用 [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces),它允许跳过模板中分隔符之间的空白符:
+可以考虑使用 [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces),它允许跳过模板中分隔符之间的空白字符:
 
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
@@ -107,16 +107,16 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```response
 == Top 10 IPs ==
 ${data}
---- ${rows_read:XML} 行读取耗时 ${time:XML} ---
+--- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-这里,`rows_read` 和 `time` 是每个请求可用的系统指标。`data` 代表生成的行(`${data}` 应始终作为此文件中的第一个占位符),基于在[**行模板文件**](assets/output.rows)中定义的模板:
+这里,`rows_read` 和 `time` 是每个请求可用的系统指标。`data` 代表生成的行(在此文件中 `${data}` 应始终作为第一个占位符),基于[**行模板文件**](assets/output.rows)中定义的模板:
 
 ```response
-${ip:Escaped} 生成了 ${total:Escaped} 个请求
+${ip:Escaped} generated ${total:Escaped} requests
 ```
 
-现在使用这些模板导出以下查询:
+现在让我们使用这些模板来导出以下查询:
 
 ```sql
 SELECT
@@ -128,23 +128,23 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 == Top 10 IPs ==
 
-9.8.4.6 生成了 3 个请求
-9.5.1.1 生成了 3 个请求
-2.4.8.9 生成了 3 个请求
-4.8.8.2 生成了 3 个请求
-4.5.4.4 生成了 3 个请求
-3.3.6.4 生成了 2 个请求
-8.9.5.9 生成了 2 个请求
-2.5.1.8 生成了 2 个请求
-6.8.3.6 生成了 2 个请求
-6.6.3.5 生成了 2 个请求
+9.8.4.6 generated 3 requests
+9.5.1.1 generated 3 requests
+2.4.8.9 generated 3 requests
+4.8.8.2 generated 3 requests
+4.5.4.4 generated 3 requests
+3.3.6.4 generated 2 requests
+8.9.5.9 generated 2 requests
+2.5.1.8 generated 2 requests
+6.8.3.6 generated 2 requests
+6.6.3.5 generated 2 requests
 
---- 1000 行读取耗时 0.001380604 ---
+--- 1000 rows read in 0.001380604 ---
 ```
 
 ### 导出到 HTML 文件 {#exporting-to-html-files}
 
-基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。基于给定的[结果集](assets/html.results)和[行](assets/html.row)格式生成 HTML 文件:
+基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。让我们基于给定的[结果集](assets/html.results)和[行](assets/html.row)格式生成 HTML 文件:
 
 ```sql
 SELECT
@@ -205,7 +205,7 @@ FORMAT XML
 
 ## 基于正则表达式导入数据 {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats/Regexp) 格式用于处理更复杂的场景,即当输入数据需要以更复杂的方式进行解析时。让我们解析 [error.log](assets/error.log) 示例文件,但这次捕获文件名和协议,并将它们保存到单独的列中。首先,为此准备一个新表:
+[Regexp](/interfaces/formats/Regexp) 格式用于处理更复杂的场景,即需要以更复杂的方式解析输入数据。让我们解析 [error.log](assets/error.log) 示例文件,但这次捕获文件名和协议,将它们保存到单独的列中。首先,为此准备一个新表:
 
 ```sql
 CREATE TABLE error_log
@@ -245,7 +245,7 @@ SELECT * FROM error_log LIMIT 5
 └─────────────────────┴─────────┴─────────────┴──────────────────────────────┴──────────┘
 ```
 
-默认情况下,如果遇到不匹配的行,ClickHouse 会抛出错误。如果想跳过不匹配的行,可以使用 [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched) 选项启用此功能:
+默认情况下,如果存在不匹配的行,ClickHouse 将抛出错误。如果想跳过不匹配的行,可以使用 [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched) 选项启用:
 
 ```sql
 SET format_regexp_skip_unmatched = 1;

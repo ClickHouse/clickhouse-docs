@@ -3,7 +3,7 @@ slug: /best-practices/choosing-a-primary-key
 sidebar_position: 10
 sidebar_label: '主キーの選び方'
 title: '主キーの選び方'
-description: 'ClickHouse で主キーをどのように選ぶかを説明するページ'
+description: 'ClickHouse で主キーをどのように選択するかを説明するページ'
 keywords: ['primary key']
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,21 +13,21 @@ import Image from '@theme/IdealImage';
 import create_primary_key from '@site/static/images/bestpractices/create_primary_key.gif';
 import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 
-> このページでは、「primary key」を指す用語として「ordering key」という表現を同義で用いています。厳密には [ClickHouse では両者は異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key) が、本ドキュメントの範囲では、テーブルの `ORDER BY` で指定された列を ordering key と呼ぶものとし、読み手は両者を同義として扱って問題ありません。
+> このページでは、「primary key」を指す用語として「ordering key」という表現を同義的に使用します。厳密には[ClickHouse では両者は異なります](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key)が、本ドキュメントにおいては読者はこれらを同義として扱って構いません。このとき、ordering key はテーブルの `ORDER BY` で指定されたカラムを指します。
 
-ClickHouse の primary key は、Postgres などの OLTP データベースにおける同様の用語に慣れている人にとっては [挙動が大きく異なります](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
+ClickHouse の primary key は、Postgres のような OLTP データベースで同様の用語に慣れている方にとっては[まったく別物のように動作します](/migrations/postgresql/data-modeling-techniques#primary-ordering-keys-in-clickhouse)。
 
-ClickHouse で効果的な primary key を選ぶことは、クエリ性能とストレージ効率の両方にとって極めて重要です。ClickHouse はデータを複数のパーツに分割して管理し、それぞれのパーツが独自のスパースな primary index を持ちます。このインデックスは、スキャンするデータ量を削減することでクエリを大幅に高速化します。さらに、primary key はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適な順序で並んだデータはより高い圧縮率を達成でき、その結果として I/O が減少し、性能向上につながります。
+ClickHouse で効果的な primary key を選択することは、クエリ性能とストレージ効率の両面で極めて重要です。ClickHouse はデータを複数のパーツに分割して管理し、各パーツは独自の疎な primary index を持ちます。このインデックスによりスキャンされるデータ量が削減され、クエリが大幅に高速化されます。さらに、primary key はディスク上のデータの物理的な並び順を決定するため、圧縮効率にも直接影響します。最適に並んだデータはより高い圧縮率を実現でき、その結果として I/O が削減され、パフォーマンスがさらに向上します。
 
-1. ordering key を選ぶ際には、クエリのフィルタ（`WHERE` 句）で頻繁に使用される列、特に多数の行を除外できる列を優先してください。
-2. テーブル内の他のデータと高い相関を持つ列も有用です。連続した配置で保存されることで、`GROUP BY` や `ORDER BY` の処理中の圧縮率およびメモリ効率が向上します。
+1. ordering key を選択する際は、クエリフィルタ（`WHERE` 句）で頻繁に使用されるカラムを優先し、とくに多数の行を除外できるカラムを重視します。
+2. テーブル内の他のデータと高い相関を持つカラムも有用です。連続した配置により、`GROUP BY` や `ORDER BY` 処理中の圧縮率およびメモリ効率が向上します。
 
 <br />
 
-ordering key を選択する際には、いくつかの簡単なルールを適用できます。以下の指針は互いに矛盾する場合もあるため、この順序で検討してください。**このプロセスから複数のキー候補を洗い出すことができ、通常は 4〜5 個あれば十分です**：
+ordering key を選択する際には、いくつかの簡単なルールを適用できます。以下のルールは相互に矛盾する場合があるため、記載順に検討してください。**このプロセスから複数のキー候補を洗い出せますが、通常は 4〜5 個あれば十分です。**
 
 :::note Important
-ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の ordering は、projection と呼ばれる機能を通じて、データ挿入の後（または前）にテーブルへ付与できます。ただし、これによりデータが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
+Ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び替えは、projections と呼ばれる機能を使うことで、データ挿入の前後を問わずテーブルに付与できますが、この場合データが重複して保持される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
 :::
 
 
@@ -35,7 +35,7 @@ ordering key はテーブル作成時に定義する必要があり、後から�
 
 以下の `posts_unordered` テーブルを考えてみましょう。このテーブルには Stack Overflow の投稿ごとに1行が含まれています。
 
-このテーブルには主キーがありません。これは `ORDER BY tuple()` で示されています。
+このテーブルにはプライマリキーがありません。これは `ORDER BY tuple()` で示されています。
 
 ```sql
 CREATE TABLE posts_unordered
@@ -82,9 +82,9 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
-このクエリで読み取られた行数とバイト数に注目してください。主キーがない場合、クエリはデータセット全体をスキャンする必要があります。
+このクエリで読み取られた行数とバイト数に注目してください。プライマリキーがない場合、クエリはデータセット全体をスキャンする必要があります。
 
-`EXPLAIN indexes=1` を使用すると、インデックスがないためフルテーブルスキャンが実行されていることが確認できます。
+`EXPLAIN indexes=1` を使用すると、インデックスがないためフルテーブルスキャンが行われていることが確認できます。
 
 ```sql
 EXPLAIN indexes = 1
@@ -117,13 +117,13 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-`PostTypeId` のカーディナリティは8であり、順序キーの最初のエントリとして論理的な選択となります。日付粒度のフィルタリングで十分である可能性が高いこと（datetime フィルタにも引き続き有効です）を認識し、キーの2番目のコンポーネントとして `toDate(CreationDate)` を使用します。これにより、日付は16ビットで表現できるため、より小さなインデックスが生成され、フィルタリングが高速化されます。
+`PostTypeId` のカーディナリティは8であり、順序キーの最初のエントリとして論理的な選択となります。日付粒度のフィルタリングで十分である（datetime フィルタにも有効です）と認識されるため、キーの2番目のコンポーネントとして `toDate(CreationDate)` を使用します。これにより、日付は16ビットで表現できるため、より小さなインデックスが生成され、フィルタリングが高速化されます。
 
-以下のアニメーションは、Stack Overflow 投稿テーブルに対して最適化されたスパース主インデックスがどのように作成されるかを示しています。個々の行をインデックス化する代わりに、インデックスは行のブロックを対象とします。
+以下のアニメーションは、Stack Overflow の投稿テーブルに対して最適化されたスパースプライマリインデックスがどのように作成されるかを示しています。個々の行をインデックス化する代わりに、インデックスは行のブロックを対象とします:
 
 <Image img={create_primary_key} size='lg' alt='Primary key' />
 
-この順序キーを持つテーブルで同じクエリを実行すると、
+この順序キーを持つテーブルで同じクエリを実行すると:
 
 ```sql
 SELECT count()
@@ -137,7 +137,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 │  192611 │
 └─────────┘
 --highlight-next-line
-1 行がセット内にあります。経過時間: 0.013 秒。処理済み 196.53 千行, 1.77 MB (14.64 百万行/秒, 131.78 MB/秒)
+1 行が結果セットにあります。経過時間: 0.013 秒。処理行数 196.53 千行、データ量 1.77 MB (14.64 百万行/秒、131.78 MB/秒)。
 
 ````
 
@@ -170,14 +170,14 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 13 rows in set. Elapsed: 0.004 sec.
 ````
 
-さらに、このサンプルクエリに対してマッチする可能性のない行ブロックを、疎インデックスがどのようにすべて除外していくかを可視化します。
+さらに、スパースインデックスが、例のクエリでマッチする可能性のない行ブロックをどのようにすべて刈り込むかを可視化します。
 
 <Image img={primary_key} size="lg" alt="Primary key" />
 
 :::note
-テーブル内のすべての列は、指定されたオーダリングキーの値に基づいてソートされます。これは、その列がオーダリングキー自体に含まれているかどうかに関係ありません。たとえば `CreationDate` がキーとして使用されている場合、他のすべての列の値の並び順は、`CreationDate` 列の値の並び順に対応します。複数のオーダリングキーを指定することもでき、その場合の並び順の意味論は、`SELECT` クエリの `ORDER BY` 句と同じになります。
+テーブル内のすべてのカラムは、指定されたオーダリングキーの値に基づいてソートされます。これは、そのカラムがキー自体に含まれているかどうかに関係ありません。たとえば `CreationDate` がキーとして使用されている場合、他のすべてのカラムの値の並び順は、`CreationDate` カラムの値の並び順に対応します。複数のオーダリングキーを指定することもでき、その場合は `SELECT` クエリの `ORDER BY` 句と同じセマンティクスでソートされます。
 :::
 
-主キーの選び方に関する詳細な上級ガイドは[こちら](/guides/best-practices/sparse-primary-indexes)にあります。
+プライマリキーの選択に関する高度なガイドの完全版は[こちら](/guides/best-practices/sparse-primary-indexes)を参照してください。
 
-オーダリングキーがどのように圧縮を改善し、さらなるストレージの最適化につなげられるかをより深く理解するには、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) と [Column Compression Codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) に関する公式ガイドを参照してください。
+オーダリングキーが圧縮をどのように向上させ、さらにストレージを最適化するかについて詳しく知るには、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) と [Column Compression Codecs](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) に関する公式ガイドを参照してください。

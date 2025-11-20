@@ -47,17 +47,17 @@ docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 
 ### HyperDX UIにアクセスする {#navigate-to-hyperdx-ui}
 
-[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。
+[http://localhost:8080](http://localhost:8080)にアクセスして、HyperDX UIを開きます。
 
-**このデプロイモードでは認証が無効になっているため、ユーザー作成を求められることはありません。**
+**このデプロイモードでは認証が有効になっていないため、ユーザー作成のプロンプトは表示されません。**
 
 独自の外部ClickHouseクラスタ(例: ClickHouse Cloud)に接続します。
 
-<Image img={hyperdx_2} alt='Create login' size='md' />
+<Image img={hyperdx_2} alt='ログイン作成' size='md' />
 
-ソースを作成し、すべてのデフォルト値を保持したまま、`Table`フィールドに`otel_logs`を入力します。その他の設定は自動検出されるため、`Save New Source`をクリックできます。
+ソースを作成し、すべてのデフォルト値を保持したまま、`Table`フィールドに`otel_logs`の値を入力します。その他の設定はすべて自動検出されるため、`Save New Source`をクリックできます。
 
-<Image img={hyperdx_logs} alt='Create logs source' size='md' />
+<Image img={hyperdx_logs} alt='ログソースの作成' size='md' />
 
 </VerticalStepper>
 

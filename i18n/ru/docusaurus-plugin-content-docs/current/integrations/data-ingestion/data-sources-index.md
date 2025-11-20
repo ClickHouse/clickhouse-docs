@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 
 # Источники данных
 
-ClickHouse позволяет легко загружать данные в базу данных из различных источников.
+ClickHouse позволяет легко загружать данные в вашу базу данных из различных источников.
 Дополнительную информацию см. на страницах, перечисленных ниже:
 
 | Источник данных                                                              |
@@ -32,6 +32,6 @@ ClickHouse позволяет легко загружать данные в ба
 | [SQLite](/integrations/sqlite)                                        |
 | [NATS](/integrations/nats)                                            |
 | [EMQX](/integrations/emqx)                                            |
-| [Вставка локальных файлов](/integrations/data-ingestion/insert-local-files) |
+| [Загрузка локальных файлов](/integrations/data-ingestion/insert-local-files) |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |
 | [ODBC](/integrations/data-ingestion/dbms/odbc-with-clickhouse)        |

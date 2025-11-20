@@ -3,9 +3,9 @@ sidebar_label: 'Обзор'
 sidebar_position: 1
 title: 'API ClickHouse Cloud'
 slug: /cloud/manage/api/api-overview
-description: 'Ознакомьтесь с API ClickHouse Cloud'
+description: 'Узнайте об API ClickHouse Cloud'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', 'обзор API', 'облачный API', 'REST API', 'программный доступ']
+keywords: ['ClickHouse Cloud', 'API overview', 'cloud API', 'REST API', 'programmatic access']
 ---
 
 
@@ -14,9 +14,9 @@ keywords: ['ClickHouse Cloud', 'обзор API', 'облачный API', 'REST A
 
 
 
-## Overview {#overview}
+## Обзор {#overview}
 
-ClickHouse Cloud API — это REST API, предназначенный для разработчиков и позволяющий легко управлять
+ClickHouse Cloud API — это REST API, разработанный для удобного управления
 организациями и сервисами в ClickHouse Cloud. С помощью Cloud API вы можете
 создавать сервисы и управлять ими, создавать API-ключи, добавлять или удалять участников
 организации и выполнять другие операции.
@@ -24,25 +24,25 @@ ClickHouse Cloud API — это REST API, предназначенный для 
 [Узнайте, как создать первый API-ключ и начать работу с ClickHouse Cloud API.](/cloud/manage/openapi)
 
 
-## Конечная точка и UI Swagger (OpenAPI) {#swagger-openapi-endpoint-and-ui}
+## Конечная точка и интерфейс Swagger (OpenAPI) {#swagger-openapi-endpoint-and-ui}
 
 API ClickHouse Cloud построен на основе открытой [спецификации OpenAPI](https://www.openapis.org/)
 для обеспечения предсказуемого использования на стороне клиента. Если вам необходимо программно
 работать с документацией API ClickHouse Cloud, мы предоставляем конечную точку Swagger на основе JSON
 по адресу https://api.clickhouse.cloud/v1. Документацию API также можно найти через
-[Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger).
+[интерфейс Swagger UI](https://clickhouse.com/docs/cloud/manage/api/swagger).
 
 :::note
-Если ваша организация была переведена на один из [новых тарифных планов](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false) и вы используете OpenAPI, вам потребуется удалить поле `tier` из `POST`-запроса на создание сервиса.
+Если ваша организация была переведена на один из [новых тарифных планов](https://clickhouse.com/pricing?plan=scale&provider=aws&region=us-east-1&hours=8&storageCompressed=false) и вы используете OpenAPI, вам необходимо удалить поле `tier` из `POST`-запроса на создание сервиса.
 
-Поле `tier` было удалено из объекта сервиса, поскольку уровни обслуживания больше не используются.  
-Это повлияет на объекты, возвращаемые запросами `POST`, `GET` и `PATCH` для сервисов. Поэтому любой код, использующий эти API, может потребовать корректировки для обработки этих изменений.
+Поле `tier` было удалено из объекта сервиса, так как уровни обслуживания больше не используются.  
+Это повлияет на объекты, возвращаемые запросами `POST`, `GET` и `PATCH` к сервисам. Поэтому любой код, использующий эти API, может потребовать корректировки для обработки этих изменений.
 :::
 
 
 ## Ограничения частоты запросов {#rate-limits}
 
-Для разработчиков установлено ограничение в 100 API-ключей на организацию. Для каждого API-ключа действует лимит в 10 запросов за 10-секундный интервал. Если вам необходимо увеличить количество API-ключей или лимит запросов за 10-секундный интервал для вашей организации, обратитесь в службу поддержки по адресу support@clickhouse.com
+Для разработчиков установлено ограничение в 100 API-ключей на организацию. Для каждого API-ключа действует лимит в 10 запросов в течение 10-секундного интервала. Если вам необходимо увеличить количество API-ключей или лимит запросов в течение 10-секундного интервала для вашей организации, обратитесь в службу поддержки по адресу support@clickhouse.com
 
 
 ## Провайдер Terraform {#terraform-provider}
@@ -63,15 +63,15 @@ API ClickHouse Cloud построен на основе открытой [спе
 :::
 
 
-## Новые цены Terraform и OpenAPI: настройки реплик {#terraform-and-openapi-new-pricing---replica-settings-explained}
+## Новая модель ценообразования Terraform и OpenAPI: настройки реплик {#terraform-and-openapi-new-pricing---replica-settings-explained}
 
-По умолчанию каждый сервис создается с 3 репликами для тарифов Scale и Enterprise и с 1 репликой для тарифа Basic.
-Для тарифов Scale и Enterprise можно изменить это значение, указав поле `numReplicas` в запросе на создание сервиса.
+По умолчанию каждый сервис создаётся с 3 репликами для тарифных планов Scale и Enterprise и с 1 репликой для тарифного плана Basic.
+Для тарифных планов Scale и Enterprise количество реплик можно настроить, указав поле `numReplicas` в запросе на создание сервиса.
 Значение поля `numReplicas` для первого сервиса в хранилище должно быть в диапазоне от 2 до 20. Сервисы, создаваемые в существующем хранилище, могут иметь от 1 реплики.
 
 
 ## Поддержка {#support}
 
-Для получения быстрой поддержки рекомендуем сначала посетить [наш канал в Slack](https://clickhouse.com/slack). Если
-вам нужна дополнительная помощь или подробная информация о нашем API и его возможностях,
-обратитесь в службу поддержки ClickHouse по адресу https://console.clickhouse.cloud/support
+Рекомендуем сначала обратиться в [наш канал Slack](https://clickhouse.com/slack) для получения оперативной поддержки. Если
+вам нужна дополнительная помощь или более подробная информация о нашем API и его возможностях,
+свяжитесь со службой поддержки ClickHouse по адресу https://console.clickhouse.cloud/support

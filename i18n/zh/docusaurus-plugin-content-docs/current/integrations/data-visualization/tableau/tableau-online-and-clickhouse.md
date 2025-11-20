@@ -24,7 +24,7 @@ import tableau_desktop_05 from '@site/static/images/integrations/data-visualizat
 
 # Tableau Online
 
-Tableau Online 可以通过官方 MySQL 数据源，借助 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 实例。
+Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 实例。
 
 
 
@@ -33,7 +33,7 @@ Tableau Online 可以通过官方 MySQL 数据源，借助 MySQL 接口连接到
 <MySQLCloudSetup />
 
 
-## 本地部署 ClickHouse 服务器配置 {#on-premise-clickhouse-server-setup}
+## 本地部署 ClickHouse 服务器 {#on-premise-clickhouse-server-setup}
 
 <MySQLOnPremiseSetup />
 
@@ -60,7 +60,7 @@ Tableau Online 可以通过官方 MySQL 数据源，借助 MySQL 接口连接到
 />
 <br />
 
-指定在 ClickHouse 设置过程中收集的连接详细信息。
+指定在 ClickHouse 设置期间收集的连接详细信息。
 
 <Image
   size='md'
@@ -70,7 +70,7 @@ Tableau Online 可以通过官方 MySQL 数据源，借助 MySQL 接口连接到
 />
 <br />
 
-Tableau Online 将自动检查数据库并提供可用表的列表。将所需的表拖动到右侧的画布上。此外,您可以点击"立即更新"来预览数据,以及调整检查到的字段类型或名称。
+Tableau Online 将自动检测数据库并提供可用表的列表。将所需的表拖动到右侧的画布上。此外,您可以点击"立即更新"来预览数据,以及调整检测到的字段类型或名称。
 
 <Image
   size='md'
@@ -80,12 +80,12 @@ Tableau Online 将自动检查数据库并提供可用表的列表。将所需�
 />
 <br />
 
-之后,只需点击右上角的"发布为"按钮,您就可以像往常一样在 Tableau Online 中使用新创建的数据集。
+之后,只需点击右上角的"发布为",即可像往常一样在 Tableau Online 中使用新创建的数据集。
 
 注意:如果您想将 Tableau Online 与 Tableau Desktop 结合使用并在它们之间共享 ClickHouse 数据集,请确保在 Tableau Desktop 中也使用默认的 MySQL 连接器,并按照从数据源下拉菜单中选择 MySQL 时显示的[此处](https://www.tableau.com/support/drivers)设置指南进行操作。如果您使用的是 M1 Mac,请查看[此故障排除主题](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac)以获取驱动程序安装的解决方法。
 
 
-## 将 Tableau Online 连接到 ClickHouse(云端或本地部署,使用 SSL){#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## 将 Tableau Online 连接到 ClickHouse(云端或本地 SSL 部署) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
 由于无法通过 Tableau Online MySQL 连接设置向导提供 SSL 证书,
 唯一的方法是使用 Tableau Desktop 设置连接,然后将其导出到 Tableau Online。不过,此过程非常简单。
@@ -104,7 +104,7 @@ Tableau Online 将自动检查数据库并提供可用表的列表。将所需�
 <br />
 
 :::note
-在 MySQL 连接设置界面中,确保启用"SSL"选项。
+在 MySQL 连接设置界面中,请确保启用"SSL"选项。
 ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certificates/) 签发。
 您可以在[此处](https://letsencrypt.org/certs/isrgrootx1.pem)下载此根证书。
 :::
@@ -155,4 +155,4 @@ ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certi
 
 ## 已知限制(ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 
-所有已知限制均已在 ClickHouse `23.11` 中修复。如果您遇到任何其他不兼容问题,请随时[联系我们](https://clickhouse.com/company/contact)或[提交新 issue](https://github.com/ClickHouse/ClickHouse/issues)。
+所有已知限制均已在 ClickHouse `23.11` 中修复。如果您遇到任何其他不兼容问题,请随时[联系我们](https://clickhouse.com/company/contact)或[提交新问题](https://github.com/ClickHouse/ClickHouse/issues)。

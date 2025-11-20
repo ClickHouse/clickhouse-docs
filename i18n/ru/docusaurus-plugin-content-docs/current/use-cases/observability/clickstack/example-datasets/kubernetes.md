@@ -19,14 +19,14 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 
-В этом руководстве показано, как собирать логи и метрики из вашей Kubernetes‑системы и отправлять их в **ClickStack** для визуализации и анализа. В качестве демонстрационных данных при необходимости используется форк официального демо OpenTelemetry от ClickStack.
+Это руководство позволяет собирать логи и метрики из вашей Kubernetes‑системы и отправлять их в **ClickStack** для визуализации и анализа. В качестве демонстрационных данных при необходимости используется форк официального демо OpenTelemetry от ClickStack.
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
 ## Предварительные требования {#prerequisites}
 
-Для работы с этим руководством необходимо:
+Для работы с данным руководством необходимо:
 
 - **Кластер Kubernetes** (рекомендуется версия 1.20 или выше) с минимум 32 ГиБ оперативной памяти и 100 ГБ дискового пространства на одном узле для ClickHouse.
 - **[Helm](https://helm.sh/)** версии 3 или выше
@@ -44,7 +44,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 - **Облачное размещение**: Используйте **ClickHouse Cloud** с внешним управлением HyperDX. Это избавляет от необходимости запускать ClickHouse или HyperDX внутри вашего кластера.
 
-Для имитации трафика приложений вы можете опционально развернуть форк ClickStack приложения [**OpenTelemetry Demo Application**](https://github.com/ClickHouse/opentelemetry-demo). Оно генерирует телеметрические данные, включая логи, метрики и трассировки. Если у вас уже есть рабочие нагрузки в кластере, вы можете пропустить этот шаг и мониторить существующие поды, узлы и контейнеры.
+Для имитации трафика приложений можно дополнительно развернуть форк ClickStack приложения [**OpenTelemetry Demo Application**](https://github.com/ClickHouse/opentelemetry-demo). Оно генерирует телеметрические данные, включая логи, метрики и трассировки. Если в вашем кластере уже запущены рабочие нагрузки, можно пропустить этот шаг и мониторить существующие поды, узлы и контейнеры.
 
 <VerticalStepper headerLevel="h3">
 
@@ -63,9 +63,9 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 
 ### Развертывание демонстрационного приложения OpenTelemetry (необязательно) {#deploy-otel-demo}
 
-Этот **шаг необязателен и предназначен для пользователей, у которых нет подов для мониторинга**. Хотя пользователи с уже развернутыми сервисами в среде Kubernetes могут пропустить этот шаг, демонстрационное приложение включает инструментированные микросервисы, которые генерируют данные трассировки и воспроизведения сеансов, позволяя изучить все возможности ClickStack.
+Этот **шаг необязателен и предназначен для пользователей, у которых нет подов для мониторинга**. Хотя пользователи с уже развернутыми сервисами в среде Kubernetes могут пропустить этот шаг, демонстрация включает инструментированные микросервисы, которые генерируют данные трассировки и воспроизведения сеансов, позволяя изучить все возможности ClickStack.
 
-Следующие команды развертывают форк ClickStack демонстрационного стека приложений OpenTelemetry в кластере Kubernetes, адаптированный для тестирования наблюдаемости и демонстрации инструментирования. Он включает бэкенд-микросервисы, генераторы нагрузки, конвейеры телеметрии, поддерживающую инфраструктуру (например, Kafka, Redis) и интеграции SDK с ClickStack.
+Следующая команда развертывает форк ClickStack демонстрационного стека приложений OpenTelemetry в кластере Kubernetes, адаптированный для тестирования наблюдаемости и демонстрации инструментирования. Он включает бэкенд-микросервисы, генераторы нагрузки, конвейеры телеметрии, поддерживающую инфраструктуру (например, Kafka, Redis) и интеграции SDK с ClickStack.
 
 Все сервисы развертываются в пространстве имен `otel-demo`. Каждое развертывание включает:
 
@@ -82,7 +82,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/hea
 kubectl apply --namespace otel-demo -f opentelemetry-demo.yaml
 ```
 
-После развертывания демо убедитесь, что все поды успешно созданы и находятся в состоянии `Running`:
+После развертывания демонстрации убедитесь, что все поды успешно созданы и находятся в состоянии `Running`:
 
 ```shell
 kubectl get pods -n=otel-demo
@@ -125,7 +125,7 @@ helm repo update
 
 ### Развертывание ClickStack {#deploy-clickstack}
 
-После установки Helm-чарта можно развернуть ClickStack в вашем кластере. Вы можете запустить все компоненты, включая ClickHouse и HyperDX, в среде Kubernetes или использовать ClickHouse Cloud, где HyperDX также доступен как управляемый сервис.
+После установки Helm-чарта можно развернуть ClickStack в кластере. Возможны два варианта: запустить все компоненты, включая ClickHouse и HyperDX, в среде Kubernetes, либо использовать ClickHouse Cloud, где HyperDX также доступен как управляемый сервис.
 
 <br />
 
@@ -140,21 +140,21 @@ helm repo update
 - MongoDB для хранения состояния приложения HyperDX
 
 :::note
-Возможно, потребуется настроить `storageClassName` в соответствии с конфигурацией вашего кластера Kubernetes.
+Возможно, потребуется настроить `storageClassName` в соответствии с конфигурацией кластера Kubernetes.
 :::
 
-Пользователи, не развертывающие демо OTel, могут изменить это, выбрав подходящее пространство имен.
+Пользователи, не развертывающие демонстрацию OTel, могут изменить команду, выбрав подходящее пространство имен.
 
 ```shell
 helm install my-hyperdx hyperdx/hdx-oss-v2   --set clickhouse.persistence.dataSize=100Gi --set global.storageClassName="standard-rwo" -n otel-demo
 ```
 
-:::warning ClickStack в production
+:::warning ClickStack в продакшене
 
 
 Этот чарт также устанавливает ClickHouse и коллектор OTel. Для production-окружения рекомендуется использовать операторы ClickHouse и коллектора OTel и/или использовать ClickHouse Cloud.
 
-Чтобы отключить ClickHouse и коллектор OTel, задайте следующие значения:
+Чтобы отключить ClickHouse и коллектор OTel, установите следующие значения:
 
 ```shell
 helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
@@ -170,13 +170,13 @@ helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set
 Если вы предпочитаете использовать ClickHouse Cloud, можно развернуть ClickStack и [отключить встроенный ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud).
 
 :::note
-В настоящее время чарт всегда разворачивает как HyperDX, так и MongoDB. Хотя эти компоненты предоставляют альтернативный путь доступа, они не интегрированы с аутентификацией ClickHouse Cloud. Эти компоненты предназначены для администраторов в данной модели развертывания, [предоставляя доступ к защищенному ключу приема данных](#retrieve-ingestion-api-key), необходимому для приема данных через развернутый коллектор OTel, но не должны быть доступны конечным пользователям.
+В настоящее время чарт всегда развертывает как HyperDX, так и MongoDB. Хотя эти компоненты предоставляют альтернативный путь доступа, они не интегрированы с аутентификацией ClickHouse Cloud. Эти компоненты предназначены для администраторов в данной модели развертывания, [предоставляя доступ к защищенному ключу приема данных](#retrieve-ingestion-api-key), необходимому для приема данных через развернутый коллектор OTel, но не должны быть доступны конечным пользователям.
 :::
 
 
 ```shell
 # укажите учетные данные ClickHouse Cloud
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # полный https url
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
@@ -185,7 +185,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set
 
 </details>
 
-Чтобы проверить статус развертывания, выполните следующую команду и убедитесь, что все компоненты находятся в состоянии `Running`. Обратите внимание, что для пользователей ClickHouse Cloud компонент ClickHouse будет отсутствовать в этом списке:
+Чтобы проверить статус развертывания, выполните следующую команду и убедитесь, что все компоненты находятся в состоянии `Running`. Обратите внимание, что при использовании ClickHouse Cloud компонент ClickHouse будет отсутствовать в этом списке:
 
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -200,7 +200,7 @@ my-hyperdx-hdx-oss-v2-otel-collector-64cf698f5c-8s7qj   1/1     Running   0     
 ### Доступ к интерфейсу HyperDX {#access-the-hyperdx-ui}
 
 :::note
-Даже при использовании ClickHouse Cloud локальный экземпляр HyperDX, развернутый в кластере Kubernetes, остается необходимым. Он предоставляет ключ приема данных, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасный прием данных через развернутый OTel collector — функциональность, которая в настоящее время недоступна в версии, размещенной в ClickHouse Cloud.
+Даже при использовании ClickHouse Cloud локальный экземпляр HyperDX, развернутый в кластере Kubernetes, по-прежнему необходим. Он предоставляет ключ приема данных, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасный прием данных через развернутый OTel-коллектор — возможность, которая в настоящее время недоступна в версии, размещенной в ClickHouse Cloud.
 :::
 
 В целях безопасности сервис использует `ClusterIP` и по умолчанию не доступен извне.
@@ -222,15 +222,15 @@ kubectl port-forward \
 
 ### Получение ключа API для приема данных {#retrieve-ingestion-api-key}
 
-Прием данных в OTel collector, развернутый с помощью ClickStack collector, защищен ключом приема данных.
+Прием данных в OTel-коллектор, развернутый с помощью ClickStack, защищен ключом приема данных.
 
-Перейдите в раздел [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из секции `API Keys`. Этот ключ API обеспечивает безопасный прием данных через OpenTelemetry collector.
+Перейдите в раздел [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из секции `API Keys`. Этот ключ API обеспечивает безопасный прием данных через коллектор OpenTelemetry.
 
 <Image img={copy_api_key} alt='Copy API key' size='lg' />
 
-### Создание Kubernetes Secret для ключа API {#create-api-key-kubernetes-secret}
+### Создание секрета Kubernetes для ключа API {#create-api-key-kubernetes-secret}
 
-Создайте новый Kubernetes secret с ключом Ingestion API Key и config map, содержащую расположение OTel collector, развернутого с помощью Helm-чарта ClickStack. Последующие компоненты будут использовать их для приема данных в collector, развернутый с помощью Helm-чарта ClickStack:
+Создайте новый секрет Kubernetes с ключом API для приема данных и конфигурационную карту, содержащую расположение OTel-коллектора, развернутого с помощью Helm-чарта ClickStack. Последующие компоненты будут использовать их для приема данных в коллектор, развернутый с помощью Helm-чарта ClickStack:
 
 
 ```shell
@@ -241,19 +241,19 @@ kubectl create secret generic hyperdx-secret \
 ```
 
 
-# создайте ConfigMap, указывающую на развёрнутый выше коллектор ClickStack OTel
+# создайте ConfigMap, указывающий на развёрнутый выше коллектор ClickStack OTel
 
 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
 
 ````
 
-Перезапустите поды демонстрационного приложения OpenTelemetry, чтобы учесть ключ API для приёма данных.
+Перезапустите поды демонстрационного приложения OpenTelemetry, чтобы применить ключ API для приёма данных.
 
 ```shell
 kubectl rollout restart deployment -n otel-demo -l app.kubernetes.io/part-of=opentelemetry-demo
 ````
 
-Данные трассировки и логов из демонстрационных сервисов теперь должны начать поступать в HyperDX.
+Данные трассировки и журналов из демонстрационных сервисов теперь должны начать поступать в HyperDX.
 
 <Image img={hyperdx_kubernetes_data} alt='Данные Kubernetes в HyperDX' size='lg' />
 
@@ -269,23 +269,23 @@ kubectl rollout restart deployment -n otel-demo -l app.kubernetes.io/part-of=ope
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
 ```
 
-### Развертывание компонентов коллектора Kubernetes {#deploy-kubernetes-collector-components}
+### Развертывание компонентов сборщика Kubernetes {#deploy-kubernetes-collector-components}
 
-Для сбора логов и метрик как из самого кластера, так и с каждого узла необходимо развернуть два отдельных коллектора OpenTelemetry, каждый со своим манифестом. Два предоставленных манифеста — `k8s_deployment.yaml` и `k8s_daemonset.yaml` — работают совместно для сбора полных телеметрических данных из вашего кластера Kubernetes.
+Для сбора логов и метрик как из самого кластера, так и с каждого узла, необходимо развернуть два отдельных сборщика OpenTelemetry, каждый со своим манифестом. Два предоставленных манифеста — `k8s_deployment.yaml` и `k8s_daemonset.yaml` — работают совместно для сбора полной телеметрии из вашего кластера Kubernetes.
 
-- `k8s_deployment.yaml` развертывает **единственный экземпляр OpenTelemetry Collector**, отвечающий за сбор **событий и метаданных на уровне кластера**. Он собирает события Kubernetes, метрики кластера и обогащает телеметрические данные метками и аннотациями подов. Этот коллектор работает как автономное развертывание с одной репликой во избежание дублирования данных.
+- `k8s_deployment.yaml` развертывает **единственный экземпляр OpenTelemetry Collector**, отвечающий за сбор **событий и метаданных на уровне кластера**. Он собирает события Kubernetes, метрики кластера и обогащает телеметрические данные метками и аннотациями подов. Этот сборщик работает как отдельное развертывание с одной репликой во избежание дублирования данных.
 
-- `k8s_daemonset.yaml` развертывает **коллектор на основе DaemonSet**, который запускается на каждом узле вашего кластера. Он собирает **метрики на уровне узлов и подов**, а также логи контейнеров, используя такие компоненты, как `kubeletstats`, `hostmetrics` и процессоры атрибутов Kubernetes. Эти коллекторы обогащают логи метаданными и отправляют их в HyperDX с помощью экспортера OTLP.
+- `k8s_daemonset.yaml` развертывает **сборщик на основе DaemonSet**, который запускается на каждом узле кластера. Он собирает **метрики на уровне узлов и подов**, а также логи контейнеров, используя такие компоненты, как `kubeletstats`, `hostmetrics` и процессоры атрибутов Kubernetes. Эти сборщики обогащают логи метаданными и отправляют их в HyperDX с помощью экспортера OTLP.
 
 Вместе эти манифесты обеспечивают полную наблюдаемость всего стека в кластере — от инфраструктуры до телеметрии на уровне приложений — и отправляют обогащенные данные в ClickStack для централизованного анализа.
 
-Сначала установите коллектор в виде развертывания:
+Сначала установите сборщик в виде развертывания:
 
 
 ```shell
 # скачать файл манифеста
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_deployment.yaml
-# установить Helm-чарт
+# установить helm-чарт
 helm install --namespace otel-demo k8s-otel-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
 ```
 
@@ -309,8 +309,8 @@ replicaCount: 1
 
 presets:
 kubernetesAttributes:
-enabled: true # При включении процессор извлечёт все метки связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя метки будет использоваться в качестве ключа.
-extractAllPodLabels: true # При включении процессор извлечёт все аннотации связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя аннотации будет использоваться в качестве ключа.
+enabled: true # При включении процессор извлечёт все метки связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя метки будет использоваться как ключ.
+extractAllPodLabels: true # При включении процессор извлечёт все аннотации связанного пода и добавит их в качестве атрибутов ресурса. # Точное имя аннотации будет использоваться как ключ.
 extractAllPodAnnotations: true
 
 # Настраивает коллектор для сбора событий Kubernetes.
@@ -322,7 +322,7 @@ extractAllPodAnnotations: true
 kubernetesEvents:
 enabled: true
 
-# Настраивает приёмник кластера Kubernetes для сбора метрик уровня кластера.
+# Настраивает приёмник Kubernetes Cluster для сбора метрик на уровне кластера.
 
 # Добавляет приёмник k8s_cluster в конвейер метрик и добавляет необходимые правила в ClusterRole.
 
@@ -363,7 +363,7 @@ exporters: - otlphttp
 
 </details>
 
-Далее разверните коллектор в виде DaemonSet для сбора метрик и логов на уровне узлов и подов:
+Далее разверните коллектор как DaemonSet для сбора метрик и логов на уровне узлов и подов:
 
 ```
 
@@ -371,7 +371,7 @@ exporters: - otlphttp
 ```shell
 # скачать файл манифеста
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
-# установить Helm-чарт
+# установить helm-чарт
 helm install --namespace otel-demo k8s-otel-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
 ```
 
@@ -415,7 +415,7 @@ enabled: true # При включении процессор извлекает 
 extractAllPodLabels: true # При включении процессор извлекает все аннотации связанного пода и добавляет их в качестве атрибутов ресурса. # Точное имя аннотации используется в качестве ключа.
 extractAllPodAnnotations: true
 
-# Настраивает коллектор для сбора метрик узлов, подов и контейнеров с API-сервера на kubelet.
+# Настраивает сборщик для получения метрик узлов, подов и контейнеров с API-сервера на kubelet.
 
 # Добавляет приемник kubeletstats в конвейер метрик и добавляет необходимые правила в ClusterRole.
 
@@ -487,7 +487,7 @@ exporters: - otlphttp
 
 </details>
 
-### Исследование данных Kubernetes в HyperDX {#explore-kubernetes-data-hyperdx}
+### Изучение данных Kubernetes в HyperDX {#explore-kubernetes-data-hyperdx}
 
 Перейдите в пользовательский интерфейс HyperDX — используя экземпляр, развернутый в Kubernetes, или через ClickHouse Cloud.
 
@@ -497,13 +497,13 @@ exporters: - otlphttp
 
 При использовании ClickHouse Cloud просто войдите в сервис ClickHouse Cloud и выберите «HyperDX» в левом меню. Вы будете автоматически аутентифицированы, и вам не потребуется создавать пользователя.
 
-При запросе на создание источника данных сохраните все значения по умолчанию в модели создания источника, заполнив поле Table значением `otel_logs` — для создания источника логов. Все остальные настройки должны определиться автоматически, после чего вы сможете нажать `Save New Source`.
+При появлении запроса на создание источника данных сохраните все значения по умолчанию в форме создания источника, заполнив поле Table значением `otel_logs` — для создания источника логов. Все остальные настройки должны определиться автоматически, после чего можно нажать `Save New Source`.
 
 <Image force img={hyperdx_cloud_datasource} alt="Источник данных HyperDX в ClickHouse Cloud" size="lg"/>
 
-Вам также потребуется создать источник данных для трассировок и метрик.
+Также потребуется создать источник данных для трассировок и метрик.
 
-Например, для создания источников трассировок и метрик OTel пользователи могут выбрать `Create New Source` в верхнем меню.
+Например, для создания источников трассировок и метрик OTel можно выбрать `Create New Source` в верхнем меню.
 
 <Image force img={hyperdx_create_new_source} alt="Создание нового источника в HyperDX" size="lg"/>
 
@@ -515,7 +515,7 @@ exporters: - otlphttp
 
 
 :::note Корреляция источников
-Обратите внимание, что различные источники данных в ClickStack — такие как логи и трассировки — могут быть скоррелированы друг с другом. Для этого требуется дополнительная настройка каждого источника. Например, в источнике логов можно указать соответствующий источник трассировок, и наоборот — в источнике трассировок указать источник логов. Подробнее см. раздел «Correlated sources».
+Обратите внимание, что различные источники данных в ClickStack — такие как логи и трассировки — могут быть скоррелированы друг с другом. Для этого требуется дополнительная настройка каждого источника. Например, в источнике логов можно указать соответствующий источник трассировок, и наоборот — в источнике трассировок указать источник логов. Подробности см. в разделе «Correlated sources».
 :::
 
 </details>
@@ -534,7 +534,7 @@ kubectl port-forward \
 ```
 
 :::note ClickStack в продакшене
-В продакшене рекомендуется использовать ingress с TLS, если вы не используете HyperDX в ClickHouse Cloud. Например:
+В продакшене мы рекомендуем использовать ingress с TLS, если вы не используете HyperDX в ClickHouse Cloud. Например:
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \

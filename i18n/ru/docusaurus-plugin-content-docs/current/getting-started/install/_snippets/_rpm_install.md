@@ -21,7 +21,8 @@ sudo zypper addrepo -r https://packages.clickhouse.com/rpm/clickhouse.repo -g
 sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
-В приведённых ниже шагах команду `yum install` можно заменить на `zypper install` в зависимости от того, какой менеджер пакетов вы используете.
+В приведённых ниже шагах команду `yum install` можно заменить на `zypper install` в зависимости
+от того, какой менеджер пакетов вы используете.
 
 
 ## Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client-1}
@@ -44,7 +45,7 @@ sudo yum install clickhouse-server-22.8.7.34
 
 ## Запуск сервера ClickHouse {#start-clickhouse-server-1}
 
-Для запуска сервера ClickHouse выполните:
+Чтобы запустить сервер ClickHouse, выполните:
 
 ```bash
 sudo systemctl enable clickhouse-server
@@ -52,13 +53,13 @@ sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
 ```
 
-Для запуска клиента ClickHouse выполните:
+Чтобы запустить клиент ClickHouse, выполните:
 
 ```sql
 clickhouse-client
 ```
 
-Если вы установили пароль для сервера, выполните:
+Если вы установили пароль для сервера, то необходимо выполнить:
 
 ```bash
 clickhouse-client --password

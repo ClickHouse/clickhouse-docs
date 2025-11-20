@@ -2,7 +2,7 @@
 sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
 keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
-description: 'Amazon QuickSight 通过统一的商业智能 (BI) 为数据驱动型组织赋能。'
+description: 'Amazon QuickSight 通过统一的商业智能 (BI) 为数据驱动型组织提供支持。'
 title: 'QuickSight'
 doc_type: 'guide'
 integration:
@@ -26,7 +26,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-QuickSight 可以通过 MySQL 接口，使用官方 MySQL 数据源并以 Direct Query 模式，连接到本地部署的 ClickHouse 实例（23.11+）。
+QuickSight 可以通过 MySQL 接口，使用官方 MySQL 数据源和 Direct Query 模式连接到本地部署的 ClickHouse 集群（23.11 及以上版本）。
 
 
 
@@ -76,7 +76,7 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-将 `password_double_sha1_hex` 条目替换为您自己生成的 Double SHA1 哈希值。
+请将 `password_double_sha1_hex` 条目替换为您自己生成的 Double SHA1 哈希值。
 
 QuickSight 需要在 MySQL 用户的配置文件中添加几项额外设置。
 
@@ -94,7 +94,7 @@ QuickSight 需要在 MySQL 用户的配置文件中添加几项额外设置。
 
 但是,建议为 MySQL 用户创建一个单独的配置文件,而不是使用默认配置文件。
 
-最后,配置 ClickHouse 服务器监听所需的 IP 地址。
+最后,配置 ClickHouse Server 监听所需的 IP 地址。
 在 `config.xml` 中,取消注释以下内容以监听所有地址:
 
 ```bash
@@ -145,7 +145,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 />
 <br />
 
-指定连接详细信息。请注意,MySQL 接口端口默认为 9004,
+指定您的连接详细信息。请注意,MySQL 接口端口默认为 9004,
 具体端口可能因服务器配置而异。
 
 <Image
@@ -176,7 +176,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 />
 <br />
 
-点击"Edit/Preview data",您应该能够看到解析的表结构,或者如果您选择使用自定义 SQL 访问数据,可以调整自定义 SQL:
+点击"Edit/Preview data",您应该能够看到解析的表结构,或者如果您选择使用自定义 SQL 访问数据,可以调整您的自定义 SQL:
 
 <Image
   size='md'

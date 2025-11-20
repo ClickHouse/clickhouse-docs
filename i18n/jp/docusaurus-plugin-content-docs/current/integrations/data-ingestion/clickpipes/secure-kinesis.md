@@ -1,8 +1,8 @@
 ---
 slug: /integrations/clickpipes/secure-kinesis
-sidebar_label: 'Kinesis ロールベースアクセス'
-title: 'Kinesis ロールベースアクセス'
-description: 'この記事では、ClickPipes のお客様がロールベースアクセスを活用して Amazon Kinesis で認証を行い、自身のデータストリームに安全にアクセスする方法を説明します。'
+sidebar_label: 'Kinesis のロールベースアクセス'
+title: 'Kinesis のロールベースアクセス'
+description: 'この記事では、ClickPipes のお客様がロールベースアクセスを活用して Amazon Kinesis で認証を行い、データストリームへ安全にアクセスする方法を説明します。'
 doc_type: 'guide'
 keywords: ['Amazon Kinesis']
 ---
@@ -11,7 +11,7 @@ import secure_kinesis from '@site/static/images/integrations/data-ingestion/clic
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-この記事では、ClickPipes のお客様がロールベースのアクセスを利用して Amazon Kinesis で認証を行い、データストリームに安全にアクセスする方法を説明します。
+この記事では、ClickPipes のお客様がロールベースアクセスを利用して Amazon Kinesis で認証を行い、データストリームに安全にアクセスする方法を説明します。
 
 
 ## 前提条件 {#prerequisite}
@@ -24,7 +24,7 @@ import Image from '@theme/IdealImage';
 
 ## はじめに {#introduction}
 
-セキュアなKinesisアクセスの設定を始める前に、その仕組みを理解することが重要です。以下は、ClickPipesが顧客のAWSアカウント内でロールを引き受けることにより、Amazon Kinesisストリームにアクセスする方法の概要です。
+セキュアなKinesisアクセスの設定に進む前に、その仕組みを理解することが重要です。以下は、ClickPipesが顧客のAWSアカウント内でロールを引き受けることにより、Amazon Kinesisストリームにアクセスする方法の概要です。
 
 <Image img={secure_kinesis} alt='Secure Kinesis' size='lg' border />
 
@@ -43,15 +43,15 @@ import Image from '@theme/IdealImage';
 - 4. ページ下部の**Network security information**セクションまでスクロールします。
 - 5. 以下に示すように、サービスに属する**Service role ID (IAM)**の値をコピーします。
 
-<Image img={secures3_arn} alt='セキュアなS3 ARN' size='lg' border />
+<Image img={secures3_arn} alt='セキュアS3 ARN' size='lg' border />
 
-### IAM Assume Roleの設定 {#setting-up-iam-assume-role}
+### IAM AssumeRoleの設定 {#setting-up-iam-assume-role}
 
 #### IAMロールの手動作成 {#manually-create-iam-role}
 
-- 1. IAMロールの作成と管理の権限を持つIAMユーザーでWebブラウザからAWSアカウントにログインします。
+- 1. IAMロールの作成と管理の権限を持つIAMユーザーで、WebブラウザからAWSアカウントにログインします。
 - 2. IAMサービスコンソールに移動します。
-- 3. 信頼されたエンティティタイプが`AWS account`の新しいIAMロールを作成します。これを機能させるには、IAMロールの名前は**必ず**`ClickHouseAccessRole-`で始まる必要があることに注意してください。
+- 3. 信頼されたエンティティタイプが`AWS account`の新しいIAMロールを作成します。この機能を動作させるには、IAMロールの名前は**必ず**`ClickHouseAccessRole-`で始まる必要があることに注意してください。
 
   **i. 信頼ポリシーの設定**
 

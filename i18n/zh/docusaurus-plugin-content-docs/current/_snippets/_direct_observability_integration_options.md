@@ -4,12 +4,12 @@ import NativeAdvancedDashboard from "@site/static/images/cloud/manage/monitoring
 
 ### 直接集成 Grafana 插件 {#direct-grafana}
 
-ClickHouse 的 Grafana 数据源插件支持通过系统表直接从 ClickHouse 可视化和探索数据。这种方法非常适合性能监控以及创建用于详细系统分析的自定义仪表板。
+Grafana 的 ClickHouse 数据源插件支持使用系统表直接从 ClickHouse 可视化和探索数据。这种方法非常适合用于性能监控以及创建自定义仪表板进行详细的系统分析。
 有关插件安装和配置的详细信息,请参阅 ClickHouse [数据源插件](/integrations/grafana)。有关使用 Prometheus-Grafana 混合方案(包含预构建仪表板和告警规则)的完整监控设置,请参阅[使用新的 Prometheus-Grafana 混合方案监控 ClickHouse](https://clickhouse.com/blog/monitor-with-new-prometheus-grafana-mix-in)。
 
 ### 直接集成 Datadog {#direct-datadog}
 
-Datadog 为其代理提供了 ClickHouse 监控插件,该插件直接查询系统表。此集成通过 clusterAllReplicas 功能提供具有集群感知能力的全面数据库监控。
+Datadog 为其代理提供了 ClickHouse 监控插件,可直接查询系统表。该集成通过 clusterAllReplicas 功能提供具有集群感知能力的全面数据库监控。
 :::note
 不建议在 ClickHouse Cloud 部署中使用此集成,因为它与成本优化的空闲行为不兼容,并且受到云代理层的操作限制。
 :::
@@ -20,7 +20,7 @@ Datadog 为其代理提供了 ClickHouse 监控插件,该插件直接查询系�
 
 **查询性能分析**
 
-用户可以使用系统表查询日志来执行查询性能分析。
+用户可以使用系统表查询日志执行查询性能分析。
 
 **示例查询**:查找所有集群副本中运行时间最长的前 5 个查询:
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/streamlit-agent
 sidebar_label: 'Streamlit を統合する'
-title: 'Streamlit で ClickHouse をバックエンドに持つ AI エージェントを構築する方法'
+title: 'Streamlit と ClickHouse を使ってバックエンド連携した AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
 description: 'Streamlit と ClickHouse MCP Server を使って Web ベースの AI エージェントを構築する方法を学びます'
@@ -12,13 +12,13 @@ doc_type: 'guide'
 
 
 
-# Streamlit を使って ClickHouse バックエンドの AI エージェントを構築する方法
+# ClickHouse をバックエンドに持つ AI エージェントを Streamlit で構築する方法
 
-このガイドでは、[Streamlit](https://streamlit.io/) を使って Web ベースの AI エージェントを構築し、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できるようにする方法を学びます。その際に、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [Agno](https://github.com/agno-agi/agno) を使用します。
+このガイドでは、[Streamlit](https://streamlit.io/) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/)、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse)、および [Agno](https://github.com/agno-agi/agno) を利用して対話できる Web ベースの AI エージェントを構築する方法を説明します。
 
-:::note 例のアプリケーション
-この例では、ClickHouse のデータを問い合わせるためのチャットインターフェイスを提供する、完成した Web アプリケーションを作成します。
-この例のソースコードは [examples リポジトリ](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit) にあります。
+:::note サンプルアプリケーション
+このサンプルでは、ClickHouse のデータをクエリするためのチャットインターフェースを備えた、完全な Web アプリケーションを作成します。
+このサンプルのソースコードは [examples リポジトリ](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit)で確認できます。
 :::
 
 
@@ -27,7 +27,7 @@ doc_type: 'guide'
 
 - システムにPythonがインストールされている必要があります。
   [`uv`](https://docs.astral.sh/uv/getting-started/installation/)がインストールされている必要があります
-- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキーが必要です
+- Anthropic APIキー、または他のLLMプロバイダーのAPIキーが必要です
 
 以下の手順でStreamlitアプリケーションを作成できます。
 
@@ -71,15 +71,15 @@ def apply_styles():
 
 ## 認証情報の設定 {#setup-credentials}
 
-Anthropic API キーを環境変数として設定します：
+Anthropic APIキーを環境変数として設定します：
 
 ```bash
 export ANTHROPIC_API_KEY="your_api_key_here"
 ```
 
-:::note 別の LLM プロバイダーを使用する場合
-Anthropic API キーをお持ちでない場合や、別の LLM プロバイダーを使用したい場合は、
-[Agno "Integrations" ドキュメント](https://docs.agentops.ai/v2/integrations/ag2)で認証情報の設定手順をご確認ください
+:::note 別のLLMプロバイダーを使用する場合
+Anthropic APIキーをお持ちでない場合や、別のLLMプロバイダーを使用したい場合は、
+[Agno "Integrations" ドキュメント](https://docs.agentops.ai/v2/integrations/ag2)で認証情報の設定手順を確認してください
 :::
 
 
@@ -141,10 +141,10 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    あなたはClickHouseアシスタントです。ユーザーがClickHouseを使用してデータをクエリし、理解できるよう支援してください。
+                    あなたはClickHouseアシスタントです。ユーザーがClickHouseを使用してデータのクエリと理解を行えるよう支援してください。
                     - ClickHouse MCPツールを使用してSQLクエリを実行する
                     - 関連する場合は結果をMarkdownテーブルで表示する
-                    - 出力は簡潔で有用、かつ適切にフォーマットされた状態を保つ
+                    - 出力を簡潔で有用かつ適切にフォーマットされた状態に保つ
                 """),
                 markdown=True,
                 show_tool_calls=True,
@@ -168,7 +168,7 @@ def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # ストリーム終了の番兵
+        queue.put(None)  # ストリーム終了を示すセンチネル
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -225,6 +225,6 @@ uv run \
   streamlit run app.py --server.headless true
 ```
 
-これによりWebブラウザが開き、`http://localhost:8501`に移動します。ここでAIエージェントと対話し、ClickHouseのSQLプレイグラウンドで利用可能なサンプルデータセットについて質問できます。
+これによりWebブラウザが開き、`http://localhost:8501`に移動します。そこでAIエージェントと対話し、ClickHouseのSQLプレイグラウンドで利用可能なサンプルデータセットについて質問できます。
 
 </VerticalStepper>

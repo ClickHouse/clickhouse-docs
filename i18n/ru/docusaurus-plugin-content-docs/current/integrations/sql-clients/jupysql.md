@@ -1,7 +1,7 @@
 ---
 slug: /integrations/jupysql
 sidebar_label: 'Jupyter notebooks'
-description: 'JupySQL — это кроссплатформенный инструмент для работы с базами данных в Jupyter.'
+description: 'JupySQL — это кроссплатформенный инструмент работы с базами данных для Jupyter.'
 title: 'Использование JupySQL с ClickHouse'
 keywords: ['JupySQL', 'Jupyter notebook', 'Python', 'data analysis', 'interactive SQL']
 doc_type: 'guide'
@@ -25,14 +25,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Мы будем использовать JupySQL для выполнения запросов к ClickHouse.
 После загрузки данных мы визуализируем их с помощью построения графиков на SQL.
 
-Интеграция между JupySQL и ClickHouse реализована с помощью библиотеки clickhouse&#95;sqlalchemy. Эта библиотека обеспечивает простой обмен данными между двумя системами и позволяет пользователям подключаться к ClickHouse и задавать SQL-диалект. После подключения пользователи могут выполнять SQL-запросы непосредственно из собственного интерфейса ClickHouse или прямо из ноутбука Jupyter.
+Интеграция между JupySQL и ClickHouse стала возможной благодаря использованию библиотеки clickhouse&#95;sqlalchemy. Эта библиотека обеспечивает простое взаимодействие между двумя системами и позволяет пользователям подключаться к ClickHouse и указывать SQL-диалект. После подключения пользователи могут выполнять SQL-запросы напрямую из встроенного интерфейса ClickHouse или непосредственно из Jupyter Notebook.
 
 ```python
 # Установка необходимых пакетов
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-Примечание: возможно, потребуется перезапустить ядро, чтобы использовать обновлённые пакеты.
+Примечание: возможно, вам потребуется перезапустить ядро, чтобы использовать обновлённые пакеты.
 
 ```python
 import pandas as pd
@@ -43,9 +43,9 @@ from sklearn_evaluation import plot
 %config SqlMagic.autocommit=False
 ```
 
-**На следующих этапах вам нужно будет убедиться, что ваш ClickHouse запущен и доступен. Вы можете использовать как локальную, так и облачную версию.**
+**На следующих этапах необходимо, чтобы ваш ClickHouse был запущен и доступен. Вы можете использовать как локальную, так и облачную версию.**
 
-**Примечание:** вам потребуется скорректировать строку подключения в соответствии с типом инстанса, к которому вы подключаетесь (url, user, password). В приведённом ниже примере мы использовали локальный инстанс. Чтобы узнать больше, ознакомьтесь с [этим руководством](/get-started/quick-start).
+**Примечание:** вам нужно будет изменить строку подключения в соответствии с типом экземпляра, к которому вы подключаетесь (`url`, `user`, `password`). В примере ниже мы использовали локальный экземпляр. Чтобы узнать больше, ознакомьтесь с [этим руководством](/get-started/quick-start).
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -230,7 +230,7 @@ SELECT * FROM s3(
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  Выполнено.
+  Готово.
 
 <table>
   <tr>
@@ -325,7 +325,7 @@ limit 5;
 ```
 
 * clickhouse://default:***@localhost:8123/default
-  Выполнено.
+  Готово.
 
 <table>
   <tr>
@@ -391,7 +391,7 @@ WHERE trip_distance < 6.3
 <AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Количество'>
 ```
 
-<Image img={jupysql_plot_1} size="md" alt="Гистограмма распределения расстояний поездок с 10 бинами из набора данных short-trips" border />
+<Image img={jupysql_plot_1} size="md" alt="Гистограмма распределения расстояний поездок с 10 интервалами из набора данных short-trips" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
@@ -400,4 +400,4 @@ ax.set_title("Расстояние поездок < 6.3")
 _ = ax.set_xlabel("Расстояние поездки")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение расстояний поездок с 50 корзинами и сеткой, с заголовком «Trip distance from trips < 6.3»" border />
+<Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение длины поездок с 50 столбцами и сеткой, с заголовком «Trip distance from trips < 6.3»" border />

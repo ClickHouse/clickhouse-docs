@@ -8,28 +8,28 @@ doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
-ClickStack 使用 OpenTelemetry (OTel) collector 从 Kubernetes 集群中收集日志、指标和 Kubernetes 事件，并将其转发到 ClickStack。我们支持原生 OTel 日志格式，无需任何额外的厂商特定配置。
+ClickStack 使用 OpenTelemetry (OTel) Collector 从 Kubernetes 集群中采集日志、指标和 Kubernetes 事件，并将其转发到 ClickStack。我们支持原生的 OTel 日志格式，无需任何额外的厂商特定配置。
 
-本指南涵盖以下内容：
+本指南涵盖以下集成内容：
 
-- **日志（Logs）**
-- **基础设施指标（Infra Metrics）**
+- **日志**
+- **基础设施指标**
 
 :::note
-如需发送应用级别的指标或 APM/追踪（traces），你还需要在应用程序中添加相应语言的集成。
+如果要发送应用级指标或 APM/追踪数据，你还需要在应用程序中添加相应的语言集成。
 :::
 
-本指南假定你已经部署了一个[作为网关的 ClickStack OTel collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)，并通过接入 API 密钥进行了安全防护。
+本指南假定你已经部署了一个[作为网关的 ClickStack OTel Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)，并使用接入 API 密钥进行了安全加固。
 
 
 
 ## 创建 OTel Helm Chart 配置文件 {#creating-the-otel-helm-chart-config-files}
 
-为了从每个节点和集群本身收集日志和指标,我们需要部署两个独立的 OpenTelemetry 收集器。其中一个将以 DaemonSet 方式部署,用于从每个节点收集日志和指标;另一个将以 Deployment 方式部署,用于从集群本身收集日志和指标。
+为了从每个节点和集群本身收集日志和指标,我们需要部署两个独立的 OpenTelemetry 收集器。一个将以 DaemonSet 方式部署,用于从每个节点收集日志和指标;另一个将以 Deployment 方式部署,用于从集群本身收集日志和指标。
 
 ### 创建 API 密钥 Secret {#create-api-key-secret}
 
-使用来自 HyperDX 的[数据摄取 API 密钥](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)创建一个新的 Kubernetes Secret。下面安装的组件将使用该密钥安全地将数据摄取到您的 ClickStack OTel 收集器:
+使用来自 HyperDX 的[数据摄取 API 密钥](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)创建一个新的 Kubernetes Secret。下面安装的组件将使用该密钥安全地将数据摄取到您的 ClickStack OTel 收集器中:
 
 ```shell
 kubectl create secret generic hyperdx-secret \
@@ -65,7 +65,7 @@ mode: daemonset
 ```
 
 
-# 使用 kubeletstats CPU/内存利用率指标所需配置
+# 使用 kubeletstats CPU/内存利用率指标所需
 
 clusterRole:
 create: true
@@ -79,20 +79,20 @@ enabled: true
 hostMetrics:
 enabled: true
 
-# 配置 Kubernetes 处理器以添加 Kubernetes 元数据
+# 配置 Kubernetes 处理器以添加 Kubernetes 元数据。
 
-# 将 k8sattributes 处理器添加到所有管道,并向 ClusterRole 添加必要的规则
+# 将 k8sattributes 处理器添加到所有管道,并向 ClusterRole 添加必要的规则。
 
 # 更多信息:https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
 
 kubernetesAttributes:
-enabled: true # 启用后,处理器将提取关联 Pod 的所有标签并将其作为资源属性添加。# 标签的确切名称将作为键。
-extractAllPodLabels: true # 启用后,处理器将提取关联 Pod 的所有注解并将其作为资源属性添加。# 注解的确切名称将作为键。
+enabled: true # 启用后,处理器将提取关联 Pod 的所有标签,并将它们作为资源属性添加。# 标签的确切名称将作为键。
+extractAllPodLabels: true # 启用后,处理器将提取关联 Pod 的所有注解,并将它们作为资源属性添加。# 注解的确切名称将作为键。
 extractAllPodAnnotations: true
 
-# 配置收集器从 kubelet 上的 API 服务器收集节点、Pod 和容器指标
+# 配置收集器从 kubelet 上的 API 服务器收集节点、Pod 和容器指标。
 
-# 将 kubeletstats 接收器添加到指标管道,并向 ClusterRole 添加必要的规则
+# 将 kubeletstats 接收器添加到指标管道,并向 ClusterRole 添加必要的规则。
 
 # 更多信息:https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
 
@@ -192,8 +192,8 @@ replicaCount: 1
 
 presets:
 kubernetesAttributes:
-enabled: true # 启用后,处理器将提取关联 Pod 的所有标签并将其作为资源属性添加。# 标签的确切名称将作为键。
-extractAllPodLabels: true # 启用后,处理器将提取关联 Pod 的所有注解并将其作为资源属性添加。# 注解的确切名称将作为键。
+enabled: true # 启用后,处理器将提取关联 Pod 的所有标签并将其添加为资源属性。# 标签的确切名称将作为键。
+extractAllPodLabels: true # 启用后,处理器将提取关联 Pod 的所有注解并将其添加为资源属性。# 注解的确切名称将作为键。
 extractAllPodAnnotations: true
 
 # 配置收集器以收集 Kubernetes 事件。
@@ -301,7 +301,7 @@ spec:
           image: my-image
           env:
             # ... 其他环境变量
-            # 从 Downward API 收集 K8s 元数据转发至应用
+            # 从 Downward API 收集 K8s 元数据转发至应用程序
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -322,7 +322,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['deployment']
-            # 通过 OTEL_RESOURCE_ATTRIBUTES 将 K8s 元数据转发至应用
+            # 通过 OTEL_RESOURCE_ATTRIBUTES 将 K8s 元数据转发至应用程序
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.node.name=$(NODE_NAME),k8s.deployment.name=$(DEPLOYMENT_NAME)
 ```

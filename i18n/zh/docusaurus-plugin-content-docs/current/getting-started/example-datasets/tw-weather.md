@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['example dataset', 'weather', 'taiwan', 'sample data', 'climate data']
 ---
 
-该数据集包含过去 128 年的历史气象观测数据。每一行代表某一时刻、某一气象测站的一次观测记录。
+该数据集包含过去 128 年的历史气象观测数据。每一行代表在某个日期时间及气象测站上的一次测量记录。
 
-该数据集的来源可在[此处](https://github.com/Raingel/historical_weather)获取，气象站编号列表可在[此处](https://github.com/Raingel/weather_station_list)找到。
+该数据集的来源可在[此处](https://github.com/Raingel/historical_weather)找到，气象测站编号列表可在[此处](https://github.com/Raingel/weather_station_list)找到。
 
-> 气象数据集的来源包括由中央气象局设置的气象站（测站代码以 C0、C1 和 4 开头）以及农委会所属的农业气象站（测站代码为上述以外的其他代码）：
+> 气象数据集的来源包括由中央气象局设立的气象站（测站编号以 C0、C1 和 4 开头），以及隶属于农业委员会的农业气象站（测站编号为上述编号以外的其他编号）：
 
     - StationId
     - MeasuredDate，观测时间
@@ -19,13 +19,13 @@ keywords: ['example dataset', 'weather', 'taiwan', 'sample data', 'climate data'
     - SeaPres，海平面气压
     - Td，露点温度
     - RH，相对湿度
-    - 其他可用要素
+    - 其他在有数据时提供的要素
 
 
 
 ## 下载数据 {#downloading-the-data}
 
-- 为 ClickHouse 准备的[预处理版本](#pre-processed-data)数据,已经过清洗、重构和丰富。该数据集涵盖 1896 年至 2023 年。
+- 为 ClickHouse 准备的[预处理版本](#pre-processed-data)数据,已经过清理、重构和丰富。该数据集涵盖 1896 年至 2023 年。
 - [下载原始数据](#original-raw-data)并转换为 ClickHouse 所需的格式。需要添加自定义列的用户可以探索或完善自己的方法。
 
 ### 预处理数据 {#pre-processed-data}
@@ -84,9 +84,9 @@ wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data
 ````
 
 
-# 可选：校验校验和
+# 选项：校验校验和
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# 校验和应为：b66b9f137217454d655e3004d7d1b51a
+# 校验和应等于：b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -112,7 +112,7 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 ````
 
 
-# 选项：将 UTF-8-BOM 转为 UTF-8 编码
+# 选项：将带 BOM 的 UTF-8 转换为 UTF-8 编码
 
 sed -i &#39;1s/^\xEF\xBB\xBF//&#39; weather&#95;sta&#95;list.csv
 
@@ -162,19 +162,19 @@ ORDER BY (MeasuredDate);
 ```
 
 
-## 向 ClickHouse 插入数据 {#inserting-into-clickhouse}
+## 插入数据到 ClickHouse {#inserting-into-clickhouse}
 
 ### 从本地文件插入 {#inserting-from-local-file}
 
-可以通过以下方式从本地文件插入数据(从 ClickHouse 客户端执行):
+可以通过以下方式从本地文件插入数据(在 ClickHouse 客户端中执行):
 
 ```sql
 INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_1896_2023.csv'
 ```
 
-其中 `/path/to` 表示磁盘上本地文件的具体路径。
+其中 `/path/to` 表示本地文件在磁盘上的具体路径。
 
-向 ClickHouse 插入数据后的示例响应输出如下:
+插入数据到 ClickHouse 后的示例响应输出如下:
 
 ```response
 Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
@@ -192,12 +192,12 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 
 ```
 
-要了解如何加速此过程,请参阅我们关于[调优大数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博客文章。
+要了解如何加速此过程,请参阅我们的博客文章:[优化大数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。
 
 
 ## 检查数据行数和大小 {#check-data-rows-and-sizes}
 
-1. 查看插入的数据行数:
+1. 查看插入的行数:
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -272,7 +272,7 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-返回 30 行。耗时:0.045 秒。处理了 641 万行,187.33 MB(1.4392 亿行/秒,4.21 GB/秒)。
+返回 30 行。耗时:0.045 秒。处理了 641 万行,187.33 MB(1.4392 亿行/秒,4.21 GB/秒)
 ```
 
 ### Q2: 获取指定时间范围、字段和气象站的原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
@@ -317,6 +317,6 @@ LIMIT 10
 
 ## 致谢 {#credits}
 
-我们谨此感谢中央气象署和农业委员会农业气象观测网络（站）在准备、清理和分发此数据集方面所做的努力。
+我们谨此感谢中央气象署和农业委员会农业气象观测网络(站)在准备、清理和分发此数据集方面所做的努力。
 
-Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. 面向应用的台湾稻瘟病早期预警深度学习模型. 生态信息学 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]
+Ou, J.-H., Kuo, C.-H., Wu, Y.-F., Lin, G.-C., Lee, M.-H., Chen, R.-K., Chou, H.-P., Wu, H.-Y., Chu, S.-C., Lai, Q.-J., Tsai, Y.-C., Lin, C.-C., Kuo, C.-C., Liao, C.-T., Chen, Y.-N., Chu, Y.-W., Chen, C.-Y., 2023. Application-oriented deep learning model for early warning of rice blast in Taiwan. Ecological Informatics 73, 101950. https://doi.org/10.1016/j.ecoinf.2022.101950 [13/12/2022]

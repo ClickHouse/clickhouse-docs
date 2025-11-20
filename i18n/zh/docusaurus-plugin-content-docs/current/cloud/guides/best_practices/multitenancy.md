@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi-tenant']
 ---
 
-在 SaaS 数据分析平台中，让多个租户（例如组织、客户或业务部门）在共享同一套数据库基础设施的同时保持数据的逻辑隔离是很常见的做法。这样可以让不同用户在同一平台上安全地访问各自的数据。
+在 SaaS 数据分析平台中，让多个租户（例如组织、客户或业务部门）共享同一套数据库基础设施，同时在逻辑上保持各自数据的隔离是很常见的场景。这样可以让不同用户在同一平台上安全地访问各自的数据。
 
-根据不同的需求，可以采用不同方式来实现多租户。下面是使用 ClickHouse Cloud 实现多租户的指南。
+根据具体需求，可以采用不同方式来实现多租户。下面是使用 ClickHouse Cloud 实现这些方式的指南。
 
 
 
@@ -17,19 +17,19 @@ keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi
 
 在这种方法中,所有租户的数据都存储在单个共享表中,通过一个字段(或一组字段)来标识每个租户的数据。为了最大化性能,该字段应包含在[主键](/sql-reference/statements/create/table#primary-key)中。为了确保用户只能访问属于其各自租户的数据,我们使用通过[行策略](/operations/access-rights#row-policy-management)实现的[基于角色的访问控制](/operations/access-rights)。
 
-> **我们推荐使用这种方法,因为它是最简单的管理方式,特别是当所有租户共享相同的数据模式且数据量适中(< TB)时**
+> **我们推荐使用这种方法,因为它是最简单的管理方式,特别适用于所有租户共享相同数据模式且数据量适中(< TB)的场景**
 
 通过将所有租户数据整合到单个表中,可以通过优化数据压缩和减少元数据开销来提高存储效率。此外,由于所有数据都集中管理,模式更新也更加简便。
 
-这种方法对于处理大量租户(可能达到数百万个)特别有效。
+这种方法特别适合处理大量租户(可能达到数百万个)的场景。
 
-但是,如果租户具有不同的数据模式或预计随时间推移会出现差异,则其他方法可能更合适。
+但是,如果租户具有不同的数据模式或预期随时间推移而产生差异,则其他方法可能更合适。
 
-在租户之间数据量存在显著差距的情况下,较小的租户可能会遇到不必要的查询性能影响。请注意,通过在主键中包含租户字段,这个问题在很大程度上可以得到缓解。
+在租户之间数据量存在显著差距的情况下,较小的租户可能会受到不必要的查询性能影响。请注意,通过在主键中包含租户字段,这个问题在很大程度上可以得到缓解。
 
 ### 示例 {#shared-table-example}
 
-这是共享表多租户模型实现的一个示例。
+以下是共享表多租户模型实现的示例。
 
 首先,让我们创建一个在主键中包含 `tenant_id` 字段的共享表。
 
@@ -51,7 +51,7 @@ ORDER BY (tenant_id, timestamp)
 
 
 ```sql
--- 插入一些示例数据行
+-- 插入一些虚拟数据行
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -74,7 +74,7 @@ CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-我们[创建行策略](/sql-reference/statements/create/row-policy)，将 `user_1` 和 `user_2` 限制为只能访问各自租户的数据。
+我们[创建行策略](/sql-reference/statements/create/row-policy)，将 `user_1` 和 `user_2` 的访问权限限制为只能访问各自租户的数据。
 
 ```sql
 -- 创建行级策略
@@ -82,7 +82,7 @@ CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
 
-然后使用一个公共角色为共享表授予 [`GRANT SELECT`](/sql-reference/statements/grant#usage) 权限。
+然后使用一个公共角色在共享表上授予 [`GRANT SELECT`](/sql-reference/statements/grant#usage) 权限。
 
 ```sql
 -- 创建角色
@@ -94,7 +94,7 @@ GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-现在，你可以使用用户 `user_1` 进行连接，并运行一个简单的 SELECT 查询。结果中只会返回来自第一个租户的行。
+现在你可以使用 `user_1` 身份连接，并运行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
 
 ```sql
 -- 以 user_1 身份登录
@@ -119,17 +119,17 @@ FROM events
 
 ## 独立表 {#separate-tables}
 
-在这种方法中,每个租户的数据存储在同一数据库内的独立表中,无需使用特定字段来标识租户。用户访问通过 [GRANT 语句](/sql-reference/statements/grant) 进行控制,确保每个用户只能访问包含其租户数据的表。
+在这种方法中,每个租户的数据存储在同一数据库内的独立表中,无需使用特定字段来标识租户。用户访问通过 [GRANT 语句](/sql-reference/statements/grant)进行控制,确保每个用户只能访问包含其租户数据的表。
 
 > **当租户具有不同的数据模式时,使用独立表是一个不错的选择。**
 
-对于涉及少量租户且拥有超大数据集、查询性能至关重要的场景,这种方法可能优于共享表模型。由于无需过滤其他租户的数据,查询效率更高。此外,主键可以进一步优化,因为无需在主键中包含额外字段(例如租户 ID)。
+对于涉及少数租户且拥有超大数据集、查询性能至关重要的场景,这种方法可能优于共享表模型。由于无需过滤其他租户的数据,查询效率更高。此外,主键可以进一步优化,因为无需在主键中包含额外字段(例如租户 ID)。
 
-请注意,这种方法不适用于数千个租户的扩展场景。请参阅[使用限制](/cloud/bestpractices/usage-limits)。
+请注意,这种方法不适用于数千个租户的场景。请参阅[使用限制](/cloud/bestpractices/usage-limits)。
 
 ### 示例 {#separate-tables-example}
 
-以下是独立表多租户模型实现的示例。
+这是独立表多租户模型实现的示例。
 
 首先,让我们创建两个表,一个用于 `tenant_1` 的事件,另一个用于 `tenant_2` 的事件。
 
@@ -157,7 +157,7 @@ CREATE TABLE events_tenant_2
 ORDER BY (timestamp, user_id) -- 主键可以专注于其他属性
 ```
 
-让我们插入一些示例数据。
+让我们插入模拟数据。
 
 ```sql
 INSERT INTO events_tenant_1 (id, type, timestamp, user_id, data)
@@ -192,12 +192,12 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 然后对相应的表授予 `GRANT SELECT` 权限。
 
 ```sql
--- 授予 events 表只读权限。
+-- 授予 events 表的只读权限。
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-现在可以以 `user_1` 身份连接并对该用户对应的表执行简单的查询。仅返回第一个租户的数据行。
+现在可以以 `user_1` 身份连接并从该用户对应的表中运行简单的查询。仅返回第一个租户的行。
 
 ```sql
 -- 以 user_1 身份登录
@@ -218,9 +218,9 @@ FROM default.events_tenant_1
 
 每个租户的数据存储在同一个 ClickHouse 服务中的独立数据库内。
 
-> **当每个租户需要大量表和物化视图,且具有不同的数据模式时,此方法非常有用。但是,当租户数量较大时,管理可能会变得困难。**
+> **当每个租户需要大量表和物化视图,且具有不同的数据模式时,此方法非常有用。但是,当租户数量较多时,管理可能会变得困难。**
 
-该实现方式类似于独立表方法,但权限授予是在数据库级别而非表级别。
+该实现方式与独立表方法类似,但权限授予是在数据库级别而非表级别。
 
 请注意,此方法不适用于数千个租户的场景。请参阅[使用限制](/cloud/bestpractices/usage-limits)。
 
@@ -262,7 +262,7 @@ CREATE TABLE tenant_2.events
 ORDER BY (timestamp, user_id);
 ```
 
-让我们插入一些示例数据。
+接下来插入示例数据。
 
 ```sql
 INSERT INTO tenant_1.events (id, type, timestamp, user_id, data)
@@ -302,7 +302,7 @@ GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-现在可以以 `user_1` 身份连接,并在相应数据库的 events 表上运行简单的 SELECT 查询。仅返回第一个租户的数据行。
+现在可以以 `user_1` 身份连接,并在相应数据库的 events 表上运行简单的 SELECT 查询。仅返回第一个租户的行。
 
 ```sql
 -- 以 user_1 身份登录
@@ -321,18 +321,18 @@ FROM tenant_1.events
 
 ## 计算-计算分离 {#compute-compute-separation}
 
-上述三种方法还可以通过使用 [Warehouse](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据通过公共对象存储共享,但借助 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation),每个租户可以拥有自己的计算服务,并配置不同的 CPU/内存比率。
+上述三种方法还可以通过使用 [Warehouse](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据通过公共对象存储共享,但借助 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation),每个租户可以拥有自己的计算服务,并配置不同的 CPU/内存比例。
 
 用户管理与前面描述的方法类似,因为 Warehouse 中的所有服务都 [共享访问控制](/cloud/reference/warehouses#database-credentials)。
 
-请注意,Warehouse 中的子服务数量有限制。请参阅 [Warehouse 限制](/cloud/reference/warehouses#limitations)。
+请注意,Warehouse 中的子服务数量有限。请参阅 [Warehouse 限制](/cloud/reference/warehouses#limitations)。
 
 
 ## 独立云服务 {#separate-service}
 
 最彻底的方法是为每个租户使用独立的 ClickHouse 服务。
 
-> **如果因法律、安全或地理位置等原因需要将租户数据存储在不同区域,这种较少使用的方法将是一种解决方案。**
+> **如果出于法律、安全或地理位置等原因需要将租户数据存储在不同区域,这种较少使用的方法将是一种解决方案。**
 
 必须在每个服务上创建用户账户,以便用户可以访问其对应租户的数据。
 
@@ -357,7 +357,7 @@ CREATE TABLE events
 ORDER BY (timestamp, user_id);
 ```
 
-让我们插入一些示例数据。
+让我们插入模拟数据。
 
 ```sql
 INSERT INTO events (id, type, timestamp, user_id, data)
@@ -379,7 +379,7 @@ CREATE USER user_1 IDENTIFIED BY '<password>'
 然后在相应的表上授予 `SELECT` 权限。
 
 ```sql
--- 授予 events 表的只读权限
+-- 授予 events 表的只读权限。
 GRANT SELECT ON events TO user_1
 ```
 

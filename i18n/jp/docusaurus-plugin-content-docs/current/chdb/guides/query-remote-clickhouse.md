@@ -2,53 +2,53 @@
 title: 'リモート ClickHouse サーバーへのクエリ方法'
 sidebar_label: 'リモート ClickHouse へのクエリ'
 slug: /chdb/guides/query-remote-clickhouse
-description: 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を説明します。'
+description: 'このガイドでは、chDB からリモート ClickHouse サーバーにクエリを送信する方法を説明します。'
 keywords: ['chdb', 'clickhouse']
 doc_type: 'guide'
 ---
 
-このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法を学びます。
+このガイドでは、chDB からリモート ClickHouse サーバーにクエリを送信する方法を説明します。
 
 
 
 ## セットアップ {#setup}
 
-まず、仮想環境を作成します：
+まず、仮想環境を作成します:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上を使用してください：
+次に chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いて、pandasとipythonをインストールします：
+次に pandas と ipython をインストールします:
 
 ```bash
 pip install pandas ipython
 ```
 
-このガイドの以降のコマンドを実行するには`ipython`を使用します。次のコマンドで起動できます：
+このガイドの残りのコマンドを実行するために `ipython` を使用します。次のコマンドで起動できます:
 
 ```bash
 ipython
 ```
 
-Pythonスクリプトまたはお好みのノートブックでコードを使用することもできます。
+Python スクリプトやお好みのノートブックでこのコードを使用することもできます。
 
 
 ## ClickPyの紹介 {#an-intro-to-clickpy}
 
-これからクエリを実行するリモートClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
-ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを通じてパッケージの統計情報を確認できます。
+これからクエリを実行するリモートのClickHouseサーバーは[ClickPy](https://clickpy.clickhouse.com)です。
+ClickPyはPyPIパッケージのすべてのダウンロードを追跡し、UIを介してパッケージの統計情報を確認できます。
 基盤となるデータベースには`play`ユーザーを使用してクエリを実行できます。
 
-ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
+ClickPyの詳細については、[GitHubリポジトリ](https://github.com/ClickHouse/clickpy)をご覧ください。
 
 
 ## ClickPy ClickHouseサービスへのクエリ {#querying-the-clickpy-clickhouse-service}
@@ -62,7 +62,7 @@ import chdb
 `remoteSecure`関数を使用してClickPyにクエリを実行します。
 この関数は、最低限ホスト名、テーブル名、ユーザー名を引数として受け取ります。
 
-以下のクエリで、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして取得できます:
+以下のクエリを記述することで、[`openai`パッケージ](https://clickpy.clickhouse.com/dashboard/openai)の1日あたりのダウンロード数をPandas DataFrameとして取得できます:
 
 ```python
 query = """
@@ -135,7 +135,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 
 ## Pandas DataFrameのマージ {#merging-pandas-dataframes}
 
-これで2つのDataFrameが用意できたので、日付（`x`列）を基準に次のようにマージできます：
+2つのDataFrameが用意できたので、日付（`x`列）を基準にして次のようにマージできます：
 
 ```python
 df = openai_df.merge(

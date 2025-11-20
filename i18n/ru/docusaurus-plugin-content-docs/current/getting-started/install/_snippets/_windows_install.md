@@ -1,4 +1,4 @@
-# Установка ClickHouse в Windows с использованием WSL
+# Установка ClickHouse в Windows с помощью WSL
 
 
 
@@ -34,7 +34,7 @@ Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 curl https://clickhouse.com/ | sh
 ```
 
-При успешном выполнении скрипта вы увидите сообщение:
+Если скрипт успешно выполнен, вы увидите сообщение:
 
 ```bash
 Successfully downloaded the ClickHouse binary, you can run it as:
@@ -58,8 +58,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 
 ## Запуск clickhouse-server {#start-clickhouse-server}
 
-Если требуется сохранение данных, необходимо запустить `clickhouse-server`. Запустить
-сервер ClickHouse можно следующей командой:
+Если вы хотите сохранять данные, вам потребуется запустить `clickhouse-server`. Запустить сервер ClickHouse можно следующей командой:
 
 ```bash
 ./clickhouse server

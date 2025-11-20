@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'LDAP の構成'
+sidebar_label: 'LDAP の設定'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '認証とロールマッピングに LDAP を使用するよう ClickHouse を構成する'
-description: '認証とロールマッピングに LDAP を使用するよう ClickHouse を構成する方法を説明します'
+title: '認証とロールマッピングに LDAP を使用するよう ClickHouse を設定する'
+description: '認証とロールマッピングに LDAP を使用するよう ClickHouse を設定する方法を説明します'
 keywords: ['LDAP configuration', 'LDAP authentication', 'role mapping', 'user management', 'SRE guide']
 doc_type: 'guide'
 ---
@@ -11,11 +11,11 @@ doc_type: 'guide'
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 
-# LDAP を使用した認証およびロールマッピングのための ClickHouse の設定
+# LDAP を使用した ClickHouse の認証およびロールマッピングの設定
 
 <SelfManaged />
 
-ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を使用するように構成できます。本ガイドでは、一般公開ディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する、簡単な例を紹介します。
+ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を使用するよう構成できます。このガイドでは、公開ディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する、シンプルな例を紹介します。
 
 
 
@@ -84,7 +84,7 @@ ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を�
    LDAP設定の詳細については、[LDAPドキュメントページ](../../../operations/external-authenticators/ldap.md)を参照してください。
    :::
 
-3. ユーザーロールマッピングを構成するために、`<user_directories>`セクションに`<ldap>`セクションを追加します。このセクションは、ユーザーが認証されるタイミングと、ユーザーが受け取るロールを定義します。この基本的な例では、LDAPに認証するすべてのユーザーは、ClickHouseの後のステップで定義される`scientists_role`を受け取ります。セクションは次のようになります:
+3. ユーザーロールマッピングを構成するために、`<user_directories>`セクションに`<ldap>`セクションを追加します。このセクションは、ユーザーが認証されるタイミングと、ユーザーが受け取るロールを定義します。この基本的な例では、LDAPで認証されたすべてのユーザーは、後のステップでClickHouseに定義される`scientists_role`を受け取ります。セクションは次のようになります:
 
    ```xml
    <user_directories>
@@ -112,10 +112,10 @@ ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を�
 
    | パラメータ     | 説明                                                         | 例                                                       |
    | ------------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
-   | server        | 前のldap_serversセクションで定義されたラベル                     | test_ldap_server                                              |
+   | server        | 前述のldap_serversセクションで定義されたラベル                     | test_ldap_server                                              |
    | roles         | ユーザーがマッピングされるClickHouseで定義されたロールの名前 | scientists_role                                               |
    | base_dn       | ユーザーを含むグループの検索を開始する基本パス                      | dc=example,dc=com                                             |
-   | search_filter | ユーザーをマッピングするために選択するグループを識別するLDAP検索フィルター   | `(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))` |
+   | search_filter | ユーザーをマッピングするために選択するグループを識別するLDAP検索フィルタ   | `(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))` |
    | attribute     | 値を返す属性名                  | cn                                                            |
 
 4. 設定を適用するためにClickHouseサーバーを再起動します。
@@ -133,13 +133,13 @@ ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を�
    CREATE ROLE scientists_role;
    ```
 
-2. ロールに必要な権限を付与します。次のステートメントは、LDAP経由で認証できるすべてのユーザーに管理者権限を付与します：
+2. ロールに必要な権限を付与します。次のステートメントは、LDAP経由で認証できるすべてのユーザーに管理者権限を付与します:
    ```sql
    GRANT ALL ON *.* TO scientists_role;
    ```
 
 
-## 3. LDAP設定のテスト {#3-test-the-ldap-configuration}
+## 3. LDAP設定をテストする {#3-test-the-ldap-configuration}
 
 1. ClickHouseクライアントを使用してログインする
 
@@ -153,10 +153,10 @@ ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を�
    ```
 
    :::note
-   ステップ1の`ldapsearch`コマンドを使用して、ディレクトリ内の利用可能なすべてのユーザーを確認できます。すべてのユーザーのパスワードは`password`です
+   ステップ1の`ldapsearch`コマンドを使用して、ディレクトリ内の利用可能なすべてのユーザーを表示できます。すべてのユーザーのパスワードは`password`です
    :::
 
-2. ユーザーが`scientists_role`ロールに正しくマッピングされ、管理者権限を持っていることを確認する
+2. ユーザーが`scientists_role`ロールに正しくマッピングされ、管理者権限を持っていることをテストする
 
    ```sql
    SHOW DATABASES
@@ -183,4 +183,4 @@ ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を�
 
 ## まとめ {#summary}
 
-本記事では、ClickHouseでLDAPサーバーによる認証とロールマッピングを行うための基本的な設定方法を説明しました。また、ClickHouseで個別のユーザーを設定し、自動ロールマッピングを構成せずにLDAP認証のみを利用するオプションもあります。LDAPモジュールはActive Directoryへの接続にも使用できます。
+本記事では、ClickHouseをLDAPサーバーで認証し、ロールにマッピングするための基本的な設定方法を説明しました。また、ClickHouseで個別のユーザーを設定し、自動ロールマッピングを構成せずにLDAP認証のみを使用するオプションもあります。LDAPモジュールはActive Directoryへの接続にも使用できます。

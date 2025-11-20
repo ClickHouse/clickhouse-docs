@@ -8,13 +8,13 @@ title: 'SQLAlchemy 支持'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect 包含一个构建在核心驱动之上的 SQLAlchemy 方言（`clickhousedb`）。它面向 SQLAlchemy Core API，支持 SQLAlchemy 1.4.40+ 和 2.0.x。
+ClickHouse Connect 包含一个基于核心驱动构建的 SQLAlchemy 方言（`clickhousedb`）。它面向 SQLAlchemy Core API，支持 SQLAlchemy 1.4.40+ 和 2.0.x。
 
 
 
 ## 使用 SQLAlchemy 连接 {#sqlalchemy-connect}
 
-使用 `clickhousedb://` 或 `clickhousedb+connect://` URL 创建引擎。查询参数对应 ClickHouse 设置、客户端选项以及 HTTP/TLS 传输选项。
+使用 `clickhousedb://` 或 `clickhousedb+connect://` URL 创建引擎。查询参数映射到 ClickHouse 设置、客户端选项和 HTTP/TLS 传输选项。
 
 ```python
 from sqlalchemy import create_engine, text
@@ -34,12 +34,12 @@ URL/查询参数说明:
 - 客户端选项:`compression`(`compress` 的别名)、`query_limit`、超时设置等。
 - HTTP/TLS 选项:HTTP 连接池和 TLS 的选项(例如 `ch_http_max_field_name_size=99999`、`ca_cert=certifi`)。
 
-请参阅下文[连接参数和设置](driver-api.md#connection-arguments)章节,了解支持选项的完整列表。这些选项也可以通过 SQLAlchemy DSN 提供。
+有关支持选项的完整列表,请参阅下文的[连接参数和设置](driver-api.md#connection-arguments)章节。这些选项也可以通过 SQLAlchemy DSN 提供。
 
 
 ## 核心查询 {#sqlalchemy-core-queries}
 
-该方言支持 SQLAlchemy Core `SELECT` 查询,包括连接(join)、过滤(filter)、排序(ordering)、限制/偏移(limit/offset)以及 `DISTINCT`。
+该方言支持 SQLAlchemy Core `SELECT` 查询，包括连接（joins）、过滤（filters）、排序（ordering）、限制/偏移量（limits/offsets）以及 `DISTINCT`。
 
 ```python
 from sqlalchemy import MetaData, Table, select
@@ -80,7 +80,7 @@ with engine.begin() as conn:
 
 ## DDL 和反射 {#sqlalchemy-ddl-reflection}
 
-您可以使用提供的 DDL 辅助工具和类型/引擎构造来创建数据库和表。支持表反射（包括列类型和引擎）。
+您可以使用提供的 DDL 辅助工具和类型/引擎构造来创建数据库和表。支持表反射(包括列类型和引擎)。
 
 ```python
 import sqlalchemy as db
@@ -110,7 +110,7 @@ with engine.begin() as conn:
     assert reflected.engine is not None
 ```
 
-反射的列包含方言特定的属性,例如 `clickhousedb_default_type`、`clickhousedb_codec_expression` 和 `clickhousedb_ttl_expression`(当这些属性在服务器上存在时)。
+反射的列包含特定于方言的属性,例如 `clickhousedb_default_type`、`clickhousedb_codec_expression` 和 `clickhousedb_ttl_expression`(当这些属性在服务器上存在时)。
 
 
 ## 插入操作（Core 和基础 ORM）{#sqlalchemy-inserts}
@@ -125,7 +125,7 @@ with engine.begin() as conn:
 ```
 
 
-# 基本 ORM 插入
+# 基础 ORM 插入
 
 from sqlalchemy.orm import declarative&#95;base, Session
 
@@ -150,10 +150,10 @@ session.commit()
 
 ## 范围和限制 {#scope-and-limitations}
 
-- 核心功能:支持 SQLAlchemy Core 特性,如带 `JOIN`(`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`)的 `SELECT`、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET` 和 `DISTINCT`。
+- 核心功能:支持 SQLAlchemy Core 特性,如带 `JOIN` 的 `SELECT`(`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`)、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET` 和 `DISTINCT`。
 - 仅支持带 `WHERE` 的 `DELETE`:该方言支持轻量级 `DELETE`,但需要显式的 `WHERE` 子句以避免意外删除全表数据。要清空表,请使用 `TRUNCATE TABLE`。
 - 不支持 `UPDATE`:ClickHouse 针对追加操作进行了优化。该方言未实现 `UPDATE`。如需修改数据,请在上游应用转换后重新插入,或自行承担风险使用显式文本 SQL(例如 `ALTER TABLE ... UPDATE`)。
 - DDL 和反射:支持创建数据库和表,反射会返回列类型和表引擎元数据。由于 ClickHouse 不强制执行这些约束,因此不存在传统的主键/外键/索引元数据。
-- ORM 范围:为方便使用,支持声明式模型和通过 `Session.add(...)`/`bulk_save_objects(...)` 进行插入。不支持高级 ORM 特性(关系管理、工作单元更新、级联操作、急切/延迟加载语义)。
-- 主键语义:`Column(..., primary_key=True)` 仅被 SQLAlchemy 用于对象标识,不会在 ClickHouse 中创建服务器端约束。请通过表引擎定义 `ORDER BY`(以及可选的 `PRIMARY KEY`)(例如 `MergeTree(order_by=...)`)。
+- ORM 范围:为方便使用,支持声明式模型以及通过 `Session.add(...)`/`bulk_save_objects(...)` 进行插入。不支持高级 ORM 特性(关系管理、工作单元更新、级联操作、急切/延迟加载语义)。
+- 主键语义:`Column(..., primary_key=True)` 仅被 SQLAlchemy 用于对象标识。它不会在 ClickHouse 中创建服务器端约束。请通过表引擎定义 `ORDER BY`(以及可选的 `PRIMARY KEY`)(例如 `MergeTree(order_by=...)`)。
 - 事务和服务器特性:不支持两阶段事务、序列、`RETURNING` 和高级隔离级别。`engine.begin()` 提供了一个 Python 上下文管理器用于分组语句,但不执行实际的事务控制(commit/rollback 为空操作)。

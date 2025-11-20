@@ -1,9 +1,9 @@
 ---
 slug: /guides/developer/mutations
-sidebar_label: '更新与删除数据'
+sidebar_label: '更新和删除数据'
 sidebar_position: 1
 keywords: ['UPDATE', 'DELETE', 'mutations']
-title: '更新与删除 ClickHouse 数据'
+title: '在 ClickHouse 中更新和删除数据'
 description: '介绍如何在 ClickHouse 中执行更新和删除操作'
 show_related_blogs: false
 doc_type: 'guide'
@@ -13,10 +13,11 @@ doc_type: 'guide'
 
 # 使用变更操作更新和删除 ClickHouse 数据
 
-尽管 ClickHouse 主要面向高吞吐量分析型工作负载，但在某些情况下仍然可以修改或删除现有数据。这类操作称为“变更（mutation）”，通过 `ALTER TABLE` 命令执行。
+尽管 ClickHouse 主要面向高吞吐量分析型工作负载，但在某些情况下也可以修改或删除已有数据。此类操作称为“变更（mutation）”，并通过 `ALTER TABLE` 命令执行。
 
 :::tip
-如果你需要频繁执行更新操作，可以考虑在 ClickHouse 中使用[去重](../developer/deduplication.md)，它允许你在不生成变更事件的情况下更新和/或删除行。或者，使用[轻量级更新](/docs/sql-reference/statements/update)或[轻量级删除](/guides/developer/lightweight-delete)。
+如果需要频繁执行更新操作，可以考虑在 ClickHouse 中使用[去重](../developer/deduplication.md)，它允许在不生成变更事件的情况下更新和/或删除行。或者使用[轻量级更新](/docs/sql-reference/statements/update)
+或[轻量级删除](/guides/developer/lightweight-delete)。
 :::
 
 
@@ -29,11 +30,11 @@ doc_type: 'guide'
 ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_expr>
 ```
 
-`<expression>` 是满足 `<filter_expr>` 条件的列的新值。`<expression>` 必须与列的数据类型相同,或者可以使用 `CAST` 操作符转换为相同的数据类型。`<filter_expr>` 应为数据的每一行返回一个 `UInt8` 值(零或非零)。多个 `UPDATE <column>` 语句可以在单个 `ALTER TABLE` 命令中组合使用,用逗号分隔。
+`<expression>` 是满足 `<filter_expr>` 条件的列的新值。`<expression>` 必须与列的数据类型相同,或者可以使用 `CAST` 运算符转换为相同的数据类型。`<filter_expr>` 应为数据的每一行返回一个 `UInt8` 值(零或非零)。多个 `UPDATE <column>` 语句可以在单个 `ALTER TABLE` 命令中组合使用,用逗号分隔。
 
 **示例**:
 
-1.  此类变更操作允许通过字典查找将 `visitor_ids` 替换为新值:
+1.  这样的变更操作允许通过字典查找将 `visitor_ids` 替换为新值:
 
     ```sql
     ALTER TABLE website.clicks
@@ -89,12 +90,12 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 要删除表中的所有数据，使用 `TRUNCATE TABLE [<database].]<table>` 命令更高效。此命令也可以通过 `ON CLUSTER` 执行。
 :::
 
-查看 [`DELETE` 语句](/sql-reference/statements/delete.md) 文档页面了解更多详情。
+查看 [`DELETE` 语句](/sql-reference/statements/delete.md)文档页面了解更多详情。
 
 
 ## 轻量级删除 {#lightweight-deletes}
 
-删除行的另一种方式是使用 `DELETE FROM` 命令,这种方式称为**轻量级删除**。被删除的行会立即标记为已删除,并在所有后续查询中自动过滤,因此您无需等待数据分区合并或使用 `FINAL` 关键字。数据清理会在后台异步执行。
+删除行的另一种方式是使用 `DELETE FROM` 命令,这被称为**轻量级删除**。被删除的行会立即标记为已删除,并在所有后续查询中自动过滤,因此您无需等待数据分区合并或使用 `FINAL` 关键字。数据清理会在后台异步执行。
 
 ```sql
 DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
@@ -109,4 +110,4 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 关于轻量级删除的几点说明:
 
 - 此功能仅适用于 `MergeTree` 表引擎系列。
-- 轻量级删除默认为同步模式,会等待所有副本完成删除操作。此行为由 [`lightweight_deletes_sync` 设置](/operations/settings/settings#lightweight_deletes_sync)控制。
+- 轻量级删除默认是同步的,会等待所有副本处理完删除操作。该行为由 [`lightweight_deletes_sync` 设置](/operations/settings/settings#lightweight_deletes_sync)控制。

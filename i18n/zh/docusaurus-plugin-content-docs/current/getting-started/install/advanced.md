@@ -1,5 +1,5 @@
 ---
-description: '关于从源代码编译 ClickHouse 或安装 CI 生成的二进制文件的指南'
+description: '从源代码编译 ClickHouse 或安装 CI 生成的二进制文件的说明'
 keywords: ['ClickHouse', 'install', 'advanced', 'compile from source', 'CI generated binary']
 sidebar_label: '高级安装'
 slug: /install/advanced
@@ -37,7 +37,7 @@ ClickHouse 的持续集成 (CI) 基础设施会为 [ClickHouse 代码仓库](htt
 
 :::note
 由于 ClickHouse 的 CI 会随时间不断演进,下载 CI 生成构建的具体步骤可能会有所变化。
-此外,CI 可能会删除旧的构建产物,导致无法下载。
+此外,CI 可能会删除旧的构建产物,使其无法下载。
 :::
 
 例如,要下载 ClickHouse v23.4 的 aarch64 二进制文件,请按照以下步骤操作:

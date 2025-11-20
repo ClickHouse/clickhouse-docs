@@ -4,8 +4,7 @@ sidebar_label: 'REST カタログ'
 title: 'REST カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と REST カタログを使用して
-データをクエリする手順を説明します。'
+description: 'このガイドでは、ClickHouse と REST カタログを使用してデータをクエリする手順を順を追って説明します。'
 keywords: ['REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
@@ -17,15 +16,15 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 :::note
 REST Catalog との連携は Iceberg テーブルでのみ動作します。
-この連携では AWS S3 に加え、他のクラウドストレージプロバイダーもサポートしています。
+この連携は AWS S3 とその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
-ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との連携をサポートしています。本ガイドでは、ClickHouse と [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/) 仕様を用いてデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との連携をサポートしています。このガイドでは、ClickHouse と [REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml/) 仕様を使用してデータをクエリする手順を説明します。
 
-REST Catalog は Iceberg カタログ向けの標準化された API 仕様であり、次のようなさまざまなプラットフォームでサポートされています。
+REST Catalog は Iceberg カタログ向けの標準化された API 仕様であり、次のようなさまざまなプラットフォームでサポートされています:
 
-* **ローカル開発環境**（docker-compose セットアップを使用）
-* Tabular.io のような **マネージドサービス**
+* **ローカル開発環境** (docker-compose を使用したセットアップ)
+* **Tabular.io のようなマネージドサービス**
 * **セルフホスト型** REST カタログ実装
 
 :::note
@@ -41,11 +40,11 @@ REST Catalog は Iceberg カタログ向けの標準化された API 仕様で�
 ### 前提条件 {#local-prerequisites}
 
 1. **DockerとDocker Compose**: Dockerがインストールされ、実行されていることを確認してください
-2. **サンプルセットアップ**: 様々なdocker-composeセットアップを使用できます（以下の代替Dockerイメージを参照）
+2. **サンプルセットアップ**: 様々なdocker-composeセットアップを使用できます(以下の代替Dockerイメージを参照)
 
 ### ローカルRESTカタログのセットアップ {#setting-up-local-rest-catalog}
 
-**[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**など、様々なコンテナ化されたRESTカタログ実装を使用できます。これはdocker-composeで完全なSpark + Iceberg + RESTカタログ環境を提供し、Iceberg統合のテストに最適です。
+**[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)**など、様々なコンテナ化されたRESTカタログ実装を使用できます。これはdocker-composeを使用した完全なSpark + Iceberg + RESTカタログ環境を提供し、Iceberg統合のテストに最適です。
 
 **ステップ1:** サンプルを実行するための新しいフォルダを作成し、[Databricks docker-spark-iceberg](https://github.com/databricks/docker-spark-iceberg/blob/main/docker-compose.yml?ref=blog.min.io)の設定を使用して`docker-compose.yml`ファイルを作成します。
 
@@ -137,7 +136,7 @@ SHOW TABLES;
 2. RESTカタログサービスが完全に初期化されていない
 3. サンプルデータの読み込みプロセスが完了していない
 
-Sparkログを確認して、テーブル作成の進行状況を確認できます:
+Sparkログを確認してテーブル作成の進行状況を確認できます:
 
 ```bash
 docker-compose logs spark
@@ -196,9 +195,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Data LakeからClickHouseへのデータ読み込み {#loading-data-from-your-data-lake-into-clickhouse}
+## Data LakeからClickHouseへのデータロード {#loading-data-from-your-data-lake-into-clickhouse}
 
-RESTカタログからClickHouseにデータを読み込む場合は、まずローカルのClickHouseテーブルを作成します:
+RESTカタログからClickHouseにデータをロードする場合は、まずローカルのClickHouseテーブルを作成します:
 
 ```sql
 CREATE TABLE taxis
@@ -228,7 +227,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-次に、`INSERT INTO SELECT`を使用してRESTカタログテーブルからデータを読み込みます:
+次に、`INSERT INTO SELECT`を使用してRESTカタログテーブルからデータをロードします:
 
 ```sql
 INSERT INTO taxis

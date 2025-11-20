@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/minSimpleState'
 title: 'minSimpleState'
-description: 'minSimpleState 组合器的使用示例'
+description: 'minSimpleState 组合器的用法示例'
 keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
 sidebar_label: 'minSimpleState'
 doc_type: 'reference'
@@ -14,15 +14,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数,用于返回所有输入值中的最小值。该函数返回类型为 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 的结果。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数，用于返回所有输入值中的最小值。该函数返回 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 类型的结果。
 
 
 ## 使用示例 {#example-usage}
 
-让我们通过一个实际示例来演示，该示例使用一个表来跟踪每日温度读数。对于每个位置，我们希望保留记录的最低温度。
+让我们通过一个实际示例来说明,该示例使用一个跟踪每日温度读数的表。对于每个位置,我们希望维护记录的最低温度。
 使用带有 `min` 的 `SimpleAggregateFunction` 类型可以在遇到更低温度时自动更新存储的值。
 
-创建用于存储原始温度读数的源表：
+创建用于存储原始温度读数的源表:
 
 ```sql
 CREATE TABLE raw_temperature_readings
@@ -36,7 +36,7 @@ CREATE TABLE raw_temperature_readings
 ORDER BY (location_id, recorded_at);
 ```
 
-创建用于存储最低温度的聚合表：
+创建用于存储最低温度的聚合表:
 
 ```sql
 CREATE TABLE temperature_extremes
@@ -50,7 +50,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
 ```
 
-创建一个增量物化视图，它将作为插入数据的触发器，并维护每个位置的最低和最高温度。
+创建一个增量物化视图,它将作为插入触发器处理插入的数据,并维护每个位置的最低和最高温度。
 
 ```sql
 CREATE MATERIALIZED VIEW temperature_extremes_mv
@@ -64,7 +64,7 @@ FROM raw_temperature_readings
 GROUP BY location_id, location_name;
 ```
 
-插入一些初始温度读数：
+插入一些初始温度读数:
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
@@ -74,7 +74,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 (4, 'East', 8);
 ```
 
-这些读数会被物化视图自动处理。让我们检查当前状态：
+这些读数会被物化视图自动处理。让我们检查当前状态:
 
 ```sql
 SELECT
@@ -95,7 +95,7 @@ ORDER BY location_id;
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-插入更多数据：
+插入更多数据:
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
@@ -106,7 +106,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
     (4, 'East', 2);
 ```
 
-查看新数据插入后更新的极值：
+查看插入新数据后更新的极值:
 
 ```sql
 SELECT
@@ -131,7 +131,7 @@ ORDER BY location_id;
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
-注意上面每个位置都有两个插入的值。这是因为数据分区尚未合并（并由 `AggregatingMergeTree` 聚合）。要从部分状态获取最终结果，我们需要添加 `GROUP BY`：
+请注意,上面每个位置有两条记录。这是因为数据分区尚未合并(并由 `AggregatingMergeTree` 聚合)。要从部分状态获取最终结果,我们需要添加 `GROUP BY`:
 
 ```sql
 SELECT
@@ -144,20 +144,20 @@ GROUP BY location_id, location_name
 ORDER BY location_id;
 ```
 
-现在我们得到了预期的结果：
+现在我们得到了预期的结果:
 
 
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ 北区         │        3 │        8 │
-│           2 │ 南区         │       15 │       18 │
-│           3 │ 西区          │       10 │       10 │
-│           4 │ 东区          │        2 │        8 │
+│           1 │ 北方         │        3 │        8 │
+│           2 │ 南方         │       15 │       18 │
+│           3 │ 西方          │       10 │       10 │
+│           4 │ 东方          │        2 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
 :::note
-使用 `SimpleState` 时，无需再使用 `Merge` 组合器来合并部分聚合状态。
+使用 `SimpleState` 时，无需使用 `Merge` 组合器来合并部分聚合状态。
 :::
 
 

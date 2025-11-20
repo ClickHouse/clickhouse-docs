@@ -7,7 +7,7 @@
 
 ## curlを使用したClickHouseのインストール {#install-clickhouse-using-curl}
 
-お使いのオペレーティングシステム用のシングルバイナリをダウンロードするには、以下のコマンドを実行します。
+お使いのオペレーティングシステム用のシングルバイナリをダウンロードするには、以下のコマンドを実行してください。
 
 ```bash
 curl https://clickhouse.com/ | sh
@@ -40,13 +40,13 @@ Macユーザーの方へ：バイナリの開発者を検証できないとい�
 
 ## clickhouse-clientの起動 {#start-clickhouse-client}
 
-サーバーが起動して実行中の状態で、新しいターミナルウィンドウを開き、以下のコマンドを実行して`clickhouse-client`を起動します:
+サーバーが起動して実行中の状態で、新しいターミナルウィンドウを開き、以下のコマンドを実行して`clickhouse-client`を起動します：
 
 ```bash
 ./clickhouse client
 ```
 
-次のような出力が表示されます:
+次のような表示が出力されます：
 
 ```response
 ./clickhouse client
@@ -57,12 +57,12 @@ Connected to ClickHouse server version 24.5.1.
 local-host :)
 ```
 
-テーブルデータは現在のディレクトリに保存され、ClickHouseサーバーの再起動後も引き続き利用可能です。必要に応じて、`./clickhouse server`に追加のコマンドライン引数として`-C config.xml`を渡し、設定ファイルで追加の設定を行うことができます。利用可能なすべての設定項目は[こちら](/operations/server-configuration-parameters/settings)および[設定ファイルテンプレートの例](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に記載されています。
+テーブルデータは現在のディレクトリに保存され、ClickHouseサーバーの再起動後も引き続き利用可能です。必要に応じて、`./clickhouse server`に追加のコマンドライン引数として`-C config.xml`を渡し、設定ファイルでさらに詳細な設定を行うことができます。利用可能なすべての設定項目は[こちら](/operations/server-configuration-parameters/settings)および[設定ファイルテンプレートの例](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に記載されています。
 
-これでClickHouseにSQLコマンドを送信する準備が整いました!
+これでClickHouseにSQLコマンドを送信する準備が整いました！
 
 :::tip
-[クイックスタート](/get-started/quick-start)では、テーブルの作成とデータの挿入手順を説明しています。
+[クイックスタート](/get-started/quick-start)では、テーブルの作成とデータの挿入の手順を説明しています。
 :::
 
 </VerticalStepper>

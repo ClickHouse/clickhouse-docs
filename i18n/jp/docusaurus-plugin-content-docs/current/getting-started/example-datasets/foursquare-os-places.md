@@ -1,5 +1,5 @@
 ---
-description: '地図上の店舗、レストラン、公園、遊び場、記念碑などのスポット情報を、1億件以上のレコードで収録したデータセット。'
+description: '地図上の店舗、レストラン、公園、遊び場、記念碑などの情報を含む、1億件以上のレコードからなるデータセット。'
 sidebar_label: 'Foursquare のスポット'
 slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare のスポット'
@@ -16,16 +16,16 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 
 ## データセット {#dataset}
 
-Foursquareが提供するこのデータセットは、Apache 2.0ライセンスの下で無料で[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)および利用が可能です。
+このFoursquareのデータセットは、Apache 2.0ライセンスの下で無料で[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)および利用が可能です。
 
-このデータセットには、店舗、レストラン、公園、遊び場、モニュメントなどの商業施設や関心地点(POI)の情報が1億件以上収録されています。また、カテゴリやソーシャルメディア情報など、これらの地点に関する追加のメタデータも含まれています。
+このデータセットには、店舗、レストラン、公園、遊び場、記念碑などの商業施設や関心地点（POI）のレコードが1億件以上含まれています。また、カテゴリやソーシャルメディア情報など、これらの地点に関する追加のメタデータも含まれています。
 
 
 ## データ探索 {#data-exploration}
 
-データを探索するために、完全なClickHouseエンジンを提供する小型のコマンドラインツールである[`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)を使用します。ClickHouse Cloud、`clickhouse-client`、または`chDB`を使用することもできます。
+データを探索するために、完全なClickHouseエンジンを提供する小型のコマンドラインツール[`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)を使用します。ClickHouse Cloud、`clickhouse-client`、または`chDB`を使用することもできます。
 
-データが保存されているS3バケットからデータを選択するには、以下のクエリを実行します:
+データが保存されているS3バケットからデータを選択するには、次のクエリを実行します:
 
 ```sql title="クエリ"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*') LIMIT 1
@@ -62,7 +62,7 @@ geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
 ```
 
-多くのフィールドが`ᴺᵁᴸᴸ`であることがわかります。より有用なデータを取得するために、クエリに追加の条件を加えることができます:
+多くのフィールドが`ᴺᵁᴸᴸ`であることがわかるため、より有用なデータを取得するためにクエリに追加の条件を加えることができます:
 
 ```sql title="クエリ"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -101,7 +101,7 @@ geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)
 ```
 
-`DESCRIBE` を使用して、自動的に推論されたデータのスキーマを表示するには、次のクエリを実行します。
+`DESCRIBE` を使用して自動推論されたデータのスキーマを表示するには、次のクエリを実行します。
 
 ```sql title="Query"
 DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -143,9 +143,9 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
 ```
 
 
-## ClickHouseへのデータ読み込み {#loading-the-data}
+## ClickHouseへのデータの読み込み {#loading-the-data}
 
-データをディスクに永続化したい場合は、`clickhouse-server`またはClickHouse Cloudを使用できます。
+データをディスクに永続化する場合は、`clickhouse-server`またはClickHouse Cloudを使用できます。
 
 テーブルを作成するには、以下のコマンドを実行します:
 
@@ -192,9 +192,9 @@ CREATE TABLE foursquare_mercator
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-複数のカラムで[`LowCardinality`](/sql-reference/data-types/lowcardinality)データ型を使用している点に注目してください。これにより、データ型の内部表現が辞書エンコード形式に変更されます。辞書エンコードされたデータを使用することで、多くのアプリケーションにおいて`SELECT`クエリのパフォーマンスが大幅に向上します。
+複数のカラムで[`LowCardinality`](/sql-reference/data-types/lowcardinality)データ型が使用されている点に注目してください。これにより、データ型の内部表現が辞書エンコード形式に変更されます。辞書エンコードされたデータを使用することで、多くのアプリケーションにおいて`SELECT`クエリのパフォーマンスが大幅に向上します。
 
-さらに、2つの`UInt32`型`MATERIALIZED`カラム`mercator_x`と`mercator_y`が作成されており、緯度経度座標を[Webメルカトル図法](https://en.wikipedia.org/wiki/Web_Mercator_projection)にマッピングすることで、地図をタイルに分割しやすくしています:
+さらに、2つの`UInt32`型の`MATERIALIZED`カラム、`mercator_x`と`mercator_y`が作成されます。これらは緯度経度座標を[Webメルカトル図法](https://en.wikipedia.org/wiki/Web_Mercator_projection)にマッピングし、地図をタイルに分割しやすくします:
 
 ```sql
 mercator_x UInt32 MATERIALIZED 0xFFFFFFFF * ((longitude + 180) / 360),
@@ -220,9 +220,9 @@ mercator_y UInt32 MATERIALIZED 0xFFFFFFFF * ((1 / 2) - ((log(tan(((latitude + 90
 - `log(tan(...))`の部分がメルカトル図法の公式の核心部分です
 - `0xFFFFFFFF`を乗算することで、32ビット整数の全範囲にスケーリングします
 
-`MATERIALIZED`を指定することで、データを`INSERT`する際にClickHouseがこれらのカラムの値を自動的に計算します。`INSERT`文でこれらのカラム(元のデータスキーマには含まれていません)を明示的に指定する必要はありません。
+`MATERIALIZED`を指定することで、データを`INSERT`する際にClickHouseがこれらのカラムの値を自動的に計算します。`INSERT`文でこれらのカラム(元のデータスキーマには含まれていません)を指定する必要はありません。
 
-テーブルは`mortonEncode(mercator_x, mercator_y)`で順序付けされており、これにより`mercator_x`、`mercator_y`のZ次空間充填曲線が生成され、地理空間クエリのパフォーマンスが大幅に向上します。このZ次曲線による順序付けにより、データが空間的な近接性に基づいて物理的に整理されます:
+テーブルは`mortonEncode(mercator_x, mercator_y)`で順序付けされており、これは`mercator_x`、`mercator_y`のZ次空間充填曲線を生成し、地理空間クエリのパフォーマンスを大幅に向上させます。このZ次曲線による順序付けにより、データが空間的な近接性に基づいて物理的に整理されます:
 
 ```sql
 ORDER BY mortonEncode(mercator_x, mercator_y)
@@ -249,10 +249,10 @@ SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parq
 ## データの可視化 {#data-visualization}
 
 このデータセットで何が可能かを確認するには、[adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)をご覧ください。
-adsb.exposedは、共同創業者兼CTOのAlexey Milovidovが、1000倍の規模を持つADS-B(Automatic Dependent Surveillance-Broadcast)
+adsb.exposedは、共同創業者兼CTOのAlexey Milovidovが、1000倍の規模を持つADS-B（自動従属監視放送）
 フライトデータを可視化するために開発したものです。社内ハッカソンの際に、AlexeyはこのツールにFoursquareデータを追加しました。
 
-以下に、お気に入りの可視化例をいくつかご紹介します。
+以下に、私たちのお気に入りの可視化例をいくつかご紹介します。
 
 <Image
   img={visualization_1}

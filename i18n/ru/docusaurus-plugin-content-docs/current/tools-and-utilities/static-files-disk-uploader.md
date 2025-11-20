@@ -1,8 +1,8 @@
 ---
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
-keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'Описание служебной утилиты clickhouse-static-files-disk-uploader'
+keywords: ['clickhouse-static-files-disk-uploader', 'утилита', 'диск', 'загрузчик']
+description: 'Описание утилиты clickhouse-static-files-disk-uploader'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,9 @@ doc_type: 'guide'
 
 # clickhouse-static-files-disk-uploader
 
-Формирует каталог данных, содержащий метаданные для указанной таблицы ClickHouse. Эти метаданные можно использовать для создания таблицы ClickHouse на другом сервере с набором данных только для чтения, хранящимся на диске `web`.
+Создаёт директорию с метаданными для указанной таблицы ClickHouse. Эти метаданные можно использовать для создания таблицы ClickHouse на другом сервере с набором данных только для чтения, размещённым на диске типа `web`.
 
-Не используйте этот инструмент для миграции данных. Вместо этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup).
+Не используйте этот инструмент для миграции данных. Для этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup).
 
 
 
@@ -75,11 +75,11 @@ Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destina
 ```
 
 
-## Выгрузка директории метаданных таблицы на внешний URL {#output-table-metadata-directory-to-an-external-url}
+## Вывод директории метаданных таблицы на внешний URL {#output-table-metadata-directory-to-an-external-url}
 
-Этот шаг аналогичен выгрузке директории данных в локальную файловую систему, но с добавлением флага `--test-mode`. Вместо указания выходной директории необходимо указать целевой URL с помощью флага `--url`.
+Этот шаг аналогичен выводу директории данных в локальную файловую систему, но с добавлением флага `--test-mode`. Вместо указания выходной директории необходимо указать целевой URL с помощью флага `--url`.
 
-При включенном режиме `test` директория метаданных таблицы выгружается на указанный URL посредством PUT-запроса.
+При включенном режиме `test` директория метаданных таблицы загружается на указанный URL с помощью PUT-запроса.
 
 ```bash
 $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
@@ -90,4 +90,4 @@ $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 
 
 Получив директорию метаданных таблицы, вы можете использовать её для создания таблицы ClickHouse на другом сервере.
 
-См. [этот репозиторий на GitHub](https://github.com/ClickHouse/web-tables-demo) с демонстрационным примером. В примере создаётся таблица с использованием диска `web`, что позволяет подключить таблицу к набору данных на другом сервере.
+См. [этот репозиторий на GitHub](https://github.com/ClickHouse/web-tables-demo) с демонстрацией. В примере создаётся таблица с использованием диска `web`, что позволяет подключить таблицу к набору данных на другом сервере.

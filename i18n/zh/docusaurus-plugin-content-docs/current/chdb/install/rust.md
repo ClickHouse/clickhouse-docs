@@ -2,7 +2,7 @@
 title: '在 Rust 中安装 chDB'
 sidebar_label: 'Rust'
 slug: /chdb/install/rust
-description: '如何安装和使用 chDB 的 Rust 绑定'
+description: '如何在 Rust 中安装和使用 chDB 绑定'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
 doc_type: 'guide'
 ---
@@ -29,9 +29,9 @@ curl -sL https://lib.chdb.io | bash
 
 chDB Rust 提供无状态和有状态两种查询执行模式。
 
-### 无状态模式 {#stateless-usage}
+### 无状态使用 {#stateless-usage}
 
-适用于无需持久化状态的简单查询：
+对于不需要持久化状态的简单查询：
 
 ```rust
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
@@ -42,22 +42,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouse 版本: {}", result.data_utf8()?);
+    println!("ClickHouse 版本：{}", result.data_utf8()?);
 
     // 查询 CSV 文件
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSV 数据: {}", result.data_utf8()?);
+    println!("CSV 数据：{}", result.data_utf8()?);
 
     Ok(())
 }
 ```
 
-### 有状态模式（会话） {#stateful-usage-sessions}
+### 有状态使用（会话）{#stateful-usage-sessions}
 
-适用于需要持久化状态（如数据库和表）的查询：
+对于需要持久化状态（如数据库和表）的查询：
 
 ```rust
 use chdb_rust::{
@@ -72,11 +72,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // 为数据库存储创建临时目录
     let tmp = TempDir::new("chdb-rust")?;
 
-    // 构建会话并配置参数
+    // 使用配置构建会话
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // 销毁时自动清理
+        .with_auto_cleanup(true)  // 销毁时清理
         .build()?;
 
     // 创建数据库和表
@@ -102,12 +102,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("查询结果:\n{}", result.data_utf8()?);
+    println!("查询结果：\n{}", result.data_utf8()?);
 
     // 获取查询统计信息
-    println!("读取行数: {}", result.rows_read());
-    println!("读取字节数: {}", result.bytes_read());
-    println!("查询耗时: {:?}", result.elapsed());
+    println!("读取行数：{}", result.rows_read());
+    println!("读取字节数：{}", result.bytes_read());
+    println!("查询时间：{:?}", result.elapsed());
 
     Ok(())
 }
@@ -139,26 +139,26 @@ cargo test
 
 ## 错误处理 {#error-handling}
 
-chDB Rust 通过 `Error` 枚举提供完善的错误处理机制:
+chDB Rust 通过 `Error` 枚举提供完善的错误处理机制：
 
 ```rust
 use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("成功: {}", result.data_utf8()?);
+        println!("成功：{}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("查询失败: {}", msg);
+        eprintln!("查询失败：{}", msg);
     },
     Err(Error::NoResult) => {
         eprintln!("未返回结果");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("无效的 UTF-8: {}", e);
+        eprintln!("无效的 UTF-8：{}", e);
     },
     Err(e) => {
-        eprintln!("其他错误: {}", e);
+        eprintln!("其他错误：{}", e);
     }
 }
 ```

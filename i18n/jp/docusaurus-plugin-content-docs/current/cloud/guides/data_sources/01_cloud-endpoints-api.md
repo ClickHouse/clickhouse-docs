@@ -1,8 +1,8 @@
 ---
 slug: /manage/data-sources/cloud-endpoints-api
-sidebar_label: 'Cloud IP アドレス'
-title: 'Cloud IP アドレス'
-description: 'このページでは、ClickHouse における Cloud Endpoints API のセキュリティ機能について説明します。認証および認可の仕組みによるアクセス管理を通じて、ClickHouse のデプロイメントをどのように保護できるかを詳しく解説します。'
+sidebar_label: 'Cloud の IP アドレス'
+title: 'Cloud の IP アドレス'
+description: 'このページでは、ClickHouse における Cloud Endpoints API のセキュリティ機能について説明します。認証および認可の仕組みを使ってアクセスを管理することで、ClickHouse のデプロイメントをどのように保護できるかを詳しく解説します。'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'static IP addresses', 'cloud endpoints', 'API', 'security', 'egress IPs', 'ingress IPs', 'firewall']
 ---
@@ -16,7 +16,7 @@ import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized
 
 静的IPのリストを取得する必要がある場合は、次のClickHouse Cloud APIエンドポイントを使用できます：[`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json)。このAPIは、リージョンとクラウドごとのイングレス/エグレスIPやS3エンドポイントなど、ClickHouse Cloudサービスのエンドポイント情報を提供します。
 
-MySQLやPostgreSQL Engineなどの統合機能を使用している場合、ClickHouse Cloudがインスタンスにアクセスできるように認可する必要があります。このAPIを使用してパブリックIPを取得し、GCPの`firewalls`や`Authorized networks`、Azure、AWSの`Security Groups`、またはその他のインフラストラクチャエグレス管理システムで設定できます。
+MySQLやPostgreSQLエンジンなどの統合機能を使用している場合、ClickHouse Cloudがお使いのインスタンスにアクセスできるよう認可する必要がある場合があります。このAPIを使用してパブリックIPを取得し、GCPの`ファイアウォール`や`承認済みネットワーク`、Azure、AWSの`セキュリティグループ`、またはその他のインフラストラクチャエグレス管理システムで設定できます。
 
 例えば、AWSのリージョン`ap-south-1`でホストされているClickHouse Cloudサービスからのアクセスを許可するには、そのリージョンの`egress_ips`アドレスを追加します：
 
@@ -45,11 +45,11 @@ MySQLやPostgreSQL Engineなどの統合機能を使用している場合、Clic
 
 <Image img={aws_rds_mysql} size='lg' alt='AWSセキュリティグループルール' border />
 
-同じClickHouse Cloudサービスが`us-east-2`で実行されており、今回はGCPのMySQLに接続する場合、`Authorized networks`は次のようになります：
+同じClickHouse Cloudサービスが`us-east-2`で実行されており、今回はGCPのMySQLに接続する場合、`承認済みネットワーク`は次のようになります：
 
 <Image
   img={gcp_authorized_network}
   size='md'
-  alt='GCP認可ネットワーク'
+  alt='GCP承認済みネットワーク'
   border
 />

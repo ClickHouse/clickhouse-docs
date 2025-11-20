@@ -1,19 +1,19 @@
 ---
-title: 'chDB を使い始める'
-sidebar_label: 'はじめに'
+title: 'chDB を始める'
+sidebar_label: '始め方'
 slug: /chdb/getting-started
-description: 'chDB は ClickHouse を基盤としたインプロセス型 SQL OLAP エンジンです'
+description: 'chDB は ClickHouse を基盤とするインプロセス SQL OLAP エンジンです'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
 
 
-# chDB をはじめる
+# chDB を使い始める
 
-このガイドでは、Python 版 chDB を使って、環境構築から実行までの手順を説明します。
-まず S3 上の JSON ファイルに対してクエリを実行し、その JSON ファイルに基づいて chDB にテーブルを作成し、さらにそのデータに対していくつかクエリを実行していきます。
-また、Apache Arrow や Pandas など、さまざまな形式でクエリ結果を取得する方法を確認し、最後に Pandas の DataFrame をどのようにクエリするかを学びます。 
+このガイドでは、chDB の Python 版を使い始めます。
+まず S3 上の JSON ファイルに対してクエリを実行し、次にその JSON ファイルを基にして chDB 内にテーブルを作成し、データに対していくつかのクエリを実行します。
+また、Apache Arrow や Pandas など、異なる形式でクエリ結果を返す方法を確認し、最後に Pandas DataFrame に対してクエリを実行する方法を学びます。 
 
 
 
@@ -27,19 +27,19 @@ source .venv/bin/activate
 ```
 
 次に、chDBをインストールします。
-バージョン2.0.3以上を使用してください：
+バージョン2.0.3以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-次に、[ipython](https://ipython.org/)をインストールします：
+続いて、[ipython](https://ipython.org/)をインストールします：
 
 ```bash
 pip install ipython
 ```
 
-このガイドの以降のコマンドは`ipython`を使用して実行します。以下のコマンドで起動できます：
+このガイドの残りの部分では、`ipython`を使用してコマンドを実行します。以下のコマンドで起動できます：
 
 ```bash
 ipython
@@ -110,7 +110,7 @@ chdb.query(
 "video_badges","Nullable(String)"
 ```
 
-また、ファイル内の行数をカウントすることもできます:
+ファイル内の行数をカウントすることもできます:
 
 ```python
 chdb.query(
@@ -146,14 +146,14 @@ chdb.query(
 ```
 
 :::warning
-プログラム内で定義された変数を使用する場合は問題ありませんが、ユーザー提供の入力には使用しないでください。SQLインジェクションの脆弱性が生じる可能性があります。
+プログラム内で定義された変数を使用する場合は問題ありませんが、ユーザー提供の入力では使用しないでください。使用すると、クエリがSQLインジェクションに対して脆弱になります。
 :::
 
 
 ## 出力フォーマットの設定 {#configuring-the-output-format}
 
 デフォルトの出力フォーマットは`CSV`ですが、`output_format`パラメータで変更できます。
-chDBはClickHouseのデータフォーマットに加えて、Pandas DataFrameを返す`DataFrame`など、[独自のフォーマット](/chdb/reference/data-formats.md)もサポートしています:
+chDBはClickHouseのデータフォーマットに加えて、Pandas DataFrameを返す`DataFrame`を含む[独自のフォーマット](/chdb/reference/data-formats.md)もサポートしています:
 
 ```python
 result = chdb.query(
@@ -176,7 +176,7 @@ print(result)
 1            True    35307
 ```
 
-Apache Arrowテーブルを取得する場合は次のようにします:
+Apache Arrowテーブルを取得する場合:
 
 ```python
 result = chdb.query(
@@ -310,9 +310,9 @@ sess.query(f"""
 ```
 
 
-## テーブルへのクエリ {#querying-a-table}
+## テーブルのクエリ {#querying-a-table}
 
-最後に、テーブルにクエリを実行してみましょう：
+最後に、テーブルをクエリしてみましょう：
 
 ```sql
 df = sess.query("""
@@ -342,14 +342,14 @@ df
 ```
 
 次に、DataFrameに列を追加して、いいねと低評価の比率を計算するとします。
-以下のようなコードを記述できます：
+以下のコードを記述できます：
 
 ```python
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
 
-## Pandas DataFrameのクエリ {#querying-a-pandas-dataframe}
+## Pandas DataFrameへのクエリ {#querying-a-pandas-dataframe}
 
 chDBからそのDataFrameに対してクエリを実行できます：
 
@@ -377,15 +377,15 @@ chdb.query(
 9                    RC Cars OFF Road          2.051021
 ```
 
-Pandas DataFrameのクエリに関する詳細は、[Pandasクエリ開発者ガイド](guides/querying-pandas.md)を参照してください。
+Pandas DataFrameへのクエリの詳細については、[Pandasクエリ開発者ガイド](guides/querying-pandas.md)を参照してください。
 
 
 ## 次のステップ {#next-steps}
 
-このガイドでchDBの概要をご理解いただけたかと思います。
-さらに詳しい使用方法については、以下の開発者ガイドをご参照ください:
+このガイドで、chDBの概要をご理解いただけたかと思います。
+使用方法の詳細については、以下の開発者ガイドをご参照ください：
 
 - [Pandas DataFrameへのクエリ](guides/querying-pandas.md)
 - [Apache Arrowへのクエリ](guides/querying-apache-arrow.md)
 - [JupySQLでのchDBの使用](guides/jupysql.md)
-- [既存のclickhouse-localデータベースとchDBの連携](guides/clickhouse-local.md)
+- [既存のclickhouse-localデータベースでのchDBの使用](guides/clickhouse-local.md)

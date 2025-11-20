@@ -1,9 +1,9 @@
 ---
 description: 'Установка ClickHouse на macOS'
-keywords: ['ClickHouse', 'install', 'macOS']
+keywords: ['ClickHouse', 'установка', 'macOS']
 sidebar_label: 'macOS'
 slug: /install/macOS
-title: 'Установка ClickHouse с помощью Homebrew'
+title: 'Установка ClickHouse через Homebrew'
 hide_title: true
 doc_type: 'guide'
 ---

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'ClickHouse OSS'
 slug: /cloud/migration/clickhouse-to-cloud
-title: '在自托管 ClickHouse 与 ClickHouse Cloud 之间迁移'
-description: '介绍如何在自托管 ClickHouse 与 ClickHouse Cloud 之间相互迁移的页面'
+title: '在自托管 ClickHouse 与 ClickHouse Cloud 之间进行迁移'
+description: '介绍如何在自托管 ClickHouse 与 ClickHouse Cloud 之间进行迁移的页面'
 doc_type: 'guide'
 keywords: ['migration', 'ClickHouse Cloud', 'OSS', 'Migrate self-managed to Cloud']
 ---
@@ -17,11 +17,11 @@ import self_managed_05 from '@site/static/images/integrations/migration/self-man
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
 
-# 在自管 ClickHouse 与 ClickHouse Cloud 之间迁移
+# 在自托管 ClickHouse 与 ClickHouse Cloud 之间迁移
 
-<Image img={self_managed_01} size='md' alt='迁移自管 ClickHouse' background='white' />
+<Image img={self_managed_01} size='md' alt='迁移自托管 ClickHouse' background='white' />
 
-本指南将演示如何将自管 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同 ClickHouse Cloud 服务之间进行迁移。[`remoteSecure`](/sql-reference/table-functions/remote) 函数可以在 `SELECT` 和 `INSERT` 查询中使用，以访问远程 ClickHouse 服务器，从而使表迁移变得非常简单：只需编写一个包含内联 `SELECT` 的 `INSERT INTO` 查询即可。
+本指南将介绍如何从自托管 ClickHouse 服务器迁移到 ClickHouse Cloud,以及如何在 ClickHouse Cloud 服务之间进行迁移。在 `SELECT` 和 `INSERT` 查询中使用 [`remoteSecure`](/sql-reference/table-functions/remote) 函数可以访问远程 ClickHouse 服务器,这使得迁移表的操作变得非常简单,只需编写一个包含 `SELECT` 子句的 `INSERT INTO` 查询即可。
 
 
 
@@ -88,7 +88,7 @@ CREATE DATABASE db
 - 使用源的 CREATE TABLE 语句创建目标表。
 
 :::tip
-运行 CREATE 语句时,将 ENGINE 更改为不带任何参数的 ReplicatedMergeTree。ClickHouse Cloud 始终复制表并提供正确的参数。但要保留 `ORDER BY`、`PRIMARY KEY`、`PARTITION BY`、`SAMPLE BY`、`TTL` 和 `SETTINGS` 子句。
+运行 CREATE 语句时,将 ENGINE 更改为不带任何参数的 ReplicatedMergeTree。ClickHouse Cloud 始终复制表并提供正确的参数。但请保留 `ORDER BY`、`PRIMARY KEY`、`PARTITION BY`、`SAMPLE BY`、`TTL` 和 `SETTINGS` 子句。
 :::
 
 ```sql
@@ -123,7 +123,7 @@ remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 />
 
 :::tip 将远程系统添加到您的 ClickHouse Cloud 服务 IP 访问列表
-为了让 `remoteSecure` 函数连接到您的 ClickHouse Cloud 服务,远程系统的 IP 地址需要被 IP 访问列表允许。展开此提示下方的**管理您的 IP 访问列表**以获取更多信息。
+为了使 `remoteSecure` 函数能够连接到您的 ClickHouse Cloud 服务,远程系统的 IP 地址需要被 IP 访问列表允许。展开此提示下方的**管理您的 IP 访问列表**以获取更多信息。
 :::
 
 <AddARemoteSystem />
@@ -140,21 +140,21 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 <Image
   img={self_managed_05}
   size='lg'
-  alt='Migrating Self-managed ClickHouse'
+  alt='迁移自管理 ClickHouse'
   background='white'
 />
 
 在 ClickHouse Cloud 服务之间迁移数据的一些示例场景:
 
 - 从已恢复的备份中迁移数据
-- 从开发环境复制数据到预发布环境(或从预发布环境到生产环境)
+- 将数据从开发环境复制到预发布环境(或从预发布环境复制到生产环境)
 
 在本示例中有两个 ClickHouse Cloud 服务,分别称为_源服务_和_目标服务_。数据将从源服务拉取到目标服务。虽然您也可以采用推送方式,但这里演示的是拉取方式,因为它使用只读用户。
 
 <Image
   img={self_managed_06}
   size='lg'
-  alt='Migrating Self-managed ClickHouse'
+  alt='迁移自管理 ClickHouse'
   background='white'
 />
 
@@ -191,7 +191,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 #### 在目标服务上复制表结构 {#duplicate-the-table-structure-on-the-destination-service}
 
-在目标服务上创建数据库(如果尚不存在):
+如果目标服务上还没有数据库,则创建数据库:
 
 - 创建目标数据库:
 

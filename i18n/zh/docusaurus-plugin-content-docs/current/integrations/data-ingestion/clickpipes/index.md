@@ -1,8 +1,8 @@
 ---
 sidebar_label: '简介'
-description: '将外部数据源无缝接入 ClickHouse Cloud。'
+description: '将外部数据源无缝连接至 ClickHouse Cloud。'
 slug: /integrations/clickpipes
-title: '与 ClickHouse Cloud 集成'
+title: '集成 ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['ClickPipes', 'data ingestion platform', 'streaming data', 'integration platform', 'ClickHouse Cloud']
 ---
@@ -27,52 +27,52 @@ import cp_advanced_settings from '@site/static/images/integrations/data-ingestio
 import Image from '@theme/IdealImage';
 
 
-# 集成 ClickHouse Cloud
+# 集成到 ClickHouse Cloud
 
 
 
 ## 简介 {#introduction}
 
-[ClickPipes](/integrations/clickpipes) 是一个托管式集成平台,可通过简单的点击操作从多种数据源中导入数据。ClickPipes 专为高负载场景设计,其强大且可扩展的架构确保了稳定的性能和可靠性。ClickPipes 既可用于长期流式数据传输,也可用于一次性数据加载任务。
+[ClickPipes](/integrations/clickpipes) 是一个托管式集成平台,只需点击几下按钮即可从多种数据源中导入数据。ClickPipes 专为最苛刻的工作负载而设计,其强大且可扩展的架构确保了一致的性能和可靠性。ClickPipes 既可用于长期流式传输需求,也可用于一次性数据加载作业。
 
 <Image img={clickpipes_stack} alt='ClickPipes 技术栈' size='lg' border />
 
 
 ## 支持的数据源 {#supported-data-sources}
 
-| 名称                                               | Logo                                                                                             | 类型           | 状态          | 描述                                                                                                                                                                                            |
+| 名称                                               | 标识                                                                                             | 类型           | 状态            | 描述                                                                                                                                                                                                  |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      | Streaming      | Stable          | 配置 ClickPipes 并开始将 Apache Kafka 的流数据接入 ClickHouse Cloud。                                                                                                       |
-| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 | Streaming      | Stable          | 通过我们的直接集成,充分发挥 Confluent 和 ClickHouse Cloud 的组合优势。                                                                                                            |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     | Streaming      | Stable          | 配置 ClickPipes 并开始将 Redpanda 的流数据接入 ClickHouse Cloud。                                                                                                           |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             | Streaming      | Stable          | 配置 ClickPipes 并开始将 AWS MSK 的流数据接入 ClickHouse Cloud。                                                                                                            |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           | Streaming      | Stable          | 配置 ClickPipes 并开始将 Azure Event Hubs 的流数据接入 ClickHouse Cloud。请参阅 [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs) 获取指导。 |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     | Streaming      | Stable          | 配置 ClickPipes 并开始将 WarpStream 的流数据接入 ClickHouse Cloud。                                                                                                         |
-| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              | Object Storage | Stable          | 配置 ClickPipes 以从对象存储接入大量数据。                                                                                                                              |
-| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  | Object Storage | Stable          | 配置 ClickPipes 以从对象存储接入大量数据。                                                                                                                              |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | Object Storage | Stable          | 配置 ClickPipes 以从对象存储接入大量数据。                                                                                                                              |
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | Object Storage | Stable          | 配置 ClickPipes 以从对象存储接入大量数据。                                                                                                                              |
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/> | Streaming      | Stable          | 配置 ClickPipes 并开始将 Amazon Kinesis 的流数据接入 ClickHouse Cloud。                                                                                                     |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         | DBMS           | Stable          | 配置 ClickPipes 并开始将 Postgres 的数据接入 ClickHouse Cloud。                                                                                                                     |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: '3rem'}}/>               | DBMS           | Public Beta     | 配置 ClickPipes 并开始将 MySQL 的数据接入 ClickHouse Cloud。                                                                                                                        |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: '3rem'}}/>           | DBMS           | Private Preview | 配置 ClickPipes 并开始将 MongoDB 的数据接入 ClickHouse Cloud。                                                                                                                      |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      | 流式      | 稳定          | 配置 ClickPipes，并开始将 Apache Kafka 中的流式数据导入 ClickHouse Cloud。                                                                                                       |
+| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 | 流式      | 稳定          | 通过我们的直接集成，充分释放 Confluent 与 ClickHouse Cloud 结合的强大能力。                                                                                                            |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     | 流式      | 稳定          | 配置 ClickPipes，并开始将 Redpanda 中的流式数据导入 ClickHouse Cloud。                                                                                                           |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             | 流式      | 稳定          | 配置 ClickPipes，并开始将 AWS MSK 中的流式数据导入 ClickHouse Cloud。                                                                                                            |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           | 流式      | 稳定          | 配置 ClickPipes，并开始将 Azure Event Hubs 中的流式数据导入 ClickHouse Cloud。有关指导，请参阅 [Azure Event Hubs 常见问题](/integrations/clickpipes/kafka/faq/#azure-eventhubs)。 |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     | 流式      | 稳定          | 配置 ClickPipes，并开始将 WarpStream 中的流式数据导入 ClickHouse Cloud。                                                                                                         |
+| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              | 对象存储 | 稳定          | 配置 ClickPipes，从对象存储中摄取海量数据。                                                                                                                              |
+| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  | 对象存储 | 稳定          | 配置 ClickPipes，从对象存储中摄取海量数据。                                                                                                                              |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | 对象存储 | 稳定          | 配置 ClickPipes，从对象存储中摄取海量数据。                                                                                                                              |
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | 对象存储 | 稳定          | 配置 ClickPipes，从对象存储中摄取海量数据。                                                                                                                              |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kenesis logo" style={{width: '3rem', height: 'auto'}}/> | 流式      | 稳定          | 配置 ClickPipes，并开始将 Amazon Kinesis 中的流式数据导入 ClickHouse Cloud。                                                                                                     |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         | 数据库管理系统           | 稳定          | 配置 ClickPipes，并开始将 Postgres 中的数据导入 ClickHouse Cloud。                                                                                                                     |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: '3rem'}}/>               | 数据库管理系统           | 公开测试版     | 配置 ClickPipes，并开始将 MySQL 中的数据导入 ClickHouse Cloud。                                                                                                                        |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: '3rem'}}/>           | 数据库管理系统           | 私有预览版 | 配置 ClickPipes，并开始将 MongoDB 中的数据导入 ClickHouse Cloud。                                                                                                                      |
 
-更多连接器将陆续添加到 ClickPipes,您可以通过[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)了解更多信息。
+ClickPipes 将持续增加更多连接器，您可以[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)了解更多信息。
 
 
 ## 静态 IP 列表 {#list-of-static-ips}
 
-以下是 ClickPipes 用于连接外部服务的静态 NAT IP(按区域划分)。请将您实例所在区域的 IP 添加到 IP 白名单中以允许流量通过。
+以下是 ClickPipes 用于连接外部服务的静态 NAT IP 地址(按区域划分)。请将您实例所在区域的 IP 地址添加到 IP 白名单中以允许流量通过。
 
 对于所有服务,ClickPipes 流量将根据服务所在位置从相应的默认区域发起:
 
-- **eu-central-1**: 适用于欧盟区域的所有服务(包括 GCP 和 Azure 欧盟区域)
-- **us-east-1**: 适用于 AWS `us-east-1` 中的所有服务
-- **ap-south-1**: 适用于 2025 年 6 月 25 日及之后在 AWS `ap-south-1` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)
-- **ap-northeast-2**: 适用于 2025 年 11 月 14 日及之后在 AWS `ap-northeast-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)
-- **ap-southeast-2**: 适用于 2025 年 6 月 25 日及之后在 AWS `ap-southeast-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)
-- **us-west-2**: 适用于 2025 年 6 月 24 日及之后在 AWS `us-west-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)
-- **us-east-2**: 适用于所有未明确列出的其他区域(包括 GCP 和 Azure 美国区域)
+- **eu-central-1**: 适用于欧盟区域的所有服务。(包括 GCP 和 Azure 欧盟区域)
+- **us-east-1**: 适用于 AWS `us-east-1` 中的所有服务。
+- **ap-south-1**: 适用于 2025 年 6 月 25 日或之后在 AWS `ap-south-1` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)。
+- **ap-northeast-2**: 适用于 2025 年 11 月 14 日或之后在 AWS `ap-northeast-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)。
+- **ap-southeast-2**: 适用于 2025 年 6 月 25 日或之后在 AWS `ap-southeast-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)。
+- **us-west-2**: 适用于 2025 年 6 月 24 日或之后在 AWS `us-west-2` 中创建的服务(此日期之前创建的服务使用 `us-east-2` IP)。
+- **us-east-2**: 适用于所有未明确列出的其他区域。(包括 GCP 和 Azure 美国区域)
 
 | AWS 区域                              | IP 地址                                                                                                                                |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -92,14 +92,14 @@ ClickHouse Cloud 为大多数使用场景提供了合理的默认设置。但是
 步骤:
 
 1. 创建自定义角色 `CREATE ROLE my_clickpipes_role SETTINGS ...`。详细信息请参阅 [CREATE ROLE](/sql-reference/statements/create/role.md) 语法。
-2. 在创建 ClickPipes 时,在 `Details and Settings` 步骤中将自定义角色添加到 ClickPipes 用户。
+2. 在创建 ClickPipes 期间的 `Details and Settings` 步骤中,将自定义角色添加到 ClickPipes 用户。
 
 <Image img={cp_custom_role} alt='分配自定义角色' size='lg' border />
 
 
 ## 调整 ClickPipes 高级设置 {#clickpipes-advanced-settings}
 
-ClickPipes 提供了合理的默认配置,可满足大多数使用场景的需求。如果您的使用场景需要进一步调优,可以调整以下设置:
+ClickPipes 提供了合理的默认值,可满足大多数使用场景的需求。如果您的使用场景需要进一步调优,可以调整以下设置:
 
 ### 对象存储 ClickPipes {#clickpipes-advanced-settings-object-storage}
 
@@ -136,28 +136,28 @@ ClickPipes 会根据数据摄取过程中遇到的错误类型,将错误存储�
 
 ### 记录错误 {#record-errors}
 
-ClickPipes 会在目标表旁创建一个带有后缀 `<destination_table_name>_clickpipes_error` 的表。该表将包含所有由数据格式错误或 schema 不匹配导致的错误,并包含完整的无效消息内容。该表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
+ClickPipes 会在您的目标表旁创建一个带有后缀 `<destination_table_name>_clickpipes_error` 的表。该表将包含由格式错误的数据或模式不匹配导致的所有错误,并包含完整的无效消息内容。该表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
 
 ### 系统错误 {#system-errors}
 
-与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表将存储与 ClickPipe 运行相关的所有其他错误(网络、连接等)。该表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
+与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表将存储与 ClickPipe 运行相关的所有其他错误(如网络、连接等)。该表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
 
-如果 ClickPipes 在 15 分钟后无法连接到数据源,或在 1 小时后无法连接到目标,ClickPipes 实例将停止运行并在系统错误表中存储相应的消息(前提是 ClickHouse 实例可用)。
+如果 ClickPipes 在 15 分钟后仍无法连接到数据源,或在 1 小时后仍无法连接到目标,则 ClickPipes 实例将停止运行,并在系统错误表中存储相应的消息(前提是 ClickHouse 实例可用)。
 
 
 ## 常见问题 {#faq}
 
 - **什么是 ClickPipes?**
 
-  ClickPipes 是 ClickHouse Cloud 的一项功能,可帮助用户轻松地将 ClickHouse 服务连接到外部数据源,特别是 Kafka。通过 ClickPipes for Kafka,用户可以轻松实现数据持续加载到 ClickHouse,使其可用于实时分析。
+  ClickPipes 是 ClickHouse Cloud 的一项功能,可帮助用户轻松地将 ClickHouse 服务连接到外部数据源,特别是 Kafka。通过 ClickPipes for Kafka,用户可以轻松地持续将数据加载到 ClickHouse 中,使其可用于实时分析。
 
 - **ClickPipes 是否支持数据转换?**
 
-  是的,ClickPipes 通过暴露 DDL 创建来支持基本的数据转换。您还可以利用 ClickHouse 的[物化视图功能](/guides/developer/cascading-materialized-views),在数据加载到 ClickHouse Cloud 服务的目标表时应用更高级的转换。
+  是的,ClickPipes 通过暴露 DDL 创建来支持基本的数据转换。然后,您可以利用 ClickHouse 的[物化视图功能](/guides/developer/cascading-materialized-views),在数据加载到 ClickHouse Cloud 服务的目标表时应用更高级的转换。
 
 - **使用 ClickPipes 是否会产生额外费用?**
 
-  ClickPipes 按两个维度计费:数据摄取和计算资源。定价的完整详情可在[此页面](/cloud/reference/billing/clickpipes)查看。运行 ClickPipes 还可能在目标 ClickHouse Cloud 服务上产生间接的计算和存储成本,这与任何数据摄取工作负载类似。
+  ClickPipes 按两个维度计费:数据摄取和计算。定价的完整详情可在[此页面](/cloud/reference/billing/clickpipes)上查看。运行 ClickPipes 还可能在目标 ClickHouse Cloud 服务上产生间接的计算和存储成本,这与任何数据摄取工作负载类似。
 
 - **使用 ClickPipes for Kafka 时是否有办法处理错误或故障?**
 

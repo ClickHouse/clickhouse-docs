@@ -3,8 +3,8 @@ sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
 keywords: ['Zing Data']
-description: 'Zing Data は、iOS、Android、および Web 向けに提供される、ClickHouse 用のシンプルでソーシャルなビジネスインテリジェンスツールです。'
-title: 'Zing Data を ClickHouse に接続する'
+description: 'Zing Data は、iOS・Android・Web 向けに提供される、ClickHouse 用のシンプルでソーシャルなビジネスインテリジェンスツールです。'
+title: 'Zing Data と ClickHouse を接続する'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> は、データ探索および可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> はデータ探索および可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
 
 
 
@@ -38,14 +38,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    <ConnectionDetails />
 
 2. Zing Dataをダウンロードまたはアクセスする
-   - モバイルでClickHouseとZing Dataを使用するには、[Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android)または[Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091)からZing Dataアプリをダウンロードしてください。
+   - モバイルでClickHouseとZing Dataを使用する場合は、[Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android)または[Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091)からZing Dataアプリをダウンロードしてください。
 
-   - WebでClickHouseとZing Dataを使用するには、[Zing Webコンソール](https://console.getzingdata.com/)にアクセスしてアカウントを作成してください。
+   - WebでClickHouseとZing Dataを使用する場合は、[Zing webコンソール](https://console.getzingdata.com/)にアクセスしてアカウントを作成してください。
 
 3. データソースを追加する
    - Zing DataでClickHouseデータを操作するには、**_データソース_**を定義する必要があります。Zing Dataのモバイルアプリメニューで**Sources**を選択し、**Add a Datasource**をクリックしてください。
 
-   - Webでデータソースを追加するには、上部メニューの**Data Sources**をクリックし、**New Datasource**をクリックして、ドロップダウンメニューから**Clickhouse**を選択してください
+   - Webでデータソースを追加する場合は、上部メニューの**Data Sources**をクリックし、**New Datasource**をクリックして、ドロップダウンメニューから**Clickhouse**を選択してください。
 
    <Image
      size='md'
@@ -117,7 +117,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      border
    />
 
-5. チャートの例は以下のようになります。質問は3点メニューを使用して保存できます。チャートにコメントを付けたり、チームメンバーをタグ付けしたり、リアルタイムアラートを作成したり、チャートタイプを変更したりできます。
+5. チャートの例は以下のようになります。質問は3点メニューを使用して保存できます。チャートにコメントを付けたり、チームメンバーをタグ付けしたり、リアルタイムアラートを作成したり、チャートタイプを変更したりすることができます。
 
    <Image
      size='md'

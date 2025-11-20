@@ -12,10 +12,10 @@ keywords: ['random data', 'test data']
 
 # 在 ClickHouse 中生成随机测试数据
 
-在测试新用例或对实现进行基准测试时，生成随机数据非常有用。
-ClickHouse 提供了[丰富的随机数据生成函数](/sql-reference/functions/random-functions)，在很多情况下无需依赖外部数据生成器。
+在测试新的使用场景或对实现进行基准测试时，生成随机数据非常有用。
+ClickHouse 提供了[大量用于生成随机数据的函数](/sql-reference/functions/random-functions)，在许多情况下可以避免依赖外部数据生成器。
 
-本指南通过多个示例演示如何在 ClickHouse 中生成满足不同随机性需求的随机数据集。
+本指南通过多个示例展示如何在 ClickHouse 中根据不同的随机性需求生成随机数据集。
 
 
 
@@ -93,7 +93,7 @@ SELECT
 FROM numbers(200000);
 ```
 
-- 事件在正午时段达到峰值,偏差服从泊松分布
+- 事件在中午时段达到峰值,偏差服从泊松分布
 
 ---
 
@@ -128,7 +128,7 @@ FROM numbers(10000);
 
 ## 分类和嵌套数据 {#categorical-and-nested-data}
 
-**用例**:创建包含多值兴趣的用户画像。
+**使用场景**：创建包含多值兴趣的用户画像。
 
 ```sql
 CREATE TABLE user_profiles (
@@ -147,10 +147,10 @@ FROM numbers(20000);
 ```
 
 - 随机数组长度为 1–3
-- 每个用户有三个分数
+- 每个用户的每个兴趣对应三个分数
 
 :::tip
-阅读博客文章 [在 ClickHouse 中生成随机数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 了解更多示例。
+阅读博客文章[在 ClickHouse 中生成随机数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)了解更多示例。
 :::
 
 
@@ -158,7 +158,7 @@ FROM numbers(20000);
 
 [`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 函数与 [`generateRandom`](/sql-reference/table-functions/generate) 表引擎结合使用时特别有用,可用于测试、性能基准测试或创建具有任意模式的模拟数据。
 
-首先,让我们使用 `generateRandomStructure` 函数来看看随机结构是什么样的:
+首先让我们使用 `generateRandomStructure` 函数看看随机结构是什么样的:
 
 ```sql
 SELECT generateRandomStructure(5);
@@ -209,7 +209,7 @@ SELECT * FROM my_test_table LIMIT 5;
 ```
 
 让我们结合这两个函数来创建一个完全随机的表。
-首先,查看我们将获得什么结构:
+首先,看看我们将得到什么结构:
 
 ```sql
 SELECT generateRandomStructure(7, 123) AS structure FORMAT vertical;
@@ -247,10 +247,10 @@ DESCRIBE TABLE fully_random_table;
    └──────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-查看第一行，作为生成数据的示例：
+查看第一行，以获取生成数据的示例：
 
 ```sql
-SELECT * FROM fully_random_table LIMIT 1 FORMAT vertical;
+SELECT * FROM fully_random_table LIMIT 1 FORMAT Vertical;
 ```
 
 ```response

@@ -3,7 +3,7 @@ sidebar_label: 'Rocket BI'
 sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
-description: 'RocketBI はセルフサービス型のビジネスインテリジェンスプラットフォームで、データをすばやく分析し、ドラッグ＆ドロップで可視化を作成し、Web ブラウザ上で同僚とコラボレーションできます。'
+description: 'RocketBI はセルフサービス型のビジネスインテリジェンスプラットフォームであり、Web ブラウザ上でデータをすばやく分析し、ドラッグ＆ドロップで可視化を作成し、同僚とコラボレーションすることができます。'
 title: '目標: 最初のダッシュボードを作成する'
 doc_type: 'guide'
 ---
@@ -35,19 +35,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-このガイドでは、Rocket.BI をインストールし、シンプルなダッシュボードを作成します。
-こちらがダッシュボードです:
+このガイドでは、Rocket.BI を使用してシンプルなダッシュボードをインストールして構築します。
+こちらがそのダッシュボードです：
 
-<Image size="md" img={rocketbi_01} alt="チャートと KPI を用いて売上指標を表示している Rocket BI ダッシュボード" border />
+<Image size="md" img={rocketbi_01} alt="Rocket BI のダッシュボードにチャートと KPI で売上指標が表示されている" border />
 <br/>
 
-[このリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+[このリンクからダッシュボードを表示できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 
 
 ## インストール {#install}
 
-事前ビルド済みのDockerイメージを使用してRocketBIを起動します。
+事前にビルドされたDockerイメージを使用してRocketBIを起動します。
 
 docker-compose.ymlと設定ファイルを取得します:
 
@@ -60,9 +60,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 次のコマンドを実行してRocketBIを起動します: `docker-compose up -d .`
 
-ブラウザを開いて`localhost:5050`にアクセスし、次のアカウントでログインします: `hello@gmail.com/123456`
+ブラウザを開き、`localhost:5050`にアクセスして、次のアカウントでログインします: `hello@gmail.com/123456`
 
-ソースからのビルドや詳細な設定については、[Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)を参照してください。
+ソースからのビルドや高度な設定については、[Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)を参照してください。
 
 
 ## ダッシュボードを構築しましょう {#lets-build-the-dashboard}
@@ -79,7 +79,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 />
 <br />
 
-高解像度のチュートリアルはYouTubeでご覧ください:[https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
+高解像度のチュートリアルはYouTubeでご覧ください: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
 ### チャートコントロールを構築する {#build-the-chart-controls}
 
@@ -104,7 +104,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
   border
 />
 
-#### 日付タイプのコントロールを作成する {#create-a-date-type-control}
+#### 日付タイプコントロールを作成する {#create-a-date-type-control}
 
 メイン日付カラムとして日付フィールドを選択します:
 
@@ -137,7 +137,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 ### それでは、チャートを構築しましょう {#now-let-build-the-charts}
 
-#### 円グラフ:地域別の売上メトリクス {#pie-chart-sales-metrics-by-regions}
+#### 円グラフ: 地域別売上メトリクス {#pie-chart-sales-metrics-by-regions}
 
 新しいチャートの追加を選択し、円グラフを選択します。
 
@@ -242,7 +242,7 @@ Regionカラムを内訳に追加します。
 />
 <br />
 
-KPIとして数値チャートを追加し、ダッシュボードを際立たせます。
+数値チャートをKPIとして追加し、ダッシュボードを際立たせます。
 
 <Image
   size='md'

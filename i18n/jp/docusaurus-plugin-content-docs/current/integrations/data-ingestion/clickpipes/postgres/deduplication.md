@@ -1,8 +1,8 @@
 ---
 sidebar_label: '重複排除戦略'
-description: '重複行および削除行を処理します。'
+description: '重複行と削除済み行を処理します。'
 slug: /integrations/clickpipes/postgres/deduplication
-title: '重複排除戦略（CDC の使用）'
+title: '重複排除戦略（CDC の利用）'
 keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
 ---
@@ -10,22 +10,22 @@ doc_type: 'guide'
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
 import Image from '@theme/IdealImage';
 
-Postgres から ClickHouse へレプリケートされた更新および削除は、ClickHouse のデータ保存構造とレプリケーション処理の仕組みにより、ClickHouse 側で行が重複してしまうことがあります。このページでは、なぜそのようなことが起こるのか、そして重複を処理するために ClickHouse で利用できる戦略について説明します。
+Postgres から ClickHouse へレプリケートされる更新および削除は、ClickHouse のデータ保存構造とレプリケーション処理の仕組みにより、ClickHouse 側で行が重複してしまう結果になります。このページでは、その理由と、ClickHouse で重複を処理するための戦略について説明します。
 
 
-## データはどのようにレプリケートされるか？ {#how-does-data-get-replicated}
+## データはどのようにレプリケートされるか? {#how-does-data-get-replicated}
 
 ### PostgreSQL論理デコーディング {#PostgreSQL-logical-decoding}
 
-ClickPipesは[Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication)を使用して、Postgresで発生する変更をリアルタイムで取得します。Postgresの論理デコーディングプロセスにより、ClickPipesのようなクライアントは、人間が読める形式、つまりINSERT、UPDATE、DELETEの一連の操作として変更を受け取ることができます。
+ClickPipesは[Postgres論理デコーディング](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication)を使用して、Postgresで発生する変更をリアルタイムで取得します。Postgresの論理デコーディングプロセスにより、ClickPipesのようなクライアントは、人間が読める形式、つまり一連のINSERT、UPDATE、DELETEとして変更を受信できます。
 
 ### ReplacingMergeTree {#replacingmergetree}
 
-ClickPipesは、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)エンジンを使用してPostgresテーブルをClickHouseにマッピングします。ClickHouseは追記専用のワークロードで最高のパフォーマンスを発揮し、頻繁なUPDATEは推奨されません。ReplacingMergeTreeはこのような場合に特に有効です。
+ClickPipesは[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)エンジンを使用して、PostgresテーブルをClickHouseにマッピングします。ClickHouseは追記専用のワークロードで最高のパフォーマンスを発揮し、頻繁なUPDATEは推奨されません。ReplacingMergeTreeはこのような場合に特に有効です。
 
-ReplacingMergeTreeでは、更新は新しいバージョン（`_peerdb_version`）を持つ行の挿入としてモデル化され、削除は新しいバージョンを持ち`_peerdb_is_deleted`がtrueにマークされた挿入としてモデル化されます。ReplacingMergeTreeエンジンはバックグラウンドでデータの重複排除とマージを行い、指定されたプライマリキー（id）に対して最新バージョンの行を保持することで、UPDATEとDELETEをバージョン管理された挿入として効率的に処理します。
+ReplacingMergeTreeでは、更新は新しいバージョン（`_peerdb_version`）の行として挿入でモデル化され、削除は新しいバージョンの挿入として`_peerdb_is_deleted`がtrueにマークされます。ReplacingMergeTreeエンジンはバックグラウンドでデータの重複排除とマージを行い、指定されたプライマリキー（id）に対して最新バージョンの行を保持することで、UPDATEとDELETEをバージョン管理された挿入として効率的に処理します。
 
-以下は、ClickPipesがClickHouseでテーブルを作成する際に実行するCREATE Table文の例です。
+以下は、ClickPipesがClickHouseでテーブルを作成するために実行するCREATE Table文の例です。
 
 ```sql
 CREATE TABLE users
@@ -53,11 +53,11 @@ ORDER BY id;
 
 ### 実例 {#illustrative-example}
 
-以下の図は、ClickPipesを使用してPostgreSQLとClickHouse間で`users`テーブルを同期する基本的な例を示しています。
+以下の図は、ClickPipesを使用したPostgreSQLとClickHouse間の`users`テーブルの同期の基本的な例を示しています。
 
 <Image img={clickpipes_initial_load} alt='ClickPipes initial load' size='lg' />
 
-**ステップ1**は、PostgreSQLの2行の初期スナップショットと、ClickPipesがこれらの2行をClickHouseに初期ロードする様子を示しています。ご覧のとおり、両方の行はそのままClickHouseにコピーされます。
+**ステップ1**は、PostgreSQLの2行の初期スナップショットと、ClickPipesがこれらの2行をClickHouseに初期ロードする様子を示しています。ご覧のとおり、両方の行がそのままClickHouseにコピーされます。
 
 **ステップ2**は、usersテーブルに対する3つの操作を示しています：新しい行の挿入、既存の行の更新、別の行の削除です。
 
@@ -148,11 +148,11 @@ SELECT count(*) FROM posts;
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> ROWポリシーは、ユーザーとロールのリストに適用されます。この例では、すべてのユーザーとロールに適用されています。特定のユーザーまたはロールのみに限定することもできます。
+> ROWポリシーは、ユーザーとロールのリストに適用されます。この例では、すべてのユーザーとロールに適用されています。特定のユーザーまたはロールのみに限定するよう調整することもできます。
 
 ### Postgresと同様のクエリ {#query-like-with-postgres}
 
-PostgreSQLからClickHouseへ分析データセットを移行する際、データ処理とクエリ実行の違いに対応するため、アプリケーションクエリの変更が必要になることがよくあります。
+分析データセットをPostgreSQLからClickHouseに移行する際、データ処理とクエリ実行の違いを考慮してアプリケーションクエリを変更する必要が生じることがよくあります。
 
 このセクションでは、元のクエリを変更せずにデータの重複を排除する手法について説明します。
 
@@ -185,7 +185,7 @@ LIMIT 10
 
 #### リフレッシュ可能なマテリアライズドビュー {#refreshable-material-view}
 
-別のアプローチは、[リフレッシュ可能なマテリアライズドビュー](/materialized-view/refreshable-materialized-view)を使用することです。これにより、行の重複排除とその結果を宛先テーブルに保存するクエリ実行をスケジュールできます。スケジュールされたリフレッシュごとに、宛先テーブルは最新のクエリ結果で置き換えられます。
+別のアプローチは、[リフレッシュ可能なマテリアライズドビュー](/materialized-view/refreshable-materialized-view)を使用することです。これにより、行の重複排除とその結果を宛先テーブルに保存するためのクエリ実行をスケジュールできます。スケジュールされたリフレッシュごとに、宛先テーブルは最新のクエリ結果で置き換えられます。
 
 この方法の主な利点は、FINALキーワードを使用するクエリがリフレッシュ時に一度だけ実行されるため、宛先テーブルに対する後続のクエリでFINALを使用する必要がなくなることです。
 

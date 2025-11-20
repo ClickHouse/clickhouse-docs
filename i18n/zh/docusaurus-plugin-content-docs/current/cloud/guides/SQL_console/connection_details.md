@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/gather-connection-details
-sidebar_label: '获取连接详细信息'
-title: '获取连接详细信息'
-description: '获取连接详细信息'
+sidebar_label: '收集连接信息'
+title: '收集连接信息'
+description: '收集连接信息'
 doc_type: 'guide'
 keywords: ['connection details', 'credentials', 'connection string', 'setup', 'configuration']
 ---

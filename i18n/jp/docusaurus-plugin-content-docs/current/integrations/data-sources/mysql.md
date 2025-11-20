@@ -9,19 +9,19 @@ integration:
   - support_level: 'core'
   - category: 'data_ingestion'
   - website: 'https://github.com/ClickHouse/clickhouse'
-keywords: ['mysql', 'データベース連携', '外部テーブル', 'データソース', 'SQL データベース']
+keywords: ['mysql', 'database integration', 'external table', 'data source', 'sql database']
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# ClickHouse と MySQL の統合
+# ClickHouse との MySQL 連携
 
-このページでは、MySQL テーブルからデータを読み取るために `MySQL` テーブルエンジンを使用する方法について説明します。
+このページでは、MySQL テーブルからデータを読み取るための `MySQL` テーブルエンジンの使用方法について説明します。
 
 :::note
-ClickHouse Cloud では、[MySQL ClickPipe](/integrations/clickpipes/mysql)（現在パブリックベータ）を使用して、MySQL テーブルから ClickHouse へデータを簡単に移動することもできます。
+ClickHouse Cloud では、[MySQL ClickPipe](/integrations/clickpipes/mysql)（現在パブリックベータ）を使用して、MySQL テーブルから ClickHouse へデータを簡単に移行することもできます。
 :::
 
 
@@ -71,7 +71,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 ```
 
 :::note
-ClickHouse Cloudでこの機能を使用している場合、MySQLインスタンスへのアクセスを許可するためにClickHouse CloudのIPアドレスを許可リストに追加する必要がある場合があります。
+ClickHouse Cloudでこの機能を使用している場合、ClickHouse CloudのIPアドレスがMySQLインスタンスにアクセスできるように許可する必要がある場合があります。
 エグレストラフィックの詳細については、ClickHouseの[Cloud Endpoints API](//cloud/get-started/query-endpoints.md)を確認してください。
 :::
 
@@ -89,13 +89,13 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 
 最小限必要なパラメータは以下の通りです:
 
-| パラメータ | 説明                      | 例                    |
-| --------- | ------------------------ | --------------------- |
-| host      | ホスト名またはIP          | mysql-host.domain.com |
-| database  | MySQLデータベース名       | db1                   |
-| table     | MySQLテーブル名           | table1                |
-| user      | MySQLに接続するユーザー名 | mysql_clickhouse      |
-| password  | MySQLに接続するパスワード | Password123!          |
+| パラメータ | 説明                  | 例                    |
+| --------- | ---------------------------- | --------------------- |
+| host      | ホスト名またはIP               | mysql-host.domain.com |
+| database  | MySQLデータベース名          | db1                   |
+| table     | MySQLテーブル名             | table1                |
+| user      | MySQLに接続するためのユーザー名 | mysql_clickhouse      |
+| password  | MySQLに接続するためのパスワード | Password123!          |
 
 :::note
 パラメータの完全なリストについては、[MySQLテーブルエンジン](/engines/table-engines/integrations/mysql.md)のドキュメントページを参照してください。
@@ -169,4 +169,4 @@ mysql> select id,column1 from db1.table1;
 ### まとめ {#summary}
 
 
-`MySQL` テーブルエンジンを使用すると、ClickHouse を MySQL に接続して、双方向にデータをやり取りできます。詳しくは、[MySQL テーブルエンジン](/sql-reference/table-functions/mysql.md) のドキュメントページを参照してください。
+`MySQL` テーブルエンジンを使用すると、ClickHouse を MySQL に接続し、データを双方向にやり取りできます。詳細については、[MySQL テーブルエンジン](/sql-reference/table-functions/mysql.md) のドキュメントページを参照してください。

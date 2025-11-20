@@ -23,15 +23,15 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Сохранение аудиторских логов ClickHouse Cloud в Splunk
+# Сохранение журналов аудита ClickHouse Cloud в Splunk
 
 <PartnerBadge/>
 
 [Splunk](https://www.splunk.com/) — это платформа для аналитики данных и мониторинга.
 
-Этот add-on позволяет пользователям сохранять [аудиторские логи ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Он использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для скачивания аудиторских логов.
+Это дополнение позволяет пользователям сохранять [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Для скачивания журналов аудита оно использует [ClickHouse Cloud API](/cloud/manage/api/api-overview).
 
-Этот add-on содержит только modular input; дополнительных элементов интерфейса в нём не предусмотрено.
+Это дополнение содержит только модульный источник данных, дополнительных элементов пользовательского интерфейса не предоставляется.
 
 
 
@@ -50,7 +50,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
   border
 />
 
-В Splunk Enterprise перейдите в раздел Apps → Manage. Затем нажмите Install app from file.
+В Splunk Enterprise перейдите в раздел Apps -> Manage. Затем нажмите Install app from file.
 
 <Image
   img={splunk_002}
@@ -71,12 +71,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Если всё прошло успешно, вы увидите установленное приложение ClickHouse Audit logs. В противном случае проверьте логи Splunkd на наличие ошибок.
 
 
-# Конфигурация модульного ввода
+# Модульная конфигурация ввода
 
-Чтобы настроить модульный ввод, вам сначала понадобится информация из вашего развертывания ClickHouse Cloud:
+Чтобы настроить модульный ввод, вам сначала потребуется информация из вашего развертывания ClickHouse Cloud:
 
-- Идентификатор организации
-- Административный [API-ключ](/cloud/manage/openapi)
+- ID организации
+- Администраторский [API-ключ](/cloud/manage/openapi)
 
 
 
@@ -84,12 +84,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Войдите в [консоль ClickHouse Cloud](https://console.clickhouse.cloud/).
 
-Перейдите в раздел Organization → Organization details. Там вы сможете скопировать идентификатор организации (Organization ID).
+Перейдите в раздел Organization → Organization details. Там вы сможете скопировать Organization ID.
 
 <Image
   img={splunk_004}
   size='lg'
-  alt='Консоль ClickHouse Cloud со страницей Organization details и идентификатором организации'
+  alt='Консоль ClickHouse Cloud со страницей Organization details и Organization ID'
   border
 />
 
@@ -111,7 +111,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
   border
 />
 
-Сохраните API-ключ и секретный ключ в безопасном месте.
+Сохраните API-ключ и секретный ключ в надёжном месте.
 
 <Image
   img={splunk_007}
@@ -164,6 +164,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Использование
 
-Модульный ввод сохраняет данные в Splunk. Чтобы просмотреть данные, вы можете использовать общий интерфейс поиска в Splunk.
+Модульный ввод сохраняет данные в Splunk. Чтобы просмотреть данные, можно использовать общий интерфейс поиска в Splunk.
 
-<Image img={splunk_012} size="lg" alt="Интерфейс поиска Splunk, показывающий данные журналов аудита ClickHouse" border />
+<Image img={splunk_012} size="lg" alt="Интерфейс поиска Splunk, отображающий журналы аудита ClickHouse" border />

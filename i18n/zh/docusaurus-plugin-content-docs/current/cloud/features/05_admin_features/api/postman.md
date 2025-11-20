@@ -31,7 +31,7 @@ Postman 应用程序可在 Web 浏览器中使用,也可下载到桌面端。
 
 ### 创建账户 {#create-an-account}
 
-- 可在 [https://www.postman.com](https://www.postman.com) 免费注册账户。
+- 可在 [https://www.postman.com](https://www.postman.com) 注册免费账户。
 
 <Image img={postman1} size='md' alt='Postman 网站' border />
 
@@ -47,11 +47,11 @@ Postman 应用程序可在 Web 浏览器中使用,也可下载到桌面端。
 
 <Image img={postman3} size='md' alt='Explore > Import' border />
 
-- A modal will appear:
+- 将弹出一个对话框:
 
 <Image img={postman4} size='md' alt='API URL 输入' border />
 
-- 输入 API 地址:"https://api.clickhouse.cloud/v1" 并按下 'Enter':
+- 输入 API 地址:"https://api.clickhouse.cloud/v1" 并按"Enter"键:
 
 <Image img={postman5} size='md' alt='导入' border />
 
@@ -65,7 +65,7 @@ Postman 应用程序可在 Web 浏览器中使用,也可下载到桌面端。
 
 <Image img={postman7} size='md' alt='导入您的 API' border />
 
-- 点击"API spec for ClickHouse Cloud"。在中间面板中选择'Authorization'选项卡:
+- 点击"API spec for ClickHouse Cloud"。在中间面板中选择"Authorization"选项卡:
 
 <Image img={postman8} size='md' alt='导入完成' border />
 
@@ -85,7 +85,7 @@ Postman 应用程序可在 Web 浏览器中使用,也可下载到桌面端。
 
 #### 设置组织 ID 和服务 ID {#set-the-organization-id-and-service-id}
 
-- 在"Collection"中,点击中间面板的"Variable"选项卡(Base URL 已在之前的 API 导入中设置):
+- 在"Collection"中,点击中间面板的"Variable"选项卡(基础 URL 已在之前的 API 导入中设置):
 - 在 `baseURL` 下方点击"Add new value"字段,并替换为您的组织 ID 和服务 ID:
 
 <Image img={postman11} size='md' alt='组织 ID 和服务 ID' border />
@@ -96,42 +96,42 @@ Postman 应用程序可在 Web 浏览器中使用,也可下载到桌面端。
 ### 测试"获取可用组织列表" {#test-get-list-of-available-organizations}
 
 - 在"OpenAPI spec for ClickHouse Cloud"下,展开文件夹 > V1 > organizations
-- 点击"GET list of available organizations"并按右侧的蓝色"Send"按钮:
+- 点击"GET list of available organizations"并点击右侧的蓝色"Send"按钮:
 
-<Image img={postman12} size='md' alt='测试获取组织信息' border />
+<Image img={postman12} size='md' alt='测试检索组织' border />
 
-- 返回结果应包含您的组织详细信息,状态码为"status": 200。(如果收到"status" 400 且没有组织信息,说明配置不正确)。
+- 返回结果应显示您的组织详细信息,状态码为"status": 200。(如果您收到"status" 400 且没有组织信息,说明配置不正确)。
 
 <Image img={postman13} size='md' alt='状态' border />
 
 ### 测试"获取组织详细信息" {#test-get-organizational-details}
 
 - 在 `organizationid` 文件夹下,导航到"GET organizational details":
-- 在中间框架菜单的 Params 下需要提供 `organizationid`。
+- 在中间面板的 Params 菜单下需要提供 `organizationid` 参数。
 
 <Image
   img={postman14}
   size='md'
-  alt='测试获取组织详细信息'
+  alt='测试检索组织详细信息'
   border
 />
 
-- 使用花括号中的 `orgid` 编辑此值 `{{orgid}}`(由于之前已设置此值,将出现一个包含该值的菜单):
+- 使用花括号中的 `orgid` 编辑此值为 `{{orgid}}`(由于之前已设置此值,将出现一个包含该值的菜单):
 
 <Image img={postman15} size='md' alt='提交测试' border />
 
-- 按下"Save"按钮后,点击屏幕右上角的蓝色"Send"按钮。
+- 点击"Save"按钮后,点击屏幕右上角的蓝色"Send"按钮。
 
 <Image img={postman16} size='md' alt='返回值' border />
 
-- 返回结果应包含您的组织详细信息,状态码为"status": 200。(如果收到"status" 400 且没有组织信息,说明配置不正确)。
+- 返回结果应显示您的组织详细信息,状态码为"status": 200。(如果您收到"status" 400 且没有组织信息,说明配置不正确)。
 
 ### 测试"获取服务详细信息" {#test-get-service-details}
 
 - 点击"GET service details"
-- 分别使用 `{{orgid}}` 和 `{{serviceid}}` 编辑 `organizationid` 和 `serviceid` 的值。
-- 按"Save"按钮,然后点击右侧的蓝色"Send"按钮。
+- 分别将 `organizationid` 和 `serviceid` 的值编辑为 `{{orgid}}` 和 `{{serviceid}}`。
+- 点击"Save"然后点击右侧的蓝色"Send"按钮。
 
 <Image img={postman17} size='md' alt='服务列表' border />
 
-- 返回结果应包含您的服务列表及其详细信息,状态码为"status": 200。(如果收到"status" 400 且没有服务信息,说明配置不正确)。
+- 返回结果应显示您的服务列表及其详细信息,状态码为"status": 200。(如果您收到"status" 400 且没有服务信息,说明配置不正确)。

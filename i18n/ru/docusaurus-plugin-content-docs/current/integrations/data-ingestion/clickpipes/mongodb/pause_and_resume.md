@@ -1,7 +1,7 @@
 ---
-title: 'Приостановка и возобновление ClickPipe для MongoDB'
-description: 'Приостановка и возобновление ClickPipe для MongoDB'
-sidebar_label: 'Приостановить конвейер'
+title: 'Приостановка и возобновление MongoDB ClickPipe'
+description: 'Приостановка и возобновление MongoDB ClickPipe'
+sidebar_label: 'Пауза для таблицы'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
@@ -14,7 +14,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-Есть сценарии, когда бывает полезно приостановить MongoDB ClickPipe. Например, вам может потребоваться выполнить аналитику по уже загруженным данным в статичном состоянии. Или вы можете проводить обновление MongoDB. Ниже описано, как приостанавливать и возобновлять работу MongoDB ClickPipe.
+В некоторых случаях бывает полезно приостановить MongoDB ClickPipe. Например, вы можете захотеть запустить аналитику по уже имеющимся данным в неизменяемом состоянии. Или, возможно, вы выполняете обновление MongoDB. Ниже описано, как приостанавливать и возобновлять MongoDB ClickPipe.
 
 
 ## Шаги для приостановки MongoDB ClickPipe {#pause-clickpipe-steps}
@@ -48,4 +48,4 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 <Image img={resume_dialog} border size='md' />
 
 5. Перейдите на вкладку **Metrics**.
-6. Дождитесь, когда статус конвейера изменится на **Running**.
+6. Дождитесь, пока статус канала изменится на **Running**.

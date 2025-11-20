@@ -9,18 +9,16 @@ doc_type: 'guide'
 keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
-ClickStack использует стандарт OpenTelemetry для сбора телеметрических данных (логов и
-трейсов). Трейсы автоматически создаются с помощью автоинструментации, поэтому ручная
-инструментация не требуется, чтобы получать пользу от трассировки.
+ClickStack использует стандарт OpenTelemetry для сбора телеметрии (логов и трасс). Трассы генерируются автоматически с помощью автоматического инструментирования, поэтому ручное вмешательство не требуется, чтобы получить пользу от трассировки.
 
-**Это руководство охватывает:**
+**Это руководство охватывает интеграцию:**
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✅ Логи</td>
       <td className="pe-2">✅ Метрики</td>
-      <td className="pe-2">✅ Трейсы</td>
+      <td className="pe-2">✅ Трассы</td>
     </tr>
   </tbody>
 </table>
@@ -36,7 +34,7 @@ ClickStack использует стандарт OpenTelemetry для сбора
 ### Загрузка агента OpenTelemetry Java {#download-opentelemtry-java-agent}
 
 Загрузите [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
-и поместите JAR-файл в нужную директорию. JAR-файл содержит агент
+и поместите JAR-файл в выбранную директорию. JAR-файл содержит агент
 и библиотеки инструментирования. Также можно использовать следующую команду для
 загрузки агента:
 
@@ -46,7 +44,7 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 ### Настройка переменных окружения {#configure-environment-variables}
 
-Затем необходимо настроить следующие переменные окружения в вашей оболочке для отправки телеметрии в ClickStack:
+После этого необходимо настроить следующие переменные окружения в вашей оболочке для отправки телеметрии в ClickStack:
 
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \

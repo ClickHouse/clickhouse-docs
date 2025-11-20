@@ -4,7 +4,7 @@ sidebar_label: '集成 Open WebUI'
 title: '使用 Open WebUI 和 ClickHouse Cloud 部署 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 Docker 将 Open WebUI 与 ClickHouse MCP 服务器进行集成。'
+description: '本指南介绍如何使用 Docker 将 Open WebUI 与 ClickHouse MCP 服务器进行集成与部署。'
 keywords: ['AI', 'Open WebUI', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -28,7 +28,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
 # 在 Open WebUI 中使用 ClickHouse MCP 服务器
 
-> 本指南说明如何配置 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器,
+> 本指南介绍如何配置 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
@@ -51,9 +51,9 @@ uv run --with open-webui open-webui serve
 在浏览器中访问 http://localhost:8080/ 即可查看界面。
 
 
-## 配置 ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
-要设置 ClickHouse MCP Server,我们需要将 MCP Server 转换为 Open API 端点。
+要设置 ClickHouse MCP 服务器,我们需要将 MCP 服务器转换为 Open API 端点。
 首先设置环境变量以连接到 ClickHouse SQL Playground:
 
 ```bash
@@ -62,7 +62,7 @@ export CLICKHOUSE_USER="demo"
 export CLICKHOUSE_PASSWORD=""
 ```
 
-然后,我们可以运行 `mcpo` 来创建 Open API 端点:
+然后,运行 `mcpo` 来创建 Open API 端点:
 
 ```bash
 uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhouse
@@ -88,7 +88,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={ToolsAvailable} alt='Open WebUI 可用工具' size='md' />
 
-点击工具图标后,即可查看可用工具列表:
+点击工具图标,即可查看可用工具列表:
 
 <Image img={ListOfTools} alt='Open WebUI 工具列表' size='md' />
 
@@ -100,7 +100,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={Connections} alt='Open WebUI 连接' size='md' />
 
-添加端点和 OpenAI 密钥:
+让我们添加端点和 OpenAI 密钥:
 
 <Image
   img={AddConnection}
@@ -113,13 +113,13 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 <Image img={OpenAIModels} alt='Open WebUI - 模型' size='md' />
 
 
-## 使用 Open WebUI 与 ClickHouse MCP Server 对话 {#chat-to-clickhouse-mcp-server}
+## 使用 Open WebUI 与 ClickHouse MCP Server 交互 {#chat-to-clickhouse-mcp-server}
 
-接下来我们可以开始对话，Open WebUI 会在需要时自动调用 MCP Server：
+接下来我们可以开始对话,Open WebUI 会在需要时自动调用 MCP Server:
 
 <Image
   img={Conversation}
-  alt='Open WebUI - 与 ClickHouse MCP Server 对话'
+  alt='Open WebUI - 与 ClickHouse MCP Server 交互'
   size='md'
 />
 

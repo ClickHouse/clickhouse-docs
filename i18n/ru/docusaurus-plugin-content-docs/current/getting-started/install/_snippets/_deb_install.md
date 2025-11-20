@@ -21,22 +21,22 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 ```
 
 
-# Загрузите GPG-ключ ClickHouse и сохраните его в хранилище ключей
+# Скачайте GPG-ключ ClickHouse и сохраните его в хранилище ключей
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
 
 
-# Определить архитектуру системы
+# Получение архитектуры системы
 ARCH=$(dpkg --print-architecture)
 
 
 
-# Добавьте репозиторий ClickHouse в список источников apt
+# Добавьте репозиторий ClickHouse в источники apt
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
 
 
-# Обновление списка пакетов apt
+# Обновите списки пакетов apt
 
 sudo apt-get update
 
@@ -56,35 +56,35 @@ sudo apt-get install apt-transport-https ca-certificates dirmngr
 ```
 
 
-# Добавьте GPG‑ключ ClickHouse для проверки подлинности пакетов
+# Добавьте GPG-ключ ClickHouse для проверки подлинности пакетов
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
 
 
-# Добавьте репозиторий ClickHouse в список источников apt
+# Добавьте репозиторий ClickHouse в источники apt
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
     
 
 
-# Обновите списки пакетов apt
+# Обновить списки пакетов apt
 sudo apt-get update
 
 
 
-# Установка пакетов сервера и клиента ClickHouse
+# Установите пакеты сервера и клиента ClickHouse
 sudo apt-get install -y clickhouse-server clickhouse-client
 
 
 
-# Запустите сервис сервера ClickHouse
+# Запустите службу сервера ClickHouse
 sudo service clickhouse-server start
 
 
 
-# Запуск клиентского приложения командной строки ClickHouse
+# Запуск клиента командной строки ClickHouse
 
-clickhouse-client # или &quot;clickhouse-client --password&quot;, если вы задали пароль.
+clickhouse-client # или &quot;clickhouse-client --password&quot;, если вы настроили пароль.
 
 ```
 
@@ -113,7 +113,7 @@ sudo service clickhouse-server start
 clickhouse-client
 ```
 
-Если вы установили пароль для сервера, то необходимо выполнить:
+Если вы установили пароль для сервера, выполните:
 
 ```bash
 clickhouse-client --password
@@ -156,10 +156,10 @@ sudo systemctl status clickhouse-keeper
 | `clickhouse-server`            | Создаёт символическую ссылку для `clickhouse-server` и устанавливает конфигурацию сервера по умолчанию.                                                                                                                                                                               |
 | `clickhouse-client`            | Создаёт символическую ссылку для `clickhouse-client` и других клиентских инструментов, а также устанавливает конфигурационные файлы клиента.                                                                                                                                          |
 | `clickhouse-common-static-dbg` | Устанавливает скомпилированные бинарные файлы ClickHouse с отладочной информацией.                                                                                                                                                                                                    |
-| `clickhouse-keeper`            | Используется для установки ClickHouse Keeper на выделенных узлах ClickHouse Keeper. Если ClickHouse Keeper запускается на том же сервере, что и ClickHouse server, устанавливать этот пакет не требуется. Устанавливает ClickHouse Keeper и конфигурационные файлы ClickHouse Keeper по умолчанию. |
+| `clickhouse-keeper`            | Используется для установки ClickHouse Keeper на выделенных узлах ClickHouse Keeper. Если ClickHouse Keeper запускается на том же сервере, что и ClickHouse Server, устанавливать этот пакет не требуется. Устанавливает ClickHouse Keeper и конфигурационные файлы ClickHouse Keeper по умолчанию. |
 
 <br />
 :::info Если необходимо установить конкретную версию ClickHouse, следует
-установить все пакеты одной и той же версии: `sudo apt-get install
+установить все пакеты одной версии: `sudo apt-get install
 clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7
 clickhouse-common-static=21.8.5.7` :::

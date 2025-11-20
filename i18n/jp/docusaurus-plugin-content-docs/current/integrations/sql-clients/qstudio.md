@@ -1,7 +1,7 @@
 ---
 slug: /integrations/qstudio
 sidebar_label: 'QStudio'
-description: 'QStudio は無償の SQL ツールです。'
+description: 'QStudio は無料の SQL ツールです。'
 title: 'QStudio を ClickHouse に接続する'
 doc_type: 'guide'
 keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
@@ -18,7 +18,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-QStudio は無償の SQL GUI であり、SQL スクリプトの実行、テーブルの容易な閲覧、グラフ化や結果のエクスポートが可能です。あらゆるオペレーティングシステム上で動作し、あらゆるデータベースに対応します。
+QStudio は無償の SQL GUI であり、SQL スクリプトの実行、テーブルの簡単な参照、結果のグラフ化およびエクスポートが可能です。あらゆるオペレーティングシステム上で動作し、あらゆるデータベースに対応します。
 
 QStudio は JDBC を使用して ClickHouse に接続します。
 
@@ -26,7 +26,7 @@ QStudio は JDBC を使用して ClickHouse に接続します。
 
 ## 1. ClickHouseの接続情報を収集する {#1-gather-your-clickhouse-details}
 
-QStudioはHTTP(S)経由のJDBCを使用してClickHouseに接続します。次の情報が必要です:
+QStudioはHTTP(S)経由のJDBCを使用してClickHouseに接続します。次の情報が必要です：
 
 - エンドポイント
 - ポート番号
@@ -43,25 +43,25 @@ QStudioは https://www.timestored.com/qstudio/download/ から入手できます
 
 ## 3. データベースを追加する {#3-add-a-database}
 
-- QStudioを初めて開く際は、メニューオプションの**Server->Add Server**をクリックするか、ツールバーのサーバー追加ボタンをクリックしてください。
+- QStudioを初めて起動したら、メニューから**Server->Add Server**を選択するか、ツールバーのサーバー追加ボタンをクリックします。
 - 次に、以下の詳細情報を設定します:
 
 <Image
   img={qstudio_add_connection}
   size='lg'
   border
-  alt='ClickHouse接続設定を表示するQStudioデータベース接続構成画面'
+  alt='ClickHouse接続設定を表示するQStudioデータベース接続設定画面'
 />
 
 1.  Server Type: Clickhouse.com
-2.  注意:ホストにはhttps://を必ず含める必要があります
+2.  注意: Hostには必ずhttps://を含めてください
     Host: https://abc.def.clickhouse.cloud
     Port: 8443
 3.  Username: default
     Password: `XXXXXXXXXXX`
 4.  Addをクリック
 
-QStudioがClickHouse JDBCドライバーがインストールされていないことを検出すると、ダウンロードを提案します:
+QStudioがClickHouse JDBCドライバーがインストールされていないことを検出すると、自動的にダウンロードを提案します:
 
 
 ## 4. ClickHouseへのクエリ実行 {#4-query-clickhouse}
@@ -82,4 +82,4 @@ QStudioがClickHouse JDBCドライバーがインストールされていない�
 
 ## 次のステップ {#next-steps}
 
-QStudioの機能については[QStudio](https://www.timestored.com/qstudio)を、ClickHouseの機能については[ClickHouseドキュメント](https://clickhouse.com/docs)をご覧ください。
+QStudioの機能については[QStudio](https://www.timestored.com/qstudio)を、ClickHouseの機能については[ClickHouseドキュメント](https://clickhouse.com/docs)を参照してください。

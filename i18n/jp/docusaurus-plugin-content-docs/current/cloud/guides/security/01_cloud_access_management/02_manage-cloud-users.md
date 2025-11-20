@@ -2,7 +2,7 @@
 sidebar_label: 'クラウドユーザーの管理'
 slug: /cloud/security/manage-cloud-users
 title: 'クラウドユーザーの管理'
-description: 'このページでは、管理者がユーザーを追加し、割り当てを管理し、ユーザーを削除する方法について説明します'
+description: 'このページでは、管理者がユーザーを追加し、権限などの割り当てを管理し、ユーザーを削除する方法について説明します'
 doc_type: 'guide'
 keywords: ['cloud users', 'access management', 'security', 'permissions', 'team management']
 ---
@@ -35,7 +35,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 5. ユーザーに割り当てる組織ロールとサービスロールを選択します
 6. `Send invites`をクリックします
 
-ユーザーには組織への参加を可能にするメールが送信されます。招待の承認に関する詳細は、[アカウントの管理](/cloud/security/manage-my-account)を参照してください。
+ユーザーは組織に参加するためのメールを受信します。招待の承認に関する詳細については、[アカウントの管理](/cloud/security/manage-my-account)を参照してください。
 
 ### SAMLアイデンティティプロバイダー経由でユーザーを追加する {#add-users-via-saml}
 
@@ -49,12 +49,12 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ### SAML専用認証の強制 {#enforce-saml}
 
-組織内に組織管理者ロールが割り当てられたSAMLユーザーが少なくとも1名存在する場合、他の認証方法を使用するユーザーを組織から削除することで、組織に対してSAML専用認証を強制できます。
+組織内に組織管理者ロールが割り当てられたSAMLユーザーが少なくとも1名存在する場合、他の認証方法を使用しているユーザーを組織から削除することで、組織に対してSAML専用認証を強制できます。
 
 
 ## ユーザーロール割り当ての管理 {#manage-role-assignments}
 
-Organization Adminロールが割り当てられたユーザーは、いつでも他のユーザーの権限を更新できます。
+Organization Adminロールが割り当てられたユーザーは、他のユーザーの権限をいつでも更新できます。
 
 <VerticalStepper headerLevel="h3">
 
@@ -104,7 +104,7 @@ Organization Adminロールが割り当てられたユーザーは、いつで�
 ## ユーザーの削除 {#remove-user}
 
 :::note SAMLユーザーの削除
-IDプロバイダーでClickHouseアプリケーションから割り当て解除されたSAMLユーザーは、ClickHouse Cloudにログインできなくなります。アカウントはコンソールから自動的には削除されないため、手動で削除する必要があります。
+IDプロバイダーでClickHouseアプリケーションから割り当て解除されたSAMLユーザーは、ClickHouse Cloudにログインできません。アカウントはコンソールから自動的には削除されないため、手動で削除する必要があります。
 :::
 
 ユーザーを削除するには、以下の手順に従ってください。

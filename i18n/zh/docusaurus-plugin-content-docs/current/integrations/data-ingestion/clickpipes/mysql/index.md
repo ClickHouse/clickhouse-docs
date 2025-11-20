@@ -18,21 +18,21 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# 使用 CDC 将数据从 MySQL 导入到 ClickHouse
+# 使用 CDC 将 MySQL 数据写入 ClickHouse
 
 <BetaBadge/>
 
 :::info
-通过 ClickPipes 将 MySQL 数据导入 ClickHouse Cloud 目前处于公开测试阶段。
+通过 ClickPipes 将 MySQL 数据写入 ClickHouse Cloud 的功能目前处于公开测试阶段。
 :::
 
-你可以使用 ClickPipes 将源 MySQL 数据库中的数据导入 ClickHouse Cloud。源 MySQL 数据库可以部署在本地，或托管在 Amazon RDS、Google Cloud SQL 等云服务上。
+你可以使用 ClickPipes 将源 MySQL 数据库中的数据写入 ClickHouse Cloud。源 MySQL 数据库可以部署在本地环境，也可以托管在 Amazon RDS、Google Cloud SQL 等云服务上。
 
 
 
 ## 前置条件 {#prerequisites}
 
-开始之前,您需要确保 MySQL 数据库已正确配置 binlog 复制。具体配置步骤取决于您部署 MySQL 的方式,请参考以下相关指南:
+开始之前,您需要先确保 MySQL 数据库已正确配置 binlog 复制。具体配置步骤取决于您部署 MySQL 的方式,请参考以下相关指南:
 
 1. [Amazon RDS MySQL](./mysql/source/rds)
 
@@ -40,84 +40,84 @@ import Image from '@theme/IdealImage';
 
 3. [Cloud SQL for MySQL](./mysql/source/gcp)
 
-4. [通用 MySQL](./mysql/source/generic)
+4. [Generic MySQL](./mysql/source/generic)
 
 5. [Amazon RDS MariaDB](./mysql/source/rds_maria)
 
-6. [通用 MariaDB](./mysql/source/generic_maria)
+6. [Generic MariaDB](./mysql/source/generic_maria)
 
 完成源 MySQL 数据库配置后,即可继续创建 ClickPipe。
 
 
 ## 创建您的 ClickPipe {#create-your-clickpipe}
 
-确保您已登录 ClickHouse Cloud 账户。如果您还没有账户,可以在[此处](https://cloud.clickhouse.com/)注册。
+请确保您已登录 ClickHouse Cloud 账户。如果您还没有账户,可以在[此处](https://cloud.clickhouse.com/)注册。
 
 [//]: # "   TODO update image here"
 
-1. 在 ClickHouse Cloud 控制台中,导航到您的 ClickHouse Cloud 服务。
+1. 在 ClickHouse Cloud 控制台中,导航至您的 ClickHouse Cloud 服务。
 
-<Image img={cp_service} alt='ClickPipes service' size='lg' border />
+<Image img={cp_service} alt='ClickPipes 服务' size='lg' border />
 
 2. 在左侧菜单中选择 `Data Sources` 按钮,然后点击 "Set up a ClickPipe"
 
-<Image img={cp_step0} alt='Select imports' size='lg' border />
+<Image img={cp_step0} alt='选择导入' size='lg' border />
 
 3. 选择 `MySQL CDC` 选项
 
-<Image img={mysql_tile} alt='Select MySQL' size='lg' border />
+<Image img={mysql_tile} alt='选择 MySQL' size='lg' border />
 
 ### 添加源 MySQL 数据库连接 {#add-your-source-mysql-database-connection}
 
-4. 填写您在前提条件步骤中配置的源 MySQL 数据库连接详细信息。
+4. 填写您在前提条件步骤中配置的源 MySQL 数据库连接详情。
 
    :::info
-   在开始添加连接详细信息之前,请确保您已在防火墙规则中将 ClickPipes IP 地址加入白名单。您可以在以下页面找到 [ClickPipes IP 地址列表](../index.md#list-of-static-ips)。
+   在开始添加连接详情之前,请确保您已在防火墙规则中将 ClickPipes IP 地址加入白名单。您可以在以下页面找到 [ClickPipes IP 地址列表](../index.md#list-of-static-ips)。
    有关更多信息,请参阅[本页顶部](#prerequisites)链接的源 MySQL 设置指南。
    :::
 
    <Image
      img={mysql_connection_details}
-     alt='Fill in connection details'
+     alt='填写连接详情'
      size='lg'
      border
    />
 
 #### (可选)设置 SSH 隧道 {#optional-set-up-ssh-tunneling}
 
-如果您的源 MySQL 数据库无法公开访问,您可以指定 SSH 隧道详细信息。
+如果您的源 MySQL 数据库无法公开访问,您可以指定 SSH 隧道详情。
 
 1. 启用 "Use SSH Tunnelling" 开关。
-2. 填写 SSH 连接详细信息。
+2. 填写 SSH 连接详情。
 
-   <Image img={ssh_tunnel} alt='SSH tunneling' size='lg' border />
+   <Image img={ssh_tunnel} alt='SSH 隧道' size='lg' border />
 
-3. 要使用基于密钥的身份验证,请点击 "Revoke and generate key pair" 生成新的密钥对,并将生成的公钥复制到您的 SSH 服务器的 `~/.ssh/authorized_keys` 文件中。
+3. 要使用基于密钥的身份验证,请点击 "Revoke and generate key pair" 生成新的密钥对,并将生成的公钥复制到您 SSH 服务器的 `~/.ssh/authorized_keys` 文件中。
 4. 点击 "Verify Connection" 验证连接。
 
 :::note
-确保在 SSH 堡垒主机的防火墙规则中将 [ClickPipes IP 地址](../clickpipes#list-of-static-ips)加入白名单,以便 ClickPipes 可以建立 SSH 隧道。
+请确保在 SSH 堡垒主机的防火墙规则中将 [ClickPipes IP 地址](../clickpipes#list-of-static-ips)加入白名单,以便 ClickPipes 能够建立 SSH 隧道。
 :::
 
-填写完连接详细信息后,点击 `Next`。
+填写完连接详情后,点击 `Next`。
 
 #### 配置高级设置 {#advanced-settings}
 
-如果需要,您可以配置高级设置。以下是每个设置的简要说明:
+如有需要,您可以配置高级设置。以下是每个设置的简要说明:
 
-- **同步间隔**: ClickPipes 轮询源数据库以获取变更的时间间隔。这会影响目标 ClickHouse 服务的成本,对于成本敏感的用户,我们建议将此值设置得较高(超过 `3600`)。
-- **初始加载的并行线程数**: 用于获取初始快照的并行工作线程数。当您有大量表并且想要控制用于获取初始快照的并行工作线程数时,此设置很有用。此设置是按表配置的。
-- **拉取批次大小**: 单次批处理中要获取的行数。这是一个尽力而为的设置,可能并非在所有情况下都会被遵守。
-- **快照每个分区的行数**: 在初始快照期间每个分区中将获取的行数。当您的表中有大量行并且想要控制每个分区中获取的行数时,此设置很有用。
-- **快照并行表数**: 在初始快照期间将并行获取的表数。当您有大量表并且想要控制并行获取的表数时,此设置很有用。
+- **同步间隔**: ClickPipes 轮询源数据库以获取变更的时间间隔。这会影响目标 ClickHouse 服务,对于成本敏感的用户,我们建议将此值设置得较高(超过 `3600`)。
+- **初始加载的并行线程数**: 用于获取初始快照的并行工作线程数。当您有大量表并希望控制用于获取初始快照的并行工作线程数时,此设置很有用。此设置按表配置。
+- **拉取批次大小**: 单次批处理中获取的行数。这是一个尽力而为的设置,可能并非在所有情况下都会生效。
+- **快照每个分区的行数**: 初始快照期间每个分区中将获取的行数。当您的表中有大量行并希望控制每个分区中获取的行数时,此设置很有用。
+- **快照并行表数**: 初始快照期间将并行获取的表数。当您有大量表并希望控制并行获取的表数时,此设置很有用。
 
 ### 配置表 {#configure-the-tables}
 
-5. 在这里您可以为您的 ClickPipe 选择目标数据库。您可以选择现有数据库或创建新数据库。
+5. 在此处您可以为 ClickPipe 选择目标数据库。您可以选择现有数据库或创建新数据库。
 
    <Image
      img={select_destination_db}
-     alt='Select destination database'
+     alt='选择目标数据库'
      size='lg'
      border
    />
@@ -128,9 +128,9 @@ import Image from '@theme/IdealImage';
 
 7. 从权限下拉菜单中选择 "Full access" 角色,然后点击 "Complete Setup"。
 
-   <Image img={ch_permissions} alt='Review permissions' size='lg' border />
+   <Image img={ch_permissions} alt='审查权限' size='lg' border />
 
-最后,请参阅 ["ClickPipes for MySQL FAQ"](/integrations/clickpipes/mysql/faq) 页面,了解有关常见问题及其解决方法的更多信息。
+最后,请参阅 ["ClickPipes for MySQL 常见问题解答"](/integrations/clickpipes/mysql/faq) 页面,了解有关常见问题及其解决方法的更多信息。
 
 
 ## 下一步 {#whats-next}

@@ -22,7 +22,7 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 - **OpenTelemetry (OTel) 收集器**(在端口 `4317` 和 `4318` 上暴露 OTLP)
 - **MongoDB**(用于持久化应用状态)
 
-**但是,此 HyperDX 发行版已禁用用户身份验证**
+**但是,此 HyperDX 发行版禁用了用户身份验证**
 
 ### 适用场景 {#suitable-for}
 

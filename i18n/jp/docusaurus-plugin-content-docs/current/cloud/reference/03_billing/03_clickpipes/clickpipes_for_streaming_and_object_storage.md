@@ -12,7 +12,7 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 # ストリーミングおよびオブジェクトストレージ向けClickPipes {#clickpipes-for-streaming-object-storage}
 
-このセクションでは、ストリーミングおよびオブジェクトストレージ向けClickPipesの料金モデルについて概説します。
+このセクションでは、ストリーミングおよびオブジェクトストレージ向けClickPipesの料金体系について説明します。
 
 
 ## ClickPipesの料金体系はどのようになっていますか？ {#what-does-the-clickpipes-pricing-structure-look-like}
@@ -20,17 +20,17 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 料金体系は2つの要素で構成されています：
 
 - **コンピュート**: **ユニットあたり時間単位**の料金。
-  コンピュートは、データを積極的に取り込んでいるかどうかに関わらず、ClickPipesレプリカポッドの実行コストを表します。
+  コンピュートは、データを積極的に取り込んでいるかどうかに関わらず、ClickPipesレプリカポッドを実行するコストを表します。
   すべてのClickPipesタイプに適用されます。
-- **取り込みデータ**: **GB単位**の料金。
+- **取り込みデータ**: **GBあたり**の料金。
   取り込みデータ料金は、レプリカポッド経由で転送されるデータに対して、すべてのストリーミングClickPipes
   (Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、Azure Event Hubs)
-  に適用されます。取り込みデータサイズ(GB)は、ソースから受信したバイト数(非圧縮または圧縮)に基づいて課金されます。
+  に適用されます。取り込みデータサイズ（GB）は、ソースから受信したバイト数（非圧縮または圧縮）に基づいて課金されます。
 
 
 ## ClickPipesレプリカとは？ {#what-are-clickpipes-replicas}
 
-ClickPipesは、ClickHouse Cloudサービスとは独立して動作・スケールする専用インフラストラクチャを通じて、リモートデータソースからデータを取り込みます。
+ClickPipesは、ClickHouse Cloudサービスとは独立して動作・スケールする専用インフラストラクチャを介して、リモートデータソースからデータを取り込みます。
 そのため、専用のコンピュートレプリカを使用します。
 
 
@@ -42,7 +42,7 @@ ClickPipesは、ClickHouse Cloudサービスとは独立して動作・スケー
 
 ## ClickPipesの公開価格について {#what-are-the-clickpipes-public-prices}
 
-- コンピュート: 1ユニットあたり1時間$0.20（デフォルトのレプリカサイズの場合、レプリカあたり1時間$0.0125）
+- コンピュート: ユニットあたり1時間$0.20（デフォルトのレプリカサイズの場合、レプリカあたり1時間$0.0125）
 - 取り込みデータ: 1GBあたり$0.04
 
 コンピュートの価格は、ClickPipe内のレプリカの**数**と**サイズ**によって決まります。デフォルトのレプリカサイズは垂直スケーリングで調整可能で、各レプリカサイズの価格は以下の通りです:
@@ -89,7 +89,7 @@ ClickPipesは、ClickHouse Cloudサービスとは独立して動作・スケー
 </table>
 
 $^1$ _オーケストレーション用のClickPipesコンピュートのみ、
-実際のデータ転送は基盤となるClickHouseサービスによって処理されることを想定_
+実際のデータ転送は基盤となるClickHouseサービスによって処理されると想定_
 
 
 ## ストリーミングおよびオブジェクトストレージ ClickPipes の FAQ {#faq-streaming-and-object-storage}

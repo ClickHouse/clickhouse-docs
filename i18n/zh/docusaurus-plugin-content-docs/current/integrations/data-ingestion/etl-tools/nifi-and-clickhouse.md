@@ -3,8 +3,8 @@ sidebar_label: 'NiFi'
 sidebar_position: 12
 keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/nifi
-description: '使用 NiFi 数据管道将数据实时写入 ClickHouse'
-title: '将 Apache NiFi 接入 ClickHouse'
+description: '使用 NiFi 数据管道将数据流式导入 ClickHouse'
+title: '将 Apache NiFi 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -38,7 +38,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <a href='https://nifi.apache.org/' target='_blank'>
   Apache NiFi
 </a>
-是一款开源工作流管理软件,旨在实现软件系统之间的数据流自动化。它支持创建 ETL 数据管道,并内置超过 300 个数据处理器。本分步教程将演示如何将 Apache NiFi 连接到 ClickHouse(既作为数据源也作为目标),以及如何加载示例数据集。
+是一款开源工作流管理软件,旨在实现软件系统之间的数据流自动化。它支持创建 ETL 数据管道,并内置超过 300 个数据处理器。本分步教程将演示如何将 Apache NiFi 作为数据源和目标连接到 ClickHouse,以及如何加载示例数据集。
 
 <VerticalStepper headerLevel="h2">
 
@@ -53,11 +53,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 对于全新安装,请从 https://nifi.apache.org/download.html 下载二进制文件,然后通过运行 `./bin/nifi.sh start` 命令来启动
 
 
-## 下载 ClickHouse JDBC 驱动 {#3-download-the-clickhouse-jdbc-driver}
+## 下载 ClickHouse JDBC 驱动程序 {#3-download-the-clickhouse-jdbc-driver}
 
-1. 访问 GitHub 上的 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 驱动发布页面</a>,查找最新的 JDBC 发布版本
+1. 访问 GitHub 上的 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 驱动程序发布页面</a>,查找最新的 JDBC 发布版本
 2. 在发布版本中,点击"Show all xx assets",查找包含关键字"shaded"或"all"的 JAR 文件,例如 `clickhouse-jdbc-0.5.0-all.jar`
-3. 将 JAR 文件放置在 Apache NiFi 可访问的文件夹中,并记下其绝对路径
+3. 将 JAR 文件放置在 Apache NiFi 可访问的文件夹中,并记录其绝对路径
 
 
 ## 添加 `DBCPConnectionPool` 控制器服务并配置其属性 {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
@@ -102,13 +102,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 | 属性                        | 值                                                                 | 备注                                                 |
 | --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------- |
-| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 将连接 URL 中的 HOSTNAME 替换为实际主机名            |
+| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 相应地替换连接 URL 中的 HOSTNAME                     |
 | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                                      |
-| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 驱动 JAR 文件的绝对路径              |
+| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 驱动程序 JAR 文件的绝对路径          |
 | Database User               | default                                                            | ClickHouse 用户名                                    |
 | Password                    | password                                                           | ClickHouse 密码                                      |
 
-6. 在设置部分,将控制器服务的名称更改为"ClickHouse JDBC"以便引用
+6. 在设置部分,将控制器服务的名称更改为"ClickHouse JDBC"以便于引用
 
    <Image
      img={nifi05}
@@ -117,7 +117,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='DBCPConnectionPool 配置对话框显示已填写的属性'
    />
 
-7. 单击"闪电"按钮,然后单击"启用"按钮以激活 `DBCPConnectionPool` 控制器服务
+7. 单击"闪电"按钮然后单击"启用"按钮来激活 `DBCPConnectionPool` 控制器服务
 
    <Image
      img={nifi06}
@@ -135,7 +135,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='启用控制器服务确认对话框'
    />
 
-8. 检查控制器服务选项卡,确保控制器服务已启用
+8. 检查控制器服务选项卡并确保控制器服务已启用
 
    <Image
      img={nifi08}
@@ -158,10 +158,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. 在 `ExecuteSQL` 处理器的"Properties"部分中,输入以下值
 
-   | Property                            | Value                         | Remark                                   |
-   | ----------------------------------- | ----------------------------- | ---------------------------------------- |
+   | Property                            | Value                         | Remark                                                  |
+   | ----------------------------------- | ----------------------------- | ------------------------------------------------------- |
    | Database Connection Pooling Service | ClickHouse JDBC               | 选择为 ClickHouse 配置的 Controller Service |
-   | SQL select query                    | SELECT \* FROM system.metrics | 在此处输入您的查询语句                              |
+   | SQL select query                    | SELECT \* FROM system.metrics | 在此处输入您的查询语句                                   |
 
 3. 启动 `ExecuteSQL` 处理器
 
@@ -169,7 +169,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      img={nifi10}
      size='lg'
      border
-     alt='已填写属性的 ExecuteSQL 处理器配置'
+     alt='ExecuteSQL 处理器配置界面,属性已填写完成'
    />
 
 4. 要确认查询已成功处理,请检查输出队列中的某个 `FlowFile`
@@ -193,7 +193,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 使用 `MergeRecord` 和 `PutDatabaseRecord` 处理器写入表 {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
 
-1. 要在单次插入中写入多行数据,首先需要将多条记录合并为一条记录。可以使用 `MergeRecord` 处理器来实现
+1. 要在单次插入中写入多行数据,首先需要将多条记录合并为单条记录。可以使用 `MergeRecord` 处理器来实现
 
 2. 在 `MergeRecord` 处理器的"Properties"部分,输入以下值
 

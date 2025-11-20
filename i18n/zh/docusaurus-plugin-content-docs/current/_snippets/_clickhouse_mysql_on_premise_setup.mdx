@@ -1,6 +1,6 @@
-请参阅[官方文档](/interfaces/mysql)，了解如何配置启用 MySQL 接口的 ClickHouse 服务器。
+请参考[官方文档](/interfaces/mysql)，了解如何配置启用了 MySQL 接口的 ClickHouse 服务器。
 
-除了在服务器的 `config.xml` 中添加一条配置项之外
+除了在服务器的 `config.xml` 中添加一项配置之外
 
 ```xml
 <clickhouse>
@@ -8,7 +8,7 @@
 </clickhouse>
 ```
 
-还*必须*为将使用 MySQL 接口的用户使用
+同时，使用 MySQL 接口的用户 *还必须* 使用
 [Double SHA1 password encryption](/operations/settings/settings-users#user-namepassword)。
 
 在 shell 中生成使用 Double SHA1 加密的随机密码：
@@ -17,16 +17,16 @@
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-输出结果应如下所示：
+输出应类似如下所示：
 
 ```
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-第一行是生成的密码，第二行是我们可以用来配置 ClickHouse 的哈希值。
+第一行是生成的密码，第二行是可用于配置 ClickHouse 的哈希值。
 
-下面是一个 `mysql_user` 使用生成的哈希值的示例配置：
+下面是一个使用该生成哈希值的 `mysql_user` 配置示例：
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -45,9 +45,9 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 
 将 `password_double_sha1_hex` 条目替换为你自己生成的 Double SHA1 哈希值。
 
-另外，建议启用 `use_mysql_types_in_show_columns`，
-以便在 `SHOW [FULL] COLUMNS` 查询结果中显示原生 MySQL 类型，而不是 ClickHouse 类型，
-从而在使用 MySQL 连接器时，使 BI 工具能够正确解析数据库模式。
+此外，建议启用 `use_mysql_types_in_show_columns`，
+以在 `SHOW [FULL] COLUMNS` 查询结果中显示原生 MySQL 类型而非 ClickHouse 类型，
+从而使 BI 工具在使用 MySQL 连接器时可以正确检查数据库模式。
 
 例如：
 
@@ -61,10 +61,10 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </profiles>
 ```
 
-或者将其分配给一个不同的配置文件，而不是使用默认的那个。
+或者将其分配给一个非默认的其他配置文件。
 
 如果你有可用的 `mysql` 可执行文件，可以在命令行中测试连接。
-使用上面示例中的用户名（`mysql_user`）和密码（`LZOQYnqQN4L/T6L0`），命令行命令将是：
+使用上面示例中的用户名（`mysql_user`）和密码（`LZOQYnqQN4L/T6L0`），命令为：
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -84,7 +84,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-最后，配置 ClickHouse Server 监听所需的 IP 地址。例如，在 `config.xml` 中，取消注释以下配置以监听所有地址：
+最后，配置 ClickHouse Server 监听所需的 IP 地址。例如，在 `config.xml` 中，取消注释以下内容以监听所有地址：
 
 ```bash
 <listen_host>::</listen_host> 

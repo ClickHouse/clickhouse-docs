@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Jupyter Notebook と chDB によるデータ探索'
-title: 'Jupyter Notebook で chDB を使ってデータを探索する'
-description: 'このガイドでは、Jupyter Notebook で ClickHouse Cloud またはローカルファイルのデータを探索するために、chDB をセットアップして使用する方法を説明します'
+sidebar_label: 'Jupyter NotebookとchDBによるデータ探索'
+title: 'Jupyter NotebookでchDBを使ったデータ探索'
+description: 'このガイドでは、Jupyter NotebookでClickHouse Cloudまたはローカルファイルのデータを探索するためのchDBのセットアップと使用方法を説明します'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
 ---
@@ -19,26 +19,26 @@ import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 
-# Jupyter Notebook と chDB を使ったデータ探索
+# JupyterノートブックとchDBによるデータ探索
 
-このガイドでは、ClickHouse を基盤とする高速なインプロセス SQL OLAP エンジンである [chDB](/chdb) を利用して、Jupyter Notebook 上で ClickHouse Cloud のデータセットを探索する方法を説明します。
+このガイドでは、[chDB](/chdb)（ClickHouseを基盤とした高速インプロセスSQL OLAPエンジン）を使用して、JupyterノートブックでClickHouse Cloudのデータセットを探索する方法を学習します。
 
 **前提条件**:
 - 仮想環境
-- 稼働中の ClickHouse Cloud サービスと、その[接続情報](/cloud/guides/sql-console/gather-connection-details)
+- 稼働中のClickHouse Cloudサービスと[接続情報](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
-まだ ClickHouse Cloud アカウントをお持ちでない場合は、[サインアップ](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)してトライアルを開始し、300 ドル分の無料クレジットを取得できます。
+ClickHouse Cloudアカウントをお持ちでない場合は、[サインアップ](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)してトライアルに登録すると、$300の無料クレジットを取得して開始できます。
 :::
 
-**このガイドで学べること:**
-- chDB を使って Jupyter Notebook から ClickHouse Cloud に接続する方法
-- リモートデータセットにクエリを実行し、結果を Pandas DataFrame に変換する方法
-- 分析のためにクラウド上のデータとローカルの CSV ファイルを組み合わせる方法
-- matplotlib を使ってデータを可視化する方法
+**学習内容:**
+- chDBを使用してJupyterノートブックからClickHouse Cloudに接続する
+- リモートデータセットをクエリし、結果をPandas DataFrameに変換する
+- クラウドデータとローカルCSVファイルを組み合わせて分析する
+- matplotlibを使用してデータを可視化する
 
-ここでは、ClickHouse Cloud でスターターデータセットの 1 つとして利用可能な UK Property Price データセットを使用します。
-このデータセットには、1995 年から 2024 年までのイギリス国内で実際に売買された住宅の価格データが含まれています。
+ここでは、ClickHouse Cloudでスターターデータセットの1つとして提供されている英国不動産価格データセットを使用します。
+このデータセットには、1995年から2024年までの英国における住宅売却価格のデータが含まれています。
 
 
 
@@ -46,11 +46,11 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 既存のClickHouse Cloudサービスにこのデータセットを追加するには、アカウント情報を使用して[console.clickhouse.cloud](https://console.clickhouse.cloud/)にログインします。
 
-左側のメニューで`Data sources`をクリックし、次に`Predefined sample data`をクリックします:
+左側のメニューで`Data sources`をクリックします。次に`Predefined sample data`をクリックします:
 
 <Image size='md' img={image_1} alt='サンプルデータセットを追加' />
 
-UK property price paid data (4GB)カードの`Get started`を選択します:
+UK property price paid data (4GB)カードで`Get started`を選択します:
 
 <Image size='md' img={image_2} alt='UK不動産価格データセットを選択' />
 
@@ -58,9 +58,9 @@ UK property price paid data (4GB)カードの`Get started`を選択します:
 
 <Image size='md' img={image_3} alt='UK不動産価格データセットをインポート' />
 
-ClickHouseは自動的に`default`データベースに`pp_complete`テーブルを作成し、2892万行の価格データを投入します。
+ClickHouseは自動的に`default`データベースに`pp_complete`テーブルを作成し、2,892万行の価格データでテーブルを埋めます。
 
-認証情報の漏洩リスクを軽減するため、ローカルマシンの環境変数としてCloudのユーザー名とパスワードを追加することを推奨します。
+認証情報の漏洩リスクを減らすため、ローカルマシンの環境変数としてCloudのユーザー名とパスワードを追加することを推奨します。
 ターミナルから次のコマンドを実行して、ユーザー名とパスワードを環境変数として追加します:
 
 ```bash
@@ -73,7 +73,7 @@ export CLICKHOUSE_PASSWORD=your_actual_password
 永続的に設定するには、シェル設定ファイルに追加してください。
 :::
 
-次に仮想環境を有効化します。
+次に仮想環境をアクティベートします。
 仮想環境内から、次のコマンドでJupyter Notebookをインストールします:
 
 ```python
@@ -116,7 +116,7 @@ print(result)
 
 UK不動産価格データセットをセットアップし、JupyterノートブックでchDBを起動したので、データの探索を開始できます。
 
-首都ロンドンなど、英国の特定地域における価格の時系列変化を確認したいとします。
+首都ロンドンなど、英国の特定地域における価格の経時変化を確認することに関心があるとします。
 ClickHouseの[`remoteSecure`](/sql-reference/table-functions/remote)関数を使用すると、ClickHouse Cloudからデータを簡単に取得できます。
 chDBに対して、このデータをプロセス内でPandasデータフレームとして返すよう指示できます。これはデータを扱う上で便利で馴染みのある方法です。
 
@@ -160,8 +160,8 @@ df.head()
 
 ````
 
-上記のコードスニペットでは、`chdb.query(query, "DataFrame")` が指定されたクエリを実行し、結果をPandas DataFrameとしてターミナルに出力します。
-このクエリでは、`remoteSecure` 関数を使用してClickHouse Cloudに接続します。
+上記のコードスニペットでは、`chdb.query(query, "DataFrame")` が指定されたクエリを実行し、結果を Pandas DataFrame としてターミナルに出力します。
+このクエリでは、`remoteSecure` 関数を使用して ClickHouse Cloud に接続します。
 `remoteSecure` 関数は以下のパラメータを受け取ります:
 - 接続文字列
 - 使用するデータベース名とテーブル名
@@ -170,14 +170,14 @@ df.head()
 
 セキュリティのベストプラクティスとして、ユーザー名とパスワードのパラメータは関数内に直接指定するのではなく、環境変数を使用することを推奨します。ただし、必要に応じて直接指定することも可能です。
 
-`remoteSecure` 関数はリモートのClickHouse Cloudサービスに接続し、クエリを実行して結果を返します。
+`remoteSecure` 関数はリモートの ClickHouse Cloud サービスに接続し、クエリを実行して結果を返します。
 データのサイズによっては、処理に数秒かかる場合があります。
 この例では、年ごとの平均価格を返し、`town='LONDON'` でフィルタリングしています。
-結果は `df` という変数にDataFrameとして格納されます。
+結果は `df` という変数に DataFrame として格納されます。
 
 `df.head` は返されたデータの最初の数行のみを表示します:
 
-<Image size="md" img={image_6} alt="DataFrameのプレビュー"/>
+<Image size="md" img={image_6} alt="dataframe preview"/>
 
 新しいセルで以下のコマンドを実行して、列の型を確認します:
 
@@ -191,25 +191,25 @@ avg_price    float64
 dtype: object
 ```
 
-ClickHouse では `date` は `Date` 型ですが、生成されるデータフレームでは `uint16` 型になることに注意してください。
-chDB は、DataFrame を返す際に最適な型を自動的に推論します。
+ClickHouseでは`date`が`Date`型であるのに対し、結果のデータフレームでは`uint16`型になっていることに注意してください。
+chDBはDataFrameを返す際に最も適切な型を自動的に推論します。
 
-データがなじみのある形式で扱えるようになったので、ロンドンの不動産価格が時間とともにどのように変化してきたかを見ていきましょう。
+データが使い慣れた形式で利用できるようになったので、ロンドンの不動産価格が時間とともにどのように変化したかを見ていきましょう。
 
-新しいセルで、次のコマンドを実行して、matplotlib を使ってロンドンの時間と価格のシンプルなチャートを作成します。
+新しいセルで、次のコマンドを実行してmatplotlibを使用し、ロンドンの時間と価格の関係を示す簡単なチャートを作成します:
 
 ```python
 plt.figure(figsize=(12, 6))
 plt.plot(df['year'], df['avg_price'], marker='o')
 plt.xlabel('年')
-plt.ylabel('価格（£）')
-plt.title('ロンドン不動産価格の経年推移')
+plt.ylabel('価格 (£)')
+plt.title('ロンドン不動産価格の経年変化')
 ```
 
 
-# 見づらくならないように2年おきに表示する
+# 混雑を避けるため2年ごとに表示
 
-years&#95;to&#95;show = df[&#39;year&#39;][::2]  # 2年おき
+years&#95;to&#95;show = df[&#39;year&#39;][::2]  # 2年ごと
 plt.xticks(years&#95;to&#95;show, rotation=45)
 
 plt.grid(True, alpha=0.3)
@@ -220,10 +220,10 @@ plt.show()
 
 <Image size="md" img={image_7} alt="dataframe preview"/>
 
-予想通り、ロンドンの不動産価格は時間の経過とともに大幅に上昇しています。
+当然のことながら、ロンドンの不動産価格は時間の経過とともに大幅に上昇しています。
 
-同僚のデータサイエンティストから、住宅関連の追加変数を含む.csvファイルが送られてきました。ロンドンで販売された住宅数が時間の経過とともにどのように変化したかを知りたいとのことです。
-これらのデータを住宅価格と照らし合わせてプロットし、何らかの相関関係を発見できるか見てみましょう。
+同僚のデータサイエンティストから、住宅関連の追加変数を含む.csvファイルが送られてきました。ロンドンで販売された住宅数が時間の経過とともにどのように変化したかを調べたいとのことです。
+これらのいくつかを住宅価格に対してプロットし、何らかの相関関係を発見できるか見てみましょう。
 
 `file`テーブルエンジンを使用すると、ローカルマシン上のファイルを直接読み取ることができます。
 新しいセルで、次のコマンドを実行してローカルの.csvファイルから新しいDataFrameを作成します。
@@ -244,8 +244,8 @@ df_2.head()
 ````
 
 <details>
-  <summary>1回のステップで複数のソースから読み取る</summary>
-  1回のステップで複数のソースから読み取ることも可能です。例えば、以下のクエリのように `JOIN` を使用できます:
+  <summary>1つのステップで複数のソースから読み取る</summary>
+  1つのステップで複数のソースから読み取ることも可能です。`JOIN`を使用して以下のクエリで実行できます:
 
   ```python
   query = f"""
@@ -276,8 +276,8 @@ df_2.head()
 
 <Image size="md" img={image_8} alt="dataframe preview" />
 
-2020年以降のデータは欠落していますが、1995年から2019年までの年については、2つのデータセットを相互に比較してプロットできます。
-新しいセルで次のコマンドを実行します:
+2020年以降のデータは欠落していますが、1995年から2019年までの期間について2つのデータセットを比較してプロットできます。
+新しいセルで以下のコマンドを実行してください:
 
 
 ```python
@@ -286,7 +286,7 @@ fig, ax1 = plt.subplots(figsize=(14, 8))
 ```
 
 
-# 左の y 軸に販売された住宅数をプロットする
+# 左側のy軸に販売住宅数をプロット
 color = 'tab:blue'
 ax1.set_xlabel('Year')
 ax1.set_ylabel('Houses Sold', color=color)
@@ -296,7 +296,7 @@ ax1.grid(True, alpha=0.3)
 
 
 
-# 価格データ用の第2軸（y軸）を作成する
+# 価格データ用の第2のy軸を作成
 ax2 = ax1.twinx()
 color = 'tab:red'
 ax2.set_ylabel('平均価格 (£)', color=color)
@@ -315,14 +315,14 @@ ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'£{x:,.0f}'))
 
 
 # タイトルを設定し、2年ごとに表示
-plt.title('ロンドン住宅市場：販売件数と価格の推移', fontsize=14, pad=20)
+plt.title('ロンドン住宅市場：販売量と価格の時系列推移', fontsize=14, pad=20)
 
 
 
-# 両データセットで2019年までの年のみを使用
+# 両方のデータセットで2019年までの年のみを使用
 
 all_years = sorted(list(set(df_2[df_2['year'] <= 2019]['year']).union(set(df[df['year'] <= 2019]['year']))))
-years_to_show = all_years[::2] # 2年おき
+years_to_show = all_years[::2] # 2年ごと
 ax1.set_xticks(years_to_show)
 ax1.set_xticklabels(years_to_show, rotation=45)
 
@@ -340,17 +340,17 @@ plt.show()
 <Image size="md" img={image_9} alt="リモートデータセットとローカルデータセットのプロット"/>
 
 プロットされたデータから、販売件数は1995年に約16万件から始まり、急速に増加して1999年には約54万件でピークに達したことがわかります。
-その後、2000年代半ばにかけて販売件数は急激に減少し、2007-2008年の金融危機時には大幅に落ち込み、約14万件まで低下しました。
+その後、2000年代半ばにかけて販売件数は急激に減少し、2007年から2008年の金融危機の際には大幅に落ち込み、約14万件まで低下しました。
 一方、価格は1995年の約15万ポンドから2005年の約30万ポンドまで、着実で一貫した成長を示しました。
 2012年以降、成長は大幅に加速し、約40万ポンドから2019年には100万ポンドを超えるまで急激に上昇しました。
-販売件数とは異なり、価格は2008年の金融危機の影響をほとんど受けず、上昇傾向を維持しました。驚きです!
+販売件数とは異なり、価格は2008年の危機による影響をほとんど受けず、上昇傾向を維持しました。驚きです!
 ```
 
 
 ## まとめ {#summary}
 
-本ガイドでは、chDBがClickHouse Cloudとローカルデータソースを接続することで、Jupyterノートブックでのシームレスなデータ探索を実現する方法を紹介しました。
-英国不動産価格データセットを使用し、`remoteSecure()`関数によるリモートClickHouse Cloudデータのクエリ、`file()`テーブルエンジンによるローカルCSVファイルの読み込み、そして結果を直接Pandas DataFrameに変換して分析・可視化を行う方法を示しました。
-chDBを使用することで、データサイエンティストはClickHouseの強力なSQL機能とPandasやmatplotlibなどの使い慣れたPythonツールを組み合わせ、複数のデータソースを統合した包括的な分析を簡単に実行できます。
+本ガイドでは、chDBがClickHouse Cloudとローカルデータソースを接続することで、Jupyterノートブックでのシームレスなデータ探索を実現する方法を解説しました。
+UK Property Priceデータセットを使用して、`remoteSecure()`関数によるリモートClickHouse Cloudデータのクエリ、`file()`テーブルエンジンによるローカルCSVファイルの読み込み、そして結果を直接Pandas DataFrameに変換して分析・可視化を行う方法を示しました。
+chDBを使用することで、データサイエンティストはClickHouseの強力なSQL機能とPandasやmatplotlibなどの使い慣れたPythonツールを組み合わせ、複数のデータソースを統合した包括的な分析を容易に実現できます。
 
-ロンドンを拠点とする多くのデータサイエンティストは、近い将来に自分の家やアパートを購入することは難しいかもしれませんが、少なくとも自分たちを市場から締め出した価格動向を分析することはできます!
+ロンドンを拠点とする多くのデータサイエンティストは、近い将来に自分の家やアパートを購入することは難しいかもしれませんが、少なくとも自分たちを市場から締め出した不動産市場を分析することはできるのです!

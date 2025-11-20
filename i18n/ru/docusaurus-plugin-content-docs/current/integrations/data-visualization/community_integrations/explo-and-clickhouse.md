@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo — это простой в использовании, открытый UI-инструмент для анализа ваших данных.'
+description: 'Explo — это простой в использовании, открытый инструмент для работы с пользовательским интерфейсом, который помогает задавать вопросы о ваших данных.'
 title: 'Подключение Explo к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -36,7 +36,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Аналитика для ваших клиентов на любой платформе. Создано для эффектной визуализации. Разработано ради простоты.
+Клиентская аналитика для любой платформы. Создана для наглядной визуализации. Разработана с упором на простоту.
 
 
 
@@ -68,7 +68,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 3. Нажмите **Connect Data Source** в правом верхнем углу.
 
-<Image img={explo_02} size='sm' alt='Подключение источника данных' border />
+<Image img={explo_02} size='sm' alt='Подключить источник данных' border />
 
 4. Заполните информацию на странице **Getting Started**.
 
@@ -105,40 +105,40 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <Image img={explo_09} size='md' alt='Explo Dashboard' border />
 
 
-## 4. Выполните SQL-запрос {#4-run-a-sql-query}
+## 4. Выполнение SQL-запроса {#4-run-a-sql-query}
 
-1. Найдите имя таблицы в правой боковой панели под названием вашей схемы. Затем введите следующую команду в редактор набора данных:
+1. Получите имя таблицы на правой боковой панели под названием схемы. Затем введите следующую команду в редактор набора данных:
    `SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100`
 
-<Image img={explo_10} size='md' alt='Панель Explo' border />
+<Image img={explo_10} size='md' alt='Панель управления Explo' border />
 
-2. Теперь нажмите кнопку Run и перейдите на вкладку предварительного просмотра, чтобы увидеть свои данные.
+2. Теперь нажмите «Выполнить» и перейдите на вкладку предварительного просмотра, чтобы увидеть данные.
 
-<Image img={explo_11} size='md' alt='Панель Explo' border />
+<Image img={explo_11} size='md' alt='Панель управления Explo' border />
 
 
-## 5. Создание графика {#5-build-a-chart}
+## 5. Создание диаграммы {#5-build-a-chart}
 
-1. С левой панели перетащите значок столбчатой диаграммы на рабочую область.
+1. Перетащите значок столбчатой диаграммы из левой панели на экран.
 
-<Image img={explo_16} size='sm' alt='Панель Explo' border />
+<Image img={explo_16} size='sm' alt='Панель управления Explo' border />
 
-2. Выберите набор данных. Теперь вы должны увидеть экран, похожий на этот:
+2. Выберите набор данных. Вы должны увидеть следующий экран:
 
-<Image img={explo_12} size='sm' alt='Панель Explo' border />
+<Image img={explo_12} size='sm' alt='Панель управления Explo' border />
 
-3. Укажите **county** на оси X и **Price** в разделе оси Y, как показано ниже:
+3. Укажите **county** для оси X и **Price** для оси Y следующим образом:
 
-<Image img={explo_13} size='sm' alt='Панель Explo' border />
+<Image img={explo_13} size='sm' alt='Панель управления Explo' border />
 
-4. Теперь измените тип агрегации на **AVG**.
+4. Теперь измените агрегацию на **AVG**.
 
-<Image img={explo_14} size='sm' alt='Панель Explo' border />
+<Image img={explo_14} size='sm' alt='Панель управления Explo' border />
 
-5. Теперь у нас есть средняя стоимость домов с разбивкой по округам!
+5. Теперь у нас есть средняя цена домов в разбивке по округам!
 
-<Image img={explo_15} size='md' alt='Панель Explo' />
+<Image img={explo_15} size='md' alt='Панель управления Explo' />
 
 
 ## Дополнительная информация {#learn-more}

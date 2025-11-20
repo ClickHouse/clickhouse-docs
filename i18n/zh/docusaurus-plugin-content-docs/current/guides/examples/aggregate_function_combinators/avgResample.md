@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
 title: 'avgResample'
-description: '将 Resample 组合子与 avg 一起使用的示例'
+description: '使用 Resample 组合子与 avg 的用法示例'
 keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
 sidebar_label: 'avgResample'
 doc_type: 'reference'
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ### 基础示例 {#basic-example}
 
-让我们看一个示例。我们将创建一个包含员工 `name`(姓名)、`age`(年龄)和 `wage`(工资)的表,并向其中插入一些数据:
+让我们看一个示例。我们将创建一个包含员工的 `name`（姓名）、`age`（年龄）和 `wage`（工资）的表,并向其中插入一些数据:
 
 ```sql
 CREATE TABLE employee_data
@@ -42,8 +42,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们获取年龄位于区间 `[30,60)` 和 `[60,75)` 的人员的平均工资(`[` 表示不包含边界,`)` 表示包含边界)。由于我们使用整数表示年龄,因此实际得到的年龄区间为 `[30, 59]` 和 `[60,74]`。
-为此,我们将 `Resample` 组合器应用于 `avg` 聚合函数。
+让我们获取年龄位于区间 `[30,60)` 和 `[60,75)` 的人员的平均工资（`[` 表示包含,`)` 表示不包含）。由于我们使用整数表示年龄,因此得到的年龄区间为 `[30, 59]` 和 `[60,74]`。为此,我们将 `Resample` 组合器应用于 `avg` 聚合函数。
 
 ```sql
 WITH avg_wage AS

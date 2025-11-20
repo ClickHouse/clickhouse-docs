@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: '集成 LibreChat'
-title: '使用 LibreChat 和 ClickHouse Cloud 搭建 ClickHouse MCP 服务器'
+title: '使用 LibreChat 和 ClickHouse Cloud 配置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 Docker 将 LibreChat 与 ClickHouse MCP 服务器进行集成。'
+description: '本指南说明如何使用 Docker 配置集成了 ClickHouse MCP 服务器的 LibreChat。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -19,7 +19,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 # 在 LibreChat 中使用 ClickHouse MCP 服务器
 
 > 本指南说明如何使用 Docker 设置 LibreChat 与 ClickHouse MCP 服务器，
-> 并将其连接到 ClickHouse 示例数据集。
+> 并连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
 
@@ -68,10 +68,10 @@ ANTHROPIC_API_KEY=user_provided
 # ANTHROPIC_REVERSE_PROXY=
 ```
 
-将 `user_provided` 替换为你要使用的 LLM 提供商的 API 密钥。
+将 `user_provided` 替换为你想要使用的 LLM 提供商的 API 密钥。
 
 :::note 使用本地 LLM
-如果你没有 API 密钥，可以使用像 Ollama 这样的本地 LLM。你会在后面的步骤 [&quot;Install Ollama&quot;](#add-local-llm-using-ollama) 中看到具体做法。现在先不要修改 .env 文件，继续进行接下来的步骤。
+如果你没有 API 密钥，可以使用像 Ollama 这样的本地 LLM。你会在后续的步骤 [&quot;Install Ollama&quot;](#add-local-llm-using-ollama) 中看到如何操作。现在先不要修改 .env 文件，继续进行下一步。
 :::
 
 
@@ -125,8 +125,8 @@ services:
     badgeText=''
     description="
 如果您还没有 Cloud 账户,立即开始使用 ClickHouse Cloud,
-即可获得 $300 积分。30 天免费试用结束后,您可以继续使用
-按量付费计划,或联系我们了解更多批量折扣信息。
+即可获得 $300 的额度。在 30 天免费试用结束后,您可以继续使用
+按需付费计划,或联系我们了解更多基于用量的折扣信息。
 访问我们的定价页面了解详情。
 "
     icon='cloud'
@@ -157,18 +157,18 @@ mcpServers:
 socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
 ```
 
-为简化操作,我们暂时移除身份验证需求:
+为简化操作,我们暂时移除身份验证要求:
 
 ```text title="librechat.yaml"
 socialLogins: []
 ```
 
 
-## 使用 Ollama 添加本地 LLM(可选) {#add-local-llm-using-ollama}
+## 使用 Ollama 添加本地 LLM（可选） {#add-local-llm-using-ollama}
 
 ### 安装 Ollama {#install-ollama}
 
-访问 [Ollama 网站](https://ollama.com/download)并为您的系统安装 Ollama。
+前往 [Ollama 网站](https://ollama.com/download)下载并安装适合您系统的 Ollama。
 
 安装完成后,可以通过以下方式运行模型:
 
@@ -176,9 +176,9 @@ socialLogins: []
 ollama run qwen3:32b
 ```
 
-如果本地不存在该模型,此命令将自动拉取模型到本地机器。
+如果本地尚未下载该模型,此命令会自动拉取模型到本地。
 
-有关模型列表,请参阅 [Ollama 模型库](https://ollama.com/library)
+模型列表请参阅 [Ollama 模型库](https://ollama.com/library)
 
 ### 在 librechat.yaml 中配置 Ollama {#configure-ollama-in-librechat-yaml}
 
@@ -206,7 +206,7 @@ custom:
 
 ## 启动所有服务 {#start-all-services}
 
-在 LibreChat 项目文件夹的根目录下,运行以下命令启动服务:
+从 LibreChat 项目文件夹的根目录运行以下命令来启动服务:
 
 ```bash
 docker compose up
@@ -220,16 +220,16 @@ docker compose up
 所有服务启动并运行后,打开浏览器并访问 `http://localhost:3080/`
 
 如果您还没有 LibreChat 账户,请创建一个免费账户并登录。此时您应该能看到
-LibreChat 界面已连接到 ClickHouse MCP 服务器,以及可选的本地 LLM。
+已连接到 ClickHouse MCP 服务器的 LibreChat 界面,以及可选的本地 LLM。
 
 在聊天界面中,选择 `clickhouse-playground` 作为您的 MCP 服务器:
 
 <Image img={LibreInterface} alt='选择您的 MCP 服务器' size='md' />
 
-现在您可以通过提示词让 LLM 探索 ClickHouse 示例数据集。试试看:
+现在您可以提示 LLM 探索 ClickHouse 示例数据集。不妨试试:
 
-```text title="提示词"
-您可以访问哪些数据集?
+```text title="提示"
+What datasets do you have access to?
 ```
 
 </VerticalStepper>

@@ -2,7 +2,7 @@
 slug: /integrations/postgresql/connecting-to-postgresql
 title: '连接 PostgreSQL'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: '介绍将 PostgreSQL 与 ClickHouse 进行连接的多种方式'
+description: '介绍将 PostgreSQL 与 ClickHouse 进行连接的多种方式的页面'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -16,11 +16,11 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 本页介绍以下将 PostgreSQL 与 ClickHouse 集成的方式：
 
 - 使用 `PostgreSQL` 表引擎，从 PostgreSQL 表中读取数据
-- 使用实验性的 `MaterializedPostgreSQL` 数据库引擎，在 PostgreSQL 数据库与 ClickHouse 数据库之间进行同步
+- 使用实验性的 `MaterializedPostgreSQL` 数据库引擎，在 PostgreSQL 和 ClickHouse 之间同步数据库
 
 :::tip
 我们推荐使用 [ClickPipes](/integrations/clickpipes/postgres)，这是一项由 PeerDB 提供支持的 ClickHouse Cloud 托管集成服务。
-另外，也可以使用 [PeerDB](https://github.com/PeerDB-io/peerdb)，这是一款专门为将 PostgreSQL 数据库的变更数据复制到自托管 ClickHouse 和 ClickHouse Cloud 而设计的开源 CDC 工具。
+或者，可以使用 [PeerDB](https://github.com/PeerDB-io/peerdb)，这是专为将 PostgreSQL 数据库的变更数据复制到自托管 ClickHouse 和 ClickHouse Cloud 而设计的开源 CDC 工具。
 :::
 
 
@@ -32,13 +32,13 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 ### 1. 设置 PostgreSQL {#1-setting-up-postgresql}
 
-1.  在 `postgresql.conf` 中添加以下配置项,使 PostgreSQL 能够在网络接口上监听:
+1.  在 `postgresql.conf` 中添加以下条目,使 PostgreSQL 监听网络接口:
 
 ```text
 listen_addresses = '*'
 ```
 
-2. 创建一个用于从 ClickHouse 连接的用户。出于演示目的,本示例授予完整的超级用户权限。
+2. 创建一个用户以便从 ClickHouse 连接。出于演示目的,本示例授予完整的超级用户权限。
 
 ```sql
 CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
@@ -59,7 +59,7 @@ CREATE TABLE table1 (
 );
 ```
 
-5. 添加几行测试数据:
+5. 添加几行数据用于测试:
 
 ```sql
 INSERT INTO table1
@@ -69,7 +69,7 @@ VALUES
   (2, 'def');
 ```
 
-6. 要配置 PostgreSQL 允许新用户连接到新数据库进行复制,请在 `pg_hba.conf` 文件中添加以下配置项。使用您的 PostgreSQL 服务器的子网或 IP 地址更新地址行:
+6. 要配置 PostgreSQL 以允许新用户连接到新数据库进行复制,请在 `pg_hba.conf` 文件中添加以下条目。使用您的 PostgreSQL 服务器的子网或 IP 地址更新地址行:
 
 ```text
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -120,12 +120,12 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 
 所需的最少参数为:
 
-| 参数      | 描述                            | 示例                          |
+| 参数 | 描述                     | 示例                       |
 | --------- | ------------------------------- | ----------------------------- |
-| host:port | 主机名或 IP 和端口              | postgres-host.domain.com:5432 |
-| database  | PostgreSQL 数据库名称           | db_in_psg                     |
-| user      | 连接到 postgres 的用户名        | clickhouse_user               |
-| password  | 连接到 postgres 的密码          | ClickHouse_123                |
+| host:port | 主机名或 IP 和端口         | postgres-host.domain.com:5432 |
+| database  | PostgreSQL 数据库名称        | db_in_psg                     |
+| user      | 连接到 PostgreSQL 的用户名 | clickhouse_user               |
+| password  | 连接到 PostgreSQL 的密码 | ClickHouse_123                |
 
 :::note
 查看 [PostgreSQL 表引擎](/engines/table-engines/integrations/postgresql) 文档页面以获取完整的参数列表。
@@ -133,13 +133,13 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 
 ### 3. 测试集成 {#3-test-the-integration}
 
-1. 在 ClickHouse 中查看初始数据行:
+1. 在 ClickHouse 中查看初始行:
 
 ```sql
 SELECT * FROM db_in_ch.table1
 ```
 
-ClickHouse 表应该会自动填充 PostgreSQL 表中已存在的两行数据:
+ClickHouse 表应该自动填充 PostgreSQL 表中已存在的两行数据:
 
 ```response
 Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
@@ -160,7 +160,7 @@ VALUES
   (4, 'jkl');
 ```
 
-4. 这两行新数据应该会出现在您的 ClickHouse 表中:
+4. 这两行新数据应该出现在您的 ClickHouse 表中:
 
 ```sql
 SELECT * FROM db_in_ch.table1
@@ -180,7 +180,7 @@ Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
 └────┴─────────┘
 ```
 
-5. 来看看当你向 ClickHouse 表中添加行时会发生什么：
+5. 接下来看看向 ClickHouse 表中添加行时会发生什么：
 
 ```sql
 INSERT INTO db_in_ch.table1
@@ -190,7 +190,7 @@ VALUES
   (6, 'pqr');
 ```
 
-6. 在 ClickHouse 中新增的行应出现在 PostgreSQL 的表中：
+6. 在 ClickHouse 中新增的行应当出现在 PostgreSQL 的表中：
 
 ```sql
 db_in_psg=# SELECT * FROM table1;
@@ -205,8 +205,8 @@ id | column1
 (6 rows)
 ```
 
-此示例演示了使用 `PostrgeSQL` 表引擎在 PostgreSQL 和 ClickHouse 之间进行基本集成。
-请查看 [PostgreSQL 表引擎文档页面](/engines/table-engines/integrations/postgresql)，了解更多功能，例如指定 schema、仅返回部分列以及连接到多个副本。另请参阅博客文章 [ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)。
+本示例演示了如何使用 `PostrgeSQL` 表引擎在 PostgreSQL 与 ClickHouse 之间进行基础集成。
+请查阅 [PostgreSQL 表引擎文档页面](/engines/table-engines/integrations/postgresql)，了解更多功能，例如指定 schema、仅返回部分列以及连接到多个副本。另请参阅博客：[ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)。
 
 
 ## 使用 MaterializedPostgreSQL 数据库引擎 {#using-the-materializedpostgresql-database-engine}
@@ -215,9 +215,9 @@ id | column1
 <ExperimentalBadge />
 
 PostgreSQL 数据库引擎利用 PostgreSQL 的复制功能来创建数据库副本,可以包含全部或部分架构和表。
-本文将演示使用单个数据库、单个架构和单个表进行集成的基本方法。
+本文将演示使用单个数据库、单个架构和单张表进行集成的基本方法。
 
-**_以下步骤中将使用 PostgreSQL CLI (psql) 和 ClickHouse CLI (clickhouse-client)。PostgreSQL 服务器安装在 Linux 上。如果 PostgreSQL 数据库是全新的测试安装,以下为最低配置设置_**
+**_以下步骤中将使用 PostgreSQL CLI (psql) 和 ClickHouse CLI (clickhouse-client)。PostgreSQL 服务器安装在 Linux 上。如果 PostgreSQL 数据库是全新的测试安装,以下为最低配置要求_**
 
 ### 1. 在 PostgreSQL 中 {#1-in-postgresql}
 
@@ -239,7 +239,7 @@ _\*ClickHouse 至少需要 `logical` WAL 级别和至少 `2` 个复制槽_
 CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
 ```
 
-_\*出于演示目的,此处授予了完整的超级用户权限。_
+_\*为演示目的,此处授予了完整的超级用户权限。_
 
 3. 创建新数据库:
 
@@ -262,7 +262,7 @@ CREATE TABLE table1 (
 );
 ```
 
-6. 插入初始数据行:
+6. 插入初始数据:
 
 ```sql
 INSERT INTO table1
@@ -272,7 +272,7 @@ VALUES
 (2, 'def');
 ```
 
-7. 配置 PostgreSQL 允许新用户连接到新数据库以进行复制。以下是需要添加到 `pg_hba.conf` 文件中的最低配置项:
+7. 配置 PostgreSQL 允许新用户连接到新数据库以进行复制。以下是需要添加到 `pg_hba.conf` 文件的最低配置项:
 
 
 ```text
@@ -280,7 +280,7 @@ VALUES
 host    db1             clickhouse_user 192.168.1.0/24          password
 ```
 
-_\*出于演示目的,此处使用明文密码认证方式。请根据 PostgreSQL 文档,使用子网或服务器地址更新地址行_
+_\*出于演示目的,此处使用明文密码身份验证方法。请根据 PostgreSQL 文档使用子网或服务器地址更新地址行_
 
 8. 重新加载 `pg_hba.conf` 配置,使用类似以下命令(根据您的版本进行调整):
 
@@ -322,8 +322,8 @@ SETTINGS materialized_postgresql_tables_list = 'table1';
 | --------- | ---------------------------------- | ---------------------------------------------- |
 | host:port | 主机名或 IP 地址和端口             | postgres-host.domain.com:5432                  |
 | database  | PostgreSQL 数据库名称              | db1                                            |
-| user      | 连接 postgres 的用户名             | clickhouse_user                                |
-| password  | 连接 postgres 的密码               | ClickHouse_123                                 |
+| user      | 连接 PostgreSQL 的用户名           | clickhouse_user                                |
+| password  | 连接 PostgreSQL 的密码             | ClickHouse_123                                 |
 | settings  | 引擎的附加设置                     | materialized_postgresql_tables_list = 'table1' |
 
 :::info
@@ -350,7 +350,7 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ### 3. 测试基本复制 {#3-test-basic-replication}
 
-1. 在 PostgreSQL 中,添加新行:
+1. 在 PostgreSQL 中添加新行:
 
 ```sql
 INSERT INTO table1
@@ -360,7 +360,7 @@ VALUES
 (4, 'jkl');
 ```
 
-2. 在 ClickHouse 中,验证新行是否可见:
+2. 在 ClickHouse 中验证新行是否可见:
 
 ```sql
 ch_env_2 :) select * from db1_postgres.table1;

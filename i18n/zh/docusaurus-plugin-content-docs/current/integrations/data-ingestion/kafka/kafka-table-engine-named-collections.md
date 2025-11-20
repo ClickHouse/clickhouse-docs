@@ -1,5 +1,5 @@
 ---
-title: '使用命名集合集成 ClickHouse 与 Kafka'
+title: '使用命名集合将 ClickHouse 与 Kafka 集成'
 description: '如何使用命名集合将 ClickHouse 连接到 Kafka'
 keywords: ['named collection', 'how to', 'kafka']
 slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
@@ -14,7 +14,7 @@ doc_type: 'guide'
 
 ## 简介 {#introduction}
 
-本指南将介绍如何使用命名集合将 ClickHouse 连接到 Kafka。使用配置文件管理命名集合具有以下优势:
+在本指南中,我们将介绍如何使用命名集合将 ClickHouse 连接到 Kafka。使用配置文件管理命名集合具有以下优势:
 
 - 集中化管理配置设置,更加便捷。
 - 无需修改 SQL 表定义即可更改设置。
@@ -25,11 +25,11 @@ doc_type: 'guide'
 
 ## 前提条件 {#assumptions}
 
-本文档假设您已具备:
+本文档假设您已具备以下条件:
 
 1. 一个正常运行的 Kafka 集群。
 2. 一个已配置并正在运行的 ClickHouse 集群。
-3. SQL 基础知识,并熟悉 ClickHouse 和 Kafka 的配置。
+3. SQL 基础知识以及对 ClickHouse 和 Kafka 配置的了解。
 
 
 ## 前提条件 {#prerequisites}
@@ -103,7 +103,7 @@ doc_type: 'guide'
 
 1. 根据您的 Kafka 集群设置调整 Kafka 地址和相关配置。
 2. `<kafka>` 标签之前的部分包含 ClickHouse Kafka 引擎参数。完整的参数列表请参阅 [Kafka 引擎参数](/engines/table-engines/integrations/kafka)。
-3. `<kafka>` 标签内的部分包含 Kafka 扩展配置选项。更多配置选项请参阅 [librdkafka 配置文档](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)。
+3. `<kafka>` 标签内的部分包含 Kafka 扩展配置选项。更多选项请参阅 [librdkafka 配置](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)。
 4. 本示例使用 `SASL_SSL` 安全协议和 `PLAIN` 认证机制。请根据您的 Kafka 集群配置调整这些设置。
 
 
@@ -225,4 +225,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-至此,使用命名集合将 ClickHouse 与 Kafka 集成的设置已完成。通过在 ClickHouse 的 `config.xml` 文件中集中管理 Kafka 配置,您可以更轻松地管理和调整设置,确保集成流程更加顺畅高效。
+至此,使用命名集合将 ClickHouse 与 Kafka 集成的设置已完成。通过在 ClickHouse 的 `config.xml` 文件中集中管理 Kafka 配置,您可以更轻松地管理和调整设置,从而确保实现流畅高效的集成。

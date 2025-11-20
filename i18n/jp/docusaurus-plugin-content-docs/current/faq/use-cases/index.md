@@ -10,9 +10,9 @@ doc_type: 'landing-page'
 
 # ClickHouse のユースケースに関する質問
 
-- [ClickHouse を時系列データベースとして利用できますか？](/knowledgebase/time-series)
-- [ClickHouse をキー・バリュー型ストレージとして利用できますか？](/knowledgebase/key-value)
+- [ClickHouse をタイムシリーズデータベースとして利用できますか？](/knowledgebase/time-series)
+- [ClickHouse をキーバリューストアとして利用できますか？](/knowledgebase/key-value)
 
-:::info お探しの内容が見つかりませんか？
-[Knowledge Base](/knowledgebase/) を確認し、本ドキュメント内にある多くの有用な記事も参照してください。
+:::info お探しの内容が見つからない場合
+[ナレッジベース](/knowledgebase/) をご覧になり、このドキュメント内にある多くの有用な記事も参照してください。
 :::

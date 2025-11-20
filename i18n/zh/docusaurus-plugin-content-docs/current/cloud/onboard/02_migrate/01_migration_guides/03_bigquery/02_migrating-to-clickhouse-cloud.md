@@ -26,16 +26,16 @@ import Image from '@theme/IdealImage';
 
 简而言之:在现代数据分析场景中,ClickHouse 比 BigQuery 更快、更经济、功能更强大:
 
-<Image img={bigquery_2} size='md' alt='ClickHouse 与 BigQuery 对比' />
+<Image img={bigquery_2} size='md' alt='ClickHouse vs BigQuery' />
 
 
 ## 从 BigQuery 加载数据到 ClickHouse Cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
 
 ### 数据集 {#dataset}
 
-作为展示从 BigQuery 迁移到 ClickHouse Cloud 的典型示例,我们使用 Stack Overflow 数据集,相关文档见[此处](/getting-started/example-datasets/stackoverflow)。该数据集包含 Stack Overflow 从 2008 年到 2024 年 4 月期间的所有 `post`、`vote`、`user`、`comment` 和 `badge` 数据。该数据在 BigQuery 中的架构如下所示:
+作为展示从 BigQuery 迁移到 ClickHouse Cloud 的典型示例,我们使用[此处](/getting-started/example-datasets/stackoverflow)记录的 Stack Overflow 数据集。该数据集包含 Stack Overflow 从 2008 年到 2024 年 4 月期间的所有 `post`、`vote`、`user`、`comment` 和 `badge` 数据。该数据的 BigQuery 模式如下所示:
 
-<Image img={bigquery_3} size='lg' alt='架构' />
+<Image img={bigquery_3} size='lg' alt='模式' />
 
 对于希望将此数据集导入 BigQuery 实例以测试迁移步骤的用户,我们在 GCS 存储桶中提供了这些表的 Parquet 格式数据,用于在 BigQuery 中创建和加载表的 DDL 命令可在[此处](https://pastila.nl/?003fd86b/2b93b1a2302cfee5ef79fd374e73f431#hVPC52YDsUfXg2eTLrBdbA==)获取。
 
@@ -43,8 +43,8 @@ import Image from '@theme/IdealImage';
 
 在 BigQuery 和 ClickHouse Cloud 之间迁移数据主要分为两种工作负载类型:
 
-- **初始批量加载与定期更新** - 需要迁移初始数据集,并按设定的时间间隔(例如每天)进行定期更新。更新通过重新发送已更改的行来处理 - 通过可用于比较的列(例如日期列)来识别变更。删除操作通过完全定期重新加载数据集来处理。
-- **实时复制或 CDC** - 需要迁移初始数据集。对该数据集的更改必须以近实时的方式反映到 ClickHouse 中,仅允许几秒钟的延迟。这实际上是一个[变更数据捕获 (CDC) 流程](https://en.wikipedia.org/wiki/Change_data_capture),其中 BigQuery 中的表必须与 ClickHouse 保持同步,即 BigQuery 表中的插入、更新和删除操作必须应用到 ClickHouse 中的对应表。
+- **初始批量加载与定期更新** - 需要迁移初始数据集,并按设定间隔(例如每日)进行定期更新。更新操作通过重新发送已更改的行来处理 - 通过可用于比较的列(例如日期)来识别变更。删除操作通过完全定期重新加载数据集来处理。
+- **实时复制或 CDC** - 需要迁移初始数据集。对该数据集的更改必须以近实时方式反映在 ClickHouse 中,仅可接受几秒钟的延迟。这实际上是一个[变更数据捕获 (CDC) 流程](https://en.wikipedia.org/wiki/Change_data_capture),其中 BigQuery 中的表必须与 ClickHouse 同步,即 BigQuery 表中的插入、更新和删除操作必须应用到 ClickHouse 中的对应表。
 
 #### 通过 Google Cloud Storage (GCS) 批量加载 {#bulk-loading-via-google-cloud-storage-gcs}
 
@@ -69,12 +69,12 @@ BigQuery 支持将数据导出到 Google 的对象存储 (GCS)。对于我们的
 
 ### 通过定时查询实现实时复制或 CDC {#real-time-replication-or-cdc-via-scheduled-queries}
 
-变更数据捕获(CDC)是使两个数据库之间的表保持同步的过程。如果需要近实时地处理更新和删除操作,实现起来会复杂得多。一种方法是使用 BigQuery 的[定时查询功能](https://cloud.google.com/bigquery/docs/scheduling-queries)定期导出数据。只要您能够接受数据写入 ClickHouse 时的一定延迟,这种方法就很容易实现和维护。[此博客文章](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)中给出了一个示例。
+变更数据捕获(CDC)是使两个数据库之间的表保持同步的过程。如果要近实时地处理更新和删除操作,复杂度会显著增加。一种方法是使用 BigQuery 的[定时查询功能](https://cloud.google.com/bigquery/docs/scheduling-queries)来安排周期性导出。只要您能够接受数据插入 ClickHouse 时的一定延迟,这种方法就易于实现和维护。[此博客文章](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)中给出了一个示例。
 
 
 ## 设计表结构 {#designing-schemas}
 
-Stack Overflow 数据集包含多个相关表。我们建议首先专注于迁移主表。这不一定是最大的表,而是您预期会收到最多分析查询的表。这将帮助您熟悉 ClickHouse 的主要概念。随着添加更多表,此表可能需要重新建模,以充分利用 ClickHouse 功能并获得最佳性能。我们在[数据建模文档](/data-modeling/schema-design#next-data-modeling-techniques)中探讨了这个建模过程。
+Stack Overflow 数据集包含多个相关表。我们建议首先专注于迁移主表。这不一定是最大的表,而是您预期会收到最多分析查询的那张表。这将帮助您熟悉 ClickHouse 的主要概念。随着添加更多表以充分利用 ClickHouse 功能并获得最佳性能,此表可能需要重新建模。我们在[数据建模文档](/data-modeling/schema-design#next-data-modeling-techniques)中探讨了这个建模过程。
 
 遵循这一原则,我们专注于主要的 `posts` 表。其 BigQuery 表结构如下所示:
 
@@ -154,11 +154,10 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 如[此处](/migrations/bigquery)所述,与 BigQuery 类似,ClickHouse 不强制要求表的主键列值具有唯一性。
 
 与 BigQuery 中的聚簇类似,ClickHouse 表的数据在磁盘上按主键列的顺序存储。查询优化器利用此排序顺序来避免重新排序、最小化连接操作的内存使用,并为 limit 子句启用短路优化。
-
 与 BigQuery 不同,ClickHouse 会根据主键列值自动创建[稀疏主索引](/guides/best-practices/sparse-primary-indexes)。该索引用于加速所有包含主键列过滤条件的查询。具体而言:
 
 - 内存和磁盘效率对于 ClickHouse 通常使用的规模至关重要。数据以称为数据分片(parts)的块写入 ClickHouse 表,并在后台应用规则合并这些数据分片。在 ClickHouse 中,每个数据分片都有自己的主索引。当数据分片合并时,合并后数据分片的主索引也会合并。需要注意的是,这些索引不是为每一行构建的。相反,数据分片的主索引为每组行设置一个索引条目——这种技术称为稀疏索引。
-- 稀疏索引之所以可行,是因为 ClickHouse 将数据分片的行按指定键排序存储在磁盘上。稀疏主索引不是直接定位单行(如基于 B-Tree 的索引),而是通过对索引条目进行二分查找,快速识别可能匹配查询的行组。然后,这些可能匹配的行组会并行流式传输到 ClickHouse 引擎中以查找匹配项。这种索引设计使主索引保持较小(完全适合主内存),同时仍能显著加快查询执行时间,特别是对于数据分析用例中典型的范围查询。有关更多详细信息,我们推荐阅读[此深入指南](/guides/best-practices/sparse-primary-indexes)。
+- 稀疏索引之所以可行,是因为 ClickHouse 将数据分片的行按指定键排序存储在磁盘上。稀疏主索引不是直接定位单个行(如基于 B 树的索引),而是通过对索引条目进行二分查找,快速识别可能匹配查询的行组。然后,这些可能匹配的行组会并行流式传输到 ClickHouse 引擎中以查找匹配项。这种索引设计使主索引保持较小(完全适合主内存),同时仍能显著加快查询执行时间,特别是对于数据分析用例中典型的范围查询。有关更多详细信息,我们推荐阅读[此深入指南](/guides/best-practices/sparse-primary-indexes)。
 
 <Image img={bigquery_5} size='md' alt='ClickHouse 主键' />
 
@@ -177,7 +176,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 ### 分区 {#partitions}
 
-BigQuery 用户应该熟悉表分区的概念,即通过将表划分为更小、更易管理的片段(称为分区)来增强大型数据库的性能和可管理性。分区可以通过指定列的范围(例如日期)、定义的列表或对键进行哈希来实现。这使管理员能够根据特定条件(如日期范围或地理位置)组织数据。
+BigQuery 用户应该熟悉表分区的概念,即通过将表划分为称为分区的更小、更易管理的部分来增强大型数据库的性能和可管理性。分区可以通过指定列的范围(例如日期)、定义的列表或对键进行哈希来实现。这使管理员能够根据特定条件(如日期范围或地理位置)组织数据。
 
 分区通过分区裁剪和更高效的索引实现更快的数据访问,从而有助于提高查询性能。它还通过允许对单个分区而非整个表执行操作,来帮助完成备份和数据清除等维护任务。此外,分区可以通过在多个分区之间分配负载来显著提高 BigQuery 数据库的可扩展性。
 
@@ -204,9 +203,9 @@ PARTITION BY toYear(CreationDate)
 
 #### 应用场景 {#applications}
 
-ClickHouse 中的分区与 BigQuery 中的应用场景类似,但存在一些细微差异。具体来说:
+ClickHouse 中的分区与 BigQuery 中的应用场景类似,但存在一些细微差别。具体而言:
 
-- **数据管理** - 在 ClickHouse 中,用户应该主要将分区视为数据管理功能,而非查询优化技术。通过基于键逻辑分离数据,每个分区可以独立操作,例如删除。这使用户能够及时在[存储层](/integrations/s3#storage-tiers)之间高效移动分区(以及子集),或者[使数据过期/从集群中高效删除](/sql-reference/statements/alter/partition)。在下面的示例中,我们删除了 2008 年的帖子:
+- **数据管理** - 在 ClickHouse 中,用户应主要将分区视为数据管理功能,而非查询优化技术。通过基于键逻辑分离数据,每个分区可以独立操作,例如删除。这使用户能够在[存储层](/integrations/s3#storage-tiers)之间高效移动分区(从而移动数据子集),或[使数据过期/从集群中高效删除](/sql-reference/statements/alter/partition)。例如,下面我们删除 2008 年的帖子:
 
 ```sql
 SELECT DISTINCT partition
@@ -233,26 +232,26 @@ WHERE `table` = 'posts'
 │ 2024      │
 └───────────┘
 
-17 rows in set. Elapsed: 0.002 sec.
+返回 17 行。耗时:0.002 秒。
 
 ALTER TABLE posts
 (DROP PARTITION '2008')
 
 Ok.
 
-0 rows in set. Elapsed: 0.103 sec.
+返回 0 行。耗时:0.103 秒。
 ```
 
 
-- **查询优化** - 虽然分区可以提升查询性能,但这在很大程度上取决于访问模式。如果查询仅针对少数分区(理想情况下是一个分区),性能可能会有所提升。这通常仅在分区键不在主键中且您按其进行过滤时才有用。然而,需要覆盖多个分区的查询可能比不使用分区时性能更差(因为分区可能导致更多的数据部分)。如果分区键已经是主键中的靠前条目,则针对单个分区的优势将更不明显甚至不复存在。如果每个分区中的值是唯一的,分区也可以用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。然而,总体而言,用户应确保主键已优化,并且仅在访问模式针对特定可预测的数据子集的特殊情况下才考虑将分区作为查询优化技术,例如按天分区,且大多数查询集中在最近一天。
+- **查询优化** - 虽然分区可以提升查询性能,但这在很大程度上取决于访问模式。如果查询仅针对少数分区(理想情况下是单个分区),性能可能会有所提升。这通常仅在分区键不在主键中且您按其进行过滤时才有用。然而,需要覆盖多个分区的查询可能比不使用分区时性能更差(因为分区可能导致更多的数据部分)。如果分区键已经是主键中的靠前条目,则针对单个分区的优势将更不明显甚至不复存在。如果每个分区中的值是唯一的,分区也可用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。然而,总体而言,用户应确保主键已优化,并且仅在访问模式针对特定可预测的数据子集的特殊情况下才考虑将分区作为查询优化技术,例如按天分区,且大多数查询集中在最近一天。
 
 #### 建议 {#recommendations}
 
-用户应将分区视为一种数据管理技术。当处理时间序列数据需要从集群中清理过期数据时,它是理想的选择,例如可以[直接删除](/sql-reference/statements/alter/partition#drop-partitionpart)最旧的分区。
+用户应将分区视为一种数据管理技术。当操作时间序列数据需要从集群中清理过期数据时,分区是理想的选择,例如可以[直接删除](/sql-reference/statements/alter/partition#drop-partitionpart)最旧的分区。
 
 重要提示:确保您的分区键表达式不会产生高基数集,即应避免创建超过 100 个分区。例如,不要按客户端标识符或名称等高基数列对数据进行分区。相反,应将客户端标识符或名称作为 `ORDER BY` 表达式中的第一列。
 
-> 在内部,ClickHouse 为插入的数据[创建数据部分](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着更多数据的插入,数据部分的数量会增加。为了防止数据部分数量过多(这会降低查询性能,因为需要读取更多文件),数据部分会在后台异步进程中合并。如果数据部分的数量超过[预配置的限制](/operations/settings/merge-tree-settings#parts_to_throw_insert),则 ClickHouse 将在插入时抛出异常,显示为["数据部分过多"错误](/knowledgebase/exception-too-many-parts)。这在正常操作下不应发生,仅在 ClickHouse 配置错误或使用不当时才会出现,例如进行大量小批量插入。由于数据部分是按分区独立创建的,增加分区数量会导致数据部分数量增加,即它是分区数量的倍数。因此,高基数分区键可能导致此错误,应避免使用。
+> 在内部,ClickHouse 为插入的数据[创建数据部分](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着更多数据的插入,数据部分的数量会增加。为了防止数据部分数量过多(这会降低查询性能,因为需要读取更多文件),数据部分会在后台异步过程中合并。如果数据部分的数量超过[预配置的限制](/operations/settings/merge-tree-settings#parts_to_throw_insert),则 ClickHouse 将在插入时抛出异常,显示为["数据部分过多"错误](/knowledgebase/exception-too-many-parts)。这在正常操作下不应发生,仅在 ClickHouse 配置错误或使用不当时才会出现,例如进行大量小批量插入。由于数据部分是按分区独立创建的,增加分区数量会导致数据部分数量增加,即它是分区数量的倍数。因此,高基数分区键可能导致此错误,应予以避免。
 
 
 ## 物化视图与投影对比 {#materialized-views-vs-projections}
@@ -342,7 +341,7 @@ WHERE UserId = 8592047
 Peak memory usage: 4.06 MiB.
 ```
 
-通过 [`EXPLAIN` 命令](/sql-reference/statements/explain),我们还可以确认该查询使用了投影:
+通过 [`EXPLAIN` 命令](/sql-reference/statements/explain),我们还可以确认投影被用于处理此查询:
 
 ```sql
 EXPLAIN indexes = 1
@@ -355,43 +354,43 @@ WHERE UserId = 8592047
 
 ┌─explain─────────────────────────────────────────────┐
 
-1. │ 表达式（Projection + Before ORDER BY）              │
-2. │   聚合                                            │
-3. │   过滤                                            │
+1. │ Expression ((Projection + Before ORDER BY))         │
+2. │   Aggregating                                       │
+3. │   Filter                                            │
 4. │           ReadFromMergeTree (comments&#95;user&#95;id)      │
-5. │           索引：                                   │
-6. │           PrimaryKey                              │
-7. │           键：                                     │
-8. │           UserId                                  │
-9. │           条件： (UserId in [8592047, 8592047])   │
-10. │           数据片段：2/2                          │
-11. │           粒度：2/11360                          │
+5. │           Indexes:                                  │
+6. │           PrimaryKey                                │
+7. │           Keys:                                     │
+8. │           UserId                                    │
+9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
     └─────────────────────────────────────────────────────┘
 
-共 11 行。耗时：0.004 秒。
+11 行结果。耗时：0.004 秒。
 
 ```
 
 ### 何时使用投影 {#when-to-use-projections}
 
-投影对新用户来说是一个很有吸引力的功能,因为它们会在数据插入时自动维护。此外,查询只需发送到单个表,投影会在可能的情况下自动被利用来加快响应速度。
+投影对新用户来说是一个极具吸引力的功能,因为它们会在数据插入时自动维护。此外,查询只需发送到单个表,投影会在可能的情况下自动被利用以加快响应时间。
 
 <Image img={bigquery_7} size="md" alt="投影"/>
 
 这与物化视图形成对比。在物化视图中,用户必须根据过滤条件选择合适的优化目标表或重写查询。这对用户应用程序提出了更高的要求,并增加了客户端的复杂性。
 
-尽管有这些优势,投影也存在一些固有的局限性,用户应该了解这些局限性,因此应谨慎部署。更多详细信息请参阅["物化视图与投影对比"](/managing-data/materialized-views-versus-projections)。
+尽管有这些优势,投影也存在一些固有的局限性,用户应该了解这些局限性,因此应谨慎部署。有关更多详细信息,请参阅["物化视图与投影对比"](/managing-data/materialized-views-versus-projections)
 
 我们建议在以下情况下使用投影:
 
-- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合数据方面更有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用。
-- 用户能够接受相关的存储占用增加以及两次写入数据的开销。请测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
+- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合数据方面更加有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用空间。
+- 用户能够接受相关的存储占用空间增加以及两次写入数据的开销。请测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 ```
 
 
 ## 在 ClickHouse 中重写 BigQuery 查询 {#rewriting-bigquery-queries-in-clickhouse}
 
-以下提供了 BigQuery 与 ClickHouse 的查询对比示例。此列表旨在演示如何利用 ClickHouse 的特性来显著简化查询。这里的示例使用完整的 Stack Overflow 数据集(截至 2024 年 4 月)。
+以下提供了 BigQuery 与 ClickHouse 的查询对比示例。本列表旨在演示如何利用 ClickHouse 的特性来显著简化查询。这里的示例使用完整的 Stack Overflow 数据集(截至 2024 年 4 月)。
 
 **获得最多浏览量的用户(提出超过 10 个问题):**
 
@@ -459,7 +458,7 @@ Peak memory usage: 567.41 MiB.
 
 ## 聚合函数 {#aggregate-functions}
 
-用户应尽可能利用 ClickHouse 的聚合函数。下面展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每年浏览量最高的问题。
+在可能的情况下,用户应充分利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每年浏览量最高的问题。
 
 _BigQuery_
 
@@ -514,7 +513,7 @@ Peak memory usage: 377.26 MiB.
 
 ## 条件函数和数组 {#conditionals-and-arrays}
 
-条件函数和数组函数可以显著简化查询。以下查询计算从 2022 年到 2023 年增长百分比最大的标签(出现次数超过 10000 次)。请注意,得益于条件函数、数组函数以及在 `HAVING` 和 `SELECT` 子句中重用别名的能力,ClickHouse 查询非常简洁。
+条件函数和数组函数可以显著简化查询。以下查询计算从 2022 年到 2023 年增长百分比最大的标签(出现次数超过 10000 次)。请注意,得益于条件函数、数组函数以及在 `HAVING` 和 `SELECT` 子句中重用别名的能力,以下 ClickHouse 查询非常简洁。
 
 _BigQuery_
 
@@ -543,8 +542,8 @@ LIMIT 5
 │ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
-5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
-Peak memory usage: 410.37 MiB.
+返回 5 行。耗时:0.096 秒。处理了 508 万行,155.73 MB(5310 万行/秒,1.63 GB/秒)。
+峰值内存使用:410.37 MiB。
 ```
 
-至此,我们完成了从 BigQuery 迁移到 ClickHouse 的基础指南。建议从 BigQuery 迁移的用户阅读 [ClickHouse 数据建模](/data-modeling/schema-design)指南,以了解更多 ClickHouse 高级特性。
+至此,我们完成了从 BigQuery 迁移到 ClickHouse 的基础指南。我们建议从 BigQuery 迁移的用户阅读 [ClickHouse 数据建模](/data-modeling/schema-design)指南,以了解更多 ClickHouse 高级功能。

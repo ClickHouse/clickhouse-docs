@@ -3,7 +3,7 @@ title: 'Обзор'
 slug: /cloud/reference/byoc/overview
 sidebar_label: 'Обзор'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
-description: 'Развертывание ClickHouse в вашей облачной инфраструктуре'
+description: 'Развертывание ClickHouse в собственной облачной инфраструктуре'
 doc_type: 'reference'
 ---
 
@@ -25,8 +25,8 @@ BYOC предназначен специально для крупномасшт
 ## Глоссарий {#glossary}
 
 - **ClickHouse VPC:** VPC, принадлежащая ClickHouse Cloud.
-- **Customer BYOC VPC:** VPC, принадлежащая облачной учётной записи клиента, которая развёртывается и управляется ClickHouse Cloud и выделена для развёртывания ClickHouse Cloud BYOC.
-- **Customer VPC:** Другие VPC, принадлежащие облачной учётной записи клиента и используемые для приложений, которым требуется подключение к Customer BYOC VPC.
+- **Customer BYOC VPC:** VPC, принадлежащая облачной учетной записи клиента, которая предоставляется и управляется ClickHouse Cloud и выделена для развертывания ClickHouse Cloud BYOC.
+- **Customer VPC:** Другие VPC, принадлежащие облачной учетной записи клиента, используемые для приложений, которым требуется подключение к Customer BYOC VPC.
 
 
 ## Возможности {#features}
@@ -44,7 +44,7 @@ BYOC предназначен специально для крупномасшт
 - **Сеть с нулевым доверием через Tailscale.**
 - **Мониторинг**:
   - Консоль Cloud включает встроенные панели мониторинга для отслеживания работоспособности сервиса.
-  - Сбор метрик Prometheus для централизованного мониторинга с помощью Prometheus, Grafana и Datadog. См. [документацию по Prometheus](/integrations/prometheus) для получения инструкций по настройке.
+  - Сбор метрик Prometheus для централизованного мониторинга с помощью Prometheus, Grafana и Datadog. Инструкции по настройке см. в [документации Prometheus](/integrations/prometheus).
 - **Пиринг VPC.**
 - **Интеграции**: полный список доступен на [этой странице](/integrations).
 - **Защищённый S3.**

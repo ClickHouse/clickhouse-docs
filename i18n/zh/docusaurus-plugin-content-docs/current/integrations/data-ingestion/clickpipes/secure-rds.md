@@ -2,7 +2,7 @@
 slug: /integrations/clickpipes/secure-rds
 sidebar_label: 'AWS IAM 数据库身份验证（RDS/Aurora）'
 title: 'AWS IAM 数据库身份验证（RDS/Aurora）'
-description: '本文演示 ClickPipes 客户如何利用基于角色的访问来与 Amazon RDS/Aurora 进行身份验证，并安全地访问其数据库。'
+description: '本文演示 ClickPipes 客户如何利用基于角色的访问实现与 Amazon RDS/Aurora 的身份验证，并安全访问其数据库。'
 doc_type: 'guide'
 keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
 ---
@@ -10,12 +10,12 @@ keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-本文演示 ClickPipes 客户如何利用基于角色的访问来通过 Amazon Aurora 和 RDS 进行身份验证，并安全访问其数据库。
+本文演示 ClickPipes 客户如何利用基于角色的访问来与 Amazon Aurora 和 RDS 进行身份验证，并安全访问其数据库。
 
 :::warning
-对于 AWS RDS Postgres 和 Aurora Postgres，由于 AWS IAM 数据库身份验证 的限制，您只能运行 `Initial Load Only` 类型的 ClickPipes。
+对于 AWS RDS Postgres 和 Aurora Postgres，由于 AWS IAM DB Authentication 的限制，您只能运行 `Initial Load Only` 类型的 ClickPipes。
 
-对于 MySQL 和 MariaDB，则不存在此限制，您可以同时运行 `Initial Load Only` 和 `CDC` 类型的 ClickPipes。
+对于 MySQL 和 MariaDB，不受此限制，您可以同时运行 `Initial Load Only` 和 `CDC` 类型的 ClickPipes。
 :::
 
 
@@ -63,7 +63,7 @@ import Image from '@theme/IdealImage';
    CREATE USER clickpipes_iam_user;
    GRANT rds_iam TO clickpipes_iam_user;
    ```
-2. 按照 [PostgreSQL 源设置指南](postgres/source/rds) 中的其余步骤配置您的 RDS 实例以用于 ClickPipes。
+2. 按照 [PostgreSQL 源设置指南](postgres/source/rds) 中的其余步骤为 ClickPipes 配置您的 RDS 实例。
 
 ##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
@@ -71,7 +71,7 @@ import Image from '@theme/IdealImage';
    ```sql
    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
    ```
-2. 按照 [MySQL 源设置指南](mysql/source/rds) 中的其余步骤配置您的 RDS/Aurora 实例以用于 ClickPipes。
+2. 按照 [MySQL 源设置指南](mysql/source/rds) 中的其余步骤为 ClickPipes 配置您的 RDS/Aurora 实例。
 
 ### 设置 IAM 角色 {#setting-up-iam-role}
 
@@ -81,7 +81,7 @@ import Image from '@theme/IdealImage';
 
 2 - 浏览到 IAM 服务控制台。
 
-3 - 使用以下 IAM 和信任策略创建新的 IAM 角色。
+3 - 使用以下 IAM 策略和信任策略创建新的 IAM 角色。
 
 信任策略(请将 `{ClickHouse_IAM_ARN}` 替换为您的 ClickHouse 实例的 IAM 角色 ARN):
 

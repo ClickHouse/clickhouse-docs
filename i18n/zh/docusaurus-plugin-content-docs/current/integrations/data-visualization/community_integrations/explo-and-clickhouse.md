@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo 是一款易于使用的开源 UI 工具，可用于对你的数据进行探索和提问。'
+description: 'Explo 是一个易于使用的开源 UI 工具,用于对数据进行查询分析。'
 title: '将 Explo 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -36,7 +36,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-适用于任何平台的客户分析。为精美可视化而设计，为极致易用而打造。
+面向客户的分析平台，适用于任何应用场景。专为精美可视化而设计，为简单易用而打造。
 
 
 
@@ -53,7 +53,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 :::
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -62,60 +62,60 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 1. 注册 Explo 账户。
 
-2. 点击左侧边栏中的 Explo **数据**选项卡。
+2. 点击左侧边栏中的 Explo **data** 选项卡。
 
 <Image img={explo_01} size='sm' alt='数据选项卡' border />
 
-3. 点击右上角的**连接数据源**。
+3. 点击右上角的 **Connect Data Source**。
 
 <Image img={explo_02} size='sm' alt='连接数据源' border />
 
-4. 在**入门**页面填写信息
+4. 填写 **Getting Started** 页面上的信息。
 
-<Image img={explo_03} size='md' alt='入门页面' border />
+<Image img={explo_03} size='md' alt='入门指南' border />
 
-5. 选择 **Clickhouse**
+5. 选择 **Clickhouse**。
 
 <Image img={explo_04} size='md' alt='Clickhouse' border />
 
-6. 输入您的 **Clickhouse 凭据**。
+6. 输入您的 **Clickhouse Credentials**。
 
 <Image img={explo_05} size='md' alt='凭据' border />
 
-7. 配置**安全设置**
+7. 配置 **Security**。
 
 <Image img={explo_06} size='md' alt='安全设置' border />
 
 8. 在 ClickHouse 中,**将 Explo IP 地址加入白名单**。
-   `54.211.43.19、52.55.98.121、3.214.169.94 和 54.156.141.148`
+   `54.211.43.19, 52.55.98.121, 3.214.169.94, 和 54.156.141.148`
 
 
 ## 3. 创建仪表板 {#3-create-a-dashboard}
 
 1. 在左侧导航栏中找到 **Dashboard** 选项卡。
 
-<Image img={explo_07} size='sm' alt='Dashboard' border />
+<Image img={explo_07} size='sm' alt='仪表板' border />
 
 2. 点击右上角的 **Create Dashboard** 并为仪表板命名。现在您已成功创建了一个仪表板!
 
-<Image img={explo_08} size='sm' alt='Create Dashboard' border />
+<Image img={explo_08} size='sm' alt='创建仪表板' border />
 
 3. 此时您应该会看到类似下图的界面:
 
-<Image img={explo_09} size='md' alt='Explo Dashboard' border />
+<Image img={explo_09} size='md' alt='Explo 仪表板' border />
 
 
 ## 4. 运行 SQL 查询 {#4-run-a-sql-query}
 
-1. 从右侧边栏中您的 schema 标题下获取表名。然后在数据集编辑器中输入以下命令:
+1. 从右侧边栏中您的模式标题下获取表名，然后在数据集编辑器中输入以下命令：
    `SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100`
 
-<Image img={explo_10} size='md' alt='Explo Dashboard' border />
+<Image img={explo_10} size='md' alt='Explo 仪表板' border />
 
-2. 点击运行按钮,然后切换到预览选项卡查看您的数据。
+2. 点击运行按钮，然后转到预览选项卡查看您的数据。
 
-<Image img={explo_11} size='md' alt='Explo Dashboard' border />
+<Image img={explo_11} size='md' alt='Explo 仪表板' border />
 
 
 ## 5. 构建图表 {#5-build-a-chart}
@@ -124,7 +124,7 @@ LIMIT 100`
 
 <Image img={explo_16} size='sm' alt='Explo 仪表板' border />
 
-2. 选择数据集。此时您应该看到如下界面:
+2. 选择数据集。您应该会看到如下界面:
 
 <Image img={explo_12} size='sm' alt='Explo 仪表板' border />
 
@@ -136,7 +136,7 @@ LIMIT 100`
 
 <Image img={explo_14} size='sm' alt='Explo 仪表板' border />
 
-5. 现在我们得到了按县分组的房屋平均价格!
+5. 现在我们得到了按县划分的房屋平均价格!
 
 <Image img={explo_15} size='md' alt='Explo 仪表板' />
 

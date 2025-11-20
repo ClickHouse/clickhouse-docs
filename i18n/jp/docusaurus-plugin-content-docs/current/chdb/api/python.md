@@ -2,14 +2,14 @@
 title: 'chDB Python API リファレンス'
 sidebar_label: 'Python API'
 slug: /chdb/api/python
-description: 'chDB 用 Python API の完全リファレンス'
+description: 'chDB の完全な Python API リファレンス'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
 
 
 
-# Python API リファレンス
+# Python APIリファレンス
 
 
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 chDBエンジンを使用してSQLクエリを実行します。
 
-これは、組み込みのClickHouseエンジンを使用してSQLステートメントを実行するメインクエリ関数です。さまざまな出力形式をサポートし、インメモリデータベースまたはファイルベースのデータベースで動作します。
+これは、組み込みのClickHouseエンジンを使用してSQL文を実行するメインクエリ関数です。さまざまな出力形式をサポートし、インメモリデータベースまたはファイルベースのデータベースで動作します。
 
 **構文**
 
@@ -32,7 +32,7 @@ chdb.query(sql, output_format='CSV', path='', udf_path='')
 | パラメータ       | 型 | デフォルト    | 説明                                                                                                                                                                                                                                                                                                     |
 | --------------- | ---- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sql`           | str  | _必須_ | 実行するSQLクエリ文字列                                                                                                                                                                                                                                                                                     |
-| `output_format` | str  | `"CSV"`    | 結果の出力形式。サポートされている形式:<br/>• `"CSV"` - カンマ区切り値<br/>• `"JSON"` - JSON形式<br/>• `"Arrow"` - Apache Arrow形式<br/>• `"Parquet"` - Parquet形式<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - 詳細ログを有効化 |
+| `output_format` | str  | `"CSV"`    | 結果の出力形式。サポートされる形式:<br/>• `"CSV"` - カンマ区切り値<br/>• `"JSON"` - JSON形式<br/>• `"Arrow"` - Apache Arrow形式<br/>• `"Parquet"` - Parquet形式<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - 詳細ログを有効化 |
 | `path`          | str  | `""`       | データベースファイルのパス。デフォルトはインメモリデータベース。<br/>ファイルパスまたはインメモリデータベースの場合は`":memory:"`を指定可能                                                                                                                                                                                               |
 | `udf_path`      | str  | `""`       | ユーザー定義関数ディレクトリへのパス                                                                                                                                                                                                                                                                        |
 
@@ -87,7 +87,7 @@ chdb.query(sql, output_format='CSV', path='', udf_path='')
 
 chDBエンジンを使用してSQLクエリを実行します。
 
-これは、組み込みのClickHouseエンジンを使用してSQLステートメントを実行するメインクエリ関数です。さまざまな出力形式をサポートし、インメモリデータベースまたはファイルベースのデータベースで動作します。
+これは、組み込みのClickHouseエンジンを使用してSQL文を実行するメインクエリ関数です。さまざまな出力形式をサポートし、インメモリデータベースまたはファイルベースのデータベースで動作します。
 
 **構文**
 
@@ -100,7 +100,7 @@ chdb.sql(sql, output_format='CSV', path='', udf_path='')
 | パラメータ       | 型 | デフォルト    | 説明                                                                                                                                                                                                                                                                                                     |
 | --------------- | ---- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sql`           | str  | _必須_ | 実行するSQLクエリ文字列                                                                                                                                                                                                                                                                                     |
-| `output_format` | str  | `"CSV"`    | 結果の出力形式。サポートされている形式:<br/>• `"CSV"` - カンマ区切り値<br/>• `"JSON"` - JSON形式<br/>• `"Arrow"` - Apache Arrow形式<br/>• `"Parquet"` - Parquet形式<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - 詳細ログを有効化 |
+| `output_format` | str  | `"CSV"`    | 結果の出力形式。サポートされる形式:<br/>• `"CSV"` - カンマ区切り値<br/>• `"JSON"` - JSON形式<br/>• `"Arrow"` - Apache Arrow形式<br/>• `"Parquet"` - Parquet形式<br/>• `"DataFrame"` - Pandas DataFrame<br/>• `"ArrowTable"` - PyArrow Table<br/>• `"Debug"` - 詳細ログを有効化 |
 | `path`          | str  | `""`       | データベースファイルのパス。デフォルトはインメモリデータベース。<br/>ファイルパスまたはインメモリデータベースの場合は`":memory:"`を指定可能                                                                                                                                                                                               |
 | `udf_path`      | str  | `""`       | ユーザー定義関数ディレクトリへのパス                                                                                                                                                                                                                                                                        |
 
@@ -112,15 +112,15 @@ chdb.sql(sql, output_format='CSV', path='', udf_path='')
 | 戻り値の型        | 条件                                                |
 | ------------------ | -------------------------------------------------------- |
 | `str`              | CSV、JSONなどのテキスト形式の場合                          |
-| `pd.DataFrame`     | `output_format` が `"DataFrame"` または `"dataframe"` の場合   |
-| `pa.Table`         | `output_format` が `"ArrowTable"` または `"arrowtable"` の場合 |
+| `pd.DataFrame`     | `output_format`が`"DataFrame"`または`"dataframe"`の場合   |
+| `pa.Table`         | `output_format`が`"ArrowTable"`または`"arrowtable"`の場合 |
 | chdb result object | その他の形式の場合                                        |
 
 **例外**
 
 | 例外                 | 条件                                                        |
 | ------------------------- | ---------------------------------------------------------------- |
-| [`ChdbError`](#chdberror) | SQLクエリの実行に失敗した場合                                 |
+| [`ChdbError`](#chdberror) | SQLクエリの実行が失敗した場合                                 |
 | `ImportError`             | DataFrame/Arrow形式に必要な依存関係が不足している場合 |
 
 **例**
@@ -238,13 +238,13 @@ chdb.to_df(r)
 
 ## 接続とセッション管理 {#connection-session-management}
 
-以下のセッション関数が利用可能です：
+以下のセッション関数が利用可能です:
 
 ### `chdb.connect` {#chdb-connect}
 
 chDBバックグラウンドサーバーへの接続を作成します。
 
-この関数は、chDB（ClickHouse）データベースエンジンへの[接続](#chdb-state-sqlitelike-connection)を確立します。
+この関数はchDB(ClickHouse)データベースエンジンへの[接続](#chdb-state-sqlitelike-connection)を確立します。
 プロセスごとに開くことができる接続は1つのみです。
 同じ接続文字列で複数回呼び出した場合、同じ接続オブジェクトが返されます。
 
@@ -252,7 +252,7 @@ chDBバックグラウンドサーバーへの接続を作成します。
 chdb.connect(connection_string: str = ':memory:') → Connection
 ```
 
-**パラメータ：**
+**パラメータ:**
 
 | パラメータ           | 型 | デフォルト      | 説明                                    |
 | ------------------- | ---- | ------------ | ---------------------------------------------- |
@@ -262,7 +262,7 @@ chdb.connect(connection_string: str = ':memory:') → Connection
 
 | 形式                    | 説明                  |
 | ------------------------- | ---------------------------- |
-| `":memory:"`              | インメモリデータベース（デフォルト） |
+| `":memory:"`              | インメモリデータベース(デフォルト) |
 | `"test.db"`               | 相対パスのデータベースファイル  |
 | `"file:test.db"`          | 相対パスと同じ        |
 | `"/path/to/test.db"`      | 絶対パスのデータベースファイル  |
@@ -279,7 +279,7 @@ chdb.connect(connection_string: str = ':memory:') → Connection
 **クエリパラメータの処理**
 
 クエリパラメータは起動引数としてClickHouseエンジンに渡されます。
-特殊なパラメータの処理：
+特殊なパラメータの処理:
 
 | 特殊パラメータ | 変換後        | 説明             |
 | ----------------- | -------------- | ----------------------- |
@@ -293,7 +293,7 @@ chdb.connect(connection_string: str = ':memory:') → Connection
 
 | 戻り値の型  | 説明                                                                                                                                                                                                                                            |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Connection` | 以下をサポートするデータベース接続オブジェクト：<br/>• `Connection.cursor()`によるカーソルの作成<br/>• `Connection.query()`による直接クエリ<br/>• `Connection.send_query()`によるストリーミングクエリ<br/>• 自動クリーンアップのためのコンテキストマネージャプロトコル |
+| `Connection` | 以下をサポートするデータベース接続オブジェクト:<br/>• `Connection.cursor()`によるカーソルの作成<br/>• `Connection.query()`による直接クエリ<br/>• `Connection.send_query()`によるストリーミングクエリ<br/>• 自動クリーンアップのためのコンテキストマネージャプロトコル |
 
 **例外**
 
@@ -321,7 +321,7 @@ chdb.connect(connection_string: str = ':memory:') → Connection
 >>> conn = connect("data.db?mode=ro")  # 読み取り専用モード
 >>> conn = connect(":memory:?verbose&log-level=debug")  # デバッグログ
 >>>
->>> # 自動クリーンアップのためのコンテキストマネージャを使用
+>>> # 自動クリーンアップのためのコンテキストマネージャの使用
 >>> with connect("data.db") as conn:
 ...     result = conn.query("SELECT 1")
 ...     print(result)
@@ -334,17 +334,15 @@ chdb.connect(connection_string: str = ':memory:') → Connection
 - [`Cursor`](#chdb-state-sqlitelike-cursor) - DB-API 2.0操作用のデータベースカーソル
 
 
-## Exception Handling {#chdb-exceptions}
+## 例外処理 {#chdb-exceptions}
 
 ### **class** `chdb.ChdbError` {#chdb_chdbError}
 
 Bases: `Exception`
 
-Base exception class for chDB-related errors.
+chDB に関連するエラーのための基底となる例外クラスです。
 
-This exception is raised when chDB query execution fails or encounters
-an error. It inherits from the standard Python Exception class and
-provides error information from the underlying ClickHouse engine.
+この例外は、chDB のクエリ実行が失敗した場合やエラーが発生した場合に送出されます。標準の Python の Exception クラスを継承しており、基盤となる ClickHouse エンジンからのエラー情報を提供します。
 
 ---
 
@@ -352,12 +350,11 @@ provides error information from the underlying ClickHouse engine.
 
 Bases: `object`
 
-Session will keep the state of query.
-If path is None, it will create a temporary directory and use it as the database path
-and the temporary directory will be removed when the session is closed.
-You can also pass in a path to create a database at that path where will keep your data.
+Session はクエリの状態を保持します。
+path が None の場合は一時ディレクトリを作成し、それをデータベースのパスとして使用します。この一時ディレクトリは、セッションがクローズされると削除されます。
+データを保持するデータベースを配置するためのパスを渡して、その場所にデータベースを作成することもできます。
 
-You can also use a connection string to pass in the path and other parameters.
+パスおよびその他のパラメータを渡すために、接続文字列を使用することもできます。
 
 ```python
 class chdb.session.Session(path=None)
@@ -365,44 +362,41 @@ class chdb.session.Session(path=None)
 
 **使用例**
 
-| Connection String                                  | Description                          |
-| -------------------------------------------------- | ------------------------------------ |
-| `":memory:"`                                       | In-memory database                   |
-| `"test.db"`                                        | Relative path                        |
-| `"file:test.db"`                                   | Same as above                        |
-| `"/path/to/test.db"`                               | Absolute path                        |
-| `"file:/path/to/test.db"`                          | Same as above                        |
-| `"file:test.db?param1=value1&param2=value2"`       | Relative path with query params      |
-| `"file::memory:?verbose&log-level=test"`           | In-memory database with query params |
-| `"///path/to/test.db?param1=value1&param2=value2"` | Absolute path with query params      |
+| 接続文字列                                         | 説明                                  |
+| -------------------------------------------------- | ------------------------------------- |
+| `":memory:"`                                       | インメモリデータベース                |
+| `"test.db"`                                        | 相対パス                              |
+| `"file:test.db"`                                   | 同上                                  |
+| `"/path/to/test.db"`                               | 絶対パス                              |
+| `"file:/path/to/test.db"`                          | 同上                                  |
+| `"file:test.db?param1=value1&param2=value2"`       | クエリパラメータ付きの相対パス        |
+| `"file::memory:?verbose&log-level=test"`           | クエリパラメータ付きのインメモリ DB   |
+| `"///path/to/test.db?param1=value1&param2=value2"` | クエリパラメータ付きの絶対パス        |
 
 :::note Connection string args handling
-Connection strings containing query params like “[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2)”
-“param1=value1” will be passed to ClickHouse engine as start up args.
+[file:test.db?param1=value1&param2=value2](file:test.db?param1=value1&param2=value2) のようにクエリパラメータを含む接続文字列の場合、
+「param1=value1」は ClickHouse エンジンに起動引数として渡されます。
 
-For more details, see `clickhouse local –help –verbose`
+詳細は `clickhouse local –help –verbose` を参照してください。
 
-Some special args handling:
+一部の引数は特別に処理されます:
 
-- “mode=ro” would be “–readonly=1” for clickhouse (read-only mode)
+- 「mode=ro」は ClickHouse では「–readonly=1」（読み取り専用モード）になります。
   :::
 
-:::warning Important
+:::warning 重要
 
-- There can be only one session at a time. If you want to create a new session, you need to close the existing one.
-- Creating a new session will close the existing one.
+- 同時に存在できるセッションは 1 つだけです。新しいセッションを作成したい場合は、既存のセッションをクローズする必要があります。
+- 新しいセッションを作成すると、既存のセッションはクローズされます。
   :::
 
 ---
 
 #### `cleanup` {#cleanup}
 
-Cleanup session resources with exception handling.
+例外処理付きでセッションのリソースをクリーンアップします。
 
-This method attempts to close the session while suppressing any exceptions
-that might occur during the cleanup process. It’s particularly useful in
-error handling scenarios or when you need to ensure cleanup happens regardless
-of the session state.
+このメソッドは、クリーンアップ処理中に発生しうる例外を抑制しつつ、セッションをクローズしようとします。エラー処理の場面や、セッションの状態にかかわらずクリーンアップを必ず実行したい場合に特に有用です。
 
 **構文**
 
@@ -411,8 +405,7 @@ cleanup()
 ```
 
 :::note
-This method will never raise an exception, making it safe to call in
-finally blocks or destructors.
+このメソッドは例外を送出することがないため、finally ブロックやデストラクタ内から安全に呼び出すことができます。
 :::
 
 **使用例**
@@ -422,22 +415,21 @@ finally blocks or destructors.
 >>> try:
 ...     session.query("INVALID SQL")
 ... finally:
-...     session.cleanup()  # Safe cleanup regardless of errors
+...     session.cleanup()  # エラー発生の有無にかかわらず安全にクリーンアップ
 ```
 
-**See also**
+**関連項目**
 
-- [`close()`](#chdb-session-session-close) - For explicit session closing with error propagation
+- [`close()`](#chdb-session-session-close) - エラーを伝播させつつ明示的にセッションをクローズする場合はこちらを使用
 
 ---
 
 #### `close` {#close}
 
-Close the session and cleanup resources.
+セッションをクローズし、リソースをクリーンアップします。
 
-This method closes the underlying connection and resets the global session state.
-After calling this method, the session becomes invalid and cannot be used for
-further queries.
+このメソッドは基盤となる接続をクローズし、グローバルなセッション状態をリセットします。
+このメソッドを呼び出した後は、セッションは無効になり、以降のクエリには使用できません。
 
 **構文**
 
@@ -446,12 +438,11 @@ close()
 ```
 
 :::note
-This method is automatically called when the session is used as a context manager
-or when the session object is destroyed.
+このメソッドは、セッションがコンテキストマネージャとして使用された場合や、セッションオブジェクトが破棄された場合に自動的に呼び出されます。
 :::
 
-:::warning Important
-Any attempt to use the session after calling `close()` will result in an error.
+:::warning 重要
+`close()` 呼び出し後にそのセッションを使用しようとすると、エラーになります。
 :::
 
 **使用例**
@@ -459,18 +450,16 @@ Any attempt to use the session after calling `close()` will result in an error.
 ```pycon
 >>> session = Session("test.db")
 >>> session.query("SELECT 1")
->>> session.close()  # Explicitly close the session
+>>> session.close()  # セッションを明示的にクローズ
 ```
 
 ---
 
 #### `query` {#chdb-session-session-query}
 
-Execute a SQL query and return the results.
+SQL クエリを実行し、その結果を返します。
 
-This method executes a SQL query against the session’s database and returns
-the results in the specified format. The method supports various output formats
-and maintains session state between queries.
+このメソッドは、セッションのデータベースに対して SQL クエリを実行し、指定されたフォーマットで結果を返します。さまざまな出力フォーマットをサポートしており、クエリ間でセッション状態を維持します。
 
 **構文**
 
@@ -478,22 +467,22 @@ and maintains session state between queries.
 query(sql, fmt='CSV', udf_path='')
 ```
 
-**Parameters**
+**パラメータ**
 
 
 | パラメータ  | 型 | デフォルト    | 説明                                                                                                                                                                                                                                                                                                                         |
 | ---------- | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sql`      | str  | _必須_ | 実行するSQLクエリ文字列                                                                                                                                                                                                                                                                                                                         |
 | `fmt`      | str  | `"CSV"`    | 結果の出力形式。利用可能な形式:<br/>• `"CSV"` - カンマ区切り値<br/>• `"JSON"` - JSON形式<br/>• `"TabSeparated"` - タブ区切り値<br/>• `"Pretty"` - 整形されたテーブル形式<br/>• `"JSONCompact"` - コンパクトJSON形式<br/>• `"Arrow"` - Apache Arrow形式<br/>• `"Parquet"` - Parquet形式 |
-| `udf_path` | str  | `""`       | ユーザー定義関数へのパス。指定しない場合は、セッション初期化時のUDFパスを使用                                                                                                                                                                                                                                     |
+| `udf_path` | str  | `""`       | ユーザー定義関数へのパス。指定されない場合は、セッション初期化時のUDFパスを使用します                                                                                                                                                                                                                                                     |
 
 **戻り値**
 
 指定された形式でクエリ結果を返します。
-正確な戻り値の型は、形式パラメータによって異なります:
+正確な戻り値の型は形式パラメータに依存します:
 
-- 文字列形式(CSV、JSONなど)は str を返す
-- バイナリ形式(Arrow、Parquet)は bytes を返す
+- 文字列形式(CSV、JSONなど)は str を返します
+- バイナリ形式(Arrow、Parquet)は bytes を返します
 
 **例外**
 
@@ -508,7 +497,7 @@ query(sql, fmt='CSV', udf_path='')
 :::
 
 :::warning 警告
-このメソッドはクエリを同期的に実行し、すべての結果をメモリに読み込みます。大きな結果セットの場合は、ストリーミング結果のために [`send_query()`](#chdb-session-session-send_query) の使用を検討してください。
+このメソッドはクエリを同期的に実行し、すべての結果をメモリに読み込みます。大きな結果セットの場合は、ストリーミング結果のために[`send_query()`](#chdb-session-session-send_query)の使用を検討してください。
 :::
 
 **例**
@@ -552,7 +541,7 @@ id,name
 
 SQLクエリを実行し、ストリーミング結果イテレータを返します。
 
-このメソッドは、セッションのデータベースに対してSQLクエリを実行し、すべてを一度にメモリに読み込むことなく結果を反復処理できるストリーミング結果オブジェクトを返します。これは、大きな結果セットに特に有用です。
+このメソッドは、セッションのデータベースに対してSQLクエリを実行し、すべてを一度にメモリに読み込むことなく結果を反復処理できるストリーミング結果オブジェクトを返します。これは大きな結果セットに特に有用です。
 
 **構文**
 
@@ -581,8 +570,7 @@ send_query(sql, fmt='CSV') → StreamingResult
 | `ValueError`   | SQLクエリの形式が不正な場合       |
 
 :::note
-The “Debug” format is not supported and will be automatically converted
-to “CSV” with a warning. For debugging, use connection string parameters instead.
+「Debug」形式はサポートされておらず、警告とともに自動的に「CSV」に変換されます。デバッグには、代わりに接続文字列パラメータを使用してください。
 :::
 
 :::warning
@@ -623,7 +611,7 @@ to “CSV” with a warning. For debugging, use connection string parameters ins
 
 #### `sql` {#chdb-session-session-sql}
 
-SQLクエリを実行して結果を返します。
+SQLクエリを実行し、結果を返します。
 
 このメソッドは、セッションのデータベースに対してSQLクエリを実行し、
 指定された形式で結果を返します。このメソッドは様々な出力形式をサポートし、
@@ -646,10 +634,10 @@ sql(sql, fmt='CSV', udf_path='')
 **戻り値**
 
 指定された形式でクエリ結果を返します。
-正確な戻り値の型はformatパラメータに依存します:
+正確な戻り値の型は format パラメータに依存します:
 
-- 文字列形式(CSV、JSONなど)はstrを返す
-- バイナリ形式(Arrow、Parquet)はbytesを返す
+- 文字列形式 (CSV、JSON など) は str を返す
+- バイナリ形式 (Arrow、Parquet) は bytes を返す
 
 **例外:**
 
@@ -659,15 +647,15 @@ sql(sql, fmt='CSV', udf_path='')
 | `ValueError`   | SQLクエリが不正な形式の場合       |
 
 :::note
-"Debug"形式はサポートされておらず、警告とともに自動的に
-"CSV"に変換されます。デバッグには、代わりに接続文字列パラメータを
+"Debug" 形式はサポートされておらず、警告とともに自動的に
+"CSV" に変換されます。デバッグには、代わりに接続文字列パラメータを
 使用してください。
 :::
 
 :::warning 警告
 このメソッドはクエリを同期的に実行し、すべての結果を
 メモリにロードします。
-大規模な結果セットの場合は、ストリーミング結果のために[`send_query()`](#chdb-session-session-send_query)の使用を検討してください。
+大規模な結果セットの場合は、ストリーミング結果のために [`send_query()`](#chdb-session-session-send_query) の使用を検討してください。
 :::
 
 **例**
@@ -690,7 +678,7 @@ number
 ```
 
 ```pycon
->>> # テーブル作成を含む複雑なクエリ
+>>> # テーブル作成を伴う複雑なクエリ
 >>> session.query("CREATE TABLE test (id INT, name String) ENGINE = MergeTree() order by id")
 >>> session.query("INSERT INTO test VALUES (1, 'Alice'), (2, 'Bob')")
 >>> result = session.query("SELECT * FROM test ORDER BY id")
@@ -713,7 +701,7 @@ id,name
 chDBバックグラウンドサーバーへの[Connection](#chdb-state-sqlitelike-connection)を作成します。
 
 この関数はchDB（ClickHouse）データベースエンジンへの接続を確立します。
-プロセスごとに開くことができる接続は1つのみです。同じ接続文字列で複数回呼び出した場合、同じ接続オブジェクトが返されます。
+プロセスごとに1つの接続のみが許可されます。同じ接続文字列で複数回呼び出した場合、同じ接続オブジェクトが返されます。
 
 **構文**
 
@@ -913,7 +901,7 @@ query(query: str, format: str = 'CSV') → Any
 
 | パラメータ | 型 | デフォルト    | 説明                                                                                                                                                                                                                                                                                        |
 | --------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `query`   | str  | _必須_ | 実行するSQLクエリ文字列                                                                                                                                                                                                                                                                                        |
+| `query`   | str  | _必須_ | 実行するSQLクエリ文字列                                                                                                                                                                                                                                                                        |
 | `format`  | str  | `"CSV"`    | 結果の出力形式。サポートされている形式:<br/>• `"CSV"` - カンマ区切り値（文字列）<br/>• `"JSON"` - JSON形式（文字列）<br/>• `"Arrow"` - Apache Arrow形式（バイト列）<br/>• `"Dataframe"` - Pandas DataFrame（pandasが必要）<br/>• `"Arrowtable"` - PyArrow Table（pyarrowが必要） |
 
 **戻り値**
@@ -960,7 +948,7 @@ num,text
 4       4
 ```
 
-**関連項目**
+**See also**
 
 - [`send_query()`](#chdb-state-sqlitelike-connection-send_query) - ストリーミングクエリ実行用
 
@@ -990,7 +978,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 
 | 戻り値の型       | 説明                                                                                                                                                                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `StreamingResult` | クエリ結果のストリーミングイテレータで、以下をサポート:<br/>• イテレータプロトコル（forループ）<br/>• コンテキストマネージャプロトコル（with文）<br/>• fetch()メソッドによる手動フェッチ<br/>• PyArrow RecordBatchストリーミング（Arrow形式のみ） |
+| `StreamingResult` | クエリ結果用のストリーミングイテレータで、以下をサポート:<br/>• イテレータプロトコル（forループ）<br/>• コンテキストマネージャプロトコル（with文）<br/>• fetch()メソッドによる手動フェッチ<br/>• PyArrow RecordBatchストリーミング（Arrow形式のみ） |
 
 **例外**
 
@@ -1000,7 +988,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 | `ImportError`  | 形式に必要なパッケージがインストールされていない場合 |
 
 :::note
-返されるStreamingResultの`record_batch()`メソッドをサポートするのは"Arrow"形式のみです。
+返されるStreamingResultで`record_batch()`メソッドをサポートするのは"Arrow"形式のみです。
 :::
 
 **例**
@@ -1011,7 +999,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 >>> # 基本的なストリーミング
 >>> stream = conn.send_query("SELECT number FROM numbers(1000)")
 >>> for chunk in stream:
-...     print(f"チャンクを処理中: {len(chunk)} バイト")
+...     print(f"Processing chunk: {len(chunk)} bytes")
 ```
 
 ```pycon
@@ -1028,7 +1016,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 >>> stream = conn.send_query("SELECT * FROM data", "Arrow")
 >>> reader = stream.record_batch(rows_per_batch=10000)
 >>> for batch in reader:
-...     print(f"バッチの形状: {batch.num_rows} x {batch.num_columns}")
+...     print(f"Batch shape: {batch.num_rows} x {batch.num_columns}")
 ```
 
 **関連項目**
@@ -1040,7 +1028,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 
 ### **class** `chdb.state.sqlitelike.Cursor` {#chdb-state-sqlitelike-cursor}
 
-Bases: `object`
+基底クラス: `object`
 
 ```python
 class chdb.state.sqlitelike.Cursor(connection)
@@ -1095,7 +1083,7 @@ column_names() → list
 
 | 戻り値の型 | 説明                                                                                               |
 | ----------- | --------------------------------------------------------------------------------------------------------- |
-| `list`      | カラム名文字列のリスト、またはクエリが実行されていない場合やクエリがカラムを返さなかった場合は空のリスト |
+| `list`      | カラム名文字列のリスト、またはクエリが実行されていないかクエリがカラムを返さなかった場合は空のリスト |
 
 **例**
 
@@ -1106,9 +1094,9 @@ column_names() → list
 ['id', 'name', 'email']
 ```
 
-**See also**
+**関連項目**
 
-- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - カラム型情報の取得
+- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - カラム型情報を取得
 - [`description`](#chdb-state-sqlitelike-cursor-description) - DB-API 2.0カラム記述
 
 ---
@@ -1131,7 +1119,7 @@ column_types() → list
 
 | 戻り値の型 | 説明                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------ |
-| `list`      | ClickHouseの型名文字列のリスト。クエリが実行されていない場合、またはクエリが列を返さなかった場合は空のリスト |
+| `list`      | ClickHouse型名の文字列リスト。クエリが実行されていない場合、またはクエリが列を返さなかった場合は空のリスト |
 
 **例**
 
@@ -1144,8 +1132,8 @@ column_types() → list
 
 **関連項目**
 
-- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - 列名情報を取得
-- [`description`](#chdb-state-sqlitelike-cursor-description) - DB-API 2.0の列記述
+- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - 列名情報の取得
+- [`description`](#chdb-state-sqlitelike-cursor-description) - DB-API 2.0列記述子
 
 ---
 
@@ -1153,9 +1141,9 @@ column_types() → list
 
 保留中のトランザクションをコミットします。
 
-このメソッドは保留中のデータベーストランザクションをコミットします。ClickHouseでは
-ほとんどの操作が自動コミットされますが、このメソッドはDB-API 2.0との
-互換性のために提供されています。
+このメソッドは、保留中のデータベーストランザクションをコミットします。ClickHouseでは
+ほとんどの操作が自動コミットされますが、このメソッドはDB-API 2.0互換性のために
+提供されています。
 
 :::note
 ClickHouseは通常、操作を自動コミットするため、明示的なコミットは
@@ -1181,10 +1169,10 @@ commit() → None
 
 #### `property description : list` {#chdb-state-sqlitelike-cursor-description}
 
-DB-API 2.0仕様に従って列の記述を返します。
+DB-API 2.0仕様に従って列記述子を返します。
 
-このプロパティは、最後に実行されたSELECTクエリの結果セット内の各列を
-記述する7項目のタプルのリストを返します。各タプルには以下が含まれます:
+このプロパティは、最後に実行されたSELECTクエリの結果セット内の各列を記述する
+7要素のタプルのリストを返します。各タプルには次の内容が含まれます：
 (name, type_code, display_size, internal_size, precision, scale, null_ok)
 
 現在、nameとtype_codeのみが提供され、他のフィールドはNoneに設定されています。
@@ -1193,11 +1181,11 @@ DB-API 2.0仕様に従って列の記述を返します。
 
 | 戻り値の型 | 説明                                                                                 |
 | ----------- | ------------------------------------------------------------------------------------------- |
-| `list`      | 各列を記述する7要素タプルのリスト。SELECTクエリが実行されていない場合は空のリスト |
+| `list`      | 各列を記述する7要素のタプルのリスト。SELECTクエリが実行されていない場合は空のリスト |
 
 :::note
 これはcursor.descriptionのDB-API 2.0仕様に従っています。
-この実装では、最初の2つの要素(nameとtype_code)のみが意味のある
+この実装では、最初の2つの要素（nameとtype_code）のみが意味のある
 データを含んでいます。
 :::
 
@@ -1207,21 +1195,21 @@ DB-API 2.0仕様に従って列の記述を返します。
 >>> cursor = conn.cursor()
 >>> cursor.execute("SELECT id, name FROM users LIMIT 1")
 >>> for desc in cursor.description:
-...     print(f"列: {desc[0]}, 型: {desc[1]}")
-列: id, 型: Int32
-列: name, 型: String
+...     print(f"Column: {desc[0]}, Type: {desc[1]}")
+Column: id, Type: Int32
+Column: name, Type: String
 ```
 
 **関連項目**
 
-- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - 列名のみを取得
-- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - 列の型のみを取得
+- [`column_names()`](#chdb-state-sqlitelike-cursor-column_names) - 列名のみの取得
+- [`column_types()`](#chdb-state-sqlitelike-cursor-column_types) - 列型のみの取得
 
 ---
 
 #### `execute` {#execute}
 
-SQLクエリを実行し、結果の取得を準備します。
+SQLクエリを実行し、結果の取得準備を行います。
 
 このメソッドはSQLクエリを実行し、fetchメソッドを使用して結果を取得できるように
 準備します。結果データの解析とClickHouseデータ型の自動型変換を処理します。
@@ -1232,7 +1220,7 @@ SQLクエリを実行し、結果の取得を準備します。
 execute(query: str) → None
 ```
 
-**パラメータ:**
+**パラメータ：**
 
 | パラメータ | 型 | 説明                 |
 | --------- | ---- | --------------------------- |
@@ -1251,7 +1239,7 @@ execute(query: str) → None
 :::
 
 :::note
-このメソッドはClickHouseデータ型を適切なPython型に自動変換します:
+このメソッドはClickHouseデータ型を適切なPython型に自動変換します：
 
 - Int/UInt型 → int
 - Float型 → float
@@ -1266,13 +1254,13 @@ execute(query: str) → None
 ```pycon
 >>> cursor = conn.cursor()
 >>>
->>> # DDLを実行
+>>> # DDLの実行
 >>> cursor.execute("CREATE TABLE test (id INT, name String) ENGINE = Memory")
 >>>
->>> # DMLを実行
+>>> # DMLの実行
 >>> cursor.execute("INSERT INTO test VALUES (1, 'Alice')")
 >>>
->>> # SELECTを実行して結果を取得
+>>> # SELECTの実行と結果の取得
 >>> cursor.execute("SELECT * FROM test")
 >>> rows = cursor.fetchall()
 >>> print(rows)
@@ -1281,9 +1269,9 @@ execute(query: str) → None
 
 **関連項目**
 
-- [`fetchone()`](#chdb-state-sqlitelike-cursor-fetchone) - 単一行を取得
-- [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) - 複数行を取得
-- [`fetchall()`](#chdb-state-sqlitelike-cursor-fetchall) - 残りのすべての行を取得
+- [`fetchone()`](#chdb-state-sqlitelike-cursor-fetchone) - 単一行の取得
+- [`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany) - 複数行の取得
+- [`fetchall()`](#chdb-state-sqlitelike-cursor-fetchall) - 残りのすべての行の取得
 
 
 ---
@@ -1304,7 +1292,7 @@ fetchall() → tuple
 
 | 戻り値の型 | 説明 |
 |-------------|-------------|
-| `tuple` | 結果セットの残りのすべての行タプルを含むタプル。利用可能な行がない場合は空のタプルを返します |
+| `tuple` | 結果セットの残りのすべての行タプルを含むタプル。行が利用できない場合は空のタプルを返します |
 
 :::warning 警告
 このメソッドは残りのすべての行を一度にメモリに読み込みます。大きな結果セットの場合は、結果をバッチで処理するために[`fetchmany()`](#chdb-state-sqlitelike-cursor-fetchmany)の使用を検討してください。
@@ -1328,7 +1316,7 @@ fetchall() → tuple
 
 #### `fetchmany` {#chdb-state-sqlitelike-cursor-fetchmany}
 
-クエリ結果から複数行を取得します。
+クエリ結果から複数の行を取得します。
 
 このメソッドは、現在のクエリ結果セットから最大'size'行を取得します。各行が適切なPython型変換された列値を含む行タプルのタプルを返します。
 
@@ -1391,10 +1379,10 @@ fetchone() → tuple | None
 
 | 戻り値の型       | 説明                                                                 |
 | ----------------- | --------------------------------------------------------------------------- |
-| `Optional[tuple]` | 列値のタプルとしての次の行、または利用可能な行がない場合はNone |
+| `Optional[tuple]` | 列値のタプルとしての次の行、またはそれ以上の行が利用できない場合はNone |
 
 :::note
-このメソッドはDB-API 2.0仕様に従います。列値はClickHouseの列型に基づいて自動的に適切なPython型に変換されます。
+このメソッドはDB-API 2.0仕様に従います。列値はClickHouseの列型に基づいて適切なPython型に自動的に変換されます。
 :::
 
 **例**
@@ -1449,7 +1437,7 @@ chdb.state.sqlitelike.to_arrowTable(res)
 
 :::note
 この関数を使用するには、pyarrowとpandasの両方がインストールされている必要があります。
-インストールするには: `pip install pyarrow pandas`
+インストールコマンド: `pip install pyarrow pandas`
 :::
 
 :::warning 警告
@@ -1476,7 +1464,7 @@ text: string
 
 クエリ結果をPandas DataFrameに変換します。
 
-この関数は、chdbクエリ結果をまずPyArrow Tableに変換し、次にDataFrameに変換することで、Pandas DataFrame形式に変換します。これにより、Pandas APIを使用した便利なデータ分析機能が提供されます。
+この関数は、chdbクエリ結果をまずPyArrow Tableに変換し、その後DataFrameに変換することで、Pandas DataFrame形式に変換します。これにより、Pandas APIを使用した便利なデータ分析機能が利用できます。
 
 **構文**
 
@@ -1503,7 +1491,7 @@ chdb.state.sqlitelike.to_df(r)
 | `ImportError` | pyarrowまたはpandasパッケージがインストールされていない場合 |
 
 :::note
-この関数は、大規模なデータセットでのパフォーマンスを向上させるために、ArrowからPandasへの変換でマルチスレッドを使用します。
+この関数は、大規模なデータセットでのパフォーマンス向上のため、ArrowからPandasへの変換にマルチスレッドを使用します。
 :::
 
 **関連項目**
@@ -1543,11 +1531,11 @@ chDBは、データベース接続のためのPython DB-API 2.0互換インタ�
 
 chDB DB-API 2.0インターフェースには以下が含まれます:
 
-- **接続**: 接続文字列によるデータベース接続管理
-- **カーソル**: クエリの実行と結果の取得
-- **型システム**: DB-API 2.0準拠の型定数とコンバータ
-- **エラー処理**: 標準的なデータベース例外階層
-- **スレッドセーフティ**: レベル1のスレッドセーフティ(スレッドはモジュールを共有できますが、接続は共有できません)
+- **Connections**: 接続文字列によるデータベース接続管理
+- **Cursors**: クエリの実行と結果の取得
+- **Type System**: DB-API 2.0準拠の型定数とコンバータ
+- **Error Handling**: 標準的なデータベース例外階層
+- **Thread Safety**: レベル1のスレッドセーフティ（スレッド間でモジュールは共有可能ですが、接続は共有できません）
 
 ---
 
@@ -1637,7 +1625,7 @@ chDBデータベースへのDB-API 2.0準拠の接続。
 
 このクラスは、chDBデータベースへの接続と対話のための標準的なDB-APIインターフェースを提供します。インメモリデータベースとファイルベースのデータベースの両方をサポートしています。
 
-この接続は、基盤となるchDBエンジンを管理し、クエリの実行、トランザクションの管理(ClickHouseでは何も行いません)、カーソルの作成のためのメソッドを提供します。
+この接続は、基盤となるchDBエンジンを管理し、クエリの実行、トランザクションの管理（ClickHouseでは無操作）、カーソルの作成のためのメソッドを提供します。
 
 ```python
 class chdb.dbapi.connections.Connection(path=None)
@@ -1684,7 +1672,7 @@ class chdb.dbapi.connections.Connection(path=None)
 ```
 
 :::note
-ClickHouseは従来のトランザクションをサポートしていないため、commit()とrollback()操作は何も行いませんが、DB-API準拠のために提供されています。
+ClickHouseは従来のトランザクションをサポートしていないため、commit()とrollback()操作は無操作ですが、DB-API準拠のために提供されています。
 :::
 
 ---
@@ -1695,7 +1683,7 @@ ClickHouseは従来のトランザクションをサポートしていないた�
 データベース接続を閉じます。
 
 基盤となるchDB接続を閉じ、この接続を閉じた状態としてマークします。
-この接続に対する後続の操作はErrorを発生させます。
+この接続に対する後続の操作はエラーを発生させます。
 
 **構文**
 
@@ -1722,7 +1710,7 @@ commit()
 ```
 
 :::note
-chDB/ClickHouseは従来型のトランザクションをサポートしていないため、このメソッドは何も実行しません。DB-API 2.0準拠のために提供されています。
+chDB/ClickHouseは従来型のトランザクションをサポートしていないため、これは何も実行しません。DB-API 2.0準拠のために提供されています。
 :::
 
 ---
@@ -1741,7 +1729,7 @@ cursor(cursor=None)
 
 | パラメータ | 型   | 説明                                |
 | --------- | ---- | ----------------------------------- |
-| `cursor`  | -    | 無視されます。互換性のために提供されています |
+| `cursor`  | -    | 無視されます。互換性のために提供    |
 
 **戻り値**
 
@@ -1819,7 +1807,7 @@ escape_string(s)
 
 | 戻り値の型  | 説明                                  |
 | ----------- | ------------------------------------- |
-| `str`       | SQLに安全に含めることができるエスケープ済み文字列 |
+| `str`       | SQLに安全に含められるエスケープ済み文字列 |
 
 ---
 
@@ -1931,9 +1919,9 @@ class chdb.dbapi.cursors.Cursor(connection)
 | 変数              | 型    | 説明                                                        |
 | ----------------- | ----- | ----------------------------------------------------------- |
 | `description`     | tuple | 最後のクエリ結果のカラムメタデータ                           |
-| `rowcount`        | int   | 最後のクエリで影響を受けた行数（不明な場合は-1）              |
-| `arraysize`       | int   | 一度に取得する行数のデフォルト値（デフォルト: 1）             |
-| `lastrowid`       | -     | 最後に挿入された行のID（該当する場合）                        |
+| `rowcount`        | int   | 最後のクエリで影響を受けた行数（不明な場合は-1）             |
+| `arraysize`       | int   | 一度に取得する行数のデフォルト値（デフォルト: 1）            |
+| `lastrowid`       | -     | 最後に挿入された行のID（該当する場合）                       |
 | `max_stmt_length` | int   | executemany()の最大ステートメントサイズ（デフォルト: 1024000）|
 
 **例**
@@ -1977,12 +1965,12 @@ callproc(procname, args=())
 | `sequence`  | 元のargsパラメータ（変更なし）            |
 
 :::note
-chDB/ClickHouseは従来の意味でのストアドプロシージャをサポートしていません。
+chDB/ClickHouseは従来型のストアドプロシージャをサポートしていません。
 このメソッドはDB-API 2.0準拠のために提供されていますが、実際の操作は実行しません。すべてのSQL操作にはexecute()を使用してください。
 :::
 
 :::warning 互換性
-これはプレースホルダー実装です。OUT/INOUTパラメータ、複数の結果セット、サーバー変数などの従来のストアドプロシージャ機能は、基盤となるClickHouseエンジンではサポートされていません。
+これはプレースホルダー実装です。OUT/INOUTパラメータ、複数の結果セット、サーバー変数などの従来型のストアドプロシージャ機能は、基盤となるClickHouseエンジンではサポートされていません。
 :::
 
 ---
@@ -2030,10 +2018,10 @@ execute(query, args=None)
 
 **パラメータスタイル**
 
-| スタイル             | 例                                              |
-| ------------------- | ----------------------------------------------- |
-| 疑問符スタイル       | `"SELECT * FROM users WHERE id = ?"`            |
-| 名前付きスタイル     | `"SELECT * FROM users WHERE name = %(name)s"`   |
+| スタイル        | 例                                              |
+| --------------- | ----------------------------------------------- |
+| 疑問符スタイル  | `"SELECT * FROM users WHERE id = ?"`            |
+| 名前付きスタイル | `"SELECT * FROM users WHERE name = %(name)s"`   |
 | フォーマットスタイル | `"SELECT * FROM users WHERE age = %s"` (レガシー) |
 
 **例**
@@ -2050,11 +2038,11 @@ execute(query, args=None)
 >>> cur.execute("SELECT COUNT(*) FROM users")
 ```
 
-**発生する例外**
+**例外**
 
 | 例外                                              | 条件                                 |
 | ------------------------------------------------------ | ----------------------------------------- |
-| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | カーソルが閉じられている、またはクエリの形式が不正な場合 |
+| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | カーソルが閉じられているか、クエリの形式が不正な場合 |
 | [`InterfaceError`](#chdb-dbapi-err-interfaceerror)     | 実行中にデータベースエラーが発生した場合 |
 
 ---
@@ -2124,7 +2112,7 @@ fetchall()
 | ----------- | ---------------------------------------------- |
 | `list`      | 残りのすべての行を表すタプルのリスト |
 
-**発生する例外**
+**例外**
 
 | 例外                                              | 条件                              |
 | ------------------------------------------------------ | -------------------------------------- |
@@ -2167,7 +2155,7 @@ fetchmany(size=1)
 | ----------- | -------------------------------------------- |
 | `list`      | 取得した行を表すタプルのリスト |
 
-**発生する例外**
+**例外**
 
 | 例外                                              | 条件                              |
 | ------------------------------------------------------ | -------------------------------------- |
@@ -2197,9 +2185,9 @@ fetchone()
 
 | 戻り値の型     | 説明                                            |
 | --------------- | ------------------------------------------------------ |
-| `tuple or None` | 次の行をタプルとして返す。行がない場合はNone |
+| `tuple or None` | タプルとしての次の行、または行がない場合はNone |
 
-**発生する例外**
+**例外**
 
 | 例外                                              | 条件                                |
 | ------------------------------------------------------ | ---------------------------------------- |
@@ -2300,7 +2288,7 @@ setinputsizes(*args)
 
 **パラメータ**
 
-| パラメータ | 型 | 説明                                    |
+| パラメータ | 型   | 説明                                    |
 | --------- | ---- | --------------------------------------- |
 | `*args`   | -    | パラメータサイズの指定(無視されます)      |
 
@@ -2313,7 +2301,7 @@ chDB は内部的にパラメータサイズを自動的に処理します。
 
 #### `setoutputsizes` {#setoutputsizes}
 
-出力カラムのサイズを設定します(何も実行しない実装)。
+出力カラムサイズを設定します(何も実行しない実装)。
 
 **構文**
 
@@ -2323,7 +2311,7 @@ setoutputsizes(*args)
 
 **パラメータ**
 
-| パラメータ | 型 | 説明                                 |
+| パラメータ | 型   | 説明                                 |
 | --------- | ---- | ------------------------------------ |
 | `*args`   | -    | カラムサイズの指定(無視されます)       |
 
@@ -2336,10 +2324,10 @@ chDB は内部的に出力サイズを自動的に処理します。
 
 ### Error Classes {#error-classes}
 
-chdb データベース操作の例外クラス。
+chDB データベース操作の例外クラス。
 
 このモジュールは、Python Database API Specification v2.0 に従って、
-chdb におけるデータベース関連エラーを処理するための完全な例外クラス階層を提供します。
+chDB におけるデータベース関連エラーを処理するための完全な例外クラス階層を提供します。
 
 例外階層は以下のように構成されています:
 
@@ -2391,7 +2379,7 @@ StandardError
 ... except ProgrammingError as e:
 ...     print(f"SQL Error: {e}")
 ...
-SQL Error: Table 'nonexistent_table' doesn't exist
+SQL Error: テーブル 'nonexistent_table' が存在しません
 ```
 
 ```pycon
@@ -2400,7 +2388,7 @@ SQL Error: Table 'nonexistent_table' doesn't exist
 ... except IntegrityError as e:
 ...     print(f"Constraint violation: {e}")
 ...
-Constraint violation: Duplicate entry '1' for key 'PRIMARY'
+Constraint violation: キー 'PRIMARY' に重複したエントリ '1' があります
 ```
 
 ---
@@ -2411,33 +2399,33 @@ Constraint violation: Duplicate entry '1' for key 'PRIMARY'
 
 処理されるデータに関する問題によって発生するエラーに対して送出される例外です。
 
-この例外は、処理されるデータに関する問題によってデータベース操作が失敗した場合に送出されます。例えば以下のような場合です:
+この例外は、以下のような処理対象データの問題によってデータベース操作が失敗した場合に送出されます:
 
 - ゼロ除算操作
 - 範囲外の数値
 - 無効な日付/時刻値
-- 文字列切り捨てエラー
+- 文字列切り詰めエラー
 - 型変換の失敗
 - カラム型に対する無効なデータ形式
 
 **送出される例外**
 
-| 例外                                     | 条件                                     |
-| ---------------------------------------- | ---------------------------------------- |
-| [`DataError`](#chdb-dbapi-err-dataerror) | データの検証または処理が失敗した場合 |
+| 例外                                     | 条件                           |
+| ---------------------------------------- | ------------------------------ |
+| [`DataError`](#chdb-dbapi-err-dataerror) | データ検証または処理が失敗した場合 |
 
 **例**
 
 ```pycon
 >>> # SQLでのゼロ除算
 >>> cursor.execute("SELECT 1/0")
-DataError: Division by zero
+DataError: ゼロ除算
 ```
 
 ```pycon
 >>> # 無効な日付形式
 >>> cursor.execute("INSERT INTO table VALUES ('invalid-date')")
-DataError: Invalid date format
+DataError: 無効な日付形式
 ```
 
 ---
@@ -2472,7 +2460,7 @@ DataError: Invalid date format
 これは警告を除く、chdbにおけるすべてのエラー例外の基底クラスです。操作の正常な完了を妨げるすべてのデータベースエラー条件の親クラスとして機能します。
 
 :::note
-この例外階層はPython DB API 2.0仕様に従っています。
+この例外階層はPython DB API 2.0仕様に準拠しています。
 :::
 
 **関連項目**
@@ -2485,7 +2473,7 @@ DataError: Invalid date format
 
 データベースのリレーショナル整合性が影響を受けた場合に送出される例外です。
 
-この例外は、データベース操作が整合性制約に違反した場合に送出されます。以下が含まれます:
+この例外は、データベース操作が以下を含む整合性制約に違反した場合に送出されます:
 
 - 外部キー制約違反
 - 主キーまたは一意制約違反(重複キー)
@@ -2495,23 +2483,23 @@ DataError: Invalid date format
 
 **送出される例外**
 
-| 例外                                               | 条件                                         |
-| -------------------------------------------------- | ------------------------------------------------ |
+| 例外                                               | 条件                               |
+| -------------------------------------------------- | ---------------------------------- |
 | [`IntegrityError`](#chdb-dbapi-err-integrityerror) | データベース整合性制約が違反された場合 |
 
 **例**
 
 ```pycon
->>> # 重複する主キー
+>>> # 重複した主キー
 >>> cursor.execute("INSERT INTO users (id, name) VALUES (1, 'John')")
 >>> cursor.execute("INSERT INTO users (id, name) VALUES (1, 'Jane')")
-IntegrityError: Duplicate entry '1' for key 'PRIMARY'
+IntegrityError: キー 'PRIMARY' に重複したエントリ '1' があります
 ```
 
 ```pycon
 >>> # 外部キー違反
 >>> cursor.execute("INSERT INTO orders (user_id) VALUES (999)")
-IntegrityError: Cannot add or update a child row: foreign key constraint fails
+IntegrityError: 子行を追加または更新できません: 外部キー制約が失敗しました
 ```
 
 ---
@@ -2520,7 +2508,7 @@ IntegrityError: Cannot add or update a child row: foreign key constraint fails
 
 基底クラス: [`Error`](#chdb-dbapi-err-error)
 
-データベース自体ではなく、データベースインターフェースに関連するエラーに対して送出される例外です。
+データベース自体ではなくデータベースインターフェースに関連するエラーに対して送出される例外です。
 
 
 この例外は、データベースインターフェースの実装に問題がある場合に発生します。例：
@@ -2530,7 +2518,7 @@ IntegrityError: Cannot add or update a child row: foreign key constraint fails
 - インターフェースレベルのプロトコルエラー
 - モジュールのインポートまたは初期化の失敗
 
-**発生する例外**
+**発生条件**
 
 | 例外                                          | 条件                                                                  |
 | -------------------------------------------------- | -------------------------------------------------------------------------- |
@@ -2546,17 +2534,17 @@ IntegrityError: Cannot add or update a child row: foreign key constraint fails
 
 基底クラス: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
-データベースが内部エラーに遭遇した場合に発生する例外です。
+データベースが内部エラーに遭遇した場合に発生する例外。
 
 この例外は、データベースシステムがアプリケーションに起因しない内部エラーに遭遇した場合に発生します。例：
 
-- 無効なカーソル状態（カーソルが無効になった場合）
-- トランザクション状態の不整合（トランザクションが同期していない場合）
-- データベース破損の問題
+- 無効なカーソル状態（カーソルが無効になっている）
+- トランザクション状態の不整合（トランザクションが同期していない）
+- データベースの破損問題
 - 内部データ構造の破損
 - システムレベルのデータベースエラー
 
-**発生する例外**
+**発生条件**
 
 | 例外                                        | 条件                                         |
 | ------------------------------------------------ | ------------------------------------------------- |
@@ -2567,7 +2555,7 @@ IntegrityError: Cannot add or update a child row: foreign key constraint fails
 :::
 
 :::note
-これらのエラーは一般的にアプリケーションの制御外であり、データベースの再起動または修復操作が必要になる場合があります。
+これらのエラーは一般的にアプリケーションの制御範囲外であり、データベースの再起動または修復操作が必要になる場合があります。
 :::
 
 ---
@@ -2576,16 +2564,16 @@ IntegrityError: Cannot add or update a child row: foreign key constraint fails
 
 基底クラス: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
-メソッドまたはデータベースAPIがサポートされていない場合に発生する例外です。
+メソッドまたはデータベースAPIがサポートされていない場合に発生する例外。
 
 この例外は、アプリケーションが現在のデータベース設定またはバージョンでサポートされていないデータベース機能またはAPIメソッドを使用しようとした場合に発生します。例：
 
-- トランザクションサポートのない接続で`rollback()`を要求する場合
-- データベースバージョンでサポートされていない高度なSQL機能を使用する場合
-- 現在のドライバで実装されていないメソッドを呼び出す場合
-- 無効化されたデータベース機能を使用しようとする場合
+- トランザクションサポートのない接続で`rollback()`を要求する
+- データベースバージョンでサポートされていない高度なSQL機能を使用する
+- 現在のドライバで実装されていないメソッドを呼び出す
+- 無効化されたデータベース機能を使用しようとする
 
-**発生する例外**
+**発生条件**
 
 | 例外                                                | 条件                                       |
 | -------------------------------------------------------- | ----------------------------------------------- |
@@ -2606,7 +2594,7 @@ NotSupportedError: WITH clause not supported in this database version
 ```
 
 :::note
-これらのエラーを回避するには、データベースのドキュメントとドライバの機能を確認してください。可能な場合は、適切なフォールバックを検討してください。
+これらのエラーを回避するために、データベースのドキュメントとドライバの機能を確認してください。可能な場合は、適切なフォールバックを検討してください。
 :::
 
 ---
@@ -2615,7 +2603,7 @@ NotSupportedError: WITH clause not supported in this database version
 
 基底クラス: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
-データベースの操作に関連するエラーが発生した場合に発生する例外です。
+データベースの操作に関連するエラーに対して発生する例外。
 
 この例外は、データベース操作中に発生し、必ずしもプログラマの制御下にないエラーに対して発生します。以下を含みます：
 
@@ -2627,7 +2615,7 @@ NotSupportedError: WITH clause not supported in this database version
 - データベースサーバの内部エラー
 - 認証または認可の失敗
 
-**発生する例外**
+**発生条件**
 
 | 例外                                              | 条件                                               |
 | ------------------------------------------------------ | ------------------------------------------------------- |
@@ -2647,18 +2635,18 @@ NotSupportedError: WITH clause not supported in this database version
 
 基底クラス: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
-データベース操作におけるプログラミングエラーに対して発生する例外です。
+データベース操作におけるプログラミングエラーに対して発生する例外。
 
 この例外は、アプリケーションのデータベース使用にプログラミングエラーがある場合に発生します。以下を含みます：
 
 - テーブルまたはカラムが見つからない
 - 作成時にテーブルまたはインデックスが既に存在する
 - ステートメントのSQL構文エラー
-- プリペアドステートメントで指定されたパラメータ数が間違っている
+- プリペアドステートメントで指定されたパラメータ数が誤っている
 - 無効なSQL操作（例：存在しないオブジェクトに対するDROP）
 - データベースAPIメソッドの誤った使用
 
-**発生する例外**
+**発生条件**
 
 | 例外                                              | 条件                                        |
 | ------------------------------------------------------ | ------------------------------------------------ |
@@ -2668,7 +2656,7 @@ NotSupportedError: WITH clause not supported in this database version
 
 
 ```pycon
->>> # テーブルが見つかりません
+>>> # テーブルが見つからない
 >>> cursor.execute("SELECT * FROM nonexistent_table")
 ProgrammingError: テーブル 'nonexistent_table' は存在しません
 ```
@@ -2680,7 +2668,7 @@ ProgrammingError: SQL 構文に誤りがあります
 ```
 
 ```pycon
->>> # パラメーター数が正しくありません
+>>> # パラメーター数が正しくない
 >>> cursor.execute("INSERT INTO users (name, age) VALUES (%s)", ('John',))
 ProgrammingError: 列数が値の数と一致しません
 ```
@@ -2689,11 +2677,11 @@ ProgrammingError: 列数が値の数と一致しません
 
 #### **exception** `chdb.dbapi.err.StandardError` {#chdb-dbapi-err-standarderror}
 
-Bases: `Exception`
+基底クラス: `Exception`
 
-chdb に対する操作に関連する例外です。
+chdb による操作に関連する例外です。
 
-これは、すべての chdb 関連の例外の基底クラスです。Python の組み込みクラス Exception を継承しており、データベース操作に関する例外階層のルートとして機能します。
+これは、すべての chdb 関連の例外の基底クラスです。Python 組み込みの Exception クラスを継承し、データベース操作における例外階層のルートとして機能します。
 
 :::note
 この例外クラスは、データベースの例外処理に関する Python DB API 2.0 仕様に準拠しています。
@@ -2703,18 +2691,18 @@ chdb に対する操作に関連する例外です。
 
 #### **exception** `chdb.dbapi.err.Warning` {#chdb-dbapi-err-warning}
 
-Bases: [`StandardError`](#chdb-dbapi-err-standarderror)
+基底クラス: [`StandardError`](#chdb-dbapi-err-standarderror)
 
 挿入時のデータ切り捨てなど、重要な警告に対して送出される例外です。
 
-この例外は、データベース操作自体は完了したものの、アプリケーション側で注意すべき重要な警告が発生した場合に送出されます。代表的なケースとしては次のようなものがあります。
+この例外は、データベース操作自体は完了したものの、アプリケーション側で注意すべき重要な警告が発生した場合に送出されます。代表的なシナリオとしては次のようなものがあります。
 
-- 挿入時のデータ切り捨て
-- 数値変換における精度の損失
+- 挿入処理中のデータ切り捨て
+- 数値変換時の精度低下
 - 文字セット変換に関する警告
 
 :::note
-これは、警告用の例外に関する Python DB API 2.0 仕様に準拠しています。
+これは警告用の例外に関する Python DB API 2.0 仕様に準拠しています。
 :::
 
 ---
@@ -2728,10 +2716,10 @@ str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
 ```
 
-指定されたオブジェクトから新しい文字列オブジェクトを作成します。encoding または errors が指定されている場合、オブジェクトはデータバッファを公開している必要があり、そのバッファは指定されたエンコーディングとエラーハンドラを使ってデコードされます。指定されていない場合は、`object._\_str_\_()` が定義されていればその結果を、定義されていなければ `repr(object)` を返します。
+指定されたオブジェクトから新しい文字列オブジェクトを作成します。encoding または errors が指定された場合、オブジェクトはデータバッファを公開している必要があり、そのバッファは指定されたエンコーディングとエラーハンドラーを使ってデコードされます。指定されていない場合は、`object._\_str_\_()` が定義されていればその結果を、そうでなければ `repr(object)` を返します。
 
-- encoding の既定値は ‘utf-8’ です。
-- errors の既定値は ‘strict’ です。
+- encoding のデフォルトは ‘utf-8’ です。
+- errors のデフォルトは ‘strict’ です。
 
 ---
 
@@ -2742,9 +2730,9 @@ int([x]) -> integer
 int(x, base=10) -> integer
 ```
 
-数値または文字列を整数に変換します。引数が与えられない場合は 0 を返します。x が数値であれば、x._\_int_\_() を返します。浮動小数点数の場合は 0 に向かって切り捨てます。
+数値または文字列を整数に変換します。引数が指定されない場合は 0 を返します。x が数値であれば x._\_int_\_() を返します。浮動小数点数の場合は 0 に向かって切り捨てられます。
 
-x が数値でない場合、または base が指定されている場合、x は指定された基数で表現された整数リテラルを表す文字列、bytes、または bytearray インスタンスである必要があります。リテラルの前には ‘+’ または ‘-’ を付けることができ、前後に空白を含んでもかまいません。base の既定値は 10 です。有効な基数は 0 および 2〜36 です。base が 0 の場合は、文字列を整数リテラルとして解釈して基数を決定します。
+x が数値でない場合、または base が指定された場合、x は指定された基数での整数リテラルを表す文字列、bytes、もしくは bytearray インスタンスでなければなりません。リテラルの前には ‘+’ または ‘-’ を付けることができ、前後に空白を含んでもかまいません。base のデフォルトは 10 です。有効な基数は 0 および 2〜36 です。base に 0 を指定すると、文字列内の整数リテラルから基数を解釈します。
 
 ```python
 >>> int(‘0b100’, base=0)
@@ -2760,33 +2748,29 @@ str(object=’’) -> str
 str(bytes_or_buffer[, encoding[, errors]]) -> str
 ```
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object._\_str_\_() (if defined)
-or repr(object).
-encoding defaults to ‘utf-8’.
-errors defaults to ‘strict’.
+指定されたオブジェクトから新しい文字列オブジェクトを作成します。encoding または errors が指定された場合、オブジェクトはデータバッファを公開している必要があり、そのバッファは指定されたエンコーディングとエラーハンドラーを使ってデコードされます。指定されていない場合は、object._\_str_\_() が定義されていればその結果を、そうでなければ repr(object) を返します。
+encoding のデフォルトは ‘utf-8’ です。
+errors のデフォルトは ‘strict’ です。
 
 ---
 
-### Type Constants {#type-constants}
+### 型定数 {#type-constants}
 
 #### `chdb.dbapi.STRING = frozenset({247, 253, 254})` {#string-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較セマンティクスをサポートします。個々の要素をこの集合に対して等価演算子および非等価演算子の両方で比較できるようにすることで、柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 の型比較の意味論をサポートします。個々の要素を集合に対して等価・非等価の両方の演算子で比較できる、柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に対して使用され、`field_type` が単一の型値である場合に “field_type == STRING” のような比較を行えるようにします。
+これは STRING、BINARY、NUMBER などの型定数に対して使用され、field_type が単一の型値である場合に “field_type == STRING” のような比較を行えるようにします。
 
 **使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
->>> FIELD_TYPE.STRING == string_types  # Returns True
->>> FIELD_TYPE.INT != string_types     # Returns True
->>> FIELD_TYPE.BLOB in string_types    # Returns False
+>>> FIELD_TYPE.STRING == string_types  # True を返す
+>>> FIELD_TYPE.INT != string_types     # True を返す
+>>> FIELD_TYPE.BLOB in string_types    # False を返す
 ```
 
 ---
@@ -2794,13 +2778,15 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.BINARY = frozenset({249, 250, 251, 252})` {#binary-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較のセマンティクスをサポートします。個々の要素を集合に対して等価・非等価の演算子で比較できる柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 における型比較のセマンティクスをサポートします。
+個々の要素を集合に対して、等価演算子および不等演算子の両方で比較できる柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に使用され、field_type が単一の型値である場合に「field_type == STRING」のような比較を可能にします。
+これは STRING、BINARY、NUMBER といった型定数に対して使用され、field_type が単一の型値である場合に
+「field_type == STRING」のような比較を可能にします。
 
-**例**
+**使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2813,13 +2799,15 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.NUMBER = frozenset({0, 1, 3, 4, 5, 8, 9, 13})` {#number-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較のセマンティクスをサポートします。個々の要素を集合に対して等価・非等価の演算子で比較できる柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 における型比較のセマンティクスをサポートします。
+個々の要素を集合に対して、等価演算子および不等演算子の両方で比較できる柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に使用され、field_type が単一の型値である場合に「field_type == STRING」のような比較を可能にします。
+これは STRING、BINARY、NUMBER といった型定数に対して使用され、field_type が単一の型値である場合に
+「field_type == STRING」のような比較を可能にします。
 
-**例**
+**使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2832,13 +2820,15 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.DATE = frozenset({10, 14})` {#date-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較のセマンティクスをサポートします。個々の要素を集合に対して等価・非等価の演算子で比較できる柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 における型比較のセマンティクスをサポートします。
+個々の要素を集合に対して、等価演算子および不等演算子の両方で比較できる柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に使用され、field_type が単一の型値である場合に「field_type == STRING」のような比較を可能にします。
+これは STRING、BINARY、NUMBER といった型定数に対して使用され、field_type が単一の型値である場合に
+「field_type == STRING」のような比較を可能にします。
 
-**例**
+**使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2851,13 +2841,15 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.TIME = frozenset({11})` {#time-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較のセマンティクスをサポートします。個々の要素を集合に対して等価・非等価の演算子で比較できる柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 における型比較のセマンティクスをサポートします。
+個々の要素を集合に対して、等価演算子および不等演算子の両方で比較できる柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に使用され、field_type が単一の型値である場合に「field_type == STRING」のような比較を可能にします。
+これは STRING、BINARY、NUMBER といった型定数に対して使用され、field_type が単一の型値である場合に
+「field_type == STRING」のような比較を可能にします。
 
-**例**
+**使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2870,13 +2862,15 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.TIMESTAMP = frozenset({7, 12})` {#timestamp-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
-このクラスは frozenset を拡張し、DB-API 2.0 の型比較のセマンティクスをサポートします。個々の要素を集合に対して等価・非等価の演算子で比較できる柔軟な型チェックを可能にします。
+このクラスは frozenset を拡張し、DB-API 2.0 における型比較のセマンティクスをサポートします。
+個々の要素を集合に対して、等価演算子および不等演算子の両方で比較できる柔軟な型チェックを可能にします。
 
-これは STRING、BINARY、NUMBER などの型定数に使用され、field_type が単一の型値である場合に「field_type == STRING」のような比較を可能にします。
+これは STRING、BINARY、NUMBER といった型定数に対して使用され、field_type が単一の型値である場合に
+「field_type == STRING」のような比較を可能にします。
 
-**例**
+**使用例**
 
 ```pycon
 >>> string_types = DBAPISet([FIELD_TYPE.STRING, FIELD_TYPE.VAR_STRING])
@@ -2887,14 +2881,13 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.DATETIME = frozenset({7, 12})` {#datetime-type}
 
-DB-API 2.0 の型比較のために拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset です。
 
 
 このクラスは frozenset を拡張し、DB-API 2.0 の型比較セマンティクスをサポートします。
-個々の要素を集合に対して、等価・非等価の両方の演算子を用いて比較できる柔軟な型チェックを可能にします。
+これにより、個々の要素を集合に対して等価演算子および不等演算子の両方で比較できる、柔軟な型チェックが可能になります。
 
-これは STRING、BINARY、NUMBER などの型定数に対して使用され、field_type が単一の型値である場合に
-「field_type == STRING」のような比較を行えるようにします。
+これは STRING、BINARY、NUMBER などの型定数に対して使用され、field_type のような単一の型値に対して「field_type == STRING」のような比較を可能にします。
 
 **例**
 
@@ -2909,13 +2902,12 @@ DB-API 2.0 の型比較のために拡張された frozenset です。
 
 #### `chdb.dbapi.ROWID = frozenset({})` {#rowid-type}
 
-DB-API 2.0 の型比較用に拡張された frozenset です。
+DB-API 2.0 の型比較用に拡張された frozenset。
 
 このクラスは frozenset を拡張し、DB-API 2.0 の型比較セマンティクスをサポートします。
-個々の要素を集合に対して、等価・非等価の両方の演算子を用いて比較できる柔軟な型チェックを可能にします。
+これにより、個々の要素を集合に対して等価演算子および不等演算子の両方で比較できる、柔軟な型チェックが可能になります。
 
-これは STRING、BINARY、NUMBER などの型定数に対して使用され、field_type が単一の型値である場合に
-「field_type == STRING」のような比較を行えるようにします。
+これは STRING、BINARY、NUMBER などの型定数に対して使用され、field_type のような単一の型値に対して「field_type == STRING」のような比較を可能にします。
 
 **例**
 
@@ -2928,17 +2920,17 @@ DB-API 2.0 の型比較用に拡張された frozenset です。
 
 **使用例**
 
-基本的なクエリ例:
+基本的なクエリの例:
 
 ```python
 import chdb.dbapi as dbapi
 
-print("chdb ドライバーのバージョン: {0}".format(dbapi.get_client_info()))
+print("chdb ドライバーバージョン: {0}".format(dbapi.get_client_info()))
 
 ```
 
 
-# 接続とカーソルを作成
+# コネクションとカーソルを作成
 conn = dbapi.connect()
 cur = conn.cursor()
 
@@ -2995,9 +2987,9 @@ cur.execute("SELECT * FROM employees WHERE department = 'Engineering'")
 
 
 
-# 結果の取得
+# 結果を取得する
 
-print(&quot;列名:&quot;, [desc[0] for desc in cur.description])
+print(&quot;Column names:&quot;, [desc[0] for desc in cur.description])
 for row in cur.fetchall():
 print(row)
 
@@ -3012,7 +3004,7 @@ import chdb.dbapi as dbapi
 ````
 
 
-# インメモリ・データベース（デフォルト）
+# インメモリ データベース（デフォルト）
 conn1 = dbapi.connect()
 
 
@@ -3027,7 +3019,7 @@ conn3 = dbapi.connect("./my_database.chdb?log-level=debug&verbose")
 
 
 
-# 読み取り専用接続
+# 読み取り専用の接続
 conn4 = dbapi.connect("./my_database.chdb?mode=ro")
 
 
@@ -3071,7 +3063,7 @@ cur.close()
 
 chDB用のユーザー定義関数モジュール。
 
-このモジュールは、chDBでユーザー定義関数（UDF）を作成・管理する機能を提供します。SQLクエリから呼び出せるカスタムPython関数を記述することで、chDBの機能を拡張できます。
+このモジュールは、chDBでユーザー定義関数（UDF）を作成・管理する機能を提供します。カスタムPython関数を記述してSQLクエリから呼び出すことで、chDBの機能を拡張できます。
 
 ### `chdb.udf.chdb_udf` {#chdb-udf}
 
@@ -3092,7 +3084,7 @@ chdb.udf.chdb_udf(return_type='String')
 **注意事項**
 
 1. 関数はステートレスである必要があります。UDFのみがサポートされており、UDAFはサポートされていません。
-2. デフォルトの戻り値の型はStringです。戻り値の型はClickHouseのデータ型のいずれかである必要があります。
+2. デフォルトの戻り値の型はStringです。戻り値の型はClickHouseのデータ型のいずれかを指定する必要があります。
 3. 関数はString型の引数を受け取る必要があります。すべての引数は文字列です。
 4. 関数は入力の各行に対して呼び出されます。
 5. 関数は純粋なPython関数である必要があります。関数内で使用するすべてのモジュールは関数内でインポートしてください。
@@ -3146,9 +3138,9 @@ chdb.udf.generate_udf(func_name, args, return_type, udf_body)
 
 ## ユーティリティ {#utilities}
 
-chDBのユーティリティ関数とヘルパー。
+chDB のユーティリティ関数とヘルパー。
 
-このモジュールには、データ型推論、データ変換ヘルパー、デバッグユーティリティなど、chDBを操作するための各種ユーティリティ関数が含まれています。
+このモジュールには、データ型推論、データ変換ヘルパー、デバッグユーティリティなど、chDB を操作するためのさまざまなユーティリティ関数が含まれています。
 
 ---
 
@@ -3157,7 +3149,7 @@ chDBのユーティリティ関数とヘルパー。
 辞書のリストをカラム形式に変換します。
 
 この関数は辞書のリストを受け取り、各キーがカラムに対応し、各値がカラム値のリストである辞書に変換します。
-辞書内の欠損値はNoneとして表現されます。
+辞書内の欠損値は None として表現されます。
 
 **構文**
 
@@ -3169,13 +3161,13 @@ chdb.utils.convert_to_columnar(items: List[Dict[str, Any]]) → Dict[str, List[A
 
 | パラメータ | 型                     | 説明                       |
 | --------- | ---------------------- | -------------------------- |
-| `items`   | `List[Dict[str, Any]]` | 変換する辞書のリスト        |
+| `items`   | `List[Dict[str, Any]]` | 変換する辞書のリスト       |
 
 **戻り値**
 
-| 戻り値の型              | 説明                                                                         |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `Dict[str, List[Any]]` | キーがカラム名、値がカラム値のリストである辞書                                  |
+| 戻り値の型             | 説明                                                                 |
+| ---------------------- | -------------------------------------------------------------------- |
+| `Dict[str, List[Any]]` | キーがカラム名、値がカラム値のリストである辞書                       |
 
 **例**
 
@@ -3199,7 +3191,7 @@ chdb.utils.convert_to_columnar(items: List[Dict[str, Any]]) → Dict[str, List[A
 
 ネストされた辞書を平坦化します。
 
-この関数はネストされた辞書を受け取り、ネストされたキーをセパレータで連結して平坦化します。辞書のリストはJSON文字列にシリアライズされます。
+この関数はネストされた辞書を受け取り、ネストされたキーをセパレータで連結して平坦化します。辞書のリストは JSON 文字列にシリアライズされます。
 
 **構文**
 
@@ -3209,17 +3201,17 @@ chdb.utils.flatten_dict(d: Dict[str, Any], parent_key: str = '', sep: str = '_')
 
 **パラメータ**
 
-| パラメータ    | 型               | デフォルト  | 説明                                            |
+| パラメータ   | 型               | デフォルト | 説明                                           |
 | ------------ | ---------------- | ---------- | ---------------------------------------------- |
-| `d`          | `Dict[str, Any]` | _必須_     | 平坦化する辞書                                   |
-| `parent_key` | str              | `""`       | 各キーの前に付加するベースキー                     |
-| `sep`        | str              | `"_"`      | 連結されたキーの間に使用するセパレータ              |
+| `d`          | `Dict[str, Any]` | _必須_     | 平坦化する辞書                                 |
+| `parent_key` | str              | `""`       | 各キーの前に付加するベースキー                 |
+| `sep`        | str              | `"_"`      | 連結されたキー間で使用するセパレータ           |
 
 **戻り値**
 
-| 戻り値の型        | 説明                   |
+| 戻り値の型       | 説明                   |
 | ---------------- | ---------------------- |
-| `Dict[str, Any]` | 平坦化された辞書        |
+| `Dict[str, Any]` | 平坦化された辞書       |
 
 **例**
 
@@ -3253,7 +3245,7 @@ chdb.utils.flatten_dict(d: Dict[str, Any], parent_key: str = '', sep: str = '_')
 
 値のリストに最も適したデータ型を推論します。
 
-この関数は値のリストを検査し、リスト内のすべての値を表現できる最も適切なデータ型を決定します。整数、符号なし整数、小数、浮動小数点型を考慮し、値がいずれの数値型でも表現できない場合、またはすべての値がNoneの場合は「string」をデフォルトとします。
+この関数は値のリストを検査し、リスト内のすべての値を表現できる最も適切なデータ型を決定します。整数、符号なし整数、小数、浮動小数点型を考慮し、値がいずれの数値型でも表現できない場合、またはすべての値が None の場合は "string" をデフォルトとします。
 
 **構文**
 
@@ -3263,21 +3255,21 @@ chdb.utils.infer_data_type(values: List[Any]) → str
 
 **パラメータ**
 
-| パラメータ | 型          | 説明                                                        |
+| パラメータ | 型          | 説明                                                       |
 | --------- | ----------- | ---------------------------------------------------------- |
-| `values`  | `List[Any]` | 分析する値のリスト。値は任意の型を取ることができます           |
+| `values`  | `List[Any]` | 分析する値のリスト。値は任意の型を取ることができます       |
 
 **戻り値**
 
 
 | 戻り値の型 | 説明                                                                                                                                                                                                                                                 |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `str`       | 推論されたデータ型を表す文字列。返される可能性のある値は次のとおりです:"int8"、"int16"、"int32"、"int64"、"int128"、"int256"、"uint8"、"uint16"、"uint32"、"uint64"、"uint128"、"uint256"、"decimal128"、"decimal256"、"float32"、"float64"、または"string"。 |
+| `str`       | 推論されたデータ型を表す文字列。返される可能性のある値は、"int8"、"int16"、"int32"、"int64"、"int128"、"int256"、"uint8"、"uint16"、"uint32"、"uint64"、"uint128"、"uint256"、"decimal128"、"decimal256"、"float32"、"float64"、または "string" です。 |
 
 :::note
 
-- リスト内のすべての値がNoneの場合、関数は"string"を返します。
-- リスト内のいずれかの値が文字列の場合、関数は直ちに"string"を返します。
+- リスト内のすべての値がNoneの場合、関数は "string" を返します。
+- リスト内のいずれかの値が文字列の場合、関数は直ちに "string" を返します。
 - 関数は、数値がその範囲と精度に基づいて整数、小数、または浮動小数点数として表現できることを前提としています。
   :::
 
@@ -3285,9 +3277,9 @@ chdb.utils.infer_data_type(values: List[Any]) → str
 
 ### `chdb.utils.infer_data_types` {#infer-data-types}
 
-列指向データ構造内の各列のデータ型を推論します。
+カラム型データ構造内の各カラムのデータ型を推論します。
 
-この関数は各列の値を分析し、データのサンプルに基づいて各列に最も適したデータ型を推論します。
+この関数は各カラムの値を分析し、データのサンプルに基づいて各カラムに最も適したデータ型を推論します。
 
 **構文**
 
@@ -3299,19 +3291,19 @@ chdb.utils.infer_data_types`(column_data: Dict[str, List[Any]], n_rows: int = 10
 
 | パラメータ     | 型                   | デフォルト    | 説明                                                                    |
 | ------------- | ---------------------- | ---------- | ------------------------------------------------------------------------------ |
-| `column_data` | `Dict[str, List[Any]]` | _必須_ | キーが列名で値が列の値のリストである辞書 |
+| `column_data` | `Dict[str, List[Any]]` | _必須_ | キーがカラム名、値がカラム値のリストである辞書 |
 | `n_rows`      | int                    | `10000`    | 型推論のためにサンプリングする行数                                |
 
 **戻り値**
 
 | 戻り値の型   | 説明                                                                |
 | ------------- | -------------------------------------------------------------------------- |
-| `List[tuple]` | 列名と推論されたデータ型を含むタプルのリスト |
+| `List[tuple]` | カラム名と推論されたデータ型を含むタプルのリスト |
 
 
 ## 抽象基底クラス {#abstract-base-classes}
 
-### **class** `chdb.rwabc.PyReader`(data: Any)` {#pyreader}
+### **class** `chdb.rwabc.PyReader(data: Any)` {#pyreader}
 
 基底クラス: `ABC`
 
@@ -3423,7 +3415,7 @@ chDB関連のエラーに対する基底例外クラスです。
 
 :::note
 この例外は、基盤となるClickHouseエンジンがエラーを報告した際に、chdb.query()および関連する関数によって自動的に送出されます。
-失敗する可能性のあるクエリを処理する際には、この例外をキャッチして、アプリケーションで適切なエラー処理を行う必要があります。
+失敗する可能性のあるクエリを処理する際には、アプリケーションで適切なエラー処理を提供するために、この例外をキャッチする必要があります。
 :::
 
 
@@ -3431,12 +3423,12 @@ chDB関連のエラーに対する基底例外クラスです。
 
 ### `chdb.chdb_version = ('3', '6', '0')` {#chdb-version}
 
-組み込みの変更不可能な（イミュータブルな）シーケンスです。
+組み込みのイミュータブル（変更不可）なシーケンスです。
 
-引数が指定されない場合、コンストラクタは空のタプルを返します。
-iterable が指定された場合、その要素からタプルが初期化されます。
+引数を指定しない場合、コンストラクタは空のタプルを返します。
+iterable が指定されている場合、その要素からタプルが初期化されます。
 
-引数がタプルの場合、戻り値は同じオブジェクトになります。
+引数がタプルである場合、戻り値は同じオブジェクトとなります。
 
 ---
 
@@ -3448,10 +3440,10 @@ str(bytes_or_buffer[, encoding[, errors]]) -> str
 ```
 
 指定されたオブジェクトから新しい文字列オブジェクトを作成します。encoding または
-errors が指定された場合、オブジェクトはデコード対象となるデータバッファを公開している必要があり、
-指定されたエンコーディングとエラーハンドラを使ってデコードされます。
-それ以外の場合は、object.__str__()（定義されている場合）の結果、
-または repr(object) を返します。
+errors が指定されている場合、そのオブジェクトは、指定されたエンコーディングとエラー
+ハンドラーを使用してデコードされるデータバッファを公開している必要があります。
+それ以外の場合は、object.__str__() が定義されていればその戻り値を、
+定義されていなければ repr(object) を返します。
 
 - encoding のデフォルトは ‘utf-8’ です。
 - errors のデフォルトは ‘strict’ です。
@@ -3466,10 +3458,10 @@ str(bytes_or_buffer[, encoding[, errors]]) -> str
 ```
 
 指定されたオブジェクトから新しい文字列オブジェクトを作成します。encoding または
-errors が指定された場合、オブジェクトはデコード対象となるデータバッファを公開している必要があり、
-指定されたエンコーディングとエラーハンドラを使ってデコードされます。
-それ以外の場合は、object.__str__()（定義されている場合）の結果、
-または repr(object) を返します。
+errors が指定されている場合、そのオブジェクトは、指定されたエンコーディングとエラー
+ハンドラーを使用してデコードされるデータバッファを公開している必要があります。
+それ以外の場合は、object.__str__() が定義されていればその戻り値を、
+定義されていなければ repr(object) を返します。
 
 - encoding のデフォルトは ‘utf-8’ です。
 - errors のデフォルトは ‘strict’ です。

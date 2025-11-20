@@ -3,13 +3,13 @@ slug: /use-cases/observability/clickstack/sdks/java
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
-description: 'ClickStack 向け Java SDK - ClickHouse Observability Stack'
+description: 'ClickStack 用 Java SDK - ClickHouse Observability Stack'
 title: 'Java'
 doc_type: 'guide'
 keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
-ClickStack は、テレメトリデータ（ログとトレース）を収集するために OpenTelemetry 標準を使用します。トレースは自動インスツルメンテーションによって自動生成されるため、トレースを活用するために手動でインスツルメンテーションを行う必要はありません。
+ClickStack は、テレメトリデータ（ログおよびトレース）を収集するために OpenTelemetry 標準を使用します。トレースは自動インスツルメンテーションによって自動生成されるため、トレーシングのメリットを得るために手動のインスツルメンテーションは不要です。
 
 **このガイドで扱う統合対象:**
 
@@ -28,12 +28,12 @@ ClickStack は、テレメトリデータ（ログとトレース）を収集す
 ## はじめに {#getting-started}
 
 :::note
-現在、この統合は **Java 8以降** のみに対応しています
+現在、この統合は **Java 8以降** とのみ互換性があります
 :::
 
 ### OpenTelemetry Javaエージェントのダウンロード {#download-opentelemtry-java-agent}
 
-[`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)をダウンロードし、任意のディレクトリに配置してください。このJARファイルには、エージェントと計装ライブラリが含まれています。以下のコマンドでエージェントをダウンロードすることもできます:
+[`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)をダウンロードし、任意のディレクトリにJARファイルを配置してください。このJARファイルには、エージェントと計装ライブラリが含まれています。以下のコマンドを使用してエージェントをダウンロードすることもできます:
 
 ```shell
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
@@ -54,7 +54,7 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 
 _`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
 
-`OTEL_EXPORTER_OTLP_HEADERS`環境変数には、HyperDXアプリの`Team Settings → API Keys`から取得できるAPIキーを設定します。
+`OTEL_EXPORTER_OTLP_HEADERS`環境変数には、HyperDXアプリの`チーム設定 → APIキー`から取得できるAPIキーが含まれます。
 
 ### OpenTelemetry Javaエージェントを使用したアプリケーションの実行 {#run-the-application-with-otel-java-agent}
 
@@ -63,5 +63,5 @@ java -jar target/<APPLICATION_JAR_FILE>
 ```
 
 <br />
-Java OpenTelemetry計装の詳細については、以下を参照してください:
+Java OpenTelemetry計装の詳細については、こちらをご覧ください:
 [https://opentelemetry.io/docs/instrumentation/java/](https://opentelemetry.io/docs/instrumentation/java/)

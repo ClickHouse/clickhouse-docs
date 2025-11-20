@@ -7,17 +7,17 @@ keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery'
 doc_type: 'guide'
 ---
 
-_Это руководство применимо к ClickHouse Cloud и к саморазвёрнутым инсталляциям ClickHouse версии v23.5+._
+_Это руководство применимо к ClickHouse Cloud и к самостоятельным установкам ClickHouse версии v23.5+._
 
 В этом руководстве показано, как перенести данные из [BigQuery](https://cloud.google.com/bigquery) в ClickHouse.
 
-Сначала мы экспортируем таблицу в [объектное хранилище Google (GCS)](https://cloud.google.com/storage), а затем импортируем эти данные в [ClickHouse Cloud](https://clickhouse.com/cloud). Эти шаги нужно повторить для каждой таблицы, которую вы хотите экспортировать из BigQuery в ClickHouse.
+Сначала мы экспортируем таблицу в [объектное хранилище Google (GCS)](https://cloud.google.com/storage), а затем импортируем эти данные в [ClickHouse Cloud](https://clickhouse.com/cloud). Эти шаги нужно повторить для каждой таблицы, которую вы хотите перенести из BigQuery в ClickHouse.
 
 
 
-## Сколько времени займет экспорт данных в ClickHouse? {#how-long-will-exporting-data-to-clickhouse-take}
+## Сколько времени займёт экспорт данных в ClickHouse? {#how-long-will-exporting-data-to-clickhouse-take}
 
-Время экспорта данных из BigQuery в ClickHouse зависит от размера набора данных. Для сравнения: экспорт [публичного набора данных Ethereum объемом 4 ТБ](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics) из BigQuery в ClickHouse по данному руководству занимает около часа.
+Время экспорта данных из BigQuery в ClickHouse зависит от размера набора данных. Для сравнения: экспорт [публичного набора данных Ethereum объёмом 4 ТБ](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics) из BigQuery в ClickHouse по данному руководству занимает около часа.
 
 | Таблица                                                                                           | Строк         | Экспортировано файлов | Размер данных | Экспорт BigQuery | Время слотов    | Импорт ClickHouse |
 | ------------------------------------------------------------------------------------------------- | ------------- | --------------------- | ------------- | ---------------- | --------------- | ----------------- |
@@ -58,24 +58,24 @@ WHILE i < n DO
 END WHILE;
 ```
 
-В приведенном выше запросе таблица BigQuery экспортируется в [формат данных Parquet](https://parquet.apache.org/). В параметре `uri` используется символ `*`, который обеспечивает разделение результата на несколько файлов с числовым возрастающим суффиксом, если объем экспорта превышает 1 ГБ данных.
+В приведённом выше запросе таблица BigQuery экспортируется в [формат данных Parquet](https://parquet.apache.org/). В параметре `uri` используется символ `*`, который обеспечивает разделение выходных данных на несколько файлов с числовым возрастающим суффиксом, если объём экспорта превышает 1 ГБ.
 
 Этот подход имеет ряд преимуществ:
 
 - Google позволяет экспортировать в GCS до 50 ТБ в день бесплатно. Пользователи платят только за хранение данных в GCS.
-- Экспорт автоматически создает несколько файлов, ограничивая размер каждого максимум 1 ГБ табличных данных. Это полезно для ClickHouse, поскольку позволяет распараллелить импорт.
-- Parquet как колоночный формат является более эффективным форматом обмена данными, поскольку он изначально сжат и обеспечивает более быстрый экспорт из BigQuery и выполнение запросов в ClickHouse
+- Экспорт автоматически создаёт несколько файлов, ограничивая размер каждого максимум 1 ГБ табличных данных. Это полезно для ClickHouse, поскольку позволяет распараллелить импорт.
+- Parquet как колоночно-ориентированный формат является более эффективным форматом обмена данными, поскольку он изначально сжат и обеспечивает более быстрый экспорт из BigQuery и выполнение запросов в ClickHouse
 
 
 ## Импорт данных в ClickHouse из GCS {#2-importing-data-into-clickhouse-from-gcs}
 
-После завершения экспорта можно импортировать эти данные в таблицу ClickHouse. Для выполнения приведённых ниже команд можно использовать [консоль ClickHouse SQL](/integrations/sql-clients/sql-console) или [`clickhouse-client`](/interfaces/cli).
+После завершения экспорта можно импортировать данные в таблицу ClickHouse. Для выполнения приведённых ниже команд используйте [консоль ClickHouse SQL](/integrations/sql-clients/sql-console) или [`clickhouse-client`](/interfaces/cli).
 
 Сначала необходимо [создать таблицу](/sql-reference/statements/create/table) в ClickHouse:
 
 ```sql
 -- Если таблица BigQuery содержит столбец типа STRUCT, необходимо включить эту настройку,
--- чтобы сопоставить этот столбец со столбцом ClickHouse типа Nested
+-- чтобы сопоставить его со столбцом ClickHouse типа Nested
 SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable
@@ -87,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-После создания таблицы включите настройку `parallel_distributed_insert_select`, если в кластере имеется несколько реплик ClickHouse — это ускорит импорт. Если используется только один узел ClickHouse, этот шаг можно пропустить:
+После создания таблицы включите настройку `parallel_distributed_insert_select`, если в кластере имеется несколько реплик ClickHouse — это ускорит экспорт. Если используется только один узел ClickHouse, этот шаг можно пропустить:
 
 ```sql
 SET parallel_distributed_insert_select = 1;
@@ -95,7 +95,7 @@ SET parallel_distributed_insert_select = 1;
 
 Наконец, можно вставить данные из GCS в таблицу ClickHouse с помощью [команды `INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select), которая вставляет данные в таблицу на основе результатов запроса `SELECT`.
 
-Для получения данных для `INSERT` можно использовать [функцию s3Cluster](/sql-reference/table-functions/s3Cluster) для извлечения данных из бакета GCS, поскольку GCS совместим с [Amazon S3](https://aws.amazon.com/s3/). Если используется только один узел ClickHouse, вместо функции `s3Cluster` можно использовать [табличную функцию s3](/sql-reference/table-functions/s3).
+Для получения данных для `INSERT` можно использовать [функцию s3Cluster](/sql-reference/table-functions/s3Cluster) для извлечения данных из корзины GCS, поскольку GCS совместим с [Amazon S3](https://aws.amazon.com/s3/). Если используется только один узел ClickHouse, вместо функции `s3Cluster` можно использовать [табличную функцию s3](/sql-reference/table-functions/s3).
 
 ```sql
 INSERT INTO mytable
@@ -110,18 +110,18 @@ FROM s3Cluster(
 );
 ```
 
-Параметры `ACCESS_ID` и `SECRET`, используемые в приведённом выше запросе, представляют собой [ключ HMAC](https://cloud.google.com/storage/docs/authentication/hmackeys), связанный с бакетом GCS.
+Параметры `ACCESS_ID` и `SECRET`, используемые в приведённом выше запросе, представляют собой [ключ HMAC](https://cloud.google.com/storage/docs/authentication/hmackeys), связанный с корзиной GCS.
 
-:::note Использование `ifNull` при экспорте nullable-столбцов
-В приведённом выше запросе используется [функция `ifNull`](/sql-reference/functions/functions-for-nulls#ifNull) со столбцом `some_text` для вставки данных в таблицу ClickHouse со значением по умолчанию. Также можно сделать столбцы в ClickHouse [`Nullable`](/sql-reference/data-types/nullable), но это не рекомендуется, так как может негативно повлиять на производительность.
+:::note Использование `ifNull` при экспорте столбцов, допускающих NULL
+В приведённом выше запросе используется [функция `ifNull`](/sql-reference/functions/functions-for-nulls#ifNull) со столбцом `some_text` для вставки данных в таблицу ClickHouse со значением по умолчанию. Также можно сделать столбцы в ClickHouse типа [`Nullable`](/sql-reference/data-types/nullable), но это не рекомендуется, так как может негативно повлиять на производительность.
 
-В качестве альтернативы можно выполнить `SET input_format_null_as_default=1`, и любые отсутствующие или NULL значения будут заменены значениями по умолчанию для соответствующих столбцов, если эти значения по умолчанию указаны.
+В качестве альтернативы можно выполнить `SET input_format_null_as_default=1`, и любые отсутствующие значения или значения NULL будут заменены значениями по умолчанию для соответствующих столбцов, если эти значения по умолчанию указаны.
 :::
 
 
 ## Проверка успешного экспорта данных {#3-testing-successful-data-export}
 
-Чтобы проверить, что данные были корректно вставлены, выполните запрос `SELECT` к новой таблице:
+Чтобы проверить, что данные были корректно вставлены, просто выполните запрос `SELECT` к новой таблице:
 
 ```sql
 SELECT * FROM mytable LIMIT 10;
@@ -134,6 +134,6 @@ SELECT * FROM mytable LIMIT 10;
 
 ## Дополнительные материалы и поддержка {#further-reading-and-support}
 
-Помимо данного руководства, рекомендуем ознакомиться с нашей статьей в блоге о том, [как использовать ClickHouse для ускорения работы с BigQuery и как выполнять инкрементальный импорт данных](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
+Помимо данного руководства, мы также рекомендуем ознакомиться с нашей статьей в блоге о том, [как использовать ClickHouse для ускорения работы с BigQuery и как обрабатывать инкрементальный импорт](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
 
-Если у вас возникли проблемы с переносом данных из BigQuery в ClickHouse, обращайтесь в службу поддержки по адресу support@clickhouse.com.
+Если у вас возникли проблемы с переносом данных из BigQuery в ClickHouse, обращайтесь к нам по адресу support@clickhouse.com.

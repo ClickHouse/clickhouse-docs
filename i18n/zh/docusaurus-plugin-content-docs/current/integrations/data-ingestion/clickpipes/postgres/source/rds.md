@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon RDS Postgres'
-description: '将 Amazon RDS Postgres 配置为 ClickPipes 的源'
+description: '将 Amazon RDS Postgres 配置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'RDS Postgres 源配置指南'
+title: 'RDS Postgres 数据源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -17,7 +17,7 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS Postgres 源端设置指南
+# RDS Postgres 源配置指南
 
 
 
@@ -33,7 +33,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
 
-如果您之前使用过其他数据复制工具,通常这些设置已经预先配置好了。
+如果您之前使用过其他数据复制工具,通常这些设置已预先配置。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -64,14 +64,14 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image
   img={change_rds_logical_replication}
-  alt='修改 rds.logical_replication'
+  alt='更改 rds.logical_replication'
   size='lg'
   border
 />
 
 <Image
   img={change_wal_sender_timeout}
-  alt='修改 wal_sender_timeout'
+  alt='更改 wal_sender_timeout'
   size='lg'
   border
 />
@@ -100,7 +100,7 @@ postgres=> SHOW wal_sender_timeout ;
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. 授予 schema 权限。以下示例展示了 `public` schema 的权限。对每个需要复制的 schema 重复执行这些命令:
+2. 授予 schema 权限。以下示例展示了 `public` schema 的权限设置。对每个需要复制的 schema 重复执行这些命令:
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -147,15 +147,15 @@ postgres=> SHOW wal_sender_timeout ;
 
 ### RDS Proxy 的替代方案 {#workarounds-for-rds-proxy}
 
-RDS Proxy 不支持逻辑复制连接。如果您的 RDS 使用动态 IP 地址且无法使用 DNS 名称或 Lambda 函数,以下是一些替代方案:
+RDS Proxy 不支持逻辑复制连接。如果您在 RDS 中使用动态 IP 地址且无法使用 DNS 名称或 Lambda 函数,以下是一些替代方案:
 
 1. 使用 cron 作业定期解析 RDS 端点的 IP 地址,如果发生变化则更新 NLB。
-2. 使用 RDS 事件通知配合 EventBridge/SNS:通过 AWS RDS 事件通知自动触发更新
-3. 稳定的 EC2 实例:部署一个 EC2 实例作为轮询服务或基于 IP 的代理
+2. 使用 RDS 事件通知配合 EventBridge/SNS:通过 AWS RDS 事件通知自动触发更新。
+3. 稳定的 EC2 实例:部署一个 EC2 实例作为轮询服务或基于 IP 的代理。
 4. 使用 Terraform 或 CloudFormation 等工具自动化 IP 地址管理。
 
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 Postgres 实例时使用的连接详细信息,在创建 ClickPipe 时会用到这些信息。
+现在您可以[创建 ClickPipe](../index.md)，开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
+请务必记录设置 Postgres 实例时使用的连接信息，创建 ClickPipe 时需要用到这些信息。

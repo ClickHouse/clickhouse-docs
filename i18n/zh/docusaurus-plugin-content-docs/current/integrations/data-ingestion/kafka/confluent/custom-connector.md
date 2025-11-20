@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Confluent 平台上的 Kafka Connector Sink'
+sidebar_label: 'Confluent Platform 上的 Kafka Connector Sink'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: '在 Kafka Connect 和 ClickHouse 中使用 ClickHouse Connector Sink'
+description: '在 Kafka Connect 中使用 ClickHouse Connector Sink 写入 ClickHouse'
 title: '将 Confluent Cloud 与 ClickHouse 集成'
 keywords: ['Confluent ClickHouse 集成', 'ClickHouse Kafka 连接器', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'Confluent 自定义连接器']
 doc_type: 'guide'
@@ -31,13 +31,13 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 ## 前置条件 {#prerequisites}
 
-我们假设您已熟悉:
+我们假设您已熟悉以下内容：
 
 - [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 - Confluent Platform 和[自定义连接器](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html)。
 
 
-## ClickHouse 官方 Kafka 连接器与 Confluent Platform 集成 {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
+## ClickHouse 官方 Kafka 连接器与 Confluent Platform {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
 ### 在 Confluent Platform 上安装 {#installing-on-confluent-platform}
 
@@ -50,7 +50,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 #### 重要说明 {#important-notes}
 
-- Kafka 主题名称必须与 ClickHouse 表名称相同。如需调整此行为,可以使用转换器(例如 [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html))。
+- Kafka 主题名称必须与 ClickHouse 表名称相同。如需调整此设置,可以使用转换器(例如 [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html))。
 - 更多分区并不总是意味着更高的性能 - 有关更多详细信息和性能优化建议,请参阅我们即将发布的指南。
 
 #### 安装连接器 {#install-connector}
@@ -62,7 +62,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 ```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
-'Sensitive properties' - 'password'。这将确保在配置过程中 ClickHouse 密码条目被屏蔽。
+'Sensitive properties' - 'password'。这将确保在配置期间 ClickHouse 密码条目被屏蔽。
 ```
 
 示例:
@@ -112,7 +112,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 
 [阅读文档。](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-qs.html#cc-byoc-endpoints)
 
-您应该已经配置完成!
+您应该已经全部设置完成!
 
 #### 已知限制 {#known-limitations}
 

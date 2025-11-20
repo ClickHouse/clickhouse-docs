@@ -1,9 +1,9 @@
 ---
 slug: /faq/operations/multi-region-replication
-title: 'Поддерживает ли ClickHouse репликацию между регионами?'
+title: 'Поддерживает ли ClickHouse межрегиональную репликацию?'
 toc_hidden: true
 toc_priority: 30
-description: 'На этой странице рассматривается, поддерживает ли ClickHouse репликацию между регионами'
+description: 'На этой странице объясняется, поддерживает ли ClickHouse межрегиональную репликацию'
 doc_type: 'reference'
 keywords: ['multi-region', 'replication', 'geo-distributed', 'distributed systems', 'data synchronization']
 ---

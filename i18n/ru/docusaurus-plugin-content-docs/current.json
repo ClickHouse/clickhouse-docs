@@ -1,39 +1,39 @@
 {
   "version.label": {
     "message": "Далее",
-    "description": "Метка текущей версии"
+    "description": "Метка для текущей версии"
   },
   "sidebar.docs.category.Introduction": {
     "message": "Введение",
-    "description": "Метка категории «Введение» в боковой панели документации"
+    "description": "Метка для категории «Введение» в боковой панели документации"
   },
   "sidebar.docs.category.Concepts": {
-    "message": "Концепции",
-    "description": "Метка категории «Концепции» в боковой панели документации"
+    "message": "Основные понятия",
+    "description": "Ярлык для категории «Концепции» в боковой панели документации"
   },
   "sidebar.docs.category.FAQ": {
     "message": "FAQ",
-    "description": "Метка для категории FAQ в боковой панели документации"
+    "description": "Ярлык для категории «FAQ» в боковой панели документации"
   },
   "sidebar.docs.category.Starter Guides": {
-    "message": "Начальные руководства",
-    "description": "Метка категории «Starter Guides» в боковой панели документации"
+    "message": "Руководства для начинающих",
+    "description": "Метка для категории «Руководства для начинающих» в боковой панели документации"
   },
   "sidebar.docs.category.Use Case Guides": {
     "message": "Руководства по сценариям использования",
-    "description": "Метка для категории «Use Case Guides» в боковой панели документации"
+    "description": "Метка для категории «Руководства по сценариям использования» в боковой панели документации"
   },
   "sidebar.docs.category.Observability": {
     "message": "Наблюдаемость",
-    "description": "Метка для категории «Observability» в боковой панели документации"
+    "description": "Метка категории «Observability» в боковой панели документации"
   },
   "sidebar.docs.category.Migration Guides": {
-    "message": "Руководства по переносу",
-    "description": "Метка категории «Руководства по миграции» в боковой панели документации"
+    "message": "Руководства по миграции",
+    "description": "Метка для категории «Migration Guides» в боковой панели документации"
   },
   "sidebar.docs.category.BigQuery": {
     "message": "BigQuery",
-    "description": "Ярлык категории BigQuery в боковой панели документации"
+    "description": "Метка категории BigQuery в боковой панели документации"
   },
   "sidebar.docs.category.PostgreSQL": {
     "message": "PostgreSQL",
@@ -41,119 +41,119 @@
   },
   "sidebar.docs.category.Example Datasets": {
     "message": "Примерные наборы данных",
-    "description": "Метка категории «Примерные наборы данных» в боковой панели документации"
+    "description": "Ярлык категории «Примеры наборов данных» в боковой панели документации"
   },
   "sidebar.docs.doc.Introduction": {
     "message": "Введение",
-    "description": "Подпись элемента документации «Introduction» в боковой панели, ссылающегося на документ migrations/postgres/overview"
+    "description": "Метка для элемента документации «Introduction» в боковой панели docs, который ссылается на документ migrations/postgres/overview"
   },
   "sidebar.docs.doc.Rockset": {
     "message": "Rockset",
-    "description": "Подпись для элемента документации Rockset в боковой панели, ссылающаяся на документ integrations/migration/rockset"
+    "description": "Метка для элемента документации Rockset в боковой панели, указывающая на документ integrations/migration/rockset"
   },
   "sidebar.cloud.category.Get Started": {
     "message": "Начало работы",
-    "description": "Ярлык категории «Get Started» в боковой панели Cloud"
+    "description": "Метка для категории «Начало работы» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Managing Cloud": {
     "message": "Управление ClickHouse Cloud",
-    "description": "Метка категории «Управление облаком» в боковой панели облака"
+    "description": "Метка для категории «Managing Cloud» в боковой панели облака"
   },
   "sidebar.cloud.category.Backups": {
     "message": "Резервное копирование",
-    "description": "Метка для категории «Backups» в боковой панели облака"
+    "description": "Метка категории «Backups» в боковой панели облака"
   },
   "sidebar.cloud.category.Monitoring": {
     "message": "Мониторинг",
-    "description": "Метка для категории «Мониторинг» в боковой панели Cloud"
+    "description": "Ярлык категории «Monitoring» в боковой панели облака"
   },
   "sidebar.cloud.category.Billing": {
     "message": "Выставление счетов",
-    "description": "Метка для категории «Биллинг» в боковой панели Cloud"
+    "description": "Метка категории «Billing» в боковой панели облака"
   },
   "sidebar.cloud.category.Marketplace": {
     "message": "Маркетплейс",
-    "description": "Метка категории «Marketplace» в боковой панели облака"
+    "description": "Метка категории Marketplace в боковой панели облака"
   },
   "sidebar.cloud.category.Jan 2025 Changes FAQ": {
-    "message": "Ответы на часто задаваемые вопросы об изменениях в январе 2025 года",
-    "description": "Метка для категории «Jan 2025 Changes FAQ» в боковой панели Cloud"
+    "message": "Часто задаваемые вопросы об изменениях за январь 2025 года",
+    "description": "Ярлык для категории «FAQ по изменениям за январь 2025» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Cloud API": {
-    "message": "API облака",
-    "description": "Метка категории «Cloud API» в облачном сайдбаре"
+    "message": "Cloud API",
+    "description": "Ярлык для категории Cloud API в боковой панели облака"
   },
   "sidebar.cloud.category.API Reference": {
     "message": "Справочник API",
-    "description": "Метка категории «API Reference» в боковой панели Cloud"
+    "description": "Метка для категории «API Reference» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Cloud Reference ": {
     "message": "Справочник по ClickHouse Cloud ",
-    "description": "Метка для категории Cloud Reference в боковой панели раздела Cloud"
+    "description": "Ярлык для категории Cloud Reference в боковой панели раздела Cloud"
   },
   "sidebar.cloud.category.Changelogs": {
-    "message": "Журналы изменений",
-    "description": "Метка для категории «Changelogs» в боковой панели Cloud"
+    "message": "Списки изменений",
+    "description": "Метка категории «Changelogs» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Release Notes": {
-    "message": "Заметки о выпуске",
+    "message": "Примечания к выпуску",
     "description": "Метка для категории «Release Notes» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Best Practices": {
-    "message": "Рекомендации по использованию",
-    "description": "Метка для категории «Рекомендации» в боковой панели облака"
+    "message": "Рекомендации",
+    "description": "Метка категории «Best Practices» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Security": {
     "message": "Безопасность",
-    "description": "Ярлык категории «Безопасность» в боковой панели облака"
+    "description": "Метка категории «Security» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Cloud Access Management": {
     "message": "Управление доступом в облачной среде",
-    "description": "Ярлык категории «Cloud Access Management» в боковой панели облака"
+    "description": "Метка для категории «Cloud Access Management» в боковой панели раздела Cloud"
   },
   "sidebar.cloud.category.Connectivity": {
     "message": "Подключение",
-    "description": "Метка категории «Connectivity» в боковой панели облака"
+    "description": "Метка для категории «Connectivity» в боковой панели облака"
   },
   "sidebar.cloud.category.Private Networking": {
-    "message": "Закрытая сеть",
-    "description": "Метка для категории «Private Networking» в боковой панели облачного интерфейса"
+    "message": "Изолированная сеть",
+    "description": "Метка категории «Private Networking» в боковой панели облака"
   },
   "sidebar.cloud.category.Privacy and Compliance": {
     "message": "Конфиденциальность и соответствие нормам",
-    "description": "Метка категории «Конфиденциальность и соответствие требованиям» в боковой панели облака"
+    "description": "Метка категории «Конфиденциальность и соответствие требованиям» в боковой панели Cloud"
   },
   "sidebar.cloud.category.Migrating to Cloud": {
-    "message": "Миграция в ClickHouse Cloud",
-    "description": "Метка для категории «Переход в облако» в боковой панели cloud"
+    "message": "Миграция в облако",
+    "description": "Метка для категории «Переход в облако» в боковой панели раздела Cloud"
   },
   "sidebar.cloud.link.Rockset": {
     "message": "Rockset",
-    "description": "Подпись ссылки Rockset в облачном боковом меню, ведущей на /migrations/rockset"
+    "description": "Подпись ссылки Rockset в облачном боковом меню, указывающей на /migrations/rockset"
   },
   "sidebar.sqlreference.category.Introduction": {
     "message": "Введение",
-    "description": "Метка для категории «Введение» в боковой панели sqlreference"
+    "description": "Метка категории «Введение» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Data Types": {
     "message": "Типы данных",
-    "description": "Подпись категории «Data Types» в боковой панели sqlreference"
+    "description": "Метка категории «Data Types» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Special Data Types": {
     "message": "Специальные типы данных",
-    "description": "Метка для категории «Специальные типы данных» в боковой панели sqlreference"
+    "description": "Метка категории «Специальные типы данных» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Statements": {
-    "message": "Инструкции",
-    "description": "Метка для категории Statements в боковой панели sqlreference"
+    "message": "Операторы",
+    "description": "Метка категории «Statements» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.SELECT": {
     "message": "SELECT",
-    "description": "Ярлык для категории SELECT в боковой панели sqlreference"
+    "description": "Метка категории SELECT в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.CREATE": {
     "message": "CREATE",
-    "description": "Метка категории CREATE в боковой панели sqlreference"
+    "description": "Ярлык категории CREATE в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.ALTER": {
     "message": "ALTER",
@@ -161,47 +161,47 @@
   },
   "sidebar.sqlreference.category.Engines": {
     "message": "Движки таблиц",
-    "description": "Метка для категории «Движки» в боковой панели sqlreference"
+    "description": "Ярлык категории «Engines» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Database Engines": {
-    "message": "Движки баз данных",
-    "description": "Метка категории «Database Engines» в боковой панели sqlreference"
+    "message": "Движки таблиц",
+    "description": "Ярлык для категории «Database Engines» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Table Engines": {
     "message": "Движки таблиц",
-    "description": "Метка для категории «Движки таблиц» в боковой панели sqlreference"
+    "description": "Метка категории «Table Engines» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "Семейство движков MergeTree",
+    "message": "Семейство таблиц MergeTree",
     "description": "Метка категории MergeTree Family в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Log Family": {
     "message": "Семейство таблиц Log",
-    "description": "Метка категории «Log Family» в боковой панели sqlreference"
+    "description": "Метка категории «Семейство Log» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Integrations": {
     "message": "Интеграции",
-    "description": "Метка для категории «Integrations» в боковой панели sqlreference"
+    "description": "Метка для категории «Интеграции» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Special": {
     "message": "Специальный",
-    "description": "Метка категории «Special» в боковой панели sqlreference"
+    "description": "Метка для категории Special в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Functions": {
     "message": "Функции",
-    "description": "Подпись категории «Functions» в боковой панели sqlreference"
+    "description": "Метка категории «Functions» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Regular Functions": {
-    "message": "Обычные функции",
-    "description": "Ярлык категории «Обычные функции» в боковой панели sqlreference"
+    "message": "Регулярные функции",
+    "description": "Метка категории «Обычные функции» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Geo": {
-    "message": "Geo",
-    "description": "Метка для категории Geo в боковой панели sqlreference"
+    "message": "География",
+    "description": "Метка категории Geo в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Aggregate Functions": {
     "message": "Агрегатные функции",
-    "description": "Метка для категории «Агрегатные функции» в боковой панели sqlreference"
+    "description": "Метка категории «Aggregate Functions» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Table Functions": {
     "message": "Табличные функции",
@@ -209,19 +209,19 @@
   },
   "sidebar.sqlreference.category.Window Functions": {
     "message": "Оконные функции",
-    "description": "Ярлык для категории «Window Functions» в боковой панели sqlreference"
+    "description": "Метка для категории «Window functions» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Other Features": {
-    "message": "Прочие возможности",
-    "description": "Метка категории «Другие возможности» в боковой панели sqlreference"
+    "message": "Другие функции",
+    "description": "Ярлык для категории «Other features» в боковой панели sqlreference"
   },
   "sidebar.sqlreference.category.Operators": {
     "message": "Операторы",
     "description": "Метка категории «Операторы» в боковой панели sqlreference"
   },
   "sidebar.integrations.category.Language Clients": {
-    "message": "Клиенты для языков программирования",
-    "description": "Метка для категории «Языковые клиенты» в боковой панели интеграций"
+    "message": "Клиентские библиотеки",
+    "description": "Метка категории «Language Clients» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Java": {
     "message": "Java",
@@ -229,39 +229,39 @@
   },
   "sidebar.integrations.category.Third-party Clients": {
     "message": "Сторонние клиенты",
-    "description": "Метка для категории «Сторонние клиенты» на боковой панели интеграций"
+    "description": "Метка категории «Сторонние клиенты» в боковой панели интеграций"
   },
   "sidebar.integrations.category.ClickPipes": {
     "message": "ClickPipes",
     "description": "Ярлык категории ClickPipes в боковой панели интеграций"
   },
   "sidebar.integrations.category.ClickPipes for Postgres": {
-    "message": "ClickPipes для Postgres",
-    "description": "Метка для категории ClickPipes для Postgres в боковой панели интеграций"
+    "message": "ClickPipes для PostgreSQL",
+    "description": "Метка категории ClickPipes for Postgres в боковой панели раздела интеграций"
   },
   "sidebar.integrations.category.Source": {
-    "message": "Источник",
-    "description": "Метка категории «Источник» в боковой панели интеграций"
+    "message": "Исходный ресурс",
+    "description": "Метка для категории Source в боковой панели интеграций"
   },
   "sidebar.integrations.category.Native Clients & Interfaces": {
     "message": "Нативные клиенты и интерфейсы",
-    "description": "Метка «Native Clients & Interfaces» для категории интеграций в боковой панели"
+    "description": "Метка для категории «Нативные клиенты и интерфейсы» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Drivers and Interfaces": {
     "message": "Драйверы и интерфейсы",
-    "description": "Метка для категории «Драйверы и интерфейсы» на боковой панели интеграций"
+    "description": "Метка категории «Drivers and Interfaces» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Data Sources": {
     "message": "Источники данных",
-    "description": "Метка категории «Источники данных» в боковой панели интеграций"
+    "description": "Название категории «Источники данных» в боковой панели интеграций"
   },
   "sidebar.integrations.category.AWS S3": {
     "message": "AWS S3",
-    "description": "Метка для категории AWS S3 в боковой панели интеграций"
+    "description": "Метка категории AWS S3 в боковой панели интеграций"
   },
   "sidebar.integrations.category.Kafka": {
     "message": "Kafka",
-    "description": "Метка для категории Kafka в боковой панели интеграций"
+    "description": "Метка категории Kafka в боковой панели Integrations"
   },
   "sidebar.integrations.category.Apache Spark": {
     "message": "Apache Spark",
@@ -269,7 +269,7 @@
   },
   "sidebar.integrations.category.Data Visualization": {
     "message": "Визуализация данных",
-    "description": "Метка категории «Визуализация данных» в боковой панели интеграций"
+    "description": "Метка для категории «Визуализация данных» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Grafana": {
     "message": "Grafana",
@@ -288,7 +288,7 @@
     "description": "Метка для категории JSON в боковой панели интеграций"
   },
   "sidebar.integrations.category.View All Formats": {
-    "message": "Показать все форматы",
+    "message": "Все форматы",
     "description": "Метка категории «Все форматы» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Arrow": {
@@ -301,31 +301,31 @@
   },
   "sidebar.integrations.category.CSV": {
     "message": "CSV",
-    "description": "Ярлык категории CSV в боковой панели интеграций"
+    "description": "Метка для категории CSV в разделе «Интеграции» на боковой панели"
   },
   "sidebar.integrations.category.CustomSeparated": {
     "message": "CustomSeparated",
-    "description": "Метка для категории CustomSeparated в боковой панели интеграций"
+    "description": "Метка для категории CustomSeparated в боковом меню интеграций"
   },
   "sidebar.integrations.category.LineAsString": {
     "message": "LineAsString",
-    "description": "Метка для категории LineAsString в боковой панели интеграций"
+    "description": "Метка категории LineAsString в боковой панели интеграций"
   },
   "sidebar.integrations.category.Parquet": {
     "message": "Parquet",
-    "description": "Метка для категории Parquet в боковой панели интеграций"
+    "description": "Метка категории Parquet в боковой панели интеграций"
   },
   "sidebar.integrations.category.Pretty": {
-    "message": "Красивый",
-    "description": "Метка категории Pretty в боковой панели интеграций"
+    "message": "Красиво",
+    "description": "Метка для категории «Pretty» в боковом меню интеграций"
   },
   "sidebar.integrations.category.Protobuf": {
     "message": "Protobuf",
-    "description": "Метка для категории Protobuf в боковой панели интеграций"
+    "description": "Метка категории Protobuf в боковой панели Integrations"
   },
   "sidebar.integrations.category.RowBinary": {
     "message": "RowBinary",
-    "description": "Метка категории RowBinary в боковой панели интеграций"
+    "description": "Метка для категории RowBinary в боковой панели интеграций"
   },
   "sidebar.integrations.category.TabSeparated": {
     "message": "TabSeparated",
@@ -333,11 +333,11 @@
   },
   "sidebar.integrations.category.Template": {
     "message": "Шаблон",
-    "description": "Метка категории Template в боковой панели интеграций"
+    "description": "Название категории Template в боковой панели интеграций"
   },
   "sidebar.integrations.category.Data Ingestion": {
     "message": "Загрузка данных",
-    "description": "Название категории «Data Ingestion» в боковой панели интеграций"
+    "description": "Метка для категории «Загрузка данных» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Google Dataflow": {
     "message": "Google Dataflow",
@@ -345,107 +345,107 @@
   },
   "sidebar.integrations.category.Dataflow Templates": {
     "message": "Шаблоны Dataflow",
-    "description": "Ярлык для категории «Dataflow Templates» в боковой панели интеграций"
+    "description": "Метка категории «Dataflow Templates» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Tools": {
     "message": "Инструменты",
-    "description": "Метка для категории «Инструменты» в боковой панели интеграций"
+    "description": "Ярлык категории «Инструменты» в боковой панели интеграций"
   },
   "sidebar.integrations.category.SQL Clients": {
     "message": "Клиенты SQL",
-    "description": "Ярлык для категории «SQL‑клиенты» в боковой панели интеграций"
+    "description": "Метка для категории «SQL-клиенты» в разделе интеграций боковой панели"
   },
   "sidebar.integrations.category.Data Integrations": {
     "message": "Интеграции с данными",
-    "description": "Метка для категории «Интеграции данных» в разделе интеграций боковой панели"
+    "description": "Метка категории «Интеграция данных» в боковой панели интеграций"
   },
   "sidebar.integrations.category.Misc": {
     "message": "Прочее",
-    "description": "Метка для категории «Разное» в боковой панели интеграций"
+    "description": "Метка категории «Разное» в боковой панели интеграций"
   },
   "sidebar.integrations.doc.Overview": {
     "message": "Обзор",
-    "description": "Подпись для элемента документации Overview в боковой панели Integrations, указывающая на документ integrations/language-clients/java/index"
+    "description": "Подпись для элемента документации «Overview» в боковой панели раздела интеграций, ссылающаяся на документ integrations/language-clients/java/index"
   },
   "sidebar.integrations.doc.Third-party Libraries": {
     "message": "Сторонние библиотеки",
-    "description": "Ярлык элемента документации «Third-party Libraries» в боковой панели раздела integrations, который ссылается на документ interfaces/third-party/integrations"
+    "description": "Метка для элемента документации «Third-party Libraries» в боковой панели раздела integrations, ссылающаяся на документ interfaces/third-party/integrations"
   },
   "sidebar.managingData.category.Core Concepts": {
-    "message": "Основные понятия",
-    "description": "Метка для категории «Core Concepts» в боковой панели managingData"
+    "message": "Основные концепции",
+    "description": "Ярлык для категории «Core Concepts» в боковой панели managingData"
   },
   "sidebar.managingData.category.Updating Data": {
     "message": "Обновление данных",
-    "description": "Ярлык категории «Обновление данных» в боковой панели managingData"
+    "description": "Метка для категории «Обновление данных» в боковой панели managingData"
   },
   "sidebar.managingData.category.Deleting Data": {
     "message": "Удаление данных",
-    "description": "Ярлык категории «Deleting Data» в боковой панели managingData"
+    "description": "Метка для категории «Deleting Data» в боковой панели managingData"
   },
   "sidebar.managingData.category.Data Modeling": {
     "message": "Моделирование данных",
-    "description": "Метка категории «Data Modeling» на боковой панели managingData"
+    "description": "Ярлык для категории «Data Modeling» в боковой панели managingData"
   },
   "sidebar.managingData.category.Dictionary": {
-    "message": "Справочник",
-    "description": "Метка для категории Dictionary в боковой панели managingData"
+    "message": "Словарь",
+    "description": "Метка для категории «Dictionary» в боковой панели Managing data"
   },
   "sidebar.managingData.category.Materialized Views": {
     "message": "Материализованные представления",
-    "description": "Метка категории «Materialized Views» в боковой панели managingData"
+    "description": "Метка для категории «Материализованные представления» в боковой панели managingData"
   },
   "sidebar.managingData.category.Data Compression": {
     "message": "Сжатие данных",
-    "description": "Метка для категории «Data Compression» в боковой панели managingData"
+    "description": "Ярлык категории «Сжатие данных» в боковой панели managingData"
   },
   "sidebar.managingData.category.Advanced Guides": {
-    "message": "Расширенное руководство",
-    "description": "Метка категории «Advanced Guides» в боковой панели managingData"
+    "message": "Продвинутые руководства",
+    "description": "Метка для категории «Расширенные руководства» в боковой панели managingData"
   },
   "sidebar.managingData.category.Performance and Optimizations": {
     "message": "Производительность и оптимизации",
-    "description": "Метка категории «Performance and Optimizations» в боковой панели managingData"
+    "description": "Ярлык для категории «Производительность и оптимизация» в боковой панели managingData"
   },
   "sidebar.managingData.doc.Lightweight Updates": {
     "message": "Лёгкие обновления",
-    "description": "Метка для элемента документа «Лёгкие обновления» в боковой панели managingData, которая ссылается на документ guides/developer/lightweight-update"
+    "description": "Метка для элемента документации «Lightweight Updates» в боковой панели managingData, указывающая на документ guides/developer/lightweight-update"
   },
   "sidebar.managingData.doc.ReplacingMergeTree": {
     "message": "ReplacingMergeTree",
-    "description": "Метка для элемента документации ReplacingMergeTree в боковой панели managingData, который ссылается на документ migrations/postgres/replacing-merge-tree"
+    "description": "Метка для элемента документации ReplacingMergeTree в боковой панели managingData, указывающая на документ guides/developer/replacing-merge-tree"
   },
   "sidebar.managingData.doc.Lightweight Deletes": {
-    "message": "Лёгкие удаления",
-    "description": "Ярлык для элемента документа «Lightweight Deletes» в боковой панели managingData, который ссылается на документ guides/developer/lightweight-delete"
+    "message": "Облегчённые удаления",
+    "description": "Метка для элемента документации «Лёгкие удаления» в боковой панели managingData, ссылающаяся на документ guides/developer/lightweight-delete"
   },
   "sidebar.aboutClickHouse.category.About ClickHouse": {
-    "message": "О ClickHouse",
-    "description": "Метка для категории «О ClickHouse» в боковой панели aboutClickHouse"
+    "message": "О системе ClickHouse",
+    "description": "Метка категории «About ClickHouse» в боковой панели aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Changelogs": {
-    "message": "Список изменений",
+    "message": "Журналы изменений",
     "description": "Метка категории Changelogs в боковой панели раздела aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Changelog": {
     "message": "Журнал изменений",
-    "description": "Метка для категории Changelog в боковой панели aboutClickHouse"
+    "description": "Метка категории «Changelog» в боковой панели раздела aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
     "message": "Журнал изменений",
-    "description": "Заголовок автоматически сгенерированной индексной страницы для категории «Журнал изменений» в боковой панели aboutClickHouse"
+    "description": "Сгенерированный заголовок индексной страницы для категории Changelog в боковой панели раздела aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Development and Contributing": {
     "message": "Разработка и вклад",
-    "description": "Метка для категории «Разработка и вклад» в боковой панели aboutClickHouse"
+    "description": "Метка для категории «Разработка и вклад» в боковой панели раздела aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.Native Protocol": {
-    "message": "Нативный протокол",
-    "description": "Метка категории Native Protocol в боковой панели aboutClickHouse"
+    "message": "Собственный протокол",
+    "description": "Метка категории «Native Protocol» в боковой панели aboutClickHouse"
   },
   "sidebar.aboutClickHouse.category.FAQ": {
-    "message": "FAQ",
-    "description": "Метка для категории FAQ в боковой панели aboutClickHouse"
+    "message": "Часто задаваемые вопросы",
+    "description": "Метка категории FAQ в боковой панели aboutClickHouse"
   },
   "sidebar.serverAdmin.category.Manage and Deploy": {
     "message": "Управление и развертывание",
@@ -457,51 +457,51 @@
   },
   "sidebar.serverAdmin.category.Settings": {
     "message": "Настройки",
-    "description": "Метка для категории «Настройки» в боковой панели serverAdmin"
+    "description": "Метка категории «Settings» в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.System Tables": {
     "message": "Системные таблицы",
-    "description": "Метка категории System Tables в боковой панели serverAdmin"
+    "description": "Ярлык категории «System Tables» в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.Security and Authentication": {
-    "message": "Безопасность и идентификация",
-    "description": "Ярлык категории «Security and Authentication» в боковой панели serverAdmin"
+    "message": "Безопасность и аутентификация",
+    "description": "Метка категории «Security and Authentication» в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.External Authenticators": {
     "message": "Внешние средства аутентификации",
-    "description": "Метка категории «Внешние аутентификаторы» в боковой панели serverAdmin"
+    "description": "Метка категории «External Authenticators» в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.SSL": {
     "message": "SSL",
-    "description": "Метка для категории SSL в боковой панели serverAdmin"
+    "description": "Ярлык категории SSL в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.LDAP": {
     "message": "LDAP",
-    "description": "Метка для категории LDAP в боковой панели serverAdmin"
+    "description": "Метка категории LDAP в боковой панели serverAdmin"
   },
   "sidebar.serverAdmin.category.Tools and Utilities": {
-    "message": "Инструменты и вспомогательные программы",
-    "description": "Подпись категории «Инструменты и утилиты» в боковой панели serverAdmin"
+    "message": "Инструменты и утилиты",
+    "description": "Ярлык категории «Инструменты и утилиты» в боковой панели serverAdmin"
   },
   "sidebar.chdb.category.chDB": {
     "message": "chDB",
-    "description": "Метка для категории chDB в боковой панели chdb"
+    "description": "Ярлык для категории chDB в боковой панели chdb"
   },
   "sidebar.chdb.category.Language Integrations": {
     "message": "Интеграции с языками программирования",
-    "description": "Метка категории «Language Integrations» в боковой панели chdb"
+    "description": "Метка категории «Интеграции с языками» в боковой панели chDB"
   },
   "sidebar.chdb.category.Developer Guides": {
-    "message": "Руководство для разработчиков",
-    "description": "Ярлык категории «Руководства для разработчиков» в боковой панели chdb"
+    "message": "Руководства разработчика",
+    "description": "Метка категории «Developer Guides» в боковой панели chDB"
   },
   "sidebar.chdb.category.Technical Reference": {
-    "message": "Техническая документация",
-    "description": "Метка категории «Техническая справка» в боковой панели chdb"
+    "message": "Техническая справка",
+    "description": "Метка для категории «Technical Reference» в боковой панели chDB"
   },
   "sidebar.chdb.category.Integrations": {
     "message": "Интеграции",
-    "description": "Метка для категории «Интеграции» в боковой панели chDB"
+    "description": "Метка категории «Integrations» в боковой панели chDB"
   },
   "sidebar.chdb.category.About chDB": {
     "message": "О chDB",
@@ -509,107 +509,107 @@
   },
   "sidebar.chdb.link.JupySQL": {
     "message": "JupySQL",
-    "description": "JupySQL"
+    "description": "Подпись для ссылки JupySQL в боковой панели chDB, ведущей на https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
   },
   "sidebar.chdb.link.chdb-lambda": {
     "message": "chdb-lambda",
-    "description": "Метка для ссылки chdb-lambda в боковой панели chdb, ведущей на https://github.com/chdb-io/chdb-lambda"
+    "description": "Метка для ссылки chdb-lambda в боковой панели chdb, указывающей на https://github.com/chdb-io/chdb-lambda"
   },
   "sidebar.chdb.link.chdb-cli": {
     "message": "chdb-cli",
-    "description": "Метка для ссылки chdb-cli в боковом меню chdb, ведущей на https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
+    "description": "Ярлык для ссылки chdb-cli в боковой панели chdb, ведущей на https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli"
   },
   "sidebar.chdb.link.Discord": {
     "message": "Discord",
-    "description": "Метка для ссылки Discord в боковой панели chDB, ведущая на https://discord.gg/Njw5YXSPPc"
+    "description": "Метка ссылки Discord в боковой панели chdb, ведущей на https://discord.gg/Njw5YXSPPc"
   },
   "sidebar.chdb.link.Birth of chDB": {
-    "message": "Появление chDB",
-    "description": "Метка для ссылки \"Рождение chDB\" в боковой панели chdb, ведущей на https://auxten.com/the-birth-of-chdb/"
+    "message": "Рождение chDB",
+    "description": "Метка ссылки «Birth of chDB» в боковой панели chdb, ведущей на https://auxten.com/the-birth-of-chdb/"
   },
   "sidebar.chdb.link.Joining ClickHouse, Inc.": {
-    "message": "Присоединяйтесь к ClickHouse, Inc.",
-    "description": "Подпись ссылки «Joining ClickHouse, Inc.» в боковой панели chdb, указывающей на https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
+    "message": "Работа в ClickHouse, Inc.",
+    "description": "Метка ссылки «Joining ClickHouse, Inc.» в боковой панели chdb, ведущей на https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
   },
   "sidebar.chdb.link.Team and Contributors": {
     "message": "Команда и контрибьюторы",
-    "description": "Надпись для ссылки «Team and Contributors» в боковой панели chdb, которая ведёт на https://github.com/chdb-io/chdb#contributors"
+    "description": "Подпись ссылки «Team and Contributors» в боковой панели chDB, ведущей на https://github.com/chdb-io/chdb#contributors"
   },
   "sidebar.dropdownCategories.category.Getting Started": {
     "message": "Начало работы",
-    "description": "Подпись для категории «Getting Started» в выпадающем списке sidebar dropdownCategories"
+    "description": "Метка для категории «Getting Started» в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Cloud": {
     "message": "Облако",
-    "description": "Метка для категории Cloud в выпадающем списке sidebar dropdownCategories"
+    "description": "Метка категории Cloud в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Manage Data": {
     "message": "Управление данными",
-    "description": "Метка для категории «Manage Data» в выпадающем списке sidebar dropdownCategories"
+    "description": "Метка категории «Manage Data» в раскрывающемся списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Server Admin": {
     "message": "Администратор сервера",
-    "description": "Метка категории «Server Admin» в выпадающем списке sidebar dropdownCategories"
+    "description": "Подпись для категории «Server Admin» в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Reference": {
-    "message": "Справочник",
-    "description": "Метка для категории «Справочник» в выпадающем списке категорий боковой панели"
+    "message": "Справочные материалы",
+    "description": "Метка категории Reference в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Integrations": {
     "message": "Интеграции",
-    "description": "Метка для категории «Интеграции» в выпадающем меню категорий боковой панели"
+    "description": "Метка для категории Integrations в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.chDB": {
     "message": "chDB",
-    "description": "Метка для категории chDB в выпадающем меню категорий боковой панели"
+    "description": "Ярлык для категории chDB в выпадающем списке dropdownCategories боковой панели"
   },
   "sidebar.dropdownCategories.category.About": {
-    "message": "О программе",
-    "description": "Метка категории «About» в выпадающем списке sidebar dropdownCategories"
+    "message": "О проекте",
+    "description": "Метка для категории «About» в выпадающем списке sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.link.Introduction": {
     "message": "Введение",
-    "description": "Метка для ссылки «Введение» в выпадающем меню dropdownCategories боковой панели, ведущей на /sql-reference"
+    "description": "Метка ссылки «Introduction» в выпадающем списке Categories боковой панели, которая ведёт на /sql-reference"
   },
   "sidebar.dropdownCategories.link.Starter Guides": {
-    "message": "Вводные руководства",
-    "description": "Метка для ссылки «Starter Guides» в выпадающем списке sidebar dropdownCategories, указывающей на /starter-guides"
+    "message": "Основы работы",
+    "description": "Метка ссылки «Starter Guides» в выпадающем списке категорий боковой панели, ведущей на /starter-guides"
   },
   "sidebar.dropdownCategories.link.Concepts": {
     "message": "Концепции",
-    "description": "Метка для ссылки «Концепции» в выпадающем меню боковой панели dropdownCategories, ведущей на /concepts"
+    "description": "Метка ссылки Concepts в выпадающем списке sidebar dropdownCategories, ведущей на /concepts"
   },
   "sidebar.dropdownCategories.link.Migration Guides": {
     "message": "Руководства по миграции",
-    "description": "Ярлык для ссылки «Migration Guides» в выпадающем списке sidebar dropdownCategories, ведущей на /migrations/migrations"
+    "description": "Метка для ссылки «Migration Guides» в выпадающем списке sidebar dropdownCategories, ведущей на /migrations/migrations"
   },
   "sidebar.dropdownCategories.link.Use Case Guides": {
-    "message": "Руководства по вариантам использования",
-    "description": "Ярлык для ссылки «Use Case Guides» в раскрывающемся списке категорий боковой панели, ведущей на /use-cases"
+    "message": "Руководства по вариантам применения",
+    "description": "Метка ссылки «Use Case Guides» в выпадающем списке категорий боковой панели, ведущей на /use-cases"
   },
   "sidebar.dropdownCategories.link.Example datasets": {
     "message": "Примеры наборов данных",
-    "description": "Метка ссылки «Example datasets» в выпадающем списке категорий боковой панели, которая ведёт на /getting-started/example-datasets"
+    "description": "Метка для ссылки «Example datasets» в выпадающем списке sidebar dropdownCategories, которая ведёт на /getting-started/example-datasets"
   },
   "sidebar.dropdownCategories.link.Get Started": {
     "message": "Начало работы",
-    "description": "Метка для ссылки «Начало работы» в выпадающем меню категорий боковой панели, ведущей на /cloud/get-started/"
+    "description": "Метка для ссылки «Get Started» в выпадающем списке sidebar dropdownCategories, указывающей на /cloud/get-started/"
   },
   "sidebar.dropdownCategories.link.Managing Cloud": {
     "message": "Управление ClickHouse Cloud",
-    "description": "Метка для ссылки «Managing Cloud» в выпадающем списке категорий боковой панели, ведущей на /cloud/bestpractices"
+    "description": "Подпись ссылки «Managing Cloud» в выпадающем списке sidebarDropdownCategories, указывающей на /cloud/bestpractices"
   },
   "sidebar.dropdownCategories.link.Cloud API": {
-    "message": "API облака",
-    "description": "Ярлык для ссылки Cloud API в выпадающем списке sidebar dropdownCategories, указывающей на /cloud/manage/cloud-api/"
+    "message": "Cloud API",
+    "description": "Метка для ссылки Cloud API в выпадающем списке sidebar dropdownCategories, указывающей на /cloud/manage/cloud-api/"
   },
   "sidebar.dropdownCategories.link.Cloud Reference": {
     "message": "Справочник по ClickHouse Cloud",
-    "description": "Метка ссылки Cloud Reference в раскрывающемся списке sidebar dropdownCategories, указывающей на /cloud/reference/"
+    "description": "Подпись ссылки «Cloud Reference» в выпадающем списке категорий боковой панели, ведущей на /cloud/reference/"
   },
   "sidebar.dropdownCategories.link.Best Practices": {
     "message": "Рекомендации",
-    "description": "Метка для ссылки «Best Practices» в раскрывающемся списке sidebar dropdownCategories, указывающей на /cloud/bestpractices/"
+    "description": "Метка ссылки «Best Practices» в выпадающем списке sidebar dropdownCategories, которая ведёт на /cloud/bestpractices/"
   },
   "sidebar.dropdownCategories.link.Security": {
     "message": "Безопасность",
@@ -617,43 +617,43 @@
   },
   "sidebar.dropdownCategories.link.Migrating to Cloud": {
     "message": "Миграция в ClickHouse Cloud",
-    "description": "Метка ссылки «Migrating to Cloud» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/migration"
+    "description": "Подпись ссылки «Migrating to Cloud» в выпадающем списке категорий боковой панели, ведущей на /integrations/migration"
   },
   "sidebar.dropdownCategories.link.Core Data Concepts": {
-    "message": "Базовые концепции данных",
-    "description": "Метка ссылки «Core Data Concepts» в выпадающем списке sidebar dropdownCategories, ведущей на /managing-data/core-concepts"
+    "message": "Основные концепции данных",
+    "description": "Подпись для ссылки «Core Data Concepts» в выпадающем списке категорий боковой панели, ведущей на /managing-data/core-concepts"
   },
   "sidebar.dropdownCategories.link.Updating Data": {
     "message": "Обновление данных",
-    "description": "Метка для ссылки «Updating Data» в выпадающем списке категорий боковой панели, указывающей на /updating-data"
+    "description": "Ярлык ссылки «Updating Data» в выпадающем списке категорий боковой панели, ведущей на /updating-data"
   },
   "sidebar.dropdownCategories.link.Deleting data": {
     "message": "Удаление данных",
-    "description": "Метка для ссылки «Удаление данных» в выпадающем меню боковой панели dropdownCategories, ведущей на /managing-data/deleting-data/overview"
+    "description": "Метка для ссылки «Deleting data» в выпадающем списке sidebar dropdownCategories, указывающей на /managing-data/deleting-data/overview"
   },
   "sidebar.dropdownCategories.link.Data Modeling": {
     "message": "Моделирование данных",
-    "description": "Метка ссылки «Data Modeling» в выпадающем списке категорий боковой панели, указывающей на /data-modeling/overview"
+    "description": "Ярлык ссылки «Data Modeling» в выпадающем списке категорий боковой панели, ведущей на /data-modeling/overview"
   },
   "sidebar.dropdownCategories.link.Performance and Optimizations": {
     "message": "Производительность и оптимизации",
-    "description": "Подпись для ссылки «Performance and Optimizations» в выпадающем меню sidebar dropdownCategories, ведущей на /operations/overview"
+    "description": "Метка ссылки «Performance and Optimizations» в выпадающем списке sidebar dropdownCategories, ведущей на /operations/overview"
   },
   "sidebar.dropdownCategories.link.Deployments and Scaling": {
     "message": "Развертывание и масштабирование",
-    "description": "Метка ссылки «Deployments and Scaling» в выпадающем списке sidebar dropdownCategories, указывающей на /deployment-guides/index"
+    "description": "Метка ссылки «Deployments and Scaling» в выпадающем списке sidebar dropdownCategories, ведущей на /deployment-guides/index"
   },
   "sidebar.dropdownCategories.link.Security and Authentication": {
     "message": "Безопасность и аутентификация",
-    "description": "Метка ссылки «Security and Authentication» в раскрывающемся списке категорий боковой панели, указывающей на /security-and-authentication"
+    "description": "Метка для ссылки «Security and Authentication» в выпадающем списке sidebar dropdownCategories, указывающей на /security-and-authentication"
   },
   "sidebar.dropdownCategories.link.Settings": {
     "message": "Настройки",
-    "description": "Метка для ссылки «Настройки» в выпадающем меню dropdownCategories боковой панели, ведущей на /operations/settings"
+    "description": "Ярлык для ссылки «Settings» в выпадающем списке sidebar dropdownCategories, ведущей на /operations/settings"
   },
   "sidebar.dropdownCategories.link.Tools and Utilities": {
-    "message": "Инструменты и сервисы",
-    "description": "Метка ссылки «Инструменты и утилиты» в выпадающем списке категорий боковой панели, ведущей на /operations/utilities"
+    "message": "Инструменты и вспомогательные утилиты",
+    "description": "Метка ссылки «Tools and Utilities» в выпадающем списке sidebar dropdownCategories, указывающей на /operations/utilities"
   },
   "sidebar.dropdownCategories.link.System Tables": {
     "message": "Системные таблицы",
@@ -661,74 +661,630 @@
   },
   "sidebar.dropdownCategories.link.Functions": {
     "message": "Функции",
-    "description": "Метка для ссылки «Функции» в выпадающем меню боковой панели dropdownCategories, ведущей на /sql-reference/functions"
+    "description": "Метка ссылки «Functions» в выпадающем списке sidebar dropdownCategories, ведущей на /sql-reference/functions"
   },
   "sidebar.dropdownCategories.link.Engines": {
-    "message": "Движки",
-    "description": "Метка для ссылки «Движки» в выпадающем меню боковой панели dropdownCategories, ведущей на /engines"
+    "message": "Движки таблиц",
+    "description": "Метка ссылки Engines в выпадающем списке sidebar dropdownCategories, ведущей на /engines"
   },
   "sidebar.dropdownCategories.link.Other Features": {
     "message": "Прочие возможности",
-    "description": "Метка ссылки «Other Features» в выпадающем списке категорий боковой панели, которая ведёт на /sql-reference/operators"
+    "description": "Метка для ссылки «Other Features» в выпадающем списке sidebar dropdownCategories, ведущей на /sql-reference/operators"
   },
   "sidebar.dropdownCategories.link.All Integrations": {
     "message": "Все интеграции",
-    "description": "Метка ссылки «All Integrations» в выпадающем списке категорий боковой панели, ведущей на /integrations"
+    "description": "Метка ссылки «All Integrations» в выпадающем списке sidebar dropdownCategories, которая ведёт на /integrations"
   },
   "sidebar.dropdownCategories.link.Language Clients": {
-    "message": "Языковые клиенты",
-    "description": "Метка ссылки «Language Clients» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/language-clients"
+    "message": "Клиентские библиотеки",
+    "description": "Ярлык для ссылки «Language Clients» в раскрывающемся списке sidebarCategories, ведущей на /integrations/language-clients"
   },
   "sidebar.dropdownCategories.link.ClickPipes": {
     "message": "ClickPipes",
-    "description": "Метка для ссылки ClickPipes в выпадающем меню категорий боковой панели, ведущей на /integrations/clickpipes"
+    "description": "Ярлык ссылки ClickPipes в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/clickpipes"
   },
   "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
-    "message": "Родные клиенты и интерфейсы",
-    "description": "Метка для ссылки «Native Clients & Interfaces» в выпадающем списке категорий боковой панели, которая ведёт на /interfaces/"
+    "message": "Встроенные клиенты и интерфейсы",
+    "description": "Подпись ссылки Native Clients & Interfaces в выпадающем списке sidebar dropdownCategories, указывающей на /interfaces/"
   },
   "sidebar.dropdownCategories.link.Data Sources": {
     "message": "Источники данных",
-    "description": "Метка для ссылки «Data Sources» в выпадающем списке категорий боковой панели, которая ведёт на /integrations/index"
+    "description": "Метка ссылки «Data Sources» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/index"
   },
   "sidebar.dropdownCategories.link.Data Visualization": {
     "message": "Визуализация данных",
-    "description": "Подпись ссылки «Data Visualization» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/data-visualization"
+    "description": "Метка для ссылки «Data Visualization» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/data-visualization"
   },
   "sidebar.dropdownCategories.link.Data Formats": {
     "message": "Форматы данных",
-    "description": "Метка ссылки «Data Formats» в выпадающем списке категорий боковой панели, которая ведёт на /integrations/data-formats"
+    "description": "Ярлык для ссылки «Data Formats» в выпадающем списке sidebar dropdownCategories, которая ведёт на /integrations/data-formats"
   },
   "sidebar.dropdownCategories.link.Data Ingestion": {
     "message": "Загрузка данных",
-    "description": "Подпись ссылки «Data Ingestion» в выпадающем списке категорий боковой панели, указывающей на /integrations/data-ingestion-overview"
+    "description": "Метка для ссылки «Data Ingestion» в выпадающем списке sidebar dropdownCategories, указывающей на /integrations/data-ingestion-overview"
   },
   "sidebar.dropdownCategories.link.Learn chDB": {
-    "message": "Изучите chDB",
-    "description": "Изучить chDB"
+    "message": "Изучение chDB",
+    "description": "Ярлык ссылки «Learn chDB» в выпадающем списке sidebar dropdownCategories, ведущей на /chdb"
   },
   "sidebar.dropdownCategories.link.Language Integrations": {
-    "message": "Интеграция с языками",
-    "description": "Ярлык ссылки «Language Integrations» в выпадающем списке категорий боковой панели, ведущей на /chdb/install"
+    "message": "Интеграции с языками программирования",
+    "description": "Метка ссылки «Language Integrations» в выпадающем списке sidebar dropdownCategories, ведущей на /chdb/install"
   },
   "sidebar.dropdownCategories.link.Guides": {
     "message": "Руководства",
-    "description": "Метка для ссылки «Руководства» в выпадающем меню боковой панели dropdownCategories, ведущей на /chdb/guides"
+    "description": "Метка для ссылки Guides в выпадающем списке sidebar dropdownCategories, указывающей на /chdb/guides"
   },
   "sidebar.dropdownCategories.link.Adopters": {
-    "message": "Пользователи",
-    "description": "Метка для ссылки «Пользователи» в выпадающем меню dropdownCategories боковой панели, ведущей на /about-us/adopters"
+    "message": "Компании, использующие ClickHouse",
+    "description": "Метка ссылки Adopters в выпадающем списке sidebar dropdownCategories, указывающей на /about-us/adopters"
   },
   "sidebar.dropdownCategories.link.Changelogs": {
-    "message": "Список изменений",
-    "description": "Подпись ссылки Changelogs в выпадающем списке категорий боковой панели, ведущей на /whats-new/security-changelog"
+    "message": "Журналы изменений",
+    "description": "Метка ссылки «Changelogs» в выпадающем списке sidebar dropdownCategories, ведущей на /category/changelog"
   },
   "sidebar.dropdownCategories.link.Support": {
     "message": "Поддержка",
-    "description": "Метка для ссылки «Поддержка» в выпадающем меню боковой панели dropdownCategories, ведущей на /about-us/support"
+    "description": "Метка ссылки «Support» в выпадающем списке sidebar dropdownCategories, указывающей на /about-us/support"
   },
   "sidebar.dropdownCategories.link.Development and Contributing": {
-    "message": "Разработка и участие",
-    "description": "Метка для ссылки «Development and Contributing» в выпадающем списке sidebar dropdownCategories, которая ведёт на /development/developer-instruction"
+    "message": "Разработка и вклад",
+    "description": "Метка ссылки «Development and Contributing» в выпадающем списке sidebar dropdownCategories, которая ведёт на /development/developer-instruction"
+  },
+  "sidebar.docs.category.Quick start": {
+    "message": "Быстрый старт",
+    "description": "Ярлык для категории «Быстрый старт» в боковой панели документации"
+  },
+  "sidebar.docs.category.Install": {
+    "message": "Установка",
+    "description": "Метка категории «Установка» в боковой панели документации"
+  },
+  "sidebar.docs.category.Starter guides": {
+    "message": "Руководства для новичков",
+    "description": "Метка для категории «Starter guides» в боковой панели документации"
+  },
+  "sidebar.docs.category.Best practices": {
+    "message": "Рекомендации по использованию",
+    "description": "Подпись категории «Best practices» в боковой панели документации"
+  },
+  "sidebar.docs.category.Use case guides": {
+    "message": "Руководства по сценариям использования",
+    "description": "Метка для категории «Руководства по сценариям использования» в боковой панели документации"
+  },
+  "sidebar.docs.category.Capabilities": {
+    "message": "Возможности",
+    "description": "Метка категории «Capabilities» в боковой панели документации"
+  },
+  "sidebar.docs.category.Build your own": {
+    "message": "Создайте собственное решение",
+    "description": "Метка для категории «Build your own» в боковой панели раздела документации"
+  },
+  "sidebar.docs.category.Time-series": {
+    "message": "Временные ряды",
+    "description": "Ярлык для категории «Time-series» в боковой панели документации"
+  },
+  "sidebar.docs.category.Data lake": {
+    "message": "Дата-лейк",
+    "description": "Метка для категории «Data Lake» в боковой панели документации"
+  },
+  "sidebar.docs.category.AI/ML": {
+    "message": "ИИ/МЛ",
+    "description": "Название категории AI/ML в боковой панели документации"
+  },
+  "sidebar.docs.category.MCP": {
+    "message": "MCP",
+    "description": "Метка категории MCP в боковой панели документации"
+  },
+  "sidebar.docs.category.Integrate AI agent libraries": {
+    "message": "Интегрируйте библиотеки AI‑агентов",
+    "description": "Метка для категории «Интеграция библиотек AI-агентов» в боковой панели документации"
+  },
+  "sidebar.docs.category.Data exploration": {
+    "message": "Исследование данных",
+    "description": "Метка для категории «Изучение данных» в боковом меню документации"
+  },
+  "sidebar.docs.category.Example datasets": {
+    "message": "Примерные наборы данных",
+    "description": "Ярлык для категории «Пример наборов данных» в боковой панели документации"
+  },
+  "sidebar.docs.category.Tips and community wisdom": {
+    "message": "Советы и рекомендации сообщества",
+    "description": "Название категории «Советы и опыт сообщества» в боковой панели документации"
+  },
+  "sidebar.cloud.category.Get started": {
+    "message": "Начало работы",
+    "description": "Метка категории «Get started» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Discover": {
+    "message": "Обзор",
+    "description": "Метка категории Discover в облачной боковой панели"
+  },
+  "sidebar.cloud.category.Use cases": {
+    "message": "Варианты использования",
+    "description": "Метка для категории «Use cases» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.ML/AI": {
+    "message": "ML/AI",
+    "description": "Метка категории ML/AI в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Setup": {
+    "message": "Настройка",
+    "description": "Метка для категории «Setup» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Migration guides": {
+    "message": "Руководства по миграции",
+    "description": "Метка категории «Руководства по миграции» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.PostgreSQL": {
+    "message": "PostgreSQL",
+    "description": "Ярлык для категории PostgreSQL в боковой панели облака"
+  },
+  "sidebar.cloud.category.Migration guide": {
+    "message": "Руководство по миграции",
+    "description": "Метка для категории «Migration guide» в боковой панели облака"
+  },
+  "sidebar.cloud.category.BigQuery": {
+    "message": "BigQuery",
+    "description": "Метка категории BigQuery в боковой панели «Облако»"
+  },
+  "sidebar.cloud.category.Snowflake": {
+    "message": "Snowflake",
+    "description": "Ярлык категории Snowflake в боковой панели облака"
+  },
+  "sidebar.cloud.category.Elasticsearch": {
+    "message": "Elasticsearch",
+    "description": "Метка категории Elasticsearch в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Redshift": {
+    "message": "Redshift",
+    "description": "Метка категории Redshift в боковой панели облака"
+  },
+  "sidebar.cloud.category.OSS to Cloud": {
+    "message": "С OSS в облако",
+    "description": "Метка категории «OSS to Cloud» в боковой панели раздела Cloud"
+  },
+  "sidebar.cloud.category.Other...": {
+    "message": "Другое…",
+    "description": "Метка категории «Другое…» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Tune": {
+    "message": "Настройка",
+    "description": "Ярлык для категории «Настройка» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Features": {
+    "message": "Возможности",
+    "description": "Метка категории «Features» в боковой панели облака"
+  },
+  "sidebar.cloud.category.SQL console": {
+    "message": "SQL-консоль",
+    "description": "Метка категории «SQL Console» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Infrastructure": {
+    "message": "Инфраструктура",
+    "description": "Ярлык категории Infrastructure в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Automatic Scaling": {
+    "message": "Автоматическое масштабирование",
+    "description": "Метка категории «Автоматическое масштабирование» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Admin": {
+    "message": "Администратор",
+    "description": "Метка категории Admin в боковой панели облака"
+  },
+  "sidebar.cloud.category.Guides": {
+    "message": "Руководства",
+    "description": "Метка категории «Guides» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Bring Your Own Backup": {
+    "message": "Использование собственных резервных копий",
+    "description": "Метка категории «Bring Your Own Backup» в боковой панели в облаке"
+  },
+  "sidebar.cloud.category.Best practices": {
+    "message": "Рекомендации по применению лучших практик",
+    "description": "Метка категории «Best practices» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Data sources": {
+    "message": "Источники данных",
+    "description": "Метка категории «Источники данных» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Deployment options": {
+    "message": "Варианты развертывания",
+    "description": "Ярлык для категории «Варианты развертывания» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.BYOC (Bring Your Own Cloud)": {
+    "message": "BYOC (Bring Your Own Cloud)",
+    "description": "Метка категории BYOC (Bring Your Own Cloud) в боковой панели раздела Cloud"
+  },
+  "sidebar.cloud.category.Onboarding": {
+    "message": "Онбординг",
+    "description": "Ярлык категории «Onboarding» в боковой панели облака"
+  },
+  "sidebar.cloud.category.FAQ": {
+    "message": "Часто задаваемые вопросы",
+    "description": "Метка категории «FAQ» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Observability": {
+    "message": "Наблюдаемость",
+    "description": "Метка для категории «Observability» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Cloud access management": {
+    "message": "Управление доступом в облачной среде",
+    "description": "Метка категории «Управление доступом к облаку» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Private networking": {
+    "message": "Частная сеть",
+    "description": "Метка для категории «Private networking» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Audit logging": {
+    "message": "Аудит логов",
+    "description": "Метка категории «Audit logging» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Compliance": {
+    "message": "Соответствие",
+    "description": "Ярлык для категории «Compliance» в боковой панели облака"
+  },
+  "sidebar.cloud.category.Reference": {
+    "message": "Справка",
+    "description": "Метка для категории Reference в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Change logs": {
+    "message": "Журналы изменений",
+    "description": "Метка для категории «Журналы изменений» в боковой панели Cloud"
+  },
+  "sidebar.cloud.category.Release notes": {
+    "message": "Примечания к выпуску",
+    "description": "Метка для категории «Release notes» в боковой панели облачного интерфейса"
+  },
+  "sidebar.cloud.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "Ярлык для категории ClickPipes в боковой панели в облаке"
+  },
+  "sidebar.integrations.category.Language clients": {
+    "message": "Клиенты для языков программирования",
+    "description": "Ярлык для категории «Клиенты для языков программирования» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Python": {
+    "message": "Python",
+    "description": "Метка категории Python в боковой панели Integrations"
+  },
+  "sidebar.integrations.category.Operations": {
+    "message": "Операции",
+    "description": "Метка категории «Operations» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.ClickPipes for object storage": {
+    "message": "ClickPipes для объектных хранилищ",
+    "description": "Метка категории ClickPipes для объектного хранилища в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.ClickPipes for Kafka": {
+    "message": "ClickPipes для Kafka",
+    "description": "Метка категории ClickPipes for Kafka в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.ClickPipes for MySQL": {
+    "message": "ClickPipes для MySQL",
+    "description": "Метка категории «ClickPipes for MySQL» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.ClickPipes for MongoDB": {
+    "message": "ClickPipes для MongoDB",
+    "description": "Метка категории ClickPipes for MongoDB в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Data sources": {
+    "message": "Источники данных",
+    "description": "Подпись для категории «Источники данных» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Table engines": {
+    "message": "Движки таблиц",
+    "description": "Метка категории «Table engines» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Data visualization": {
+    "message": "Визуализация данных",
+    "description": "Метка для категории «Визуализация данных» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Third-party": {
+    "message": "Сторонний",
+    "description": "Метка категории «Сторонние» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Data formats": {
+    "message": "Форматы данных",
+    "description": "Метка категории «Форматы данных» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Data ingestion": {
+    "message": "Загрузка данных",
+    "description": "Метка для категории «Загрузка данных» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Azure Data Factory": {
+    "message": "Azure Data Factory",
+    "description": "Метка для категории Azure Data Factory в разделе интеграций боковой панели"
+  },
+  "sidebar.integrations.category.Dataflow templates": {
+    "message": "Шаблоны конвейеров обработки данных",
+    "description": "Метка для категории «Шаблоны Dataflow» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.dbt": {
+    "message": "dbt",
+    "description": "Название категории dbt в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.SQL clients": {
+    "message": "SQL-клиенты",
+    "description": "Ярлык для категории «SQL‑клиенты» в разделе интеграций на боковой панели"
+  },
+  "sidebar.integrations.category.Data integrations": {
+    "message": "Интеграции с данными",
+    "description": "Метка для категории «Интеграции данных» в боковой панели интеграций"
+  },
+  "sidebar.integrations.doc.Introduction": {
+    "message": "Введение",
+    "description": "Метка для элемента документа «Introduction» в боковой панели раздела integrations, указывающая на документ integrations/language-clients/python/index"
+  },
+  "sidebar.managingData.category.Core concepts": {
+    "message": "Основные концепции",
+    "description": "Метка для категории «Core concepts» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Updating data": {
+    "message": "Обновление данных",
+    "description": "Метка для категории «Обновление данных» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Deleting data": {
+    "message": "Удаление данных",
+    "description": "Метка для категории «Удаление данных» в боковой панели раздела managingData"
+  },
+  "sidebar.managingData.category.Data modeling": {
+    "message": "Моделирование данных",
+    "description": "Метка для категории «Моделирование данных» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Materialized views": {
+    "message": "Материализованные представления",
+    "description": "Метка категории «Материализованные представления» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Projections": {
+    "message": "Проекции",
+    "description": "Метка для категории «Projections» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Data compression": {
+    "message": "Сжатие данных",
+    "description": "Метка для категории «Сжатие данных» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Advanced guides": {
+    "message": "Расширенные инструкции",
+    "description": "Метка категории «Расширенные руководства» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Performance and optimizations": {
+    "message": "Производительность и оптимизации",
+    "description": "Метка для категории «Performance and optimizations» в боковой панели managingData"
+  },
+  "sidebar.managingData.category.Data skipping indexes": {
+    "message": "Индексы пропуска блоков данных",
+    "description": "Метка для категории «Data skipping indexes» в боковой панели managingData"
+  },
+  "sidebar.managingData.doc.Lightweight updates": {
+    "message": "Легковесные обновления",
+    "description": "Метка для элемента документа «Lightweight updates» в боковой панели managingData, указывающая на документ guides/developer/on-fly-mutations"
+  },
+  "sidebar.managingData.doc.Lightweight deletes": {
+    "message": "Облегчённые удаления",
+    "description": "Метка для элемента документа «Lightweight deletes» в боковой панели managingData, которая ссылается на документ guides/developer/lightweight-delete"
+  },
+  "sidebar.serverAdmin.category.Manage and deploy": {
+    "message": "Управление и развёртывание",
+    "description": "Метка для категории «Управление и развертывание» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Deployment and scaling": {
+    "message": "Развертывание и масштабирование",
+    "description": "Метка категории «Deployment and scaling» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Examples": {
+    "message": "Примеры",
+    "description": "Метка категории «Examples» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Backup/Restore": {
+    "message": "Резервное копирование и восстановление",
+    "description": "Метка категории «Backup/Restore» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Security and authentication": {
+    "message": "Безопасность и аутентификация",
+    "description": "Метка категории «Безопасность и аутентификация» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.External authenticators": {
+    "message": "Внешние средства аутентификации",
+    "description": "Метка категории «Внешние аутентификаторы» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Tools and utilities": {
+    "message": "Инструменты и службы",
+    "description": "Метка для категории «Инструменты и утилиты» в боковой панели serverAdmin"
+  },
+  "sidebar.chdb.category.Language integrations": {
+    "message": "Языковые интеграции",
+    "description": "Название категории «Интеграции с языками» в боковой панели chDB"
+  },
+  "sidebar.chdb.category.Developer guides": {
+    "message": "Руководства разработчика",
+    "description": "Метка для категории «Руководства разработчика» в боковой панели chDB"
+  },
+  "sidebar.chdb.category.Technical reference": {
+    "message": "Техническая документация",
+    "description": "Метка категории «Technical reference» в боковой панели chDB"
+  },
+  "sidebar.chdb.link.Team and dontributors": {
+    "message": "Команда и участники",
+    "description": "Метка ссылки «Team and contributors» в боковой панели chdb, ведущей на https://github.com/chdb-io/chdb#contributors"
+  },
+  "sidebar.clickstack.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "Метка категории ClickStack в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.Sample datasets": {
+    "message": "Примерные наборы данных",
+    "description": "Метка категории «Sample datasets» в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.Deployment": {
+    "message": "Развертывание",
+    "description": "Метка категории Deployment в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.Ingesting data": {
+    "message": "Загрузка данных",
+    "description": "Ярлык для категории «Ingesting data» в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.SDKs": {
+    "message": "SDK",
+    "description": "Метка категории «SDKs» в боковой панели ClickStack"
+  },
+  "sidebar.clickstack.category.Migration guides": {
+    "message": "Руководства по миграции",
+    "description": "Метка для категории «Migration guides» в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.Migrating from Elastic": {
+    "message": "Миграция с Elasticsearch",
+    "description": "Метка для категории «Переход с Elastic» в боковой панели clickstack"
+  },
+  "sidebar.clickstack.category.Integration quick start": {
+    "message": "Быстрый старт по интеграциям",
+    "description": "Метка для категории «Быстрый старт интеграции» в боковой панели ClickStack"
+  },
+  "sidebar.clickstack.category.Host Logs": {
+    "message": "Журналы узла",
+    "description": "Ярлык категории «Host Logs» в боковой панели clickstack"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "Начало работы",
+    "description": "Метка для категории «Знакомство» в раскрывающемся списке sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "Управление данными",
+    "description": "Метка для категории «Управление данными» в выпадающем списке sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "Администратор сервера",
+    "description": "Ярлык категории «Server admin» в выпадающем списке sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "Метка для категории ClickStack в выпадающем списке категорий боковой панели"
+  },
+  "sidebar.dropdownCategories.link.Starter guides": {
+    "message": "Начальные руководства",
+    "description": "Метка для ссылки «Starter guides» в выпадающем списке sidebar dropdownCategories, указывающей на /starter-guides"
+  },
+  "sidebar.dropdownCategories.link.Best practices": {
+    "message": "Рекомендации по использованию",
+    "description": "Метка ссылки «Best practices» в выпадающем списке категорий боковой панели, ведущей на /best-practices"
+  },
+  "sidebar.dropdownCategories.link.Migration guides": {
+    "message": "Руководства по миграции",
+    "description": "Метка ссылки Migration guides в выпадающем списке sidebar dropdownCategories, указывающей на /integrations/migration/overview"
+  },
+  "sidebar.dropdownCategories.link.Use case guides": {
+    "message": "Руководства по вариантам применения",
+    "description": "Метка ссылки «Use case guides» в раскрывающемся списке категорий боковой панели, ведущей на /use-cases"
+  },
+  "sidebar.dropdownCategories.link.Tips and community wisdom": {
+    "message": "Советы и опыт сообщества",
+    "description": "Метка ссылки «Tips and community wisdom» в выпадающем списке sidebar dropdownCategories, ведущей на /tips-and-tricks/community-wisdom"
+  },
+  "sidebar.dropdownCategories.link.Features": {
+    "message": "Особенности",
+    "description": "Метка ссылки «Features» в выпадающем списке категорий боковой панели, указывающей на /cloud/manage/cloud-tiers"
+  },
+  "sidebar.dropdownCategories.link.Reference": {
+    "message": "Справка",
+    "description": "Метка ссылки «Reference» в выпадающем списке категорий боковой панели, которая указывает на /cloud/reference/"
+  },
+  "sidebar.dropdownCategories.link.Core data concepts": {
+    "message": "Основные концепции данных",
+    "description": "Метка ссылки «Core data concepts» в выпадающем списке категорий боковой панели, ведущей на /managing-data/core-concepts"
+  },
+  "sidebar.dropdownCategories.link.Updating data": {
+    "message": "Обновление данных",
+    "description": "Метка ссылки «Updating data» в выпадающем списке sidebarCategories, ведущей на /updating-data"
+  },
+  "sidebar.dropdownCategories.link.Data modeling": {
+    "message": "Моделирование данных",
+    "description": "Метка для ссылки «Data modeling» в выпадающем списке sidebar dropdownCategories, ведущей на /data-modeling/overview"
+  },
+  "sidebar.dropdownCategories.link.Performance and optimizations": {
+    "message": "Производительность и оптимизация",
+    "description": "Метка ссылки «Performance and optimizations» в выпадающем списке категорий боковой панели, ведущей на /operations/overview"
+  },
+  "sidebar.dropdownCategories.link.Deployments and scaling": {
+    "message": "Развертывание и масштабирование",
+    "description": "Метка ссылки «Deployments and scaling» в выпадающем списке sidebar dropdownCategories, указывающей на /deployment-guides/index"
+  },
+  "sidebar.dropdownCategories.link.Security and authentication": {
+    "message": "Безопасность и идентификация",
+    "description": "Метка для ссылки «Security and authentication» в раскрывающемся списке категорий боковой панели, которая ведет на /security-and-authentication"
+  },
+  "sidebar.dropdownCategories.link.Tools and utilities": {
+    "message": "Инструменты и вспомогательные программы",
+    "description": "Метка ссылки «Tools and utilities» в выпадающем списке категорий боковой панели, которая ведет на /operations/utilities"
+  },
+  "sidebar.dropdownCategories.link.System tables": {
+    "message": "Системные таблицы",
+    "description": "Метка ссылки «System tables» в выпадающем списке категорий боковой панели, которая ведёт на /operations/system-tables"
+  },
+  "sidebar.dropdownCategories.link.All integrations": {
+    "message": "Все интеграции",
+    "description": "Метка ссылки «All integrations» в выпадающем списке sidebar dropdownCategories, указывающей на /integrations"
+  },
+  "sidebar.dropdownCategories.link.Language clients": {
+    "message": "Языковые клиенты",
+    "description": "Ярлык ссылки «Language clients» в выпадающем списке категорий боковой панели, ведущей на /integrations/language-clients"
+  },
+  "sidebar.dropdownCategories.link.Native clients & interfaces": {
+    "message": "Нативные клиенты и интерфейсы",
+    "description": "Метка ссылки «Native clients & interfaces» в выпадающем списке категорий боковой панели, ведущей на /interfaces/natives-clients-and-interfaces"
+  },
+  "sidebar.dropdownCategories.link.Data sources": {
+    "message": "Источники данных",
+    "description": "Метка ссылки «Data sources» в выпадающем списке категорий боковой панели, указывающей на /integrations/data-sources/index"
+  },
+  "sidebar.dropdownCategories.link.Data visualization": {
+    "message": "Визуализация данных",
+    "description": "Метка ссылки «Data visualization» в выпадающем списке sidebar dropdownCategories, ведущей на /integrations/data-visualization"
+  },
+  "sidebar.dropdownCategories.link.Data formats": {
+    "message": "Форматы данных",
+    "description": "Метка ссылки «Data formats» в выпадающем списке sidebar dropdownCategories, которая ведёт на /integrations/data-formats"
+  },
+  "sidebar.dropdownCategories.link.Data ingestion": {
+    "message": "Загрузка данных",
+    "description": "Метка ссылки «Data ingestion» в выпадающем списке sidebar dropdownCategories, которая ведет на /integrations/data-ingestion-overview"
+  },
+  "sidebar.dropdownCategories.link.Getting started": {
+    "message": "Начало работы",
+    "description": "Подпись ссылки «Getting started» в выпадающем списке категорий боковой панели, ведущей на /use-cases/observability/clickstack/getting-started"
+  },
+  "sidebar.dropdownCategories.link.Sample datasets": {
+    "message": "Примерные наборы данных",
+    "description": "Метка ссылки «Sample datasets» в выпадающем списке категорий боковой панели, которая ведёт на /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Architecture": {
+    "message": "Архитектура",
+    "description": "Метка для ссылки «Architecture» в выпадающем списке sidebar dropdownCategories, указывающей на /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Deployment": {
+    "message": "Развертывание",
+    "description": "Подпись для ссылки «Deployment» в выпадающем списке sidebar dropdownCategories, указывающей на /use-cases/observability/clickstack/deployment"
+  },
+  "sidebar.dropdownCategories.link.Ingesting data": {
+    "message": "Загрузка данных",
+    "description": "Метка для ссылки «Ingesting data» в выпадающем меню sidebar dropdownCategories, ведущей на страницу /use-cases/observability/clickstack/ingesting-data"
+  },
+  "sidebar.dropdownCategories.link.Configuration options": {
+    "message": "Параметры настройки",
+    "description": "Метка ссылки «Configuration options» в выпадающем списке категорий боковой панели, которая ведёт на /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Production": {
+    "message": "Продакшен",
+    "description": "Метка для ссылки «Production» в выпадающем списке sidebar dropdownCategories, ведущей на /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Integration examples": {
+    "message": "Примеры интеграций",
+    "description": "Текст ссылки «Integration examples» в выпадающем списке sidebar dropdownCategories, ведущей на /use-cases/observability/clickstack/integration-guides"
+  },
+  "sidebar.dropdownCategories.link.Language integrations": {
+    "message": "Интеграции с языками программирования",
+    "description": "Подпись ссылки «Интеграции с языками программирования» в выпадающем списке категорий боковой панели, которая ведёт на /chdb/install"
+  },
+  "sidebar.dropdownCategories.link.Development and contributing": {
+    "message": "Разработка и вклад",
+    "description": "Ярлык ссылки «Development and contributing» в раскрывающемся списке sidebar dropdownCategories, ведущей на /development/developer-instruction"
   }
 }

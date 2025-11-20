@@ -33,27 +33,27 @@ pip install "chdb>=2.0.2"
 pip install pandas ipython
 ```
 
-我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过以下命令启动:
+我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过运行以下命令启动:
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您常用的 notebook 中使用这些代码。
+您也可以在 Python 脚本或您喜欢的 Notebook 中使用这些代码。
 
 
 ## ClickPy 简介 {#an-intro-to-clickpy}
 
 我们将要查询的远程 ClickHouse 服务器是 [ClickPy](https://clickpy.clickhouse.com)。
-ClickPy 跟踪所有 PyPI 包的下载情况,并允许您通过 UI 界面浏览包的统计信息。
-底层数据库可使用 `play` 用户进行查询。
+ClickPy 跟踪所有 PyPI 包的下载情况,并允许您通过 UI 界面浏览包的统计数据。
+可以使用 `play` 用户查询底层数据库。
 
 您可以在 [其 GitHub 仓库](https://github.com/ClickHouse/clickpy) 中了解更多关于 ClickPy 的信息。
 
 
 ## 查询 ClickPy ClickHouse 服务 {#querying-the-clickpy-clickhouse-service}
 
-让我们导入 chDB：
+首先导入 chDB:
 
 ```python
 import chdb
@@ -62,7 +62,7 @@ import chdb
 我们将使用 `remoteSecure` 函数来查询 ClickPy。
 该函数至少需要主机名、表名和用户名这三个参数。
 
-我们可以编写以下查询，以 Pandas DataFrame 的形式返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai)的每日下载量：
+我们可以编写以下查询,以 Pandas DataFrame 的形式返回 [`openai` 包](https://clickpy.clickhouse.com/dashboard/openai)的每日下载量:
 
 ```python
 query = """
@@ -97,7 +97,7 @@ openai_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-现在让我们用同样的方式返回 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载量：
+现在用同样的方式查询 [`scikit-learn`](https://clickpy.clickhouse.com/dashboard/scikit-learn) 的下载量:
 
 ```python
 query = """
@@ -135,7 +135,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 
 ## 合并 Pandas DataFrames {#merging-pandas-dataframes}
 
-现在我们有两个 DataFrames,可以基于日期(即 `x` 列)将它们合并,如下所示:
+现在我们有两个 DataFrame,可以基于日期(即 `x` 列)将它们合并,如下所示:
 
 ```python
 df = openai_df.merge(

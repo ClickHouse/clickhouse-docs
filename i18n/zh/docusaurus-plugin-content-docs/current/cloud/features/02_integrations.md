@@ -25,7 +25,7 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import Image from '@theme/IdealImage';
 
-ClickHouse Cloud 让你轻松连接常用的工具和服务。
+ClickHouse Cloud 允许你连接常用且喜爱的工具和服务。
 
 
 ## ClickHouse Cloud 的托管集成管道 {#clickpipes}
@@ -36,20 +36,20 @@ ClickPipes 可用于长期流式传输需求或一次性数据加载作业。
 
 | 名称                                               | 徽标                                                                                             | 类型           | 状态          | 描述                                                                                          |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Apache Kafka 的流式数据摄取到 ClickHouse Cloud。     |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka logo" style={{width: '3rem', 'height': '3rem'}}/>      | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Apache Kafka 的流式数据摄取到 ClickHouse Cloud 中。     |
 | Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud logo" style={{width: '3rem'}}/>                 | 流式传输      | 稳定          | 通过我们的直接集成,释放 Confluent 和 ClickHouse Cloud 的组合能力。          |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Redpanda 的流式数据摄取到 ClickHouse Cloud。         |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 AWS MSK 的流式数据摄取到 ClickHouse Cloud。          |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Azure Event Hubs 的流式数据摄取到 ClickHouse Cloud。 |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 WarpStream 的流式数据摄取到 ClickHouse Cloud。       |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda logo"/>                                     | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Redpanda 的流式数据摄取到 ClickHouse Cloud 中。         |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK logo" style={{width: '3rem', 'height': '3rem'}}/>             | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 AWS MSK 的流式数据摄取到 ClickHouse Cloud 中。          |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs logo" style={{width: '3rem'}}/>           | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Azure Event Hubs 的流式数据摄取到 ClickHouse Cloud 中。 |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream logo" style={{width: '3rem'}}/>                     | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 WarpStream 的流式数据摄取到 ClickHouse Cloud 中。       |
 | Amazon S3                                          | <S3svg class="image" alt="Amazon S3 logo" style={{width: '3rem', height: 'auto'}}/>              | 对象存储 | 稳定          | 配置 ClickPipes 以从对象存储中摄取大量数据。                            |
 | Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage logo" style={{width: '3rem', height: 'auto'}}/>  | 对象存储 | 稳定          | 配置 ClickPipes 以从对象存储中摄取大量数据。                            |
 | DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '3rem', height: 'auto'}}/>          | 对象存储 | 稳定          | 配置 ClickPipes 以从对象存储中摄取大量数据。                            |
 | Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage logo" style={{width: '3rem', height: 'auto'}}/>    | 对象存储 | 私有测试版    | 配置 ClickPipes 以从对象存储中摄取大量数据。                            |
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <AmazonKinesis class="image" alt="Amazon Kinesis logo" style={{width: '3rem', height: 'auto'}}/> | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Amazon Kinesis 的流式数据摄取到 ClickHouse Cloud。   |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         | 数据库管理系统           | 稳定          | 配置 ClickPipes 并开始将 Postgres 的数据摄取到 ClickHouse Cloud。                   |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               | 数据库管理系统           | 私有测试版    | 配置 ClickPipes 并开始将 MySQL 的数据摄取到 ClickHouse Cloud。                      |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           | 数据库管理系统           | 私有预览版 | 配置 ClickPipes 并开始将 MongoDB 的数据摄取到 ClickHouse Cloud。                    |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <AmazonKinesis class="image" alt="Amazon Kinesis logo" style={{width: '3rem', height: 'auto'}}/> | 流式传输      | 稳定          | 配置 ClickPipes 并开始将 Amazon Kinesis 的流式数据摄取到 ClickHouse Cloud 中。   |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres logo" style={{width: '3rem', height: 'auto'}}/>         | 数据库管理系统           | 稳定          | 配置 ClickPipes 并开始将 Postgres 的数据摄取到 ClickHouse Cloud 中。                   |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               | 数据库管理系统           | 私有测试版    | 配置 ClickPipes 并开始将 MySQL 的数据摄取到 ClickHouse Cloud 中。                      |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           | 数据库管理系统           | 私有预览版 | 配置 ClickPipes 并开始将 MongoDB 的数据摄取到 ClickHouse Cloud 中。                    |
 
 
 ## 语言客户端集成 {#language-client-integrations}

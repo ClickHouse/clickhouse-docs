@@ -7,17 +7,17 @@ doc_type: 'guide'
 keywords: ['dynamic column selection', 'regular expressions', 'APPLY modifier', 'advanced queries', 'developer guide']
 ---
 
-[动态列选择](/docs/sql-reference/statements/select#dynamic-column-selection) 是 ClickHouse 中一个功能强大但尚未被充分利用的特性，它允许你使用正则表达式来选择列，而无需逐一写出每个列名。你还可以使用 `APPLY` 修饰符对所有匹配的列应用函数，这使得该功能在数据分析和数据转换任务中极其有用。
+[动态列选择](/docs/sql-reference/statements/select#dynamic-column-selection) 是 ClickHouse 中一个功能强大但尚未被充分利用的特性，它允许你使用正则表达式选择列，而无需逐一写出每个列名。你还可以使用 `APPLY` 修饰符对匹配到的列应用函数，使其在数据分析和转换任务中极其实用。
 
-我们将借助 [纽约出租车数据集](/docs/getting-started/example-datasets/nyc-taxi) 来学习如何使用这一特性，你也可以在 [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) 中找到该数据集。
+我们将借助 [纽约出租车数据集](/docs/getting-started/example-datasets/nyc-taxi) 学习如何使用这一特性，你也可以在 [ClickHouse SQL playground](https://sql.clickhouse.com?query=LS0gRGF0YXNldCBjb250YWluaW5nIHRheGkgcmlkZSBkYXRhIGluIE5ZQyBmcm9tIDIwMDkuIE1vcmUgaW5mbyBoZXJlOiBodHRwczovL2NsaWNraG91c2UuY29tL2RvY3MvZW4vZ2V0dGluZy1zdGFydGVkL2V4YW1wbGUtZGF0YXNldHMvbnljLXRheGkKU0VMRUNUICogRlJPTSBueWNfdGF4aS50cmlwcyBMSU1JVCAxMDA) 中找到该数据集。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/moabRqqHNo4?si=jgmInV-u3UxtLvMS" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 
 ## 选择匹配模式的列 {#selecting-columns}
 
-让我们从一个常见场景开始:从 NYC 出租车数据集中仅选择包含 `_amount` 的列。无需手动输入每个列名,我们可以使用 `COLUMNS` 表达式配合正则表达式来实现:
+让我们从一个常见场景开始:从 NYC 出租车数据集中仅选择包含 `_amount` 的列。我们可以使用带正则表达式的 `COLUMNS` 表达式,而无需手动输入每个列名:
 
 ```sql
 FROM nyc_taxi.trips
@@ -27,7 +27,7 @@ LIMIT 10;
 
 > [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7&run_query=true)
 
-此查询返回前 10 行数据,但仅包含列名匹配模式 `.*_amount`(任意字符后跟 "\_amount")的列。
+此查询返回前 10 行,但仅返回列名匹配模式 `.*_amount`(任意字符后跟 "\_amount")的列。
 
 ```text
     ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐
@@ -45,7 +45,7 @@ LIMIT 10;
 ```
 
 假设我们还想返回包含 `fee` 或 `tax` 的列。
-我们可以更新正则表达式来包含这些条件:
+我们可以更新正则表达式以包含这些内容:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax')
@@ -67,7 +67,7 @@ LIMIT 3;
 
 ## 选择多个模式 {#selecting-multiple-patterns}
 
-我们可以在单个查询中组合多个列模式:
+我们可以在单个查询中组合多个列模式：
 
 ```sql
 SELECT
@@ -77,7 +77,7 @@ FROM nyc_taxi.trips
 LIMIT 5;
 ```
 
-> [在 SQL Playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7&run_query=true)
+> [在 SQL playground 中尝试此查询](https://sql.clickhouse.com?query=U0VMRUNUIAogICAgQ09MVU1OUygnLipfYW1vdW50JyksCiAgICBDT0xVTU5TKCcuKl9kYXRlLionKQpGUk9NIG55Y190YXhpLnRyaXBzCkxJTUlUIDU7&run_query=true)
 
 ```text
    ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┬─pickup_date─┬─────pickup_datetime─┬─dropoff_date─┬────dropoff_datetime─┐
@@ -123,7 +123,7 @@ FROM nyc_taxi.trips
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-这些值包含很多小数位,但我们可以通过链式调用函数来解决。在这种情况下,我们将先应用 avg 函数,然后应用 round 函数:
+这些值包含很多小数位,但我们可以通过链式调用函数来解决这个问题。在这种情况下,我们将先应用 avg 函数,然后应用 round 函数:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)
@@ -138,7 +138,7 @@ FROM nyc_taxi.trips;
    └─────────────────────────┴─────────────────────┴────────────────────────┴──────────────────────────┴───────────────────────┴──────────────────────────┘
 ```
 
-但这会将平均值四舍五入为整数。如果我们想四舍五入到指定的小数位数,比如 2 位小数,也可以实现。除了接受函数外,`APPLY` 修饰符还接受 lambda 表达式,这使我们能够灵活地让 round 函数将平均值四舍五入到 2 位小数:
+但这会将平均值四舍五入为整数。如果我们想四舍五入到指定的小数位数(例如 2 位小数),也可以做到。除了接受函数之外,`APPLY` 修饰符还接受 lambda 表达式,这使我们能够灵活地让 round 函数将平均值四舍五入到 2 位小数:
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(x -> round(x, 2))

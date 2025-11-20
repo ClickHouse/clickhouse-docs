@@ -4,7 +4,7 @@ description: 'ClickPipes のソースとして Amazon RDS Postgres を設定す�
 slug: /integrations/clickpipes/postgres/source/rds
 title: 'RDS Postgres ソース設定ガイド'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'データ取り込み', 'リアルタイム同期']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -28,7 +28,7 @@ ClickPipesはPostgresバージョン12以降をサポートしています。
 
 ## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-RDSインスタンスに以下の設定が既に構成されている場合は、このセクションをスキップできます。
+RDSインスタンスに以下の設定が既に構成されている場合は、このセクションをスキップできます：
 
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
@@ -49,9 +49,9 @@ postgres=> SHOW wal_sender_timeout ;
 (1 row)
 ```
 
-まだ構成されていない場合は、以下の手順に従ってください。
+まだ構成されていない場合は、以下の手順に従ってください：
 
-1. 使用しているPostgresバージョン用の新しいパラメータグループを必要な設定で作成します。
+1. 必要な設定を含む、使用しているPostgresバージョン用の新しいパラメータグループを作成します：
    - `rds.logical_replication`を1に設定
    - `wal_sender_timeout`を0に設定
 
@@ -125,7 +125,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 ### IPベースのアクセス制御 {#ip-based-access-control}
 
-RDSインスタンスへのトラフィックを制限する場合は、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)をRDSセキュリティグループの`インバウンドルール`に追加してください。
+RDSインスタンスへのトラフィックを制限する場合は、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)をRDSセキュリティグループの`Inbound rules`に追加してください。
 
 <Image
   img={security_group_in_rds_postgres}
@@ -149,13 +149,13 @@ RDSインスタンスへのトラフィックを制限する場合は、[ドキ�
 
 RDS Proxyは論理レプリケーション接続をサポートしていません。RDSで動的IPアドレスを使用しており、DNS名やLambdaを使用できない場合、以下の代替手段があります:
 
-1. cronジョブを使用して、RDSエンドポイントのIPを定期的に解決し、変更があればNLBを更新する
-2. EventBridge/SNSを使用したRDSイベント通知:AWS RDSイベント通知を使用して自動的に更新をトリガーする
-3. 安定したEC2インスタンス:EC2インスタンスをデプロイして、ポーリングサービスまたはIPベースのプロキシとして機能させる
-4. TerraformやCloudFormationなどのツールを使用してIPアドレス管理を自動化する
+1. cronジョブを使用して、RDSエンドポイントのIPを定期的に解決し、変更があればNLBを更新する。
+2. EventBridge/SNSを使用したRDSイベント通知: AWS RDSイベント通知を使用して自動的に更新をトリガーする。
+3. 安定したEC2: EC2インスタンスをデプロイして、ポーリングサービスまたはIPベースのプロキシとして機能させる。
+4. TerraformやCloudFormationなどのツールを使用してIPアドレス管理を自動化する。
 
 
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず記録しておいてください。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/marketplace/marketplace-billing
 title: 'マーケットプレイスでの課金'
-description: 'AWS、GCP、Azure のマーケットプレイス経由で ClickHouse Cloud をサブスクライブします。'
+description: 'AWS、GCP、Azure のマーケットプレイスを通じて ClickHouse Cloud に登録します。'
 keywords: ['aws', 'azure', 'gcp', 'google cloud', 'marketplace', 'billing']
 doc_type: 'guide'
 ---
@@ -9,16 +9,16 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 
-AWS、GCP、Azure のマーケットプレイス経由で ClickHouse Cloud を利用開始できます。これにより、既存のクラウドプロバイダーの請求に ClickHouse Cloud の料金を含めて支払うことができます。
+AWS、GCP、Azure のマーケットプレイスを通じて ClickHouse Cloud を利用開始できます。これにより、既存のクラウドプロバイダーの請求に ClickHouse Cloud の料金を統合して支払うことができます。
 
-マーケットプレイスでは、従量課金制 (PAYG) を利用するか、ClickHouse Cloud とのコミット契約を締結するかを選択できます。課金はクラウドプロバイダーによって処理され、すべてのクラウドサービスに対して 1 つの請求書が発行されます。
+マーケットプレイス経由で、従量課金制 (PAYG) を利用するか、ClickHouse Cloud とのコミット契約を結ぶかを選択できます。請求処理はクラウドプロバイダー側で行われ、すべてのクラウドサービスについて 1 つの請求書が発行されます。
 
 * [AWS Marketplace PAYG](/cloud/billing/marketplace/aws-marketplace-payg)
-* [AWS Marketplace コミット契約](/cloud/billing/marketplace/aws-marketplace-committed-contract)
+* [AWS Marketplace Committed Contract](/cloud/billing/marketplace/aws-marketplace-committed-contract)
 * [GCP Marketplace PAYG](/cloud/billing/marketplace/gcp-marketplace-payg)
-* [GCP Marketplace コミット契約](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
+* [GCP Marketplace Committed Contract](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
 * [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
-* [Azure Marketplace コミット契約](/cloud/billing/marketplace/azure-marketplace-committed-contract)
+* [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
 
 ## よくある質問 {#faqs}
@@ -80,17 +80,17 @@ ClickHouse Cloudの使用を停止し、既存のすべてのClickHouse Cloudサ
 マーケットプレイス請求は暦月サイクルに従います。たとえば、12月1日から1月1日までの使用量に対して、1月3日から1月5日の間に請求書が生成されます。
 
 
-ClickHouse Cloudの使用量明細書は、サインアップ日を起点とした30日間で使用量を計測・報告する独自の請求サイクルに従います。
+ClickHouse Cloudの使用量明細書は、サインアップ日を起点として30日間の使用量を計測・報告する独自の請求サイクルに従います。
 
-使用量明細書の日付と請求書の日付が一致しない場合、これらの日付は異なります。使用量明細書は特定のサービスの使用量を日単位で追跡するため、ユーザーは明細書でコストの内訳を確認できます。
+使用量の計測期間と請求書の日付が一致しない場合、これらの日付は異なります。使用量明細書は特定のサービスの使用量を日単位で追跡するため、ユーザーは明細書を参照してコストの内訳を確認できます。
 
 ### 一般的な請求情報はどこで確認できますか? {#where-can-i-find-general-billing-information}
 
-[請求概要ページ](/cloud/manage/billing)をご参照ください。
+[請求概要ページ](/cloud/manage/billing)をご覧ください。
 
-### クラウドプロバイダーのマーケットプレイス経由で支払う場合とClickHouseに直接支払う場合で、ClickHouse Cloudの料金に違いはありますか? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### クラウドプロバイダーのマーケットプレイス経由で支払う場合とClickHouseに直接支払う場合で、ClickHouse Cloudの価格に違いはありますか? {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
 
-マーケットプレイス請求とClickHouseへの直接サインアップの間に料金の違いはありません。いずれの場合も、ClickHouse Cloudの使用量はClickHouse Cloud Credits(CHC)で追跡され、同じ方法で計測されて請求されます。
+マーケットプレイス請求とClickHouseへの直接サインアップの間に価格の違いはありません。いずれの場合も、ClickHouse Cloudの使用量はClickHouse Cloud Credits(CHC)で追跡され、同じ方法で計測されて請求されます。
 
 ### 複数のClickHouse Organizationを単一のクラウドマーケットプレイス請求アカウントまたはサブアカウント(AWS、GCP、Azure)に請求するように設定できますか? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
@@ -98,4 +98,4 @@ ClickHouse Cloudの使用量明細書は、サインアップ日を起点とし�
 
 ### ClickHouse Organizationがクラウドマーケットプレイスのコミット支出契約を通じて請求されている場合、クレジットを使い果たすと自動的にPAYG請求に移行しますか? {#automatically-move-to-PAYG-when-running-out-of-credit}
 
-マーケットプレイスのコミット支出契約が有効でクレジットを使い果たした場合、Organizationは自動的にPAYG請求に移行します。ただし、既存の契約が期限切れになった場合は、新しいマーケットプレイス契約をOrganizationにリンクするか、クレジットカードによる直接請求にOrganizationを移行する必要があります。
+マーケットプレイスのコミット支出契約が有効でクレジットを使い果たした場合、Organizationは自動的にPAYG請求に移行されます。ただし、既存の契約が期限切れになった場合は、新しいマーケットプレイス契約をOrganizationにリンクするか、クレジットカードによる直接請求にOrganizationを移行する必要があります。

@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/anyIf'
 title: 'anyIf'
-description: 'anyIf 组合子使用示例'
+description: 'anyIf 组合器的使用示例'
 keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
 sidebar_label: 'anyIf'
 doc_type: 'reference'

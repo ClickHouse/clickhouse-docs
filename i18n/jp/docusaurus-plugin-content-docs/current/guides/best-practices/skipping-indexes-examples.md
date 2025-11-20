@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes/examples
-sidebar_label: 'データスキップインデックス - 実例'
+sidebar_label: 'データスキッピングインデックス - 例'
 sidebar_position: 2
-description: 'スキップインデックスの実例集'
-title: 'データスキップインデックスの実例'
+description: 'スキップインデックスの例のまとめ'
+title: 'データスキッピングインデックスの例'
 doc_type: 'guide'
 keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---
@@ -33,12 +33,12 @@ ClickHouseは5種類のスキップインデックスタイプをサポートし
 各セクションでは、サンプルデータを用いた例を提供し、クエリ実行時のインデックス使用状況を確認する方法を示します。
 
 
-## MinMaxインデックス {#minmax-index}
+## MinMax インデックス {#minmax-index}
 
-`minmax`インデックスは、緩やかにソートされたデータや`ORDER BY`と相関のある列に対する範囲条件に最適です。
+`minmax`インデックスは、緩やかにソートされたデータや`ORDER BY`と相関のある列に対する範囲述語に最適です。
 
 ```sql
--- CREATE TABLEで定義
+-- CREATE TABLE で定義
 CREATE TABLE events
 (
   ts DateTime,
@@ -53,7 +53,7 @@ ORDER BY ts;
 ALTER TABLE events ADD INDEX ts_minmax ts TYPE minmax GRANULARITY 1;
 ALTER TABLE events MATERIALIZE INDEX ts_minmax;
 
--- インデックスの効果を得られるクエリ
+-- インデックスの恩恵を受けるクエリ
 SELECT count() FROM events WHERE ts >= now() - 3600;
 
 -- 使用状況を確認
@@ -66,7 +66,7 @@ SELECT count() FROM events WHERE ts >= now() - 3600;
 
 ## Setインデックス {#set-index}
 
-`set`インデックスは、ローカル（ブロック単位）のカーディナリティが低い場合に使用します。各ブロックに多数の異なる値が含まれる場合には効果がありません。
+ローカル（ブロック単位）のカーディナリティが低い場合に`set`インデックスを使用します。各ブロックに多数の異なる値が含まれる場合は効果がありません。
 
 ```sql
 ALTER TABLE events ADD INDEX user_set user_id TYPE set(100) GRANULARITY 1;
@@ -78,12 +78,12 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE user_id IN (101, 202);
 ```
 
-作成とマテリアライゼーションのワークフロー、および適用前後の効果については、[基本操作ガイド](/optimize/skipping-indexes#basic-operation)を参照してください。
+インデックスの作成とマテリアライゼーションのワークフロー、および適用前後の効果については、[基本操作ガイド](/optimize/skipping-indexes#basic-operation)を参照してください。
 
 
-## 汎用Bloomフィルタ（スカラー） {#generic-bloom-filter-scalar}
+## 汎用Bloomフィルタ(スカラー) {#generic-bloom-filter-scalar}
 
-`bloom_filter`インデックスは、「干し草の山から針を探す」ような等価性/INメンバーシップの検索に適しています。偽陽性率を指定するオプションのパラメータを受け付けます（デフォルトは0.025）。
+`bloom_filter`インデックスは、等価性検索やIN句によるメンバーシップ検索において、大量のデータから特定の値を見つける場合に有効です。偽陽性率を指定するオプションのパラメータを受け付けます(デフォルトは0.025)。
 
 ```sql
 ALTER TABLE events ADD INDEX value_bf value TYPE bloom_filter(0.01) GRANULARITY 3;
@@ -96,9 +96,9 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
 
-## 部分文字列検索のためのN-gram Bloomフィルター (ngrambf_v1) {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
+## 部分文字列検索のためのN-gram Bloomフィルタ (ngrambf_v1) {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
-`ngrambf_v1`インデックスは文字列をn-gramに分割します。`LIKE '%...%'`クエリに対して効果的に機能します。String/FixedString/Map（mapKeys/mapValues経由）をサポートし、サイズ、ハッシュ関数数、シード値を調整可能です。詳細については[N-gram bloomフィルター](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)のドキュメントを参照してください。
+`ngrambf_v1`インデックスは文字列をn-gramに分割します。`LIKE '%...%'`クエリに対して効果的に機能します。String/FixedString/Map（mapKeys/mapValues経由）をサポートし、サイズ、ハッシュ数、シード値を調整可能です。詳細については[N-gram bloomフィルタ](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)のドキュメントを参照してください。
 
 ```sql
 -- 部分文字列検索用のインデックスを作成
@@ -112,7 +112,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[このガイド](/use-cases/observability/schema-design#bloom-filters-for-text-search)では、実践的な例とトークンとngramの使い分けについて説明しています。
+[このガイド](/use-cases/observability/schema-design#bloom-filters-for-text-search)では、実践的な例とtokenとngramの使い分けについて説明しています。
 
 **パラメータ最適化ヘルパー:**
 
@@ -135,7 +135,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 ## 単語ベース検索のためのトークンブルームフィルタ（tokenbf_v1） {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-`tokenbf_v1`は英数字以外の文字で区切られたトークンをインデックス化します。[`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE`の単語パターン、または等価/IN演算子と組み合わせて使用します。`String`/`FixedString`/`Map`型に対応しています。
+`tokenbf_v1`は、英数字以外の文字で区切られたトークンをインデックス化します。[`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE`の単語パターン、または等価/IN演算子と組み合わせて使用してください。`String`/`FixedString`/`Map`型に対応しています。
 
 詳細については、[トークンブルームフィルタ](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter)および[ブルームフィルタの種類](/optimize/skipping-indexes#skip-index-types)のページを参照してください。
 
@@ -155,7 +155,7 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 ## CREATE TABLE でのインデックス追加（複数の例） {#add-indexes-during-create-table-multiple-examples}
 
-スキッピングインデックスは、複合式および `Map`/`Tuple`/`Nested` 型もサポートしています。以下の例で示します：
+スキッピングインデックスは、複合式および `Map`/`Tuple`/`Nested` 型もサポートしています。以下の例でこれを示します：
 
 ```sql
 CREATE TABLE t
@@ -177,7 +177,7 @@ ORDER BY u64;
 
 ## 既存データへのマテリアライズと検証 {#materializing-on-existing-data-and-verifying}
 
-`MATERIALIZE`を使用して既存のデータパーツにインデックスを追加し、以下のように`EXPLAIN`またはトレースログでプルーニングを確認できます:
+`MATERIALIZE`を使用して既存のデータパーツにインデックスを追加し、以下に示すように`EXPLAIN`またはトレースログでプルーニングを確認できます:
 
 ```sql
 ALTER TABLE t MATERIALIZE INDEX idx_bf;
@@ -189,21 +189,21 @@ SELECT count() FROM t WHERE u64 IN (123, 456);
 SET send_logs_level = 'trace';
 ```
 
-この[minmaxの動作例](/best-practices/use-data-skipping-indices-where-appropriate#example)は、EXPLAIN出力の構造とプルーニングカウントを示しています。
+この[minmaxの実例](/best-practices/use-data-skipping-indices-where-appropriate#example)は、EXPLAIN出力の構造とプルーニングカウントを示しています。
 
 
-## スキッピングインデックスを使用すべき場合と避けるべき場合 {#when-use-and-when-to-avoid}
+## スキッピングインデックスを使用する場合と避ける場合 {#when-use-and-when-to-avoid}
 
-**スキップインデックスを使用すべき場合:**
+**スキップインデックスを使用する場合:**
 
-- データブロック内でフィルタ値の分布が疎である場合
-- `ORDER BY`カラムとの強い相関関係が存在する場合、またはデータ取り込みパターンによって類似した値がグループ化されている場合
-- 大規模なログデータセットに対してテキスト検索を実行する場合（`ngrambf_v1`/`tokenbf_v1`タイプ）
+- データブロック内でフィルタ値がまばらに分布している場合
+- `ORDER BY`列との強い相関関係が存在する場合、またはデータ取り込みパターンによって類似した値がグループ化される場合
+- 大規模なログデータセットに対してテキスト検索を実行する場合(`ngrambf_v1`/`tokenbf_v1`タイプ)
 
-**スキップインデックスを避けるべき場合:**
+**スキップインデックスを避ける場合:**
 
-- ほとんどのブロックに少なくとも1つの一致する値が含まれている可能性が高い場合（ブロックは結局読み取られます）
-- データの順序付けと相関関係のない高カーディナリティカラムでフィルタリングする場合
+- ほとんどのブロックに少なくとも1つの一致する値が含まれている可能性が高い場合(いずれにせよブロックは読み取られます)
+- データの順序付けとの相関関係がない高カーディナリティ列でフィルタリングする場合
 
 :::note 重要な考慮事項
 データブロック内に値が一度でも出現する場合、ClickHouseはブロック全体を読み取る必要があります。実際のデータセットでインデックスをテストし、実際のパフォーマンス測定に基づいて粒度とタイプ固有のパラメータを調整してください。
@@ -226,7 +226,7 @@ SETTINGS ignore_data_skipping_indices = 'msg_token';
 
 - スキッピングインデックスは[MergeTreeファミリーテーブル](/engines/table-engines/mergetree-family/mergetree)でのみサポートされており、プルーニングはグラニュール/ブロックレベルで行われます。
 - Bloomフィルターベースのインデックスは確率的なものです(偽陽性により余分な読み取りが発生する可能性がありますが、有効なデータがスキップされることはありません)。
-- Bloomフィルターやその他のスキップインデックスは`EXPLAIN`とトレーシングで検証してください。プルーニング効果とインデックスサイズのバランスを取るために粒度を調整する必要があります。
+- Bloomフィルターおよびその他のスキップインデックスは、`EXPLAIN`とトレーシングを使用して検証する必要があります。プルーニング効果とインデックスサイズのバランスを取るために、粒度を調整してください。
 
 
 ## 関連ドキュメント {#related-docs}

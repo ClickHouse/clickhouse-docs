@@ -1,6 +1,6 @@
 ---
 title: 'スキーマ設計'
-description: 'オブザーバビリティ向けのスキーマ設計'
+description: 'オブザーバビリティのためのスキーマ設計'
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 slug: /use-cases/observability/schema-design
 show_related_blogs: true
@@ -14,31 +14,31 @@ import observability_13 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-# オブザーバビリティ向けスキーマの設計
+# オブザーバビリティのためのスキーマ設計
 
-次の理由から、ログおよびトレースについては常に独自のスキーマを作成することを推奨します。
+次の理由から、ログおよびトレース用には必ず独自のスキーマを作成することを推奨します。
 
-- **主キーの選択** - デフォルトのスキーマは、特定のアクセスパターンに最適化された `ORDER BY` を使用しています。あなたのアクセスパターンがこれと完全に一致する可能性は低いでしょう。
-- **構造の抽出** - ユーザーは、既存の列（例として `Body` 列）から新しい列を抽出したくなる場合があります。これは、マテリアライズドカラム（および、より複雑なケースではマテリアライズドビュー）を使用して実現できます。このためにはスキーマ変更が必要です。
-- **Map の最適化** - デフォルトのスキーマは属性の保存に Map 型を使用します。これらの列は任意のメタデータを保存できます。イベントからのメタデータは事前に定義されていないことが多く、その場合 ClickHouse のような強い型付けのデータベースには、他の方法では保存できないため、これは不可欠な機能です。ただし、通常の列へのアクセスと比べて、Map のキーおよびその値へのアクセスはそれほど効率的ではありません。これに対処するため、スキーマを変更し、最も頻繁にアクセスされる Map のキーをトップレベルの列として定義します。詳しくは ["Extracting structure with SQL"](#extracting-structure-with-sql) を参照してください。これにはスキーマ変更が必要です。
-- **Map キーアクセスの単純化** - Map 内のキーにアクセスするには、より冗長な構文が必要です。ユーザーはエイリアスを使用することでこれを軽減できます。クエリを簡素化するには ["Using Aliases"](#using-aliases) を参照してください。
-- **セカンダリインデックス** - デフォルトスキーマでは、Map へのアクセスを高速化し、テキストクエリを高速化するためにセカンダリインデックスを使用しています。これは通常必須ではなく、追加のディスク容量を消費します。利用すること自体は可能ですが、本当に必要かどうかを確認するために検証すべきです。["Secondary / Data Skipping indices"](#secondarydata-skipping-indices) を参照してください。
-- **コーデックの利用** - 予想されるデータを理解しており、圧縮が改善されるという根拠がある場合、ユーザーは列ごとにコーデックをカスタマイズしたい場合があります。
+- **主キーの選択** - デフォルトのスキーマでは、特定のアクセスパターンに最適化された `ORDER BY` を使用しています。多くの場合、ユーザーのアクセスパターンがこれと一致することはありません。
+- **構造の抽出** - 既存のカラム、たとえば `Body` カラムから新しいカラムを抽出したい場合があります。これは、マテリアライズドカラム（およびより複雑なケースではマテリアライズドビュー）を使用して実現できます。この操作にはスキーマ変更が必要です。
+- **Map の最適化** - デフォルトのスキーマでは、属性の保存に Map 型を使用しています。これらのカラムは任意のメタデータを保存できます。イベントからのメタデータは事前に定義されていないことが多く、そのため ClickHouse のような強い型付けのデータベースには通常のカラムとして格納できないため、これは重要な機能です。ただし、Map のキーおよびその値へのアクセスは、通常のカラムへのアクセスほど効率的ではありません。これに対処するため、スキーマを変更し、最も頻繁にアクセスされる Map キーをトップレベルのカラムとして定義します。「[SQL による構造の抽出](#extracting-structure-with-sql)」を参照してください。この操作にはスキーマ変更が必要です。
+- **Map キーアクセスの簡略化** - Map のキーへアクセスするには、より冗長な構文が必要になります。エイリアスを用いることでこれを軽減できます。クエリを簡素化するには「[エイリアスの使用](#using-aliases)」を参照してください。
+- **セカンダリインデックス** - デフォルトスキーマでは、Map へのアクセス高速化およびテキストクエリの高速化にセカンダリインデックスを使用しています。これらは通常必須ではなく、追加のディスク容量を消費します。利用は可能ですが、本当に必要かどうかを確認するためにテストするべきです。「[セカンダリ / データスキップインデックス](#secondarydata-skipping-indices)」を参照してください。
+- **Codecs の使用** - 予想されるデータを理解しており、圧縮の改善に有効であるという根拠がある場合、カラムごとに codec をカスタマイズしたい場合があります。
 
-_上記それぞれのユースケースについては、この後で詳しく説明します。_
+_上記の各ユースケースについて、以下で詳細に説明します。_
 
-**重要:** ユーザーは最適な圧縮およびクエリ性能を達成するためにスキーマを拡張・変更することが推奨されますが、可能な限りコア列については OTel スキーマの命名に従うべきです。ClickHouse Grafana プラグインは、クエリ構築を支援するために、Timestamp や SeverityText など、いくつかの基本的な OTel 列の存在を前提としています。ログおよびトレースに必要な列は、それぞれこちら [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) および [こちら](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure) に記載されています。これらの列名は、プラグイン設定でデフォルトを上書きすることで変更することもできます。
+**重要:** 最適な圧縮およびクエリパフォーマンスを達成するためにスキーマの拡張および変更を行うことは推奨されますが、可能な限りコアカラムについては OTel スキーマの命名規則に従うべきです。ClickHouse Grafana プラグインは、クエリビルディングを支援するために、Timestamp や SeverityText など、いくつかの基本的な OTel カラムの存在を前提としています。ログおよびトレースに必要なカラムは、それぞれ [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) および [こちら](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure) に文書化されています。これらのカラム名は、プラグイン設定でデフォルトを上書きすることで変更することもできます。
 
 
 
 ## SQLによる構造の抽出 {#extracting-structure-with-sql}
 
-構造化ログまたは非構造化ログを取り込む際、ユーザーは以下の機能を必要とすることがよくあります：
+構造化ログまたは非構造化ログを取り込む際、ユーザーは以下の機能を必要とすることがよくあります:
 
-- **文字列ブロブからカラムを抽出する**。これらに対してクエリを実行することは、クエリ時に文字列操作を使用するよりも高速です。
-- **マップからキーを抽出する**。デフォルトのスキーマは、任意の属性をMap型のカラムに配置します。この型はスキーマレス機能を提供し、ログやトレースを定義する際に属性のカラムを事前定義する必要がないという利点があります。これは、Kubernetesからログを収集し、後の検索のためにポッドラベルを保持したい場合に、しばしば不可能となります。マップキーとその値へのアクセスは、通常のClickHouseカラムに対するクエリよりも低速です。したがって、マップからルートテーブルカラムへキーを抽出することが望ましい場合が多くあります。
+- **文字列ブロブからカラムを抽出する**。これらをクエリする方が、クエリ時に文字列操作を使用するよりも高速です。
+- **マップからキーを抽出する**。デフォルトのスキーマは、任意の属性をMap型のカラムに配置します。この型は、ログやトレースを定義する際に属性のカラムを事前定義する必要がないというスキーマレス機能を提供します。これは、Kubernetesからログを収集し、後の検索のためにポッドラベルを保持したい場合に、しばしば不可能となります。マップのキーとその値へのアクセスは、通常のClickHouseカラムに対するクエリよりも低速です。したがって、マップからルートテーブルカラムへキーを抽出することが望ましい場合が多くあります。
 
-以下のクエリを考えてみましょう：
+以下のクエリを考えてみましょう:
 
 構造化ログを使用して、どのURLパスが最も多くのPOSTリクエストを受信しているかをカウントしたいとします。JSONブロブは`Body`カラムにString型として格納されています。さらに、ユーザーがコレクターでjson_parserを有効にしている場合、`LogAttributes`カラムに`Map(String, String)`として格納されることもあります。
 
@@ -54,7 +54,7 @@ Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
-`LogAttributes`が利用可能であると仮定すると、サイトのどのURLパスが最も多くのPOSTリクエストを受信しているかをカウントするクエリは次のようになります：
+`LogAttributes`が利用可能であると仮定すると、サイトのどのURLパスが最も多くのPOSTリクエストを受信しているかをカウントするクエリは次のようになります:
 
 ```sql
 SELECT path(LogAttributes['request_path']) AS path, count() AS c
@@ -76,12 +76,12 @@ LIMIT 5
 Peak memory usage: 153.71 MiB.
 ```
 
-ここでは、マップ構文（例：`LogAttributes['request_path']`）と、URLからクエリパラメータを削除するための[`path`関数](/sql-reference/functions/url-functions#path)の使用に注意してください。
+ここでは、マップ構文(例: `LogAttributes['request_path']`)と、URLからクエリパラメータを削除するための[`path`関数](/sql-reference/functions/url-functions#path)の使用に注意してください。
 
 ユーザーがコレクターでJSON解析を有効にしていない場合、`LogAttributes`は空になり、String型の`Body`からカラムを抽出するために[JSON関数](/sql-reference/functions/json-functions)を使用する必要があります。
 
 :::note 解析にはClickHouseを推奨
-構造化ログのJSON解析はClickHouseで実行することを一般的に推奨します。ClickHouseは最速のJSON解析実装であると確信しています。ただし、ユーザーがログを他のソースに送信し、このロジックをSQLに配置したくない場合があることも認識しています。
+構造化ログのJSON解析は、一般的にClickHouseで実行することを推奨します。ClickHouseは最速のJSON解析実装であると確信しています。ただし、ユーザーがログを他のソースに送信し、このロジックをSQLに配置したくない場合があることも認識しています。
 :::
 
 ```sql
@@ -108,7 +108,7 @@ LIMIT 5
 
 ````
 
-次に、非構造化ログに対して同じ処理を考えてみましょう:
+次に、非構造化ログに対して同様の処理を考えてみましょう:
 
 ```sql
 SELECT Body, LogAttributes
@@ -149,16 +149,16 @@ LIMIT 5
 5行のセット。経過時間: 1.953秒。処理済み: 1037万行、3.59 GB（531万行/秒、1.84 GB/秒）
 ```
 
-非構造化ログの解析におけるクエリの複雑さとコストの増加（パフォーマンスの差に注目してください）が、可能な限り構造化ログの使用を推奨する理由です。
+非構造化ログを解析するクエリの複雑さとコストの増加（パフォーマンスの差に注目してください）が、可能な限り構造化ログの使用を推奨する理由です。
 
 :::note ディクショナリの検討
-上記のクエリは、正規表現ディクショナリを活用して最適化できます。詳細については[ディクショナリの使用](#using-dictionaries)を参照してください。
+上記のクエリは、正規表現ディクショナリを活用することで最適化できます。詳細については、[ディクショナリの使用](#using-dictionaries)を参照してください。
 :::
 
-これらのユースケースは、上記のクエリロジックを挿入時に移動することで、ClickHouseを使用して対応できます。以下では、それぞれが適切な場面を示しながら、いくつかのアプローチを検討します。
+これらのユースケースはいずれも、上記のクエリロジックを挿入時に移動することで、ClickHouseを使用して実現できます。以下では、それぞれが適切な場面を示しながら、いくつかのアプローチを検討します。
 
 :::note 処理にOTelとClickHouseのどちらを使用するか？
-ユーザーは、[こちら](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)で説明されているように、OTel Collectorのプロセッサとオペレータを使用して処理を実行することもできます。ほとんどの場合、ClickHouseはコレクタのプロセッサよりも大幅にリソース効率が高く高速です。SQLですべてのイベント処理を実行する主な欠点は、ソリューションがClickHouseに依存することです。たとえば、ユーザーはOTel CollectorからS3などの代替の宛先に処理済みログを送信したい場合があります。
+ユーザーは、[こちら](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)で説明されているように、OTel Collectorのプロセッサとオペレータを使用して処理を実行することもできます。ほとんどの場合、ClickHouseはコレクタのプロセッサよりも大幅にリソース効率が高く、高速です。SQLですべてのイベント処理を実行する主な欠点は、ソリューションがClickHouseに依存することです。たとえば、ユーザーはOTel CollectorからS3などの代替の送信先に処理済みログを送信したい場合があります。
 :::
 
 ### マテリアライズドカラム {#materialized-columns}
@@ -169,9 +169,9 @@ LIMIT 5
 マテリアライズドカラムは、挿入時に値がディスク上の新しいカラムに抽出されるため、追加のストレージオーバーヘッドが発生します。
 :::
 
-マテリアライズドカラムは、あらゆるClickHouse式をサポートし、[文字列処理](/sql-reference/functions/string-functions)（[正規表現と検索](/sql-reference/functions/string-search-functions)を含む）、[URL](/sql-reference/functions/url-functions)、[型変換](/sql-reference/functions/type-conversion-functions)、[JSONからの値抽出](/sql-reference/functions/json-functions)、[数学演算](/sql-reference/functions/math-functions)のための分析関数を活用できます。
+マテリアライズドカラムは、任意のClickHouse式をサポートし、[文字列処理](/sql-reference/functions/string-functions)（[正規表現と検索](/sql-reference/functions/string-search-functions)を含む）、[URL](/sql-reference/functions/url-functions)、[型変換](/sql-reference/functions/type-conversion-functions)、[JSONからの値抽出](/sql-reference/functions/json-functions)、[数学演算](/sql-reference/functions/math-functions)のための分析関数を活用できます。
 
-基本的な処理には、マテリアライズドカラムを推奨します。これらは、マップから値を抽出し、ルートカラムに昇格させ、型変換を実行する際に特に有用です。非常に基本的なスキーマで使用する場合や、マテリアライズドビューと組み合わせて使用する場合に最も効果的です。コレクタによってJSONが`LogAttributes`カラムに抽出されたログの次のスキーマを考えてみましょう:
+基本的な処理にはマテリアライズドカラムを推奨します。マップから値を抽出してルートカラムに昇格させたり、型変換を実行したりする際に特に有用です。非常に基本的なスキーマで使用する場合、またはマテリアライズドビューと組み合わせて使用する場合に最も効果的です。コレクタによってJSONが`LogAttributes`カラムに抽出されたログの次のスキーマを考えてみましょう:
 
 
 ```sql
@@ -201,9 +201,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-String 型の `Body` から JSON 関数を使って抽出するための同等のスキーマは[こちら](https://pastila.nl/?005cbb97/513b174a7d6114bf17ecc657428cf829#gqoOOiomEjIiG6zlWhE+Sg==)で確認できます。
+String `Body` から JSON 関数を使って抽出するための同等のスキーマは[こちら](https://pastila.nl/?005cbb97/513b174a7d6114bf17ecc657428cf829#gqoOOiomEjIiG6zlWhE+Sg==)で確認できます。
 
-ここで定義した 3 つのマテリアライズドカラムは、リクエストページ、リクエストタイプ、およびリファラーのドメインを抽出します。これらのカラムはマップのキーにアクセスし、その値に関数を適用します。この後に実行するクエリは大幅に高速になります。
+ここで定義した 3 つのマテリアライズドカラムは、リクエストページ、リクエストタイプ、およびリファラーのドメインを抽出します。これらはマップのキーにアクセスし、その値に対して関数を適用します。これに続くクエリは大幅に高速になります。
 
 ```sql
 SELECT RequestPage AS path, count() AS c
@@ -226,7 +226,7 @@ Peak memory usage: 3.16 MiB.
 ```
 
 :::note
-`Materialized` カラムは、デフォルトでは `SELECT *` の結果には含まれません。これは、`SELECT *` の結果を常に INSERT を使ってそのままテーブルに挿入できるという不変条件を保つためです。この動作は、`asterisk_include_materialized_columns=1` を設定することで無効化でき、Grafana では（データソース設定の `Additional Settings -> Custom Settings` で）有効化できます。
+マテリアライズドカラムは、デフォルトでは `SELECT *` に含まれません。これは、`SELECT *` の結果を常に INSERT を使ってテーブルにそのまま挿入し直せるという不変条件を維持するためです。この挙動は `asterisk_include_materialized_columns=1` を設定することで変更でき、Grafana のデータソース設定でも有効化できます（`Additional Settings -> Custom Settings` を参照してください）。
 :::
 
 
@@ -234,19 +234,19 @@ Peak memory usage: 3.16 MiB.
 
 [マテリアライズドビュー](/materialized-views)は、ログとトレースに対してSQLフィルタリングと変換を適用するための、より強力な手段を提供します。
 
-マテリアライズドビューを使用すると、計算コストをクエリ実行時から挿入時にシフトできます。ClickHouseのマテリアライズドビューは、テーブルにデータブロックが挿入される際にクエリを実行するトリガーです。このクエリの結果は、2番目の「ターゲット」テーブルに挿入されます。
+マテリアライズドビューを使用すると、計算コストをクエリ時から挿入時へシフトできます。ClickHouseのマテリアライズドビューは、テーブルへのデータブロック挿入時にクエリを実行するトリガーです。このクエリの結果は、2番目の「ターゲット」テーブルに挿入されます。
 
 <Image img={observability_10} alt='マテリアライズドビュー' size='md' />
 
 :::note リアルタイム更新
-ClickHouseのマテリアライズドビューは、基となるテーブルにデータが流入するとリアルタイムで更新され、継続的に更新されるインデックスのように機能します。対照的に、他のデータベースのマテリアライズドビューは通常、更新が必要な静的なクエリのスナップショットです(ClickHouse Refreshable Materialized Viewsに類似)。
+ClickHouseのマテリアライズドビューは、基となるテーブルへのデータ流入に応じてリアルタイムで更新され、継続的に更新されるインデックスのように機能します。対照的に、他のデータベースでは、マテリアライズドビューは通常、更新が必要な静的なクエリのスナップショットです(ClickHouse Refreshable Materialized Viewsに類似)。
 :::
 
-マテリアライズドビューに関連付けられたクエリは、理論的には集計を含む任意のクエリが可能ですが、[結合には制限があります](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins)。ログとトレースに必要な変換とフィルタリングのワークロードについては、任意の`SELECT`文が使用可能です。
+マテリアライズドビューに関連付けられたクエリは、理論的には集計を含む任意のクエリが可能ですが、[結合には制限があります](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins)。ログとトレースに必要な変換とフィルタリングのワークロードについては、任意の`SELECT`文が使用可能と考えることができます。
 
-クエリは、テーブル(ソーステーブル)に挿入される行に対して実行されるトリガーであり、結果は新しいテーブル(ターゲットテーブル)に送信されることを理解しておく必要があります。
+クエリは、テーブル(ソーステーブル)に挿入される行に対して実行されるトリガーであり、結果は新しいテーブル(ターゲットテーブル)に送信されることを覚えておく必要があります。
 
-データを2回(ソーステーブルとターゲットテーブルに)永続化しないようにするため、ソーステーブルのテーブルエンジンを[Nullテーブルエンジン](/engines/table-engines/special/null)に変更し、元のスキーマを保持できます。OTelコレクターは引き続きこのテーブルにデータを送信します。例えば、ログの場合、`otel_logs`テーブルは次のようになります:
+データを2回永続化しない(ソーステーブルとターゲットテーブルの両方に)ようにするため、ソーステーブルのテーブルエンジンを[Nullテーブルエンジン](/engines/table-engines/special/null)に変更し、元のスキーマを保持できます。OTelコレクターは引き続きこのテーブルにデータを送信します。例えば、ログの場合、`otel_logs`テーブルは次のようになります:
 
 ```sql
 CREATE TABLE otel_logs
@@ -297,7 +297,7 @@ FROM otel_logs
 LIMIT 1
 FORMAT Vertical
 
-Row 1:
+行 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
@@ -317,16 +317,16 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-1 row in set. Elapsed: 0.027 sec.
+1行を取得しました。経過時間: 0.027秒
 ```
 
-また、将来的に SQL で抽出していない追加属性が増えた場合に備えて、上記の `Body` 列も抽出しています。この列は ClickHouse で高い圧縮率が期待でき、アクセス頻度も低いため、クエリ性能への影響はほとんどありません。最後に、`Timestamp` を `DateTime` にキャストして縮小しています（領域節約のため。詳細は [&quot;Optimizing Types&quot;](#optimizing-types) を参照）。
+また、将来的に SQL で抽出していない追加属性が追加される可能性に備えて、上記の `Body` 列も抽出しています。この列は ClickHouse で高い圧縮率が期待でき、参照頻度も低いため、クエリ性能への影響はほとんどありません。最後に、`Timestamp` を `DateTime` にキャストして型を縮小しています（スペースを節約するため — [&quot;Optimizing Types&quot;](#optimizing-types) を参照）。
 
 :::note Conditionals
-上記では、`SeverityText` と `SeverityNumber` を抽出するために [conditionals](/sql-reference/functions/conditional-functions) を使用している点に注目してください。これらは複雑な条件式を記述したり、マップ内で値が設定されているかを確認したりするのに非常に有用です。ここでは単純化のために、`LogAttributes` 内にすべてのキーが存在すると仮定しています。[null values](/sql-reference/functions/functions-for-nulls) を扱う関数とあわせて習熟しておくことをおすすめします。ログのパースにおける強力な味方となるでしょう。
+上記で `SeverityText` と `SeverityNumber` を抽出するために [条件関数](/sql-reference/functions/conditional-functions) を使用している点に注目してください。これらは複雑な条件を定義したり、マップ内で値が設定されているかを確認したりするのに非常に有用です。ここでは単純化のため、`LogAttributes` にすべてのキーが存在すると仮定しています。ぜひこれらの関数には習熟してください。[null 値](/sql-reference/functions/functions-for-nulls) を扱う関数と並んで、ログ解析における心強い味方となります！
 :::
 
-これらの結果を書き込むためのテーブルが必要です。以下のターゲットテーブルは、上記のクエリに対応した構造になっています。
+これらの結果を書き込むためのテーブルが必要です。以下のターゲットテーブルは、上記のクエリに対応しています。
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -353,14 +353,14 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-ここで選択されている型は、[「Optimizing types」](#optimizing-types) で説明されている最適化に基づいています。
+ここで選択されている型は、[「型の最適化」](#optimizing-types) で説明されている最適化に基づいています。
 
 :::note
-スキーマを大きく変更している点に注目してください。実際には、ユーザーは保持しておきたい Trace 列や `ResourceAttributes` 列（通常は Kubernetes メタデータを含みます）も併せて持っていることが多いでしょう。Grafana はトレース列を活用して、ログとトレースを相互に行き来できるリンク機能を提供できます。詳しくは [「Using Grafana」](/observability/grafana) を参照してください。
+スキーマを大きく変更している点に注目してください。実際には、多くの場合、ユーザーは保持しておきたいトレース関連のカラムや、`ResourceAttributes` カラム（通常は Kubernetes メタデータを含みます）も併せて持っています。Grafana はトレースのカラムを活用し、ログとトレースを相互に行き来できるリンク機能を提供します。詳しくは「[Grafana の利用](/observability/grafana)」を参照してください。
 :::
 
 
-以下では、マテリアライズドビュー `otel_logs_mv` を作成します。このビューは、`otel_logs` テーブルに対して前述の `SELECT` を実行し、その結果を `otel_logs_v2` に送ります。
+以下では、マテリアライズドビュー `otel_logs_mv` を作成します。このビューは、上記の `otel_logs` テーブルに対して先ほどの SELECT 文を実行し、その結果を `otel_logs_v2` に送信します。
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
@@ -385,11 +385,11 @@ SELECT
 FROM otel_logs
 ```
 
-上記の内容は、次の図のように可視化できます。
+上記は次のように可視化されます:
 
 <Image img={observability_11} alt="Otel MV" size="md" />
 
-「[Exporting to ClickHouse](/observability/integrating-opentelemetry#exporting-to-clickhouse)」で使用したコレクター設定をここで再起動すると、`otel_logs_v2` に、想定した形式でデータが格納されます。型付き JSON 抽出関数を使用している点に注目してください。
+ここで [&quot;Exporting to ClickHouse&quot;](/observability/integrating-opentelemetry#exporting-to-clickhouse) で使用した collector の設定を再起動すると、データは `otel_logs_v2` に所望の形式で格納されます。型付き JSON 抽出関数を利用している点に注意してください。
 
 ```sql
 SELECT *
@@ -397,7 +397,7 @@ FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
 
-Row 1:
+行 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
@@ -417,10 +417,10 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-1 row in set. Elapsed: 0.010 sec.
+1行を取得しました。経過時間: 0.010秒
 ```
 
-`Body` カラムから JSON 関数を使って列を抽出することに基づく、同等の Materialized view を次に示します。
+`Body` カラムから JSON 関数を使ってカラムを抽出することで実現した、同等の Materialized View を以下に示します。
 
 
 ```sql
@@ -454,7 +454,7 @@ FROM otel_logs
 - JSON抽出関数は、値が見つからない場合にその型のデフォルト値を返します。これらの値が妥当であることを確認してください!
 
 :::note Nullableの使用を避ける
-オブザーバビリティデータにおいてClickHouseで[Nullable](/sql-reference/data-types/nullable)を使用することは避けてください。ログやトレースにおいて、空とnullを区別する必要があることはほとんどありません。この機能は追加のストレージオーバーヘッドを発生させ、クエリパフォーマンスに悪影響を及ぼします。詳細は[こちら](/data-modeling/schema-design#optimizing-types)を参照してください。
+オブザーバビリティデータにおいてClickHouseで[Nullable](/sql-reference/data-types/nullable)を使用することは避けてください。ログやトレースにおいて空とnullを区別する必要があることはほとんどありません。この機能は追加のストレージオーバーヘッドを発生させ、クエリパフォーマンスに悪影響を及ぼします。詳細は[こちら](/data-modeling/schema-design#optimizing-types)を参照してください。
 :::
 
 
@@ -462,27 +462,27 @@ FROM otel_logs
 
 必要なカラムを抽出したら、ソートキー/プライマリキーの最適化を開始できます。
 
-ソートキーの選択には、いくつかのシンプルなルールを適用できます。以下のルールは時に相反することがあるため、順番に検討してください。このプロセスから複数のキーを特定できますが、通常は4～5個で十分です：
+ソートキーの選択には、いくつかのシンプルなルールを適用できます。以下のルールは時に相反する場合があるため、順番に検討してください。このプロセスから複数のキーを特定できますが、通常は4～5個で十分です：
 
-1. 一般的なフィルタやアクセスパターンに合致するカラムを選択します。ユーザーが通常、特定のカラム（例：ポッド名）でフィルタリングしてObservability調査を開始する場合、そのカラムは`WHERE`句で頻繁に使用されます。使用頻度の低いカラムよりも、これらをキーに含めることを優先してください。
-2. フィルタリング時に全体の行の大部分を除外できるカラムを優先します。これにより、読み取る必要があるデータ量が削減されます。サービス名やステータスコードは良い候補となることが多いですが、後者の場合は、ほとんどの行を除外する値でフィルタリングする場合に限ります。例えば、200番台でフィルタリングすると、ほとんどのシステムで大半の行にマッチしますが、500エラーでフィルタリングすると小さなサブセットに対応します。
-3. テーブル内の他のカラムと高い相関関係を持つ可能性のあるカラムを優先します。これにより、これらの値も連続して格納され、圧縮率が向上します。
+1. 一般的なフィルタやアクセスパターンに合致するカラムを選択します。ユーザーが通常、特定のカラム（例：ポッド名）でフィルタリングしてオブザーバビリティの調査を開始する場合、そのカラムは`WHERE`句で頻繁に使用されます。使用頻度の低いカラムよりも、これらをキーに含めることを優先してください。
+2. フィルタリング時に全体の行の大部分を除外できるカラムを優先し、読み取る必要があるデータ量を削減します。サービス名やステータスコードは良い候補となることが多いですが、後者の場合はユーザーが大部分の行を除外する値でフィルタリングする場合に限ります。例えば、200番台でフィルタリングすると多くのシステムでほとんどの行にマッチしますが、500エラーでフィルタリングすると小さなサブセットに対応します。
+3. テーブル内の他のカラムと高い相関関係を持つ可能性のあるカラムを優先します。これにより、これらの値も連続して格納されることが保証され、圧縮率が向上します。
 4. ソートキーに含まれるカラムに対する`GROUP BY`および`ORDER BY`操作は、よりメモリ効率的に実行できます。
 
 <br />
 
-ソートキーに含めるカラムのサブセットを特定したら、それらを特定の順序で宣言する必要があります。この順序は、クエリにおけるセカンダリキーカラムのフィルタリング効率と、テーブルのデータファイルの圧縮率の両方に大きく影響します。一般的に、**カーディナリティの昇順でキーを並べるのが最適**です。ただし、ソートキーの後方に現れるカラムでのフィルタリングは、タプルの前方に現れるカラムでのフィルタリングよりも効率が低下することを考慮する必要があります。これらの動作のバランスを取り、アクセスパターンを考慮してください。最も重要なのは、バリエーションをテストすることです。ソートキーの理解とその最適化方法については、[この記事](/guides/best-practices/sparse-primary-indexes)を推奨します。
+ソートキーに含めるカラムのサブセットを特定したら、それらを特定の順序で宣言する必要があります。この順序は、クエリにおけるセカンダリキーカラムのフィルタリング効率とテーブルのデータファイルの圧縮率の両方に大きく影響します。一般的に、**カーディナリティの昇順でキーを並べるのが最適**です。ただし、ソートキーの後方に現れるカラムでのフィルタリングは、タプルの前方に現れるカラムでのフィルタリングよりも効率が低くなることを考慮する必要があります。これらの動作のバランスを取り、アクセスパターンを考慮してください。最も重要なのは、バリエーションをテストすることです。ソートキーの理解とその最適化方法については、[この記事](/guides/best-practices/sparse-primary-indexes)を推奨します。
 
 :::note 構造を優先
-ログを構造化した後にソートキーを決定することを推奨します。属性マップ内のキーやJSON抽出式をソートキーに使用しないでください。ソートキーはテーブルのルートカラムとして配置してください。
+ログを構造化した後にソートキーを決定することを推奨します。属性マップ内のキーやJSON抽出式をソートキーに使用しないでください。ソートキーがテーブルのルートカラムとして存在することを確認してください。
 :::
 
 
 ## マップの使用 {#using-maps}
 
-前述の例では、`Map(String, String)` カラムの値にアクセスするためにマップ構文 `map['key']` を使用する方法を示しました。ネストされたキーにアクセスするためのマップ表記の使用に加えて、これらのカラムをフィルタリングまたは選択するための専用ClickHouse [マップ関数](/sql-reference/functions/tuple-map-functions#mapkeys)が利用可能です。
+前述の例では、`Map(String, String)` カラムの値にアクセスするためにマップ構文 `map['key']` を使用する方法を示しました。ネストされたキーにアクセスするためのマップ表記の使用に加えて、これらのカラムをフィルタリングまたは選択するための専用のClickHouse [マップ関数](/sql-reference/functions/tuple-map-functions#mapkeys)が利用可能です。
 
-例えば、次のクエリは [`mapKeys` 関数](/sql-reference/functions/tuple-map-functions#mapkeys)と[`groupArrayDistinctArray` 関数](/sql-reference/aggregate-functions/combinators)（コンビネータ）を使用して、`LogAttributes` カラムで利用可能なすべての一意のキーを識別します。
+例えば、次のクエリは [`mapKeys` 関数](/sql-reference/functions/tuple-map-functions#mapkeys)とそれに続く [`groupArrayDistinctArray` 関数](/sql-reference/aggregate-functions/combinators)(コンビネータ)を使用して、`LogAttributes` カラムで利用可能なすべての一意のキーを識別します。
 
 ```sql
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
@@ -506,7 +506,7 @@ Mapカラム名にドットを使用することは推奨されず、将来的�
 
 マップ型のクエリは通常のカラムのクエリよりも低速です - ["クエリの高速化"](#accelerating-queries)を参照してください。さらに、構文が複雑でユーザーが記述するのが煩雑になる可能性があります。この後者の問題に対処するため、エイリアスカラムの使用を推奨します。
 
-ALIASカラムはクエリ時に計算され、テーブルには保存されません。そのため、このタイプのカラムに値をINSERTすることはできません。エイリアスを使用することで、マップキーを参照し、構文を簡素化し、マップエントリを通常のカラムとして透過的に公開できます。次の例を考えてみましょう:
+ALIASカラムはクエリ時に計算され、テーブルには保存されません。したがって、このタイプのカラムに値をINSERTすることはできません。エイリアスを使用することで、マップキーを参照し、構文を簡素化し、マップエントリを通常のカラムとして透過的に公開できます。次の例を考えてみましょう:
 
 ```sql
 CREATE TABLE otel_logs
@@ -575,7 +575,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.014 sec.
 ```
 
-:::note デフォルトではエイリアスは除外されます
+:::note デフォルトでエイリアスは除外されます
 デフォルトでは、`SELECT *`はALIASカラムを除外します。この動作は`asterisk_include_alias_columns=1`を設定することで無効化できます。
 :::
 
@@ -587,21 +587,21 @@ LIMIT 5
 
 ## コーデックの使用 {#using-codecs}
 
-型の最適化に加えて、ClickHouse Observabilityスキーマの圧縮を最適化する際には、[コーデックの一般的なベストプラクティス](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)を参照してください。
+型の最適化に加えて、ClickHouse Observabilityスキーマの圧縮を最適化する際には、[コーデックに関する一般的なベストプラクティス](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)を参照してください。
 
-一般的に、`ZSTD`コーデックはログおよびトレースデータセットに非常に適しています。圧縮レベルをデフォルト値の1から増やすことで圧縮率が向上する可能性があります。ただし、値を大きくすると挿入時のCPUオーバーヘッドが増加するため、必ずテストを行ってください。通常、この値を増やしても得られる効果はわずかです。
+一般的に、`ZSTD`コーデックはログおよびトレースデータセットに非常に適しています。圧縮レベルをデフォルト値の1から増やすことで圧縮率が向上する可能性があります。ただし、値を大きくすると挿入時のCPUオーバーヘッドが増加するため、テストを行う必要があります。通常、この値を増やしても得られる効果はわずかです。
 
-さらに、タイムスタンプは圧縮においてデルタエンコーディングの恩恵を受けますが、このカラムをプライマリキー/ソートキーに使用すると、クエリパフォーマンスが低下することが確認されています。圧縮とクエリパフォーマンスのトレードオフを評価することを推奨します。
+さらに、タイムスタンプは圧縮に関してデルタエンコーディングの恩恵を受けますが、このカラムをプライマリキー/ソートキーに使用するとクエリパフォーマンスが低下することが示されています。圧縮とクエリパフォーマンスのトレードオフを評価することを推奨します。
 
 
 ## ディクショナリの使用 {#using-dictionaries}
 
-[ディクショナリ](/sql-reference/dictionaries)は、ClickHouseの[主要機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部[ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリで[キーバリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシの検索クエリに最適化されています。
+[ディクショナリ](/sql-reference/dictionaries)は、ClickHouseの[主要機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、様々な内部および外部[ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリで[キーバリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシの検索クエリに最適化されています。
 
 <Image img={observability_12} alt='オブザーバビリティとディクショナリ' size='md' />
 
-これは、取り込みプロセスを遅延させることなく取り込みデータをその場でエンリッチメントしたり、クエリのパフォーマンスを全般的に向上させたりするなど、さまざまなシナリオで有用です。特にJOINが大きな恩恵を受けます。
-オブザーバビリティのユースケースでは結合が必要になることはまれですが、ディクショナリは挿入時とクエリ時の両方でエンリッチメント目的に有用です。以下では両方の例を示します。
+これは、取り込みプロセスを遅延させることなく取り込みデータをその場でエンリッチメントしたり、クエリのパフォーマンスを全般的に向上させたりする様々なシナリオで有用であり、特にJOINが大きな恩恵を受けます。
+オブザーバビリティのユースケースでは結合が必要になることは稀ですが、ディクショナリは挿入時とクエリ時の両方でエンリッチメント目的に有用です。以下では両方の例を示します。
 
 :::note 結合の高速化
 ディクショナリを使用した結合の高速化に興味のあるユーザーは、詳細を[こちら](/dictionary)で確認できます。
@@ -609,9 +609,9 @@ LIMIT 5
 
 ### 挿入時とクエリ時の比較 {#insert-time-vs-query-time}
 
-ディクショナリは、クエリ時または挿入時にデータセットをエンリッチメントするために使用できます。これらのアプローチにはそれぞれ長所と短所があります。要約すると以下の通りです:
+ディクショナリは、クエリ時または挿入時にデータセットをエンリッチメントするために使用できます。これらのアプローチにはそれぞれ長所と短所があります。要約すると:
 
-- **挿入時** - エンリッチメント値が変更されず、ディクショナリへの入力に使用できる外部ソースに存在する場合に適しています。この場合、挿入時に行をエンリッチメントすることで、クエリ時のディクショナリ検索を回避できます。ただし、エンリッチメントされた値が列として保存されるため、挿入パフォーマンスの低下と追加のストレージオーバーヘッドが発生します。
+- **挿入時** - エンリッチメント値が変更されず、ディクショナリの生成に使用できる外部ソースに存在する場合に適しています。この場合、挿入時に行をエンリッチメントすることで、クエリ時のディクショナリ検索を回避できます。ただし、エンリッチメントされた値が列として保存されるため、挿入パフォーマンスの低下と追加のストレージオーバーヘッドが発生します。
 - **クエリ時** - ディクショナリ内の値が頻繁に変更される場合、クエリ時の検索がより適していることが多いです。これにより、マッピングされた値が変更された場合に列を更新する(およびデータを書き換える)必要がなくなります。この柔軟性は、クエリ時の検索コストを犠牲にして得られます。このクエリ時のコストは、多数の行に対して検索が必要な場合(例えば、フィルタ句でディクショナリ検索を使用する場合)に顕著になります。結果のエンリッチメント、つまり`SELECT`句での使用では、このオーバーヘッドは通常無視できる程度です。
 
 ユーザーはディクショナリの基本を理解することをお勧めします。ディクショナリは、専用の[特殊関数](/sql-reference/functions/ext-dict-functions#dictgetall)を使用して値を取得できるインメモリ検索テーブルを提供します。
@@ -624,7 +624,7 @@ IPアドレスを使用してログとトレースに緯度と経度の値を地
 
 [DB-IP.com](https://db-ip.com/)が[CC BY 4.0ライセンス](https://creativecommons.org/licenses/by/4.0/)の条件下で提供する、公開されている[DB-IP都市レベルデータセット](https://github.com/sapics/ip-location-db#db-ip-database-update-monthly)を使用します。
 
-[readme](https://github.com/sapics/ip-location-db#csv-format)から、データが以下のように構造化されていることがわかります:
+[readme](https://github.com/sapics/ip-location-db#csv-format)から、データが次のように構造化されていることがわかります:
 
 ```csv
 | ip_range_start | ip_range_end | country_code | state1 | state2 | city | postcode | latitude | longitude | timezone |
@@ -675,7 +675,7 @@ select count() from geoip_url;
 └─────────┘
 ```
 
-`ip_trie` 辞書では、IP アドレス範囲を CIDR 表記で指定する必要があるため、`ip_range_start` と `ip_range_end` を変換する必要があります。
+`ip_trie` 辞書では IP アドレス範囲を CIDR 表記で表す必要があるため、`ip_range_start` と `ip_range_end` を変換する必要があります。
 
 各範囲に対応する CIDR は、次のクエリで簡潔に算出できます。
 
@@ -704,10 +704,10 @@ LIMIT 4;
 ```
 
 :::note
-上記のクエリでは多くの処理が行われています。興味のある方は、この優れた[解説](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)をお読みください。そうでなければ、「上記のクエリは IP 範囲から CIDR を算出している」と理解しておいてください。
+上記のクエリでは多くの処理が行われています。詳しく知りたい方は、この優れた[解説](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation)を参照してください。詳細は気にしない場合は、「上記のクエリは IP レンジから CIDR を算出している」と理解して先に進んでかまいません。
 :::
 
-ここで必要になるのは IP 範囲、国コード、座標だけなので、新しいテーブルを作成し、Geo IP データを挿入しましょう。
+ここでは IP レンジ、国コード、座標だけが必要なので、新しいテーブルを作成し、Geo IP データを挿入しましょう。
 
 ```sql
 CREATE TABLE geoip
@@ -734,7 +734,7 @@ SELECT
 FROM geoip_url
 ```
 
-ClickHouse で低レイテンシな IP ルックアップを行うために、Geo IP データの「キー → 属性」マッピングをインメモリで保持するためのディクショナリを利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/dictionaries#ip_trie) が用意されています。次のクエリでは、このレイアウトを使用し、上記のテーブルをソースとするディクショナリを定義します。
+ClickHouse で低レイテンシーな IP ルックアップを行うために、Geo IP データのキー → 属性マッピングをインメモリで保持するための辞書を利用します。ClickHouse には、ネットワークプレフィックス（CIDR ブロック）を座標および国コードにマッピングするための `ip_trie` [dictionary structure](/sql-reference/dictionaries#ip_trie) が用意されています。次のクエリでは、このレイアウトを使用し、上記のテーブルをソースとする辞書を定義します。
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -749,7 +749,7 @@ layout(ip_trie)
 lifetime(3600);
 ```
 
-ディクショナリから行を選択して、このデータセットがルックアップに利用できることを確認します。
+ディクショナリから行を選択して、このデータセットがルックアップに利用できることを確認できます。
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
@@ -767,10 +767,10 @@ SELECT * FROM ip_trie LIMIT 3
 ````
 
 :::note 定期的な更新
-ClickHouseのディクショナリは、基盤となるテーブルデータと上記で使用したlifetime句に基づいて定期的に更新されます。Geo IPディクショナリをDB-IPデータセットの最新の変更に対応させるには、geoip_urlリモートテーブルから変換を適用したデータを`geoip`テーブルに再挿入するだけです。
+ClickHouseのディクショナリは、基盤となるテーブルデータと上記で使用したlifetime句に基づいて定期的に更新されます。Geo IPディクショナリをDB-IPデータセットの最新の変更内容に更新するには、geoip_urlリモートテーブルから変換を適用したデータを`geoip`テーブルに再挿入するだけです。
 :::
 
-これで`ip_trie`ディクショナリ(便宜上、同じく`ip_trie`という名前)にGeo IPデータが読み込まれたので、IPの地理的位置情報の取得に使用できます。これは次のように[`dictGet()`関数](/sql-reference/functions/ext-dict-functions)を使用して実現できます:
+これで`ip_trie`ディクショナリ（便利なことに同名の`ip_trie`）にGeo IPデータが読み込まれたので、IPジオロケーションに使用できます。これは次のように[`dictGet()`関数](/sql-reference/functions/ext-dict-functions)を使用して実現できます:
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
@@ -782,9 +782,9 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 1 row in set. Elapsed: 0.003 sec.
 ````
 
-ここでの取得速度に注目してください。これにより、ログを拡充できます。この例では、**クエリ実行時にエンリッチメントを行う**ことを選択します。
+ここでの取得速度に注目してください。これにより、ログをリッチ化できます。今回は、**クエリ実行時にエンリッチメントを行う**ことを選択します。
 
-元のログデータセットに戻ると、上記を用いてログを国別に集約できます。以下では、先ほど作成したマテリアライズドビューの結果として得られたスキーマを使用し、その中に抽出済みの `RemoteAddress` カラムが含まれているものとします。
+元のログデータセットに戻り、上記を用いてログを国別に集約できます。以下では、先ほどのマテリアライズドビューによって得られたスキーマを使用しているものとし、そのスキーマには抽出済みの `RemoteAddress` カラムが含まれていることを前提とします。
 
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
@@ -807,7 +807,7 @@ LIMIT 5
 Peak memory usage: 1.16 MiB.
 ```
 
-IP から地理的位置への対応は変化し得るため、ユーザーは「現在そのアドレスに対応する地理的位置」ではなく、「リクエストが行われた時点でどこから送信されたのか」を知りたいと考える可能性が高くなります。このため、ここではインデックス時のエンリッチメントを行うことが望ましいと考えられます。これは、以下に示すようにマテリアライズドカラムを使うか、あるいはマテリアライズドビューの SELECT 句内で実施できます。
+IP から地理的位置へのマッピングは変更され得るため、ユーザーは同じアドレスの現在の地理的位置ではなく、「リクエストが行われた時点でどこから送信されたのか」を知りたいと考える可能性が高くなります。このため、このケースではインデックス時のエンリッチメントの方が好まれる傾向があります。これは、以下に示すようにマテリアライズドカラムを用いるか、またはマテリアライズドビューの `SELECT` 句の中で実行できます。
 
 ```sql
 CREATE TABLE otel_logs_v2
@@ -842,11 +842,11 @@ ORDER BY (ServiceName, Timestamp)
 ユーザーは新しいデータに基づいてIPエンリッチメント辞書を定期的に更新したい場合があります。これは辞書の`LIFETIME`句を使用することで実現でき、基盤となるテーブルから辞書が定期的に再読み込みされます。基盤となるテーブルを更新する方法については、["リフレッシュ可能なマテリアライズドビュー"](/materialized-view/refreshable-materialized-view)を参照してください。
 :::
 
-上記の国と座標情報により、国別のグループ化やフィルタリングを超えた可視化機能が利用できます。参考として["地理データの可視化"](/observability/grafana#visualizing-geo-data)を参照してください。
+上記の国と座標情報により、国別のグループ化やフィルタリングを超えた可視化機能が利用できます。詳細については、["地理データの可視化"](/observability/grafana#visualizing-geo-data)を参照してください。
 
 ### 正規表現辞書の使用(ユーザーエージェント解析) {#using-regex-dictionaries-user-agent-parsing}
 
-[ユーザーエージェント文字列](https://en.wikipedia.org/wiki/User_agent)の解析は、正規表現を用いた古典的な問題であり、ログやトレースベースのデータセットにおける一般的な要件です。ClickHouseは正規表現ツリー辞書を使用して、ユーザーエージェントの効率的な解析を提供します。
+[ユーザーエージェント文字列](https://en.wikipedia.org/wiki/User_agent)の解析は、正規表現を用いた古典的な問題であり、ログやトレースベースのデータセットにおける一般的な要件です。ClickHouseは、正規表現ツリー辞書を使用してユーザーエージェントの効率的な解析を提供します。
 
 正規表現ツリー辞書は、ClickHouseオープンソースにおいてYAMLRegExpTree辞書ソースタイプを使用して定義され、正規表現ツリーを含むYAMLファイルへのパスを指定します。独自の正規表現辞書を提供する場合は、必要な構造の詳細を[こちら](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)で確認できます。以下では、[uap-core](https://github.com/ua-parser/uap-core)を使用したユーザーエージェント解析に焦点を当て、サポートされているCSV形式で辞書を読み込みます。このアプローチはOSSとClickHouse Cloudの両方に対応しています。
 
@@ -885,7 +885,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-これらのテーブルは、urlテーブル関数を使用して以下の公開ホストされているCSVファイルから入力できます:
+これらのテーブルは、urlテーブル関数を使用して、以下の公開ホストされているCSVファイルからデータを投入できます:
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -895,7 +895,7 @@ INSERT INTO regexp_device SELECT * FROM s3('https://datasets-documentation.s3.eu
 INSERT INTO regexp_browser SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_browser.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
 ```
 
-メモリテーブルにデータが入力されたら、正規表現辞書を読み込むことができます。キー値を列として指定する必要があることに注意してください。これらはユーザーエージェントから抽出できる属性になります。
+メモリテーブルへのデータ投入が完了したら、正規表現辞書を読み込むことができます。キー値を列として指定する必要があることに注意してください。これらはユーザーエージェントから抽出できる属性になります。
 
 ```sql
 CREATE DICTIONARY regexp_os_dict
@@ -938,7 +938,7 @@ LAYOUT(regexp_tree);
 ```
 
 
-これらの辞書を読み込んだら、サンプルの user-agent を用意して、新しい辞書抽出機能をテストできます。
+これらの辞書を読み込んだら、サンプルの user-agent を指定して、新しい辞書抽出機能をテストできます。
 
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
@@ -954,9 +954,9 @@ SELECT
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-ユーザーエージェントに関するルールが変更されることはほとんどなく、辞書も新しいブラウザ、オペレーティングシステム、デバイスに対応する場合にのみ更新すればよいことから、この抽出処理は挿入時に実行するのが妥当です。
+ユーザーエージェントに関するルールはほとんど変わらず、辞書の更新も新しいブラウザ、オペレーティングシステム、デバイスに対応する場合に限られるため、この抽出処理は挿入時に実行するのが理にかなっています。
 
-この処理は、マテリアライズドカラムを使って行うことも、マテリアライズドビューを使って行うこともできます。以下では、前述のマテリアライズドビューを修正します。
+この処理は、マテリアライズドカラムを使って行うことも、マテリアライズドビューを使って行うこともできます。以下では、先ほど使用したマテリアライズドビューを修正します。
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2
@@ -984,7 +984,7 @@ AS SELECT
 FROM otel_logs
 ```
 
-これには、対象テーブル `otel_logs_v2` のスキーマを変更する必要があります。
+そのためには、対象テーブル `otel_logs_v2` のスキーマを変更する必要があります。
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -1014,7 +1014,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp, Status)
 ```
 
-前の手順で説明したとおりにコレクターを再起動して構造化ログを取り込んだら、新たに抽出された `Device`、`Browser`、`Os` 各カラムをクエリできます。
+コレクターを再起動して構造化ログを取り込んだら、前述の手順に従って新たに抽出された Device、Browser、Os 列をクエリできます。
 
 
 ```sql
@@ -1031,12 +1031,12 @@ Os:     ('Other','0','0','0')
 ```
 
 :::note 複雑な構造に対するタプル
-これらのユーザーエージェントカラムでタプルが使用されていることに注目してください。タプルは、階層が事前に判明している複雑な構造に推奨されます。サブカラムは通常のカラムと同等のパフォーマンスを提供し(Mapキーとは異なり)、異種型を許容します。
+これらのユーザーエージェントカラムでタプルが使用されていることに注目してください。タプルは、階層が事前に判明している複雑な構造に推奨されます。サブカラムは通常のカラムと同等のパフォーマンスを提供し（Mapキーとは異なり）、異種型を許容します。
 :::
 
 ### 参考資料 {#further-reading}
 
-ディクショナリに関するより詳しい例と詳細については、以下の記事を参照してください:
+ディクショナリに関するより詳しい例と詳細については、以下の記事を参照してください：
 
 - [ディクショナリの高度なトピック](/dictionary#advanced-dictionary-topics)
 - [「ディクショナリを使用したクエリの高速化」](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
@@ -1049,9 +1049,9 @@ ClickHouseは、クエリパフォーマンスを高速化するための多数�
 
 ### 集計のためのマテリアライズドビュー(増分)の使用 {#using-materialized-views-incremental-for-aggregations}
 
-前のセクションでは、データ変換とフィルタリングのためのマテリアライズドビューの使用について説明しました。しかし、マテリアライズドビューは、挿入時に集計を事前計算し、その結果を保存するためにも使用できます。この結果は、後続の挿入からの結果で更新できるため、挿入時に集計を効果的に事前計算することが可能になります。
+前のセクションでは、データ変換とフィルタリングのためのマテリアライズドビューの使用について説明しました。しかし、マテリアライズドビューは、挿入時に集計を事前計算し、その結果を保存するためにも使用できます。この結果は、後続の挿入からの結果で更新できるため、挿入時に集計を効果的に事前計算することが可能です。
 
-ここでの基本的な考え方は、結果が元のデータのより小さな表現になることが多いということです(集計の場合は部分的なスケッチ)。ターゲットテーブルから結果を読み取るためのよりシンプルなクエリと組み合わせることで、元のデータに対して同じ計算を実行する場合よりもクエリ時間が高速になります。
+ここでの基本的な考え方は、結果が元のデータのより小さな表現(集計の場合は部分的なスケッチ)になることが多いということです。ターゲットテーブルから結果を読み取るためのよりシンプルなクエリと組み合わせると、元のデータに対して同じ計算を実行する場合よりもクエリ時間が高速になります。
 
 次のクエリを考えてみましょう。構造化ログを使用して1時間あたりの総トラフィックを計算します:
 
@@ -1075,10 +1075,10 @@ LIMIT 5
 Peak memory usage: 1.40 MiB.
 ```
 
-これは、ユーザーがGrafanaでプロットする一般的な折れ線グラフかもしれません。このクエリは確かに非常に高速です - データセットはわずか1000万行で、ClickHouseは高速です!しかし、これを数十億、数兆行にスケールする場合、理想的にはこのクエリパフォーマンスを維持したいところです。
+これは、ユーザーがGrafanaでプロットする一般的な折れ線グラフかもしれません。このクエリは確かに非常に高速です - データセットはわずか1000万行であり、ClickHouseは高速です!しかし、これを数十億、数兆行にスケールする場合、このクエリパフォーマンスを維持したいと考えるでしょう。
 
 :::note
-このクエリは、`LogAttributes`マップからsizeキーを抽出する以前のマテリアライズドビューから生成される`otel_logs_v2`テーブルを使用すると、10倍高速になります。ここでは説明目的でのみ生データを使用しており、これが一般的なクエリである場合は、以前のビューを使用することをお勧めします。
+このクエリは、`LogAttributes`マップからsizeキーを抽出する以前のマテリアライズドビューから生成される`otel_logs_v2`テーブルを使用すれば、10倍高速になります。ここでは説明目的でのみ生データを使用しており、これが一般的なクエリである場合は、以前のビューを使用することをお勧めします。
 :::
 
 マテリアライズドビューを使用して挿入時にこれを計算する場合、結果を受け取るテーブルが必要です。このテーブルは1時間あたり1行のみを保持する必要があります。既存の時間に対して更新を受け取った場合、他の列は既存の時間の行にマージされる必要があります。この増分状態のマージを実現するには、他の列の部分的な状態を保存する必要があります。
@@ -1107,7 +1107,7 @@ GROUP BY Hour
 
 ここでの`TO`句が重要で、結果の送信先、つまり`bytes_per_hour`を示しています。
 
-OTel Collectorを再起動してログを再送信すると、`bytes_per_hour`テーブルは上記のクエリ結果で増分的に入力されます。完了時に、`bytes_per_hour`のサイズを確認できます - 1時間あたり1行になっているはずです:
+OTel Collectorを再起動してログを再送信すると、`bytes_per_hour`テーブルは上記のクエリ結果で増分的に入力されます。完了時に、`bytes_per_hour`のサイズを確認できます - 1時間あたり1行が存在するはずです:
 
 ```sql
 SELECT count()
@@ -1121,18 +1121,18 @@ FINAL
 │ 113 │
 └─────────┘
 
-1 row in set. Elapsed: 0.039 sec.
+1行が返されました。経過時間: 0.039秒
 
 ````
 
-ここでは、クエリの結果を保存することで、行数を1000万行(`otel_logs`内)から113行に効果的に削減しました。重要なポイントは、`otel_logs`テーブルに新しいログが挿入されると、それぞれの時間に対応する新しい値が`bytes_per_hour`に送信され、バックグラウンドで自動的に非同期マージされることです。1時間あたり1行のみを保持することで、`bytes_per_hour`は常にコンパクトかつ最新の状態を維持します。
+ここでは、クエリの結果を保存することで、行数を(`otel_logs`の)1000万行から113行に効果的に削減しました。重要なのは、`otel_logs`テーブルに新しいログが挿入されると、それぞれの時間に対応する新しい値が`bytes_per_hour`に送信され、バックグラウンドで自動的に非同期にマージされることです。1時間あたり1行のみを保持することで、`bytes_per_hour`は常に小さく、かつ最新の状態を維持します。
 
-行のマージは非同期で行われるため、ユーザーがクエリを実行する際に1時間あたり複数の行が存在する可能性があります。クエリ時に未マージの行を確実にマージするには、2つの方法があります:
+行のマージは非同期で行われるため、ユーザーがクエリを実行する際に1時間あたり複数の行が存在する可能性があります。クエリ時に未処理の行が確実にマージされるようにするには、2つの選択肢があります:
 
-- テーブル名に[`FINAL`修飾子](/sql-reference/statements/select/from#final-modifier)を使用する(上記のカウントクエリで使用しました)。
-- 最終テーブルで使用されている順序キー(つまりTimestamp)で集約し、メトリクスを合計する。
+- テーブル名に[`FINAL`修飾子](/sql-reference/statements/select/from#final-modifier)を使用する(上記のカウントクエリで実行したもの)。
+- 最終テーブルで使用されている順序キー(すなわちTimestamp)で集約し、メトリクスを合計する。
 
-通常、2番目の方法の方が効率的で柔軟性があります(テーブルを他の用途にも使用できます)が、一部のクエリでは1番目の方がシンプルになる場合があります。以下に両方を示します:
+通常、2番目の選択肢の方が効率的で柔軟性があります(テーブルを他の用途にも使用できます)が、一部のクエリでは1番目の方がシンプルになる場合があります。以下に両方を示します:
 
 ```sql
 SELECT
@@ -1151,7 +1151,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.008 sec.
+5行が返されました。経過時間: 0.008秒
 
 SELECT
         Hour,
@@ -1169,20 +1169,20 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.005 sec.
+5行が返されました。経過時間: 0.005秒
 ````
 
-これにより、クエリが0.6秒から0.008秒に高速化されました - 75倍以上の改善です!
+これにより、クエリの実行時間が0.6秒から0.008秒に短縮され、75倍以上高速化されました!
 
 :::note
-より大規模なデータセットとより複雑なクエリでは、この効果はさらに大きくなる可能性があります。例については[こちら](https://github.com/ClickHouse/clickpy)を参照してください。
+より大規模なデータセットやより複雑なクエリでは、この削減効果はさらに大きくなる可能性があります。例については[こちら](https://github.com/ClickHouse/clickpy)を参照してください。
 :::
 
 #### より複雑な例 {#a-more-complex-example}
 
-上記の例では、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)を使用して1時間あたりの単純なカウントを集約しています。単純な合計を超える統計には、別のターゲットテーブルエンジンが必要です:[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)です。
+上記の例では、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)を使用して1時間あたりの単純なカウントを集約しています。単純な合計を超える統計には、異なるターゲットテーブルエンジンが必要です:[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)です。
 
-1日あたりの一意のIPアドレス数(または一意のユーザー数)を計算したいとします。そのためのクエリは次のとおりです:
+1日あたりのユニークIPアドレス数(またはユニークユーザー数)を計算したいとします。そのためのクエリは次のとおりです:
 
 ```sql
 SELECT toStartOfHour(Timestamp) AS Hour, uniq(LogAttributes['remote_addr']) AS UniqueUsers
@@ -1195,7 +1195,7 @@ ORDER BY Hour DESC
 │ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
-113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
+113行が返されました。経過時間: 0.667秒 処理: 1037万行、4.73 GB (1553万行/秒、7.09 GB/秒)
 ```
 
 増分更新のためにカーディナリティカウントを永続化するには、AggregatingMergeTreeが必要です。
@@ -1224,7 +1224,7 @@ GROUP BY Hour
 ORDER BY Hour DESC
 ```
 
-集約関数の末尾に`State`サフィックスを追加していることに注目してください。これにより、最終結果ではなく関数の集約状態が返されます。この状態には、他の状態とマージするための追加情報が含まれています。
+集約関数の末尾に`State`サフィックスを追加していることに注目してください。これにより、最終結果ではなく関数の集約状態が返されます。この状態には、他の状態とマージできるようにするための追加情報が含まれます。
 
 Collectorの再起動によってデータが再読み込みされた後、`unique_visitors_per_hour`テーブルに113行が存在することを確認できます。
 
@@ -1257,9 +1257,9 @@ ORDER BY Hour DESC
 
 ここでは`FINAL`を使用する代わりに`GROUP BY`を使用していることに注意してください。
 
-### 高速ルックアップのためのマテリアライズドビュー(増分)の使用 {#using-materialized-views-incremental--for-fast-lookups}
+### 高速検索のためのマテリアライズドビュー(増分)の使用 {#using-materialized-views-incremental--for-fast-lookups}
 
-ユーザーは、フィルタや集約句で頻繁に使用されるカラムを含むClickHouseの順序キーを選択する際に、アクセスパターンを考慮する必要があります。これは、単一のカラムセットでは包含できない多様なアクセスパターンを持つObservabilityのユースケースでは制約となる可能性があります。これは、デフォルトのOTelスキーマに組み込まれた例で最もよく示されます。トレースのデフォルトスキーマを考えてみましょう:
+ユーザーは、フィルタや集約句で頻繁に使用されるカラムを含むClickHouseのオーダリングキーを選択する際に、アクセスパターンを考慮する必要があります。これは、単一のカラムセットでは包含できない多様なアクセスパターンを持つObservabilityのユースケースでは制約となる可能性があります。これは、デフォルトのOTelスキーマに組み込まれた例で最もよく示されます。トレースのデフォルトスキーマを考えてみましょう:
 
 
 ```sql
@@ -1299,9 +1299,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-このスキーマは、`ServiceName`、`SpanName`、`Timestamp` によるフィルタリングに最適化されています。トレースでは、特定の `TraceId` で検索し、対応するトレースに含まれるスパンを取得できることも必要です。`TraceId` も並び替えキーに含まれていますが、最後に配置されているため、[フィルタリングの効率が低下し](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)、単一のトレースを取得する際に大量のデータをスキャンする必要が生じる可能性があります。
+このスキーマは、`ServiceName`、`SpanName`、`Timestamp` によるフィルタリングに最適化されています。トレーシングでは、特定の `TraceId` で検索し、関連するトレースのスパンを取得できることも必要です。`TraceId` は並び替えキーに含まれていますが、末尾にあるため[フィルタリングの効率が低下し](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)、単一のトレースを取得する際に大量のデータをスキャンしなければならない可能性が高くなります。
 
-この課題に対処するために、OTel コレクターはマテリアライズドビューとそれに対応するテーブルも作成します。テーブルとビューを以下に示します。
+この課題に対処するために、OTel コレクターはマテリアライズドビューと、それに関連するテーブルも作成します。テーブルとビューは以下のとおりです。
 
 ```sql
 CREATE TABLE otel_traces_trace_id_ts
@@ -1329,7 +1329,7 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
-このビューにより、テーブル `otel_traces_trace_id_ts` には各トレースの最小および最大タイムスタンプが保持されることが実質的に保証されます。このテーブルは `TraceId` で並べ替えられているため、これらのタイムスタンプを効率的に取得できます。さらに、こうして得られたタイムスタンプ範囲は、メインの `otel_traces` テーブルをクエリする際に利用できます。より具体的には、トレースをその ID で取得する場合、Grafana は次のクエリを使用します：
+このビューによって、テーブル `otel_traces_trace_id_ts` には各トレースの最小および最大タイムスタンプが保持されるようになります。このテーブルは `TraceId` で並べ替えられているため、これらのタイムスタンプを効率的に取得できます。さらに、これらのタイムスタンプ範囲は、メインの `otel_traces` テーブルをクエリする際に利用できます。より具体的には、トレースをその ID で取得する場合、Grafana は次のクエリを使用します。
 
 
 ```sql
@@ -1361,19 +1361,19 @@ LIMIT 1000
 
 このCTEは、トレースID `ae9226c78d1d360601e6383928e4d22d` の最小および最大タイムスタンプを特定し、それを使用してメインの `otel_traces` テーブルから関連するスパンをフィルタリングします。
 
-同じアプローチを類似のアクセスパターンに適用できます。データモデリングにおける類似の例を[こちら](/materialized-view/incremental-materialized-view#lookup-table)で詳しく説明しています。
+同じアプローチを類似のアクセスパターンに適用できます。データモデリングにおける類似の例を[こちら](/materialized-view/incremental-materialized-view#lookup-table)で解説しています。
 
 ### プロジェクションの使用 {#using-projections}
 
 ClickHouseのプロジェクションを使用すると、テーブルに対して複数の `ORDER BY` 句を指定できます。
 
-前のセクションでは、ClickHouseでマテリアライズドビューを使用して集計を事前計算し、行を変換し、さまざまなアクセスパターンに対してObservabilityクエリを最適化する方法を説明しました。
+前のセクションでは、ClickHouseでマテリアライズドビューを使用して集計を事前計算し、行を変換し、さまざまなアクセスパターンに対してObservabilityクエリを最適化する方法を解説しました。
 
 トレースIDによる検索を最適化するために、マテリアライズドビューが挿入を受け取る元のテーブルとは異なるソートキーを持つターゲットテーブルに行を送信する例を示しました。
 
-プロジェクションを使用して同じ問題に対処でき、プライマリキーに含まれていないカラムに対するクエリを最適化できます。
+プロジェクションを使用して同じ問題に対処でき、プライマリキーに含まれていない列に対するクエリを最適化できます。
 
-理論的には、この機能を使用してテーブルに複数のソートキーを提供できますが、明確な欠点が1つあります。それはデータの重複です。具体的には、各プロジェクションに指定された順序に加えて、メインのプライマリキーの順序でもデータを書き込む必要があります。これにより挿入が遅くなり、より多くのディスク容量を消費します。
+理論上、この機能を使用してテーブルに複数のソートキーを提供できますが、明確な欠点が1つあります。それはデータの重複です。具体的には、メインのプライマリキーの順序に加えて、各プロジェクションに指定された順序でデータを書き込む必要があります。これにより挿入が遅くなり、より多くのディスク容量を消費します。
 
 :::note プロジェクション vs マテリアライズドビュー
 プロジェクションはマテリアライズドビューと同様の機能を多く提供しますが、控えめに使用すべきであり、多くの場合マテリアライズドビューが推奨されます。ユーザーは欠点と適切な使用場面を理解する必要があります。例えば、プロジェクションは集計の事前計算に使用できますが、この用途にはマテリアライズドビューの使用を推奨します。
@@ -1399,7 +1399,7 @@ Peak memory usage: 56.54 MiB.
 ここでは `FORMAT Null` を使用して結果を出力していません。これにより、すべての結果が読み取られますが返されないため、LIMITによるクエリの早期終了を防ぎます。これは単に1000万行すべてをスキャンするのにかかる時間を示すためです。
 :::
 
-上記のクエリは、選択したソートキー `(ServiceName, Timestamp)` での線形スキャンが必要です。ソートキーの末尾に `Status` を追加して上記クエリのパフォーマンスを向上させることもできますが、プロジェクションを追加することもできます。
+上記のクエリは、選択したソートキー `(ServiceName, Timestamp)` による線形スキャンが必要です。ソートキーの末尾に `Status` を追加して上記クエリのパフォーマンスを向上させることもできますが、プロジェクションを追加することもできます。
 
 ```sql
 ALTER TABLE otel_logs_v2 (
@@ -1412,7 +1412,7 @@ ALTER TABLE otel_logs_v2 (
 ALTER TABLE otel_logs_v2 MATERIALIZE PROJECTION status
 ```
 
-まずプロジェクションを作成してから、それをマテリアライズする必要があることに注意してください。この後者のコマンドにより、データは2つの異なる順序でディスク上に2回保存されます。以下に示すように、プロジェクションはデータ作成時に定義することもでき、データが挿入されると自動的に維持されます。
+まずプロジェクションを作成してから、それをマテリアライズする必要があることに注意してください。この後者のコマンドにより、データは2つの異なる順序でディスク上に2回保存されます。以下に示すように、データ作成時にプロジェクションを定義することもでき、データが挿入されると自動的に維持されます。
 
 
 ```sql
@@ -1445,7 +1445,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-重要な点として、プロジェクションを`ALTER`で作成する場合、`MATERIALIZE PROJECTION`コマンドの発行時に非同期で作成されます。この操作の進行状況は以下のクエリで確認でき、`is_done=1`になるまで待機します。
+重要な点として、プロジェクションを`ALTER`で作成する場合、`MATERIALIZE PROJECTION`コマンドの発行時に作成処理は非同期で実行されます。ユーザーは以下のクエリでこの操作の進行状況を確認し、`is_done=1`になるまで待機できます。
 
 ```sql
 SELECT parts_to_do, is_done, latest_fail_reason
@@ -1459,7 +1459,7 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-上記のクエリを再実行すると、追加のストレージを代償としてパフォーマンスが大幅に向上していることがわかります(測定方法については["テーブルサイズと圧縮の測定"](#measuring-table-size--compression)を参照してください)。
+上記のクエリを再実行すると、追加のストレージを代償としてパフォーマンスが大幅に向上していることが確認できます(測定方法については["テーブルサイズと圧縮の測定"](#measuring-table-size--compression)を参照してください)。
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1471,24 +1471,24 @@ FORMAT `Null`
 Peak memory usage: 27.85 MiB.
 ```
 
-上記の例では、先ほどのクエリで使用した列をプロジェクションに指定しています。これにより、指定した列のみがプロジェクションの一部としてディスクに保存され、Statusで順序付けられます。代わりに`SELECT *`を使用した場合は、すべての列が保存されます。これにより、より多くのクエリ(任意の列のサブセットを使用)がプロジェクションの恩恵を受けられますが、追加のストレージが必要になります。ディスク容量と圧縮の測定については、["テーブルサイズと圧縮の測定"](#measuring-table-size--compression)を参照してください。
+上記の例では、先ほどのクエリで使用された列をプロジェクションに指定しています。これにより、指定されたこれらの列のみがプロジェクションの一部としてディスク上に保存され、Statusで順序付けられます。代わりに`SELECT *`を使用した場合、すべての列が保存されます。これにより、より多くのクエリ(任意の列のサブセットを使用)がプロジェクションの恩恵を受けられますが、追加のストレージが必要になります。ディスク容量と圧縮の測定については、["テーブルサイズと圧縮の測定"](#measuring-table-size--compression)を参照してください。
 
-### セカンダリ/データスキッピングインデックス {#secondarydata-skipping-indices}
+### セカンダリ/データスキップインデックス {#secondarydata-skipping-indices}
 
-ClickHouseでプライマリキーをどれほど適切にチューニングしても、一部のクエリでは必然的にフルテーブルスキャンが必要になります。これはマテリアライズドビュー(および一部のクエリではプロジェクション)を使用することで軽減できますが、追加のメンテナンスが必要であり、ユーザーがそれらの存在を認識して確実に活用する必要があります。従来のリレーショナルデータベースではセカンダリインデックスでこの問題を解決しますが、ClickHouseのようなカラム指向データベースでは効果的ではありません。代わりに、ClickHouseは「スキップ」インデックスを使用します。これにより、データベースが一致する値を含まない大きなデータチャンクをスキップできるようになり、クエリパフォーマンスを大幅に向上させることができます。
+ClickHouseでプライマリキーをどれほど適切にチューニングしても、一部のクエリは必然的にフルテーブルスキャンを必要とします。これはマテリアライズドビュー(および一部のクエリではプロジェクション)を使用することで軽減できますが、これらには追加のメンテナンスが必要であり、ユーザーがそれらを確実に活用するためには、その存在を認識している必要があります。従来のリレーショナルデータベースはセカンダリインデックスでこの問題を解決しますが、ClickHouseのようなカラム指向データベースではこれらは効果的ではありません。代わりに、ClickHouseは「スキップ」インデックスを使用します。これにより、データベースが一致する値を含まない大きなデータチャンクをスキップできるようになり、クエリパフォーマンスを大幅に向上させることができます。
 
-デフォルトのOTelスキーマは、マップアクセスを高速化するためにセカンダリインデックスを使用しています。これらは一般的に効果的でないことがわかっており、カスタムスキーマへのコピーは推奨しませんが、スキッピングインデックスは依然として有用な場合があります。
+デフォルトのOTelスキーマは、マップアクセスを高速化するためにセカンダリインデックスを使用しています。これらは一般的に効果的でないことが判明しており、カスタムスキーマへのコピーは推奨しませんが、スキップインデックスは依然として有用な場合があります。
 
-ユーザーは、適用を試みる前に[セカンダリインデックスのガイド](/optimize/skipping-indexes)を読んで理解する必要があります。
+ユーザーは、これらを適用する前に[セカンダリインデックスのガイド](/optimize/skipping-indexes)を読んで理解する必要があります。
 
-**一般的に、プライマリキーと対象となる非プライマリ列/式の間に強い相関関係が存在し、ユーザーが稀な値(つまり多くのグラニュールに出現しない値)を検索する場合に効果的です。**
+**一般的に、プライマリキーと対象となる非プライマリ列/式の間に強い相関関係が存在し、ユーザーが稀な値、つまり多くのグラニュールに出現しない値を検索する場合に効果的です。**
 
 ### テキスト検索のためのブルームフィルタ {#bloom-filters-for-text-search}
 
 
-Observability クエリでは、ユーザーがテキスト検索を行う必要がある場合に、セカンダリインデックスが有用です。具体的には、[`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) および [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) という N-gram／トークンベースの Bloom フィルタインデックスを使用して、`LIKE`、`IN`、hasToken 演算子を用いた String カラム上の検索を高速化できます。重要な点として、トークンベースのインデックスは、英数字以外の文字を区切り文字としてトークンを生成します。これは、クエリ時にはトークン（または完全な単語）だけがマッチ対象となることを意味します。より細かなマッチングが必要な場合は、[N-gram bloom filter](/optimize/skipping-indexes#bloom-filter-types) を使用できます。これは文字列を指定サイズの N-gram に分割し、単語の一部レベルでのマッチングを可能にします。
+Observability クエリにおいては、ユーザーがテキスト検索を行う必要がある場合に、セカンダリインデックスが有用です。具体的には、ngram およびトークンベースの Bloom フィルタインデックスである [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) と [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) を使用して、`LIKE`、`IN`、および hasToken 演算子による String 型カラムの検索を高速化できます。重要な点として、トークンベースインデックスは英数字以外の文字を区切りとしてトークンを生成します。これは、クエリ実行時にマッチ可能なのがトークン（すなわち単語全体）のみであることを意味します。より細かい粒度でマッチさせたい場合は、[N-gram Bloom フィルタ](/optimize/skipping-indexes#bloom-filter-types) を使用できます。これは、文字列を指定サイズの n-gram に分割することで、単語の一部に対するマッチングを可能にします。
 
-どのようなトークンが生成され、マッチ対象となるかを確認するには、`tokens` 関数を使用できます：
+どのようなトークンが生成され、ひいてはマッチ対象となるかを確認するには、`tokens` 関数を使用できます。
 
 ```sql
 SELECT tokens('https://www.zanbil.ir/m/filter/b113')
@@ -1500,7 +1500,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-`ngram` 関数も同様の機能を提供しており、2 番目のパラメータとして `ngram` のサイズを指定できます。
+`ngram` 関数も同様の機能を提供しており、`ngram` のサイズは 2 番目のパラメーターとして指定できます。
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
@@ -1509,14 +1509,14 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.008 sec.
+1行取得。経過時間: 0.008秒
 ```
 
 :::note 反転インデックス
-ClickHouse には、セカンダリインデックスとして反転インデックスの実験的なサポートもあります。これらは現時点ではログデータセットには推奨していませんが、本番利用に十分成熟した段階でトークンベースのブルームフィルタを置き換えることを想定しています。
+ClickHouse には、セカンダリインデックスとして反転インデックスを利用できる実験的な機能もあります。現時点ではログデータセットに対しての利用は推奨していませんが、本番運用レベルに達した際には、トークンベースのブルームフィルターを置き換えることを想定しています。
 :::
 
-この例では、構造化ログのデータセットを使用します。`Referer` 列に `ultra` が含まれるログの件数を数えたいとします。
+この例では、構造化ログのデータセットを使用します。`Referer` 列に `ultra` が含まれるログの件数をカウントしたいとします。
 
 ```sql
 SELECT count()
@@ -1527,10 +1527,10 @@ WHERE Referer LIKE '%ultra%'
 │  114514 │
 └─────────┘
 
-1行が返されました。経過時間: 0.177秒。処理済み: 1037万行、908.49 MB (5857万行/秒、5.13 GB/秒)
+1行のセット。経過時間: 0.177秒。処理: 1037万行、908.49 MB (5857万行/秒、5.13 GB/秒)
 ```
 
-ここでは、3 文字の ngram を対象にマッチングする必要があります。そのため、`ngrambf_v1` インデックスを作成します。
+ここでは、サイズ 3 の ngram にマッチさせる必要があります。そのため、`ngrambf_v1` インデックスを作成します。
 
 ```sql
 CREATE TABLE otel_logs_bloom
@@ -1558,7 +1558,7 @@ ENGINE = MergeTree
 ORDER BY (Timestamp)
 ```
 
-ここでのインデックス `ngrambf_v1(3, 10000, 3, 7)` は 4 つのパラメーターを取ります。最後の値（7）はシード値を表します。その他はそれぞれ、ngram のサイズ（3）、値 `m`（フィルターサイズ）、およびハッシュ関数の数 `k` を表します。`k` と `m` はチューニングが必要であり、一意な ngram／トークンの数と、フィルターが真の否定（したがって、ある値がグラニュールに存在しないことを確認できる）を返す確率に基づいて決定されます。これらの値を決定する際には、[これらの関数](/engines/table-engines/mergetree-family/mergetree#bloom-filter) の利用を推奨します。
+ここでのインデックス `ngrambf_v1(3, 10000, 3, 7)` は 4 つのパラメータを取ります。最後のパラメータ（値 7）はシードを表します。その他は、それぞれ ngram サイズ (3)、値 `m`（フィルターサイズ）、およびハッシュ関数の数 `k` (7) を表します。`k` と `m` はチューニングが必要で、ユニークな ngram/トークンの数と、フィルターが真の否定結果を返す（したがって、ある値がグラニュールに存在しないことを確認できる）確率に基づいて決定されます。これらの値を決定する際には、[これらの関数](/engines/table-engines/mergetree-family/mergetree#bloom-filter) を利用することを推奨します。
 
 
 適切にチューニングすれば、ここで得られる高速化は非常に大きくなり得ます。
@@ -1572,16 +1572,16 @@ WHERE Referer LIKE '%ultra%'
 └─────────┘
 
 1 row in set. Elapsed: 0.077 sec. Processed 4.22 million rows, 375.29 MB (54.81 million rows/s., 4.87 GB/s.)
-ピークメモリ使用量: 129.60 KiB.
+Peak memory usage: 129.60 KiB.
 ```
 
-:::note 例のみ
-上記は説明のための例にすぎません。トークンベースの Bloom フィルタを使ってテキスト検索の最適化を図るのではなく、挿入時にログから構造を抽出することを推奨します。ただし、スタックトレースやその他の大きな文字列など、構造がそれほど決定的でないためにテキスト検索が有用となるケースもあります。
+:::note Example only
+上記は例示のみを目的としています。トークンベースのブルームフィルタを使ってテキスト検索を最適化しようとするのではなく、ログ挿入時にログから構造を抽出することを推奨します。ただし、スタックトレースやその他の大きな文字列など、構造があまり決定的でないためにテキスト検索が有用となるケースもあります。
 :::
 
-Bloom フィルタを使用する際の一般的なガイドライン:
+ブルームフィルタを使用する際の一般的なガイドラインは次のとおりです。
 
-Bloom フィルタの目的は [granule](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) をフィルタリングし、列のすべての値を読み込んで線形走査を行う必要をなくすことです。パラメータ `indexes=1` を指定した `EXPLAIN` 句を使用すると、スキップされた granule の数を確認できます。元のテーブル `otel_logs_v2` と、ngram Bloom フィルタを持つテーブル `otel_logs_bloom` に対する以下の応答を確認してください。
+ブルームフィルタの目的は、[granules](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design) をふるいにかけ、列のすべての値を読み込んで線形走査を行う必要がないようにすることです。パラメータ `indexes=1` を指定した `EXPLAIN` 句を使用すると、スキップされた granule の数を確認できます。元のテーブル `otel_logs_v2` と、ngram ブルームフィルタを使用したテーブル `otel_logs_bloom` に対する以下のレスポンスを比較してみてください。
 
 ```sql
 EXPLAIN indexes = 1
@@ -1628,7 +1628,7 @@ WHERE Referer LIKE '%ultra%'
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-ブルームフィルタは、通常はカラム自体よりも小さい場合にのみ高速になります。逆にそれより大きい場合、パフォーマンス向上はほとんど期待できません。次のクエリを使って、フィルタのサイズとカラムのサイズを比較してください。
+ブルームフィルターは、通常はカラム自体よりも小さい場合にのみ高速になります。カラムより大きい場合は、性能向上はほとんど見込めません。次のクエリを使用して、フィルターのサイズとカラムのサイズを比較してください。
 
 ```sql
 SELECT
@@ -1645,7 +1645,7 @@ ORDER BY sum(data_compressed_bytes) DESC
 │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
 └─────────┴─────────────────┴───────────────────┴───────┘
 
-1 row in set. Elapsed: 0.018 sec.
+1行のセット。経過時間: 0.018秒
 
 SELECT
         `table`,
@@ -1660,27 +1660,27 @@ WHERE `table` = 'otel_logs_bloom'
 │ otel&#95;logs&#95;bloom │ 12.03 MiB       │ 12.17 MiB         │
 └─────────────────┴─────────────────┴───────────────────┘
 
-1 行が結果セットに含まれています。経過時間: 0.004 秒。
+1 行がセットに含まれます。経過時間: 0.004 秒。
 
 ```
 
-上記の例では、セカンダリブルームフィルタインデックスのサイズが12MBであることがわかります。これは、カラム自体の圧縮サイズである56MBの約5分の1です。
+上記の例では、セカンダリブルームフィルタインデックスが12MBであることがわかります。これは、カラム自体の圧縮サイズである56MBと比較して、ほぼ5分の1のサイズです。
 
-ブルームフィルタには大幅なチューニングが必要になる場合があります。最適な設定を特定する際に役立つ[こちら](/engines/table-engines/mergetree-family/mergetree#bloom-filter)の注意事項に従うことを推奨します。また、ブルームフィルタは挿入時とマージ時に処理コストが高くなる可能性があります。本番環境にブルームフィルタを追加する前に、挿入パフォーマンスへの影響を評価してください。
+ブルームフィルタには大幅なチューニングが必要になる場合があります。最適な設定を特定するのに役立つ[こちら](/engines/table-engines/mergetree-family/mergetree#bloom-filter)の注意事項に従うことを推奨します。ブルームフィルタは、挿入時とマージ時にコストがかかる場合もあります。本番環境にブルームフィルタを追加する前に、挿入パフォーマンスへの影響を評価してください。
 
 セカンダリスキップインデックスの詳細については、[こちら](/optimize/skipping-indexes#skip-index-functions)を参照してください。
 
 ### マップからの抽出 {#extracting-from-maps}
 
-Map型はOTelスキーマで広く使用されています。この型では、値とキーが同じ型である必要があり、Kubernetesラベルなどのメタデータには十分です。Map型のサブキーをクエリする際には、親カラム全体が読み込まれることに注意してください。マップに多数のキーがある場合、キーが独立したカラムとして存在する場合と比較して、ディスクから読み取る必要があるデータ量が増えるため、クエリパフォーマンスに大きな影響が生じる可能性があります。
+Map型はOTelスキーマで広く使用されています。この型では、値とキーが同じ型である必要があります。これはKubernetesラベルなどのメタデータには十分です。Map型のサブキーをクエリする際には、親カラム全体が読み込まれることに注意してください。マップに多数のキーがある場合、キーがカラムとして存在する場合と比較して、ディスクから読み取る必要があるデータが増えるため、クエリに大きなペナルティが発生する可能性があります。
 
-特定のキーを頻繁にクエリする場合は、それをルートレベルの専用カラムに移動することを検討してください。これは通常、一般的なアクセスパターンに応じてデプロイ後に行われる作業であり、本番環境前に予測することは困難な場合があります。デプロイ後のスキーマ変更方法については、[「スキーマ変更の管理」](/observability/managing-data#managing-schema-changes)を参照してください。
+特定のキーを頻繁にクエリする場合は、そのキーをルートレベルの専用カラムに移動することを検討してください。これは通常、一般的なアクセスパターンに応じてデプロイ後に行われるタスクであり、本番環境前に予測することが困難な場合があります。デプロイ後にスキーマを変更する方法については、[「スキーマ変更の管理」](/observability/managing-data#managing-schema-changes)を参照してください。
 ```
 
 
 ## テーブルサイズと圧縮の測定 {#measuring-table-size--compression}
 
-ClickHouseがオブザーバビリティ用途で使用される主な理由の一つは圧縮機能です。
+ClickHouseがオブザーバビリティ用途で使用される主な理由の一つは、その圧縮機能です。
 
 ストレージコストを大幅に削減するだけでなく、ディスク上のデータ量が少なくなることで、I/Oが減少し、クエリと挿入が高速化されます。I/Oの削減効果は、CPUに対する圧縮アルゴリズムのオーバーヘッドを上回ります。したがって、ClickHouseクエリの高速化を実現する際には、データの圧縮改善を最優先に取り組むべきです。
 

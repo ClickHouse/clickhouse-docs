@@ -3,7 +3,7 @@ description: 'Debian/Ubuntu Linux への ClickHouse のインストール'
 keywords: ['ClickHouse', 'install', 'Docker']
 sidebar_label: 'Docker'
 slug: /install/docker
-title: 'Docker を使って ClickHouse をインストールする'
+title: 'Docker を使用して ClickHouse をインストールする'
 hide_title: true
 doc_type: 'guide'
 ---

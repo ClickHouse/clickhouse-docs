@@ -1,7 +1,7 @@
 ---
 title: 'Java'
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
-description: '通过 Java 连接 ClickHouse 的多种方式'
+description: '通过 Java 连接 ClickHouse 的可选方式'
 slug: /integrations/java
 doc_type: 'reference'
 ---
@@ -11,9 +11,9 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Java 客户端概览
+# Java 客户端总览
 
-- [客户端 0.8+](./client/client.mdx)
+- [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [R2DBC 驱动](./r2dbc.md)
 
@@ -92,7 +92,7 @@ Java 客户端最早开发于 2015 年。随着时间推移,其代码库变得�
 
 ### 功能特性 {#features}
 
-客户端功能特性对比表:
+客户端功能特性对照表:
 
 
 | 名称                              | Client V2 | Client V1 |           备注           |
@@ -113,22 +113,22 @@ Java 客户端最早开发于 2015 年。随着时间推移,其代码库变得�
 | 服务器自动发现             |     ✗     |    ✔     |                              |
 | 日志注释                       |    ✔     |    ✔     |                              |
 | 会话角色                     |    ✔     |    ✔     |                              |
-| SSL 客户端认证         |    ✔     |    ✔     |                              |
+| SSL 客户端身份验证         |    ✔     |    ✔     |                              |
 | 会话时区                  |    ✔     |    ✔     |                              |
 
 JDBC 驱动继承了底层客户端实现的相同特性。其他 JDBC 特性列在其[页面](/integrations/language-clients/java/jdbc)中。
 
 ### 兼容性 {#compatibility}
 
-- 此仓库中的所有项目均已通过 ClickHouse 所有[活跃 LTS 版本](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)的测试。
-- [支持策略](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
-- 我们建议持续升级客户端,以免错过安全修复和新功能改进
-- 如果您在迁移到 v2 API 时遇到问题 - [创建一个 issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=),我们会及时回复!
+- 此仓库中的所有项目都已通过 ClickHouse 所有[活跃 LTS 版本](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)的测试。
+- [Support policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
+- 我们建议持续升级客户端，以免错过安全修复和新改进
+- 如果您在迁移到 v2 API 时遇到问题 - [创建一个 issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)，我们会及时回复！
 
 ### 日志记录 {#logging}
 
-我们的 Java 语言客户端使用 [SLF4J](https://www.slf4j.org/) 进行日志记录。您可以使用任何与 SLF4J 兼容的日志框架,例如 `Logback` 或 `Log4j`。
-例如,如果您使用 Maven,可以将以下依赖项添加到您的 `pom.xml` 文件中:
+我们的 Java 语言客户端使用 [SLF4J](https://www.slf4j.org/) 进行日志记录。您可以使用任何与 SLF4J 兼容的日志框架，例如 `Logback` 或 `Log4j`。
+例如，如果您使用 Maven，可以将以下依赖项添加到您的 `pom.xml` 文件中：
 
 ```xml title="pom.xml"
 <dependencies>
@@ -157,7 +157,7 @@ JDBC 驱动继承了底层客户端实现的相同特性。其他 JDBC 特性列
 
 #### 配置日志记录 {#configuring-logging}
 
-这取决于您使用的日志框架。例如,如果您使用 `Logback`,可以在名为 `logback.xml` 的文件中配置日志记录:
+这取决于您使用的日志框架。例如，如果您使用 `Logback`，可以在名为 `logback.xml` 的文件中配置日志记录：
 
 ```xml title="logback.xml"
 <configuration>

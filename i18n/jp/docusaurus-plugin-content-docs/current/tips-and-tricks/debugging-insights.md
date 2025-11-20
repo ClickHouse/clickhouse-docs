@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /community-wisdom/debugging-insights
-sidebar_label: 'デバッグのヒント'
+sidebar_label: 'デバッグに関する知見'
 doc_type: 'guide'
 keywords: [
   'clickhouse troubleshooting',
@@ -15,16 +15,16 @@ keywords: [
   'debug',
   'solutions'
 ]
-title: 'レッスン - デバッグのヒント'
-description: '遅いクエリ、メモリエラー、接続の問題、設定の問題など、ClickHouse でよく発生する問題に対する代表的な解決策を紹介します。'
+title: 'レッスン - デバッグに関する知見'
+description: '低速なクエリ、メモリエラー、接続の問題、設定の問題など、ClickHouseでよく発生する問題の解決策を紹介します。'
 ---
 
 
 
-# ClickHouse運用：コミュニティデバッグの知見 {#clickhouse-operations-community-debugging-insights}
+# ClickHouseの運用：コミュニティによるデバッグの知見 {#clickhouse-operations-community-debugging-insights}
 
-_このガイドは、コミュニティミートアップから得られた知見をまとめたものの一部です。実際の問題解決事例や知見については、[問題別に参照](./community-wisdom.md)できます。_
-_運用コストの高さにお悩みですか？[コスト最適化](./cost-optimization.md)コミュニティ知見ガイドをご確認ください。_
+_本ガイドは、コミュニティミートアップから得られた知見をまとめたものの一部です。実際の運用における解決策や知見については、[問題別に参照](./community-wisdom.md)することができます。_
+_運用コストの高さにお悩みですか？[コスト最適化](./cost-optimization.md)のコミュニティ知見ガイドをご確認ください。_
 
 
 ## 必須のシステムテーブル {#essential-system-tables}
@@ -55,7 +55,7 @@ ORDER BY absolute_delay DESC;
 
 ### system.replication_queue {#system-replication-queue}
 
-レプリケーションの問題を診断するための詳細情報を提供します。
+レプリケーションの問題を診断するための詳細な情報を提供します。
 
 ```sql
 SELECT database, table, replica_name, position, type, create_time, last_exception
@@ -97,14 +97,14 @@ AWSユーザーは、デフォルトの汎用EBSボリュームには16TBの制�
 
 ### パーツ数過多エラー {#too-many-parts-error}
 
-小規模で頻繁な挿入はパフォーマンス問題を引き起こします。コミュニティでは、毎秒10回を超える挿入レートでは、ClickHouseがパーツを十分な速度でマージできないため、「パーツ数過多」エラーが頻繁に発生することが確認されています。
+小規模で頻繁な挿入はパフォーマンス問題を引き起こします。コミュニティでは、毎秒10回を超える挿入レートが「パーツ数過多」エラーを引き起こすことが多いと確認されています。これはClickHouseがパーツを十分な速度でマージできないためです。
 
 **解決策:**
 
 - 30秒または200MBの閾値を使用してデータをバッチ処理する
-- 自動バッチ処理のために async_insert を有効にする
+- 自動バッチ処理のために`async_insert`を有効にする
 - サーバー側のバッチ処理にはバッファテーブルを使用する
-- 制御されたバッチサイズのために Kafka を設定する
+- 制御されたバッチサイズのためにKafkaを設定する
 
 [公式推奨事項](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous): 1回の挿入あたり最低1,000行、理想的には10,000から100,000行。
 
@@ -112,9 +112,9 @@ AWSユーザーは、デフォルトの汎用EBSボリュームには16TBの制�
 
 任意のタイムスタンプを持つデータを送信するアプリケーションは、パーティションの問題を引き起こします。これにより、非現実的な日付(1998年や2050年など)のデータを含むパーティションが作成され、予期しないストレージ動作が発生します。
 
-### `ALTER` 操作のリスク {#alter-operation-risks}
+### `ALTER`操作のリスク {#alter-operation-risks}
 
-数テラバイト規模のテーブルに対する大規模な `ALTER` 操作は、大量のリソースを消費し、データベースをロックする可能性があります。あるコミュニティの事例では、14TBのデータに対して Integer から Float への変更を行った結果、データベース全体がロックされ、バックアップからの再構築が必要になりました。
+数テラバイト規模のテーブルに対する大規模な`ALTER`操作は、大量のリソースを消費し、データベースをロックする可能性があります。あるコミュニティの事例では、14TBのデータに対してIntegerからFloatへの変更を行った結果、データベース全体がロックされ、バックアップからの再構築が必要になりました。
 
 **高コストなミューテーションの監視:**
 
@@ -131,7 +131,7 @@ WHERE is_done = 0;
 
 ### 外部集約 {#external-aggregation}
 
-メモリ集約的な操作には外部集約を有効にしてください。処理速度は低下しますが、ディスクへのスピルによってメモリ不足によるクラッシュを防ぎます。`max_bytes_before_external_group_by` を使用することで、大規模な `GROUP BY` 操作でのメモリ不足クラッシュを防ぐことができます。この設定の詳細については[こちら](/operations/settings/settings#max_bytes_before_external_group_by)をご覧ください。
+メモリ集約的な操作には外部集約を有効にします。処理速度は低下しますが、ディスクへのスピルによってメモリ不足によるクラッシュを防ぐことができます。`max_bytes_before_external_group_by` を使用することで、大規模な `GROUP BY` 操作でのメモリ不足クラッシュを防ぐことができます。この設定の詳細については[こちら](/operations/settings/settings#max_bytes_before_external_group_by)をご覧ください。
 
 ```sql
 SELECT
@@ -150,11 +150,11 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GBの閾値
 
 **関連ドキュメント**
 
-- [Selecting an insert strategy](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)
+- [挿入戦略の選択](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)
 
 ### 分散テーブルの設定 {#distributed-table-configuration}
 
-デフォルトでは、分散テーブルはシングルスレッドの挿入を使用します。並列処理とシャードへの即座のデータ送信を行うには、`insert_distributed_sync` を有効にしてください。
+デフォルトでは、分散テーブルはシングルスレッドの挿入を使用します。並列処理とシャードへの即座のデータ送信を行うには、`insert_distributed_sync` を有効にします。
 
 分散テーブルを使用する際は、一時データの蓄積を監視してください。
 
@@ -168,7 +168,7 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GBの閾値
 
 **関連ドキュメント**
 
-- [Custom partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key)
+- [カスタムパーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key)
 
 
 ## クイックリファレンス {#quick-reference}

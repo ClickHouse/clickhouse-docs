@@ -17,8 +17,8 @@ File('<path>/<filename>') |
 Disk('<disk_name>', '<path>/') | 
 S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>', '<extra_credentials>') |
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
---- дополнительные параметры
+--- дополнительные настройки
 [SETTINGS ...]
 ```
 
-**Подробнее о каждой команде см. в разделе [&quot;Сводка команд&quot;](/operations/backup/overview/#command-summary).**
+**Дополнительные сведения о каждой команде см. в разделе [&quot;Краткое описание команд&quot;](/operations/backup/overview/#command-summary).**

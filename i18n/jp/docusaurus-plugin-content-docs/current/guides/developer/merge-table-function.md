@@ -1,14 +1,14 @@
 ---
 slug: /guides/developer/merge-table-function
 sidebar_label: 'Merge table function'
-title: 'Merge table function'
+title: 'Merge テーブル関数'
 description: '複数のテーブルを同時にクエリします。'
 doc_type: 'reference'
 keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-[merge テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/merge) を使うと、複数のテーブルに対して並列にクエリできます。
-これは一時的な [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) テーブルを作成し、対象テーブル群の列の和集合を取り、その中から共通の型を決定することで、このテーブルの構造を導出することで実現されます。
+[Merge テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/merge)を使用すると、複数のテーブルを並行してクエリできます。
+この関数は一時的な [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) テーブルを作成し、対象テーブル群の列の和集合を取り、共通の型を導出することで、そのテーブルの構造を決定します。
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -84,7 +84,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 └─────────────┴──────────────────┴─────────────────┴──────────────────┴───────────────────────────┘
 ```
 
-違いを見ていきましょう:
+違いを確認していきましょう:
 
 - 1970年代では、`winner_seed`の型が`Nullable(String)`から`Nullable(UInt8)`に、`score`が`String`から`Array(String)`に変更されています。
 - 1980年代では、`winner_seed`と`loser_seed`が`Nullable(UInt8)`から`Nullable(UInt16)`に変更されています。
@@ -119,8 +119,8 @@ AND loser_seed = 1;
 └───────────────┴─────────────────────────────────┘
 ```
 
-次に、McEnroeがシード3位以下だった試合に絞り込みたいとします。
-これは少し複雑です。なぜなら、`winner_seed`が各テーブルで異なる型を使用しているためです:
+次に、これらの試合をフィルタリングして、McEnroeがシード3位以下だった試合を見つけたいとします。
+これは少し複雑です。なぜなら、`winner_seed`が複数のテーブルで異なる型を使用しているためです:
 
 ```sql
 SELECT loser_name, score, winner_seed
@@ -136,7 +136,7 @@ AND multiIf(
 
 [`variantType`](/docs/sql-reference/functions/other-functions#variantType)関数を使用して各行の`winner_seed`の型を確認し、次に[`variantElement`](/docs/sql-reference/functions/other-functions#variantElement)を使用して基礎となる値を抽出します。
 型が`String`の場合は、数値にキャストしてから比較を行います。
-クエリの実行結果は以下の通りです:
+クエリの実行結果を以下に示します:
 
 ```text
 ┌─loser_name────┬─score─────────┬─winner_seed─┐
@@ -148,10 +148,10 @@ AND multiIf(
 ```
 
 
-## mergeを使用する際に行がどのテーブルから取得されるかを確認する方法 {#which-table-merge}
+## mergeを使用する際、行はどのテーブルから取得されるか? {#which-table-merge}
 
-行がどのテーブルから取得されるかを知りたい場合はどうすればよいでしょうか?
-以下のクエリに示すように、`_table`仮想カラムを使用することで確認できます:
+行がどのテーブルから取得されたかを知りたい場合はどうすればよいでしょうか?
+以下のクエリに示すように、`_table`仮想カラムを使用することでこれを実現できます:
 
 ```sql
 SELECT _table, loser_name, score, winner_seed

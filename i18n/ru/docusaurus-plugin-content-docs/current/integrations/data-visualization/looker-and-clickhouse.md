@@ -2,7 +2,7 @@
 sidebar_label: 'Looker'
 slug: /integrations/looker
 keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
-description: 'Looker — это корпоративная платформа для BI, дата-приложений и встроенной аналитики, которая помогает изучать данные и делиться аналитическими выводами в режиме реального времени.'
+description: 'Looker — это корпоративная платформа для BI, аналитических приложений и встроенной аналитики, которая помогает исследовать данные и делиться инсайтами в режиме реального времени.'
 title: 'Looker'
 doc_type: 'guide'
 integration:
@@ -23,7 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker может подключаться к ClickHouse Cloud или локальному развертыванию через официальный источник данных ClickHouse.
+Looker может подключаться к ClickHouse Cloud или к локальному развертыванию через официальный источник данных ClickHouse.
 
 
 
@@ -74,7 +74,7 @@ Looker может подключаться к ClickHouse Cloud или локал
 />
 <br />
 
-Теперь вы можете подключить источник данных ClickHouse к вашему проекту Looker.
+Теперь вы сможете подключить источник данных ClickHouse к проекту Looker.
 
 
 ## 3. Известные ограничения {#3-known-limitations}
@@ -90,7 +90,7 @@ Looker может подключаться к ClickHouse Cloud или локал
    - JSON
    - Nested
    - FixedString
-   - Геопространственные типы
+   - Геотипы
      - MultiPolygon
      - Polygon
      - Point

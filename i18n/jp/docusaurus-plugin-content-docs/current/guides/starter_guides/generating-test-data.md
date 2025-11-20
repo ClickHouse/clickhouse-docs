@@ -2,7 +2,7 @@
 sidebar_label: 'ランダムなテストデータの生成'
 title: 'ClickHouse でランダムなテストデータを生成する'
 slug: /guides/generating-test-data
-description: 'ClickHouse でランダムなテストデータを生成する方法を学ぶ'
+description: 'ClickHouse におけるランダムなテストデータの生成方法を学ぶ'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['random data', 'test data']
@@ -12,10 +12,10 @@ keywords: ['random data', 'test data']
 
 # ClickHouse でランダムなテストデータを生成する
 
-ランダムデータの生成は、新しいユースケースのテストや実装のベンチマークに役立ちます。
-ClickHouse には [ランダムデータを生成するための多様な関数](/sql-reference/functions/random-functions) が用意されており、多くの場合、外部のデータジェネレーターは不要です。
+ランダムなデータの生成は、新しいユースケースの検証や実装のベンチマークに役立ちます。
+ClickHouse には、ランダムデータを生成するための[多様な関数群](/sql-reference/functions/random-functions)が用意されており、多くの場合、外部のデータジェネレーターを利用する必要がありません。
 
-このガイドでは、ランダム性に対する要件が異なる場合に、ClickHouse でランダムなデータセットを生成する方法のいくつかの例を紹介します。
+このガイドでは、求められるランダム性の要件に応じて、ClickHouse でランダムなデータセットを生成する方法をいくつかの例を通して紹介します。
 
 
 
@@ -50,7 +50,7 @@ FROM numbers(1000000);
 
 ## 指数分布 {#exponential-distribution}
 
-**ユースケース**: 大半の値が低く、一部の値が高い購入金額をシミュレートします。
+**ユースケース**: ほとんどの値が低く、一部が高い購入金額をシミュレートします。
 
 ```sql
 CREATE TABLE purchases (
@@ -68,8 +68,8 @@ SELECT
 FROM numbers(500000);
 ```
 
-- 直近期間における均一なタイムスタンプ
-- `randExponential(1/10)` — 大半の合計値は0に近く、最小値15でオフセット ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4])
+- 最近の期間における均一なタイムスタンプ
+- `randExponential(1/10)` — ほとんどの合計値は0に近く、最小値15でオフセット ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4])
 
 ---
 
@@ -100,7 +100,7 @@ FROM numbers(200000);
 
 ## 時間変動する正規分布 {#time-varying-normal-distribution}
 
-**ユースケース**: 時間とともに変動するシステムメトリクス（例：CPU使用率）をエミュレートします。
+**ユースケース**: 時間とともに変動するシステムメトリクス（例: CPU使用率）をエミュレートします。
 
 ```sql
 CREATE TABLE cpu_metrics (
@@ -146,7 +146,7 @@ SELECT
 FROM numbers(20000);
 ```
 
-- 配列の長さは1～3の範囲でランダム
+- 配列の長さは1〜3の範囲でランダム
 - 各興味に対してユーザーごとに3つのスコア
 
 :::tip
@@ -180,7 +180,7 @@ SELECT generateRandomStructure(3, 42);
 c1 String, c2 Array(Nullable(Int32)), c3 Tuple(UInt8, Date)
 ```
 
-それでは、実際のテーブルを作成してランダムデータで埋めてみましょう:
+それでは、実際のテーブルを作成してランダムなデータで埋めてみましょう:
 
 ```sql
 CREATE TABLE my_test_table
@@ -247,7 +247,7 @@ DESCRIBE TABLE fully_random_table;
    └──────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-生成されたデータの一例として、最初の行を確認します：
+生成されたデータのサンプルとして最初の行を確認します:
 
 ```sql
 SELECT * FROM fully_random_table LIMIT 1 FORMAT vertical;

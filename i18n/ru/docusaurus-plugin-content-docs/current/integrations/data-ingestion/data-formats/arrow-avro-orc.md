@@ -3,7 +3,7 @@ sidebar_label: 'Avro, Arrow и ORC'
 sidebar_position: 5
 slug: /integrations/data-formats/arrow-avro-orc
 title: 'Работа с данными Avro, Arrow и ORC в ClickHouse'
-description: 'Страница с описанием работы с данными Avro, Arrow и ORC в ClickHouse'
+description: 'Страница о работе с данными Avro, Arrow и ORC в ClickHouse'
 keywords: ['Apache Avro', 'Apache Arrow', 'ORC format', 'columnar formats', 'big data formats']
 doc_type: 'guide'
 ---
@@ -12,7 +12,7 @@ doc_type: 'guide'
 
 # Работа с данными Avro, Arrow и ORC в ClickHouse
 
-Apache разработал несколько форматов данных, активно используемых в аналитических средах, включая популярные [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/) и [Orc](https://orc.apache.org/). ClickHouse поддерживает импорт и экспорт данных в любом из этих форматов.
+Apache разработал несколько форматов данных, активно используемых в аналитических системах, включая популярные [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/) и [ORC](https://orc.apache.org/). ClickHouse поддерживает импорт и экспорт данных в любом из этих форматов.
 
 
 
@@ -95,7 +95,7 @@ kafka_format = 'AvroConfluent';
 
 ## Работа с форматом Arrow {#working-with-arrow-format}
 
-Ещё один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта данных. Для импорта данных из [файла Arrow](assets/data.arrow) используется формат [Arrow](/interfaces/formats/Arrow):
+Еще один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта. Для импорта данных из [файла Arrow](assets/data.arrow) используется формат [Arrow](/interfaces/formats/Arrow):
 
 ```sql
 INSERT INTO sometable
@@ -111,13 +111,13 @@ INTO OUTFILE 'export.arrow'
 FORMAT Arrow
 ```
 
-Также ознакомьтесь с разделом [соответствие типов данных](/interfaces/formats/Arrow#data-types-matching), чтобы узнать, требуется ли ручное преобразование типов.
+Также ознакомьтесь с разделом [соответствие типов данных](/interfaces/formats/Arrow#data-types-matching), чтобы узнать, требуется ли ручное преобразование каких-либо типов.
 
 ### Потоковая передача данных Arrow {#arrow-data-streaming}
 
-Формат [ArrowStream](/interfaces/formats/ArrowStream) используется для работы с потоковой передачей Arrow (применяется для обработки данных в памяти). ClickHouse поддерживает чтение и запись потоков Arrow.
+Формат [ArrowStream](/interfaces/formats/ArrowStream) используется для работы с потоковой передачей Arrow (применяется для обработки данных в памяти). ClickHouse может читать и записывать потоки Arrow.
 
-Чтобы продемонстрировать, как ClickHouse передаёт данные Arrow в потоковом режиме, направим их в следующий python-скрипт (он читает входной поток в формате потоковой передачи Arrow и выводит результат в виде таблицы Pandas):
+Чтобы продемонстрировать, как ClickHouse может передавать данные Arrow в потоковом режиме, направим их в следующий python-скрипт (он читает входной поток в формате потоковой передачи Arrow и выводит результат в виде таблицы Pandas):
 
 ```python
 import sys, pyarrow as pa
@@ -150,7 +150,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 
 ## Импорт и экспорт данных ORC {#importing-and-exporting-orc-data}
 
-Формат [Apache ORC](https://orc.apache.org/) — это колоночный формат хранения данных, который обычно используется в Hadoop. ClickHouse поддерживает импорт и экспорт [данных ORC](assets/data.orc) с помощью [формата ORC](/interfaces/formats/ORC):
+[Apache ORC](https://orc.apache.org/) — это колоночный формат хранения данных, обычно используемый в Hadoop. ClickHouse поддерживает импорт и экспорт [данных Orc](assets/data.orc) с использованием [формата ORC](/interfaces/formats/ORC):
 
 ```sql
 SELECT *
@@ -163,7 +163,7 @@ FROM INFILE 'data.orc'
 FORMAT ORC;
 ```
 
-Также см. [соответствие типов данных](/interfaces/formats/ORC) и [дополнительные настройки](/interfaces/formats/Parquet#format-settings) для настройки экспорта и импорта.
+Также ознакомьтесь с [соответствием типов данных](/interfaces/formats/ORC) и [дополнительными настройками](/interfaces/formats/Parquet#format-settings) для настройки экспорта и импорта.
 
 
 ## Дополнительные материалы {#further-reading}

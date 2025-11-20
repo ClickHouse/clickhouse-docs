@@ -20,7 +20,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 <details>
   <summary>创建 S3 存储桶和 IAM 用户</summary>
 
-本文介绍如何配置 AWS IAM 用户、创建 S3 存储桶以及配置 ClickHouse 使用该存储桶作为 S3 磁盘的基本步骤。您应与安全团队协作确定所需的权限,本文提供的配置可作为参考起点。
+本文介绍如何配置 AWS IAM 用户、创建 S3 存储桶以及配置 ClickHouse 使用该存储桶作为 S3 磁盘的基本步骤。您应当与安全团队协作确定所需的权限,本文提供的内容可作为起点参考。
 
 ### 创建 AWS IAM 用户 {#create-an-aws-iam-user}
 
@@ -28,7 +28,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 1.  登录 AWS IAM 管理控制台。
 
-2.  在"用户"中,选择**添加用户**
+2.  在"用户"中,选择 **添加用户**
 
 <Image
   size='md'
@@ -38,7 +38,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-3. 输入用户名,将凭证类型设置为**访问密钥 - 编程访问**,然后选择**下一步:权限**
+3. 输入用户名并将凭证类型设置为 **访问密钥 - 编程访问**,然后选择 **下一步:权限**
 
 <Image
   size='md'
@@ -48,7 +48,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-4. 不要将用户添加到任何组,选择**下一步:标签**
+4. 不要将用户添加到任何组,选择 **下一步:标签**
 
 <Image
   size='md'
@@ -58,7 +58,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-5. 除非需要添加标签,否则选择**下一步:审核**
+5. 除非需要添加标签,否则选择 **下一步:审核**
 
 <Image
   size='md'
@@ -68,10 +68,10 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-6. 选择**创建用户**
+6. 选择 **创建用户**
 
    :::note
-   可以忽略提示用户无权限的警告消息,将在下一节中为该用户授予存储桶权限
+   可以忽略提示用户没有权限的警告消息,将在下一节中为该用户授予存储桶权限
    :::
 
 <Image
@@ -82,9 +82,9 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   force
 />
 
-7. 用户已创建完成,点击**显示**并复制访问密钥和私有密钥。
+7. 用户现已创建,点击 **显示** 并复制访问密钥和私有密钥。
    :::note
-   请将密钥保存到其他位置,这是获取私有访问密钥的唯一机会。
+   请将密钥保存到其他位置,这是私有访问密钥唯一可获取的时机。
    :::
 
 <Image
@@ -117,7 +117,7 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 ### 创建 S3 存储桶 {#create-an-s3-bucket}
 
-1. 在 S3 存储桶部分,选择**创建存储桶**
+1. 在 S3 存储桶部分,选择 **创建存储桶**
 
 <Image
   size='md'
@@ -129,9 +129,9 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 2. 输入存储桶名称,其他选项保持默认值
    :::note
-   存储桶名称必须在整个 AWS 中全局唯一,而不仅仅是在组织内唯一,否则会报错。
+   存储桶名称必须在整个 AWS 中唯一,而不仅仅是在组织内唯一,否则将报错。
    :::
-3. 保持`阻止所有公共访问`处于启用状态,无需公共访问权限。
+3. 保持 `阻止所有公共访问` 启用状态,无需公共访问权限。
 
 
 <Image

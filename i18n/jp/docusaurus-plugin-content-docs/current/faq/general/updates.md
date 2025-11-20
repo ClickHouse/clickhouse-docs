@@ -1,21 +1,21 @@
 ---
-title: 'ClickHouse はリアルタイム更新をサポートしていますか?'
+title: 'ClickHouse はリアルタイム更新をサポートしていますか？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/updates
-description: 'ClickHouse は軽量なリアルタイム更新をサポートします'
+description: 'ClickHouse は軽量なリアルタイム更新をサポートしています'
 doc_type: 'reference'
 keywords: ['updates', 'real-time']
 ---
 
 # ClickHouse はリアルタイム更新をサポートしていますか？
 
-ClickHouse は `UPDATE` ステートメントをサポートしており、`INSERT` と同等の速度でリアルタイム更新を実行できます。
+ClickHouse は `UPDATE` 文をサポートしており、`INSERT` と同等の速度でリアルタイム更新を実行できます。
 
-これは、[patch parts データ構造](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates#stage-3-patch-parts--updates-the-clickhouse-way) によって実現されています。これにより、`SELECT` のパフォーマンスに大きな影響を与えることなく、高速に変更を適用できます。
+これは、[patch parts データ構造](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates#stage-3-patch-parts--updates-the-clickhouse-way) により、`SELECT` のパフォーマンスに大きな影響を与えることなく、変更を高速に適用できるためです。
 
-さらに、MVCC (multi-version concurrency control) とスナップショット分離により、更新は ACID 特性を満たします。
+さらに、MVCC（multi-version concurrency control、マルチバージョン並行実行制御）とスナップショット分離により、更新は ACID 特性を満たします。
 
 :::info
-Lightweight updates は、ClickHouse バージョン 25.7 で初めて導入されました。
+軽量な更新は、ClickHouse バージョン 25.7 で初めて導入されました。
 :::

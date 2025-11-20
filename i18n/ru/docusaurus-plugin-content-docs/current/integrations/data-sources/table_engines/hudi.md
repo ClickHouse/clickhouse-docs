@@ -3,7 +3,7 @@ slug: /integrations/hudi
 sidebar_label: 'Hudi'
 title: 'Hudi'
 hide_title: true
-description: 'Страница, описывающая движок таблицы Hudi'
+description: 'Страница, описывающая табличный движок Hudi'
 doc_type: 'reference'
 keywords: ['hudi table engine', 'apache hudi', 'data lake integration']
 ---

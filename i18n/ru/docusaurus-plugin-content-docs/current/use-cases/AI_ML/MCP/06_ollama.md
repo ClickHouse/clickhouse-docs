@@ -4,7 +4,7 @@ sidebar_label: 'Интеграция Ollama'
 title: 'Настройка сервера ClickHouse MCP с Ollama'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве описывается, как настроить Ollama с сервером ClickHouse MCP.'
+description: 'В этом руководстве описано, как настроить Ollama с сервером ClickHouse MCP.'
 keywords: ['AI', 'Ollama', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -32,7 +32,7 @@ Ollama — это библиотека для запуска больших яз
 После запуска Ollama автоматически запустит локальный сервер в фоновом режиме, который можно использовать для работы с моделями.
 Также вы можете запустить сервер вручную, выполнив команду `ollama serve`.
 
-После установки вы можете загрузить модель на свой компьютер следующим образом:
+После установки вы можете загрузить модель на ваш компьютер следующим образом:
 
 ```bash
 ollama pull qwen3:8b
@@ -99,7 +99,7 @@ ollama show qwen3
 На момент написания (июль 2025 года) нативной функциональности для использования Ollama с MCP-серверами не существует.
 Однако можно использовать [MCPHost](https://github.com/mark3labs/mcphost) для запуска моделей Ollama с MCP-серверами.
 
-MCPHost — это приложение на Go, поэтому необходимо убедиться, что на вашей машине [установлен Go](https://go.dev/doc/install).
+MCPHost — это приложение на Go, поэтому необходимо убедиться, что на вашем компьютере [установлен Go](https://go.dev/doc/install).
 Затем можно установить MCPHost, выполнив следующую команду:
 
 ```bash
@@ -112,7 +112,7 @@ go install github.com/mark3labs/mcphost@latest
 ## Настройка ClickHouse MCP Server {#configure-clickhouse-mcp-server}
 
 MCP-серверы можно настроить с помощью MCPHost в файлах YAML или JSON.
-MCPHost ищет конфигурационные файлы в домашнем каталоге в следующем порядке:
+MCPHost будет искать конфигурационные файлы в домашнем каталоге в следующем порядке:
 
 1. `.mcphost.yml` или `.mcphost.json` (рекомендуется)
 2. `.mcp.yml` или `.mcp.json` (для обратной совместимости)
@@ -161,7 +161,7 @@ export CLICKHOUSE_PASSWORD=""
 
 ## Запуск MCPHost {#running-mcphost}
 
-После настройки MCP-сервера ClickHouse вы можете запустить MCPHost, выполнив следующую команду:
+После настройки сервера ClickHouse MCP вы можете запустить MCPHost, выполнив следующую команду:
 
 ```bash
 mcphost --model ollama:qwen3
@@ -198,7 +198,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
   Enter your prompt (Type /help for commands, Ctrl+C to quit, ESC to cancel generation)
 ```
 
-Для вывода списка MCP-серверов можно использовать команду `/servers`:
+Для вывода списка серверов MCP можно использовать команду `/servers`:
 
 ```text
   ┃                                                                                      ┃

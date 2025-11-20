@@ -24,16 +24,16 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-本节提供了有关设置 dbt 和 ClickHouse 适配器的指南，以及一个使用公开 IMDB 数据集在 ClickHouse 中使用 dbt 的示例。该示例涵盖以下步骤：
+本节提供了有关设置 dbt 和 ClickHouse 适配器的指南，以及一个使用公开可用的 IMDB 数据集在 ClickHouse 中使用 dbt 的示例。该示例涵盖以下步骤：
 
-1. 创建一个 dbt 项目并设置 ClickHouse 适配器。
+1. 创建 dbt 项目并配置 ClickHouse 适配器。
 2. 定义模型。
 3. 更新模型。
 4. 创建增量模型。
 5. 创建快照模型。
 6. 使用物化视图。
 
-这些指南旨在与其余[文档](/integrations/dbt)以及[功能与配置](/integrations/dbt/features-and-configurations)配合使用。
+这些指南旨在与其余[文档](/integrations/dbt)以及[功能和配置](/integrations/dbt/features-and-configurations)配合使用。
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
@@ -43,11 +43,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 按照 [dbt 和 ClickHouse 适配器的设置](/integrations/dbt) 部分的说明准备您的环境。
 
-**重要提示:以下内容已在 Python 3.9 下测试通过。**
+**重要提示:以下内容已在 Python 3.9 环境下测试通过。**
 
 ### 准备 ClickHouse {#prepare-clickhouse}
 
-dbt 在对高度关联的数据进行建模时表现出色。为了演示,我们提供了一个小型 IMDB 数据集,其关系模式如下所示。该数据集来源于[关系数据集仓库](https://relational.fit.cvut.cz/dataset/IMDb)。相比 dbt 常用的模式,这个数据集较为简单,但它是一个易于管理的示例:
+dbt 在对高度关系型数据进行建模时表现出色。为了演示,我们提供了一个小型 IMDB 数据集,其关系模式如下所示。该数据集来源于[关系数据集仓库](https://relational.fit.cvut.cz/dataset/IMDb)。相对于 dbt 常用的模式,这个数据集较为简单,但它是一个易于管理的示例:
 
 <Image img={dbt_01} size='lg' alt='IMDB 表结构' />
 
@@ -103,10 +103,10 @@ CREATE TABLE imdb.roles
 ```
 
 :::note
-表 `roles` 的 `created_at` 列默认值为 `now()`。我们稍后将使用该列来识别模型的增量更新 - 请参阅[增量模型](#creating-an-incremental-materialization)。
+表 `roles` 中的 `created_at` 列默认值为 `now()`。我们稍后将使用此列来识别模型的增量更新 - 请参阅[增量模型](#creating-an-incremental-materialization)。
 :::
 
-我们使用 `s3` 函数从公共端点读取源数据并插入数据。运行以下命令填充表:
+我们使用 `s3` 函数从公共端点读取源数据并插入数据。运行以下命令来填充表:
 
 ```sql
 INSERT INTO imdb.actors
@@ -140,7 +140,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/imdb/imdb_ijs
 'TSVWithNames');
 ```
 
-这些命令的执行时间可能因您的带宽而异,但每个命令通常只需几秒钟即可完成。执行以下查询来计算每个演员的汇总信息,按电影出演次数排序,并确认数据已成功加载:
+这些命令的执行时间可能因您的带宽而异,但每个命令应该只需要几秒钟即可完成。执行以下查询来计算每个演员的汇总信息(按电影出演次数排序),并确认数据已成功加载:
 
 
 ```sql
@@ -171,7 +171,7 @@ ORDER BY num_movies DESC
 LIMIT 5;
 ```
 
-响应应如下所示：
+响应应如下：
 
 ```response
 +------+------------+----------+------------------+-------------+--------------+-------------------+
@@ -185,12 +185,12 @@ LIMIT 5;
 +------+------------+----------+------------------+-------------+--------------+-------------------+
 ```
 
-在后续的指南中，我们会将此查询转换为一个模型——在 ClickHouse 中将其物化为 dbt 视图和表。
+在后续指南中，我们会将此查询转换为一个模型——在 ClickHouse 中将其物化为一个 dbt 视图和一个表。
 
 
 ## 连接到 ClickHouse {#connecting-to-clickhouse}
 
-1. 创建一个 dbt 项目。在本例中,我们以 `imdb` 数据源命名该项目。当出现提示时,选择 `clickhouse` 作为数据库源。
+1. 创建一个 dbt 项目。在本例中,我们以 `imdb` 数据源命名该项目。出现提示时,选择 `clickhouse` 作为数据库源。
 
    ```bash
    clickhouse-user@clickhouse:~$ dbt init imdb
@@ -220,7 +220,7 @@ LIMIT 5;
 
 3. 此时,您需要选择一个文本编辑器。在下面的示例中,我们使用流行的 VS Code。打开 IMDB 目录后,您应该会看到一系列 yml 和 sql 文件:
 
-   <Image img={dbt_02} size='lg' alt='新建 dbt 项目' />
+   <Image img={dbt_02} size='lg' alt='新的 dbt 项目' />
 
 4. 更新 `dbt_project.yml` 文件以指定我们的第一个模型 - `actor_summary`,并将 profile 设置为 `clickhouse_imdb`。
 
@@ -244,9 +244,9 @@ LIMIT 5;
          secure: False
    ```
 
-   注意需要修改用户名和密码。其他可用设置记录在[此处](https://github.com/silentsokolov/dbt-clickhouse#example-profile)。
+   请注意需要修改用户名和密码。其他可用设置请参阅[此处](https://github.com/silentsokolov/dbt-clickhouse#example-profile)的文档。
 
-6. 从 IMDB 目录中,执行 `dbt debug` 命令以确认 dbt 是否能够连接到 ClickHouse。
+6. 在 IMDB 目录中,执行 `dbt debug` 命令以确认 dbt 是否能够连接到 ClickHouse。
 
    ```bash
    clickhouse-user@clickhouse:~/imdb$ dbt debug
@@ -355,7 +355,7 @@ LIMIT 5;
    from actor_summary
    ```
 
-   注意我们在最终的 actor_summary 中包含了 `updated_at` 列。我们稍后会将其用于增量物化。
+   注意我们在最终的 actor_summary 中包含了 `updated_at` 列。我们稍后将其用于增量物化。
 
 4. 从 `imdb` 目录执行命令 `dbt run`。
 
@@ -377,7 +377,7 @@ LIMIT 5;
     15:05:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 ```
 
-5. 根据我们的配置，dbt 会按要求在 ClickHouse 中将该 model 表现为一个 view。现在我们可以直接查询这个 view。这个 view 会被创建在 `imdb_dbt` 数据库中——这一点由 `clickhouse_imdb` 配置档下文件 `~/.dbt/profiles.yml` 中的 schema 参数决定。
+5. 按照要求，dbt 会在 ClickHouse 中将该模型创建为一个视图。现在我们可以直接查询这个视图。该视图会被创建在 `imdb_dbt` 数据库中——这是由 `~/.dbt/profiles.yml` 文件中 `clickhouse_imdb` 配置下的 schema 参数决定的。
 
    ```sql
    SHOW DATABASES;
@@ -396,7 +396,7 @@ LIMIT 5;
    +------------------+
    ```
 
-   查询这个 view，就可以用更简洁的语法复现之前查询的结果：
+   查询该视图时，我们可以用更简单的语法复现之前查询的结果：
 
    ```sql
    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
@@ -417,7 +417,7 @@ LIMIT 5;
 
 ## 创建表物化 {#creating-a-table-materialization}
 
-在前面的示例中,我们的模型被物化为视图。虽然这对某些查询可能提供足够的性能,但更复杂的 SELECT 语句或频繁执行的查询更适合物化为表。这种物化方式对于将被 BI 工具查询的模型很有用,可以确保用户获得更快的体验。这实际上会将查询结果存储为新表,并带来相应的存储开销 - 实际上执行的是 `INSERT TO SELECT` 操作。请注意,该表每次都会被重建,即它不是增量更新的。因此,大型结果集可能导致较长的执行时间 - 请参阅 [dbt 限制](/integrations/dbt#limitations)。
+在前面的示例中,我们的模型被物化为视图。虽然这对某些查询可能提供足够的性能,但更复杂的 SELECT 语句或频繁执行的查询最好物化为表。这种物化方式对于将被 BI 工具查询的模型很有用,可以确保用户获得更快的体验。这实际上会将查询结果存储为新表,并带来相应的存储开销 - 实际上执行的是 `INSERT TO SELECT` 操作。请注意,该表每次都会被重建,即它不是增量更新的。因此,大型结果集可能导致较长的执行时间 - 请参阅 [dbt 限制](/integrations/dbt#limitations)。
 
 1. 修改文件 `actors_summary.sql`,将 `materialized` 参数设置为 `table`。注意 `ORDER BY` 的定义方式,以及我们使用了 `MergeTree` 表引擎:
 
@@ -444,7 +444,7 @@ LIMIT 5;
    15:13:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
-3. 确认表 `imdb_dbt.actor_summary` 已创建:
+3. 确认表 `imdb_dbt.actor_summary` 的创建:
 
    ```sql
    SHOW CREATE TABLE imdb_dbt.actor_summary;
@@ -488,7 +488,7 @@ LIMIT 5;
    ```
 
 
-你可以随时对该模型运行其他查询。例如：哪些演员在出场超过 5 次的电影中拥有评分最高的作品？
+你可以继续针对该模型执行其他查询。例如：哪些演员在出场次数超过 5 次的电影中拥有评分最高的作品？
 
 ```sql
 SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
@@ -497,7 +497,7 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
 
 ## 创建增量物化 {#creating-an-incremental-materialization}
 
-前面的示例创建了一个表来物化模型。该表将在每次 dbt 执行时重新构建。对于较大的结果集或复杂的转换,这可能不可行且成本极高。为了应对这一挑战并减少构建时间,dbt 提供了增量物化功能。这允许 dbt 自上次执行以来向表中插入或更新记录,使其适用于事件类型的数据。在底层实现中,会创建一个包含所有更新记录的临时表,然后将所有未变更的记录以及更新的记录插入到新的目标表中。这导致对于大型结果集存在与表模型类似的[限制](/integrations/dbt#limitations)。
+前面的示例创建了一个表来物化模型。该表将在每次 dbt 执行时重新构建。对于较大的结果集或复杂的转换,这可能不可行且成本极高。为了应对这一挑战并减少构建时间,dbt 提供了增量物化功能。这允许 dbt 自上次执行以来向表中插入或更新记录,使其适用于事件类型的数据。在底层实现中,会创建一个包含所有更新记录的临时表,然后将所有未修改的记录以及更新的记录插入到新的目标表中。这导致对于大型结果集存在与表模型类似的[限制](/integrations/dbt#limitations)。
 
 为了克服大型数据集的这些限制,适配器支持 'inserts_only' 模式,在该模式下所有更新都直接插入到目标表中,而无需创建临时表(下文将详细介绍)。
 
@@ -542,13 +542,13 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
 
     {% if is_incremental() %}
 
-    -- this filter will only be applied on an incremental run
+    -- 此过滤器仅在增量运行时生效
     where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
     {% endif %}
 ```
 
-请注意，我们的模型只会根据 `roles` 和 `actors` 表的更新和新增做出响应。若希望对所有表的变化都作出响应，建议用户将此模型拆分为多个子模型——每个子模型都有自身的增量条件。随后可以相互引用并关联这些模型。有关模型之间交叉引用的更多详情参见[此处](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)。
+请注意，我们的模型只会对 `roles` 和 `actors` 表的更新和新增作出响应。若要对所有表作出响应，建议用户将该模型拆分为多个子模型——每个子模型都有各自的增量条件。这些模型随后可以互相引用并关联。有关模型交叉引用的更多详情，请参见[此处](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)。
 
 2. 执行一次 `dbt run` 并确认生成表的结果：
 
@@ -586,7 +586,7 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     +------+------------+----------+------------------+------+---------+-------------------+
 ```
 
-3. 现在我们将向模型中添加数据，以演示增量更新。将演员 “Clicky McClickHouse” 添加到 `actors` 表中：
+3. 现在我们向模型中添加数据，以演示一次增量更新。将我们的演员 “Clicky McClickHouse” 添加到 `actors` 表中：
 
    ```sql
    INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -601,7 +601,7 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
    LIMIT 910 OFFSET 10000;
    ```
 
-5. 直接查询底层源表并绕过所有 dbt 模型，确认他确实已经成为出场次数最多的演员：
+5. 通过直接查询底层源表并绕过所有 dbt 模型，确认他现在确实是出场次数最多的演员：
 
    ```sql
    SELECT id,
@@ -675,7 +675,7 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
 
 ### 内部机制 {#internals}
 
-我们可以通过查询 ClickHouse 的查询日志来识别执行上述增量更新的语句。
+我们可以通过查询 ClickHouse 的查询日志来识别执行上述增量更新时所执行的语句。
 
 ```sql
 SELECT event_time, query  FROM system.query_log WHERE type='QueryStart' AND query LIKE '%dbt%'
@@ -685,7 +685,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 根据实际执行时间段调整上述查询。我们将结果检查留给用户,但在此重点说明适配器执行增量更新所使用的一般策略:
 
 1. 适配器创建一个临时表 `actor_sumary__dbt_tmp`。已更改的行会流式传输到此表中。
-2. 创建一个新表 `actor_summary_new`。旧表中的行依次从旧表流式传输到新表,同时检查以确保行 ID 不存在于临时表中。这有效地处理了更新和重复项。
+2. 创建一个新表 `actor_summary_new`。旧表中的行依次从旧表流式传输到新表,同时检查以确保行 ID 不存在于临时表中。这样可以有效地处理更新和重复项。
 3. 临时表中的结果流式传输到新的 `actor_summary` 表中:
 4. 最后,通过 `EXCHANGE TABLES` 语句将新表与旧版本进行原子交换。旧表和临时表随后被删除。
 
@@ -697,8 +697,8 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 ### 追加策略(仅插入模式) {#append-strategy-inserts-only-mode}
 
-为了克服增量模型中大型数据集的限制,适配器使用 dbt 配置参数 `incremental_strategy`。可以将其设置为 `append` 值。设置后,更新的行会直接插入到目标表(即 `imdb_dbt.actor_summary`)中,不会创建临时表。
-注意:仅追加模式要求您的数据是不可变的,或者可以接受重复项。如果您需要支持行更改的增量表模型,请不要使用此模式!
+为了克服增量模型中大型数据集的限制,适配器使用 dbt 配置参数 `incremental_strategy`。可以将其设置为 `append` 值。设置后,更新的行将直接插入到目标表(即 `imdb_dbt.actor_summary`)中,不会创建临时表。
+注意:仅追加模式要求您的数据是不可变的,或者可以接受重复项。如果您需要支持修改行的增量表模型,请不要使用此模式!
 
 为了说明此模式,我们将添加另一个新演员,并使用 `incremental_strategy='append'` 重新执行 dbt run。
 
@@ -728,19 +728,19 @@ LIMIT 920 OFFSET 10000;
 
    ```response
    clickhouse-user@clickhouse:~/imdb$ dbt run
-   16:12:16  使用 dbt=1.1.0 运行
-   16:12:16  发现 1 个模型、0 个测试、1 个快照、0 个分析、186 个宏、0 个操作、0 个种子文件、6 个源、0 个暴露、0 个指标
+   16:12:16  Running with dbt=1.1.0
+   16:12:16  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 186 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
    16:12:16
-   16:12:17  并发数:1 个线程(目标='dev')
+   16:12:17  Concurrency: 1 threads (target='dev')
    16:12:17
-   16:12:17  1/1 开始增量模型 imdb_dbt.actor_summary........................... [运行中]
-   16:12:24  1/1 成功创建增量模型 imdb_dbt.actor_summary...................... [完成,耗时 0.17 秒]
+   16:12:17  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+   16:12:24  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 0.17s]
    16:12:24
-   16:12:24  完成运行 1 个增量模型,耗时 0.19 秒。
+   16:12:24  Finished running 1 incremental model in 0.19s.
    16:12:24
-   16:12:24  成功完成
+   16:12:24  Completed successfully
    16:12:24
-   16:12:24  完成。通过=1 警告=0 错误=0 跳过=0 总计=1
+   16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
    ```sql
@@ -757,9 +757,9 @@ LIMIT 920 OFFSET 10000;
    +------+-------------------+----------+------------------+------+---------+-------------------+
    ```
 
-注意与插入 "Clicky" 相比,这次增量操作的速度快了多少。
+注意此次增量运行相比插入 "Clicky" 时的速度提升。
 
-再次检查 query_log 表可以看出这两次增量运行之间的差异:
+再次检查 query_log 表可以看出两次增量运行之间的差异:
 
 ```sql
 INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
@@ -795,14 +795,14 @@ FROM actor_summary
 WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
 ```
 
-在此次运行中,只有新行被直接添加到 `imdb_dbt.actor_summary` 表,不涉及表的创建。
+在此次运行中,仅将新行直接添加到 `imdb_dbt.actor_summary` 表,无需创建表。
 
-### 删除并插入模式(实验性) {#deleteinsert-mode-experimental}
+### 删除并插入模式(实验性功能) {#deleteinsert-mode-experimental}
 
 
-历史上,ClickHouse 仅以异步 [Mutations](/sql-reference/statements/alter/index.md) 的形式对更新和删除提供有限的支持。这些操作可能会极度消耗 IO 资源,通常应该避免使用。
+历史上,ClickHouse 仅以异步 [Mutations](/sql-reference/statements/alter/index.md) 的形式对更新和删除提供有限的支持。这些操作可能会极其消耗 IO 资源,通常应该避免使用。
 
-ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md),ClickHouse 25.7 引入了[轻量级更新](/sql-reference/statements/update)。随着这些特性的引入,单个更新查询的修改即使在异步物化时,从用户角度来看也会立即生效。
+ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md),ClickHouse 25.7 引入了[轻量级更新](/sql-reference/statements/update)。随着这些特性的引入,即使修改是异步物化的,从用户角度来看,单个更新查询的修改也会立即生效。
 
 可以通过 `incremental_strategy` 参数为模型配置此模式,例如:
 
@@ -810,7 +810,7 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md),
 {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id', incremental_strategy='delete+insert') }}
 ```
 
-此策略直接在目标模型的表上操作,因此如果操作过程中出现问题,增量模型中的数据可能会处于无效状态 - 不存在原子更新。
+此策略直接在目标模型的表上操作,因此如果操作过程中出现问题,增量模型中的数据可能会处于无效状态——不存在原子更新。
 
 总结来说,此方法的执行步骤如下:
 
@@ -820,9 +820,9 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md),
 
 此过程如下所示:
 
-<Image img={dbt_06} size='lg' alt='轻量级删除增量' />
+<Image img={dbt_06} size='lg' alt='lightweight delete incremental' />
 
-### insert_overwrite 模式(实验性) {#insert_overwrite-mode-experimental}
+### insert_overwrite 模式(实验性){#insert_overwrite-mode-experimental}
 
 执行以下步骤:
 
@@ -836,14 +836,14 @@ ClickHouse 22.8 引入了[轻量级删除](/sql-reference/statements/delete.md),
 
 - 它比默认策略更快,因为它不会复制整个表。
 - 它比其他策略更安全,因为在 INSERT 操作成功完成之前不会修改原始表:如果中间发生故障,原始表不会被修改。
-- 它实现了"分区不可变性"数据工程最佳实践,简化了增量和并行数据处理、回滚等操作。
+- 它实现了"分区不可变性"数据工程最佳实践,从而简化了增量和并行数据处理、回滚等操作。
 
-<Image img={dbt_07} size='lg' alt='插入覆盖增量' />
+<Image img={dbt_07} size='lg' alt='insert overwrite incremental' />
 
 
 ## 创建快照 {#creating-a-snapshot}
 
-dbt 快照功能允许记录可变模型随时间的变化。这使得可以对模型进行时间点查询,分析师可以"回溯时间"查看模型的历史状态。这是通过使用[类型 2 缓慢变化维度](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row)实现的,其中起始和结束日期列记录行的有效时间范围。ClickHouse 适配器支持此功能,下面将进行演示。
+dbt 快照功能允许记录可变模型随时间的变化。这使得可以对模型进行时间点查询,分析人员可以"回溯时间"查看模型的历史状态。这是通过使用[类型 2 缓慢变化维度](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row)实现的,其中起始和结束日期列记录行的有效时间范围。ClickHouse 适配器支持此功能,下面将进行演示。
 
 此示例假设您已完成[创建增量表模型](#creating-an-incremental-materialization)。请确保您的 actor_summary.sql 未设置 inserts_only=True。您的 models/actor_summary.sql 应如下所示:
 
@@ -880,7 +880,7 @@ from actor_summary
 
 {% if is_incremental() %}
 
--- this filter will only be applied on an incremental run
+-- 此过滤器仅在增量运行时应用
 where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
 {% endif %}
@@ -936,9 +936,9 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
     13:26:25  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 ```
 
-请注意，在 snapshots 数据库中已经创建了一个名为 actor&#95;summary&#95;snapshot 的表（由 target&#95;schema 参数决定）。
+请注意，在 snapshots 数据库中创建了一个名为 actor&#95;summary&#95;snapshot 的表（由 target&#95;schema 参数决定）。
 
-4. 对这些数据做采样查询，你会看到 dbt 自动加入了 dbt&#95;valid&#95;from 和 dbt&#95;valid&#95;to 两列。后者当前的值为 null，后续的运行会更新它。
+4. 对该数据进行抽样查询时，你会看到 dbt 自动加入了 dbt&#95;valid&#95;from 和 dbt&#95;valid&#95;to 两个列。后者当前的值为 null，后续运行会更新它。
 
    ```sql
    SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
@@ -956,7 +956,7 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
    +------+----------+------------+----------+-------------------+------------+
    ```
 
-5. 让我们最喜欢的演员 Clicky McClickHouse 再出现在 10 部电影中。
+5. 让我们最喜欢的演员 Clicky McClickHouse 再出演 10 部电影。
 
    ```sql
    INSERT INTO imdb.roles
@@ -965,7 +965,7 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
    LIMIT 10;
    ```
 
-6. 在 `imdb` 目录下重新运行 dbt run 命令。这将更新增量模型。完成后，再运行 dbt snapshot 来捕获这些变更。
+6. 在 `imdb` 目录中重新运行 dbt run 命令。这将更新增量模型。完成后，运行 dbt snapshot 来捕获这些更改。
 
    ```response
    clickhouse-user@clickhouse:~/imdb$ dbt run
@@ -987,22 +987,22 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
 
 clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 13:46:26  使用 dbt=1.1.0 运行
-13:46:26  找到 1 个 model，0 个 test，1 个 snapshot，0 个 analysis，181 个 macro，0 个 operation，0 个 seed 文件，3 个 source，0 个 exposure，0 个 metric
+13:46:26  找到 1 个 model，0 个 tests，1 个 snapshot，0 个 analyses，181 个 macros，0 个 operations，0 个 seed files，3 个 sources，0 个 exposures，0 个 metrics
 13:46:26
 13:46:27  并发数：1 个线程 (target=&#39;dev&#39;)
 13:46:27
-13:46:27  1 / 1 开始执行 snapshot snapshots.actor&#95;summary&#95;snapshot...................... [RUN]
-13:46:31  1 / 1 已完成 snapshot snapshots.actor&#95;summary&#95;snapshot...................... [OK 用时 4.05s]
+13:46:27  1 / 1 START snapshot snapshots.actor&#95;summary&#95;snapshot...................... [RUN]
+13:46:31  1 / 1 OK 已完成快照 snapshots.actor&#95;summary&#95;snapshot...................... [OK 用时 4.05s]
 13:46:31
-13:46:31  已在 5.02s 内完成执行 1 个 snapshot。
+13:46:31  已在 5.02s 内完成运行 1 个 snapshot。
 13:46:31
-13:46:31  执行成功
+13:46:31  已成功完成
 13:46:31
 13:46:31  完成。PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 
 ````
 
-7. 现在查询快照,可以看到 Clicky McClickHouse 有 2 条记录。之前的条目现在有了 dbt_valid_to 值。新记录的 dbt_valid_from 列值与之前记录的 dbt_valid_to 值相同,而 dbt_valid_to 值为 null。如果有新行数据,这些行也会追加到快照中。
+7. 现在查询快照,可以看到 Clicky McClickHouse 有 2 行记录。之前的条目现在有了 dbt_valid_to 值。新值的 dbt_valid_from 列记录了相同的时间值,而 dbt_valid_to 值为 null。如果有新行,这些行也会追加到快照中。
 
  ```sql
  SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
@@ -1020,7 +1020,7 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 +------+----------+------------+----------+-------------------+-------------------+
 ```
 
-有关 dbt 快照的更多信息，请参阅[此处](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)。
+有关 dbt 快照的更多详细信息，请参见[这里](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)。
 
 
 ## 使用种子数据 {#using-seeds}
@@ -1035,7 +1035,7 @@ dbt 提供了从 CSV 文件加载数据的功能。该功能不适用于加载�
    LIMIT 100 FORMAT CSVWithNames" > seeds/genre_codes.csv
    ```
 
-2. 执行 `dbt seed` 命令。该命令将在数据库 `imdb_dbt` 中创建一个新表 `genre_codes`(由模式配置定义),并将 CSV 文件中的数据行加载到表中。
+2. 执行 `dbt seed` 命令。这将在数据库 `imdb_dbt` 中创建一个新表 `genre_codes`(由模式配置定义),并将 CSV 文件中的数据行加载到该表中。
 
    ```bash
    clickhouse-user@clickhouse:~/imdb$ dbt seed
@@ -1054,7 +1054,7 @@ dbt 提供了从 CSV 文件加载数据的功能。该功能不适用于加载�
    17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
-3. 确认数据已加载:
+3. 确认数据已成功加载:
 
    ```sql
    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
@@ -1081,4 +1081,4 @@ dbt 提供了从 CSV 文件加载数据的功能。该功能不适用于加载�
 
 ## 更多信息 {#further-information}
 
-前面的指南仅介绍了 dbt 功能的基础内容。建议用户阅读详尽的 [dbt 文档](https://docs.getdbt.com/docs/introduction)以深入了解。
+前面的指南仅介绍了 dbt 功能的基础内容。建议用户阅读详尽的 [dbt 文档](https://docs.getdbt.com/docs/introduction)。

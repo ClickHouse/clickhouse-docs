@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Amazon RDS MariaDB'
-description: '逐步讲解如何将 Amazon RDS MariaDB 配置为 ClickPipes 源的指南'
+description: '将 Amazon RDS MariaDB 配置为 ClickPipes 数据源的分步指南'
 slug: /integrations/clickpipes/mysql/source/rds_maria
-title: 'RDS MariaDB 源配置指南'
+title: 'RDS MariaDB 数据源配置指南'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['clickpipes', 'mysql', 'cdc', '数据采集', '实时同步']
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -18,12 +18,12 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# RDS MariaDB 源端配置指南
+# RDS MariaDB 源配置指南
 
-本文是一个分步指南，介绍如何为你的 RDS MariaDB 实例配置通过 MySQL ClickPipe 进行数据复制。
+本指南将逐步说明如何配置 RDS MariaDB 实例,以便通过 MySQL ClickPipe 复制数据。
 <br/>
 :::info
-我们也建议你查看 MySQL 常见问题解答页面 [这里](/integrations/data-ingestion/clickpipes/mysql/faq.md)。该常见问题页面正在持续更新中。
+我们还建议您阅读 MySQL 常见问题解答[此处](/integrations/data-ingestion/clickpipes/mysql/faq.md)。该页面会持续更新。
 :::
 
 
@@ -34,7 +34,7 @@ import Image from '@theme/IdealImage';
 
 ### 1. 通过自动备份启用二进制日志记录{#enable-binlog-logging-rds}
 
-自动备份功能决定 MySQL 的二进制日志记录是开启还是关闭。可以在 AWS 控制台中进行设置:
+自动备份功能决定了 MySQL 的二进制日志记录是启用还是禁用。可以在 AWS 控制台中进行配置:
 
 <Image
   img={rds_backups}
@@ -47,7 +47,7 @@ import Image from '@theme/IdealImage';
 
 ### 2. 二进制日志保留小时数{#binlog-retention-hours-rds}
 
-Amazon RDS for MariaDB 采用不同的方法设置二进制日志保留时长,即包含变更的二进制日志文件的保留时间。如果在二进制日志文件被删除之前某些变更未被读取,复制将无法继续。二进制日志保留小时数的默认值为 NULL,表示不保留二进制日志。
+Amazon RDS for MariaDB 采用不同的方法来设置二进制日志保留时长,即包含变更的二进制日志文件的保留时间。如果在二进制日志文件被删除之前某些变更未被读取,复制将无法继续进行。二进制日志保留小时数的默认值为 NULL,表示不保留二进制日志。
 
 要指定数据库实例上保留二进制日志的小时数,请使用 mysql.rds_set_configuration 函数,并设置足够长的二进制日志保留期以确保复制正常进行。建议最小值为 `24 小时`。
 
@@ -100,7 +100,7 @@ Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_Worki
 
 ## 启用 GTID 模式 {#gtid-mode-rds}
 
-全局事务标识符(GTID)是为 MySQL/MariaDB 中每个已提交事务分配的唯一 ID。它们简化了 binlog 复制,并使故障排查更加简便。MariaDB 默认启用 GTID 模式,因此用户无需进行任何操作即可使用。
+全局事务标识符(GTID)是分配给 MySQL/MariaDB 中每个已提交事务的唯一 ID。它们简化了 binlog 复制,并使故障排查更加简便。MariaDB 默认启用 GTID 模式,因此无需用户操作即可使用。
 
 
 ## 配置数据库用户 {#configure-database-user-rds}
@@ -113,7 +113,7 @@ Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_Worki
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
    ```
 
-2. 授予架构权限。以下示例显示了 `mysql` 数据库的权限。对需要复制的每个数据库和主机重复执行这些命令:
+2. 授予架构权限。以下示例显示了 `mysql` 数据库的权限。对要复制的每个数据库和主机重复执行这些命令:
 
    ```sql
    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
@@ -135,7 +135,7 @@ Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_Worki
 
 <Image
   img={security_group_in_rds_mysql}
-  alt='在 RDS 中如何找到安全组?'
+  alt='在 RDS 中哪里可以找到安全组?'
   size='lg'
   border
 />
@@ -149,4 +149,4 @@ Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_Worki
 
 ### 通过 AWS PrivateLink 进行私有访问 {#private-access-via-aws-privatelink}
 
-要通过私有网络连接到 RDS 实例,您可以使用 AWS PrivateLink。请参考我们的 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来配置连接。
+要通过私有网络连接到 RDS 实例,您可以使用 AWS PrivateLink。请参阅我们的 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来建立连接。

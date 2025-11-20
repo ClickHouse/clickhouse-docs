@@ -1,9 +1,9 @@
 ---
 title: 'トラブルシューティング'
-description: 'インストールトラブル解決ガイド'
+description: 'インストールのトラブルシューティングガイド'
 slug: /guides/troubleshooting
 doc_type: 'guide'
-keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnostics']
+keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 'エラー', '診断']
 ---
 
 
@@ -16,7 +16,7 @@ keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnos
 
 ### gpgでkeyserver.ubuntu.comからGPGキーをインポートできない {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
-1. `gpg`がインストールされているか確認します:
+1. `gpg`がインストールされているか確認してください:
 
 ```shell
 sudo apt-get install gnupg
@@ -24,8 +24,8 @@ sudo apt-get install gnupg
 
 ### apt-getでClickHouseリポジトリからdebパッケージを取得できない {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
-1. ファイアウォール設定を確認します。
-1. 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install/install.mdx)に記載されている手順でパッケージをダウンロードし、`sudo dpkg -i <packages>`コマンドで手動インストールします。`tzdata`パッケージも必要です。
+1. ファイアウォール設定を確認してください。
+1. 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install/install.mdx)に記載されている方法でパッケージをダウンロードし、`sudo dpkg -i <packages>`コマンドを使用して手動でインストールしてください。`tzdata`パッケージも必要になります。
 
 ### apt-getでClickHouseリポジトリからdebパッケージを更新できない {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
@@ -33,9 +33,9 @@ sudo apt-get install gnupg
 
 [セットアップ](/install/debian_ubuntu)ページの手順に従って、リポジトリ設定を更新してください。
 
-### `apt-get update`で各種警告が表示される {#you-get-different-warnings-with-apt-get-update}
+### `apt-get update`で様々な警告が表示される {#you-get-different-warnings-with-apt-get-update}
 
-警告メッセージの全文は以下のいずれかです:
+表示される警告メッセージは以下のいずれかです:
 
 ```shell
 N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
@@ -57,7 +57,7 @@ Err:11 https://packages.clickhouse.com/deb stable InRelease
 400  Bad Request [IP: 172.66.40.249 443]
 ```
 
-上記の問題を解決するには、以下のスクリプトを実行してください:
+上記の問題を解決するには、以下のスクリプトを使用してください:
 
 ```shell
 sudo rm /var/lib/apt/lists/packages.clickhouse.com_* /var/lib/dpkg/arch /var/lib/apt/lists/partial/packages.clickhouse.com_*
@@ -65,7 +65,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 署名エラーによりYumでパッケージを取得できない {#cant-get-packages-with-yum-because-of-wrong-signature}
+### 署名が正しくないためYumでパッケージを取得できない {#cant-get-packages-with-yum-because-of-wrong-signature}
 
 考えられる原因: キャッシュが破損している可能性があります。2022年9月のGPGキー更新後に破損した可能性があります。
 
@@ -84,7 +84,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 発生する可能性のある問題:
 
 - サーバーが起動していない。
-- 予期しない設定パラメータまたは誤った設定パラメータ。
+- 予期しない設定パラメータ、または誤った設定パラメータ。
 
 ### サーバーが起動していない {#server-is-not-running}
 
@@ -109,7 +109,7 @@ sudo service clickhouse-server start
 - `<Information> Application: starting up.` — サーバーが起動しました。
 - `<Information> Application: Ready for connections.` — サーバーが実行中で、接続を受け付ける準備ができています。
 
-`clickhouse-server`の起動が設定エラーで失敗した場合、エラーの説明とともに`<Error>`文字列が表示されます。例:
+`clickhouse-server`の起動が設定エラーで失敗した場合、エラーの説明を含む`<Error>`文字列が表示されます。例:
 
 ```plaintext
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
@@ -139,7 +139,7 @@ Revision: 54413
 
 #### systemdログを確認する {#see-systemd-logs}
 
-`clickhouse-server`ログに有用な情報が見つからない場合、またはログが存在しない場合は、次のコマンドで`systemd`ログを表示できます:
+`clickhouse-server`ログに有用な情報が見つからない場合、またはログが存在しない場合は、次のコマンドで`systemd`ログを確認できます:
 
 ```shell
 sudo journalctl -u clickhouse-server
@@ -179,7 +179,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
 ## クエリ処理 {#query-processing}
 
-ClickHouseがクエリを処理できない場合、エラーの詳細をクライアントに送信します。`clickhouse-client`では、コンソールにエラーの詳細が表示されます。HTTPインターフェースを使用している場合、ClickHouseはレスポンスボディにエラーの詳細を送信します。例:
+ClickHouseがクエリを処理できない場合、クライアントにエラーの詳細を送信します。`clickhouse-client`では、コンソールにエラーの詳細が表示されます。HTTPインターフェースを使用している場合、ClickHouseはレスポンスボディにエラーの詳細を送信します。例：
 
 ```shell
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
@@ -191,7 +191,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 接続が切断されたというメッセージが表示されることがあります。この場合、クエリを再実行できます。クエリを実行するたびに接続が切断される場合は、サーバーログでエラーを確認してください。
 
 
-## クエリ処理の効率性 {#efficiency-of-query-processing}
+## クエリ処理の効率 {#efficiency-of-query-processing}
 
 ClickHouseの動作が遅いと感じた場合は、クエリに対するサーバーリソースとネットワークの負荷をプロファイリングする必要があります。
 

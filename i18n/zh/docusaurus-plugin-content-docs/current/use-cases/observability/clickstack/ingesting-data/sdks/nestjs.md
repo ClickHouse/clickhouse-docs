@@ -3,33 +3,34 @@ slug: /use-cases/observability/clickstack/sdks/nestjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'NestJS SDK for ClickStack - The ClickHouse Observability Stack'
+description: 'ClickStack 的 NestJS SDK - ClickHouse 可观测性技术栈'
 title: 'NestJS'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-ClickStack NestJS 集成允许你创建一个 logger，或使用默认 logger，将日志发送到 ClickStack（基于 [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) 实现）。
+ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认
+logger 将日志发送到 ClickStack（由 [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) 提供支持）。
 
-**本指南支持集成：**
+**本指南集成：**
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✖️ 指标</td>
-      <td className="pe-2">✖️ 跟踪（Traces）</td>
+      <td className="pe-2">✖️ 链路追踪</td>
     </tr>
   </tbody>
 </table>
 
-_若要发送指标或 APM/跟踪（traces），还需要在你的应用程序中额外添加相应的语言集成。_
+_若要发送指标或 APM/链路追踪数据，你还需要在应用程序中添加对应语言的集成。_
 
 
 
-## 快速开始 {#getting-started}
+## 入门指南 {#getting-started}
 
-将 `HyperDXNestLoggerModule` 导入到根 `AppModule` 中,并使用 `forRoot()` 方法进行配置。
+将 `HyperDXNestLoggerModule` 导入到根模块 `AppModule` 中,并使用 `forRoot()` 方法进行配置。
 
 ```javascript
 import { Module } from '@nestjs/common';
@@ -69,12 +70,12 @@ export class CatsController {
 ### 替换 Nest 日志记录器(包括引导阶段) {#replacing-the-nest-logger}
 
 :::note 重要提示
-采用此方式将放弃依赖注入,这意味着不再需要 `forRoot` 和 `forRootAsync`,也不应该使用它们。请从主模块中移除这些方法。
+采用此方式将放弃依赖注入,这意味着不再需要使用 `forRoot` 和 `forRootAsync`,也不应该使用它们。请从主模块中移除这些方法。
 :::
 
-使用依赖注入有一个小缺点。Nest 必须先引导应用程序(实例化模块和提供者、注入依赖项等),而在此过程中 `HyperDXNestLogger` 的实例尚未可用,这意味着 Nest 会回退到内部日志记录器。
+使用依赖注入存在一个小缺陷。Nest 需要先引导应用程序(实例化模块和提供者、注入依赖项等),而在此过程中 `HyperDXNestLogger` 实例尚未就绪,这意味着 Nest 会回退使用内部日志记录器。
 
-一种解决方案是在应用程序生命周期之外使用 `createLogger` 函数创建日志记录器,并将其传递给 `NestFactory.create`。Nest 随后会将我们的自定义日志记录器(即 `createLogger` 方法返回的实例)包装到 Logger 类中,并将所有调用转发给它:
+一种解决方案是使用 `createLogger` 函数在应用程序生命周期之外创建日志记录器,并将其传递给 `NestFactory.create`。Nest 随后会将我们的自定义日志记录器(即 `createLogger` 方法返回的实例)包装到 Logger 类中,并将所有调用转发给它:
 
 在 `main.ts` 文件中创建日志记录器
 
@@ -105,7 +106,7 @@ import { Logger, Module } from "@nestjs/common"
 export class AppModule {}
 ```
 
-然后通过 `@nestjs/common` 中的 Logger 进行类型提示来注入日志记录器:
+然后通过使用 `@nestjs/common` 中的 Logger 进行类型标注来注入日志记录器:
 
 ```javascript
 import { Controller, Logger } from '@nestjs/common';

@@ -1,7 +1,7 @@
 ---
 title: '通知'
 slug: /cloud/notifications
-description: 'ClickHouse Cloud 服务的通知'
+description: 'ClickHouse Cloud 服务通知'
 keywords: ['cloud', 'notifications']
 doc_type: 'guide'
 ---
@@ -12,11 +12,11 @@ import notifications_2 from '@site/static/images/cloud/manage/notifications-2.pn
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
 import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
 
-ClickHouse Cloud 会发送与你的服务或组织相关的重要事件通知。要理解通知是如何发送和配置的，需要注意以下几个概念：
+ClickHouse Cloud 会发送与你的服务或组织相关的关键事件通知。要理解通知是如何发送和配置的，需要牢记以下几个概念：
 
-1. **通知类别（Notification category）**：指一组通知，例如计费通知、服务相关通知等。每个类别中都包含多种具体通知，可分别配置其投递方式。
-2. **通知严重级别（Notification severity）**：通知的严重级别可以是 `info`、`warning` 或 `critical`，取决于通知的重要程度。此项不可配置。
-3. **通知渠道（Notification channel）**：通知渠道指接收通知的方式，例如 UI、电子邮件、Slack 等。对于大多数通知，此项是可配置的。
+1. **通知类别（Notification category）**：指一组通知，例如计费通知、服务通知等。在每个类别中，有多种通知可以单独配置其投递方式。
+2. **通知严重性（Notification severity）**：通知严重性可以是 `info`、`warning` 或 `critical`，具体取决于通知的重要程度。该属性不可配置。
+3. **通知渠道（Notification channel）**：通知渠道指接收通知的方式，例如 UI、电子邮件、Slack 等。对于大多数通知，该项是可配置的。
 
 
 ## 接收通知 {#receiving-notifications}
@@ -61,10 +61,10 @@ Cloud 用户可以自定义通过 Cloud UI 接收的通知,这些自定义设置
 />
 
 :::note
-某些**必需**通知(如**支付失败**)不可配置。
+某些**必需**通知(如**付款失败**)不可配置。
 :::
 
 
 ## 支持的通知 {#supported-notifications}
 
-目前,我们会发送与账单相关的通知(如支付失败、用量超过特定阈值等),以及与扩缩容事件相关的通知(如扩缩容完成、扩缩容被阻止等)。
+目前，我们会发送与账单相关的通知（如支付失败、使用量超过特定阈值等），以及与扩缩容事件相关的通知（如扩缩容完成、扩缩容受阻等）。

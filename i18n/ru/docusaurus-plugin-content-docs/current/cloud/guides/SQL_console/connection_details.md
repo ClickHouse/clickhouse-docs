@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/gather-connection-details
-sidebar_label: 'Сведения о подключении'
-title: 'Сведения о подключении'
-description: 'Сведения о подключении'
+sidebar_label: 'Сбор данных для подключения'
+title: 'Сбор данных для подключения'
+description: 'Сбор данных для подключения'
 doc_type: 'guide'
 keywords: ['connection details', 'credentials', 'connection string', 'setup', 'configuration']
 ---

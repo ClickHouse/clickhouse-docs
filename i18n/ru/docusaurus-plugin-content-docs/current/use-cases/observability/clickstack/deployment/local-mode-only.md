@@ -4,7 +4,7 @@ title: "Только локальный режим"
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: "Развертывание ClickStack только в локальном режиме — стек наблюдаемости ClickHouse"
+description: "Развертывание ClickStack только в локальном режиме - стек наблюдаемости ClickHouse"
 doc_type: "guide"
 keywords:
   ["clickstack", "deployment", "setup", "configuration", "observability"]
@@ -15,12 +15,12 @@ import hyperdx_logs from "@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx_2 from "@site/static/images/use-cases/observability/hyperdx-2.png"
 import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
 
-По аналогии с [универсальным образом](/use-cases/observability/clickstack/deployment/docker-compose), этот комплексный Docker-образ включает все компоненты ClickStack:
+Аналогично [универсальному образу](/use-cases/observability/clickstack/deployment/docker-compose), этот комплексный Docker-образ включает все компоненты ClickStack:
 
 - **ClickHouse**
 - **HyperDX**
-- **коллектор OpenTelemetry (OTel)** (предоставляет OTLP на портах `4317` и `4318`)
-- **MongoDB** (для постоянного хранения состояния приложения)
+- **Коллектор OpenTelemetry (OTel)** (предоставляет OTLP на портах `4317` и `4318`)
+- **MongoDB** (для сохранения состояния приложения)
 
 **Однако в этом дистрибутиве HyperDX аутентификация пользователей отключена**
 
@@ -31,31 +31,31 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 - Разработки с использованием HyperDX
 
 
-## Шаги развертывания {#deployment-steps}
+## Шаги развёртывания {#deployment-steps}
 
 <br />
 
 <VerticalStepper headerLevel="h3">
 
-### Развертывание с помощью Docker {#deploy-with-docker}
+### Развёртывание с помощью Docker {#deploy-with-docker}
 
-В локальном режиме пользовательский интерфейс HyperDX развертывается на порту 8080.
+В локальном режиме пользовательский интерфейс HyperDX развёртывается на порту 8080.
 
 ```shell
 docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 ```
 
-### Переход к пользовательскому интерфейсу HyperDX {#navigate-to-hyperdx-ui}
+### Переход к интерфейсу HyperDX {#navigate-to-hyperdx-ui}
 
-Откройте [http://localhost:8080](http://localhost:8080) для доступа к пользовательскому интерфейсу HyperDX.
+Откройте [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX.
 
-**Вам не будет предложено создать пользователя, так как аутентификация в этом режиме развертывания не включена.**
+**Вам не будет предложено создать пользователя, так как аутентификация в этом режиме развёртывания отключена.**
 
-Подключитесь к собственному внешнему кластеру ClickHouse, например, ClickHouse Cloud.
+Подключитесь к своему внешнему кластеру ClickHouse, например, ClickHouse Cloud.
 
-<Image img={hyperdx_2} alt='Создание учетной записи' size='md' />
+<Image img={hyperdx_2} alt='Создание учётной записи' size='md' />
 
-Создайте источник, сохраните все значения по умолчанию и заполните поле `Table` значением `otel_logs`. Все остальные настройки должны быть определены автоматически, после чего вы сможете нажать `Save New Source`.
+Создайте источник, оставьте все значения по умолчанию и заполните поле `Table` значением `otel_logs`. Все остальные настройки должны определиться автоматически, после чего вы сможете нажать `Save New Source`.
 
 <Image img={hyperdx_logs} alt='Создание источника логов' size='md' />
 
@@ -63,7 +63,7 @@ docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
 
 <JSONSupport />
 
-Для образа локального режима пользователям необходимо установить только параметр `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`, например:
+Для образа, работающего только в локальном режиме, пользователям необходимо установить только параметр `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`, например:
 
 ```shell
 docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local

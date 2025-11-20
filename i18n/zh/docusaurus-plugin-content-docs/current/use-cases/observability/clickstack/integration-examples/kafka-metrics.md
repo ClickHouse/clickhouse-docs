@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-metrics
-title: '使用 ClickStack 监测 Kafka 指标'
+title: '使用 ClickStack 监控 Kafka 指标'
 sidebar_label: 'Kafka 指标'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监测 Kafka 指标'
+description: '使用 ClickStack 监控 Kafka 指标'
 doc_type: 'guide'
 keywords: ['Kafka', 'metrics', 'OTEL', 'ClickStack', 'JMX']
 ---
@@ -21,15 +21,15 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 Kafka 指标 {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
-本指南介绍如何使用 OpenTelemetry JMX Metric Gatherer 通过 ClickStack 监控 Apache Kafka 性能指标。您将学习:
+本指南介绍如何使用 OpenTelemetry JMX Metric Gatherer 通过 ClickStack 监控 Apache Kafka 性能指标。您将学习如何：
 
 - 在 Kafka broker 上启用 JMX 并配置 JMX Metric Gatherer
 - 通过 OTLP 将 Kafka 指标发送到 ClickStack
-- 使用预构建的仪表板可视化 Kafka 性能(broker 吞吐量、消费者滞后、分区健康状况、请求延迟)
+- 使用预构建的仪表板可视化 Kafka 性能（broker 吞吐量、消费者延迟、分区健康状况、请求延迟）
 
-如果您想在配置生产 Kafka 集群之前测试集成,可以使用包含示例指标的演示数据集。
+如果您想在配置生产环境 Kafka 集群之前测试集成，可以使用包含示例指标的演示数据集。
 
-所需时间:10-15 分钟
+所需时间：10-15 分钟
 :::
 
 
@@ -39,7 +39,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 如果您希望在不修改现有配置的情况下先测试此集成,请跳转到[演示数据集部分](#demo-dataset)。
 
-##### 前置条件 {#prerequisites}
+##### 前提条件 {#prerequisites}
 
 - ClickStack 实例正在运行
 - 已启用 JMX 的现有 Kafka 安装(版本 2.0 或更高)
@@ -91,7 +91,7 @@ services:
       - "9999:9999"
 ```
 
-对于非 Docker 部署,在 Kafka 启动时设置以下参数:
+对于非 Docker 部署,在 Kafka 启动时设置以下内容:
 
 ```bash
 export JMX_PORT=9999
@@ -176,33 +176,33 @@ driver: bridge
 
 ```
 
-**关键配置参数:**
+**关键配置参数：**
 
-- `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - JMX 连接 URL(使用您的 Kafka 主机名)
+- `service:jmx:rmi:///jndi/rmi://kafka:9999/jmxrmi` - JMX 连接 URL（使用您的 Kafka 主机名）
 - `otel.jmx.target.system=kafka` - 启用 Kafka 专用指标
-- `http://clickstack:4318` - OTLP HTTP 端点(使用您的 ClickStack 主机名)
-- `authorization=\${CLICKSTACK_API_KEY}` - 用于身份验证的 API 密钥(必填)
+- `http://clickstack:4318` - OTLP HTTP 端点（使用您的 ClickStack 主机名）
+- `authorization=\${CLICKSTACK_API_KEY}` - 用于身份验证的 API 密钥（必填）
 - `service.name=kafka,kafka.broker.id=broker-0` - 用于筛选的资源属性
-- `10000` - 采集间隔,单位为毫秒(10 秒)
+- `10000` - 采集间隔，单位为毫秒（10 秒）
 
 #### 在 HyperDX 中验证指标 {#verify-metrics}
 
-登录 HyperDX 并确认指标数据正在流入:
+登录 HyperDX 并确认指标数据正在流入：
 
-1. 导航到图表浏览器(Chart Explorer)
+1. 导航到图表浏览器（Chart Explorer）
 2. 搜索 `kafka.message.count` 或 `kafka.partition.count`
 3. 指标应每 10 秒显示一次
 
-**需要验证的关键指标:**
+**需要验证的关键指标：**
 - `kafka.message.count` - 已处理的消息总数
 - `kafka.partition.count` - 分区总数
-- `kafka.partition.under_replicated` - 健康集群中应为 0
+- `kafka.partition.under_replicated` - 在健康集群中应为 0
 - `kafka.network.io` - 网络吞吐量
 - `kafka.request.time.*` - 请求延迟百分位数
 ```
 
 
-为了产生活动并生成更多指标：
+要生成活动并填充更多指标：
 
 ```bash
 # 创建测试主题
@@ -217,7 +217,7 @@ echo -e &quot;Message 1\nMessage 2\nMessage 3&quot; | docker exec -i kafka bash 
 ```
 
 :::note
-在 Kafka 容器内运行 Kafka 客户端命令(如 kafka-topics、kafka-console-producer 等)时,需在命令前加上 `unset JMX_PORT &&` 以避免 JMX 端口冲突。
+在 Kafka 容器内运行 Kafka 客户端命令(如 kafka-topics、kafka-console-producer 等)时,请在命令前加上 `unset JMX_PORT &&` 以避免 JMX 端口冲突。
 :::
 
 </VerticalStepper>
@@ -233,7 +233,7 @@ echo -e &quot;Message 1\nMessage 2\nMessage 3&quot; | docker exec -i kafka bash 
 #### 下载示例指标数据集 {#download-sample}
 
 
-下载预生成的指标文件（包含 29 小时的 Kafka 指标数据，具有真实的模式特征）：
+下载预生成的指标文件（29 小时的 Kafka 指标数据，包含真实场景模式）：
 
 ```bash
 # 下载仪表指标（分区数量、队列大小、延迟、消费者延迟）
@@ -241,24 +241,24 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```
 
 
-# 下载汇总指标(消息速率、字节速率、请求计数)
+# 下载汇总指标（消息速率、字节速率、请求计数）
 
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/kafka/kafka-metrics-sum.csv
 
 ````
 
-该数据集包含单节点电商 Kafka 集群的真实流量模式:
-- **06:00-08:00: 早高峰** - 流量从夜间基线快速攀升
-- **10:00-10:15: 限时抢购** - 流量激增至正常水平的 3.5 倍
-- **11:30: 部署事件** - 消费者延迟激增 12 倍,伴随副本数不足的分区
-- **14:00-15:30: 购物高峰** - 持续高流量,达到基线的 2.8 倍
-- **17:00-17:30: 下班高峰** - 次高峰流量
-- **18:45: 消费者重平衡** - 重平衡期间延迟激增 6 倍
-- **20:00-22:00: 晚间回落** - 流量急剧下降至夜间水平
+该数据集包含单节点电商 Kafka 集群的真实流量模式：
+- **06:00-08:00：早高峰** - 流量从夜间基准水平急剧攀升
+- **10:00-10:15：限时抢购** - 流量激增至正常水平的 3.5 倍
+- **11:30：部署事件** - 消费者延迟激增 12 倍，同时出现副本不足的分区
+- **14:00-15:30：购物高峰** - 持续高流量，达到基准水平的 2.8 倍
+- **17:00-17:30：下班高峰** - 次高峰流量
+- **18:45：消费者重平衡** - 重平衡期间延迟激增 6 倍
+- **20:00-22:00：晚间回落** - 流量急剧下降至夜间水平
 
 #### 启动 ClickStack {#start-clickstack}
 
-启动 ClickStack 实例:
+启动 ClickStack 实例：
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
@@ -268,16 +268,16 @@ docker run -d --name clickstack-demo \
 #### 将指标加载到 ClickStack {#load-metrics}
 
 
-将这些指标直接导入 ClickHouse：
+将指标直接加载到 ClickHouse 中：
 
 ```bash
-# 加载仪表指标（分区数、队列大小、延迟、消费者延迟）
+# 加载仪表指标（分区数量、队列大小、延迟、消费者延迟）
 cat kafka-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 ```
 
 
-# 加载 sum 类型指标（消息速率、字节速率、请求计数）
+# 加载求和指标（消息速率、字节速率、请求计数）
 
 cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
 clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVWithNames&quot;
@@ -291,40 +291,40 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 前往[仪表板和可视化](#dashboards)部分导入仪表板,即可一次性查看所有 Kafka 指标。
 
 :::note[时区显示]
-HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范围为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**。请将时间范围设置为 **2025-11-04 16:00:00 - 2025-11-07 16:00:00**,以确保无论您身处何地都能看到演示指标。查看到指标后,可以将范围缩小至 24 小时,以获得更清晰的可视化效果。
+HyperDX 会在浏览器的本地时区中显示时间戳。演示数据的时间跨度为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**。请将时间范围设置为 **2025-11-04 16:00:00 - 2025-11-07 16:00:00**,以确保无论您身处何地都能看到演示指标。查看到指标后,您可以将范围缩小至 24 小时,以获得更清晰的可视化效果。
 :::
 
 </VerticalStepper>
 ```
 
 
-## 仪表板与可视化 {#dashboards}
+## 仪表板和可视化 {#dashboards}
 
-为帮助您快速开始使用 ClickStack 监控 Kafka,我们提供了 Kafka 指标的核心可视化功能。
+为了帮助您开始使用 ClickStack 监控 Kafka,我们提供了 Kafka 指标的基本可视化功能。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink>仪表板配置文件 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink>仪表板配置 {#download}
 
-#### 导入预构建仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 {#import-dashboard}
 
-1. 打开 HyperDX 并导航至 Dashboards 部分
-2. 点击右上角省略号菜单中的 **Import Dashboard**
+1. 打开 HyperDX 并导航到仪表板部分
+2. 点击右上角省略号下的**导入仪表板**
 
 <Image img={import_dashboard} alt='导入仪表板按钮' />
 
-3. 上传 `kafka-metrics-dashboard.json` 文件并点击 **Finish Import**
+3. 上传 `kafka-metrics-dashboard.json` 文件并点击**完成导入**
 
 <Image img={finish_import} alt='完成导入对话框' />
 
 #### 查看仪表板 {#created-dashboard}
 
-仪表板将创建完成,所有可视化组件均已预配置:
+仪表板将创建完成,所有可视化均已预配置:
 
 <Image img={example_dashboard} alt='Kafka 指标仪表板' />
 
 :::note
-对于演示数据集,请将时间范围设置为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**(根据您的本地时区调整)。导入的仪表板默认不会指定时间范围。
+对于演示数据集,请将时间范围设置为 **2025-11-05 16:00:00 - 2025-11-06 16:00:00 (UTC)**(根据您的本地时区进行调整)。导入的仪表板默认不会指定时间范围。
 :::
 
 </VerticalStepper>
@@ -343,19 +343,19 @@ echo $CLICKSTACK_API_KEY
 ```
 
 
-# 验证容器中的环境变量
+# 验证容器中是否存在该环境变量
 
 docker exec <jmx-exporter-container> env | grep CLICKSTACK_API_KEY
 
 ````
 
-如果缺失,请设置后重启:
+如果缺失，请设置后重启：
 ```bash
 export CLICKSTACK_API_KEY=your-api-key-here
 docker compose up -d kafka-jmx-exporter
 ````
 
-**检查指标是否已发送到 ClickHouse:**
+**检查指标是否已到达 ClickHouse：**
 
 ```bash
 docker exec <clickstack-container> clickhouse-client --query "
@@ -366,13 +366,13 @@ LIMIT 10
 "
 ```
 
-如果未看到任何结果,请检查 JMX exporter 日志:
+如果未看到任何结果，请检查 JMX 导出器日志：
 
 ```bash
 docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
 ```
 
-**生成 Kafka 活动以产生指标:**
+**生成 Kafka 活动以填充指标：**
 
 
 ```bash
@@ -387,11 +387,11 @@ echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset 
 
 ````
 
-#### 身份验证错误 {#auth-errors}
+#### 认证错误 {#auth-errors}
 
-如果看到 `Authorization failed` 或 `401 Unauthorized` 错误:
+如果您看到 `Authorization failed` 或 `401 Unauthorized` 错误:
 
-1. 在 HyperDX UI 中验证 API 密钥(Settings → API Keys → Ingestion API Key)
+1. 在 HyperDX UI 中验证 API 密钥(设置 → API 密钥 → 数据摄取 API 密钥)
 2. 重新导出并重启:
 
 ```bash
@@ -402,13 +402,13 @@ docker compose up -d
 
 #### Kafka 客户端命令端口冲突 {#port-conflicts}
 
-在 Kafka 容器内运行 Kafka 命令时,可能会看到:
+在 Kafka 容器内运行 Kafka 命令时,您可能会看到:
 
 ```bash
-错误:端口已被占用:9999
+Error: Port already in use: 9999
 ```
 
-在命令前加上 `unset JMX_PORT &&`:
+在命令前添加 `unset JMX_PORT &&`:
 
 ```bash
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
@@ -440,4 +440,4 @@ docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null >
 
 在生产环境中,应部署您自己的 OpenTelemetry Collector 作为代理,用于接收来自 JMX Exporter 的指标并转发至 ClickStack。这样可以实现批量处理、提高容错能力并支持集中式配置管理。
 
-有关生产环境部署模式和 Collector 配置示例,请参阅[使用 OpenTelemetry 采集数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。
+有关生产环境部署模式和收集器配置示例,请参阅[使用 OpenTelemetry 采集数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

@@ -1,5 +1,5 @@
 ---
-title: '在 C 和 C++ 中使用 chDB'
+title: '适用于 C 和 C++ 的 chDB'
 sidebar_label: 'C 和 C++'
 slug: /chdb/install/c
 description: '如何在 C 和 C++ 中安装和使用 chDB'
@@ -9,9 +9,9 @@ doc_type: 'guide'
 
 
 
-# 面向 C 和 C++ 的 chDB
+# 适用于 C 和 C++ 的 chDB
 
-chDB 提供原生的 C/C++ API，使你可以在应用程序中直接嵌入 ClickHouse 功能。该 API 既支持简单查询，也支持持久连接和流式查询结果等高级特性。
+chDB 提供原生的 C/C++ API，可将 ClickHouse 的功能直接嵌入到您的应用程序中。该 API 既支持简单查询，也支持持久连接、流式查询结果等高级功能。
 
 
 
@@ -44,7 +44,7 @@ gcc -o myapp myapp.c -lchdb
 ```
 
 
-# C++ 编译
+# 使用 C++ 编译
 
 g++ -o myapp myapp.cpp -lchdb
 
@@ -196,7 +196,7 @@ int main() {
 ```
 
 
-// 美化输出
+// 美化输出格式
 chdb&#95;result* pretty&#95;result = chdb&#95;query(*conn, query, &quot;Pretty&quot;);
 printf(&quot;Pretty Result:\n%.*s\n\n&quot;,
 (int)chdb&#95;result&#95;length(pretty&#95;result),
@@ -253,16 +253,16 @@ public:
         if (error) {
             std::string error_msg(error);
             chdb_destroy_query_result(result);
-            throw std::runtime_error("查询错误: " + error_msg);
+            throw std::runtime_error("查询错误：" + error_msg);
         }
 
         std::string data(chdb_result_buffer(result), chdb_result_length(result));
 
         // 获取查询统计信息
-        std::cout << "查询统计信息:\n";
-        std::cout << "  耗时: " << chdb_result_elapsed(result) << " 秒\n";
-        std::cout << "  读取行数: " << chdb_result_rows_read(result) << "\n";
-        std::cout << "  读取字节数: " << chdb_result_bytes_read(result) << "\n";
+        std::cout << "查询统计信息：\n";
+        std::cout << "  耗时：" << chdb_result_elapsed(result) << " 秒\n";
+        std::cout << "  读取行数：" << chdb_result_rows_read(result) << "\n";
+        std::cout << "  读取字节数：" << chdb_result_bytes_read(result) << "\n";
 
         chdb_destroy_query_result(result);
         return data;
@@ -279,14 +279,14 @@ int main() {
         db.query("INSERT INTO test VALUES (1, 'hello'), (2, 'world'), (3, 'chdb')");
 
         // 使用不同格式查询
-        std::cout << "CSV 结果:\n" << db.query("SELECT * FROM test", "CSV") << "\n";
-        std::cout << "JSON 结果:\n" << db.query("SELECT * FROM test", "JSON") << "\n";
+        std::cout << "CSV 结果：\n" << db.query("SELECT * FROM test", "CSV") << "\n";
+        std::cout << "JSON 结果：\n" << db.query("SELECT * FROM test", "JSON") << "\n";
 
         // 聚合查询
-        std::cout << "计数: " << db.query("SELECT COUNT(*) FROM test") << "\n";
+        std::cout << "计数：" << db.query("SELECT COUNT(*) FROM test") << "\n";
 
     } catch (const std::exception& e) {
-        std::cerr << "错误: " << e.what() << std::endl;
+        std::cerr << "错误：" << e.what() << std::endl;
         return 1;
     }
 
@@ -345,6 +345,6 @@ cleanup:
 
 ## GitHub 仓库 {#github-repository}
 
-- **主仓库**:[chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **问题与支持**:在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues)报告问题
-- **C API 文档**:[绑定文档](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **主仓库**：[chdb-io/chdb](https://github.com/chdb-io/chdb)
+- **问题与支持**：在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues)报告问题
+- **C API 文档**：[绑定文档](https://github.com/chdb-io/chdb/blob/main/bindings.md)

@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
 sidebar_label: 'DSPy を統合する'
-title: 'DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法'
+title: 'DSPy と ClickHouse MCP Server で AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法を学びます'
+description: 'DSPy と ClickHouse MCP Server を使って AI エージェントの構築方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'DSPy']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,10 +12,9 @@ doc_type: 'guide'
 
 
 
-# DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法
+# DSPy と ClickHouse MCP Server を使用して AI エージェントを構築する方法
 
-このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph) を使って、
-[ClickHouse の SQL playground](https://sql.clickhouse.com/) と連携し、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して対話できる AI エージェントを構築する方法を説明します。
+このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph) を使用して、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を通じて対話できる AI エージェントを構築する方法を説明します。
 
 
 
@@ -47,7 +46,7 @@ pip install -q mcp
 
 ## 認証情報の設定 {#setup-credentials}
 
-次に、Anthropic APIキーを指定します：
+次に、Anthropic APIキーを指定する必要があります：
 
 ```python
 import os
@@ -56,7 +55,7 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Anthropic APIキーを入力�
 
 :::note 別のLLMプロバイダーを使用する場合
 Anthropic APIキーをお持ちでない場合や、別のLLMプロバイダーを使用したい場合は、
-[DSPyドキュメント](https://dspy.ai/#__tabbed_1_1)で認証情報の設定手順を確認してください
+[DSPyドキュメント](https://dspy.ai/#__tabbed_1_1)で認証情報の設定手順を確認できます
 :::
 
 次に、ClickHouse SQLプレイグラウンドへの接続に必要な認証情報を定義します：
@@ -72,9 +71,9 @@ env = {
 ```
 
 
-## MCPサーバーの初期化 {#initialize-mcp}
+## MCP サーバーの初期化 {#initialize-mcp}
 
-次に、ClickHouse MCPサーバーがClickHouse SQLプレイグラウンドを参照するように設定します。
+次に、ClickHouse MCP サーバーが ClickHouse SQL プレイグラウンドを参照するように設定します。
 
 ```python
 from mcp import ClientSession, StdioServerParameters
@@ -136,10 +135,10 @@ async with stdio_client(server_params) as (read, write):
 
 ```response title="レスポンス"
 ================================================================================
-🤖 DSPy ReAct結果
+🤖 DSPy ReAct 結果
 ================================================================================
 
-📍 ステップ1
+📍 ステップ 1
 ----------------------------------------
 🧠 思考: Amazon製品カテゴリに関する情報を見つけ、最も人気のあるものを特定する必要があります。まず、Amazon関連のデータがあるかどうかを確認するために、利用可能なデータベースを調べます。
 
@@ -177,7 +176,7 @@ reddit
 rubygems
 sta...
 
-📍 ステップ2
+📍 ステップ 2
 ----------------------------------------
 🧠 思考: 素晴らしい！「amazon」データベースが利用可能であることが確認できました。これはAmazon製品カテゴリに関する情報を見つけるために必要なものです。amazonデータベース内のテーブルを調べて、どのようなデータが利用可能かを確認します。
 
@@ -196,7 +195,7 @@ sta...
       "default_type": "",
       "default_expression": "",...
 
-📍 ステップ3
+📍 ステップ 3
 ----------------------------------------
 🧠 思考: 完璧です！product_category列を含むamazon_reviewsテーブルを見つけました。このテーブルには1億5000万行を超えるAmazonレビューデータがあり、製品の人気度を適切に表現できるはずです。最も人気のあるAmazon製品カテゴリを見つけるには、カテゴリごとのレビュー数をカウントし、カウント数の降順で並べ替える必要があります。最も多くのレビューを持つカテゴリが最も人気があると見なされます。
 
@@ -211,9 +210,9 @@ sta...
    5. Home: 6,221,321件のレビュー
    ... その他5件
 
-📍 ステップ4
+📍 ステップ 4
 ----------------------------------------
-🧠 思考: 完璧です！ユーザーの質問に対する答えが見つかりました。Amazonレビューデータに基づくと、「Books」が19,530,930件のレビューで最も人気のあるAmazon製品カテゴリであり、次いで「Digital_Ebook_Purchase」が17,622,107件のレビューであることが明確にわかります。データは、各カテゴリが受け取ったレビュー数に基づいて、製品カテゴリの人気度の明確なランキングを示しています。これでユーザーの質問に答えるために必要なすべての情報が揃いました。
+🧠 思考: 完璧です！ユーザーの質問に対する答えが見つかりました。Amazonレビューデータに基づくと、「Books」が19,530,930件のレビューで最も人気のあるAmazon製品カテゴリであり、次いで「Digital_Ebook_Purchase」が17,622,107件のレビューであることが明確にわかります。データは、各カテゴリが受け取ったレビュー数に基づいて、製品カテゴリの人気度の明確なランキングを示しています。ユーザーの質問に答えるために必要なすべての情報が揃いました。
 
 🔧 ツール: finish
 
@@ -222,7 +221,7 @@ sta...
 
 🎯 推論
 ----------------------------------------
-最も人気のあるAmazon製品カテゴリに関する質問に答えるために、Amazonデータベースにアクセスし、1億5000万件を超えるレビューレコードを含む「amazon_reviews」というテーブルを見つけました。このテーブルには「product_category」列があり、レビュー数に基づいて製品の人気度を分析できます。製品カテゴリごとのレビュー数をカウントし、カウント数の降順で並べ替えるクエリを実行しました。ここでの前提は、より多くのレビューを持つカテゴリがより高い人気を示すということです。これは、より多くのレビューが通常、より多くの購入と顧客エンゲージメントと相関するためです。
+最も人気のあるAmazon製品カテゴリに関する質問に答えるため、Amazonデータベースにアクセスし、1億5000万件を超えるレビューレコードを含む「amazon_reviews」というテーブルを見つけました。このテーブルには「product_category」列があり、レビュー数に基づいて製品の人気度を分析できます。製品カテゴリごとのレビュー数をカウントし、カウント数の降順で並べ替えるクエリを実行しました。ここでの前提は、レビュー数が多いカテゴリほど人気が高いということです。これは、レビュー数が多いほど購入数や顧客エンゲージメントが高いことと相関する傾向があるためです。
 
 ✅ 最終結果
 ----------------------------------------
@@ -231,7 +230,7 @@ sta...
 ```
 
 
-Amazon の商品カテゴリのうち、レビュー数ベースで人気トップ 10 は次のとおりです。
+以下は、レビュー数が最も多い Amazon の人気商品カテゴリ上位 10 件です。
 
 1. **Books** - 19,530,930 件のレビュー
 2. **Digital&#95;Ebook&#95;Purchase** - 17,622,107 件のレビュー
@@ -244,7 +243,7 @@ Amazon の商品カテゴリのうち、レビュー数ベースで人気トッ�
 9. **Video DVD** - 5,069,014 件のレビュー
 10. **Mobile&#95;Apps** - 5,033,164 件のレビュー
 
-# Books と Digital&#95;Ebook&#95;Purchase（関連する 2 つのカテゴリ）だけで 3,700 万件以上のレビューを占めており、Amazon のプラットフォーム上で読書コンテンツが非常に人気であることがわかります。
+# Books と Digital&#95;Ebook&#95;Purchase（関連する 2 つのカテゴリ）だけで合計 3,700 万件以上のレビューがあり、Amazon のプラットフォームにおける読書関連コンテンツの非常に高い人気がうかがえます。
 
 ```
 </VerticalStepper>

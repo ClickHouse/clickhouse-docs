@@ -25,7 +25,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 - 配置 OTel 采集器以解析 Redis 日志格式
 - 使用自定义配置部署 ClickStack
-- 使用预构建的仪表板可视化 Redis 指标(连接、命令、内存、错误)
+- 使用预构建的仪表板可视化 Redis 指标(连接数、命令、内存、错误)
 
 如果您想在配置生产环境 Redis 之前测试集成功能,可以使用包含示例日志的演示数据集。
 
@@ -48,7 +48,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 #### 验证 Redis 日志配置 {#verify-redis}
 
-首先,检查 Redis 日志配置。连接到 Redis 并查看日志文件位置:
+首先,检查 Redis 日志配置。连接到 Redis 并检查日志文件位置:
 
 ```bash
 redis-cli CONFIG GET logfile
@@ -56,11 +56,11 @@ redis-cli CONFIG GET logfile
 
 常见 Redis 日志位置:
 
-- **Linux (apt/yum)**: `/var/log/redis/redis-server.log`
-- **macOS (Homebrew)**: `/usr/local/var/log/redis.log`
-- **Docker**: 通常输出到 stdout,但可以配置为写入 `/data/redis.log`
+- **Linux (apt/yum)**:`/var/log/redis/redis-server.log`
+- **macOS (Homebrew)**:`/usr/local/var/log/redis.log`
+- **Docker**:通常输出到 stdout,但可以配置为写入 `/data/redis.log`
 
-如果 Redis 正在输出日志到 stdout,请通过更新 `redis.conf` 将其配置为写入文件:
+如果 Redis 正在输出到 stdout,请通过更新 `redis.conf` 将其配置为写入文件:
 
 
 ```bash
@@ -85,7 +85,7 @@ sudo systemctl restart redis
 ```
 
 
-# 针对 Docker
+# 对于 Docker
 
 docker restart <redis-container>
 
@@ -135,16 +135,16 @@ service:
 此配置:
 
 - 从标准位置读取 Redis 日志
-- 使用正则表达式解析 Redis 日志格式,提取结构化字段(`pid`、`role`、`timestamp`、`log_level`、`message`)
+- 使用正则表达式解析 Redis 的日志格式,提取结构化字段(`pid`、`role`、`timestamp`、`log_level`、`message`)
 - 添加 `source: redis` 属性以便在 HyperDX 中进行过滤
 - 通过专用管道将日志路由到 ClickHouse 导出器
 
 :::note
 
 - 您只需在自定义配置中定义新的接收器和管道
-- 处理器(`memory_limiter`、`transform`、`batch`)和导出器(`clickhouse`)已在基础 ClickStack 配置中定义 - 您只需按名称引用它们即可
+- 处理器(`memory_limiter`、`transform`、`batch`)和导出器(`clickhouse`)已在基础 ClickStack 配置中定义 - 您只需按名称引用它们
 - `time_parser` 操作符从 Redis 日志中提取时间戳以保留原始日志时间
-- 此配置使用 `start_at: beginning` 在收集器启动时读取所有现有日志,使您能够立即看到日志。对于生产部署,如果您希望避免在收集器重启时重新采集日志,请更改为 `start_at: end`。
+- 此配置使用 `start_at: beginning` 在收集器启动时读取所有现有日志,使您能够立即看到日志。对于生产部署,如果您希望避免在收集器重启时重新摄取日志,请更改为 `start_at: end`。
   :::
 
 #### 配置 ClickStack 加载自定义配置 {#load-custom}
@@ -191,7 +191,7 @@ docker run --name clickstack \
 
 #### 在 HyperDX 中验证日志 {#verifying-logs}
 
-配置完成后,登录 HyperDX 并验证日志是否正常流入:
+配置完成后,登录 HyperDX 并验证日志是否正在流入:
 
 <Image img={log_view} alt='日志视图' />
 
@@ -306,24 +306,24 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间跨
 1. 打开 HyperDX 并导航到仪表板部分。
 2. 点击右上角省略号下的"Import Dashboard"。
 
-<Image img={import_dashboard} alt='导入仪表板' />
+<Image img={import_dashboard} alt='Import Dashboard' />
 
 3. 上传 redis-logs-dashboard.json 文件并点击完成导入。
 
-<Image img={finish_import} alt='完成导入' />
+<Image img={finish_import} alt='Finish Import' />
 
-#### 仪表板将被创建并预配置所有可视化内容 {#created-dashboard}
+#### 仪表板将创建并预配置所有可视化内容 {#created-dashboard}
 
 :::note
 对于演示数据集,请将时间范围设置为 **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**(根据您的本地时区进行调整)。导入的仪表板默认不会指定时间范围。
 :::
 
-<Image img={example_dashboard} alt='示例仪表板' />
+<Image img={example_dashboard} alt='Example Dashboard' />
 
 </VerticalStepper>
 
 
-## 故障排查 {#troubleshooting}
+## 故障排除 {#troubleshooting}
 
 ### 自定义配置未加载 {#troubleshooting-not-loading}
 
@@ -336,7 +336,7 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 
-**检查自定义配置文件是否已成功挂载：**
+**检查自定义配置文件是否已挂载：**
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
@@ -344,11 +344,11 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 
-**查看自定义配置内容：**
+**查看自定义配置的内容：**
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
-# 应显示您的 redis-monitoring.yaml 文件内容
+# 应显示你的 redis-monitoring.yaml 内容
 ```
 
 
@@ -362,12 +362,12 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 ### HyperDX 中未显示日志 {#no-logs}
 
 
-**确保 Redis 将日志写入文件：**
+**确保 Redis 将日志写入到文件：**
 
 ```bash
 redis-cli CONFIG GET logfile
-# 预期输出：应显示文件路径,而不是空字符串
-# 示例:1) "logfile" 2) "/var/log/redis/redis-server.log"
+# 预期输出：应显示文件路径，而不是空字符串
+# 示例：1) "logfile" 2) "/var/log/redis/redis-server.log"
 ```
 
 
@@ -387,7 +387,7 @@ docker exec <container> cat /var/log/redis/redis-server.log
 ```
 
 
-**检查采集器日志中的错误：**
+**检查收集器日志中的错误：**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
@@ -406,7 +406,7 @@ docker volume inspect <volume-name>
 ### 日志解析不正确 {#logs-not-parsing}
 
 
-**验证 Redis 日志格式是否符合预期格式：**
+**验证 Redis 日志格式是否符合预期模式：**
 
 ```bash
 # Redis 日志应如下所示：
@@ -414,7 +414,7 @@ docker volume inspect <volume-name>
 tail -5 /var/log/redis/redis-server.log
 ```
 
-如果你的 Redis 日志采用的是其他格式，则可能需要调整 `regex_parser` 算子中的正则表达式模式。标准格式为：
+如果你的 Redis 日志格式不同，则可能需要在 `regex_parser` 算子中调整正则表达式模式。标准格式为：
 
 * `pid:role timestamp level message`
 * 示例：`12345:M 28 Oct 2024 14:23:45.123 * Server started`
@@ -422,7 +422,7 @@ tail -5 /var/log/redis/redis-server.log
 
 ## 后续步骤 {#next-steps}
 
-如果您想进一步探索,以下是一些可以在仪表板上进行实验的后续步骤:
+如果您想进一步探索，可以尝试以下步骤来优化您的仪表板
 
-- 为关键指标(错误率、延迟阈值)设置[告警](/use-cases/observability/clickstack/alerts)
-- 针对特定用例(API 监控、安全事件)创建额外的[仪表板](/use-cases/observability/clickstack/dashboards)
+- 为关键指标（错误率、延迟阈值）设置[告警](/use-cases/observability/clickstack/alerts)
+- 针对特定用例（API 监控、安全事件）创建更多[仪表板](/use-cases/observability/clickstack/dashboards)

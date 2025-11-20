@@ -2,14 +2,14 @@
 title: '如何使用 chDB 查询 Pandas DataFrame'
 sidebar_label: '查询 Pandas'
 slug: /chdb/guides/pandas
-description: '学习如何使用 chDB 查询 Pandas DataFrame'
+description: '了解如何使用 chDB 查询 Pandas DataFrame'
 keywords: ['chDB', 'Pandas']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-[Pandas](https://pandas.pydata.org/) 是 Python 中广泛使用的数据处理和分析库。
-在 chDB 的第 2 版中，我们提升了对 Pandas DataFrame 的查询性能，并引入了 `Python` 表函数。
+[Pandas](https://pandas.pydata.org/) 是 Python 中广泛使用的数据处理与分析库。
+在 chDB 2 版本中，我们提升了对 Pandas DataFrame 查询的性能，并引入了 `Python` 表函数。
 在本指南中，我们将学习如何使用 `Python` 表函数来查询 Pandas。
 
 
@@ -30,19 +30,19 @@ source .venv/bin/activate
 pip install "chdb>=2.0.2"
 ```
 
-接下来安装 Pandas 和其他几个库:
+接下来我们将安装 Pandas 和其他几个库:
 
 ```bash
 pip install pandas requests ipython
 ```
 
-我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过以下方式启动:
+我们将使用 `ipython` 来运行本指南其余部分的命令,您可以通过运行以下命令来启动它:
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您喜欢的 Notebook 中使用这些代码。
+您也可以在 Python 脚本或您喜欢的 notebook 中使用这些代码。
 
 
 ## 从 URL 创建 Pandas DataFrame {#creating-a-pandas-dataframe-from-a-url}
@@ -64,7 +64,7 @@ response = requests.get(
 matches_df = pd.json_normalize(response.json(), sep='_')
 ```
 
-让我们查看一下将要处理的数据:
+让我们看看将要处理的数据:
 
 ```python
 matches_df.iloc[0]
@@ -126,7 +126,7 @@ events_df = pd.json_normalize(response.json(), sep='_')
 events_df["match_id"] = 3943077
 ```
 
-同样,让我们查看一下第一行:
+同样,让我们看看第一行:
 
 ```python
 with pd.option_context("display.max_rows", None):
@@ -230,7 +230,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-接下来,我们可以通过以下查询找出执裁过多场比赛的裁判:
+接下来,我们可以通过以下查询找出执法过多场比赛的裁判:
 
 ```python
 chdb.query("""
@@ -256,7 +256,7 @@ ORDER BY count DESC
 9                  Raphael Claus      2
 ```
 
-现在,让我们来探索 `events_df`。
+现在,我们来探索 `events_df`。
 
 ```python
 chdb.query("""
@@ -287,7 +287,7 @@ LIMIT 10
 ## 连接 Pandas DataFrames {#joining-pandas-dataframes}
 
 我们也可以在查询中连接多个 DataFrames。
-例如,要获取比赛的概览信息,可以编写以下查询:
+例如,要获取比赛概览,可以编写以下查询:
 
 ```python
 chdb.query("""
@@ -304,8 +304,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    阿根廷
-away_team_away_team_name     哥伦比亚
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527
@@ -319,27 +319,27 @@ Name: 0, dtype: object
 ## 从 DataFrame 填充表 {#populating-a-table-from-a-dataframe}
 
 我们也可以从 DataFrame 创建并填充 ClickHouse 表。
-如果要在 chDB 中创建表,需要使用有状态会话 API(Stateful Session API)。
+如果要在 chDB 中创建表,需要使用有状态会话 API (Stateful Session API)。
 
-导入 session 模块:
+首先导入 session 模块:
 
 ```python
 from chdb import session as chs
 ```
 
-初始化会话:
+初始化一个会话:
 
 ```python
 sess = chs.Session()
 ```
 
-接下来,创建数据库:
+接下来,创建一个数据库:
 
 ```python
 sess.query("CREATE DATABASE statsbomb")
 ```
 
-然后,基于 `events_df` 创建 `events` 表:
+然后,基于 `events_df` 创建一个 `events` 表:
 
 ```python
 sess.query("""
@@ -349,7 +349,7 @@ FROM Python(events_df)
 """)
 ```
 
-接下来可以运行查询来返回接收传球次数最多的球员:
+然后可以运行查询以返回接收传球次数最多的球员:
 
 ```python
 sess.query("""

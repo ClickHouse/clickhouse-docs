@@ -1,5 +1,6 @@
 ---
-description: '包含超过 1 亿条记录的数据集，包含地图上各类地点的信息，例如商店、餐厅、公园、游乐场和纪念性建筑。'
+description: '包含超过 1 亿条记录的数据集，涵盖地图上各类地点的信息，例如商店、
+餐厅、公园、游乐场和纪念性建筑。'
 sidebar_label: 'Foursquare 地点'
 slug: /getting-started/example-datasets/foursquare-places
 title: 'Foursquare 地点'
@@ -16,14 +17,14 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 
 ## 数据集 {#dataset}
 
-Foursquare 提供的这个数据集可以[下载](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)并在 Apache 2.0 许可证下免费使用。
+Foursquare 提供的此数据集可[下载](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)并在 Apache 2.0 许可证下免费使用。
 
 该数据集包含超过 1 亿条商业兴趣点(POI)记录,包括商店、餐厅、公园、游乐场和纪念碑等。此外还包含这些地点的附加元数据,如类别和社交媒体信息。
 
 
 ## 数据探索 {#data-exploration}
 
-为了探索数据,我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local),这是一个提供完整 ClickHouse 引擎的小型命令行工具。您也可以使用 ClickHouse Cloud、`clickhouse-client` 或 `chDB`。
+为了探索数据,我们将使用 [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local),这是一个提供完整 ClickHouse 引擎的小型命令行工具,您也可以使用 ClickHouse Cloud、`clickhouse-client` 或 `chDB`。
 
 运行以下查询从存储数据的 S3 存储桶中选取数据:
 
@@ -62,7 +63,7 @@ geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
 ```
 
-我们可以看到有相当多的字段值为 `ᴺᵁᴸᴸ`,因此可以在查询中添加一些额外的条件来获取更多有效数据:
+我们可以看到有相当多的字段值为 `ᴺᵁᴸᴸ`,因此可以在查询中添加一些额外的条件来获取更多有用的数据:
 
 ```sql title="查询"
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -95,13 +96,13 @@ facebook_id:         522698844570949 -- 522.70 trillion
 instagram:           landalmooizutendaal
 twitter:             landalzdl
 fsq_category_ids:    ['56aa371be4b08b9a8d5734e1']
-fsq_category_labels: ['旅行与交通 > 住宿 > 度假屋租赁']
+fsq_category_labels: ['旅行和交通 > 住宿 > 度假租赁']
 placemaker_url:      https://foursquare.com/placemakers/review-place/59b2c754b54618784f259654
 geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)
 ```
 
-运行以下查询，使用 `DESCRIBE` 查看自动推断出的数据架构：
+运行以下查询，通过 `DESCRIBE` 查看自动推断出的数据 schema（模式）：
 
 ```sql title="Query"
 DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
@@ -246,13 +247,13 @@ SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parq
 ```
 
 
-## 数据可视化 {#data-visualization}
+## 可视化数据 {#data-visualization}
 
 要了解此数据集的可视化效果,请访问 [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)。
-adsb.exposed 最初由联合创始人兼首席技术官 Alexey Milovidov 开发,用于可视化 ADS-B(自动相关监视广播)
-航班数据,其数据量是本数据集的 1000 倍。在一次公司黑客马拉松活动中,Alexey 将 Foursquare 数据添加到了该工具。
+adsb.exposed 最初由联合创始人兼首席技术官 Alexey Milovidov 构建,用于可视化 ADS-B(自动相关监视广播)
+飞行数据,该数据集的规模是当前数据集的 1000 倍。在一次公司黑客马拉松活动中,Alexey 将 Foursquare 数据添加到了该工具中。
 
-以下是我们精选的一些可视化示例供您参考。
+以下是我们精选的一些可视化效果,供您欣赏。
 
 <Image
   img={visualization_1}

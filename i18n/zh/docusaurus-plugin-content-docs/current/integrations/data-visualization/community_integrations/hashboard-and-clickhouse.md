@@ -18,13 +18,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Hashboard](https://hashboard.com) 是一款交互式数据探索工具，可让组织内的任何人跟踪指标并发现可付诸行动的洞察。Hashboard 会向你的 ClickHouse 数据库发出实时 SQL 查询，特别适用于自助式、临时性的数据探索场景。
+[Hashboard](https://hashboard.com) 是一款交互式数据探索工具，可让你组织内的任何人跟踪指标并发掘可付诸行动的洞察。Hashboard 会向你的 ClickHouse 数据库发起实时 SQL 查询，特别适用于自助式、即席数据探索等使用场景。
 
 <Image size="md" img={hashboard_01} alt="Hashboard 数据探索界面，展示交互式查询构建器和可视化" border />
 
 <br/>
 
-本指南将引导你完成将 Hashboard 连接到 ClickHouse 实例的步骤。你也可以在 Hashboard 的 [ClickHouse 集成文档](https://docs.hashboard.com/docs/database-connections/clickhouse) 中找到相应信息。
+本指南将引导你完成将 Hashboard 连接到 ClickHouse 实例的各个步骤。你也可以在 Hashboard 的 [ClickHouse 集成文档](https://docs.hashboard.com/docs/database-connections/clickhouse) 中找到相同的信息。
 
 
 
@@ -45,14 +45,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 1. 导航到您的 [Hashboard 项目](https://hashboard.com/app)。
 2. 点击侧边导航栏中的齿轮图标打开设置页面。
 3. 点击 `+ New Database Connection`。
-4. 在弹出的对话框中,选择"ClickHouse"。
+4. 在弹出的对话框中,选择 "ClickHouse"。
 5. 使用之前收集的信息填写**连接名称**、**主机**、**端口**、**用户名**、**密码**和**数据库**字段。
-6. 点击"Test"验证连接配置是否成功。
-7. 点击"Add"
+6. 点击 "Test" 验证连接配置是否成功。
+7. 点击 "Add"
 
 您的 ClickHouse 数据库现已连接到 Hashboard,您可以继续构建[数据模型](https://docs.hashboard.com/docs/data-modeling/add-data-model)、[探索](https://docs.hashboard.com/docs/visualizing-data/explorations)、[指标](https://docs.hashboard.com/docs/metrics)和[仪表板](https://docs.hashboard.com/docs/dashboards)。有关这些功能的更多详细信息,请参阅相应的 Hashboard 文档。
 
 
 ## 了解更多 {#learn-more}
 
-如需了解更多高级功能和故障排除信息,请访问 [Hashboard 文档](https://docs.hashboard.com/)。
+如需了解更多高级功能和故障排除方法,请访问 [Hashboard 文档](https://docs.hashboard.com/)。

@@ -14,12 +14,9 @@ import Image from '@theme/IdealImage';
 
 # SnowflakeからClickHouseへの移行
 
-> このガイドでは、SnowflakeからClickHouseへデータを移行する方法を説明します。
+> このガイドでは、SnowflakeからClickHouseへデータを移行する方法について説明します。
 
-SnowflakeとClickHouse間でデータを移行する際は、転送用の中間ストレージとして
-S3などのオブジェクトストアを使用する必要があります。移行プロセスでは、
-Snowflakeの`COPY INTO`コマンドとClickHouseの`INSERT INTO SELECT`
-コマンドを利用します。
+SnowflakeとClickHouse間でデータを移行する際は、S3などのオブジェクトストアを転送用の中間ストレージとして使用する必要があります。移行プロセスでは、Snowflakeの`COPY INTO`コマンドとClickHouseの`INSERT INTO SELECT`コマンドを使用します。
 
 <VerticalStepper headerLevel="h2">
 
@@ -45,9 +42,9 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-このテーブルのデータをClickHouseデータベースに移行するには、まずこのデータを外部ステージにコピーする必要があります。データをコピーする際は、型情報の共有が可能で、精度を保持し、圧縮効率が高く、分析で一般的に使用されるネスト構造をネイティブにサポートするParquetを中間フォーマットとして推奨します。
+このテーブルのデータをClickHouseデータベースに移動するには、まずこのデータを外部ステージにコピーする必要があります。データをコピーする際は、型情報の共有が可能で、精度を保持し、圧縮効率が高く、分析で一般的に使用されるネスト構造をネイティブにサポートするParquetを中間フォーマットとして推奨します。
 
-以下の例では、SnowflakeでParquetと必要なファイルオプションを表す名前付きファイルフォーマットを作成します。次に、コピーしたデータセットを格納するバケットを指定します。最後に、データセットをバケットにコピーします。
+以下の例では、Parquetと必要なファイルオプションを表す名前付きファイルフォーマットをSnowflakeで作成します。次に、コピーしたデータセットを格納するバケットを指定します。最後に、データセットをバケットにコピーします。
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;

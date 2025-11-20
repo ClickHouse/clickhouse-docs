@@ -2,13 +2,13 @@
 sidebar_label: 'SQLAlchemy'
 sidebar_position: 7
 keywords: ['clickhouse', 'python', 'sqlalchemy', 'integrate']
-description: 'ClickHouse における SQLAlchemy サポート'
+description: 'ClickHouse SQLAlchemy サポート'
 slug: /integrations/language-clients/python/sqlalchemy
 title: 'SQLAlchemy サポート'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect には、コアドライバー上に実装された SQLAlchemy 方言（`clickhousedb`）が含まれます。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40 以降および 2.0.x をサポートします。
+ClickHouse Connect には、コアドライバー上に実装された SQLAlchemy 方言（`clickhousedb`）が含まれています。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40 以降および 2.0 系をサポートします。
 
 
 
@@ -39,7 +39,7 @@ URL/クエリパラメータに関する注意事項:
 
 ## コアクエリ {#sqlalchemy-core-queries}
 
-このダイアレクトは、結合、フィルタ、順序付け、LIMIT/OFFSET、および `DISTINCT` を含む SQLAlchemy Core の `SELECT` クエリをサポートしています。
+このダイアレクトは、結合、フィルタ、順序付け、LIMIT/OFFSET、および`DISTINCT`を含むSQLAlchemy Coreの`SELECT`クエリをサポートしています。
 
 ```python
 from sqlalchemy import MetaData, Table, select
@@ -51,13 +51,13 @@ orders = Table("orders", metadata, autoload_with=engine)
 ```
 
 
-# 基本的な SELECT
+# 基本的なSELECT
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
 
 
-# JOIN（INNER/LEFT OUTER/FULL OUTER/CROSS）
+# JOIN（INNER／LEFT OUTER／FULL OUTER／CROSS）
 
 with engine.begin() as conn:
 stmt = (
@@ -80,7 +80,7 @@ with engine.begin() as conn:
 
 ## DDLとリフレクション {#sqlalchemy-ddl-reflection}
 
-提供されているDDLヘルパーと型/エンジン構造を使用して、データベースとテーブルを作成できます。テーブルリフレクション（カラム型とエンジンを含む）がサポートされています。
+提供されているDDLヘルパーと型/エンジン構造を使用して、データベースとテーブルを作成できます。テーブルリフレクション(カラム型とエンジンを含む)がサポートされています。
 
 ```python
 import sqlalchemy as db
@@ -113,19 +113,19 @@ with engine.begin() as conn:
 リフレクションされたカラムには、サーバー上に存在する場合、`clickhousedb_default_type`、`clickhousedb_codec_expression`、`clickhousedb_ttl_expression`などのダイアレクト固有の属性が含まれます。
 
 
-## Insert操作（CoreおよびBasic ORM） {#sqlalchemy-inserts}
+## 挿入（CoreおよびBasic ORM） {#sqlalchemy-inserts}
 
-Insert操作は、SQLAlchemy Coreを介して実行できるほか、利便性を考慮したシンプルなORMモデルでも使用できます。
+挿入はSQLAlchemy Coreを使用して動作するほか、利便性のためにシンプルなORMモデルでも使用できます。
 
 
 ```python
-# コア insert
+# コア挿入
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 ```
 
 
-# 基本的な ORM の挿入
+# 基本的な ORM による挿入
 
 from sqlalchemy.orm import declarative&#95;base, Session
 
@@ -150,10 +150,10 @@ session.commit()
 
 ## スコープと制限事項 {#scope-and-limitations}
 
-- コア機能: `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT`を含む`SELECT`などのSQLAlchemy Core機能を有効化します。
-- `WHERE`句を伴う`DELETE`のみ: このダイアレクトは軽量な`DELETE`をサポートしますが、誤ってテーブル全体を削除することを防ぐため、明示的な`WHERE`句が必要です。テーブルをクリアするには、`TRUNCATE TABLE`を使用してください。
+- コア機能: `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）を含む`SELECT`、`WHERE`、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT`などのSQLAlchemy Core機能を有効化します。
+- `WHERE`句を伴う`DELETE`のみ: このダイアレクトは軽量な`DELETE`をサポートしますが、誤ってテーブル全体を削除することを防ぐため、明示的な`WHERE`句が必須です。テーブルをクリアする場合は、`TRUNCATE TABLE`を使用してください。
 - `UPDATE`非対応: ClickHouseは追記最適化されています。このダイアレクトは`UPDATE`を実装していません。データを変更する必要がある場合は、上流で変換を適用して再挿入するか、明示的なテキストSQL（例: `ALTER TABLE ... UPDATE`）を自己責任で使用してください。
 - DDLとリフレクション: データベースとテーブルの作成がサポートされており、リフレクションはカラム型とテーブルエンジンのメタデータを返します。ClickHouseはこれらの制約を強制しないため、従来の主キー/外部キー/インデックスのメタデータは存在しません。
-- ORMスコープ: 宣言的モデルと`Session.add(...)`/`bulk_save_objects(...)`による挿入は利便性のために機能します。高度なORM機能（リレーションシップ管理、unit-of-work更新、カスケード、eager/lazyローディングセマンティクス）はサポートされていません。
+- ORMのスコープ: 宣言的モデルと`Session.add(...)`/`bulk_save_objects(...)`による挿入は利便性のために機能します。高度なORM機能（リレーションシップ管理、unit-of-work更新、カスケード、eager/lazy読み込みセマンティクス）はサポートされていません。
 - 主キーのセマンティクス: `Column(..., primary_key=True)`はSQLAlchemyによってオブジェクトの識別にのみ使用されます。ClickHouseのサーバー側制約は作成されません。`ORDER BY`（およびオプションの`PRIMARY KEY`）はテーブルエンジン経由で定義してください（例: `MergeTree(order_by=...)`）。
 - トランザクションとサーバー機能: 2フェーズトランザクション、シーケンス、`RETURNING`、高度な分離レベルはサポートされていません。`engine.begin()`はステートメントをグループ化するためのPythonコンテキストマネージャーを提供しますが、実際のトランザクション制御は行いません（commit/rollbackは何も実行しません）。

@@ -1,9 +1,9 @@
 ---
 description: 'Установка ClickHouse на MacOS'
 keywords: ['ClickHouse', 'install', 'Linux', 'tar']
-sidebar_label: 'Другие Linux'
+sidebar_label: 'Другие дистрибутивы Linux'
 slug: /install/linux_other
-title: 'Установка ClickHouse из архивов tgz'
+title: 'Установка ClickHouse с помощью tgz-архивов'
 hide_title: true
 doc_type: 'guide'
 ---

@@ -3,7 +3,7 @@ sidebar_label: 'Airbyte'
 sidebar_position: 11
 keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/airbyte
-description: 'Передавайте данные в ClickHouse с помощью конвейеров данных Airbyte'
+description: 'Потоковая загрузка данных в ClickHouse с помощью конвейеров данных Airbyte'
 title: 'Подключение Airbyte к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -30,7 +30,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 :::note
-Обратите внимание, что источник и приёмник Airbyte для ClickHouse в настоящее время находятся в статусе Alpha и не подходят для перемещения больших наборов данных (> 10 млн строк)
+Обратите внимание, что источник и приёмник Airbyte для ClickHouse в настоящее время находятся в статусе Alpha и не подходят для переноса больших наборов данных (> 10 миллионов строк)
 :::
 
 <a href='https://www.airbyte.com/' target='_blank'>
@@ -62,7 +62,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
         ./run-ab-platform.sh
         ```
 
-3.  После появления баннера Airbyte в терминале вы можете подключиться по адресу <a href="http://localhost:8000" target="_blank">localhost:8000</a>
+3.  После появления баннера Airbyte в терминале вы можете подключиться к <a href="http://localhost:8000" target="_blank">localhost:8000</a>
 
     <Image img={airbyte01} size='lg' border alt='Баннер Airbyte' />
 
@@ -97,7 +97,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 4. Поздравляем! Вы успешно добавили ClickHouse в качестве назначения в Airbyte.
 
 :::note
-Для использования ClickHouse в качестве назначения пользователь должен иметь права на создание баз данных, таблиц и вставку строк. Рекомендуется создать выделенного пользователя для Airbyte (например, `my_airbyte_user`) со следующими правами:
+Для использования ClickHouse в качестве назначения пользователь должен иметь права на создание баз данных, таблиц и вставку строк. Рекомендуется создать отдельного пользователя для Airbyte (например, `my_airbyte_user`) со следующими правами:
 
 ```sql
 CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
@@ -110,13 +110,13 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 ## Добавление набора данных в качестве источника {#3-add-a-dataset-as-a-source}
 
-В качестве примера мы будем использовать набор данных <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). Для этого руководства мы используем подмножество данных, соответствующее январю 2022 года.
+В качестве примера мы будем использовать набор данных <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). В этом руководстве мы используем подмножество данных за январь 2022 года.
 
 1.  В Airbyte перейдите на страницу «Sources» и добавьте новый источник типа file.
 
     <Image img={airbyte04} size='lg' border alt='Добавление источника в Airbyte' />
 
-2.  Заполните форму «Set up the source», указав имя источника и URL-адрес файла NYC Taxi за январь 2022 года (см. ниже). Убедитесь, что выбрали `parquet` в качестве формата файла, `HTTPS Public Web` в качестве Storage Provider и `nyc_taxi_2022` в качестве Dataset Name.
+2.  Заполните форму «Set up the source», указав имя источника и URL-адрес файла NYC Taxi за январь 2022 года (см. ниже). Убедитесь, что выбран формат файла `parquet`, провайдер хранилища `HTTPS Public Web` и имя набора данных `nyc_taxi_2022`.
 
         ```text
         https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
@@ -148,7 +148,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 <Image img={airbyte08} size='lg' border alt='Синхронизация в Airbyte' />
 
-5. Начнется загрузка данных. Вы можете развернуть представление, чтобы просмотреть логи Airbyte и ход выполнения. После завершения операции в логах появится сообщение `Completed successfully`:
+5. Начнется загрузка данных. Вы можете развернуть представление, чтобы просмотреть журналы и прогресс Airbyte. После завершения операции в журналах появится сообщение `Completed successfully`:
 
 <Image img={airbyte09} size='lg' border alt='Успешно завершено' />
 
@@ -160,7 +160,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         LIMIT 10
         ```
 
-        Ответ должен выглядеть следующим образом:
+        Результат должен выглядеть следующим образом:
         ```response
         Query id: 4f79c106-fe49-4145-8eba-15e1cb36d325
 
@@ -195,7 +195,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         └─────────┘
         ```
 
-7.  Обратите внимание, что Airbyte автоматически определил типы данных и добавил 4 столбца в целевую таблицу. Эти столбцы используются Airbyte для управления логикой репликации и журналирования операций. Подробнее см. в <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">официальной документации Airbyte</a>.
+7.  Обратите внимание, что Airbyte автоматически определил типы данных и добавил 4 столбца в целевую таблицу. Эти столбцы используются Airbyte для управления логикой репликации и журналирования операций. Подробная информация доступна в <a href="https://docs.airbyte.com/integrations/destinations/clickhouse#output-schema" target="_blank">официальной документации Airbyte</a>.
 
         ```sql
             `_airbyte_ab_id` String,

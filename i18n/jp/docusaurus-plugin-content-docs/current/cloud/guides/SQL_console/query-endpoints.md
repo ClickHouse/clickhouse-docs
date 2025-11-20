@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Query API エンドポイント'
+sidebar_title: 'クエリ API エンドポイント'
 slug: /cloud/get-started/query-endpoints
 description: '保存済みクエリから REST API エンドポイントを簡単に作成'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'Query API エンドポイント'
+title: 'クエリ API エンドポイント'
 doc_type: 'guide'
 ---
 
@@ -20,18 +20,18 @@ import TabItem from '@theme/TabItem';
 
 # クエリ API エンドポイントの設定
 
-**Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで保存した任意の SQL クエリから、直接 API エンドポイントを作成できます。これにより、ネイティブドライバーを使用して ClickHouse Cloud サービスに接続することなく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できます。
+**Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで保存した任意の SQL クエリから、直接 API エンドポイントを作成できます。HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるため、ネイティブドライバーを使って ClickHouse Cloud サービスに接続する必要がなくなります。
 
 
 
 ## 前提条件 {#quick-start-guide}
 
-作業を進める前に、以下を確認してください：
+作業を進める前に、以下をご確認ください：
 
 - 適切な権限を持つAPIキー
 - Admin Consoleロール
 
-APIキーをまだお持ちでない場合は、[APIキーの作成](/cloud/manage/openapi)ガイドに従って作成できます。
+APIキーをまだお持ちでない場合は、[APIキーの作成](/cloud/manage/openapi)ガイドに従って作成してください。
 
 :::note 最小限の権限
 APIエンドポイントにクエリを実行するには、APIキーに`Member`組織ロールと`Query Endpoints`サービスアクセスが必要です。データベースロールはエンドポイント作成時に設定されます。
@@ -41,7 +41,7 @@ APIエンドポイントにクエリを実行するには、APIキーに`Member`
 
 ### 保存済みクエリの作成 {#creating-a-saved-query}
 
-保存済みクエリをすでにお持ちの場合は、このステップをスキップできます。
+保存済みクエリをお持ちの場合は、このステップをスキップできます。
 
 新しいクエリタブを開きます。デモンストレーションのため、約45億レコードを含む[youtubeデータセット](/getting-started/example-datasets/youtube-dislikes)を使用します。
 Cloudサービス上でテーブルを作成しデータを挿入するには、["Create table"](/getting-started/example-datasets/youtube-dislikes#create-the-table)セクションの手順に従ってください。
@@ -73,7 +73,7 @@ ORDER BY per_upload desc
 
 このクエリには、上記のスニペットでハイライトされているパラメータ（`year`）が含まれていることに注意してください。
 クエリパラメータは、波括弧`{ }`とパラメータの型を組み合わせて指定できます。
-SQLコンソールのクエリエディタは、ClickHouseクエリパラメータ式を自動的に検出し、各パラメータの入力フィールドを提供します。
+SQLコンソールクエリエディタは、ClickHouseクエリパラメータ式を自動的に検出し、各パラメータの入力欄を提供します。
 
 SQLエディタの右側にあるクエリ変数入力ボックスで年`2010`を指定して、このクエリが正常に動作することを確認しましょう：
 
@@ -83,11 +83,11 @@ SQLエディタの右側にあるクエリ変数入力ボックスで年`2010`�
 
 <Image img={endpoints_savequery} size='md' alt='Save example query' />
 
-保存済みクエリに関する詳細なドキュメントは、["Saving a query"](/cloud/get-started/sql-console#saving-a-query)セクションを参照してください。
+保存済みクエリに関する詳細なドキュメントは、["Saving a query"](/cloud/get-started/sql-console#saving-a-query)セクションをご覧ください。
 
 ### クエリAPIエンドポイントの設定 {#configuring-the-query-api-endpoint}
 
-クエリAPIエンドポイントは、クエリビューから直接設定できます。**Share**ボタンをクリックして`API Endpoint`を選択してください。
+クエリAPIエンドポイントは、クエリビューから直接設定できます。**Share**ボタンをクリックし、`API Endpoint`を選択してください。
 エンドポイントにアクセスできるAPIキーを指定するよう求められます：
 
 <Image img={endpoints_configure} size='md' alt='Configure query endpoint' />
@@ -111,7 +111,7 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 
 ### クエリAPIパラメータ {#query-api-parameters}
 
-クエリ内のクエリパラメータは、`{parameter_name: type}`の構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストペイロードには、これらのパラメータを渡すための`queryVariables`オブジェクトが含まれます。
+クエリ内のクエリパラメータは、`{parameter_name: type}`という構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストペイロードには、これらのパラメータを渡すための`queryVariables`オブジェクトが含まれます。
 
 ### テストとモニタリング {#testing-and-monitoring}
 
@@ -149,12 +149,12 @@ POST /query-endpoints/{queryEndpointId}/run
 
 - 複雑なネストされたデータを含まないシンプルなクエリ
 - パラメータを簡単にURLエンコードできる
-- HTTP GETセマンティクスによるキャッシングの利点を活用できる
+- HTTP GETセマンティクスによるキャッシングの利点
 
 **POSTを使用する場合:**
 
 - 複雑なクエリ変数(配列、オブジェクト、大きな文字列)
-- セキュリティ/プライバシーのためにリクエストボディが望ましい
+- セキュリティやプライバシーのためにリクエストボディが望ましい
 - ストリーミングファイルアップロードまたは大量データ
 
 ### 認証 {#authentication}
@@ -247,13 +247,13 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ### 基本的なリクエスト {#basic-request}
 
-**Query APIエンドポイントSQL:**
+**Query API エンドポイント SQL:**
 
 ```sql
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-#### バージョン1 {#version-1}
+#### バージョン 1 {#version-1}
 
 <Tabs>
 <TabItem value="cURL" label="cURL" default>
@@ -312,7 +312,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### バージョン2 {#version-2}
+#### バージョン 2 {#version-2}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -368,9 +368,9 @@ fetch(
 </TabItem>
 </Tabs>
 
-### クエリ変数とバージョン2を使用したJSONCompactEachRow形式のリクエスト {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### クエリ変数とバージョン 2 を使用した JSONCompactEachRow 形式のリクエスト {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**Query APIエンドポイントSQL:**
+**Query API エンドポイント SQL:**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
@@ -550,15 +550,15 @@ fetch(
 )
   .then((response) => response.json())
   .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error))
+  .catch((error) => console.error("エラー:", error))
 ```
 
 </TabItem>
 </Tabs>
 
-### レスポンスをストリームとしてリクエストして解析する {#request-and-parse-the-response-as-a-stream}
+### レスポンスをストリームとしてリクエストし、解析する` {#request-and-parse-the-response-as-a-stream}
 
-**Query APIエンドポイントSQL:**
+**Query API エンドポイント用 SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
@@ -599,11 +599,11 @@ async function fetchAndLogChunks(
   })
 
   reader.on("end", () => {
-    console.log("Stream ended.")
+    console.log("ストリームが終了しました。")
   })
 
   reader.on("error", (err) => {
-    console.error("Stream error:", err)
+    console.error("ストリーム エラー:", err)
   })
 }
 
@@ -622,15 +622,15 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
 > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
 ...
-> Stream ended.
+> ストリームが終了しました。
 ```
 
 </TabItem>
 </Tabs>
 
-### ファイルからテーブルへストリームを挿入する {#insert-a-stream-from-a-file-into-a-table}
+### ファイルからテーブルにストリームを挿入する {#insert-a-stream-from-a-file-into-a-table}
 
-以下の内容で`./samples/my_first_table_2024-07-11.csv`ファイルを作成します:
+次の内容を持つファイル `./samples/my_first_table_2024-07-11.csv` を作成します:
 
 ```csv
 "user_id","json","name"
@@ -638,7 +638,7 @@ fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**テーブル作成SQL:**
+**テーブル作成用 SQL:**
 
 ```sql
 create table default.my_first_table
@@ -650,7 +650,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**Query APIエンドポイントSQL:**
+**Query API エンドポイント用 SQL:**
 
 ```sql
 INSERT INTO default.my_first_table

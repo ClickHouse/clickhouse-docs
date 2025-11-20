@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/minMap'
 title: 'minMap'
-description: 'minMap 组合器的使用示例'
+description: 'minMap 组合器的用法示例'
 keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
 doc_type: 'reference'
@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数,使用 `minMap` 聚合组合器函数计算 Map 中每个键对应的最小值。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可应用于 [`min`](/sql-reference/aggregate-functions/reference/min) 函数，使用 `minMap` 聚合组合器函数按每个键计算 Map 中的最小值。
 
 
 ## 使用示例 {#example-usage}
@@ -68,4 +68,4 @@ GROUP BY timeslot;
 ## 另请参阅 {#see-also}
 
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

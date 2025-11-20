@@ -1,14 +1,14 @@
 每个配置文件都将包含以下唯一配置（如下所示）。
-所使用的 `server_id` 应当在集群中对应的 ClickHouse Keeper 节点中保持唯一，
-并且与 `<raft_configuration>` 部分中定义的服务器 `<id>` 相匹配。
-`tcp_port` 是供 ClickHouse Keeper 的 *客户端* 使用的端口。
+所使用的 `server_id` 应当在集群中对该 ClickHouse Keeper 节点是唯一的，
+并且与 `<raft_configuration>` 部分中定义的服务器 `<id>` 相对应。
+`tcp_port` 是 ClickHouse Keeper 的 *客户端* 使用的端口。
 
 ```xml
 <tcp_port>9181</tcp_port>
 <server_id>{id}</server_id>
 ```
 
-以下部分用于配置参与 [Raft 共识算法](https://en.wikipedia.org/wiki/Raft_\(algorithm\)) 法定人数的服务器：
+以下部分用于配置参与 [Raft 共识算法](https://en.wikipedia.org/wiki/Raft_\(algorithm\)) 仲裁的服务器：
 
 ```xml
 <raft_configuration>

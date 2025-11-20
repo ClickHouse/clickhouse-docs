@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Amazon Aurora Postgres'
-description: 'ClickPipes のソースとして Amazon Aurora Postgres を設定する'
+description: 'ClickPipes のソースとして Amazon Aurora Postgres をセットアップする'
 slug: /integrations/clickpipes/postgres/source/aurora
-title: 'Aurora Postgres ソース設定ガイド'
+title: 'Aurora Postgres ソースセットアップガイド'
 doc_type: 'guide'
-keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS database', 'logical replication setup']
+keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS データベース', '論理レプリケーションのセットアップ']
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -17,18 +17,18 @@ import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/
 import Image from '@theme/IdealImage';
 
 
-# Aurora PostgreSQL ソース設定ガイド
+# Aurora Postgres ソースセットアップガイド
 
 
 
 ## サポートされているPostgresバージョン {#supported-postgres-versions}
 
-ClickPipesは、Aurora PostgreSQL互換エディションのバージョン12以降をサポートしています。
+ClickPipesは、Aurora PostgreSQL互換エディションバージョン12以降をサポートしています。
 
 
 ## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-Auroraインスタンスに以下の設定が既に構成されている場合は、このセクションをスキップできます:
+Aurora インスタンスに以下の設定が既に構成されている場合は、このセクションをスキップできます:
 
 - `rds.logical_replication = 1`
 - `wal_sender_timeout = 0`
@@ -51,48 +51,48 @@ postgres=> SHOW wal_sender_timeout ;
 
 まだ構成されていない場合は、以下の手順に従ってください:
 
-1. 必要な設定を含むAurora PostgreSQLバージョン用の新しいパラメータグループを作成します:
-   - `rds.logical_replication`を1に設定
-   - `wal_sender_timeout`を0に設定
+1. 必要な設定を含む、Aurora PostgreSQL バージョン用の新しいパラメータグループを作成します:
+   - `rds.logical_replication` を 1 に設定
+   - `wal_sender_timeout` を 0 に設定
 
 <Image
   img={parameter_group_in_blade}
-  alt='Auroraでパラメータグループを見つける場所'
+  alt='Aurora でパラメータグループを見つける場所'
   size='lg'
   border
 />
 
 <Image
   img={change_rds_logical_replication}
-  alt='rds.logical_replicationの変更'
+  alt='rds.logical_replication の変更'
   size='lg'
   border
 />
 
 <Image
   img={change_wal_sender_timeout}
-  alt='wal_sender_timeoutの変更'
+  alt='wal_sender_timeout の変更'
   size='lg'
   border
 />
 
-2. 新しいパラメータグループをAurora PostgreSQLクラスタに適用します
+2. 新しいパラメータグループを Aurora PostgreSQL クラスタに適用します
 
 <Image
   img={modify_parameter_group}
-  alt='新しいパラメータグループでAurora PostgreSQLを変更'
+  alt='新しいパラメータグループによる Aurora PostgreSQL の変更'
   size='lg'
   border
 />
 
-3. 変更を適用するためにAuroraクラスタを再起動します
+3. 変更を適用するために Aurora クラスタを再起動します
 
-<Image img={reboot_rds} alt='Aurora PostgreSQLの再起動' size='lg' border />
+<Image img={reboot_rds} alt='Aurora PostgreSQL の再起動' size='lg' border />
 
 
 ## データベースユーザーの設定 {#configure-database-user}
 
-管理者ユーザーとしてAurora PostgreSQLのライターインスタンスに接続し、以下のコマンドを実行します:
+管理者ユーザーとしてAurora PostgreSQLライターインスタンスに接続し、以下のコマンドを実行します:
 
 1. ClickPipes専用のユーザーを作成します:
 
@@ -141,21 +141,21 @@ Auroraクラスタへのトラフィックを制限する場合は、[ドキュ�
   border
 />
 
-### AWS PrivateLinkによるプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLinkを介したプライベートアクセス {#private-access-via-aws-privatelink}
 
-プライベートネットワーク経由でAuroraクラスタに接続するには、AWS PrivateLinkを使用できます。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+プライベートネットワークを介してAuroraクラスタに接続するには、AWS PrivateLinkを使用できます。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)に従ってください。
 
 ### Aurora固有の考慮事項 {#aurora-specific-considerations}
 
-Aurora PostgreSQLでClickPipesを設定する際は、以下の点に留意してください:
+Aurora PostgreSQLでClickPipesを設定する際は、以下の考慮事項に留意してください:
 
-1. **接続エンドポイント**: 論理レプリケーションではレプリケーションスロットを作成するための書き込みアクセスが必要であり、プライマリインスタンスに接続する必要があるため、常にAuroraクラスタのライターエンドポイントに接続してください。
+1. **接続エンドポイント**: 論理レプリケーションはレプリケーションスロットを作成するための書き込みアクセスを必要とし、プライマリインスタンスに接続する必要があるため、常にAuroraクラスタのライターエンドポイントに接続してください。
 
-2. **フェイルオーバー処理**: フェイルオーバーが発生すると、Auroraは自動的にリーダーを新しいライターに昇格させます。ClickPipesは切断を検出し、ライターエンドポイントへの再接続を試みます。このエンドポイントは新しいプライマリインスタンスを指すようになります。
+2. **フェイルオーバー処理**: フェイルオーバーが発生した場合、Auroraは自動的にリーダーを新しいライターに昇格させます。ClickPipesは切断を検出し、ライターエンドポイントへの再接続を試みます。このエンドポイントは新しいプライマリインスタンスを指すようになります。
 
-3. **グローバルデータベース**: Aurora Global Databaseを使用している場合は、プライマリリージョンのライターエンドポイントに接続してください。クロスリージョンレプリケーションがリージョン間のデータ移動を既に処理しているためです。
+3. **グローバルデータベース**: Aurora Global Databaseを使用している場合は、リージョン間のデータ移動はクロスリージョンレプリケーションによって既に処理されているため、プライマリリージョンのライターエンドポイントに接続してください。
 
-4. **ストレージに関する考慮事項**: Auroraのストレージレイヤーはクラスタ内のすべてのインスタンス間で共有されているため、標準的なRDSと比較して論理レプリケーションのパフォーマンスが向上する可能性があります。
+4. **ストレージに関する考慮事項**: Auroraのストレージ層はクラスタ内のすべてのインスタンス間で共有されており、標準的なRDSと比較して論理レプリケーションのパフォーマンスが向上する可能性があります。
 
 ### 動的クラスタエンドポイントへの対処 {#dealing-with-dynamic-cluster-endpoints}
 
@@ -163,10 +163,10 @@ Auroraは適切なインスタンスに自動的にルーティングする安�
 
 1. 高可用性構成の場合、現在のプライマリインスタンスを自動的に指すAuroraライターエンドポイントを使用するようにアプリケーションを設定してください。
 
-2. クロスリージョンレプリケーションを使用している場合は、レイテンシを削減し耐障害性を向上させるために、各リージョンに個別のClickPipesを設定することを検討してください。
+2. クロスリージョンレプリケーションを使用している場合は、レイテンシを削減し、耐障害性を向上させるために、各リージョンに個別のClickPipesを設定することを検討してください。
 
 
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)して、Aurora PostgreSQLクラスタからClickHouse Cloudへのデータ取り込みを開始できます。
-Aurora PostgreSQLクラスタのセットアップ時に使用した接続情報は、ClickPipe作成時に必要となるため、必ず控えておいてください。
+ClickPipeの作成時に必要となるため、Aurora PostgreSQLクラスタのセットアップで使用した接続情報を必ず控えておいてください。

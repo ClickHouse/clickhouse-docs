@@ -1,8 +1,8 @@
 ---
-description: '关于从本地磁盘进行备份/恢复的详细信息'
+description: '介绍在本地磁盘上或从本地磁盘执行备份和恢复的详细信息'
 sidebar_label: '本地磁盘 / S3 磁盘'
 slug: /operations/backup/disk
-title: 'ClickHouse 的备份与恢复'
+title: 'ClickHouse 中的备份与恢复'
 doc_type: 'guide'
 ---
 
@@ -31,7 +31,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 /etc/clickhouse-server/config.d/backup_disk.xml
 ```
 
-例如,下面的配置定义了一个名为 `backups` 的磁盘,然后将该磁盘添加到 **backups** 的 **allowed_disk** 列表中:
+例如,以下配置定义了一个名为 `backups` 的磁盘,然后将该磁盘添加到 **backups** 的 **allowed_disk** 列表中:
 
 ```xml
 <clickhouse>
@@ -135,7 +135,7 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 
 :::note
 如果表 `test.table` 包含数据,上述 `RESTORE` 操作将失败。
-设置 `allow_non_empty_tables=true` 允许 `RESTORE TABLE` 将数据插入非空表。这会将表中的原有数据与从备份中提取的数据混合。
+设置 `allow_non_empty_tables=true` 允许 `RESTORE TABLE` 将数据插入非空表。这会将表中的原有数据与从备份中提取的数据混合在一起。
 因此,此设置可能导致表中出现重复数据,应谨慎使用。
 :::
 
@@ -170,7 +170,7 @@ https://github.com/ClickHouse/clickhouse-docs/issues/3968
 
 ### 磁盘增量备份 {#incremental-backups}
 
-ClickHouse 中的基础备份是初始的完整备份,后续的增量备份都基于此创建。增量备份仅存储自基础备份以来的变更,因此必须保留基础备份才能从任何增量备份中恢复。可以使用 `base_backup` 设置来指定基础备份的位置。
+ClickHouse 中的基础备份是初始的完整备份,后续的增量备份都基于此创建。增量备份仅存储自基础备份以来的更改,因此必须保留基础备份才能从任何增量备份中恢复。可以使用 `base_backup` 设置来指定基础备份的位置。
 
 :::note
 增量备份依赖于基础备份。必须保留基础备份才能从增量备份中恢复。
@@ -225,19 +225,19 @@ SETTINGS password='qwerty'
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')
 ```
 
-从 tar 归档恢复：
+从 tar 归档文件恢复：
 
 ```sql
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.tar')
 ```
 
-要更改压缩方法，需要在备份名称后添加相应的文件后缀。例如，使用 gzip 压缩 tar 归档时运行：
+要更改压缩方法，应在备份名称后附加正确的文件后缀。例如，要使用 gzip 压缩 tar 归档文件，请运行：
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 ```
 
-支持的压缩文件后缀有：
+支持的压缩文件后缀包括：
 
 - `tar.gz`
 - `.tgz`
@@ -249,10 +249,10 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 
 ### 压缩设置 {#compression-settings}
 
-可以分别通过 `compression_method` 和 `compression_level` 设置来指定压缩方法和压缩级别。
+可以分别使用 `compression_method` 和 `compression_level` 设置来指定压缩方法和压缩级别。
 
-<!-- TO DO:
-More information needed on these settings and why you would want to do this
+<!-- 待办：
+需要更多关于这些设置的信息以及为什么要这样做
 -->
 
 ```sql
@@ -263,9 +263,9 @@ SETTINGS compression_method='lzma', compression_level=3
 
 ### 恢复特定分区 {#restore-specific-partitions}
 
-如果需要恢复表的特定分区，可以指定这些分区。
+如果需要恢复与表关联的特定分区，可以指定这些分区。
 
-下面创建一个简单的分区表，分为四个分区，插入一些数据，然后仅备份第一个和第四个分区：
+让我们创建一个简单的分区表，将其分为四个部分，向其中插入一些数据，然后仅备份第一个和第四个分区：
 
 <details>
 

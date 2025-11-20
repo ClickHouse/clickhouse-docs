@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-committed-contract
 title: 'GCP Marketplace コミットメント契約'
-description: 'GCP Marketplace（コミットメント契約）を通じて ClickHouse Cloud を購読する'
+description: 'GCP Marketplace（コミットメント契約）を通じて ClickHouse Cloud をサブスクライブする'
 keywords: ['gcp', 'google', 'marketplace', 'billing', 'committed', 'committed contract']
 doc_type: 'guide'
 ---
@@ -22,12 +22,12 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-コミット契約を通じて、[GCP Marketplace](https://console.cloud.google.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。コミット契約（Private Offer とも呼ばれます）を利用すると、お客様は一定期間に ClickHouse Cloud に対して支出する金額をあらかじめ約束することができます。
+コミット契約を通じて、[GCP Marketplace](https://console.cloud.google.com/marketplace) から ClickHouse Cloud の利用を開始できます。コミット契約（Private Offer とも呼ばれます）では、一定期間にわたり ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束することができます。
 
 
 ## 前提条件 {#prerequisites}
 
-- 特定の契約条件に基づくClickHouseからのプライベートオファー
+- 特定の契約条件に基づいたClickHouseからのプライベートオファー
 
 
 ## サインアップ手順 {#steps-to-sign-up}
@@ -119,7 +119,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-6. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントで登録できます。
+6. ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録できます。
 
 <br />
 
@@ -132,7 +132,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register**をクリックします。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスの確認後、ClickHouse Cloudログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
+ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register**をクリックします。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスの確認後、ClickHouse Cloudログインページを閉じ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
 
 <br />
 
@@ -145,7 +145,7 @@ ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register
 
 <br />
 
-新規ユーザーの場合、ビジネスに関する基本情報の入力も必要です。以下のスクリーンショットを参照してください。
+新規ユーザーの場合は、ビジネスに関する基本情報の入力も必要です。以下のスクリーンショットを参照してください。
 
 <br />
 

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-payg
 title: 'Azure Marketplace 従量課金 (PAYG)'
-description: 'Azure Marketplace（従量課金 / PAYG）を通じて ClickHouse Cloud をサブスクライブします。'
+description: 'Azure Marketplace（従量課金: PAYG）から ClickHouse Cloud をサブスクライブします。'
 keywords: ['azure', 'marketplace', 'billing', 'PAYG']
 doc_type: 'guide'
 ---
@@ -22,7 +22,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) の PAYG（従量課金制）パブリックオファーから、ClickHouse Cloud の利用を開始しましょう。
+[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上の従量課金制 (PAYG: Pay-as-you-go) パブリックオファーから ClickHouse Cloud を使い始めましょう。
 
 
 ## 前提条件 {#prerequisites}
@@ -30,7 +30,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 - 請求管理者によって購入権限が有効化されているAzureプロジェクト。
 - Azure MarketplaceでClickHouse Cloudをサブスクライブするには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
 
-1. [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)にアクセスし、ClickHouse Cloudを検索します。マーケットプレイスで製品を購入できるように、ログインしていることを確認してください。
+1. [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)にアクセスし、ClickHouse Cloudを検索します。マーケットプレイスで製品を購入できるように、必ずログインしてください。
 
 <br />
 
@@ -82,7 +82,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-5. 次の画面で、サブスクリプション、リソースグループ、およびリソースグループの場所を選択します。リソースグループの場所は、ClickHouse Cloudでサービスを起動する予定の場所と同じである必要はありません。
+5. 次の画面で、サブスクリプション、リソースグループ、およびリソースグループの場所を選択します。リソースグループの場所は、ClickHouse Cloud上でサービスを起動する予定の場所と同じである必要はありません。
 
 <br />
 
@@ -95,7 +95,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-6. サブスクリプションの名前を入力し、利用可能なオプションから請求期間を選択する必要もあります。**Recurring billing**をオンまたはオフに設定できます。「オフ」に設定すると、請求期間の終了後に契約が終了し、リソースが削除されます。
+6. また、サブスクリプションの名前を入力し、利用可能なオプションから請求期間を選択する必要があります。**Recurring billing**をオンまたはオフに設定できます。「オフ」に設定すると、請求期間の終了後に契約が終了し、リソースが廃止されます。
 
 <br />
 
@@ -110,7 +110,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 7. **「Review + subscribe」**をクリックします。
 
-8. 次の画面で、すべてが正しいことを確認し、**Subscribe**をクリックします。
+8. 次の画面で、すべての内容が正しいことを確認し、**Subscribe**をクリックします。
 
 <br />
 
@@ -123,7 +123,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-9. この時点で、ClickHouse CloudのAzureサブスクリプションへの登録は完了していますが、ClickHouse Cloudでのアカウント設定はまだ完了していません。次のステップは、ClickHouse CloudがAzureサブスクリプションに紐付けられ、Azure Marketplaceを通じて請求が正しく行われるために必要かつ重要です。
+9. この時点で、ClickHouse CloudのAzureサブスクリプションへのサブスクライブは完了していますが、ClickHouse Cloud上でのアカウント設定はまだ完了していません。次のステップは、ClickHouse CloudがAzureサブスクリプションにバインドされ、Azure Marketplaceを通じて請求が正しく行われるために必要かつ重要です。
 
 <br />
 
@@ -166,7 +166,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-12. ClickHouse Cloudのサインアップまたはサインインページにリダイレクトされます。ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録できます。このステップは、ClickHouse CloudのOrganizationをAzure Marketplaceの請求に紐付けるために非常に重要です。
+12. ClickHouse Cloudのサインアップまたはサインインページにリダイレクトされます。ClickHouse Cloudにリダイレクトされたら、既存のアカウントでログインするか、新しいアカウントを登録できます。このステップは、ClickHouse Cloudの組織をAzure Marketplaceの請求にバインドするために非常に重要です。
 
 13. 新規ユーザーの場合、ビジネスに関する基本情報も入力する必要があります。以下のスクリーンショットを参照してください。
 
@@ -190,7 +190,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-**Complete sign up**をクリックすると、ClickHouse Cloud内のOrganizationに移動し、請求画面を表示してAzure Marketplaceを通じて請求されていることを確認し、サービスを作成できます。
+**Complete sign up**をクリックすると、ClickHouse Cloud内の組織に移動し、請求画面を表示してAzure Marketplace経由で請求されていることを確認できます。また、サービスを作成することもできます。
 
 <br />
 
@@ -217,4 +217,4 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-14. 問題が発生した場合は、[サポートチーム](https://clickhouse.com/support/program)までお気軽にお問い合わせください。
+14. 問題が発生した場合は、どうぞ遠慮なく[サポートチーム](https://clickhouse.com/support/program)までお問い合わせください。

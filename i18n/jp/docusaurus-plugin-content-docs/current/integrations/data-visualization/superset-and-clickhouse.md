@@ -33,7 +33,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> は、Python で実装されたオープンソースのデータ探索・可視化プラットフォームです。Superset は、ClickHouse が提供する Python ドライバーを使用して ClickHouse に接続します。では、その仕組みを見ていきましょう。
+<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> は、Python で実装されたオープンソースのデータ探索および可視化プラットフォームです。Superset は、ClickHouse が提供する Python ドライバーを使って ClickHouse に接続します。それでは、どのように動作するか見ていきましょう。
 
 
 
@@ -44,13 +44,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <Image
   size='md'
   img={superset_12}
-  alt='円グラフやテーブルなど複数の可視化で英国不動産価格を表示するSupersetダッシュボード'
+  alt='円グラフやテーブルなど複数の可視化を含む英国不動産価格を表示するSupersetダッシュボード'
   border
 />
 <br />
 
 :::tip データの追加
-作業用のデータセットがない場合は、サンプルデータセットの1つを追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択することをお勧めします。同じドキュメントカテゴリには他にもいくつかのサンプルがあります。
+作業用のデータセットがない場合は、サンプルデータセットの1つを追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択することをお勧めします。同じドキュメントカテゴリには他にも複数のデータセットがあります。
 :::
 
 
@@ -61,13 +61,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## 2. ドライバーのインストール {#2-install-the-driver}
 
-1. Supersetは`clickhouse-connect`ドライバーを使用してClickHouseに接続します。`clickhouse-connect`の詳細は<a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a>で確認でき、以下のコマンドでインストールできます:
+1. SupersetはClickHouseへの接続に`clickhouse-connect`ドライバーを使用します。`clickhouse-connect`の詳細は<a href="https://pypi.org/project/clickhouse-connect/" target="_blank">https://pypi.org/project/clickhouse-connect/</a>で確認でき、以下のコマンドでインストールできます:
 
    ```console
    pip install clickhouse-connect
    ```
 
-2. Supersetを起動(または再起動)します。
+2. Supersetを起動(または再起動)してください。
 
 
 ## 3. SupersetをClickHouseに接続する {#3-connect-superset-to-clickhouse}
@@ -82,7 +82,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-2. 最初のステップで、データベースのタイプとして**ClickHouse Connect**を選択します:
+2. 最初のステップで、データベースの種類として**ClickHouse Connect**を選択します:
 
 <Image
   size='sm'
@@ -94,9 +94,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 3. 2番目のステップで:
 
-- SSLをオンまたはオフに設定します。
-- 先ほど収集した接続情報を入力します
-- **DISPLAY NAME**を指定します: 任意の名前を設定できます。複数のClickHouseデータベースに接続する場合は、より説明的な名前を付けてください。
+- SSLのオン/オフを設定します。
+- 事前に収集した接続情報を入力します
+- **DISPLAY NAME**を指定します:任意の名前を設定できます。複数のClickHouseデータベースに接続する場合は、より説明的な名前を付けてください。
 
 <Image
   size='sm'
@@ -106,7 +106,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-4. **CONNECT**ボタンをクリックし、次に**FINISH**ボタンをクリックしてセットアップウィザードを完了すると、データベースのリストに追加したデータベースが表示されます。
+4. **CONNECT**ボタンをクリックし、次に**FINISH**ボタンをクリックしてセットアップウィザードを完了します。データベースのリストに追加したデータベースが表示されます。
 
 
 ## 4. データセットの追加 {#4-add-a-dataset}
@@ -126,9 +126,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 3. ダイアログウィンドウ下部の**ADD**ボタンをクリックすると、テーブルがデータセットのリストに表示されます。これでダッシュボードを構築し、ClickHouseデータを分析する準備が整いました!
 
 
-## 5. Supersetでチャートとダッシュボードを作成する {#5--creating-charts-and-a-dashboard-in-superset}
+## 5. Supersetでのチャートとダッシュボードの作成 {#5--creating-charts-and-a-dashboard-in-superset}
 
-Supersetに慣れている方であれば、このセクションもスムーズに進められるでしょう。Supersetが初めての方でも心配ありません。他の優れた可視化ツールと同様に、使い始めるのは簡単ですが、細かい機能や使いこなし方はツールを使っていく中で自然と身についていきます。
+Supersetに慣れている方であれば、次のセクションもスムーズに進められるでしょう。Supersetが初めての方でも心配ありません。他の優れた可視化ツールと同様に、使い始めるのは簡単ですが、詳細な機能や使いこなし方はツールを使用していく中で徐々に習得していくことになります。
 
 1. まずダッシュボードから始めます。Supersetの上部メニューから**Dashboards**を選択します。右上のボタンをクリックして新しいダッシュボードを追加します。以下のダッシュボードは**UK property prices**という名前です:
 
@@ -150,7 +150,7 @@ Supersetに慣れている方であれば、このセクションもスムーズ
 />
 <br />
 
-3. Supersetの円グラフには**Dimension**と**Metric**が必要で、その他の設定はオプションです。ディメンションとメトリックには任意のフィールドを選択できます。この例では、ClickHouseのフィールド`district`をディメンションとして、`AVG(price)`をメトリックとして使用しています。
+3. Supersetの円グラフには**Dimension**と**Metric**が必要で、その他の設定は任意です。ディメンションとメトリックには任意のフィールドを選択できます。この例では、ClickHouseのフィールド`district`をディメンションとして、`AVG(price)`をメトリックとして使用しています。
 
 <Image
   size='md'
@@ -176,7 +176,7 @@ Supersetに慣れている方であれば、このセクションもスムーズ
 />
 <br />
 
-6. **SAVE**ボタンをクリックしてチャートを保存し、**ADD TO DASHBOARD**ドロップダウンから**UK property prices**を選択した後、**SAVE & GO TO DASHBOARD**をクリックしてチャートを保存しダッシュボードに追加します:
+6. **SAVE**ボタンをクリックしてチャートを保存し、**ADD TO DASHBOARD**ドロップダウンで**UK property prices**を選択してから、**SAVE & GO TO DASHBOARD**をクリックしてチャートを保存しダッシュボードに追加します:
 
 <Image
   size='md'

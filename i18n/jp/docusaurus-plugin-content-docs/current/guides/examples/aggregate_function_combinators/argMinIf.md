@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
 title: 'argMinIf'
-description: 'argMinIf コンビネーターの使用例'
+description: 'argMinIf コンビネータの使用例'
 keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
 sidebar_label: 'argMinIf'
 doc_type: 'reference'
@@ -22,9 +22,9 @@ doc_type: 'reference'
 ## 使用例 {#example-usage}
 
 この例では、商品価格とそのタイムスタンプを格納するテーブルを作成し、
-`argMinIf`を使用して各商品の在庫がある時点での最低価格を見つけます。
+`argMinIf`を使用して各商品の在庫がある時点での最低価格を取得します。
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE product_prices(
     product_id UInt32,
     price Decimal(10,2),
@@ -47,13 +47,13 @@ FROM product_prices
 GROUP BY product_id;
 ```
 
-`argMinIf`関数は、各商品について最も早いタイムスタンプに対応する価格を見つけますが、
-`in_stock = 1`の行のみを考慮します。例えば：
+`argMinIf`関数は、各商品について最も早いタイムスタンプに対応する価格を取得しますが、
+`in_stock = 1`の行のみを対象とします。例えば:
 
-- 商品1：在庫ありの行の中で、10.99が最も早いタイムスタンプ（10:00:00）を持つ
-- 商品2：在庫ありの行の中で、20.99が最も早いタイムスタンプ（11:00:00）を持つ
+- 商品1: 在庫ありの行の中で、10.99が最も早いタイムスタンプ(10:00:00)を持つ
+- 商品2: 在庫ありの行の中で、20.99が最も早いタイムスタンプ(11:00:00)を持つ
 
-```response title="レスポンス"
+```response title="Response"
    ┌─product_id─┬─lowest_price_when_in_stock─┐
 1. │          1 │                      10.99 │
 2. │          2 │                      20.99 │

@@ -1,6 +1,6 @@
 ---
-title: 'Поддерживаемые регионы в облаке'
-sidebar_label: 'Поддерживаемые регионы в облаке'
+title: 'Поддерживаемые облачные регионы'
+sidebar_label: 'Поддерживаемые регионы ClickHouse Cloud'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'Поддерживаемые регионы для ClickHouse Cloud'
 slug: /cloud/reference/supported-regions
@@ -25,11 +25,11 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-west-1 (Ирландия)
 - eu-west-2 (Лондон)
 - me-central-1 (ОАЭ)
-- us-east-1 (Северная Виргиния)
+- us-east-1 (Сев. Виргиния)
 - us-east-2 (Огайо)
 - us-west-2 (Орегон)
 
-**Частные регионы:**
+**Частный регион:**
 
 - ca-central-1 (Канада)
 - af-south-1 (Южная Африка)
@@ -45,7 +45,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-central1 (Айова)
 - us-east1 (Южная Каролина)
 
-**Частные регионы:**
+**Приватные регионы:**
 
 - us-west1 (Орегон)
 - australia-southeast1 (Сидней)
@@ -88,15 +88,15 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge feature='HIPAA' support='true' />
 
-Для настройки сервисов в регионах, соответствующих требованиям HIPAA, клиенты должны подписать соглашение о партнерстве (Business Associate Agreement, BAA) и запросить подключение через отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие HIPAA:
+Для настройки сервисов в регионах, соответствующих требованиям HIPAA, клиенты должны подписать соглашение Business Associate Agreement (BAA) и запросить подключение через отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие HIPAA:
 
-- AWS af-south-1 (Южная Африка) **Частный регион**
-- AWS ca-central-1 (Канада) **Частный регион**
+- AWS af-south-1 (Южная Африка) **Приватный регион**
+- AWS ca-central-1 (Канада) **Приватный регион**
 - AWS eu-central-1 (Франкфурт)
-- AWS eu-north-1 (Стокгольм) **Частный регион**
+- AWS eu-north-1 (Стокгольм) **Приватный регион**
 - AWS eu-west-1 (Ирландия)
 - AWS eu-west-2 (Лондон)
-- AWS sa-east-1 (Южная Америка) **Частный регион**
+- AWS sa-east-1 (Южная Америка) **Приватный регион**
 - AWS us-east-1 (Северная Виргиния)
 - AWS us-east-2 (Огайо)
 - AWS us-west-2 (Орегон)
@@ -109,7 +109,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge feature='PCI' support='true' />
 
-Для настройки сервисов в регионах, соответствующих стандарту PCI, клиенты должны обратиться в отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие стандарту PCI:
+Для настройки сервисов в регионах, соответствующих стандарту PCI, клиенты должны запросить подключение через отдел продаж или службу поддержки. Следующие регионы поддерживают соответствие стандарту PCI:
 
 - AWS af-south-1 (Южная Африка) **Частный регион**
 - AWS ca-central-1 (Канада) **Частный регион**
@@ -118,6 +118,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - AWS eu-west-1 (Ирландия)
 - AWS eu-west-2 (Лондон)
 - AWS sa-east-1 (Южная Америка) **Частный регион**
-- AWS us-east-1 (Северная Виргиния)
+- AWS us-east-1 (Сев. Виргиния)
 - AWS us-east-2 (Огайо)
 - AWS us-west-2 (Орегон)

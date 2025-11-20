@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumMap'
 title: 'sumMap'
-description: 'sumMap 组合器的使用示例'
+description: 'sumMap 组合器使用示例'
 keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
 doc_type: 'reference'
@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数,通过 `sumMap` 聚合组合器函数按每个键计算 Map 中值的总和。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数,通过 `sumMap` 聚合组合器函数按键计算 Map 中各值的总和。
 
 
 ## 使用示例 {#example-usage}
@@ -68,4 +68,4 @@ GROUP BY timeslot;
 ## 另请参阅 {#see-also}
 
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

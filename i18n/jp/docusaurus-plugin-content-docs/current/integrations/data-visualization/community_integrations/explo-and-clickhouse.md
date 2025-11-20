@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo は、データについて簡単に問いかけることができる、使いやすいオープンソースの UI ツールです。'
+description: 'Explo は、データに関する疑問を解決するための、使いやすいオープンソースの UI ツールです。'
 title: 'Explo を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -36,7 +36,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-あらゆるプラットフォームで顧客向けアナリティクスを提供。美しいビジュアライゼーションのために設計され、シンプルさを追求してエンジニアリングされています。
+あらゆるプラットフォーム向けの顧客向けアナリティクス。美しいビジュアライゼーションのために設計され、シンプルさを追求して実装されています。
 
 
 
@@ -49,7 +49,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <p />
 
 :::tip データの追加
-作業用のデータセットがない場合は、サンプルの中から1つ追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択するとよいでしょう。同じドキュメントカテゴリには他にも複数のデータセットがあります。
+作業用のデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは[UK Price Paid](/getting-started/example-datasets/uk-price-paid.md)データセットを使用しているため、こちらを選択することをお勧めします。同じドキュメントカテゴリには他にも複数のデータセットがあります。
 :::
 
 
@@ -70,11 +70,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_02} size='sm' alt='Connect Data Source' border />
 
-4. **Getting Started**ページで情報を入力します
+4. **Getting Started**ページの情報を入力します。
 
 <Image img={explo_03} size='md' alt='Getting Started' border />
 
-5. **Clickhouse**を選択します
+5. **Clickhouse**を選択します。
 
 <Image img={explo_04} size='md' alt='Clickhouse' border />
 
@@ -82,7 +82,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_05} size='md' alt='Credentials' border />
 
-7. **Security**を設定します
+7. **Security**を設定します。
 
 <Image img={explo_06} size='md' alt='Security' border />
 
@@ -90,19 +90,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    `54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148`
 
 
-## 3. ダッシュボードの作成 {#3-create-a-dashboard}
+## 3. ダッシュボードを作成する {#3-create-a-dashboard}
 
-1. 左側のナビゲーションバーから **Dashboard** タブに移動します。
+1. 左側のナビゲーションバーにある **Dashboard** タブに移動します。
 
-<Image img={explo_07} size='sm' alt='ダッシュボード' border />
+<Image img={explo_07} size='sm' alt='Dashboard' border />
 
-2. 右上の **Create Dashboard** をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました！
+2. 右上隅の **Create Dashboard** をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました!
 
-<Image img={explo_08} size='sm' alt='ダッシュボードの作成' border />
+<Image img={explo_08} size='sm' alt='Create Dashboard' border />
 
-3. 次のような画面が表示されます：
+3. 次のような画面が表示されます:
 
-<Image img={explo_09} size='md' alt='Explo ダッシュボード' border />
+<Image img={explo_09} size='md' alt='Explo Dashboard' border />
 
 
 ## 4. SQLクエリを実行する {#4-run-a-sql-query}
@@ -118,29 +118,29 @@ LIMIT 100`
 <Image img={explo_11} size='md' alt='Explo Dashboard' border />
 
 
-## 5. チャートの作成 {#5-build-a-chart}
+## 5. チャートを作成する {#5-build-a-chart}
 
-1. 左側から棒グラフアイコンを画面上にドラッグします。
+1. 左側から棒グラフアイコンを画面にドラッグします。
 
-<Image img={explo_16} size='sm' alt='Explo Dashboard' border />
+<Image img={explo_16} size='sm' alt='Exploダッシュボード' border />
 
-2. データセットを選択します。次のような画面が表示されます:
+2. データセットを選択します。以下のような画面が表示されます:
 
-<Image img={explo_12} size='sm' alt='Explo Dashboard' border />
+<Image img={explo_12} size='sm' alt='Exploダッシュボード' border />
 
-3. X軸に**county**、Y軸セクションに**Price**を次のように入力します:
+3. X軸に**county**、Y軸セクションに**Price**を以下のように設定します:
 
-<Image img={explo_13} size='sm' alt='Explo Dashboard' border />
+<Image img={explo_13} size='sm' alt='Exploダッシュボード' border />
 
 4. 次に、集計方法を**AVG**に変更します。
 
-<Image img={explo_14} size='sm' alt='Explo Dashboard' border />
+<Image img={explo_14} size='sm' alt='Exploダッシュボード' border />
 
-5. これで、郡ごとの住宅平均価格が表示されます!
+5. これで郡ごとの住宅平均価格が表示されます!
 
-<Image img={explo_15} size='md' alt='Explo Dashboard' />
+<Image img={explo_15} size='md' alt='Exploダッシュボード' />
 
 
 ## 詳細情報 {#learn-more}
 
-Exploおよびダッシュボードの構築方法の詳細については、<a href="https://docs.explo.co/" target="_blank">Exploドキュメント</a>を参照してください。
+Exploおよびダッシュボードの構築方法の詳細については、<a href="https://docs.explo.co/" target="_blank">Exploドキュメント</a>をご覧ください。

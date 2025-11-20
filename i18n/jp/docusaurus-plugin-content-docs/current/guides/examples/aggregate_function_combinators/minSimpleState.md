@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/minSimpleState'
 title: 'minSimpleState'
-description: 'minSimpleState コンビネーターの使用例'
+description: 'minSimpleState コンビネータの使用例'
 keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
 sidebar_label: 'minSimpleState'
 doc_type: 'reference'
@@ -14,12 +14,12 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)コンビネータを[`min`](/sql-reference/aggregate-functions/reference/min)関数に適用することで、すべての入力値における最小値を返すことができます。結果は[`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)型として返されます。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)コンビネータを[`min`](/sql-reference/aggregate-functions/reference/min)関数に適用することで、すべての入力値における最小値を返すことができます。結果は[`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)型で返されます。
 
 
 ## 使用例 {#example-usage}
 
-日々の気温測定値を記録するテーブルを使った実用的な例を見てみましょう。各地点について、記録された最低気温を保持したいとします。
+日々の気温測定値を記録するテーブルを使用した実用的な例を見てみましょう。各地点について、記録された最低気温を保持したいとします。
 `SimpleAggregateFunction`型を`min`と共に使用すると、より低い気温が検出された際に保存された値が自動的に更新されます。
 
 生の気温測定値用のソーステーブルを作成します:
@@ -106,7 +106,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
     (4, 'East', 2);
 ```
 
-新しいデータ投入後の更新された極値を表示します:
+新しいデータ後の更新された極値を表示します:
 
 ```sql
 SELECT
@@ -149,20 +149,20 @@ ORDER BY location_id;
 
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ 北         │        3 │        8 │
-│           2 │ 南         │       15 │       18 │
-│           3 │ 西          │       10 │       10 │
-│           4 │ 東          │        2 │        8 │
+│           1 │ 北部         │        3 │        8 │
+│           2 │ 南部         │       15 │       18 │
+│           3 │ 西部          │       10 │       10 │
+│           4 │ 東部          │        2 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
 :::note
-`SimpleState` を使用すると、部分集計状態を結合するために `Merge` コンビネータを使う必要はありません。
+`SimpleState` を使用する場合、部分集約状態を結合するために `Merge` コンビネータを使用する必要はありません。
 :::
 
 
 ## 関連項目 {#see-also}
 
 - [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)
+- [`SimpleState コンビネータ`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [`SimpleAggregateFunction 型`](/sql-reference/data-types/simpleaggregatefunction)

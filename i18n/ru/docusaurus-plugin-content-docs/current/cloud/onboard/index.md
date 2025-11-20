@@ -1,7 +1,7 @@
 ---
 slug: /cloud/get-started
 title: 'Начало работы с ClickHouse Cloud'
-description: 'Полное руководство по началу работы с ClickHouse Cloud — от знакомства с возможностями до развертывания и оптимизации'
+description: 'Полное руководство по работе с ClickHouse Cloud — от знакомства с возможностями до развертывания и оптимизации'
 hide_title: true
 doc_type: 'guide'
 keywords: ['onboarding', 'getting started', 'cloud setup', 'quickstart', 'introduction']
@@ -12,7 +12,7 @@ keywords: ['onboarding', 'getting started', 'cloud setup', 'quickstart', 'introd
 # Начало работы с ClickHouse Cloud
 
 Впервые используете ClickHouse Cloud и не знаете, с чего начать? В этом разделе документации
-мы покажем вам всё необходимое для быстрого начала работы. Мы разделили
+мы пошагово покажем всё необходимое для быстрого запуска. Мы разделили
 этот раздел на три подраздела, чтобы помочь вам на каждом этапе
 освоения ClickHouse Cloud.
 
@@ -29,7 +29,7 @@ keywords: ['onboarding', 'getting started', 'cloud setup', 'quickstart', 'introd
 
 Теперь, когда вы знаете, что такое ClickHouse Cloud, мы проведём вас через процесс
 загрузки ваших данных в ClickHouse Cloud, покажем основные доступные возможности
-и познакомим с общими рекомендациями, которые вам следует знать.
+и укажем на общие рекомендации, которые вам следует знать.
 
 Темы включают:
 
@@ -38,9 +38,9 @@ keywords: ['onboarding', 'getting started', 'cloud setup', 'quickstart', 'introd
 
 ## Настройка развертывания ClickHouse Cloud {#evaluate-clickhouse-cloud}
 
-Теперь, когда ваши данные загружены в ClickHouse Cloud, мы рассмотрим более продвинутые
-темы, которые помогут вам получить максимальную отдачу от работы с ClickHouse Cloud и изучить
-возможности платформы.
+Теперь, когда ваши данные загружены в ClickHouse Cloud, мы рассмотрим более сложные
+темы, которые помогут вам максимально эффективно использовать ClickHouse Cloud и изучить
+все возможности платформы.
 
 Рассматриваемые темы:
 

@@ -6,7 +6,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-:::warning ベータ機能 - 本番環境では未対応
+:::warning ベータ機能 - 本番環境での使用は非推奨
 **ClickStack**におけるJSON型のサポートは**ベータ機能**です。JSON型自体はClickHouse 25.3以降で本番環境対応済みですが、ClickStack内での統合は現在も活発に開発中であり、制限事項がある場合や、将来的に変更される可能性、またはバグが含まれる可能性があります。
 :::
 

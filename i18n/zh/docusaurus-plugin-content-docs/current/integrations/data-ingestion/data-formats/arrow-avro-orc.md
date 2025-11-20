@@ -12,13 +12,13 @@ doc_type: 'guide'
 
 # 在 ClickHouse 中使用 Avro、Arrow 和 ORC 数据
 
-Apache 提供了多种在分析环境中广泛使用的数据格式，包括流行的 [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/) 和 [Orc](https://orc.apache.org/)。ClickHouse 支持使用上述任一格式导入和导出数据。
+Apache 发布了多种在分析环境中广泛使用的数据格式，其中包括流行的 [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/) 和 [Orc](https://orc.apache.org/)。ClickHouse 支持使用上述任意格式导入和导出数据。
 
 
 
 ## 以 Avro 格式导入和导出 {#importing-and-exporting-in-avro-format}
 
-ClickHouse 支持读写 [Apache Avro](https://avro.apache.org/) 数据文件,该格式在 Hadoop 系统中广泛使用。
+ClickHouse 支持读取和写入 [Apache Avro](https://avro.apache.org/) 数据文件,该格式在 Hadoop 系统中广泛使用。
 
 要从 [avro 文件](assets/data.avro) 导入数据,需要在 `INSERT` 语句中使用 [Avro](/interfaces/formats/Avro) 格式:
 
@@ -28,7 +28,7 @@ FROM INFILE 'data.avro'
 FORMAT Avro
 ```
 
-使用 [file()](/sql-reference/functions/files.md/#file) 函数,可以在实际导入数据之前先查看 Avro 文件内容:
+使用 [file()](/sql-reference/functions/files.md/#file) 函数,可以在实际导入数据之前先查看 Avro 文件的内容:
 
 ```sql
 SELECT path, hits
@@ -47,7 +47,7 @@ LIMIT 5;
 └─────────────────┴───────┘
 ```
 
-导出为 Avro 文件:
+导出到 Avro 文件:
 
 ```sql
 SELECT * FROM sometable
@@ -57,7 +57,7 @@ FORMAT Avro;
 
 ### Avro 与 ClickHouse 数据类型 {#avro-and-clickhouse-data-types}
 
-导入或导出 Avro 文件时需要注意[数据类型映射](/interfaces/formats/Avro#data-type-mapping)。从 Avro 文件加载数据时,可使用显式类型转换:
+在导入或导出 Avro 文件时,需要考虑[数据类型映射](/interfaces/formats/Avro#data-type-mapping)。从 Avro 文件加载数据时,可使用显式类型转换:
 
 ```sql
 SELECT
@@ -77,7 +77,7 @@ LIMIT 3;
 
 ### Kafka 中的 Avro 消息 {#avro-messages-in-kafka}
 
-当 Kafka 消息使用 Avro 格式时,ClickHouse 可以通过 [AvroConfluent](/interfaces/formats/AvroConfluent) 格式和 [Kafka](/engines/table-engines/integrations/kafka.md) 引擎读取这类数据流:
+当 Kafka 消息使用 Avro 格式时,ClickHouse 可以通过 [AvroConfluent](/interfaces/formats/AvroConfluent) 格式和 [Kafka](/engines/table-engines/integrations/kafka.md) 引擎读取此类数据流:
 
 ```sql
 CREATE TABLE some_topic_stream
@@ -111,7 +111,7 @@ INTO OUTFILE 'export.arrow'
 FORMAT Arrow
 ```
 
-另外,请查看[数据类型匹配](/interfaces/formats/Arrow#data-types-matching)以了解是否需要手动转换某些类型。
+此外,请查看[数据类型匹配](/interfaces/formats/Arrow#data-types-matching)以了解是否需要手动转换某些类型。
 
 ### Arrow 数据流 {#arrow-data-streaming}
 
@@ -163,12 +163,12 @@ FROM INFILE 'data.orc'
 FORMAT ORC;
 ```
 
-此外,请参阅[数据类型匹配](/interfaces/formats/ORC)以及[附加设置](/interfaces/formats/Parquet#format-settings)来调整导出和导入行为。
+另外,请参阅[数据类型匹配](/interfaces/formats/ORC)以及[附加设置](/interfaces/formats/Parquet#format-settings)以优化导出和导入操作。
 
 
 ## 延伸阅读 {#further-reading}
 
-ClickHouse 支持多种文本和二进制格式,以满足各种应用场景和平台需求。您可以在以下文章中了解更多格式及其使用方法:
+ClickHouse 支持多种格式,包括文本和二进制格式,以覆盖各种应用场景和平台需求。您可以在以下文章中了解更多格式及其使用方法:
 
 - [CSV 和 TSV 格式](csv-tsv.md)
 - [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
@@ -176,4 +176,4 @@ ClickHouse 支持多种文本和二进制格式,以满足各种应用场景和�
 - [原生和二进制格式](binary.md)
 - [SQL 格式](sql.md)
 
-另外,您还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 这是一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地或远程文件。
+另外,您还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地/远程文件。

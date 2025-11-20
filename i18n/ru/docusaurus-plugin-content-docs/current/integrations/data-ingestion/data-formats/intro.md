@@ -4,7 +4,7 @@ sidebar_label: 'Обзор'
 sidebar_position: 1
 keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
 title: 'Импорт из различных форматов данных в ClickHouse'
-description: 'Страница, описывающая, как импортировать данные в ClickHouse из различных форматов'
+description: 'Страница, описывающая, как импортировать данные из различных форматов в ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -31,8 +31,8 @@ doc_type: 'guide'
 
 Работа с распространенными форматами Apache, такими как Parquet и Arrow.
 
-### [**SQL-данные**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
+### [**Данные SQL**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-Нужно импортировать SQL-дамп в MySQL или PostgreSQL? Здесь вы найдете всё необходимое.
+Необходимо импортировать SQL-дамп в MySQL или PostgreSQL? Вы по адресу.
 
 Если вы хотите подключить инструмент бизнес-аналитики, такой как Grafana, Tableau и другие, обратитесь к разделу [Визуализация](../../data-visualization/index.md) документации.

@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Postgres 用 Azure Flexible Server'
+sidebar_label: 'Azure Flexible Server for Postgres'
 description: 'ClickPipes のソースとして Azure Flexible Server for Postgres をセットアップする'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Postgres 用 Azure Flexible Server ソースセットアップガイド'
+title: 'Azure Flexible Server for Postgres ソース設定ガイド'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 ---
@@ -14,7 +14,7 @@ import firewall from '@site/static/images/integrations/data-ingestion/clickpipes
 import Image from '@theme/IdealImage';
 
 
-# Azure Flexible Server for Postgres ソース設定ガイド
+# Postgres 用 Azure Flexible Server ソース設定ガイド
 
 ClickPipes は Postgres バージョン 12 以降をサポートします。
 
@@ -93,7 +93,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートします。
 
 ネットワークに[ClickPipes IP](../../index.md#list-of-static-ips)を追加するには、以下の手順に従ってください。
 
-1. **Networking**タブに移動し、[ClickPipes IP](../../index.md#list-of-static-ips)をAzure Flexible Server Postgresのファイアウォールに追加します。SSHトンネリングを使用している場合は、ジャンプサーバー/Bastionに追加してください。
+1. **Networking**タブに移動し、[ClickPipes IP](../../index.md#list-of-static-ips)をAzure Flexible Server Postgresのファイアウォールに追加します。SSHトンネリングを使用している場合は、ジャンプサーバー/踏み台サーバーに追加してください。
 
 <Image
   img={firewall}
@@ -104,5 +104,5 @@ ClickPipes は Postgres バージョン 12 以降をサポートします。
 
 ## 次のステップ {#whats-next}
 
-これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず記録しておいてください。
+これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

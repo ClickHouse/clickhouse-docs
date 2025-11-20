@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMergeState'
 title: 'avgMergeState'
-description: 'Пример использования комбинирующей функции avgMergeState'
-keywords: ['avg', 'MergeState', 'combinator', 'examples', 'avgMergeState']
+description: 'Пример использования комбинатора avgMergeState'
+keywords: ['avg', 'MergeState', 'комбинатор', 'примеры', 'avgMergeState']
 sidebar_label: 'avgMergeState'
 doc_type: 'reference'
 ---
@@ -46,7 +46,7 @@ ENGINE = MergeTree()
 ORDER BY (region, server_id, timestamp);
 ```
 
-Создадим целевую таблицу для агрегации на уровне сервера и определим инкрементальное
+Создадим целевую таблицу агрегации на уровне сервера и определим инкрементное
 материализованное представление, выполняющее роль триггера вставки в неё:
 
 ```sql
@@ -190,7 +190,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
   </TabItem>
 </Tabs>
 
-Мы можем вставить больше данных:
+Мы можем добавить больше данных:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -199,7 +199,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Давайте снова проверим производительность на уровне дата-центра. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
+Давайте ещё раз проверим производительность на уровне дата-центра. Обратите внимание, что вся цепочка агрегации обновилась автоматически:
 
 ```sql
 SELECT

@@ -1,8 +1,8 @@
 ---
 slug: /manage/data-sources/cloud-endpoints-api
 sidebar_label: 'Cloud IP addresses'
-title: 'Cloud IP addresses'
-description: '本文介绍 ClickHouse 中 Cloud Endpoints API 的安全特性，并详细说明如何通过身份验证和授权机制管理访问，从而保护您的 ClickHouse 部署。'
+title: '云端 IP 地址'
+description: '本页介绍 ClickHouse 中 Cloud Endpoints API 的安全特性，并说明如何通过身份验证和授权机制管理访问，从而保护您的 ClickHouse 部署。'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'static IP addresses', 'cloud endpoints', 'API', 'security', 'egress IPs', 'ingress IPs', 'firewall']
 ---
@@ -16,7 +16,7 @@ import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized
 
 如果您需要获取静态 IP 列表,可以使用以下 ClickHouse Cloud API 端点:[`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json)。该 API 提供 ClickHouse Cloud 服务的端点信息,包括各区域和云平台的入站/出站 IP 以及 S3 端点。
 
-如果您使用 MySQL 或 PostgreSQL 引擎等集成,可能需要授权 ClickHouse Cloud 访问您的实例。您可以使用此 API 获取公网 IP,并在 GCP 的 `firewalls` 或 `Authorized networks` 中配置,或在 Azure、AWS 的 `Security Groups` 中配置,也可以在您使用的任何其他基础设施出站管理系统中配置。
+如果您使用了 MySQL 或 PostgreSQL 引擎等集成,可能需要授权 ClickHouse Cloud 访问您的实例。您可以使用此 API 获取公网 IP,并在 GCP 的 `firewalls` 或 `Authorized networks` 中配置这些 IP,或在 Azure、AWS 的 `Security Groups` 中配置,也可以在您使用的任何其他基础设施出站管理系统中进行配置。
 
 例如,要允许托管在 AWS `ap-south-1` 区域的 ClickHouse Cloud 服务进行访问,您可以添加该区域的 `egress_ips` 地址:
 

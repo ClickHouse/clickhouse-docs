@@ -9,23 +9,24 @@ doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry integration', 'Golang observability', 'Go tracing instrumentation', 'ClickStack Go SDK']
 ---
 
-ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）。借助自动化埋点可以自动生成追踪数据，因此无需手动埋点也能充分利用分布式追踪的价值。
+ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和
+链路追踪）。通过自动化埋点自动生成追踪数据，因此无需手动埋点即可从追踪中获益。
 
-**本指南涵盖集成：**
+**本指南集成：**
 
 <table>
   <tbody>
     <tr>
-      <td className="pe-2">✅ 日志（Logs）</td>
-      <td className="pe-2">✅ 指标（Metrics）</td>
-      <td className="pe-2">✅ 追踪（Traces）</td>
+      <td className="pe-2">✅ 日志</td>
+      <td className="pe-2">✅ 指标</td>
+      <td className="pe-2">✅ 链路追踪</td>
     </tr>
   </tbody>
 </table>
 
 
 
-## 入门 {#getting-started}
+## 快速入门 {#getting-started}
 
 ### 安装 OpenTelemetry 插桩包 {#install-opentelemetry}
 
@@ -46,7 +47,7 @@ go get -u github.com/hyperdxio/opentelemetry-logs-go
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
-请参考注释部分了解如何对 Go 应用程序进行插桩。
+请参考注释部分了解如何对您的 Go 应用程序进行插桩。
 
 ```go
 
@@ -152,13 +153,13 @@ io.WriteString(w, `{"status":"ok"}`)
 
 ### Gin 应用示例 {#gin-application-example}
 
-在本示例中,我们将使用 `gin-gonic/gin`。
+本示例将使用 `gin-gonic/gin`。
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ````
 
-请参考代码注释部分了解如何对您的 Go 应用程序进行插桩。
+参考代码注释部分了解如何为您的 Go 应用程序添加监测。
 
 ```go
 
@@ -179,7 +180,7 @@ import (
   "go.uber.org/zap"
 )
 
-// 将 trace id 附加到日志中
+// 将 trace id 附加到日志
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
@@ -197,20 +198,20 @@ func main() {
   // 初始化 otel 配置并在整个应用中使用
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("error setting up OTel SDK - %e", err)
+    log.Fatalf("设置 OTel SDK 时出错 - %e", err)
   }
 
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // 配置 opentelemetry 日志提供程序
+  // 配置 opentelemetry 日志提供器
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
 
-  // 优雅地关闭日志记录器以在程序结束前刷新累积的信号
+  // 优雅关闭日志记录器以在程序结束前刷新累积的信号
   defer loggerProvider.Shutdown(ctx)
 
   // 使用 opentelemetry zap core 创建新的日志记录器并全局设置
@@ -222,7 +223,7 @@ func main() {
 
   router.Use(otelgin.Middleware("service-name"))
 
-  // 定义一个响应根 URL 上 GET 请求的路由
+  // 定义响应根 URL GET 请求的路由
   router.GET("/", func(c *gin.Context) {
     _logger := WithTraceMetadata(c.Request.Context(), logger)
     _logger.Info("Hello World!")

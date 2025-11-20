@@ -2,9 +2,9 @@
 sidebar_label: 'ダッシュボード'
 slug: /cloud/manage/dashboards
 title: 'ダッシュボード'
-description: 'SQL Console のダッシュボード機能を使用すると、保存したクエリから作成した可視化を収集して共有できます。'
+description: 'SQL Console のダッシュボード機能を使用すると、保存したクエリから作成した可視化をまとめて共有できます。'
 doc_type: 'guide'
-keywords: ['ClickHouse Cloud', 'dashboards', 'data visualization', 'SQL console dashboards', 'cloud analytics']
+keywords: ['ClickHouse Cloud', 'ダッシュボード', 'データ可視化', 'SQL Console ダッシュボード', 'クラウド分析']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -23,7 +23,7 @@ import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.pn
 
 # ダッシュボード
 
-SQL Console のダッシュボード機能を使用すると、保存したクエリから作成した可視化を収集して共有できます。まずはクエリを保存して可視化し、その可視化をダッシュボードに追加し、クエリパラメータを使ってダッシュボードをインタラクティブにしましょう。
+SQL Console のダッシュボード機能を使用すると、保存したクエリから作成した可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化をダッシュボードに追加し、さらにクエリパラメータを使ってダッシュボードをインタラクティブにしてみましょう。
 
 
 
@@ -37,7 +37,7 @@ SQL Console のダッシュボード機能を使用すると、保存したク�
 
 [クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使用して、ダッシュボードをインタラクティブにできます。例えば、`WHERE`句にクエリパラメータを追加することで、フィルタとして機能させることができます。
 
-クエリパラメータ入力の表示/非表示は、ビジュアライゼーション設定で「filter」タイプを選択し、**Global**フィルタサイドペインから切り替えることができます。また、ダッシュボード上の別のオブジェクト(テーブルなど)にリンクすることでも切り替え可能です。詳細については、以下のクイックスタートガイドの「[フィルタの設定](/cloud/manage/dashboards#configure-a-filter)」セクションを参照してください。
+ビジュアライゼーション設定で「filter」タイプを選択することで、**Global**フィルタサイドペインからクエリパラメータ入力の表示/非表示を切り替えられます。また、ダッシュボード上の別のオブジェクト(テーブルなど)にリンクすることでも、クエリパラメータ入力の表示/非表示を切り替えられます。詳細については、以下のクイックスタートガイドの「[フィルタの設定](/cloud/manage/dashboards#configure-a-filter)」セクションを参照してください。
 
 
 ## クイックスタート {#quick-start}
@@ -80,7 +80,7 @@ SQL Console のダッシュボード機能を使用すると、保存したク�
 
 ### 可視化の追加 {#add-a-visualization}
 
-保存済みクエリが2つあります:`queries over time`と`query count by query kind`です。最初のクエリを折れ線グラフとして可視化しましょう。可視化にタイトルとサブタイトルを付け、可視化するクエリを選択します。次に、「Line」チャートタイプを選択し、x軸とy軸を割り当てます。
+2つの保存済みクエリ、`queries over time`と`query count by query kind`があります。最初のクエリを折れ線グラフとして可視化しましょう。可視化にタイトルとサブタイトルを付け、可視化するクエリを選択します。次に、「Line」チャートタイプを選択し、x軸とy軸を割り当てます。
 
 <Image img={dashboards_6} size='md' alt='可視化の追加' border />
 
@@ -101,7 +101,7 @@ SQL Console のダッシュボード機能を使用すると、保存したク�
 
 クエリ種別にフィルタを追加して、Insertクエリに関連するトレンドのみを表示できるようにし、このダッシュボードをインタラクティブにしましょう。この作業は[クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使用して実現します。
 
-折れ線グラフの横にある3つの点をクリックし、クエリの横にある鉛筆ボタンをクリックしてインラインクエリエディタを開きます。ここでは、ダッシュボードから直接、基になる保存済みクエリを編集できます。
+折れ線グラフの横にある3つの点をクリックし、クエリの横にある鉛筆ボタンをクリックして、インラインクエリエディタを開きます。ここでは、ダッシュボードから直接、基になる保存済みクエリを編集できます。
 
 <Image img={dashboards_8} size='md' alt='基になるクエリの編集' border />
 

@@ -1,6 +1,6 @@
 ---
 sidebar_label: '适用于 Amazon Kinesis 的 ClickPipes'
-description: '将您的 Amazon Kinesis 数据源无缝连接到 ClickHouse Cloud。'
+description: '将 Amazon Kinesis 数据源无缝连接到 ClickHouse Cloud。'
 slug: /integrations/clickpipes/kinesis
 title: '将 Amazon Kinesis 与 ClickHouse Cloud 集成'
 doc_type: 'guide'
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={cp_service} alt='ClickPipes service' size='lg' border />
 
-2. 在左侧菜单中选择 `Data Sources` 按钮,然后点击"Set up a ClickPipe"
+2. 在左侧菜单中选择 `Data Sources` 按钮,然后点击 "Set up a ClickPipe"
 
 <Image img={cp_step0} alt='Select imports' size='lg' border />
 
@@ -79,13 +79,13 @@ import Image from '@theme/IdealImage';
 
 8. 最后,您可以为内部 ClickPipes 用户配置权限。
 
-   **权限:** ClickPipes 将创建一个专用用户用于向目标表写入数据。您可以使用自定义角色或预定义角色之一为此内部用户选择角色:
+   **权限:** ClickPipes 将创建一个专用用户用于向目标表写入数据。您可以使用自定义角色或以下预定义角色之一为此内部用户选择角色:
    - `Full access`:对集群具有完全访问权限。如果您在目标表中使用物化视图或字典,这可能会很有用。
    - `Only destination table`:仅对目标表具有 `INSERT` 权限。
 
 <Image img={cp_step5} alt='Permissions' border />
 
-9. 点击"Complete Setup"后,系统将注册您的 ClickPipe,您将能够在摘要表中看到它。
+9. 点击 "Complete Setup" 后,系统将注册您的 ClickPipe,您将能够在摘要表中看到它。
 
 <Image img={cp_success} alt='Success notice' size='sm' border />
 
@@ -122,23 +122,23 @@ ClickPipes 目前支持以下 ClickHouse 数据类型:
 - String
 - FixedString
 - Date, Date32
-- DateTime, DateTime64 (UTC timezones only)
+- DateTime、DateTime64(仅支持 UTC 时区)
 - Enum8/Enum16
 - UUID
 - IPv4
 - IPv6
-- all ClickHouse LowCardinality types
+- 所有 ClickHouse LowCardinality 类型
 - Map,其键和值可使用上述任意类型(包括 Nullable 类型)
-- Tuple 和 Array,其元素可使用上述任意类型(包括 Nullable 类型,仅支持一层深度)
+- Tuple 和 Array,其元素可使用上述任意类型(包括 Nullable 类型,仅支持单层嵌套)
 - SimpleAggregateFunction 类型(用于 AggregatingMergeTree 或 SummingMergeTree 目标表)
 
 ### Variant 类型支持 {#variant-type-support}
 
-您可以为源数据流中的任何 JSON 字段手动指定 Variant 类型(例如 `Variant(String, Int64, DateTime)`)。由于 ClickPipes 确定正确变体子类型的方式,Variant 定义中只能使用一种整数类型或一种日期时间类型 - 例如,不支持 `Variant(Int64, UInt32)`。
+您可以为源数据流中的任何 JSON 字段手动指定 Variant 类型(例如 `Variant(String, Int64, DateTime)`)。由于 ClickPipes 确定正确变体子类型的方式,Variant 定义中只能使用一种整数类型或一种日期时间类型 - 例如,`Variant(Int64, UInt32)` 不受支持。
 
 ### JSON 类型支持 {#json-type-support}
 
-始终为 JSON 对象的 JSON 字段可以分配给 JSON 目标列。您需要手动将目标列更改为所需的 JSON 类型,包括任何固定路径或跳过路径。
+始终为 JSON 对象的 JSON 字段可以分配给 JSON 目标列。您需要手动将目标列更改为所需的 JSON 类型,包括任何固定路径或跳过路径的配置。
 
 
 ## Kinesis 虚拟列 {#kinesis-virtual-columns}
@@ -153,7 +153,7 @@ Kinesis 流支持以下虚拟列。在创建新的目标表时,可以使用 `Add
 | \_sequence_number | Kinesis 序列号                                         | String      |
 | \_raw_message     | 完整的 Kinesis 消息                                    | String      |
 
-\_raw_message 字段可用于仅需要完整 Kinesis JSON 记录的场景(例如使用 ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 函数来填充下游物化视图)。对于此类数据管道,删除所有"非虚拟"列可能会提升 ClickPipes 性能。
+\_raw_message 字段可用于仅需要完整 Kinesis JSON 记录的场景(例如使用 ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 函数来填充下游物化视图)。对于此类管道,删除所有"非虚拟"列可能会提升 ClickPipes 性能。
 
 
 ## 限制 {#limitations}
@@ -174,7 +174,7 @@ ClickPipes 以批处理方式将数据插入 ClickHouse。这样做是为了避�
 
 ### 延迟 {#latency}
 
-延迟(定义为从 Kinesis 消息发送到流到消息在 ClickHouse 中可用之间的时间)取决于多种因素(例如 Kinesis 延迟、网络延迟、消息大小/格式)。上述章节中描述的[批处理](#batching)也会影响延迟。我们始终建议针对您的特定用例进行测试,以了解可以预期的延迟。
+延迟(定义为从 Kinesis 消息发送到流到消息在 ClickHouse 中可用之间的时间)取决于多个因素(例如 Kinesis 延迟、网络延迟、消息大小/格式)。上述章节中描述的[批处理](#batching)也会影响延迟。我们始终建议针对您的特定用例进行测试,以了解可以预期的延迟。
 
 如果您有特定的低延迟需求,请[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
 
@@ -192,4 +192,4 @@ ClickPipe 将自动重启消费者并继续处理消息。
 
 ## 身份验证 {#authentication}
 
-要访问 Amazon Kinesis 数据流,可以使用 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。有关如何设置 IAM 角色的更多详细信息,可以[参考本指南](./secure-kinesis.md)了解如何设置适用于 ClickHouse Cloud 的角色
+要访问 Amazon Kinesis 数据流,可以使用 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。有关如何设置 IAM 角色的更多详细信息,可以[参考本指南](./secure-kinesis.md)了解如何设置适用于 ClickHouse Cloud 的角色。

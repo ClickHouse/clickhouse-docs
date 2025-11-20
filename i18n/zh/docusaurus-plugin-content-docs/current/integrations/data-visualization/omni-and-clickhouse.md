@@ -2,7 +2,7 @@
 sidebar_label: 'Omni'
 slug: /integrations/omni
 keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
-description: 'Omni 是一款企业级 BI、数据应用和内嵌分析平台，帮助你实时探索并共享洞察。'
+description: 'Omni 是一款面向企业的 BI、数据应用和嵌入式分析平台，帮助你实时探索并分享洞察。'
 title: 'Omni'
 doc_type: 'guide'
 ---
@@ -18,11 +18,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管部署。
+Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse 实例。
 
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -44,9 +44,9 @@ Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或自托
 <Image
   size='lg'
   img={omni_02}
-  alt='Omni 的 ClickHouse 连接配置界面,显示凭据表单字段'
+  alt='ClickHouse 的 Omni 连接配置界面,显示凭据表单字段'
   border
 />
 <br />
 
-现在您可以在 Omni 中查询和可视化 ClickHouse 的数据了。
+现在您可以在 Omni 中查询和可视化来自 ClickHouse 的数据了。

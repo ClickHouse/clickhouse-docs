@@ -13,12 +13,12 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 集成 Apache Beam 与 ClickHouse
+# 集成 Apache Beam 和 ClickHouse
 
 <ClickHouseSupportedBadge/>
 
-**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义并执行批处理和流式（连续）数据处理管道。Apache Beam 的灵活性体现在其对广泛数据处理场景的支持，从 ETL（Extract, Transform, Load，抽取、转换、加载）操作到复杂事件处理和实时分析。  
-此集成在数据写入层面使用了 ClickHouse 官方的 [JDBC connector](https://github.com/ClickHouse/clickhouse-java)。
+**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义并执行批处理和流式（连续）数据处理流水线。Apache Beam 的灵活性体现在其能够支持从 ETL（Extract, Transform, Load）操作到复杂事件处理和实时分析在内的各类数据处理场景。
+此集成在底层数据写入层使用了 ClickHouse 官方的 [JDBC connector](https://github.com/ClickHouse/clickhouse-java)。
 
 
 
@@ -43,7 +43,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```
 
 :::important 推荐的 Beam 版本
-建议从 Apache Beam 版本 `2.59.0` 开始使用 `ClickHouseIO` 连接器。
+建议使用 Apache Beam `2.59.0` 及以上版本的 `ClickHouseIO` 连接器。
 早期版本可能无法完全支持该连接器的功能。
 :::
 
@@ -146,7 +146,7 @@ public class Main {
 | `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | 如果为 true,则同步分布式表的插入操作。 |
 | `withInsertQuorum`          | `(Long quorum)`             | `null`                        | 确认插入操作所需的副本数。 |
 | `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | 如果为 true,则为插入操作启用去重。        |
-| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 目标 ClickHouse 表的模式定义。                          |
+| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 目标 ClickHouse 表的 schema。                          |
 
 
 ## 限制 {#limitations}
@@ -154,8 +154,8 @@ public class Main {
 使用该连接器时请注意以下限制：
 
 - 目前仅支持 Sink 操作。该连接器不支持 Source 操作。
-- ClickHouse 在向 `ReplicatedMergeTree` 或基于 `ReplicatedMergeTree` 构建的 `Distributed` 表插入数据时会执行去重。如果没有副本机制,向普通 MergeTree 表插入数据时,若插入失败后重试成功,可能会产生重复数据。但是,每个数据块都是原子性插入的,数据块大小可以通过 `ClickHouseIO.Write.withMaxInsertBlockSize(long)` 进行配置。去重是通过插入数据块的校验和来实现的。有关去重的更多信息,请参阅 [去重](/guides/developer/deduplication) 和 [去重插入配置](/operations/settings/settings#insert_deduplicate)。
-- 该连接器不执行任何 DDL 语句,因此目标表必须在插入数据之前已存在。
+- ClickHouse 在向 `ReplicatedMergeTree` 或基于 `ReplicatedMergeTree` 构建的 `Distributed` 表插入数据时会执行去重。在没有副本的情况下，向普通 MergeTree 表插入数据时，如果插入失败后重试成功，可能会产生重复数据。但是，每个数据块都是原子性插入的，数据块大小可以通过 `ClickHouseIO.Write.withMaxInsertBlockSize(long)` 进行配置。去重通过使用插入数据块的校验和来实现。有关去重的更多信息，请参阅[去重](/guides/developer/deduplication)和[去重插入配置](/operations/settings/settings#insert_deduplicate)。
+- 该连接器不执行任何 DDL 语句；因此，目标表必须在插入数据前已存在。
 
 
 ## 相关内容 {#related-content}

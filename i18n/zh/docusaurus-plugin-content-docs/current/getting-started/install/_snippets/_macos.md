@@ -10,9 +10,9 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 <VerticalStepper>
 
 
-## 使用社区 Homebrew formula 安装 {#install-using-community-homebrew-formula}
+## 使用社区 Homebrew 配方安装 {#install-using-community-homebrew-formula}
 
-要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse,可以使用 ClickHouse 社区提供的 [homebrew formula](https://formulae.brew.sh/cask/clickhouse)。
+要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，您可以使用 ClickHouse 社区的 [homebrew 配方](https://formulae.brew.sh/cask/clickhouse)。
 
 ```bash
 brew install --cask clickhouse
@@ -112,7 +112,7 @@ Brew 提供了一个命令行选项,可以在首次安装时避免对二进制�
 brew uninstall clickhouse
 ```
 
-现在使用 `--no-quarantine` 参数重新安装 ClickHouse:
+现在使用 `--no-quarantine` 重新安装 ClickHouse:
 
 ```shell
 brew install --no-quarantine clickhouse

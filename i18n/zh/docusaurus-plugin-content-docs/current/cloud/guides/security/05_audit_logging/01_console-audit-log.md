@@ -2,7 +2,7 @@
 sidebar_label: '控制台审计日志'
 slug: /cloud/security/audit-logging/console-audit-log
 title: '控制台审计日志'
-description: '本页介绍用户如何查看云端审计日志'
+description: '本页介绍用户如何查看云审计日志'
 doc_type: 'guide'
 keywords: ['audit log']
 ---
@@ -15,7 +15,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # 控制台审计日志 {#console-audit-log}
 
-用户的控制台操作活动会被记录在审计日志中，拥有 Admin 或 Developer 组织角色的用户可以查看并将其集成到日志系统。控制台审计日志包含的具体事件如下所示
+用户控制台活动将记录在审计日志中，拥有管理员或开发者组织角色的用户可以查看并将其集成到日志系统。控制台审计日志包含的具体事件如下所示
 
 
 ## 通过用户界面访问控制台日志 {#console-audit-log-ui}
@@ -25,7 +25,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 ## 选择组织 {#select-org}
 
-在 ClickHouse Cloud 中,导航至您的组织详情页面。
+在 ClickHouse Cloud 中,导航到您的组织详情页面。
 
 <Image
   img={activity_log_1}
@@ -39,9 +39,9 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 ## 选择审计 {#select-audit}
 
-在左侧菜单中选择 **Audit** 选项卡,查看对您的 ClickHouse Cloud 组织所做的更改——包括更改者和更改时间。
+在左侧菜单中选择 **Audit** 选项卡,查看对您的 ClickHouse Cloud 组织所做的更改,包括更改者和更改时间。
 
-**Activity** 页面显示一个表格,其中包含有关您组织的事件日志列表。默认情况下,此列表按时间倒序排列(最新事件在顶部)。单击列标题可更改表格的排序顺序。表格中的每一项包含以下字段:
+**Activity** 页面显示一个表格,其中包含有关您组织的事件日志列表。默认情况下,此列表按时间倒序排列(最新事件在顶部)。单击列标题可以更改表格的排序顺序。表格中的每一项包含以下字段:
 
 - **Activity:** 描述事件的文本片段
 - **User:** 发起事件的用户

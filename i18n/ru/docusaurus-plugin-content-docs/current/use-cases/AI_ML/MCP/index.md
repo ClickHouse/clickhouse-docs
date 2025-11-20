@@ -4,7 +4,7 @@ sidebar_label: 'MCP'
 title: 'Руководства по MCP'
 pagination_prev: null
 pagination_next: null
-description: 'На этой странице даётся вводное описание протокола Model Context Protocol (MCP) и приведено оглавление руководств по MCP.'
+description: 'На этой странице приведено введение в Model Context Protocol (MCP) и содержание руководств по MCP.'
 keywords: ['ClickHouse', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,25 +13,25 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import overview from '@site/static/images/use-cases/AI_ML/MCP/mcp_overview.png';
 
-[Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) (MCP) — это стандарт, разработанный компанией Anthropic, который позволяет AI-ассистентам бесшовно интегрироваться с внешними системами.
-Этот протокол позволяет AI-ассистентам подключаться к источникам данных, API, базам данных и многому другому безопасным и стандартизированным способом.
+[Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) (MCP) — это стандарт, разработанный компанией Anthropic, который позволяет ИИ-ассистентам бесшовно интегрироваться с внешними системами.
+Этот протокол позволяет ИИ-ассистентам подключаться к источникам данных, API, базам данных и многому другому безопасным и стандартизованным способом.
 
-MCP создаёт универсальный интерфейс между AI-моделями и различными сервисами, устраняя необходимость в отдельных реализациях инструментов для каждой интеграции.
-Его можно рассматривать как универсальный стандарт API, разработанный специально для AI-систем.
+MCP создаёт универсальный интерфейс между ИИ-моделями и различными сервисами, устраняя необходимость в кастомных реализациях инструментов для каждой интеграции.
+Его можно рассматривать как универсальный стандарт API, специально разработанный для ИИ-систем.
 
-Ключевое преимущество MCP в том, что библиотекам AI нужно реализовать поддержку протокола только один раз.
-После этого все совместимые с MCP сервисы становятся сразу доступными, что экономит разработчикам и сопровождающим AI-библиотеки много времени.
+Ключевое преимущество MCP заключается в том, что библиотекам ИИ нужно реализовать поддержку протокола только один раз.
+После этого все сервисы, совместимые с MCP, становятся сразу доступными, что значительно экономит время сопровождающим ИИ-библиотеки.
 
 
-## Что такое архитектура MCP? {#mcp-architecture}
+## Какова архитектура MCP? {#mcp-architecture}
 
 MCP использует клиент-серверную архитектуру:
 
-- Клиенты (например, Claude Desktop, Cursor или VS Code) устанавливают соединения с серверами MCP. Коллекцию клиентов можно найти в репозитории GitHub [awesome-mcp-clients](https://github.com/punkpeye/awesome-mcp-clients?tab=readme-ov-file#windsurf).
-- Серверы предоставляют инструменты и возможности через стандартизированные интерфейсы. Коллекцию серверов можно найти в репозитории GitHub [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers).
+- Клиенты (например, Claude Desktop, Cursor или VS Code) устанавливают соединения с серверами MCP. Коллекцию клиентов можно посмотреть в репозитории GitHub [awesome-mcp-clients](https://github.com/punkpeye/awesome-mcp-clients?tab=readme-ov-file#windsurf).
+- Серверы предоставляют инструменты и возможности через стандартизированные интерфейсы. Коллекцию серверов можно посмотреть в репозитории GitHub [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers).
 - Модели ИИ могут использовать эти инструменты для доступа к внешним данным и функциональности по мере необходимости
 
-Ниже приведена диаграмма архитектуры:
+Диаграмма архитектуры приведена ниже:
 
 <Image img={overview} alt='Обзор MCP' size='lg' />
 
@@ -55,27 +55,27 @@ MCP использует клиент-серверную архитектуру:
 
 | Страница                                                                                                                                                    | Описание                                                                                                                         |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| [Включение удалённого MCP-сервера ClickHouse Cloud](/use-cases/AI/MCP/remote_mcp)                                                                         | В этом руководстве описывается, как включить и использовать удалённый MCP-сервер ClickHouse Cloud                                                           |
-| [Как создать AI-агента на основе ClickHouse с помощью Streamlit](/use-cases/AI/MCP/ai-agent-libraries/streamlit-agent)                                        | Узнайте, как создать веб-приложение AI-агента с помощью Streamlit и MCP-сервера ClickHouse                                                |
-| [Как создать AI-агента LangChain/LangGraph с использованием MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/langchain)                              | Узнайте, как создать AI-агента LangChain/LangGraph, который может взаимодействовать с SQL-песочницей ClickHouse через MCP-сервер ClickHouse |
-| [Как создать AI-агента LlamaIndex с использованием MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/llamaindex)                                      | Узнайте, как создать AI-агента LlamaIndex, который может взаимодействовать с MCP-сервером ClickHouse                                              |
-| [Как создать агента PydanticAI с использованием MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/pydantic-ai)                                        | Узнайте, как создать агента PydanticAI, который может взаимодействовать с MCP-сервером ClickHouse                                                 |
-| [Как создать агента SlackBot с использованием MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/slackbot)                                             | Узнайте, как создать агента SlackBot, который может взаимодействовать с MCP-сервером ClickHouse                                                   |
-| [Как создать AI-агента с помощью Agno и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/agno)                                           | Узнайте, как создать AI-агента с помощью Agno и MCP-сервера ClickHouse                                                                 |
-| [Как создать AI-агента с помощью Chainlit и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/chainlit)                                   | Узнайте, как использовать Chainlit для создания чат-приложений на основе LLM совместно с MCP-сервером ClickHouse                                      |
-| [Как создать AI-агента с помощью Claude Agent SDK и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/claude-agent-sdk)                   | Узнайте, как создать AI-агента с помощью Claude Agent SDK и MCP-сервера ClickHouse                                                     |
-| [Как создать AI-агента с помощью CopilotKit и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/copilotkit)                               | Узнайте, как создать агентное приложение, использующее данные из ClickHouse с помощью MCP ClickHouse и CopilotKit                        |
-| [Как создать AI-агента с помощью CrewAI и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/crewai)                                       | Узнайте, как создать AI-агента с помощью CrewAI и MCP-сервера ClickHouse                                                               |
-| [Как создать AI-агента с помощью DSPy и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/DSPy)                                           | Узнайте, как создать AI-агента с помощью DSPy и MCP-сервера ClickHouse                                                              |
-| [Как создать AI-агента с помощью mcp-agent и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/mcp-agent)                                 | Узнайте, как создать AI-агента с помощью mcp-agent и MCP-сервера ClickHouse                                                            |
-| [Как создать AI-агента с помощью Microsoft Agent Framework и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework) | Узнайте, как создать AI-агента с помощью Microsoft Agent Framework и MCP-сервера ClickHouse                                            |
-| [Как создать AI-агента с помощью Upsonic и MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/upsonic)                                     | Узнайте, как создать AI-агента с помощью Upsonic и MCP-сервера ClickHouse                                                              |
-| [Как создать агента OpenAI с использованием MCP-сервера ClickHouse](/use-cases/AI/MCP/ai-agent-libraries/openai-agents)                                         | Узнайте, как создать агента OpenAI, который может взаимодействовать с MCP-сервером ClickHouse                                                    |
-| [Настройка MCP-сервера ClickHouse с AnythingLLM и ClickHouse Cloud](/use-cases/AI/MCP/anythingllm)                                                     | В этом руководстве описывается, как настроить AnythingLLM с MCP-сервером ClickHouse с использованием Docker                                            |
-| [Настройка MCP-сервера ClickHouse с Claude Desktop](/use-cases/AI/MCP/claude-desktop)                                                                    | В этом руководстве описывается, как настроить Claude Desktop с MCP-сервером ClickHouse                                                      |
-| [Настройка MCP-сервера ClickHouse с Jan.ai](/use-cases/AI/MCP/janai)                                                                                     | В этом руководстве описывается, как настроить Jan.ai с MCP-сервером ClickHouse                                                              |
-| [Настройка MCP-сервера ClickHouse с LibreChat и ClickHouse Cloud](/use-cases/AI/MCP/librechat)                                                         | В этом руководстве описывается, как настроить LibreChat с MCP-сервером ClickHouse с использованием Docker                                              |
-| [Настройка MCP-сервера ClickHouse с Ollama](/use-cases/AI/MCP/ollama)                                                                                    | В этом руководстве описывается, как настроить Ollama с MCP-сервером ClickHouse                                                              |
-| [Настройка MCP-сервера ClickHouse с Open WebUI и ClickHouse Cloud](/use-cases/AI/MCP/open-webui)                                                       | В этом руководстве описывается, как настроить Open WebUI с MCP-сервером ClickHouse с использованием Docker                                             |
+| [Enabling the ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp)                                                                         | В этом руководстве описывается, как включить и использовать удаленный MCP-сервер ClickHouse Cloud                                                           |
+| [How to build a ClickHouse-backed AI Agent with Streamlit](/use-cases/AI/MCP/ai-agent-libraries/streamlit-agent)                                        | Узнайте, как создать веб-приложение AI-агента с использованием Streamlit и MCP-сервера ClickHouse                                                |
+| [How to build a LangChain/LangGraph AI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/langchain)                              | Узнайте, как создать AI-агента на основе LangChain/LangGraph, который может взаимодействовать с SQL-песочницей ClickHouse через MCP-сервер ClickHouse. |
+| [How to build a LlamaIndex AI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/llamaindex)                                      | Узнайте, как создать AI-агента на основе LlamaIndex, который может взаимодействовать с MCP-сервером ClickHouse.                                              |
+| [How to build a PydanticAI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/pydantic-ai)                                        | Узнайте, как создать агента на основе PydanticAI, который может взаимодействовать с MCP-сервером ClickHouse.                                                 |
+| [How to build a SlackBot agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/slackbot)                                             | Узнайте, как создать SlackBot-агента, который может взаимодействовать с MCP-сервером ClickHouse.                                                   |
+| [How to build an AI Agent with Agno and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/agno)                                           | Узнайте, как создать AI-агента с использованием Agno и MCP-сервера ClickHouse                                                                 |
+| [How to build an AI Agent with Chainlit and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/chainlit)                                   | Узнайте, как использовать Chainlit для создания чат-приложений на основе LLM совместно с MCP-сервером ClickHouse                                      |
+| [How to build an AI Agent with Claude Agent SDK and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/claude-agent-sdk)                   | Узнайте, как создать AI-агента с использованием Claude Agent SDK и MCP-сервера ClickHouse                                                     |
+| [How to build an AI Agent with CopilotKit and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/copilotkit)                               | Узнайте, как создать агентное приложение, использующее данные из ClickHouse, с помощью MCP-сервера ClickHouse и CopilotKit                        |
+| [How to build an AI Agent with CrewAI and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/crewai)                                       | Узнайте, как создать AI-агента с использованием CrewAI и MCP-сервера ClickHouse                                                               |
+| [How to build an AI Agent with DSPy and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/DSPy)                                           | Узнайте, как создать AI-агента с использованием DSPy и MCP-сервера ClickHouse                                                              |
+| [How to build an AI Agent with mcp-agent and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/mcp-agent)                                 | Узнайте, как создать AI-агента с использованием mcp-agent и MCP-сервера ClickHouse                                                            |
+| [How to build an AI Agent with Microsoft Agent Framework and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework) | Узнайте, как создать AI-агента с использованием Microsoft Agent Framework и MCP-сервера ClickHouse                                            |
+| [How to build an AI Agent with Upsonic and the ClickHouse MCP Server](/use-cases/AI/MCP/ai-agent-libraries/upsonic)                                     | Узнайте, как создать AI-агента с использованием Upsonic и MCP-сервера ClickHouse                                                              |
+| [How to build an OpenAI agent using ClickHouse MCP Server.](/use-cases/AI/MCP/ai-agent-libraries/openai-agents)                                         | Узнайте, как создать агента на основе OpenAI, который может взаимодействовать с MCP-сервером ClickHouse.                                                    |
+| [Set Up ClickHouse MCP Server with AnythingLLM and ClickHouse Cloud](/use-cases/AI/MCP/anythingllm)                                                     | В этом руководстве описывается, как настроить AnythingLLM с MCP-сервером ClickHouse с использованием Docker.                                            |
+| [Set Up ClickHouse MCP Server with Claude Desktop](/use-cases/AI/MCP/claude-desktop)                                                                    | В этом руководстве описывается, как настроить Claude Desktop с MCP-сервером ClickHouse.                                                      |
+| [Set Up ClickHouse MCP Server with Jan.ai](/use-cases/AI/MCP/janai)                                                                                     | В этом руководстве описывается, как настроить Jan.ai с MCP-сервером ClickHouse.                                                              |
+| [Set Up ClickHouse MCP Server with LibreChat and ClickHouse Cloud](/use-cases/AI/MCP/librechat)                                                         | В этом руководстве описывается, как настроить LibreChat с MCP-сервером ClickHouse с использованием Docker.                                              |
+| [Set Up ClickHouse MCP Server with Ollama](/use-cases/AI/MCP/ollama)                                                                                    | В этом руководстве описывается, как настроить Ollama с MCP-сервером ClickHouse.                                                              |
+| [Set Up ClickHouse MCP Server with Open WebUI and ClickHouse Cloud](/use-cases/AI/MCP/open-webui)                                                       | В этом руководстве описывается, как настроить Open WebUI с MCP-сервером ClickHouse с использованием Docker.                                             |
 
 <!--AUTOGENERATED_END-->

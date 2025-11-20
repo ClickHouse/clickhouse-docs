@@ -1,9 +1,9 @@
 ---
-description: '包含来自 LAION 5B 数据集的一亿个向量的数据集'
+description: '包含 LAION 5B 数据集一亿个向量的数据集'
 sidebar_label: 'LAION 5B 数据集'
 slug: /getting-started/example-datasets/laion-5b-dataset
 title: 'LAION 5B 数据集'
-keywords: ['语义搜索', '向量相似度', '近似最近邻搜索', '嵌入向量']
+keywords: ['语义搜索', '向量相似度', '近似最近邻', '嵌入']
 doc_type: 'guide'
 ---
 
@@ -15,16 +15,16 @@ import Image from '@theme/IdealImage';
 
 [LAION 5b 数据集](https://laion.ai/blog/laion-5b/)包含 58.5 亿个图像-文本嵌入向量及相关的图像元数据。这些嵌入向量使用 `Open AI CLIP` 模型 [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) 生成。每个嵌入向量的维度为 `768`。
 
-该数据集可用于大规模实际向量搜索应用的模型设计、规模评估和性能分析。该数据集支持文本到图像搜索和图像到图像搜索两种场景。
+该数据集可用于大规模实际向量搜索应用的模型设计、容量规划和性能评估。该数据集支持文本到图像搜索和图像到图像搜索两种应用场景。
 
 
 ## 数据集详情 {#dataset-details}
 
 完整数据集以 `npy` 和 `Parquet` 文件混合形式提供,可在 [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/) 获取。
 
-ClickHouse 在 `S3` 存储桶中提供了包含 1 亿个向量的数据子集。该 `S3` 存储桶包含 10 个 `Parquet` 文件,每个 `Parquet` 文件包含 1000 万行数据。
+ClickHouse 在 `S3` 存储桶中提供了包含 1 亿个向量的子集。该 `S3` 存储桶包含 10 个 `Parquet` 文件,每个 `Parquet` 文件包含 1000 万行数据。
 
-我们建议用户首先进行容量规划评估,参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)来估算此数据集的存储和内存需求。
+我们建议用户首先进行容量评估,参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)来估算此数据集的存储和内存需求。
 
 
 ## 步骤 {#steps}
@@ -33,7 +33,7 @@ ClickHouse 在 `S3` 存储桶中提供了包含 1 亿个向量的数据子集。
 
 ### 创建表 {#create-table}
 
-创建 `laion_5b_100m` 表以存储嵌入向量及其关联属性:
+创建 `laion_5b_100m` 表来存储嵌入向量及其相关属性:
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -87,7 +87,7 @@ FROM laion_5b_100m
 ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
 LIMIT 20
 
-id = 9999 的行中的向量是一张熟食店餐厅图片的嵌入向量。
+id = 9999 的行中的向量是一张熟食店餐厅图像的嵌入向量。
 ```
 
 
@@ -122,7 +122,7 @@ id = 9999 的行中的向量是一张熟食店餐厅图片的嵌入向量。
 ````
 
 记录查询延迟,以便与使用向量索引的 ANN 查询延迟进行比较。
-对于 1 亿行数据,不使用向量索引的查询可能需要几秒到几分钟才能完成。
+对于 1 亿行数据,在没有向量索引的情况下,上述查询可能需要几秒钟到几分钟才能完成。
 
 ### 构建向量相似度索引 {#build-vector-similarity-index}
 
@@ -134,8 +134,8 @@ ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('
 ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ````
 
-索引创建和搜索的参数及性能注意事项详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
-上述语句分别为 HNSW 超参数 `M` 和 `ef_construction` 设置了 64 和 512 的值。
+索引创建和搜索的参数及性能考虑因素在[文档](../../engines/table-engines/mergetree-family/annindexes.md)中有详细说明。
+上述语句分别为 HNSW 超参数 `M` 和 `ef_construction` 使用了 64 和 512 的值。
 用户需要通过评估索引构建时间和搜索结果质量来仔细选择这些参数的最优值。
 
 对于完整的 1 亿数据集,构建和保存索引可能需要几个小时,具体取决于可用的 CPU 核心数和存储带宽。
@@ -152,13 +152,13 @@ LIMIT 20
 
 ```
 
-首次将向量索引加载到内存可能需要几秒到几分钟。
+首次将向量索引加载到内存中可能需要几秒钟到几分钟。
 
 ### 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
 
-`LAION 5b` 数据集的嵌入向量使用 `OpenAI CLIP` 模型 `ViT-L/14` 生成。
+`LAION 5b` 数据集的嵌入向量是使用 `OpenAI CLIP` 模型 `ViT-L/14` 生成的。
 
-下面提供了一个 Python 脚本示例,演示如何使用 `CLIP` API 以编程方式生成嵌入向量。生成的搜索嵌入向量将作为参数传递给 `SELECT` 查询中的 [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 函数。
+下面提供了一个示例 Python 脚本,演示如何使用 `CLIP` API 以编程方式生成嵌入向量。然后将搜索嵌入向量作为参数传递给 `SELECT` 查询中的 [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 函数。
 
 要安装 `clip` 包,请参考 [OpenAI GitHub 仓库](https://github.com/openai/clip)。
 

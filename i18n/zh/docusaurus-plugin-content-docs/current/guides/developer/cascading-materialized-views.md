@@ -1,7 +1,7 @@
 ---
 slug: /guides/developer/cascading-materialized-views
 title: '级联物化视图'
-description: '如何基于同一个源表使用多个物化视图。'
+description: '如何从一个源表构建并使用多个物化视图。'
 keywords: ['materialized view', 'aggregation']
 doc_type: 'guide'
 ---
@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 # 级联物化视图
 
-本示例演示如何创建一个物化视图，以及如何在第一个物化视图的基础上再级联创建第二个物化视图。在本页中，你将看到如何实现这一点、可用的多种方式以及相关的限制。对于不同的使用场景，可以通过创建一个以第二个物化视图为数据源的物化视图来实现。
+此示例演示如何创建一个物化视图，以及如何在其基础上再级联创建第二个物化视图。在本页中，你将看到具体的实现方式、众多可能的用法以及相关限制。通过创建一个以另一个物化视图为数据源的物化视图，可以满足不同的使用场景。
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -18,26 +18,26 @@ doc_type: 'guide'
 
 示例：
 
-我们将使用一个虚构的数据集，其中包含一组域名每小时的浏览量。
+我们将使用一个虚构的数据集，其中包含一组域名的按小时浏览量统计。
 
 我们的目标
 
-1. 我们需要按月、按域名聚合的数据，
-2. 我们还需要按年、按域名聚合的数据。
+1. 我们需要为每个域名按月聚合数据，
+2. 我们还需要为每个域名按年聚合数据。
 
 你可以选择以下方式之一：
 
-- 编写在 `SELECT` 查询执行期间读取并聚合数据的语句
-- 在数据写入时将其转换为一种新的数据格式
-- 在数据写入时将其预聚合为特定的汇总结果。
+- 编写在 `SELECT` 查询期间读取并聚合数据的查询
+- 在数据写入时将其转换为新的数据格式
+- 在数据写入时将其预聚合成特定的汇总结果。
 
-使用物化视图在写入时预处理数据，可以减少 ClickHouse 需要处理的数据量和计算量，从而让你的 `SELECT` 查询更快。
+使用物化视图在写入时预先准备数据，可以减少 ClickHouse 需要处理的数据量和计算量，从而加快你的 `SELECT` 查询。
 
 
 
 ## 物化视图的源表 {#source-table-for-the-materialized-views}
 
-创建源表。由于我们的目标是对聚合数据进行报告,而不是对单个行进行报告,因此我们可以解析数据,将信息传递给物化视图,然后丢弃实际传入的原始数据。这既满足了我们的需求,又节省了存储空间,所以我们将使用 `Null` 表引擎。
+创建源表。由于我们的目标是对聚合数据进行报告而不是处理单个行,因此我们可以解析数据,将信息传递给物化视图,然后丢弃实际传入的数据。这既满足了我们的需求又节省了存储空间,所以我们将使用 `Null` 表引擎。
 
 ```sql
 CREATE DATABASE IF NOT EXISTS analytics;
@@ -54,7 +54,7 @@ ENGINE = Null
 ```
 
 :::note
-您可以在 Null 表上创建物化视图。这样,写入表的数据最终会影响视图,但原始数据仍会被丢弃。
+您可以在 Null 表上创建物化视图。这样,写入表中的数据最终会影响视图,但原始数据仍会被丢弃。
 :::
 
 
@@ -110,7 +110,7 @@ ORDER BY (domain_name, year)
 此步骤定义了级联关系。`FROM` 语句将使用 `monthly_aggregated_data` 表,这意味着数据流向如下:
 
 1. 数据写入 `hourly_data` 表。
-2. ClickHouse 将接收到的数据转发到第一个物化视图的目标表 `monthly_aggregated_data`,
+2. ClickHouse 将接收到的数据转发到第一个物化视图 `monthly_aggregated_data` 表,
 3. 最后,步骤 2 中接收到的数据将被转发到 `year_aggregated_data`。
 
 ```sql
@@ -132,13 +132,13 @@ GROUP BY
 
 假设在此示例中,`monthly_aggregated_data` 使用的引擎是 CollapsingMergeTree,转发到第二个物化视图 `year_aggregated_data_mv` 的数据将不是折叠表的最终结果,而是转发包含 `SELECT ... GROUP BY` 中定义字段的数据块。
 
-如果您使用 CollapsingMergeTree、ReplacingMergeTree 或 SummingMergeTree,并计划创建级联物化视图,则需要理解此处描述的限制。
+如果您使用 CollapsingMergeTree、ReplacingMergeTree 或 SummingMergeTree,并且计划创建级联物化视图,则需要理解此处描述的限制。
 :::
 
 
 ## 示例数据 {#sample-data}
 
-现在我们可以通过插入一些数据来测试级联物化视图:
+现在是时候通过插入一些数据来测试我们的级联物化视图了:
 
 ```sql
 INSERT INTO analytics.hourly_data (domain_name, event_time, count_views)
@@ -148,7 +148,7 @@ VALUES ('clickhouse.com', '2019-01-01 10:00:00', 1),
        ('clickhouse.com', '2020-01-01 00:00:00', 6);
 ```
 
-如果您查询 `analytics.hourly_data` 的内容,将看到以下结果,因为表引擎是 `Null`,但数据已经被处理。
+如果您查询 `analytics.hourly_data` 的内容,将看到以下结果。由于该表的引擎是 `Null`,虽然数据已被处理,但表中不会保留任何数据。
 
 ```sql
 SELECT * FROM analytics.hourly_data
@@ -157,18 +157,18 @@ SELECT * FROM analytics.hourly_data
 ```response
 Ok.
 
-返回 0 行。耗时:0.002 秒。
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
-我们使用了一个小数据集,以便能够跟踪并将结果与预期进行比较。一旦您的数据流在小数据集上运行正确,就可以处理大量数据了。
+我们使用了一个小数据集,以便能够跟踪并验证结果是否符合预期。一旦您的数据流在小数据集上运行正确,就可以开始处理大规模数据了。
 
 
 ## 结果 {#results}
 
-如果您尝试通过查询目标表中的 `sumCountViews` 字段,将会看到二进制表示形式(在某些终端中),这是因为该值并非以数字形式存储,而是以 AggregateFunction 类型存储。
-要获取聚合的最终结果,需要使用 `-Merge` 后缀。
+如果您尝试通过选择 `sumCountViews` 字段来查询目标表,您将看到二进制表示形式(在某些终端中),因为该值不是以数字形式存储,而是以 AggregateFunction 类型存储。
+要获取聚合的最终结果,您需要使用 `-Merge` 后缀。
 
-您可以通过以下查询查看 AggregateFunction 中存储的特殊字符:
+您可以通过以下查询查看存储在 AggregateFunction 中的特殊字符:
 
 ```sql
 SELECT sumCountViews FROM analytics.monthly_aggregated_data
@@ -184,7 +184,7 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 3 rows in set. Elapsed: 0.003 sec.
 ```
 
-下面我们尝试使用 `Merge` 后缀来获取 `sumCountViews` 的值:
+现在,让我们尝试使用 `Merge` 后缀来获取 `sumCountViews` 的值:
 
 ```sql
 SELECT
@@ -213,9 +213,9 @@ GROUP BY
     month
 ```
 
-现在我们可以验证物化视图是否达到了预期目标。
+现在我们可以验证物化视图是否达到了我们定义的目标。
 
-现在数据已存储在目标表 `monthly_aggregated_data` 中,我们可以获取每个域名按月聚合的数据:
+现在数据已存储在目标表 `monthly_aggregated_data` 中,我们可以获取按月份聚合的各域名数据:
 
 ```sql
 SELECT
@@ -238,7 +238,7 @@ GROUP BY
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-每个域名按年聚合的数据:
+按年份聚合的各域名数据:
 
 ```sql
 SELECT

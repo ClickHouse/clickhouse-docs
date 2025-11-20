@@ -4,7 +4,7 @@ sidebar_position: 0
 slug: /cloud/manage/backups/overview
 title: '概览'
 keywords: ['backups', 'cloud backups', 'restore']
-description: '概述 ClickHouse Cloud 中的备份'
+description: '介绍 ClickHouse Cloud 中备份功能的概览'
 doc_type: 'guide'
 ---
 
@@ -18,15 +18,15 @@ import backup_restore from '@site/static/images/cloud/manage/backup-restore.png'
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
 
-# 查看并恢复备份
+# 查看与恢复备份
 
-本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为您的服务配置备份的选项，以及如何从备份中恢复。
+本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为服务配置备份的选项，以及如何从备份中恢复数据。
 
 
 
 ## 备份状态列表 {#backup-status-list}
 
-您的服务将按照设定的计划进行备份,无论是默认的每日备份计划,还是您自定义的[备份计划](/cloud/manage/backups/configurable-backups)。您可以在服务的 **Backups** 选项卡中查看所有可用备份。在此页面中,您可以查看备份状态、持续时间以及备份大小。您还可以通过 **Actions** 列来恢复指定的备份。
+您的服务将按照设定的计划自动备份,可以是默认的每日备份计划,也可以是您自定义的[备份计划](/cloud/manage/backups/configurable-backups)。所有可用备份均可在服务的 **Backups** 选项卡中查看。在此页面中,您可以查看备份状态、持续时间以及备份大小。您还可以通过 **Actions** 列恢复指定的备份。
 
 <Image
   img={backup_status_list}
@@ -49,11 +49,11 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
   border
 />
 
-估算备份总成本需要您先设置计划。我们正在更新[价格计算器](https://clickhouse.com/pricing),以便您在设置计划之前就能获得月度成本估算。要估算成本,您需要提供以下信息:
+估算备份的总成本需要您先设置计划。我们也在更新[价格计算器](https://clickhouse.com/pricing),以便您在设置计划之前就能获得月度成本估算。要估算成本,您需要提供以下信息:
 
 - 完整备份和增量备份的大小
-- 期望的备份频率
-- 期望的保留时长
+- 所需频率
+- 所需保留期
 - 云服务提供商和区域
 
 :::note
@@ -65,7 +65,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 备份会恢复到新的 ClickHouse Cloud 服务中,而不是恢复到创建备份的原服务。
 
-点击 **Restore** 备份图标后,您可以指定要创建的新服务名称,然后恢复该备份:
+点击**恢复**备份图标后,您可以指定要创建的新服务名称,然后恢复该备份:
 
 <Image
   img={backup_restore}
@@ -78,14 +78,14 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 <Image
   img={backup_service_provisioning}
   size='md'
-  alt='服务配置中'
+  alt='服务配置进行中'
   border
 />
 
 
 ## 使用已恢复的服务 {#working-with-your-restored-service}
 
-备份恢复后,您将拥有两个相似的服务:**原始服务**(需要恢复的服务)和从原始服务备份中恢复的新**已恢复服务**。
+备份恢复完成后,您将拥有两个相似的服务:**原始服务**(需要恢复的服务)和一个新的**已恢复服务**(从原始服务的备份中恢复)。
 
 备份恢复完成后,您应执行以下操作之一:
 
@@ -96,17 +96,17 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 要使用新服务,请执行以下步骤:
 
-1. 验证新服务具有您的使用场景所需的 IP 访问列表条目。
+1. 验证新服务具有您使用场景所需的 IP 访问列表条目。
 1. 验证新服务包含您需要的数据。
 1. 删除原始服务。
 
 ### 将数据从**新恢复的服务**迁移回**原始服务** {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
-假设由于某种原因您无法使用新恢复的服务,例如,您仍有用户或应用程序连接到现有服务。您可能决定将新恢复的数据迁移到原始服务中。可以通过以下步骤完成迁移:
+假设由于某种原因您无法使用新恢复的服务,例如仍有用户或应用程序连接到现有服务。您可能需要将新恢复的数据迁移到原始服务中。可以通过以下步骤完成迁移:
 
 **允许远程访问新恢复的服务**
 
-新服务应从具有与原始服务相同 IP 允许列表的备份中恢复。这是必需的,因为除非您允许从**任何位置**访问,否则不允许连接到其他 ClickHouse Cloud 服务。修改允许列表并临时允许从**任何位置**访问。有关详细信息,请参阅 [IP 访问列表](/cloud/security/setting-ip-filters)文档。
+新服务应从具有与原始服务相同 IP 允许列表的备份中恢复。这是必需的,因为除非您允许从**任何位置**访问,否则不允许连接到其他 ClickHouse Cloud 服务。请修改允许列表并临时允许从**任何位置**访问。有关详细信息,请参阅 [IP 访问列表](/cloud/security/setting-ip-filters)文档。
 
 **在新恢复的 ClickHouse 服务上(托管已恢复数据的系统)**
 
@@ -145,7 +145,7 @@ CREATE DATABASE db
 使用源中的 `CREATE TABLE` 语句创建目标表:
 
 :::tip
-运行 `CREATE` 语句时,将 `ENGINE` 更改为不带任何参数的 `ReplicatedMergeTree`。ClickHouse Cloud 始终复制表并提供正确的参数。
+运行 `CREATE` 语句时,将 `ENGINE` 更改为不带任何参数的 `ReplicatedMergeTree`。ClickHouse Cloud 始终会复制表并提供正确的参数。
 :::
 
 ```sql
@@ -154,7 +154,7 @@ ENGINE = ReplicatedMergeTree
 ORDER BY ...
 ```
 
-使用 `remoteSecure` 函数将数据从新恢复的 ClickHouse Cloud 服务拉取到原始服务:
+使用 `remoteSecure` 函数将数据从新恢复的 ClickHouse Cloud 服务拉取到原始服务中:
 
 ```sql
 INSERT INTO db.table

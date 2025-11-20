@@ -7,16 +7,16 @@ doc_type: 'guide'
 keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
 ---
 
-Star Schema Benchmark в общих чертах основан на таблицах и запросах [TPC-H](tpch.md), но в отличие от TPC-H использует схемную организацию типа «звезда».
-Основной объём данных хранится в огромной таблице фактов, окружённой несколькими небольшими таблицами измерений.
-В запросах таблица фактов соединяется с одной или несколькими таблицами измерений для применения критериев фильтрации, например `MONTH = 'JANUARY'`.
+Star Schema Benchmark в общих чертах основан на таблицах и запросах [TPC-H](tpch.md), но в отличие от TPC-H использует схему «звезда».
+Основной объем данных хранится в большой фактологической таблице, окружённой несколькими небольшими таблицами измерений.
+Запросы соединяют фактологическую таблицу с одной или несколькими таблицами измерений для применения фильтров, например, `MONTH = 'JANUARY'`.
 
 Ссылки:
 
-* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil и др.), 2009
-* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl и др.), 2013
+* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil et al.), 2009
+* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl et al.), 2013
 
-Сначала клонируйте репозиторий Star Schema Benchmark и скомпилируйте генератор данных:
+Сначала клонируйте репозиторий Star Schema Benchmark и соберите генератор данных:
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -132,8 +132,8 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-Во многих сценариях использования ClickHouse несколько таблиц преобразуются в одну денормализованную «плоскую» таблицу.
-Этот шаг необязателен: ниже приведены запросы в их исходном виде и в варианте, переписанном для денормализованной таблицы.
+Во многих сценариях использования ClickHouse несколько таблиц преобразуются в одну денормализованную плоскую таблицу.
+Этот шаг необязателен: ниже приведены запросы в их исходном виде, а также в варианте, переписанном для денормализованной таблицы.
 
 
 ```sql

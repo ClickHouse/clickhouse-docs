@@ -2,7 +2,7 @@
 sidebar_label: 'Retool'
 slug: /integrations/retool
 keywords: ['clickhouse', 'retool', 'connect', 'integrate', 'ui', 'admin', 'panel', 'dashboard', 'nocode', 'no-code']
-description: 'Быстро создавайте веб- и мобильные приложения с богатыми пользовательскими интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — все это на основе ваших данных.'
+description: 'Быстро создавайте веб- и мобильные приложения с удобными пользовательскими интерфейсами, автоматизируйте сложные задачи и интегрируйте ИИ — всё это работает на ваших данных.'
 title: 'Подключение Retool к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -49,7 +49,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <br />
 
 Укажите учетные данные ClickHouse в следующем формате: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
-Если экземпляр требует SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
+Если для вашего экземпляра требуется SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
 <Image img={retool_04} size='lg' border alt='Указание учетных данных' />
 <br />
@@ -59,4 +59,4 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <Image img={retool_05} size='lg' border alt='Проверка подключения' />
 <br />
 
-Теперь можно перейти к работе с приложением, используя ресурс ClickHouse.
+Теперь вы можете использовать ресурс ClickHouse в своем приложении.

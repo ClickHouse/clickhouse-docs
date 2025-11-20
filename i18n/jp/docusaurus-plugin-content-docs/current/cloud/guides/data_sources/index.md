@@ -2,7 +2,7 @@
 slug: /cloud/guides/data-sources
 title: 'データソース'
 hide_title: true
-description: 'ClickHouse Cloud ガイドセクションの目次ページ'
+description: 'ClickHouse Cloud ガイド セクションの内容一覧ページ'
 doc_type: 'landing-page'
 keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutorials']
 ---
@@ -16,14 +16,14 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | ページ                                                           | 説明                                                            |
 | -------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | [クラウドIPアドレス](/manage/data-sources/cloud-endpoints-api) | 一部のテーブル関数と接続に必要なネットワーク情報 |
-| [S3データへの安全なアクセス](/cloud/data-sources/secure-s3)    | ロールベースアクセスを使用したAWS S3外部データソースへのアクセス         |
+| [S3データへの安全なアクセス](/cloud/data-sources/secure-s3)    | ロールベースアクセスを使用してAWS S3の外部データソースにアクセス         |
 
 
 ## 外部データソースへの追加接続 {#additional-connections-for-external-data-sources}
 
 ### データ取り込み用のClickPipes {#clickpipes-for-data-ingestion}
 
-ClickPipesを使用すると、複数のソースからのストリーミングデータを簡単に統合できます。詳細については、Integrationsドキュメントの[ClickPipes](/integrations/clickpipes)を参照してください。
+ClickPipesを使用すると、複数のソースからのストリーミングデータを簡単に統合できます。詳細については、統合ドキュメントの[ClickPipes](/integrations/clickpipes)を参照してください。
 
 ### 外部データソースとしてのテーブル関数 {#table-functions-as-external-data-sources}
 

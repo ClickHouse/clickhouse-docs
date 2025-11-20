@@ -2,7 +2,7 @@
 sidebar_label: 'Omni'
 slug: /integrations/omni
 keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
-description: 'Omni は、BI、データアプリケーション、組み込みアナリティクス向けのエンタープライズプラットフォームで、リアルタイムにインサイトを探索し共有することを可能にします。'
+description: 'Omni は、BI、データアプリケーション、および組み込みアナリティクス向けのエンタープライズ向けプラットフォームで、リアルタイムにインサイトを探索・共有することに役立ちます。'
 title: 'Omni'
 doc_type: 'guide'
 ---
@@ -18,7 +18,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Omni は公式の ClickHouse データソースを介して、ClickHouse Cloud またはオンプレミスの ClickHouse 環境に接続できます。
+Omni は、公式の ClickHouse データソースを通じて、ClickHouse Cloud またはオンプレミス環境の ClickHouse デプロイメントに接続できます。
 
 
 
@@ -29,24 +29,24 @@ Omni は公式の ClickHouse データソースを介して、ClickHouse Cloud �
 
 ## 2. ClickHouseデータソースを作成する {#2-create-a-clickhouse-data-source}
 
-Admin -> Connectionsに移動し、右上隅の「Add Connection」ボタンをクリックします。
+Admin -> Connectionsに移動し、右上隅にある「Add Connection」ボタンをクリックします。
 
 <Image
   size='lg'
   img={omni_01}
-  alt='ConnectionsセクションのAdd Connectionボタンを表示しているOmni管理画面'
+  alt='ConnectionsセクションにあるAdd Connectionボタンを表示しているOmni管理画面'
   border
 />
 <br />
 
-`ClickHouse`を選択します。フォームに認証情報を入力します。
+`ClickHouse`を選択します。フォームに認証情報を入力してください。
 
 <Image
   size='lg'
   img={omni_02}
-  alt='ClickHouseの認証情報フォームフィールドを表示しているOmni接続設定画面'
+  alt='認証情報フォームフィールドを表示しているClickHouse用のOmni接続設定画面'
   border
 />
 <br />
 
-これでOmniからClickHouseのデータをクエリして可視化できるようになります。
+これでOmni内でClickHouseのデータをクエリして可視化できるようになります。

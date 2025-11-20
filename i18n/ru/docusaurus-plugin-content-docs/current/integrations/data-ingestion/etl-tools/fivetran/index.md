@@ -44,14 +44,14 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 </div>
 
 
-## Назначение ClickHouse Cloud {#clickhouse-cloud-destination}
+## ClickHouse Cloud как целевая система {#clickhouse-cloud-destination}
 
 Смотрите официальную документацию на сайте Fivetran:
 
-- [Обзор назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse)
-- [Руководство по настройке назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
+- [Обзор ClickHouse как целевой системы](https://fivetran.com/docs/destinations/clickhouse)
+- [Руководство по настройке ClickHouse как целевой системы](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
 
 ## Свяжитесь с нами {#contact-us}
 
-Если у вас возникли вопросы или есть предложения по функциональности, откройте [тикет в службу поддержки](/about-us/support).
+Если у вас есть вопросы или предложения по функциональности, откройте [тикет в службу поддержки](/about-us/support).

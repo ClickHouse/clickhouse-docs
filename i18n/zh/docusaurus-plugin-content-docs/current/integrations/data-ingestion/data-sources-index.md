@@ -1,14 +1,14 @@
 ---
 slug: /integrations/data-sources/index
 keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
-description: '数据源总览页面'
+description: '数据源概览页'
 title: '数据源'
 doc_type: 'landing-page'
 ---
 
 # 数据源
 
-ClickHouse 允许你轻松地从多种数据源向数据库写入数据。
+ClickHouse 允许你轻松地从多种数据源将数据导入数据库。
 如需了解更多信息，请参阅以下页面：
 
 | 数据源                                                                   |

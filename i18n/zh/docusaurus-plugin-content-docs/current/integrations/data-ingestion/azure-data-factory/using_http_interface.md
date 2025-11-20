@@ -38,27 +38,23 @@ import adfCopyDataDebugSuccess                  from '@site/static/images/integr
 
 # 在 Azure 数据工厂中使用 ClickHouse HTTP 接口 {#using-clickhouse-http-interface-in-azure-data-factory}
 
-[`azureBlobStorage` 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-是一种从 Azure Blob Storage 向 ClickHouse 导入数据的快速便捷方式。但是,在以下情况下使用它可能并不总是合适:
+[`azureBlobStorage` 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)是一种从 Azure Blob Storage 向 ClickHouse 导入数据的快速便捷方式。但是,在以下情况下使用它可能并不总是合适:
 
 - 您的数据可能未存储在 Azure Blob Storage 中——例如,数据可能位于 Azure SQL Database、Microsoft SQL Server 或 Cosmos DB 中。
 - 安全策略可能完全禁止外部访问 Blob Storage——例如,如果存储账户已锁定且没有公共端点。
 
-在这些场景中,您可以将 Azure 数据工厂与
-[ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http)
-结合使用,将数据从 Azure 服务发送到 ClickHouse。
+在这种情况下,您可以将 Azure Data Factory 与 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http)结合使用,将数据从 Azure 服务发送到 ClickHouse。
 
-此方法反转了数据流:不是让 ClickHouse 从 Azure 拉取数据,而是由 Azure 数据工厂将数据推送到 ClickHouse。这种方法通常要求您的 ClickHouse 实例可从公共互联网访问。
+此方法反转了数据流:不是由 ClickHouse 从 Azure 拉取数据,而是由 Azure Data Factory 将数据推送到 ClickHouse。这种方法通常要求您的 ClickHouse 实例可从公共互联网访问。
 
 :::info
-通过使用 Azure 数据工厂的自承载集成运行时,可以避免将 ClickHouse 实例暴露到互联网。此设置允许通过专用网络发送数据。但是,这超出了本文的范围。您可以在官方指南中找到更多信息:
-[创建和配置自承载集成运行时](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
+通过使用 Azure Data Factory 的自承载集成运行时,可以避免将 ClickHouse 实例暴露到互联网。此设置允许通过专用网络发送数据。但是,这超出了本文的范围。您可以在官方指南中找到更多信息:[创建和配置自承载集成运行时](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
 
 ## 将 ClickHouse 转换为 REST 服务 {#turning-clickhouse-to-a-rest-service}
 
-Azure Data Factory 支持通过 HTTP 以 JSON 格式向外部系统发送数据。我们可以利用此功能,通过 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http)直接向 ClickHouse 插入数据。您可以在 [ClickHouse HTTP 接口文档](https://clickhouse.com/docs/interfaces/http)中了解更多信息。
+Azure Data Factory 支持通过 HTTP 以 JSON 格式向外部系统发送数据。我们可以利用此功能,使用 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http)直接向 ClickHouse 插入数据。您可以在 [ClickHouse HTTP 接口文档](https://clickhouse.com/docs/interfaces/http)中了解更多信息。
 
 在本示例中,我们只需指定目标表,将输入数据格式定义为 JSON,并包含允许更灵活解析时间戳的选项。
 
@@ -80,7 +76,7 @@ https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date
 Azure Data Factory 可以使用其内置的 `encodeUriComponent` 函数自动处理此编码,因此您无需手动操作。
 :::
 
-现在您可以向此 URL 发送 JSON 格式的数据。数据应与目标表的结构匹配。以下是使用 curl 的简单示例,假设表有三列:`col_1`、`col_2` 和 `col_3`。
+现在您可以向此 URL 发送 JSON 格式的数据。数据应与目标表的结构匹配。以下是使用 curl 的简单示例,假设表包含三列:`col_1`、`col_2` 和 `col_3`。
 
 ```text
 curl \
@@ -88,11 +84,11 @@ curl \
     --data '{"col_1":9119,"col_2":50.994,"col_3":"2019-06-01 00:00:00"}'
 ```
 
-您还可以发送 JSON 对象数组或 JSON Lines(换行符分隔的 JSON 对象)。Azure Data Factory 使用 JSON 数组格式,该格式与 ClickHouse 的 `JSONEachRow` 输入完全兼容。
+您还可以发送 JSON 对象数组或 JSON Lines(换行符分隔的 JSON 对象)。Azure Data Factory 使用 JSON 数组格式,该格式与 ClickHouse 的 `JSONEachRow` 输入完美兼容。
 
 如您所见,对于此步骤,您无需在 ClickHouse 端执行任何特殊操作。HTTP 接口已经提供了作为类 REST 端点所需的一切功能——无需额外配置。
 
-现在我们已经让 ClickHouse 表现得像一个 REST 端点,接下来可以配置 Azure Data Factory 来使用它了。
+现在我们已经使 ClickHouse 表现得像一个 REST 端点,接下来可以配置 Azure Data Factory 来使用它了。
 
 在后续步骤中,我们将创建一个 Azure Data Factory 实例,设置到您的 ClickHouse 实例的链接服务,为 [REST 接收器](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)定义数据集,并创建一个复制数据活动以将数据从 Azure 发送到 ClickHouse。
 
@@ -106,7 +102,7 @@ curl \
 
    <Image img={azureHomePage} size='lg' alt='Azure 门户主页' border />
 
-2. 在左侧的类别窗格中,选择 **分析**,然后在热门服务列表中点击
+2. 在左侧的类别窗格中,选择**分析**,然后在热门服务列表中点击
    **Data Factory**。
 
    <Image
@@ -126,7 +122,7 @@ curl \
      border
    />
 
-4. 点击 **查看 + 创建**,然后点击 **创建** 启动部署。
+4. 点击**查看 + 创建**,然后点击**创建**以启动部署。
 
    <Image
      img={azureNewDataFactoryConfirm}
@@ -157,7 +153,7 @@ Data Factory 实例。
      border
    />
 
-2. 在 Data Factory 概览页面上,点击 **Launch Studio**。
+2. 在 Data Factory 概览页面上,单击 **Launch Studio**。
 
    <Image
      img={azureDataFactoryPage}
@@ -167,7 +163,7 @@ Data Factory 实例。
    />
 
 3. 在左侧菜单中,选择 **Manage**,然后转到 **Linked services**,
-   并点击 **+ New** 创建新的链接服务。
+   并单击 **+ New** 以创建新的链接服务。
 
    <Image
      img={adfCreateLinkedServiceButton}
@@ -176,7 +172,7 @@ Data Factory 实例。
      border
    />
 
-4. 在 **New linked service search bar** 中,输入 **REST**,选择 **REST**,然后点击 **Continue**
+4. 在 **New linked service search bar** 中,输入 **REST**,选择 **REST**,然后单击 **Continue**
    以创建 [REST 连接器](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
    实例。
 
@@ -188,7 +184,7 @@ Data Factory 实例。
    />
 
 5. 在链接服务配置窗格中输入新服务的名称,
-   点击 **Base URL** 字段,然后点击 **Add dynamic content**(此链接仅在选择该字段时显示)。
+   单击 **Base URL** 字段,然后单击 **Add dynamic content**(此链接仅在选择该字段时显示)。
 
    <Image
      img={adfNewLinedServicePane}
@@ -198,7 +194,7 @@ Data Factory 实例。
    />
 
 6. 在动态内容窗格中,您可以创建参数化 URL,
-   这样可以在为不同表创建数据集时再定义查询——从而使链接服务可重用。
+   这样可以在稍后为不同表创建数据集时定义查询——这使得链接服务可重用。
 
    <Image
      img={adfNewLinkedServiceBaseUrlEmpty}
@@ -207,9 +203,9 @@ Data Factory 实例。
      border
    />
 
-7. 点击筛选输入框旁边的 **"+"** 并添加新参数,将其命名为
+7. 单击筛选器输入框旁边的 **"+"** 并添加新参数,将其命名为
    `pQuery`,将类型设置为 String,并将默认值设置为 `SELECT 1`。
-   点击 **Save**。
+   单击 **Save**。
 
    <Image
      img={adfNewLinkedServiceParams}
@@ -218,7 +214,7 @@ Data Factory 实例。
      border
    />
 
-8. 在表达式字段中,输入以下内容并点击 **OK**。将
+8. 在表达式字段中,输入以下内容并单击 **OK**。将
    `your-clickhouse-url.com` 替换为您的 ClickHouse
    实例的实际地址。
 
@@ -233,8 +229,8 @@ Data Factory 实例。
      border
    />
 
-9. 返回主表单,选择 Basic authentication,输入用于连接 ClickHouse HTTP 接口的用户名和
-   密码,点击 **Test
+9. 返回主表单,选择 Basic authentication,输入用于连接到 ClickHouse HTTP 接口的用户名和
+   密码,单击 **Test
    connection**。如果一切配置正确,您将看到成功
    消息。
 
@@ -245,7 +241,7 @@ Data Factory 实例。
      border
    />
 
-10. 点击 **Create** 完成设置。
+10. 单击 **Create** 以完成设置。
     <Image
       img={adfLinkedServicesList}
       size='lg'
@@ -320,7 +316,7 @@ Data Factory 实例。
 
 ### 设置示例数据集 {#setting-up-an-example-dataset}
 
-在本示例中,我们不会使用完整的环境传感器数据集,而是仅使用[传感器数据集样本](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv)中提供的一小部分数据。
+在本示例中,我们不会使用完整的环境传感器数据集,而是仅使用[传感器数据集样本](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv)中提供的一小部分。
 
 :::info
 为了使本指南保持重点,我们不会详细介绍在 Azure Data Factory 中创建源数据集的具体步骤。您可以将样本数据上传到任何您选择的存储服务——例如 Azure Blob Storage、Microsoft SQL Server,甚至 Azure Data Factory 支持的其他文件格式。
@@ -333,7 +329,7 @@ Data Factory 实例。
 
 现在我们已经配置了输入和输出数据集,可以设置一个**复制数据**活动,将示例数据集中的数据传输到 ClickHouse 的 `sensors` 表中。
 
-1. 打开 **Azure Data Factory Studio**,转到**创作选项卡**。在 **Factory Resources** 窗格中,将鼠标悬停在 **Pipeline** 上,点击三点图标,然后选择 **New pipeline**。
+1. 打开 **Azure Data Factory Studio**,转到**创作选项卡**。在 **Factory Resources** 窗格中,将鼠标悬停在 **Pipeline** 上,点击三点图标,然后选择**新建管道**。
 
    <Image
      img={adfNewPipelineItem}
@@ -342,17 +338,17 @@ Data Factory 实例。
      border
    />
 
-2. 在 **Activities** 窗格中,展开 **Move and transform** 部分,将 **Copy data** 活动拖到画布上。
+2. 在**活动**窗格中,展开**移动和转换**部分,将**复制数据**活动拖到画布上。
 
    <Image img={adfNewCopyDataItem} size='lg' alt='新建复制数据项' border />
 
-3. 选择 **Source** 选项卡,并选择之前创建的源数据集。
+3. 选择**源**选项卡,并选择之前创建的源数据集。
 
    <Image img={adfCopyDataSource} size='lg' alt='复制数据源' border />
 
-4. 转到 **Sink** 选项卡,选择为 sensors 表创建的 ClickHouse 数据集。将 **Request method** 设置为 POST。确保 **HTTP compression type** 设置为 **None**。
+4. 转到**接收器**选项卡,选择为 sensors 表创建的 ClickHouse 数据集。将**请求方法**设置为 POST。确保 **HTTP 压缩类型**设置为 **None**。
    :::warning
-   HTTP 压缩在 Azure Data Factory 的复制数据活动中无法正常工作。启用后,Azure 只会发送零字节的有效负载——这可能是服务中的一个 bug。请务必保持压缩处于禁用状态。
+   HTTP 压缩在 Azure Data Factory 的复制数据活动中无法正常工作。启用后,Azure 仅发送零字节的有效负载——这可能是服务中的一个错误。请务必保持压缩处于禁用状态。
    :::
    :::info
    我们建议保持默认批次大小为 10,000,甚至可以进一步增加。有关更多详细信息,请参阅[选择插入策略 / 同步批量插入](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)。
@@ -365,7 +361,7 @@ Data Factory 实例。
      border
    />
 
-5. 点击画布顶部的 **Debug** 来运行管道。稍等片刻后,活动将被排队并执行。如果一切配置正确,任务应该以 **Success** 状态完成。
+5. 点击画布顶部的**调试**以运行管道。稍等片刻后,活动将被排队并执行。如果一切配置正确,任务应以**成功**状态完成。
 
    <Image
      img={adfCopyDataDebugSuccess}
@@ -374,7 +370,7 @@ Data Factory 实例。
      border
    />
 
-6. 完成后,点击 **Publish all** 保存管道和数据集的更改。
+6. 完成后,点击**全部发布**以保存管道和数据集的更改。
 
 
 ## 其他资源 {#additional-resources-1}

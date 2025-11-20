@@ -2,7 +2,7 @@
 sidebar_label: 'クイックスタート'
 sidebar_position: 1
 slug: /integrations/grafana
-description: 'Grafana で ClickHouse を使用するための概要'
+description: 'Grafana で ClickHouse を使用するための入門'
 title: 'Grafana 向け ClickHouse データソースプラグイン'
 show_related_blogs: true
 doc_type: 'guide'
@@ -10,7 +10,7 @@ integration:
   - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
-keywords: ['Grafana', 'data visualization', 'dashboard', 'plugin', 'data source']
+keywords: ['Grafana', 'データ可視化', 'ダッシュボード', 'プラグイン', 'データソース']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
@@ -27,7 +27,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Grafana を使用すると、ダッシュボードを通じてあらゆるデータを可視化・共有できます。
+Grafana を使用すると、ダッシュボードを通じてあらゆるデータを探索し、共有できます。
 Grafana から ClickHouse に接続するにはプラグインが必要ですが、UI から簡単にインストールできます。
 
 <div class='vimeo-container'>
@@ -59,16 +59,16 @@ Grafanaはクエリの安全性を検証しません。クエリには`DELETE`�
 
 1. [ClickHouseでのユーザーとロールの作成](/operations/access-rights)ガイドに従って、`readonly`ユーザープロファイルを作成します。
 2. `readonly`ユーザーが、基盤となる[clickhouse-goクライアント](https://github.com/ClickHouse/clickhouse-go)で必要とされる`max_execution_time`設定を変更するための十分な権限を持っていることを確認します。
-3. 公開されているClickHouseインスタンスを使用している場合、`readonly`プロファイルで`readonly=2`を設定することは推奨されません。代わりに、`readonly=1`のままにして、`max_execution_time`の制約タイプを[changeable_in_readonly](/operations/settings/constraints-on-settings)に設定し、この設定の変更を許可してください。
+3. 公開ClickHouseインスタンスを使用している場合、`readonly`プロファイルで`readonly=2`を設定することは推奨されません。代わりに、`readonly=1`のままにして、`max_execution_time`の制約タイプを[changeable_in_readonly](/operations/settings/constraints-on-settings)に設定し、この設定の変更を許可してください。
 
 
 ## 3. Grafana用ClickHouseプラグインのインストール {#3--install-the-clickhouse-plugin-for-grafana}
 
-GrafanaからClickHouseに接続するには、適切なGrafanaプラグインをインストールする必要があります。Grafanaにログイン済みであることを前提として、以下の手順に従ってください:
+GrafanaからClickHouseに接続するには、適切なGrafanaプラグインをインストールする必要があります。Grafanaにログイン済みであることを前提として、以下の手順に従ってください：
 
 1. サイドバーの**Connections**ページから、**Add new connection**タブを選択します。
 
-2. **ClickHouse**を検索し、Grafana Labsによる署名済みプラグインをクリックします:
+2. **ClickHouse**を検索し、Grafana Labsによる署名済みプラグインをクリックします：
 
    <Image
      size='md'
@@ -77,7 +77,7 @@ GrafanaからClickHouseに接続するには、適切なGrafanaプラグイン�
      border
    />
 
-3. 次の画面で、**Install**ボタンをクリックします:
+3. 次の画面で、**Install**ボタンをクリックします：
 
    <Image size='md' img={install} alt='ClickHouseプラグインのインストール' border />
 
@@ -102,12 +102,12 @@ GrafanaからClickHouseに接続するには、適切なGrafanaプラグイン�
   border
 />
 
-3. サーバー設定と認証情報を入力します。主な設定項目は次のとおりです:
+3. サーバー設定と認証情報を入力します。主要な設定項目は次のとおりです:
 
 - **Server host address:** ClickHouseサービスのホスト名。
 - **Server port:** ClickHouseサービスのポート。サーバー設定とプロトコルによって異なります。
 - **Protocol:** ClickHouseサービスへの接続に使用するプロトコル。
-- **Secure connection:** サーバーがセキュアな接続を必要とする場合に有効化します。
+- **Secure connection:** サーバーがセキュア接続を必要とする場合に有効化します。
 - **Username**と**Password**: ClickHouseユーザーの認証情報を入力します。ユーザーを設定していない場合は、ユーザー名に`default`を試してください。[読み取り専用ユーザーを設定する](#2-making-a-read-only-user)ことを推奨します。
 
 その他の設定については、[プラグイン設定](./config.md)のドキュメントを参照してください。
@@ -119,11 +119,11 @@ GrafanaからClickHouseに接続するには、適切なGrafanaプラグイン�
 
 ## 5. 次のステップ {#5-next-steps}
 
-データソースの準備が完了しました![クエリビルダー](./query-builder.md)を使用したクエリの構築方法について詳しく学びましょう。
+データソースの準備が完了しました！[クエリビルダー](./query-builder.md)を使用したクエリの構築方法については、こちらをご覧ください。
 
 設定の詳細については、[プラグイン設定](./config.md)のドキュメントを参照してください。
 
-このドキュメントに記載されていない情報については、[GitHubのプラグインリポジトリ](https://github.com/grafana/clickhouse-datasource)を確認してください。
+このドキュメントに記載されていない情報については、[GitHubのプラグインリポジトリ](https://github.com/grafana/clickhouse-datasource)をご確認ください。
 
 
 ## プラグインバージョンのアップグレード {#upgrading-plugin-versions}

@@ -2,7 +2,7 @@
 sidebar_label: 'コンソール監査ログ'
 slug: /cloud/security/audit-logging/console-audit-log
 title: 'コンソール監査ログ'
-description: 'このページでは、ユーザーがクラウド監査ログを閲覧する方法について説明します'
+description: 'このページでは、ユーザーがクラウド監査ログを参照する方法について説明します'
 doc_type: 'guide'
 keywords: ['audit log']
 ---
@@ -15,10 +15,10 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # コンソール監査ログ {#console-audit-log}
 
-ユーザーのコンソール操作は監査ログに記録されます。この監査ログは、Admin または Developer の組織ロールを持つユーザーが確認およびログシステムとの統合に利用できます。コンソール監査ログに含まれる具体的なイベントは、
+ユーザーのコンソール操作は監査ログに記録されます。この監査ログは、AdminまたはDeveloperの組織ロールを持つユーザーが確認でき、ロギングシステムとの統合も可能です。コンソール監査ログに含まれる具体的なイベントは、
 
 
-## ユーザーインターフェースを使用してコンソールログにアクセスする {#console-audit-log-ui}
+## ユーザーインターフェースからコンソールログにアクセスする {#console-audit-log-ui}
 
 <VerticalStepper>
 
@@ -45,7 +45,7 @@ ClickHouse Cloudで、組織の詳細ページに移動します。
 
 - **アクティビティ:** イベントを説明するテキスト
 - **ユーザー:** イベントを開始したユーザー
-- **IPアドレス:** 該当する場合、イベントを開始したユーザーのIPアドレスが表示されます
+- **IPアドレス:** 該当する場合、このフィールドにはイベントを開始したユーザーのIPアドレスが表示されます
 - **時刻:** イベントのタイムスタンプ
 
 <Image
@@ -81,6 +81,6 @@ ClickHouse Cloud APIの`activity`エンドポイントを使用することで�
 
 ## ログ統合 {#log-integrations}
 
-ユーザーは API を使用して、選択したログプラットフォームと統合できます。以下のコネクタがすぐに使用できる形で提供されています：
+ユーザーは、APIを使用して任意のロギングプラットフォームと統合できます。以下は、すぐに使用できるコネクタです：
 
 - [ClickHouse Cloud Audit add-on for Splunk](/integrations/audit-splunk)

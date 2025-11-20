@@ -55,48 +55,48 @@ ClickHouse Cloudが初めての方は、
 </TrackedLink>
 して開始してください。::::
 
-このオプションは、ClickHouse Cloudを使用しているユーザー向けに設計されています。このデプロイメントパターンでは、ClickHouseとHyperDXの両方がClickHouse Cloudでホストされるため、ユーザーがセルフホストする必要があるコンポーネントの数を最小限に抑えられます。
+このオプションは、ClickHouse Cloudを使用しているユーザー向けに設計されています。このデプロイメントパターンでは、ClickHouseとHyperDXの両方がClickHouse Cloudでホストされるため、ユーザーがセルフホストする必要があるコンポーネントの数を最小限に抑えることができます。
 
 インフラストラクチャ管理の負担を軽減するだけでなく、このデプロイメントパターンでは認証がClickHouse Cloud SSO/SAMLと統合されます。セルフホスト型デプロイメントとは異なり、ダッシュボード、保存された検索、ユーザー設定、アラートなどのアプリケーション状態を保存するためのMongoDBインスタンスをプロビジョニングする必要もありません。
 
-このモードでは、データ取り込みは完全にユーザーに委ねられます。独自にホストしたOpenTelemetryコレクター、クライアントライブラリからの直接取り込み、ClickHouseネイティブのテーブルエンジン(KafkaやS3など)、ETLパイプライン、またはClickHouse Cloudのマネージド取り込みサービスであるClickPipesを使用して、ClickHouse Cloudにデータを取り込むことができます。このアプローチは、ClickStackを運用する最もシンプルで高性能な方法を提供します。
+このモードでは、データ取り込みは完全にユーザーに委ねられます。独自にホストしたOpenTelemetryコレクター、クライアントライブラリからの直接取り込み、ClickHouseネイティブのテーブルエンジン(KafkaやS3など)、ETLパイプライン、またはClickPipes(ClickHouse Cloudのマネージド取り込みサービス)を使用して、ClickHouse Cloudにデータを取り込むことができます。このアプローチは、ClickStackを運用する最もシンプルで高性能な方法を提供します。
 
 ### 適用対象 {#suitable-for}
 
 このデプロイメントパターンは、以下のシナリオに最適です:
 
-1. すでにClickHouse Cloudにオブザーバビリティデータがあり、HyperDXを使用して可視化したい場合
-2. 大規模なオブザーバビリティデプロイメントを運用しており、ClickHouse CloudでClickStackの専用パフォーマンスとスケーラビリティが必要な場合
-3. すでに分析にClickHouse Cloudを使用しており、ClickStackインストルメンテーションライブラリを使用してアプリケーションを計装し、同じクラスターにデータを送信したい場合。この場合、オブザーバビリティワークロード用のコンピュートを分離するために[ウェアハウス](/cloud/reference/warehouses)の使用を推奨します
+1. すでにClickHouse Cloudにオブザーバビリティデータがあり、HyperDXを使用して可視化したい場合。
+2. 大規模なオブザーバビリティデプロイメントを運用しており、ClickHouse CloudでClickStackの専用パフォーマンスとスケーラビリティが必要な場合。
+3. すでにClickHouse Cloudを分析に使用しており、ClickStackインストルメンテーションライブラリを使用してアプリケーションを計装し、同じクラスターにデータを送信したい場合。この場合、オブザーバビリティワークロード用のコンピュートを分離するために[ウェアハウス](/cloud/reference/warehouses)の使用を推奨します。
 
 
 ## デプロイ手順 {#deployment-steps}
 
-以下のガイドは、すでにClickHouse Cloudサービスを作成済みであることを前提としています。サービスをまだ作成していない場合は、クイックスタートガイドの[「ClickHouseサービスを作成する」](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)の手順に従ってください。
+このガイドは、ClickHouse Cloudサービスが既に作成されていることを前提としています。サービスをまだ作成していない場合は、クイックスタートガイドの[「ClickHouseサービスの作成」](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)の手順に従ってください。
 
 <VerticalStepper headerLevel="h3">
 
 ### サービス認証情報のコピー（オプション） {#copy-service-credentials}
 
-**サービスで可視化したい既存のオブザーバビリティイベントがある場合、この手順はスキップできます。**
+**可視化したい既存のオブザーバビリティイベントがサービスに存在する場合、この手順はスキップできます。**
 
-メインのサービス一覧に移動し、HyperDXで可視化するためのオブザーバビリティイベントを格納するサービスを選択します。
+メインのサービス一覧に移動し、HyperDXで可視化するためのオブザーバビリティイベントを保存するサービスを選択します。
 
-ナビゲーションメニューから`Connect`ボタンを押します。モーダルが開き、サービスの認証情報と、さまざまなインターフェースや言語での接続方法の手順が表示されます。ドロップダウンから`HTTPS`を選択し、接続エンドポイントと認証情報を記録します。
+ナビゲーションメニューから`Connect`ボタンをクリックします。モーダルが開き、サービスの認証情報と、各種インターフェースや言語を使用した接続方法の手順が表示されます。ドロップダウンから`HTTPS`を選択し、接続エンドポイントと認証情報を記録します。
 
 <Image img={cloud_connect} alt='ClickHouse Cloud接続' size='lg' />
 
 ### Open Telemetry Collectorのデプロイ（オプション） {#deploy-otel-collector}
 
-**サービスで可視化したい既存のオブザーバビリティイベントがある場合、この手順はスキップできます。**
+**可視化したい既存のオブザーバビリティイベントがサービスに存在する場合、この手順はスキップできます。**
 
-この手順により、Open Telemetry（OTel）スキーマでテーブルが作成され、HyperDXでデータソースをシームレスに作成できるようになります。また、[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)の読み込みやClickStackへのOTelイベント送信に使用できるOTLPエンドポイントも提供されます。
+この手順により、Open Telemetry（OTel）スキーマでテーブルが作成され、HyperDXでのデータソース作成にシームレスに利用できるようになります。また、[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)の読み込みやClickStackへのOTelイベント送信に使用できるOLTPエンドポイントも提供されます。
 
 :::note 標準Open Telemetry Collectorの使用
-以下の手順では、ClickStackディストリビューションではなく、OTel Collectorの標準ディストリビューションを使用します。後者は設定にOpAMPサーバーが必要ですが、現在プライベートプレビューではサポートされていません。以下の設定は、ClickStackディストリビューションのCollectorで使用されているバージョンを再現し、イベントを送信できるOTLPエンドポイントを提供します。
+以下の手順では、ClickStackディストリビューションではなく、OTel Collectorの標準ディストリビューションを使用します。ClickStackディストリビューションは設定にOpAMPサーバーが必要ですが、現在プライベートプレビューではサポートされていません。以下の設定は、ClickStackディストリビューションのCollectorで使用されているバージョンを再現し、イベントを送信できるOLTPエンドポイントを提供します。
 :::
 
-OTel Collectorの設定をダウンロードします：
+OTel Collectorの設定ファイルをダウンロードします：
 
 ```bash
 curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
@@ -260,7 +260,7 @@ service:
 
 </details>
 
-以下のDockerコマンドを使用してコレクターをデプロイします。事前に記録した接続設定を各環境変数に設定し、オペレーティングシステムに応じた適切なコマンドを使用してください。
+以下のDockerコマンドを使用してコレクターをデプロイします。事前に記録した接続設定を対応する環境変数に設定し、オペレーティングシステムに応じた適切なコマンドを使用してください。
 ```
 
 
@@ -329,7 +329,7 @@ docker run --rm -it \
 
 ユーザーを作成する必要はなく、自動的に認証された後、データソースの作成を求められます。
 
-HyperDXインターフェースのみを試したいユーザーには、OTelデータを使用した[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)を推奨します。
+HyperDXインターフェースのみを試したいユーザーには、OTelデータを使用する[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)を推奨します。
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX Landing" size="lg"/>
 
@@ -340,7 +340,7 @@ HyperDXにアクセスするユーザーは、ClickHouse Cloudコンソールの
 #### ユーザーアクセスの設定方法 {#configure-access}
 
 1. ClickHouse Cloudコンソールでサービスに移動します
-2. **Settings** → **SQL Console Access**に進みます
+2. **Settings** → **SQL Console Access**に移動します
 3. 各ユーザーに適切な権限レベルを設定します:
    - **Service Admin → Full Access** - アラートを有効にするために必要
    - **Service Read Only → Read Only** - 可観測性データの表示とダッシュボードの作成が可能
@@ -349,7 +349,7 @@ HyperDXにアクセスするユーザーは、ClickHouse Cloudコンソールの
 <Image img={read_only} alt="ClickHouse Cloud Read Only"/>
 
 :::important アラートには管理者アクセスが必要です
-アラートを有効にするには、**Service Admin**権限(SQL Console Accessドロップダウンで**Full Access**にマッピングされます)を持つ少なくとも1人のユーザーが、HyperDXに少なくとも1回ログインする必要があります。これにより、アラートクエリを実行する専用ユーザーがデータベースにプロビジョニングされます。
+アラートを有効にするには、**Service Admin**権限(SQL Console Accessドロップダウンで**Full Access**にマッピングされます)を持つ少なくとも1人のユーザーが、少なくとも1回HyperDXにログインする必要があります。これにより、アラートクエリを実行する専用ユーザーがデータベースにプロビジョニングされます。
 :::
 
 ### データソースの作成 {#create-a-datasource}
@@ -376,7 +376,7 @@ ClickStackの異なるデータソース(ログやトレースなど)は、相�
 
 #### カスタムスキーマの使用 {#using-custom-schemas}
 
-データを持つ既存のサービスにHyperDXを接続したいユーザーは、必要に応じてデータベースとテーブルの設定を完了できます。テーブルがClickHouse用のOpen Telemetryスキーマに準拠している場合、設定は自動検出されます。
+データを持つ既存のサービスにHyperDXを接続したいユーザーは、必要に応じてデータベースとテーブルの設定を完了できます。テーブルがClickHouse用のOpen Telemetryスキーマに準拠している場合、設定は自動検出されます。 
 
 独自のスキーマを使用する場合は、必要なフィールドが指定されていることを確認してログソースを作成することを推奨します。詳細については、["ログソース設定"](/use-cases/observability/clickstack/config#logs)を参照してください。
 

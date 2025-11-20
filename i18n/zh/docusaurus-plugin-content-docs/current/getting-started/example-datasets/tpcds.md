@@ -7,15 +7,15 @@ doc_type: 'guide'
 keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
-与 [Star Schema Benchmark (SSB)](star-schema.md) 类似，TPC-DS 也是基于 [TPC-H](tpch.md) 的，但走了相反的路线：通过将数据存储在复杂的雪花模式中（24 张表而不是 8 张表），显著增加了所需的连接（JOIN）数量。
-其数据分布是偏斜的（例如正态分布和泊松分布）。
-它包含 99 个带有随机替换的报表和临时查询。
+与 [Star Schema Benchmark (SSB)](star-schema.md) 类似，TPC-DS 基于 [TPC-H](tpch.md)，但它走了相反的路线：通过将数据存储在复杂的雪花模型中（24 张表而非 8 张），增加了所需的 `JOIN` 数量。
+数据分布是偏斜的（例如正态分布和泊松分布）。
+它包含 99 个报表和临时查询，并带有随机参数替换。
 
 参考文献
 
 * [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-首先，检出（checkout）TPC-DS 代码仓库并编译数据生成器：
+首先，检出 TPC-DS 仓库并编译数据生成器：
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -29,14 +29,14 @@ make
 ./dsdgen -scale 1
 ```
 
-然后，生成查询（使用相同的规模因子）：
+然后，生成查询（使用相同的缩放因子）：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询语句
 ```
 
 现在在 ClickHouse 中创建表。
-你可以使用 `tools/tpcds.sql` 中原始的建表定义，或者使用经过“调优”的建表定义，在合适的地方正确定义主键索引，并将相应的列设置为 `LowCardinality` 类型。
+你可以使用 `tools/tpcds.sql` 中的原始表定义，或使用经过「优化」的表定义，在合适的地方正确定义主键索引，并将列类型设置为 `LowCardinality`。
 
 
 ```sql
@@ -594,6 +594,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 然后运行生成的查询。
 
 ::::warning
-TPC-DS 大量使用相关子查询，而在撰写本文时（2024 年 9 月），ClickHouse 尚不支持相关子查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-因此，上述许多基准测试查询将会报错而执行失败。
+TPC-DS 大量使用相关子查询，而在撰写本文时（2024 年 9 月）ClickHouse 尚不支持相关子查询（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
+因此，上述许多基准查询将会报错并执行失败。
 ::::

@@ -42,20 +42,20 @@ import Image from '@theme/IdealImage';
 
 ## 配置数据源 {#3-configure-data-source}
 
-填写表单,为 ClickPipe 提供名称、描述(可选)、凭据及其他连接详细信息。
+填写表单,为 ClickPipe 提供名称、描述(可选)、凭据及其他连接详情。
 
-<Image img={cp_step2} alt='填写连接详细信息' size='md' />
+<Image img={cp_step2} alt='填写连接详情' size='md' />
 
 
 ## 配置 Schema Registry(可选) {#4-configure-your-schema-registry}
 
-Avro 流需要有效的 schema。有关如何配置 Schema Registry 的更多详细信息,请参阅 [Schema registries](./02_schema-registries.md)。
+Avro 流需要有效的 Schema。有关如何配置 Schema Registry 的更多详细信息,请参阅 [Schema Registries](./02_schema-registries.md)。
 
 
 ## 配置反向私有端点(可选) {#5-configure-reverse-private-endpoint}
 
-配置反向私有端点,以允许 ClickPipes 通过 AWS PrivateLink 连接到您的 Kafka 集群。
-有关更多信息,请参阅 [AWS PrivateLink 文档](../aws-privatelink.md)。
+配置反向私有端点,以允许 ClickPipes 使用 AWS PrivateLink 连接到您的 Kafka 集群。
+有关更多信息,请参阅我们的 [AWS PrivateLink 文档](../aws-privatelink.md)。
 
 
 ## 选择主题 {#6-select-your-topic}
@@ -67,7 +67,7 @@ Avro 流需要有效的 schema。有关如何配置 Schema Registry 的更多详
 
 ## 配置目标表 {#7-configure-your-destination-table}
 
-在下一步中,您可以选择将数据导入到新的 ClickHouse 表,或重用现有表。按照屏幕上的说明修改表名、架构和设置。您可以在顶部的示例表中实时预览所做的更改。
+在下一步中,您可以选择将数据导入到新的 ClickHouse 表,或复用现有表。按照屏幕上的说明修改表名、架构和设置。您可以在顶部的示例表中实时预览所做的更改。
 
 <Image img={cp_step4a} alt='设置表、架构和设置' size='md' />
 
@@ -78,10 +78,10 @@ Avro 流需要有效的 schema。有关如何配置 Schema Registry 的更多详
 
 ## 配置权限 {#8-configure-permissions}
 
-ClickPipes 将创建一个专用用户用于向目标表写入数据。您可以为此内部用户选择角色,可以使用自定义角色或以下预定义角色之一:
+ClickPipes 将创建一个专用用户用于向目标表写入数据。您可以为此内部用户选择角色,可使用自定义角色或以下预定义角色之一:
 
-- `Full access`:具有集群的完全访问权限。如果您在目标表上使用物化视图或字典,此选项会很有用。
-- `Only destination table`:仅具有目标表的 `INSERT` 权限。
+- `Full access`:拥有集群的完全访问权限。如果您在目标表上使用物化视图或字典,此选项会很有用。
+- `Only destination table`:仅拥有目标表的 `INSERT` 权限。
 
 <Image img={cp_step5} alt='权限' size='md' />
 

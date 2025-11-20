@@ -3,7 +3,7 @@ slug: /guides/sre/configuring-ssl
 sidebar_label: '配置 SSL-TLS'
 sidebar_position: 20
 title: '配置 SSL-TLS'
-description: '本指南提供一组简单且精简的设置，用于将 ClickHouse 配置为使用 OpenSSL 证书验证连接。'
+description: '本指南提供配置 ClickHouse 使用 OpenSSL 证书验证连接的简单、精简的设置。'
 keywords: ['SSL 配置', 'TLS 设置', 'OpenSSL 证书', '安全连接', 'SRE 指南']
 doc_type: 'guide'
 ---
@@ -13,16 +13,16 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 
 
-# 配置 SSL/TLS
+# 配置 SSL-TLS
 
 <SelfManaged />
 
-本指南提供了一些简单、精简的设置，用于配置 ClickHouse 使用 OpenSSL 证书来验证连接。作为演示，我们会创建一个自签名的证书颁发机构（CA）证书及其密钥，以及节点证书，并通过相应的设置来建立连接。
+本指南提供了简单且精简的配置示例，说明如何让 ClickHouse 使用 OpenSSL 证书来验证连接。作为演示，我们将创建自签名的证书颁发机构（CA）证书和密钥，以及节点证书，并通过相应设置建立连接。
 
 :::note
-TLS 的实现较为复杂，并且存在许多选项需要考虑，以确保部署的安全性和健壮性。本教程仅演示基础的 SSL/TLS 配置示例。请与贵组织的 PKI / 安全团队协作，为贵组织生成合适的证书。
+TLS 的实现较为复杂，要实现安全且健壮的部署，需要考虑许多选项。本教程仅展示基础的 SSL/TLS 配置示例。请与贵组织的 PKI/安全团队协作，为组织生成适合的证书。
 
-在此之前，可以先阅读这篇[关于证书使用的基础教程](https://ubuntu.com/server/docs/security-certificates)，以获得入门级概览。
+在阅读本指南前，可先参考此[证书使用基础教程](https://ubuntu.com/server/docs/security-certificates)，了解基本概念和使用方式。
 :::
 
 
@@ -31,14 +31,14 @@ TLS 的实现较为复杂，并且存在许多选项需要考虑，以确保部�
 
 本指南基于 Ubuntu 20.04 编写,ClickHouse 通过 DEB 软件包(使用 apt)安装在以下主机上。域名为 `marsnet.local`:
 
-| 主机      | IP 地址    |
+| 主机      | IP 地址       |
 | --------- | ------------- |
 | `chnode1` | 192.168.1.221 |
 | `chnode2` | 192.168.1.222 |
 | `chnode3` | 192.168.1.223 |
 
 :::note
-查看[快速入门](/getting-started/install/install.mdx)以了解有关如何安装 ClickHouse 的更多详细信息。
+查看[快速入门](/getting-started/install/install.mdx)了解如何安装 ClickHouse 的更多详细信息。
 :::
 
 
@@ -54,7 +54,7 @@ TLS 的实现较为复杂，并且存在许多选项需要考虑，以确保部�
    openssl genrsa -out marsnet_ca.key 2048
    ```
 
-2. 生成新的自签名 CA 证书。以下命令将创建一个新证书,用于使用 CA 密钥对其他证书进行签名:
+2. 生成新的自签名 CA 证书。以下命令将创建一个新证书,该证书将使用 CA 密钥对其他证书进行签名:
 
    ```bash
    openssl req -x509 -subj "/CN=marsnet.local CA" -nodes -key marsnet_ca.key -days 1095 -out marsnet_ca.crt
@@ -102,7 +102,7 @@ TLS 的实现较为复杂，并且存在许多选项需要考虑，以确保部�
 ## 3. 创建并配置用于存储证书和密钥的目录 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
-必须在每个节点上执行此操作。请在每台主机上使用相应的证书和密钥。
+此操作必须在每个节点上执行。请在每台主机上使用相应的证书和密钥。
 :::
 
 1. 在每个节点上创建一个 ClickHouse 可访问的目录。建议使用默认配置目录(例如 `/etc/clickhouse-server`):
@@ -111,7 +111,7 @@ TLS 的实现较为复杂，并且存在许多选项需要考虑，以确保部�
    mkdir /etc/clickhouse-server/certs
    ```
 
-2. 将 CA 证书、节点证书以及对应每个节点的密钥复制到新创建的 certs 目录中。
+2. 将 CA 证书、节点证书以及对应每个节点的密钥复制到新建的 certs 目录中。
 
 3. 更新所有者和权限,以允许 ClickHouse 读取证书:
 
@@ -208,10 +208,10 @@ ClickHouse Keeper 的推荐端口为 `9281`。但该端口可配置,如果环境
 3. 更新并将以下集群设置添加到 `chnode1` 和 `chnode2`。`chnode3` 将用于 ClickHouse Keeper 仲裁。
 
    :::note
-   在此配置中,仅配置了一个示例集群。测试样例集群必须删除或注释掉,或者如果正在测试现有集群,则必须更新端口并添加 `<secure>` 选项。如果在安装时或在 `users.xml` 文件中为 `default` 用户初始配置了密码,则必须设置 `<user>` 和 `<password>`。
+   在此配置中,仅配置了一个示例集群。测试样本集群必须删除或注释掉,或者如果正在测试现有集群,则必须更新端口并添加 `<secure>` 选项。如果在安装时或在 `users.xml` 文件中为 `default` 用户初始配置了密码,则必须设置 `<user>` 和 `<password>`。
    :::
 
-   以下配置在两个服务器上创建一个具有单分片副本的集群(每个节点一个副本)。
+   以下配置在两个服务器上创建一个包含单分片副本的集群(每个节点一个)。
 
    ```xml
    <remote_servers>
@@ -237,7 +237,7 @@ ClickHouse Keeper 的推荐端口为 `9281`。但该端口可配置,如果环境
    ```
 
 
-4. 定义宏的取值，以便创建用于测试的 `ReplicatedMergeTree` 表。在 `chnode1` 上：
+4. 定义宏值，以便创建用于测试的 `ReplicatedMergeTree` 表。在 `chnode1` 上：
     ```xml
     <macros>
         <shard>1</shard>
@@ -295,7 +295,7 @@ ClickHouse Keeper 的推荐端口为 `9281`。但该端口可配置,如果环境
 6.  配置 OpenSSL 证书和路径
 
     :::note
-    每个文件名和路径都必须更新为与所配置节点相匹配。
+    每个文件名和路径都必须更新以匹配所配置的节点。
     例如,在 `chnode2` 主机上配置时,需将 `<certificateFile>` 条目更新为 `chnode2.crt`。
     :::
 
@@ -362,7 +362,7 @@ ClickHouse Keeper 的推荐端口为 `9281`。但该端口可配置,如果环境
     ```
 
 
-6. 禁用 MySQL 和 PostgreSQL 的默认模拟端口：
+6. 禁用 MySQL 和 PostgreSQL 的默认兼容端口：
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
@@ -410,8 +410,8 @@ ClickHouse Keeper 的推荐端口为 `9281`。但该端口可配置,如果环境
    | 9440            | 安全原生 TCP 协议             |
    | 9444            | ClickHouse Keeper Raft 端口   |
 
-3. 验证 ClickHouse Keeper 健康状态
-   在没有 TLS 的情况下,使用 `echo` 执行典型的 [四字命令 (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) 将无法正常工作,以下是使用 `openssl` 执行这些命令的方法。
+3. 验证 ClickHouse Keeper 运行状况
+   在没有 TLS 的情况下,使用 `echo` 执行常规的[四字命令 (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) 将无法正常工作,以下是使用 `openssl` 执行这些命令的方法。
    - 使用 `openssl` 启动交互式会话
 
 
@@ -438,7 +438,7 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 ...
 ```
 
-* 在 `openssl` 会话中发送 4LW 命令
+* 在 openssl 会话中发送 4LW 命令
 
   ```bash
   mntr
@@ -486,16 +486,16 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    clickhouse :)
    ```
 
-5. 通过 `https` 接口，使用 `https://chnode1.marsnet.local:8443/play` 登录 Play UI。
+5. 通过 `https` 接口在 `https://chnode1.marsnet.local:8443/play` 登录 Play UI。
 
-   <Image img={configuringSsl01} alt="配置 SSL" size="md" border />
+   <Image img={configuringSsl01} alt="Configuring SSL" size="md" border />
 
    :::note
-   浏览器会显示证书不受信任，因为是从工作站访问的，且证书不在客户端机器的根 CA 存储中。
-   当使用由公共证书机构或企业 CA 签发的证书时，则应显示为受信任。
+   浏览器会显示证书不受信任，因为是从工作站访问，并且这些证书不在客户端机器的根 CA 证书存储中。
+   使用由公共机构或企业 CA 签发的证书时，应显示为受信任。
    :::
 
-6. 创建一个副本表：
+6. 创建一个复制表：
 
    ```sql
    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
@@ -525,7 +525,7 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    ```
 
 
-8. 在 `chnode2` 上查看行数据以验证复制是否成功：
+8. 在 `chnode2` 上查看这些行以验证复制是否成功：
     ```sql
     SELECT * FROM repl_table
     ```
@@ -541,4 +541,4 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 ## 总结 {#summary}
 
-本文重点介绍了如何为 ClickHouse 环境配置 SSL/TLS。生产环境中的具体设置会因需求而异,例如证书验证级别、协议、加密算法等。通过本文,您应该已经掌握了配置和实现安全连接的各个步骤。
+本文重点介绍了如何为 ClickHouse 环境配置 SSL/TLS。生产环境中的设置会因不同需求而有所差异,例如证书验证级别、协议、加密算法等。通过本文,您应该已经充分掌握了配置和实现安全连接的相关步骤。

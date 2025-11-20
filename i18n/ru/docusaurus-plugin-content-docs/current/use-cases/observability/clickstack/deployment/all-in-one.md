@@ -4,7 +4,7 @@ title: "Всё в одном"
 pagination_prev: null
 pagination_next: null
 sidebar_position: 0
-description: "Развертывание ClickStack в режиме «Всё в одном» — стек наблюдаемости ClickHouse"
+description: "Развертывание ClickStack в конфигурации «Всё в одном» — стек наблюдаемости ClickHouse"
 doc_type: "guide"
 keywords: ["ClickStack", "observability", "all-in-one", "deployment"]
 ---
@@ -21,7 +21,7 @@ import hyperdx_logs from "@site/static/images/use-cases/observability/hyperdx-lo
 - **Коллектор OpenTelemetry (OTel)** (предоставляет OTLP на портах `4317` и `4318`)
 - **MongoDB** (для сохранения состояния приложения)
 
-Этот вариант включает аутентификацию, обеспечивая сохранение дашбордов, алертов и сохраненных поисковых запросов между сеансами и пользователями.
+Эта конфигурация включает аутентификацию, обеспечивая сохранение дашбордов, оповещений и сохраненных поисковых запросов между сеансами и для разных пользователей.
 
 ### Подходит для {#suitable-for}
 
@@ -49,7 +49,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 
 Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям.
 
-При нажатии `Create` будут созданы источники данных для интегрированного экземпляра ClickHouse.
+При нажатии кнопки `Create` будут созданы источники данных для интегрированного экземпляра ClickHouse.
 
 <Image img={hyperdx_login} alt='Веб-интерфейс HyperDX' size='lg' />
 
@@ -115,14 +115,14 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-Значение `CLICKHOUSE_ENDPOINT` должно содержать HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+Значение `CLICKHOUSE_ENDPOINT` должно быть HTTPS-эндпоинтом ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
 После подключения к интерфейсу HyperDX перейдите в раздел [`Team Settings`](http://localhost:8080/team) и создайте подключение к вашему сервису ClickHouse Cloud, а затем настройте необходимые источники данных. Пример процесса см. [здесь](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 
-## Настройка коллектора OpenTelemetry {#configuring-collector}
+## Настройка сборщика OpenTelemetry {#configuring-collector}
 
-При необходимости конфигурацию коллектора OTel можно изменить — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
+При необходимости конфигурацию сборщика OTel можно изменить — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
 <JSONSupport />
 

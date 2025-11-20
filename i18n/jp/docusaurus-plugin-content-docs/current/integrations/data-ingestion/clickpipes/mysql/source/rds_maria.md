@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon RDS MariaDB'
-description: 'ClickPipes のソースとして Amazon RDS MariaDB を設定するためのステップバイステップガイド'
+description: 'ClickPipes のソースとして Amazon RDS MariaDB をセットアップするための手順ガイド'
 slug: /integrations/clickpipes/mysql/source/rds_maria
-title: 'RDS MariaDB ソース設定ガイド'
+title: 'RDS MariaDB ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -20,17 +20,17 @@ import Image from '@theme/IdealImage';
 
 # RDS MariaDB ソースセットアップガイド
 
-これは、MySQL ClickPipe を通じてデータをレプリケートするように RDS MariaDB インスタンスを構成するためのステップバイステップガイドです。
+このドキュメントでは、MySQL ClickPipe を介してデータをレプリケーションするために、RDS MariaDB インスタンスを構成する手順をステップバイステップで説明します。
 <br/>
 :::info
-あわせて、MySQL の FAQ を[こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)からご確認いただくことをおすすめします。FAQ ページは継続的に更新されています。
+また、MySQL に関する FAQ を[こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)から参照することをおすすめします。FAQ ページは継続的に更新されています。
 :::
 
 
 
-## バイナリログ保持の有効化 {#enable-binlog-retention-rds}
+## バイナリログの保持を有効にする {#enable-binlog-retention-rds}
 
-バイナリログは、MySQLサーバーインスタンスに対して行われたデータ変更に関する情報を含むログファイルのセットです。バイナリログファイルはレプリケーションに必要です。以下の両方の手順に従う必要があります:
+バイナリログは、MySQLサーバーインスタンスに対して行われたデータ変更に関する情報を含むログファイルのセットです。バイナリログファイルはレプリケーションに必須です。以下の両方の手順に従う必要があります:
 
 ### 1. 自動バックアップによるバイナリロギングの有効化{#enable-binlog-logging-rds}
 
@@ -38,18 +38,18 @@ import Image from '@theme/IdealImage';
 
 <Image
   img={rds_backups}
-  alt='RDSでの自動バックアップの有効化'
+  alt='RDSで自動バックアップを有効にする'
   size='lg'
   border
 />
 
-レプリケーションのユースケースに応じて、バックアップ保持期間を適切な長さに設定することを推奨します。
+レプリケーションのユースケースに応じて、バックアップ保持期間を適切に長い値に設定することを推奨します。
 
 ### 2. バイナリログ保持時間{#binlog-retention-hours-rds}
 
-Amazon RDS for MariaDBでは、バイナリログ保持期間の設定方法が異なります。これは、変更を含むバイナリログファイルが保持される時間の長さを指します。バイナリログファイルが削除される前に一部の変更が読み取られない場合、レプリケーションを継続できなくなります。バイナリログ保持時間のデフォルト値はNULLで、バイナリログが保持されないことを意味します。
+Amazon RDS for MariaDBには、バイナリログ保持期間を設定する独自の方法があります。これは、変更を含むバイナリログファイルが保持される時間の長さを指します。バイナリログファイルが削除される前に一部の変更が読み取られない場合、レプリケーションを継続できなくなります。バイナリログ保持時間のデフォルト値はNULLで、これはバイナリログが保持されないことを意味します。
 
-DBインスタンスでバイナリログを保持する時間数を指定するには、レプリケーションが実行されるのに十分な長さのバイナリログ保持期間を指定して、mysql.rds_set_configuration関数を使用します。推奨される最小値は`24時間`です。
+DBインスタンスでバイナリログを保持する時間数を指定するには、mysql.rds_set_configuration関数を使用し、レプリケーションが実行されるのに十分な長さのバイナリログ保持期間を設定します。`24時間`が推奨される最小値です。
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
@@ -75,35 +75,35 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 
 1. `binlog_format`を`ROW`に設定
 
-<Image img={binlog_format} alt='BinlogフォーマットをROWに設定' size='lg' border />
+<Image img={binlog_format} alt='Binlogフォーマットを ROW に設定' size='lg' border />
 
 2. `binlog_row_metadata`を`FULL`に設定
 
 <Image
   img={binlog_row_metadata}
-  alt='Binlog行メタデータをFULLに設定'
+  alt='Binlog row メタデータを FULL に設定'
   size='lg'
   border
 />
 
 3. `binlog_row_image`を`FULL`に設定
 
-<Image img={binlog_row_image} alt='Binlog行イメージをFULLに設定' size='lg' border />
+<Image img={binlog_row_image} alt='Binlog row イメージを FULL に設定' size='lg' border />
 
 次に、右上の`Save Changes`をクリックします。変更を有効にするには、インスタンスの再起動が必要になる場合があります。RDSインスタンスのConfigurationsタブでパラメータグループのリンクの横に`Pending reboot`と表示されている場合は、インスタンスの再起動が必要であることを示しています。
 
 <br />
-:::tip MariaDBクラスタを使用している場合、上記のパラメータは[DBクラスタ](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)パラメータグループに存在し、DBインスタンスグループには存在しません。 :::
+:::tip MariaDBクラスターをお使いの場合、上記のパラメータは[DBクラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)パラメータグループにあり、DBインスタンスグループにはありません。 :::
 
 
 ## GTIDモードの有効化 {#gtid-mode-rds}
 
-グローバルトランザクション識別子（GTID）は、MySQL/MariaDBでコミットされた各トランザクションに割り当てられる一意のIDです。GTIDはbinlogレプリケーションを簡素化し、トラブルシューティングをより簡単にします。MariaDBではGTIDモードがデフォルトで有効になっているため、利用にあたってユーザー側での操作は不要です。
+グローバルトランザクション識別子（GTID）は、MySQL/MariaDBでコミットされた各トランザクションに割り当てられる一意のIDです。GTIDはbinlogレプリケーションを簡素化し、トラブルシューティングをより簡単にします。MariaDBではGTIDモードがデフォルトで有効になっているため、使用にあたってユーザー操作は不要です。
 
 
 ## データベースユーザーの設定 {#configure-database-user-rds}
 
-管理者ユーザーとしてRDS MariaDBインスタンスに接続し、以下のコマンドを実行します:
+管理者ユーザーとしてRDS MariaDBインスタンスに接続し、以下のコマンドを実行してください:
 
 1. ClickPipes専用のユーザーを作成します:
 
@@ -111,7 +111,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
    ```
 
-2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケーション対象の各データベースとホストに対してこれらのコマンドを繰り返します:
+2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返してください:
 
    ```sql
    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
@@ -129,7 +129,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 
 ### IPベースのアクセス制御 {#ip-based-access-control}
 
-RDSインスタンスへのトラフィックを制限したい場合は、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)をRDSセキュリティグループの`インバウンドルール`に追加してください。
+RDSインスタンスへのトラフィックを制限する場合は、RDSセキュリティグループの`Inbound rules`に[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)を追加してください。
 
 <Image
   img={security_group_in_rds_mysql}
@@ -145,6 +145,6 @@ RDSインスタンスへのトラフィックを制限したい場合は、[ド�
   border
 />
 
-### AWS PrivateLinkによるプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLinkを介したプライベートアクセス {#private-access-via-aws-privatelink}
 
-プライベートネットワーク経由でRDSインスタンスに接続するには、AWS PrivateLinkを使用できます。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+プライベートネットワーク経由でRDSインスタンスに接続するには、AWS PrivateLinkを使用できます。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)に従ってください。

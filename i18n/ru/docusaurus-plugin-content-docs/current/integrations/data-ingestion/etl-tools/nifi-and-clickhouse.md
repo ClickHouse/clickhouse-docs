@@ -3,7 +3,7 @@ sidebar_label: 'NiFi'
 sidebar_position: 12
 keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/nifi
-description: 'Стриминговая загрузка данных в ClickHouse с помощью конвейеров данных NiFi'
+description: 'Передавайте данные в ClickHouse с помощью конвейеров данных NiFi'
 title: 'Подключение Apache NiFi к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -38,7 +38,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <a href='https://nifi.apache.org/' target='_blank'>
   Apache NiFi
 </a>
-— это программное обеспечение с открытым исходным кодом для управления рабочими процессами, предназначенное для автоматизации потоков данных между программными системами. Оно позволяет создавать ETL-конвейеры данных и поставляется с более чем 300 процессорами данных. Это пошаговое руководство показывает, как подключить Apache NiFi к ClickHouse в качестве источника и приёмника данных, а также загрузить тестовый набор данных.
+— это программное обеспечение с открытым исходным кодом для управления рабочими процессами, предназначенное для автоматизации потоков данных между программными системами. Оно позволяет создавать ETL-конвейеры данных и поставляется с более чем 300 процессорами данных. Это пошаговое руководство показывает, как подключить Apache NiFi к ClickHouse в качестве источника и приёмника данных, а также как загрузить тестовый набор данных.
 
 <VerticalStepper headerLevel="h2">
 
@@ -102,9 +102,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 | Свойство                    | Значение                                                           | Примечание                                           |
 | --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------- |
-| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Замените HOSTNAME в URL подключения на соответствующее значение |
+| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | Замените HOSTNAME в URL подключения соответствующим образом |
 | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                                      |
-| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Абсолютный путь к JAR-файлу драйвера JDBC для ClickHouse |
+| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | Абсолютный путь к JAR-файлу JDBC-драйвера ClickHouse |
 | Database User               | default                                                            | Имя пользователя ClickHouse                          |
 | Password                    | password                                                           | Пароль ClickHouse                                    |
 
@@ -178,7 +178,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      img={nifi11}
      size='lg'
      border
-     alt='Диалоговое окно списка очереди с FlowFile, готовыми к проверке'
+     alt='Диалоговое окно списка очереди, показывающее FlowFile, готовые к проверке'
    />
 
 5. Переключите вид на «formatted», чтобы просмотреть результат выходного `FlowFile`
@@ -187,7 +187,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      img={nifi12}
      size='lg'
      border
-     alt='Просмотрщик содержимого FlowFile с результатами запроса в форматированном виде'
+     alt='Просмотрщик содержимого FlowFile, показывающий результаты запроса в форматированном виде'
    />
 
 
@@ -201,8 +201,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    | ------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
    | Record Reader             | `JSONTreeReader`    | Выберите соответствующий читатель записей                                                                                       |
    | Record Writer             | `JSONReadSetWriter` | Выберите соответствующий писатель записей                                                                                       |
-   | Minimum Number of Records | 1000                | Измените на большее значение, чтобы минимальное количество строк объединялось в одну запись. По умолчанию: 1 строка             |
-   | Maximum Number of Records | 10000               | Измените на значение больше, чем "Minimum Number of Records". По умолчанию: 1 000 строк                                         |
+   | Minimum Number of Records | 1000                | Измените это значение на большее, чтобы минимальное количество строк объединялось в одну запись. По умолчанию: 1 строка         |
+   | Maximum Number of Records | 10000               | Измените это значение на большее, чем "Minimum Number of Records". По умолчанию: 1 000 строк                                    |
 
 3. Чтобы убедиться, что несколько записей объединены в одну, проверьте входные и выходные данные процессора `MergeRecord`. Обратите внимание, что выходные данные представляют собой массив из нескольких входных записей
 
@@ -221,7 +221,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      img={nifi14}
      size='sm'
      border
-     alt='Выходные данные процессора MergeRecord, показывающие объединенный массив записей'
+     alt='Выходные данные процессора MergeRecord, показывающие объединённый массив записей'
    />
 
 4. В разделе "Properties" процессора `PutDatabaseRecord` введите следующие значения
@@ -236,7 +236,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    | Translate Field Names               | false            | Установите значение "false", чтобы имена вставляемых полей совпадали с именами столбцов                                                                          |
    | Maximum Batch Size                  | 1000             | Максимальное количество строк на одну вставку. Это значение не должно быть меньше значения "Minimum Number of Records" в процессоре `MergeRecord`               |
 
-5. Чтобы убедиться, что каждая вставка содержит несколько строк, проверьте, что количество строк в таблице увеличивается как минимум на значение "Minimum Number of Records", определенное в `MergeRecord`.
+5. Чтобы убедиться, что каждая вставка содержит несколько строк, проверьте, что количество строк в таблице увеличивается как минимум на значение "Minimum Number of Records", определённое в `MergeRecord`.
 
    <Image
      img={nifi15}
@@ -245,6 +245,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='Результаты запроса, показывающие количество строк в целевой таблице'
    />
 
-6. Поздравляем! Вы успешно загрузили данные в ClickHouse с помощью Apache NiFi!
+6. Поздравляем — вы успешно загрузили данные в ClickHouse с помощью Apache NiFi!
 
 </VerticalStepper>

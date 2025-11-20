@@ -1,9 +1,9 @@
 ---
 sidebar_label: '常见问题'
-description: '关于 ClickPipes for Postgres 的常见问题解答。'
+description: '关于 ClickPipes for Postgres 的常见问题。'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
-title: 'ClickPipes for Postgres 常见问题解答'
+title: 'ClickPipes for Postgres 常见问题'
 keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 doc_type: 'reference'
 ---
@@ -14,11 +14,11 @@ import Image from '@theme/IdealImage';
 
 # ClickPipes for Postgres 常见问题
 
-### 空闲状态如何影响我的 Postgres CDC ClickPipe？ {#how-does-idling-affect-my-postgres-cdc-clickpipe}
+### 空闲状态如何影响我的 Postgres CDC ClickPipe? {#how-does-idling-affect-my-postgres-cdc-clickpipe}
 
-如果您的 ClickHouse Cloud 服务处于空闲状态,您的 Postgres CDC ClickPipe 将继续同步数据,服务会在下一个同步间隔时自动唤醒以处理传入的数据。同步完成并达到空闲时长后,服务将重新进入空闲状态。
+如果您的 ClickHouse Cloud 服务处于空闲状态,您的 Postgres CDC ClickPipe 将继续同步数据,服务会在下一个同步间隔时自动唤醒以处理传入的数据。同步完成并达到空闲时间后,服务将重新进入空闲状态。
 
-例如,如果您的同步间隔设置为 30 分钟,服务空闲时长设置为 10 分钟,那么您的服务将每 30 分钟唤醒一次并保持活动状态 10 分钟,然后重新进入空闲状态。
+例如,如果您的同步间隔设置为 30 分钟,服务空闲时间设置为 10 分钟,那么您的服务将每 30 分钟唤醒一次并保持活动状态 10 分钟,然后重新进入空闲状态。
 
 ### ClickPipes for Postgres 如何处理 TOAST 列? {#how-are-toast-columns-handled-in-clickpipes-for-postgres}
 
@@ -33,18 +33,18 @@ import Image from '@theme/IdealImage';
 要使用 ClickPipes for Postgres 复制表,该表必须定义主键或 [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY)。
 
 - **主键**:最直接的方法是在表上定义主键。这为每一行提供了唯一标识符,对于跟踪更新和删除至关重要。在这种情况下,您可以将 REPLICA IDENTITY 设置为 `DEFAULT`(默认行为)。
-- **副本标识**:如果表没有主键,您可以设置副本标识。副本标识可以设置为 `FULL`,这意味着将使用整行来识别变更。或者,如果表上存在唯一索引,您可以将其设置为使用该索引,然后将 REPLICA IDENTITY 设置为 `USING INDEX index_name`。
+- **副本标识**:如果表没有主键,您可以设置副本标识。副本标识可以设置为 `FULL`,这意味着将使用整行来识别更改。或者,如果表上存在唯一索引,您可以将其设置为使用该唯一索引,然后将 REPLICA IDENTITY 设置为 `USING INDEX index_name`。
   要将副本标识设置为 FULL,您可以使用以下 SQL 命令:
 
 ```sql
 ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
-REPLICA IDENTITY FULL 还支持复制未变更的 TOAST 列。更多信息请参阅[此处](./toast)。
+REPLICA IDENTITY FULL 还支持复制未更改的 TOAST 列。更多信息请参阅[此处](./toast)。
 
-请注意,使用 `REPLICA IDENTITY FULL` 可能会影响性能并导致 WAL 增长更快,特别是对于没有主键且频繁更新或删除的表,因为它需要为每次变更记录更多数据。如果您对为表设置主键或副本标识有任何疑问或需要帮助,请联系我们的支持团队寻求指导。
+请注意,使用 `REPLICA IDENTITY FULL` 可能会影响性能并导致 WAL 增长更快,特别是对于没有主键且频繁更新或删除的表,因为它需要为每次更改记录更多数据。如果您对为表设置主键或副本标识有任何疑问或需要帮助,请联系我们的支持团队寻求指导。
 
-需要注意的是,如果既未定义主键也未定义副本标识,ClickPipes 将无法复制该表的变更,您可能会在复制过程中遇到错误。因此,建议在设置 ClickPipe 之前检查您的表结构并确保它们满足这些要求。
+需要注意的是,如果既未定义主键也未定义副本标识,ClickPipes 将无法复制该表的更改,您可能会在复制过程中遇到错误。因此,建议在设置 ClickPipe 之前检查您的表结构并确保它们满足这些要求。
 
 ### 是否支持将分区表作为 Postgres CDC 的一部分? {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
@@ -93,7 +93,7 @@ ClickPipes for Postgres 会将来自 Postgres 的 INSERT 和 UPDATE 操作捕获
 
 有一个实验性设置可以启用主键更新处理,但它会带来显著的性能影响,不建议在未经仔细考虑的情况下用于生产环境。
 
-如果您的用例需要在 PostgreSQL 中更新主键列并将这些更改正确反映到 ClickHouse 中,请联系我们的支持团队 [db-integrations-support@clickhouse.com](mailto:db-integrations-support@clickhouse.com) 讨论您的具体需求和潜在解决方案。
+如果您的用例需要在 PostgreSQL 中更新主键列并将这些更改正确反映到 ClickHouse 中,请通过 [db-integrations-support@clickhouse.com](mailto:db-integrations-support@clickhouse.com) 联系我们的支持团队,讨论您的具体需求和潜在解决方案。
 
 ### 是否支持 schema 变更? {#do-you-support-schema-changes}
 
@@ -135,7 +135,7 @@ ClickPipes for Postgres 会将来自 Postgres 的 INSERT 和 UPDATE 操作捕获
    - 在流量较低的时段安排这些操作，或在运行时密切监控 WAL 使用情况。
 
 4. **VACUUM 和 VACUUM ANALYZE**
-   - 尽管这些操作对数据库健康必不可少，但它们会产生额外的 WAL 流量——特别是在扫描大表时。
+   - 尽管这些操作对数据库健康是必需的，但它们会产生额外的 WAL 流量——特别是在扫描大表时。
    - 考虑使用 autovacuum 调优参数，或在非高峰时段安排手动 VACUUM 操作。
 
 5. **复制消费者未主动读取槽位**
@@ -165,11 +165,11 @@ JSON 和 JSONB 列在 ClickHouse 中被复制为 String 类型。由于 ClickHou
 - 对于同步，如果中途取消，Postgres 中的 confirmed_flush_lsn 不会前进，因此下一次同步将从中止的位置开始，确保数据一致性。
 - 对于规范化，ReplacingMergeTree 插入顺序会处理去重。
 
-总之，虽然同步和规范化过程在暂停期间会终止，但这样做是安全的，因为它们可以在不丢失数据或产生不一致的情况下恢复。
+总之，虽然同步和规范化过程在暂停期间会终止，但这样做是安全的，因为它们可以在不丢失数据或不一致的情况下恢复。
 
 ### ClickPipe 的创建可以自动化或通过 API 或 CLI 完成吗？ {#can-clickpipe-creation-be-automated-or-done-via-api-or-cli}
 
-Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) 端点创建和管理。此功能处于测试阶段，API 参考可以在[这里](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta)找到。我们也在积极开发 Terraform 支持以创建 Postgres ClickPipes。
+Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) 端点创建和管理。此功能处于测试阶段，API 参考可以在[此处](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta)找到。我们也在积极开发 Terraform 支持以创建 Postgres ClickPipes。
 
 ### 如何加快初始加载速度？ {#how-do-i-speed-up-my-initial-load}
 
@@ -184,9 +184,9 @@ Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/m
 
 这些调整应该能够显著提高初始加载的性能,特别是对于较旧的 Postgres 版本。如果您使用的是 Postgres 14 或更高版本,由于对 CTID 范围扫描的改进支持,这些设置的影响较小。
 
-### 设置复制时应该如何确定发布的范围? {#how-should-i-scope-my-publications-when-setting-up-replication}
+### 设置复制时应如何确定发布的范围? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
-您可以让 ClickPipes 管理您的发布(需要额外的权限)或自己创建它们。使用 ClickPipes 管理的发布,我们会在您编辑管道时自动处理表的添加和删除。如果自行管理,请仔细确定发布范围,仅包含您需要复制的表 - 包含不必要的表会降低 Postgres WAL 解码的速度。
+您可以让 ClickPipes 管理您的发布(需要额外的权限)或自己创建它们。使用 ClickPipes 管理的发布,我们会在您编辑管道时自动处理表的添加和删除。如果自行管理,请仔细确定发布的范围,仅包含您需要复制的表 - 包含不必要的表会降低 Postgres WAL 解码的速度。
 
 如果您在发布中包含任何表,请确保它具有主键或 `REPLICA IDENTITY FULL`。如果您有没有主键的表,为所有表创建发布将导致这些表上的 DELETE 和 UPDATE 操作失败。
 
@@ -213,7 +213,7 @@ WHERE
    ```
 
 2. **在 ClickPipes 中包含没有主键的表**:
-   如果您想包含没有主键的表,需要将它们的副本标识更改为 `FULL`。这确保 UPDATE 和 DELETE 操作正常工作:
+   如果您想包含没有主键的表,需要将它们的副本标识更改为 `FULL`。这可以确保 UPDATE 和 DELETE 操作正常工作:
    ```sql
    ALTER TABLE table_without_primary_key1 REPLICA IDENTITY FULL;
    ALTER TABLE table_without_primary_key2 REPLICA IDENTITY FULL;
@@ -247,60 +247,60 @@ WHERE
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-##### 对于 PostgreSQL 9.6 及更低版本: {#for-postgresql-96-and-below}
+##### 对于 PostgreSQL 9.6 及更低版本： {#for-postgresql-96-and-below}
 
 ```sql
 SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
 
-- 在一天中的不同时间运行上述查询,尤其是在高事务处理时段。
-- 计算每 24 小时周期生成的 WAL 量。
-- 将该数字乘以 2 或 3 以提供足够的保留空间。
-- 将 `max_slot_wal_keep_size` 设置为计算得出的值(以 MB 或 GB 为单位)。
+- 在一天中的不同时间运行上述查询，尤其是在事务高峰期。
+- 计算每 24 小时生成的 WAL 量。
+- 将该数值乘以 2 或 3 以提供足够的保留空间。
+- 将 `max_slot_wal_keep_size` 设置为计算得出的值（单位为 MB 或 GB）。
 
 ##### 示例 {#example}
 
-如果您的数据库每天生成 100 GB 的 WAL,请设置:
+如果您的数据库每天生成 100 GB 的 WAL，请设置：
 
 ```sql
 max_slot_wal_keep_size = 200GB
 ```
 
-### 我在日志中看到 ReceiveMessage EOF 错误。这是什么意思? {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
+### 我在日志中看到 ReceiveMessage EOF 错误。这是什么意思？ {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
 
-`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数,用于从复制流中读取消息。EOF(文件结束)错误表示在尝试从复制流读取数据时,与 Postgres 服务器的连接意外关闭。
+`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF（文件结束）错误表示在尝试从复制流读取数据时，与 Postgres 服务器的连接意外关闭。
 
-这是一个可恢复的、完全非致命的错误。ClickPipes 将自动尝试重新连接并恢复复制过程。
+这是一个可恢复的非致命错误。ClickPipes 将自动尝试重新连接并恢复复制过程。
 
-这可能由以下几个原因导致:
+可能的原因包括：
 
-- **wal_sender_timeout 过低:** 确保 `wal_sender_timeout` 设置为 5 分钟或更高。此设置控制服务器在关闭连接之前等待客户端响应的时长。如果超时时间过短,可能导致过早断开连接。
-- **网络问题:** 临时的网络中断可能导致连接断开。
-- **Postgres 服务器重启:** 如果 Postgres 服务器重启或崩溃,连接将会丢失。
+- **wal_sender_timeout 设置过低：** 确保 `wal_sender_timeout` 设置为 5 分钟或更长。此设置控制服务器在关闭连接之前等待客户端响应的时长。如果超时时间过短，可能导致连接过早断开。
+- **网络问题：** 临时的网络中断可能导致连接断开。
+- **Postgres 服务器重启：** 如果 Postgres 服务器重启或崩溃，连接将会丢失。
 
-### 我的复制槽已失效。我该怎么办? {#my-replication-slot-is-invalidated-what-should-i-do}
+### 我的复制槽已失效。我该怎么办？ {#my-replication-slot-is-invalidated-what-should-i-do}
 
-恢复 ClickPipe 的唯一方法是触发重新同步,您可以在设置页面中执行此操作。
+恢复 ClickPipe 的唯一方法是触发重新同步，您可以在设置页面中执行此操作。
 
-复制槽失效最常见的原因是 PostgreSQL 数据库上的 `max_slot_wal_keep_size` 设置过低(例如,仅几个 GB)。我们建议增加此值。[请参阅此部分](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings)了解如何调优 `max_slot_wal_keep_size`。理想情况下,应将其设置为至少 200GB 以防止复制槽失效。
+复制槽失效最常见的原因是 PostgreSQL 数据库上的 `max_slot_wal_keep_size` 设置过低（例如仅几个 GB）。我们建议增加此值。[请参阅此部分](/integrations/clickpipes/postgres/faq#recommended-max_slot_wal_keep_size-settings)了解如何调优 `max_slot_wal_keep_size`。理想情况下，应将其设置为至少 200GB 以防止复制槽失效。
 
-在极少数情况下,即使未配置 `max_slot_wal_keep_size`,我们也观察到此问题的发生。这可能是由于 PostgreSQL 中一个复杂且罕见的 bug 导致的,尽管具体原因尚不清楚。
+在极少数情况下，即使未配置 `max_slot_wal_keep_size`，我们也观察到此问题的发生。这可能是由于 PostgreSQL 中一个复杂且罕见的 bug 导致的，尽管具体原因尚不清楚。
 
-### 我在 ClickPipe 摄取数据时看到 ClickHouse 出现内存不足(OOM)错误。能帮我解决吗? {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
+### 我在 ClickPipe 摄取数据时遇到 ClickHouse 内存不足（OOM）错误。能帮我解决吗？ {#i-am-seeing-out-of-memory-ooms-on-clickhouse-while-my-clickpipe-is-ingesting-data-can-you-help}
 
-ClickHouse 出现 OOM 的一个常见原因是您的服务资源配置不足。这意味着您当前的服务配置没有足够的资源(例如内存或 CPU)来有效处理摄取负载。我们强烈建议扩展服务以满足 ClickPipe 数据摄取的需求。
+ClickHouse 出现 OOM 的一个常见原因是服务资源配置不足。这意味着您当前的服务配置没有足够的资源（例如内存或 CPU）来有效处理摄取负载。我们强烈建议扩展服务以满足 ClickPipe 数据摄取的需求。
 
-我们观察到的另一个原因是存在具有潜在未优化 JOIN 的下游物化视图:
+我们观察到的另一个原因是存在包含未优化连接的下游物化视图：
 
-- 一种常见的 JOIN 优化技术是,如果您有一个 `LEFT JOIN`,其中右侧表非常大。在这种情况下,将查询重写为使用 `RIGHT JOIN`,并将较大的表移到左侧。这使得查询规划器能够更高效地使用内存。
+- 一种常见的 JOIN 优化技术是：如果您使用 `LEFT JOIN` 且右侧表非常大，可以将查询重写为使用 `RIGHT JOIN`，并将较大的表移到左侧。这使查询规划器能够更高效地使用内存。
 
-- 另一种 JOIN 优化方法是通过 `子查询` 或 `CTE` 显式过滤表,然后在这些子查询之间执行 `JOIN`。这为规划器提供了如何高效过滤行和执行 `JOIN` 的提示。
+- 另一种 JOIN 优化方法是通过 `子查询` 或 `CTE` 显式过滤表，然后在这些子查询之间执行 `JOIN`。这为规划器提供了如何高效过滤行和执行 `JOIN` 的提示。
 
-### 我在初始加载期间看到 `invalid snapshot identifier` 错误。我该怎么办? {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
+### 我在初始加载期间看到 `invalid snapshot identifier` 错误。我该怎么办？ {#i-am-seeing-an-invalid-snapshot-identifier-during-the-initial-load-what-should-i-do}
 
-`invalid snapshot identifier` 错误发生在 ClickPipes 与您的 Postgres 数据库之间连接断开时。这可能由于网关超时、数据库重启或其他瞬态问题而发生。
+`invalid snapshot identifier` 错误发生在 ClickPipes 与您的 Postgres 数据库之间连接断开时。这可能由网关超时、数据库重启或其他瞬态问题引起。
 
-建议您在初始加载进行期间不要对 Postgres 数据库执行任何破坏性操作(如升级或重启),并确保与数据库的网络连接稳定。
+建议您在初始加载进行期间不要对 Postgres 数据库执行任何破坏性操作（如升级或重启），并确保与数据库的网络连接稳定。
 
 
 要解决此问题,您可以从 ClickPipes UI 触发重新同步。这将从头开始重新启动初始加载过程。
@@ -328,10 +328,10 @@ WITH (publish_via_partition_root = true);
 
 ### 如果我看到 `Unexpected Datatype` 错误或 `Cannot parse type XX ...` 怎么办? {#what-if-i-am-seeing-unexpected-datatype-errors}
 
-当源 Postgres 数据库具有在摄取期间无法映射的数据类型时,通常会发生此错误。
+当源 Postgres 数据库具有在数据摄取期间无法映射的数据类型时,通常会发生此错误。
 有关更具体的问题,请参考以下可能性。
 
-### 在复制/槽创建期间,我看到类似 `invalid memory alloc request size <XXX>` 的错误 {#postgres-invalid-memalloc-bug}
+### 我在复制/槽创建期间看到类似 `invalid memory alloc request size <XXX>` 的错误 {#postgres-invalid-memalloc-bug}
 
 Postgres 补丁版本 17.5/16.9/15.13/14.18/13.21 中引入了一个 bug,某些工作负载可能导致内存使用量呈指数级增长,从而导致内存分配请求 >1GB,Postgres 认为这是无效的。此 bug [已修复](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a),并将包含在下一个 Postgres 补丁系列 (17.6...) 中。请向您的 Postgres 提供商咨询此补丁版本何时可用于升级。如果无法立即升级,则在遇到错误时需要重新同步 pipe。
 
@@ -350,7 +350,7 @@ CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish =
 ### 为什么我无法复制名称中包含点的表? {#replicate-table-dot}
 
 PeerDB 目前存在一个限制,即不支持在源表标识符(即模式名称或表名称)中使用点进行复制,因为在这种情况下,PeerDB 无法区分哪个是模式,哪个是表,因为它按点分割。
-目前正在努力支持分别输入模式和表,以解决此限制。
+目前正在努力支持分别输入模式和表以解决此限制。
 
 ### 初始加载已完成,但 ClickHouse 上没有数据或数据缺失。可能是什么问题? {#initial-load-issue}
 
@@ -362,17 +362,17 @@ PeerDB 目前存在一个限制,即不支持在源表标识符(即模式名称�
 
 ### 我可以让 ClickPipe 创建启用故障转移的复制槽吗? {#failover-slot}
 
-可以,对于复制模式为 CDC 或 Snapshot + CDC 的 Postgres ClickPipe,您可以在创建 ClickPipe 时通过切换 `高级设置` 部分中的以下开关,让 ClickPipes 创建启用故障转移的复制槽。请注意,您的 Postgres 版本必须为 17 或更高版本才能使用此功能。
+可以,对于复制模式为 CDC 或 Snapshot + CDC 的 Postgres ClickPipe,您可以在创建 ClickPipe 时通过切换`高级设置`部分中的以下开关,让 ClickPipes 创建启用故障转移的复制槽。请注意,您的 Postgres 版本必须为 17 或更高版本才能使用此功能。
 
 <Image img={failover_slot} border size='md' />
 
 
-如果源配置正确,在故障转移到 Postgres 只读副本后,槽位将被保留,从而确保数据持续复制。了解更多信息请访问[此处](https://www.postgresql.org/docs/current/logical-replication-failover.html)。
+如果源配置正确,在故障转移到 Postgres 只读副本后会保留该槽位,确保数据持续复制。了解更多信息请访问[此处](https://www.postgresql.org/docs/current/logical-replication-failover.html)。
 
 ### 我遇到了类似 `Internal error encountered during logical decoding of aborted sub-transaction` 的错误 {#transient-logical-decoding-errors}
 
-此错误表明在对已中止的子事务进行逻辑解码时出现了临时性问题,这是 Aurora Postgres 自定义实现特有的情况。由于错误来自 `ReorderBufferPreserveLastSpilledSnapshot` 例程,这表明逻辑解码无法读取溢出到磁盘的快照。建议尝试将 [`logical_decoding_work_mem`](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM) 增加到更高的值。
+此错误表明在对已中止子事务进行逻辑解码时出现了临时性问题,这是 Aurora Postgres 自定义实现特有的情况。由于错误来自 `ReorderBufferPreserveLastSpilledSnapshot` 例程,这表明逻辑解码无法读取溢出到磁盘的快照。可以尝试将 [`logical_decoding_work_mem`](https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM) 增加到更高的值。
 
 ### 我在 CDC 复制期间遇到了类似 `error converting new tuple to map` 或 `error parsing logical message` 的错误 {#logical-message-processing-errors}
 
-Postgres 以具有固定协议的消息形式发送变更信息。当 ClickPipe 接收到无法解析的消息时会出现这些错误,原因可能是传输过程中的数据损坏或发送了无效消息。虽然具体问题因情况而异,但我们已经发现多个来自 Neon Postgres 数据源的案例。如果您在使用 Neon 时也遇到此问题,请向他们提交支持工单。对于其他情况,请联系我们的支持团队寻求帮助。
+Postgres 以具有固定协议的消息形式发送变更信息。当 ClickPipe 接收到无法解析的消息时会出现这些错误,原因可能是传输过程中的损坏或发送了无效消息。虽然具体问题往往各不相同,但我们已经看到多个来自 Neon Postgres 源的案例。如果您在使用 Neon 时也遇到此问题,请向他们提交支持工单。在其他情况下,请联系我们的支持团队寻求指导。

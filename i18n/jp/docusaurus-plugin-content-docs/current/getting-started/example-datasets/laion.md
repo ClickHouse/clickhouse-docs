@@ -1,5 +1,5 @@
 ---
-description: '英語の画像キャプション付きの4億枚の画像を含むデータセット'
+description: '英語の画像キャプション付き 4 億件の画像を含むデータセット'
 sidebar_label: 'Laion-400M データセット'
 slug: /getting-started/example-datasets/laion-400m-dataset
 title: 'Laion-400M データセット'
@@ -7,15 +7,15 @@ doc_type: 'guide'
 keywords: ['example dataset', 'laion', 'image embeddings', 'sample data', 'machine learning']
 ---
 
-[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/)には、英語の画像キャプション付きの4億枚の画像が含まれています。現在 Laion は[さらに大規模なデータセット](https://laion.ai/blog/laion-5b/)も提供していますが、扱い方はほぼ同様です。
+[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/) には、英語の画像キャプション付きの 4 億件の画像が含まれています。現在 Laion は[さらに大規模なデータセット](https://laion.ai/blog/laion-5b/)も提供していますが、扱い方はほぼ同様です。
 
-このデータセットには、画像 URL、画像および画像キャプションそれぞれの埋め込みベクトル、画像と画像キャプション間の類似度スコアに加えて、画像の幅・高さ、ライセンス、NSFW フラグなどのメタデータが含まれます。このデータセットを使用して、ClickHouse における[近似最近傍探索](../../engines/table-engines/mergetree-family/annindexes.md)をデモできます。
+このデータセットには、画像の URL、画像および画像キャプションの両方の埋め込みベクトル、画像と画像キャプション間の類似度スコアに加えて、画像の幅・高さ、ライセンス、NSFW フラグといったメタデータが含まれています。このデータセットを用いて、ClickHouse における[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)をデモンストレーションできます。
 
 
 
 ## データの準備 {#data-preparation}
 
-埋め込みベクトルとメタデータは、生データ内で別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルを結合し、CSV形式に変換してClickHouseにインポートします。この処理には以下の`download.sh`スクリプトを使用できます：
+埋め込みベクトルとメタデータは、生データ内の別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルを結合し、CSV形式に変換してClickHouseにインポートします。この処理には、以下の`download.sh`スクリプトを使用できます:
 
 ```bash
 number=${1}
@@ -28,7 +28,7 @@ wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embedd
 python3 process.py $number # ファイルを結合してCSVに変換
 ```
 
-`process.py`スクリプトは以下のように定義されています：
+`process.py`スクリプトは以下のように定義されています:
 
 ```python
 import pandas as pd
@@ -56,7 +56,7 @@ data = pd.read_parquet(metadata_file)
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
 
-# ClickHouse にインポートするカラム
+# ClickHouse にインポートする列
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
 
@@ -67,12 +67,12 @@ data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
 
 
-# キャプションにはさまざまな種類のクォートが含まれることがあるため、このちょっとしたハックが必要
+# キャプションにはさまざまな引用符が含まれる場合があるため、このちょっとしたハックが必要です
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
 
 
-# データをCSVファイルとしてエクスポートする
+# データを CSV ファイルにエクスポートする
 data.to_csv(str_i + '.csv', header=False)
 
 
@@ -89,9 +89,9 @@ os.system(f&quot;rm {npy_file} {metadata_file} {text_npy}&quot;)
 seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 ````
 
-このデータセットは 410 個のファイルに分割されており、各ファイルには約 100 万行が含まれています。より小さなサブセットで作業したい場合は、単に範囲を調整してください（例: `seq 0 9 | ...`）。
+このデータセットは 410 個のファイルに分割されており、各ファイルには約 100 万行が含まれています。より小さいデータのサブセットで作業したい場合は、単純に上限値を調整してください（例: `seq 0 9 | ...`）。
 
-（上記の python スクリプトは非常に遅く（ファイルあたり約 2〜10 分）、大量のメモリを消費し（ファイルあたり 41 GB）、生成される csv ファイルも大きいです（各 10 GB）。そのため注意が必要です。十分な RAM がある場合は、並列度を上げるために `-P1` の数値を増やしてください。これでもまだ遅い場合は、より効率的な取り込み手順を検討してください。たとえば .npy ファイルを parquet に変換し、その後の処理をすべて ClickHouse で実行する、といった方法があります。）
+（上記の Python スクリプトは非常に遅く（1 ファイルあたり約 2〜10 分）、大量のメモリを消費し（1 ファイルあたり 41 GB）、生成される CSV ファイルも大きい（各 10 GB）ため注意してください。十分な RAM がある場合は、並列度を上げるために `-P1` の数値を増やしてください。それでもなお遅すぎる場合は、より優れた取り込み手順の検討をおすすめします。たとえば、.npy ファイルを Parquet に変換し、その後の処理をすべて ClickHouse で実行する、といった方法が考えられます。）
 
 
 ## テーブルの作成 {#create-table}
@@ -125,15 +125,15 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 
 ## ブルートフォースベクトル類似検索の実行 {#run-a-brute-force-vector-similarity-search}
 
-ブルートフォース近似ベクトル検索を実行するには、以下を実行します:
+ブルートフォース近似ベクトル検索を実行するには、次のクエリを実行します:
 
 ```sql
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
 `target`は512要素の配列で、クライアントパラメータです。
-このような配列を取得する便利な方法は、記事の最後で紹介します。
-ここでは、ランダムなLEGOセットの画像の埋め込みを`target`として実行できます。
+このような配列を取得する便利な方法については、記事の最後で紹介します。
+ここでは、ランダムなLEGOセットの画像の埋め込みを`target`として使用します。
 
 **結果**
 
@@ -203,7 +203,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ```
 
 
-10 行取得。経過時間: 0.019 秒。処理 137.27 千行, 24.42 MB (7.38 百万行/秒, 1.31 GB/秒)
+10 行が結果セットに含まれます。経過時間: 0.019 秒。処理件数 137.27 千行、24.42 MB (7.38 百万行/秒、1.31 GB/秒)。
 
 ```
 
@@ -276,7 +276,7 @@ ORDER BY cosineDistance(text_embedding, encode_text('a dog and a cat')) ASC
 LIMIT 10
 ```
 
-`encode_text()` UDF自体が埋め込みベクトルの計算と出力に数秒かかる場合があることに注意してください。
+`encode_text()` UDF自体が埋め込みベクトルを計算して出力するのに数秒かかる場合があることに注意してください。
 
 ### 画像埋め込み {#image-embeddings}
 
@@ -331,13 +331,13 @@ if __name__ == '__main__':
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 
-次に、上記の画像の埋め込みを生成するために、次のクエリを実行します：
+次に、上記の画像の埋め込みを生成するには、このクエリを実行します。
 
 ```sql
-SELECT encode_image('/パス/to/your/画像');
+SELECT encode_image('/path/to/your/image');
 ```
 
-完全な検索クエリは次のとおりです。
+完全な検索クエリは次のとおりです：
 
 ```sql
 SELECT

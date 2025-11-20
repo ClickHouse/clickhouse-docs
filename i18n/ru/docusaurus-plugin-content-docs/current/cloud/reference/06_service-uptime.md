@@ -2,8 +2,8 @@
 sidebar_label: 'Доступность сервиса и SLA'
 slug: /cloud/manage/service-uptime
 title: 'Доступность сервиса'
-description: 'Пользователи могут просматривать показатели доступности по регионам на странице статуса и подписываться на оповещения о сбоях в работе сервиса.'
-keywords: ['ClickHouse Cloud', 'service uptime', 'SLA', 'cloud reliability', 'status monitoring']
+description: 'Пользователи теперь могут видеть доступность по регионам на странице статуса и подписываться на оповещения о сбоях в работе сервиса.'
+keywords: ['ClickHouse Cloud', 'service uptime', 'SLA', 'надежность облака', 'мониторинг статуса']
 doc_type: 'reference'
 ---
 

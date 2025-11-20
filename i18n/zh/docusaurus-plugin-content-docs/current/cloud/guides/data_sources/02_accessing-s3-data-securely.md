@@ -2,8 +2,8 @@
 slug: /cloud/data-sources/secure-s3
 sidebar_label: '安全访问 S3 数据'
 title: '安全访问 S3 数据'
-description: '本文演示 ClickHouse Cloud 客户如何利用基于角色的访问控制与 Amazon Simple Storage Service (S3) 进行身份验证，并安全访问其数据。'
-keywords: ['RBAC', 'Amazon S3', 'authentication']
+description: '本文介绍 ClickHouse Cloud 用户如何通过基于角色的访问控制对 Amazon Simple Storage Service (S3) 进行身份验证,从而安全地访问数据。'
+keywords: ['RBAC', 'Amazon S3', '身份验证']
 doc_type: 'guide'
 ---
 
@@ -12,12 +12,12 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
-本文演示 ClickHouse Cloud 客户如何利用基于角色的访问来与 Amazon Simple Storage Service (S3) 进行身份验证，并安全地访问其数据。
+本文演示 ClickHouse Cloud 客户如何利用基于角色的访问控制与 Amazon Simple Storage Service (S3) 进行身份验证，并安全访问其数据。
 
 
 ## 简介 {#introduction}
 
-在深入了解安全 S3 访问的配置之前,了解其工作原理非常重要。下面概述了 ClickHouse 服务如何通过代入客户 AWS 账户中的角色来访问私有 S3 存储桶。
+在深入了解安全 S3 访问的配置之前,理解其工作原理非常重要。下面概述了 ClickHouse 服务如何通过代入客户 AWS 账户中的角色来访问私有 S3 存储桶。
 
 <Image
   img={secure_s3}
@@ -53,7 +53,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 #### 选项 1:使用 CloudFormation 堆栈部署 {#option-1-deploying-with-cloudformation-stack}
 
-1 - 使用具有创建和管理 IAM 角色权限的 IAM 用户在 Web 浏览器中登录您的 AWS 账户。
+1 - 在 Web 浏览器中使用具有创建和管理 IAM 角色权限的 IAM 用户登录您的 AWS 账户。
 
 2 - 访问[此 URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) 以创建 CloudFormation 堆栈。
 
@@ -65,7 +65,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 | :------------------------ | :------------------: | :-------------------------------------------------------------------------------------------- |
 | RoleName                  | ClickHouseAccess-001 | ClickHouse Cloud 用于访问您的 S3 存储桶的新角色名称                                            |
 | Role Session Name         |          \*          | 角色会话名称可用作共享密钥以进一步保护您的存储桶。                                              |
-| ClickHouse Instance Roles |                      | 可以使用此 Secure S3 集成的 ClickHouse 服务 IAM 角色的逗号分隔列表。                           |
+| ClickHouse Instance Roles |                      | 可以使用此安全 S3 集成的 ClickHouse 服务 IAM 角色的逗号分隔列表。                              |
 | Bucket Access             |         Read         | 设置所提供存储桶的访问级别。                                                                   |
 | Bucket Names              |                      | 此角色可以访问的**存储桶名称**的逗号分隔列表。                                                 |
 
@@ -90,9 +90,9 @@ _注意_:请勿填写完整的存储桶 ARN,仅填写存储桶名称即可。
 
 #### 选项 2:手动创建 IAM 角色 {#option-2-manually-create-iam-role}
 
-1 - 使用具有创建和管理 IAM 角色权限的 IAM 用户在 Web 浏览器中登录您的 AWS 账户。
+1 - 在 Web 浏览器中使用具有创建和管理 IAM 角色权限的 IAM 用户登录您的 AWS 账户。
 
-2 - 进入 IAM 服务控制台。
+2 - 浏览到 IAM 服务控制台。
 
 3 - 使用以下 IAM 策略和信任策略创建新的 IAM 角色。
 
@@ -144,12 +144,12 @@ ClickHouse Cloud 提供了一项新功能,允许您在 S3 表函数中指定 `ex
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
 ```
 
-以下示例查询使用 `role_session_name` 作为共享密钥来查询存储桶中的数据。如果 `role_session_name` 不正确,该操作将失败。
+以下示例查询使用 `role_session_name` 作为共享密钥来查询存储桶中的数据。如果 `role_session_name` 不正确,该操作将会失败。
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))
 ```
 
 :::note
-建议将源 S3 存储桶与 ClickHouse Cloud 服务部署在同一区域,以降低数据传输成本。更多信息请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)
+我们建议将源 S3 存储桶与 ClickHouse Cloud 服务部署在同一区域,以降低数据传输成本。更多信息请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)
 :::

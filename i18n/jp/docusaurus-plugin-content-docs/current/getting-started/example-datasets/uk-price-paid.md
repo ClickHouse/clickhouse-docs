@@ -1,5 +1,5 @@
 ---
-description: 'イングランドおよびウェールズの不動産物件に支払われた価格データを含む UK property データセットを使って、頻繁に実行するクエリのパフォーマンスを向上させるための projection の使い方を学びます'
+description: 'イングランドおよびウェールズの不動産物件の支払価格データを含む UK property データセットを使って、頻繁に実行するクエリのパフォーマンスを向上させるために projections を利用する方法を学びます'
 sidebar_label: 'UK property prices'
 slug: /getting-started/example-datasets/uk-price-paid
 title: 'UK property prices データセット'
@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'getting started']
 ---
 
-このデータには、イングランドおよびウェールズの不動産物件に支払われた価格が含まれています。1995 年以降のデータが利用可能で、非圧縮状態でのデータセットのサイズは約 4 GiB です（ClickHouse では約 278 MiB に収まります）。
+このデータには、イングランドおよびウェールズの不動産物件に支払われた価格が含まれています。1995 年以降のデータが利用可能で、非圧縮形式でのデータセットのサイズは約 4 GiB です（ClickHouse では約 278 MiB で済みます）。
 
 - 出典: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
 - フィールドの説明: https://www.gov.uk/guidance/about-the-price-paid-data
@@ -46,12 +46,12 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 
 `url`関数を使用してClickHouseにデータをストリーミングします。まず、受信データの一部を前処理する必要があります。これには以下が含まれます：
 
-- `postcode`を2つの異なるカラム（`postcode1`と`postcode2`）に分割します。これにより、ストレージとクエリの効率が向上します
+- `postcode`を2つの異なる列（`postcode1`と`postcode2`）に分割します。これにより、ストレージとクエリの効率が向上します
 - `time`フィールドを日付に変換します。このフィールドには00:00の時刻のみが含まれているためです
 - [UUid](../../sql-reference/data-types/uuid.md)フィールドは分析に不要なため無視します
 - [transform](../../sql-reference/functions/other-functions.md#transform)関数を使用して、`type`と`duration`をより読みやすい`Enum`フィールドに変換します
 - `is_new`フィールドを単一文字の文字列（`Y`/`N`）から0または1の値を持つ[UInt8](/sql-reference/data-types/int-uint)フィールドに変換します
-- 最後の2つのカラムはすべて同じ値（0）を持つため削除します
+- 最後の2つの列はすべて同じ値（0）を持つため削除します
 
 `url`関数は、Webサーバーからデータをストリーミングし、ClickHouseテーブルに挿入します。以下のコマンドは、`uk_price_paid`テーブルに500万行を挿入します：
 
@@ -94,7 +94,7 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-データの挿入が完了するまでお待ちください。ネットワーク速度によっては1～2分程度かかります。
+データの挿入が完了するまでお待ちください。ネットワーク速度によっては1～2分かかります。
 
 
 ## データの検証 {#validate-data}
@@ -148,7 +148,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に何かが起こりました！しかし、それはおそらく驚くことではないでしょう...
+2020年に住宅価格に何かが起こりました!しかし、それはおそらく驚くことではないでしょう...
 
 ### クエリ3. 最も高額な地域 {#most-expensive-neighborhoods}
 
@@ -170,10 +170,10 @@ LIMIT 100
 ```
 
 
-## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
+## プロジェクションを使用したクエリの高速化 {#speeding-up-queries-with-projections}
 
 プロジェクションを使用してこれらのクエリを高速化できます。このデータセットを使用した例については、["プロジェクション"](/data-modeling/projections)を参照してください。
 
 ### プレイグラウンドで試す {#playground}
 
-このデータセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。
+このデータセットは[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用できます。

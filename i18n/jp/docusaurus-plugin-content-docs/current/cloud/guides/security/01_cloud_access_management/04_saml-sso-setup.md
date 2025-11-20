@@ -16,13 +16,13 @@ import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claim
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# SAML SSO の設定
+# SAML SSO のセットアップ
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
-ClickHouse Cloud は、Security Assertion Markup Language (SAML) を利用したシングルサインオン (SSO) をサポートしています。これにより、アイデンティティプロバイダ (IdP) で認証することで、ClickHouse Cloud の組織に安全にサインインできるようになります。
+ClickHouse Cloud は、Security Assertion Markup Language (SAML) を利用したシングルサインオン (SSO) をサポートしています。これにより、アイデンティティプロバイダー (IdP) で認証することで、ClickHouse Cloud の組織に安全にサインインできます。
 
-現在、サービスプロバイダー開始型の SSO、別個の接続を使用する複数組織、ジャストインタイムプロビジョニングをサポートしています。現時点では、SCIM (System for Cross-domain Identity Management) や属性マッピングにはまだ対応していません。
+現在、サービスプロバイダー主導の SSO、個別の接続を使用する複数組織、Just-in-Time プロビジョニングに対応しています。System for Cross-domain Identity Management (SCIM) および属性マッピングには、まだ対応していません。
 
 
 
@@ -40,9 +40,11 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 <details>
   <summary> 組織IDの取得 </summary>
   すべてのセットアップには組織IDが必要です。組織IDを取得するには: 1.
-  [ClickHouse Cloud](https://console.clickhouse.cloud)の組織にサインインします。
-  <Image img={samlOrgId} size='md' alt='Organization ID' force />
-  3. 左下隅の**Organization**の下にある組織名をクリックします。4. ポップアップメニューで**Organization details**を選択します。5.
+  [ClickHouse Cloud](https://console.clickhouse.cloud)
+  組織にサインインします。
+  <Image img={samlOrgId} size='md' alt='組織ID' force />
+  3. 左下隅の
+  **Organization**の下にある組織名をクリックします。4. ポップアップメニューで**Organization details**を選択します。5.
   以下で使用する**Organization ID**をメモしておきます。
 </details>
 
@@ -55,20 +57,20 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 
 - Audience URIまたはEntity ID: `urn:auth0:ch-production:{organizationid}`
 
-- Application username: `email`
+- アプリケーションユーザー名: `email`
 
-- Attribute mapping: `email = user.email`
+- 属性マッピング: `email = user.email`
 
 - 組織にアクセスするための直接リンク: `https://console.clickhouse.cloud/?connection={organizationid}`
 
-  具体的な設定手順については、以下の該当するアイデンティティプロバイダーを参照してください。
+  具体的な設定手順については、以下のご利用のアイデンティティプロバイダーを参照してください。
 
 </details>
 
 <details>
    <summary>  接続情報の取得  </summary>
 
-アイデンティティプロバイダーのSSO URLとx.509証明書を取得します。この情報の取得方法については、以下の該当するアイデンティティプロバイダーを参照してください。
+アイデンティティプロバイダーのSSO URLとx.509証明書を取得します。この情報の取得方法については、以下のご利用のアイデンティティプロバイダーを参照してください。
 
 </details>
 
@@ -89,7 +91,7 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
    
    7. 新しいケースを作成します。
    
-   8. ClickHouse Cloud内でセットアップを完了し、テストの準備ができたらお知らせします。
+   8. ClickHouse Cloud内でセットアップを完了し、テストの準備が整い次第お知らせします。
 
 </details>
 
@@ -104,11 +106,11 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 
 4.  元の認証方法でログインし、新しいSSOアカウントにAdminロールを割り当てます。
 
-- メール + パスワードアカウントの場合は、`https://console.clickhouse.cloud/?with=email`を使用してください。
+- メール+パスワードアカウントの場合は、`https://console.clickhouse.cloud/?with=email`を使用してください。
 - ソーシャルログインの場合は、適切なボタン(**Continue with Google**または**Continue with Microsoft**)をクリックしてください。
 
 :::note
-上記の`?with=email`の`email`は、プレースホルダーではなくリテラルのパラメータ値です
+上記の`?with=email`の`email`は、プレースホルダーではなくリテラルパラメータ値です
 :::
 
 5.  元の認証方法でログアウトし、https://console.clickhouse.cloud または上記の「SAML統合の設定」で設定した直接リンク経由で再度ログインします。
@@ -144,20 +146,20 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 <details>
   <summary>
     {" "}
-    2. ユーザーがシームレスにログインできるようにブックマークアプリを作成する{" "}
+    2. ユーザーがシームレスにログインできるようにするブックマークアプリを作成する{" "}
   </summary>
-  1. 左側の **Applications** を選択し、**Applications** サブ見出しを選択します。2. **Browse App Catalog** をクリックします。3. **Bookmark App** を検索して選択します。4. **Add integration** をクリックします。5. アプリのラベルを選択します。6. URLとして `https://console.clickhouse.cloud/?connection=
+  1. 左側の **Applications** を選択し、次に **Applications** サブ見出しを選択します。2. **Browse App Catalog** をクリックします。3. **Bookmark App** を検索して選択します。4. **Add integration** をクリックします。5. アプリのラベルを選択します。6. URL として `https://console.clickhouse.cloud/?connection=
   {organizationid}` を入力します。7. **Assignments** タブに移動し、上記で作成したグループを追加します。
 </details>
 
 <details>
-   <summary>  3. 接続を有効にするためのSAMLアプリを作成する  </summary>
+   <summary>  3. 接続を有効にするSAMLアプリを作成する  </summary>
    
-   1. 左側の **Applications** を選択し、**Applications** サブ見出しを選択します。
+   1. 左側の **Applications** を選択し、次に **Applications** サブ見出しを選択します。
    
    2. **Create App Integration** をクリックします。
    
-   3. SAML 2.0を選択し、Nextをクリックします。
+   3. SAML 2.0 を選択し、Next をクリックします。
    
    4. アプリケーションの名前を入力し、**Do not display application icon to users** の横のチェックボックスをオンにして、**Next** をクリックします。
    
@@ -172,15 +174,15 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
       | Application username           | Email             |
       | Update application username on | Create and update |
    
-   7. 以下のAttribute Statementを入力します。
+   7. 以下の属性ステートメントを入力します。
 
-      | Name    | Name format   | Value      |
+      | 名前    | 名前形式   | 値      |
       |---------|---------------|------------|
       | email   | Basic         | user.email |
 
 9. **Next** をクリックします。
 
-10. Feedbackの画面で要求された情報を入力し、**Finish** をクリックします。
+10. フィードバック画面で要求された情報を入力し、**Finish** をクリックします。
 
 11. **Assignments** タブに移動し、上記で作成したグループを追加します。
 
@@ -189,11 +191,11 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
     <Image
       img={samlOktaSetup}
       size='md'
-      alt='Okta SAML設定手順'
+      alt='Okta SAMLセットアップ手順'
       force
     />
 
-13. 以下の3つの項目を収集し、上記のサポートケースの提出に進んでプロセスを完了します。
+13. 以下の3つの項目を収集し、上記の「サポートケースを送信する」に進んでプロセスを完了します。
 
 
      - Identity Provider Single Sign-On URL
@@ -204,22 +206,22 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 
 ### Google SAMLの設定 {#configure-google-saml}
 
-各組織ごとにGoogleで1つのSAMLアプリを設定し、マルチ組織SSOを使用する場合はユーザーにブックマーク用の直接リンク（`https://console.clickhouse.cloud/?connection={organizationId}`）を提供する必要があります。
+各組織ごとにGoogleで1つのSAMLアプリを設定する必要があります。マルチ組織SSOを使用する場合は、ユーザーにブックマーク用の直接リンク（`https://console.clickhouse.cloud/?connection={organizationId}`）を提供してください。
 
 <details>
    <summary>  Google Webアプリを作成する  </summary>
    
-   1. Google Admin コンソール（admin.google.com）にアクセスします。
+   1. Google管理コンソール（admin.google.com）にアクセスします。
 
 <Image img={samlGoogleApp} size='md' alt='Google SAMLアプリ' force />
 
-2.  **Apps** をクリックし、左側の **Web and mobile apps** を選択します。
+2.  **Apps** をクリックし、次に左側の **Web and mobile apps** をクリックします。
 
 3.  上部メニューから **Add app** をクリックし、**Add custom SAML app** を選択します。
 
 4.  アプリの名前を入力し、**Continue** をクリックします。
 
-5.  以下の2つの項目を収集し、上記のサポートケースの提出に進んで情報を送信してください。注意：このデータをコピーする前にセットアップを完了した場合は、アプリのホーム画面から **DOWNLOAD METADATA** をクリックしてX.509証明書を取得してください。
+5.  以下の2つの項目を収集し、上記の「サポートケースを送信する」に進んで情報を送信してください。注意：このデータをコピーする前にセットアップを完了した場合は、アプリのホーム画面から **DOWNLOAD METADATA** をクリックしてX.509証明書を取得してください。
 
 
      - SSO URL
@@ -234,7 +236,7 @@ IdPでの管理者権限と、ClickHouse Cloud組織での**Admin**ロールが�
 
 8.  **Signed response** のチェックボックスをオンにします。
 
-9.  Name ID Formatとして **EMAIL** を選択し、Name IDは **Basic Information > Primary email** のままにします。
+9.  Name ID Formatに **EMAIL** を選択し、Name IDは **Basic Information > Primary email** のままにします。
 
 10. **Continue** をクリックします。
 
@@ -297,7 +299,7 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
    
          <Image img={samlAzureClaims} size="md" alt="属性とクレーム" force/>
    
-   12. 以下の2つの項目を収集し、上記の「サポートケースの提出」に進んでプロセスを完了します:
+   12. 以下の2つの項目を収集し、上記の「サポートケースの送信」に進んでプロセスを完了します:
      - Login URL
      - Certificate (Base64)
 
@@ -324,7 +326,7 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
     | Assertion Consumer Service (ACS) URL | `https://auth.clickhouse.cloud/login/callback?connection={organizationid}` |
     | Service Provider Login URL           | `https://console.clickhouse.cloud/?connection={organizationid}`            |
 
-4.  以下の2つの項目を収集し、上記の「サポートケースの提出」に進んでプロセスを完了します:
+4.  以下の2つの項目を収集し、上記の「サポートケースの送信」に進んでプロセスを完了します:
     - Single Sign-On URL
     - Certificate
 
@@ -335,15 +337,15 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 ### SAML SSOによるユーザー管理 {#user-management-with-saml-sso}
 
-ユーザー権限の管理とSAML接続のみへのアクセス制限については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
+ユーザー権限の管理とSAML接続のみへのアクセス制限の詳細については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
 
 ### サービスプロバイダー起点のSSO {#service-provider-initiated-sso}
 
-サービスプロバイダー起点のSSOのみを利用しています。ユーザーは`https://console.clickhouse.cloud`にアクセスしてメールアドレスを入力すると、認証のためにIdPにリダイレクトされます。IdP経由で既に認証済みのユーザーは、ダイレクトリンクを使用することで、ログインページでメールアドレスを入力せずに組織へ自動的にログインできます。
+サービスプロバイダー起点のSSOのみを使用しています。これは、ユーザーが`https://console.clickhouse.cloud`にアクセスし、メールアドレスを入力するとIdPにリダイレクトされて認証が行われることを意味します。既にIdP経由で認証済みのユーザーは、直接リンクを使用することで、ログインページでメールアドレスを入力せずに、自動的に組織にログインできます。
 
 ### マルチ組織SSO {#multi-org-sso}
 
-ClickHouse Cloudは、各組織に個別の接続を提供することでマルチ組織SSOをサポートしています。各組織にログインするには、ダイレクトリンク（`https://console.clickhouse.cloud/?connection={organizationid}`）を使用してください。別の組織にログインする前に、現在の組織から必ずログアウトしてください。
+ClickHouse Cloudは、各組織に個別の接続を提供することでマルチ組織SSOをサポートしています。各組織にログインするには、直接リンク（`https://console.clickhouse.cloud/?connection={organizationid}`）を使用してください。別の組織にログインする前に、必ず現在の組織からログアウトしてください。
 
 
 ## 追加情報 {#additional-information}
@@ -355,12 +357,12 @@ ClickHouse Cloudは、各組織に個別の接続を提供することでマル�
 - **SSOアカウントと非SSOアカウントは自動的にリンクされません。** 同じメールアドレスを使用している場合でも、ClickHouseのユーザーリストに同一ユーザーの複数のアカウントが表示されることがあります。
 
 
-## よくある問題のトラブルシューティング {#troubleshooting-common-issues}
+## 一般的な問題のトラブルシューティング {#troubleshooting-common-issues}
 
 | エラー                                                                                                                                                              | 原因                                                                                 | 解決方法                                                                                                                                                                                                                       |
 | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| システムの設定ミスまたはサービス障害の可能性があります                                                                                                | IDプロバイダー起点のログイン                                                     | このエラーを解決するには、直接リンク `https://console.clickhouse.cloud/?connection={organizationid}` を使用してください。上記のIDプロバイダーの手順に従って、これをユーザーのデフォルトログイン方法として設定してください |
-| IDプロバイダーにリダイレクトされた後、ログインページに戻される                                                                                            | IDプロバイダーにメール属性のマッピングが設定されていません                       | 上記のIDプロバイダーの手順に従ってユーザーのメール属性を設定し、再度ログインしてください                                                                                                                |
+| システムの設定ミスまたはサービス停止の可能性があります                                                                                                | IDプロバイダー起点のログイン                                                     | このエラーを解決するには、直接リンク `https://console.clickhouse.cloud/?connection={organizationid}` を使用してください。上記のIDプロバイダーの手順に従って、これをユーザーのデフォルトログイン方法として設定してください |
+| IDプロバイダーにリダイレクトされた後、ログインページに戻されます                                                                                            | IDプロバイダーにメール属性のマッピングが設定されていません                       | 上記のIDプロバイダーの手順に従ってユーザーのメール属性を設定し、再度ログインしてください                                                                                                                |
 | ユーザーがこのアプリケーションに割り当てられていません                                                                                                                           | IDプロバイダーでユーザーがClickHouseアプリケーションに割り当てられていません | IDプロバイダーでユーザーをアプリケーションに割り当て、再度ログインしてください                                                                                                                                                   |
-| SAML SSOと統合された複数のClickHouse組織があり、どのリンクやタイルを使用しても常に同じ組織にログインされる | 最初の組織にログインしたままになっています                                     | ログアウトしてから、別の組織にログインしてください                                                                                                                                                                                 |
-| URLに一時的に `access denied` と表示される                                                                                                                              | メールドメインが設定済みのドメインと一致しません                        | このエラーの解決についてはサポートにお問い合わせください                                                                                                                                                                                       |
+| SAML SSOと統合された複数のClickHouse組織があり、どのリンクやタイルを使用しても常に同じ組織にログインされます | 最初の組織にログインしたままになっています                                     | ログアウトしてから、別の組織にログインしてください                                                                                                                                                                                 |
+| URLに一時的に `access denied` と表示されます                                                                                                                              | メールドメインが設定済みのドメインと一致しません                        | このエラーの解決についてはサポートにお問い合わせください                                                                                                                                                                                       |

@@ -14,9 +14,9 @@ import Image from '@theme/IdealImage';
 
 # 从 Snowflake 迁移到 ClickHouse
 
-> 本指南介绍如何将数据从 Snowflake 迁移到 ClickHouse。
+> 本指南将向您展示如何将数据从 Snowflake 迁移到 ClickHouse。
 
-从 Snowflake 迁移数据到 ClickHouse 需要使用对象存储(如 S3)作为中间存储进行数据传输。迁移过程依赖于 Snowflake 的 `COPY INTO` 命令和 ClickHouse 的 `INSERT INTO SELECT` 命令。
+在 Snowflake 和 ClickHouse 之间迁移数据需要使用对象存储(如 S3)作为中间存储进行数据传输。迁移过程还需要使用 Snowflake 的 `COPY INTO` 命令和 ClickHouse 的 `INSERT INTO SELECT` 命令。
 
 <VerticalStepper headerLevel="h2">
 
@@ -42,9 +42,9 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-要将此表的数据迁移到 ClickHouse 数据库,我们首先需要将数据复制到外部阶段。在复制数据时,我们推荐使用 Parquet 作为中间格式,因为它允许共享类型信息、保留精度、压缩效果好,并且原生支持分析场景中常见的嵌套结构。
+要将此表的数据迁移到 ClickHouse 数据库,我们首先需要将数据复制到外部阶段。在复制数据时,我们推荐使用 Parquet 作为中间格式,因为它允许共享类型信息、保持精度、压缩效果好,并且原生支持分析中常见的嵌套结构。
 
-在下面的示例中,我们在 Snowflake 中创建一个命名文件格式来表示 Parquet 及所需的文件选项。然后指定用于存放复制数据集的存储桶。最后,我们将数据集复制到该存储桶中。
+在下面的示例中,我们在 Snowflake 中创建一个命名文件格式来表示 Parquet 和所需的文件选项。然后指定用于存放复制数据集的存储桶。最后,我们将数据集复制到该存储桶中。
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
@@ -67,9 +67,9 @@ COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 heade
 
 数据暂存到中间对象存储后,可以使用 ClickHouse 函数(如 [s3 表函数](/sql-reference/table-functions/s3))将数据插入表中,如下所示。
 
-此示例使用 [s3 表函数](/sql-reference/table-functions/s3) 访问 AWS S3,但也可以使用 [gcs 表函数](/sql-reference/table-functions/gcs) 访问 Google Cloud Storage,或使用 [azureBlobStorage 表函数](/sql-reference/table-functions/azureBlobStorage) 访问 Azure Blob Storage。
+本示例使用 [s3 表函数](/sql-reference/table-functions/s3)访问 AWS S3,也可以使用 [gcs 表函数](/sql-reference/table-functions/gcs)访问 Google Cloud Storage,或使用 [azureBlobStorage 表函数](/sql-reference/table-functions/azureBlobStorage)访问 Azure Blob Storage。
 
-假设目标表结构如下:
+假设目标表的结构如下:
 
 ```sql
 CREATE TABLE default.mydataset
@@ -99,20 +99,20 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- 确保值为 null 时列以默认值插入
+SETTINGS input_format_null_as_default = 1, -- 确保值为 null 时列使用默认值插入
 input_format_parquet_case_insensitive_column_matching = 1 -- 源数据与目标表之间的列匹配不区分大小写
 ```
 
 :::note 关于嵌套列结构的说明
 原始 Snowflake 表结构中的 `VARIANT` 和 `OBJECT` 列默认会输出为 JSON 字符串,因此在插入 ClickHouse 时需要进行类型转换。
 
-Snowflake 在复制时会将 `some_file` 等嵌套结构转换为 JSON 字符串。导入此数据时,需要在 ClickHouse 插入时使用 [JSONExtract 函数](/sql-reference/functions/json-functions#JSONExtract) 将这些结构转换为元组(Tuple),如上所示。
+嵌套结构(如 `some_file`)在 Snowflake 复制时会被转换为 JSON 字符串。导入此类数据时,需要在 ClickHouse 插入时使用 [JSONExtract 函数](/sql-reference/functions/json-functions#JSONExtract)将这些结构转换为 Tuple,如上所示。
 :::
 
 
 ## 测试数据导出是否成功 {#3-testing-successful-data-export}
 
-要测试数据是否已正确插入,只需对新表执行 `SELECT` 查询:
+要测试数据是否已正确插入,只需对新表运行 `SELECT` 查询:
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;

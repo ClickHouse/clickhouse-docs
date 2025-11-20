@@ -1,5 +1,5 @@
 ---
-title: 'BYOC в AWS — наблюдаемость'
+title: 'Наблюдаемость BYOC в AWS'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'AWS'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
@@ -41,9 +41,9 @@ ClickHouse Cloud включает расширенную панель наблю
 
 #### Доступ к стеку Prometheus в BYOC {#prometheus-access}
 
-ClickHouse BYOC развертывает стек Prometheus в вашем кластере Kubernetes. Вы можете получить доступ и собирать метрики оттуда, интегрируя их с вашим собственным стеком мониторинга.
+ClickHouse BYOC развертывает стек Prometheus в вашем кластере Kubernetes. Вы можете получить доступ и собирать метрики оттуда, а также интегрировать их с вашим собственным стеком мониторинга.
 
-Свяжитесь со службой поддержки ClickHouse, чтобы включить приватный балансировщик нагрузки и получить URL. Обратите внимание, что этот URL доступен только через частную сеть и не поддерживает аутентификацию.
+Свяжитесь со службой поддержки ClickHouse, чтобы включить частный балансировщик нагрузки и получить URL. Обратите внимание, что этот URL доступен только через частную сеть и не поддерживает аутентификацию.
 
 **Пример URL**
 
@@ -55,11 +55,11 @@ https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 
 <DeprecatedBadge />
 
-Пожалуйста, используйте интеграцию со стеком Prometheus, описанную в разделе выше. Помимо метрик сервера ClickHouse, она предоставляет дополнительные метрики, включая метрики K8S и метрики других сервисов.
+Пожалуйста, используйте интеграцию со стеком Prometheus, описанную в разделе выше. Помимо метрик ClickHouse Server, она предоставляет дополнительные метрики, включая метрики K8S и метрики других сервисов.
 
 ClickHouse Cloud предоставляет конечную точку Prometheus, которую можно использовать для сбора метрик мониторинга. Это позволяет интегрироваться с такими инструментами, как Grafana и Datadog, для визуализации.
 
-**Пример запроса через https-конечную точку /metrics_all**
+**Пример запроса через HTTPS-конечную точку /metrics_all**
 
 ```bash
 curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud:8443/metrics_all
@@ -72,13 +72,13 @@ curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.by
 # HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes Объем данных в байтах, хранящихся на диске `s3disk` в системной базе данных
 # TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge
 ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes{hostname="c-jet-ax-16-server-43d5baj-0"} 62660929
-# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts Количество поврежденных отсоединенных кусков
+# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts Количество поврежденных отсоединенных кусков данных
 # TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge
 ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server-43d5baj-0"} 0
 # HELP ClickHouse_CustomMetric_LostPartCount Возраст самой старой мутации (в секундах)
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_NumberOfWarnings Количество предупреждений, выданных сервером. Обычно указывает на возможные ошибки в конфигурации
+# HELP ClickHouse_CustomMetric_NumberOfWarnings Количество предупреждений, выданных сервером. Обычно указывает на возможные проблемы конфигурации
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
 # HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST
@@ -94,7 +94,7 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 
 **Аутентификация**
 
-Для аутентификации можно использовать пару имя пользователя и пароль ClickHouse. Рекомендуется создать отдельного пользователя с минимальным набором прав для сбора метрик. Минимально требуется право `READ` на таблицу `system.custom_metrics` на всех репликах. Например:
+Для аутентификации можно использовать пару «имя пользователя — пароль» ClickHouse. Рекомендуем создать отдельного пользователя с минимальными правами для сбора метрик. Как минимум требуется право `READ` на таблицу `system.custom_metrics` на всех репликах. Например:
 
 ```sql
 GRANT REMOTE ON *.* TO scrapping_user;
@@ -117,7 +117,7 @@ GRANT SELECT(description, metric, value) ON system.metrics TO scrapping_user;
 
 **Настройка Prometheus**
 
-Ниже приведён пример конфигурации. Конечная точка `targets` совпадает с той, что используется для доступа к сервису ClickHouse.
+Пример конфигурации приведён ниже. Конечная точка `targets` — та же, что используется для доступа к сервису ClickHouse.
 
 ```bash
 global:
@@ -138,4 +138,4 @@ scrape_configs:
    honor_labels: true
 ```
 
-См. также [эту запись в блоге](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) и [документацию по настройке Prometheus для ClickHouse](/integrations/prometheus).
+Также смотрите [эту запись в блоге](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) и [документацию по настройке Prometheus для ClickHouse](/integrations/prometheus).

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
-description: 'TABLUM.IO 是一款开箱即用支持 ClickHouse 的数据管理类 SaaS 服务。'
-title: '将 TABLUM.IO 连接至 ClickHouse'
+description: 'TABLUM.IO 是一款开箱即用、原生支持 ClickHouse 的数据管理 SaaS。'
+title: '将 TABLUM.IO 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -33,7 +33,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 1. 注册或登录服务 {#1-sign-up-or-sign-in-to-the-service}
 
-首先,使用您的电子邮箱注册 TABLUM.IO,或通过 Google 或 Facebook 账户快速登录。
+首先，使用您的电子邮箱注册 TABLUM.IO，或通过 Google 或 Facebook 账户快速登录。
 
 <Image img={tablum_ch_0} size='md' border alt='TABLUM.IO 登录页面' />
 
@@ -60,7 +60,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 3. 选择连接器 {#3-select-the-connector}
 
-导航到 **Dataset** 选项卡。在下拉菜单中选择刚创建的 ClickHouse 连接器。在右侧面板中,您将看到可用的表和架构列表。
+导航到 **Dataset** 选项卡。在下拉菜单中选择刚创建的 ClickHouse 连接器。右侧面板将显示可用的表和架构列表。
 
 <Image
   img={tablum_ch_2}
@@ -70,12 +70,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 />
 
 
-## 4. 输入并运行 SQL 查询 {#4-input-a-sql-query-and-run-it}
+## 4. 输入 SQL 查询并运行 {#4-input-a-sql-query-and-run-it}
 
-在 SQL 控制台中输入查询语句,然后点击 **Run Query**。查询结果将以表格形式显示。
+在 SQL 控制台中输入查询语句并点击 **Run Query**。查询结果将以电子表格形式显示。
 
 :::tip
-右键点击列名可打开下拉菜单,其中包含排序、筛选等操作选项。
+右键点击列名可打开包含排序、筛选和其他操作的下拉菜单。
 :::
 
 <Image
@@ -86,14 +86,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 />
 
 :::note
-使用 TABLUM.IO,您可以:
+使用 TABLUM.IO 您可以
 
-- 在您的 TABLUM.IO 账户中创建和使用多个 ClickHouse 连接器
-- 对任何已加载的数据运行查询,无论数据来源如何
-- 将查询结果共享为新的 ClickHouse 数据库
-  :::
+- 在您的 TABLUM.IO 账户中创建和使用多个 ClickHouse 连接器,
+- 对任何已加载的数据运行查询,无论数据源是什么,
+- 将查询结果共享为新的 ClickHouse 数据库。
+:::
 
 
 ## 了解更多 {#learn-more}
 
-访问 https://tablum.io 了解更多关于 TABLUM.IO 的信息。
+访问 https://tablum.io 了解有关 TABLUM.IO 的更多信息。

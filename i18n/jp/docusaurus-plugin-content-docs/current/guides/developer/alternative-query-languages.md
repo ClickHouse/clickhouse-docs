@@ -1,7 +1,7 @@
 ---
 slug: /guides/developer/alternative-query-languages
-sidebar_label: '代替クエリ言語'
-title: '代替クエリ言語'
+sidebar_label: '別のクエリ言語'
+title: '別のクエリ言語'
 description: 'ClickHouse で別のクエリ言語を使用する'
 keywords: ['alternative query languages', 'query dialects', 'MySQL dialect', 'PostgreSQL dialect', 'developer guide']
 doc_type: 'reference'
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-標準的な SQL に加えて、ClickHouse はデータをクエリするためのさまざまな代替クエリ言語をサポートしています。
+標準SQLに加えて、ClickHouseはデータを照会するためのさまざまな代替クエリ言語をサポートしています。
 
 現在サポートされている方言は次のとおりです。
 
@@ -17,12 +17,12 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 * `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
 * `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-使用するクエリ言語は、`dialect` の設定によって制御されます。
+使用するクエリ言語は、`dialect` を設定することで切り替えられます。
 
 
 ## 標準SQL {#standard-sql}
 
-標準SQLは、ClickHouseのデフォルトクエリ言語です。
+標準SQLは、ClickHouseのデフォルトのクエリ言語です。
 
 ```sql
 SET dialect = 'clickhouse'
@@ -57,7 +57,7 @@ aggregate {
 
 <ExperimentalBadge />
 
-KQLを有効にするには:
+KQLを有効にするには：
 
 ```sql
 SET allow_experimental_kusto_dialect = 1; -- このSET文はClickHouseバージョン25.1以降でのみ必要です
@@ -83,4 +83,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-注意: KQLクエリはClickHouseで定義されているすべての関数にアクセスできない場合があります。
+なお、KQLクエリではClickHouseで定義されているすべての関数にアクセスできない場合があります。

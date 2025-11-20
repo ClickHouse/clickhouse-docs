@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Binary と Native'
+sidebar_label: 'バイナリ形式とネイティブ形式'
 slug: /integrations/data-formats/binary-native
-title: 'ClickHouse における Native および Binary 形式の利用'
-description: 'ClickHouse で native および binary 形式を利用する方法を説明するページ'
+title: 'ClickHouse におけるネイティブ形式とバイナリ形式の使用'
+description: 'ClickHouse でのネイティブ形式およびバイナリ形式の使用方法について説明するページ'
 keywords: ['binary formats', 'native format', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'data formats', 'performance', 'compression']
 doc_type: 'guide'
 ---
@@ -10,11 +10,11 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# ClickHouse におけるネイティブ形式とバイナリ形式の使用
+# ClickHouse におけるネイティブ形式とバイナリ形式の利用
 
-ClickHouse は複数のバイナリ形式をサポートしており、これによりパフォーマンスとストレージ効率が向上します。バイナリ形式は、データがバイナリとして保存されるため、文字エンコーディングの観点からも安全です。
+ClickHouse は複数のバイナリ形式をサポートしており、これによりパフォーマンスとストレージ効率が向上します。バイナリ形式ではデータがバイナリとして保存されるため、文字エンコーディングの観点からも安全です。
 
-ここではデモ用に、some_data [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用します。お使いの ClickHouse インスタンス上で、同じ手順を自由に再現してみてください。
+ここではデモ用に、some_data の[テーブル](assets/some_data.sql)と[データ](assets/some_data.tsv)を使用します。ご利用の ClickHouse インスタンス上で、ぜひ同様に実行してみてください。
 
 
 
@@ -80,7 +80,7 @@ FORMAT Native
 
 ## RowBinaryへのエクスポート {#exporting-to-rowbinary}
 
-サポートされているもう一つのバイナリ形式は[RowBinary](/interfaces/formats/RowBinary)で、バイナリ形式の行でデータのインポートとエクスポートが可能です：
+サポートされているもう一つのバイナリ形式は[RowBinary](/interfaces/formats/RowBinary)で、バイナリ形式の行でデータのインポートとエクスポートが可能です:
 
 ```sql
 SELECT * FROM some_data
@@ -91,7 +91,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 
 ### RowBinaryファイルの確認 {#exploring-rowbinary-files}
 
-この形式では自動スキーマ推論がサポートされていないため、読み込み前に確認するにはスキーマを明示的に定義する必要があります：
+この形式では自動スキーマ推論がサポートされていないため、読み込み前に確認するにはスキーマを明示的に定義する必要があります:
 
 ```sql
 SELECT *
@@ -113,7 +113,7 @@ LIMIT 5
 
 ### RowBinaryファイルからのインポート {#importing-from-rowbinary-files}
 
-RowBinaryファイルからデータを読み込むには、`FROM INFILE`句を使用できます：
+RowBinaryファイルからデータを読み込むには、`FROM INFILE`句を使用できます:
 
 ```sql
 INSERT INTO sometable
@@ -125,7 +125,7 @@ FORMAT RowBinary
 ## RawBLOBを使用した単一バイナリ値のインポート {#importing-single-binary-value-using-rawblob}
 
 バイナリファイル全体を読み込んでテーブルのフィールドに保存したい場合を想定します。
-このような場合に[RawBLOBフォーマット](/interfaces/formats/RawBLOB)が使用できます。このフォーマットは単一カラムのテーブルでのみ直接使用可能です:
+このような場合に[RawBLOB形式](/interfaces/formats/RawBLOB)を使用できます。この形式は単一カラムのテーブルでのみ直接使用可能です:
 
 ```sql
 CREATE TABLE images(data String) ENGINE = Memory
@@ -151,7 +151,7 @@ SELECT length(data) FROM images
 
 ### RawBLOBデータのエクスポート {#exporting-rawblob-data}
 
-このフォーマットは`INTO OUTFILE`句を使用したデータのエクスポートにも使用できます:
+この形式は`INTO OUTFILE`句を使用したデータのエクスポートにも使用できます:
 
 ```sql
 SELECT * FROM images LIMIT 1
@@ -164,7 +164,7 @@ FORMAT RawBLOB
 
 ## MessagePack {#messagepack}
 
-ClickHouseは[MsgPack](/interfaces/formats/MsgPack)を使用して[MessagePack](https://msgpack.org/)形式のインポートおよびエクスポートをサポートしています。MessagePack形式でエクスポートするには:
+ClickHouseは[MsgPack](/interfaces/formats/MsgPack)を使用して[MessagePack](https://msgpack.org/)形式のインポートおよびエクスポートをサポートしています。MessagePack形式にエクスポートするには：
 
 ```sql
 SELECT *
@@ -173,7 +173,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-[MessagePackファイル](assets/data.msgpk)からデータをインポートするには:
+[MessagePackファイル](assets/data.msgpk)からデータをインポートするには：
 
 ```sql
 INSERT INTO sometable
@@ -186,7 +186,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge />
 
-[Protocol Buffers](/interfaces/formats/Protobuf)を使用するには、まず[スキーマファイル](assets/schema.proto)を定義する必要があります：
+[Protocol Buffers](/interfaces/formats/Protobuf)を使用するには、まず[スキーマファイル](assets/schema.proto)を定義する必要があります:
 
 ```protobuf
 syntax = "proto3";
@@ -198,7 +198,7 @@ message MessageType {
 };
 ```
 
-このスキーマファイルへのパス(この例では`schema.proto`)は、[Protobuf](/interfaces/formats/Protobuf)フォーマットの`format_schema`設定オプションで指定します：
+このスキーマファイルへのパス(この例では`schema.proto`)は、[Protobuf](/interfaces/formats/Protobuf)形式の`format_schema`設定オプションで指定します:
 
 ```sql
 SELECT * FROM some_data
@@ -207,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-これにより、データが[proto.bin](assets/proto.bin)ファイルに保存されます。ClickHouseはProtobufデータのインポートやネストされたメッセージもサポートしています。単一のProtocol Bufferメッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle)の使用を検討してください(この場合、長さ区切り文字は省略されます)。
+これにより、データが[proto.bin](assets/proto.bin)ファイルに保存されます。ClickHouseはProtobufデータのインポートおよびネストされたメッセージもサポートしています。単一のProtocol Bufferメッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle)の使用を検討してください(この場合、長さ区切り文字は省略されます)。
 
 
 ## Cap'n Proto {#capn-proto}
 
 <CloudNotSupportedBadge />
 
-ClickHouseがサポートするもう一つの人気のバイナリシリアライゼーション形式は[Cap'n Proto](https://capnproto.org/)です。`Protobuf`形式と同様に、この例ではスキーマファイル([`schema.capnp`](assets/schema.capnp))を定義する必要があります:
+ClickHouseがサポートするもう一つの人気のバイナリシリアライゼーション形式は[Cap'n Proto](https://capnproto.org/)です。`Protobuf`形式と同様に、この例ではスキーマファイル（[`schema.capnp`](assets/schema.capnp)）を定義する必要があります：
 
 ```response
 @0xec8ff1a10aa10dbe;
@@ -226,7 +226,7 @@ struct PathStats {
 }
 ```
 
-これで、[CapnProto](/interfaces/formats/CapnProto)形式とこのスキーマを使用してインポートおよびエクスポートが可能になります:
+これで、[CapnProto](/interfaces/formats/CapnProto)形式とこのスキーマを使用してインポートおよびエクスポートが可能になります：
 
 ```sql
 SELECT
@@ -239,12 +239,12 @@ FORMAT CapnProto
 SETTINGS format_schema = 'schema:PathStats'
 ```
 
-`Date`カラムを`UInt32`にキャストして[対応する型に一致させる](/interfaces/formats/CapnProto#data_types-matching-capnproto)必要がある点に注意してください。
+`Date`カラムを`UInt32`にキャストして[対応する型と一致させる](/interfaces/formats/CapnProto#data_types-matching-capnproto)必要があることに注意してください。
 
 
 ## その他のフォーマット {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットと使用方法について詳しく確認できます：
+ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットとその使用方法を確認できます:
 
 - [CSVおよびTSVフォーマット](csv-tsv.md)
 - [Parquet](parquet.md)
@@ -253,4 +253,4 @@ ClickHouseは、さまざまなシナリオやプラットフォームに対応�
 - **ネイティブおよびバイナリフォーマット**
 - [SQLフォーマット](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを起動することなく、ローカル/リモートファイルを操作できるポータブルでフル機能を備えたツールです。
+また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これは、ClickHouseサーバーを起動せずにローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。

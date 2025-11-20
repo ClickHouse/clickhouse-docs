@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
 title: 'avgResample'
-description: 'avg で Resample コンビネータを使用する例'
-keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
+description: 'avgでResampleコンビネータを使用する例'
+keywords: ['avg', 'Resample', 'コンビネータ', '例', 'avgResample']
 sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
@@ -16,8 +16,8 @@ doc_type: 'reference'
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
-区間でカウントできます。
+集約関数に適用することで、指定されたキー列の値を固定数の
+区間（`N`）でカウントできます。
 
 
 ## 使用例 {#example-usage}
@@ -45,8 +45,8 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-年齢が`[30,60)`と`[60,75)`の区間にある人々の平均賃金を取得してみましょう(`[`は閉区間、`)`は開区間を表します)。年齢には整数表現を使用するため、実際には`[30, 59]`と`[60,74]`の区間の年齢が対象となります。
-これを実現するには、`avg`集約関数に`Resample`コンビネータを適用します。
+年齢が`[30,60)`と`[60,75)`の区間にある人々の平均賃金を取得しましょう(`[`は閉区間、`)`は開区間)。年齢には整数表現を使用するため、実際には`[30, 59]`と`[60,74]`の区間の年齢が対象となります。
+これを行うには、`avg`集約関数に`Resample`コンビネータを適用します。
 
 ```sql
 WITH avg_wage AS

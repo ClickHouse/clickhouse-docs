@@ -1,21 +1,21 @@
 ---
-title: 'Поддерживает ли ClickHouse обновления в реальном времени?'
+title: 'Поддерживает ли ClickHouse обновления в режиме реального времени?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/updates
-description: 'ClickHouse поддерживает легковесные обновления в реальном времени'
+description: 'ClickHouse поддерживает легковесные обновления в режиме реального времени'
 doc_type: 'reference'
 keywords: ['updates', 'real-time']
 ---
 
-# Поддерживает ли ClickHouse обновления в реальном времени?
+# Поддерживает ли ClickHouse обновления в режиме реального времени?
 
-ClickHouse поддерживает оператор UPDATE и способен выполнять обновления в реальном времени так же быстро, как и INSERT.
+ClickHouse поддерживает оператор UPDATE и может выполнять обновления в режиме реального времени с той же скоростью, что и INSERT.
 
-Это становится возможным благодаря [структуре данных patch parts](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates#stage-3-patch-parts--updates-the-clickhouse-way), которая позволяет быстро применять изменения без значительного влияния на производительность запросов SELECT.
+Это возможно благодаря [структуре данных patch parts](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates#stage-3-patch-parts--updates-the-clickhouse-way), которая позволяет быстро применять изменения без существенного влияния на производительность SELECT-запросов.
 
-Кроме того, благодаря MVCC (многоверсионному управлению параллельным доступом) и изоляции снимков обновления обладают свойствами ACID.
+Кроме того, благодаря MVCC (multi-version concurrency control) и snapshot isolation, обновления обладают свойствами ACID.
 
 :::info
-Лёгкие обновления впервые появились в ClickHouse версии 25.7.
+Облегчённые обновления впервые были представлены в ClickHouse версии 25.7.
 :::

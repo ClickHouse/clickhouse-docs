@@ -4,7 +4,7 @@ sidebar_label: 'Chartbrew'
 sidebar_position: 131
 slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', 'connect', 'integrate', 'visualization']
-description: '将 Chartbrew 连接到 ClickHouse，以创建实时仪表盘和客户端报告。'
+description: '将 Chartbrew 连接到 ClickHouse，以创建实时仪表板和客户报告。'
 doc_type: 'guide'
 ---
 
@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 <CommunityMaintainedBadge/>
 
-[Chartbrew](https://chartbrew.com) 是一款数据可视化平台，支持用户创建仪表盘并实时监控数据。它支持包括 ClickHouse 在内的多种数据源，并提供零代码界面，用于构建图表和报表。
+[Chartbrew](https://chartbrew.com) 是一个数据可视化平台，允许用户创建仪表板并实时监控数据。它支持包括 ClickHouse 在内的多种数据源，并提供零代码界面，用于构建图表和报告。
 
 
 
@@ -42,7 +42,7 @@ import Image from '@theme/IdealImage';
 :::
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -62,9 +62,9 @@ import Image from '@theme/IdealImage';
    - **Display Name**: 用于在 Chartbrew 中标识该连接的名称。
    - **Host**: ClickHouse 服务器的主机名或 IP 地址。
    - **Port**: HTTPS 连接通常使用 `8443`。
-   - **Database Name**: 要连接的数据库名称。
-   - **Username**: 您的 ClickHouse 用户名。
-   - **Password**: 您的 ClickHouse 密码。
+   - **Database Name**: 要连接的数据库。
+   - **Username**: ClickHouse 用户名。
+   - **Password**: ClickHouse 密码。
 
    <Image
      img={chartbrew_03}
@@ -84,7 +84,7 @@ import Image from '@theme/IdealImage';
 
 ## 3. 创建数据集并运行 SQL 查询 {#3-create-a-dataset-and-run-a-sql-query}
 
-1. 点击 **Create dataset** 按钮或导航到 **Datasets** 选项卡来创建数据集。
+1. 点击 **Create dataset** 按钮或导航至 **Datasets** 选项卡来创建数据集。
 2. 选择您之前创建的 ClickHouse 连接。
 
 <Image
@@ -93,7 +93,7 @@ import Image from '@theme/IdealImage';
   alt='为数据集选择 ClickHouse 连接'
 />
 
-编写 SQL 查询来检索您想要可视化的数据。例如,以下查询从 `uk_price_paid` 数据集中计算每年的平均房价:
+编写 SQL 查询以检索要可视化的数据。例如,以下查询从 `uk_price_paid` 数据集中计算每年的平均房价:
 
 ```sql
 SELECT toYear(date) AS year, avg(price) AS avg_price
@@ -104,9 +104,9 @@ ORDER BY year;
 
 <Image img={chartbrew_07} size='lg' alt='Chartbrew 中的 ClickHouse SQL 查询' />
 
-点击 **Run query** 来获取数据。
+点击 **Run query** 获取数据。
 
-如果您不确定如何编写查询,可以使用 **Chartbrew 的 AI 助手**根据您的数据库模式生成 SQL 查询。
+如果您不确定如何编写查询,可以使用 **Chartbrew 的 AI 助手**根据数据库架构自动生成 SQL 查询。
 
 <Image
   img={chartbrew_06}
@@ -114,7 +114,7 @@ ORDER BY year;
   alt='Chartbrew 中的 ClickHouse AI SQL 助手'
 />
 
-数据检索完成后,点击 **Configure dataset** 来设置可视化参数。
+数据检索完成后,点击 **Configure dataset** 设置可视化参数。
 
 
 ## 4. 创建可视化图表 {#4-create-a-visualization}
@@ -130,7 +130,7 @@ ORDER BY year;
   alt='使用 ClickHouse 数据的 Chartbrew 仪表板'
 />
 
-您可以根据需要创建任意数量的数据集,以可视化数据的不同方面。利用这些数据集,您可以创建多个仪表板来跟踪不同的指标。
+您可以根据需要创建任意数量的数据集,以可视化数据的不同维度。利用这些数据集,您可以创建多个仪表板来跟踪不同的指标。
 
 <Image
   img={chartbrew_01}
@@ -141,7 +141,7 @@ ORDER BY year;
 
 ## 5. 自动化数据更新 {#5-automate-data-updates}
 
-为保持仪表板数据的实时性,您可以配置自动数据更新:
+为保持仪表板数据的最新状态,您可以设置自动数据更新:
 
 1. 点击数据集刷新按钮旁的日历图标。
 2. 配置更新间隔(例如:每小时、每天)。

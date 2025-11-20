@@ -2,7 +2,7 @@
 sidebar_label: 'Vector'
 sidebar_position: 220
 slug: /integrations/vector
-description: '如何使用 Vector 将日志文件尾部数据导入 ClickHouse'
+description: '如何使用 Vector 将日志文件实时写入 ClickHouse'
 title: 'Vector 与 ClickHouse 集成'
 show_related_blogs: true
 doc_type: 'guide'
@@ -10,7 +10,7 @@ integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://vector.dev/'
-keywords: ['vector', '日志采集', '可观测性', '数据写入', '数据管道']
+keywords: ['vector', '日志采集', '可观测性', '数据摄取', '数据管道']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,17 +23,17 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge />
 
-对于生产应用而言,实时分析日志至关重要。
+对于生产应用程序而言,实时分析日志至关重要。
 ClickHouse 在存储和分析日志数据方面表现卓越,这得益于其出色的压缩能力(日志压缩比可达 [170 倍](https://clickhouse.com/blog/log-compression-170x))
 以及快速聚合海量数据的能力。
 
-本指南将介绍如何使用流行的数据管道工具 [Vector](https://vector.dev/docs/about/what-is-vector/) 来跟踪 Nginx 日志文件并将其发送到 ClickHouse。
+本指南将向您展示如何使用流行的数据管道工具 [Vector](https://vector.dev/docs/about/what-is-vector/) 来跟踪 Nginx 日志文件并将其发送到 ClickHouse。
 以下步骤同样适用于跟踪任何类型的日志文件。
 
 **前置条件:**
 
-- 您已安装并运行 ClickHouse
-- 您已安装 Vector
+- 您已经安装并运行了 ClickHouse
+- 您已经安装了 Vector
 
 <VerticalStepper headerLevel="h2">
 
@@ -48,7 +48,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越,这得益于其出�
 CREATE DATABASE IF NOT EXISTS nginxdb
 ```
 
-2. 将整个日志事件作为单个字符串插入。显然,这种格式并不适合对日志数据进行分析,但我们将在下文中使用**_物化视图_**来解决这个问题。
+2. 将整个日志事件作为单个字符串插入。显然,这种格式不适合对日志数据进行分析,但我们将在下文中使用**_物化视图_**来解决这个问题。
 
 ```sql
 CREATE TABLE IF NOT EXISTS  nginxdb.access_logs (
@@ -65,10 +65,10 @@ ORDER BY tuple()
 
 ## 配置 Nginx {#2--configure-nginx}
 
-在本步骤中,您将学习如何配置 Nginx 日志记录。
+在此步骤中,将介绍如何配置 Nginx 日志记录。
 
-1. 以下 `access_log` 属性会将日志以 **combined** 格式写入 `/var/log/nginx/my_access.log`。
-   该配置应添加到 `nginx.conf` 文件的 `http` 部分:
+1. 以下 `access_log` 属性会将日志以 **combined** 格式发送到 `/var/log/nginx/my_access.log`。
+   该配置应放置在 `nginx.conf` 文件的 `http` 部分:
 
 ```bash
 http {
@@ -84,7 +84,7 @@ http {
 2. 如果修改了 `nginx.conf`,请务必重启 Nginx。
 
 3. 通过访问 Web 服务器上的页面来生成一些访问日志事件。
-   **combined** 格式的日志示例如下:
+   **combined** 格式的日志如下所示:
 
 ```bash
 192.168.208.1 - - [12/Oct/2021:03:31:44 +0000] "GET / HTTP/1.1" 200 615 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
@@ -98,7 +98,7 @@ http {
 Vector 收集、转换和路由日志、指标和追踪数据(称为 **sources**)到多个不同的目标系统(称为 **sinks**),包括对 ClickHouse 的开箱即用支持。
 Sources 和 sinks 在名为 **vector.toml** 的配置文件中定义。
 
-1. 以下 **vector.toml** 文件定义了一个类型为 **file** 的 **source**,用于跟踪 **my_access.log** 文件末尾的内容,同时还定义了一个 **sink** 指向上面定义的 **access_logs** 表:
+1. 以下 **vector.toml** 文件定义了一个类型为 **file** 的 **source**,用于追踪 **my_access.log** 文件末尾的内容,同时还定义了一个 **sink** 指向上面定义的 **access_logs** 表:
 
 ```bash
 [sources.nginx_logs]
@@ -144,7 +144,7 @@ SELECT * FROM nginxdb.access_logs
 192.168.208.1 - - [12/Oct/2021:15:32:43 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 ```
 
-ClickHouse 中有多种函数可以解析上述字符串。[`splitByWhitespace`](/sql-reference/functions/splitting-merging-functions#splitByWhitespace) 函数按空白字符解析字符串,并将每个标记以数组形式返回。
+ClickHouse 中有多种函数可以解析上述字符串。[`splitByWhitespace`](/sql-reference/functions/splitting-merging-functions#splitByWhitespace) 函数按空格解析字符串,并将每个标记以数组形式返回。
 为了演示,请运行以下命令:
 
 ```sql title="查询"
@@ -187,7 +187,7 @@ SELECT parseDateTimeBestEffort(replaceOne(trim(LEADING '[' FROM '[12/Oct/2021:15
 
 
 现在我们可以定义物化视图了。
-下面的定义包含 `POPULATE`,这意味着 **access_logs** 中的现有行将立即被处理并插入。
+下面的定义包含 `POPULATE` 参数,这意味着 **access_logs** 中的现有行将立即被处理并插入。
 运行以下 SQL 语句:
 
 ```sql
@@ -225,8 +225,8 @@ FROM
   (SELECT message FROM nginxdb.access_logs)
 ```
 
-现在验证是否生效。
-您应该看到访问日志已被正确解析为列:
+现在验证是否成功。
+您应该能看到访问日志已被正确解析为列:
 
 ```sql
 SELECT * FROM nginxdb.access_logs_view
@@ -236,14 +236,14 @@ SELECT * FROM nginxdb.access_logs_view
   img={vector02}
   size='lg'
   border
-  alt='以表格格式查看解析后的 ClickHouse 日志'
+  alt='以表格格式查看已解析的 ClickHouse 日志'
 />
 
 :::note
-上面的示例将数据存储在两个表中,但您可以将初始的 `nginxdb.access_logs` 表更改为使用 [`Null`](/engines/table-engines/special/null) 表引擎。
-解析后的数据仍将存储在 `nginxdb.access_logs_view` 表中,但原始数据不会存储在表中。
+上述示例将数据存储在两个表中,但您可以将初始的 `nginxdb.access_logs` 表改为使用 [`Null`](/engines/table-engines/special/null) 表引擎。
+解析后的数据仍会存储在 `nginxdb.access_logs_view` 表中,但原始数据不会被存储。
 :::
 
 </VerticalStepper>
 
-> 通过使用 Vector(只需简单安装和快速配置),您可以将 Nginx 服务器的日志发送到 ClickHouse 的表中。通过使用物化视图,您可以将这些日志解析为列,以便更轻松地进行分析。
+> 通过使用 Vector(只需简单安装和快速配置),您可以将 Nginx 服务器的日志发送到 ClickHouse 表中。通过使用物化视图,您可以将这些日志解析为列,从而更便于进行分析。

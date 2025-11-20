@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/gather-connection-details
-sidebar_label: '接続情報を確認する'
-title: '接続情報を確認する'
-description: '接続情報を確認する'
+sidebar_label: '接続情報を取得する'
+title: '接続情報を取得する'
+description: '接続情報を取得する'
 doc_type: 'guide'
 keywords: ['connection details', 'credentials', 'connection string', 'setup', 'configuration']
 ---

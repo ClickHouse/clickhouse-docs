@@ -3,7 +3,7 @@ slug: /integrations/hive
 sidebar_label: 'Hive'
 title: 'Hive'
 hide_title: true
-description: 'Страница, описывающая табличный движок Hive'
+description: 'Страница с описанием движка таблиц Hive'
 doc_type: 'reference'
 keywords: ['hive', 'table engine', 'integration']
 ---

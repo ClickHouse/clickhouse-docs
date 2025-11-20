@@ -2,7 +2,7 @@
 title: 'ClickHouse Private'
 slug: /cloud/infrastructure/clickhouse-private
 keywords: ['private', 'on-prem']
-description: 'ClickHouse Private オファリングの概要'
+description: 'ClickHouse Private 提供内容の概要'
 doc_type: 'reference'
 ---
 
@@ -17,11 +17,11 @@ ClickHouse Privateは、ClickHouse Cloudで稼働しているものと同じプ�
 このパッケージは現在AWSとIBM Cloudで利用可能で、ベアメタルデプロイメントも近日中に提供予定です。
 
 :::note 注記
-ClickHouse Privateは、最も厳格なコンプライアンス要件を持つ大企業向けに設計されており、専用インフラストラクチャを完全に制御・管理できます。このオプションは[お問い合わせ](https://clickhouse.com/company/contact?loc=nav)いただくことでのみご利用いただけます。
+ClickHouse Privateは、最も厳格なコンプライアンス要件を持つ大企業向けに設計されており、専用インフラストラクチャを完全に制御・管理できます。このオプションは[お問い合わせ](https://clickhouse.com/company/contact?loc=nav)いただくことでのみ利用可能です。
 :::
 
 
-## オープンソースに対する利点 {#benefits-over-os}
+## オープンソース版に対する利点 {#benefits-over-os}
 
 以下の機能により、ClickHouse Privateはセルフマネージド型のオープンソースデプロイメントと差別化されています：
 
@@ -29,16 +29,16 @@ ClickHouse Privateは、最も厳格なコンプライアンス要件を持つ�
 
 ### パフォーマンスの強化 {#enhanced-performance}
 
-- コンピュートとストレージのネイティブ分離
-- [shared merge tree](/cloud/reference/shared-merge-tree)や[warehouse](/cloud/reference/warehouses)機能などの独自クラウド機能
+- コンピュートとストレージのネイティブな分離
+- [Shared Merge Tree](/cloud/reference/shared-merge-tree)や[ウェアハウス](/cloud/reference/warehouses)機能などの独自のクラウド機能
 
-### 多様なユースケースと条件下でテスト済み・実証済み {#tested-proven-through-variety-of-use-cases}
+### 多様なユースケースと条件下でテスト・実証済み {#tested-proven-through-variety-of-use-cases}
 
-- ClickHouse Cloudで完全にテストおよび検証済み
+- ClickHouse Cloudで完全にテスト・検証済み
 
-### 新機能を定期的に追加する充実したロードマップ {#full-featured-roadmap}
+### 新機能が定期的に追加される充実したロードマップ {#full-featured-roadmap}
 
-近日追加予定の追加機能：
+近日追加予定の機能には以下が含まれます：
 
 - リソースをプログラムで管理するためのAPI
   - 自動バックアップ
@@ -66,7 +66,7 @@ ClickHouse Privateは、お客様のデプロイメント環境内で完全に�
 
 ## オンボーディングプロセス {#onboarding-process}
 
-オンボーディングを開始するには、[弊社](https://clickhouse.com/company/contact?loc=nav)までお問い合わせください。条件を満たすお客様には、詳細な環境構築ガイドと、デプロイメント用のイメージおよびHelmチャートへのアクセスを提供いたします。
+お客様は[弊社](https://clickhouse.com/company/contact?loc=nav)までお問い合わせいただくことで、オンボーディングを開始できます。条件を満たすお客様には、詳細な環境構築ガイドと、デプロイメント用のイメージおよびHelmチャートへのアクセスを提供いたします。
 
 
 ## 一般要件 {#general-requirements}

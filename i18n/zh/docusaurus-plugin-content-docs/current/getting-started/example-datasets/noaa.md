@@ -1,5 +1,5 @@
 ---
-description: '覆盖过去 120 年的 25 亿行气候数据'
+description: '过去 120 年的 25 亿行气候数据'
 sidebar_label: 'NOAA 全球历史气候网络'
 slug: /getting-started/example-datasets/noaa
 title: 'NOAA 全球历史气候网络'
@@ -7,21 +7,21 @@ doc_type: 'guide'
 keywords: ['example dataset', 'noaa', 'weather data', 'sample data', 'climate']
 ---
 
-该数据集包含过去 120 年的天气观测数据。每一行代表某一时间点和观测站的一次测量记录。
+此数据集包含过去 120 年的天气观测数据。每一行代表某一时间点和观测站的一条测量记录。
 
 更准确地说，根据[该数据的来源](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)：
 
-> GHCN-Daily 是一个包含全球陆地区域逐日观测数据的数据集。它包含来自全球各地陆地观测站的站点观测数据，其中约有三分之二仅为降水观测（Menne 等，2012）。GHCN-Daily 是由来自众多来源的气候记录合并而成，并经过统一的质量保证流程审核（Durre 等，2010）。该档案包括以下气象要素：
->
-> - 日最高气温
-> - 日最低气温
-> - 观测时刻气温
-> - 降水量（如降雨、融雪）
-> - 降雪量
-> - 积雪深度
-> - 其他在可用情况下的要素
+> GHCN-Daily 是一个包含全球陆地区域逐日观测记录的数据集。它包含来自全球各地陆地观测站的站点观测数据，其中约三分之二仅为降水观测（Menne 等, 2012）。GHCN-Daily 由众多来源的气候记录汇总合并而成，并统一通过了同一套质量保证审查（Durre 等, 2010）。该档案包括以下气象要素：
 
-下面的章节将对把该数据集导入 ClickHouse 所涉及的步骤做一个简要概述。若你希望更详细地了解每一步，我们建议阅读我们的博文《[探索海量真实世界数据集：在 ClickHouse 中分析逾 100 年的天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)》。
+    - 每日最高气温
+    - 每日最低气温
+    - 观测时的气温
+    - 降水量（例如雨量、融雪量）
+    - 降雪量
+    - 积雪深度
+    - 其他在可用情况下的要素
+
+以下各节简要概述了将此数据集导入 ClickHouse 所涉及的步骤。如果你希望更详细地了解每个步骤，建议阅读我们的博文《[探索海量真实世界数据集：在 ClickHouse 中分析 100+ 年气象记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)》。
 
 
 
@@ -32,7 +32,7 @@ keywords: ['example dataset', 'noaa', 'weather data', 'sample data', 'climate']
 
 ### 预处理数据 {#pre-prepared-data}
 
-具体来说,已删除未通过 NOAA 质量保证检查的行。数据也已从每行一个测量值重构为每个站点 ID 和日期一行,即:
+具体而言,已删除未通过 NOAA 质量保证检查的行。数据结构也已从每行一个测量值重构为每个站点 ID 和日期一行,即:
 
 ```csv
 "station_id","date","tempAvg","tempMax","tempMin","precipitation","snowfall","snowDepth","percentDailySun","averageWindSpeed","maxWindSpeed","weatherType"
@@ -85,29 +85,29 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 
 总结一下[格式文档](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)：
 
-按顺序对格式文档及各列进行总结：
+按顺序对格式文档和各列进行总结如下：
 
 
-- 11 个字符的站点标识代码。该代码本身编码了一些有用的信息
-- YEAR/MONTH/DAY = 8 个字符的日期,格式为 YYYYMMDD(例如 19860529 = 1986 年 5 月 29 日)
-- ELEMENT = 4 个字符的元素类型指示符。实际上就是测量类型。虽然有许多可用的测量类型,但我们选择以下几种:
-  - PRCP - 降水量(十分之一毫米)
+- 11 字符的站点标识代码。该代码本身编码了一些有用的信息
+- YEAR/MONTH/DAY = 8 字符的日期,采用 YYYYMMDD 格式(例如 19860529 = 1986 年 5 月 29 日)
+- ELEMENT = 4 字符的元素类型指示符。实际上就是测量类型。虽然有许多可用的测量类型,但我们选择以下几种:
+  - PRCP - 降水量(0.1 毫米)
   - SNOW - 降雪量(毫米)
   - SNWD - 积雪深度(毫米)
-  - TMAX - 最高温度(十分之一摄氏度)
-  - TAVG - 平均温度(十分之一摄氏度)
-  - TMIN - 最低温度(十分之一摄氏度)
+  - TMAX - 最高温度(0.1 摄氏度)
+  - TAVG - 平均温度(0.1 摄氏度)
+  - TMIN - 最低温度(0.1 摄氏度)
   - PSUN - 每日可能日照百分比(百分比)
-  - AWND - 日平均风速(十分之一米/秒)
-  - WSFG - 峰值阵风风速(十分之一米/秒)
+  - AWND - 日平均风速(0.1 米/秒)
+  - WSFG - 峰值阵风风速(0.1 米/秒)
   - WT** = 天气类型,其中 ** 定义具体的天气类型。完整的天气类型列表见此处。
-  - DATA VALUE = ELEMENT 的 5 个字符数据值,即测量值。
-  - M-FLAG = 1 个字符的测量标志。有 10 个可能的值。其中一些值表示数据准确性存疑。我们接受该标志设置为 "P" 的数据 - 标识为缺失并假定为零,因为这仅与 PRCP、SNOW 和 SNWD 测量相关。
-- Q-FLAG 是测量质量标志,有 14 个可能的值。我们只关注空值的数据,即未失败任何质量保证检查的数据。
+  - DATA VALUE = ELEMENT 的 5 字符数据值,即测量的数值。
+  - M-FLAG = 1 字符的测量标志。有 10 个可能的值。其中一些值表示数据准确性存疑。我们接受该标志设置为 "P" 的数据 - 标识为缺失并假定为零,因为这仅与 PRCP、SNOW 和 SNWD 测量相关。
+- Q-FLAG 是测量质量标志,有 14 个可能的值。我们只关注空值的数据,即通过了所有质量保证检查的数据。
 - S-FLAG 是观测的来源标志。对我们的分析没有用处,因此忽略。
-- OBS-TIME = 4 个字符的观测时间,格式为小时-分钟(即 0700 = 上午 7:00)。通常在较旧的数据中不存在。我们在此忽略该字段。
+- OBS-TIME = 4 字符的观测时间,采用小时-分钟格式(即 0700 = 上午 7:00)。通常在较旧的数据中不存在。我们在此忽略该字段。
 
-每行一个测量值会导致 ClickHouse 中的稀疏表结构。我们应该转换为每个时间和站点一行,测量值作为列。首先,我们将数据集限制为没有问题的行,即 `qFlag` 等于空字符串的行。
+每行一个测量值会导致 ClickHouse 中的稀疏表结构。我们应该转换为每个时间和站点一行,将测量值作为列。首先,我们将数据集限制为没有问题的行,即 `qFlag` 等于空字符串的行。
 
 #### 清理数据 {#clean-the-data}
 
@@ -120,11 +120,11 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 2679264563
 ```
 
-由于有超过 26 亿行,这不是一个快速的查询,因为它涉及解析所有文件。在我们的 8 核机器上,这大约需要 160 秒。
+由于有超过 26 亿行,这不是一个快速的查询,因为它涉及解析所有文件。在我们的 8 核机器上,大约需要 160 秒。
 
 ### 数据透视 {#pivot-data}
 
-虽然每行一个测量值的结构可以在 ClickHouse 中使用,但它会不必要地使未来的查询复杂化。理想情况下,我们需要每个站点 ID 和日期一行,其中每个测量类型及其关联值作为一列,即:
+虽然每行一个测量值的结构可以在 ClickHouse 中使用,但它会不必要地使未来的查询复杂化。理想情况下,我们需要每个站点 ID 和日期一行,其中每个测量类型及其关联值都作为一列,即:
 
 ```csv
 "station_id","date","tempAvg","tempMax","tempMin","precipitation","snowfall","snowDepth","percentDailySun","averageWindSpeed","maxWindSpeed","weatherType"
@@ -134,7 +134,7 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 "AEM00041194","2022-08-02",381,424,352,0,0,0,0,0,0,0
 ```
 
-使用 ClickHouse local 和简单的 `GROUP BY`,我们可以将数据重新透视为这种结构。为了限制内存开销,我们一次处理一个文件。
+使用 ClickHouse local 和简单的 `GROUP BY`,我们可以将数据重新透视为这种结构。为了限制内存开销,我们每次处理一个文件。
 
 
 ```bash
@@ -163,7 +163,7 @@ done
 
 ### 数据增强 {#enriching-the-data}
 
-除了包含国家代码前缀的站点 ID 外,数据中不包含位置信息。理想情况下,每个站点都应关联纬度和经度。为此,NOAA 提供了一个单独的 [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) 文件,包含每个站点的详细信息。该文件包含[多个列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file),其中五个列对后续分析有用:id、latitude、longitude、elevation 和 name。
+除了包含国家代码前缀的站点 ID 外,数据中没有位置信息。理想情况下,每个站点都应该关联纬度和经度。为此,NOAA 提供了一个单独的文件 [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file),其中包含每个站点的详细信息。该文件包含[多个列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file),其中五列对后续分析有用:id、latitude、longitude、elevation 和 name。
 
 ```bash
 wget http://noaa-ghcn-pds.s3.amazonaws.com/ghcnd-stations.txt
@@ -191,7 +191,7 @@ FROM file('noaa.csv', CSV,
          JOIN stations ON noaa.station_id = stations.id INTO OUTFILE 'noaa_enriched.parquet' FORMAT Parquet SETTINGS format_regexp='^(.{11})\s+(\-?\d{1,2}\.\d{4})\s+(\-?\d{1,3}\.\d{1,4})\s+(\-?\d*\.\d*)\s+(.*)\s+(?:[\d]*)'"
 ```
 
-该查询需要几分钟运行,生成一个 6.4 GB 的文件 `noaa_enriched.parquet`。
+该查询需要几分钟运行时间,生成一个 6.4 GB 的文件 `noaa_enriched.parquet`。
 
 
 ## 创建表 {#create-table}
@@ -209,10 +209,10 @@ CREATE TABLE noaa
    `precipitation` UInt32 COMMENT '降水量(十分之一毫米)',
    `snowfall` UInt32 COMMENT '降雪量(毫米)',
    `snowDepth` UInt32 COMMENT '积雪深度(毫米)',
-   `percentDailySun` UInt8 COMMENT '日照百分比(百分比)',
+   `percentDailySun` UInt8 COMMENT '日照百分比(占可能日照的百分比)',
    `averageWindSpeed` UInt32 COMMENT '日平均风速(十分之一米/秒)',
    `maxWindSpeed` UInt32 COMMENT '最大阵风风速(十分之一米/秒)',
-   `weatherType` Enum8('正常' = 0, '雾' = 1, '浓雾' = 2, '雷电' = 3, '小冰雹' = 4, '冰雹' = 5, '雨凇' = 6, '尘埃/火山灰' = 7, '烟雾/霾' = 8, '吹雪/飘雪' = 9, '龙卷风' = 10, '大风' = 11, '浪花飞溅' = 12, '薄雾' = 13, '毛毛雨' = 14, '冻毛毛雨' = 15, '雨' = 16, '冻雨' = 17, '雪' = 18, '未知降水' = 19, '地面雾' = 21, '冻雾' = 22),
+   `weatherType` Enum8('正常' = 0, '雾' = 1, '浓雾' = 2, '雷暴' = 3, '小冰雹' = 4, '冰雹' = 5, '雨凇' = 6, '尘埃/火山灰' = 7, '烟雾/霾' = 8, '吹雪/飘雪' = 9, '龙卷风' = 10, '大风' = 11, '吹浪' = 12, '薄雾' = 13, '毛毛雨' = 14, '冻毛毛雨' = 15, '雨' = 16, '冻雨' = 17, '雪' = 18, '未知降水' = 19, '地面雾' = 21, '冻雾' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
@@ -248,7 +248,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 
 ## 示例查询 {#sample-queries}
 
-### 历史最高温度 {#highest-temperature-ever}
+### 历史最高气温 {#highest-temperature-ever}
 
 ```sql
 SELECT
@@ -274,11 +274,11 @@ LIMIT 5
 5 rows in set. Elapsed: 0.514 sec. Processed 1.06 billion rows, 4.27 GB (2.06 billion rows/s., 8.29 GB/s.)
 ```
 
-截至 2023 年,该结果与 [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) 的[记录数据](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)完全一致。
+该结果与截至 2023 年在 [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) 的[记录数据](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)一致。
 
-### 最佳滑雪胜地 {#best-ski-resorts}
+### 最佳滑雪度假村 {#best-ski-resorts}
 
-使用美国[滑雪胜地列表](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)及其各自的位置,我们将这些数据与过去 5 年中任意月份降雪量最多的前 1000 个气象站进行关联。通过 [geoDistance](/sql-reference/functions/geo/coordinates/#geodistance) 对关联结果进行排序,并将结果限制为距离小于 20 公里的记录,我们为每个滑雪胜地选择排名最高的结果,并按总降雪量排序。请注意,我们还将滑雪胜地限制为海拔 1800 米以上的地点,作为良好滑雪条件的基本指标。
+使用美国[滑雪度假村列表](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)及其各自的位置,我们将这些数据与过去 5 年中任意月份降雪量最多的前 1000 个气象站进行关联。通过 [geoDistance](/sql-reference/functions/geo/coordinates/#geodistance) 对关联结果进行排序,并将结果限制为距离小于 20 公里的记录,我们为每个度假村选择排名最高的结果,并按总降雪量排序。请注意,我们还将度假村限制为海拔 1800 米以上的地点,作为良好滑雪条件的基本指标。
 
 
 ```sql
@@ -342,7 +342,7 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-返回 5 行。用时:0.750 秒。处理了 6.891 亿行,3.20 GB(每秒 9.182 亿行,每秒 4.26 GB)。
+返回 5 行。用时:0.750 秒。已处理 6.891 亿行,3.20 GB(9.182 亿行/秒,4.26 GB/秒)。
 峰值内存使用量:67.66 MiB。
 ```
 

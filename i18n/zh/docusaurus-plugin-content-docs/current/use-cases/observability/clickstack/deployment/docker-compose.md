@@ -25,10 +25,10 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 
 - **ClickHouse**
 - **HyperDX**
-- **OpenTelemetry (OTel) 采集器**
+- **OpenTelemetry (OTel) 收集器**
 - **MongoDB**
 
-这些镜像可以组合使用 Docker Compose 在本地部署。
+这些镜像可以通过 Docker Compose 组合并在本地部署。
 
 Docker Compose 基于默认的 `otel-collector` 配置暴露了用于可观测性和数据采集的额外端口:
 
@@ -36,16 +36,16 @@ Docker Compose 基于默认的 `otel-collector` 配置暴露了用于可观测�
 - `24225`: 用于日志采集的 Fluentd 接收器
 - `4317`: OTLP gRPC 接收器(用于追踪、日志和指标的标准协议)
 - `4318`: OTLP HTTP 接收器(gRPC 的替代方案)
-- `8888`: Prometheus 指标端点,用于监控采集器自身
+- `8888`: 用于监控收集器自身的 Prometheus 指标端点
 
-这些端口支持与多种遥测数据源集成,使 OpenTelemetry 采集器能够满足生产环境中多样化的数据采集需求。
+这些端口支持与各种遥测数据源集成,使 OpenTelemetry 收集器能够满足生产环境中多样化的数据采集需求。
 
 ### 适用场景 {#suitable-for}
 
 - 本地测试
 - 概念验证
 - 不需要容错能力且单台服务器足以承载所有 ClickHouse 数据的生产部署
-- 部署 ClickStack 但单独托管 ClickHouse 的场景,例如使用 ClickHouse Cloud。
+- 部署 ClickStack 但单独托管 ClickHouse 的场景,例如使用 ClickHouse Cloud
 
 
 ## 部署步骤 {#deployment-steps}
@@ -89,7 +89,7 @@ docker compose up
 
 如果您希望连接到自己的**外部 ClickHouse 集群**(例如 ClickHouse Cloud),可以手动输入连接凭据。
 
-如果系统提示创建数据源,请保留所有默认值,并在 `Table` 字段中填入 `otel_logs`。其他设置将自动检测,之后您可以点击 `Save New Source`。
+如果系统提示创建数据源,请保留所有默认值,并在 `Table` 字段中填入 `otel_logs`。其他设置将自动检测,然后您可以点击 `Save New Source`。
 
 <Image img={hyperdx_logs} alt='创建日志数据源' size='md' />
 
@@ -122,7 +122,7 @@ IMAGE_NIGHTLY_TAG=2-nightly
 
 
 # 设置域名 URL
-HYPERDX_API_PORT=8000 # 可选（不应与其他服务端口冲突）
+HYPERDX_API_PORT=8000 #可选(不应被其他服务占用)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
@@ -144,10 +144,10 @@ HYPERDX&#95;OTEL&#95;EXPORTER&#95;CLICKHOUSE&#95;DATABASE=default
 
 ## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
 
-此发行版可与 ClickHouse Cloud 配合使用。用户需要：
+此发行版可与 ClickHouse Cloud 配合使用。用户需要:
 
-- 从 `docker-compose.yaml` 文件中移除 ClickHouse 服务。如果是测试环境，此步骤为可选项,因为部署的 ClickHouse 实例将被忽略——但会浪费本地资源。如果移除该服务，请确保同时删除对该服务的所有引用，例如 `depends_on`。
-- 通过在 compose 文件中设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`，将 OTel collector 配置为使用 ClickHouse Cloud 实例。具体操作是将这些环境变量添加到 OTel collector 服务中：
+- 从 `docker-compose.yaml` 文件中移除 ClickHouse 服务。如果是测试环境,此步骤为可选项,因为部署的 ClickHouse 实例将被忽略——但会浪费本地资源。如果移除该服务,请确保同时移除对该服务的所有引用,例如 `depends_on`。
+- 通过在 compose 文件中设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`,将 OTel collector 配置为使用 ClickHouse Cloud 实例。具体操作是将这些环境变量添加到 OTel collector 服务中:
 
   ```shell
   otel-collector:
@@ -170,13 +170,13 @@ HYPERDX&#95;OTEL&#95;EXPORTER&#95;CLICKHOUSE&#95;DATABASE=default
         - internal
   ```
 
-  `CLICKHOUSE_ENDPOINT` 应为 ClickHouse Cloud 的 HTTPS 端点，包括端口 `8443`，例如 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+  `CLICKHOUSE_ENDPOINT` 应为 ClickHouse Cloud 的 HTTPS 端点,包括端口 `8443`,例如 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-- 连接到 HyperDX UI 并创建到 ClickHouse 的连接时，使用您的 Cloud 凭据。
+- 连接到 HyperDX UI 并创建到 ClickHouse 的连接时,使用您的 Cloud 凭据。
 
 <JSONSupport />
 
-要设置这些参数，请修改 `docker-compose.yaml` 中的相关服务：
+要设置这些参数,请修改 `docker-compose.yaml` 中的相关服务:
 
 ```yaml
 app:
@@ -189,12 +189,12 @@ app:
     FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
     HYPERDX_API_KEY: ${HYPERDX_API_KEY}
     HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-  # 为简洁起见已省略部分内容
+  # 为简洁起见已省略
 
 otel-collector:
   image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
   environment:
     OTEL_AGENT_FEATURE_GATE_ARG: "--feature-gates=clickhouse.json" # 启用 JSON
     CLICKHOUSE_ENDPOINT: "tcp://ch-server:9000?dial_timeout=10s"
-    # 为简洁起见已省略部分内容
+    # 为简洁起见已省略
 ```

@@ -32,7 +32,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 sudo yum install -y clickhouse-server clickhouse-client
 ```
 
-- 您可以根据需要将 `stable` 替换为 `lts` 以使用不同的[发布类型](/knowledgebase/production)。
+- 您可以根据需要将 `stable` 替换为 `lts` 以使用不同的[发布版本](/knowledgebase/production)。
 - 您可以从 [packages.clickhouse.com/rpm](https://packages.clickhouse.com/rpm/stable) 手动下载并安装软件包。
 - 要指定特定版本,请在软件包名称末尾添加 `-$version`,
   例如:
@@ -44,7 +44,7 @@ sudo yum install clickhouse-server-22.8.7.34
 
 ## 启动 ClickHouse 服务器 {#start-clickhouse-server-1}
 
-要启动 ClickHouse 服务器,请运行:
+要启动 ClickHouse 服务器，请运行：
 
 ```bash
 sudo systemctl enable clickhouse-server
@@ -52,13 +52,13 @@ sudo systemctl start clickhouse-server
 sudo systemctl status clickhouse-server
 ```
 
-要启动 ClickHouse 客户端,请运行:
+要启动 ClickHouse 客户端，请运行：
 
 ```sql
 clickhouse-client
 ```
 
-如果您为服务器设置了密码,则需要运行:
+如果您为服务器设置了密码，则需要运行：
 
 ```bash
 clickhouse-client --password

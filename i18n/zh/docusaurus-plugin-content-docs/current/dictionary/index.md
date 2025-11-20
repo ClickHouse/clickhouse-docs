@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
 title: '字典'
-keywords: ['dictionary', 'dictionaries']
-description: '字典以键值对形式表示数据，用于快速查找。'
+keywords: ['dictionary', 'dictionaries', '字典']
+description: '字典提供数据的键值映射表示,用于快速查找。'
 doc_type: 'reference'
 ---
 
@@ -13,13 +13,13 @@ import Image from '@theme/IdealImage';
 
 # 字典
 
-ClickHouse 中的字典提供了将来自多种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据，以内存中 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示的机制，并针对超低延迟的查找查询进行了优化。
+ClickHouse 中的字典提供了来自各种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据的内存[键值](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)表示形式,专为超低延迟的查找查询而优化。
 
-字典的用途包括：
-- 提升查询性能，尤其是在与 `JOIN` 配合使用时
-- 在不降低写入吞吐的前提下，对实时写入的数据进行实时富化
+字典的主要用途:
+- 提升查询性能,特别是在使用 `JOIN` 时
+- 在数据摄取过程中实时丰富数据,同时不影响摄取速度
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 中字典的使用场景"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 字典的使用场景"/>
 
 
 
@@ -33,18 +33,18 @@ ClickHouse 中的字典提供了将来自多种[内部和外部数据源](/sql-r
   alt='使用字典进行 LEFT ANY JOIN'
 />
 
-在这种情况下,ClickHouse 可以利用字典执行[直接连接](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join)。这是 ClickHouse 最快的连接算法,适用于右侧表的底层[表引擎](/engines/table-engines)支持低延迟键值请求的场景。ClickHouse 有三种表引擎提供此功能:[Join](/engines/table-engines/special/join)(本质上是预先计算的哈希表)、[EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) 和 [Dictionary](/engines/table-engines/special/dictionary)。我们将介绍基于字典的方法,但这三种引擎的工作机制相同。
+在这种情况下,ClickHouse 可以利用字典执行[直接连接](https://clickhouse.com/blog/clickhouse-fully-supports-joins-direct-join-part4#direct-join)。这是 ClickHouse 最快的连接算法,适用于右侧表的底层[表引擎](/engines/table-engines)支持低延迟键值请求的场景。ClickHouse 有三种表引擎提供此功能:[Join](/engines/table-engines/special/join)(本质上是预先计算的哈希表)、[EmbeddedRocksDB](/engines/table-engines/integrations/embedded-rocksdb) 和 [Dictionary](/engines/table-engines/special/dictionary)。我们将介绍基于字典的方法,但这三种引擎的工作机制是相同的。
 
-直接连接算法要求右侧表由字典支持,使得该表中待连接的数据已经以低延迟键值数据结构的形式存在于内存中。
+直接连接算法要求右侧表由字典支持,使该表中待连接的数据已经以低延迟键值数据结构的形式存在于内存中。
 
 ### 示例 {#example}
 
-使用 Stack Overflow 数据集,让我们来回答这个问题:
+使用 Stack Overflow 数据集,让我们回答这个问题:
 _Hacker News 上关于 SQL 最具争议的帖子是什么?_
 
-我们将争议性定义为帖子的赞成票和反对票数量相近的情况。我们计算这个绝对差值,值越接近 0 表示争议性越大。我们假设帖子必须至少有 10 个赞成票和 10 个反对票 - 人们不投票的帖子并不具有争议性。
+我们将争议性定义为帖子的赞成票和反对票数量相近的情况。我们计算这个绝对差值,值越接近 0 表示争议性越大。我们假设帖子必须至少有 10 个赞成票和 10 个反对票——人们不投票的帖子并不具有争议性。
 
-在数据规范化后,此查询目前需要对 `posts` 和 `votes` 表进行 `JOIN`:
+在数据规范化后,此查询目前需要使用 `posts` 和 `votes` 表进行 `JOIN`:
 
 ```sql
 WITH PostIds AS
@@ -87,9 +87,9 @@ Controversial_ratio: 0
 Peak memory usage: 3.18 GiB.
 ```
 
-> **在 `JOIN` 右侧使用较小的数据集**:此查询可能看起来比实际需要的更冗长,对 `PostId` 的过滤在外部查询和子查询中都出现了。这是一种性能优化,可确保查询响应时间快速。为了获得最佳性能,始终确保 `JOIN` 的右侧是较小的数据集且尽可能小。有关优化 JOIN 性能和了解可用算法的技巧,我们推荐[这一系列博客文章](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)。
+> **在 `JOIN` 右侧使用较小的数据集**:此查询可能看起来比所需的更冗长,对 `PostId` 的过滤在外部查询和子查询中都出现了。这是一种性能优化,可确保查询响应时间快速。为了获得最佳性能,始终确保 `JOIN` 的右侧是较小的数据集,并且尽可能小。有关优化 JOIN 性能和了解可用算法的提示,我们推荐[这一系列博客文章](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)。
 
-虽然此查询速度很快,但它依赖于我们仔细编写 `JOIN` 以实现良好的性能。理想情况下,我们只需将帖子过滤为包含 "SQL" 的帖子,然后查看这部分博客的 `UpVote` 和 `DownVote` 计数来计算我们的指标。
+虽然此查询速度很快,但它依赖于我们仔细编写 `JOIN` 以实现良好的性能。理想情况下,我们只需将帖子过滤为包含 "SQL" 的帖子,然后查看博客子集的 `UpVote` 和 `DownVote` 计数来计算我们的指标。
 
 #### 应用字典 {#applying-a-dictionary}
 
@@ -110,11 +110,11 @@ GROUP BY table
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
-数据将在我们的字典中以未压缩形式存储，因此如果要在字典中存储所有列（我们不会这么做），至少需要 4GB 内存。字典会在整个集群中复制，所以这部分内存需要为*每个节点*预留。
+数据将以未压缩形式存储在字典中,因此如果要在字典中存储所有列(实际上不会这样做),至少需要 4GB 内存。字典会在集群中复制,因此需要*为每个节点*预留相应的内存量。
 
-> 在下面的示例中，字典的数据来自一张 ClickHouse 表。虽然这是字典最常见的数据源，但还支持[多种数据源](/sql-reference/dictionaries#dictionary-sources)，包括文件、HTTP，以及包括 [Postgres](/sql-reference/dictionaries#postgresql) 在内的多种数据库。正如我们将要展示的，字典可以自动刷新，为那些频繁变更但规模较小的数据集提供了一种理想方式，使其始终可用于直接 join。
+> 在下面的示例中,字典的数据来源于 ClickHouse 表。虽然这是字典最常见的数据源,但也支持[多种数据源](/sql-reference/dictionaries#dictionary-sources),包括文件、HTTP 和数据库(如 [Postgres](/sql-reference/dictionaries#postgresql))。如下文所示,字典可以自动刷新,这为确保频繁变化的小型数据集可用于直接 JOIN 提供了理想方式。
 
-我们的字典需要一个用于执行查找的主键。这个主键在概念上与事务型数据库的主键完全相同，并且应该是唯一的。上面的查询需要在 join 键 `PostId` 上进行查找。相应地，字典应使用 `votes` 表中按 `PostId` 汇总得到的赞成票和反对票总数来填充。下面是获取该字典数据的查询：
+字典需要一个主键来执行查找操作。这在概念上与事务型数据库的主键相同,且应该是唯一的。上述查询需要在 JOIN 键 `PostId` 上进行查找。字典应该从 `votes` 表中填充每个 `PostId` 的赞成票和反对票总数。以下是获取字典数据的查询:
 
 ```sql
 SELECT PostId,
@@ -124,7 +124,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-要创建我们的字典，需要使用以下 DDL —— 请注意这里使用了上面的查询：
+创建字典需要以下 DDL 语句 - 注意使用了上面的查询:
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -141,9 +141,9 @@ LAYOUT(HASHED())
 0 rows in set. Elapsed: 36.063 sec.
 ```
 
-> 在自主管理的开源版本中，需要在所有节点上执行上述命令。在 ClickHouse Cloud 中，字典会自动复制到所有节点。以上操作是在一台拥有 64GB 内存的 ClickHouse Cloud 节点上执行的，加载耗时 36 秒。
+> 在自托管的开源版本中,上述命令需要在所有节点上执行。在 ClickHouse Cloud 中,字典会自动复制到所有节点。以上操作在配置 64GB 内存的 ClickHouse Cloud 节点上执行,加载用时 36 秒。
 
-要确认我们的字典所占用的内存：
+确认字典占用的内存:
 
 ```sql
 SELECT formatReadableSize(bytes_allocated) AS size
@@ -155,7 +155,7 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-现在，可以通过一个简单的 `dictGet` 函数来获取特定 `PostId` 的赞成票和反对票。下面我们来获取帖子 `11227902` 的这些值：
+现在可以通过简单的 `dictGet` 函数来检索特定 `PostId` 的赞成票和反对票数量。下面我们检索帖子 `11227902` 的值:
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -185,7 +185,7 @@ LIMIT 3
 峰值内存使用量:552.26 MiB。
 ```
 
-这个查询不仅简单得多，而且速度也提升了两倍多！还可以进一步优化：只把赞成票和反对票合计超过 10 的帖子加载到字典中，并且只存储预先计算好的“争议度”数值。
+这个查询不仅简单得多,而且速度还快了两倍多!可以通过仅将赞成票和反对票总数超过 10 的帖子加载到字典中,并只存储预先计算好的争议值来进一步优化。
 
 
 ## 查询时数据增强 {#query-time-enrichment}
@@ -257,9 +257,9 @@ Peak memory usage: 248.84 MiB.
 
 在上面的示例中,我们在查询时使用字典来消除连接操作。字典也可以用于在插入时增强行数据。如果增强值不会改变且存在于可用于填充字典的外部数据源中,这种方式通常是合适的。在这种情况下,在插入时增强行数据可以避免查询时对字典的查找操作。
 
-假设 Stack Overflow 中用户的 `Location` 永远不会改变(实际上会改变)——具体来说是 `users` 表的 `Location` 列。假设我们想要按位置对 posts 表进行分析查询。该表包含一个 `UserId` 字段。
+假设 Stack Overflow 中用户的 `Location` 永远不会改变(实际上会改变)——具体来说是 `users` 表的 `Location` 列。假设我们想要按位置对 posts 表进行分析查询。该表包含一个 `UserId`。
 
-字典提供了从用户 ID 到位置的映射,数据来源于 `users` 表:
+字典提供了从用户 ID 到位置的映射,由 `users` 表支持:
 
 ```sql
 CREATE DICTIONARY users_dict
@@ -289,7 +289,7 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-在上面的示例中,`Location` 被声明为 `MATERIALIZED` 列。这意味着该值将作为 `INSERT` 查询的一部分自动计算。
+在上面的示例中,`Location` 被声明为 `MATERIALIZED` 列。这意味着该值可以作为 `INSERT` 查询的一部分提供,并且始终会被计算。
 
 > ClickHouse 还支持 [`DEFAULT` 列](/sql-reference/statements/create/table#default_values)(如果未提供值,可以插入或计算该值)。
 
@@ -327,7 +327,7 @@ Peak memory usage: 666.82 MiB.
 
 ### 选择字典 `LAYOUT` {#choosing-the-dictionary-layout}
 
-`LAYOUT` 子句控制字典的内部数据结构。有多种选项可供选择,详细文档请参见[此处](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议可以在[此处](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)找到。
+`LAYOUT` 子句控制字典的内部数据结构。有多种选项可供选择,详细文档请参见[此处](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)。关于如何选择正确布局的一些建议可以在[此处](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)找到。
 
 ### 刷新字典 {#refreshing-dictionaries}
 

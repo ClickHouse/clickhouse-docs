@@ -12,12 +12,12 @@ doc_type: 'guide'
 
 
 
-# ClickHouse MCP Server を使って OpenAI エージェントを構築する方法
+# ClickHouse MCP Server を使用して OpenAI エージェントを構築する方法
 
-このガイドでは、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [OpenAI](https://github.com/openai/openai-agents-python) エージェントを構築する方法を説明します。
+このガイドでは、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使用して、[ClickHouse SQL playground](https://sql.clickhouse.com/) と対話できる [OpenAI](https://github.com/openai/openai-agents-python) エージェントを構築する方法を説明します。
 
-:::note サンプルノートブック
-このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) にあるノートブックとして参照できます。
+:::note Example notebook
+このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 内のノートブックとしても提供されています。
 :::
 
 
@@ -59,7 +59,8 @@ Enter OpenAI API Key: ········
 
 ## MCPサーバーとOpenAIエージェントの初期化 {#initialize-mcp-and-agent}
 
-ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するように設定し、OpenAIエージェントを初期化して質問してみましょう：
+次に、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するよう設定し、
+OpenAIエージェントを初期化して質問してみます:
 
 ```python
 from agents.mcp import MCPServer, MCPServerStdio
@@ -80,13 +81,13 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # 文字列と解析済み出力の両方を処理
+                # 文字列と既にパース済みの出力の両方を処理
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
                     output = chunk.item.output
 
-                # 辞書形式とリスト形式の両方を処理
+                # 辞書とリスト形式の両方を処理
                 if isinstance(output, dict):
                     if output.get('type') == 'text':
                         text = output['text']
@@ -104,11 +105,11 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 else:
-                    # フォールバック - 生の出力を表示
+                    # フォールバック - 生の出力をそのまま表示
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # 解析に失敗した場合は生の出力にフォールバック
+                # パースに失敗した場合は生の出力にフォールバック
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -146,7 +147,7 @@ async with MCPServerStdio(
         mcp_servers=[server],
     )
 
-    message = "2025年現在で最大のGitHubプロジェクトは何ですか？"
+    message = "2025年のこれまでで最大のGitHubプロジェクトは何ですか?"
     print(f"\n\nRunning: {message}")
     with trace("Biggest project workflow"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
@@ -155,10 +156,10 @@ async with MCPServerStdio(
 ```
 
 
-```response title="Response"
-Running: What's the biggest GitHub project so far in 2025?
-🔧 Tool: list_databases({})
-✅ Result: amazon
+```response title="レスポンス"
+実行中: 2025年最大のGitHubプロジェクトは？
+🔧 ツール: list_databases({})
+✅ 結果: amazon
 bluesky
 country
 covid
@@ -173,24 +174,24 @@ github
 hackernews
 imdb
 log...
-🔧 Tool: list_tables({"database":"github"})
-✅ Result: {
+🔧 ツール: list_tables({"database":"github"})
+✅ 結果: {
   "database": "github",
   "name": "actors_per_repo",
   "comment": "",
   "columns": [
     {
       "...
-🔧 Tool: run_select_query({"query":"SELECT repo_name, MAX(stars) FROM github.top_repos_mv"})
-✅ Result: {
+🔧 ツール: run_select_query({"query":"SELECT repo_name, MAX(stars) FROM github.top_repos_mv"})
+✅ 結果: {
   "status": "error",
   "message": "Query failed: HTTPDriver for https://sql-clickhouse.clickhouse....
-🔧 Tool: run_select_query({"query":"SELECT repo_name, stars FROM github.top_repos ORDER BY stars DESC LIMIT 1"})
-✅ Result: {
+🔧 ツール: run_select_query({"query":"SELECT repo_name, stars FROM github.top_repos ORDER BY stars DESC LIMIT 1"})
+✅ 結果: {
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-2025年で最大のGitHubプロジェクトは、スター数に基づくと、402,893スターを獲得している「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。💬 レスポンス: 2025年で最大のGitHubプロジェクトは、スター数に基づくと、402,893スターを獲得している「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。
+2025年最大のGitHubプロジェクトは、スター数に基づくと402,893スターの「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。💬 レスポンス: 2025年最大のGitHubプロジェクトは、スター数に基づくと402,893スターの「[sindresorhus/awesome](https://github.com/sindresorhus/awesome)」です。
 ```
 
 </VerticalStepper>

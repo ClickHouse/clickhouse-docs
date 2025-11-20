@@ -13,7 +13,7 @@ keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.
 
 :::info
 
-如果你使用的是侧边栏中列出的受支持提供商之一，请参阅该提供商的专用指南。
+如果你使用的是侧边栏中列出的受支持提供程序之一，请查阅该提供程序的专用指南。
 
 :::
 
@@ -103,21 +103,21 @@ MySQL 5.7 不支持列排除功能,因为 `binlog_row_metadata` 设置尚未引�
 
 ## 配置数据库用户 {#configure-database-user}
 
-以 root 用户身份连接到 MySQL 实例并执行以下命令:
+以 root 用户身份连接到 MySQL 实例并执行以下命令：
 
-1. 为 ClickPipes 创建专用用户:
+1. 为 ClickPipes 创建专用用户：
 
    ```sql
    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some_secure_password';
    ```
 
-2. 授予模式权限。以下示例展示了 `clickpipes` 数据库的权限。对每个需要复制的数据库和主机重复执行这些命令:
+2. 授予模式权限。以下示例展示了 `clickpipes` 数据库的权限。对需要复制的每个数据库和主机重复执行这些命令：
 
    ```sql
    GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'%';
    ```
 
-3. 授予用户复制权限:
+3. 向用户授予复制权限：
 
    ```sql
    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
@@ -137,16 +137,16 @@ SSL 证书可确保与 MySQL 数据库的安全连接。具体配置取决于您
 
 **受信任的证书颁发机构(DigiCert、Let's Encrypt 等)** - 无需额外配置。
 
-**内部证书颁发机构** - 从您的 IT 团队获取根 CA 证书文件。在 ClickPipes UI 中创建新的 MySQL ClickPipe 时上传该文件。
+**内部证书颁发机构** - 从您的 IT 团队获取根 CA 证书文件。在 ClickPipes UI 中创建新的 MySQL ClickPipe 时上传该证书文件。
 
-**自托管 MySQL** - 从您的 MySQL 服务器复制 CA 证书(通常位于 `/var/lib/mysql/ca.pem`),并在创建新的 MySQL ClickPipe 时在 UI 中上传。使用服务器的 IP 地址作为主机。
+**自托管 MySQL** - 从您的 MySQL 服务器复制 CA 证书(通常位于 `/var/lib/mysql/ca.pem`),并在创建新的 MySQL ClickPipe 时在 UI 中上传。使用服务器的 IP 地址作为主机地址。
 
-**无服务器访问权限的自托管 MySQL** - 联系您的 IT 团队获取证书。作为最后手段,可以使用 ClickPipes UI 中的"跳过证书验证"开关(出于安全原因不推荐使用)。
+**无服务器访问权限的自托管 MySQL** - 联系您的 IT 团队获取证书。作为最后的选择,可以使用 ClickPipes UI 中的"跳过证书验证"开关(出于安全考虑不推荐使用)。
 
 有关 SSL/TLS 选项的更多信息,请查看我们的 [FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error)。
 
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 MySQL 实例中的数据导入到 ClickHouse Cloud。
-请务必记录设置 MySQL 实例时使用的连接详细信息,因为在创建 ClickPipe 过程中需要用到这些信息。
+现在您可以[创建 ClickPipe](../index.md) 并开始将 MySQL 实例中的数据导入 ClickHouse Cloud。
+请务必记录设置 MySQL 实例时使用的连接详细信息，因为在创建 ClickPipe 过程中需要用到这些信息。

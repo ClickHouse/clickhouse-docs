@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgMap'
 title: 'avgMap'
-description: 'avgMap コンビネータの利用例'
+description: 'avgMap コンビネーターの使用例'
 keywords: ['avg', 'map', 'combinator', 'examples', 'avgMap']
 sidebar_label: 'avgMap'
 doc_type: 'reference'
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-この例では、異なるタイムスロットごとにステータスコードとそのカウント数を格納するテーブルを作成します。
+この例では、異なるタイムスロットのステータスコードとそのカウント数を格納するテーブルを作成します。
 各行には、ステータスコードとそれに対応するカウント数のMapが含まれます。`avgMap`を使用して、
 各タイムスロット内の各ステータスコードの平均カウント数を計算します。
 

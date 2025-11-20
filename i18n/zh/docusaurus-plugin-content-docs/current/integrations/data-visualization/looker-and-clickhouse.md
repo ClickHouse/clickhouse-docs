@@ -2,7 +2,7 @@
 sidebar_label: 'Looker'
 slug: /integrations/looker
 keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
-description: 'Looker 是一款企业级平台，支持 BI、数据应用和嵌入式分析，帮助你实时探索和分享洞察。'
+description: 'Looker 是一个企业级平台，提供 BI、数据应用和嵌入式分析功能，帮助你实时探索和分享洞察。'
 title: 'Looker'
 doc_type: 'guide'
 integration:
@@ -23,11 +23,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse 集群。
+Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse。
 
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -44,7 +44,7 @@ Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本�
 />
 <br />
 
-为数据源选择一个名称,并从数据库类型下拉菜单中选择 `ClickHouse`。在表单中输入您的连接凭据。
+为您的数据源选择一个名称,并从数据库类型下拉菜单中选择 `ClickHouse`。在表单中输入您的凭据信息。
 
 <Image
   size='md'
@@ -54,7 +54,7 @@ Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本�
 />
 <br />
 
-如果您使用 ClickHouse Cloud 或您的部署需要 SSL,请确保在附加设置中开启 SSL。
+如果您使用的是 ClickHouse Cloud 或您的部署需要 SSL,请确保在附加设置中开启 SSL。
 
 <Image
   size='md'
@@ -64,7 +64,7 @@ Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本�
 />
 <br />
 
-首先测试连接,测试通过后即可连接到新的 ClickHouse 数据源。
+首先测试您的连接,测试通过后,连接到您的新 ClickHouse 数据源。
 
 <Image
   size='md'
@@ -74,15 +74,15 @@ Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本�
 />
 <br />
 
-现在您可以将 ClickHouse 数据源关联到 Looker 项目了。
+现在您应该能够将 ClickHouse 数据源关联到您的 Looker 项目了。
 
 
 ## 3. 已知限制 {#3-known-limitations}
 
-1. 以下数据类型默认按字符串处理:
-   - Array - 由于 JDBC 驱动的限制,序列化无法正常工作
-   - Decimal\* - 可在模型中更改为数值类型
-   - LowCardinality(...) - 可在模型中更改为相应类型
+1. 以下数据类型默认按字符串处理：
+   - Array - 由于 JDBC 驱动的限制，序列化无法正常工作
+   - Decimal\* - 可在模型中改为数值类型
+   - LowCardinality(...) - 可在模型中改为相应类型
    - Enum8, Enum16
    - UUID
    - Tuple

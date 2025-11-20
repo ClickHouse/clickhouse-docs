@@ -13,7 +13,7 @@ doc_type: 'guide'
 
 [Hacker Newsデータセット](https://news.ycombinator.com/)には、2,874万件の投稿とそのベクトル埋め込みが含まれています。埋め込みは、[SentenceTransformers](https://sbert.net/)モデルの[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)を使用して生成されました。各埋め込みベクトルの次元数は`384`です。
 
-このデータセットは、ユーザー生成のテキストデータを基盤とした大規模な実世界のベクトル検索アプリケーションにおける設計、サイジング、パフォーマンスの各側面を検証するために使用できます。
+このデータセットは、ユーザー生成のテキストデータを基盤とした大規模な実環境のベクトル検索アプリケーションにおける設計、サイジング、パフォーマンスの各側面を検証するために使用できます。
 
 
 ## データセットの詳細 {#dataset-details}
@@ -55,7 +55,7 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-`id` は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、ポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索に利用できます。
+`id` は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、ポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を実現できます。
 
 ### データの読み込み {#load-table}
 
@@ -79,7 +79,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 
 
 インデックス作成と検索のパラメータおよびパフォーマンスに関する考慮事項は、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)に記載されています。
 上記の文では、HNSWハイパーパラメータ `M` と `ef_construction` にそれぞれ64と512の値を使用しています。
-ユーザーは、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、これらのパラメータの最適な値を慎重に選択する必要があります。
+ユーザーは、選択した値に対応するインデックス構築時間と検索結果の品質を評価することで、これらのパラメータの最適な値を慎重に選択する必要があります。
 
 2,874万件の完全なデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、数分から数時間かかる場合があります。
 
@@ -87,7 +87,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 
 
 ベクトル類似インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します：
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT id, title, text
 FROM hackernews
 ORDER BY cosineDistance( vector, <search vector>)
@@ -99,9 +99,9 @@ LIMIT 10
 
 ### 検索クエリの埋め込みベクトル生成 {#generating-embeddings-for-search-query}
 
-[Sentence Transformers](https://www.sbert.net/) は、文や段落の意味を捉えるための、ローカルで使いやすい埋め込みモデルを提供します。
+[Sentence Transformers](https://www.sbert.net/)は、文や段落の意味を捉えるための、ローカルで使いやすい埋め込みモデルを提供します。
 
-このHackerNewsデータセットには、[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) モデルから生成されたベクトル埋め込みが含まれています。
+このHackerNewsデータセットには、[all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)モデルから生成されたベクトル埋め込みが含まれています。
 
 以下に、`sentence_transformers` Pythonパッケージを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索埋め込みベクトルは、`SELECT` クエリ内の [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 関数の引数として渡されます。
 
@@ -119,18 +119,18 @@ chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
 while True:
     # ユーザーから検索クエリを取得
-    print("検索クエリを入力してください：")
+    print("Enter a search query :")
     input_query = sys.stdin.readline();
     texts = [input_query]
 
     # モデルを実行して検索ベクトルを取得
-    print("埋め込みベクトルを生成中：", input_query);
+    print("Generating the embedding for ", input_query);
     embeddings = model.encode(texts)
 
 ```
 
 
-    print("ClickHouseへクエリを実行中...")
+    print("ClickHouse にクエリを実行しています...")
     params = {'v1':list(embeddings[0]), 'v2':20}
     result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
     print("結果:")
@@ -140,20 +140,20 @@ while True:
 
 ````
 
-上記のPythonスクリプトを実行した例と類似検索の結果を以下に示します
-(上位20件の投稿からそれぞれ100文字のみを表示):
+上記の Python スクリプトを実行した例と、その類似度検索の結果を次に示します
+（上位 20 件の投稿それぞれについて、先頭 100 文字のみを表示しています）。
 
 ```text
-Initializing...
+初期化中...
 
-検索クエリを入力:
+検索クエリを入力してください:
 Are OLAP cubes useful
 
-"Are OLAP cubes useful"の埋め込みを生成中
+"Are OLAP cubes useful" の埋め込みを生成しています
 
 Querying ClickHouse...
 
-Results :
+結果:
 
 27742647 smartmic:
 slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
@@ -212,51 +212,44 @@ rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probab
 
 ## 要約デモアプリケーション {#summarization-demo-application}
 
-上記の例では、ClickHouse を使用したセマンティック検索とドキュメント取得をデモンストレーションしました。
+上記の例では、ClickHouseを使用したセマンティック検索とドキュメント検索を実演しました。
 
-次に、非常にシンプルですが高い可能性を秘めた生成 AI のサンプルアプリケーションを紹介します。
+次に、非常にシンプルながら高い可能性を持つ生成AIのサンプルアプリケーションを紹介します。
 
-このアプリケーションは、次のステップを実行します：
+このアプリケーションは以下のステップを実行します:
 
-1. ユーザから _topic_ を入力として受け取ります
-2. _topic_ の埋め込みベクトルを、`all-MiniLM-L6-v2` モデルを使用した `SentenceTransformers` で生成します
-3. `hackernews` テーブル上でベクター類似性検索を使用して、関連性の高い投稿/コメントを取得します
-4. ステップ #3 で取得したコンテンツを **要約** するために、`LangChain` と OpenAI `gpt-3.5-turbo` Chat API を使用します。
-   ステップ #3 で取得した投稿/コメントは、Chat API に _context_ として渡され、生成 AI の重要な要素となります。
+1. ユーザーから_トピック_を入力として受け取る
+2. `SentenceTransformers`とモデル`all-MiniLM-L6-v2`を使用して、_トピック_の埋め込みベクトルを生成する
+3. `hackernews`テーブルに対してベクトル類似度検索を使用し、高い関連性を持つ投稿/コメントを取得する
+4. `LangChain`とOpenAI `gpt-3.5-turbo` Chat APIを使用して、ステップ3で取得したコンテンツを**要約**する。
+   ステップ3で取得した投稿/コメントは_コンテキスト_としてChat APIに渡され、生成AIにおける重要な連携要素となる。
 
-要約アプリケーションの実行例を以下に示し、その後に要約アプリケーションのコードを示します。アプリケーションを実行するには、環境変数 `OPENAI_API_KEY` に OpenAI API キーを設定する必要があります。OpenAI API キーは、https://platform.openai.com に登録した後に取得できます。
+以下に、要約アプリケーションの実行例を最初に示し、その後に要約アプリケーションのコードを示します。アプリケーションを実行するには、環境変数`OPENAI_API_KEY`にOpenAI APIキーを設定する必要があります。OpenAI APIキーは、https://platform.openai.com で登録後に取得できます。
 
-このアプリケーションは、顧客センチメント分析、技術サポートの自動化、ユーザー会話の分析、法的文書、医療記録、会議の書き起こし、財務諸表など、複数のエンタープライズドメインに適用可能な生成 AI のユースケースをデモンストレーションします
+このアプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話のマイニング、法的文書、医療記録、会議の議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIのユースケースを実演しています。
 
 ```shell
 $ python3 summarize.py
 
-Enter a search topic :
-ClickHouse performance experiences
+検索トピックを入力してください:
+ClickHouseのパフォーマンス体験
 
-Generating the embedding for ---->  ClickHouse performance experiences
+埋め込みを生成中 ---->  ClickHouseのパフォーマンス体験
 
-Querying ClickHouse to retrieve relevant articles...
+関連記事を取得するためにClickHouseにクエリを実行中...
 
-Initializing chatgpt-3.5-turbo model...
+chatgpt-3.5-turboモデルを初期化中...
 
-Summarizing search results retrieved from ClickHouse...
+ClickHouseから取得した検索結果を要約中...
 
-Summary from chatgpt-3.5:
-The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
-AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
-for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
-in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
-are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
-engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
-as a powerful tool for real-time data processing, analytics, and handling large volumes of data
-efficiently, gaining popularity for its impressive performance and cost-effectiveness.
+chatgpt-3.5からの要約:
+議論は、ClickHouseをTimescaleDB、Apache Spark、AWS Redshift、QuestDBなどの様々なデータベースと比較することに焦点を当てており、ClickHouseのコスト効率の高いパフォーマンスと分析アプリケーションへの適合性を強調しています。ユーザーは、大規模な分析ワークロードを処理する際のClickHouseのシンプルさ、速度、リソース効率を称賛していますが、DMLやバックアップの難しさなどの課題も言及されています。ClickHouseは、リアルタイム集計計算機能と堅実なエンジニアリングで認識されており、DruidやMemSQLなどの他のデータベースとの比較も行われています。全体として、ClickHouseはリアルタイムデータ処理、分析、大量データの効率的な処理のための強力なツールと見なされており、その印象的なパフォーマンスとコスト効率の高さで人気を集めています。
 ```
 
-上記のアプリケーションのコード：
+上記アプリケーションのコード:
 
 ```python
-print("Initializing...")
+print("初期化中...")
 
 import sys
 import json
@@ -284,15 +277,15 @@ chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credential
 
 while True:
     # Take the search query from user
-    print("検索トピックを入力してください：")
+    print("検索トピックを入力してください:")
     input_query = sys.stdin.readline();
     texts = [input_query]
 
     # Run the model and obtain search or reference vector
-    print("----> ", input_query, "の埋め込みを生成中");
+    print("埋め込みを生成中 ----> ", input_query);
     embeddings = model.encode(texts)
 
-    print("ClickHouse をクエリ中...")
+    print("ClickHouseにクエリを実行中...")
     params = {'v1':list(embeddings[0]), 'v2':100}
     result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
@@ -301,7 +294,7 @@ while True:
     for row in result.result_rows:
         doc_results = doc_results + "\n" + row[2]
 
-    print("chatgpt-3.5-turbo モデルを初期化中")
+    print("chatgpt-3.5-turboモデルを初期化中")
     model_name = "gpt-3.5-turbo"
 
     text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
@@ -315,13 +308,13 @@ while True:
     llm = ChatOpenAI(temperature=0, model_name=model_name)
 
     prompt_template = """
-以下の内容を10文以内で簡潔に要約してください：
+以下の内容を10文以内で簡潔に要約してください:
 
 
 {text}
 
 
-簡潔な要約：
+簡潔な要約:
 """
 
     prompt = PromptTemplate(template=prompt_template, input_variables=["text"])

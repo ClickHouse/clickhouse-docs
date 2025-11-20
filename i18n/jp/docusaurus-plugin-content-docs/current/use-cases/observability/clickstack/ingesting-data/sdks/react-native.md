@@ -3,19 +3,17 @@ slug: /use-cases/observability/clickstack/sdks/react-native
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'ClickStack 用 React Native SDK - ClickHouse Observability Stack'
+description: 'ClickStack 向け React Native SDK - ClickHouse Observability スタック'
 title: 'React Native'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-ClickStack React Native SDK を使用すると、React Native アプリケーションに
-計測処理を組み込み、イベントを ClickStack に送信できます。これにより、モバイルのネットワークリクエストや
-例外を、バックエンドのイベントと合わせて 1 つのタイムライン上で確認できます。
+ClickStack React Native SDK を使用すると、React Native アプリケーションを計測して、イベントを ClickStack に送信できます。これにより、モバイルのネットワークリクエストや例外を、バックエンドのイベントと同じタイムライン上で確認できます。
 
-このガイドで統合する内容:
+本ガイドで扱う統合対象:
 
-- **XHR/Fetch リクエスト**
+- **XHR/Fetch Requests**
 
 
 
@@ -45,9 +43,9 @@ HyperDXRum.init({
 
 ### ユーザー情報またはメタデータの付加（オプション） {#attach-user-information-metadata}
 
-ユーザー情報を付加することで、HyperDX内でセッションやイベントを検索・フィルタリングできるようになります。この処理はクライアントセッション中のどの時点でも呼び出すことができます。現在のクライアントセッションと、この呼び出し後に送信されるすべてのイベントは、ユーザー情報と関連付けられます。
+ユーザー情報を付加することで、HyperDX内でセッションやイベントを検索・フィルタリングできるようになります。この処理はクライアントセッション中のどの時点でも呼び出すことができます。現在のクライアントセッションと呼び出し後に送信されるすべてのイベントは、ユーザー情報と関連付けられます。
 
-`userEmail`、`userName`、`teamName`は、セッションUIに対応する値を表示しますが、省略することもできます。その他の追加の値を指定して、イベントの検索に使用することもできます。
+`userEmail`、`userName`、`teamName`は、セッションUIに対応する値を表示しますが、省略することもできます。その他の追加の値を指定して、イベントの検索に使用することができます。
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
@@ -108,7 +106,7 @@ module.exports = {
 
 [react-navigation](https://github.com/react-navigation/react-navigation) バージョン5および6がサポートされています。
 
-以下の例では、ナビゲーションを計装する方法を示します：
+以下の例では、ナビゲーションを計装する方法を示します。
 
 ```javascript
 import { startNavigationTracking } from "@hyperdx/otel-react-native"

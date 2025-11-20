@@ -10,7 +10,7 @@ keywords: ["clickpipes", "mongodb", "cdc", "数据摄取", "实时同步"]
 import resync_button from "@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png"
 import Image from "@theme/IdealImage"
 
-### 重新同步的作用是什么? {#what-mongodb-resync-do}
+### 重新同步的作用是什么？ {#what-mongodb-resync-do}
 
 重新同步按顺序执行以下操作:
 
@@ -25,8 +25,8 @@ import Image from "@theme/IdealImage"
 
 以下是几个典型场景:
 
-1. 您可能需要对源表执行重大架构变更,这会导致现有的 ClickPipe 失效并需要重启。执行变更后,您只需点击重新同步即可。
-2. 特别是对于 ClickHouse,您可能需要更改目标表的 ORDER BY 键。您可以通过重新同步将数据重新填充到使用正确排序键的新表中。
+1. 您可能需要对源表执行重大架构变更,这会导致现有的 ClickPipe 失效并需要重启。在执行变更后,您只需点击重新同步即可。
+2. 特别是对于 ClickHouse,您可能需要更改目标表的 ORDER BY 键。您可以通过重新同步使用正确的排序键将数据重新填充到新表中。
 
 ### 重新同步 ClickPipe 指南 {#guide-mongodb-resync}
 
@@ -38,7 +38,7 @@ import Image from "@theme/IdealImage"
 
 4. 将出现一个确认对话框。再次点击重新同步。
 5. 转到**指标**选项卡。
-6. 等待管道状态变为**设置**或**快照**。
+6. 等待管道状态变为 **Setup** 或 **Snapshot**。
 7. 可以在**表**选项卡的**初始加载统计**部分监控重新同步的初始加载进度。
-8. 初始加载完成后,管道将原子性地将 `_resync` 表与原始表进行交换。在交换期间,状态将显示为**重新同步**。
-9. 交换完成后,管道将进入**运行**状态,并在启用的情况下执行 CDC。
+8. 初始加载完成后,管道将原子性地交换 `_resync` 表与原始表。在交换期间,状态将显示为 **Resync**。
+9. 交换完成后,管道将进入 **Running** 状态,并在启用的情况下执行 CDC。

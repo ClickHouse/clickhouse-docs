@@ -7,8 +7,8 @@
 
 ## Загрузка и установка последней стабильной версии {#install-latest-stable}
 
-Необходимую версию можно загрузить с помощью `curl` или `wget` из репозитория https://packages.clickhouse.com/tgz/.
-После этого загруженные архивы необходимо распаковать и установить с помощью установочных скриптов.
+Нужную версию можно скачать с помощью `curl` или `wget` из репозитория https://packages.clickhouse.com/tgz/.
+После загрузки архивы необходимо распаковать и установить с помощью установочных скриптов.
 
 Ниже приведён пример установки последней стабильной версии.
 
@@ -84,11 +84,11 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# Извлечение и установка серверного пакета с настройкой
+# Извлечение и установка пакета сервера с конфигурацией
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # Запуск сервера
+sudo /etc/init.d/clickhouse-server start  # Запустить сервер
 ```
 
 * `clickhouse-client`

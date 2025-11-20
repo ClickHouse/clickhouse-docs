@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArrayIf'
 title: 'uniqArrayIf'
-description: 'uniqArrayIf コンビネーターの使用例'
+description: 'uniqArrayIfコンビネータの使用例'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
@@ -14,17 +14,17 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array)および[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`uniq`](/sql-reference/aggregate-functions/reference/uniq)関数に適用することで、条件が真となる行の配列内のユニークな値の数を`uniqArrayIf`集約コンビネータ関数を使用してカウントできます。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array)および[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`uniq`](/sql-reference/aggregate-functions/reference/uniq)関数に適用することで、条件が真である行の配列内の一意な値の数を`uniqArrayIf`集約コンビネータ関数を使用してカウントできます。
 
-:::note `-If`と`-Array`は組み合わせることができます。ただし、`Array`を先に、その後に`If`を指定する必要があります。
+:::note `-If`と`-Array`は組み合わせることができます。ただし、`Array`を先に記述し、その後に`If`を記述する必要があります。
 :::
 
-これは、`arrayJoin`を使用せずに特定の条件に基づいて配列内のユニークな要素をカウントしたい場合に有用です。
+これは、`arrayJoin`を使用せずに特定の条件に基づいて配列内の一意な要素をカウントしたい場合に便利です。
 
 
 ## 使用例 {#example-usage}
 
-### セグメントタイプとエンゲージメントレベル別のユニーク閲覧商品数のカウント {#count-unique-products}
+### セグメントタイプとエンゲージメントレベル別のユニーク商品閲覧数をカウントする {#count-unique-products}
 
 この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、特定のユーザーセグメントに属し、セッション滞在時間というエンゲージメント指標を持つユーザーが閲覧したユニーク商品数をカウントします。
 
@@ -45,7 +45,7 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- セグメントタイプとエンゲージメントレベル別のユニーク閲覧商品数をカウント
+-- セグメントタイプとエンゲージメントレベル別のユニーク商品閲覧数をカウント
 SELECT
     session_date,
     -- 新規顧客による長時間セッションで閲覧されたユニーク商品数をカウント

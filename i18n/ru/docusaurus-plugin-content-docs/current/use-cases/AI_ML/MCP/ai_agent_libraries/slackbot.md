@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
 sidebar_label: 'Интеграция SlackBot'
-title: 'Как создать агента SlackBot на базе ClickHouse MCP Server.'
+title: 'Как создать SlackBot-агента с помощью ClickHouse MCP Server.'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать агента SlackBot, который может взаимодействовать с ClickHouse MCP Server.'
+description: 'Узнайте, как создать SlackBot-агента, который может взаимодействовать с ClickHouse MCP Server.'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,14 +12,14 @@ doc_type: 'guide'
 
 
 
-# Как создать агента SlackBot с помощью ClickHouse MCP Server
+# Как создать агента SlackBot с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать агента [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot).
-Этот бот позволяет задавать вопросы о ваших данных в ClickHouse прямо из Slack, используя естественный язык. Он использует
+Этот бот позволяет задавать вопросы о ваших данных ClickHouse напрямую из Slack, используя естественный язык. Он использует
 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) и [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1).
 
 :::note Пример проекта
-Код этого примера доступен в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md).
+Код этого примера можно найти в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md).
 :::
 
 
@@ -28,7 +28,7 @@ doc_type: 'guide'
 
 - Необходимо установить [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 - Необходим доступ к рабочему пространству Slack
-- Необходим API-ключ Anthropic или API-ключ от другого провайдера LLM
+- Необходим API-ключ Anthropic или API-ключ от другого поставщика LLM
 
 <VerticalStepper headerLevel="h2">
 
@@ -40,9 +40,9 @@ doc_type: 'guide'
 3. Выберите рабочее пространство Slack.
 
 
-## Установка приложения в рабочее пространство {#install-the-app-to-your-workspace}
+## Установите приложение в рабочее пространство {#install-the-app-to-your-workspace}
 
-Далее необходимо добавить созданное на предыдущем шаге приложение в ваше рабочее пространство.
+Далее необходимо добавить приложение, созданное на предыдущем шаге, в ваше рабочее пространство.
 Следуйте инструкциям ["Add apps to your Slack workspace"](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)
 в документации Slack.
 
@@ -110,9 +110,9 @@ CLICKHOUSE_SECURE=true
 если это применимо.
 
 **Контекст ветки:**
-При ответе в ветке бот загружает все предыдущие сообщения (кроме текущего) и включает их в качестве контекста для AI.
+При ответе в ветке бот загружает все предыдущие сообщения (кроме текущего) и включает их в качестве контекста для ИИ.
 
 **Использование инструментов:**
-Бот использует только инструменты, доступные через MCP (например, обнаружение схемы, выполнение SQL), и всегда показывает использованный SQL и краткое описание того, как был найден ответ.
+Бот использует только инструменты, доступные через MCP (например, обнаружение схемы, выполнение SQL-запросов), и всегда показывает использованный SQL-запрос и краткое описание того, как был получен ответ.
 
 </VerticalStepper>

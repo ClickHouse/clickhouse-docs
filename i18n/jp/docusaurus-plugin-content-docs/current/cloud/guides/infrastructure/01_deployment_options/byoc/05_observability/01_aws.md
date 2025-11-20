@@ -1,9 +1,9 @@
 ---
-title: 'AWS における BYOC の可観測性'
+title: 'AWS での BYOC のオブザーバビリティ'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'AWS'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
-description: '独自のクラウドインフラストラクチャ上で ClickHouse をデプロイする'
+description: 'お客様のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
 doc_type: 'reference'
 ---
 
@@ -78,7 +78,7 @@ ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server
 # HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの経過時間(秒)
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定の誤りの可能性を示します
+# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常は設定ミスの可能性を示します
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
 # HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST
@@ -94,7 +94,7 @@ ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj
 
 **認証**
 
-ClickHouse のユーザー名とパスワードの組み合わせを認証に使用できます。メトリクスをスクレイピングするための専用ユーザーを作成し、その権限を最小限に抑えることを推奨します。少なくとも、すべてのレプリカで `system.custom_metrics` テーブルに対する `READ` 権限が必要です。例えば:
+ClickHouse のユーザー名とパスワードの組み合わせを認証に使用できます。メトリクスのスクレイピング専用に、権限を最小限にしたユーザーを作成することを推奨します。最低限、すべてのレプリカにおいて `system.custom_metrics` テーブルに対する `READ` 権限が必要です。例えば、次のようになります。
 
 ```sql
 GRANT REMOTE ON *.* TO scrapping_user;
@@ -115,7 +115,7 @@ GRANT SELECT(description, labels, metric, value) ON system.histogram_metrics TO 
 GRANT SELECT(description, metric, value) ON system.metrics TO scrapping_user;
 ```
 
-**Prometheus の設定**
+**Prometheus の構成**
 
 以下に設定例を示します。`targets` エンドポイントは、ClickHouse サービスへのアクセスに使用するものと同じです。
 

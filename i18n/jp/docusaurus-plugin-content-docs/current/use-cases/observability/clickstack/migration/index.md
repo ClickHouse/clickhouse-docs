@@ -14,4 +14,4 @@ keywords: ['migrate to ClickStack', 'ClickStack migration guide
 
 | Technology | Description |
 |------------|-------------|
-| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | データ移行、エージェントの移行、検索機能を含む、Elastic Stack から ClickStack への移行に関する包括的なガイド |
+| [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | Elastic Stack から ClickStack へ移行するための完全なガイドです。データ移行、エージェントの移行、検索機能の移行までを網羅しています |

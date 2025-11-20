@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/elixir
 pagination_prev: null
 pagination_next: null
 sidebar_position: 1
-description: '用于 ClickStack 的 Elixir SDK - ClickHouse 可观测性技术栈'
+description: 'ClickStack 的 Elixir SDK - ClickHouse 可观测性技术栈'
 title: 'Elixir'
 doc_type: 'guide'
 keywords: ['Elixir ClickStack SDK', 'Elixir observability', 'HyperDX Elixir', 'Elixir logging SDK', 'ClickStack Elixir integration']
@@ -14,11 +14,11 @@ keywords: ['Elixir ClickStack SDK', 'Elixir observability', 'HyperDX Elixir', 'E
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✖️ 指标</td>
-      <td className="pe-2">✖️ 跟踪</td>
+      <td className="pe-2">✖️ 追踪</td>
     </tr>
   </tbody>
 </table>
-_🚧 OpenTelemetry 指标和跟踪相关埋点即将推出！_
+_🚧 OpenTelemetry 指标和追踪支持即将推出！_
 
 
 
@@ -26,7 +26,7 @@ _🚧 OpenTelemetry 指标和跟踪相关埋点即将推出！_
 
 ### 安装 ClickStack 日志后端包 {#install-hyperdx-logger-backend-package}
 
-通过在 `mix.exs` 文件的依赖列表中添加 `hyperdx` 来安装该包:
+通过在 `mix.exs` 的依赖项列表中添加 `hyperdx` 来安装该包：
 
 ```elixir
 def deps do
@@ -36,9 +36,9 @@ def deps do
 end
 ```
 
-### 配置日志记录器 {#configure-logger}
+### 配置日志 {#configure-logger}
 
-在 `config.exs` 文件中添加以下内容:
+在 `config.exs` 文件中添加以下内容：
 
 
 ```elixir

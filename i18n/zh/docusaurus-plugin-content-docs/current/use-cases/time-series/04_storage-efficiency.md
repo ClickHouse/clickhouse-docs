@@ -1,7 +1,7 @@
 ---
 title: '存储效率 - 时序数据'
 sidebar_label: '存储效率'
-description: '提升时序数据的存储效率'
+description: '提升时序数据存储效率'
 slug: /use-cases/time-series/storage-efficiency
 keywords: ['time-series', 'storage efficiency', 'compression', 'data retention', 'TTL', 'storage optimization', 'disk usage']
 show_related_blogs: true
@@ -10,10 +10,10 @@ doc_type: 'guide'
 
 
 
-# 时序数据存储效率
+# 时间序列存储效率
 
-在探索了如何查询我们的 Wikipedia 统计数据集之后，我们接下来关注如何在 ClickHouse 中优化其存储效率。
-本节将演示一些实用技术，在保证查询性能的前提下尽量减少存储占用。
+在了解了如何查询我们的 Wikipedia 统计数据集之后，我们来关注如何在 ClickHouse 中优化其存储效率。
+本节将演示一些实用技术，在保持查询性能的同时最大限度地减少存储占用。
 
 
 
@@ -63,13 +63,13 @@ ALTER TABLE wikistat
 MODIFY COLUMN `hits` UInt32;
 ```
 
-这将使该列在内存中的大小至少减少一半。请注意,由于压缩的原因,磁盘上的大小将保持不变。但要注意,不要选择过小的数据类型!
+这将使该列在内存中的大小至少减少一半。请注意,由于压缩的原因,磁盘上的大小将保持不变。但要小心,不要选择过小的数据类型!
 
 
 ## 专用编解码器 {#time-series-specialized-codecs}
 
 在处理时间序列等顺序数据时,我们可以通过使用专用编解码器进一步提高存储效率。
-其基本思想是存储值之间的变化量而非绝对值本身,这样在处理缓慢变化的数据时可以大幅减少所需空间:
+其基本思想是存储值之间的变化量而非绝对值本身,这在处理缓慢变化的数据时可以大幅减少所需空间:
 
 ```sql
 ALTER TABLE wikistat
@@ -130,4 +130,4 @@ GROUP BY ALL;
 └────────────────────┴──────────────┴────────────┴───────┘
 ```
 
-优化后的表在压缩形式下占用的空间减少了 4 倍以上。
+优化后的表在压缩形式下占用的空间减少了 4 倍多。

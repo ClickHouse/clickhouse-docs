@@ -2,7 +2,7 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: 'ClickHouse で MinIO を使用する方法について説明するページ'
+description: 'MinIO を ClickHouse で使用する方法を説明するページ'
 title: 'MinIO の利用'
 doc_type: 'guide'
 integration:
@@ -11,15 +11,15 @@ integration:
 keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
-# MinIO の利用
+# MinIO の使用
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-すべての S3 関数およびテーブルは [MinIO](https://min.io/) と互換性があります。特にネットワークのローカリティが最適な場合、セルフホスト型の MinIO ストアでは、より高いスループットが得られることがあります。
+すべての S3 関数およびテーブルは [MinIO](https://min.io/) と互換性があります。特にネットワークのローカリティが最適な場合、セルフホスト型の MinIO ストアではより高いスループットが得られることがあります。
 
-また、オブジェクトストレージをバックエンドに利用する MergeTree の設定も、設定にいくつか小さな変更が必要になる点を除けば、互換性があります。
+また、Backed MergeTree の設定も、設定内容にいくつか軽微な変更を加えることで互換性があります。
 
 ```xml
 <clickhouse>
@@ -47,5 +47,5 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 ```
 
 :::tip
-エンドポイントタグ内の二重スラッシュに注意してください。これはバケットのルートを示すために必要です。
+エンドポイントタグ内の二重スラッシュに注意してください。バケットのルートを示すために必要です。
 :::

@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 
 ## はじめに {#introduction}
 
-[Amazon Redshift](https://aws.amazon.com/redshift/)は、Amazon Web Servicesが提供する人気のクラウドデータウェアハウスソリューションです。本ガイドでは、RedshiftインスタンスからClickHouseへデータを移行するための複数のアプローチを紹介します。以下の3つのオプションについて説明します:
+[Amazon Redshift](https://aws.amazon.com/redshift/)は、Amazon Web Servicesが提供する広く利用されているクラウドデータウェアハウスソリューションです。本ガイドでは、RedshiftインスタンスからClickHouseへデータを移行するための複数のアプローチを紹介します。以下の3つのオプションについて説明します：
 
 <Image
   img={redshiftToClickhouse}
@@ -19,13 +19,13 @@ import Image from '@theme/IdealImage';
   background='white'
 />
 
-ClickHouseインスタンスの観点から、以下のいずれかの方法を選択できます:
+ClickHouseインスタンスの観点から、次のいずれかの方法を選択できます：
 
-1. サードパーティのETL/ELTツールまたはサービスを使用してClickHouseにデータを**[プッシュ](#push-data-from-redshift-to-clickhouse)**する
+1. サードパーティのETL/ELTツールまたはサービスを使用してClickHouseへデータを**[プッシュ](#push-data-from-redshift-to-clickhouse)**する
 
 2. ClickHouse JDBC Bridgeを活用してRedshiftからデータを**[プル](#pull-data-from-redshift-to-clickhouse)**する
 
-3. S3オブジェクトストレージを使用し、「アンロード後ロード」ロジックでデータを**[ピボット](#pivot-data-from-redshift-to-clickhouse-using-s3)**する
+3. S3オブジェクトストレージを使用し、「アンロード後にロード」のロジックで**[ピボット](#pivot-data-from-redshift-to-clickhouse-using-s3)**する
 
 :::note
 本チュートリアルではRedshiftをデータソースとして使用していますが、ここで紹介する移行アプローチはRedshift専用ではなく、互換性のある任意のデータソースに対して同様の手順を適用できます。
@@ -43,21 +43,21 @@ ClickHouseインスタンスの観点から、以下のいずれかの方法を�
   background='white'
 />
 
-### メリット {#pros}
+### 利点 {#pros}
 
 - ETL/ELTソフトウェアの既存のコネクタカタログを活用できます。
-- データを同期状態に保つための組み込み機能(追加/上書き/増分ロジック)を備えています。
+- データの同期を維持するための組み込み機能(追加/上書き/増分ロジック)を備えています。
 - データ変換シナリオを実現できます(例:[dbtの統合ガイド](/integrations/data-ingestion/etl-tools/dbt/index.md)を参照)。
 
-### デメリット {#cons}
+### 欠点 {#cons}
 
 - ユーザーはETL/ELTインフラストラクチャのセットアップと保守が必要です。
-- アーキテクチャにサードパーティ要素が導入されるため、スケーラビリティのボトルネックになる可能性があります。
+- アーキテクチャにサードパーティ要素を導入することで、スケーラビリティのボトルネックになる可能性があります。
 
 
 ## RedshiftからClickHouseへのデータプル {#pull-data-from-redshift-to-clickhouse}
 
-プルシナリオでは、ClickHouse JDBC Bridgeを利用してClickHouseインスタンスからRedshiftクラスタに直接接続し、`INSERT INTO ... SELECT`クエリを実行します。
+プルシナリオでは、ClickHouse JDBC Bridgeを活用してClickHouseインスタンスからRedshiftクラスタに直接接続し、`INSERT INTO ... SELECT`クエリを実行します。
 
 <Image
   img={pull}
@@ -66,12 +66,12 @@ ClickHouseインスタンスの観点から、以下のいずれかの方法を�
   background='white'
 />
 
-### メリット {#pros-1}
+### 利点 {#pros-1}
 
 - すべてのJDBC互換ツールに汎用的に対応
 - ClickHouse内から複数の外部データソースをクエリできるエレガントなソリューション
 
-### デメリット {#cons-1}
+### 欠点 {#cons-1}
 
 - ClickHouse JDBC Bridgeインスタンスが必要であり、スケーラビリティのボトルネックになる可能性がある
 
@@ -194,7 +194,7 @@ Ok.
 
 ## S3を使用してRedshiftからClickHouseへデータを移行する {#pivot-data-from-redshift-to-clickhouse-using-s3}
 
-このシナリオでは、中間形式でデータをS3にエクスポートし、次のステップでS3からClickHouseにデータをロードします。
+このシナリオでは、中間形式でS3にデータをエクスポートし、次のステップでS3からClickHouseにデータをロードします。
 
 <Image
   img={pivot}
@@ -207,8 +207,8 @@ Ok.
 
 - RedshiftとClickHouseの両方が強力なS3統合機能を備えています。
 - Redshiftの`UNLOAD`コマンドやClickHouseのS3テーブル関数/テーブルエンジンなどの既存機能を活用できます。
-- ClickHouseのS3に対する並列読み取りと高スループット機能により、シームレスにスケールします。
-- Apache Parquetのような高度な圧縮形式を活用できます。
+- ClickHouseのS3との間での並列読み取りと高スループット機能により、シームレスにスケールします。
+- Apache Parquetのような高度で圧縮された形式を活用できます。
 
 ### 欠点 {#cons-2}
 
@@ -248,7 +248,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-または、ClickHouseは`CREATE TABLE ... EMPTY AS SELECT`を使用してテーブル構造を推測できます:
+または、ClickHouseは`CREATE TABLE ... EMPTY AS SELECT`を使用してテーブル構造を推測することができます:
 
 ```sql
 CREATE TABLE users
@@ -257,7 +257,7 @@ EMPTY AS
 SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>', '<aws_secret_access_key>', 'CSV')
 ```
 
-これは、Parquetのようなデータ型情報を含む形式でデータが保存されている場合に特に有効です。
+これは、Parquetのようなデータ型に関する情報を含む形式でデータが保存されている場合に特に有効です。
 
 #### S3ファイルをClickHouseにロードする {#load-s3-files-into-clickhouse}
 
@@ -277,7 +277,7 @@ Ok.
 ```
 
 :::note
-この例では中間形式としてCSVを使用しました。ただし、本番環境のワークロードでは、大規模な移行にはApache Parquetを最適な選択肢として推奨します。Parquetは圧縮機能を備えており、転送時間を短縮しながらストレージコストを削減できます(デフォルトでは、各行グループはSNAPPYを使用して圧縮されます)。ClickHouseはParquetのカラム指向性も活用してデータ取り込みを高速化します。
+この例では中間形式としてCSVを使用しました。ただし、本番環境のワークロードでは、大規模な移行にはApache Parquetを最適な選択肢として推奨します。Parquetは圧縮機能を備えており、転送時間を短縮しながらストレージコストを削減できます(デフォルトでは、各行グループはSNAPPYを使用して圧縮されます)。ClickHouseはParquetの列指向性も活用してデータ取り込みを高速化します。
 :::
 
 </VerticalStepper>

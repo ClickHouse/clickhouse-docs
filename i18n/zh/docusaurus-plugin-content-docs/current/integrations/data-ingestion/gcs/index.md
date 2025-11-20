@@ -2,7 +2,7 @@
 sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: '由 Google Cloud Storage (GCS) 支持的 MergeTree'
+description: '基于 Google Cloud Storage (GCS) 的 MergeTree'
 title: '将 Google Cloud Storage 与 ClickHouse 集成'
 doc_type: 'guide'
 keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse integration', 'GCS backed MergeTree', 'ClickHouse GCS storage', 'Google Cloud ClickHouse']
@@ -17,10 +17,10 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 # 将 Google Cloud Storage 集成到 ClickHouse 中
 
 :::note
-如果你在 [Google Cloud](https://cloud.google.com) 上使用 ClickHouse Cloud，则本页内容不适用，因为你的服务已经在使用 [Google Cloud Storage](https://cloud.google.com/storage)。如果你希望从 GCS 中 `SELECT` 数据或向 GCS 中 `INSERT` 数据，请参阅 [`gcs` 表函数](/sql-reference/table-functions/gcs)。
+如果你在 [Google Cloud](https://cloud.google.com) 上使用 ClickHouse Cloud，则本页内容不适用，因为你的服务已经在使用 [Google Cloud Storage](https://cloud.google.com/storage)。如果你希望从 GCS 中执行 `SELECT` 或向 GCS 中执行 `INSERT` 操作，请参阅 [`gcs` 表函数](/sql-reference/table-functions/gcs)。
 :::
 
-ClickHouse 认识到，GCS 是希望将存储与计算解耦的用户的理想存储方案。为此，ClickHouse 提供了将 GCS 用作 MergeTree 引擎存储的支持。这样，用户既可以利用 GCS 的可扩展性和成本优势，又能发挥 MergeTree 引擎在写入和查询方面的性能。
+ClickHouse 认识到，GCS 是希望实现存储与计算分离的用户的一个极具吸引力的存储解决方案。为此，ClickHouse 支持将 GCS 用作 MergeTree 引擎的存储。这使用户既可以利用 GCS 的可扩展性和成本优势，又能获得 MergeTree 引擎在写入和查询方面的高性能。
 
 
 
@@ -28,13 +28,13 @@ ClickHouse 认识到，GCS 是希望将存储与计算解耦的用户的理想�
 
 ### 创建磁盘 {#creating-a-disk}
 
-要将 GCS 存储桶用作磁盘,必须首先在 `conf.d` 目录下的 ClickHouse 配置文件中进行声明。下面展示了一个 GCS 磁盘声明的示例。此配置包含多个部分,用于配置 GCS "磁盘"、缓存以及在 GCS 磁盘上创建表时 DDL 查询中指定的策略。下面将分别介绍这些内容。
+要将 GCS 存储桶用作磁盘,必须首先在 `conf.d` 目录下的 ClickHouse 配置文件中进行声明。下面展示了一个 GCS 磁盘声明的示例。此配置包含多个部分,用于配置 GCS "磁盘"、缓存以及在 GCS 磁盘上创建表时 DDL 查询中指定的策略。下文将对这些内容逐一说明。
 
 #### 存储配置 > disks > gcs {#storage_configuration--disks--gcs}
 
-配置的这一部分在高亮区域显示,指定了以下内容:
+配置的这一部分在高亮区域中显示,并指定了以下内容:
 
-- 不执行批量删除。GCS 目前不支持批量删除,因此禁用自动检测以避免错误消息。
+- 不执行批量删除操作。GCS 目前不支持批量删除,因此禁用自动检测以避免错误消息。
 - 磁盘类型为 `s3`,因为使用的是 S3 API。
 - GCS 提供的端点
 - 服务账号 HMAC 密钥和密钥
@@ -70,7 +70,7 @@ ClickHouse 认识到，GCS 是希望将存储与计算解耦的用户的理想�
 
 #### 存储配置 > disks > cache {#storage_configuration--disks--cache}
 
-下面高亮显示的示例配置为磁盘 `gcs` 启用了 10Gi 的内存缓存。
+下面高亮显示的示例配置为磁盘 `gcs` 启用了 10Gi 的缓存。
 
 ```xml
 <clickhouse>
@@ -138,7 +138,7 @@ ClickHouse 认识到，GCS 是希望将存储与计算解耦的用户的理想�
 </clickhouse>
 ```
 
-与此磁盘声明相关的完整设置列表可以在[这里](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)找到。
+与此磁盘声明相关的完整设置列表可以在[此处](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)找到。
 
 
 ### 创建表 {#creating-a-table}
@@ -185,7 +185,7 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 
 ### 了解更多 {#learn-more}
 
-[Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) 可与一些适用于 Amazon Simple Storage Service (Amazon S3) 等服务的工具和库互操作。
+[Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) 可与某些工具和库互操作,这些工具和库适用于 Amazon Simple Storage Service (Amazon S3) 等服务。
 
 有关线程调优的更多信息,请参阅[性能优化](../s3/index.md#s3-optimizing-performance)。
 
@@ -208,7 +208,7 @@ ClickHouse Cloud 默认使用对象存储,如果您在 ClickHouse Cloud 中运�
 - 两个 GCS 存储桶,部署在与两个 ClickHouse 服务器节点相同的区域
 - 三个 ClickHouse Keeper 节点,其中两个部署在与 ClickHouse 服务器节点相同的区域。第三个可以与前两个 Keeper 节点之一位于同一区域,但需在不同的可用区。
 
-ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要三个节点。
+ClickHouse Keeper 需要两个节点才能正常运行,因此高可用性需要三个节点。
 
 ### 准备虚拟机 {#prepare-vms}
 
@@ -224,7 +224,7 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 #### 部署 ClickHouse {#deploy-clickhouse}
 
-在两台主机上部署 ClickHouse,在示例配置中它们分别命名为 `chnode1` 和 `chnode2`。
+在两台主机上部署 ClickHouse,在示例配置中它们分别命名为 `chnode1`、`chnode2`。
 
 将 `chnode1` 放置在一个 GCP 区域,将 `chnode2` 放置在另一个区域。在本指南中,计算引擎虚拟机和 GCS 存储桶使用 `us-east1` 和 `us-east4`。
 
@@ -244,7 +244,7 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 为实现高可用性,两个 ClickHouse 服务器将位于不同的区域。每个服务器都将在同一区域拥有一个 GCS 存储桶。
 
-在 **Cloud Storage > Buckets** 中选择 **CREATE BUCKET**。在本教程中创建两个存储桶,分别位于 `us-east1` 和 `us-east4`。这些存储桶为单区域、标准存储类,且不公开。出现提示时,启用公共访问防护。不要创建文件夹,ClickHouse 写入存储时会自动创建。
+在 **Cloud Storage > Buckets** 中选择 **CREATE BUCKET**。在本教程中创建两个存储桶,分别位于 `us-east1` 和 `us-east4`。这些存储桶为单区域、标准存储类别且非公开。出现提示时,启用公共访问防护。不要创建文件夹,ClickHouse 写入存储时会自动创建。
 
 如果您需要创建存储桶和 HMAC 密钥的分步说明,请展开 **Create GCS buckets and an HMAC key** 并按照步骤操作:
 
@@ -252,7 +252,7 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 ### 配置 ClickHouse Keeper {#configure-clickhouse-keeper}
 
-所有 ClickHouse Keeper 节点都具有相同的配置文件,除了 `server_id` 行(下面第一个高亮行)。使用您的 ClickHouse Keeper 服务器的主机名修改文件,并在每个服务器上设置 `server_id` 以匹配 `raft_configuration` 中相应的 `server` 条目。由于此示例将 `server_id` 设置为 `3`,我们在 `raft_configuration` 中高亮显示了匹配的行。
+所有 ClickHouse Keeper 节点都具有相同的配置文件,除了 `server_id` 行(下面第一个高亮行)。使用您的 ClickHouse Keeper 服务器的主机名修改该文件,并在每个服务器上设置 `server_id` 以匹配 `raft_configuration` 中相应的 `server` 条目。由于此示例将 `server_id` 设置为 `3`,我们在 `raft_configuration` 中高亮显示了匹配的行。
 
 - 使用您的主机名编辑文件,并确保它们可以从 ClickHouse 服务器节点和 Keeper 节点解析
 - 将文件复制到相应位置(每个 Keeper 服务器上的 `/etc/clickhouse-keeper/keeper_config.xml`)
@@ -313,7 +313,7 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 #### 网络配置 {#networking}
 
-默认情况下,ClickHouse 监听回环接口。在复制部署中,需要配置机器之间的网络通信。监听所有接口:
+默认情况下,ClickHouse 监听回环接口。在复制部署中,需要配置机器之间的网络通信。配置监听所有接口:
 
 ```xml title=/etc/clickhouse-server/config.d/network.xml
 <clickhouse>
@@ -374,7 +374,7 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 #### 副本标识 {#replica-identification}
 
-此文件配置与 ClickHouse Keeper 路径相关的设置,特别是用于标识数据所属副本的宏。在一台服务器上,副本应指定为 `replica_1`,在另一台服务器上指定为 `replica_2`。名称可以更改,例如在我们的示例中,一个副本存储在南卡罗来纳州,另一个存储在北弗吉尼亚州,值可以设置为 `carolina` 和 `virginia`;只需确保它们在每台机器上都不同即可。
+此文件配置与 ClickHouse Keeper 路径相关的设置,特别是用于标识数据所属副本的宏。在一台服务器上,副本应指定为 `replica_1`,在另一台服务器上应指定为 `replica_2`。名称可以更改,例如在我们的示例中,一个副本存储在南卡罗来纳州,另一个存储在北弗吉尼亚州,值可以设置为 `carolina` 和 `virginia`;只需确保它们在每台机器上都不同即可。
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>
@@ -392,16 +392,16 @@ ClickHouse Keeper 需要至少两个节点才能运行,因此高可用性需要�
 
 #### 在 GCS 中存储 {#storage-in-gcs}
 
-ClickHouse 存储配置包括 `disks` 和 `policies`。下面配置的磁盘名为 `gcs`,其 `type` 为 `s3`。类型设置为 s3 是因为 ClickHouse 访问 GCS 存储桶的方式与访问 AWS S3 存储桶相同。需要两份此配置,每个 ClickHouse 服务器节点一份。
+ClickHouse 存储配置包括 `disks` 和 `policies`。下面配置的磁盘名为 `gcs`,其 `type` 为 `s3`。类型设置为 s3 是因为 ClickHouse 访问 GCS 存储桶的方式与访问 AWS S3 存储桶相同。需要准备两份此配置,每个 ClickHouse 服务器节点一份。
 
 应在下面的配置中进行以下替换。
 
-以下替换在两个 ClickHouse 服务器节点之间有所不同:
+这些替换在两个 ClickHouse 服务器节点之间有所不同:
 
 - `REPLICA 1 BUCKET` 应设置为与服务器位于同一区域的存储桶名称
-- `REPLICA 1 FOLDER` 在其中一台服务器上应更改为 `replica_1`,在另一台服务器上更改为 `replica_2`
+- `REPLICA 1 FOLDER` 在其中一台服务器上应更改为 `replica_1`,在另一台服务器上应更改为 `replica_2`
 
-以下替换在两个节点上是通用的:
+这些替换在两个节点上是相同的:
 
 - `access_key_id` 应设置为之前生成的 HMAC 密钥
 - `secret_access_key` 应设置为之前生成的 HMAC 密钥
@@ -601,7 +601,7 @@ SETTINGS storage_policy='gcs_main'
 2 rows in set. Elapsed: 0.641 sec.
 ```
 
-#### 验证可以插入数据 {#verify-that-data-can-be-inserted}
+#### 验证数据可以插入 {#verify-that-data-can-be-inserted}
 
 ```sql
 INSERT INTO trips SELECT
@@ -650,7 +650,7 @@ formatReadableSize(total_bytes): 36.42 MiB
 
 #### 在 Google Cloud 控制台中验证 {#verify-in-google-cloud-console}
 
-查看存储桶时,您会看到每个存储桶中都创建了一个文件夹,其名称与 `storage.xml` 配置文件中使用的名称相同。展开文件夹后,您将看到许多文件,这些文件代表数据分区。
+查看存储桶时,您会看到每个存储桶中都创建了一个文件夹,其名称与 `storage.xml` 配置文件中使用的名称相同。展开文件夹后,您将看到许多文件,它们代表数据分区。
 
 #### 副本一的存储桶 {#bucket-for-replica-one}
 

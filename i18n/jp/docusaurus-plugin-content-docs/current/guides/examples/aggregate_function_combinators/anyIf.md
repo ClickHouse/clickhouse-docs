@@ -14,16 +14,15 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`any`](/sql-reference/aggregate-functions/reference/any)
-集約関数に適用することで、指定された条件に一致する、指定されたカラムから最初に見つかった要素を選択できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`any`](/sql-reference/aggregate-functions/reference/any)集約関数に適用することで、指定された条件に一致する指定カラムから最初に検出された要素を選択できます。
 
 
 ## 使用例 {#example-usage}
 
 この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
-`anyIf`を使用して金額が200以上と200未満の最初の`transaction_id`を選択します。
+`anyIf` を使用して金額が200より大きい場合と小さい場合の最初の `transaction_id` を選択します。
 
-まず、テーブルを作成してデータを挿入します：
+まず、テーブルを作成してデータを挿入します:
 
 ```sql title="クエリ"
 CREATE TABLE sales(

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Crunchy Bridge Postgres'
-description: '将 Crunchy Bridge Postgres 配置为 ClickPipes 的数据源'
+description: '将 Crunchy Bridge Postgres 设置为 ClickPipes 的源'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres 数据源配置指南'
+title: 'Crunchy Bridge Postgres 源配置指南'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
 doc_type: 'guide'
 ---
@@ -53,7 +53,7 @@ SHOW max_replication_slots; -- 应为 10
     ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. 创建用于后续创建 MIRROR(复制)的发布。
+4. 创建用于后续创建 MIRROR(镜像复制)的发布。
 
    ```sql
    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
@@ -62,7 +62,7 @@ SHOW max_replication_slots; -- 应为 10
 
 ## 将 ClickPipes IP 地址加入白名单 {#safe-list-clickpipes-ips}
 
-在 Crunchy Bridge 中添加防火墙规则,将 [ClickPipes IP 地址](../../index.md#list-of-static-ips)加入白名单。
+在 Crunchy Bridge 中添加防火墙规则，将 [ClickPipes IP 地址](../../index.md#list-of-static-ips)加入白名单。
 
 <Image
   size='lg'
@@ -81,5 +81,5 @@ SHOW max_replication_slots; -- 应为 10
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 Postgres 实例时使用的连接详细信息,在创建 ClickPipe 时会用到这些信息。
+您现在可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
+请务必记录设置 Postgres 实例时使用的连接详细信息，因为在创建 ClickPipe 过程中需要用到这些信息。

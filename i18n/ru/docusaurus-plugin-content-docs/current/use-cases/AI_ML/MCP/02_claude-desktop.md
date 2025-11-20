@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: 'Интеграция с Claude Desktop'
-title: 'Настройка сервера ClickHouse MCP для Claude Desktop'
+title: 'Настройка сервера ClickHouse MCP для работы с Claude Desktop'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как настроить Claude Desktop для работы с сервером ClickHouse MCP.'
@@ -28,7 +28,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
   width='768'
   height='432'
   src='https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q'
-  title='Видеоплеер YouTube'
+  title='YouTube video player'
   frameborder='0'
   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
   referrerpolicy='strict-origin-when-cross-origin'
@@ -60,7 +60,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 <Image img={ClaudeDesktopConfig} alt='Конфигурация Claude Desktop' size='md' />
 
 Это откроет директорию с конфигурационным файлом (`claude_desktop_config.json`).
-При первом открытии файл, скорее всего, будет содержать следующее:
+При первом открытии этот файл, скорее всего, будет содержать следующее содержимое:
 
 ```json
 {
@@ -122,7 +122,7 @@ MCP mcp-clickhouse: spawn uv ENOENT
 Затем вы можете выбрать, отключить ли все инструменты или только некоторые из них.
 
 Теперь мы готовы задать Claude несколько вопросов, которые приведут к использованию MCP-сервера ClickHouse.
-Например, можно спросить `What's the most interesting dataset in the SQL playground?`.
+Например, можно спросить: `What's the most interesting dataset in the SQL playground?`.
 
 Claude попросит подтвердить использование каждого инструмента MCP-сервера при первом вызове:
 

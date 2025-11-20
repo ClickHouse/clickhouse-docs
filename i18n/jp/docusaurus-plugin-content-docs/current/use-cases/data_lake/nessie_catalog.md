@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/data-lake/nessie-catalog
-sidebar_label: 'Nessie カタログ'
-title: 'Nessie カタログ'
+sidebar_label: 'Nessieカタログ'
+title: 'Nessieカタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Nessie Catalog を使ってデータをクエリする手順を説明します。'
-keywords: ['Nessie', 'REST', 'Transactional', 'Data Lake', 'Iceberg', 'Git-like']
+description: 'このガイドでは、ClickHouseとNessie Catalogを使用してデータをクエリする手順について説明します。'
+keywords: ['Nessie', 'REST', 'トランザクショナル', 'データレイク', 'Iceberg', 'Git風']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,22 +15,22 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge />
 
 :::note
-Nessie Catalog との統合は Iceberg テーブルでのみ動作します。
-この統合は AWS S3 およびその他のクラウドストレージプロバイダをサポートします。
+Nessie Catalogとの統合はIcebergテーブルでのみ機能します。
+この統合はAWS S3およびその他のクラウドストレージプロバイダーの両方に対応しています。
 :::
 
-ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [Nessie](https://projectnessie.org/) カタログを使用してデータをクエリする手順を説明します。
+ClickHouseは複数のカタログ(Unity、Glue、REST、Polarisなど)との統合をサポートしています。本ガイドでは、ClickHouseと[Nessie](https://projectnessie.org/)カタログを使用してデータをクエリする手順について説明します。
 
-Nessie はデータレイク向けのオープンソースのトランザクションカタログで、次の機能を提供します:
+Nessieはデータレイク向けのオープンソーストランザクショナルカタログで、以下の機能を提供します:
 
-* ブランチとコミットを備えた **Git ライクな** データバージョン管理
-* **テーブル間トランザクション** と可視性に関する保証
-* Iceberg REST カタログ仕様に準拠した **REST API**
-* Hive、Spark、Dremio、Trino などをサポートする **オープンデータレイク** アプローチ
-* Docker または Kubernetes 上での **本番運用に対応した** デプロイ
+* **Gitにインスパイアされた**ブランチとコミットによるデータバージョン管理
+* **テーブル間トランザクション**と可視性の保証
+* Iceberg RESTカタログ仕様に準拠した**REST API**
+* Hive、Spark、Dremio、Trinoなどに対応する**オープンデータレイク**アプローチ
+* DockerまたはKubernetes上での**本番環境対応**デプロイメント
 
 :::note
-この機能は実験的なため、次の設定で有効化する必要があります:
+この機能は実験的機能のため、以下の設定で有効化する必要があります:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
@@ -218,7 +218,7 @@ SELECT count(*) FROM `default.taxis`;
 ```
 
 :::note バッククォートが必要
-ClickHouseは複数のネームスペースをサポートしていないため、バッククォートが必要です。
+ClickHouseは複数の名前空間をサポートしていないため、バッククォートが必要です。
 :::
 
 テーブルのDDLを確認するには:

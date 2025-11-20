@@ -14,35 +14,35 @@ import TabItem from '@theme/TabItem';
 
 # Хранимые процедуры и параметры запросов в ClickHouse
 
-Если вы переходите с традиционной реляционной системы управления базами данных, вы, возможно, ищете в ClickHouse хранимые процедуры и подготовленные выражения.
-В этом руководстве объясняется подход ClickHouse к этим возможностям и предлагаются рекомендуемые альтернативы.
+Если вы переходите с традиционной реляционной базы данных, вы можете искать в ClickHouse хранимые процедуры и подготовленные выражения.
+В этом руководстве объясняется подход ClickHouse к этим концепциям и предлагаются рекомендуемые альтернативы.
 
 
 
 ## Альтернативы хранимым процедурам в ClickHouse {#alternatives-to-stored-procedures}
 
 ClickHouse не поддерживает традиционные хранимые процедуры с логикой управления потоком выполнения (`IF`/`ELSE`, циклы и т. д.).
-Это осознанное архитектурное решение, обусловленное природой ClickHouse как аналитической базы данных.
+Это намеренное архитектурное решение, обусловленное природой ClickHouse как аналитической базы данных.
 Циклы не рекомендуются для аналитических баз данных, поскольку обработка O(n) простых запросов обычно медленнее обработки меньшего количества сложных запросов.
 
 ClickHouse оптимизирован для:
 
-- **Аналитических нагрузок** — сложные агрегации больших наборов данных
+- **Аналитических нагрузок** — сложные агрегации по большим наборам данных
 - **Пакетной обработки** — эффективная обработка больших объёмов данных
-- **Декларативных запросов** — SQL-запросы, описывающие, какие данные получить, а не как их обрабатывать
+- **Декларативных запросов** — SQL-запросы, которые описывают, какие данные получить, а не как их обрабатывать
 
 Хранимые процедуры с процедурной логикой противоречат этим оптимизациям. Вместо этого ClickHouse предоставляет альтернативы, соответствующие его сильным сторонам.
 
 ### Пользовательские функции (UDF) {#user-defined-functions}
 
-Пользовательские функции позволяют инкапсулировать переиспользуемую логику без управления потоком выполнения. ClickHouse поддерживает два типа:
+Пользовательские функции позволяют инкапсулировать повторно используемую логику без управления потоком выполнения. ClickHouse поддерживает два типа:
 
 #### UDF на основе лямбда-выражений {#lambda-based-udfs}
 
 Создавайте функции с использованием SQL-выражений и синтаксиса лямбда-выражений:
 
 <details>
-<summary>Примеры данных для примеров</summary>
+<summary>Примеры данных</summary>
 
 ```sql
 -- Создание таблицы products
@@ -71,7 +71,7 @@ INSERT INTO products (product_id, product_name, price) VALUES
 </details>
 
 ```sql
--- Простая функция расчёта
+-- Простая функция вычисления
 CREATE FUNCTION calculate_tax AS (price, rate) -> price * rate;
 
 SELECT
@@ -107,7 +107,7 @@ SELECT format_phone('5551234567');
 
 **Ограничения:**
 
-- Отсутствие циклов или сложной логики управления потоком
+- Отсутствие циклов или сложного управления потоком выполнения
 - Невозможность изменения данных (`INSERT`/`UPDATE`/`DELETE`)
 - Рекурсивные функции не допускаются
 
@@ -148,10 +148,10 @@ FROM customer_reviews;
 ### Параметризованные представления {#parameterized-views}
 
 Параметризованные представления работают как функции, возвращающие наборы данных.
-Они идеально подходят для переиспользуемых запросов с динамической фильтрацией:
+Они идеально подходят для повторно используемых запросов с динамической фильтрацией:
 
 <details>
-<summary>Примеры данных для примера</summary>
+<summary>Примеры данных</summary>
 
 ```sql
 -- Создание таблицы sales
@@ -332,7 +332,7 @@ SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
 ````
 
-См. [Каскадные материализованные представления](/guides/developer/cascading-materialized-views) для продвинутых паттернов.
+См. [Каскадные материализованные представления](/guides/developer/cascading-materialized-views) для изучения продвинутых паттернов.
 
 ### Внешняя оркестрация {#external-orchestration}
 
@@ -341,7 +341,7 @@ WHERE month = toStartOfMonth(today());
 
 #### Использование кода приложения {#using-application-code}
 
-Ниже приведено сравнение, показывающее, как хранимая процедура MySQL переводится в код приложения с ClickHouse:
+Ниже приведено сравнение, показывающее, как хранимая процедура MySQL преобразуется в код приложения с ClickHouse:
 
 <Tabs>
 <TabItem value="mysql" label="Хранимая процедура MySQL" default>
@@ -397,7 +397,7 @@ BEGIN
 ```
 
 
--- Вставка записи о транзакции бонусных баллов
+-- Вставка транзакции начисления бонусных баллов
 INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
 VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
 CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
@@ -429,7 +429,7 @@ SELECT @status, @points;
 
 :::note Параметры запроса
 В примере ниже используются параметры запроса в ClickHouse.
-Перейдите к разделу ["Альтернативы prepared statements в ClickHouse"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse),
+Перейдите к разделу ["Альтернативы подготовленным инструкциям в ClickHouse"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse),
 если вы ещё не знакомы с параметрами запроса в ClickHouse.
 :::
 ```
@@ -473,7 +473,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
     discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
     final_amount = order_total - discount
 
-    # Шаг 3: Вставка записи заказа
+    # Шаг 3: Добавление записи заказа
     client.command(
         """
         INSERT INTO orders (order_id, customer_id, order_total, discount,
@@ -490,11 +490,11 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         }
     )
 
-    # Шаг 4: Расчёт новой статистики клиента
+    # Шаг 4: Расчёт обновлённой статистики клиента
     new_order_count = previous_orders + 1
 
     # Для аналитических баз данных предпочтительнее использовать INSERT вместо UPDATE
-    # Здесь используется паттерн ReplacingMergeTree
+    # Здесь применяется паттерн ReplacingMergeTree
     client.command(
         """
         INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -527,7 +527,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         }
     )
 
-    # Шаг 6: Проверка повышения уровня (бизнес-логика в Python)
+    # Шаг 6: Проверка на повышение уровня (бизнес-логика в Python)
     status = 'ORDER_COMPLETE'
 
     if new_order_count >= 10 and customer_tier == 'bronze':
@@ -586,7 +586,7 @@ print(f&quot;Статус: {status}, бонусные баллы: {points}&quot;
 #### Ключевые различия {#key-differences}
 
 1. **Управление потоком выполнения** — хранимые процедуры MySQL используют конструкции `IF/ELSE`, циклы `WHILE`. В ClickHouse эту логику следует реализовывать в коде приложения (Python, Java и т. д.)
-2. **Транзакции** — MySQL поддерживает `BEGIN/COMMIT/ROLLBACK` для ACID-транзакций. ClickHouse — это аналитическая СУБД, оптимизированная для операций добавления данных, а не для транзакционных обновлений
+2. **Транзакции** — MySQL поддерживает `BEGIN/COMMIT/ROLLBACK` для ACID-транзакций. ClickHouse — это аналитическая база данных, оптимизированная для операций добавления данных, а не для транзакционных обновлений
 3. **Обновления** — MySQL использует операторы `UPDATE`. В ClickHouse для изменяемых данных рекомендуется использовать `INSERT` с движками [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) или [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
 4. **Переменные и состояние** — хранимые процедуры MySQL могут объявлять переменные (`DECLARE v_discount`). В ClickHouse управление состоянием осуществляется в коде приложения
 5. **Обработка ошибок** — MySQL поддерживает `SIGNAL` и обработчики исключений. В коде приложения используйте встроенные механизмы обработки ошибок вашего языка программирования (try/catch)
@@ -601,7 +601,7 @@ print(f&quot;Статус: {status}, бонусные баллы: {points}&quot;
 #### Использование инструментов оркестрации рабочих процессов {#using-workflow-orchestration-tools}
 
 - **Apache Airflow** — планирование и мониторинг сложных DAG запросов ClickHouse
-- **dbt** — преобразование данных с помощью SQL-ориентированных рабочих процессов
+- **dbt** — преобразование данных с помощью рабочих процессов на основе SQL
 - **Prefect/Dagster** — современная оркестрация на основе Python
 - **Пользовательские планировщики** — задания cron, Kubernetes CronJobs и т. д.
 
@@ -617,7 +617,7 @@ print(f&quot;Статус: {status}, бонусные баллы: {points}&quot;
 
 ## Альтернативы подготовленным запросам в ClickHouse {#alternatives-to-prepared-statements-in-clickhouse}
 
-Хотя в ClickHouse нет традиционных «подготовленных запросов» в понимании реляционных СУБД, он предоставляет **параметры запросов**, которые выполняют ту же функцию: безопасные параметризованные запросы, предотвращающие SQL-инъекции.
+Хотя в ClickHouse нет традиционных «подготовленных запросов» в понимании реляционных СУБД, он предоставляет **параметры запросов**, которые служат той же цели: безопасные параметризованные запросы, предотвращающие SQL-инъекции.
 
 ### Синтаксис {#query-parameters-syntax}
 
@@ -824,8 +824,8 @@ SELECT count() FROM {table: Identifier};
 
 Параметры запросов **не являются универсальными текстовыми подстановками**. Они имеют определённые ограничения:
 
-1. Они **предназначены в первую очередь для операторов SELECT** - наилучшая поддержка обеспечивается в SELECT-запросах
-2. Они **работают как идентификаторы или литералы** - они не могут заменять произвольные SQL-фрагменты
+1. Они **предназначены в первую очередь для операторов SELECT** - наилучшая поддержка обеспечивается в запросах SELECT
+2. Они **работают как идентификаторы или литералы** - они не могут заменять произвольные фрагменты SQL
 3. Они имеют **ограниченную поддержку DDL** - они поддерживаются в `CREATE TABLE`, но не в `ALTER TABLE`
 
 **Что РАБОТАЕТ:**
@@ -850,17 +850,17 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 
 **Что НЕ работает:**
 ```sql
--- ✗ Имена столбцов в SELECT (используйте Identifier с осторожностью)
-SELECT {column: Identifier} FROM users;  -- Ограниченная поддержка
+-- ✗ Column names in SELECT (use Identifier carefully)
+SELECT {column: Identifier} FROM users;  -- Limited support
 
--- ✗ Произвольные SQL-фрагменты
-SELECT * FROM users {where_clause: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ Arbitrary SQL fragments
+SELECT * FROM users {where_clause: String};  -- NOT SUPPORTED
 
--- ✗ Операторы ALTER TABLE
-ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ ALTER TABLE statements
+ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
 
--- ✗ Несколько операторов
-{statements: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
+-- ✗ Multiple statements
+{statements: String};  -- NOT SUPPORTED
 ````
 
 ### Рекомендации по безопасности {#security-best-practices}
@@ -869,7 +869,7 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕР
 
 
 ```python
-# ✓ БЕЗОПАСНО — Использует параметры
+# ✓ БЕЗОПАСНО — использует параметры
 user_input = request.get('user_id')
 result = client.query(
     "SELECT * FROM orders WHERE user_id = {uid: UInt64}",
@@ -885,11 +885,11 @@ result = client.query(f"SELECT \* FROM orders WHERE user_id = {user_input}")
 
 ````
 
-**Валидация типов входных данных:**
+**Проверяйте типы входных данных:**
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
-    # Валидация типов перед выполнением запроса
+    # Проверка типов перед выполнением запроса
     if not isinstance(user_id, int) or user_id <= 0:
         raise ValueError("Invalid user_id")
 
@@ -906,12 +906,12 @@ def get_user_orders(user_id: int, start_date: str):
 
 ### Подготовленные выражения протокола MySQL {#mysql-protocol-prepared-statements}
 
-[MySQL-интерфейс](/interfaces/mysql) ClickHouse включает минимальную поддержку подготовленных выражений (`COM_STMT_PREPARE`, `COM_STMT_EXECUTE`, `COM_STMT_CLOSE`), в первую очередь для обеспечения совместимости с инструментами вроде Tableau Online, которые оборачивают запросы в подготовленные выражения.
+[Интерфейс MySQL](/interfaces/mysql) в ClickHouse включает минимальную поддержку подготовленных выражений (`COM_STMT_PREPARE`, `COM_STMT_EXECUTE`, `COM_STMT_CLOSE`), в первую очередь для обеспечения совместимости с такими инструментами, как Tableau Online, которые оборачивают запросы в подготовленные выражения.
 
 **Основные ограничения:**
 
 - **Привязка параметров не поддерживается** — нельзя использовать заполнители `?` с привязанными параметрами
-- Запросы сохраняются, но не парсятся во время `PREPARE`
+- Запросы сохраняются, но не парсятся во время выполнения `PREPARE`
 - Реализация минимальна и предназначена для совместимости с конкретными BI-инструментами
 
 **Пример того, что НЕ работает:**
@@ -923,7 +923,7 @@ EXECUTE stmt USING @user_id;  -- Привязка параметров не по
 ```
 
 :::tip
-**Используйте вместо этого нативные параметры запросов ClickHouse.** Они обеспечивают полную поддержку привязки параметров, типобезопасность и защиту от SQL-инъекций во всех интерфейсах ClickHouse:
+**Вместо этого используйте нативные параметры запросов ClickHouse.** Они обеспечивают полную поддержку привязки параметров, типобезопасность и защиту от SQL-инъекций во всех интерфейсах ClickHouse:
 
 ```sql
 -- Нативные параметры запросов ClickHouse (рекомендуется)
@@ -933,7 +933,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 :::
 
-Подробнее см. в [документации по MySQL-интерфейсу](/interfaces/mysql) и в [статье блога о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
+Подробнее см. в [документации по интерфейсу MySQL](/interfaces/mysql) и в [статье блога о поддержке MySQL](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey).
 
 
 ## Резюме {#summary}

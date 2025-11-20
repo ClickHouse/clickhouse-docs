@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Azure Synapse'
 slug: /integrations/azure-synapse
-description: 'Azure Synapse 与 ClickHouse 的集成概述'
+description: '在 ClickHouse 中使用 Azure Synapse 的介绍'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: '将 Azure Synapse 与 ClickHouse 集成'
 doc_type: 'guide'
@@ -19,9 +19,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) 是一项集成分析服务，将大数据、数据科学和数据仓库结合在一起，用于实现快速的大规模数据分析。
-在 Synapse 中，Spark 池提供按需扩缩的 [Apache Spark](https://spark.apache.org) 集群，使用户能够运行复杂的数据转换、机器学习任务，以及与外部系统的集成。
+在 Synapse 中，Spark 池提供按需伸缩的 [Apache Spark](https://spark.apache.org) 集群，使用户能够运行复杂的数据转换、机器学习以及与外部系统的集成。
 
-本文将向你展示在 Azure Synapse 中使用 Apache Spark 时，如何集成 [ClickHouse Spark 连接器](/integrations/apache-spark/spark-native-connector)。
+本文将演示在 Azure Synapse 中使用 Apache Spark 时，如何集成 [ClickHouse Spark 连接器](/integrations/apache-spark/spark-native-connector)。
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -37,7 +37,7 @@ Azure Synapse 支持三个级别的[包维护](https://learn.microsoft.com/en-us
 
 <br />
 
-请参照 [Apache Spark 池库管理指南](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)，将以下必需的依赖项添加到您的 Spark 应用程序中：
+请参考 [Apache Spark 池库管理指南](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)，将以下必需的依赖项添加到您的 Spark 应用程序中：
 
 - `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [官方 Maven 仓库](https://mvnrepository.com/artifact/com.clickhouse.spark)
 - `clickhouse-jdbc-{java_client_version}-all.jar` - [官方 Maven 仓库](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
@@ -47,13 +47,14 @@ Azure Synapse 支持三个级别的[包维护](https://learn.microsoft.com/en-us
 
 ## 将 ClickHouse 添加为 catalog {#add-clickhouse-as-catalog}
 
-有多种方式可以将 Spark 配置添加到会话中:
+有多种方式可以将 Spark 配置添加到您的会话中:
 
-- 加载自定义配置文件到会话
+- 加载自定义配置文件到您的会话
 - 通过 Azure Synapse UI 添加配置
 - 在 Synapse notebook 中添加配置
 
-请参考[管理 Apache Spark 配置](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)并添加[连接器所需的 Spark 配置](/integrations/apache-spark/spark-native-connector#register-the-catalog-required)。
+请参考[管理 Apache Spark 配置](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)
+并添加[连接器所需的 Spark 配置](/integrations/apache-spark/spark-native-connector#register-the-catalog-required)。
 
 例如,您可以在 notebook 中使用以下设置配置 Spark 会话:
 
@@ -72,7 +73,7 @@ Azure Synapse 支持三个级别的[包维护](https://learn.microsoft.com/en-us
 }
 ```
 
-确保将其放在第一个单元格中,如下所示:
+请确保将其放在第一个单元格中,如下所示:
 
 <Image
   img={sparkConfigViaNotebook}
@@ -90,8 +91,8 @@ Azure Synapse 支持三个级别的[包维护](https://learn.microsoft.com/en-us
 
 ## 设置验证 {#setup-verification}
 
-要验证依赖项和配置是否已成功设置,请访问您会话的 Spark UI,然后进入 `Environment` 选项卡。
-在其中查找与 ClickHouse 相关的设置:
+要验证依赖项和配置是否已成功设置,请访问您会话的 Spark UI,然后转到 `Environment` 选项卡。
+在该选项卡中,查找与 ClickHouse 相关的设置:
 
 <Image
   img={sparkUICHSettings}

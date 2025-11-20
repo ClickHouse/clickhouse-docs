@@ -13,13 +13,13 @@ import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
 
-<Image img={landing_image} alt="ランディングページ" size="lg" />
+<Image img={landing_image} alt="Landing page" size="lg" />
 
-**ClickStack** は ClickHouse 上に構築された本番運用向けのオブザーバビリティプラットフォームであり、ログ、トレース、メトリクス、セッションを単一の高性能なソリューションとして統合します。複雑なシステムの監視とデバッグのために設計されており、開発者と SRE はツール間を行き来したり、タイムスタンプや相関 ID を使って手動でデータを突き合わせたりすることなく、エンドツーエンドで問題をトレースできます。
+**ClickStack**は、ClickHouse上に構築された本番環境対応のオブザーバビリティプラットフォームで、ログ、トレース、メトリクス、セッションを単一の高性能ソリューションに統合します。複雑なシステムの監視とデバッグを目的として設計されたClickStackにより、開発者やSREは、ツールを切り替えたり、タイムスタンプや相関IDを使用して手動でデータを結合したりすることなく、問題をエンドツーエンドで追跡できます。
 
-ClickStack の中核にあるのは、「すべてのオブザーバビリティデータは、横方向に広く、リッチなイベントとして取り込むべきである」というシンプルながら強力なコンセプトです。これらのイベントはデータ種別ごと（ログ、トレース、メトリクス、セッション）に ClickHouse のテーブルに保存されますが、データベースレベルで完全にクエリでき、相互に相関付けることができます。
+ClickStackの中核にあるのは、シンプルながら強力なアイデアです。すべてのオブザーバビリティデータは、幅広く豊富なイベントとして取り込むべきである、というものです。これらのイベントは、データタイプ別（ログ、トレース、メトリクス、セッション）にClickHouseテーブルに保存されますが、データベースレベルで完全にクエリ可能かつ相互相関可能な状態を維持します。
 
-ClickStack は、ClickHouse のカラム指向アーキテクチャ、ネイティブな JSON サポート、完全に並列化された実行エンジンを活用することで、高カーディナリティなワークロードを効率的に処理できるように設計されています。これにより、巨大なデータセットに対するサブセカンドでのクエリ、広い時間範囲にわたる高速な集計、個々のトレースの詳細な解析が可能になります。JSON は圧縮されたカラムナ形式で保存されるため、事前の定義や手動の対応なしにスキーマを進化させることができます。
+ClickStackは、ClickHouseのカラム指向アーキテクチャ、ネイティブJSON対応、完全並列化実行エンジンを活用することで、高カーディナリティのワークロードを効率的に処理します。これにより、大規模データセットに対するサブセカンドクエリ、広範な時間範囲にわたる高速集計、個別トレースの詳細な検査が可能になります。JSONは圧縮されたカラム形式で保存されるため、手動介入や事前定義なしでスキーマを進化させることができます。
 
 
 ## 機能 {#features}
@@ -49,9 +49,9 @@ ClickStackは3つの主要コンポーネントで構成されています：
 2. **OpenTelemetry collector** – ログ、トレース、メトリクスに対して独自のスキーマを持つ、カスタムビルドされた事前設定済みコレクター
 3. **ClickHouse** – スタックの中核となる高性能分析データベース
 
-これらのコンポーネントは、個別または一括でデプロイできます。ブラウザホスト版のHyperDX UIも提供されており、追加のインフラストラクチャなしで既存のClickHouseデプロイメントに接続できます。
+これらのコンポーネントは、個別または一括でデプロイできます。ブラウザホスト版のHyperDX UIも提供されており、追加のインフラストラクチャなしで既存のClickHouseデプロイメントに接続することができます。
 
-まず、[入門ガイド](/use-cases/observability/clickstack/getting-started)を参照してから、[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)を読み込んでください。また、[デプロイメントオプション](/use-cases/observability/clickstack/deployment)と[本番環境のベストプラクティス](/use-cases/observability/clickstack/production)に関するドキュメントもご参照いただけます。
+まず、[入門ガイド](/use-cases/observability/clickstack/getting-started)を参照してから、[サンプルデータセット](/use-cases/observability/clickstack/sample-datasets)を読み込んでください。[デプロイメントオプション](/use-cases/observability/clickstack/deployment)や[本番環境のベストプラクティス](/use-cases/observability/clickstack/production)に関するドキュメントもご参照いただけます。
 
 
 ## 原則 {#clickstack-principles}
@@ -80,7 +80,7 @@ ClickStackはOpenTelemetryとネイティブに統合されており、すべて
 
 ### オープンソースで完全にカスタマイズ可能 {#open-source-and-customizable}
 
-ClickStackは完全にオープンソースであり、どこにでもデプロイできます。スキーマは柔軟でユーザーが変更可能であり、UIは変更を必要とせずにカスタムスキーマに対応できるよう設計されています。コレクター、ClickHouse、UIを含むすべてのコンポーネントは、取り込み、クエリ、ストレージの要求に応じて独立してスケール可能です。
+ClickStackは完全にオープンソースであり、どこにでもデプロイできます。スキーマは柔軟でユーザーが変更可能であり、UIは変更を必要とせずにカスタムスキーマに対応できるよう設計されています。コレクター、ClickHouse、UIを含むすべてのコンポーネントは、取り込み、クエリ、ストレージの要求に応じて独立してスケールできます。
 
 
 ## アーキテクチャ概要 {#architectural-overview}
@@ -90,7 +90,7 @@ ClickStackは完全にオープンソースであり、どこにでもデプロ�
 ClickStackは3つのコアコンポーネントで構成されています:
 
 1. **HyperDX UI**  
-   オブザーバビリティ向けに構築されたユーザーフレンドリーなインターフェース。Lucene形式とSQLクエリの両方、インタラクティブなダッシュボード、アラート、トレース探索などをサポートし、すべてがバックエンドとしてClickHouseに最適化されています。
+   オブザーバビリティ向けに構築されたユーザーフレンドリーなインターフェース。Lucene形式とSQLクエリの両方、インタラクティブなダッシュボード、アラート、トレース探索などをサポートし、すべてがバックエンドとしてのClickHouseに最適化されています。
 
 2. **OpenTelemetry collector**  
    ClickHouseへの取り込みに最適化された独自スキーマで構成されたカスタムビルドのコレクター。OpenTelemetryプロトコル経由でログ、メトリクス、トレースを受信し、効率的なバッチ挿入を使用してClickHouseに直接書き込みます。
@@ -102,4 +102,4 @@ ClickStackは3つのコアコンポーネントで構成されています:
 
 完全なアーキテクチャ図とデプロイメントの詳細については、[アーキテクチャセクション](/use-cases/observability/clickstack/architecture)を参照してください。
 
-ClickStackを本番環境にデプロイすることに関心のあるユーザーには、["本番環境"](/use-cases/observability/clickstack/production)ガイドを読むことをお勧めします。
+ClickStackを本番環境にデプロイすることに関心のあるユーザーには、["Production"](/use-cases/observability/clickstack/production)ガイドをお読みいただくことをお勧めします。

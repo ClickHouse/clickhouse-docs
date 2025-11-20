@@ -7,37 +7,36 @@ doc_type: 'reference'
 keywords: ['usage limits', 'quotas', 'best practices', 'resource management', 'cloud features']
 ---
 
-ClickHouse は高速かつ信頼性が高いことで知られていますが、最適なパフォーマンスは
-特定の運用パラメータの範囲内で発揮されます。たとえば、テーブル・データベース・
-パーツが多すぎるとパフォーマンスに悪影響を与える可能性があります。これを防ぐために、
-ClickHouse Cloud では複数の運用面に対して制限を設けています。
+ClickHouse はその高速性と信頼性で知られていますが、最適なパフォーマンスは
+特定の動作パラメータの範囲内で発揮されます。たとえば、テーブル、データベース、
+パーツが多すぎるとパフォーマンスに悪影響を及ぼす可能性があります。これを防ぐために、
+ClickHouse Cloud は複数の運用上の側面に対して制限を設けています。
 これらのガードレールの詳細を以下に示します。
 
 :::tip
-これらのガードレールのいずれかに達した場合、ユースケースの実装が
+これらのガードレールのいずれかに抵触した場合は、ユースケースの実装方法が
 最適化されていない可能性があります。サポートチームまでお問い合わせいただければ、
-ガードレールを超えないようにユースケースを改善するお手伝いや、
-これらの制限を制御された方法で引き上げる方法について一緒に検討いたします。
+ガードレールを超過しないようにユースケースを改善するお手伝いをするとともに、
+管理された方法でガードレールの引き上げが可能かどうかを一緒に検討いたします。
 :::
 
 | Dimension                     | Limit                                                      |
 |-------------------------------|------------------------------------------------------------|
 | **Databases**                 | 1000                                                       |
 | **Tables**                    | 5000                                                       |
-| **Columns**                   | ∼1000 (wide format is preferred to compact)                |
+| **Columns**                   | ∼1000 (コンパクト形式よりもワイド形式を推奨)                  |
 | **Partitions**                | 50k                                                        |
-| **Parts**                     | 100k across the entire instance                            |
+| **Parts**                     | インスタンス全体で 100k                                    |
 | **Part size**                 | 150gb                                                      |
 | **Services per organization** | 20 (soft)                                                  |
 | **Services per warehouse**    | 5 (soft)                                                   |
 | **Replicas per service**      | 20 (soft)                                                  |  
-| **Low cardinality**           | 10k or less                                                |
-| **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
-| **Query concurrency**         | 1000 (per replica)                                         |
-| **Batch ingest**              | anything > 1M will be split by the system in 1M row blocks |
+| **Low cardinality**           | 10k 以下                                                   |
+| **Primary keys in a table**   | データを十分に絞り込める主キーを 4〜5 個                      |
+| **Query concurrency**         | 1000 (レプリカあたり)                                      |
+| **Batch ingest**              | 1M を超えるものはシステムによって 1M 行ごとのブロックに分割されます |
 
 :::note
-Single Replica Service の場合、データベースの最大数は 100、
-テーブルの最大数は 500 に制限されます。さらに、Basic Tier Service のストレージは
-1 TB に制限されます。
+Single Replica Services の場合、データベース数の上限は 100、テーブル数の上限は 500 に
+制限されます。さらに、Basic Tier Services のストレージは 1 TB に制限されます。
 :::

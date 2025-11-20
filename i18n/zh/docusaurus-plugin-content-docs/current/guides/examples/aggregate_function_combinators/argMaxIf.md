@@ -12,11 +12,11 @@ doc_type: 'reference'
 # argMaxIf {#argmaxif}
 
 
-## Description {#description}
+## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`argMax`](/sql-reference/aggregate-functions/reference/argmax) 函数,通过 `argMaxIf` 聚合组合器函数,查找满足条件的行中与 `val` 最大值对应的 `arg` 值。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`argMax`](/sql-reference/aggregate-functions/reference/argmax) 函数，通过 `argMaxIf` 聚合组合器函数，在满足条件的行中查找与 `val` 最大值对应的 `arg` 值。
 
-当需要在数据集中查找与最大值关联的值,但仅限于满足特定条件的行时,`argMaxIf` 函数非常有用。
+当需要在数据集中查找与最大值关联的值，但仅限于满足特定条件的行时，`argMaxIf` 函数非常有用。
 
 
 ## 使用示例 {#example-usage}

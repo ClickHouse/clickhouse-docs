@@ -17,43 +17,43 @@ doc_type: 'reference'
 
 对于不需要在 ClickHouse 数据与原生或第三方数据类型和结构之间进行转换的使用场景,ClickHouse Connect 客户端提供了直接使用 ClickHouse 连接的方法。
 
-### Client `raw_query` 方法 {#client-rawquery-method}
+### 客户端 `raw_query` 方法 {#client-rawquery-method}
 
 `Client.raw_query` 方法允许通过客户端连接直接使用 ClickHouse HTTP 查询接口。返回值是未经处理的 `bytes` 对象。该方法提供了一个便捷的封装,通过简洁的接口实现参数绑定、错误处理、重试和设置管理:
 
-| Parameter     | Type             | Default    | Description                                                                                                                                             |
+| 参数          | 类型             | 默认值     | 描述                                                                                                                                                    |
 | ------------- | ---------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| query         | str              | _必需_ | 任何有效的 ClickHouse 查询语句                                                                                                                              |
-| parameters    | dict or iterable | _None_     | 参见 [parameters 参数说明](driver-api.md#parameters-argument)。                                                                                        |
-| settings      | dict             | _None_     | 参见 [settings 参数说明](driver-api.md#settings-argument)。                                                                                            |
-| fmt           | str              | _None_     | 结果字节的 ClickHouse 输出格式。(未指定时 ClickHouse 默认使用 TSV)                                                                |
+| query         | str              | _必需_     | 任何有效的 ClickHouse 查询                                                                                                                              |
+| parameters    | dict or iterable | _None_     | 参见[参数说明](driver-api.md#parameters-argument)。                                                                                        |
+| settings      | dict             | _None_     | 参见[设置说明](driver-api.md#settings-argument)。                                                                                            |
+| fmt           | str              | _None_     | 结果字节的 ClickHouse 输出格式。(未指定时 ClickHouse 使用 TSV)                                                                |
 | use_database  | bool             | True       | 在查询上下文中使用 ClickHouse Connect 客户端指定的数据库                                                                               |
-| external_data | ExternalData     | _None_     | 包含文件或二进制数据的 ExternalData 对象,供查询使用。参见 [高级查询(外部数据)](advanced-querying.md#external-data) |
+| external_data | ExternalData     | _None_     | 包含用于查询的文件或二进制数据的 ExternalData 对象。参见[高级查询(外部数据)](advanced-querying.md#external-data) |
 
-调用者需要自行处理返回的 `bytes` 对象。注意,`Client.query_arrow` 只是对该方法的简单封装,使用 ClickHouse `Arrow` 输出格式。
+调用者需负责处理返回的 `bytes` 对象。注意,`Client.query_arrow` 只是对此方法的一个轻量级封装,使用 ClickHouse 的 `Arrow` 输出格式。
 
-### Client `raw_stream` 方法 {#client-rawstream-method}
+### 客户端 `raw_stream` 方法 {#client-rawstream-method}
 
-`Client.raw_stream` 方法的 API 与 `raw_query` 方法相同,但返回一个 `io.IOBase` 对象,可用作 `bytes` 对象的生成器/流数据源。该方法目前被 `query_arrow_stream` 方法使用。
+`Client.raw_stream` 方法具有与 `raw_query` 方法相同的 API,但返回一个 `io.IOBase` 对象,可用作 `bytes` 对象的生成器/流数据源。该方法目前被 `query_arrow_stream` 方法使用。
 
-### Client `raw_insert` 方法 {#client-rawinsert-method}
+### 客户端 `raw_insert` 方法 {#client-rawinsert-method}
 
 `Client.raw_insert` 方法允许通过客户端连接直接插入 `bytes` 对象或 `bytes` 对象生成器。由于不对插入数据进行任何处理,因此性能极高。该方法提供了指定设置和插入格式的选项:
 
-| Parameter    | Type                                   | Default    | Description                                                                                 |
+| 参数         | 类型                                   | 默认值     | 描述                                                                                 |
 | ------------ | -------------------------------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| table        | str                                    | _必需_ | 简单表名或带数据库限定的表名                                          |
-| column_names | Sequence[str]                          | _None_     | 插入数据块的列名。如果 `fmt` 参数不包含列名,则此参数为必需   |
-| insert_block | str, bytes, Generator[bytes], BinaryIO | _必需_ | 要插入的数据。字符串将使用客户端编码进行编码。                           |
-| settings     | dict                                   | _None_     | 参见 [settings 参数说明](driver-api.md#settings-argument)。                                |
-| fmt          | str                                    | _None_     | `insert_block` 字节的 ClickHouse 输入格式。(未指定时 ClickHouse 默认使用 TSV) |
+| table        | str                                    | _必需_     | 简单表名或带数据库限定的表名                                          |
+| column_names | Sequence[str]                          | _None_     | 插入数据块的列名。如果 `fmt` 参数不包含列名,则为必需   |
+| insert_block | str, bytes, Generator[bytes], BinaryIO | _必需_     | 要插入的数据。字符串将使用客户端编码进行编码。                           |
+| settings     | dict                                   | _None_     | 参见[设置说明](driver-api.md#settings-argument)。                                |
+| fmt          | str                                    | _None_     | `insert_block` 字节的 ClickHouse 输入格式。(未指定时 ClickHouse 使用 TSV) |
 
-调用者需要确保 `insert_block` 采用指定的格式并使用指定的压缩方法。ClickHouse Connect 使用这些原始插入方法处理文件上传和 PyArrow 表,并将解析工作委托给 ClickHouse 服务器。
+调用者需负责确保 `insert_block` 采用指定的格式并使用指定的压缩方法。ClickHouse Connect 将这些原始插入用于文件上传和 PyArrow 表,并将解析工作委托给 ClickHouse 服务器。
 
 
 ## 将查询结果保存为文件 {#saving-query-results-as-files}
 
-您可以使用 `raw_stream` 方法将数据直接从 ClickHouse 流式传输到本地文件系统。例如,如果您想将查询结果保存为 CSV 文件,可以使用以下代码片段:
+您可以使用 `raw_stream` 方法将 ClickHouse 的查询结果直接流式传输到本地文件系统。例如,如果您想将查询结果保存为 CSV 文件,可以使用以下代码:
 
 ```python
 import clickhouse_connect
@@ -61,7 +61,7 @@ import clickhouse_connect
 if __name__ == '__main__':
     client = clickhouse_connect.get_client()
     query = 'SELECT number, toString(number) AS number_as_str FROM system.numbers LIMIT 5'
-    fmt = 'CSVWithNames'  # or CSV, or CSVWithNamesAndTypes, or TabSeparated, etc.
+    fmt = 'CSVWithNames'  # 或 CSV、CSVWithNamesAndTypes、TabSeparated 等
     stream = client.raw_stream(query=query, fmt=fmt)
     with open("output.csv", "wb") as f:
         for chunk in stream:
@@ -113,11 +113,11 @@ async def main():
 asyncio.run(main())
 ```
 
-`AsyncClient` 具有与标准 `Client` 相同的方法和参数,但在适用时这些方法是协程。在内部,`Client` 中执行 I/O 操作的方法会被包装在 [run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) 调用中。
+`AsyncClient` 具有与标准 `Client` 相同的方法和参数,但在适用时这些方法是协程。在内部,`Client` 中执行 I/O 操作的这些方法被包装在 [run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) 调用中。
 
 使用 `AsyncClient` 包装器时多线程性能会提升,因为在等待 I/O 操作完成期间,执行线程和 GIL 会被释放。
 
-注意:与常规 `Client` 不同,`AsyncClient` 默认将 `autogenerate_session_id` 强制设置为 `False`。
+注意:与常规 `Client` 不同,`AsyncClient` 默认强制将 `autogenerate_session_id` 设为 `False`。
 
 另请参阅:[run_async 示例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
@@ -164,4 +164,4 @@ client1 = clickhouse_connect.get_client(pool_mgr=big_pool_mgr)
 client2 = clickhouse_connect.get_client(pool_mgr=big_pool_mgr)
 ```
 
-如上例所示,多个客户端可以共享一个连接池管理器,也可以为每个客户端创建独立的连接池管理器。有关创建 PoolManager 时可用选项的更多详细信息,请参阅 [`urllib3` 文档](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior)。
+如上例所示,多个客户端可以共享一个连接池管理器,也可以为每个客户端创建单独的连接池管理器。有关创建 PoolManager 时可用选项的更多详细信息,请参阅 [`urllib3` 文档](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#customizing-pool-behavior)。

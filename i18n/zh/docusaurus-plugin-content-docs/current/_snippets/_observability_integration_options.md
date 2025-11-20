@@ -19,9 +19,9 @@ Datadog 正在开发专用的 API 集成,该集成将提供完善的云服务监
 
 ### ClickStack {#clickstack}
 
-ClickStack 是 ClickHouse 推荐的可观测性解决方案,用于深度系统分析和调试,使用 ClickHouse 作为存储引擎提供日志、指标和追踪的统一平台。该方案依赖于 HyperDX(ClickStack UI),直接连接到您的 ClickHouse 实例内的系统表。
-HyperDX 内置了一个专注于 ClickHouse 的仪表板,包含 Selects、Inserts 和 Infrastructure 选项卡。团队还可以使用 Lucene 或 SQL 语法搜索系统表和日志,并通过 Chart Explorer 创建自定义可视化以进行详细的系统分析。
-该方法非常适合调试复杂问题、性能分析和深度系统内省,而不适用于实时生产告警。
+ClickStack 是 ClickHouse 推荐的可观测性解决方案,用于深度系统分析和调试,使用 ClickHouse 作为存储引擎提供日志、指标和追踪的统一平台。该方法依赖于 HyperDX(ClickStack 的用户界面),直接连接到您的 ClickHouse 实例内的系统表。
+HyperDX 附带一个专注于 ClickHouse 的仪表板,包含 Selects、Inserts 和 Infrastructure 选项卡。团队还可以使用 Lucene 或 SQL 语法搜索系统表和日志,并通过 Chart Explorer 创建自定义可视化以进行详细的系统分析。
+该方法非常适合调试复杂问题、性能分析和深度系统内省,而非实时生产告警。
 
 :::note
 请注意,由于 HyperDX 直接查询系统表,该方法会唤醒空闲服务。

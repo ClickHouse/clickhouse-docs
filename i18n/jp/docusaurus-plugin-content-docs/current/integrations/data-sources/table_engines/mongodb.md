@@ -3,7 +3,7 @@ slug: /integrations/mongodb
 sidebar_label: 'MongoDB'
 title: 'MongoDB'
 hide_title: true
-description: 'MongoDB エンジンを使用したインテグレーションについて説明するページ'
+description: 'MongoDB エンジンを使用した連携について説明するページ'
 doc_type: 'reference'
 keywords: ['mongodb', 'nosql', 'integration', 'data source', 'document database']
 ---

@@ -11,12 +11,12 @@ import snapshot_params from '@site/static/images/integrations/data-ingestion/cli
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、MySQL ClickPipe におけるスナップショット／初期ロードの並列実行の仕組みを説明し、その制御に使用できるスナップショットパラメーターについて解説します。
+このドキュメントでは、MySQL ClickPipe におけるスナップショット／初回ロードの並列実行の仕組みを説明し、その挙動を制御するために使用できるスナップショットパラメータについて解説します。
 
 
 ## 概要 {#overview-mysql-snapshot}
 
-初期ロードはCDC ClickPipeの最初のフェーズで、ClickPipeがソースデータベースのテーブルの履歴データをClickHouseに同期してからCDCを開始します。多くの場合、開発者はこれをシングルスレッド方式で実行します。
+初期ロードはCDC ClickPipeの最初のフェーズで、ClickPipeがソースデータベースのテーブルの履歴データをClickHouseに同期してから、CDCを開始します。多くの場合、開発者はこれをシングルスレッド方式で実行します。
 しかし、MySQL ClickPipeはこのプロセスを並列化でき、初期ロードを大幅に高速化できます。
 
 ### パーティションキー列 {#key-mysql-snapshot}
@@ -39,7 +39,7 @@ MySQL ClickPipeは、ソーステーブルの列を使用してソーステー�
 
 #### パーティションあたりのスナップショット行数 {#numrows-mysql-snapshot}
 
-この設定は、パーティションを構成する行数を制御します。ClickPipeは、このサイズのチャンクでソーステーブルを読み取り、チャンクは設定された初期ロード並列度に基づいて並列処理されます。デフォルト値はパーティションあたり100,000行です。
+この設定は、1つのパーティションを構成する行数を制御します。ClickPipeは、このサイズのチャンクでソーステーブルを読み取り、チャンクは設定された初期ロード並列度に基づいて並列処理されます。デフォルト値はパーティションあたり100,000行です。
 
 #### 初期ロード並列度 {#parallelism-mysql-snapshot}
 
@@ -57,4 +57,4 @@ MySQLで**SHOW processlist**を実行すると、並列スナップショット�
 
 - スナップショットパラメータは、パイプ作成後に編集できません。変更する場合は、新しいClickPipeを作成する必要があります。
 - 既存のClickPipeにテーブルを追加する場合、スナップショットパラメータを変更できません。ClickPipeは新しいテーブルに対して既存のパラメータを使用します。
-- パーティションキー列には`NULL`を含めないでください。パーティショニングロジックによってスキップされます。
+- パーティションキー列は`NULL`を含むべきではありません。パーティショニングロジックによってスキップされるためです。

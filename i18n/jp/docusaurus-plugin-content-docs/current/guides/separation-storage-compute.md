@@ -3,7 +3,7 @@ sidebar_position: 1
 sidebar_label: 'ストレージとコンピュートの分離'
 slug: /guides/separation-storage-compute
 title: 'ストレージとコンピュートの分離'
-description: 'このガイドでは、ClickHouse と S3 を使用して、ストレージとコンピュートを分離したアーキテクチャをどのように実装できるかを解説します。'
+description: 'このガイドでは、ClickHouse と S3 を使用して、ストレージとコンピュートを分離したアーキテクチャを構築する方法を解説します。'
 doc_type: 'guide'
 keywords: ['storage', 'compute', 'architecture', 'scalability', 'cloud']
 ---
@@ -79,7 +79,7 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 
 S3ディスクの設定をさらに指定する必要がある場合(例えば`region`の指定やカスタムHTTP `header`の送信など)、関連する設定のリストは[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
 
-また、`access_key_id`と`secret_access_key`を以下の設定に置き換えることもできます。これにより、環境変数とAmazon EC2メタデータから認証情報の取得を試みます:
+また、`access_key_id`と`secret_access_key`を以下に置き換えることもできます。これにより、環境変数とAmazon EC2メタデータから認証情報の取得を試みます:
 
 ```bash
 <use_environment_credentials>true</use_environment_credentials>
@@ -91,7 +91,7 @@ S3ディスクの設定をさらに指定する必要がある場合(例えば`r
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
-変更を有効にするために、ClickHouseサーバーを再起動します:
+これで、変更を有効にするためにClickHouseサーバーを再起動できます:
 
 ```bash
 service clickhouse-server restart
@@ -100,7 +100,7 @@ service clickhouse-server restart
 
 ## 2. S3をバックエンドとするテーブルの作成 {#2-create-a-table-backed-by-s3}
 
-S3ディスクが正しく設定されているかを確認するため、テーブルを作成してクエリを実行してみます。
+S3ディスクが正しく設定されているかをテストするため、テーブルを作成してクエリを実行してみます。
 
 新しいS3ストレージポリシーを指定してテーブルを作成します:
 
@@ -160,9 +160,9 @@ SELECT * FROM my_s3_table;
 2 rows in set. Elapsed: 0.284 sec.
 ```
 
-AWSコンソールで、データがS3に正常に挿入された場合、ClickHouseが指定したバケット内に新しいファイルを作成したことを確認できます。
+AWSコンソールで、データがS3に正常に挿入された場合、ClickHouseが指定したバケットに新しいファイルを作成したことを確認できます。
 
-すべてが正常に動作した場合、ストレージとコンピュートを分離したClickHouseの使用が完了しました!
+すべてが正常に動作した場合、ストレージとコンピュートが分離されたClickHouseを使用できています!
 
 <Image
   img={s3_bucket_example}
@@ -172,7 +172,7 @@ AWSコンソールで、データがS3に正常に挿入された場合、ClickH
 />
 
 
-## 3. フォールトトレランスのためのレプリケーションの実装(オプション) {#3-implementing-replication-for-fault-tolerance-optional}
+## 3. フォールトトレランスのためのレプリケーションの実装（オプション） {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
 AWS/GCSのライフサイクルポリシーを設定しないでください。これはサポートされておらず、テーブルが破損する可能性があります。
@@ -180,7 +180,7 @@ AWS/GCSのライフサイクルポリシーを設定しないでください。�
 
 フォールトトレランスを実現するには、複数のAWSリージョンに分散配置された複数のClickHouseサーバーノードを使用し、各ノードにS3バケットを割り当てます。
 
-S3ディスクを使用したレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用して実現できます。詳細については、以下のガイドを参照してください:
+S3ディスクを使用したレプリケーションは、`ReplicatedMergeTree`テーブルエンジンを使用することで実現できます。詳細については、以下のガイドを参照してください。
 
 - [S3オブジェクトストレージを使用した2つのAWSリージョン間での単一シャードのレプリケーション](/integrations/s3#s3-multi-region)
 

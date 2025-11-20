@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Google Cloud SQL'
-description: '将 Google Cloud SQL Postgres 实例配置为 ClickPipes 的数据源'
+description: '将 Google Cloud SQL Postgres 实例设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
-title: 'Google Cloud SQL Postgres 源配置指南'
+title: 'Google Cloud SQL Postgres 数据源配置指南'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'logical decoding', 'firewall']
 ---
@@ -18,11 +18,11 @@ import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 
-# Google Cloud SQL Postgres 数据源设置指南
+# Google Cloud SQL Postgres 源设置指南
 
 :::info
 
-如果你使用的是受支持的提供商之一（见侧边栏），请参阅该提供商的专用指南。
+如果你使用的是侧边栏中列出的受支持提供商之一，请参考该提供商的专用指南。
 
 :::
 
@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
-支持 Postgres 12 及以上版本
+Postgres 12 及以上版本
 
 
 ## 启用逻辑复制 {#enable-logical-replication}
@@ -65,7 +65,7 @@ import Image from '@theme/IdealImage';
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
 
-通过管理员用户连接到您的 Cloud SQL Postgres 并运行以下命令:
+通过管理员用户连接到您的 Cloud SQL Postgres 实例并运行以下命令:
 
 1. 创建一个专用于 ClickPipes 的 Postgres 用户。
 
@@ -73,7 +73,7 @@ import Image from '@theme/IdealImage';
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. 为 `clickpipes_user` 授予对需要复制表所在模式的只读访问权限。以下示例展示了如何为 `public` 模式设置权限。如果需要授予对多个模式的访问权限,可以为每个模式运行这三条命令。
+2. 为 `clickpipes_user` 授予对需要复制表所在模式的只读访问权限。以下示例展示了如何为 `public` 模式设置权限。如果需要授予对多个模式的访问权限,可以为每个模式分别运行这三条命令。
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -87,7 +87,7 @@ import Image from '@theme/IdealImage';
    ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. 创建一个发布,用于后续创建 MIRROR(镜像复制)。
+4. 创建用于后续创建 MIRROR(复制)的发布。
 
    ```sql
    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
@@ -106,7 +106,7 @@ import Image from '@theme/IdealImage';
 
 :::
 
-1. 进入 **Connections** 部分
+1. 转到 **Connections** 部分
 
 <Image
   img={connections}
@@ -115,7 +115,7 @@ import Image from '@theme/IdealImage';
   border
 />
 
-2. 进入 Networking 子部分
+2. 转到 Networking 子部分
 
 <Image
   img={connections_networking}
@@ -142,5 +142,5 @@ import Image from '@theme/IdealImage';
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md) 并开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 Postgres 实例时使用的连接详细信息,在创建 ClickPipe 时会用到这些信息。
+现在您可以[创建 ClickPipe](../index.md)，开始将 Postgres 实例中的数据导入 ClickHouse Cloud。
+请务必记录设置 Postgres 实例时使用的连接信息，创建 ClickPipe 时需要用到这些信息。

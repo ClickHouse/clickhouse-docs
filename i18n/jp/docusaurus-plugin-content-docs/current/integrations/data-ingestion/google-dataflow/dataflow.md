@@ -2,7 +2,7 @@
 sidebar_label: 'Google Dataflow と ClickHouse の統合'
 slug: /integrations/google-dataflow/dataflow
 sidebar_position: 1
-description: 'Google Dataflow を使用して ClickHouse にデータを取り込む方法'
+description: 'Google Dataflow を使用して ClickHouse にデータを取り込むことができます'
 title: 'Google Dataflow と ClickHouse の統合'
 doc_type: 'guide'
 keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apache Beam ClickHouse', 'ClickHouseIO connector', 'Google Cloud ClickHouse integration']
@@ -15,10 +15,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-[Google Dataflow](https://cloud.google.com/dataflow) は、フルマネージドなストリーミング／バッチデータ処理サービスです。Java または Python で記述されたパイプラインをサポートし、Apache Beam SDK の上に構築されています。
+[Google Dataflow](https://cloud.google.com/dataflow) は、フルマネージドのストリーミングおよびバッチデータ処理サービスです。Java または Python で記述されたパイプラインをサポートしており、Apache Beam SDK 上に構築されています。
 
-Google Dataflow を ClickHouse と組み合わせて使用する主な方法は 2 つあり、どちらも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を利用します。
-次の 2 つです:
+Google Dataflow を ClickHouse と組み合わせて利用する主な方法は 2 つあり、いずれも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を使用します。
+次の 2 通りです。
 - [Java runner](#1-java-runner)
 - [Predefined templates](#2-predefined-templates)
 
@@ -29,7 +29,7 @@ Google Dataflow を ClickHouse と組み合わせて使用する主な方法は 
 [Javaランナー](./java-runner)を使用すると、Apache Beam SDKの`ClickHouseIO`統合を利用してカスタムDataflowパイプラインを実装できます。このアプローチでは、パイプラインロジックに対する完全な柔軟性と制御が提供され、特定の要件に合わせてETLプロセスをカスタマイズできます。
 ただし、このオプションを使用するには、Javaプログラミングの知識とApache Beamフレームワークへの習熟が必要です。
 
-### 主な特徴 {#key-features}
+### 主な機能 {#key-features}
 
 - 高度なカスタマイズが可能
 - 複雑または高度なユースケースに最適

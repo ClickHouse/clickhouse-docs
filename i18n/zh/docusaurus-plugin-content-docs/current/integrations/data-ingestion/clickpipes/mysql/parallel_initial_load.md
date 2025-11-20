@@ -1,6 +1,6 @@
 ---
 title: 'MySQL ClickPipe 中的并行快照'
-description: '说明 MySQL ClickPipe 中并行快照机制的文档'
+description: '解释 MySQL ClickPipe 并行快照机制的文档'
 slug: /integrations/clickpipes/mysql/parallel_initial_load
 sidebar_label: '并行快照的工作原理'
 doc_type: 'guide'
@@ -11,17 +11,17 @@ import snapshot_params from '@site/static/images/integrations/data-ingestion/cli
 import partition_key from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/partition_key.png'
 import Image from '@theme/IdealImage';
 
-本文档解释了 MySQL ClickPipe 中并行快照/初始加载的工作原理，并介绍了可用于控制该过程的快照参数。
+本文档说明了 MySQL ClickPipe 中并行快照/初始加载的工作机制，并介绍了可用于控制该过程的快照参数。
 
 
 ## 概述 {#overview-mysql-snapshot}
 
-初始加载是 CDC ClickPipe 的第一个阶段,ClickPipe 会先将源数据库中表的历史数据同步到 ClickHouse,然后再启动 CDC。通常情况下,开发人员会以单线程方式执行此操作。
-而 MySQL ClickPipe 可以并行化此过程,从而显著加快初始加载速度。
+初始加载是 CDC ClickPipe 的第一个阶段,ClickPipe 会在启动 CDC 之前将源数据库中表的历史数据同步到 ClickHouse。通常情况下,开发人员会以单线程方式执行此操作。
+但是,MySQL ClickPipe 可以并行化此过程,从而显著加快初始加载速度。
 
 ### 分区键列 {#key-mysql-snapshot}
 
-启用功能标志后,您将在 ClickPipe 表选择器中看到以下设置(在创建和编辑 ClickPipe 时均可见):
+启用功能标志后,您应该会在 ClickPipe 表选择器中看到以下设置(在创建和编辑 ClickPipe 时都可见):
 
 <Image img={partition_key} alt='分区键列' size='md' />
 
@@ -39,7 +39,7 @@ MySQL ClickPipe 使用源表中的某一列对源表进行逻辑分区。该列�
 
 #### 每个分区的快照行数 {#numrows-mysql-snapshot}
 
-此设置控制一个分区包含多少行。ClickPipe 将按此大小的数据块读取源表,并根据设置的初始加载并行度并行处理这些数据块。默认值为每个分区 100,000 行。
+此设置控制一个分区包含多少行。ClickPipe 将按此大小的块读取源表,并根据设置的初始加载并行度并行处理这些块。默认值为每个分区 100,000 行。
 
 #### 初始加载并行度 {#parallelism-mysql-snapshot}
 

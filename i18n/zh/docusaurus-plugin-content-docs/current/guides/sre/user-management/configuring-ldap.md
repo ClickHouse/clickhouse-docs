@@ -2,9 +2,9 @@
 sidebar_label: '配置 LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
-description: '说明如何将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
-keywords: ['LDAP 配置', 'LDAP 身份验证', '角色映射', '用户管理', 'SRE 指南']
+title: '配置 ClickHouse 使用 LDAP 进行身份认证和角色映射'
+description: '介绍如何配置 ClickHouse 使用 LDAP 进行身份认证和角色映射'
+keywords: ['LDAP 配置', 'LDAP 身份认证', '角色映射', '用户管理', 'SRE 指南']
 doc_type: 'guide'
 ---
 
@@ -15,7 +15,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-可以将 ClickHouse 配置为使用 LDAP 来对 ClickHouse 数据库用户进行身份验证。本文档提供了一个简单示例，说明如何将 ClickHouse 与 LDAP 系统集成，以对一个公开可用的目录进行身份验证。
+ClickHouse 可以配置为使用 LDAP 对 ClickHouse 数据库用户进行身份验证。本指南提供了一个简单示例,演示如何将 ClickHouse 与 LDAP 系统集成,并通过公开可用的目录进行身份验证。
 
 
 
@@ -48,7 +48,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
    ...
    ```
 
-2. 编辑 `config.xml` 文件并添加以下内容来配置 LDAP:
+2. 编辑 `config.xml` 文件并添加以下内容以配置 LDAP:
 
    ```xml
    <ldap_servers>
@@ -74,17 +74,17 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
    | port             | LDAP 服务器的目录端口                         | 389                                 |
    | bind_dn          | 用户的模板路径                                | `uid={user_name},dc=example,dc=com` |
    | enable_tls       | 是否使用安全 LDAP                             | no                                  |
-   | tls_require_cert | 是否要求连接时提供证书                        | never                               |
+   | tls_require_cert | 是否要求连接证书                              | never                               |
 
    :::note
    在此示例中,由于公共服务器使用 389 端口且不使用安全端口,因此出于演示目的禁用了 TLS。
    :::
 
    :::note
-   查看 [LDAP 文档页面](../../../operations/external-authenticators/ldap.md) 了解有关 LDAP 设置的更多详细信息。
+   查看 [LDAP 文档页面](../../../operations/external-authenticators/ldap.md) 以了解有关 LDAP 设置的更多详细信息。
    :::
 
-3. 将 `<ldap>` 部分添加到 `<user_directories>` 部分来配置用户角色映射。此部分定义用户何时通过身份验证以及用户将获得什么角色。在此基本示例中,任何通过 LDAP 身份验证的用户都将获得 `scientists_role` 角色,该角色将在后续步骤中在 ClickHouse 中定义。该部分应类似如下:
+3. 将 `<ldap>` 部分添加到 `<user_directories>` 部分以配置用户角色映射。此部分定义用户何时通过身份验证以及用户将获得什么角色。在此基本示例中,任何通过 LDAP 身份验证的用户都将获得 `scientists_role` 角色,该角色将在后续步骤中在 ClickHouse 中定义。该部分应类似如下:
 
    ```xml
    <user_directories>
@@ -114,7 +114,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
    | ------------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
    | server        | 在先前 ldap_servers 部分中定义的标签                                | test_ldap_server                                              |
    | roles         | 在 ClickHouse 中定义的、用户将映射到的角色名称                      | scientists_role                                               |
-   | base_dn       | 开始搜索包含用户的组的基准路径                                      | dc=example,dc=com                                             |
+   | base_dn       | 开始搜索包含用户的组的基础路径                                      | dc=example,dc=com                                             |
    | search_filter | 用于识别要选择以映射用户的组的 LDAP 搜索过滤器                     | `(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))` |
    | attribute     | 应从哪个属性名称返回值                                              | cn                                                            |
 
@@ -133,7 +133,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
    CREATE ROLE scientists_role;
    ```
 
-2. 为该角色授予所需的权限。以下语句为所有能够通过 LDAP 身份验证的用户授予管理员权限:
+2. 向该角色授予所需的权限。以下语句向所有能够通过 LDAP 身份验证的用户授予管理员权限:
    ```sql
    GRANT ALL ON *.* TO scientists_role;
    ```
@@ -156,7 +156,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
    使用步骤 1 中的 `ldapsearch` 命令可以查看目录中的所有可用用户,所有用户的密码都是 `password`
    :::
 
-2. 测试用户是否正确映射到 `scientists_role` 角色并具有管理员权限
+2. 测试用户是否已正确映射到 `scientists_role` 角色并具有管理员权限
 
    ```sql
    SHOW DATABASES

@@ -2,7 +2,7 @@
 sidebar_label: '将 Dataflow 与 ClickHouse 集成'
 slug: /integrations/google-dataflow/dataflow
 sidebar_position: 1
-description: '用户可以使用 Google Dataflow 将数据写入 ClickHouse'
+description: '用户可以使用 Google Dataflow 将数据导入 ClickHouse'
 title: '将 Google Dataflow 与 ClickHouse 集成'
 doc_type: 'guide'
 keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apache Beam ClickHouse', 'ClickHouseIO connector', 'Google Cloud ClickHouse integration']
@@ -17,7 +17,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 [Google Dataflow](https://cloud.google.com/dataflow) 是一项完全托管的流式和批处理数据处理服务。它支持使用 Java 或 Python 编写的 pipeline，并构建在 Apache Beam SDK 之上。
 
-在将 Google Dataflow 与 ClickHouse 结合使用时，有两种主要方式，这两种方式都利用了 [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam)：
+将 Google Dataflow 与 ClickHouse 结合使用主要有两种方式，这两种方式都依赖于 [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam)：
 - [Java runner](#1-java-runner)
 - [预定义模板](#2-predefined-templates)
 
@@ -31,18 +31,18 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ### 主要特性 {#key-features}
 
 - 高度可定制。
-- 适用于复杂或高级用例。
+- 适用于复杂或高级使用场景。
 - 需要编码能力和对 Beam API 的理解。
 
 
 ## 预定义模板 {#2-predefined-templates}
 
-ClickHouse 提供了针对特定用例设计的[预定义模板](./templates),例如将数据从 BigQuery 导入到 ClickHouse。这些模板开箱即用,简化了集成流程,对于希望使用无代码解决方案的用户来说是理想的选择。
+ClickHouse 提供了针对特定用例设计的[预定义模板](./templates),例如将数据从 BigQuery 导入到 ClickHouse。这些模板可直接使用,简化了集成流程,是偏好无代码解决方案用户的理想选择。
 
 ### 主要特性 {#key-features-1}
 
 - 无需编写 Beam 代码。
-- 简单用例的快速便捷配置。
-- 同样适合编程经验较少的用户。
+- 针对简单用例可快速便捷地完成设置。
+- 同样适用于编程经验较少的用户。
 
-这两种方法都与 Google Cloud 和 ClickHouse 生态系统完全兼容,可根据您的技术水平和项目需求灵活选择。
+这两种方法都完全兼容 Google Cloud 和 ClickHouse 生态系统,可根据您的技术专长和项目需求灵活选择。

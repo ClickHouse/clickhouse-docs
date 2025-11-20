@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Cloud SQL For MySQL '
-description: '逐步演示如何将 Cloud SQL for MySQL 配置为 ClickPipes 源的指南'
+description: '将 Cloud SQL for MySQL 配置为 ClickPipes 源的分步指南'
 slug: /integrations/clickpipes/mysql/source/gcp
-title: 'Cloud SQL for MySQL 源配置指南'
+title: 'Cloud SQL for MySQL 作为源的配置指南'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
 doc_type: 'guide'
 ---
@@ -18,17 +18,17 @@ import Image from '@theme/IdealImage';
 
 # Cloud SQL for MySQL 源端设置指南
 
-本文通过分步说明，指导你如何配置 Cloud SQL for MySQL 实例，以通过 MySQL ClickPipe 复制其中的数据。
+本指南将逐步介绍如何配置 Cloud SQL for MySQL 实例，以通过 MySQL ClickPipe 复制其中的数据。
 
 
 
 ## 启用二进制日志保留 {#enable-binlog-retention-gcp}
 
-二进制日志是一组日志文件,其中包含对 MySQL 服务器实例所做数据修改的相关信息。二进制日志文件是实现复制功能的必要条件。
+二进制日志是一组日志文件,其中包含对 MySQL 服务器实例进行的数据修改信息。二进制日志文件是实现复制功能的必要条件。
 
 ### 通过 PITR 启用二进制日志记录{#enable-binlog-logging-gcp}
 
-PITR 功能决定了 Google Cloud 中 MySQL 的二进制日志记录是开启还是关闭。您可以在 Cloud 控制台中编辑 Cloud SQL 实例,然后向下滚动到以下部分进行设置。
+PITR 功能决定 Google Cloud 中 MySQL 的二进制日志记录是开启还是关闭。您可以在 Cloud 控制台中编辑 Cloud SQL 实例,然后向下滚动到以下部分进行设置。
 
 <Image img={gcp_pitr} alt='在 Cloud SQL 中启用 PITR' size='lg' border />
 
@@ -61,7 +61,7 @@ PITR 功能决定了 Google Cloud 中 MySQL 的二进制日志记录是开启还
 
 ## 配置数据库用户 {#configure-database-user-gcp}
 
-以 root 用户身份连接到您的 Cloud SQL MySQL 实例,然后执行以下命令:
+以 root 用户身份连接到您的 Cloud SQL MySQL 实例并执行以下命令:
 
 1. 为 ClickPipes 创建专用用户:
 
@@ -69,7 +69,7 @@ PITR 功能决定了 Google Cloud 中 MySQL 的二进制日志记录是开启还
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
    ```
 
-2. 授予架构权限。以下示例展示了 `clickpipes` 数据库的权限设置。对需要复制的每个数据库和主机重复执行这些命令:
+2. 授予模式权限。以下示例显示了 `clickpipes` 数据库的权限。对要复制的每个数据库和主机重复执行这些命令:
 
    ```sql
    GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'host';
@@ -85,10 +85,10 @@ PITR 功能决定了 Google Cloud 中 MySQL 的二进制日志记录是开启还
 
 ## 配置网络访问 {#configure-network-access-gcp-mysql}
 
-如果您需要限制对 Cloud SQL 实例的流量访问,请将[文档中列出的静态 NAT IP 地址](../../index.md#list-of-static-ips)添加到 Cloud SQL MySQL 实例的 IP 白名单中。
-您可以通过编辑实例或在 Cloud 控制台侧边栏的 `Connections` 选项卡中完成此配置。
+如果您想限制对 Cloud SQL 实例的流量访问,请将[文档中记录的静态 NAT IP 地址](../../index.md#list-of-static-ips)添加到 Cloud SQL MySQL 实例的 IP 白名单中。
+您可以通过编辑实例或在 Cloud 控制台侧边栏中进入 `Connections` 选项卡来完成此操作。
 
-<Image img={gcp_mysql_ip} alt='GCP MySQL 中的 IP 白名单配置' size='lg' border />
+<Image img={gcp_mysql_ip} alt='GCP MySQL 中的 IP 白名单' size='lg' border />
 
 
 ## 下载并使用根 CA 证书 {#download-root-ca-certificate-gcp-mysql}
@@ -102,6 +102,6 @@ PITR 功能决定了 Google Cloud 中 MySQL 的二进制日志记录是开启还
 
 <Image img={gcp_mysql_cert} alt='下载 GCP MySQL 证书' size='lg' border />
 
-5. 在 ClickPipes 界面中,创建新的 MySQL ClickPipe 时上传已下载的证书。
+5. 在 ClickPipes 界面中,创建新的 MySQL ClickPipe 时上传下载的证书。
 
 <Image img={rootca} alt='使用 GCP MySQL 证书' size='lg' border />

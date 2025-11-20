@@ -2,7 +2,7 @@
 sidebar_label: 'データ暗号化'
 slug: /cloud/security/cmek
 title: 'データ暗号化'
-description: 'ClickHouse Cloud におけるデータ暗号化について詳しく学びます'
+description: 'ClickHouse Cloud のデータ暗号化について詳しく学ぶ'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'encryption', 'CMEK', 'KMS key poller']
 ---
@@ -22,14 +22,14 @@ ClickHouse Cloudは、デフォルトでクラウドプロバイダー管理のA
 
 - [S3のAWSサーバーサイド暗号化](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [GCPのデフォルト保存時暗号化](https://cloud.google.com/docs/security/encryption/default-encryption)
-- [Azureの保存データ用ストレージ暗号化](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
+- [保存データ向けAzureストレージ暗号化](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
 
 
 ## データベースレベルの暗号化 {#database-encryption}
 
 <EnterprisePlanFeatureBadge feature='Enhanced Encryption' />
 
-保存データは、デフォルトでクラウドプロバイダー管理のAES 256キーを使用して暗号化されます。お客様は、Transparent Data Encryption (TDE) を有効にしてサービスデータに追加の保護層を提供するか、独自のキーを提供してCustomer Managed Encryption Keys (CMEK) をサービスに実装することができます。
+保存データは、デフォルトでクラウドプロバイダー管理のAES 256キーを使用して暗号化されます。お客様は、Transparent Data Encryption (TDE) を有効にしてサービスデータに追加の保護層を提供するか、独自のキーを提供してサービスにCustomer Managed Encryption Keys (CMEK) を実装することができます。
 
 拡張暗号化は現在、AWSおよびGCPサービスで利用可能です。Azureは近日対応予定です。
 
@@ -107,7 +107,7 @@ ClickHouse Cloudサービスの暗号化に使用されているKMSキーを削�
 
 #### キーのローテーション {#key-rotation}
 
-CMEKを設定したら、上記の手順に従って新しいKMSキーを作成し権限を付与することでキーをローテーションします。サービス設定に戻り、新しいARN (AWS) またはKey Resource Path (GCP) を貼り付けて設定を保存します。サービスは新しいキーを適用するために再起動します。
+CMEKを設定したら、上記の手順に従って新しいKMSキーを作成し権限を付与することでキーをローテーションします。サービス設定に戻り、新しいARN (AWS) またはKey Resource Path (GCP) を貼り付けて設定を保存します。新しいキーを適用するためにサービスが再起動します。
 
 #### KMSキーポーラー {#kms-key-poller}
 

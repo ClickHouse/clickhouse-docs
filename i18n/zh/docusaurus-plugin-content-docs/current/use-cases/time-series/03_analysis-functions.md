@@ -1,7 +1,7 @@
 ---
 title: '分析函数 - 时间序列'
 sidebar_label: '分析函数'
-description: '用于在 ClickHouse 中分析时间序列数据的函数。'
+description: '在 ClickHouse 中用于时间序列数据分析的函数。'
 slug: /use-cases/time-series/analysis-functions
 keywords: ['time-series', 'analysis functions', 'window functions', 'aggregation functions', 'moving averages', 'trend analysis']
 show_related_blogs: true
@@ -12,26 +12,26 @@ doc_type: 'reference'
 
 # 时间序列分析函数
 
-在 ClickHouse 中，可以使用标准的 SQL 聚合函数和窗口函数来进行时间序列分析。  
-处理时间序列数据时，通常会遇到三类主要指标：
+在 ClickHouse 中，可以使用标准 SQL 聚合函数和窗口函数来进行时间序列分析。
+在处理时间序列数据时，通常会遇到三种主要类型的指标：
 
-* 随时间单调递增的 Counter 指标（例如页面浏览量或事件总数）
-* 表示某一时刻测量值、且可上下波动的 Gauge 指标（例如 CPU 使用率或温度）
-* 对观测值进行采样并按桶计数的直方图（例如请求时长或响应大小）
+* 随时间单调递增的计数器型指标（如页面浏览量或事件总数）
+* 表示某一时刻测量值、可上下波动的仪表型指标（如 CPU 使用率或温度）
+* 对观测值进行采样并按桶统计计数的直方图（如请求时长或响应大小）
 
-这些指标常见的分析模式包括对不同时期之间的数值进行比较、计算累积总量、计算变化速率以及分析分布。  
+对这些指标的常见分析模式包括对比不同时期的数值、计算累积总量、确定变化速率以及分析分布。
 这些都可以通过聚合、`sum() OVER` 等窗口函数以及 `histogram()` 等专用函数的组合来实现。
 
 
 
 ## 环比变化 {#time-series-period-over-period-changes}
 
-在分析时间序列数据时,我们经常需要了解数值在不同时间段之间的变化情况。
+在分析时间序列数据时,我们经常需要了解数值在不同时间段之间如何变化。
 这对于仪表类指标和计数器类指标都至关重要。
 [`lagInFrame`](/docs/sql-reference/window-functions/lagInFrame) 窗口函数可以让我们访问上一时间段的值来计算这些变化。
 
 以下查询通过计算 "Weird Al" Yankovic 维基百科页面的日环比浏览量变化来演示此功能。
-trend 列显示与前一天相比流量是增加(正值)还是减少(负值),有助于识别活动中的异常峰值或骤降。
+trend 列显示与前一天相比流量是增加(正值)还是减少(负值),有助于识别活动中出现的异常峰值或骤降。
 
 ```sql
 SELECT
@@ -134,8 +134,8 @@ LIMIT 10;
 ## 直方图 {#time-series-histograms}
 
 时间序列数据的一个常见应用场景是基于跟踪的事件构建直方图。
-假设我们想要了解页面按总点击量的分布情况,仅包含点击量超过 10,000 的页面。
-我们可以使用 `histogram()` 函数根据分箱数量自动生成自适应直方图:
+假设我们想要了解页面按总点击量的分布情况,仅包括点击量超过 10,000 的页面。
+我们可以使用 `histogram()` 函数根据分箱数自动生成自适应直方图:
 
 ```sql
 SELECT

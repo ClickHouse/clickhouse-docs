@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 ## OpenTelemetry Lambdaレイヤーのインストール {#installing-the-otel-lambda-layers}
 
-OpenTelemetryプロジェクトは、以下の目的で個別のLambdaレイヤーを提供しています：
+OpenTelemetryプロジェクトは、以下の目的で個別のLambdaレイヤーを提供しています:
 
 1. OpenTelemetry自動計装を使用してLambda関数コードを自動的に計装する
 2. 収集されたログ、メトリクス、トレースをClickStackに転送する
@@ -40,10 +40,10 @@ OpenTelemetryプロジェクトは、以下の目的で個別のLambdaレイヤ�
 
 LambdaがすでにOpenTelemetry SDKで計装されている場合は、この手順をスキップできます。
 
-**開始するには**：
+**開始するには**:
 
 1. Layersセクションで「Add a layer」をクリックします
-2. 「specify an ARN」を選択し、言語に基づいて正しいARNを選択します。`<region>`を実際のリージョン（例：`us-east-2`）に置き換えてください：
+2. 「specify an ARN」を選択し、言語に基づいて正しいARNを選択します。`<region>`を実際のリージョン(例: `us-east-2`)に置き換えてください:
 
 <Tabs groupId="install-language-options">
 <TabItem value="javascript" label="Javascript" default>
@@ -133,10 +133,10 @@ OTEL_TRACES_SAMPLER=always_on
 
 コレクターLambdaレイヤーを使用すると、エクスポーターのレイテンシによる応答時間への影響なしに、Lambda関数からClickStackへログ、メトリクス、トレースを転送できます。
 
-**コレクターレイヤーをインストールするには**：
+**コレクターレイヤーをインストールするには**:
 
 1. Layersセクションで「Add a layer」をクリックします
-2. 「specify an ARN」を選択し、アーキテクチャに基づいて正しいARNを選択します。`<region>`を実際のリージョン（例：`us-east-2`）に置き換えてください：
+2. 「specify an ARN」を選択し、アーキテクチャに基づいて正しいARNを選択します。`<region>`を実際のリージョン(例: `us-east-2`)に置き換えてください:
 
 <Tabs groupId="install-language-layer">
 
@@ -208,22 +208,22 @@ OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 
 ## インストールの確認 {#checking-the-installation}
 
-レイヤーをデプロイすると、Lambda関数から自動的に収集されたトレースがHyperDXに表示されるようになります。`decouple`および`batching`プロセッサによってテレメトリ収集に遅延が発生する可能性があるため、トレースの表示が遅れる場合があります。カスタムログやメトリクスを出力するには、使用している言語に対応したOpenTelemetry SDKでコードをインストルメント化する必要があります。
+レイヤーをデプロイすると、Lambda関数から自動的に収集されたトレースがHyperDXに表示されるようになります。`decouple`および`batching`プロセッサはテレメトリ収集に遅延を生じさせる可能性があるため、トレースの表示が遅れる場合があります。カスタムログやメトリクスを出力するには、使用している言語に対応したOpenTelemetry SDKでコードを計装する必要があります。
 
 
 ## トラブルシューティング {#troubleshoting}
 
 ### カスタムインストルメンテーションが送信されない {#custom-instrumentation-not-sending}
 
-手動で定義したトレースやその他のテレメトリが表示されない場合、互換性のないバージョンのOpenTelemetry APIパッケージを使用している可能性があります。OpenTelemetry APIパッケージのバージョンが、AWS Lambdaに含まれているバージョン以下であることを確認してください。
+手動で定義したトレースやその他のテレメトリが表示されない場合、互換性のないバージョンのOpenTelemetry APIパッケージを使用している可能性があります。OpenTelemetry APIパッケージのバージョンが、AWS Lambdaに含まれているバージョンと同じか、それより低いバージョンであることを確認してください。
 
 ### SDKデバッグログの有効化 {#enabling-sdk-debug-logs}
 
-OpenTelemetry SDKのデバッグログを有効にするには、環境変数`OTEL_LOG_LEVEL`を`DEBUG`に設定します。これにより、自動インストルメンテーション層がアプリケーションを正しくインストルメント化していることを確認できます。
+OpenTelemetry SDKのデバッグログを有効にするには、環境変数`OTEL_LOG_LEVEL`を`DEBUG`に設定してください。これにより、自動インストルメンテーション層がアプリケーションを正しく計装していることを確認できます。
 
 ### コレクターデバッグログの有効化 {#enabling-collector-debug-logs}
 
-コレクターの問題をデバッグするには、コレクター設定ファイルを変更して`logging`エクスポーターを追加し、テレメトリのログレベルを`debug`に設定することで、コレクターLambdaレイヤーからより詳細なログを有効にできます。
+コレクターの問題をデバッグするには、コレクター設定ファイルを変更して`logging`エクスポーターを追加し、テレメトリのログレベルを`debug`に設定することで、コレクターLambdaレイヤーからより詳細なログ出力を有効にできます。
 
 
 ```yaml

@@ -1,8 +1,8 @@
 ---
 slug: /manage/data-sources/cloud-endpoints-api
-sidebar_label: 'IP-адреса Cloud'
-title: 'IP-адреса Cloud'
-description: 'На этой странице описаны функции безопасности Cloud Endpoints API в ClickHouse. Здесь объясняется, как защитить развертывания ClickHouse, управляя доступом с помощью механизмов аутентификации и авторизации.'
+sidebar_label: 'IP-адреса в Cloud'
+title: 'IP-адреса в Cloud'
+description: 'На этой странице описаны функции безопасности Cloud Endpoints API в ClickHouse. Здесь объясняется, как защитить ваши развёртывания ClickHouse, управляя доступом с помощью механизмов аутентификации и авторизации.'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'static IP addresses', 'cloud endpoints', 'API', 'security', 'egress IPs', 'ingress IPs', 'firewall']
 ---
@@ -14,9 +14,9 @@ import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized
 
 ## API статических IP-адресов {#static-ips-api}
 
-Если вам необходимо получить список статических IP-адресов, вы можете использовать следующую конечную точку API ClickHouse Cloud: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). Этот API предоставляет конечные точки для сервисов ClickHouse Cloud, такие как IP-адреса входящего и исходящего трафика, а также конечные точки S3 для каждого региона и облачного провайдера.
+Если вам необходимо получить список статических IP-адресов, вы можете использовать следующую конечную точку API ClickHouse Cloud: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). Этот API предоставляет конечные точки для сервисов ClickHouse Cloud, такие как IP-адреса входящего/исходящего трафика и конечные точки S3 для каждого региона и облачного провайдера.
 
-Если вы используете интеграцию, такую как движок MySQL или PostgreSQL, возможно, вам потребуется авторизовать ClickHouse Cloud для доступа к вашим экземплярам. Вы можете использовать этот API для получения публичных IP-адресов и настройки их в `firewalls` или `Authorized networks` в GCP, либо в `Security Groups` для Azure, AWS или в любой другой системе управления исходящим трафиком инфраструктуры, которую вы используете.
+Если вы используете интеграцию, например движок MySQL или PostgreSQL, возможно, вам потребуется авторизовать ClickHouse Cloud для доступа к вашим экземплярам. Вы можете использовать этот API для получения публичных IP-адресов и настройки их в `firewalls` или `Authorized networks` в GCP, либо в `Security Groups` для Azure, AWS или в любой другой системе управления исходящим трафиком инфраструктуры, которую вы используете.
 
 Например, чтобы разрешить доступ от сервиса ClickHouse Cloud, размещенного на AWS в регионе `ap-south-1`, вы можете добавить адреса `egress_ips` для этого региона:
 

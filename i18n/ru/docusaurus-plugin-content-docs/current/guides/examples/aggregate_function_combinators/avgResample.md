@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgResample'
 title: 'avgResample'
-description: 'Пример использования комбинатора Resample с avg'
-keywords: ['avg', 'Resample', 'комбинатор', 'примеры', 'avgResample']
+description: 'Пример использования комбинатора Resample с функцией avg'
+keywords: ['avg', 'Resample', 'combinator', 'examples', 'avgResample']
 sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
@@ -15,7 +15,7 @@ doc_type: 'reference'
 ## Описание {#description}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
-можно применить к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
+может применяться к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
 для подсчёта значений указанного ключевого столбца в заданном количестве
 интервалов (`N`).
 

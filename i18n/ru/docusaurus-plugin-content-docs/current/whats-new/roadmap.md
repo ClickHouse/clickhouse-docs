@@ -1,8 +1,8 @@
 ---
-title: 'Дорожная карта'
+title: 'Планы развития'
 slug: /whats-new/roadmap
 sidebar_position: 50
-description: 'Текущие и прошлые дорожные карты ClickHouse'
+description: 'Текущие и прошлые планы развития ClickHouse'
 doc_type: 'landing-page'
 keywords: ['roadmap', 'future features', 'development plans', 'upcoming releases', 'product direction']
 ---

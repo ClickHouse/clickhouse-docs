@@ -1,7 +1,7 @@
 ---
 sidebar_title: 'クエリインサイト'
 slug: /cloud/get-started/query-insights
-description: 'system.query_log データを可視化して、クエリのデバッグとパフォーマンスチューニングを容易にします'
+description: 'システムテーブル system.query_log のデータを可視化し、クエリのデバッグとパフォーマンス最適化を容易にします'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
 title: 'クエリインサイト'
 doc_type: 'guide'
@@ -17,25 +17,25 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 # Query Insights
 
-**Query Insights** 機能は、さまざまな可視化やテーブルを通じて、ClickHouse に組み込まれているクエリログをより使いやすくします。ClickHouse の `system.query_log` テーブルは、クエリの最適化やデバッグ、クラスタ全体の健全性およびパフォーマンスの監視における主要な情報源です。
+**Query Insights** 機能は、さまざまな可視化やテーブルによって、ClickHouse の組み込みクエリログをより扱いやすくします。ClickHouse の `system.query_log` テーブルは、クエリの最適化、デバッグ、クラスター全体の健全性およびパフォーマンスの監視における主要な情報源です。
 
 
 
 ## クエリ概要 {#query-overview}
 
-サービスを選択すると、左サイドバーの**Monitoring**ナビゲーション項目が展開され、新しい**Query insights**サブ項目が表示されます。このオプションをクリックすると、Query insightsページが開きます:
+サービスを選択すると、左サイドバーの**モニタリング**ナビゲーション項目が展開され、新しい**クエリインサイト**サブ項目が表示されます。このオプションをクリックすると、クエリインサイトページが開きます:
 
 <Image
   img={insights_overview}
   size='md'
-  alt='Query Insights UIの概要'
+  alt='クエリインサイトUIの概要'
   border
 />
 
 
 ## トップレベルメトリクス {#top-level-metrics}
 
-上部の統計ボックスには、選択された期間における基本的なトップレベルのクエリメトリクスが表示されます。その下には、選択された時間枠内でクエリの種類（SELECT、INSERT、その他）ごとに分類されたクエリ量、レイテンシ、エラー率を表す3つの時系列チャートが表示されます。レイテンシチャートは、p50、p90、p99のレイテンシを表示するようにさらに調整できます：
+上部の統計ボックスには、選択された期間における基本的なトップレベルのクエリメトリクスが表示されます。その下には、選択された時間枠内でクエリの種類(SELECT、INSERT、その他)ごとに分類されたクエリ量、レイテンシ、エラー率を表す3つの時系列チャートが表示されます。レイテンシチャートは、p50、p90、p99のレイテンシを表示するようにさらに調整できます:
 
 <Image
   img={insights_latency}
@@ -47,7 +47,7 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 ## 最近のクエリ {#recent-queries}
 
-トップレベルメトリクスの下には、選択した期間における正規化されたクエリハッシュとユーザーでグループ化されたクエリログエントリを表示するテーブルがあります：
+トップレベルメトリクスの下には、選択した期間における正規化されたクエリハッシュとユーザーでグループ化されたクエリログエントリを表示するテーブルがあります:
 
 <Image
   img={insights_recent}
@@ -70,7 +70,7 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
   border
 />
 
-フライアウトから確認できるように、この特定のクエリは過去24時間で3000回以上実行されています。**Query info**タブのすべてのメトリクスは集計されたメトリクスですが、**Query history**タブを選択することで個別の実行結果のメトリクスも表示できます:
+フライアウトから確認できるように、この特定のクエリは過去24時間で3000回以上実行されています。**Query info**タブのすべてのメトリクスは集計メトリクスですが、**Query history**タブを選択することで個別実行のメトリクスも確認できます:
 
 <Image
   img={insights_query_info}
@@ -81,4 +81,4 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 <br />
 
-このペインから、各クエリ実行の`Settings`と`Profile Events`項目を展開して追加情報を表示することができます。
+このペインでは、各クエリ実行の`Settings`と`Profile Events`項目を展開して追加情報を表示できます。

@@ -7,15 +7,14 @@ doc_type: 'guide'
 keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
-[Star Schema Benchmark (SSB)](star-schema.md) と同様に、TPC-DS も [TPC-H](tpch.md) に基づいていますが、そのアプローチは逆であり、データを複雑なスノーフレークスキーマ（8 テーブルではなく 24 テーブル）に格納することで、必要な結合の数を増やしています。
-データ分布には（正規分布やポアソン分布などの）偏りがあります。
-ランダムなパラメータ置換を伴う 99 個のレポーティングクエリおよびアドホッククエリが含まれています。
+[Star Schema Benchmark (SSB)](star-schema.md) と同様に、TPC-DS は [TPC-H](tpch.md) をベースとしていますが、まったく逆のアプローチを取っています。つまり、データを複雑なスノーフレークスキーマ（8 テーブルではなく 24 テーブル）で格納することで、必要となる `JOIN` の数を増やしています。
+データ分布は偏っており（たとえば正規分布やポアソン分布）、ランダムな代入を含む 99 個のレポート系およびアドホッククエリが含まれています。
 
 参考文献
 
 * [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-まず、TPC-DS リポジトリを取得し、データジェネレーターをコンパイルします。
+まず、TPC-DS リポジトリをチェックアウトしてデータジェネレーターをコンパイルします。
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -23,20 +22,20 @@ cd tpcds-kit/tools
 make
 ```
 
-次にデータを生成します。パラメーター `-scale` でスケールファクターを指定します。
+次に、データを生成します。パラメーター `-scale` はスケールファクターを指定します。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-次に、同じスケールファクターを使用してクエリを生成します：
+次に、クエリを生成します（同じスケールファクターを使用してください）:
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sql に99個のクエリを生成します
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sql に99個のクエリを生成
 ```
 
-次に、ClickHouse でテーブルを作成します。
-`tools/tpcds.sql` にある元のテーブル定義を使用するか、`primary key` インデックスを適切に設定し、適切な箇所で `LowCardinality` 型のカラムを用いるよう「チューニング」したテーブル定義を使用できます。
+ここで ClickHouse にテーブルを作成します。
+`tools/tpcds.sql` にある元のテーブル定義を使用するか、プライマリキーインデックスを適切に定義し、必要に応じて LowCardinality 型のカラムを用いた「チューニング済み」のテーブル定義を使用することもできます。
 
 
 ```sql
@@ -595,5 +594,5 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 
 ::::warning
 TPC-DS は相関サブクエリを多用しますが、これは執筆時点（2024 年 9 月）では ClickHouse でサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-その結果、上記の多くのベンチマーククエリはエラーとなって失敗します。
+その結果、上記のベンチマーククエリの多くはエラーになって失敗します。
 ::::

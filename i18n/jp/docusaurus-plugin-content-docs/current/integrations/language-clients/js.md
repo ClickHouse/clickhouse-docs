@@ -19,15 +19,15 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 # ClickHouse JS
 
 ClickHouse に接続するための公式 JS クライアントです。
-このクライアントは TypeScript で実装されており、クライアントのパブリック API 向けの型定義を提供します。
+クライアントは TypeScript で実装されており、クライアントの public API に対する型定義を提供します。
 
-依存パッケージはなく、パフォーマンスを最大限発揮できるよう最適化されており、さまざまな ClickHouse のバージョンや構成（オンプレミス単一ノード、オンプレミスクラスタ、ClickHouse Cloud）でテストされています。
+依存関係はなく、パフォーマンスが最大限発揮されるよう最適化されており、さまざまな ClickHouse のバージョンおよび構成（オンプレミス単一ノード、オンプレミスクラスター、ClickHouse Cloud）でテストされています。
 
-利用環境に応じて、2 種類のクライアントが提供されています:
+異なる環境向けに 2 種類のクライアントバージョンが利用可能です:
 - `@clickhouse/client` - Node.js 専用
-- `@clickhouse/client-web` - ブラウザ（Chrome/Firefox）、Cloudflare Workers 向け
+- `@clickhouse/client-web` - ブラウザ（Chrome/Firefox）、Cloudflare Workers
 
-TypeScript を使用する場合は、[バージョン 4.5 以上](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)であることを確認してください。このバージョンでは、[インラインの import/export 構文](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names)が利用可能になります。
+TypeScript を使用する場合は、少なくとも [バージョン 4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html) であることを確認してください。このバージョンでは、[インラインの import/export 構文](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names)が利用可能になります。
 
 クライアントのソースコードは [ClickHouse-JS GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-js)で公開されています。
 
@@ -38,7 +38,7 @@ TypeScript を使用する場合は、[バージョン 4.5 以上](https://www.t
 クライアントを実行するには、環境でNode.jsが利用可能である必要があります。
 このクライアントは、[メンテナンス対象](https://github.com/nodejs/release#readme)のすべてのNode.jsリリースと互換性があります。
 
-Node.jsのバージョンがサポート終了（End-Of-Life）に近づくと、クライアントはそのバージョンのサポートを終了します。これは、そのバージョンが古く安全でないと見なされるためです。
+Node.jsバージョンがサポート終了（End-Of-Life）に近づくと、そのバージョンは古く安全でないと見なされるため、クライアントはサポートを終了します。
 
 現在のNode.jsバージョンのサポート状況：
 
@@ -52,7 +52,7 @@ Node.jsのバージョンがサポート終了（End-Of-Life）に近づくと�
 
 ## 環境要件（Web） {#environment-requirements-web}
 
-クライアントのWeb版は、最新のChrome/Firefoxブラウザで正式にテストされており、React/Vue/Angularアプリケーション、またはCloudflare Workersなどの依存関係として使用できます。
+クライアントのWeb版は、最新のChrome/Firefoxブラウザで正式にテストされており、React/Vue/Angularアプリケーション、またはCloudflare Workersなどで依存関係として使用できます。
 
 
 ## インストール {#installation}
@@ -89,11 +89,11 @@ npm i @clickhouse/client-web
 
 ### クライアントAPI {#client-api}
 
-特に明記されていない限り、ほとんどの例はNode.jsとWebバージョンの両方のクライアントと互換性があります。
+特に明記されていない限り、ほとんどの例はNode.js版とWeb版の両方のクライアントと互換性があります。
 
 #### クライアントインスタンスの作成 {#creating-a-client-instance}
 
-`createClient`ファクトリを使用して、必要な数のクライアントインスタンスを作成できます:
+`createClient`ファクトリを使用して、必要な数だけクライアントインスタンスを作成できます:
 
 ```ts
 import { createClient } from "@clickhouse/client" // or '@clickhouse/client-web'
@@ -122,9 +122,9 @@ const client = createClient({
 | 設定                                                                  | 説明                                                                         | デフォルト値           | 参照                                                                                   |
 | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------ |
 | **url**?: string                                                         | ClickHouseインスタンスのURL。                                                          | `http://localhost:8123` | [URL設定ドキュメント](./js.md#url-configuration)                                        |
-| **pathname**?: string                                                    | クライアントによって解析された後、ClickHouse URLに追加するオプションのパス名。 | `''`                    | [パス名を使用したプロキシのドキュメント](./js.md#proxy-with-a-pathname)                                |
+| **pathname**?: string                                                    | クライアントによる解析後にClickHouse URLに追加するオプションのパス名。 | `''`                    | [パス名を使用したプロキシのドキュメント](./js.md#proxy-with-a-pathname)                                |
 | **request_timeout**?: number                                             | リクエストタイムアウト(ミリ秒単位)。                                                | `30_000`                | -                                                                                          |
-| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 圧縮を有効にします。                                                                 | -                       | [圧縮ドキュメント](./js.md#compression)                                                    |
+| **compression**?: `{ **response**?: boolean; **request**?: boolean }`    | 圧縮を有効化します。                                                                 | -                       | [圧縮ドキュメント](./js.md#compression)                                                    |
 | **username**?: string                                                    | リクエストを実行するユーザーの名前。                             | `default`               | -                                                                                          |
 | **password**?: string                                                    | ユーザーパスワード。                                                                  | `''`                    | -                                                                                          |
 | **application**?: string                                                 | Node.jsクライアントを使用するアプリケーションの名前。                               | `clickhouse-js`         | -                                                                                          |
@@ -132,20 +132,20 @@ const client = createClient({
 | **clickhouse_settings**?: ClickHouseSettings                             | すべてのリクエストに適用するClickHouse設定。                                       | `{}`                    | -                                                                                          |
 | **log**?: `{ **LoggerClass**?: Logger, **level**?: ClickHouseLogLevel }` | 内部クライアントログの設定。                                                 | -                       | [ログドキュメント](./js.md#logging-nodejs-only)                                                |
 | **session_id**?: string                                                  | すべてのリクエストで送信するオプションのClickHouseセッションID。                          | -                       | -                                                                                          |
-| **keep_alive**?: `{ **enabled**?: boolean }`                             | Node.jsとWebバージョンの両方でデフォルトで有効になっています。                                | -                       | -                                                                                          |
+| **keep_alive**?: `{ **enabled**?: boolean }`                             | Node.js版とWeb版の両方でデフォルトで有効化されています。                                | -                       | -                                                                                          |
 | **http_headers**?: `Record<string, string>`                              | 送信するClickHouseリクエストの追加HTTPヘッダー。                           | -                       | [認証付きリバースプロキシのドキュメント](./js.md#reverse-proxy-with-authentication)        |
 | **roles**?: string \| string[]                                           | 送信リクエストに付与するClickHouseロール名。                         | -                       | [HTTPインターフェースでのロールの使用](/interfaces/http#setting-role-with-query-parameters) |
 
 #### Node.js固有の設定パラメータ {#nodejs-specific-configuration-parameters}
 
 
-| 設定                                                                    | 説明                                                 | デフォルト値 | 参照                                                                                             |
+| 設定                                                                    | 説明                                                 | デフォルト値 | 関連項目                                                                                             |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------- |
 | **max_open_connections**?: number                                          | ホストごとに許可する接続ソケットの最大数。    | `10`          | -                                                                                                    |
 | **tls**?: `{ **ca_cert**: Buffer, **cert**?: Buffer, **key**?: Buffer }`   | TLS証明書を設定します。                                 | -             | [TLSドキュメント](./js.md#tls-certificates-nodejs-only)                                                     |
 | **keep_alive**?: `{ **enabled**?: boolean, **idle_socket_ttl**?: number }` | -                                                           | -             | [Keep Aliveドキュメント](./js.md#keep-alive-configuration-nodejs-only)                                      |
 | **http_agent**?: http.Agent \| https.Agent <br/><ExperimentalBadge/>       | クライアント用のカスタムHTTPエージェント。                           | -             | [HTTPエージェントドキュメント](./js.md#custom-httphttps-agent-experimental-nodejs-only)                           |
-| **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>              | Basic認証資格情報を使用して`Authorization`ヘッダーを設定します。 | `true`        | [HTTPエージェントドキュメントでのこの設定の使用方法](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
+| **set_basic_auth_header**?: boolean <br/><ExperimentalBadge/>              | Basic認証の資格情報を使用して`Authorization`ヘッダーを設定します。 | `true`        | [HTTPエージェントドキュメント内のこの設定の使用方法](./js.md#custom-httphttps-agent-experimental-nodejs-only) |
 
 ### URL設定 {#url-configuration}
 
@@ -153,7 +153,7 @@ const client = createClient({
 URL設定は_常に_ハードコードされた値を上書きし、この場合は警告がログに記録されます。
 :::
 
-クライアントインスタンスのパラメータのほとんどはURLで設定できます。URLの形式は`http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`です。ほとんどの場合、特定のパラメータの名前は設定オプションインターフェースでのパスを反映していますが、いくつかの例外があります。以下のパラメータがサポートされています:
+クライアントインスタンスのパラメータのほとんどはURLで設定できます。URLの形式は`http[s]://[username:password@]hostname:port[/database][?param1=value1&param2=value2]`です。ほとんどの場合、特定のパラメータの名前は設定オプションインターフェース内のパスを反映していますが、いくつかの例外があります。以下のパラメータがサポートされています:
 
 | パラメータ                                   | 型                                                              |
 | ------------------------------------------- | ----------------------------------------------------------------- |
@@ -164,14 +164,14 @@ URL設定は_常に_ハードコードされた値を上書きし、この場合
 | `max_open_connections`                      | ゼロより大きい非負の数値。                           |
 | `compression_request`                       | 真偽値。下記(1)を参照                                            |
 | `compression_response`                      | 真偽値。                                                          |
-| `log_level`                                 | 許可される値: `OFF`, `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`。 |
+| `log_level`                                 | 許可される値: `OFF`、`TRACE`、`DEBUG`、`INFO`、`WARN`、`ERROR`。 |
 | `keep_alive_enabled`                        | 真偽値。                                                          |
 | `clickhouse_setting_*` または `ch_*`            | 下記(2)を参照                                                     |
 | `http_header_*`                             | 下記(3)を参照                                                     |
 | (Node.jsのみ) `keep_alive_idle_socket_ttl` | 非負の数値。                                              |
 
 - (1) 真偽値の場合、有効な値は`true`/`1`および`false`/`0`です。
-- (2) `clickhouse_setting_`または`ch_`で始まるパラメータは、このプレフィックスが削除され、残りがクライアントの`clickhouse_settings`に追加されます。例えば、`?ch_async_insert=1&ch_wait_for_async_insert=1`は以下と同じです:
+- (2) `clickhouse_setting_`または`ch_`で始まるパラメータは、このプレフィックスが削除され、残りの部分がクライアントの`clickhouse_settings`に追加されます。例えば、`?ch_async_insert=1&ch_wait_for_async_insert=1`は以下と同じです:
 
 ```ts
 createClient({
@@ -206,7 +206,7 @@ createClient({
 
 以下の例は、ClickHouse Cloudへの接続を設定する方法を示しています。`url`(プロトコルとポートを含む)と`password`の値が環境変数で指定され、`default`ユーザーが使用されることを前提としています。
 
-**例:** 環境変数を使用してNode.jsクライアントインスタンスを作成する。
+**例:** 環境変数を使用した設定でNode.jsクライアントインスタンスを作成する。
 
 ```ts
 import { createClient } from "@clickhouse/client"
@@ -219,60 +219,60 @@ const client = createClient({
 ```
 
 
-クライアントリポジトリには、環境変数を使用する複数の例が含まれています。例えば、[ClickHouse Cloudでのテーブル作成](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)、[非同期インサートの使用](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts)などがあります。
+クライアントリポジトリには、[ClickHouse Cloudでのテーブル作成](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)や[非同期インサートの使用](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts)など、環境変数を使用する複数のサンプルが含まれています。
 
 #### コネクションプール(Node.jsのみ) {#connection-pool-nodejs-only}
 
-リクエストごとに接続を確立するオーバーヘッドを回避するため、クライアントはKeep-Aliveメカニズムを利用してClickHouseへの接続プールを作成し、再利用します。デフォルトでは、Keep-Aliveが有効になっており、接続プールのサイズは`10`に設定されていますが、`max_open_connections`[設定オプション](./js.md#configuration)で変更できます。
+リクエストごとに接続を確立するオーバーヘッドを回避するため、クライアントはKeep-Aliveメカニズムを利用してClickHouseへの接続プールを作成し、再利用します。デフォルトでは、Keep-Aliveが有効になっており、コネクションプールのサイズは`10`に設定されていますが、`max_open_connections`[設定オプション](./js.md#configuration)で変更できます。
 
-ユーザーが`max_open_connections: 1`を設定しない限り、プール内の同じ接続が後続のクエリに使用される保証はありません。これはほとんど必要ありませんが、一時テーブルを使用する場合には必要になることがあります。
+ユーザーが`max_open_connections: 1`を設定しない限り、プール内の同じ接続が後続のクエリで使用される保証はありません。これはほとんど必要ありませんが、一時テーブルを使用する場合には必要になることがあります。
 
-参照: [Keep-Alive設定](./js.md#keep-alive-configuration-nodejs-only)
+参照: [Keep-Alive設定](./js.md#keep-alive-configuration-nodejs-only)。
 
 ### クエリID {#query-id}
 
-クエリまたはステートメントを送信するすべてのメソッド(`command`、`exec`、`insert`、`select`)は、結果に`query_id`を提供します。この一意の識別子はクライアントによってクエリごとに割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings)で有効になっている場合は`system.query_log`からデータを取得したり、長時間実行されるクエリをキャンセルしたりするのに役立ちます([例を参照](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts))。必要に応じて、`query_id`は`command`/`query`/`exec`/`insert`メソッドのパラメータでユーザーが上書きできます。
+クエリまたはステートメントを送信するすべてのメソッド(`command`、`exec`、`insert`、`select`)は、結果に`query_id`を提供します。この一意の識別子はクライアントによってクエリごとに割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings)で有効になっている場合は`system.query_log`からデータを取得したり、長時間実行されるクエリをキャンセルしたりするのに役立ちます([サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)を参照)。必要に応じて、`query_id`は`command`/`query`/`exec`/`insert`メソッドのパラメータで上書きできます。
 
 :::tip
-`query_id`パラメータを上書きする場合は、呼び出しごとに一意性を確保する必要があります。ランダムなUUIDが適切な選択です。
+`query_id`パラメータを上書きする場合は、呼び出しごとに一意性を確保する必要があります。ランダムなUUIDの使用を推奨します。
 :::
 
 ### すべてのクライアントメソッドの基本パラメータ {#base-parameters-for-all-client-methods}
 
-すべてのクライアントメソッド([query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method))に適用できるいくつかのパラメータがあります。
+すべてのクライアントメソッド([query](./js.md#query-method)/[command](./js.md#command-method)/[insert](./js.md#insert-method)/[exec](./js.md#exec-method))に適用できるパラメータがいくつかあります。
 
 ```ts
 interface BaseQueryParams {
-  // クエリレベルで適用できるClickHouse設定
+  // クエリレベルで適用できるClickHouse設定。
   clickhouse_settings?: ClickHouseSettings
-  // クエリバインディング用のパラメータ
+  // クエリバインディング用のパラメータ。
   query_params?: Record<string, unknown>
-  // 進行中のクエリをキャンセルするためのAbortSignalインスタンス
+  // 実行中のクエリをキャンセルするためのAbortSignalインスタンス。
   abort_signal?: AbortSignal
-  // query_idの上書き。指定されていない場合、ランダムな識別子が自動的に生成されます
+  // query_idの上書き。指定されていない場合、ランダムな識別子が自動的に生成されます。
   query_id?: string
-  // session_idの上書き。指定されていない場合、セッションIDはクライアント設定から取得されます
+  // session_idの上書き。指定されていない場合、セッションIDはクライアント設定から取得されます。
   session_id?: string
-  // 認証情報の上書き。指定されていない場合、クライアントの認証情報が使用されます
+  // 認証情報の上書き。指定されていない場合、クライアントの認証情報が使用されます。
   auth?: { username: string; password: string }
-  // このクエリに使用する特定のロールのリスト。クライアント設定で設定されたロールを上書きします
+  // このクエリで使用する特定のロールのリスト。クライアント設定で設定されたロールを上書きします。
   role?: string | Array<string>
 }
 ```
 
 ### queryメソッド {#query-method}
 
-これは、`SELECT`のようなレスポンスを持つ可能性のあるほとんどのステートメントや、`CREATE TABLE`のようなDDLの送信に使用され、awaitする必要があります。返される結果セットは、アプリケーション内で消費されることが期待されます。
+これは、`SELECT`のようなレスポンスを返す可能性のあるほとんどのステートメント、または`CREATE TABLE`のようなDDLの送信に使用され、awaitする必要があります。返される結果セットは、アプリケーション内で処理されることが想定されています。
 
 :::note
-データ挿入には専用の[insert](./js.md#insert-method)メソッドがあり、DDLには[command](./js.md#command-method)メソッドがあります。
+データ挿入には専用の[insert](./js.md#insert-method)メソッドがあり、DDLには[command](./js.md#command-method)があります。
 :::
 
 ```ts
 interface QueryParams extends BaseQueryParams {
-  // 実行するクエリ。データを返す可能性があります
+  // 実行するクエリ。データを返す可能性があります。
   query: string
-  // 結果データセットのフォーマット。デフォルト: JSON
+  // 結果データセットのフォーマット。デフォルト: JSON。
   format?: DataFormat
 }
 
@@ -281,7 +281,7 @@ interface ClickHouseClient {
 }
 ```
 
-参照: [すべてのクライアントメソッドの基本パラメータ](./js.md#base-parameters-for-all-client-methods)
+参照: [すべてのクライアントメソッドの基本パラメータ](./js.md#base-parameters-for-all-client-methods)。
 
 :::tip
 `query`内でFORMAT句を指定せず、代わりに`format`パラメータを使用してください。
@@ -289,21 +289,21 @@ interface ClickHouseClient {
 
 #### 結果セットと行の抽象化 {#result-set-and-row-abstractions}
 
-`ResultSet`は、アプリケーションでのデータ処理のためのいくつかの便利なメソッドを提供します。
+`ResultSet`は、アプリケーションでのデータ処理のための便利なメソッドをいくつか提供します。
 
 Node.jsの`ResultSet`実装は内部で`Stream.Readable`を使用し、Web版はWeb APIの`ReadableStream`を使用します。
 
-`ResultSet`の`text`または`json`メソッドを呼び出すことで`ResultSet`を消費し、クエリによって返された行の全体セットをメモリにロードできます。
+`ResultSet`の`text`または`json`メソッドを呼び出すことで`ResultSet`を処理し、クエリによって返された行の全体セットをメモリにロードできます。
 
 
-`ResultSet` はレスポンスストリームを開いたままにし、その結果として基盤となる接続をビジー状態に保つため、できるだけ早く読み取りを開始する必要があります。クライアントは、アプリケーションによる過剰なメモリ使用を避けるために、受信データをバッファリングしません。
+`ResultSet` はレスポンスストリームを開いたままにし、その結果として基盤となるコネクションを占有するため、できるだけ早く読み出しを開始する必要があります。クライアントは、アプリケーションによる過剰なメモリ使用の可能性を避けるために、受信データをバッファリングしません。
 
-結果が一度にメモリに収まりきらないほど大きい場合は、代わりに `stream` メソッドを呼び出し、ストリーミングモードでデータを処理できます。レスポンスの各チャンクは、比較的小さな行の配列へと変換され（この配列のサイズは、クライアントがサーバーから受信する各チャンクのサイズ（変動する可能性があります）と、個々の行のサイズに依存します）、チャンクごとに順番に処理されます。
+一度にメモリに収まりきらないほど大きい場合は、代わりに `stream` メソッドを呼び出し、ストリーミングモードでデータを処理できます。レスポンスの各チャンクは、比較的小さな行配列に変換されます（この配列のサイズは、クライアントがサーバーから受け取る各チャンクのサイズや、各行のサイズに依存し、変動する可能性があります）。これを 1 チャンクずつ処理します。
 
-ご利用のケースでストリーミングに最適な形式を判断するには、[サポートされているデータ形式](./js.md#supported-data-formats)の一覧を参照してください。たとえば、JSON オブジェクトをストリーミングしたい場合は、[JSONEachRow](/interfaces/formats/JSONEachRow) を選択すると、各行が JS オブジェクトとしてパースされます。または、よりコンパクトな [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) 形式を選択すると、各行が値のコンパクトな配列になります。あわせて [streaming files](./js.md#streaming-files-nodejs-only) も参照してください。
+ストリーミングに最適なフォーマットを判断するには、[サポートされているデータフォーマット](./js.md#supported-data-formats)の一覧を参照してください。たとえば、JSON オブジェクトをストリームしたい場合は [JSONEachRow](/interfaces/formats/JSONEachRow) を選択でき、その場合は各行が JS オブジェクトとしてパースされます。あるいは、よりコンパクトな [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) フォーマットを選択すれば、各行は値のコンパクトな配列になります。[ファイルのストリーミング](./js.md#streaming-files-nodejs-only) も参照してください。
 
 :::important
-`ResultSet` またはそのストリームが最後まで読み取られない場合、非アクティブ状態が `request_timeout` 期間続いた後に破棄されます。
+`ResultSet` またはそのストリームが最後まで読み出されない場合、非アクティブな状態が `request_timeout` 期間続くと破棄されます。
 :::
 
 ```ts
@@ -311,18 +311,18 @@ interface BaseResultSet<Stream> {
   // 上記の「クエリID」セクションを参照してください
   query_id: string
 
-  // ストリーム全体を消費して内容を文字列として取得します
-  // 任意のDataFormatで使用できます
+  // ストリーム全体を消費し、内容を文字列として取得します
+  // 任意のDataFormatで使用可能です
   // 一度だけ呼び出してください
   text(): Promise<string>
 
-  // ストリーム全体を消費して内容をJSオブジェクトとして解析します
-  // JSON形式でのみ使用できます
+  // ストリーム全体を消費し、内容をJavaScriptオブジェクトとして解析します
+  // JSON形式でのみ使用可能です
   // 一度だけ呼び出してください
   json<T>(): Promise<T>
 
   // ストリーミング可能なレスポンスに対して読み取り可能なストリームを返します
-  // ストリームの各反復処理で、選択されたDataFormat形式のRow[]配列が提供されます
+  // ストリームの各イテレーションは、選択されたDataFormat形式のRow[]配列を提供します
   // 一度だけ呼び出してください
   stream(): Stream
 }
@@ -331,12 +331,12 @@ interface Row {
   // 行の内容をプレーン文字列として取得します
   text: string
 
-  // 行の内容をJSオブジェクトとして解析します
+  // 行の内容をJavaScriptオブジェクトとして解析します
   json<T>(): T
 }
 ```
 
-**例:** (Node.js/Web) 結果データセットを `JSONEachRow` 形式で取得し、ストリーム全体を読み込んで内容を JS オブジェクトとしてパースするクエリ。
+**例:** (Node.js/Web) `JSONEachRow` 形式の結果セットを返すクエリで、ストリーム全体を読み込み、その内容を JS オブジェクトとしてパースします。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts)。
 
 ```ts
@@ -344,10 +344,10 @@ const resultSet = await client.query({
   query: 'SELECT * FROM my_table',
   format: 'JSONEachRow',
 })
-const dataset = await resultSet.json() // JSON解析を避ける場合は `row.text` を使用
+const dataset = await resultSet.json() // JSONパースを避ける場合は `row.text` を使用
 ```
 
-**例:** (`Node.js` のみ) クラシックな `on('data')` アプローチを使って、`JSONEachRow` 形式のクエリ結果をストリーミングします。これは `for await const` 構文と相互に置き換え可能です。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
+**例:** （Node.js のみ）クラシックな `on('data')` アプローチを使用して、`JSONEachRow` フォーマットでクエリ結果をストリーミングします。これは `for await const` 構文と相互に置き換え可能です。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
 
 ```ts
 const rows = await client.query({
@@ -357,25 +357,25 @@ const rows = await client.query({
 const stream = rows.stream()
 stream.on('data', (rows: Row[]) => {
   rows.forEach((row: Row) => {
-    console.log(row.json()) // JSON のパースを避ける場合は `row.text` を使用
+    console.log(row.json()) // JSON パースを避ける場合は `row.text` を使用
   })
 })
 await new Promise((resolve, reject) => {
   stream.on('end', () => {
-    console.log('完了!')
+    console.log('完了しました!')
     resolve(0)
   })
   stream.on('error', reject)
 })
 ```
 
-**例:** (Node.js のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と相互に置き換え可能です。
+**例:** (`Node.js` のみ) クラシックな `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と互換的に使用できます。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
 
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
-  format: 'CSV', // TabSeparated、CustomSeparatedなど
+  format: 'CSV', // または TabSeparated、CustomSeparated など
 })
 const stream = resultSet.stream()
 stream.on('data', (rows: Row[]) => {
@@ -435,7 +435,7 @@ while (true) {
 
 ### Insertメソッド {#insert-method}
 
-これはデータ挿入の主要なメソッドです。
+これはデータ挿入のための主要なメソッドです。
 
 ```ts
 export interface InsertResult {
@@ -448,9 +448,9 @@ interface ClickHouseClient {
 }
 ```
 
-サーバーからデータが返されることを想定しておらず、レスポンスストリームを即座にドレインするため、戻り値の型は最小限です。
+サーバーからデータが返されることを想定しておらず、レスポンスストリームを即座に消費するため、戻り値の型は最小限です。
 
-insertメソッドに空の配列が渡された場合、insert文はサーバーに送信されず、代わりにメソッドは即座に`{ query_id: '...', executed: false }`で解決されます。この場合、メソッドパラメータで`query_id`が指定されていない場合、結果は空文字列になります。これは、クライアントが生成したランダムなUUIDを返すと、そのような`query_id`を持つクエリが`system.query_log`テーブルに存在しないため、混乱を招く可能性があるためです。
+insertメソッドに空の配列が渡された場合、insert文はサーバーに送信されません。代わりに、メソッドは即座に`{ query_id: '...', executed: false }`で解決されます。この場合、メソッドパラメータで`query_id`が指定されていない場合、結果は空文字列になります。これは、クライアントが生成したランダムなUUIDを返すと混乱を招く可能性があるためです。そのような`query_id`を持つクエリは`system.query_log`テーブルに存在しないからです。
 
 insert文がサーバーに送信された場合、`executed`フラグは`true`になります。
 
@@ -461,7 +461,7 @@ insert文がサーバーに送信された場合、`executed`フラグは`true`�
 Insertメソッドはawaitされることを想定していますが、入力ストリームを指定し、ストリームが完了したときにのみ`insert`操作をawaitすることも可能です(これにより`insert`のpromiseも解決されます)。これはイベントリスナーや類似のシナリオで有用な可能性がありますが、クライアント側で多くのエッジケースがあり、エラー処理が複雑になる可能性があります。代わりに、[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts)で示されているように、[非同期insert](/optimize/asynchronous-inserts)の使用を検討してください。
 
 :::tip
-このメソッドでモデル化するのが難しいカスタムINSERT文がある場合は、[commandメソッド](./js.md#command-method)の使用を検討してください。
+このメソッドでモデル化することが難しいカスタムINSERT文がある場合は、[commandメソッド](./js.md#command-method)の使用を検討してください。
 
 [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts)または[INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts)の例で使用方法を確認できます。
 :::
@@ -476,8 +476,8 @@ interface InsertParams<T> extends BaseQueryParams {
   // 挿入するデータセットの形式
   format?: DataFormat
   // データを挿入する列を指定できます
-  // - `['a', 'b']` のような配列は次のステートメントを生成します: `INSERT INTO table (a, b) FORMAT DataFormat`
-  // - `{ except: ['a', 'b'] }` のようなオブジェクトは次のステートメントを生成します: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // - `['a', 'b']` のような配列は次のように生成されます: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - `{ except: ['a', 'b'] }` のようなオブジェクトは次のように生成されます: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
   // デフォルトでは、データはテーブルのすべての列に挿入され、
   // 生成されるステートメントは次のようになります: `INSERT INTO table FORMAT DataFormat`
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
@@ -496,7 +496,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```ts
 await client.insert({
   table: "my_table",
-  // 構造は目的の形式と一致する必要があります。この例では JSONEachRow
+  // 構造は目的の形式と一致する必要があります。この例ではJSONEachRow
   values: [
     { id: 42, name: "foo" },
     { id: 42, name: "bar" }
@@ -572,7 +572,7 @@ await client.insert({
 現在、`@clickhouse/client-web` での挿入は `Array<T>` と `JSON*` 形式でのみ動作します。
 ブラウザの互換性が不十分なため、Web版ではストリームの挿入はまだサポートされていません。
 
-そのため、Web版の `InsertParams` インターフェースは Node.js 版とは若干異なり、
+そのため、Web版の `InsertParams` インターフェースはNode.js版とわずかに異なり、
 `values` は `ReadonlyArray<T>` 型のみに制限されています:
 
 
@@ -585,8 +585,8 @@ interface InsertParams<T> extends BaseQueryParams {
   // 挿入するデータセットの形式
   format?: DataFormat
   // データを挿入する列を指定できます
-  // - `['a', 'b']` のような配列は次のように生成されます: `INSERT INTO table (a, b) FORMAT DataFormat`
-  // - `{ except: ['a', 'b'] }` のようなオブジェクトは次のように生成されます: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // - `['a', 'b']` のような配列は次を生成します: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - `{ except: ['a', 'b'] }` のようなオブジェクトは次を生成します: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
   // デフォルトでは、データはテーブルのすべての列に挿入され、
   // 生成されるステートメントは次のようになります: `INSERT INTO table FORMAT DataFormat`
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
@@ -715,19 +715,20 @@ type PingResult = { success: true } | { success: false; error: Error }
 ```
 
 
-/** ヘルスチェックリクエストのパラメータ - 組み込みの `/ping` エンドポイントを使用します。
- * これはNode.jsバージョンのデフォルト動作です。 */
+/\*\* 組み込みの `/ping` エンドポイントを使用するヘルスチェックリクエスト用のパラメータ。
+
+- これは Node.js 版でのデフォルトの動作です。 _/
   export type PingParamsWithEndpoint = {
   select: false
-  /** 進行中のリクエストをキャンセルするためのAbortSignalインスタンス。 */
+  /\*\* 進行中のリクエストをキャンセルするための AbortSignal インスタンス。 _/
   abort_signal?: AbortSignal
-  /** この特定のリクエストに付加する追加のHTTPヘッダー。 */
+  /** このリクエストに付与する追加の HTTP ヘッダー。 \*/
   http_headers?: Record<string, string>
   }
-  /** ヘルスチェックリクエストのパラメータ - SELECTクエリを使用します。
-   * `/ping` エンドポイントはCORSをサポートしていないため、これはWebバージョンのデフォルト動作です。
-   * 標準的な `query` メソッドのパラメータのほとんど、例えば `query_id`、`abort_signal`、`http_headers` などは動作しますが、
-   * `query_params` は例外です。このメソッドでは許可する意味がないためです。 */
+  /** SELECT クエリを使用するヘルスチェックリクエスト用のパラメータ。
+- `/ping` エンドポイントは CORS をサポートしないため、これは Web 版でのデフォルトの動作です。
+- `query_id`、`abort_signal`、`http_headers` など、標準的な `query` メソッドのパラメータのほとんどは利用できます。
+- ただし、このメソッドでは意味をなさないため、`query_params` は除外されます。 \*/
   export type PingParamsWithSelectQuery = { select: true } & Omit<
   BaseQueryParams,
   'query_params'
@@ -741,33 +742,33 @@ ping(params?: PingParams): Promise<PingResult>
 
 ````
 
-Pingは、アプリケーション起動時にサーバーが利用可能かどうかを確認するための便利なツールです。特にClickHouse Cloudでは、インスタンスがアイドル状態になっている可能性があり、ping後にウェイクアップします。その場合、間隔を空けて数回リトライすることをお勧めします。
+アプリケーション起動時にサーバーが利用可能かどうかを確認するには、ping は有用な手段となります。特に ClickHouse Cloud では、インスタンスがアイドル状態になっていて ping を受けてから起動する場合があり、そのようなケースでは、間に遅延を挟みながら複数回リトライすることを検討してください。
 
-デフォルトでは、Node.jsバージョンは `/ping` エンドポイントを使用しますが、Webバージョンは `/ping` エンドポイントがCORSをサポートしていないため、同様の結果を得るために単純な `SELECT 1` クエリを使用することに注意してください。
+デフォルトでは、Node.js 版は `/ping` エンドポイントを使用し、一方で Web 版は同様の結果を得るためにシンプルな `SELECT 1` クエリを使用することに注意してください。これは、`/ping` エンドポイントが CORS をサポートしないためです。
 
-**例:** (Node.js/Web) ClickHouseサーバーインスタンスへのシンプルなping。注: Webバージョンでは、キャプチャされるエラーが異なります。
+**例:** (Node.js/Web) ClickHouse サーバーインスタンスへのシンプルな ping。注: Web 版では捕捉されるエラーの内容が異なります。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/ping.ts)。
 
 ```ts
 const result = await client.ping();
 if (!result.success) {
-  // result.errorを処理
+  // process result.error
 }
 ````
 
-**例:** `ping` メソッドを呼び出す際に認証情報も確認したい場合、または `query_id` などの追加パラメータを指定したい場合は、次のように使用できます:
+**例:** `ping` メソッド呼び出し時に認証情報も検証したい場合や、`query_id` などの追加パラメータを指定したい場合は、次のように利用できます。
 
 ```ts
 const result = await client.ping({
-  select: true /* query_id、abort_signal、http_headers、またはその他のクエリパラメータ */
+  select: true /* query_id, abort_signal, http_headers, or any other query params */
 })
 ```
 
-pingメソッドは、標準的な `query` メソッドのパラメータのほとんどを許可します - `PingParamsWithSelectQuery` 型定義を参照してください。
+ping メソッドでは、標準的な `query` メソッドのパラメータのほとんどを利用できます。詳細は `PingParamsWithSelectQuery` の型定義を参照してください。
 
-### Close (Node.jsのみ) {#close-nodejs-only}
+### Close (Node.js のみ) {#close-nodejs-only}
 
-すべての開いている接続を閉じ、リソースを解放します。Webバージョンでは何も行いません。
+開いているすべての接続をクローズし、リソースを解放します。Web 版では何も行いません (no-op)。
 
 ```ts
 await client.close()
@@ -776,34 +777,34 @@ await client.close()
 
 ## ファイルのストリーミング（Node.jsのみ） {#streaming-files-nodejs-only}
 
-クライアントリポジトリには、主要なデータフォーマット（NDJSON、CSV、Parquet）を使用したファイルストリーミングの例がいくつか用意されています。
+クライアントリポジトリには、主要なデータ形式（NDJSON、CSV、Parquet）を使用したファイルストリーミングの例がいくつか用意されています。
 
 - [NDJSONファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
 - [CSVファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
 - [Parquetファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
 - [Parquetファイルへのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
 
-他のフォーマットをファイルにストリーミングする場合も、Parquetと同様の方法で実行できます。
-唯一の違いは、`query`呼び出しで使用するフォーマット（`JSONEachRow`、`CSV`など）と出力ファイル名のみです。
+他の形式をファイルにストリーミングする場合もParquetと同様の方法で実行できます。
+唯一の違いは、`query`呼び出しで使用する形式（`JSONEachRow`、`CSV`など）と出力ファイル名のみです。
 
 
-## サポートされているデータフォーマット {#supported-data-formats}
+## サポートされているデータ形式 {#supported-data-formats}
 
-クライアントはJSONまたはテキスト形式のデータフォーマットを処理します。
+クライアントはJSONまたはテキスト形式でデータを処理します。
 
-`format`をJSON系フォーマット(`JSONEachRow`、`JSONCompactEachRow`など)のいずれかに指定すると、クライアントは通信時にデータのシリアライズとデシリアライズを行います。
+`format`にJSON系の形式(`JSONEachRow`、`JSONCompactEachRow`など)を指定すると、クライアントは通信時にデータのシリアライズとデシリアライズを実行します。
 
-「raw」テキストフォーマット(`CSV`、`TabSeparated`、`CustomSeparated`系)で提供されるデータは、追加の変換なしで送信されます。
+「生の」テキスト形式(`CSV`、`TabSeparated`、`CustomSeparated`系)で提供されるデータは、追加の変換なしで送信されます。
 
 :::tip
-一般的なフォーマットとしてのJSONと[ClickHouse JSONフォーマット](/interfaces/formats/JSON)との間で混同が生じる可能性があります。
+一般的な形式としてのJSONと[ClickHouse JSON形式](/interfaces/formats/JSON)との間で混同が生じる可能性があります。
 
-クライアントは[JSONEachRow](/interfaces/formats/JSONEachRow)などのフォーマットでJSONオブジェクトのストリーミングをサポートしています(他のストリーミング対応フォーマットについては表の概要を参照してください。また、`select_streaming_`の[クライアントリポジトリの例](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)も参照してください)。
+クライアントは[JSONEachRow](/interfaces/formats/JSONEachRow)などの形式でストリーミングJSONオブジェクトをサポートしています(他のストリーミング対応形式については表の概要を参照してください。また、`select_streaming_`の[クライアントリポジトリの例](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node)も参照してください)。
 
-ただし、[ClickHouse JSON](/interfaces/formats/JSON)などのフォーマットとその他いくつかのフォーマットは、レスポンス内で単一のオブジェクトとして表現されるため、クライアントによるストリーミングができません。
+ただし、[ClickHouse JSON](/interfaces/formats/JSON)などの形式は、レスポンス内で単一のオブジェクトとして表現されるため、クライアントによるストリーミングができません。
 :::
 
-| フォーマット                                     | 入力(配列) | 入力(オブジェクト) | 入出力(ストリーム) | 出力(JSON) | 出力(テキスト)   |
+| 形式                                     | 入力(配列) | 入力(オブジェクト) | 入出力(ストリーム) | 出力(JSON) | 出力(テキスト)   |
 | ------------------------------------------ | ------------- | -------------- | --------------------- | ------------- | --------------- |
 | JSON                                       | ❌            | ✔️             | ❌                    | ✔️            | ✔️              |
 | JSONCompact                                | ❌            | ✔️             | ❌                    | ✔️            | ✔️              |
@@ -833,35 +834,35 @@ await client.close()
 | Parquet                                    | ❌            | ❌             | ✔️                    | ❌            | ✔️❗- see below |
 
 
-Parquet の場合、`SELECT` の主なユースケースは、結果ストリームをファイルに書き出すことになります。クライアントリポジトリ内の[このサンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)を参照してください。
+Parquet の場合、`SELECT` の主なユースケースは、結果ストリームをファイルに書き出すことになります。クライアントリポジトリにある[このサンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)を参照してください。
 
-`JSONEachRowWithProgress` は、ストリーム内で進行状況のレポートをサポートする出力専用フォーマットです。詳細については[このサンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts)を参照してください。
+`JSONEachRowWithProgress` は、ストリーム内で進行状況の報告をサポートする、出力専用のフォーマットです。詳細については[このサンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts)を参照してください。
 
 ClickHouse の入力および出力フォーマットの一覧は
-[こちら](/interfaces/formats)から参照できます。
+[こちら](/interfaces/formats)で確認できます。
 
 
 
 ## サポートされているClickHouseデータ型 {#supported-clickhouse-data-types}
 
 :::note
-関連するJS型は、すべてを文字列として表現する形式（例：`JSONStringEachRow`）を除く、すべての`JSON*`形式に適用されます
+関連するJS型は、すべてを文字列として表現する形式(例: `JSONStringEachRow`)を除く、すべての`JSON*`形式に適用されます
 :::
 
 | 型                     | ステータス        | JS型                       |
 | ---------------------- | ---------------- | -------------------------- |
 | UInt8/16/32            | ✔️               | number                     |
-| UInt64/128/256         | ✔️ ❗- 以下参照 | string                     |
+| UInt64/128/256         | ✔️ ❗- 下記参照 | string                     |
 | Int8/16/32             | ✔️               | number                     |
-| Int64/128/256          | ✔️ ❗- 以下参照 | string                     |
+| Int64/128/256          | ✔️ ❗- 下記参照 | string                     |
 | Float32/64             | ✔️               | number                     |
-| Decimal                | ✔️ ❗- 以下参照 | number                     |
+| Decimal                | ✔️ ❗- 下記参照 | number                     |
 | Boolean                | ✔️               | boolean                    |
 | String                 | ✔️               | string                     |
 | FixedString            | ✔️               | string                     |
 | UUID                   | ✔️               | string                     |
 | Date32/64              | ✔️               | string                     |
-| DateTime32/64          | ✔️ ❗- 以下参照 | string                     |
+| DateTime32/64          | ✔️ ❗- 下記参照 | string                     |
 | Enum                   | ✔️               | string                     |
 | LowCardinality         | ✔️               | string                     |
 | Array(T)               | ✔️               | T[]                        |
@@ -884,7 +885,7 @@ ClickHouse の入力および出力フォーマットの一覧は
 サポートされているClickHouse形式の完全なリストは
 [こちら](/sql-reference/data-types/)で確認できます。
 
-関連項目：
+関連項目:
 
 - [Dynamic/Variant/JSONの使用例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
 - [Time/Time64の使用例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
@@ -893,7 +894,7 @@ ClickHouse の入力および出力フォーマットの一覧は
 
 クライアントは追加の型変換を行わずに値を挿入するため、`Date`/`Date32`型のカラムは文字列としてのみ挿入できます。
 
-**例：** `Date`型の値を挿入する。
+**例:** `Date`型の値を挿入する。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/ba387d7f4ce375a60982ac2d99cb47391cf76cec/__tests__/integration/date_time.test.ts)
 
 ```ts
@@ -908,7 +909,7 @@ await client.insert({
 
 ### Decimal*型の注意事項 {#decimal-types-caveats}
 
-`JSON*`ファミリー形式を使用してDecimalを挿入することができます。次のように定義されたテーブルがあると仮定します：
+`JSON*`ファミリー形式を使用してDecimal値を挿入することができます。次のように定義されたテーブルがあると仮定します:
 
 ```sql
 CREATE TABLE my_table
@@ -923,7 +924,7 @@ ENGINE MergeTree()
 ORDER BY (id)
 ```
 
-文字列表現を使用することで、精度を失うことなく値を挿入できます：
+文字列表現を使用することで、精度を失うことなく値を挿入できます:
 
 
 ```ts
@@ -990,7 +991,7 @@ expect(await resultSet.json()).toEqual([{ number: 0 }])
 
 ## ClickHouse設定 {#clickhouse-settings}
 
-クライアントは[設定](/operations/settings/settings/)メカニズムを使用してClickHouseの動作を調整できます。
+クライアントは[設定](/operations/settings/settings/)メカニズムを通じてClickHouseの動作を調整できます。
 
 設定はクライアントインスタンスレベルで指定でき、ClickHouseに送信されるすべてのリクエストに適用されます:
 
@@ -1008,8 +1009,7 @@ client.query({
 })
 ```
 
-サポートされているすべてのClickHouse設定を含む型定義ファイルは
-[こちら](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/settings.ts)で確認できます。
+サポートされているすべてのClickHouse設定を含む型定義ファイルは[こちら](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/settings.ts)で確認できます。
 
 :::important
 クエリを実行するユーザーが設定を変更するための十分な権限を持っていることを確認してください。
@@ -1022,20 +1022,19 @@ client.query({
 
 パラメータ付きのクエリを作成し、クライアントアプリケーションから値を渡すことができます。これにより、クライアント側で特定の動的な値を使用してクエリをフォーマットする必要がなくなります。
 
-通常通りクエリをフォーマットし、アプリケーションパラメータからクエリに渡したい値を次の形式で中括弧内に配置します：
+通常通りクエリをフォーマットし、アプリケーションパラメータからクエリに渡したい値を次の形式で中括弧内に配置します:
 
 ```text
 {<name>: <data_type>}
 ```
 
-ここで：
+ここで:
 
 - `name` — プレースホルダー識別子
 - `data_type` - アプリケーションパラメータ値の[データ型](/sql-reference/data-types/)
 
-**例：** パラメータ付きクエリ。
+**例:** パラメータ付きクエリ
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
-。
 
 ```ts
 await client.query({
@@ -1052,7 +1051,7 @@ await client.query({
 
 ### 圧縮 {#compression}
 
-注：リクエスト圧縮は現在Web版では利用できません。レスポンス圧縮は通常通り動作します。Node.js版は両方をサポートしています。
+注意: リクエスト圧縮は現在Web版では利用できません。レスポンス圧縮は通常通り動作します。Node.js版は両方をサポートしています。
 
 ネットワーク経由で大規模なデータセットを扱うデータアプリケーションは、圧縮を有効にすることで恩恵を受けることができます。現在、[zlib](https://nodejs.org/docs/latest-v14.x/api/zlib.html)を使用した`GZIP`のみがサポートされています。
 
@@ -1065,24 +1064,24 @@ createClient({
 })
 ```
 
-設定パラメータは次の通りです：
+設定パラメータは以下の通りです:
 
-- `response: true` はClickHouseサーバーに圧縮されたレスポンスボディで応答するよう指示します。デフォルト値：`response: false`
-- `request: true` はクライアントリクエストボディの圧縮を有効にします。デフォルト値：`request: false`
+- `response: true` はClickHouseサーバーに圧縮されたレスポンスボディで応答するよう指示します。デフォルト値: `response: false`
+- `request: true` はクライアントリクエストボディの圧縮を有効にします。デフォルト値: `request: false`
 
-### ロギング（Node.jsのみ） {#logging-nodejs-only}
+### ロギング (Node.jsのみ) {#logging-nodejs-only}
 
 :::important
 ロギングは実験的な機能であり、将来変更される可能性があります。
 :::
 
 デフォルトのロガー実装は、`console.debug/info/warn/error`メソッドを介してログレコードを`stdout`に出力します。
-`LoggerClass`を提供することでロギングロジックをカスタマイズでき、`level`パラメータで希望するログレベルを選択できます（デフォルトは`OFF`）：
+`LoggerClass`を提供することでロギングロジックをカスタマイズでき、`level`パラメータを介して希望するログレベルを選択できます(デフォルトは`OFF`):
 
 ```typescript
 import type { Logger } from "@clickhouse/client"
 
-// 3つのLogParams型はすべてクライアントからエクスポートされます
+// 3つのLogParams型はすべてクライアントによってエクスポートされます
 interface LogParams {
   module: string
   message: string
@@ -1117,21 +1116,21 @@ const client = createClient({
 })
 ```
 
-現在、クライアントは次のイベントをログに記録します：
+現在、クライアントは以下のイベントをログに記録します:
 
 - `TRACE` - Keep-Aliveソケットのライフサイクルに関する低レベル情報
-- `DEBUG` - レスポンス情報（認証ヘッダーとホスト情報を除く）
-- `INFO` - ほとんど使用されず、クライアント初期化時に現在のログレベルを出力します
-- `WARN` - 致命的でないエラー；失敗した`ping`リクエストは警告としてログに記録されます（基礎となるエラーが返される結果に含まれるため）
-- `ERROR` - `query`/`insert`/`exec`/`command`メソッドからの致命的なエラー（リクエストの失敗など）
+- `DEBUG` - レスポンス情報(認証ヘッダーとホスト情報を除く)
+- `INFO` - ほとんど使用されず、クライアントの初期化時に現在のログレベルを出力します
+- `WARN` - 致命的でないエラー; 失敗した`ping`リクエストは警告としてログに記録されます。基礎となるエラーは返される結果に含まれます
+- `ERROR` - `query`/`insert`/`exec`/`command`メソッドからの致命的なエラー(リクエストの失敗など)
 
 デフォルトのLogger実装は[こちら](https://github.com/ClickHouse/clickhouse-js/blob/main/packages/client-common/src/logger.ts)で確認できます。
 
-### TLS証明書（Node.jsのみ） {#tls-certificates-nodejs-only}
+### TLS証明書 (Node.jsのみ) {#tls-certificates-nodejs-only}
 
-Node.jsクライアントは、基本的なTLS（認証局のみ）と相互TLS（認証局とクライアント証明書）の両方をオプションでサポートしています。
+Node.jsクライアントは、基本的なTLS(認証局のみ)と相互TLS(認証局とクライアント証明書)の両方をオプションでサポートしています。
 
-基本的なTLS設定の例です。証明書が`certs`フォルダにあり、CAファイル名が`CA.pem`であると仮定します：
+基本的なTLS設定の例です。証明書が`certs`フォルダにあり、CAファイル名が`CA.pem`であると仮定します:
 
 ```ts
 const client = createClient({
@@ -1144,7 +1143,7 @@ const client = createClient({
 })
 ```
 
-クライアント証明書を使用した相互TLS設定の例：
+クライアント証明書を使用した相互TLS設定の例:
 
 
 ```ts
@@ -1161,29 +1160,29 @@ const client = createClient({
 
 リポジトリ内の[基本的な](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts)TLSと[相互](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts)TLSの完全な例を参照してください。
 
-### Keep-alive設定（Node.jsのみ） {#keep-alive-configuration-nodejs-only}
+### Keep-alive設定(Node.jsのみ) {#keep-alive-configuration-nodejs-only}
 
-クライアントはデフォルトで基盤となるHTTPエージェントでKeep-Aliveを有効にします。これにより、接続されたソケットが後続のリクエストで再利用され、`Connection: keep-alive`ヘッダーが送信されます。アイドル状態のソケットは、デフォルトで2500ミリ秒間接続プールに保持されます（[このオプションの調整に関する注意事項](./js.md#adjusting-idle_socket_ttl)を参照してください）。
+クライアントはデフォルトで基盤となるHTTPエージェントでKeep-Aliveを有効にします。これにより、接続されたソケットが後続のリクエストで再利用され、`Connection: keep-alive`ヘッダーが送信されます。アイドル状態のソケットは、デフォルトで2500ミリ秒間接続プールに保持されます([このオプションの調整に関する注意事項](./js.md#adjusting-idle_socket_ttl)を参照してください)。
 
-`keep_alive.idle_socket_ttl`の値は、サーバー/ロードバランサーの設定よりも十分に低く設定する必要があります。主な理由は、HTTP/1.1ではサーバーがクライアントに通知せずにソケットを閉じることが許可されているため、サーバーまたはロードバランサーがクライアントよりも_先に_接続を閉じた場合、クライアントが閉じられたソケットを再利用しようとして`socket hang up`エラーが発生する可能性があるためです。
+`keep_alive.idle_socket_ttl`の値は、サーバー/ロードバランサーの設定よりもかなり低く設定する必要があります。主な理由は、HTTP/1.1ではサーバーがクライアントに通知せずにソケットを閉じることが許可されているため、サーバーまたはロードバランサーがクライアントよりも_先に_接続を閉じた場合、クライアントが閉じられたソケットを再利用しようとして`socket hang up`エラーが発生する可能性があるためです。
 
 `keep_alive.idle_socket_ttl`を変更する場合は、常にサーバー/ロードバランサーのKeep-Alive設定と同期させ、**常にそれより低く**設定して、サーバーが開いている接続を先に閉じないようにする必要があることに留意してください。
 
 #### `idle_socket_ttl`の調整 {#adjusting-idle_socket_ttl}
 
-クライアントは`keep_alive.idle_socket_ttl`を2500ミリ秒に設定しています。これは最も安全なデフォルト値と考えられるためです。サーバー側では、`config.xml`を変更しない場合、[ClickHouseバージョン23.11以前では`keep_alive_timeout`が最短3秒に設定されている](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1)可能性があります。
+クライアントは`keep_alive.idle_socket_ttl`を2500ミリ秒に設定しています。これは最も安全なデフォルト値と考えられるためです。サーバー側では、`config.xml`を変更しない場合、[ClickHouseバージョン23.11以前では`keep_alive_timeout`が最低3秒に設定されている](https://github.com/ClickHouse/ClickHouse/commit/1685cdcb89fe110b45497c7ff27ce73cc03e82d1)可能性があります。
 
 :::warning
 パフォーマンスに満足しており、問題が発生していない場合は、`keep_alive.idle_socket_ttl`設定の値を増やさ**ない**ことを推奨します。増やすと「Socket hang-up」エラーが発生する可能性があります。また、アプリケーションが多数のクエリを送信し、クエリ間のダウンタイムがあまりない場合は、ソケットが長時間アイドル状態にならず、クライアントがそれらをプールに保持するため、デフォルト値で十分です。
 :::
 
-次のコマンドを実行することで、サーバーレスポンスヘッダーから正しいKeep-Aliveタイムアウト値を確認できます：
+次のコマンドを実行することで、サーバーレスポンスヘッダーから正しいKeep-Aliveタイムアウト値を確認できます:
 
 ```sh
 curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```
 
-レスポンス内の`Connection`および`Keep-Alive`ヘッダーの値を確認してください。例：
+レスポンス内の`Connection`および`Keep-Alive`ヘッダーの値を確認してください。例:
 
 ```text
 < Connection: Keep-Alive
@@ -1194,9 +1193,9 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 #### トラブルシューティング {#troubleshooting}
 
-最新バージョンのクライアントを使用していても`socket hang up`エラーが発生する場合は、次の方法でこの問題を解決できます：
+最新バージョンのクライアントを使用していても`socket hang up`エラーが発生する場合は、次の方法でこの問題を解決できます:
 
-- 少なくとも`WARN`ログレベルでログを有効にします。これにより、アプリケーションコードに未消費または未処理のストリームがあるかどうかを確認できます。トランスポート層はWARNレベルでこれをログに記録します。これはサーバーによってソケットが閉じられる可能性があるためです。クライアント設定でログを有効にするには次のようにします：
+- 少なくとも`WARN`ログレベルでログを有効にします。これにより、アプリケーションコードに未消費または未処理のストリームがあるかどうかを確認できます。トランスポート層はWARNレベルでこれをログに記録します。これはサーバーによってソケットが閉じられる原因となる可能性があるためです。クライアント設定でログを有効にするには次のようにします:
 
   ```ts
   const client = createClient({
@@ -1207,17 +1206,18 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 - [no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) ESLintルールを有効にしてアプリケーションコードを確認します。これにより、未処理のストリームやソケットにつながる可能性のある未処理のプロミスを特定できます。
 
 
-- ClickHouseサーバー設定の`keep_alive.idle_socket_ttl`設定を若干減らします。特定の状況、例えばクライアントとサーバー間のネットワークレイテンシが高い場合、`keep_alive.idle_socket_ttl`をさらに200～500ミリ秒減らすことで、送信リクエストがサーバーが閉じようとしているソケットを取得してしまう状況を回避できる可能性があります。
+- ClickHouseサーバー設定の`keep_alive.idle_socket_ttl`設定を若干減らします。特定の状況、例えばクライアントとサーバー間のネットワーク遅延が大きい場合、`keep_alive.idle_socket_ttl`をさらに200～500ミリ秒減らすことで、送信リクエストがサーバーが閉じようとしているソケットを取得してしまう状況を回避できる可能性があります。
 
-- データの入出力がない長時間実行クエリ中にこのエラーが発生する場合（例：長時間実行される`INSERT FROM SELECT`）、ロードバランサーがアイドル接続を閉じていることが原因である可能性があります。以下のClickHouse設定の組み合わせを使用して、長時間実行クエリ中に強制的にデータを受信させることで対処できます：
+- このエラーが、データの送受信がない長時間実行クエリ（例えば、長時間実行される`INSERT FROM SELECT`）中に発生している場合、ロードバランサーがアイドル接続を閉じていることが原因である可能性があります。以下のClickHouse設定の組み合わせを使用して、長時間実行クエリ中に強制的にデータを送信することを試すことができます：
 
   ```ts
   const client = createClient({
     // ここでは、5分以上の実行時間を持つクエリがあることを想定しています
     request_timeout: 400_000,
-    /** これらの設定を組み合わせることで、`INSERT FROM SELECT`などのデータの入出力がない長時間実行クエリの場合に、
-     *  LBタイムアウトの問題を回避できます。接続がLBによってアイドル状態とマークされ、突然閉じられる可能性があるためです。
-     *  この場合、LBのアイドル接続タイムアウトが120秒であると想定し、110秒を「安全な」値として設定しています。 */
+    /** これらの設定を組み合わせることで、`INSERT FROM SELECT`などのデータの送受信がない長時間実行クエリの場合に、
+     *  ロードバランサーのタイムアウト問題を回避できます。接続がロードバランサーによってアイドル状態とマークされ、
+     *  突然閉じられる可能性があるためです。
+     *  この場合、ロードバランサーのアイドル接続タイムアウトが120秒であると想定し、110秒を「安全な」値として設定しています。 */
     clickhouse_settings: {
       send_progress_in_http_headers: 1,
       http_headers_progress_interval_ms: "110000" // UInt64、文字列として渡す必要があります
@@ -1225,11 +1225,11 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
   })
   ```
 
-  ただし、最近のNode.jsバージョンでは受信ヘッダーの合計サイズに16KBの制限があることに注意してください。一定量のプログレスヘッダーを受信した後（テストでは約70～80個）、例外が生成されます。
+  ただし、最近のNode.jsバージョンでは、受信ヘッダーの合計サイズに16KBの制限があることに注意してください。一定量のプログレスヘッダーを受信した後（テストでは約70～80個）、例外が生成されます。
 
-  また、まったく異なるアプローチを使用して、ネットワーク上の待機時間を完全に回避することも可能です。これは、接続が失われてもミューテーションがキャンセルされないというHTTPインターフェースの「機能」を活用することで実現できます。詳細については、[この例（パート2）](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)を参照してください。
+  また、まったく異なるアプローチを使用して、通信上の待機時間を完全に回避することも可能です。これは、接続が失われてもミューテーションがキャンセルされないというHTTPインターフェースの「機能」を活用することで実現できます。詳細については、[この例（パート2）](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/long_running_queries_timeouts.ts)を参照してください。
 
-- Keep-Alive機能を完全に無効にすることができます。この場合、クライアントはすべてのリクエストに`Connection: close`ヘッダーも追加し、基盤となるHTTPエージェントは接続を再利用しません。アイドルソケットが存在しないため、`keep_alive.idle_socket_ttl`設定は無視されます。これにより、リクエストごとに新しい接続が確立されるため、追加のオーバーヘッドが発生します。
+- Keep-Alive機能を完全に無効にすることができます。この場合、クライアントはすべてのリクエストに`Connection: close`ヘッダーも追加し、基盤となるHTTPエージェントは接続を再利用しません。アイドル状態のソケットが存在しないため、`keep_alive.idle_socket_ttl`設定は無視されます。これにより、リクエストごとに新しい接続が確立されるため、追加のオーバーヘッドが発生します。
 
   ```ts
   const client = createClient({
@@ -1255,7 +1255,7 @@ readonly=1ユーザーの制限についてさらに詳しく説明している[
 
 ### パス名を持つプロキシ {#proxy-with-a-pathname}
 
-ClickHouseインスタンスがプロキシの背後にあり、URLにパス名が含まれている場合（例：http://proxy:8123/clickhouse_server）、`clickhouse_server`を`pathname`設定オプションとして指定します（先頭のスラッシュの有無は問いません）。そうしないと、`url`に直接指定した場合、`database`オプションとして扱われます。複数のセグメントがサポートされています（例：`/my_proxy/db`）。
+ClickHouseインスタンスがプロキシの背後にあり、例えばhttp://proxy:8123/clickhouse_serverのようにURLにパス名が含まれている場合、`clickhouse_server`を`pathname`設定オプションとして指定します（先頭のスラッシュの有無は問いません）。そうしないと、`url`に直接指定した場合、`database`オプションとして扱われます。複数のセグメントがサポートされています（例：`/my_proxy/db`）。
 
 ```ts
 const client = createClient({
@@ -1283,13 +1283,13 @@ const client = createClient({
 :::
 
 
-デフォルトでは、クライアントはクライアント設定で提供された設定（`max_open_connections`、`keep_alive.enabled`、`tls`など）を使用して、基盤となるHTTP(s)エージェントを構成します。このエージェントがClickHouseサーバーへの接続を処理します。また、TLS証明書が使用される場合、基盤となるエージェントは必要な証明書で構成され、適切なTLS認証ヘッダーが適用されます。
+デフォルトでは、クライアントはクライアント設定で指定された設定(`max_open_connections`、`keep_alive.enabled`、`tls`など)を使用して基盤となるHTTP(s)エージェントを構成し、ClickHouseサーバーへの接続を処理します。また、TLS証明書が使用される場合、基盤となるエージェントは必要な証明書で構成され、適切なTLS認証ヘッダーが適用されます。
 
-バージョン1.2.0以降、クライアントにカスタムHTTP(s)エージェントを提供し、デフォルトの基盤エージェントを置き換えることができます。これは複雑なネットワーク構成の場合に有用です。カスタムエージェントを提供する場合、以下の条件が適用されます:
+1.2.0以降、クライアントにカスタムHTTP(s)エージェントを指定し、デフォルトの基盤エージェントを置き換えることが可能になりました。これは複雑なネットワーク構成の場合に有用です。カスタムエージェントを指定する場合、以下の条件が適用されます:
 
-- `max_open_connections`および`tls`オプションは_効果がなく_、クライアントによって無視されます。これらは基盤となるエージェント設定の一部であるためです。
-- `keep_alive.enabled`は`Connection`ヘッダーのデフォルト値のみを制御します（`true` -> `Connection: keep-alive`、`false` -> `Connection: close`）。
-- アイドル状態のキープアライブソケット管理は引き続き機能しますが（エージェントではなく特定のソケット自体に紐付いているため）、`keep_alive.idle_socket_ttl`の値を`0`に設定することで完全に無効化することができます。
+- `max_open_connections`および`tls`オプションは_効果がなく_、基盤となるエージェント設定の一部であるため、クライアントによって無視されます。
+- `keep_alive.enabled`は`Connection`ヘッダーのデフォルト値のみを制御します(`true` -> `Connection: keep-alive`、`false` -> `Connection: close`)。
+- アイドル状態のキープアライブソケット管理は引き続き機能しますが(エージェントではなく特定のソケット自体に紐付いているため)、`keep_alive.idle_socket_ttl`の値を`0`に設定することで完全に無効化することが可能になりました。
 
 #### カスタムエージェントの使用例 {#custom-agent-usage-examples}
 
@@ -1297,7 +1297,7 @@ const client = createClient({
 
 ```ts
 const agent = new http.Agent({
-  // or https.Agent
+  // またはhttps.Agent
   keepAlive: true,
   keepAliveMsecs: 2500,
   maxSockets: 10,
@@ -1321,7 +1321,7 @@ const agent = new https.Agent({
 const client = createClient({
   url: "https://myserver:8443",
   http_agent: agent,
-  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しません。ヘッダーは手動で提供する必要があります
+  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しません。ヘッダーは手動で指定する必要があります
   http_headers: {
     "X-ClickHouse-User": "username",
     "X-ClickHouse-Key": "password"
@@ -1346,7 +1346,7 @@ const agent = new https.Agent({
 const client = createClient({
   url: "https://myserver:8443",
   http_agent: agent,
-  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しません。ヘッダーは手動で提供する必要があります
+  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しません。ヘッダーは手動で指定する必要があります
   http_headers: {
     "X-ClickHouse-User": "username",
     "X-ClickHouse-Key": "password",
@@ -1357,10 +1357,10 @@ const client = createClient({
 })
 ```
 
-証明書_および_カスタム_HTTPS_エージェントを使用する場合、TLSヘッダーと競合するため、`set_basic_auth_header`設定（バージョン1.2.0で導入）を使用してデフォルトのauthorizationヘッダーを無効化する必要がある可能性が高いです。すべてのTLSヘッダーは手動で提供する必要があります。
+証明書_および_カスタム_HTTPS_エージェントを使用する場合、TLSヘッダーと競合するため、`set_basic_auth_header`設定(1.2.0で導入)を使用してデフォルトのauthorizationヘッダーを無効化する必要がある可能性が高いです。すべてのTLSヘッダーは手動で指定する必要があります。
 
 
-## 既知の制限事項（Node.js/web） {#known-limitations-nodejsweb}
+## 既知の制限事項 (Node.js/web) {#known-limitations-nodejsweb}
 
 - 結果セットに対するデータマッパーが存在しないため、言語プリミティブのみが使用されます。特定のデータ型マッパーは[RowBinaryフォーマットのサポート](https://github.com/ClickHouse/clickhouse-js/issues/216)で計画されています。
 - [Decimal\*およびDate\* / DateTime\*データ型に関する注意事項](./js.md#datedate32-types-caveats)があります。
@@ -1369,16 +1369,16 @@ const client = createClient({
 
 ## 既知の制限事項（Web） {#known-limitations-web}
 
-- SELECTクエリのストリーミングは機能しますが、INSERTでは無効になっています（型レベルでも同様です）。
-- リクエスト圧縮は無効になっており、設定は無視されます。レスポンス圧縮は機能します。
+- SELECT クエリのストリーミングは機能しますが、INSERT では無効化されています（型レベルでも同様）。
+- リクエスト圧縮は無効化されており、設定は無視されます。レスポンス圧縮は機能します。
 - ログ記録はまだサポートされていません。
 
 
 ## パフォーマンス最適化のヒント {#tips-for-performance-optimizations}
 
-- アプリケーションのメモリ消費を削減するには、大規模な挿入（ファイルからの挿入など）や該当する場合のSELECT操作にストリームの使用を検討してください。イベントリスナーや類似のユースケースでは、[非同期挿入](/optimize/asynchronous-inserts)も良い選択肢となり、クライアント側でのバッチ処理を最小化、または完全に回避することができます。非同期挿入の例は[クライアントリポジトリ](https://github.com/ClickHouse/clickhouse-js/tree/main/examples)で`async_insert_`というファイル名プレフィックスで提供されています。
-- クライアントはデフォルトでリクエストまたはレスポンスの圧縮を有効にしていません。ただし、大規模なデータセットをSELECTまたはINSERTする場合は、`ClickHouseClientConfigOptions.compression`を介して有効化することを検討できます（`request`のみ、`response`のみ、または両方）。
-- 圧縮には大きなパフォーマンスペナルティがあります。`request`または`response`に対して有効化すると、それぞれSELECT操作またはINSERT操作の速度に悪影響を及ぼしますが、アプリケーションが転送するネットワークトラフィック量を削減できます。
+- アプリケーションのメモリ消費量を削減するには、大規模な挿入（ファイルからの挿入など）や該当する場合のSELECT操作にストリームの使用を検討してください。イベントリスナーや類似のユースケースでは、[非同期挿入](/optimize/asynchronous-inserts)も良い選択肢となり、クライアント側でのバッチ処理を最小化、または完全に回避することができます。非同期挿入の例は[クライアントリポジトリ](https://github.com/ClickHouse/clickhouse-js/tree/main/examples)で、ファイル名のプレフィックスが`async_insert_`のものとして利用可能です。
+- クライアントはデフォルトでリクエストまたはレスポンスの圧縮を有効にしません。ただし、大規模なデータセットをSELECTまたはINSERTする場合は、`ClickHouseClientConfigOptions.compression`を介して有効化することを検討できます（`request`のみ、`response`のみ、または両方）。
+- 圧縮には大きなパフォーマンスペナルティがあります。`request`または`response`に対して有効化すると、それぞれSELECT操作またはINSERT操作の速度に悪影響を及ぼしますが、アプリケーションが転送するネットワークトラフィック量を削減します。
 
 
 ## お問い合わせ {#contact-us}

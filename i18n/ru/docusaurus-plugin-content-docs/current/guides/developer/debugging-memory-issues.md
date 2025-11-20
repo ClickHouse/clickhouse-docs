@@ -2,7 +2,7 @@
 slug: /guides/developer/debugging-memory-issues
 sidebar_label: 'Отладка проблем с памятью'
 sidebar_position: 1
-description: 'Запросы, которые помогут диагностировать проблемы с памятью.'
+description: 'Запросы, которые помогут вам отладить проблемы с памятью.'
 keywords: ['memory issues']
 title: 'Отладка проблем с памятью'
 doc_type: 'guide'
@@ -12,10 +12,10 @@ doc_type: 'guide'
 
 # Отладка проблем с памятью {#debugging-memory-issues}
 
-При возникновении проблем с памятью или утечек памяти важно знать, какие запросы и ресурсы потребляют значительный объем памяти. Ниже приведены запросы, которые помогут отладить проблемы с памятью путем выявления запросов, баз данных и таблиц, подлежащих оптимизации:
+При возникновении проблем с памятью или утечек памяти важно знать, какие запросы и ресурсы потребляют значительный объем памяти. Ниже приведены запросы, которые помогут отладить проблемы с памятью путем определения запросов, баз данных и таблиц, подлежащих оптимизации:
 
 
-## Список текущих запросов по пиковому потреблению памяти {#list-currently-running-processes-by-peak-memory}
+## Список выполняющихся процессов по пиковому использованию памяти {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -57,21 +57,21 @@ WHERE engine IN ('Memory','Set','Join');
 ```
 
 
-## Вывод общего объёма памяти, используемой слияниями {#output-total-memory-used-by-merges}
+## Вывод общего объема памяти, используемой слияниями {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
 
-## Вывод общего объема памяти, используемой выполняющимися процессами {#output-total-memory-used-by-currently-running-processes}
+## Вывод общего объёма памяти, используемой выполняющимися процессами {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
 
-## Вывод общего объёма памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
+## Вывод общего объёма памяти, используемого словарями {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;

@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Kafka 向け ClickPipes に関するよくある質問'
+description: 'Kafka 用 ClickPipes に関するよくある質問'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
-title: 'Kafka ClickPipes FAQ'
+title: 'Kafka ClickPipes に関する FAQ'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 ---
@@ -74,7 +74,7 @@ AWS PrivateLinkはサポートされています。セットアップ方法の�
 <summary>ClickPipesレプリカはスケーリングできますか？</summary>
 
 はい、ストリーミング用ClickPipesは水平方向と垂直方向の両方でスケーリングできます。
-水平スケーリングはスループットを向上させるためにレプリカを追加し、垂直スケーリングは各レプリカに割り当てられるリソース（CPUとRAM）を増やして、より負荷の高いワークロードを処理します。
+水平スケーリングはスループットを向上させるためにレプリカを追加し、垂直スケーリングはより負荷の高いワークロードを処理するために各レプリカに割り当てられるリソース（CPUとRAM）を増やします。
 これは、ClickPipe作成時、または**Settings** -> **Advanced Settings** -> **Scaling**で任意の時点で設定できます。
 
 </details>
@@ -105,7 +105,7 @@ AWS PrivateLinkはサポートされています。セットアップ方法の�
   Azure Event Hubsから消費するために、ポリシーにはどのような権限が必要ですか？
 </summary>
 
-トピックをリスト表示してイベントを消費するには、ClickPipesに付与される共有アクセスポリシーに、最低限「Listen」クレームが必要です。
+トピックをリストし、イベントを消費するには、ClickPipesに付与される共有アクセスポリシーに、最低限「Listen」クレームが必要です。
 
 </details>
 
@@ -119,7 +119,7 @@ ClickHouseインスタンスがEvent Hubsデプロイメントとは異なるリ
 
 <details>
 
-<summary>Azure Event Hubsにポート番号を含める必要がありますか？</summary>
+<summary>Azure Event Hubsのポート番号を含める必要がありますか？</summary>
 
 
 はい。ClickPipesではKafkaサーフェスのポート番号として`:9093`を含める必要があります。
@@ -128,16 +128,16 @@ ClickHouseインスタンスがEvent Hubsデプロイメントとは異なるリ
 
 <details>
 
-<summary>Azure Event HubsでもClickPipesのIPアドレスは必要ですか？</summary>
+<summary>Azure Event HubsでもClickPipesのIPアドレスは必要ですか?</summary>
 
-はい。Event Hubsインスタンスへのトラフィックを制限するには、[ドキュメント化された静的NAT IPアドレス](../
+はい。Event Hubsインスタンスへのトラフィックを制限するには、[ドキュメント化された静的NAT IP](../
 /index.md#list-of-static-ips)を追加してください。
 
 </details>
 
 <details>
-<summary>接続文字列はEvent Hub用ですか、それともEvent Hub名前空間用ですか？</summary>
+<summary>接続文字列はEvent Hub用ですか、それともEvent Hub名前空間用ですか?</summary>
 
-どちらでも動作します。複数のEvent Hubからサンプルを取得する場合は、**名前空間レベル**の共有アクセスポリシーを使用することを強く推奨します。
+どちらでも動作します。複数のEvent Hubからサンプルを取得する場合は、**名前空間レベル**で共有アクセスポリシーを使用することを強く推奨します。
 
 </details>

@@ -2,7 +2,7 @@
 sidebar_label: '存储过程与查询参数'
 sidebar_position: 19
 keywords: ['clickhouse', 'stored procedures', 'prepared statements', 'query parameters', 'UDF', 'parameterized views']
-description: '关于 ClickHouse 中存储过程、预处理语句和查询参数的指南'
+description: 'ClickHouse 存储过程、预编译语句和查询参数指南'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: '存储过程与查询参数'
 doc_type: 'guide'
@@ -14,16 +14,16 @@ import TabItem from '@theme/TabItem';
 
 # ClickHouse 中的存储过程和查询参数
 
-如果你来自传统关系型数据库领域，你可能会希望在 ClickHouse 中使用存储过程和预处理语句。
-本指南解释了 ClickHouse 对这些概念的实现思路，并提供推荐的替代方案。
+如果您习惯使用传统关系型数据库,可能会在 ClickHouse 中寻找存储过程和预处理语句。
+本指南将说明 ClickHouse 对这些概念的处理方式,并提供推荐的替代方案。
 
 
 
 ## ClickHouse 中存储过程的替代方案 {#alternatives-to-stored-procedures}
 
 ClickHouse 不支持带有控制流逻辑(如 `IF`/`ELSE`、循环等)的传统存储过程。
-这是基于 ClickHouse 作为分析型数据库架构的有意设计决策。
-对于分析型数据库,不建议使用循环,因为处理 O(n) 个简单查询通常比处理少量复杂查询更慢。
+这是基于 ClickHouse 分析型数据库架构的有意设计决策。
+分析型数据库不鼓励使用循环,因为处理 O(n) 个简单查询通常比处理少量复杂查询更慢。
 
 ClickHouse 针对以下场景进行了优化:
 
@@ -206,10 +206,10 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-#### 常见使用场景 {#common-use-cases}
+#### 常见用例 {#common-use-cases}
 
 - 动态日期范围过滤
-- 用户特定的数据切片
+- 用户特定数据切片
 - [多租户数据访问](/cloud/bestpractices/multi-tenancy)
 - 报表模板
 - [数据脱敏](/cloud/guides/data-masking)
@@ -253,7 +253,7 @@ SELECT * FROM top_products_by_category(
 
 ### 物化视图 {#materialized-views}
 
-物化视图非常适合预计算传统上需要在存储过程中完成的高成本聚合操作。如果您来自传统数据库背景,可以将物化视图理解为一个 **INSERT 触发器**,它会在数据插入源表时自动转换和聚合数据:
+物化视图非常适合预计算传统上在存储过程中完成的高成本聚合操作。如果您来自传统数据库背景,可以将物化视图理解为一个 **INSERT 触发器**,它会在数据插入源表时自动转换和聚合数据:
 
 ```sql
 -- 源表
@@ -310,7 +310,7 @@ GROUP BY user_id;
 
 #### 可刷新物化视图 {#refreshable-materialized-views}
 
-用于定时批处理(类似夜间存储过程):
+用于定时批处理(如夜间存储过程):
 
 ```sql
 -- 每天凌晨 2 点自动刷新
@@ -340,7 +340,7 @@ WHERE month = toStartOfMonth(today());
 
 #### 使用应用程序代码 {#using-application-code}
 
-以下是一个对比示例,展示了如何将 MySQL 存储过程转换为使用 ClickHouse 的应用程序代码:
+以下是一个对比示例,展示了 MySQL 存储过程如何转换为使用 ClickHouse 的应用程序代码:
 
 <Tabs>
 <TabItem value="mysql" label="MySQL 存储过程" default>
@@ -396,12 +396,12 @@ BEGIN
 ```
 
 
--- 插入忠诚度积分交易记录
+-- 插入会员积分交易记录
 INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
 VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
-CONCAT(&#39;订单 #&#39;, p&#95;order&#95;id));
+CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
 
--- 检查客户是否需要升级等级
+-- 检查是否需要升级客户等级
 IF v&#95;previous&#95;orders + 1 &gt;= 10 AND v&#95;customer&#95;tier = &#39;bronze&#39; THEN
 UPDATE customers SET tier = &#39;silver&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
 SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;SILVER&#39;;
@@ -444,10 +444,10 @@ client = clickhouse_connect.get_client(host='localhost')
 def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
     """
     处理订单,包含通常在存储过程中实现的业务逻辑。
-    返回值: (status_message, loyalty_points)
+    返回值:(status_message, loyalty_points)
 
-    注意:ClickHouse 针对分析场景优化,不适用于 OLTP 事务。
-    对于事务型工作负载,应使用 OLTP 数据库(PostgreSQL、MySQL),
+    注意:ClickHouse 针对分析场景进行了优化,而非 OLTP 事务处理。
+    对于事务型工作负载,请使用 OLTP 数据库(如 PostgreSQL、MySQL),
     并将分析数据同步到 ClickHouse 用于报表分析。
     """
 
@@ -466,7 +466,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
 
     customer_tier, previous_orders = result.result_rows[0]
 
-    # 步骤 2:根据等级计算折扣(Python 中的业务逻辑)
+    # 步骤 2:根据会员等级计算折扣(业务逻辑在 Python 中实现)
     discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
     discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
     final_amount = order_total - discount
@@ -509,7 +509,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         parameters={'cid': customer_id, 'new_count': new_order_count}
     )
 
-    # 步骤 5:计算并记录积分
+    # 步骤 5:计算并记录会员积分
     loyalty_points = int(final_amount)
 
     client.command(
@@ -525,11 +525,11 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         }
     )
 
-    # 步骤 6:检查等级升级(Python 中的业务逻辑)
+    # 步骤 6:检查会员等级升级(业务逻辑在 Python 中实现)
     status = 'ORDER_COMPLETE'
 
     if new_order_count >= 10 and customer_tier == 'bronze':
-        # 升级至银卡
+        # 升级到银卡会员
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -545,7 +545,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
         status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
 
     elif new_order_count >= 50 and customer_tier == 'silver':
-        # 升级至金卡
+        # 升级到金卡会员
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
@@ -564,7 +564,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
 ```
 
 
-# 使用函数
+# 使用该函数
 
 status, points = process&#95;order(
 order&#95;id=12345,
@@ -572,7 +572,7 @@ customer&#95;id=5678,
 order&#95;total=Decimal(&#39;250.00&#39;)
 )
 
-print(f&quot;状态: {status}, 积分: {points}&quot;)
+print(f&quot;Status: {status}, Loyalty Points: {points}&quot;)
 
 ```
 
@@ -584,23 +584,23 @@ print(f&quot;状态: {status}, 积分: {points}&quot;)
 #### 主要差异 {#key-differences}
 
 1. **控制流** - MySQL 存储过程使用 `IF/ELSE`、`WHILE` 循环。在 ClickHouse 中,需在应用程序代码(Python、Java 等)中实现此类逻辑
-2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 来实现 ACID 事务。ClickHouse 是一个针对仅追加工作负载优化的分析型数据库,不支持事务性更新
-3. **更新** - MySQL 使用 `UPDATE` 语句。ClickHouse 更倾向于使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 来处理可变数据
-4. **变量和状态** - MySQL 存储过程可以声明变量(`DECLARE v_discount`)。在 ClickHouse 中,需在应用程序代码中管理状态
+2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 来实现 ACID 事务。ClickHouse 是针对仅追加工作负载优化的分析型数据库,不支持事务性更新
+3. **更新** - MySQL 使用 `UPDATE` 语句。ClickHouse 处理可变数据时更推荐使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
+4. **变量和状态** - MySQL 存储过程可以声明变量(`DECLARE v_discount`)。使用 ClickHouse 时,需在应用程序代码中管理状态
 5. **错误处理** - MySQL 支持 `SIGNAL` 和异常处理器。在应用程序代码中,使用所用语言的原生错误处理机制(try/catch)
 
 :::tip
 **何时使用各种方法:**
 - **OLTP 工作负载**(订单、支付、用户账户)→ 使用 MySQL/PostgreSQL 配合存储过程
 - **分析工作负载**(报表、聚合、时间序列)→ 使用 ClickHouse 配合应用程序编排
-- **混合架构** → 两者都用!将事务数据从 OLTP 流式传输到 ClickHouse 进行分析
+- **混合架构** → 两者兼用!将事务数据从 OLTP 流式传输到 ClickHouse 进行分析
 :::
 
 #### 使用工作流编排工具 {#using-workflow-orchestration-tools}
 
 - **Apache Airflow** - 调度和监控 ClickHouse 查询的复杂 DAG
 - **dbt** - 使用基于 SQL 的工作流转换数据
-- **Prefect/Dagster** - 基于 Python 的现代编排工具
+- **Prefect/Dagster** - 现代化的基于 Python 的编排工具
 - **自定义调度器** - Cron 作业、Kubernetes CronJobs 等
 
 **外部编排的优势:**
@@ -697,7 +697,7 @@ clickhouse-client \
 ### 数据类型示例 {#data-type-examples}
 
 <details>
-<summary>示例表和样本数据</summary>
+<summary>示例所需的表和样本数据</summary>
 
 ```sql
 -- 1. 创建用于字符串和数字测试的表
@@ -731,7 +731,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
--- 4. 创建用于 Map(类结构)测试的表
+-- 4. 创建用于 Map(类结构体)测试的表
 CREATE TABLE IF NOT EXISTS accounts (
     user_id UInt32,
     status String,
@@ -818,7 +818,7 @@ SELECT count() FROM {table: Identifier};
 
 ### 查询参数的限制 {#limitations-of-query-parameters}
 
-查询参数**不是通用的文本替换**。它们有以下限制:
+查询参数**不是通用的文本替换**。它们有以下特定限制:
 
 1. **主要用于 SELECT 语句** - 在 SELECT 查询中支持最完善
 2. **作为标识符或字面量使用** - 不能替换任意 SQL 片段
@@ -844,9 +844,9 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 
 ````
 
-**不支持的操作：**
+**不支持的用法：**
 ```sql
--- ✗ SELECT 中的列名（需谨慎使用 Identifier）
+-- ✗ SELECT 中的列名（谨慎使用 Identifier）
 SELECT {column: Identifier} FROM users;  -- 支持有限
 
 -- ✗ 任意 SQL 片段
@@ -874,14 +874,14 @@ result = client.query(
 ```
 
 
-# ✗ 危险 - 存在 SQL 注入风险!
+# ✗ 危险 - 存在 SQL 注入风险！
 
 user_input = request.get('user_id')
 result = client.query(f"SELECT \* FROM orders WHERE user_id = {user_input}")
 
 ````
 
-**验证输入类型:**
+**验证输入类型：**
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
@@ -902,39 +902,39 @@ def get_user_orders(user_id: int, start_date: str):
 
 ### MySQL 协议预处理语句 {#mysql-protocol-prepared-statements}
 
-ClickHouse 的 [MySQL 接口](/interfaces/mysql)对预处理语句(`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`)提供了最基础的支持,主要用于与 Tableau Online 等将查询包装在预处理语句中的工具建立连接。
+ClickHouse 的 [MySQL 接口](/interfaces/mysql)对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）提供了最基本的支持，主要用于与 Tableau Online 等将查询封装在预处理语句中的工具建立连接。
 
-**主要限制:**
+**主要限制：**
 
 - **不支持参数绑定** - 无法使用 `?` 占位符配合绑定参数
-- 查询会被存储,但在 `PREPARE` 阶段不会被解析
-- 实现极为精简,专为特定 BI 工具的兼容性而设计
+- 查询会被存储，但在 `PREPARE` 阶段不会被解析
+- 实现极为精简，专为特定 BI 工具的兼容性而设计
 
-**不支持的示例:**
+**无法正常工作的示例：**
 
 ```sql
--- 这种带参数的 MySQL 风格预处理语句在 ClickHouse 中无法使用
+-- 这种带参数的 MySQL 风格预处理语句在 ClickHouse 中无法正常工作
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
 EXECUTE stmt USING @user_id;  -- 不支持参数绑定
 ```
 
 :::tip
-**请改用 ClickHouse 的原生查询参数。**它们在所有 ClickHouse 接口中提供完整的参数绑定支持、类型安全性以及 SQL 注入防护:
+**请改用 ClickHouse 的原生查询参数。**它们在所有 ClickHouse 接口中提供完整的参数绑定支持、类型安全性以及 SQL 注入防护：
 
 ```sql
--- ClickHouse 原生查询参数(推荐)
+-- ClickHouse 原生查询参数（推荐）
 SET param_user_id = 12345;
 SELECT * FROM users WHERE id = {user_id: UInt64};
 ```
 
 :::
 
-更多详细信息,请参阅 [MySQL 接口文档](/interfaces/mysql)和[关于 MySQL 支持的博客文章](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)。
+有关更多详细信息，请参阅 [MySQL 接口文档](/interfaces/mysql)和[关于 MySQL 支持的博客文章](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)。
 
 
 ## 总结 {#summary}
 
-### ClickHouse 中存储过程的替代方案 {#summary-stored-procedures}
+### ClickHouse 对存储过程的替代方案 {#summary-stored-procedures}
 
 | 传统存储过程模式                        | ClickHouse 替代方案                                                         |
 | --------------------------------------- | --------------------------------------------------------------------------- |
@@ -942,7 +942,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 | 可重用的参数化查询                      | 参数化视图                                                                  |
 | 预计算聚合                              | 物化视图                                                                    |
 | 定时批处理                              | 可刷新物化视图                                                              |
-| 复杂的多步骤 ETL                        | 链式物化视图或外部编排工具(Python、Airflow、dbt)                            |
+| 复杂的多步骤 ETL                        | 链式物化视图或外部编排工具 (Python、Airflow、dbt)                           |
 | 带控制流的业务逻辑                      | 应用程序代码                                                                |
 
 ### 查询参数的使用 {#summary-query-parameters}
@@ -957,8 +957,8 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 ## 相关文档 {#related-documentation}
 
-- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - 用户自定义函数
-- [`CREATE VIEW`](/sql-reference/statements/create/view) - 视图,包括参数化视图和物化视图
+- [`CREATE FUNCTION`](/sql-reference/statements/create/function) - 用户定义函数
+- [`CREATE VIEW`](/sql-reference/statements/create/view) - 视图(包括参数化视图和物化视图)
 - [SQL 语法 - 查询参数](/sql-reference/syntax#defining-and-using-query-parameters) - 完整参数语法
 - [级联物化视图](/guides/developer/cascading-materialized-views) - 高级物化视图模式
 - [可执行 UDF](/sql-reference/functions/udf) - 外部函数执行

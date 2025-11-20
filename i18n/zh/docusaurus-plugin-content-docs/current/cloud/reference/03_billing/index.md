@@ -10,9 +10,9 @@ doc_type: 'landing-page'
 
 | Page                                  | Description                                                          |
 |---------------------------------------|----------------------------------------------------------------------|
-| [Overview](/cloud/manage/billing/overview)                       | 计费的定价示例和常见问题解答。                      | 
-| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 详细了解付款阈值的工作原理以及如何调整。 |
+| [Overview](/cloud/manage/billing/overview)                       | 计费相关的定价示例和常见问题解答。                      | 
+| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 了解付款阈值的工作原理以及如何进行调整。 |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | 排查常见计费问题。                                  |
-| [Marketplace](/cloud/manage/marketplace/)                    | 与 Marketplace 相关主题的着陆页。                 |
+| [Marketplace](/cloud/manage/marketplace/)                    | 与 Marketplace 相关主题的入口页面。                 |
 
 https://clickhouse.com/docs/cloud/

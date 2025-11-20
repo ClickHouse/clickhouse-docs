@@ -9,7 +9,7 @@ ClickHouseの非同期インサートは、クライアント側でのバッチ�
 
 非同期インサートは、受信データをインメモリバッファに書き込み、設定可能なしきい値に基づいてストレージにフラッシュすることで、バッチ処理の責任をクライアントからサーバーに移します。このアプローチにより、パート作成のオーバーヘッドが大幅に削減され、CPU使用率が低下し、高い同時実行性の下でもインジェストの効率性が維持されます。
 
-コア動作は[`async_insert`](/operations/settings/settings#async_insert)設定によって制御されます。
+コア動作は[`async_insert`](/operations/settings/settings#async_insert)設定で制御されます。
 
 <Image img={async_inserts} size='lg' alt='Async inserts' />
 
@@ -17,21 +17,21 @@ ClickHouseの非同期インサートは、クライアント側でのバッチ�
 
 (1) バッファが指定されたサイズに達する（async_insert_max_data_size）
 (2) 時間しきい値が経過する（async_insert_busy_timeout_ms）、または
-(3) 最大数のインサートクエリが蓄積される（async_insert_max_query_number）
+(3) 最大数のインサートクエリが蓄積される（async_insert_max_query_number）。
 
 このバッチ処理プロセスはクライアントからは見えず、ClickHouseが複数のソースからのインサートトラフィックを効率的にマージするのに役立ちます。ただし、フラッシュが発生するまで、データはクエリできません。重要な点として、インサート形状と設定の組み合わせごとに複数のバッファが存在し、クラスタではノードごとにバッファが維持されるため、マルチテナント環境全体できめ細かい制御が可能になります。インサートのメカニズムは、それ以外の点では[同期インサート](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)で説明されているものと同一です。
 
 ### 戻りモードの選択 {#choosing-a-return-mode}
 
-非同期インサートの動作は、[`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert)設定を使用してさらに調整できます。
+非同期インサートの動作は、[`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert)設定でさらに調整できます。
 
 1に設定された場合（デフォルト）、ClickHouseはデータがディスクに正常にフラッシュされた後にのみインサートを確認応答します。これにより強力な耐久性保証が確保され、エラー処理が簡単になります。フラッシュ中に問題が発生した場合、エラーがクライアントに返されます。このモードは、特にインサート失敗を確実に追跡する必要がある場合、ほとんどの本番環境で推奨されます。
 
 [ベンチマーク](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)によると、適応的インサートと安定したパート作成動作により、200クライアントでも500クライアントでも、同時実行性に対して良好にスケールすることが示されています。
 
-`wait_for_async_insert = 0`を設定すると、「ファイア・アンド・フォーゲット」モードが有効になります。この場合、サーバーはデータがバッファリングされるとすぐにインサートを確認応答し、ストレージに到達するのを待ちません。
+`wait_for_async_insert = 0`を設定すると、「ファイア・アンド・フォーゲット」モードが有効になります。このモードでは、サーバーはデータがバッファリングされるとすぐにインサートを確認応答し、ストレージに到達するのを待ちません。
 
-これにより超低レイテンシのインサートと最大スループットが提供され、高速で重要度の低いデータに最適です。ただし、トレードオフがあります。データが永続化される保証はなく、エラーはフラッシュ時にのみ表面化する可能性があり、失敗したインサートを追跡することが困難です。このモードは、ワークロードがデータ損失を許容できる場合にのみ使用してください。
+これにより超低レイテンシのインサートと最大スループットが実現され、高速で重要度の低いデータに最適です。ただし、トレードオフがあります。データが永続化される保証はなく、エラーはフラッシュ時にのみ表面化する可能性があり、失敗したインサートを追跡することが困難です。このモードは、ワークロードがデータ損失を許容できる場合にのみ使用してください。
 
 [ベンチマークでも示されている](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)ように、バッファフラッシュが頻繁でない場合（例：30秒ごと）、パートの大幅な削減とCPU使用率の低下が実現されますが、サイレント障害のリスクは残ります。
 
@@ -58,7 +58,7 @@ ClickHouseの非同期インサートは、クライアント側でのバッチ�
   ```
 - ClickHouseプログラミング言語クライアントを使用する際に、接続パラメータとして非同期インサート設定を指定することもできます。
 
-  例として、ClickHouse CloudへのJDBC接続にClickHouse Java JDBCドライバーを使用する場合、JDBC接続文字列内で次のように指定できます：
+  例として、ClickHouse Cloudへの接続にClickHouse Java JDBCドライバーを使用する場合、JDBC接続文字列内で次のように指定できます：
 
   ```bash
   "jdbc:ch://HOST.clickhouse.cloud:8443/?user=default&password=PASSWORD&ssl=true&custom_http_params=async_insert=1,wait_for_async_insert=1"

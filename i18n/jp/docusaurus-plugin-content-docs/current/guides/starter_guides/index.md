@@ -5,14 +5,14 @@ description: 'スターターガイドのランディングページ'
 pagination_prev: null
 pagination_next: null
 doc_type: 'landing-page'
-keywords: ['beginner', 'tutorial', 'create table', 'insert data', 'select data', 'update data', 'delete data']
+keywords: ['初心者', 'チュートリアル', 'テーブル作成', 'データ挿入', 'データ選択', 'データ更新', 'データ削除']
 ---
 
-このセクションでは、一般的な SQL クエリである `CREATE`、`INSERT`、`SELECT` と、ミューテーションである `UPDATE`、`DELETE` の入門ガイドを参照できます。
+このセクションでは、一般的なSQLクエリ(`CREATE`、`INSERT`、`SELECT`)およびミューテーション(`UPDATE`、`DELETE`)のスターターガイドを掲載しています。
 
-| Page                                                | Description                                                            |
+| ページ                                                | 説明                                                            |
 |-----------------------------------------------------|------------------------------------------------------------------------|
-| [Create Tables](/guides/creating-tables)         | テーブルの作成方法に関する入門ガイド。                                |
-| [Insert Data](/guides/inserting-data)            | テーブルへのデータ挿入方法に関する入門ガイド。                      |
-| [Select Data](/guides/writing-queries)           | テーブルからデータを取得する方法に関する入門ガイド。                      |
-| [Update and Delete Data](/guides/developer/mutations) | ClickHouse におけるデータの更新と削除を行うミューテーションに関する入門ガイド。 |
+| [テーブルの作成](/guides/creating-tables)         | テーブルを作成する方法についてのスターターガイド。                                |
+| [データの挿入](/guides/inserting-data)            | テーブルにデータを挿入する方法についてのスターターガイド。                      |
+| [データの選択](/guides/writing-queries)           | テーブルからデータを選択する方法についてのスターターガイド。                      |
+| [データの更新と削除](/guides/developer/mutations) | ClickHouseにおけるミューテーション(データの更新と削除)についてのスターターガイド。 |

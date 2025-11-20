@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 # chDB для Bun
 
-chDB-bun предоставляет экспериментальные FFI-привязки (Foreign Function Interface) для chDB, позволяя выполнять запросы ClickHouse напрямую в ваших приложениях Bun без каких-либо внешних зависимостей.
+chDB-bun предоставляет экспериментальные привязки FFI (Foreign Function Interface) для chDB, позволяя выполнять запросы ClickHouse непосредственно в приложениях Bun без каких-либо внешних зависимостей.
 
 
 
@@ -29,7 +29,7 @@ curl -sL https://lib.chdb.io | bash
 
 #### Установите инструменты сборки {#install-build-tools}
 
-В системе должен быть установлен `gcc` или `clang`:
+Вам потребуется установленный в системе `gcc` или `clang`:
 
 ### Шаг 2: Установите chDB-bun {#install-chdb-bun}
 

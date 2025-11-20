@@ -1,8 +1,8 @@
 ---
 sidebar_label: '使用 UI 进行备份或恢复'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: '在 UI 中创建备份或恢复备份'
-description: '说明如何在使用自有对象存储桶的前提下，通过 UI 创建或恢复备份的页面'
+title: '通过 UI 创建备份或恢复备份'
+description: '介绍如何使用 UI 搭配自有存储桶创建或恢复备份的页面'
 sidebar_position: 2
 doc_type: 'guide'
 keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud features']
@@ -32,7 +32,7 @@ import restore_backups_azure from '@site/static/images/cloud/manage/backups/rest
 #### 1. 在 AWS 中执行的步骤 {#aws-steps}
 
 :::note
-这些步骤与["安全访问 S3 数据"](/cloud/data-sources/secure-s3)中描述的安全 S3 设置类似,但角色权限中需要执行额外的操作
+这些步骤与["安全访问 S3 数据"](/cloud/data-sources/secure-s3)中描述的安全 S3 设置类似,但角色权限需要额外的操作
 :::
 
 在您的 AWS 账户中执行以下步骤:
@@ -109,15 +109,15 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 在设置页面上,点击设置外部备份:
 
-<Image img={change_external_backup} alt='Change external backup' size='lg' />
+<Image img={change_external_backup} alt='更改外部备份' size='lg' />
 
 ##### 配置 AWS IAM 角色 ARN 和 S3 存储桶详细信息 {#configure-aws-iam-role-arn-and-s3-bucket-details}
 
-在下一个屏幕上,提供您刚创建的 AWS IAM 角色 ARN 和 S3 存储桶 URL,格式如下:
+在下一个屏幕上提供您刚创建的 AWS IAM 角色 ARN 和 S3 存储桶 URL,格式如下:
 
 <Image
   img={configure_arn_s3_details}
-  alt='Configure AWS IAM Role ARN and S3 bucket details'
+  alt='配置 AWS IAM 角色 ARN 和 S3 存储桶详细信息'
   size='lg'
 />
 
@@ -127,15 +127,15 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ##### 更改默认备份计划 {#changing-the-backup-schedule}
 
-外部备份现在将按照默认计划在您的存储桶中执行。
+外部备份现在将按默认计划在您的存储桶中执行。
 或者,您可以从"设置"页面配置备份计划。
 如果配置不同,自定义计划将用于将备份写入您的存储桶,而默认计划(每 24 小时备份一次)将用于 ClickHouse Cloud 所有的存储桶中的备份。
 
 ##### 查看存储在您的存储桶中的备份 {#view-backups-stored-in-your-bucket}
 
-备份页面将在单独的表格中显示存储在您的存储桶中的这些备份,如下所示:
+备份页面将在单独的表中显示存储在您的存储桶中的这些备份,如下所示:
 
-<Image img={view_backups} alt='View backups stored in your bucket' size='lg' />
+<Image img={view_backups} alt='查看存储在您的存储桶中的备份' size='lg' />
 
 </VerticalStepper>
 
@@ -178,7 +178,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ##### 运行恢复命令 {#run-the-restore-command}
 
-在新创建的服务中,从 SQL 控制台运行恢复命令以恢复备份。
+在新创建服务的 SQL 控制台中运行恢复命令以恢复备份。
 
 </VerticalStepper>
 
@@ -195,7 +195,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ##### 创建 GCP 存储桶 {#create-a-gcp-storage-bucket}
 
-在您的 GCP 账户中创建一个存储桶用于导出备份。
+在您的 GCP 账户中创建一个存储桶以导出备份。
 
 ##### 生成 HMAC 密钥和密钥 {#generate-an-hmac-key-and-secret}
 
@@ -204,7 +204,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 - a. 创建服务账户
   - I. 在 Google Cloud Console 中导航到 IAM & Admin 部分,然后选择 `Service Accounts`。
   - II. 点击 `Create Service Account` 并提供名称和 ID。点击 `Create and Continue`。
-  - III. 为此服务账户授予 Storage Object User 角色。
+  - III. 向此服务账户授予 Storage Object User 角色。
   - IV. 点击 `Done` 完成服务账户创建。
 
 - b. 生成 HMAC 密钥
@@ -215,7 +215,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
   - V. 点击 `Create key`。
 
 - c. 安全存储凭据:
-  - I. 系统将显示 Access ID(您的 HMAC 密钥)和 Secret(您的 HMAC 密钥)。请保存这些值,因为关闭此窗口后将不再显示密钥。
+  - I. 系统将显示 Access ID(您的 HMAC 密钥)和 Secret(您的 HMAC 密钥)。请保存这些值,因为关闭此窗口后将不会再次显示密钥。
 
 </VerticalStepper>
 
@@ -233,7 +233,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ##### 配置 GCP HMAC 密钥和密钥 {#gcp-configure-gcp-hmac-key-and-secret}
 
-在弹出对话框中,提供在上一节中创建的 GCP 存储桶路径、HMAC 密钥和密钥。
+在弹出对话框中,提供在上一部分中创建的 GCP 存储桶路径、HMAC 密钥和密钥。
 
 <Image img={gcp_configure} alt='Configure GCP HMAC Key and Secret' size='md' />
 
@@ -285,11 +285,11 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份,如�
 
 
 :::tip ASYNC 命令
-对于 Restore 命令,您可以在执行大型恢复操作时在末尾添加 `ASYNC` 命令。
-这样可以让恢复操作异步执行,即使连接中断,恢复操作也会继续运行。
+对于 Restore 命令,您可以选择在末尾添加 `ASYNC` 命令来处理大型恢复操作。
+这样可以让恢复过程异步执行,即使连接中断,恢复操作也会继续进行。
 需要注意的是,ASYNC 命令会立即返回成功状态。
-但这并不代表恢复操作已成功完成。
-您需要通过监控 `system.backups` 表来查看恢复操作是否已完成,以及执行结果是成功还是失败。
+但这并不代表恢复操作已经成功完成。
+您需要监控 `system.backups` 表来查看恢复是否已完成,以及操作是成功还是失败。
 :::
 
 ##### 运行 SQL 命令恢复备份 {#gcp-run-sql-command-to-restore-backup}
@@ -301,9 +301,9 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份,如�
 
 ## Azure {#azure}
 
-### 备份到 Azure {#taking-backups-to-azure}
+### 将备份保存到 Azure {#taking-backups-to-azure}
 
-按照以下步骤将数据备份到 Azure:
+按照以下步骤将备份保存到 Azure:
 
 #### 在 Azure 中的操作步骤 {#steps-to-follow-in-azure}
 
@@ -315,8 +315,8 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份,如�
 
 ##### 获取连接字符串 {#azure-get-connection-string}
 
-- a. 在存储账户概览页面中,找到 `Security + networking` 部分,然后点击 `Access keys`。
-- b. 在这里,您将看到 `key1` 和 `key2`。在每个密钥下方,您会找到 `Connection string` 字段。
+- a. 在存储账户概览中,找到 `Security + networking` 部分并点击 `Access keys`。
+- b. 在此处您将看到 `key1` 和 `key2`。在每个密钥下方,您会找到 `Connection string` 字段。
 - c. 点击 `Show` 显示连接字符串。复制该连接字符串,您将在 ClickHouse Cloud 中使用它进行配置。
 
 </VerticalStepper>
@@ -349,11 +349,11 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份,如�
 
 ##### 修改默认备份计划 {#azure-changing-the-backup-schedule}
 
-外部备份现在将按照默认计划在您的存储桶中执行。您也可以从 "Settings" 页面配置备份计划。如果配置了自定义计划,则自定义计划将用于将备份写入您的存储桶,而默认计划(每 24 小时备份一次)将用于 ClickHouse Cloud 自有存储桶中的备份。
+外部备份现在将按照默认计划在您的存储桶中执行。您也可以在"Settings"页面配置备份计划。如果配置了自定义计划,则自定义计划将用于将备份写入您的存储桶,而默认计划(每 24 小时备份一次)将用于 ClickHouse Cloud 自有存储桶中的备份。
 
 ##### 查看存储在您的存储桶中的备份 {#azure-view-backups-stored-in-your-bucket}
 
-备份页面将在单独的表中显示您的存储桶中的这些备份,如下所示:
+备份页面将在单独的表格中显示您的存储桶中的这些备份,如下所示:
 
 <Image
   img={view_backups_azure}
@@ -375,7 +375,7 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份,如�
 
 ##### 获取用于恢复备份的 SQL 命令 {#azure-obtain-sql-command-to-restore-backup}
 
-点击 UI 中备份列表上方的 `access or restore a backup` 链接以获取恢复备份的 SQL 命令。该命令格式如下所示,您可以从下拉列表中选择相应的备份以获取该特定备份的恢复命令。您需要将 Azure 存储账户连接字符串添加到该命令中。
+点击 UI 中备份列表上方的 `access or restore a backup` 链接以获取恢复备份的 SQL 命令。该命令格式如下所示,您可以从下拉菜单中选择相应的备份以获取该特定备份的恢复命令。您需要将 Azure 存储账户连接字符串添加到该命令中。
 
 <Image img={restore_backups_azure} alt='在 Azure 中恢复备份' size='md' />
 

@@ -3,7 +3,7 @@ sidebar_label: 'Databrain'
 sidebar_position: 131
 slug: /integrations/databrain
 keywords: ['clickhouse', 'Databrain', 'connect', 'integrate', 'ui', 'analytics', 'embedded', 'dashboard', 'visualization']
-description: 'Databrain 是一款嵌入式分析平台，可与 ClickHouse 无缝集成，用于构建面向客户的仪表盘、指标和数据可视化。'
+description: 'Databrain 是一款嵌入式分析平台，可与 ClickHouse 无缝集成，用于构建面向客户的仪表板、指标和数据可视化。'
 title: '将 Databrain 连接到 ClickHouse'
 doc_type: 'guide'
 ---
@@ -23,21 +23,21 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Databrain](https://usedatabrain.com) 是一款嵌入式分析平台，可让你为客户构建并共享交互式仪表盘、指标和数据可视化。Databrain 通过 HTTPS 接口连接到 ClickHouse，让你可以借助现代、友好的界面轻松完成 ClickHouse 数据的可视化和分析。
+[Databrain](https://usedatabrain.com) 是一款嵌入式分析平台，帮助你为客户构建和分享交互式仪表盘、指标和数据可视化。Databrain 通过 HTTPS 接口连接到 ClickHouse，使你能够借助现代、易用的界面轻松对 ClickHouse 数据进行可视化和分析。
 
-<Image size="md" img={databrain_01} alt="显示 ClickHouse 数据可视化的 Databrain 仪表盘界面" border />
+<Image size="md" img={databrain_01} alt="展示 ClickHouse 数据可视化的 Databrain 仪表盘界面" border />
 
 <br/>
 
-本指南将逐步介绍如何将 Databrain 连接到你的 ClickHouse 实例。
+本指南将引导你完成将 Databrain 连接到 ClickHouse 实例的全部步骤。
 
 
 
 ## 前置条件 {#pre-requisites}
 
 - 一个 ClickHouse 数据库,可以部署在您自己的基础设施上,或使用 [ClickHouse Cloud](https://clickhouse.com/)。
-- 一个 [Databrain 账号](https://app.usedatabrain.com/users/sign-up)。
-- 一个 Databrain 工作空间,用于连接您的数据源。
+- 一个 [Databrain 账户](https://app.usedatabrain.com/users/sign-up)。
+- 一个用于连接数据源的 Databrain 工作空间。
 
 
 ## 将 Databrain 连接到 ClickHouse 的步骤 {#steps-to-connect-databrain-to-clickhouse}
@@ -53,22 +53,22 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 对于 ClickHouse Cloud 用户:
 
 1. 在 ClickHouse Cloud 控制台中导航到您的服务
-2. 转到 **设置** → **安全**
+2. 转到 **Settings** → **Security**
 3. 将 Databrain 的 IP 地址添加到允许列表
 
 :::tip
-请参阅 [Databrain 的 IP 白名单文档](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip)以获取需要添加到白名单的最新 IP 地址列表。
+请参阅 [Databrain 的 IP 白名单文档](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip)以获取需要添加到白名单的当前 IP 地址列表。
 :::
 
 ### 3. 在 Databrain 中添加 ClickHouse 作为数据源 {#3-add-clickhouse-as-a-data-source}
 
 1. 登录您的 Databrain 账户并导航到要添加数据源的工作区。
 
-2. 在导航菜单中点击 **数据源**。
+2. 在导航菜单中点击 **Data Sources**。
 
 <Image size='md' img={databrain_02} alt='Databrain 数据源菜单' border />
 
-3. 点击 **添加数据源** 或 **连接数据源**。
+3. 点击 **Add a Data Source** 或 **Connect Data Source**。
 
 4. 从可用连接器列表中选择 **ClickHouse**。
 
@@ -80,11 +80,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 />
 
 5. 填写连接详细信息:
-   - **目标名称**: 为此连接输入描述性名称(例如,"生产环境 ClickHouse" 或 "分析数据库")
-   - **主机**: 输入您的 ClickHouse 主机 URL(例如,`https://your-instance.region.aws.clickhouse.cloud`)
-   - **端口**: 输入 `8443`(ClickHouse 的默认 HTTPS 端口)
-   - **用户名**: 输入您的 ClickHouse 用户名
-   - **密码**: 输入您的 ClickHouse 密码
+   - **Destination Name**: 为此连接输入描述性名称(例如,"Production ClickHouse" 或 "Analytics DB")
+   - **Host**: 输入您的 ClickHouse 主机 URL(例如,`https://your-instance.region.aws.clickhouse.cloud`)
+   - **Port**: 输入 `8443`(ClickHouse 的默认 HTTPS 端口)
+   - **Username**: 输入您的 ClickHouse 用户名
+   - **Password**: 输入您的 ClickHouse 密码
 
 <Image
   size='md'
@@ -93,9 +93,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   border
 />
 
-6. 点击 **测试连接** 以验证 Databrain 能够连接到您的 ClickHouse 实例。
+6. 点击 **Test Connection** 以验证 Databrain 能够连接到您的 ClickHouse 实例。
 
-7. 连接成功后,点击 **保存** 或 **连接** 以添加数据源。
+7. 连接成功后,点击 **Save** 或 **Connect** 以添加数据源。
 
 ### 4. 配置用户权限 {#4-configure-user-permissions}
 
@@ -112,7 +112,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 将 `your_databrain_user` 和 `your_database` 替换为您的实际用户名和数据库名称。
 
 
-## 将 Databrain 与 ClickHouse 结合使用 {#using-databrain-with-clickhouse}
+## 将 Databrain 与 ClickHouse 配合使用 {#using-databrain-with-clickhouse}
 
 ### 探索数据 {#explore-your-data}
 
@@ -164,12 +164,12 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 Databrain 在与 ClickHouse 配合使用时提供多项高级功能:
 
-- **自定义 SQL 控制台**: 直接针对 ClickHouse 数据库编写和执行自定义 SQL 查询
-- **多租户和单租户**: 连接您的 ClickHouse 数据库,支持单租户和多租户架构
-- **报告调度**: 安排自动化报告并通过电子邮件发送给相关人员
-- **AI 驱动的洞察**: 使用 AI 从数据中生成摘要和洞察
-- **嵌入式分析**: 将仪表板和指标直接嵌入到应用程序中
-- **语义层**: 创建可重用的数据模型和业务逻辑
+- **自定义 SQL 控制台**:直接针对 ClickHouse 数据库编写和执行自定义 SQL 查询
+- **多租户和单租户**:连接您的 ClickHouse 数据库,支持单租户和多租户架构
+- **报告调度**:安排自动化报告并通过电子邮件发送给相关人员
+- **AI 驱动的洞察**:使用 AI 从数据中生成摘要和洞察
+- **嵌入式分析**:将仪表板和指标直接嵌入到应用程序中
+- **语义层**:创建可重用的数据模型和业务逻辑
 
 
 ## 故障排查 {#troubleshooting}
@@ -196,7 +196,7 @@ Databrain 在与 ClickHouse 配合使用时提供多项高级功能:
 
 ## 了解更多 {#learn-more}
 
-有关 Databrain 功能以及如何构建强大分析能力的更多信息:
+有关 Databrain 功能以及如何构建强大分析能力的更多信息：
 
 - [Databrain 文档](https://docs.usedatabrain.com/)
 - [ClickHouse 集成指南](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)

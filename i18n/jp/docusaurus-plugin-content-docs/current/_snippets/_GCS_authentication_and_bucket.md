@@ -9,14 +9,14 @@ import GCS_guide_key from "@site/static/images/integrations/data-ingestion/s3/GC
 import Image from "@theme/IdealImage"
 
 <details>
-    <summary>GCSバケットとHMACキーを作成する</summary>
+    <summary>GCSバケットとHMACキーの作成</summary>
 
 ### ch_bucket_us_east1 {#ch_bucket_us_east1}
 
 <Image
   size='md'
   img={GCS_bucket_1}
-  alt='US East 1でGCSバケットを作成する'
+  alt='US East 1でのGCSバケットの作成'
   border
 />
 
@@ -25,40 +25,40 @@ import Image from "@theme/IdealImage"
 <Image
   size='md'
   img={GCS_bucket_2}
-  alt='US East 4でGCSバケットを作成する'
+  alt='US East 4でのGCSバケットの作成'
   border
 />
 
-### アクセスキーを生成する {#generate-an-access-key}
+### アクセスキーの生成 {#generate-an-access-key}
 
-### サービスアカウントのHMACキーとシークレットを作成する {#create-a-service-account-hmac-key-and-secret}
+### サービスアカウントのHMACキーとシークレットの作成 {#create-a-service-account-hmac-key-and-secret}
 
 **Cloud Storage > Settings > Interoperability**を開き、既存の**Access key**を選択するか、**CREATE A KEY FOR A SERVICE ACCOUNT**を選択します。本ガイドでは、新しいサービスアカウント用の新しいキーを作成する手順について説明します。
 
 <Image
   size='md'
   img={GCS_create_service_account_key}
-  alt='GCSでサービスアカウントのHMACキーを生成する'
+  alt='GCSでのサービスアカウントHMACキーの生成'
   border
 />
 
-### 新しいサービスアカウントを追加する {#add-a-new-service-account}
+### 新しいサービスアカウントの追加 {#add-a-new-service-account}
 
 既存のサービスアカウントがないプロジェクトの場合は、**CREATE NEW ACCOUNT**を選択します。
 
 <Image
   size='md'
   img={GCS_create_service_account_0}
-  alt='GCSで新しいサービスアカウントを追加する'
+  alt='GCSでの新しいサービスアカウントの追加'
   border
 />
 
-サービスアカウントの作成には3つのステップがあります。最初のステップでは、アカウントにわかりやすい名前、ID、説明を設定します。
+サービスアカウントの作成には3つのステップがあります。最初のステップでは、アカウントに分かりやすい名前、ID、説明を設定します。
 
 <Image
   size='md'
   img={GCS_create_service_account_a}
-  alt='GCSで新しいサービスアカウントの名前とIDを定義する'
+  alt='GCSでの新しいサービスアカウント名とIDの定義'
   border
 />
 
@@ -67,25 +67,25 @@ Interoperability設定ダイアログでは、IAMロール**Storage Object Admin
 <Image
   size='md'
   img={GCS_create_service_account_2}
-  alt='GCSでIAMロールStorage Object Adminを選択する'
+  alt='GCSでのIAMロールStorage Object Adminの選択'
   border
 />
 
-ステップ3はオプションであり、本ガイドでは使用しません。ポリシーに基づいて、ユーザーにこれらの権限を付与することもできます。
+ステップ3はオプションであり、本ガイドでは使用しません。ポリシーに基づいて、ユーザーにこれらの権限を付与することができます。
 
 <Image
   size='md'
   img={GCS_create_service_account_3}
-  alt='GCSで新しいサービスアカウントの追加設定を構成する'
+  alt='GCSでの新しいサービスアカウントの追加設定の構成'
   border
 />
 
-サービスアカウントのHMACキーが表示されます。この情報はClickHouseの設定で使用するため、保存してください。
+サービスアカウントのHMACキーが表示されます。この情報はClickHouseの設定で使用されるため、保存してください。
 
 <Image
   size='md'
   img={GCS_guide_key}
-  alt='GCS用に生成されたHMACキーを取得する'
+  alt='GCS用に生成されたHMACキーの取得'
   border
 />
 

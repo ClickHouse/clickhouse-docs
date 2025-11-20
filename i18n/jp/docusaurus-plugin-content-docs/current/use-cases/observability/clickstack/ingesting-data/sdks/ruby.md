@@ -3,25 +3,25 @@ slug: /use-cases/observability/clickstack/sdks/ruby-on-rails
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'ClickStack 用 Ruby on Rails SDK - ClickHouse Observability Stack'
+description: 'ClickStack用Ruby on Rails SDK - ClickHouse Observabilityスタック'
 title: 'Ruby on Rails'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-このガイドでサポートされるのは次の機能です：
+このガイドで統合される機能:
 
 <table>
   <tbody>
     <tr>
-      <td className="pe-2">✖️ Logs</td>
-      <td className="pe-2">✖️ ️️Metrics</td>
-      <td className="pe-2">✅ Traces</td>
+      <td className="pe-2">✖️ ログ</td>
+      <td className="pe-2">✖️ ️️メトリクス</td>
+      <td className="pe-2">✅ トレース</td>
     </tr>
   </tbody>
 </table>
 
-_ログを ClickStack に送信するには、[OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 経由でログを送信してください。_
+_ClickStackへログを送信する場合は、[OpenTelemetryコレクター](/use-cases/observability/clickstack/ingesting-data/otel-collector)を使用してください。_
 
 
 
@@ -37,7 +37,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 
 ### OpenTelemetry + ロガーフォーマッターの設定 {#configure-otel-logger-formatter}
 
-次に、OpenTelemetryトレーシング計装を初期化し、Railsロガーのログメッセージフォーマッターを設定して、ログを自動的にトレースに紐付けられるようにする必要があります。カスタムフォーマッターがない場合、ログはClickStackで自動的に相関付けされません。
+次に、OpenTelemetryトレーシング計装を初期化し、Railsロガーのログメッセージフォーマッターを設定して、ログを自動的にトレースに紐付けられるようにする必要があります。カスタムフォーマッターがない場合、ClickStackでログが自動的に関連付けられません。
 
 `config/initializers`フォルダ内に`hyperdx.rb`というファイルを作成し、以下の内容を追加します:
 

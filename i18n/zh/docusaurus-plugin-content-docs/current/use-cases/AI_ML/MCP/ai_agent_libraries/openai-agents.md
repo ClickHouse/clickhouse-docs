@@ -7,7 +7,7 @@ pagination_next: null
 description: '了解如何构建一个可以与 ClickHouse MCP Server 交互的 OpenAI Agent。'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
-doc_type: '指南'
+doc_type: 'guide'
 ---
 
 
@@ -17,7 +17,7 @@ doc_type: '指南'
 在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) Agent，使用 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
 :::note 示例 Notebook
-你可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中找到该示例的 Notebook 版本。
+该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb) 中的 Notebook 文件中找到。
 :::
 
 
@@ -43,7 +43,7 @@ pip install -q openai-agents
 ```
 
 
-## 设置凭证 {#setup-credentials}
+## 设置凭据 {#setup-credentials}
 
 接下来,您需要提供 OpenAI API 密钥:
 
@@ -68,7 +68,7 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """简化版本,仅过滤重要事件"""
+    """仅过滤重要事件的简化版本"""
 
     # 工具调用
     if (hasattr(chunk, 'type') and
@@ -81,7 +81,7 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # 处理字符串和已解析的输出
+                # 处理字符串和已解析输出
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
@@ -105,11 +105,11 @@ def simple_render_chunk(chunk):
                         else:
                             print(f"✅ Result: {text[:100]}...")
                 else:
-                    # 回退 - 仅打印原始输出
+                    # 回退处理 - 直接打印原始输出
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # 如果解析失败则回退到原始输出
+                # 解析失败时回退到原始输出
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -156,10 +156,10 @@ async with MCPServerStdio(
 ```
 
 
-```response title="Response"
-Running: What's the biggest GitHub project so far in 2025?
-🔧 Tool: list_databases({})
-✅ Result: amazon
+```response title="响应"
+运行中：截至 2025 年，最大的 GitHub 项目是什么？
+🔧 工具：list_databases({})
+✅ 结果：amazon
 bluesky
 country
 covid
@@ -174,24 +174,24 @@ github
 hackernews
 imdb
 log...
-🔧 Tool: list_tables({"database":"github"})
-✅ Result: {
+🔧 工具：list_tables({"database":"github"})
+✅ 结果：{
   "database": "github",
   "name": "actors_per_repo",
   "comment": "",
   "columns": [
     {
       "...
-🔧 Tool: run_select_query({"query":"SELECT repo_name, MAX(stars) FROM github.top_repos_mv"})
-✅ Result: {
+🔧 工具：run_select_query({"query":"SELECT repo_name, MAX(stars) FROM github.top_repos_mv"})
+✅ 结果：{
   "status": "error",
   "message": "Query failed: HTTPDriver for https://sql-clickhouse.clickhouse....
-🔧 Tool: run_select_query({"query":"SELECT repo_name, stars FROM github.top_repos ORDER BY stars DESC LIMIT 1"})
-✅ Result: {
+🔧 工具：run_select_query({"query":"SELECT repo_name, stars FROM github.top_repos ORDER BY stars DESC LIMIT 1"})
+✅ 结果：{
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-基于 star 数量，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个 star。💬 响应：基于 star 数量，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个 star。
+按星标数计算，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个星标。💬 响应：按星标数计算，2025 年最大的 GitHub 项目是"[sindresorhus/awesome](https://github.com/sindresorhus/awesome)"，拥有 402,893 个星标。
 ```
 
 </VerticalStepper>

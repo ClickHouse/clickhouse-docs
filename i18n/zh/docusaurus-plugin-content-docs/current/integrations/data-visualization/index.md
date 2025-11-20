@@ -25,7 +25,7 @@ doc_type: 'guide'
 
 <br/>
 
-现在你的数据已经存入 ClickHouse，可以开始进行分析了，而这通常需要借助 BI 工具来构建可视化报表。许多主流的 BI 和可视化工具都可以连接到 ClickHouse。有些工具无需额外配置即可直接连接 ClickHouse，而有些则需要安装连接器。我们为部分工具提供了文档，包括：
+现在你的数据已经导入 ClickHouse，可以开始进行分析了，这通常会涉及使用 BI 工具构建可视化报表。许多流行的 BI 和可视化工具都可以连接到 ClickHouse。有些可以开箱即用地连接 ClickHouse，而另一些则需要安装连接器。我们为其中一些工具提供了文档，包括：
 
 - [Apache Superset](./superset-and-clickhouse.md)
 - [Astrato](./community_integrations/astrato-and-clickhouse.md)

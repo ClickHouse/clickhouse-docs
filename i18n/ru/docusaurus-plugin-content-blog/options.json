@@ -1,7 +1,7 @@
 {
   "title": {
     "message": "База знаний ClickHouse",
-    "description": "Заголовок блога, используемый в целях SEO"
+    "description": "Заголовок блога для SEO"
   },
   "description": {
     "message": "База знаний",
@@ -9,6 +9,6 @@
   },
   "sidebar.title": {
     "message": "Все статьи базы знаний",
-    "description": "Подпись для левой боковой панели"
+    "description": "Надпись для левой боковой панели"
   }
 }

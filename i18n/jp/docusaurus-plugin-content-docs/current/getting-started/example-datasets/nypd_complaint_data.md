@@ -1,22 +1,22 @@
 ---
-description: 'タブ区切り値データを 5 ステップで取り込み・クエリする'
-sidebar_label: 'NYPD 苦情データ'
+description: 'タブ区切り値データを5つのステップで取り込みクエリする'
+sidebar_label: 'NYPD通報データ'
 slug: /getting-started/example-datasets/nypd_complaint_data
-title: 'NYPD 苦情データ'
+title: 'NYPD通報データ'
 doc_type: 'guide'
 keywords: ['example dataset', 'nypd', 'crime data', 'sample data', 'public data']
 ---
 
-タブ区切り値（Tab Separated Value、TSV）ファイルは一般的な形式であり、ファイルの先頭行にフィールド名が含まれている場合があります。ClickHouse は TSV を取り込めるだけでなく、ファイルを取り込まずに TSV を直接クエリすることもできます。このガイドでは、これら両方のケースを扱います。CSV ファイルをクエリまたは取り込む必要がある場合も、同じ手法を利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけです。
+タブ区切り値(TSV)ファイルは一般的なデータ形式で、ファイルの最初の行にフィールド見出しを含む場合があります。ClickHouseはTSVファイルを取り込むことができ、またファイルを取り込まずに直接クエリすることもできます。このガイドでは、これら両方のケースについて説明します。CSVファイルをクエリまたは取り込む必要がある場合は、同じ手法が使用でき、フォーマット引数の`TSV`を`CSV`に置き換えるだけです。
 
-このガイドを進めるにあたり、次のことを行います:
-- **調査**: TSV ファイルの構造と内容をクエリする。
-- **対象となる ClickHouse スキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングする。
-- **ClickHouse テーブルの作成**。
-- データを **前処理してストリーミングし**、ClickHouse に送信する。
-- ClickHouse に対して **いくつかのクエリを実行**する。
+このガイドを進める中で、以下を行います:
+- **調査**: TSVファイルの構造と内容をクエリします。
+- **ターゲットとなるClickHouseスキーマの決定**: 適切なデータ型を選択し、既存のデータをそれらの型にマッピングします。
+- **ClickHouseテーブルの作成**。
+- **データの前処理とストリーミング**をClickHouseに対して行います。
+- **ClickHouseに対していくつかのクエリを実行**します。
 
-このガイドで使用するデータセットは NYC Open Data チームが提供しているもので、「New York City Police Department (NYPD) に報告された、すべての有効な重罪、軽罪、および違反行為に関する犯罪」のデータを含みます。執筆時点では、データファイルのサイズは 166MB ですが、定期的に更新されています。
+このガイドで使用するデータセットは、NYC Open Dataチームから提供されており、「ニューヨーク市警察(NYPD)に通報されたすべての有効な重罪、軽罪、および違反犯罪」に関するデータが含まれています。執筆時点では、データファイルは166MBですが、定期的に更新されています。
 
 **出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
 **利用規約**: https://www1.nyc.gov/home/terms-of-use.page
@@ -25,18 +25,18 @@ keywords: ['example dataset', 'nypd', 'crime data', 'sample data', 'public data'
 
 ## 前提条件 {#prerequisites}
 
-- [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)ページにアクセスし、Exportボタンをクリックして**TSV for Excel**を選択し、データセットをダウンロードします。
-- [ClickHouseサーバーとクライアント](../../getting-started/install/install.mdx)をインストールします
+- [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) ページにアクセスし、Exportボタンをクリックして **TSV for Excel** を選択し、データセットをダウンロードします。
+- [ClickHouse server and client](../../getting-started/install/install.mdx) をインストールします
 
-### このガイドで使用するコマンドについて {#a-note-about-the-commands-described-in-this-guide}
+### このガイドで説明するコマンドについて {#a-note-about-the-commands-described-in-this-guide}
 
-このガイドでは2種類のコマンドを使用します:
+このガイドには2種類のコマンドがあります:
 
-- TSVファイルに対してクエリを実行するコマンド。これらはコマンドプロンプトで実行します。
-- ClickHouseに対してクエリを実行するコマンド。これらは`clickhouse-client`またはPlay UIで実行します。
+- 一部のコマンドはTSVファイルに対してクエリを実行するもので、コマンドプロンプトで実行します。
+- 残りのコマンドはClickHouseに対してクエリを実行するもので、`clickhouse-client` またはPlay UIで実行します。
 
 :::note
-このガイドの例では、TSVファイルを`${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`に保存していることを前提としています。必要に応じてコマンドを調整してください。
+このガイドの例では、TSVファイルを `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv` に保存していることを前提としています。必要に応じてコマンドを調整してください。
 :::
 
 
@@ -64,9 +64,9 @@ CMPLNT_FR_TM                Nullable(String)
 ```
 
 :::tip
-通常、上記のコマンドを実行すると、入力データのどのフィールドが数値型で、どれが文字列型で、どれがタプル型かを確認できます。ただし、常にそうとは限りません。ClickHouseは数十億件のレコードを含むデータセットで日常的に使用されるため、スキーマを推論する際に数十億行を解析することを避けるために、デフォルトで100行が[スキーマ推論](/integrations/data-formats/json/inference)の対象として検査されます。データセットは年に数回更新されるため、以下のレスポンスは実際に表示される内容と一致しない場合があります。データディクショナリを確認すると、CMPLNT_NUMはテキストとして指定されており、数値ではないことがわかります。推論のデフォルト100行を`SETTINGS input_format_max_rows_to_read_for_schema_inference=2000`設定で上書きすることで、コンテンツをより正確に把握できます。
+通常、上記のコマンドを実行すると、入力データのどのフィールドが数値型で、どれが文字列型で、どれがタプル型かを確認できます。ただし、常にそうとは限りません。ClickHouseは数十億件のレコードを含むデータセットで日常的に使用されるため、スキーマを推論する際に数十億行を解析することを避けるために、デフォルトで100行が[スキーマ推論](/integrations/data-formats/json/inference)の対象として検査されます。データセットは年に数回更新されるため、以下のレスポンスは実際に表示される内容と一致しない場合があります。データディクショナリを確認すると、CMPLNT_NUMはテキストとして指定されており、数値ではないことがわかります。`SETTINGS input_format_max_rows_to_read_for_schema_inference=2000`という設定で推論のデフォルト100行を上書きすることで、コンテンツをより正確に把握できます。
 
-注意: バージョン22.5以降、スキーマ推論のデフォルトは25,000行になっているため、古いバージョンを使用している場合や、25,000行を超えるサンプリングが必要な場合にのみ設定を変更してください。
+注意: バージョン22.5以降、スキーマ推論のデフォルトは25,000行になっているため、古いバージョンを使用している場合、または25,000行を超えるサンプリングが必要な場合にのみ、この設定を変更してください。
 :::
 
 コマンドプロンプトでこのコマンドを実行してください。ダウンロードしたTSVファイル内のデータをクエリするために`clickhouse-local`を使用します。
@@ -118,11 +118,11 @@ Lat_Lon           Tuple(Nullable(Float64), Nullable(Float64))
 New Georeferenced Column Nullable(String)
 ```
 
-この時点で、TSVファイルの列が[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)の**Columns in this Dataset**セクションで指定されている名前と型と一致していることを確認してください。データ型はあまり具体的ではなく、すべての数値フィールドは`Nullable(Float64)`に設定され、その他のフィールドはすべて`Nullable(String)`になっています。データを格納するClickHouseテーブルを作成する際には、より適切でパフォーマンスの高い型を指定できます。
+この時点で、TSVファイルの列が[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)の**Columns in this Dataset**セクションで指定されている名前と型と一致していることを確認してください。データ型はあまり具体的ではなく、すべての数値フィールドは`Nullable(Float64)`に設定され、その他のすべてのフィールドは`Nullable(String)`に設定されています。データを格納するClickHouseテーブルを作成する際には、より適切でパフォーマンスの高い型を指定できます。
 
 ### 適切なスキーマを決定する {#determine-the-proper-schema}
 
-フィールドにどの型を使用すべきかを判断するには、データがどのようなものかを把握する必要があります。例えば、`JURISDICTION_CODE`フィールドは数値ですが、`UInt8`、`Enum`、または`Float64`のどれが適切でしょうか?
+フィールドにどの型を使用すべきかを判断するには、データがどのようなものかを把握する必要があります。たとえば、`JURISDICTION_CODE`フィールドは数値ですが、`UInt8`、`Enum`、または`Float64`のどれが適切でしょうか?
 
 
 ```sql
@@ -161,7 +161,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 クエリの結果から、`JURISDICTION_CODE` は `UInt8` に適していることがわかります。
 
-同様に、いくつかの `String` フィールドを確認し、`DateTime` または [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) フィールドに適しているかどうかを判断します。
+同様に、`String` フィールドのいくつかを確認し、`DateTime` または [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) フィールドに適しているかどうかを判断します。
 
 例えば、`PARKS_NM` フィールドは「該当する場合、発生したニューヨーク市の公園、遊び場、または緑地の名称(州立公園は含まれません)」と説明されています。ニューヨーク市の公園名は `LowCardinality(String)` の適切な候補となる可能性があります:
 
@@ -181,7 +181,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └─────────────────────┘
 ```
 
-いくつかの公園名を確認してみましょう:
+公園名のいくつかを確認してみましょう:
 
 ```sql
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -209,9 +209,9 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └────────────────────────────┘
 ```
 
-執筆時点で使用されているデータセットでは、`PARK_NM` 列に数百の異なる公園と遊び場しか含まれていません。これは、`LowCardinality(String)` フィールドでは10,000未満の異なる文字列に留めるという [LowCardinality](/sql-reference/data-types/lowcardinality#description) の推奨事項に基づくと、少ない数です。
+執筆時点で使用されているデータセットでは、`PARK_NM` カラムに数百の異なる公園と遊び場しか含まれていません。これは、`LowCardinality(String)` フィールドでは10,000未満の異なる文字列に留めるという [LowCardinality](/sql-reference/data-types/lowcardinality#description) の推奨事項に基づくと、少ない数です。
 
-### DateTime フィールド {#datetime-fields}
+### DateTimeフィールド {#datetime-fields}
 
 [データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)の **Columns in this Dataset** セクションによると、報告されたイベントの開始と終了の日時フィールドがあります。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認することで、これらのフィールドが常に入力されているかどうかを把握できます:
 
@@ -283,20 +283,20 @@ FORMAT PrettyCompact"
 
 ## 計画を立てる {#make-a-plan}
 
-上記の調査に基づいて：
+上記の調査に基づいて:
 
 - `JURISDICTION_CODE` は `UInt8` にキャストする必要があります。
 - `PARKS_NM` は `LowCardinality(String)` にキャストする必要があります。
-- `CMPLNT_FR_DT` と `CMPLNT_FR_TM` は常に値が入力されています（デフォルトの時刻として `00:00:00` が設定されている可能性があります）
+- `CMPLNT_FR_DT` と `CMPLNT_FR_TM` は常に値が入力されています(デフォルト時刻 `00:00:00` の可能性があります)
 - `CMPLNT_TO_DT` と `CMPLNT_TO_TM` は空の場合があります
 - 日付と時刻はソースでは別々のフィールドに格納されています
 - 日付は `mm/dd/yyyy` 形式です
 - 時刻は `hh:mm:ss` 形式です
-- 日付と時刻は DateTime 型に結合できます
+- 日付と時刻は DateTime 型に連結できます
 - 1970年1月1日より前の日付が一部存在するため、64ビットの DateTime が必要です
 
 :::note
-型に対して行うべき変更は他にも多数ありますが、それらはすべて同じ調査手順に従うことで判断できます。フィールド内の個別の文字列の数、数値の最小値と最大値を確認し、判断を下してください。このガイドの後半で示されるテーブルスキーマには、多数の低カーディナリティ文字列と符号なし整数フィールドがあり、浮動小数点数値はほとんどありません。
+型に対して行うべき変更は他にも多数ありますが、それらはすべて同じ調査手順に従うことで判断できます。フィールド内の異なる文字列の数、数値の最小値と最大値を確認し、判断を下してください。このガイドの後半で示されるテーブルスキーマには、多数の低カーディナリティ文字列と符号なし整数フィールドがあり、浮動小数点数値はほとんどありません。
 :::
 
 
@@ -384,7 +384,7 @@ FORMAT PrettyCompact"
 ```
 
 :::note
-上で `1925` と表示されている日付は、データの誤りによるものです。元データには、本来は `2019`〜`2022` であるべきところが、`1019`〜`1022` の年として記録されているレコードがいくつか存在します。64 ビットの DateTime で扱える最も古い日付が 1925 年 1 月 1 日であるため、それらは 1925 年 1 月 1 日として保存されています。
+上記で`1925`と表示されている日付は、データのエラーに起因しています。元データには`1019`～`1022`年の日付を持つレコードが複数存在しますが、これらは本来`2019`～`2022`年であるべきものです。64ビットDateTimeで表現可能な最古の日付が1925年1月1日であるため、これらのレコードは1925年1月1日として格納されています。
 :::
 
 
@@ -396,14 +396,14 @@ FORMAT PrettyCompact"
 
 - `ORDER BY`タプルには、クエリフィルタで使用されるフィールドを含める必要があります
 - ディスク上の圧縮を最大化するため、`ORDER BY`タプルはカーディナリティの昇順で並べる必要があります
-- `PRIMARY KEY`タプルが存在する場合、`ORDER BY`タプルのサブセットである必要があります
+- `PRIMARY KEY`タプルが存在する場合、それは`ORDER BY`タプルのサブセットでなければなりません
 - `ORDER BY`のみが指定されている場合、同じタプルが`PRIMARY KEY`として使用されます
-- プライマリキーインデックスは、指定されている場合は`PRIMARY KEY`タプルを使用して作成され、それ以外の場合は`ORDER BY`タプルを使用して作成されます
+- プライマリキーインデックスは、指定されている場合は`PRIMARY KEY`タプルを使用して作成され、そうでない場合は`ORDER BY`タプルを使用して作成されます
 - `PRIMARY KEY`インデックスはメインメモリに保持されます
 
-データセットとそれをクエリすることで答えられる可能性のある質問を見ると、ニューヨーク市の5つの区で時系列に報告された犯罪の種類を調べることが考えられます。これらのフィールドを`ORDER BY`に含めることができます:
+データセットとそれをクエリすることで答えられる可能性のある質問を見ると、ニューヨーク市の5つの区で時系列に報告された犯罪の種類を調べることになるかもしれません。これらのフィールドは`ORDER BY`に含まれる可能性があります:
 
-| カラム    | 説明（データディクショナリより）                 |
+| カラム    | 説明(データディクショナリより)                 |
 | --------- | ------------------------------------------------------ |
 | OFNS_DESC | キーコードに対応する違反の説明     |
 | RPT_DT    | 事件が警察に報告された日付                      |
@@ -488,7 +488,7 @@ CREATE TABLE NYPD_Complaint (
 ### テーブルのプライマリキーの確認 {#finding-the-primary-key-of-a-table}
 
 
-ClickHouse の `system` データベース、特に `system.table` には、作成したばかりのテーブルに関するすべての情報が含まれています。このクエリでは、`ORDER BY`（ソートキー）と `PRIMARY KEY` が確認できます:
+ClickHouseの`system`データベース、特に`system.tables`には、作成したテーブルに関するすべての情報が含まれています。このクエリは`ORDER BY`（ソートキー）と`PRIMARY KEY`を表示します：
 
 ```sql
 SELECT
@@ -506,14 +506,14 @@ FORMAT Vertical
 ```response
 Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 
-行 1:
+Row 1:
 ──────
-パーティションキー:
-ソートキー:   borough, offense_description, date_reported
-プライマリキー:   borough, offense_description, date_reported
-テーブル:         NYPD_Complaint
+partition_key:
+sorting_key:   borough, offense_description, date_reported
+primary_key:   borough, offense_description, date_reported
+table:         NYPD_Complaint
 
-1 行を取得しました。経過時間: 0.001 秒。
+1 row in set. 経過時間: 0.001秒
 ```
 
 
@@ -524,7 +524,7 @@ Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 ### 使用する`clickhouse-local`の引数 {#clickhouse-local-arguments-used}
 
 :::tip
-以下のclickhouse-localの引数に`table='input'`が指定されています。clickhouse-localは提供された入力（`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`）を受け取り、テーブルに挿入します。デフォルトではテーブル名は`table`ですが、このガイドではデータフローを明確にするためにテーブル名を`input`に設定しています。clickhouse-localの最後の引数はテーブルから選択するクエリ（`FROM input`）であり、その結果が`clickhouse-client`にパイプされて`NYPD_Complaint`テーブルにデータが投入されます。
+以下のclickhouse-localの引数に`table='input'`が指定されています。clickhouse-localは提供された入力(`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`)を受け取り、テーブルに挿入します。デフォルトではテーブル名は`table`ですが、このガイドではデータフローを明確にするためにテーブル名を`input`に設定しています。clickhouse-localの最後の引数はテーブルから選択するクエリ(`FROM input`)であり、その結果が`clickhouse-client`にパイプされて`NYPD_Complaint`テーブルにデータが投入されます。
 :::
 
 ```sql
@@ -575,7 +575,7 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 ## データの検証 {#validate-data}
 
 :::note
-データセットは年に1回以上更新されるため、カウント数がこのドキュメントの記載内容と一致しない場合があります。
+データセットは年に1回以上変更されるため、カウント数がこのドキュメントの記載と一致しない場合があります。
 :::
 
 クエリ:
@@ -595,7 +595,7 @@ FROM NYPD_Complaint
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-ClickHouse内のデータセットのサイズは元のTSVファイルのわずか12%です。元のTSVファイルのサイズとテーブルのサイズを比較してみましょう:
+ClickHouseにおけるデータセットのサイズは元のTSVファイルのわずか12%です。元のTSVファイルのサイズとテーブルのサイズを比較してください:
 
 クエリ:
 
@@ -687,4 +687,4 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 ## 次のステップ {#next-steps}
 
-[ClickHouseにおけるスパースプライマリインデックスの実践的な入門](/guides/best-practices/sparse-primary-indexes.md)では、従来のリレーショナルデータベースと比較したClickHouseのインデックスの違い、ClickHouseがスパースプライマリインデックスを構築・使用する方法、およびインデックスのベストプラクティスについて解説しています。
+[ClickHouseにおけるスパースプライマリインデックスの実践的な入門](/guides/best-practices/sparse-primary-indexes.md)では、従来のリレーショナルデータベースと比較したClickHouseのインデックスの違い、ClickHouseがスパースプライマリインデックスを構築・使用する方法、およびインデックスのベストプラクティスについて説明しています。

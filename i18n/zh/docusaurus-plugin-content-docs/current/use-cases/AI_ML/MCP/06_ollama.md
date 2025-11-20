@@ -4,7 +4,7 @@ sidebar_label: '集成 Ollama'
 title: '使用 Ollama 配置 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 Ollama 配置 ClickHouse MCP 服务器。'
+description: '本指南介绍如何将 Ollama 与 ClickHouse MCP 服务器进行集成配置。'
 keywords: ['AI', 'Ollama', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -29,17 +29,17 @@ Ollama 是一个用于在本地机器上运行大型语言模型（LLM）的库�
 
 您可以从[下载页面](https://ollama.com/download)下载适用于 Mac、Windows 或 Linux 的 Ollama。
 
-运行 Ollama 后,它会在后台启动一个本地服务器,您可以使用该服务器来运行模型。
-或者,您也可以通过运行 `ollama serve` 手动启动服务器。
+运行 Ollama 后，它会在后台启动一个本地服务器，您可以使用该服务器来运行模型。
+或者，您也可以通过运行 `ollama serve` 手动启动服务器。
 
-安装完成后,您可以通过以下方式将模型拉取到本地机器:
+安装完成后，您可以通过以下方式将模型拉取到本地机器：
 
 ```bash
 ollama pull qwen3:8b
 ```
 
-如果模型不存在,此命令会将模型拉取到本地机器。
-下载完成后,您可以通过以下方式运行模型:
+如果模型尚未存在，此命令会将模型拉取到本地机器。
+下载完成后，您可以通过以下方式运行模型：
 
 ```bash
 ollama run qwen3:8b
@@ -49,7 +49,7 @@ ollama run qwen3:8b
 只有[支持工具的模型](https://ollama.com/search?c=tools)才能与 MCP Server 配合使用。
 :::
 
-我们可以通过以下方式列出已下载的模型:
+我们可以通过以下方式列出已下载的模型：
 
 ```bash
 ollama ls
@@ -60,7 +60,7 @@ NAME                       ID              SIZE      MODIFIED
 qwen3:latest               500a1f067a9f    5.2 GB    3 days ago
 ```
 
-我们可以使用以下命令查看已下载模型的详细信息:
+我们可以使用以下命令查看已下载模型的详细信息：
 
 ```bash
 ollama show qwen3
@@ -91,7 +91,7 @@ ollama show qwen3
     Version 2.0, January 2004
 ```
 
-从此输出可以看出,默认的 qwen3 模型拥有略超过 80 亿个参数。
+从此输出可以看出，默认的 qwen3 模型拥有略超过 80 亿个参数。
 
 
 ## 安装 MCPHost {#install-mcphost}
@@ -161,13 +161,13 @@ export CLICKHOUSE_PASSWORD=""
 
 ## 运行 MCPHost {#running-mcphost}
 
-配置好 ClickHouse MCP 服务器后,可以通过以下命令运行 MCPHost:
+配置好 ClickHouse MCP 服务器后,可以通过运行以下命令来运行 MCPHost:
 
 ```bash
 mcphost --model ollama:qwen3
 ```
 
-如果需要使用特定的配置文件:
+或者,如果要使用特定的配置文件:
 
 ```bash
 mcphost --model ollama:qwen3 --config ~/.mcphost.json
@@ -219,10 +219,10 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
   ┃  3. mcp-ch__run_select_query
 ```
 
-然后可以向模型询问 ClickHouse SQL playground 中可用的数据库和表相关问题。
+然后可以向模型询问有关 ClickHouse SQL 演练场中可用数据库/表的问题。
 
-根据我们的经验,使用较小的模型时(默认的 qwen3 模型有 80 亿参数),需要更明确地说明希望执行的操作。
-例如,需要明确要求列出数据库和表,而不是直接要求查询某个表。
-可以通过使用更大的模型(如 qwen3:14b)来部分缓解这个问题,但在消费级硬件上运行速度会更慢。
+根据我们的经验,使用较小的模型时(默认的 qwen3 模型有 80 亿个参数),需要更明确地说明希望它执行的操作。
+例如,需要明确要求它列出数据库和表,而不是直接要求它查询某个表。
+可以通过使用更大的模型(例如 qwen3:14b)来部分缓解此问题,但在消费级硬件上运行速度会更慢。
 
 </VerticalStepper>

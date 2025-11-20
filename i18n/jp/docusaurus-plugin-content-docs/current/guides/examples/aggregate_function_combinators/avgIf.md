@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
 title: 'avgIf'
-description: 'avgIf 結合子の使用例'
+description: 'avgIf 集約関数コンビネータの使用例'
 keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
 doc_type: 'reference'
@@ -14,13 +14,13 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、条件が真となる行の値の算術平均を計算できます。これには `avgIf` 集約コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、条件が真である行の値の算術平均を計算できます。これには `avgIf` 集約コンビネータ関数を使用します。
 
 
 ## 使用例 {#example-usage}
 
 この例では、成功フラグを持つ売上データを格納するテーブルを作成し、
-`avgIf`を使用して成功したトランザクションの平均売上額を計算します。
+`avgIf`を使用して成功した取引の平均売上額を計算します。
 
 ```sql title="クエリ"
 CREATE TABLE sales(

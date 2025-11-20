@@ -1,7 +1,7 @@
 ---
 title: 'Postgres ClickPipe の一時停止と再開'
 description: 'Postgres ClickPipe の一時停止と再開'
-sidebar_label: 'テーブルの一時停止'
+sidebar_label: 'テーブルを一時停止'
 slug: /integrations/clickpipes/postgres/pause_and_resume
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
@@ -14,7 +14,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-Postgres ClickPipe を一時停止できると便利な場合があります。たとえば、既存データを静的な状態のまま分析したい場合や、Postgres のアップグレードを実施している場合などです。以下では、Postgres ClickPipe を一時停止および再開する方法を説明します。
+Postgres ClickPipe を一時停止できると便利なケースがいくつかあります。たとえば、既存データが変化しない静的な状態のときに分析を実行したい場合があります。また、Postgres のアップグレードを行っている最中かもしれません。ここでは、Postgres ClickPipe を一時停止および再開する方法を説明します。
 
 
 ## Postgres ClickPipeを一時停止する手順 {#pause-clickpipe-steps}

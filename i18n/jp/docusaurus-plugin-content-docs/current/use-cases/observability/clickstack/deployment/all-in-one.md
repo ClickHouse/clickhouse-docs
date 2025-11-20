@@ -70,7 +70,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hype
 ```shell
 # ディレクトリの存在を確認
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# パスをマウントするようコマンドを変更
+# パスをマウントするコマンドを変更
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -86,8 +86,8 @@ docker run \
 
 このオプションは、以下の理由により本番環境へのデプロイには適していません:
 
-- **非永続ストレージ:** すべてのデータはDockerネイティブのオーバーレイファイルシステムを使用して保存されます。この構成では大規模環境でのパフォーマンスに対応できず、ユーザーが[必要なファイルパスをマウント](#persisting-data-and-settings)しない限り、コンテナの削除または再起動時にデータが失われます。
-- **コンポーネント分離の欠如:** すべてのコンポーネントが単一のDockerコンテナ内で実行されます。これにより、独立したスケーリングと監視が不可能になり、`cgroup`制限がすべてのプロセスにグローバルに適用されます。その結果、コンポーネント間でCPUとメモリのリソース競合が発生する可能性があります。
+- **非永続的ストレージ:** すべてのデータはDockerネイティブのオーバーレイファイルシステムを使用して保存されます。この構成では大規模環境でのパフォーマンスに対応できず、ユーザーが[必要なファイルパスをマウント](#persisting-data-and-settings)しない限り、コンテナの削除または再起動時にデータが失われます。
+- **コンポーネント分離の欠如:** すべてのコンポーネントが単一のDockerコンテナ内で実行されます。これにより、独立したスケーリングと監視が不可能になり、`cgroup`の制限がすべてのプロセスに対してグローバルに適用されます。その結果、コンポーネント間でCPUとメモリのリソース競合が発生する可能性があります。
 
 
 ## ポートのカスタマイズ {#customizing-ports-deploy}
@@ -115,9 +115,9 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
 ```
 
-`CLICKHOUSE_ENDPOINT`には、ポート`8443`を含むClickHouse CloudのHTTPSエンドポイントを指定します。例:`https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+`CLICKHOUSE_ENDPOINT`には、ポート`8443`を含むClickHouse CloudのHTTPSエンドポイントを指定する必要があります(例: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`)。
 
-HyperDX UIに接続後、[`Team Settings`](http://localhost:8080/team)に移動し、ClickHouse Cloudサービスへの接続を作成してから、必要なソースを設定します。フローの例については、[こちら](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
+HyperDX UIに接続したら、[`Team Settings`](http://localhost:8080/team)に移動し、ClickHouse Cloudサービスへの接続を作成してから、必要なソースを設定します。フローの例については、[こちら](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
 
 
 ## OpenTelemetryコレクターの設定 {#configuring-collector}

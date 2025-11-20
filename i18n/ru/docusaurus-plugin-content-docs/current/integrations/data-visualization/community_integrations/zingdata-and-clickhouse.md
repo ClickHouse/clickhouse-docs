@@ -3,7 +3,7 @@ sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
 keywords: ['Zing Data']
-description: 'Zing Data — это простая социальная платформа бизнес-аналитики для ClickHouse, доступная на iOS, Android и в вебе.'
+description: 'Zing Data — простое решение для социальной бизнес-аналитики на базе ClickHouse, доступное для iOS, Android и веб.'
 title: 'Подключение Zing Data к ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
@@ -38,14 +38,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    <ConnectionDetails />
 
 2. Загрузите или откройте Zing Data
-   - Для использования ClickHouse с Zing Data на мобильном устройстве загрузите приложение Zing Data из [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) или [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
+   - Чтобы использовать ClickHouse с Zing Data на мобильном устройстве, загрузите приложение Zing Data из [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) или [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
 
-   - Для использования ClickHouse с Zing Data в веб-версии перейдите в [веб-консоль Zing](https://console.getzingdata.com/) и создайте учетную запись.
+   - Чтобы использовать ClickHouse с Zing Data в веб-версии, перейдите в [веб-консоль Zing](https://console.getzingdata.com/) и создайте учётную запись.
 
 3. Добавьте источник данных
    - Для работы с данными ClickHouse в Zing Data необходимо определить **_источник данных_**. В меню мобильного приложения Zing Data выберите **Sources**, затем нажмите **Add a Datasource**.
 
-   - Для добавления источника данных в веб-версии нажмите **Data Sources** в верхнем меню, затем нажмите **New Datasource** и выберите **Clickhouse** из выпадающего списка
+   - Чтобы добавить источник данных в веб-версии, нажмите **Data Sources** в верхнем меню, затем нажмите **New Datasource** и выберите **Clickhouse** из выпадающего списка
 
    <Image
      size='md'
@@ -65,7 +65,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    />
    <br />
 
-5. При успешном подключении Zing перенаправит вас к выбору таблиц. Выберите необходимые таблицы и нажмите **Save**. Если Zing не может подключиться к источнику данных, вы увидите сообщение с просьбой проверить учетные данные и повторить попытку. Если проблемы сохраняются даже после проверки учетных данных и повторной попытки, <a id="contact_link" href="mailto:hello@getzingdata.com">обратитесь в службу поддержки Zing.</a>
+5. Если подключение выполнено успешно, Zing перенаправит вас к выбору таблиц. Выберите необходимые таблицы и нажмите **Save**. Если Zing не может подключиться к источнику данных, вы увидите сообщение с просьбой проверить учётные данные и повторить попытку. Если даже после проверки учётных данных и повторной попытки проблемы сохраняются, <a id="contact_link" href="mailto:hello@getzingdata.com">обратитесь в службу поддержки Zing.</a>
 
    <Image
      size='md'
@@ -75,7 +75,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    />
    <br />
 
-6. После добавления источника данных ClickHouse он станет доступен всем участникам вашей организации Zing на вкладке **Data Sources** / **Sources**.
+6. После добавления источника данных ClickHouse он будет доступен всем участникам вашей организации Zing на вкладке **Data Sources** / **Sources**.
 
 
 ## Создание графиков и дашбордов в Zing Data {#creating-charts-and-dashboards-in-zing-data}
@@ -92,12 +92,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    />
    <br />
 
-3. Используйте визуальный конструктор запросов для выбора нужных полей, агрегаций и других параметров, затем нажмите **Run Question**.
+3. Используйте визуальный конструктор запросов для выбора нужных полей, агрегаций и т. д., затем нажмите **Run Question**.
 
    <Image
      size='md'
      img={zing_05}
-     alt='Интерфейс визуального конструктора запросов Zing Data с опциями выбора полей и агрегации'
+     alt='Интерфейс визуального конструктора запросов Zing Data с возможностью выбора полей и настройки агрегаций'
      border
    />
    <br />
@@ -107,17 +107,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    <Image
      size='md'
      img={zing_06}
-     alt='Режим SQL-редактора в Zing Data с интерфейсом написания SQL-запросов'
+     alt='Режим SQL-редактора в Zing Data с интерфейсом для написания SQL-запросов'
      border
    />
    <Image
      size='md'
      img={zing_07}
-     alt='Результаты SQL-запроса в Zing Data с данными в табличном формате'
+     alt='Результаты выполнения SQL-запроса в Zing Data с данными в табличном формате'
      border
    />
 
-5. Пример графика выглядит следующим образом. Запрос можно сохранить через меню с тремя точками. Вы можете комментировать график, отмечать членов команды, создавать оповещения в реальном времени, изменять тип графика и выполнять другие действия.
+5. Пример графика выглядит следующим образом. Запрос можно сохранить через меню с тремя точками. Вы можете комментировать график, отмечать членов команды, создавать оповещения в реальном времени, изменять тип графика и т. д.
 
    <Image
      size='md'
@@ -132,7 +132,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    <Image
      size='md'
      img={zing_09}
-     alt='Представление дашборда Zing Data с несколькими визуализациями в макете дашборда'
+     alt='Вид дашборда Zing Data с несколькими визуализациями, размещенными в макете дашборда'
      border
    />
    <br />

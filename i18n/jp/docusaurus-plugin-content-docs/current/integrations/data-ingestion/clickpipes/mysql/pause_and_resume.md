@@ -14,7 +14,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-MySQL ClickPipe を一時停止できると便利な場面があります。たとえば、既存データを変化しない静的な状態で分析したい場合や、MySQL のアップグレードを行っている場合などです。ここでは、MySQL ClickPipe を一時停止および再開する方法を説明します。
+MySQL ClickPipe を一時停止できると便利なケースがいくつかあります。たとえば、既存データを静的な状態のまま分析したい場合や、MySQL のアップグレードを実行している場合などです。ここでは、MySQL ClickPipe を一時停止および再開する方法を説明します。
 
 
 ## MySQL ClickPipeを一時停止する手順 {#pause-clickpipe-steps}

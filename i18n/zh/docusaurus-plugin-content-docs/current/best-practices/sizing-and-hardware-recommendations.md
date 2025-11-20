@@ -1,23 +1,23 @@
 ---
 slug: /guides/sizing-and-hardware-recommendations
-sidebar_label: '容量规划与硬件推荐'
+sidebar_label: '容量规划与硬件建议'
 sidebar_position: 4
-title: '容量规划与硬件推荐'
-description: '本指南介绍我们针对开源用户在硬件、计算、内存和磁盘配置方面的一般性推荐。'
+title: '容量规划与硬件建议'
+description: '本指南介绍我们为开源用户在硬件、算力、内存和磁盘配置方面的一般性建议。'
 doc_type: 'guide'
 keywords: ['sizing', 'hardware', 'capacity planning', 'best practices', 'performance']
 ---
 
 
 
-# 规格和硬件建议
+# 规格与硬件建议
 
-本指南介绍我们针对开源用户在硬件、计算、内存和磁盘配置方面的一般性建议。若希望简化部署，我们推荐使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，它会根据工作负载自动扩缩容和调整配置，同时将与基础设施管理相关的成本降至最低。
+本指南介绍我们针对开源用户在硬件、计算、内存和磁盘配置方面的一般性建议。如果你希望简化部署，我们推荐使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，它会根据你的工作负载自动扩缩和调整，同时最大限度降低与基础设施管理相关的成本。
 
-ClickHouse 集群的配置在很大程度上取决于应用的使用场景和工作负载模式。在规划架构时，必须考虑以下因素：
+ClickHouse 集群的配置高度依赖于你的应用场景和工作负载模式。在规划架构时，你需要考虑以下因素：
 
 - 并发量（每秒请求数）
-- 吞吐量（每秒处理的行数）
+- 吞吐量（每秒处理行数）
 - 数据量
 - 数据保留策略
 - 硬件成本
@@ -27,52 +27,52 @@ ClickHouse 集群的配置在很大程度上取决于应用的使用场景和工
 
 ## 磁盘 {#disk}
 
-在 ClickHouse 中应使用的磁盘类型取决于数据量、延迟或吞吐量需求。
+您在 ClickHouse 中应使用的磁盘类型取决于数据量、延迟或吞吐量需求。
 
 ### 性能优化 {#optimizing-for-performance}
 
-为了实现最佳性能,我们建议直接挂载 [AWS 预配置 IOPS SSD 卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)或您的云服务提供商提供的同等产品,这些产品针对 IO 性能进行了优化。
+为了实现最佳性能,我们建议直接挂载 [AWS 预配置 IOPS SSD 卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)或您的云服务提供商提供的同等产品,以优化 IO 性能。
 
 ### 存储成本优化 {#optimizing-for-storage-costs}
 
 为了降低成本,您可以使用[通用型 SSD EBS 卷](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html)。
 
-您还可以使用 SSD 和 HDD 实现分层存储,采用[热/温/冷架构](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)。此外,也可以使用 [AWS S3](https://aws.amazon.com/s3/) 作为存储来实现存算分离。请参阅我们关于在开源 ClickHouse 中使用存算分离的指南[此处](/guides/separation-storage-compute)。ClickHouse Cloud 默认提供存算分离功能。
+您还可以使用 SSD 和 HDD 实现分层存储,采用[热/温/冷架构](/guides/developer/ttl#implementing-a-hotwarmcold-architecture)。或者,也可以使用 [AWS S3](https://aws.amazon.com/s3/) 作为存储来实现存储与计算分离。请参阅我们关于在开源 ClickHouse 中使用存储与计算分离的指南[此处](/guides/separation-storage-compute)。在 ClickHouse Cloud 中,存储与计算分离默认可用。
 
 
 ## CPU {#cpu}
 
-### 我应该使用哪种 CPU? {#which-cpu-should-i-use}
+### 应该使用哪种 CPU? {#which-cpu-should-i-use}
 
-您应该使用的 CPU 类型取决于您的使用场景。但总体而言,具有大量频繁并发查询、处理更多数据或使用计算密集型 UDF 的应用程序将需要更多 CPU 核心。
+您应该使用的 CPU 类型取决于您的使用场景。但总体而言,具有大量频繁并发查询、需要处理更多数据或使用计算密集型 UDF 的应用程序需要更多的 CPU 核心。
 
 **低延迟或面向客户的应用程序**
 
-对于延迟要求在数十毫秒级别的场景(例如面向客户的工作负载),我们推荐使用 AWS 的 EC2 [i3 系列](https://aws.amazon.com/ec2/instance-types/i3/)或 [i4i 系列](https://aws.amazon.com/ec2/instance-types/i4i/),或您的云服务提供商的等效产品,这些实例类型针对 IO 进行了优化。
+对于延迟要求在数十毫秒级别的场景(例如面向客户的工作负载),我们推荐使用 AWS 的 EC2 [i3 系列](https://aws.amazon.com/ec2/instance-types/i3/)或 [i4i 系列](https://aws.amazon.com/ec2/instance-types/i4i/),或您的云服务提供商的同等产品,这些实例针对 IO 进行了优化。
 
 **高并发应用程序**
 
-对于需要优化并发性能的工作负载(每秒 100+ 个查询),我们推荐使用 AWS 的[计算优化型 C 系列](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)或您的云服务提供商的等效产品。
+对于需要优化并发性能的工作负载(每秒 100+ 个查询),我们推荐使用 AWS 的[计算优化 C 系列](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)或您的云服务提供商的同等产品。
 
 **数据仓库用例**
 
-对于数据仓库工作负载和即席分析查询,我们推荐使用 AWS 的 [R 型系列](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)或您的云服务提供商的等效产品,因为它们针对内存进行了优化。
+对于数据仓库工作负载和即席分析查询,我们推荐使用 AWS 的 [R 类型系列](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)或您的云服务提供商的同等产品,因为它们针对内存进行了优化。
 
 ---
 
 ### CPU 利用率应该是多少? {#what-should-cpu-utilization-be}
 
-ClickHouse 没有标准的 CPU 利用率目标。使用 [iostat](https://linux.die.net/man/1/iostat) 等工具来测量平均 CPU 使用率,并相应地调整服务器规模以应对意外的流量峰值。但是,对于具有即席查询的分析或数据仓库用例,您应该将目标设定为 10-20% 的 CPU 利用率。
+ClickHouse 没有标准的 CPU 利用率目标。可以使用 [iostat](https://linux.die.net/man/1/iostat) 等工具来测量平均 CPU 使用率,并相应地调整服务器规模以应对意外的流量峰值。但是,对于具有即席查询的分析或数据仓库用例,建议将 CPU 利用率目标设定为 10-20%。
 
-### 我应该使用多少个 CPU 核心? {#how-many-cpu-cores-should-i-use}
+### 应该使用多少个 CPU 核心? {#how-many-cpu-cores-should-i-use}
 
-您应该使用的 CPU 数量取决于您的工作负载。但是,我们通常根据您的 CPU 类型推荐以下内存与 CPU 核心比率:
+您应该使用的 CPU 核心数量取决于您的工作负载。但是,我们通常根据 CPU 类型推荐以下内存与 CPU 核心比率:
 
-- **[M 型](https://aws.amazon.com/ec2/instance-types/)(通用用例):** 4 GB:1 的内存与 CPU 核心比率
-- **[R 型](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)(数据仓库用例):** 8 GB:1 的内存与 CPU 核心比率
-- **[C 型](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)(计算优化用例):** 2 GB:1 的内存与 CPU 核心比率
+- **[M 类型](https://aws.amazon.com/ec2/instance-types/)(通用用例):** 4 GB:1 内存与 CPU 核心比率
+- **[R 类型](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized)(数据仓库用例):** 8 GB:1 内存与 CPU 核心比率
+- **[C 类型](https://aws.amazon.com/ec2/instance-types/#Compute_Optimized)(计算优化用例):** 2 GB:1 内存与 CPU 核心比率
 
-例如,在使用 M 型 CPU 时,我们建议每 25 个 CPU 核心配置 100GB 内存。要确定适合您应用程序的内存量,需要对内存使用情况进行分析。您可以阅读[此内存问题调试指南](/guides/developer/debugging-memory-issues)或使用[内置可观测性仪表板](/operations/monitoring)来监控 ClickHouse。
+例如,在使用 M 类型 CPU 时,我们建议每 25 个 CPU 核心配置 100GB 内存。要确定适合您应用程序的内存量,需要对内存使用情况进行分析。您可以阅读[此调试内存问题指南](/guides/developer/debugging-memory-issues)或使用[内置可观测性仪表板](/operations/monitoring)来监控 ClickHouse。
 
 
 ## 内存 {#memory}
@@ -98,18 +98,18 @@ ClickHouse 没有标准的 CPU 利用率目标。使用 [iostat](https://linux.d
 
 ## 副本 {#replicas}
 
-我们建议每个分片至少配置三个副本(或在使用 [Amazon EBS](https://aws.amazon.com/ebs/) 时配置两个副本)。此外,我们建议在添加额外副本(水平扩展)之前,优先对所有副本进行垂直扩展。
+我们建议每个分片至少配置三个副本(或在使用 [Amazon EBS](https://aws.amazon.com/ebs/) 时配置两个副本)。此外,我们建议在添加更多副本(横向扩展)之前,优先对所有副本进行纵向扩展。
 
-ClickHouse 不会自动进行分片,重新分片数据集将需要大量计算资源。因此,我们通常建议使用可用的最大规格服务器,以避免将来需要重新分片数据。
+ClickHouse 不会自动进行分片,重新分片数据集将需要大量计算资源。因此,我们通常建议使用可用的最大规格服务器,以避免未来需要重新分片数据。
 
 建议考虑使用 [ClickHouse Cloud](https://clickhouse.com/cloud),它可以自动扩展,并允许您根据使用场景轻松控制副本数量。
 
 
 ## 大规模工作负载的配置示例 {#example-configurations-for-large-workloads}
 
-ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我们帮助优化您的架构以实现成本和性能的最优化,请[联系销售团队](https://clickhouse.com/company/contact?loc=docs-sizing-and-hardware-recommendations)。
+ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我们帮助优化您的架构以降低成本并提升性能,请[联系销售团队](https://clickhouse.com/company/contact?loc=docs-sizing-and-hardware-recommendations)。
 
-为了提供指导(而非推荐),以下是 ClickHouse 用户在生产环境中的配置示例:
+为提供参考(非正式建议),以下是 ClickHouse 用户在生产环境中的配置示例:
 
 ### 财富 500 强 B2B SaaS 企业 {#fortune-500-b2b-saas}
 
@@ -156,11 +156,11 @@ ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我
     <td>
       <strong>并发数</strong>
     </td>
-    <td>200+ 并发查询</td>
+    <td>200+ 个并发查询</td>
   </tr>
   <tr>
     <td>
-      <strong>副本数(包括高可用对)</strong>
+      <strong>副本数量(包含高可用对)</strong>
     </td>
     <td>44</td>
   </tr>
@@ -221,7 +221,7 @@ ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我
         <td>4860TB</td>
     </tr>
     <tr>
-        <td><strong>总存储（压缩后）</strong></td>
+        <td><strong>总存储量（压缩后）</strong></td>
         <td>608TB</td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我
         <td col="2"><strong><em>CPU</em></strong></td>
     </tr>
     <tr>
-        <td><strong>副本数量（包含 HA 对）</strong></td>
+        <td><strong>副本数量（包括 HA 对）</strong></td>
         <td>38</td>
     </tr>
     <tr>
@@ -244,14 +244,14 @@ ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我
         <td>42</td>
     </tr>
     <tr>
-        <td><strong>总 vCPU 数</strong></td>
+        <td><strong>vCPU 总数</strong></td>
         <td>1600</td>
     </tr>
     <tr>
         <td col="2"><strong><em>内存</em></strong></td>
     </tr>
     <tr>
-        <td><strong>总 RAM 容量</strong></td>
+        <td><strong>RAM 总容量</strong></td>
         <td>10TB</td>
     </tr>
     <tr>
@@ -272,7 +272,7 @@ ClickHouse 的配置高度依赖于您特定应用的需求。如果您希望我
 
 ## 延伸阅读 {#further-reading}
 
-以下是使用开源 ClickHouse 的公司发布的架构相关博客文章:
+以下是使用开源 ClickHouse 的公司发布的架构相关博客文章：
 
 - [Cloudflare](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/?utm_source=linkedin&utm_medium=social&utm_campaign=blog)
 - [eBay](https://innovation.ebayinc.com/tech/engineering/ou-online-analytical-processing/)

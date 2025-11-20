@@ -3,7 +3,7 @@ slug: /architecture/horizontal-scaling
 sidebar_label: 'スケーリング'
 sidebar_position: 10
 title: 'スケーリング'
-description: 'スケーラビリティを実現するために設計されたサンプルアーキテクチャを説明するページ'
+description: 'スケーラビリティを実現するために設計されたアーキテクチャ例を解説するページ'
 doc_type: 'guide'
 keywords: ['sharding', 'horizontal scaling', 'distributed data', 'cluster setup', 'data distribution']
 ---
@@ -23,21 +23,21 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> この例では、スケール可能なシンプルな ClickHouse クラスターの構成方法を学びます。
-> サーバーは 5 台で構成されています。そのうち 2 台はデータのシャーディングに使用されます。
-> 残りの 3 台のサーバーは調整用に使用されます。
+> この例では、スケールするシンプルな ClickHouse クラスターのセットアップ方法を説明します。
+> サーバーは 5 台構成で、このうち 2 台はデータのシャーディングに使用します。
+> 残りの 3 台のサーバーは調停（コーディネーション）に使用します。
 
-これから構成するクラスターのアーキテクチャを次に示します。
+これからセットアップするクラスターのアーキテクチャは、次の図のとおりです。
 
-<Image img={ShardingArchitecture} size="md" alt="2 つのシャードと 1 つのレプリカのアーキテクチャ図" />
+<Image img={ShardingArchitecture} size="md" alt="2 シャードと 1 レプリカのアーキテクチャ図" />
 
 <DedicatedKeeperServers />
 
 
 ## 前提条件 {#pre-requisites}
 
-- 事前に[ローカルClickHouseサーバー](/install)をセットアップ済みであること
-- [設定ファイル](/operations/configuration-files)などClickHouseの基本的な設定概念を理解していること
+- 事前に[ローカルClickHouseサーバー](/install)をセットアップしていること
+- [設定ファイル](/operations/configuration-files)などClickHouseの基本的な設定概念に精通していること
 - マシンにDockerがインストールされていること
 
 <VerticalStepper level="h2">
@@ -47,9 +47,9 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 
 <ExampleFiles />
 
-このチュートリアルでは、[Docker Compose](https://docs.docker.com/compose/)を使用してClickHouseクラスタをセットアップします。このセットアップは、個別のローカルマシン、仮想マシン、またはクラウドインスタンスでも動作するように変更可能です。
+このチュートリアルでは、[Docker compose](https://docs.docker.com/compose/)を使用してClickHouseクラスタをセットアップします。このセットアップは、個別のローカルマシン、仮想マシン、またはクラウドインスタンスでも動作するように変更できます。
 
-以下のコマンドを実行して、この例で使用するディレクトリ構造をセットアップします:
+この例のディレクトリ構造をセットアップするには、以下のコマンドを実行してください:
 
 ```bash
 mkdir cluster_2S_1R
@@ -58,14 +58,14 @@ cd cluster_2S_1R
 ```
 
 
-# clickhouse-keeperディレクトリの作成
+# clickhouse-keeperディレクトリを作成
 
 for i in {01..03}; do
 mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
 done
 
 
-# clickhouse-serverディレクトリを作成
+# clickhouse-serverディレクトリを作成する
 
 for i in {01..02}; do
 mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
@@ -178,7 +178,7 @@ done
 
 ### サーバーのセットアップ {#server-setup}
 
-`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている空の設定ファイル`config.xml`をそれぞれ編集します。以下でハイライトされている行は、各ノードに応じて変更する必要があります:
+`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている空の設定ファイル`config.xml`をそれぞれ変更します。以下でハイライトされている行は、各ノードに応じて変更する必要があります:
 
 ```xml
 <clickhouse replace="true">
@@ -267,7 +267,7 @@ done
 </logger>
 ```
 
-ログ設定の詳細については、ClickHouseのデフォルト[設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に含まれるコメントを参照してください。
+ログ設定の詳細については、デフォルトのClickHouse[設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に含まれるコメントを参照してください。
 
 #### クラスター設定 {#cluster-configuration}
 
@@ -275,9 +275,9 @@ done
 ここでは、クラスター名`cluster_2S_1R`が定義されています。
 
 
-`<cluster_2S_1R></cluster_2S_1R>` ブロックは、`<shard></shard>` と `<replica></replica>` 設定を使用してクラスタのレイアウトを定義し、`ON CLUSTER` 句を使用してクラスタ全体で実行される分散DDLクエリのテンプレートとして機能します。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries` 設定で無効にすることもできます。
+`<cluster_2S_1R></cluster_2S_1R>` ブロックは、`<shard></shard>` および `<replica></replica>` 設定を使用してクラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリとは、`ON CLUSTER` 句を使用してクラスタ全体で実行されるクエリです。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries` 設定でオフにすることもできます。
 
-`internal_replication` は、シャードごとにレプリカが1つのみであるため、デフォルトでfalseに設定されたままになっています。
+`internal_replication` は、シャードごとにレプリカが1つしかないため、デフォルトではfalseに設定されたままになっています。
 
 ```xml
 <remote_servers>
@@ -303,7 +303,7 @@ done
 #### Keeper設定 {#keeper-config-explanation}
 
 `<ZooKeeper>` セクションは、ClickHouse Keeper(またはZooKeeper)が実行されている場所をClickHouseに指定します。
-ClickHouse Keeperクラスタを使用しているため、クラスタの各 `<node>` を、`<host>` タグと `<port>` タグを使用してそれぞれホスト名とポート番号とともに指定する必要があります。
+ClickHouse Keeperクラスタを使用しているため、クラスタの各 `<node>` を、`<host>` および `<port>` タグを使用してそれぞれホスト名とポート番号とともに指定する必要があります。
 
 ClickHouse Keeperのセットアップについては、チュートリアルの次のステップで説明します。
 
@@ -340,7 +340,7 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 ```
 
 :::note
-これらは、クラスタのレイアウトに応じて個別に定義されます。
+これらは、クラスタのレイアウトに応じて一意に定義されます。
 :::
 
 ### ユーザー設定 {#user-config}
@@ -388,16 +388,16 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 ```
 
 
-| Directory                                                 | File                                                                                                                                                                             |
+| ディレクトリ                                                 | ファイル                                                                                                                                                                             |
 |-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml)    |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml)    |
 
-この例では、説明を簡単にするために、デフォルトユーザーはパスワードなしで設定されています。
+この例では、説明を簡単にするため、デフォルトユーザーにはパスワードを設定していません。
 実運用では、このような設定は推奨されません。
 
 :::note
-この例では、各 `users.xml` ファイルはクラスター内のすべてのノードで同一です。
+この例では、`users.xml` ファイルはクラスター内のすべてのノードで同一です。
 :::
 
 
@@ -428,8 +428,8 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 docker-compose up -d
 ```
 
-DockerがClickHouseとKeeperのイメージをプルし始め、
-その後コンテナが起動する様子が表示されます:
+DockerがClickHouseとKeeperのイメージをプルし、
+その後コンテナを起動する様子が表示されます:
 
 ```bash
 [+] Running 6/6
@@ -441,8 +441,8 @@ DockerがClickHouseとKeeperのイメージをプルし始め、
  ✔ Container clickhouse-02         Started
 ```
 
-クラスタが実行されていることを確認するには、`clickhouse-01`または`clickhouse-02`のいずれかに接続し、
-以下のクエリを実行します。最初のノードに接続するコマンドを以下に示します:
+クラスタが実行されていることを確認するには、`clickhouse-01`または`clickhouse-02`のいずれかに接続して、
+以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
 
 
 ```bash
@@ -456,7 +456,7 @@ docker exec -it clickhouse-01 clickhouse-client
 cluster_2S_1R node 1 :)
 ```
 
-次のクエリを実行して、どのホストにどのクラスタトポロジーが定義されているかを確認します。
+どのホストにどのクラスタートポロジーが定義されているかを確認するには、次のクエリを実行します。
 
 ```sql title="Query"
 SELECT 
@@ -495,15 +495,15 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus />
 
-これで、1 つのシャードと 2 つのレプリカを持つ ClickHouse クラスターのセットアップが完了しました。
+これで、1 つのシャードと 2 つのレプリカからなる ClickHouse クラスターのセットアップが完了しました。
 次のステップでは、クラスター内にテーブルを作成します。
 
 
 ## データベースの作成 {#creating-a-database}
 
-クラスタが正しく設定され稼働していることを確認したので、次に[UK property prices](/getting-started/example-datasets/uk-price-paid)のサンプルデータセットチュートリアルで使用したものと同じテーブルを再作成します。このデータセットは、1995年以降のイングランドとウェールズにおける不動産取引価格の約3,000万行で構成されています。
+クラスタが正しくセットアップされ、稼働していることを確認したので、次に[英国不動産価格](/getting-started/example-datasets/uk-price-paid)のサンプルデータセットチュートリアルで使用したものと同じテーブルを再作成します。このデータセットは、1995年以降のイングランドとウェールズにおける不動産取引価格の約3,000万行で構成されています。
 
-別々のターミナルタブまたはウィンドウから以下の各コマンドを実行して、各ホストのクライアントに接続します:
+各ホストのクライアントに接続するには、別々のターミナルタブまたはウィンドウから以下のコマンドをそれぞれ実行します:
 
 ```bash
 docker exec -it clickhouse-01 clickhouse-client
@@ -533,7 +533,7 @@ CREATE DATABASE IF NOT EXISTS uk
 ON CLUSTER cluster_2S_1R;
 ```
 
-各ホストのクライアントから再度同じクエリを実行して、`clickhouse-01`でのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されたことを確認できます:
+各ホストのクライアントから再度同じクエリを実行して、`clickhouse-01`でのみクエリを実行したにもかかわらず、クラスタ全体にデータベースが作成されたことを確認できます:
 
 ```sql
 SHOW DATABASES;
@@ -551,7 +551,7 @@ SHOW DATABASES;
 ```
 
 
-## クラスター上にテーブルを作成する {#creating-a-table}
+## クラスタ上にテーブルを作成する {#creating-a-table}
 
 データベースが作成されたので、次にテーブルを作成します。
 いずれかのホストクライアントから以下のクエリを実行してください：
@@ -582,9 +582,9 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 
 このクエリは、[UK property prices](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと、`ON CLUSTER`句を除いて同一であることに注意してください。
 
-`ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL（データ定義言語）クエリの分散実行のために設計されており、これらのスキーマ変更がクラスター内のすべてのノードに適用されることを保証します。
+`ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL（データ定義言語）クエリの分散実行のために設計されており、これらのスキーマ変更がクラスタ内のすべてのノードに適用されることを保証します。
 
-各ホストのクライアントから以下のクエリを実行して、テーブルがクラスター全体に作成されたことを確認できます：
+各ホストのクライアントから以下のクエリを実行して、テーブルがクラスタ全体に作成されたことを確認できます：
 
 ```sql title="クエリ"
 SHOW TABLES IN uk;
@@ -626,13 +626,13 @@ INSERT INTO test.test_table (id, name) VALUES (1, 'Alexey Milovidov');
 次に`clickhouse-01`または`clickhouse-02`から以下のクエリを実行します：
 
 ```sql
--- clickhouse-01から
+-- from clickhouse-01
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Clicky McClickface │
 --   └────┴────────────────────┘
 
--- clickhouse-02から
+--from clickhouse-02
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Alexey Milovidov   │
@@ -655,7 +655,7 @@ CREATE TABLE test.test_table_dist ON CLUSTER cluster_2S_1R AS test.test_table
 ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
 ```
 
-この例では、シャーディングキーとして `rand()` 関数を選択しているため、挿入データがシャード全体にランダムに分散されます。
+この例では、`rand()` 関数をシャーディングキーとして選択しているため、挿入データがシャード全体にランダムに分散されます。
 
 次に、いずれかのホストから分散テーブルをクエリすると、前の例とは異なり、2つのホストに挿入された両方の行が返されます：
 
@@ -670,7 +670,7 @@ SELECT * FROM test.test_table_dist;
    └────┴────────────────────┘
 ```
 
-英国不動産価格データについても同様に行いましょう。いずれかのホストクライアントから、以前に `ON CLUSTER` で作成した既存のテーブルを使用して分散テーブルを作成するため、以下のクエリを実行します：
+英国不動産価格データについても同様に行いましょう。いずれかのホストクライアントから、以下のクエリを実行して、以前に `ON CLUSTER` で作成した既存のテーブルを使用した分散テーブルを作成します：
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -731,25 +731,25 @@ FROM uk.uk_price_paid_distributed
 
 ```response title="レスポンス"
    ┌──count()─┐
-1. │ 30212555 │ -- 3021万件
+1. │ 30212555 │ -- 3021万
    └──────────┘
 ```
 
-いずれかのホストで以下のクエリを実行すると、データがシャード間でほぼ均等に分散されていることが確認できます（挿入先のシャードの選択は`rand()`で設定されているため、結果は異なる場合があります）：
+いずれかのホストで以下のクエリを実行すると、データがシャード間でほぼ均等に分散されていることがわかります（挿入先のシャードの選択は`rand()`で設定されているため、結果が異なる場合があります）：
 
 ```sql
 -- clickhouse-01から
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
--- 1. │ 15107353 │ -- 1511万件
+-- 1. │ 15107353 │ -- 1511万
 --    └──────────┘
 
 --clickhouse-02から
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
--- 1. │ 15105202 │ -- 1511万件
+-- 1. │ 15105202 │ -- 1511万
 --    └──────────┘
 ```
 
@@ -767,10 +767,10 @@ docker-compose ps
 
 ```response title="レスポンス"
 NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
-clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X分前            起動中 X分      127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
-clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X分前            起動中 X分      127.0.0.1:9181->9181/tcp
-clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X分前            起動中 X分      127.0.0.1:9182->9181/tcp
-clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X分前            起動中 X分      127.0.0.1:9183->9181/tcp
+clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
+clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
+clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
+clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
 ```
 
 次に`clickhouse-02`から、先ほど分散テーブルに対して実行したのと同じselectクエリを実行します：
@@ -787,10 +787,10 @@ Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: All conne
 ```
 
 
-コード: 32. DB::Exception: EOF の後に読み取りを試行しました。 (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (バージョン 25.5.2.47 (official build))
-コード: 209. DB::NetException: タイムアウト: 接続がタイムアウトしました: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, ローカルアドレス: 192.168.7.2:37484, 接続タイムアウト 1000 ms)。 (SOCKET&#95;TIMEOUT) (バージョン 25.5.2.47 (official build))
+Code: 32. DB::Exception: EOF の後を読み取ろうとしました。 (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (version 25.5.2.47 (official build))
+Code: 209. DB::NetException: タイムアウト: 接続がタイムアウトしました: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET&#95;TIMEOUT) (version 25.5.2.47 (official build))
 #highlight-next-line
-コード: 198. DB::NetException: ホストのアドレスが見つかりません: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, ローカルアドレス: 192.168.7.2:37484)。 (DNS&#95;ERROR) (バージョン 25.5.2.47 (official build))
+Code: 198. DB::NetException: ホストのアドレスが見つかりません: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS&#95;ERROR) (version 25.5.2.47 (official build))
 
 : Remote の実行中に発生しました。 (ALL&#95;CONNECTION&#95;TRIES&#95;FAILED)
 
@@ -808,6 +808,6 @@ Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: All conne
 
 このクラスタトポロジの利点は、データが複数のホストに分散され、ノードあたりのストレージ使用量が半分になることです。さらに重要なのは、クエリが両方のシャードで処理されるため、メモリ使用効率が向上し、ホストあたりのI/O負荷が削減されることです。
 
-このクラスタトポロジの主な欠点は、いずれか1台のホストが停止すると、クエリを処理できなくなることです。
+このクラスタトポロジの主な欠点は、当然ながら、ホストの1つが失われるとクエリを処理できなくなることです。
 
-[次の例](/architecture/cluster-deployment)では、スケーラビリティと耐障害性の両方を実現する、2つのシャードと2つのレプリカを持つクラスタのセットアップ方法について説明します。
+[次の例](/architecture/cluster-deployment)では、スケーラビリティと耐障害性の両方を提供する、2つのシャードと2つのレプリカを持つクラスタの構築方法について説明します。

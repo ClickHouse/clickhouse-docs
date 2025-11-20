@@ -3,7 +3,7 @@ sidebar_label: 'Airbyte'
 sidebar_position: 11
 keywords: ['clickhouse', 'Airbyte', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/airbyte
-description: 'Airbyte データパイプラインを使用して ClickHouse にデータをストリーミングする'
+description: 'Airbyte のデータパイプラインを使用して ClickHouse にデータをストリーミングする'
 title: 'Airbyte を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -30,20 +30,20 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <PartnerBadge />
 
 :::note
-ClickHouse用のAirbyteソースおよびデスティネーションは現在アルファステータスであり、大規模なデータセット（1000万行超）の移動には適していません
+ClickHouse用のAirbyteソースおよびデスティネーションは現在アルファステータスであり、大規模なデータセット(1000万行超)の移動には適していないことにご注意ください
 :::
 
 <a href='https://www.airbyte.com/' target='_blank'>
   Airbyte
 </a>
-はオープンソースのデータ統合プラットフォームです。
+は、オープンソースのデータ統合プラットフォームです。
 <a
   href='https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el'
   target='_blank'
 >
   ELT
 </a>
-データパイプラインの作成が可能で、140以上のすぐに使えるコネクタが付属しています。このステップバイステップのチュートリアルでは、AirbyteをClickHouseにデスティネーションとして接続し、サンプルデータセットをロードする方法を説明します。
+データパイプラインの作成が可能で、140以上のすぐに使えるコネクタが付属しています。このステップバイステップのチュートリアルでは、Airbyteをデスティネーションとして ClickHouseに接続し、サンプルデータセットをロードする方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
@@ -60,7 +60,7 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
         ./run-ab-platform.sh
         ```
 
-3.  ターミナルにAirbyteバナーが表示されたら、<a href="http://localhost:8000" target="_blank">localhost:8000</a>に接続できます。
+3.  ターミナルにAirbyteのバナーが表示されたら、<a href="http://localhost:8000" target="_blank">localhost:8000</a>に接続できます。
 
     <Image img={airbyte01} size='lg' border alt='Airbyteバナー' />
 
@@ -69,19 +69,19 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
         :::
 
 
-## ClickHouseを送信先として追加する {#2-add-clickhouse-as-a-destination}
+## ClickHouseを宛先として追加する {#2-add-clickhouse-as-a-destination}
 
-このセクションでは、ClickHouseインスタンスを送信先として追加する方法を説明します。
+このセクションでは、ClickHouseインスタンスを宛先として追加する方法を説明します。
 
-1. ClickHouseサーバーを起動するか(Airbyteはバージョン`21.8.10.19`以降のClickHouseと互換性があります)、ClickHouse Cloudアカウントにログインします:
+1. ClickHouseサーバーを起動するか(AirbyteはClickHouseバージョン`21.8.10.19`以上に対応しています)、ClickHouse Cloudアカウントにログインします:
 
    ```bash
    clickhouse-server start
    ```
 
-2. Airbyte内で「Destinations」ページを選択し、新しい送信先を追加します:
+2. Airbyte内で「Destinations」ページを選択し、新しい宛先を追加します:
 
-   <Image img={airbyte02} size='lg' border alt='Airbyteで送信先を追加' />
+   <Image img={airbyte02} size='lg' border alt='Airbyteで宛先を追加' />
 
 3. 「Destination type」ドロップダウンリストからClickHouseを選択し、「Set up the destination」フォームにClickHouseのホスト名とポート、データベース名、ユーザー名、パスワードを入力し、SSL接続かどうかを選択します(`clickhouse-client`の`--secure`フラグに相当):
 
@@ -89,13 +89,13 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
      img={airbyte03}
      size='lg'
      border
-     alt='AirbyteでのClickHouse送信先の作成'
+     alt='AirbyteでのClickHouse宛先の作成'
    />
 
-4. おめでとうございます。AirbyteにClickHouseを送信先として追加できました。
+4. おめでとうございます。AirbyteにClickHouseを宛先として追加できました。
 
 :::note
-ClickHouseを送信先として使用するには、使用するユーザーがデータベース、テーブルの作成および行の挿入権限を持っている必要があります。Airbyte専用のユーザー(例: `my_airbyte_user`)を作成し、以下の権限を付与することを推奨します:
+ClickHouseを宛先として使用するには、使用するユーザーがデータベース、テーブルの作成および行の挿入権限を持っている必要があります。Airbyte専用のユーザー(例:`my_airbyte_user`)を以下の権限で作成することを推奨します:
 
 ```sql
 CREATE USER 'my_airbyte_user'@'%' IDENTIFIED BY 'your_password_here';
@@ -108,7 +108,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 ## データセットをソースとして追加する {#3-add-a-dataset-as-a-source}
 
-このチュートリアルで使用するサンプルデータセットは、<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a>（<a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>上）です。このチュートリアルでは、2022年1月のデータに対応するサブセットを使用します。
+このチュートリアルで使用するサンプルデータセットは、<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a>（<a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>上）です。このチュートリアルでは、2022年1月分に対応するこのデータセットのサブセットを使用します。
 
 1.  Airbyte内で「Sources」ページを選択し、ファイルタイプの新しいソースを追加します。
 
@@ -138,11 +138,11 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 2. 「Use existing source」を選択してNew York City Taxi Dataを選択し、次に「Use existing destination」を選択してClickHouseインスタンスを選択します。
 
-3. 「Set up the connection」フォームに入力し、レプリケーション頻度を選択します(このチュートリアルでは`manual`を使用します)。同期するストリームとして`nyc_taxi_2022`を選択します。正規化として`Normalized Tabular Data`を選択してください。
+3. 「Set up the connection」フォームに入力し、Replication Frequencyを選択します(このチュートリアルでは`manual`を使用します)。同期するストリームとして`nyc_taxi_2022`を選択します。Normalizationとして`Normalized Tabular Data`を選択してください。
 
 <Image img={airbyte07} size='lg' border alt='Airbyteでの接続作成' />
 
-4. 接続が作成されたので、「Sync now」をクリックしてデータの読み込みを開始します(レプリケーション頻度として`Manual`を選択したため)
+4. 接続が作成されたので、「Sync now」をクリックしてデータの読み込みを開始します(Replication Frequencyとして`Manual`を選択したため)
 
 <Image img={airbyte08} size='lg' border alt='Airbyteで今すぐ同期' />
 
@@ -184,7 +184,7 @@ GRANT CREATE ON * TO my_airbyte_user;
         FROM nyc_taxi_2022
         ```
 
-        レスポンスは以下の通りです:
+        レスポンスは次のとおりです:
         ```response
         Query id: a9172d39-50f7-421e-8330-296de0baa67e
 
@@ -202,8 +202,8 @@ GRANT CREATE ON * TO my_airbyte_user;
             `_airbyte_nyc_taxi_072021_hashid` String
         ```
 
-        データセットがClickHouseインスタンスにロードされたので、新しいテーブルを作成し、より適切なClickHouseデータ型を使用できます（<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">詳細はこちら</a>）。
+        データセットがClickHouseインスタンスにロードされたので、新しいテーブルを作成し、より適切なClickHouseデータ型を使用できます(<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">詳細</a>)。
 
-8.  おめでとうございます。Airbyteを使用してNYCタクシーデータをClickHouseに正常にロードできました！
+8.  おめでとうございます。Airbyteを使用してNYCタクシーデータをClickHouseに正常にロードできました。
 
 </VerticalStepper>

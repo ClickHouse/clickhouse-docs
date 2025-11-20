@@ -23,11 +23,11 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> 在本示例中，你将学习如何搭建一个可以横向扩展的简单 ClickHouse 集群。
-> 集群中配置了五台服务器，其中两台用于对数据进行分片。
+> 在本示例中，你将学习如何搭建一个简单且可扩展的 ClickHouse 集群。
+> 共配置了五台服务器，其中两台用于对数据进行分片。
 > 另外三台服务器用于协调。
 
-你将要搭建的集群架构如下图所示：
+你将要搭建的集群架构如下所示：
 
 <Image img={ShardingArchitecture} size="md" alt="包含 2 个分片和 1 个副本的架构图" />
 
@@ -47,9 +47,9 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 
 <ExampleFiles />
 
-在本教程中，您将使用 [Docker compose](https://docs.docker.com/compose/) 来搭建 ClickHouse 集群。该配置也可以修改后用于独立的本地机器、虚拟机或云实例。
+在本教程中,您将使用 [Docker compose](https://docs.docker.com/compose/) 来设置 ClickHouse 集群。该配置也可以修改后用于独立的本地机器、虚拟机或云实例。
 
-运行以下命令来创建本示例所需的目录结构：
+运行以下命令来设置本示例的目录结构:
 
 ```bash
 mkdir cluster_2S_1R
@@ -176,7 +176,7 @@ done
 
 ## 配置 ClickHouse 节点 {#configure-clickhouse-servers}
 
-### 服务器设置 {#server-setup}
+### 服务器配置 {#server-setup}
 
 现在修改位于 `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d` 的每个空配置文件 `config.xml`。下面高亮显示的行需要根据每个节点进行相应修改:
 
@@ -190,7 +190,7 @@ done
         <count>3</count>
     </logger>
     <!--highlight-next-line-->
-    <display_name>cluster_2S_1R node 1</display_name>
+    <display_name>cluster_2S_1R 节点 1</display_name>
     <listen_host>0.0.0.0</listen_host>
     <http_port>8123</http_port>
     <tcp_port>9000</tcp_port>
@@ -244,18 +244,18 @@ done
 </clickhouse>
 ```
 
-| 目录                                                 | 文件                                                                                                                                                                             |
+| Directory                                                 | File                                                                                                                                                                             |
 | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
 
-上述配置文件的各个部分将在下文详细说明。
+下文将详细说明上述配置文件的各个部分。
 
 #### 网络和日志 {#networking}
 
 <ListenHost />
 
-日志配置在 `<logger>` 块中定义。此示例配置提供了一个调试日志,当日志文件达到 1000M 时会进行滚动,保留 3 个历史文件:
+日志在 `<logger>` 块中定义。此示例配置提供了一个调试日志,当日志文件达到 1000M 时将滚动,最多保留三个文件:
 
 ```xml
 <logger>
@@ -275,13 +275,13 @@ done
 此处定义了集群名称 `cluster_2S_1R`。
 
 
-`<cluster_2S_1R></cluster_2S_1R>` 块定义了集群的布局，
-使用 `<shard></shard>` 和 `<replica></replica>` 设置，并作为
-分布式 DDL 查询的模板。分布式 DDL 查询是使用 `ON CLUSTER` 子句在整个
-集群中执行的查询。默认情况下，分布式 DDL 查询
-是允许的，但也可以通过设置 `allow_distributed_ddl_queries` 来关闭。
+`<cluster_2S_1R></cluster_2S_1R>` 块定义了集群的布局,
+使用 `<shard></shard>` 和 `<replica></replica>` 设置,并作为
+分布式 DDL 查询的模板,这些查询通过 `ON CLUSTER` 子句在整个
+集群中执行。默认情况下,分布式 DDL 查询
+是允许的,但也可以通过设置 `allow_distributed_ddl_queries` 来关闭。
 
-`internal_replication` 默认保持为 false，因为每个分片只有一个副本。
+`internal_replication` 默认保持为 false,因为每个分片只有一个副本。
 
 ```xml
 <remote_servers>
@@ -306,8 +306,8 @@ done
 
 #### Keeper 配置 {#keeper-config-explanation}
 
-`<ZooKeeper>` 部分告诉 ClickHouse 在哪里运行 ClickHouse Keeper（或 ZooKeeper）。
-由于我们使用的是 ClickHouse Keeper 集群，需要指定集群的每个 `<node>`，
+`<ZooKeeper>` 部分告诉 ClickHouse 在哪里运行 ClickHouse Keeper(或 ZooKeeper)。
+由于我们使用的是 ClickHouse Keeper 集群,需要指定集群的每个 `<node>`,
 并分别使用 `<host>` 和 `<port>` 标签指定其主机名和端口号。
 
 ClickHouse Keeper 的设置将在教程的下一步中说明。
@@ -330,14 +330,14 @@ ClickHouse Keeper 的设置将在教程的下一步中说明。
 ```
 
 :::note
-虽然可以在与 ClickHouse Server 相同的服务器上运行 ClickHouse Keeper，
-但在生产环境中，我们强烈建议 ClickHouse Keeper 在专用主机上运行。
+虽然可以在与 ClickHouse Server 相同的服务器上运行 ClickHouse Keeper,
+但在生产环境中,我们强烈建议 ClickHouse Keeper 在专用主机上运行。
 :::
 
 #### 宏配置 {#macros-config-explanation}
 
-此外，`<macros>` 部分用于定义复制表的参数替换。
-这些参数列在 `system.macros` 中，允许在查询中使用
+此外,`<macros>` 部分用于定义复制表的参数替换。
+这些参数列在 `system.macros` 中,允许在查询中使用
 `{shard}` 和 `{replica}` 等替换。
 
 ```xml
@@ -354,7 +354,7 @@ ClickHouse Keeper 的设置将在教程的下一步中说明。
 ### 用户配置 {#user-config}
 
 现在修改位于
-`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` 的每个空配置文件 `users.xml`，内容如下：
+`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` 的每个空配置文件 `users.xml`,内容如下:
 
 ```xml title="/users.d/users.xml"
 <?xml version="1.0"?>
@@ -397,16 +397,16 @@ ClickHouse Keeper 的设置将在教程的下一步中说明。
 ```
 
 
-| 目录                                                      | 文件                                                                                                                                                                             |
+| 目录                                                       | 文件                                                                                                                                                                             |
 |-----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml)    |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d`  | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml)    |
 
-在此示例中，为了简单起见，默认用户被配置为不使用密码。
-在实际使用中并不推荐这样做。
+在本示例中，为了简化配置，默认用户未设置密码。
+在实际环境中，不建议这样做。
 
 :::note
-在此示例中，集群中所有节点上的 `users.xml` 文件内容完全相同。
+在本示例中，集群中所有节点上的 `users.xml` 文件内容完全相同。
 :::
 
 
@@ -431,13 +431,13 @@ ClickHouse Keeper 的设置将在教程的下一步中说明。
 ## 测试设置 {#test-the-setup}
 
 确保 Docker 在您的机器上运行。
-在 `cluster_2S_1R` 目录的根目录下使用 `docker-compose up` 命令启动集群:
+从 `cluster_2S_1R` 目录的根目录使用 `docker-compose up` 命令启动集群:
 
 ```bash
 docker-compose up -d
 ```
 
-您将看到 Docker 开始拉取 ClickHouse 和 Keeper 镜像,
+您应该会看到 Docker 开始拉取 ClickHouse 和 Keeper 镜像,
 然后启动容器:
 
 ```bash
@@ -450,8 +450,7 @@ docker-compose up -d
  ✔ Container clickhouse-02         Started
 ```
 
-要验证集群是否正在运行,请连接到 `clickhouse-01` 或 `clickhouse-02` 并执行
-以下查询。连接到第一个节点的命令如下:
+要验证集群是否正在运行,请连接到 `clickhouse-01` 或 `clickhouse-02` 并运行以下查询。连接到第一个节点的命令如下所示:
 
 
 ```bash
@@ -459,13 +458,13 @@ docker-compose up -d
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-如果连接成功，你会看到 ClickHouse 客户端提示符：
+如果成功，您将看到 ClickHouse 客户端提示符：
 
 ```response
 cluster_2S_1R node 1 :)
 ```
 
-运行以下查询，查看每个主机上定义了哪些集群拓扑：
+运行以下查询，检查每个主机上定义的集群拓扑：
 
 ```sql title="Query"
 SELECT 
@@ -504,13 +503,13 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus />
 
-至此，你已经成功搭建了一个包含一个分片和两个副本的 ClickHouse 集群。
-下一步，你将在该集群中创建一张表。
+至此，您已经成功搭建了一个由单个分片和两个副本组成的 ClickHouse 集群。
+下一步，您将在该集群中创建一张表。
 
 
 ## 创建数据库 {#creating-a-database}
 
-现在您已验证集群配置正确且正在运行,接下来将重新创建与[英国房产价格](/getting-started/example-datasets/uk-price-paid)示例数据集教程中相同的表。该数据集包含自 1995 年以来英格兰和威尔士房地产交易价格的约 3000 万行数据。
+现在您已验证集群配置正确且正在运行,接下来将重新创建与 [英国房产价格](/getting-started/example-datasets/uk-price-paid) 示例数据集教程中相同的表。该数据集包含自 1995 年以来英格兰和威尔士房地产交易价格的约 3000 万行记录。
 
 在不同的终端标签页或窗口中分别运行以下命令,连接到各主机的客户端:
 
@@ -592,8 +591,8 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 请注意,该查询与 [UK property prices](/getting-started/example-datasets/uk-price-paid) 示例数据集教程中原始 `CREATE` 语句使用的查询相同,
 只是增加了 `ON CLUSTER` 子句。
 
-`ON CLUSTER` 子句用于分布式执行 DDL(数据定义语言)查询,
-例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`,确保这些
+`ON CLUSTER` 子句用于分布式执行 DDL(数据定义语言)
+查询,例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`,确保这些
 模式变更应用于集群中的所有节点。
 
 您可以从每个主机的客户端运行以下查询,以确认该表已在整个集群中创建:
@@ -608,7 +607,7 @@ SHOW TABLES IN uk;
    └─────────────────────┘
 ```
 
-在插入英国房价数据之前,让我们进行一个快速实验,看看
+在插入 UK price paid 数据之前,让我们进行一个快速实验,看看
 从任一主机向普通表插入数据时会发生什么。
 
 从任一主机使用以下查询创建测试数据库和表:
@@ -639,24 +638,24 @@ INSERT INTO test.test_table (id, name) VALUES (1, 'Alexey Milovidov');
 现在从 `clickhouse-01` 或 `clickhouse-02` 运行以下查询:
 
 ```sql
--- 从 clickhouse-01
+-- from clickhouse-01
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Clicky McClickface │
 --   └────┴────────────────────┘
 
--- 从 clickhouse-02
+--from clickhouse-02
 SELECT * FROM test.test_table;
 --   ┌─id─┬─name───────────────┐
 -- 1.│  1 │ Alexey Milovidov   │
 --   └────┴────────────────────┘
 ```
 
-您会注意到,与 `ReplicatedMergeTree` 表不同,只返回插入到该特定主机上表中的行,
-而不是两行都返回。
+您会注意到,与 `ReplicatedMergeTree` 表不同,只会返回插入到该
+特定主机上表中的行,而不会同时返回两行。
 
-要跨两个分片读取数据,我们需要一个能够处理跨所有分片查询的接口,
-在运行 select 查询时合并来自两个分片的数据,
+要跨两个分片读取数据,我们需要一个能够处理
+所有分片查询的接口,在运行 select 查询时合并来自两个分片的数据,
 或在运行 insert 查询时将数据插入到两个分片。
 
 在 ClickHouse 中,这个接口称为**分布式表**,我们使用
@@ -674,7 +673,7 @@ ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
 
 在此示例中,选择 `rand()` 函数作为分片键,使插入的数据随机分布到各个分片。
 
-现在从任一主机查询分布式表,您将获得在两个主机上插入的所有行,这与之前的示例不同:
+现在从任一主机查询分布式表,您将获得在两个主机上插入的所有行,与之前的示例不同:
 
 ```sql
 SELECT * FROM test.test_table_dist;
@@ -687,7 +686,7 @@ SELECT * FROM test.test_table_dist;
    └────┴────────────────────┘
 ```
 
-让我们对英国房产价格数据执行相同的操作。从任一主机客户端运行以下查询,使用之前通过 `ON CLUSTER` 创建的现有表来创建分布式表:
+对英国房产价格数据执行相同的操作。从任一主机客户端运行以下查询,使用之前通过 `ON CLUSTER` 创建的现有表来创建分布式表:
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -739,7 +738,7 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-数据插入完成后,可以使用分布式表查询行数:
+数据插入完成后,可以使用分布式表检查行数:
 
 ```sql title="查询"
 SELECT count(*)
@@ -748,25 +747,25 @@ FROM uk.uk_price_paid_distributed
 
 ```response title="响应"
    ┌──count()─┐
-1. │ 30212555 │ -- 3021 万
+1. │ 30212555 │ -- 3021万
    └──────────┘
 ```
 
-如果在任意一台主机上运行以下查询,将会看到数据已基本均匀地分布在各个分片上(请注意,插入到哪个分片是通过 `rand()` 设置的,因此您的结果可能会有所不同):
+如果在任意一台主机上运行以下查询,将看到数据已基本均匀地分布在各个分片上(请注意,插入到哪个分片的选择是通过 `rand()` 设置的,因此您的结果可能会有所不同):
 
 ```sql
--- from clickhouse-01
+-- 来自 clickhouse-01
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
--- 1. │ 15107353 │ -- 1511 万
+-- 1. │ 15107353 │ -- 1511万
 --    └──────────┘
 
---from clickhouse-02
+-- 来自 clickhouse-02
 SELECT count(*)
 FROM uk.uk_price_paid_local
 --    ┌──count()─┐
--- 1. │ 15105202 │ -- 1511 万
+-- 1. │ 15105202 │ -- 1511万
 --    └──────────┘
 ```
 
@@ -790,7 +789,7 @@ clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint
 clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
 ```
 
-现在从 `clickhouse-02` 运行之前在分布式表上执行的相同查询:
+现在从 `clickhouse-02` 运行我们之前在分布式表上执行的相同查询:
 
 ```sql
 SELECT count(*)
@@ -804,16 +803,18 @@ Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: All conne
 ```
 
 
-Code: 32. DB::Exception: 尝试在 EOF 之后读取。 (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (version 25.5.2.47 (official build))
-Code: 209. DB::NetException: 超时：连接 192.168.7.1:9000 超时 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms)。 (SOCKET&#95;TIMEOUT) (version 25.5.2.47 (official build))
+代码: 32. DB::Exception: 尝试在文件结束符之后读取。 (ATTEMPT&#95;TO&#95;READ&#95;AFTER&#95;EOF) (版本 25.5.2.47 (official build))
+代码: 209. DB::NetException: 超时：连接到 192.168.7.1:9000 超时 (clickhouse-01:9000, 192.168.7.1, 本地地址: 192.168.7.2:37484, 连接超时时间 1000 ms)。 (SOCKET&#95;TIMEOUT) (版本 25.5.2.47 (official build))
 #highlight-next-line
-Code: 198. DB::NetException: 未找到主机地址: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484)。 (DNS&#95;ERROR) (version 25.5.2.47 (official build))
+代码: 198. DB::NetException: 找不到主机地址: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, 本地地址: 192.168.7.2:37484)。 (DNS&#95;ERROR) (版本 25.5.2.47 (official build))
 
 ：在执行 Remote 时。 (ALL&#95;CONNECTION&#95;TRIES&#95;FAILED)
 
 ```
 
-不幸的是,我们的集群不具备容错能力。如果其中一台主机发生故障,集群将被视为不健康状态,查询将会失败。这与我们在[上一个示例](/architecture/replication)中看到的复制表不同——即使其中一台主机发生故障,我们仍然能够向复制表插入数据。
+不幸的是,我们的集群不具备容错能力。如果其中一台主机发生故障,
+集群将被视为不健康状态,查询将会失败。这与我们在[上一个示例](/architecture/replication)中看到的复制表不同——
+即使其中一台主机发生故障,我们仍然能够向复制表插入数据。
 
 </VerticalStepper>
 ```
@@ -821,8 +822,8 @@ Code: 198. DB::NetException: 未找到主机地址: clickhouse-01: (clickhouse-0
 
 ## 总结 {#conclusion}
 
-这种集群拓扑的优势在于数据分布在不同的主机上，每个节点仅使用一半的存储空间。更重要的是,查询会跨两个分片进行处理，这在内存利用率方面更加高效，同时降低了每个主机的 I/O 负载。
+这种集群拓扑的优势在于数据分布在不同的主机上，每个节点使用一半的存储空间。更重要的是，查询会在两个分片上并行处理，这在内存利用率方面更高效，并减少了每个主机的 I/O 开销。
 
 当然，这种集群拓扑的主要缺点是，一旦丢失其中一个主机，我们将无法提供查询服务。
 
-在[下一个示例](/architecture/cluster-deployment)中，我们将介绍如何设置一个具有两个分片和两个副本的集群，从而同时实现可扩展性和容错能力。
+在[下一个示例](/architecture/cluster-deployment)中，我们将介绍如何设置一个具有两个分片和两个副本的集群，以同时提供可扩展性和容错能力。

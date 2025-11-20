@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
-description: 'count で Resample コンビネーターを使用する例'
+description: 'count と Resample コンビネータを使用する例'
 keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'
 doc_type: 'reference'
@@ -16,8 +16,8 @@ doc_type: 'reference'
 
 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 コンビネータを[`count`](/sql-reference/aggregate-functions/reference/count)
-集約関数に適用することで、指定されたキー列の値を固定数（`N`）の
-区間でカウントできます。
+集約関数に適用することで、指定されたキー列の値を固定数の
+区間（`N`）でカウントできます。
 
 
 ## 使用例 {#example-usage}

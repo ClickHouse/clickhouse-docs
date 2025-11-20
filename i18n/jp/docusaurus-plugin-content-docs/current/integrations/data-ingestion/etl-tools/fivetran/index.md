@@ -24,10 +24,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 [Fivetran](https://www.fivetran.com)は、クラウドデータプラットフォーム間でのデータ移動を自動化するプラットフォームです。
 
-[ClickHouse Cloud](https://clickhouse.com/cloud)は[Fivetranの送信先](https://fivetran.com/docs/destinations/clickhouse)としてサポートされており、さまざまなソースからClickHouseへデータをロードすることができます。
+[ClickHouse Cloud](https://clickhouse.com/cloud)は[Fivetranの転送先](https://fivetran.com/docs/destinations/clickhouse)としてサポートされており、ユーザーは様々なソースからClickHouseへデータをロードできます。
 
 :::note
-[ClickHouse Cloud送信先](https://fivetran.com/docs/destinations/clickhouse)は現在プライベートプレビュー中です。問題が発生した場合は、ClickHouseサポートまでお問い合わせください。
+[ClickHouse Cloudの転送先](https://fivetran.com/docs/destinations/clickhouse)は現在プライベートプレビュー中です。問題が発生した場合は、ClickHouseサポートまでお問い合わせください。
 :::
 
 <div class='vimeo-container'>
@@ -46,7 +46,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
 
-Fivetran ウェブサイトの公式ドキュメントを参照してください:
+Fivetran ウェブサイトの公式ドキュメントを参照してください：
 
 - [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
@@ -54,4 +54,4 @@ Fivetran ウェブサイトの公式ドキュメントを参照してくださ�
 
 ## お問い合わせ {#contact-us}
 
-ご質問や機能のリクエストがございましたら、[サポートチケット](/about-us/support)を開いてください。
+ご質問や機能リクエストがございましたら、[サポートチケット](/about-us/support)を作成してください。

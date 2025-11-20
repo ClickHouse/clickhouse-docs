@@ -3,18 +3,18 @@ slug: /use-cases/observability/clickstack/sdks/deno
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
-description: '适用于 ClickStack 的 Deno SDK - ClickHouse 可观测性技术栈'
+description: 'ClickStack 的 Deno SDK - ClickHouse 可观测性技术栈'
 title: 'Deno'
 doc_type: 'guide'
-keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 集成', 'Deno 可观测性', 'Deno 日志 SDK']
 ---
 
-本指南可用于集成以下功能：
+本指南集成以下功能:
 
 - **日志**
 
 :::note
-当前仅支持 OpenTelemetry 日志。关于分布式追踪支持，[请参阅以下指南](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
+目前仅支持 OpenTelemetry 日志功能。关于追踪支持,请[参阅以下指南](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
 
 

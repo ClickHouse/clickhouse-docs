@@ -7,8 +7,8 @@ keywords: ['chdb', 'clickhouse-local']
 doc_type: 'guide'
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) 是一个带有嵌入式 ClickHouse 的命令行工具（CLI）。
-它使用户无需安装服务器即可使用 ClickHouse 的强大功能。
+[clickhouse-local](/operations/utilities/clickhouse-local) 是一个内置了 ClickHouse 的命令行工具（CLI）。
+它让用户无需安装服务器即可使用 ClickHouse 的强大功能。
 在本指南中，我们将学习如何在 chDB 中使用 clickhouse-local 数据库。
 
 
@@ -35,7 +35,7 @@ pip install "chdb>=2.0.2"
 pip install ipython
 ```
 
-我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过运行以下命令来启动:
+我们将使用 `ipython` 来运行本指南其余部分的命令,您可以通过运行以下命令来启动它:
 
 ```bash
 ipython
@@ -60,7 +60,7 @@ curl https://clickhouse.com/ | sh
 
 ## 将数据导入 clickhouse-local {#ingesting-data-into-clickhouse-local}
 
-默认数据库仅将数据存储在内存中,因此我们需要创建一个命名数据库,以确保导入的任何数据都能持久化到磁盘。
+默认数据库仅将数据存储在内存中,因此我们需要创建一个命名数据库,以确保导入的数据能够持久化到磁盘。
 
 ```sql
 CREATE DATABASE foo;
@@ -75,7 +75,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-让我们编写一个查询来查看我们获得了哪些数据:
+让我们编写一个查询来查看已有的数据:
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -96,19 +96,19 @@ ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another s
 
 ## 连接到 clickhouse-local 数据库 {#connecting-to-a-clickhouse-local-database}
 
-返回 `ipython` shell 并从 chDB 导入 `session` 模块:
+返回 `ipython` shell 并从 chDB 导入 `session` 模块：
 
 ```python
 from chdb import session as chs
 ```
 
-初始化一个指向 `demo..chdb` 的会话:
+初始化一个指向 `demo..chdb` 的会话：
 
 ```python
 sess = chs.Session("demo.chdb")
 ```
 
-然后可以运行相同的查询来返回数字的分位数:
+然后可以运行相同的查询来返回数字的分位数：
 
 ```python
 sess.query("""
@@ -121,7 +121,7 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-也可以从 chDB 向该数据库插入数据:
+也可以从 chDB 向该数据库插入数据：
 
 ```python
 sess.query("""

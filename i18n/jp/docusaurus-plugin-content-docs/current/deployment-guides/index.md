@@ -1,14 +1,14 @@
 ---
 slug: /deployment-guides/index
-title: 'デプロイメントガイドの概要'
-description: 'デプロイメントとスケーリングセクションのランディングページ'
+title: 'デプロイメントガイド概要'
+description: 'デプロイメントおよびスケーリングセクションのランディングページ'
 keywords: ['deployment guides', 'scaling', 'cluster deployment', 'replication', 'fault tolerance']
 doc_type: 'landing-page'
 ---
 
 # デプロイとスケーリング
 
-このセクションでは、次のトピックを扱います。
+このセクションでは、次のトピックについて説明します。
 
 | トピック                                                            |
 |------------------------------------------------------------------|

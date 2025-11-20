@@ -3,7 +3,7 @@ sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: '在 ClickHouse 中使用 Parquet'
-description: '介绍如何在 ClickHouse 中使用 Parquet 的指南页面'
+description: '介绍如何在 ClickHouse 中使用 Parquet 的页面'
 doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
@@ -16,10 +16,10 @@ Parquet 是一种高效的文件格式，用于以列式方式存储数据。
 ClickHouse 支持读取和写入 Parquet 文件。
 
 :::tip
-在查询中引用文件路径时，ClickHouse 实际尝试读取的位置取决于你使用的 ClickHouse 变体。
+在查询中引用文件路径时，ClickHouse 实际尝试读取的位置取决于你使用的 ClickHouse 版本/形态。
 
-如果你使用的是 [`clickhouse-local`](/operations/utilities/clickhouse-local.md)，它将从相对于你启动 ClickHouse Local 时所在位置的路径读取文件。
-如果你通过 `clickhouse client` 使用 ClickHouse Server 或 ClickHouse Cloud，它将从服务器上 `/var/lib/clickhouse/user_files/` 目录的相对路径读取文件。
+如果你使用的是 [`clickhouse-local`](/operations/utilities/clickhouse-local.md)，它会从你启动 ClickHouse Local 的位置的相对路径读取文件。
+如果你是通过 `clickhouse client` 使用 ClickHouse Server 或 ClickHouse Cloud，它会从服务器上 `/var/lib/clickhouse/user_files/` 目录的相对路径读取文件。
 :::
 
 
@@ -32,7 +32,7 @@ ClickHouse 支持读取和写入 Parquet 文件。
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-我们将 [Parquet](/interfaces/formats/Parquet) 作为第二个参数,这样 ClickHouse 就能识别文件格式。该命令将输出列及其类型:
+我们将 [Parquet](/interfaces/formats/Parquet) 作为第二个参数,以便 ClickHouse 识别文件格式。这将输出列及其类型:
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -42,7 +42,7 @@ DESCRIBE TABLE file('data.parquet', Parquet);
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-我们还可以在实际导入数据之前,充分利用 SQL 的强大功能来探索文件内容:
+我们还可以在实际导入数据之前,充分利用 SQL 的强大功能来探索文件:
 
 ```sql
 SELECT *
@@ -59,8 +59,8 @@ LIMIT 3;
 ```
 
 :::tip
-对于 `file()` 和 `INFILE`/`OUTFILE`,我们可以省略显式的格式设置。
-在这种情况下,ClickHouse 会根据文件扩展名自动检测格式。
+我们可以省略 `file()` 和 `INFILE`/`OUTFILE` 的显式格式设置。
+在这种情况下,ClickHouse 将根据文件扩展名自动检测格式。
 :::
 
 
@@ -114,7 +114,7 @@ clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 
 ## 从 Parquet 文件创建新表 {#creating-new-tables-from-parquet-files}
 
-由于 ClickHouse 能够读取 Parquet 文件的架构,我们可以即时创建表:
+由于 ClickHouse 能够读取 Parquet 文件的模式(schema),我们可以即时创建表:
 
 ```sql
 CREATE TABLE imported_from_parquet
@@ -124,7 +124,7 @@ SELECT *
 FROM file('data.parquet', Parquet)
 ```
 
-这将自动从指定的 Parquet 文件创建并填充表:
+这将自动从指定的 Parquet 文件创建表并填充数据:
 
 ```sql
 DESCRIBE TABLE imported_from_parquet;
@@ -161,7 +161,7 @@ FORMAT Parquet
 
 ## ClickHouse 与 Parquet 数据类型 {#clickhouse-and-parquet-data-types}
 
-ClickHouse 与 Parquet 的数据类型大部分相同,但仍[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如,ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64` 类型。如果将其重新导入 ClickHouse,将会看到数字([time.parquet 文件](assets/time.parquet)):
+ClickHouse 与 Parquet 的数据类型大部分相同,但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如,ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果将其重新导入到 ClickHouse,将会看到数字([time.parquet 文件](assets/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -177,12 +177,12 @@ SELECT * FROM file('time.parquet', Parquet);
 └───┴────────────┘
 ```
 
-此时可以使用[类型转换](/sql-reference/functions/type-conversion-functions.md):
+在这种情况下可以使用[类型转换](/sql-reference/functions/type-conversion-functions.md):
 
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- int 转为 time
+    toDateTime(time)                 <--- int 转换为 time
 FROM file('time.parquet', Parquet);
 ```
 

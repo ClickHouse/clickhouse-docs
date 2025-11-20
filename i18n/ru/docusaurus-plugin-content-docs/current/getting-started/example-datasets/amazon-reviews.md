@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-Этот набор данных содержит более 150 млн отзывов покупателей о товарах Amazon. Данные хранятся в сжатых с помощью snappy файлах Parquet в AWS S3, их общий объём составляет 49 ГБ (в сжатом виде). Рассмотрим шаги по загрузке этого набора данных в ClickHouse.
+Этот набор данных содержит более 150 млн отзывов покупателей о товарах Amazon. Данные представлены в snappy-сжатых файлах Parquet в AWS S3, общим сжатым объёмом 49 ГБ. Давайте по шагам рассмотрим, как загрузить этот набор данных в ClickHouse.
 
 :::note
-Приведённые ниже запросы выполнялись на рабочем (**Production**) инстансе ClickHouse Cloud. Дополнительную информацию см. в разделе
-["Playground specifications"](/getting-started/playground#specifications).
+Приведённые ниже запросы выполнялись на экземпляре ClickHouse Cloud уровня **Production**. Для получения дополнительной информации см. раздел
+["Характеристики Playground"](/getting-started/playground#specifications).
 :::
 
 
@@ -116,7 +116,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. Следующая команда `INSERT` использует табличную функцию `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно с использованием всех узлов вашего кластера. Мы также используем маску для вставки всех файлов, имена которых начинаются с `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
+3. Следующая команда `INSERT` использует табличную функцию `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно с использованием всех узлов вашего кластера. Мы также используем символ подстановки для вставки любого файла, имя которого начинается с `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -126,10 +126,10 @@ FROM s3Cluster('default',
 
 
 :::tip
-В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера… или используйте табличную функцию `s3` (вместо `s3Cluster`), если кластера у вас нет.
+В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера... или используйте табличную функцию `s3` (вместо `s3Cluster`), если у вас нет кластера.
 :::
 
-5. Этот запрос выполняется недолго — в среднем обрабатывается около 300 000 строк в секунду. Примерно через 5 минут вы должны увидеть, что все строки вставлены:
+5. Этот запрос выполняется недолго — в среднем около 300 000 строк в секунду. Примерно через 5 минут вы должны увидеть, что все строки вставлены:
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
@@ -152,7 +152,7 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-Исходный объём данных составлял около 70 ГБ, но в сжатом виде в ClickHouse они занимают около 30 ГБ.
+Исходный объём данных составлял около 70 ГБ, но в сжатом виде в ClickHouse он занимает примерно 30 ГБ.
 
 
 ## Примеры запросов {#example-queries}

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Драйвер R2DBC'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
-description: 'Драйвер ClickHouse R2DBC'
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'Драйвер R2DBC для ClickHouse'
 slug: /integrations/java/r2dbc
 title: 'Драйвер R2DBC'
 doc_type: 'reference'
@@ -21,11 +21,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 Обёртка [R2DBC](https://r2dbc.io/) над асинхронным Java-клиентом для ClickHouse.
 
-### Требования к окружению {#environment-requirements}
+### Системные требования {#environment-requirements}
 
 - [OpenJDK](https://openjdk.java.net) версии >= 8
 
-### Настройка {#setup}
+### Установка {#setup}
 
 ```xml
 <dependency>
@@ -33,7 +33,7 @@ import CodeBlock from '@theme/CodeBlock';
     <!-- измените на clickhouse-r2dbc_0.9.1 для SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- используйте uber jar со всеми включёнными зависимостями, измените classifier на http или grpc для уменьшения размера jar -->
+    <!-- используйте uber jar со всеми зависимостями, измените classifier на http или grpc для уменьшения размера jar -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Запросы {#query}
+### Выполнение запросов {#query}
 
 ```java showLineNumbers
 connection

@@ -11,8 +11,7 @@ keywords: ['示例数据集', 'hacker news', '示例数据', '文本分析', '�
 
 # Hacker News 数据集
 
-> 在本教程中，你将以 CSV 和 Parquet 两种格式向一个 ClickHouse
-> 表中插入 2800 万行 Hacker News 数据，并运行一些简单查询来探索这些数据。
+> 在本教程中，你将通过 CSV 和 Parquet 两种格式向 ClickHouse 中的一张表插入 2800 万行 Hacker News 数据，并运行一些简单的查询来探索这些数据。
 
 
 
@@ -22,7 +21,7 @@ keywords: ['示例数据集', 'hacker news', '示例数据', '文本分析', '�
 
 ### 下载 CSV {#download}
 
-可以从我们的公共 [S3 存储桶](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz) 下载数据集的 CSV 版本,或通过运行以下命令:
+可以从我们的公共 [S3 存储桶](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz) 下载该数据集的 CSV 版本,或通过运行以下命令:
 
 ```bash
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
@@ -34,7 +33,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hackne
 
 [`clickhouse-local`](/operations/utilities/clickhouse-local/) 允许用户对本地文件进行快速处理,无需部署和配置 ClickHouse 服务器。
 
-在将数据存储到 ClickHouse 之前,我们先使用 clickhouse-local 对文件进行采样。
+在将任何数据存储到 ClickHouse 之前,让我们使用 clickhouse-local 对文件进行采样。
 在控制台中运行:
 
 ```bash
@@ -92,13 +91,13 @@ descendants: 10
 此命令具有许多强大的功能。
 [`file`](/sql-reference/functions/files/#file) 函数允许您从本地磁盘读取文件,只需指定格式 `CSVWithNames`。
 最重要的是,表结构会根据文件内容自动推断。
-还要注意 `clickhouse-local` 能够读取压缩文件,并从扩展名推断出 gzip 格式。
-使用 `Vertical` 格式可以更清晰地查看每列的数据。
+还要注意 `clickhouse-local` 能够读取压缩文件,从扩展名推断出 gzip 格式。
+使用 `Vertical` 格式可以更轻松地查看每列的数据。
 
-### 使用表结构推断加载数据 {#loading-the-data}
+### 使用结构推断加载数据 {#loading-the-data}
 
 用于数据加载的最简单且最强大的工具是 `clickhouse-client`:一个功能丰富的原生命令行客户端。
-要加载数据,您可以再次利用表结构推断,由 ClickHouse 自动确定列的类型。
+要加载数据,您可以再次利用结构推断,依靠 ClickHouse 来确定列的类型。
 
 运行以下命令创建表并直接从远程 CSV 文件插入数据,通过 [`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url) 函数访问内容。
 表结构会自动推断:
@@ -110,7 +109,7 @@ CREATE TABLE hackernews ENGINE = MergeTree ORDER BY tuple
 ```
 
 这将使用从数据推断出的表结构创建一个空表。
-[`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 命令可以让我们查看这些推断出的类型。
+[`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 命令允许我们了解这些推断的类型。
 
 ```sql title="查询"
 DESCRIBE TABLE hackernews
@@ -149,7 +148,7 @@ FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/h
 
 ### 探索数据 {#explore}
 
-运行以下查询来采样 Hacker News 故事和特定列:
+通过运行以下查询来查看 Hacker News 故事和特定列的样本数据:
 
 ```sql title="查询"
 SELECT
@@ -198,15 +197,15 @@ url:   http://articles.chicagotribune.com/2011-05-27/business/sc-cons-0526-start
 score: 1
 ```
 
-虽然模式推断是初始数据探索的有效工具,但它是"尽力而为"的方式,不能长期替代为数据定义最优模式。
+虽然模式推断是初步数据探索的有效工具,但它采用"尽力而为"的方式,不能长期替代为数据定义最优模式。
 
 ### 定义模式 {#define-a-schema}
 
-一个显而易见的即时优化是为每个字段定义类型。
-除了将 time 字段声明为 `DateTime` 类型外,在删除现有数据集后,我们为以下每个字段定义适当的类型。
+一个显而易见的优化是为每个字段定义类型。
+除了将 time 字段声明为 `DateTime` 类型外,我们在删除现有数据集后为以下每个字段定义适当的类型。
 在 ClickHouse 中,数据的主键 id 通过 `ORDER BY` 子句定义。
 
-选择适当的类型并选择要包含在 `ORDER BY` 子句中的列将有助于提高查询速度和压缩效率。
+选择适当的类型并确定要包含在 `ORDER BY` 子句中的列将有助于提高查询速度和压缩率。
 
 运行以下查询以删除旧模式并创建改进的模式:
 
@@ -235,7 +234,7 @@ CREATE TABLE hackernews
 ORDER BY id
 ```
 
-使用优化的模式,您现在可以从本地文件系统插入数据。
+使用优化后的模式,您现在可以从本地文件系统插入数据。
 再次使用 `clickhouse-client`,通过带有显式 `INSERT INTO` 的 `INFILE` 子句插入文件。
 
 ```sql title="查询"
@@ -247,9 +246,9 @@ INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithName
 下面提供了一些示例查询,为您编写自己的查询提供参考。
 
 
-#### "ClickHouse" 在 Hacker News 中的话题普及度如何? {#how-pervasive}
+#### "ClickHouse" 这个话题在 Hacker News 上的热度如何? {#how-pervasive}
 
-score 字段提供了文章热度的衡量指标,而 `id` 字段和 `||` 连接运算符可用于生成原始帖子的链接。
+score 字段提供了文章热度的衡量指标,而 `id` 字段和 `||` 连接运算符可用于生成指向原始帖子的链接。
 
 ```sql title="查询"
 SELECT
@@ -312,7 +311,7 @@ url:         https://github.com/ClickHouse/ClickHouse
 hn_url:      https://news.ycombinator.com/item?id=27310247
 ```
 
-ClickHouse 的讨论热度是否随时间增长?这里展示了将 `time` 字段定义为 `DateTime` 类型的实用性,使用正确的数据类型可以让您使用 `toYYYYMM()` 函数:
+ClickHouse 的讨论热度是否随时间增长?这里展示了将 `time` 字段定义为 `DateTime` 类型的优势,使用正确的数据类型可以让您使用 `toYYYYMM()` 函数:
 
 ```sql title="查询"
 SELECT
@@ -325,7 +324,7 @@ ORDER BY monthYear ASC
 ```
 
 
-```response title="响应"
+```response title="Response"
 ┌─monthYear─┬─bar(count(), 0, 120, 20)─┐
 │    201606 │ ██▎                      │
 │    201607 │ ▏                        │
@@ -392,11 +391,11 @@ ORDER BY monthYear ASC
 └───────────┴──────────────────────────┘
 ```
 
-可以看出,ClickHouse 的热度随时间不断增长。
+可以看出,ClickHouse 的受欢迎程度随时间不断增长。
 
 #### 谁是 ClickHouse 相关文章的主要评论者? {#top-commenters}
 
-```sql title="查询"
+```sql title="Query"
 SELECT
    by,
    count() AS comments
@@ -407,7 +406,7 @@ ORDER BY comments DESC
 LIMIT 5
 ```
 
-```response title="响应"
+```response title="Response"
 ┌─by──────────┬─comments─┐
 │ hodgesrm    │       78 │
 │ zX41ZdbW    │       45 │
@@ -585,7 +584,7 @@ FROM hackernews
 WHERE hasToken(lower(comment), 'clickhouse');
 ```
 
-注意查询现在使用索引后仅需 0.248 秒,而之前没有索引时需要 0.843 秒:
+注意使用索引后查询仅需 0.248 秒,相比之前未使用索引时的 0.843 秒有显著提升:
 
 ```response title="响应"
 #highlight-next-line
@@ -595,7 +594,7 @@ WHERE hasToken(lower(comment), 'clickhouse');
 └─────────┘
 ```
 
-可以使用 [`EXPLAIN`](/sql-reference/statements/explain) 子句来理解为什么添加此索引将查询性能提升了约 3.4 倍。
+可以使用 [`EXPLAIN`](/sql-reference/statements/explain) 子句来了解为什么添加此索引使查询性能提升了约 3.4 倍。
 
 ```response text="查询"
 EXPLAIN indexes = 1
@@ -624,9 +623,9 @@ WHERE hasToken(lower(comment), 'clickhouse')
 └─────────────────────────────────────────────────┘
 ```
 
-注意索引如何通过跳过大量颗粒来加速查询。
+注意索引通过跳过大量颗粒来加速查询的效果。
 
-现在还可以高效地搜索单个或多个词条:
+现在还可以高效地搜索单个词条或多个词条:
 
 ```sql title="查询"
 SELECT count(*)

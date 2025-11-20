@@ -1,8 +1,8 @@
 ---
-description: '2009年以降、ニューヨーク市内でのタクシーおよびハイヤー車両（Uber、Lyft など）による数十億件の乗車データ'
-sidebar_label: 'ニューヨークタクシーデータ'
+description: '2009年以降、ニューヨーク市発の数十億件におよぶタクシーおよび配車サービス（Uber、Lyft など）の乗車データ'
+sidebar_label: 'ニューヨーク タクシーデータ'
 slug: /getting-started/example-datasets/nyc-taxi
-title: 'ニューヨークタクシーデータ'
+title: 'ニューヨーク タクシーデータ'
 doc_type: 'guide'
 keywords: ['example dataset', 'nyc taxi', 'tutorial', 'sample data', 'getting started']
 ---
@@ -10,16 +10,16 @@ keywords: ['example dataset', 'nyc taxi', 'tutorial', 'sample data', 'getting st
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-New York のタクシーデータサンプルは、2009 年以降に New York City から出発した 30 億件超のタクシーおよび配車サービス（Uber、Lyft など）の乗車データで構成されています。この入門ガイドでは、そのうち 300 万行のサンプルを使用します。
+ニューヨークのタクシーデータサンプルは、2009 年以降にニューヨーク市を発着地として行われた 30 億件超のタクシーおよびハイヤー（Uber、Lyft など）の乗車記録で構成されています。この入門ガイドでは、そのうち 300 万行のサンプルを使用します。
 
-完全なデータセットは次のいずれかの方法で取得できます。
+完全なデータセットは、次のいくつかの方法で取得できます。
 
-* S3 または GCS から ClickHouse Cloud にデータを直接挿入する
-* 準備済みのパーティションをダウンロードする
-* あるいは、デモ環境上の [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) で完全なデータセットに対してクエリを実行することもできます。
+* S3 または GCS から ClickHouse Cloud に直接データを挿入する
+* あらかじめ用意されたパーティションをダウンロードする
+* もしくは、デモ環境で [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上の完全なデータセットに対してクエリを実行することもできます。
 
 :::note
-以下のサンプルクエリは、ClickHouse Cloud の **Production** インスタンスで実行されたものです。詳細は
+以下のサンプルクエリは、ClickHouse Cloud の **Production** インスタンス上で実行されています。詳細については、
 [「Playground の仕様」](/getting-started/playground#specifications) を参照してください。
 :::
 
@@ -58,14 +58,14 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 
 ## オブジェクトストレージから直接データを読み込む {#load-the-data-directly-from-object-storage}
 
-データに慣れるために、データの一部（300万行）を取得できます。データはオブジェクトストレージ内のTSVファイルとして保存されており、`s3`テーブル関数を使用してClickHouse Cloudに簡単にストリーミングできます。
+ユーザーはデータに慣れるために、データの小さなサブセット(300万行)を取得できます。データはオブジェクトストレージ内のTSVファイルとして保存されており、`s3`テーブル関数を使用してClickHouse Cloudに簡単にストリーミングできます。
 
 同じデータがS3とGCSの両方に保存されています。いずれかのタブを選択してください。
 
 <Tabs groupId="storageVendor">
 <TabItem value="s3" label="S3">
 
-以下のコマンドは、S3バケットから3つのファイルを`trips_small`テーブルにストリーミングします（`{0..2}`構文は0、1、2の値のワイルドカードです）:
+以下のコマンドは、S3バケットから3つのファイルを`trips_small`テーブルにストリーミングします(`{0..2}`構文は値0、1、2を表すワイルドカードです):
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -96,7 +96,7 @@ FROM s3(
 </TabItem>
 <TabItem value="gcs" label="GCS" default>
 
-以下のコマンドは、GCSバケットから3つのファイルを`trips_small`テーブルにストリーミングします（`{0..2}`構文は0、1、2の値のワイルドカードです）:
+以下のコマンドは、GCSバケットから3つのファイルを`trips`テーブルにストリーミングします(`{0..2}`構文は値0、1、2を表すワイルドカードです):
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -130,7 +130,7 @@ FROM gcs(
 
 ## サンプルクエリ {#sample-queries}
 
-以下のクエリは、上記で説明したサンプルに対して実行されます。ユーザーは[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)で完全なデータセットに対してサンプルクエリを実行できます。その際、以下のクエリを修正して`nyc_taxi.trips`テーブルを使用してください。
+以下のクエリは、上記で説明したサンプルに対して実行されます。ユーザーは、[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)で完全なデータセットに対してサンプルクエリを実行できます。その際、以下のクエリを修正して`nyc_taxi.trips`テーブルを使用してください。
 
 挿入された行数を確認してみましょう:
 
@@ -139,7 +139,7 @@ SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-各TSVファイルには約100万行が含まれており、3つのファイルで合計3,000,317行あります。いくつかの行を見てみましょう:
+各TSVファイルには約100万行が含まれており、3つのファイルで合計3,000,317行となります。いくつかの行を見てみましょう:
 
 ```sql runnable
 SELECT *
@@ -193,8 +193,8 @@ ORDER BY passenger_count ASC
 
 データセットの説明とダウンロード手順については、https://github.com/toddwschneider/nyc-taxi-data および http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html を参照してください。
 
-ダウンロードすると、CSV形式で約227GBの非圧縮データが取得されます。1Gbit接続では、ダウンロードに約1時間かかります(s3.amazonaws.comからの並列ダウンロードにより、1Gbitチャネルの少なくとも半分を活用できます)。
-一部のファイルが完全にダウンロードされない可能性があります。ファイルサイズを確認し、疑わしいものは再ダウンロードしてください。
+ダウンロードすると、CSVファイルで約227GBの非圧縮データが取得されます。1Gbit接続では、ダウンロードに約1時間かかります(s3.amazonaws.comからの並列ダウンロードにより、1Gbitチャネルの少なくとも半分を活用できます)。
+一部のファイルが完全にダウンロードされない場合があります。ファイルサイズを確認し、疑わしいものは再ダウンロードしてください。
 
 
 ```bash
@@ -286,17 +286,17 @@ Q2: 0.438 秒。
 Q3: 0.733 秒。
 Q4: 1.241 秒。
 
-クエリは線形にスケールしているため、ここには特に驚くべき点はありません。
+クエリが線形にスケールしているため、ここには特に驚きはありません。
 
-140 台のサーバーから成るクラスターでの結果もあります:
+また、140 台のサーバーから成るクラスターでの結果もあります:
 
 Q1: 0.028 秒。
 Q2: 0.043 秒。
 Q3: 0.051 秒。
 Q4: 0.072 秒。
 
-この場合、クエリ処理時間は主にネットワークレイテンシによって決まります。
-クラスターが配置されている場所とは別のデータセンターにあるクライアントからクエリを実行したため、約 20 ms のレイテンシが追加されました。
+この場合、クエリ処理時間は、何よりもネットワークレイテンシによって決まります。
+クラスターが配置されているデータセンターとは別のデータセンターにあるクライアントからクエリを実行したため、約 20 ms のレイテンシが追加されました。
 
 
 ## 概要 {#summary}

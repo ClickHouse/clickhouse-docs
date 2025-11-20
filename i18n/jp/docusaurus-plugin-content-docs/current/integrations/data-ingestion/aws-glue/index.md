@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon Glue'
 sidebar_position: 1
 slug: /integrations/glue
-description: 'ClickHouse と Amazon Glue の統合'
+description: 'ClickHouse と Amazon Glue を統合する'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Amazon Glue と ClickHouse および Spark の統合'
 doc_type: 'guide'
@@ -16,19 +16,19 @@ import dependent_jars_path_option from '@site/static/images/integrations/data-in
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Amazon Glue を ClickHouse と Spark と統合する
+# Amazon Glue を ClickHouse と Spark に統合する
 
 <ClickHouseSupportedBadge/>
 
-[Amazon Glue](https://aws.amazon.com/glue/) は、Amazon Web Services (AWS) が提供するフルマネージドかつサーバーレスのデータ統合サービスです。分析、機械学習、およびアプリケーション開発向けのデータの検出・準備・変換プロセスを簡素化します。
+[Amazon Glue](https://aws.amazon.com/glue/) は、Amazon Web Services (AWS) が提供するフルマネージドかつサーバーレスなデータ統合サービスです。分析、機械学習、アプリケーション開発のためのデータの検出、準備、変換プロセスを簡素化します。
 
 
 
 ## インストール {#installation}
 
-GlueコードをClickHouseと統合するには、以下のいずれかの方法で公式Sparkコネクタを使用できます:
+GlueコードをClickHouseと統合するには、以下のいずれかの方法で公式Sparkコネクタを使用できます。
 
-- AWS MarketplaceからClickHouse Glueコネクタをインストールする(推奨)
+- AWS MarketplaceからClickHouse Glueコネクタをインストールする（推奨）
 - Spark ConnectorのJARファイルをGlueジョブに手動で追加する
 
 <Tabs>
@@ -36,17 +36,18 @@ GlueコードをClickHouseと統合するには、以下のいずれかの方法
 
 1. <h3 id='subscribe-to-the-connector'>コネクタのサブスクライブ</h3>
    アカウントでコネクタにアクセスするには、AWS MarketplaceからClickHouse AWS Glue
-   Connectorをサブスクライブします。
+   Connectorをサブスクライブしてください。
 
 2. <h3 id='grant-required-permissions'>必要な権限の付与</h3>
    最小権限
    [ガイド](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors)に記載されているように、GlueジョブのIAMロールに必要な権限があることを確認してください。
 
 3. <h3 id='activate-the-connector'>
-     コネクタのアクティベーションと接続の作成
+     コネクタの有効化と接続の作成
    </h3>
-   [このリンク](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:1.0.0&connectorClassName="com.clickhouse.spark.ClickHouseCatalog")をクリックすることで、コネクタをアクティベートし、接続を直接作成できます。これにより、主要なフィールドが事前入力されたGlue接続作成ページが開きます。
-   接続に名前を付けて、作成ボタンを押してください(この段階でClickHouseの接続詳細を提供する必要はありません)。
+   [このリンク](https://console.aws.amazon.com/gluestudio/home#/connector/add-connection?connectorName="ClickHouse%20AWS%20Glue%20Connector"&connectorType="Spark"&connectorUrl=https://709825985650.dkr.ecr.us-east-1.amazonaws.com/clickhouse/clickhouse-glue:1.0.0&connectorClassName="com.clickhouse.spark.ClickHouseCatalog")をクリックすることで、コネクタを有効化し、接続を直接作成できます。
+   これにより、主要なフィールドが事前入力されたGlue接続作成ページが開きます。
+   接続に名前を付けて、作成を押してください（この段階でClickHouseの接続詳細を提供する必要はありません）。
 
 4. <h3 id='use-in-glue-job'>Glueジョブでの使用</h3>
    Glueジョブで、`Job details`タブを選択し、`Advanced
@@ -60,15 +61,15 @@ GlueコードをClickHouseと統合するには、以下のいずれかの方法
 />
 
 :::note
-Glueコネクタで使用されるJARファイルは、`Spark 3.3`、`Scala 2`、`Python 3`用にビルドされています。Glueジョブを設定する際は、これらのバージョンを選択してください。
+Glueコネクタで使用されるJARファイルは、`Spark 3.3`、`Scala 2`、`Python 3`用にビルドされています。Glueジョブを設定する際は、必ずこれらのバージョンを選択してください。
 :::
 
 </TabItem>
 <TabItem value="Manual Installation" label="手動インストール">
-必要なJARファイルを手動で追加するには、以下の手順に従ってください:
+必要なJARファイルを手動で追加するには、以下の手順に従ってください。
 1. 以下のJARファイルをS3バケットにアップロードします - `clickhouse-jdbc-0.6.X-all.jar`と`clickhouse-spark-runtime-3.X_2.X-0.8.X.jar`
 2. Glueジョブがこのバケットにアクセスできることを確認します。
-3. `Job details`タブで下にスクロールし、`Advanced properties`ドロップダウンを展開して、`Dependent JARs path`にJARファイルのパスを入力します:
+3. `Job details`タブで下にスクロールし、`Advanced properties`ドロップダウンを展開して、`Dependent JARs path`にJARファイルのパスを入力します。
 
 <Image
   img={dependent_jars_path_option}
@@ -142,11 +143,11 @@ object ClickHouseGlueExample {
       .schema(schema)
       .csv(url)
 
-    // ClickHouseへの書き込み
+    // ClickHouseに書き込む
     df.writeTo("clickhouse.default.cell_towers").append()
 
 
-    // ClickHouseからの読み込み
+    // ClickHouseから読み込む
     val dfRead = spark.sql("select * from clickhouse.default.cell_towers")
     Job.commit()
   }
@@ -197,7 +198,7 @@ spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
 spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
 
 
-# DataFrame の作成
+# DataFrame を作成
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 

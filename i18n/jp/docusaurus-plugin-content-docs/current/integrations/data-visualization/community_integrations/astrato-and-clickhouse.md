@@ -3,9 +3,9 @@ sidebar_label: 'Astrato'
 sidebar_position: 131
 slug: /integrations/astrato
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui', 'data apps', 'data viz', 'embedded analytics', 'Astrato']
-description: 'Astrato は、すべてのユーザーにアナリティクスを開放することで、エンタープライズおよびデータビジネスに真のセルフサービス BI をもたらし、ユーザー自身がダッシュボード、レポート、データアプリを構築して、IT 部門の支援なしにデータに関する疑問に答えられるようにします。Astrato は、導入を加速し、意思決定のスピードを高め、アナリティクス、組み込みアナリティクス、データ入力、データアプリを 1 つのプラットフォーム上で統合します。Astrato はアクションとアナリティクスを 1 つに結び付け、ライブな書き戻しを可能にし、ML モデルとの対話を実現し、AI によって分析ワークフローを加速します。Astrato の pushdown SQL サポートにより、ダッシュボードの枠を超えた高度なアナリティクスが可能になります。'
-title: 'Astrato と ClickHouse の接続'
-doc_type: 'ガイド'
+description: 'Astrato は、すべてのユーザーにアナリティクスを届け、ユーザー自身がダッシュボード、レポート、データアプリを作成して、IT 部門の支援なしにデータに関する疑問に答えられるようにすることで、真のセルフサービス BI をエンタープライズやデータビジネスにもたらします。Astrato は導入を加速し、意思決定のスピードを高め、アナリティクス、組み込みアナリティクス、データ入力、データアプリを 1 つのプラットフォームに統合します。Astrato はアクションとアナリティクスを 1 つに結び付け、ライブライトバックを実現し、ML モデルとの対話を可能にし、AI によってアナリティクスを加速します。Astrato のプッシュダウン SQL サポートにより、ダッシュボードの作成を超えた活用が可能になります。'
+title: 'Astrato を ClickHouse に接続する'
+doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_visualization'
@@ -30,7 +30,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミス環境の ClickHouse に対して直接クエリを実行します。これにより、業界をリードする ClickHouse のパフォーマンスを活用しながら、必要なあらゆるデータにアクセスできます。
+Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミス環境の ClickHouse デプロイメントに対して直接クエリを実行します。つまり、業界トップクラスの ClickHouse のパフォーマンスを活用しながら、必要なあらゆるデータにアクセスできます。
 
 
 
@@ -102,7 +102,7 @@ Data Viewエディタでは、ClickHouse内のすべてのテーブルとスキ�
 <Image
   size='lg'
   img={astrato_4a_clickhouse_data_view}
-  alt='AstratoとClickHouseユーザーアクセスの接続'
+  alt='AstratoをClickHouseユーザーアクセスに接続'
   border
 />
 
@@ -113,16 +113,16 @@ Data Viewエディタでは、ClickHouse内のすべてのテーブルとスキ�
 <Image
   size='lg'
   img={astrato_4b_clickhouse_data_view_joins}
-  alt='AstratoとClickHouseユーザーアクセスの接続'
+  alt='AstratoをClickHouseユーザーアクセスに接続'
   border
 />
 
-**Astratoはメタデータを使用して結合をインテリジェントに提案**します。これにはClickHouseのキーの活用も含まれます。提案される結合により、適切にガバナンスされたClickHouseデータから作業を開始することが容易になり、ゼロから構築する必要がありません。また、**結合品質**も表示されるため、Astratoからのすべての提案を詳細に確認することができます。
+**Astratoはメタデータを使用してインテリジェントに結合を提案します**。これには、ClickHouseのキーの活用も含まれます。提案される結合により、適切に管理されたClickHouseデータを活用して簡単に作業を開始でき、車輪の再発明を避けることができます。また、**結合品質**も表示されるため、Astratoからのすべての提案を詳細に確認することができます。
 
 <Image
   size='lg'
   img={astrato_4c_clickhouse_completed_data_view}
-  alt='AstratoとClickHouseユーザーアクセスの接続'
+  alt='AstratoをClickHouseユーザーアクセスに接続'
   border
 />
 
@@ -145,7 +145,7 @@ Data Viewエディタでは、ClickHouse内のすべてのテーブルとスキ�
 
 ### 各ビジュアライゼーションを支える生成されたSQLの表示 {#view-generated-sql-supporting-each-visualization}
 
-透明性と正確性はAstratoの中核です。生成されたすべてのクエリが可視化されることを保証し、完全な制御を維持できます。すべての計算はClickHouse内で直接実行され、その高速性を活用しながら、堅牢なセキュリティとガバナンスを維持します。
+透明性と正確性はAstratoの中核です。生成されたすべてのクエリが可視化されることを保証し、完全な制御を維持できます。すべての計算はClickHouse内で直接実行され、その速度を活用しながら、堅牢なセキュリティとガバナンスを維持します。
 
 <Image
   size='lg'
@@ -156,7 +156,7 @@ Data Viewエディタでは、ClickHouse内のすべてのテーブルとスキ�
 
 ### 完成したダッシュボードの例 {#example-completed-dashboard}
 
-美しく完成したダッシュボードやデータアプリの実現はもう間近です。私たちが構築したものをさらにご覧になりたい場合は、Webサイトのデモギャラリーをご覧ください。https://astrato.io/gallery
+美しく完成したダッシュボードやデータアプリの実現はもう間近です。私たちが構築したものをさらにご覧になりたい場合は、当社ウェブサイトのデモギャラリーをご覧ください。https://astrato.io/gallery
 
 <Image
   size='lg'

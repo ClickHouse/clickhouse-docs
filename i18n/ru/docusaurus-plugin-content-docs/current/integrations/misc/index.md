@@ -2,7 +2,7 @@
 slug: /integrations/misc
 keywords: ['Retool', 'Easypanel', 'Splunk']
 title: 'Инструменты'
-description: 'Главная страница раздела «Инструменты»'
+description: 'Лендинг раздела «Инструменты»'
 doc_type: 'landing-page'
 ---
 
@@ -10,6 +10,6 @@ doc_type: 'landing-page'
 
 | Страница              |
 |-------------------|
-| [Визуальные интерфейсы](/interfaces/third-party/gui) |
+| [Графические интерфейсы](/interfaces/third-party/gui) |
 | [Прокси](/interfaces/third-party/proxy)         |
 | [Интеграции](/interfaces/third-party/integrations)      |

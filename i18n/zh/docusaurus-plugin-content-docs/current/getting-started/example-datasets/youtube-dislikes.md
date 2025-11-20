@@ -1,35 +1,35 @@
 ---
-description: '一个包含 YouTube 视频“踩”数的数据集。'
-sidebar_label: 'YouTube 差评'
+description: 'YouTube 视频点踩数据集。'
+sidebar_label: 'YouTube 点踩'
 slug: /getting-started/example-datasets/youtube-dislikes
-title: 'YouTube 差评数据集'
+title: 'YouTube 点踩数据集'
 doc_type: 'guide'
 keywords: ['example dataset', 'youtube', 'sample data', 'video analytics', 'dislikes']
 ---
 
-在 2021 年 11 月，YouTube 从所有视频页面中移除了公开显示的***差评***数量。创作者仍然可以看到自己视频的差评数，但观众只能看到视频收到了多少***点赞***。
+在 2021 年 11 月，YouTube 从所有视频中移除了公开的 ***点踩*** 计数。创作者仍然可以看到其视频的点踩数量，但观众现在只能看到视频收获了多少 ***点赞***。
 
 :::important
-该数据集包含超过 45.5 亿条记录，如果你的资源无法处理如此规模的数据量，请谨慎直接复制并执行下面的命令。下面的命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的一个**生产**实例上执行的。
+该数据集包含超过 45.5 亿条记录，因此在不确定自身资源是否能够处理这种数据量的情况下，请谨慎直接复制粘贴下面的命令。以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的一个 **生产** 实例上执行的。
 :::
 
-数据为 JSON 格式，可以从 [archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) 下载。我们也将同样的数据提供在 S3 上，便于更高效地下载到 ClickHouse Cloud 实例中。
+数据为 JSON 格式，可以从 [archive.org](https://archive.org/download/dislikes_youtube_2021_12_video_json_files) 下载。我们也已将同样的数据放在 S3 中，以便更高效地下载到 ClickHouse Cloud 实例中。
 
-以下是在 ClickHouse Cloud 中创建数据表并插入数据的步骤。
+下面是如何在 ClickHouse Cloud 中创建一张表并插入这些数据的步骤。
 
 :::note
-下面的步骤同样适用于本地安装的 ClickHouse。唯一的区别是要使用 `s3` 函数而不是 `s3cluster`（除非你已经配置了集群——在这种情况下，将 `default` 改为你的集群名称）。
+下面的步骤也可以很方便地应用于本地安装的 ClickHouse。唯一需要更改的是使用 `s3` 函数而不是 `s3cluster`（除非你已经配置了集群——在这种情况下，将 `default` 改为你的集群名称）。
 :::
 
 
 
-## 分步操作指南 {#step-by-step-instructions}
+## 分步说明 {#step-by-step-instructions}
 
 <VerticalStepper headerLevel="h3">
 
 ### 数据探索 {#data-exploration}
 
-让我们先查看一下数据的结构。`s3cluster` 表函数会返回一个表,因此我们可以使用 `DESCRIBE` 来查看结果:
+让我们先看看数据的结构。`s3cluster` 表函数返回一个表,因此我们可以使用 `DESCRIBE` 查看结果:
 
 ```sql
 DESCRIBE s3(
@@ -38,7 +38,7 @@ DESCRIBE s3(
 );
 ```
 
-ClickHouse 从 JSON 文件中推断出以下 schema:
+ClickHouse 从 JSON 文件中推断出以下架构:
 
 ```response
 ┌─name────────────────┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -68,7 +68,7 @@ ClickHouse 从 JSON 文件中推断出以下 schema:
 
 ### 创建表 {#create-the-table}
 
-基于推断出的 schema,我们对数据类型进行了优化并添加了主键。
+基于推断出的架构,我们对数据类型进行了优化并添加了主键。
 定义如下表结构:
 
 ```sql
@@ -102,7 +102,7 @@ ORDER BY (uploader, upload_date)
 
 ### 插入数据 {#insert-data}
 
-以下命令将 S3 文件中的记录流式导入到 `youtube` 表中。
+以下命令将 S3 文件中的记录流式传输到 `youtube` 表中。
 
 
 :::important
@@ -184,7 +184,7 @@ WHERE uploader = 'ClickHouse';
 上述查询运行如此快速是因为我们选择了 `uploader` 作为主键的第一列 - 因此它只需要处理 23.7 万行。
 :::
 
-让我们查看 ClickHouse 视频的点赞和不喜欢数:
+让我们查看 ClickHouse 视频的点赞数和点踩数:
 
 ```sql
 SELECT
@@ -303,7 +303,7 @@ ORDER BY
 
 启用评论功能似乎与更高的用户互动率相关。
 
-### 视频数量如何随时间变化——值得关注的事件? {#how-does-the-number-of-videos-change-over-time---notable-events}
+### 视频数量如何随时间变化 - 值得关注的事件? {#how-does-the-number-of-videos-change-over-time---notable-events}
 
 ```sql
 SELECT
@@ -342,9 +342,9 @@ ORDER BY month ASC;
 
 可以明显看到[新冠疫情期间上传者数量激增](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)。
 
-### 字幕数量随时间的增长趋势 {#more-subtitles-over-time-and-when}
+### 字幕使用率随时间的变化趋势 {#more-subtitles-over-time-and-when}
 
-随着语音识别技术的进步,为视频创建字幕变得比以往任何时候都容易。YouTube 在 2009 年末添加了自动字幕功能——那时是否出现了明显的增长?
+随着语音识别技术的进步,为视频创建字幕变得比以往任何时候都容易。YouTube 在 2009 年末添加了自动字幕功能——字幕使用率是否在那时出现了跃升?
 
 ```sql
 SELECT

@@ -2,7 +2,7 @@
 sidebar_label: 'CSV и TSV'
 slug: /integrations/data-formats/csv-tsv
 title: 'Работа с данными в форматах CSV и TSV в ClickHouse'
-description: 'Страница, описывающая, как работать с данными в форматах CSV и TSV в ClickHouse'
+description: 'Страница, описывающая работу с данными в форматах CSV и TSV в ClickHouse'
 keywords: ['CSV format', 'TSV format', 'comma separated values', 'tab separated values', 'data import']
 doc_type: 'guide'
 ---
@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 # Работа с данными CSV и TSV в ClickHouse
 
-ClickHouse поддерживает импорт данных из CSV и экспорт данных в CSV. Поскольку CSV‑файлы могут иметь различные особенности формата, включая строки заголовков, пользовательские разделители и экранирующие символы, ClickHouse предоставляет форматы и настройки для эффективной обработки каждого такого случая.
+ClickHouse поддерживает импорт данных из CSV и экспорт данных в CSV. Поскольку файлы CSV могут иметь разные особенности формата, включая строки заголовков, пользовательские разделители и символы экранирования, ClickHouse предоставляет форматы и настройки для эффективной обработки каждого варианта.
 
 
 
@@ -36,7 +36,7 @@ ORDER BY tuple(month, path)
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
 ```
 
-Обратите внимание, что мы используем [FORMAT CSV](/interfaces/formats/CSV), чтобы указать ClickHouse, что загружаемые данные имеют формат CSV. Альтернативно можно загрузить данные из локального файла с помощью конструкции [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file):
+Обратите внимание, что мы используем [FORMAT CSV](/interfaces/formats/CSV), чтобы сообщить ClickHouse о том, что загружаются данные в формате CSV. Альтернативно можно загрузить данные из локального файла с помощью конструкции [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file):
 
 ```sql
 INSERT INTO sometable
@@ -48,7 +48,7 @@ FORMAT CSV
 
 :::tip
 Можно не указывать формат явно для `file()` и `INFILE`/`OUTFILE`.
-В этом случае ClickHouse автоматически определит формат по расширению файла.
+В этом случае ClickHouse автоматически определит формат на основе расширения файла.
 :::
 
 ### CSV-файлы с заголовками {#csv-files-with-headers}
@@ -89,7 +89,7 @@ SET format_csv_delimiter = ';'
 
 ### Пропуск строк в CSV-файле {#skipping-lines-in-a-csv-file}
 
-Иногда требуется пропустить определённое количество строк при импорте данных из CSV-файла. Это можно сделать с помощью параметра [input_format_csv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_csv_skip_first_lines):
+Иногда может потребоваться пропустить определённое количество строк при импорте данных из CSV-файла. Это можно сделать с помощью параметра [input_format_csv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_csv_skip_first_lines):
 
 ```sql
 SET input_format_csv_skip_first_lines = 10
@@ -110,12 +110,12 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 [Файл](assets/data_small.csv) содержит 1000 строк, но ClickHouse загрузил только 990, так как мы указали пропустить первые 10.
 
 :::tip
-При использовании функции `file()` в ClickHouse Cloud необходимо выполнять команды в `clickhouse client` на машине, где находится файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для локального анализа файлов.
+При использовании функции `file()` в ClickHouse Cloud необходимо выполнять команды в `clickhouse client` на машине, где находится файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для работы с файлами локально.
 :::
 
 ### Обработка значений NULL в CSV-файлах {#treating-null-values-in-csv-files}
 
-Значения NULL могут кодироваться по-разному в зависимости от приложения, создавшего файл. По умолчанию ClickHouse использует `\N` в качестве значения NULL в CSV. Но это можно изменить с помощью параметра [format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation).
+Значения Null могут кодироваться по-разному в зависимости от приложения, которое создало файл. По умолчанию ClickHouse использует `\N` в качестве значения Null в CSV. Но это можно изменить с помощью параметра [format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation).
 
 Предположим, у нас есть следующий CSV-файл:
 
@@ -127,7 +127,7 @@ Nothing,70
 ```
 
 
-Если мы загрузим данные из этого файла, ClickHouse будет воспринимать `Nothing` как String (что корректно):
+Если мы загрузим данные из этого файла, ClickHouse будет интерпретировать `Nothing` как String (и это корректно):
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -136,18 +136,18 @@ SELECT * FROM file('nulls.csv')
 ```response
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
-│ Joe     │ NULL    │
-│ Nothing │ 70      │
+│ Joe     │ Ничего │
+│ Ничего │ 70      │
 └─────────┴─────────┘
 ```
 
-Если мы хотим, чтобы ClickHouse воспринимал `Nothing` как `NULL`, можно задать это с помощью следующей настройки:
+Если мы хотим, чтобы ClickHouse трактовал `Nothing` как `NULL`, можно задать это с помощью следующей опции:
 
 ```sql
 SET format_csv_null_representation = 'Nothing'
 ```
 
-Теперь `NULL` находится там, где мы и ожидаем:
+Теперь `NULL` находится там, где мы его ожидаем:
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -170,16 +170,16 @@ SELECT * FROM file('nulls.csv')
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
 ```
 
-Также существует формат [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames), позволяющий работать с TSV-файлами, которые содержат заголовки. Как и в случае с CSV, можно пропустить первые X строк с помощью параметра [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines).
+Также существует формат [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames), позволяющий работать с TSV-файлами, которые содержат заголовки. Как и для CSV, можно пропустить первые X строк с помощью параметра [input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines).
 
 ### Необработанный TSV {#raw-tsv}
 
-Иногда TSV-файлы сохраняются без экранирования символов табуляции и переносов строк. Для обработки таких файлов следует использовать формат [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw).
+Иногда TSV-файлы сохраняются без экранирования символов табуляции и переводов строк. Для обработки таких файлов следует использовать формат [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw).
 
 
 ## Экспорт в CSV {#exporting-to-csv}
 
-Любой формат из предыдущих примеров также можно использовать для экспорта данных. Чтобы экспортировать данные из таблицы (или запроса) в формат CSV, используется то же предложение `FORMAT`:
+Любой формат из предыдущих примеров можно использовать для экспорта данных. Чтобы экспортировать данные из таблицы (или запроса) в формат CSV, используется то же предложение `FORMAT`:
 
 ```sql
 SELECT *
@@ -216,7 +216,7 @@ FORMAT CSVWithNames
 
 ### Сохранение экспортированных данных в CSV-файл {#saving-exported-data-to-a-csv-file}
 
-Для сохранения экспортированных данных в файл можно использовать предложение [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md):
+Для сохранения экспортированных данных в файл используется предложение [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md):
 
 ```sql
 SELECT *
@@ -233,7 +233,7 @@ FORMAT CSVWithNames
 
 ### Экспорт CSV с пользовательскими разделителями {#exporting-csv-with-custom-delimiters}
 
-Если требуется использовать разделители, отличные от запятой, можно воспользоваться параметром настройки [format_csv_delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter):
+Если требуется использовать разделители, отличные от запятой, можно применить параметр настройки [format_csv_delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter):
 
 ```sql
 SET format_csv_delimiter = '|'
@@ -281,7 +281,7 @@ DESCRIBE file('data-small.csv', CSV)
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Здесь ClickHouse успешно определил типы столбцов для нашего CSV-файла. Если вы не хотите, чтобы ClickHouse определял типы автоматически, можно отключить эту функцию следующей настройкой:
+Здесь ClickHouse успешно определил типы столбцов для нашего CSV-файла. Если не требуется, чтобы ClickHouse определял типы автоматически, это можно отключить следующей настройкой:
 
 ```sql
 SET input_format_csv_use_best_effort_in_schema_inference = 0
@@ -329,7 +329,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 ## Пользовательские разделители, сепараторы и правила экранирования {#custom-delimiters-separators-and-escaping-rules}
 
-В сложных случаях текстовые данные могут иметь нестандартное форматирование, но при этом сохранять структуру. Для таких случаев в ClickHouse предусмотрен специальный формат [CustomSeparated](/interfaces/formats/CustomSeparated), который позволяет задавать пользовательские правила экранирования, разделители, сепараторы строк и начальные/конечные символы.
+В сложных случаях текстовые данные могут быть отформатированы нестандартным образом, но при этом иметь структуру. ClickHouse предоставляет специальный формат [CustomSeparated](/interfaces/formats/CustomSeparated) для таких случаев, который позволяет задавать пользовательские правила экранирования, разделители, сепараторы строк и начальные/конечные символы.
 
 Предположим, у нас есть следующие данные в файле:
 
@@ -337,7 +337,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 row('Akiba_Hebrew_Academy';'2017-08-01';241),row('Aegithina_tiphia';'2018-02-01';34),...
 ```
 
-Видно, что отдельные строки обёрнуты в `row()`, строки разделены запятой `,`, а отдельные значения — точкой с запятой `;`. В этом случае для чтения данных из файла можно использовать следующие настройки:
+Мы видим, что отдельные строки обёрнуты в `row()`, строки разделены запятой `,`, а отдельные значения разделены точкой с запятой `;`. В этом случае мы можем использовать следующие настройки для чтения данных из этого файла:
 
 ```sql
 SET format_custom_row_before_delimiter = 'row(';
@@ -347,7 +347,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-Теперь можно загрузить данные из [файла](assets/data_small_custom.txt) с пользовательским форматированием:
+Теперь мы можем загрузить данные из нашего [файла](assets/data_small_custom.txt) с пользовательским форматированием:
 
 ```sql
 SELECT *
@@ -363,12 +363,12 @@ LIMIT 3
 └───────────────────────────┴────────────┴─────┘
 ```
 
-Также можно использовать формат [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) для корректного экспорта и импорта заголовков. Для работы с ещё более сложными случаями изучите форматы [regex и template](templates-regex.md).
+Мы также можем использовать [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) для корректного экспорта и импорта заголовков. Изучите форматы [regex и template](templates-regex.md) для работы с ещё более сложными случаями.
 
 
 ## Работа с большими CSV-файлами {#working-with-large-csv-files}
 
-CSV-файлы могут быть большими, и ClickHouse эффективно работает с файлами любого размера. Большие файлы обычно поставляются в сжатом виде, и ClickHouse обрабатывает их без необходимости предварительной распаковки. При вставке данных можно использовать параметр `COMPRESSION`:
+CSV-файлы могут быть большими, и ClickHouse эффективно работает с файлами любого размера. Большие файлы обычно поставляются сжатыми, и ClickHouse обрабатывает их без необходимости предварительной распаковки. Можно использовать параметр `COMPRESSION` при вставке данных:
 
 ```sql
 INSERT INTO sometable
@@ -376,7 +376,7 @@ FROM INFILE 'data_csv.csv.gz'
 COMPRESSION 'gzip' FORMAT CSV
 ```
 
-Если параметр `COMPRESSION` не указан, ClickHouse попытается определить тип сжатия по расширению файла. Этот же подход можно использовать для экспорта файлов непосредственно в сжатом формате:
+Если параметр `COMPRESSION` не указан, ClickHouse всё равно попытается определить тип сжатия файла по его расширению. Тот же подход можно использовать для экспорта файлов непосредственно в сжатом виде:
 
 ```sql
 SELECT *

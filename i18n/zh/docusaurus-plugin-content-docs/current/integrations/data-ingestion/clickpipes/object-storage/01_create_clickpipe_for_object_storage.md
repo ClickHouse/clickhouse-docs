@@ -1,8 +1,8 @@
 ---
-sidebar_label: '创建首个对象存储 ClickPipe'
-description: '将对象存储无缝连接到 ClickHouse Cloud。'
+sidebar_label: '创建你的第一个对象存储 ClickPipe'
+description: '将你的对象存储无缝连接到 ClickHouse Cloud。'
 slug: /integrations/clickpipes/object-storage
-title: '创建首个对象存储 ClickPipe'
+title: '创建你的第一个对象存储 ClickPipe'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -23,7 +23,7 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-对象存储 ClickPipes 为从 Amazon S3、Google Cloud Storage、Azure Blob Storage 和 DigitalOcean Spaces 将数据导入 ClickHouse Cloud 提供了一种简单且可靠的方式。支持一次性和持续导入，并具备精确一次（exactly-once）语义。
+对象存储 ClickPipes 为从 Amazon S3、Google Cloud Storage、Azure Blob Storage 和 DigitalOcean Spaces 向 ClickHouse Cloud 导入数据提供了一种简单且可靠的方式。支持一次性和持续数据导入，并具备精确一次（exactly-once）语义。
 
 
 # 创建您的第一个对象存储 ClickPipe {#creating-your-first-clickpipe}
@@ -50,13 +50,13 @@ import Image from '@theme/IdealImage';
 
 ## 配置 ClickPipe {#3-configure-clickpipe}
 
-填写表单,为 ClickPipe 提供名称、描述(可选)、IAM 角色或凭证以及存储桶 URL。
-您可以使用类 bash 通配符指定多个文件。
-更多信息请参阅[路径中使用通配符的文档](/integrations/clickpipes/object-storage/reference/#limitations)。
+填写表单，为您的 ClickPipe 提供名称、描述（可选）、IAM 角色或凭证以及存储桶 URL。
+您可以使用类似 bash 的通配符来指定多个文件。
+有关更多信息，请参阅[路径中使用通配符的文档](/integrations/clickpipes/object-storage/reference/#limitations)。
 
 <Image
   img={cp_step2_object_storage}
-  alt='填写连接详情'
+  alt='填写连接详细信息'
   size='lg'
   border
 />
@@ -65,7 +65,7 @@ import Image from '@theme/IdealImage';
 ## 选择数据格式 {#4-select-format}
 
 界面将显示指定存储桶中的文件列表。
-选择您的数据格式(目前我们支持 ClickHouse 格式的子集),并选择是否启用持续摄取。
+选择您的数据格式(我们目前支持 ClickHouse 格式的子集),以及是否启用持续摄取。
 ([更多详情见下文](/integrations/clickpipes/object-storage/reference/#continuous-ingest))。
 
 <Image
@@ -128,4 +128,4 @@ import Image from '@theme/IdealImage';
 
 **恭喜!** 您已成功设置第一个 ClickPipe。
 如果这是流式 ClickPipe,它将持续运行,从远程数据源实时摄取数据。
-否则,它将摄取批量数据并完成。
+否则,它将摄取批次数据后完成。

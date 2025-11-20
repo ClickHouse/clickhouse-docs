@@ -1,15 +1,15 @@
 ---
-title: 'ClickHouse にコストベースオプティマイザはありますか'
+title: 'ClickHouse にコストベースオプティマイザーはありますか'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/cost-based
-description: 'ClickHouse にはいくつかのコストベース最適化の仕組みがあります'
+description: 'ClickHouse にはいくつかのコストベース最適化メカニズムがあります'
 doc_type: 'reference'
 keywords: ['CBE', 'optimizer']
 ---
 
-# ClickHouse にはコストベース最適化器はありますか？
+# ClickHouse にはコストベースオプティマイザはありますか？
 
-ClickHouse には、いくつかの限定的なコストベース最適化の仕組みがあります。たとえば、列の読み取り順序は、ディスク上の圧縮されたデータ範囲を読み取るコストによって決定されます。
+ClickHouse には、いくつかの個別のコストベース最適化メカニズムがあります。たとえば、どの順序でカラムを読み出すかは、ディスクから圧縮されたデータ範囲を読み取るコストによって決定されます。
 
-ClickHouse は列統計に基づいて JOIN の順序を組み替えることもしますが、これは（2025 年時点では）Postgres、Oracle、MS SQL Server におけるコストベース最適化ほど高度ではありません。
+ClickHouse はカラム統計情報に基づいて JOIN の順序を組み替えることもしますが、これは（2025 年時点では）Postgres、Oracle、MS SQL Server における CBO ほど高度ではありません。

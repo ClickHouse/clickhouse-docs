@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
 title: 'sumIf'
-description: 'sumIf 组合器的使用示例'
+description: 'sumIf 组合器使用示例'
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
 sidebar_label: 'sumIf'
 doc_type: 'reference'
@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数,使用 `sumIf` 聚合组合器函数来计算条件为真的行的值总和。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，通过 `sumIf` 聚合组合器函数来计算满足条件的行的值之和。
 
 
 ## 使用示例 {#example-usage}
@@ -90,8 +90,8 @@ ORDER BY month;
 ### 按股票代码计算交易量 {#calculate-trading-volume}
 
 
-在本示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 中提供的 `stock` 表，
-计算 2006 年三家当时最大的科技公司按股票代码划分的交易量。
+在本示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 上提供的 `stock` 表，
+计算 2006 年期间当时三家最大的科技公司按股票代码统计的成交量。
 
 ```sql title="Query"
 SELECT 
@@ -108,19 +108,19 @@ ORDER BY month;
 ```
 
 ```markdown title="Response"
-    ┌──────month─┬─apple_volume───┬─microsoft_volume─┬─google_volume──┬─total_volume─┬─major_tech_percentage─┐
- 1. │ 2006-01-01 │ 7.8221亿 │ 13.9亿     │ 2.9969亿 │  84343937700 │                  2.93 │
- 2. │ 2006-02-01 │ 6.7038亿 │ 10.5亿     │ 2.9765亿 │  73524748600 │                  2.74 │
- 3. │ 2006-03-01 │ 7.4485亿 │ 13.9亿     │ 2.8836亿 │  87960830800 │                  2.75 │
- 4. │ 2006-04-01 │ 7.1897亿 │ 14.5亿     │ 1.8565亿 │  78031719800 │                  3.02 │
- 5. │ 2006-05-01 │ 5.5789亿 │ 23.2亿     │ 1.7494亿 │  97096584100 │                  3.14 │
- 6. │ 2006-06-01 │ 6.4148亿 │ 19.8亿     │ 1.4255亿 │  96304086800 │                  2.87 │
- 7. │ 2006-07-01 │ 6.2493亿 │ 13.3亿     │ 1.2774亿 │  79940921800 │                  2.61 │
- 8. │ 2006-08-01 │ 6.3935亿 │ 11.3亿     │ 1.0716亿 │  84251753200 │                  2.23 │
- 9. │ 2006-09-01 │ 6.3345亿 │ 11.0亿     │ 1.2172亿 │  82775234300 │                  2.24 │
-10. │ 2006-10-01 │ 5.1482亿 │ 12.9亿     │ 1.5890亿 │  93406712600 │                   2.1 │
-11. │ 2006-11-01 │ 4.9437亿 │ 12.4亿     │ 1.1849亿 │  90177365500 │                  2.06 │
-12. │ 2006-12-01 │ 6.0395亿 │ 11.4亿     │ 0.9177亿  │  80499584100 │                  2.28 │
+    ┌──────month(月份)─┬─apple_volume(Apple 成交量)───┬─microsoft_volume(Microsoft 成交量)─┬─google_volume(Google 成交量)──┬─total_volume(总成交量)─┬─major_tech_percentage(主要科技股占比)─┐
+ 1. │ 2006-01-01 │ 782.21 million │ 1.39 billion     │ 299.69 million │  84343937700 │                  2.93 │
+ 2. │ 2006-02-01 │ 670.38 million │ 1.05 billion     │ 297.65 million │  73524748600 │                  2.74 │
+ 3. │ 2006-03-01 │ 744.85 million │ 1.39 billion     │ 288.36 million │  87960830800 │                  2.75 │
+ 4. │ 2006-04-01 │ 718.97 million │ 1.45 billion     │ 185.65 million │  78031719800 │                  3.02 │
+ 5. │ 2006-05-01 │ 557.89 million │ 2.32 billion     │ 174.94 million │  97096584100 │                  3.14 │
+ 6. │ 2006-06-01 │ 641.48 million │ 1.98 billion     │ 142.55 million │  96304086800 │                  2.87 │
+ 7. │ 2006-07-01 │ 624.93 million │ 1.33 billion     │ 127.74 million │  79940921800 │                  2.61 │
+ 8. │ 2006-08-01 │ 639.35 million │ 1.13 billion     │ 107.16 million │  84251753200 │                  2.23 │
+ 9. │ 2006-09-01 │ 633.45 million │ 1.10 billion     │ 121.72 million │  82775234300 │                  2.24 │
+10. │ 2006-10-01 │ 514.82 million │ 1.29 billion     │ 158.90 million │  93406712600 │                   2.1 │
+11. │ 2006-11-01 │ 494.37 million │ 1.24 billion     │ 118.49 million │  90177365500 │                  2.06 │
+12. │ 2006-12-01 │ 603.95 million │ 1.14 billion     │ 91.77 million  │  80499584100 │                  2.28 │
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 

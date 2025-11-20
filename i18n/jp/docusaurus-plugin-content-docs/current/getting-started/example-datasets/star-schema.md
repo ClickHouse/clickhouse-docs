@@ -7,16 +7,16 @@ doc_type: 'guide'
 keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
 ---
 
-Star Schema Benchmark は [TPC-H](tpch.md) のテーブルおよびクエリに大まかに基づいていますが、TPC-H と異なり、スター・スキーマ形式のレイアウトを採用しています。
-データの大部分は巨大なファクトテーブルに格納され、その周囲を複数の小さなディメンションテーブルが取り囲みます。
-クエリでは、フィルタ条件を適用するためにファクトテーブルを 1 つ以上のディメンションテーブルと結合します（例: `MONTH = 'JANUARY'`）。
+Star Schema Benchmark は、概ね [TPC-H](tpch.md) のテーブルおよびクエリに基づいていますが、TPC-H と異なり、スター・スキーマ構造を採用しています。
+データの大部分は巨大なファクトテーブルに格納されており、その周囲を複数の小さなディメンションテーブルが取り囲む構造になっています。
+クエリでは、`MONTH = 'JANUARY'` のようなフィルター条件を適用するために、ファクトテーブルを 1 つ以上のディメンションテーブルと結合します。
 
 参考文献:
 
 * [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil ほか), 2009
 * [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl ほか), 2013
 
-まず、Star Schema Benchmark のリポジトリを取得し、データジェネレーターをコンパイルします。
+まず、Star Schema Benchmark のリポジトリをチェックアウトし、データジェネレータをコンパイルします。
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -24,7 +24,7 @@ cd ssb-dbgen
 make
 ```
 
-次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。例えば `-s 100` の場合、6億行が生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクターを指定します。たとえば `-s 100` の場合、6億行が生成されます。
 
 ```bash
 ./dbgen -s 1000 -T c
@@ -34,7 +34,7 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-次に、ClickHouse でテーブルを作成します：
+次に、ClickHouse でテーブルを作成します。
 
 
 ```sql
@@ -122,7 +122,7 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
-データは次の方法でインポートできます。
+データは次のようにインポートできます。
 
 ```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
@@ -132,8 +132,8 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-ClickHouse の多くのユースケースでは、複数のテーブルを 1 つの非正規化されたフラットなテーブルに変換します。
-このステップは必須ではなく、以下のクエリは、元の形式と非正規化テーブル向けに書き換えた形式の両方を示しています。
+ClickHouse の多くのユースケースでは、複数のテーブルを 1 つの非正規化されたフラットテーブルに変換します。
+このステップは任意であり、以下のクエリは元の形式と、非正規化テーブル用に書き換えた形式の両方を示しています。
 
 
 ```sql
@@ -203,7 +203,7 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -347,7 +347,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規化されたテーブル：
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -390,7 +390,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -752,7 +752,7 @@ ORDER BY
     P_BRAND
 ```
 
-非正規化テーブル:
+非正規化テーブル：
 
 ```sql
 SELECT

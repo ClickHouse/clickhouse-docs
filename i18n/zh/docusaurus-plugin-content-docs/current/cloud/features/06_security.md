@@ -2,7 +2,7 @@
 sidebar_label: '安全'
 slug: /cloud/security
 title: '安全'
-description: '了解如何保障 ClickHouse Cloud 和 BYOC 的安全'
+description: '进一步了解如何保障 ClickHouse Cloud 和 BYOC 的安全'
 doc_type: 'reference'
 keywords: ['security', 'cloud security', 'access control', 'compliance', 'data protection']
 ---
@@ -11,9 +11,9 @@ keywords: ['security', 'cloud security', 'access control', 'compliance', 'data p
 
 # ClickHouse Cloud 安全性
 
-本文档详细介绍了用于保护 ClickHouse 组织和服务的安全选项与最佳实践。
-ClickHouse 致力于提供安全的分析型数据库解决方案，因此将保护数据和服务的完整性作为首要任务。
-本文所述信息涵盖多种方法，旨在帮助用户提升其 ClickHouse 环境的安全性。
+本文档详细介绍用于保护 ClickHouse 组织和服务的安全选项及最佳实践。
+ClickHouse 致力于提供安全的分析型数据库解决方案，因此保障数据和服务的完整性是首要任务。
+本文介绍的信息涵盖多种方法，旨在帮助用户构建安全的 ClickHouse 使用环境。
 
 
 
@@ -54,7 +54,7 @@ ClickHouse Cloud 支持使用 Google 或 Microsoft 社交账号进行单点登�
 
 ### 数据库密码身份验证 {#db-password-auth}
 
-ClickHouse 数据库用户密码遵循 NIST 800-63B 标准配置,要求至少 12 个字符,并需满足复杂度要求:包含大写字母、小写字母、数字和/或特殊字符。
+ClickHouse 数据库用户密码按照 NIST 800-63B 标准配置,要求至少 12 个字符,并需满足复杂度要求:包含大写字母、小写字母、数字和/或特殊字符。
 
 了解更多关于[数据库密码身份验证](/cloud/security/manage-database-users#database-user-id--password)。
 
@@ -69,7 +69,7 @@ ClickHouse 数据库用户可配置为使用 SSH 身份验证。
 
 ### 控制台基于角色的访问控制 (RBAC) {#console-rbac}
 
-ClickHouse Cloud 支持为组织、服务和数据库权限分配角色。通过此方式配置的数据库权限仅在 SQL 控制台中支持。
+ClickHouse Cloud 支持为组织、服务和数据库权限分配角色。通过此方法配置的数据库权限仅在 SQL 控制台中支持。
 
 了解更多关于[控制台 RBAC](/cloud/security/console-roles) 的信息。
 
@@ -120,13 +120,13 @@ ClickHouse Cloud 企业版客户可以使用自己的密钥进行数据库级加
 
 ### 控制台审计日志 {#console-audit-log}
 
-控制台内的活动将被记录。日志可供审查和导出。
+控制台内的活动会被记录。日志可供查看和导出。
 
 了解更多关于[控制台审计日志](/cloud/security/audit-logging/console-audit-log)的信息。
 
 ### 数据库审计日志 {#database-audit-logs}
 
-数据库内的活动将被记录。日志可供审查和导出。
+数据库内的活动会被记录。日志可供查看和导出。
 
 了解更多关于[数据库审计日志](/cloud/security/audit-logging/database-audit-log)的信息。
 

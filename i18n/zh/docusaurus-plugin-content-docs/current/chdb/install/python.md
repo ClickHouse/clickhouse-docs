@@ -26,7 +26,7 @@ pip install chdb
 
 ### 命令行界面 {#command-line-interface}
 
-直接从命令行运行 SQL 查询:
+直接从命令行运行 SQL 查询：
 
 
 ```bash
@@ -56,15 +56,15 @@ print(result)
 
 # 获取查询统计信息
 
-print(f&quot;Rows read: {result.rows_read()}&quot;)
-print(f&quot;Bytes read: {result.bytes_read()}&quot;)
-print(f&quot;Execution time: {result.elapsed()} seconds&quot;)
+print(f&quot;读取的行数: {result.rows_read()}&quot;)
+print(f&quot;读取的字节数: {result.bytes_read()}&quot;)
+print(f&quot;执行时间: {result.elapsed()} 秒&quot;)
 
 ````
 
-### 基于连接的 API(推荐) {#connection-based-api}
+### 基于连接的 API（推荐） {#connection-based-api}
 
-为了更好地管理资源和提升性能:
+为了更好地管理资源和提升性能：
 
 ```python
 import chdb
@@ -77,7 +77,7 @@ conn = chdb.connect(":memory:")
 
 
 
-# 创建用于执行查询的游标
+# 创建用于执行查询的游标对象
 cur = conn.cursor()
 
 
@@ -88,8 +88,8 @@ cur.execute("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3"
 
 
 # 以不同方式获取结果
-print(cur.fetchone())    # 单条记录: (0, '0')
-print(cur.fetchmany(2))  # 多条记录: ((1, '1'), (2, '2'))
+print(cur.fetchone())    # 单行: (0, '0')
+print(cur.fetchmany(2))  # 多行: ((1, '1'), (2, '2'))
 
 
 
@@ -99,13 +99,13 @@ print(cur.column_types())  # ['UInt64', 'String']
 
 
 
-# 将游标用作迭代器
+# 将游标作为迭代器使用
 for row in cur:
     print(row)
 
 
 
-# 始终记得关闭资源
+# 始终关闭资源
 
 cur.close()
 conn.close()
@@ -118,7 +118,7 @@ conn.close()
 
 ### 基于文件的数据源 {#file-based-data-sources}
 
-chDB 支持直接查询 70 多种数据格式的文件:
+chDB 支持直接查询 70 多种数据格式的文件：
 
 
 ```python
@@ -167,7 +167,7 @@ print(type(df))  # <class 'pandas.core.frame.DataFrame'>
 ```
 
 
-# 用于互操作的 Arrow Table
+# 用于互操作的 Arrow 表
 
 arrow_table = chdb.query('SELECT \* FROM system.numbers LIMIT 5', 'ArrowTable')
 print(type(arrow_table)) # <class 'pyarrow.lib.Table'>
@@ -179,7 +179,7 @@ print(json_result)
 
 
 
-# 用于调试的 Pretty 输出格式
+# 用于调试的 Pretty 格式
 
 pretty&#95;result = chdb.query(&#39;SELECT * FROM system.numbers LIMIT 3&#39;, &#39;Pretty&#39;)
 print(pretty&#95;result)
@@ -241,7 +241,7 @@ df = pd.DataFrame({
 })
 
 
-# 直接查询 DataFrame，并支持 JSON
+# 直接查询 DataFrame（支持 JSON）
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -281,12 +281,12 @@ from chdb import session
 ````
 
 
-# 临时会话（自动清理）
+# 临时会话（自动清除）
 sess = session.Session()
 
 
 
-# 或使用指定路径创建持久会话
+# 或使用指定路径的持久会话
 # sess = session.Session("/path/to/data")
 
 
@@ -336,9 +336,9 @@ print(result)
 
 
 
-# 会话自动管理资源
+# Session 自动管理资源
 
-sess.close()  # 可选 - 对象被删除时会自动关闭
+sess.close()  # 可选 - 在对象被删除时会自动关闭
 
 ```
 
@@ -357,7 +357,7 @@ sess = session.Session(
 # 查询性能优化
 
 result = sess.query(&quot;&quot;&quot;
-SELECT product, sum(amount) as total
+SELECT product, sum(amount) AS total
 FROM sales
 GROUP BY product
 ORDER BY total DESC
@@ -370,7 +370,7 @@ SETTINGS max&#95;threads = 4
 
 ### Python DB-API 2.0 接口 {#python-db-api-20}
 
-标准数据库接口，用于兼容现有的 Python 应用程序：
+标准数据库接口，用于与现有 Python 应用程序兼容：
 
 ```python
 import chdb.dbapi as dbapi
@@ -398,7 +398,7 @@ cursor.execute("""
 
 
 # 获取元数据
-print("列描述:", cursor.description)
+print("列信息:", cursor.description)
 print("行数:", cursor.rowcount)
 
 
@@ -411,7 +411,7 @@ print("接下来的 2 行:", cursor.fetchmany(2))
 
 # 获取剩余的行
 for row in cursor.fetchall():
-    print("Row:", row)
+    print("行:", row)
 
 
 
@@ -497,13 +497,13 @@ def calculate_bmi(height_str, weight_str):
 ```
 
 
-# 数据验证 UDF
+# 用于数据验证的 UDF
 
-@chdb_udf(return_type="UInt8")
+@chdb*udf(return_type="UInt8")
 def is_valid_email(email):
-    import re
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return 1 if re.match(pattern, email) else 0
+import re
+pattern = r'^[a-zA-Z0-9.*%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+return 1 if re.match(pattern, email) else 0
 
 
 # 在复杂查询中的使用
@@ -527,16 +527,16 @@ print(result)
 
 #### UDF 最佳实践 {#udf-best-practices}
 
-1. **无状态函数**:UDF 应当是无副作用的纯函数
-2. **在函数内导入**:所有必需的模块必须在 UDF 内部导入
-3. **字符串输入/输出**:所有 UDF 参数均为字符串(TabSeparated 格式)
-4. **错误处理**:包含 try-catch 块以确保 UDF 的健壮性
-5. **性能优化**:UDF 会对每一行数据调用,因此需要优化性能
+1. **无状态函数**：UDF 应当是无副作用的纯函数
+2. **在函数内导入**：所有必需的模块必须在 UDF 内部导入
+3. **字符串输入/输出**：所有 UDF 参数均为字符串（TabSeparated 格式）
+4. **错误处理**：应包含 try-catch 块以确保 UDF 的健壮性
+5. **性能优化**：UDF 会针对每一行数据调用,因此需要优化性能
 ```
 
 
 ```python
-# 结构良好的 UDF，带错误处理
+# 结构良好的 UDF 及错误处理
 @chdb_udf(return_type="String")
 def safe_json_extract(json_str, path):
     import json
@@ -555,7 +555,7 @@ def safe_json_extract(json_str, path):
 ```
 
 
-# 使用复杂嵌套 JSON
+# 处理复杂的嵌套 JSON
 
 query("""
 SELECT safe_json_extract(
@@ -568,7 +568,7 @@ SELECT safe_json_extract(
 
 ### 流式查询处理 {#streaming-queries}
 
-以恒定内存使用量处理大型数据集：
+处理大型数据集并保持恒定的内存使用量：
 
 ```python
 from chdb import session
@@ -587,7 +587,7 @@ sess.query("""
 
 
 
-# 示例 1：使用上下文管理器的基础流式处理
+# 示例 1：使用上下文管理器的基本流式处理
 total_rows = 0
 with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
     for chunk in stream:
@@ -595,7 +595,7 @@ with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
         total_rows += chunk_rows
         print(f"Processed chunk: {chunk_rows} rows")
         
-        # 如有需要可提前结束
+        # 如有需要可提前终止
         if total_rows > 100000:
             break
 
@@ -618,7 +618,7 @@ while True:
         if line:  # 跳过空行
             processed_count += 1
     
-    print(f"当前已处理 {processed_count} 条记录...")
+    print(f"Processed {processed_count} records so far...")
     
 stream.close()  # 重要：显式清理
 
@@ -630,12 +630,12 @@ import pyarrow as pa
 from deltalake import write_deltalake
 
 
-# 以 Arrow 格式流式获取查询结果
+# 以 Arrow 格式流式获取结果
 stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
 
 
-# 创建具有自定义批大小的 RecordBatchReader
+# 使用自定义批处理大小创建 RecordBatchReader
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
 
@@ -701,7 +701,7 @@ result = chdb.query("""
 
 
 
-# 在 DataFrame 上使用窗口函数
+# DataFrame 上的窗口函数
 
 window&#95;result = chdb.query(&quot;&quot;&quot;
 SELECT
@@ -720,7 +720,7 @@ print(window&#95;result)
 
 #### 使用 PyReader 自定义数据源 {#custom-data-sources-pyreader}
 
-为特定数据源实现自定义数据读取器:
+为特定数据源实现自定义数据读取器：
 
 ```python
 import chdb
@@ -779,7 +779,7 @@ class DatabaseReader(chdb.PyReader):
 
 ### JSON 类型推断与处理 {#json-type-inference-handling}
 
-chDB 自动处理复杂的嵌套数据结构:
+chDB 自动处理复杂的嵌套数据结构：
 
 ```python
 import pandas as pd
@@ -839,11 +839,11 @@ print(complex&#95;json)
 
 ### 基准测试 {#benchmarks}
 
-chDB 的性能始终优于其他嵌入式引擎:
+chDB 的性能始终优于其他嵌入式引擎：
 
-- **DataFrame 操作**: 分析查询速度比传统 DataFrame 库快 2-5 倍
-- **Parquet 处理**: 与领先的列式引擎性能相当
-- **内存效率**: 内存占用低于其他替代方案
+- **DataFrame 操作**：分析查询速度比传统 DataFrame 库快 2-5 倍
+- **Parquet 处理**：与领先的列式引擎性能相当
+- **内存效率**：内存占用低于其他替代方案
 
 [更多基准测试结果详情](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
@@ -857,8 +857,8 @@ import chdb
 
 # 1. 使用合适的输出格式
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 用于分析
-arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 用于互操作性
-native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 间通信
+arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 用于与其他系统集成
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 之间的数据交换
 
 
 
@@ -875,14 +875,14 @@ fast_result = chdb.query("""
 
 
 
-# 3. 利用流式处理应对大型数据集
+# 3. 利用流式处理处理大型数据集
 from chdb import session
 
 sess = session.Session()
 
 
 
-# 准备大型数据集
+# 设置大型数据集
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -908,13 +908,13 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
                 total_amount += row['total']
                 processed_rows += 1
         
-        print(f"Processed {processed_rows} customer records, running total: {total_amount}")
+        print(f"已处理 {processed_rows} 条客户记录，当前运行总额: {total_amount}")
         
         # 演示用的提前终止
         if processed_rows > 1000:
             break
 
-print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
+print(f"最终结果: 共处理 {processed_rows} 位客户，总金额: {total_amount}")
 
 
 
@@ -929,7 +929,7 @@ batch_reader = stream.record_batch(rows_per_batch=50000)
 for batch in batch&#95;reader:
 print(f&quot;Processing batch with {batch.num_rows} rows...&quot;)
 
-# 对每个批次进行转换或导出
+# 转换或导出每个批次
 
 # df&#95;batch = batch.to&#95;pandas()
 
@@ -944,5 +944,5 @@ sess.close()
 
 ## GitHub 仓库 {#github-repository}
 
-- **主仓库**:[chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **问题与支持**:在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues)报告问题
+- **主仓库**：[chdb-io/chdb](https://github.com/chdb-io/chdb)
+- **问题与支持**：在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues)报告问题

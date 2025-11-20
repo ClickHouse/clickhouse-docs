@@ -13,6 +13,6 @@ keywords: ['postgresql', 'database integration', 'external table', 'data source'
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-> 有关从 PostgreSQL 迁移到 ClickHouse 的完整指南（包括数据建模和等价概念的建议），请参见[此处](/migrations/postgresql/overview)。以下内容介绍如何连接 ClickHouse 与 PostgreSQL。
+> 有关从 PostgreSQL 迁移到 ClickHouse 的完整指南（包括关于数据建模和对应概念的建议）请参见[此处](/migrations/postgresql/overview)。下文将介绍如何连接 ClickHouse 和 PostgreSQL。
 
 <PostgreSQL />

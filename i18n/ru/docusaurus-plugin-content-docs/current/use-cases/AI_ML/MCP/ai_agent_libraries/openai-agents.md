@@ -15,7 +15,7 @@ doc_type: 'guide'
 # Как создать агента OpenAI с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать агента [OpenAI](https://github.com/openai/openai-agents-python), который
-может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb).
@@ -46,7 +46,7 @@ pip install -q openai-agents
 
 ## Настройка учетных данных {#setup-credentials}
 
-Далее необходимо указать ваш API-ключ OpenAI:
+Далее вам потребуется указать ваш API-ключ OpenAI:
 
 ```python
 import os, getpass
@@ -60,7 +60,7 @@ Enter OpenAI API Key: ········
 
 ## Инициализация MCP-сервера и агента OpenAI {#initialize-mcp-and-agent}
 
-Теперь настройте MCP-сервер ClickHouse для подключения к тестовой среде ClickHouse SQL,
+Теперь настройте MCP-сервер ClickHouse для подключения к песочнице ClickHouse SQL,
 инициализируйте агента OpenAI и задайте ему вопрос:
 
 ```python
@@ -82,7 +82,7 @@ def simple_render_chunk(chunk):
 
         elif chunk.name == 'tool_output':
             try:
-                # Обработка строкового и уже разобранного вывода
+                # Обработка строк и уже разобранного вывода
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
@@ -110,7 +110,7 @@ def simple_render_chunk(chunk):
                     print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # Резервный вариант с необработанным выводом при ошибке разбора
+                # Резервный вариант с необработанным выводом при ошибке парсинга
                 print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
@@ -150,7 +150,7 @@ async with MCPServerStdio(
 
     message = "Какой самый крупный проект на GitHub на данный момент в 2025 году?"
     print(f"\n\nВыполнение: {message}")
-    with trace("Biggest project workflow"):
+    with trace("Рабочий процесс поиска крупнейшего проекта"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
@@ -192,7 +192,7 @@ log...
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-Самый крупный проект на GitHub в 2025 году по количеству звёзд — "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" с 402 893 звёздами.💬 Ответ: Самый крупный проект на GitHub в 2025 году по количеству звёзд — "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" с 402 893 звёздами.
+Самый крупный проект на GitHub в 2025 году по количеству звёзд — это "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" с 402 893 звёздами.💬 Ответ: Самый крупный проект на GitHub в 2025 году по количеству звёзд — это "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" с 402 893 звёздами.
 ```
 
 </VerticalStepper>

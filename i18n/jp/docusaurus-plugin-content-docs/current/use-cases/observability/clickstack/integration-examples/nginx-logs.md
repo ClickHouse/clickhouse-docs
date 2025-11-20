@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx
-title: 'ClickStack を使った Nginx ログの監視'
+title: 'ClickStack を使用した Nginx ログの監視'
 sidebar_label: 'Nginx ログ'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を使った Nginx の監視'
+description: 'ClickStack を使用した Nginx の監視'
 doc_type: 'guide'
 ---
 
@@ -21,12 +21,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # ClickStackによるNginxログの監視 {#nginx-clickstack}
 
 :::note[要約]
-このガイドでは、OpenTelemetryコレクターを設定してNginxアクセスログを取り込み、ClickStackでNginxを監視する方法を説明します。以下の内容を学習できます：
+本ガイドでは、OpenTelemetryコレクターを設定してNginxアクセスログを取り込み、ClickStackでNginxを監視する方法を説明します。以下の内容を学習できます：
 
 - JSON形式のログを出力するようにNginxを設定する
 - ログ取り込み用のカスタムOTelコレクター設定を作成する
-- カスタム設定でClickStackをデプロイする
-- 事前構築されたダッシュボードを使用してNginxメトリクスを可視化する
+- カスタム設定を使用してClickStackをデプロイする
+- 事前構築済みのダッシュボードを使用してNginxメトリクスを可視化する
 
 本番環境のNginxを設定する前に統合をテストしたい場合は、サンプルログを含むデモデータセットが利用可能です。
 
@@ -36,7 +36,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## 既存のNginxとの統合 {#existing-nginx}
 
-このセクションでは、ClickStack OTelコレクター設定を変更することで、既存のNginxインストールからClickStackにログを送信する設定方法について説明します。
+このセクションでは、ClickStack OTelコレクター設定を変更して、既存のNginxインストールからClickStackにログを送信するように設定する方法について説明します。
 独自の既存セットアップを設定する前に統合をテストしたい場合は、[次のセクション](/use-cases/observability/clickstack/integrations/nginx#demo-dataset)で事前設定されたセットアップとサンプルデータを使用してテストできます。
 
 ##### 前提条件 {#prerequisites}
@@ -49,7 +49,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 #### Nginxログフォーマットの設定 {#configure-nginx}
 
-まず、解析を容易にするために、NginxがJSON形式でログを出力するように設定します。nginx.confに次のログフォーマット定義を追加します:
+まず、解析を容易にするために、NginxがJSON形式でログを出力するように設定します。nginx.confに次のログフォーマット定義を追加します。
 
 `nginx.conf`ファイルは通常、以下の場所にあります:
 
@@ -86,7 +86,7 @@ http {
 
 ClickStackでは、カスタム設定ファイルをマウントし、環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定とマージされます。
 
-次の設定で nginx-monitoring.yaml という名前のファイルを作成します:
+次の設定でnginx-monitoring.yamlという名前のファイルを作成します:
 
 ```yaml
 receivers:
@@ -123,23 +123,23 @@ service:
 - 標準的な場所からNginxログを読み取ります
 - JSONログエントリを解析します
 - 元のログタイムスタンプを抽出して保持します
-- HyperDXでのフィルタリング用に source: Nginx 属性を追加します
+- HyperDXでのフィルタリング用にsource: Nginx属性を追加します
 - 専用パイプラインを介してClickHouseエクスポーターにログをルーティングします
 
 :::note
 
 - カスタム設定では新しいレシーバーとパイプラインのみを定義します
-- プロセッサー(memory_limiter、transform、batch)とエクスポーター(clickhouse)は、ベースのClickStack設定ですでに定義されています - 名前で参照するだけです
-- time_parserオペレーターは、元のログタイミングを保持するために、Nginxのtime_localフィールドからタイムスタンプを抽出します
+- プロセッサー（memory_limiter、transform、batch）とエクスポーター（clickhouse）は、ベースのClickStack設定ですでに定義されています - 名前で参照するだけです
+- time_parser演算子は、元のログタイミングを保持するために、Nginxのtime_localフィールドからタイムスタンプを抽出します
 - パイプラインは、既存のプロセッサーを介して、レシーバーからClickHouseエクスポーターにデータをルーティングします
   :::
 
-#### カスタム設定を読み込むためのClickStackの設定 {#load-custom}
+#### カスタム設定を読み込むようにClickStackを設定 {#load-custom}
 
-既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、以下を行う必要があります:
+既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の操作を行う必要があります:
 
-1. カスタム設定ファイルを /etc/otelcol-contrib/custom.config.yaml にマウントします
-2. 環境変数 CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml を設定します
+1. カスタム設定ファイルを/etc/otelcol-contrib/custom.config.yamlにマウントします
+2. 環境変数CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yamlを設定します
 3. コレクターがログを読み取れるように、Nginxログディレクトリをマウントします
 
 ##### オプション1: Docker Compose {#docker-compose}
@@ -149,14 +149,14 @@ ClickStackデプロイメント設定を更新します:
 ```yaml
 services:
   clickstack:
-    # ... existing configuration ...
+    # ... 既存の設定 ...
     environment:
       - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # ... other environment variables ...
+      # ... その他の環境変数 ...
     volumes:
       - ./nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
       - /var/log/nginx:/var/log/nginx:ro
-      # ... other volumes ...
+      # ... その他のボリューム ...
 ```
 
 
@@ -179,10 +179,10 @@ ClickStackコレクターがnginxログファイルを読み取るための適�
 
 #### HyperDXでのログの検証 {#verifying-logs}
 
-設定完了後、HyperDXにログインしてログが正常に取り込まれていることを確認します：
+設定が完了したら、HyperDXにログインしてログが正常に送信されていることを確認します：
 
 1. 検索ビューに移動します
-2. ソースをLogsに設定し、request、request_time、upstream_response_timeなどのフィールドを含むログエントリが表示されることを確認します
+2. ソースをLogsに設定し、request、request_time、upstream_response_timeなどのフィールドを持つログエントリが表示されることを確認します
 
 以下は表示される内容の例です：
 
@@ -210,13 +210,13 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 データセットには以下が含まれます：
 
 - 実際のトラフィックパターンを持つログエントリ
-- 様々なエンドポイントとHTTPメソッド
+- 各種エンドポイントとHTTPメソッド
 - 成功したリクエストとエラーの混在
 - 実際のレスポンス時間とバイト数
 
 #### テストコレクター設定の作成 {#test-config}
 
-以下の設定で `nginx-demo.yaml` という名前のファイルを作成します：
+以下の設定で`nginx-demo.yaml`という名前のファイルを作成します：
 
 ```yaml
 cat > nginx-demo.yaml << 'EOF'
@@ -224,7 +224,7 @@ receivers:
   filelog:
     include:
       - /tmp/nginx-demo/access.log
-    start_at: beginning  # デモデータのため先頭から読み込み
+    start_at: beginning  # デモデータのため最初から読み込む
     operators:
       - type: json_parser
         parse_from: body
@@ -267,8 +267,8 @@ docker run --name clickstack-demo \
 ClickStackが実行されたら：
 
 1. [HyperDX](http://localhost:8080/)を開き、アカウントにログインします（最初にアカウントを作成する必要がある場合があります）
-2. 検索ビューに移動し、ソースを `Logs` に設定します
-3. 時間範囲を **2025-10-19 11:00:00 - 2025-10-22 11:00:00** に設定します
+2. 検索ビューに移動し、ソースを`Logs`に設定します
+3. 時間範囲を**2025-10-19 11:00:00 - 2025-10-22 11:00:00**に設定します
 
 検索ビューには以下のように表示されます：
 
@@ -285,7 +285,7 @@ HyperDXはブラウザのローカルタイムゾーンでタイムスタンプ�
 
 ## ダッシュボードと可視化 {#dashboards}
 
-ClickStackを使用したnginxの監視を開始できるよう、Nginx Logsの重要な可視化機能を提供しています。
+ClickStackを使用したnginxの監視を開始できるよう、Nginxログの重要な可視化機能を提供しています。
 
 <VerticalStepper headerLevel="h4">
 
@@ -317,19 +317,19 @@ ClickStackを使用したnginxの監視を開始できるよう、Nginx Logsの�
 
 ### カスタム設定が読み込まれない {#troubleshooting-not-loading}
 
-- 環境変数 CUSTOM_OTELCOL_CONFIG_FILE が正しく設定されていることを確認してください
+- 環境変数 CUSTOM_OTELCOL_CONFIG_FILE が正しく設定されているか確認します
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
-- カスタム設定ファイルが /etc/otelcol-contrib/custom.config.yaml にマウントされていることを確認してください
+- カスタム設定ファイルが /etc/otelcol-contrib/custom.config.yaml にマウントされているか確認します
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
-- カスタム設定の内容を表示して、読み取り可能であることを確認してください
+- カスタム設定の内容を表示して、読み取り可能であるか確認します
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
@@ -337,25 +337,25 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 
 ### HyperDX にログが表示されない {#no-logs}
 
-- nginx が JSON ログを書き込んでいることを確認してください
+- nginx が JSON ログを書き込んでいるか確認します
 
 ```bash
 tail -f /var/log/nginx/access.log
 ```
 
-- コレクターがログを読み取れることを確認してください
+- コレクターがログを読み取れるか確認します
 
 ```bash
 docker exec `<container>` cat /var/log/nginx/access.log
 ```
 
-- 有効な設定に filelog レシーバーが含まれていることを確認してください
+- 有効な設定に filelog レシーバーが含まれているか確認します
 
 ```bash
 docker exec `<container>` cat /etc/otel/supervisor-data/effective.yaml | grep filelog
 ```
 
-- コレクターログにエラーがないか確認してください
+- コレクターログにエラーがないか確認します
 
 ```bash
 docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
@@ -366,5 +366,5 @@ docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 
 ダッシュボードをさらに活用したい場合は、以下の手順を試してみてください。
 
-- 重要なメトリクス（エラー率、レイテンシのしきい値）のアラートを設定する
-- 特定のユースケース（APIモニタリング、セキュリティイベント）用の追加ダッシュボードを作成する
+- 重要なメトリクス（エラー率、レイテンシのしきい値）に対するアラートを設定する
+- 特定のユースケース（API監視、セキュリティイベント）用の追加ダッシュボードを作成する

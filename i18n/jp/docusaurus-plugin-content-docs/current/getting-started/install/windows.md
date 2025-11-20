@@ -1,9 +1,9 @@
 ---
-description: 'WSL を使って Windows に ClickHouse をインストールする'
+description: 'WSL を使用して Windows に ClickHouse をインストールする'
 keywords: ['ClickHouse', 'install', 'Redhat', 'rpm']
 sidebar_label: 'Windows'
 slug: /install/windows
-title: 'WSL を使って Windows に ClickHouse をインストールする'
+title: 'WSL を使用して Windows に ClickHouse をインストールする'
 hide_title: true
 doc_type: 'guide'
 ---

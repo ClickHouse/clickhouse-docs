@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'AWS Marketplace 承诺制合约'
-description: '通过 AWS Marketplace 订阅 ClickHouse Cloud（承诺制合约）'
+title: 'AWS Marketplace 承诺合约'
+description: '通过 AWS Marketplace 以承诺合约方式订阅 ClickHouse Cloud'
 keywords: ['aws', 'amazon', 'marketplace', 'billing', 'committed', 'committed contract']
 doc_type: 'guide'
 ---
@@ -15,17 +15,17 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺合同，开始使用 ClickHouse Cloud。
+在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上通过签订承诺合同开始使用 ClickHouse Cloud。
 承诺合同（也称为 Private Offer）允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
 
 
 ## 前提条件 {#prerequisites}
 
-- 基于特定合同条款的 ClickHouse 私有优惠。
+- 基于特定合同条款的 ClickHouse Private Offer。
 - 要将 ClickHouse 组织关联到您的承诺消费优惠,您必须是该组织的管理员。
 
 :::note
-一个 AWS 账户只能订阅一个"ClickHouse Cloud - Committed Contract"私有优惠,且该优惠只能关联到一个 ClickHouse 组织。
+一个 AWS 账户只能订阅一个"ClickHouse Cloud - Committed Contract"私有优惠,且该优惠只能关联一个 ClickHouse 组织。
 :::
 
 在 AWS 中查看和接受承诺合同所需的权限:

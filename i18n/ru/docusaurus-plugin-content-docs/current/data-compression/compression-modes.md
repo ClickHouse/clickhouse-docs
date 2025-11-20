@@ -2,7 +2,7 @@
 slug: /data-compression/compression-modes
 sidebar_position: 6
 title: 'Режимы сжатия'
-description: 'Режимы сжатия столбцов в ClickHouse'
+description: 'Режимы сжатия колонок в ClickHouse'
 keywords: ['compression', 'codec', 'encoding', 'modes']
 doc_type: 'reference'
 ---
@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 Используйте `LZ4`, если не уверены, какой режим выбрать.
 
 :::tip
-Узнайте больше о [кодеках сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec), доступных в ClickHouse, и указывайте их при создании таблиц или позже.
+Узнайте больше о доступных [кодеках сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec) и указывайте их при создании таблиц или позже.
 :::
 
 
@@ -27,8 +27,8 @@ import Image from '@theme/IdealImage';
 | value  | name               | description                              |
 | ------ | ------------------ | ---------------------------------------- |
 | `0x02` | [None](#none-mode) | Без сжатия, только контрольные суммы     |
-| `0x82` | LZ4                | Очень быстрое, хорошее сжатие            |
-| `0x90` | ZSTD               | Zstandard, достаточно быстрое, лучшее сжатие |
+| `0x82` | LZ4                | Очень быстрый, хорошее сжатие            |
+| `0x90` | ZSTD               | Zstandard, достаточно быстрый, лучшее сжатие |
 
 Оба алгоритма LZ4 и ZSTD созданы одним автором, но с разными компромиссами.
 Из [бенчмарков Facebook](https://facebook.github.io/zstd/#benchmarks):

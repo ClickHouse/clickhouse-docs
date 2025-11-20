@@ -56,16 +56,16 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## Azureリージョン {#azure-regions}
 
-- 米国西部3 (アリゾナ)
-- 米国東部2 (バージニア)
-- ドイツ西中部 (フランクフルト)
+- 米国西部3(アリゾナ)
+- 米国東部2(バージニア)
+- ドイツ西中部(フランクフルト)
 
 **プライベートリージョン:**
 
 - 日本東部
 
 :::note
-現在リストにないリージョンへのデプロイが必要な場合は、[リクエストを送信](https://clickhouse.com/pricing?modal=open)してください。
+現在リストに記載されていないリージョンへのデプロイが必要な場合は、[リクエストを送信](https://clickhouse.com/pricing?modal=open)してください。
 :::
 
 
@@ -75,20 +75,20 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 Enterpriseティアサービス向けにプライベートリージョンを提供しています。プライベートリージョンのご利用をご希望の場合は、[お問い合わせ](https://clickhouse.com/company/contact)ください。
 
-プライベートリージョンの主な注意事項:
+プライベートリージョンに関する主な考慮事項:
 
 - サービスは自動スケーリングされませんが、手動による垂直および水平スケーリングはサポートされています。
 - サービスをアイドル状態にすることはできません。
 - プライベートリージョンではステータスページは利用できません。
 
-HIPAA準拠には追加要件が適用される場合があります(BAA(事業提携契約)への署名を含む)。なお、HIPAAは現在Enterpriseティアサービスでのみ利用可能です。
+HIPAA準拠には追加要件が適用される場合があります(BAAへの署名を含む)。なお、HIPAAは現在Enterpriseティアサービスでのみ利用可能です。
 
 
 ## HIPAA準拠リージョン {#hipaa-compliant-regions}
 
 <EnterprisePlanFeatureBadge feature='HIPAA' support='true' />
 
-HIPAA準拠リージョンでサービスを設定するには、お客様はBusiness Associate Agreement（BAA）に署名し、営業またはサポートを通じてオンボーディングをリクエストする必要があります。以下のリージョンがHIPAAコンプライアンスをサポートしています：
+お客様がHIPAA準拠リージョンでサービスを利用するには、Business Associate Agreement（BAA：ビジネスアソシエイト契約）に署名し、セールスまたはサポート窓口を通じてオンボーディングを申請する必要があります。以下のリージョンがHIPAA準拠に対応しています。
 
 - AWS af-south-1（南アフリカ）**プライベートリージョン**
 - AWS ca-central-1（カナダ）**プライベートリージョン**
@@ -96,8 +96,8 @@ HIPAA準拠リージョンでサービスを設定するには、お客様はBus
 - AWS eu-north-1（ストックホルム）**プライベートリージョン**
 - AWS eu-west-1（アイルランド）
 - AWS eu-west-2（ロンドン）
-- AWS sa-east-1（南米）**プライベートリージョン**
-- AWS us-east-1（バージニア北部）
+- AWS sa-east-1（南アメリカ）**プライベートリージョン**
+- AWS us-east-1（北バージニア）
 - AWS us-east-2（オハイオ）
 - AWS us-west-2（オレゴン）
 - GCP europe-west4（オランダ）
@@ -109,7 +109,7 @@ HIPAA準拠リージョンでサービスを設定するには、お客様はBus
 
 <EnterprisePlanFeatureBadge feature='PCI' support='true' />
 
-PCI準拠リージョンでサービスを設定するには、営業またはサポートを通じてオンボーディングをリクエストする必要があります。以下のリージョンがPCI準拠に対応しています:
+PCI準拠リージョンでサービスを設定するには、営業またはサポートを通じてオンボーディングを申請する必要があります。以下のリージョンがPCI準拠に対応しています:
 
 - AWS af-south-1 (南アフリカ) **プライベートリージョン**
 - AWS ca-central-1 (カナダ) **プライベートリージョン**

@@ -2,7 +2,7 @@
 sidebar_label: '一般的なアクセス管理クエリ'
 title: '一般的なアクセス管理クエリ'
 slug: /cloud/security/common-access-management-queries
-description: 'この記事では、SQL ユーザーとロールの基本的な定義方法と、それらの権限や許可をデータベース、テーブル、行、列に適用する方法を説明します。'
+description: 'この記事では、SQL ユーザーとロールの基本的な定義方法と、それらの特権および権限をデータベース、テーブル、行、列に適用する方法を説明します。'
 keywords: ['ClickHouse Cloud', 'access management']
 doc_type: 'guide'
 ---
@@ -12,8 +12,8 @@ import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common
 
 # 一般的なアクセス管理クエリ
 
-:::tip セルフマネージド
-セルフマネージドの ClickHouse を利用している場合は、[SQL users and roles](/guides/sre/user-management/index.md) を参照してください。
+:::tip Self-managed
+セルフマネージドの ClickHouse をお使いの場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md) を参照してください。
 :::
 
 この記事では、SQL ユーザーとロールの基本的な定義方法と、それらの権限をデータベース、テーブル、行、列に適用する方法について説明します。
@@ -44,20 +44,20 @@ SQL Consoleを使用する場合、SQLステートメントは`default`ユーザ
 
 ## パスワードレス認証 {#passwordless-authentication}
 
-SQLコンソールには2つのロールが用意されています:`sql_console_admin`は`default_role`と同一の権限を持ち、`sql_console_read_only`は読み取り専用の権限を持ちます。
+SQLコンソールには2つのロールが用意されています：`default_role`と同一の権限を持つ`sql_console_admin`と、読み取り専用権限を持つ`sql_console_read_only`です。
 
-管理者ユーザーにはデフォルトで`sql_console_admin`ロールが割り当てられるため、管理者の操作に変更はありません。一方、`sql_console_read_only`ロールを使用することで、非管理者ユーザーに任意のインスタンスへの読み取り専用アクセスまたはフルアクセスを付与できます。このアクセス設定は管理者が行う必要があります。これらのロールは、インスタンス固有の要件に合わせて`GRANT`または`REVOKE`コマンドを使用して調整でき、ロールに加えられた変更はすべて永続化されます。
+管理者ユーザーにはデフォルトで`sql_console_admin`ロールが割り当てられるため、管理者に対する変更はありません。一方、`sql_console_read_only`ロールを使用することで、非管理者ユーザーに任意のインスタンスへの読み取り専用アクセスまたはフルアクセスを付与できます。このアクセスは管理者が設定する必要があります。これらのロールは、インスタンス固有の要件に合わせて`GRANT`または`REVOKE`コマンドを使用して調整でき、ロールに加えられた変更はすべて永続化されます。
 
 ### 詳細なアクセス制御 {#granular-access-control}
 
-このアクセス制御機能は、ユーザーレベルの粒度で手動設定することもできます。新しい`sql_console_*`ロールをユーザーに割り当てる前に、`sql-console-role:<email>`という名前空間に一致するSQLコンソールユーザー固有のデータベースロールを作成する必要があります。例:
+このアクセス制御機能は、ユーザーレベルの粒度で手動設定することもできます。新しい`sql_console_*`ロールをユーザーに割り当てる前に、名前空間`sql-console-role:<email>`に一致するSQLコンソールユーザー固有のデータベースロールを作成する必要があります。例：
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;
 GRANT <some grants> TO sql-console-role:<email>;
 ```
 
-一致するロールが検出されると、定型ロールの代わりにそのロールがユーザーに割り当てられます。これにより、`sql_console_sa_role`や`sql_console_pm_role`のようなロールを作成し、特定のユーザーに付与するといった、より複雑なアクセス制御設定が可能になります。例:
+一致するロールが検出されると、定型ロールの代わりにそのロールがユーザーに割り当てられます。これにより、`sql_console_sa_role`や`sql_console_pm_role`のようなロールを作成し、特定のユーザーに付与するといった、より複雑なアクセス制御設定が可能になります。例：
 
 ```sql
 CREATE ROLE OR REPLACE sql_console_sa_role;

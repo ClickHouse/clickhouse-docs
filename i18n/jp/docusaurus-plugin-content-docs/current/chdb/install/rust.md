@@ -2,7 +2,7 @@
 title: 'Rust 向け chDB のインストール'
 sidebar_label: 'Rust'
 slug: /chdb/install/rust
-description: 'chDB Rust バインディングのインストールと使用方法'
+description: 'Rust 用 chDB バインディングのインストールと使用方法'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
 doc_type: 'guide'
 ---
@@ -16,9 +16,9 @@ chDB-rustは、chDB向けの実験的なFFI（Foreign Function Interface）バ�
 
 ## インストール {#installation}
 
-### libchdb のインストール {#install-libchdb}
+### libchdbのインストール {#install-libchdb}
 
-chDB ライブラリをインストールします：
+chDBライブラリをインストールします:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
@@ -27,7 +27,7 @@ curl -sL https://lib.chdb.io | bash
 
 ## 使用方法 {#usage}
 
-chDB Rustはステートレスとステートフルの両方のクエリ実行モードを提供します。
+chDB Rustは、ステートレスとステートフルの両方のクエリ実行モードを提供します。
 
 ### ステートレスな使用方法 {#stateless-usage}
 
@@ -139,7 +139,7 @@ cargo test
 
 ## エラー処理 {#error-handling}
 
-chDB Rustは`Error`列挙型による包括的なエラー処理を提供します：
+chDB Rustは、`Error`列挙型による包括的なエラー処理を提供します:
 
 ```rust
 use chdb_rust::{execute, error::Error};
@@ -149,7 +149,7 @@ match execute("SELECT 1", None) {
         println!("成功: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("クエリ失敗: {}", msg);
+        eprintln!("クエリが失敗しました: {}", msg);
     },
     Err(Error::NoResult) => {
         eprintln!("結果が返されませんでした");

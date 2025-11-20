@@ -7,20 +7,17 @@ pagination_next: null
 description: 'このガイドでは、ClickHouse と AWS Glue Data Catalog を使用して、S3 バケット内のデータをクエリする手順を順を追って説明します。'
 keywords: ['Glue', 'Data Lake']
 show_related_blogs: true
-doc_type: 'ガイド'
+doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ（Unity、Glue、Polaris
-など）との統合をサポートしています。このガイドでは、ClickHouse と Glue Data Catalog を使用して、S3 バケット内のデータをクエリする手順を
-説明します。
+ClickHouse は複数のカタログ (Unity、Glue、Polaris など) との連携をサポートしています。このガイドでは、ClickHouse と Glue Data Catalog を使用して S3 バケット内のデータをクエリする手順を説明します。
 
 :::note
-Glue はさまざまなテーブル形式をサポートしていますが、この統合で
-サポートされるのは Iceberg テーブルのみです。
+Glue はさまざまなテーブル形式をサポートしていますが、この連携で利用できるのは Iceberg テーブルのみです。
 :::
 
 
@@ -50,7 +47,7 @@ SETTINGS
 
 ## ClickHouseを使用してGlueデータカタログをクエリする {#query-glue-catalog}
 
-接続が確立されたので、Glueに対してクエリを実行できます：
+接続が確立されたので、Glueへのクエリを開始できます:
 
 ```sql title="クエリ"
 USE glue;
@@ -66,19 +63,20 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-上記のように、一部のテーブルはIcebergテーブルではありません（例：`iceberg-benchmark.hitsparquet`）。現在Icebergのみがサポートされているため、これらのテーブルに対してクエリを実行することはできません。
+上記のように、一部のテーブルはIcebergテーブルではありません。例えば
+`iceberg-benchmark.hitsparquet`です。現在Icebergのみがサポートされているため、これらのテーブルをクエリすることはできません。
 
-テーブルをクエリするには：
+テーブルをクエリするには:
 
 ```sql title="クエリ"
 SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-ClickHouseは複数のネームスペースをサポートしていないため、バッククォートが必要です。
+ClickHouseは複数の名前空間をサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルのDDLを確認するには、以下のクエリを実行します：
+テーブルのDDLを確認するには、以下のクエリを実行します:
 
 ```sql
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
@@ -320,7 +318,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-次に、Iceberg テーブルからデータをロードします：
+次に、Iceberg テーブルからデータを読み込みます。
 
 ```sql title="Query"
 INSERT INTO default.hits 

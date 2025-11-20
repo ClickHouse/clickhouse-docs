@@ -46,7 +46,7 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-Функция `countIf` подсчитывает только те строки, где `is_successful = 1`, для каждого пользователя.
+Функция `countIf` подсчитает только те строки, где `is_successful = 1`, для каждого пользователя.
 
 ```response title="Результат"
    ┌─user_id─┬─successful_logins─┐

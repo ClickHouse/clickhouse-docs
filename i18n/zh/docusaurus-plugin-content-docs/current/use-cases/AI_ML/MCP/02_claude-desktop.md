@@ -4,7 +4,7 @@ sidebar_label: '集成 Claude Desktop'
 title: '将 ClickHouse MCP 服务器与 Claude Desktop 集成'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何将 Claude Desktop 与 ClickHouse MCP 服务器集成。'
+description: '本指南介绍如何将 Claude Desktop 与 ClickHouse MCP 服务器进行集成配置。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -21,7 +21,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 # 在 Claude Desktop 中使用 ClickHouse MCP 服务器
 
-> 本指南介绍如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器，
+> 本指南介绍如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器
 > 并将其连接到 ClickHouse 示例数据集。
 
 <iframe
@@ -51,15 +51,15 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 ## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
-安装 Claude Desktop 后,接下来需要配置 [ClickHouse MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)。
+安装 Claude Desktop 后,即可开始配置 [ClickHouse MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)。
 可以通过 [Claude Desktop 配置文件](https://claude.ai/docs/configuration)来完成配置。
 
-要找到该文件,首先进入设置页面(Mac 上按 `Cmd+,`),然后点击左侧菜单中的 `Developer` 选项卡。
-随后会看到以下界面,点击 `Edit config` 按钮:
+要找到此文件,首先进入设置页面(Mac 上使用 `Cmd+,`),然后点击左侧菜单中的 `Developer` 选项卡。
+随后您将看到以下界面,需要点击 `Edit config` 按钮:
 
 <Image img={ClaudeDesktopConfig} alt='Claude Desktop 配置' size='md' />
 
-这会打开包含配置文件(`claude_desktop_config.json`)的目录。
+这将打开包含配置文件(`claude_desktop_config.json`)的目录。
 首次打开该文件时,其内容可能如下:
 
 ```json
@@ -68,7 +68,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 }
 ```
 
-`mcpServers` 字典以 MCP 服务器名称作为键,配置选项字典作为值。
+`mcpServers` 字典以 MCP 服务器名称作为键,以配置选项字典作为值。
 例如,连接到 ClickHouse Playground 的 ClickHouse MCP 服务器配置如下:
 
 ```json
@@ -102,13 +102,13 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 更新配置后,需要重启 Claude Desktop 使更改生效。
 
 :::warning
-根据 `uv` 的安装方式,重启 Claude Desktop 时可能会遇到以下错误:
+根据 `uv` 的安装方式,重启 Claude Desktop 时可能会收到以下错误:
 
 ```text
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
-如果出现此错误,需要将 `command` 更新为 `uv` 的完整路径。例如,通过 Cargo 安装时,路径为 `/Users/<username>/.cargo/bin/uv`
+如果出现此错误,需要将 `command` 更新为 `uv` 的完整路径。例如,如果通过 Cargo 安装,路径为 `/Users/<username>/.cargo/bin/uv`
 :::
 
 
@@ -121,10 +121,10 @@ MCP mcp-clickhouse: spawn uv ENOENT
 
 然后您可以选择禁用全部或部分工具。
 
-现在我们可以开始向 Claude 提问了,这些问题将触发它使用 ClickHouse MCP 服务器。
-例如,我们可以问它 `SQL playground 中最有趣的数据集是什么?`。
+现在我们可以开始向 Claude 提问了,这些问题将会触发它使用 ClickHouse MCP 服务器。
+例如,我们可以问它 `What's the most interesting dataset in the SQL playground?`。
 
-Claude 在首次调用时会要求我们确认使用 MCP 服务器中的每个工具:
+Claude 在首次调用时会要求我们确认是否使用 MCP 服务器中的每个工具:
 
 <Image
   img={MCPPermission}

@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/python
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'ClickStack 向け Python - ClickHouse オブザーバビリティスタック'
+description: 'ClickStack 用 Python - ClickHouse Observability スタック'
 title: 'Python'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
@@ -12,13 +12,13 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack は、テレメトリーデータ（ログとトレース）を収集するために OpenTelemetry 標準を使用します。トレースは自動インストルメンテーションによって自動生成されるため、トレースから価値を得るために手動インストルメンテーションを行う必要はありません。
+ClickStack は、テレメトリーデータ（ログとトレース）を収集するために OpenTelemetry 標準を使用します。トレースは自動インストルメンテーションによって自動生成されるため、トレースを活用するために手動インストルメンテーションを行う必要はありません。
 
-このガイドでは、次を統合します。
+このガイドでは、次の要素を統合します:
 
-* **Logs**
-* **Metrics**
-* **Traces**
+* **ログ**
+* **メトリクス**
+* **トレース**
 
 
 ## はじめに {#getting-started}

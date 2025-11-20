@@ -3,7 +3,7 @@ slug: /guides/developer/ttl
 sidebar_label: 'TTL（生存时间）'
 sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', 'old', 'data']
-description: 'TTL（生存时间）指的是在经过一定时间间隔后，将行或列移动、删除或进行汇总的能力。'
+description: 'TTL（生存时间，time-to-live）是指在经过一定时间间隔后，对行或列进行移动、删除或汇总的机制。'
 title: '使用 TTL（生存时间）管理数据'
 show_related_blogs: true
 doc_type: 'guide'
@@ -12,7 +12,7 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# 使用 TTL（生存时间）管理数据
+# 使用 TTL（存活时间）管理数据
 
 
 
@@ -31,7 +31,7 @@ TTL 可以应用于整个表或特定列。
 
 ## TTL 语法 {#ttl-syntax}
 
-`TTL` 子句可以出现在列定义之后和/或表定义的末尾。使用 `INTERVAL` 子句定义时间长度(需要是 `Date` 或 `DateTime` 数据类型)。例如,以下表中有两个带有 `TTL` 子句的列:
+`TTL` 子句可以出现在列定义之后和/或表定义的末尾。使用 `INTERVAL` 子句定义时间长度(需要是 `Date` 或 `DateTime` 数据类型)。例如,以下表有两个带有 `TTL` 子句的列:
 
 ```sql
 CREATE TABLE example1 (
@@ -44,32 +44,32 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-- x 列的存活时间为 timestamp 列时间起 1 个月
-- y 列的存活时间为 timestamp 列时间起 1 天
-- 当时间间隔到期时,列将过期。ClickHouse 会将列值替换为其数据类型的默认值。如果数据部分中的所有列值都已过期,ClickHouse 会从文件系统中删除该数据部分的此列。
+- x 列的生存时间为 timestamp 列时间起 1 个月
+- y 列的生存时间为 timestamp 列时间起 1 天
+- 当时间间隔到期时,列将过期。ClickHouse 会将列值替换为其数据类型的默认值。如果数据部分中的所有列值都已过期,ClickHouse 将从文件系统的数据部分中删除该列。
 
 :::note
-TTL 规则可以被修改或删除。更多详细信息请参阅 [表 TTL 操作](/sql-reference/statements/alter/ttl.md) 页面。
+TTL 规则可以被修改或删除。有关更多详细信息,请参阅[表 TTL 操作](/sql-reference/statements/alter/ttl.md)页面。
 :::
 
 
 ## 触发 TTL 事件 {#triggering-ttl-events}
 
-过期行的删除或聚合不会立即发生——它仅在表合并期间执行。如果您的表由于某种原因没有主动进行合并,可以通过以下两个设置来触发 TTL 事件:
+过期行的删除或聚合操作不会立即执行 - 它们仅在表合并期间发生。如果您的表因某种原因没有主动进行合并,可以通过以下两个设置来触发 TTL 事件:
 
-- `merge_with_ttl_timeout`: 重复执行带有删除 TTL 的合并之前的最小延迟秒数。默认值为 14400 秒(4 小时)。
-- `merge_with_recompression_ttl_timeout`: 重复执行带有重压缩 TTL 的合并之前的最小延迟秒数(在删除之前汇总数据的规则)。默认值:14400 秒(4 小时)。
+- `merge_with_ttl_timeout`: 重复执行带删除 TTL 的合并操作之前的最小延迟时间(秒)。默认值为 14400 秒(4 小时)。
+- `merge_with_recompression_ttl_timeout`: 重复执行带重压缩 TTL 的合并操作之前的最小延迟时间(秒)(该规则会在删除数据前先进行汇总)。默认值:14400 秒(4 小时)。
 
-因此,默认情况下,您的 TTL 规则将至少每 4 小时应用到表一次。如果您需要更频繁地应用 TTL 规则,只需修改上述设置即可。
+因此,默认情况下,您的 TTL 规则至少每 4 小时会应用到表一次。如果需要更频繁地应用 TTL 规则,只需修改上述设置即可。
 
 :::note
-这不是一个理想的解决方案(我们也不建议您频繁使用),但您也可以使用 `OPTIMIZE` 强制执行合并:
+虽然不是一个理想的解决方案(我们也不建议频繁使用),但您也可以使用 `OPTIMIZE` 来强制执行合并:
 
 ```sql
 OPTIMIZE TABLE example1 FINAL
 ```
 
-`OPTIMIZE` 会初始化表分区的非计划合并,而 `FINAL` 会在表已经是单个分区时强制重新优化。
+`OPTIMIZE` 会初始化表数据分片的非计划合并操作,而 `FINAL` 则会在表已经是单个分片时强制重新优化。
 :::
 
 
@@ -120,9 +120,9 @@ MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 
 ## 实现数据汇总 {#implementing-a-rollup}
 
-假设我们希望在一定时间后删除数据行,但需要保留部分数据用于报表分析。我们不需要保留所有详细信息——只需要保留历史数据的一些聚合结果。这可以通过在 `TTL` 表达式中添加 `GROUP BY` 子句来实现,同时在表中添加一些列来存储聚合结果。
+假设我们希望在一定时间后删除数据行,但出于报表需求需要保留部分数据。我们不需要所有详细信息——只需要一些历史数据的聚合结果。这可以通过在 `TTL` 表达式中添加 `GROUP BY` 子句来实现,同时在表中添加一些列来存储聚合结果。
 
-假设在以下 `hits` 表中,我们希望删除旧数据行,但在删除之前需要保留 `hits` 列的总和与最大值。我们需要添加字段来存储这些值,并且需要在 `TTL` 子句中添加 `GROUP BY` 子句来汇总求和与最大值:
+假设在以下 `hits` 表中,我们希望删除旧数据行,但在删除之前保留 `hits` 列的总和与最大值。我们需要添加字段来存储这些值,并且需要在 `TTL` 子句中添加 `GROUP BY` 子句来汇总总和与最大值:
 
 ```sql
 CREATE TABLE hits (
@@ -141,9 +141,9 @@ TTL timestamp + INTERVAL 1 DAY
         sum_hits = sum(sum_hits);
 ```
 
-关于 `hits` 表的几点说明:
+关于 `hits` 表的一些说明:
 
-- `TTL` 子句中的 `GROUP BY` 列必须是 `PRIMARY KEY` 的前缀,并且我们希望按每天的起始时间对结果进行分组。因此,需要将 `toStartOfDay(timestamp)` 添加到主键中
+- `TTL` 子句中的 `GROUP BY` 列必须是 `PRIMARY KEY` 的前缀,并且我们希望按每天的开始时间对结果进行分组。因此,需要将 `toStartOfDay(timestamp)` 添加到主键中
 - 我们添加了两个字段来存储聚合结果:`max_hits` 和 `sum_hits`
 - 根据 `SET` 子句的定义方式,将 `max_hits` 和 `sum_hits` 的默认值设置为 `hits` 是逻辑正常运行的必要条件
 
@@ -156,9 +156,9 @@ TTL timestamp + INTERVAL 1 DAY
 如果您使用的是 ClickHouse Cloud,本课程中的步骤不适用。您无需担心在 ClickHouse Cloud 中移动旧数据的问题。
 :::
 
-在处理大量数据时,一个常见的做法是随着数据老化而移动数据。以下是使用 `TTL` 命令的 `TO DISK` 和 `TO VOLUME` 子句在 ClickHouse 中实现热/温/冷架构的步骤。(顺便说一句,这不一定非要是热冷架构 - 您可以根据任何使用场景使用 TTL 来移动数据。)
+在处理大量数据时,一个常见的做法是随着数据老化而移动数据。以下是使用 `TTL` 命令的 `TO DISK` 和 `TO VOLUME` 子句在 ClickHouse 中实现热/温/冷架构的步骤。(顺便说一下,这不一定非要是热冷架构 - 您可以根据任何使用场景使用 TTL 来移动数据。)
 
-1. `TO DISK` 和 `TO VOLUME` 选项引用在 ClickHouse 配置文件中定义的磁盘或卷的名称。创建一个名为 `my_system.xml`(或任何文件名)的新文件来定义您的磁盘,然后定义使用这些磁盘的卷。将 XML 文件放置在 `/etc/clickhouse-server/config.d/` 目录中,以便将配置应用到您的系统:
+1. `TO DISK` 和 `TO VOLUME` 选项引用在 ClickHouse 配置文件中定义的磁盘或卷的名称。创建一个名为 `my_system.xml`(或任何文件名)的新文件来定义您的磁盘,然后定义使用这些磁盘的卷。将 XML 文件放置在 `/etc/clickhouse-server/config.d/` 目录中以将配置应用到您的系统:
 
 ```xml
 <clickhouse>
@@ -232,7 +232,7 @@ FROM system.storage_policies
 └─────────────┴───────────────┘
 ```
 
-4. 现在我们将添加一个 `TTL` 规则,用于在热、温和冷卷之间移动数据:
+4. 现在我们将添加一个 `TTL` 规则,在热、温和冷卷之间移动数据:
 
 ```sql
 ALTER TABLE my_table
@@ -242,7 +242,7 @@ ALTER TABLE my_table
       trade_date + INTERVAL 4 YEAR TO VOLUME 'cold_volume';
 ```
 
-5. 新的 `TTL` 规则应该会自动物化,但您可以强制执行以确保:
+5. 新的 `TTL` 规则应该会物化,但您可以强制执行以确保:
 
 ```sql
 ALTER TABLE my_table

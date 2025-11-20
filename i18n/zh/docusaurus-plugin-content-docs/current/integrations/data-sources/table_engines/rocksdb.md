@@ -3,7 +3,7 @@ slug: /integrations/rocksdb
 sidebar_label: 'RocksDB'
 title: 'RocksDB'
 hide_title: true
-description: '介绍 RocksDBTable 引擎的页面'
+description: '介绍 RocksDBTableEngine 的页面'
 doc_type: 'reference'
 keywords: ['rocksdb', 'embedded database', 'integration', 'storage engine', 'key-value store']
 ---

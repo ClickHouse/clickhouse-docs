@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: '示例日志、追踪与指标'
+title: '示例日志、链路追踪和指标'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
-description: '开始使用 ClickStack，并使用包含日志、会话、追踪与指标的示例数据集'
+description: '使用 ClickStack 和包含日志、会话、链路追踪和指标的示例数据集快速入门'
 doc_type: 'guide'
-keywords: ['clickstack', '示例数据', '示例数据集', '日志', '可观测性']
+keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -37,33 +37,33 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 以下示例假设您已按照[一体化镜像说明](/use-cases/observability/clickstack/getting-started)启动 ClickStack,并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
 :::note ClickHouse Cloud 中的 HyperDX
-此示例数据集也可用于 ClickHouse Cloud 中的 HyperDX,只需对流程进行少量调整。如果在 ClickHouse Cloud 中使用 HyperDX,用户需要在本地运行 OpenTelemetry 采集器,具体说明请参见[此部署模式的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)。
+此示例数据集也可用于 ClickHouse Cloud 中的 HyperDX,只需对流程进行少量调整。如果在 ClickHouse Cloud 中使用 HyperDX,用户需要在本地运行 OpenTelemetry 收集器,具体说明请参见[此部署模式的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)。
 :::
 
 <VerticalStepper>
 
 
-## 访问 HyperDX UI {#navigate-to-the-hyperdx-ui}
+## 导航到 HyperDX UI {#navigate-to-the-hyperdx-ui}
 
 如果是本地部署,请访问 [http://localhost:8080](http://localhost:8080) 来访问 HyperDX UI。如果在 ClickHouse Cloud 中使用 HyperDX,请从左侧菜单中选择您的服务和 `HyperDX`。
 
 <Image img={hyperdx} alt='HyperDX UI' size='lg' />
 
 
-## 复制数据摄取 API 密钥 {#copy-ingestion-api-key}
+## 复制数据接入 API 密钥 {#copy-ingestion-api-key}
 
 :::note ClickHouse Cloud 中的 HyperDX
-如果在 ClickHouse Cloud 中使用 HyperDX,则无需执行此步骤,因为当前不支持摄取密钥。
+如果在 ClickHouse Cloud 中使用 HyperDX,则无需执行此步骤,因为目前暂不支持数据接入密钥。
 :::
 
-导航到 [`Team Settings`](http://localhost:8080/team),从 `API Keys` 部分复制 `Ingestion API Key`。此 API 密钥用于确保通过 OpenTelemetry 采集器进行数据摄取时的安全性。
+导航至 [`Team Settings`](http://localhost:8080/team),从 `API Keys` 部分复制 `Ingestion API Key`。此 API 密钥可确保通过 OpenTelemetry 采集器进行的数据接入是安全的。
 
 <Image img={copy_api_key} alt='复制 API 密钥' size='lg' />
 
 
 ## 下载示例数据 {#download-sample-data}
 
-要在 UI 中填充示例数据,请下载以下文件:
+要在 UI 中加载示例数据,请下载以下文件:
 
 [示例数据](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
@@ -71,11 +71,11 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 ```shell
 # curl
 curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-# 或者
+# 或
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-此文件包含我们公开的 [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)（一个基于微服务的简单电商商店）中的示例日志、指标和追踪数据。请将此文件复制到任意目录。
+此文件包含来自我们公开的 [OpenTelemetry 演示](https://github.com/ClickHouse/opentelemetry-demo)的示例日志、指标和追踪数据——这是一个包含微服务的简单电子商务应用。请将此文件复制到您选择的目录中。
 
 
 ## 加载示例数据 {#load-sample-data}
@@ -85,7 +85,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 首先,导出上面复制的 API 密钥。
 
 :::note ClickHouse Cloud 中的 HyperDX
-如果在 ClickHouse Cloud 中使用 HyperDX,则无需执行此步骤,因为目前不支持摄取密钥功能。
+如果在 ClickHouse Cloud 中使用 HyperDX,则无需执行此步骤,因为目前不支持摄取密钥。
 :::
 
 
@@ -94,12 +94,12 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
 ```
 
-运行以下命令，将数据发送到 OTel 收集器：
+运行以下命令将数据发送到 OTel 收集器:
 
 ```shell
 for filename in $(tar -tf sample.tar.gz); do
   endpoint="http://localhost:4318/v1/${filename%.json}"
-  echo "loading ${filename%.json}"
+  echo "正在加载 ${filename%.json}"
   tar -xOf sample.tar.gz "$filename" | while read -r line; do
     printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
     -H "Content-Type: application/json" \
@@ -109,13 +109,13 @@ for filename in $(tar -tf sample.tar.gz); do
 done
 ```
 
-这会模拟 OTLP 日志、追踪和指标源向 OTel collector 发送数据。在生产环境中，这些源可能是各语言的客户端，甚至是其他 OTel collector。
+这模拟了 OTLP 日志、追踪和指标数据源向 OTel 收集器发送数据。在生产环境中,这些数据源可能是各种语言的客户端,甚至是其他 OTel 收集器。
 
-返回到 `Search` 视图，你应该能看到数据已经开始加载（如果数据没有显示出来，请将时间范围调整为 `Last 1 hour`）：
+返回到 `Search` 视图,您应该会看到数据已开始加载(如果数据未显示,请将时间范围调整为 `Last 1 hour`):
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg" />
 
-数据加载需要几分钟时间。请等待加载完成后再继续下一步。
+数据加载需要几分钟时间。请等待加载完成后再继续下一步操作。
 
 
 ## 探索会话 {#explore-sessions}
@@ -140,7 +140,7 @@ done
 任何错误都会在时间轴上用红色标注。
 :::
 
-用户无法下单,且没有明显的错误提示。滚动到左侧面板底部,其中包含来自用户浏览器的网络和控制台事件。您会注意到在调用 `/api/checkout` 时抛出了 500 错误。
+用户无法下订单,且没有明显的错误提示。滚动到左侧面板底部,其中包含来自用户浏览器的网络和控制台事件。您会注意到在调用 `/api/checkout` 时抛出了 500 错误。
 
 <Image img={hyperdx_13} alt='会话中的错误' size='lg' />
 
@@ -183,7 +183,7 @@ done
 
 虽然代码中明显引入了错误,但我们可以使用指标来确认缓存大小。导航到 `Chart Explorer` 视图。
 
-选择 `Metrics` 作为数据源。完成图表构建器以绘制 `visa_validation_cache.size (Gauge)` 的 `Maximum` 值,然后按播放按钮。缓存在达到最大容量之前持续增长,达到上限后开始产生错误。
+选择 `Metrics` 作为数据源。完成图表构建器以绘制 `visa_validation_cache.size (Gauge)` 的 `Maximum` 值,然后按播放按钮。可以清楚地看到,缓存在达到最大值之前持续增长,之后开始产生错误。
 
 <Image img={hyperdx_19} alt='指标' size='lg' />
 

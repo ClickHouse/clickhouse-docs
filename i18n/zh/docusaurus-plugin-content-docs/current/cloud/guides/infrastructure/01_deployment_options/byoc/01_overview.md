@@ -3,7 +3,7 @@ title: '概览'
 slug: /cloud/reference/byoc/overview
 sidebar_label: '概览'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
-description: '在您的自有云基础设施上部署 ClickHouse'
+description: '在您自有的云基础设施上部署 ClickHouse'
 doc_type: 'reference'
 ---
 
@@ -11,14 +11,14 @@ doc_type: 'reference'
 
 ## 概述 {#overview}
 
-BYOC(Bring Your Own Cloud,自带云)允许您在自己的云基础设施上部署 ClickHouse Cloud。如果您有特定的需求或限制条件,无法使用 ClickHouse Cloud 托管服务,BYOC 将是理想的解决方案。
+BYOC(自带云)允许您在自己的云基础设施上部署 ClickHouse Cloud。如果您有特定的需求或限制条件,无法使用 ClickHouse Cloud 托管服务,BYOC 将是理想的解决方案。
 
 > **如需获取访问权限,请[联系我们](https://clickhouse.com/cloud/bring-your-own-cloud)。** 更多信息请参阅我们的[服务条款](https://clickhouse.com/legal/agreements/terms-of-service)。
 
 BYOC 目前仅支持 AWS。您可以在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入 GCP 和 Azure 的候补名单。
 
 :::note
-BYOC 专为大规模部署设计,需要客户签署承诺合约。
+BYOC 专为大规模部署设计,需要客户签署承诺合同。
 :::
 
 

@@ -22,7 +22,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-或者，我们可以使用 [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) 格式，通过省略列名来节省磁盘空间：
+或者，我们可以使用 [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) 格式，通过不写入列名来节省磁盘空间：
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -49,7 +49,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-现在,数值列 `hits` 被编码为字符串。所有 JSON\* 格式都支持以字符串形式导出,可以使用 `JSONStrings\*` 和 `JSONCompactStrings\*` 格式:
+现在,`hits` 数值列被编码为字符串。所有 JSON\* 格式都支持以字符串形式导出,可以使用 `JSONStrings\*` 和 `JSONCompactStrings\*` 格式:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -137,12 +137,12 @@ SELECT * FROM sometable FORMAT JSONCompact
 }
 ```
 
-如需将所有值编码为字符串,可以考虑使用 [`JSONStrings`](/interfaces/formats/JSONStrings) 或 [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) 变体。
+可以考虑使用 [`JSONStrings`](/interfaces/formats/JSONStrings) 或 [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) 变体将所有值编码为字符串。
 
 
 ## 导出 JSON 数据和结构的紧凑方式 {#compact-way-to-export-json-data-and-structure}
 
-要同时导出数据及其结构,更高效的方法是使用 [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) 格式:
+要同时导出数据及其结构,更高效的方式是使用 [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) 格式:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
@@ -181,7 +181,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
-虽然耗时更长,但会生成一个小得多的压缩文件:
+虽然耗时更长,但生成的压缩文件要小得多:
 
 ```bash
 2.2G    out.json

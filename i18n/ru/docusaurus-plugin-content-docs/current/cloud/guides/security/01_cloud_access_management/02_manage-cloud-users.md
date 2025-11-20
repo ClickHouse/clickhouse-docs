@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Управление пользователями облака'
+sidebar_label: 'Управление пользователями в облаке'
 slug: /cloud/security/manage-cloud-users
-title: 'Управление пользователями облака'
+title: 'Управление пользователями в облаке'
 description: 'На этой странице описано, как администраторам добавлять пользователей, управлять их правами и удалять пользователей'
 doc_type: 'guide'
 keywords: ['cloud users', 'access management', 'security', 'permissions', 'team management']
@@ -35,7 +35,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 5. Выберите роли организации и сервиса, которые будут назначены пользователям
 6. Нажмите `Send invites`
 
-Пользователи получат письмо, с помощью которого смогут присоединиться к организации. Дополнительную информацию о принятии приглашений см. в разделе [Управление моей учётной записью](/cloud/security/manage-my-account).
+Пользователи получат письмо, с помощью которого смогут присоединиться к организации. Дополнительную информацию о принятии приглашений см. в разделе [Управление учётной записью](/cloud/security/manage-my-account).
 
 ### Добавление пользователей через провайдер идентификации SAML {#add-users-via-saml}
 
@@ -54,7 +54,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## Управление назначением ролей пользователей {#manage-role-assignments}
 
-Пользователи с ролью Organization Admin могут в любое время изменять права доступа других пользователей.
+Пользователи с ролью Organization Admin могут изменять права доступа других пользователей в любое время.
 
 <VerticalStepper headerLevel="h3">
 
@@ -72,7 +72,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ### Выбор пользователя для изменения {#select-user-to-update}
 
-Выберите пункт меню в конце строки пользователя, права доступа которого вы хотите изменить:
+Выберите пункт меню в конце строки для пользователя, права доступа которого вы хотите изменить:
 
 <Image img={step_3} size='lg' />
 

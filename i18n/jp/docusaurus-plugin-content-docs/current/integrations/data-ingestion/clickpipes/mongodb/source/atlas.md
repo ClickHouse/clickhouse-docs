@@ -89,4 +89,4 @@ ClickPipesユーザーにアクセスを許可するクラスター/インスタ
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)して、MongoDBインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-MongoDBインスタンスのセットアップ時に使用した接続情報は、ClickPipe作成時に必要となるため、必ず控えておいてください。
+ClickPipeの作成時に必要となるため、MongoDBインスタンスのセットアップ時に使用した接続情報を必ず控えておいてください。

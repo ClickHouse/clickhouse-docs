@@ -1,8 +1,8 @@
 ---
-sidebar_label: '最初のオブジェクトストレージ ClickPipe を作成する'
-description: 'オブジェクトストレージを ClickHouse Cloud にシームレスに接続します。'
+sidebar_label: '初めてのオブジェクトストレージClickPipeの作成'
+description: 'オブジェクトストレージをClickHouse Cloudにシームレスに接続します。'
 slug: /integrations/clickpipes/object-storage
-title: '最初のオブジェクトストレージ ClickPipe を作成する'
+title: '初めてのオブジェクトストレージClickPipeの作成'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -23,7 +23,7 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-Object Storage ClickPipes は、Amazon S3、Google Cloud Storage、Azure Blob Storage、DigitalOcean Spaces から ClickHouse Cloud へのデータ取り込みを、シンプルかつ高い耐障害性をもって実現します。単発の取り込みと継続的な取り込みの両方を、exactly-once セマンティクスでサポートします。
+Object Storage ClickPipesは、Amazon S3、Google Cloud Storage、Azure Blob Storage、DigitalOcean SpacesからClickHouse Cloudへデータを取り込むためのシンプルで信頼性の高い方法を提供します。1回限りの取り込みと継続的な取り込みの両方に対応しており、exactly-onceセマンティクスを保証します。
 
 
 # 最初のオブジェクトストレージClickPipeを作成する {#creating-your-first-clickpipe}
@@ -31,12 +31,12 @@ Object Storage ClickPipes は、Amazon S3、Google Cloud Storage、Azure Blob St
 
 ## 前提条件 {#prerequisite}
 
-- [ClickPipes の概要](../index.md)を確認済みであること。
+- [ClickPipes の概要](../index.md)を理解していること。
 
 
 ## データソースに移動 {#1-load-sql-console}
 
-クラウドコンソールで、左側のメニューから`Data Sources`ボタンを選択し、「Set up a ClickPipe」をクリックします
+クラウドコンソールで、左側のメニューにある`Data Sources`ボタンを選択し、「Set up a ClickPipe」をクリックします
 
 <Image img={cp_step0} alt='インポートを選択' size='lg' border />
 
@@ -50,8 +50,8 @@ Object Storage ClickPipes は、Amazon S3、Google Cloud Storage、Azure Blob St
 
 ## ClickPipeの設定 {#3-configure-clickpipe}
 
-ClickPipeの名前、説明（オプション）、IAMロールまたは認証情報、バケットURLを入力してフォームに記入します。
-bashライクなワイルドカードを使用して複数のファイルを指定できます。
+ClickPipeの名前、説明（オプション）、IAMロールまたは認証情報、バケットURLを入力してフォームを完成させます。
+bash形式のワイルドカードを使用して複数のファイルを指定できます。
 詳細については、[パスでのワイルドカード使用に関するドキュメント](/integrations/clickpipes/object-storage/reference/#limitations)を参照してください。
 
 <Image
@@ -65,7 +65,7 @@ bashライクなワイルドカードを使用して複数のファイルを指�
 ## データ形式の選択 {#4-select-format}
 
 UIには指定されたバケット内のファイル一覧が表示されます。
-データ形式を選択し（現在はClickHouse形式のサブセットをサポート）、継続的な取り込みを有効にするかどうかを指定します。
+データ形式を選択し（現在はClickHouse形式の一部をサポートしています）、継続的な取り込みを有効にするかどうかを指定してください。
 （[詳細は以下を参照](/integrations/clickpipes/object-storage/reference/#continuous-ingest)）。
 
 <Image
@@ -80,18 +80,18 @@ UIには指定されたバケット内のファイル一覧が表示されます
 
 次のステップでは、新しいClickHouseテーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。
 画面の指示に従って、テーブル名、スキーマ、設定を変更してください。
-上部のサンプルテーブルで変更内容のリアルタイムプレビューを確認できます。
+上部のサンプルテーブルで変更内容をリアルタイムでプレビューできます。
 
-<Image img={cp_step4a} alt='テーブル、スキーマ、設定の指定' size='lg' border />
+<Image img={cp_step4a} alt='テーブル、スキーマ、設定の設定' size='lg' border />
 
-提供されているコントロールを使用して詳細設定をカスタマイズすることもできます。
+提供されているコントロールを使用して、詳細設定をカスタマイズすることもできます。
 
 <Image img={cp_step4a3} alt='詳細コントロールの設定' size='lg' border />
 
 または、既存のClickHouseテーブルにデータを取り込むこともできます。
-その場合、UIを使用してソースのフィールドを選択した宛先テーブルのClickHouseフィールドにマッピングできます。
+その場合、UIを使用して、ソースのフィールドを選択した宛先テーブルのClickHouseフィールドにマッピングできます。
 
-<Image img={cp_step4b} alt='既存テーブルの使用' size='lg' border />
+<Image img={cp_step4b} alt='既存のテーブルを使用' size='lg' border />
 
 :::info
 `_path`や`_size`などの[仮想カラム](../../sql-reference/table-functions/s3#virtual-columns)をフィールドにマッピングすることもできます。
@@ -104,10 +104,10 @@ UIには指定されたバケット内のファイル一覧が表示されます
 
 **権限:** ClickPipesは、宛先テーブルへのデータ書き込み用に専用ユーザーを作成します。この内部ユーザーに対して、カスタムロールまたは以下の事前定義ロールのいずれかを選択できます:
 
-- `Full access`: クラスタへの完全なアクセス権限。宛先テーブルでマテリアライズドビューまたはDictionaryを使用する場合に必要です。
-- `Only destination table`: 宛先テーブルへの`INSERT`権限のみ。
+- `Full access`: クラスタへの完全なアクセス権を持ちます。宛先テーブルでマテリアライズドビューまたはDictionaryを使用する場合に必要です。
+- `Only destination table`: 宛先テーブルへの`INSERT`権限のみを持ちます。
 
-<Image img={cp_step5} alt='権限' size='lg' border />
+<Image img={cp_step5} alt='Permissions' size='lg' border />
 
 
 ## セットアップの完了 {#7-complete-setup}
@@ -127,5 +127,5 @@ UIには指定されたバケット内のファイル一覧が表示されます
 <Image img={cp_overview} alt='概要を表示' size='lg' border />
 
 **おめでとうございます!** 最初のClickPipeのセットアップが正常に完了しました。
-ストリーミングClickPipeの場合は、継続的に実行され、リモートデータソースからリアルタイムでデータを取り込みます。
+ストリーミングClickPipeの場合、継続的に実行され、リモートデータソースからリアルタイムでデータを取り込みます。
 バッチ処理の場合は、バッチを取り込んで完了します。

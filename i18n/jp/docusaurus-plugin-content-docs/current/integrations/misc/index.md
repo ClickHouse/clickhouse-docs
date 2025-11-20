@@ -2,7 +2,7 @@
 slug: /integrations/misc
 keywords: ['Retool', 'Easypanel', 'Splunk']
 title: 'ツール'
-description: 'ツールセクション用ランディングページ'
+description: 'ツールセクションのランディングページ'
 doc_type: 'landing-page'
 ---
 
@@ -12,4 +12,4 @@ doc_type: 'landing-page'
 |-------------------|
 | [ビジュアルインターフェース](/interfaces/third-party/gui) |
 | [プロキシ](/interfaces/third-party/proxy)         |
-| [統合](/interfaces/third-party/integrations)      |
+| [インテグレーション](/interfaces/third-party/integrations)      |

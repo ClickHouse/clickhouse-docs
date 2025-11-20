@@ -2,7 +2,7 @@
 sidebar_label: 'Power BI'
 slug: /integrations/powerbi
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
-description: 'Microsoft Power BI — это интерактивный программный продукт для визуализации данных, разработанный компанией Microsoft с основным фокусом на задачах бизнес-аналитики.'
+description: 'Microsoft Power BI — это интерактивный программный продукт для визуализации данных, разработанный компанией Microsoft и ориентированный в первую очередь на бизнес-аналитику.'
 title: 'Power BI'
 doc_type: 'guide'
 integration:
@@ -34,21 +34,21 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Microsoft Power BI может выполнять запросы к данным в [ClickHouse Cloud](https://clickhouse.com/cloud) или в самостоятельном развёртывании, а также загружать эти данные в память.
+Microsoft Power BI может выполнять запросы к данным в [ClickHouse Cloud](https://clickhouse.com/cloud) или загружать их в память, а также работать с данными из самоуправляемого развёртывания.
 
 Существует несколько вариантов Power BI, которые вы можете использовать для визуализации данных:
 
 * Power BI Desktop: настольное приложение для Windows для создания дашбордов и визуализаций
-* Power BI Service: сервис в Azure (SaaS) для размещения дашбордов, созданных в Power BI Desktop
+* Power BI Service: доступен в Azure как SaaS‑сервис для размещения дашбордов, созданных в Power BI Desktop
 
-В Power BI дашборды необходимо создавать в версии Desktop и публиковать в Power BI Service.
+В Power BI требуется создавать дашборды в версии Desktop и публиковать их в Power BI Service.
 
-В этом руководстве вы узнаете, как:
+В этом руководстве вы пройдёте процесс:
 
-* [установить драйвер ClickHouse ODBC](#install-the-odbc-driver)
-* [установить коннектор ClickHouse Power BI в Power BI Desktop](#power-bi-installation)
-* [выполнять запросы к данным в ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
-* [настроить локальный (on-premise) шлюз данных для Power BI Service](#power-bi-service)
+* [установки драйвера ClickHouse ODBC](#install-the-odbc-driver)
+* [установки коннектора ClickHouse Power BI в Power BI Desktop](#power-bi-installation)
+* [выполнения запросов к данным из ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
+* [настройки локального шлюза данных (on-premise data gateway) для Power BI Service](#power-bi-service)
 
 
 
@@ -60,9 +60,9 @@ Microsoft Power BI может выполнять запросы к данным 
 
 Рекомендуется использовать последнюю версию Power BI. Коннектор ClickHouse доступен по умолчанию начиная с версии `2.137.751.0`.
 
-### Подготовка данных для подключения к ClickHouse {#gather-your-clickhouse-connection-details}
+### Сбор параметров подключения к ClickHouse {#gather-your-clickhouse-connection-details}
 
-Для подключения к экземпляру ClickHouse потребуются следующие данные:
+Для подключения к экземпляру ClickHouse потребуются следующие параметры:
 
 - Hostname — имя хоста ClickHouse
 - Username — имя пользователя
@@ -106,7 +106,7 @@ Microsoft Power BI может выполнять запросы к данным 
 <Image
   size='md'
   img={powerbi_odbc_search}
-  alt='Поиск Windows с параметром «Источники данных ODBC (64-разрядная версия)»'
+  alt='Поиск Windows с отображением параметра «Источники данных ODBC (64-разрядная версия)»'
   border
 />
 <br />
@@ -183,7 +183,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 ### Запросы и визуализация данных {#query-and-visualise-data}
 
-В итоге вы увидите базы данных и таблицы в представлении «Навигатор». Выберите нужную таблицу и нажмите «Загрузить», чтобы
+В представлении «Навигатор» вы увидите базы данных и таблицы. Выберите нужную таблицу и нажмите «Загрузить», чтобы
 импортировать данные из ClickHouse.
 
 <Image
@@ -249,7 +249,7 @@ Microsoft Power BI может выполнять запросы к данным 
 <Image
   size='sm'
   img={powerbi_connection_details}
-  alt='Диалоговое окно конфигурации драйвера ODBC ClickHouse с параметрами подключения'
+  alt='Диалоговое окно настройки драйвера ODBC ClickHouse с параметрами подключения'
   border
 />
 <br />
@@ -270,7 +270,7 @@ Microsoft Power BI может выполнять запросы к данным 
 <Image
   size='md'
   img={powerbi_get_data}
-  alt='Главный экран Power BI Desktop с отображением кнопки «Получить данные»'
+  alt='Главный экран Power BI Desktop с кнопкой «Получить данные»'
   border
 />
 <br />
@@ -290,7 +290,7 @@ Microsoft Power BI может выполнять запросы к данным 
 <Image
   size='md'
   img={powerbi_select_dsn}
-  alt='Диалоговое окно выбора драйвера ODBC с отображением настроенного DSN ClickHouse'
+  alt='Диалоговое окно выбора драйвера ODBC с настроенным DSN ClickHouse'
   border
 />
 <br />
@@ -307,12 +307,12 @@ Microsoft Power BI может выполнять запросы к данным 
 />
 <br />
 
-Наконец, вы увидите базы данных и таблицы в представлении «Навигатор». Выберите нужную таблицу и нажмите «Загрузить», чтобы импортировать данные из ClickHouse.
+В представлении «Навигатор» вы увидите базы данных и таблицы. Выберите нужную таблицу и нажмите «Загрузить», чтобы импортировать данные из ClickHouse.
 
 <Image
   size='md'
   img={powerbi_table_navigation}
-  alt='Представление «Навигатор» Power BI с отображением таблиц базы данных ClickHouse и примеров данных'
+  alt='Представление «Навигатор» Power BI с таблицами базы данных ClickHouse и примерами данных'
   border
 />
 <br />
@@ -331,13 +331,13 @@ Microsoft Power BI может выполнять запросы к данным 
 :::
 
 В этом примере таблица `pageviews` содержит столбец UInt64, который по умолчанию распознается как «Binary».
-Кнопка «Transform Data» открывает редактор Power Query Editor, где можно изменить тип столбца, установив его, например, как
+«Transform Data» открывает редактор Power Query Editor, где можно изменить тип столбца, установив его, например, как
 Text.
 
 <Image
   size='md'
   img={powerbi_16}
-  alt='Редактор Power Query Editor с преобразованием типа данных для столбца UInt64'
+  alt='Редактор Power Query Editor, показывающий преобразование типа данных для столбца UInt64'
   border
 />
 <br />

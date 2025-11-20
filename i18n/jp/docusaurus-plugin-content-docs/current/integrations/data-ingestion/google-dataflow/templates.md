@@ -15,7 +15,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Google Dataflow テンプレートは、カスタムコードを記述することなく、あらかじめ用意されたデータパイプラインをすぐに利用・実行できる便利な手段です。これらのテンプレートは、一般的なデータ処理タスクを簡素化することを目的として設計されており、[Apache Beam](https://beam.apache.org/) を使用して構築されています。`ClickHouseIO` のようなコネクタを活用することで、ClickHouse データベースとのシームレスな連携を実現します。これらのテンプレートを Google Dataflow 上で実行することで、最小限の労力で高いスケーラビリティを備えた分散データ処理を実現できます。
+Google Dataflow テンプレートは、カスタムコードを記述することなく、あらかじめ用意されたすぐに使えるデータパイプラインを実行するための便利な手段です。これらのテンプレートは、一般的なデータ処理タスクを簡素化するように設計されており、[Apache Beam](https://beam.apache.org/) を用いて構築されています。また、`ClickHouseIO` のようなコネクタを活用し、ClickHouse データベースとシームレスに統合できます。これらのテンプレートを Google Dataflow 上で実行することで、最小限の労力で高スケーラビリティな分散データ処理を実現できます。
 
 
 
@@ -23,7 +23,7 @@ Google Dataflow テンプレートは、カスタムコードを記述するこ�
 
 - **使いやすさ**: テンプレートは特定のユースケースに合わせて事前設定されたパイプラインを提供するため、コーディングが不要です。
 - **スケーラビリティ**: Dataflowは分散処理により大量のデータを処理し、パイプラインを効率的にスケールさせます。
-- **コスト効率**: 使用したリソース分のみの支払いで、パイプライン実行コストを最適化できます。
+- **コスト効率**: 使用したリソース分のみの支払いで、パイプライン実行コストの最適化が可能です。
 
 
 ## Dataflowテンプレートの実行方法 {#how-to-run-dataflow-templates}
@@ -34,6 +34,6 @@ Google Dataflow テンプレートは、カスタムコードを記述するこ�
 
 ## ClickHouseテンプレート一覧 {#list-of-clickhouse-templates}
 
-- [BigQueryからClickHouseへ](./templates/bigquery-to-clickhouse)
-- [GCSからClickHouseへ](https://github.com/ClickHouse/DataflowTemplates/issues/3) (近日公開予定)
-- [Pub SubからClickHouseへ](https://github.com/ClickHouse/DataflowTemplates/issues/4) (近日公開予定)
+- [BigQueryからClickHouse](./templates/bigquery-to-clickhouse)
+- [GCSからClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (近日公開予定)
+- [Pub SubからClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (近日公開予定)

@@ -21,10 +21,10 @@ import Image from '@theme/IdealImage';
 
 # AWS PrivateLink для ClickPipes
 
-Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) для организации защищённого подключения между VPC,
-сервисами AWS, вашими локальными системами и ClickHouse Cloud без вывода трафика в публичный интернет.
+Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) для установления безопасного соединения между VPC,
+сервисами AWS, вашими локальными системами и ClickHouse Cloud без вывода трафика в общедоступный интернет.
 
-Этот документ описывает функциональность обратной приватной конечной точки ClickPipes,
+В этом документе описывается функциональность обратной приватной конечной точки ClickPipes,
 которая позволяет настроить VPC endpoint AWS PrivateLink.
 
 
@@ -56,7 +56,7 @@ import Image from '@theme/IdealImage';
 
 Это предпочтительный вариант для Postgres CDC при приёме данных из кластера RDS.
 
-Для настройки PrivateLink с ресурсом VPC:
+Чтобы настроить PrivateLink с ресурсом VPC:
 
 1. Создайте шлюз ресурсов
 2. Создайте конфигурацию ресурса
@@ -111,7 +111,7 @@ aws vpc-lattice create-resource-configuration \
 
 Самый простой [тип конфигурации ресурса](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) — это одиночная конфигурация ресурса. Вы можете настроить её напрямую с помощью ARN или указать IP-адрес или доменное имя, которое можно разрешить публично.
 
-Например, для настройки с использованием ARN кластера RDS:
+Например, чтобы настроить с использованием ARN кластера RDS:
 
 ```bash
 aws vpc-lattice create-resource-configuration \
@@ -124,7 +124,7 @@ aws vpc-lattice create-resource-configuration \
 :::note
 Невозможно создать конфигурацию ресурса для публично доступного кластера.
 Если ваш кластер публично доступен, необходимо изменить кластер,
-сделав его частным перед созданием конфигурации ресурса,
+чтобы сделать его частным перед созданием конфигурации ресурса,
 или использовать вместо этого [список разрешённых IP-адресов](/integrations/clickpipes#list-of-static-ips).
 Для получения дополнительной информации см. [документацию AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
@@ -147,7 +147,7 @@ aws ram create-resource-share \
 
 В выводе команды будет содержаться ARN Resource-Share, который потребуется для настройки подключения ClickPipe с ресурсом VPC.
 
-Теперь вы готовы [создать ClickPipe с обратной частной конечной точкой](#creating-clickpipe), используя ресурс VPC. Вам потребуется:
+Теперь вы готовы [создать ClickPipe с обратной частной конечной точкой](#creating-clickpipe) с использованием ресурса VPC. Вам потребуется:
 
 - Установить `VPC endpoint type` в значение `VPC Resource`.
 - Установить `Resource configuration ID` в значение идентификатора Resource-Configuration, созданного на шаге 2.
@@ -157,13 +157,13 @@ aws ram create-resource-share \
 
 </VerticalStepper>
 
-### Подключение MSK к нескольким VPC {#msk-multi-vpc}
+### Многосетевое подключение MSK {#msk-multi-vpc}
 
-[Подключение к нескольким VPC](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) — это встроенная функция AWS MSK, которая позволяет подключать несколько VPC к одному кластеру MSK.
-Поддержка частного DNS доступна по умолчанию и не требует дополнительной настройки.
+[Многосетевое подключение](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) — это встроенная функция AWS MSK, которая позволяет подключать несколько VPC к одному кластеру MSK.
+Поддержка частного DNS доступна из коробки и не требует дополнительной настройки.
 Межрегиональное подключение не поддерживается.
 
-Это рекомендуемый вариант для использования ClickPipes с MSK.
+Это рекомендуемый вариант для ClickPipes с MSK.
 Дополнительную информацию см. в руководстве [по началу работы](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html).
 
 :::info
@@ -275,20 +275,20 @@ aws ram create-resource-share \
    DNS-имя не является полным сетевым адресом.
    Добавьте порт в соответствии с источником данных.
 
-   Строку подключения MSK можно найти в консоли AWS.
+   Строку подключения MSK можно получить в консоли AWS.
 
    Чтобы просмотреть полный список DNS-имен, откройте настройки облачного сервиса.
 
 </VerticalStepper>
 
 
-## Управление существующими обратными приватными конечными точками {#managing-existing-endpoints}
+## Управление существующими обратными частными конечными точками {#managing-existing-endpoints}
 
-Вы можете управлять существующими обратными приватными конечными точками в настройках сервиса ClickHouse Cloud:
+Вы можете управлять существующими обратными частными конечными точками в настройках сервиса ClickHouse Cloud:
 
 <VerticalStepper headerLevel="list">
 
-1. В боковой панели найдите кнопку `Settings` и нажмите её.
+1. На боковой панели найдите кнопку `Settings` и нажмите на неё.
 
    <Image
      img={cp_rpe_settings0}
@@ -297,7 +297,7 @@ aws ram create-resource-share \
      border
    />
 
-2. Нажмите `Reverse private endpoints` в разделе `ClickPipe reverse private endpoints`.
+2. Нажмите на `Reverse private endpoints` в разделе `ClickPipe reverse private endpoints`.
 
    <Image
      img={cp_rpe_settings1}
@@ -306,9 +306,9 @@ aws ram create-resource-share \
      border
    />
 
-   Расширенная информация об обратной приватной конечной точке отображается во всплывающем окне.
+   Расширенная информация об обратной частной конечной точке отображается во всплывающей панели.
 
-   Конечную точку можно удалить отсюда. Это повлияет на все ClickPipes, которые её используют.
+   Конечную точку можно удалить отсюда. Это повлияет на все ClickPipes, использующие данную конечную точку.
 
 </VerticalStepper>
 

@@ -7,7 +7,7 @@
 
 ## 使用 curl 安装 ClickHouse {#install-clickhouse-using-curl}
 
-运行以下命令下载适用于您操作系统的单个二进制文件。
+运行以下命令以下载适用于您操作系统的单个二进制文件。
 
 ```bash
 curl https://clickhouse.com/ | sh
@@ -20,9 +20,9 @@ Mac 用户注意:如果遇到无法验证二进制文件开发者的错误,请�
 
 ## 启动 clickhouse-local {#start-clickhouse-local}
 
-`clickhouse-local` 允许您使用 ClickHouse 强大的 SQL 语法处理本地和远程文件,无需任何配置。表数据存储在临时位置,这意味着重启 `clickhouse-local` 后,之前创建的表将不再可用。
+`clickhouse-local` 允许您使用 ClickHouse 强大的 SQL 语法处理本地和远程文件,无需配置。 表数据存储在临时位置,这意味着重启 `clickhouse-local` 后,之前创建的表将不再可用。
 
-运行以下命令以启动 [clickhouse-local](/operations/utilities/clickhouse-local):
+运行以下命令启动 [clickhouse-local](/operations/utilities/clickhouse-local):
 
 ```bash
 ./clickhouse
@@ -31,7 +31,7 @@ Mac 用户注意:如果遇到无法验证二进制文件开发者的错误,请�
 
 ## 启动 clickhouse-server {#start-clickhouse-server}
 
-如果需要持久化数据,您需要运行 `clickhouse-server`。可以使用以下命令启动 ClickHouse 服务器:
+如果您希望持久化数据,则需要运行 `clickhouse-server`。可以使用以下命令启动 ClickHouse 服务器:
 
 ```bash
 ./clickhouse server
@@ -57,7 +57,7 @@ Connected to ClickHouse server version 24.5.1.
 local-host :)
 ```
 
-表数据存储在当前目录中,ClickHouse 服务器重启后数据仍然可用。如有需要,您可以在启动 `./clickhouse server` 时通过 `-C config.xml` 参数指定配置文件,以提供更多配置选项。所有可用的配置项都记录在[此处](/operations/server-configuration-parameters/settings)和[示例配置文件模板](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)中。
+表数据存储在当前目录中,ClickHouse 服务器重启后数据仍然可用。如有必要,您可以在执行 `./clickhouse server` 时通过 `-C config.xml` 参数指定配置文件,以提供更多配置选项。所有可用的配置设置都记录在[此处](/operations/server-configuration-parameters/settings)以及[示例配置文件模板](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)中。
 
 现在您可以开始向 ClickHouse 发送 SQL 命令了!
 

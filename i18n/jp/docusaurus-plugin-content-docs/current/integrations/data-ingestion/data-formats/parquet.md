@@ -2,7 +2,7 @@
 sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
-title: 'ClickHouse での Parquet の扱い方'
+title: 'ClickHouse における Parquet の利用'
 description: 'ClickHouse で Parquet を扱う方法を説明するページ'
 doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
@@ -12,14 +12,14 @@ keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache p
 
 # ClickHouse での Parquet の利用
 
-Parquet は、データを列指向で格納するための効率的なファイル形式です。
+Parquet は、データをカラム指向で格納するための効率的なファイル形式です。
 ClickHouse は、Parquet ファイルの読み込みと書き込みの両方をサポートしています。
 
 :::tip
-クエリ内でファイルパスを指定した場合に、ClickHouse がどこから読み込もうとするかは、使用している ClickHouse の種類によって異なります。
+クエリ内でファイルパスを指定する場合、ClickHouse がどこから読み取ろうとするかは、使用している ClickHouse のバリアントによって異なります。
 
-[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用している場合は、ClickHouse Local を起動した場所からの相対パスとして読み込みます。
-`clickhouse client` 経由で ClickHouse Server または ClickHouse Cloud を使用している場合は、サーバー上の `/var/lib/clickhouse/user_files/` ディレクトリからの相対パスとして読み込みます。
+[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用している場合は、ClickHouse Local を起動したディレクトリからの相対パスとして読み取ります。
+`clickhouse client` 経由で ClickHouse Server または ClickHouse Cloud を使用している場合は、サーバー上の `/var/lib/clickhouse/user_files/` ディレクトリからの相対パスとして読み取ります。
 :::
 
 
@@ -79,7 +79,7 @@ ENGINE = MergeTree
 ORDER BY (date, path);
 ```
 
-次に、`FROM INFILE`句を使用してデータをインポートします：
+`FROM INFILE`句を使用してデータをインポートできます：
 
 ```sql
 INSERT INTO sometable
@@ -100,7 +100,7 @@ LIMIT 5;
 └───────────────────────────────┴────────────┴──────┘
 ```
 
-ClickHouseが`date`カラムのParquet文字列を自動的に`Date`型に変換していることに注目してください。これは、ClickHouseがターゲットテーブルの型に基づいて自動的に型キャストを行うためです。
+ClickHouseがParquetの文字列（`date`列）を自動的に`Date`型に変換していることに注目してください。これは、ClickHouseがターゲットテーブルの型に基づいて自動的に型キャストを行うためです。
 
 
 ## ローカルファイルをリモートサーバーに挿入する {#inserting-a-local-file-to-remote-server}
@@ -144,7 +144,7 @@ DESCRIBE TABLE imported_from_parquet;
 ## Parquet形式へのエクスポート {#exporting-to-parquet-format}
 
 :::tip
-ClickHouse Cloudで`INTO OUTFILE`を使用する場合、ファイルの書き込み先となるマシン上で`clickhouse client`のコマンドを実行する必要があります。
+ClickHouse Cloudで`INTO OUTFILE`を使用する場合、ファイルの書き込み先となるマシン上で`clickhouse client`からコマンドを実行する必要があります。
 :::
 
 任意のテーブルまたはクエリ結果をParquetファイルにエクスポートするには、`INTO OUTFILE`句を使用できます:
@@ -161,7 +161,7 @@ FORMAT Parquet
 
 ## ClickHouseとParquetのデータ型 {#clickhouse-and-parquet-data-types}
 
-ClickHouseとParquetのデータ型はほぼ同一ですが、[若干の違い](/interfaces/formats/Parquet#data-types-matching-parquet)があります。例えば、ClickHouseは`DateTime`型をParquetの`int64`としてエクスポートします。これをClickHouseに再度インポートすると、数値が表示されます（[time.parquetファイル](assets/time.parquet)）：
+ClickHouseとParquetのデータ型はほぼ同一ですが、[若干の違い](/interfaces/formats/Parquet#data-types-matching-parquet)があります。例えば、ClickHouseは`DateTime`型をParquetの`int64`としてエクスポートします。これをClickHouseに再度インポートすると、数値が表示されます([time.parquetファイル](assets/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -177,7 +177,7 @@ SELECT * FROM file('time.parquet', Parquet);
 └───┴────────────┘
 ```
 
-この場合、[型変換](/sql-reference/functions/type-conversion-functions.md)を使用できます：
+この場合、[型変換](/sql-reference/functions/type-conversion-functions.md)を使用できます:
 
 ```sql
 SELECT
@@ -197,7 +197,7 @@ FROM file('time.parquet', Parquet);
 ```
 
 
-## 参考資料 {#further-reading}
+## 関連資料 {#further-reading}
 
 ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、より多くのフォーマットとその操作方法を確認できます:
 
@@ -205,7 +205,7 @@ ClickHouseは、さまざまなシナリオやプラットフォームに対応�
 - [Avro、Arrow、ORC](arrow-avro-orc.md)
 - [JSON形式](/integrations/data-ingestion/data-formats/json/intro.md)
 - [正規表現とテンプレート](templates-regex.md)
-- [ネイティブ形式とバイナリ形式](binary.md)
+- [ネイティブおよびバイナリ形式](binary.md)
 - [SQL形式](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これは、ClickHouseサーバーを必要とせずにローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。
+また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせず、ローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。

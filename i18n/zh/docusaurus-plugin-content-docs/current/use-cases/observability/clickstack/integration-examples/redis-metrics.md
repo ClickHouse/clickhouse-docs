@@ -24,7 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 - 配置 OTel 采集器以收集 Redis 指标
 - 使用自定义配置部署 ClickStack
-- 使用预构建仪表板可视化 Redis 性能(命令数/秒、内存使用量、已连接客户端、缓存性能)
+- 使用预构建的仪表板可视化 Redis 性能(命令数/秒、内存使用量、已连接客户端、缓存性能)
 
 如果您想在配置生产环境 Redis 之前测试集成,可以使用包含示例指标的演示数据集。
 
@@ -38,7 +38,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 如果您希望在配置现有环境之前测试 Redis 指标集成,可以使用[下一节](#demo-dataset)中预配置的演示数据集进行测试。
 
-##### 前置要求 {#prerequisites}
+##### 前置条件 {#prerequisites}
 
 - ClickStack 实例正在运行
 - 现有 Redis 安装(版本 3.0 或更高版本)
@@ -130,7 +130,7 @@ service:
 
 此配置:
 
-- 连接到 `localhost:6379` 上的 Redis(根据您的环境调整端点)
+- 连接到 `localhost:6379` 上的 Redis(根据您的设置调整端点)
 - 每 10 秒收集一次指标
 - 收集关键性能指标(命令、客户端、内存、键空间统计)
 - **根据 [OpenTelemetry 语义约定](https://opentelemetry.io/docs/specs/semconv/resource/#service)设置必需的 `service.name` 资源属性**
@@ -140,24 +140,24 @@ service:
 
 - `redis.commands.processed` - 每秒处理的命令数
 - `redis.clients.connected` - 已连接的客户端数量
-- `redis.clients.blocked` - 在阻塞调用上被阻塞的客户端数
+- `redis.clients.blocked` - 在阻塞调用上被阻塞的客户端
 - `redis.memory.used` - Redis 使用的内存(字节)
 - `redis.memory.peak` - 峰值内存使用量
 - `redis.keyspace.hits` - 成功的键查找次数
 - `redis.keyspace.misses` - 失败的键查找次数(用于缓存命中率计算)
-- `redis.keys.expired` - 过期的键数
-- `redis.keys.evicted` - 因内存压力而被驱逐的键数
+- `redis.keys.expired` - 过期的键
+- `redis.keys.evicted` - 因内存压力而被驱逐的键
 - `redis.connections.received` - 接收的总连接数
-- `redis.connections.rejected` - 被拒绝的连接数
+- `redis.connections.rejected` - 被拒绝的连接
 
 :::note
 
 - 您只需在自定义配置中定义新的接收器、处理器和管道
 - `memory_limiter` 和 `batch` 处理器以及 `clickhouse` 导出器已在基础 ClickStack 配置中定义 - 您只需按名称引用它们
 - `resource` 处理器根据 OpenTelemetry 语义约定设置必需的 `service.name` 属性
-- 对于需要身份验证的生产环境,将密码存储在环境变量中: `${env:REDIS_PASSWORD}`
+- 对于需要身份验证的生产环境,请将密码存储在环境变量中: `${env:REDIS_PASSWORD}`
 - 根据需求调整 `collection_interval`(默认为 10 秒;较低的值会增加数据量)
-- 对于多个 Redis 实例,自定义 `service.name` 以区分它们(例如 `"redis-cache"`、`"redis-sessions"`)
+- 对于多个 Redis 实例,请自定义 `service.name` 以区分它们(例如 `"redis-cache"`、`"redis-sessions"`)
   :::
 
 #### 配置 ClickStack 以加载自定义配置 {#load-custom}
@@ -202,9 +202,9 @@ ports:
 
 ````
 
-##### 选项 2:Docker run(一体化镜像){#all-in-one}
+##### 选项 2：Docker run（一体化镜像）{#all-in-one}
 
-如果使用 `docker run` 运行一体化镜像:
+如果使用 `docker run` 运行一体化镜像：
 ```bash
 docker run --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
@@ -214,7 +214,7 @@ docker run --name clickstack \
 ````
 
 
-**重要：** 如果 Redis 运行在另一个容器中，请使用 Docker 网络：
+**重要：**如果 Redis 运行在另一个容器中，请使用 Docker 网络功能：
 
 ```bash
 # 创建网络
@@ -222,7 +222,7 @@ docker network create monitoring
 ```
 
 
-# 在指定网络上运行 Redis
+# 在指定网络中运行 Redis
 docker run -d --name redis --network monitoring redis:7-alpine
 
 
@@ -240,11 +240,11 @@ docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 
 #### 在 HyperDX 中验证指标 {#verifying-metrics}
 
-配置完成后,登录 HyperDX 并验证指标数据流:
+配置完成后,登录 HyperDX 并验证指标数据是否正常流入:
 
-1. 导航到指标浏览器(Metrics explorer)
+1. 进入指标浏览器(Metrics explorer)
 2. 搜索以 `redis.` 开头的指标(例如 `redis.commands.processed`、`redis.memory.used`)
-3. 您应该能看到指标数据点按配置的采集间隔出现
+3. 您应该能看到指标数据点按配置的采集间隔显示
 
 <!-- <Image img={metrics_view} alt="Redis 指标视图"/> -->
 
@@ -254,14 +254,14 @@ docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前测试 Redis 指标集成的用户,我们提供了预生成的数据集,包含真实的 Redis 指标模式。
+对于希望在配置生产系统之前测试 Redis 指标集成的用户,我们提供了一个预生成的数据集,其中包含真实的 Redis 指标模式。
 
 <VerticalStepper headerLevel="h4">
 
 #### 下载示例指标数据集 {#download-sample}
 
 
-下载预生成的指标文件（包含 24 小时的 Redis 指标数据，具有真实的模式）：
+下载预生成的指标文件（包含 24 小时的 Redis 指标，具有真实的模式）：
 
 ```bash
 # 下载指标数据（内存、碎片率）
@@ -269,16 +269,16 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 ```
 
 
-# 下载汇总指标（命令、连接、键空间统计）
+# 下载汇总指标（命令、连接、键空间统计信息）
 
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 
 ````
 
 该数据集包含真实场景模式：
-- **缓存预热事件（06:00）** - 命中率从 30% 提升至 80%
-- **流量峰值（14:30-14:45）** - 流量激增 5 倍并伴随连接压力
-- **内存压力（20:00）** - 键驱逐和缓存性能下降
+- **缓存预热事件（06:00）** - 命中率从 30% 攀升至 80%
+- **流量峰值（14:30-14:45）** - 流量激增 5 倍，连接承压
+- **内存压力（20:00）** - 键被驱逐，缓存性能下降
 - **日常流量模式** - 工作时段峰值、晚间回落、随机微峰值
 
 #### 启动 ClickStack {#start-clickstack}
@@ -290,7 +290,7 @@ docker run -d --name clickstack-demo \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 ````
 
-等待约 30 秒，直到 ClickStack 完全启动。
+等待约 30 秒，直至 ClickStack 完全启动。
 
 #### 将指标加载到 ClickStack {#load-metrics}
 
@@ -323,7 +323,7 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 留意以下值得关注的模式:
 - **06:00** - 缓存预热(命中率从低位开始攀升)
 - **14:30-14:45** - 流量峰值(客户端连接数激增,部分连接被拒绝)
-- **20:00** - 内存压力(开始驱逐键)
+- **20:00** - 内存压力(开始执行键驱逐)
 :::
 
 </VerticalStepper>
@@ -332,11 +332,11 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 
 ## 仪表板和可视化 {#dashboards}
 
-为了帮助您开始使用 ClickStack 监控 Redis,我们提供了 Redis 指标的核心可视化功能。
+为了帮助您开始使用 ClickStack 监控 Redis,我们提供了 Redis 指标的基础可视化功能。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">下载</TrackedLink>仪表板配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
 #### 导入预构建仪表板 {#import-dashboard}
 
@@ -356,7 +356,7 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 <Image img={example_dashboard} alt='Redis 指标仪表板' />
 
 :::note
-对于演示数据集,请将时间范围设置为 **2025-10-20 05:00:00 - 2025-10-21 05:00:00 (UTC)**(根据您的本地时区调整)。导入的仪表板默认不会指定时间范围。
+对于演示数据集,请将时间范围设置为 **2025-10-20 05:00:00 - 2025-10-21 05:00:00 (UTC)**(根据您的本地时区进行调整)。导入的仪表板默认不会指定时间范围。
 :::
 
 </VerticalStepper>
@@ -378,7 +378,7 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
-查看自定义配置内容以验证其可读性：
+查看自定义配置内容以验证其是否可读：
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
@@ -396,25 +396,25 @@ docker exec <clickstack-container> redis-cli -h <redis-host> ping
 ```
 
 
-检查 `Redis INFO` 命令是否可用：
+检查 `Redis INFO` 命令是否正常工作：
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
 # 应显示 Redis 统计信息
 ```
 
-确认实际生效的配置中包含你的 Redis 接收器：
+验证最终生效的配置中包含你的 Redis 接收器：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
 ```
 
 
-检查采集器日志中的错误：
+检查收集器日志中的错误：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 查找连接错误或认证失败信息
+# 查找连接错误或认证失败
 ```
 
 ### 认证错误 {#auth-errors}
@@ -428,18 +428,18 @@ redis-cli CONFIG GET requirepass
 ```
 
 
-# 测试认证
+# 测试身份验证
 
 redis-cli -a <password> ping
 
 
-# 确保在 ClickStack 环境中已设置密码
+# 确保在 ClickStack 环境中设置密码
 
 docker exec <clickstack-container> printenv REDIS_PASSWORD
 
 ````
 
-更新配置以使用该密码:
+更新配置以使用密码:
 ```yaml
 receivers:
   redis:
@@ -450,7 +450,7 @@ receivers:
 ### 网络连接问题 {#network-issues}
 
 
-如果 ClickStack 无法访问 Redis：
+如果 ClickStack 无法连接 Redis：
 
 ```bash
 # 检查两个容器是否在同一网络上
@@ -458,7 +458,7 @@ docker network inspect <network-name>
 ```
 
 
-# 测试连接
+# 测试连通性
 
 docker exec <clickstack-container> ping redis
 docker exec <clickstack-container> telnet redis 6379

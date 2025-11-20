@@ -2,7 +2,7 @@
 sidebar_label: 'Looker'
 slug: /integrations/looker
 keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
-description: 'Looker は、BI、データアプリケーション、組み込みアナリティクス向けのエンタープライズプラットフォームで、リアルタイムにインサイトを探索および共有することを可能にします。'
+description: 'Looker は、BI、データアプリケーション、埋め込み分析のためのエンタープライズ向けプラットフォームであり、リアルタイムにインサイトを探索・共有することを可能にします。'
 title: 'Looker'
 doc_type: 'guide'
 integration:
@@ -23,7 +23,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker は、公式の ClickHouse データソースを介して ClickHouse Cloud またはオンプレミスの ClickHouse 環境に接続できます。
+Looker は、公式の ClickHouse データソースを通じて ClickHouse Cloud またはオンプレミス環境の ClickHouse に接続できます。
 
 
 
@@ -32,14 +32,14 @@ Looker は、公式の ClickHouse データソースを介して ClickHouse Clou
 <ConnectionDetails />
 
 
-## 2. ClickHouseデータソースの作成 {#2-create-a-clickhouse-data-source}
+## 2. ClickHouseデータソースを作成する {#2-create-a-clickhouse-data-source}
 
 Admin -> Database -> Connectionsに移動し、右上隅の「Add Connection」ボタンをクリックします。
 
 <Image
   size='md'
   img={looker_01}
-  alt="Lookerのデータベース管理インターフェースで新しい接続を追加"
+  alt="Lookerのデータベース管理インターフェースで新しい接続を追加する"
   border
 />
 <br />
@@ -49,7 +49,7 @@ Admin -> Database -> Connectionsに移動し、右上隅の「Add Connection」�
 <Image
   size='md'
   img={looker_02}
-  alt='Looker接続フォームでClickHouse認証情報を指定'
+  alt='Looker接続フォームでClickHouseの認証情報を指定する'
   border
 />
 <br />
@@ -59,7 +59,7 @@ ClickHouse Cloudを使用している場合、またはデプロイメントでS
 <Image
   size='md'
   img={looker_03}
-  alt='Looker設定でClickHouse接続のSSLを有効化'
+  alt='Looker設定でClickHouse接続のSSLを有効にする'
   border
 />
 <br />
@@ -79,7 +79,7 @@ ClickHouse Cloudを使用している場合、またはデプロイメントでS
 
 ## 3. 既知の制限事項 {#3-known-limitations}
 
-1. 以下のデータ型はデフォルトで文字列として処理されます：
+1. 以下のデータ型はデフォルトで文字列として処理されます:
    - Array - JDBCドライバの制限により、シリアライゼーションが正常に動作しません
    - Decimal\* - モデル内で数値型に変更できます
    - LowCardinality(...) - モデル内で適切な型に変更できます
@@ -95,5 +95,5 @@ ClickHouse Cloudを使用している場合、またはデプロイメントでS
      - Polygon
      - Point
      - Ring
-2. [対称集約機能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)はサポートされていません
+2. [対称集計機能](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates)はサポートされていません
 3. [完全外部結合](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer)はドライバにまだ実装されていません

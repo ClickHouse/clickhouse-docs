@@ -3,7 +3,7 @@ sidebar_label: 'Tableau Desktop'
 sidebar_position: 1
 slug: /integrations/tableau
 keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
-description: 'Tableau 可以将 ClickHouse 数据库及其数据表作为数据源使用。'
+description: 'Tableau 可以将 ClickHouse 数据库和表作为数据源使用。'
 title: '将 Tableau 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -34,12 +34,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-ClickHouse 提供了官方的 Tableau 连接器，并已在
+ClickHouse 提供了官方 Tableau 连接器，并已在
 [Tableau Exchange](https://exchange.tableau.com/products/1064) 上发布。
 该连接器基于 ClickHouse 的高级 [JDBC 驱动程序](/integrations/language-clients/java/jdbc)。
 
-借助此连接器，Tableau 可以将 ClickHouse 的数据库和表作为数据源进行集成。要启用此功能，
-请按照下方的设置指南进行操作。
+借助此连接器，Tableau 可以将 ClickHouse 数据库和表作为数据源进行集成。要启用此功能，
+请按照以下设置指南进行操作。
 
 <TOCInline toc={toc}/>
 
@@ -56,10 +56,10 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 3. 按照 `clickhouse-tableau-connector-jdbc` 说明下载兼容版本的 <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC 驱动程序</a>。
 
 :::note
-请确保下载 [clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR 文件。该文件从 `0.9.2` 版本开始提供。
+请确保下载 [clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR 文件。该构件从 `0.9.2` 版本开始提供。
 :::
 
-4. 将 JDBC 驱动程序存储到以下文件夹中(根据您的操作系统,如果文件夹不存在,可以手动创建):
+4. 将 JDBC 驱动程序存储在以下文件夹中(根据您的操作系统,如果文件夹不存在,可以手动创建):
    - macOS: `~/Library/Tableau/Drivers`
    - Windows: `C:\Program Files\Tableau\Drivers`
 5. 在 Tableau 中配置 ClickHouse 数据源,即可开始构建数据可视化!
@@ -67,7 +67,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 
 ## 在 Tableau 中配置 ClickHouse 数据源 {#configure-a-clickhouse-data-source-in-tableau}
 
-现在您已经安装并配置好 `clickhouse-jdbc` 驱动程序,接下来我们将介绍如何在 Tableau 中定义一个连接到 ClickHouse **TPCD** 数据库的数据源。
+现在您已经安装并配置了 `clickhouse-jdbc` 驱动程序,接下来我们将介绍如何在 Tableau 中定义一个连接到 ClickHouse **TPCD** 数据库的数据源。
 
 1. 启动 Tableau。(如果已经在运行,请重新启动。)
 
@@ -76,7 +76,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='md'
   img={tableau_connecttoserver}
-  alt='Tableau 连接界面显示连接器选择菜单,其中 ClickHouse by ClickHouse 选项已高亮显示'
+  alt='Tableau 连接屏幕显示连接器选择菜单,其中 ClickHouse by ClickHouse 选项已高亮显示'
   border
 />
 <br />
@@ -95,7 +95,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
   border
 />
 <br />
-4. 点击 **安装并重启 Tableau**。重启应用程序。5. 重启后,连接器将显示其完整名称:`ClickHouse JDBC by ClickHouse, Inc.`。点击它时,将弹出以下对话框:
+4. 点击 **安装并重启 Tableau**。重新启动应用程序。5. 重启后,连接器将显示其完整名称:`ClickHouse JDBC by ClickHouse, Inc.`。点击它时,将弹出以下对话框:
 
 <Image
   size='md'
@@ -130,7 +130,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='md'
   img={tableau_newworkbook}
-  alt='新的 Tableau 工作簿显示初始连接界面和数据库选择选项'
+  alt='新的 Tableau 工作簿显示初始连接屏幕和数据库选择选项'
   border
 />
 <br />
@@ -140,7 +140,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='md'
   img={tableau_tpcdschema}
-  alt='Tableau 模式选择界面显示 TPCD 数据库表,包括 CUSTOMER、LINEITEM、NATION、ORDERS 等'
+  alt='Tableau 模式选择显示 TPCD 数据库表,包括 CUSTOMER、LINEITEM、NATION、ORDERS 等'
   border
 />
 <br />
@@ -157,29 +157,29 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='md'
   img={tableau_workbook1}
-  alt='Tableau 工作簿,CUSTOMER 表已拖到画布上,显示列标题但没有数据'
+  alt='Tableau 工作簿中将 CUSTOMER 表拖到画布上,显示列标题但没有数据'
   border
 />
 <br />
 
 2. 点击 **Update Now** 按钮,**CUSTOMER** 表中的 100 行数据将填充到表中。
 
-3. 将 **ORDERS** 表拖到工作簿中,然后将 **Custkey** 设置为两个表之间的关联字段:
+3. 将 **ORDERS** 表拖到工作簿中,然后将 **Custkey** 设置为两个表之间的关系字段:
 
 <Image
   size='md'
   img={tableau_workbook2}
-  alt='Tableau 关系编辑器,显示使用 Custkey 字段连接 CUSTOMER 和 ORDERS 表'
+  alt='Tableau 关系编辑器显示使用 Custkey 字段连接 CUSTOMER 和 ORDERS 表'
   border
 />
 <br />
 
-4. 现在您已经将 **ORDERS** 和 **LINEITEM** 表相互关联作为数据源,因此可以使用这种关系来分析数据。选择工作簿底部的 **Sheet 1** 选项卡。
+4. 现在您已经将 **ORDERS** 和 **LINEITEM** 表相互关联作为数据源,因此可以使用此关系来查询数据。选择工作簿底部的 **Sheet 1** 选项卡。
 
 <Image
   size='md'
   img={tableau_workbook3}
-  alt='Tableau 工作表,显示来自 ClickHouse 表的可用于分析的维度和度量'
+  alt='Tableau 工作表显示来自 ClickHouse 表的可用于分析的维度和度量'
   border
 />
 <br />
@@ -189,12 +189,12 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='sm'
   img={tableau_workbook4}
-  alt='Tableau 折线图,显示来自 ClickHouse 数据的按年份统计的订购数量'
+  alt='Tableau 折线图显示来自 ClickHouse 数据的按年份统计的订购数量'
   border
 />
 <br />
 
-这不是一个很有趣的折线图,但该数据集是由脚本生成的,用于测试查询性能,因此您会注意到 TPCH 数据的模拟订单中没有太多变化。
+这不是一个非常有趣的折线图,但该数据集是由脚本生成的,用于测试查询性能,因此您会注意到 TPCD 数据的模拟订单中没有太多变化。
 
 6. 假设您想知道按季度和运输方式(空运、邮寄、海运、卡车等)统计的平均订单金额(以美元计):
    - 点击 **New Worksheet** 选项卡创建新工作表
@@ -206,17 +206,17 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='sm'
   img={tableau_workbook5}
-  alt='Tableau 交叉表视图,季度作为列,运输方式作为行'
+  alt='Tableau 交叉表视图,以季度作为列,运输方式作为行'
   border
 />
 <br />
 
-7. **Abc** 值只是占位符,直到您将度量拖到表上。将 **ORDERS** 中的 **Totalprice** 拖到表上。注意默认计算是对 **Totalprice** 进行 **SUM** 求和:
+7. **Abc** 值只是占位符,直到您将指标拖到表上。将 **ORDERS** 中的 **Totalprice** 拖到表上。注意默认计算是对 **Totalprices** 进行 **SUM** 求和:
 
 <Image
   size='md'
   img={tableau_workbook6}
-  alt='Tableau 交叉表,显示按季度和运输方式统计的总价格总和'
+  alt='Tableau 交叉表显示按季度和运输方式统计的总价格总和'
   border
 />
 <br />
@@ -226,7 +226,7 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 <Image
   size='md'
   img={tableau_workbook7}
-  alt='Tableau 交叉表,显示按季度和运输方式统计的平均订单价格,带有货币格式'
+  alt='Tableau 交叉表显示按季度和运输方式统计的平均订单价格,带有货币格式'
   border
 />
 <br />
@@ -236,19 +236,19 @@ ClickHouse 提供了官方的 Tableau 连接器，并已在
 
 ## 手动安装连接器 {#install-the-connector-manually}
 
-如果您使用的 Tableau Desktop 版本较旧,默认不包含该连接器,可以按照以下步骤手动安装:
+如果您使用的 Tableau Desktop 版本较旧,默认不包含该连接器,您可以按照以下步骤手动安装:
 
 1. 从 [Tableau Exchange](https://exchange.tableau.com/products/1064) 下载最新的 taco 文件
-2. 将 taco 文件放置在以下目录:
-   - macOS:`~/Documents/My Tableau Repository/Connectors`
-   - Windows:`C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
+2. 将 taco 文件放置在以下位置:
+   - macOS: `~/Documents/My Tableau Repository/Connectors`
+   - Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. 重启 Tableau Desktop,如果安装成功,您将在 `New Data Source` 部分看到该连接器。
 
 
-## 连接和分析提示 {#connection-and-analysis-tips}
+## 连接和分析技巧 {#connection-and-analysis-tips}
 
-如需了解更多关于优化 Tableau-ClickHouse 集成的指导，
-请参阅[连接提示](/integrations/tableau/connection-tips)和[分析提示](/integrations/tableau/analysis-tips)。
+有关优化 Tableau 与 ClickHouse 集成的更多指导,
+请参阅[连接技巧](/integrations/tableau/connection-tips)和[分析技巧](/integrations/tableau/analysis-tips)。
 
 
 ## 测试 {#tests}

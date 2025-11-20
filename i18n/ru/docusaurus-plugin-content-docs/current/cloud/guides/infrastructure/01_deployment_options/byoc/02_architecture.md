@@ -3,7 +3,7 @@ title: 'Архитектура'
 slug: /cloud/reference/byoc/architecture
 sidebar_label: 'Архитектура'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
-description: 'Разверните ClickHouse в собственной облачной инфраструктуре'
+description: 'Развертывание ClickHouse в собственной облачной инфраструктуре'
 doc_type: 'reference'
 ---
 

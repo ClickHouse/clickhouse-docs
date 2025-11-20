@@ -1,17 +1,17 @@
 ---
 sidebar_label: 'SQL ダンプ'
 slug: /integrations/data-formats/sql
-title: 'ClickHouse での SQL データの挿入とダンプ'
-description: 'SQL ダンプを使用して、他のデータベースと ClickHouse 間でデータを転送する方法を説明するページです。'
+title: 'ClickHouse における SQL データの挿入とダンプ'
+description: 'SQL ダンプを使用して、他のデータベースと ClickHouse 間でデータをやり取りする方法を説明するページ。'
 doc_type: 'guide'
 keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
 
 
 
-# ClickHouse での SQL データの挿入とダンプ
+# ClickHouse における SQL データの挿入とダンプ
 
-ClickHouse は、さまざまな方法で OLTP データベース基盤に容易に統合できます。その 1 つとして、SQL ダンプを使用して他のデータベースと ClickHouse 間でデータをやり取りできます。
+ClickHouse は、さまざまな方法で OLTP データベース基盤に容易に統合できます。その 1 つとして、SQL ダンプを利用して他のデータベースと ClickHouse 間でデータを転送できます。
 
 
 
@@ -40,7 +40,7 @@ mysql some_db < dump.sql
 
 `some_db` MySQLデータベースに`some_table`テーブルが存在することを前提としています。
 
-一部のDBMSでは、単一バッチ内で処理できる値の数に制限がある場合があります。デフォルトでは、ClickHouseは65,000個の値のバッチを作成しますが、これは[`output_format_sql_insert_max_batch_size`](/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)オプションで変更できます:
+一部のDBMSでは、単一バッチ内で処理できる値の数に制限がある場合があります。デフォルトでは、ClickHouseは65k個の値のバッチを作成しますが、[`output_format_sql_insert_max_batch_size`](/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)オプションで変更できます:
 
 ```sql
 SET output_format_sql_insert_max_batch_size = 1000;
@@ -48,7 +48,7 @@ SET output_format_sql_insert_max_batch_size = 1000;
 
 ### 値のセットのエクスポート {#exporting-a-set-of-values}
 
-ClickHouseには[Values](/interfaces/formats/Values)形式があり、これはSQLInsertに似ていますが、`INSERT INTO table VALUES`の部分を省略し、値のセットのみを返します:
+ClickHouseには[Values](/interfaces/formats/Values)形式があり、SQLInsertに似ていますが、`INSERT INTO table VALUES`の部分を省略し、値のセットのみを返します:
 
 ```sql
 SELECT * FROM some_data LIMIT 3 FORMAT Values
@@ -61,7 +61,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 
 ## SQLダンプからのデータ挿入 {#inserting-data-from-sql-dumps}
 
-SQLダンプを読み込むには、[MySQLDump](/interfaces/formats/MySQLDump)を使用します:
+SQLダンプを読み込むには、[MySQLDump](/interfaces/formats/MySQLDump)を使用します：
 
 ```sql
 SELECT *
@@ -79,14 +79,14 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-デフォルトでは、ClickHouseは不明なカラムをスキップし([input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)オプションで制御)、ダンプ内で最初に見つかったテーブルのデータを処理します(複数のテーブルが単一のファイルにダンプされている場合)。DDL文はスキップされます。MySQLダンプからテーブルにデータをロードするには([mysql.sql](assets/mysql.sql)ファイル):
+デフォルトでは、ClickHouseは不明なカラムをスキップし（[input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)オプションで制御）、ダンプ内で最初に見つかったテーブルのデータを処理します（複数のテーブルが単一のファイルにダンプされている場合）。DDL文はスキップされます。MySQLダンプからテーブルにデータをロードするには（[mysql.sql](assets/mysql.sql)ファイル）：
 
 ```sql
 INSERT INTO some_data
 FROM INFILE 'mysql.sql' FORMAT MySQLDump
 ```
 
-MySQLダンプファイルから自動的にテーブルを作成することもできます:
+MySQLダンプファイルからテーブルを自動的に作成することもできます：
 
 ```sql
 CREATE TABLE table_from_mysql
@@ -96,7 +96,7 @@ SELECT *
 FROM file('mysql.sql', MySQLDump)
 ```
 
-ここでは、ClickHouseが自動的に推測した構造に基づいて`table_from_mysql`という名前のテーブルを作成しました。ClickHouseはデータに基づいて型を検出するか、利用可能な場合はDDLを使用します:
+ここでは、ClickHouseが自動的に推論した構造に基づいて`table_from_mysql`という名前のテーブルを作成しました。ClickHouseは、データに基づいて型を検出するか、利用可能な場合はDDLを使用します：
 
 ```sql
 DESCRIBE TABLE table_from_mysql;
@@ -113,7 +113,7 @@ DESCRIBE TABLE table_from_mysql;
 
 ## その他のフォーマット {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットと使用方法について詳しく説明しています:
+ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、より多くのフォーマットとその使用方法を確認できます:
 
 - [CSVおよびTSV形式](csv-tsv.md)
 - [Parquet](parquet.md)

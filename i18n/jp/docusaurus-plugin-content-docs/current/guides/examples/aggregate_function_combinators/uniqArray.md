@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array)コンビネータを[`uniq`](/sql-reference/aggregate-functions/reference/uniq)関数に適用することで、`uniqArray`集約コンビネータ関数を使用して、すべての配列における一意な要素の概算数を計算できます。
 
-`uniqArray`関数は、データセット内の複数の配列にわたって一意な要素をカウントする必要がある場合に便利です。これは`uniq(arrayJoin())`を使用するのと同等で、`arrayJoin`がまず配列を平坦化し、その後`uniq`が一意な要素をカウントします。
+`uniqArray`関数は、データセット内の複数の配列にわたって一意な要素をカウントする必要がある場合に便利です。これは`uniq(arrayJoin())`を使用するのと同等であり、`arrayJoin`がまず配列を平坦化し、その後`uniq`が一意な要素をカウントします。
 
 
 ## 使用例 {#example-usage}

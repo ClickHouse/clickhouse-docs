@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: '使用 ClickStack 监控 Nginx Trace 数据'
+title: '使用 ClickStack 监控 Nginx Trace'
 sidebar_label: 'Nginx Trace'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Nginx Trace 数据'
+description: '使用 ClickStack 监控 Nginx Trace'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
@@ -21,14 +21,14 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 Nginx 追踪 {#nginx-traces-clickstack}
 
 :::note[TL;DR]
-本指南介绍如何从现有 Nginx 安装中采集分布式追踪数据并在 ClickStack 中进行可视化。您将学习:
+本指南介绍如何从现有 Nginx 安装中采集分布式追踪数据并在 ClickStack 中进行可视化。您将学习如何:
 
 - 为 Nginx 添加 OpenTelemetry 模块
 - 配置 Nginx 向 ClickStack 的 OTLP 端点发送追踪数据
 - 验证追踪数据是否已显示在 HyperDX 中
 - 使用预构建仪表板可视化请求性能(延迟、错误、吞吐量)
 
-如需在配置生产环境 Nginx 之前测试集成,可使用包含示例追踪数据的演示数据集。
+如果您希望在配置生产环境 Nginx 之前测试集成,可以使用包含示例追踪数据的演示数据集。
 
 所需时间:5-10 分钟
 ::::
@@ -58,28 +58,28 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 
 ```yaml
-# In your docker-compose.yml or Dockerfile
+# 在你的 docker-compose.yml 或 Dockerfile 中
 image: nginx:1.27-otel
 ```
 
-此镜像已预装 `ngx_otel_module.so` 模块,可直接使用。
+该镜像已预装 `ngx_otel_module.so` 模块，可直接使用。
 
 :::note
-如果您在 Docker 之外运行 Nginx,请参阅 [OpenTelemetry Nginx 文档](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) 获取手动安装说明。
+如果你在 Docker 之外运行 Nginx，请参阅 [OpenTelemetry Nginx 文档](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) 获取手动安装说明。
 :::
 
-#### 配置 Nginx 向 ClickStack 发送追踪数据 {#configure-nginx}
+#### 配置 Nginx 将追踪数据发送到 ClickStack {#configure-nginx}
 
-在您的 `nginx.conf` 文件中添加 OpenTelemetry 配置。该配置会加载模块并将追踪数据发送到 ClickStack 的 OTLP 端点。
+在你的 `nginx.conf` 文件中添加 OpenTelemetry 配置。该配置会加载模块，并将追踪数据发送到 ClickStack 的 OTLP 端点。
 
-首先,获取您的 API 密钥:
+首先，获取你的 API 密钥：
 
-1. 在您的 ClickStack URL 打开 HyperDX
-2. 导航至 Settings → API Keys
-3. 复制您的 **Ingestion API Key**
-4. 将其设置为环境变量:`export CLICKSTACK_API_KEY=your-api-key-here`
+1. 通过你的 ClickStack URL 打开 HyperDX
+2. 前往 Settings → API Keys
+3. 复制你的 **Ingestion API Key**
+4. 将其设置为环境变量：`export CLICKSTACK_API_KEY=your-api-key-here`
 
-将以下内容添加到您的 `nginx.conf`:
+将以下内容添加到你的 `nginx.conf` 中：
 
 ```yaml
 load_module modules/ngx_otel_module.so;
@@ -89,39 +89,39 @@ events {
 }
 
 http {
-    # OpenTelemetry 导出器配置
+    # OpenTelemetry exporter configuration
     otel_exporter {
         endpoint <clickstack-host>:4317;
         header authorization ${CLICKSTACK_API_KEY};
     }
 
-    # 用于标识此 nginx 实例的服务名称
+    # Service name for identifying this nginx instance
     otel_service_name "nginx-proxy";
 
-    # 启用追踪
+    # Enable tracing
     otel_trace on;
 
     server {
         listen 80;
 
         location / {
-            # 启用追踪 for this location
+            # Enable tracing for this location
             otel_trace_context propagate;
             otel_span_name "$request_method $uri";
 
-            # 向追踪数据添加请求详情
+            # Add request details to traces
             otel_span_attr http.status_code $status;
             otel_span_attr http.request.method $request_method;
             otel_span_attr http.route $uri;
 
-            # 您现有的代理或应用程序配置
+            # Your existing proxy or application configuration
             proxy_pass http://your-backend;
         }
     }
 }
 ```
 
-如果在 Docker 中运行 Nginx,请将环境变量传递给容器:
+如果在 Docker 中运行 Nginx，请将该环境变量传递给容器：
 
 ```yaml
 services:
@@ -133,29 +133,29 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
 ```
 
-将 `<clickstack-host>` 替换为您的 ClickStack 实例主机名或 IP 地址。
+将 `<clickstack-host>` 替换为你的 ClickStack 实例的主机名或 IP 地址。
 
 :::note
 
 - **端口 4317** 是 Nginx 模块使用的 gRPC 端点
-- **otel_service_name** 应描述您的 Nginx 实例(例如 "api-gateway"、"frontend-proxy")
-- 更改 **otel_service_name** 以匹配您的环境,便于在 HyperDX 中识别
+- **otel_service_name** 应该能清晰描述你的 Nginx 实例（例如：“api-gateway”、“frontend-proxy”）
+- 根据你的实际环境修改 **otel_service_name**，以便在 HyperDX 中更容易识别
   :::
 
-##### 理解配置 {#understanding-configuration}
+##### 理解该配置 {#understanding-configuration}
 
-**追踪内容:**
-每个发送到 Nginx 的请求都会创建一个追踪 span,显示:
+**会被追踪的内容：**
+每个到达 Nginx 的请求都会创建一个追踪 span，其中包括：
 
 - 请求方法和路径
 - HTTP 状态码
-- 请求持续时间
+- 请求耗时
 - 时间戳
 
-**Span 属性:**
-`otel_span_attr` 指令为每个追踪添加元数据,允许您在 HyperDX 中按状态码、方法、路由等过滤和分析请求。
+**Span 属性：**
+`otel_span_attr` 指令会为每个追踪添加元数据，使你能够在 HyperDX 中按状态码、方法、路由等对请求进行过滤和分析。
 
-完成这些更改后,测试您的 Nginx 配置:
+完成这些更改后，测试你的 Nginx 配置：
 
 ```bash
 nginx -t
@@ -258,7 +258,7 @@ curl -X POST http://localhost:4318/v1/traces \
 #### 在 HyperDX 中验证追踪数据 {#verify-demo-traces}
 
 1. 打开 [HyperDX](http://localhost:8080/) 并登录您的账户（您可能需要先创建一个账户）
-2. 导航至 Search 视图并将源设置为 `Traces`
+2. 导航至 Search 视图并将数据源设置为 `Traces`
 3. 将时间范围设置为 **2025-10-25 13:00:00 - 2025-10-28 13:00:00**
 
 以下是您在搜索视图中应该看到的内容：
@@ -306,7 +306,7 @@ HyperDX 以您浏览器的本地时区显示时间戳。演示数据时间跨度
 
 ### HyperDX 中未显示追踪数据 {#no-traces}
 
-**验证 nginx 模块是否已加载:**
+**验证 nginx 模块是否已加载：**
 
 ```bash
 nginx -V 2>&1 | grep otel
@@ -314,7 +314,7 @@ nginx -V 2>&1 | grep otel
 
 您应该能看到 OpenTelemetry 模块的相关信息。
 
-**检查网络连接:**
+**检查网络连接：**
 
 ```bash
 telnet <clickstack-host> 4317
@@ -322,13 +322,13 @@ telnet <clickstack-host> 4317
 
 此命令应该能成功连接到 OTLP gRPC 端点。
 
-**验证 API 密钥是否已设置:**
+**验证 API 密钥是否已设置：**
 
 ```bash
 echo $CLICKSTACK_API_KEY
 ```
 
-应该输出您的 API 密钥(非空)。
+应该输出您的 API 密钥（非空）。
 
 
 **查看 nginx 错误日志：**
@@ -344,11 +344,11 @@ docker logs <nginx-container> 2>&1 | grep -i otel
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 
 ```
-查找 OpenTelemetry 相关的错误。
+查找 OpenTelemetry 相关错误。
 ```
 
 
-**验证 nginx 是否收到请求：**
+**验证 nginx 是否已成功接收请求：**
 
 ```bash
 # 检查访问日志以确认流量
@@ -358,7 +358,7 @@ tail -f /var/log/nginx/access.log
 
 ## 后续步骤 {#next-steps}
 
-如果您想进一步探索,可以尝试以下步骤来优化您的仪表板:
+如果您想进一步探索,以下是一些可以在仪表板上进行实验的后续步骤:
 
-- 为关键指标设置告警(如错误率、延迟阈值)
-- 针对特定场景创建更多仪表板(如 API 监控、安全事件)
+- 为关键指标设置告警(错误率、延迟阈值)
+- 针对特定用例创建额外的仪表板(API 监控、安全事件)

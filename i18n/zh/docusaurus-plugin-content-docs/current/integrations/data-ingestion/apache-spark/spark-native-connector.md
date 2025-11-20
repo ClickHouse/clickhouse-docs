@@ -2,7 +2,7 @@
 sidebar_label: 'Spark 原生连接器'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
-description: '将 Apache Spark 与 ClickHouse 集成的简介'
+description: 'Apache Spark 与 ClickHouse 集成简介'
 keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Spark 连接器'
 doc_type: 'guide'
@@ -15,20 +15,20 @@ import TOCInline from '@theme/TOCInline';
 
 # Spark 连接器
 
-此连接器利用 ClickHouse 特有的优化能力，例如高级分区和谓词下推，以提升查询性能和数据处理效率。
-该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理自己的 catalog。
+该连接器利用 ClickHouse 特有的优化能力，例如高级分区和谓词下推，以提升查询性能和数据处理效率。
+该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理其自身的 catalog。
 
-在 Spark 3.0 之前，Spark 并没有内置的 catalog 概念，因此用户通常依赖 Hive Metastore 或 AWS Glue 等外部 catalog 系统。
-在使用这些外部方案时，用户在 Spark 中访问数据之前，必须先手动注册其数据源表。
-而自 Spark 3.0 引入 catalog 概念之后，Spark 现在可以通过注册 catalog 插件自动发现表。
+在 Spark 3.0 之前，Spark 缺少内置的 catalog 概念，因此用户通常依赖 Hive Metastore 或 AWS Glue 等外部 catalog 系统。
+使用这些外部方案时，用户必须在 Spark 中访问数据之前手动注册其数据源表。
+但是，自 Spark 3.0 引入 catalog 概念后，Spark 现在可以通过注册 catalog 插件自动发现表。
 
-Spark 的默认 catalog 为 `spark_catalog`，表通过 `{catalog name}.{database}.{table}` 进行标识。借助新的 catalog 功能，现在可以在单个 Spark 应用程序中添加并使用多个 catalog。
+Spark 的默认 catalog 为 `spark_catalog`，表通过 `{catalog name}.{database}.{table}` 来标识。借助新的 catalog 功能，现在可以在单个 Spark 应用中添加并使用多个 catalog。
 
 <TOCInline toc={toc}></TOCInline>
 
 
 
-## 系统要求 {#requirements}
+## 要求 {#requirements}
 
 - Java 8 或 17
 - Scala 2.12 或 2.13
@@ -89,7 +89,7 @@ Spark 的默认 catalog 为 `spark_catalog`，表通过 `{catalog name}.{databas
 <repositories>
   <repository>
     <id>sonatype-oss-snapshots</id>
-    <name>Sonatype OSS 快照仓库</name>
+    <name>Sonatype OSS Snapshots Repository</name>
     <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
   </repository>
 </repositories>
@@ -152,26 +152,26 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 ```
 
 您可以在 [Maven 中央仓库](https://repo1.maven.org/maven2/com/clickhouse/spark/)中找到所有已发布的 JAR 文件,
-在 [Sonatype OSS 快照仓库](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/)中找到所有每日构建的 SNAPSHOT JAR 文件。
+在 [Sonatype OSS Snapshots 仓库](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/)中找到所有每日构建的 SNAPSHOT JAR 文件。
 
 
 :::important
-务必包含带有 "all" 分类器的 [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，
-因为该连接器依赖 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
+务必包含带有 `all` 分类器的 [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，
+因为该连接器依赖于 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)
 和 [clickhouse-client](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)——这两者都已打包在
 clickhouse-jdbc:all 中。
 或者，如果你不想使用完整的 JDBC 包，也可以分别添加 [clickhouse-client JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-client)
 和 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)。
 
-无论采用哪种方式，请确保这些包的版本根据
-[兼容性矩阵](#compatibility-matrix) 彼此兼容。
+无论采用哪种方式，请确保各个包的版本与
+[兼容性矩阵](#compatibility-matrix) 中的要求兼容。
 :::
 
 
 
 ## 注册目录(必需) {#register-the-catalog-required}
 
-要访问 ClickHouse 表,您必须使用以下配置项配置新的 Spark 目录:
+要访问 ClickHouse 表,您必须使用以下配置项配置一个新的 Spark 目录:
 
 | 属性                                     | 值                                    | 默认值  | 必需 |
 | -------------------------------------------- | ---------------------------------------- | -------------- | -------- |
@@ -184,9 +184,9 @@ clickhouse-jdbc:all 中。
 | `spark.sql.catalog.<catalog_name>.database`  | `<database>`                             | `default`      | 否       |
 | `spark.<catalog_name>.write.format`          | `json`                                   | `arrow`        | 否       |
 
-可以通过以下任一方式设置这些配置:
+这些配置可以通过以下方式之一进行设置:
 
-- 编辑或创建 `spark-defaults.conf` 文件。
+- 编辑/创建 `spark-defaults.conf`。
 - 将配置传递给 `spark-submit` 命令(或 `spark-shell`/`spark-sql` CLI 命令)。
 - 在初始化上下文时添加配置。
 
@@ -427,7 +427,7 @@ from pyspark.sql import Row
 ```
 
 
-# 也可以自由使用满足上述兼容性矩阵要求的任意其他包组合。
+# 你也可以自由使用符合上述兼容性矩阵要求的任意其他包组合。
 packages = [
     "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
     "com.clickhouse:clickhouse-client:0.7.0",
@@ -467,7 +467,7 @@ df.writeTo("clickhouse.default.example_table").append()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-    -- resultTable 是要插入到 clickhouse.default.example_table 的 Spark 中间 DataFrame
+    -- resultTable 是我们要插入到 clickhouse.default.example_table 的 Spark 中间 DataFrame
    INSERT INTO TABLE clickhouse.default.example_table
                 SELECT * FROM resultTable;
 
@@ -479,9 +479,8 @@ df.writeTo("clickhouse.default.example_table").append()
 
 ## DDL 操作 {#ddl-operations}
 
-您可以使用 Spark SQL 在 ClickHouse 实例上执行 DDL 操作,所有更改将立即持久化到 ClickHouse 中。
-Spark SQL 允许您像在 ClickHouse 中一样编写查询,
-因此您可以直接执行 CREATE TABLE、TRUNCATE 等命令,无需修改,例如:
+您可以使用 Spark SQL 在 ClickHouse 实例上执行 DDL 操作,所有更改都会立即持久化到 ClickHouse 中。
+Spark SQL 允许您像在 ClickHouse 中一样编写查询,因此您可以直接执行 CREATE TABLE、TRUNCATE 等命令而无需修改,例如:
 
 :::note
 使用 Spark SQL 时,每次只能执行一条语句。
@@ -507,7 +506,7 @@ TBLPROPERTIES (
 );
 ```
 
-以上示例展示了 Spark SQL 查询,您可以在应用程序中使用任何 API(Java、Scala、PySpark 或 shell)来运行这些查询。
+以上示例演示了 Spark SQL 查询,您可以在应用程序中使用任何 API(Java、Scala、PySpark 或 shell)来运行这些查询。
 
 
 ## 配置项 {#configurations}
@@ -517,29 +516,29 @@ TBLPROPERTIES (
 <br />
 
 
-| 键                                                  | 默认                                                | 说明                                                                                                                                                                                                                          | 由于    |
-| -------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| spark.clickhouse.ignoreUnsupportedTransform        | false                                             | ClickHouse 支持使用复杂表达式作为分片键或分区值，例如：`cityHash64(col_1, col_2)`，而这些表达式目前尚不受 Spark 支持。如果`true`忽略不受支持的表达式，否则会立即以抛出异常的方式失败。注意，当`spark.clickhouse.write.distributed.convertLocal`在启用该功能时，忽略不受支持的分片键可能会破坏数据。                         | 0.4.0 |
-| spark.clickhouse.read.compression.codec            | lz4                                               | 用于在读取时解压数据的编解码器。支持的编解码器：none、lz4。                                                                                                                                                                                           | 0.5.0 |
-| spark.clickhouse.read.distributed.convertLocal     | true                                              | 读取 Distributed 表时，改为读取其本地表而非 Distributed 表本身。如果`true`, 忽略`spark.clickhouse.read.distributed.useClusterNodes`读取 Distributed 表时，改为读取本地表而不是 Distributed 表本身。若为 `true`，则忽略 `spark.clickhouse.read.distributed.useClusterNodes`。 | 0.1.0 |
-| spark.clickhouse.read.fixedStringAs                | 二进制                                               | 将 ClickHouse 的 FixedString 类型按指定的 Spark 数据类型进行读取。支持的类型：binary、string                                                                                                                                                        | 0.8.0 |
-| spark.clickhouse.read.format                       | json                                              | 读取时的序列化格式。支持的格式：JSON、binary                                                                                                                                                                                                 | 0.6.0 |
-| spark.clickhouse.read.runtimeFilter.enabled        | false                                             | 为读取启用运行时过滤。                                                                                                                                                                                                                 | 0.8.0 |
-| spark.clickhouse.read.splitByPartitionId           | true                                              | 如果`true`，通过虚拟列构造输入分区筛选条件`_partition_id`，而不是使用分区值。已知按分区值构造 SQL 谓词存在问题。此功能需要 ClickHouse Server v21.6+。                                                                                                                        | 0.4.0 |
-| spark.clickhouse.useNullableQuerySchema            | false                                             | 如果`true`，在执行时将查询模式中的所有字段标记为可为空`CREATE/REPLACE TABLE ... AS SELECT ...`在创建表时。注意，此配置依赖于 SPARK-43390（在 Spark 3.5 中可用），如果没有该补丁，它始终会被视为`true`.                                                                                   | 0.8.0 |
-| spark.clickhouse.write.batchSize                   | 10000                                             | 写入 ClickHouse 时每个批次包含的记录数。                                                                                                                                                                                                  | 0.1.0 |
-| spark.clickhouse.write.compression.codec           | lz4                                               | 用于在写入时压缩数据的编码器。支持的编码器：none、lz4。                                                                                                                                                                                             | 0.3.0 |
-| spark.clickhouse.write.distributed.convertLocal    | false                                             | 在向 `Distributed` 表写入数据时，改为写入其本地表而不是该分布式表本身。如果`true`, ignore`spark.clickhouse.write.distributed.useClusterNodes`.                                                                                                            | 0.1.0 |
-| spark.clickhouse.write.distributed.useClusterNodes | true                                              | 在向 `Distributed` 表写入数据时，将数据写入集群中的所有节点。                                                                                                                                                                                      | 0.1.0 |
-| spark.clickhouse.write.format                      | arrow                                             | 写入时使用的序列化格式。支持的格式：JSON、Arrow                                                                                                                                                                                                | 0.4.0 |
-| spark.clickhouse.write.localSortByKey              | true                                              | 如果`true`，在写入前按排序键进行本地排序。                                                                                                                                                                                                    | 0.3.0 |
-| spark.clickhouse.write.localSortByPartition        | spark.clickhouse.write.repartitionByPartition 的取值 | 如果`true`，在写入前按分区进行本地排序。如果未设置，则等于`spark.clickhouse.write.repartitionByPartition`.                                                                                                                                            | 0.3.0 |
-| spark.clickhouse.write.maxRetry                    | 3                                                 | 对于因可重试错误码而失败的单次批量写入操作，我们会进行重试的最大次数。                                                                                                                                                                                         | 0.1.0 |
-| spark.clickhouse.write.repartitionByPartition      | true                                              | 是否在写入前按 ClickHouse 分区键对数据重新分区，以匹配 ClickHouse 表的分布方式。                                                                                                                                                                        | 0.3.0 |
-| spark.clickhouse.write.repartitionNum              | 0                                                 | 在写入前，如需通过重新分区来满足 ClickHouse 表的分布要求，可使用此配置指定重新分区的数量；当该值小于 1 时表示无此要求。                                                                                                                                                         | 0.1.0 |
-| spark.clickhouse.write.repartitionStrictly         | false                                             | 如果`true`，则 Spark 会在将记录写入数据源表之前，严格地将传入记录分配到各个分区，以满足所需的分布要求。否则，Spark 可能会应用某些优化来加速查询，但会破坏分布约束。注意，此配置依赖于 SPARK-37523（在 Spark 3.4 中提供），如果没有该补丁，其行为始终等同于`true`.                                                                   | 0.3.0 |
-| spark.clickhouse.write.retryInterval               | 10 秒                                              | 写入重试之间的间隔时间（秒）。                                                                                                                                                                                                             | 0.1.0 |
-| spark.clickhouse.write.retryableErrorCodes         | 241                                               | 写入失败时 ClickHouse 服务器返回的可重试错误代码。                                                                                                                                                                                             | 0.1.0 |
+| 键                                                  | 默认                                               | 说明                                                                                                                                                                                                                               | 自     |
+| -------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| spark.clickhouse.ignoreUnsupportedTransform        | false                                            | ClickHouse 支持使用复杂表达式作为分片键或分区值，例如：`cityHash64(col_1, col_2)`，当前 Spark 尚不支持。如果`true`，忽略这些不受支持的表达式；否则，将抛出异常并快速失败。请注意，当`spark.clickhouse.write.distributed.convertLocal`在启用时，忽略不受支持的分片键可能会破坏数据。                                      | 0.4.0 |
+| spark.clickhouse.read.compression.codec            | lz4                                              | 用于在读取时解压数据的编解码器（codec）。支持的编解码器：`none`、`lz4`。                                                                                                                                                                                     | 0.5.0 |
+| spark.clickhouse.read.distributed.convertLocal     | true                                             | 在读取 Distributed 表时，改为读取本地表而不是它自身。如果`true`, 忽略`spark.clickhouse.read.distributed.useClusterNodes`读取 Distributed 表时，改为读取其本地表而非 Distributed 表本身。若为 `true`，则忽略 `spark.clickhouse.read.distributed.useClusterNodes`。                  | 0.1.0 |
+| spark.clickhouse.read.fixedStringAs                | 二进制                                              | 将 ClickHouse 的 FixedString 类型按指定的 Spark 数据类型进行读取。支持的类型：binary、string                                                                                                                                                             | 0.8.0 |
+| spark.clickhouse.read.format                       | json                                             | 读取时使用的序列化格式。支持的格式：JSON、Binary                                                                                                                                                                                                    | 0.6.0 |
+| spark.clickhouse.read.runtimeFilter.enabled        | false                                            | 为读取启用运行时过滤。                                                                                                                                                                                                                      | 0.8.0 |
+| spark.clickhouse.read.splitByPartitionId           | true                                             | 如果`true`，通过虚拟列构建输入分区过滤器`_partition_id`，而不是按分区值。已知在按分区值构造 SQL 谓词时存在问题。此功能需要 ClickHouse Server v21.6+。                                                                                                                             | 0.4.0 |
+| spark.clickhouse.useNullableQuerySchema            | false                                            | 如果`true`，在执行时将查询模式中的所有字段标记为可为空`CREATE/REPLACE TABLE ... AS SELECT ...`在创建表时。请注意，此配置依赖于 SPARK-43390（在 Spark 3.5 中提供），如果没有该补丁，它始终表现为`true`.                                                                                        | 0.8.0 |
+| spark.clickhouse.write.batchSize                   | 10000                                            | 写入 ClickHouse 时每个批次的记录数。                                                                                                                                                                                                         | 0.1.0 |
+| spark.clickhouse.write.compression.codec           | lz4                                              | 用于在写入时压缩数据的 `codec`。支持的 `codec` 有：`none`、`lz4`。                                                                                                                                                                                  | 0.3.0 |
+| spark.clickhouse.write.distributed.convertLocal    | false                                            | 在向 `Distributed` 表写入数据时，改为向其对应的本地表写入。若`true`，若为 `true` 则忽略`spark.clickhouse.write.distributed.useClusterNodes`写入 Distributed 表时，写入其对应的本地表而不是 Distributed 表本身。若为 `true`，则忽略 `spark.clickhouse.write.distributed.useClusterNodes`。 | 0.1.0 |
+| spark.clickhouse.write.distributed.useClusterNodes | true                                             | 在向 Distributed 表写入时，将数据写入集群中的所有节点。                                                                                                                                                                                               | 0.1.0 |
+| spark.clickhouse.write.format                      | arrow                                            | 用于写入的序列化格式。支持的格式：JSON、Arrow                                                                                                                                                                                                      | 0.4.0 |
+| spark.clickhouse.write.localSortByKey              | true                                             | 如果`true`，则在写入前按排序键在本地进行排序。                                                                                                                                                                                                       | 0.3.0 |
+| spark.clickhouse.write.localSortByPartition        | spark.clickhouse.write.repartitionByPartition 的值 | 如果`true`，则在写入前按分区进行本地排序。如果未设置，则等同于`spark.clickhouse.write.repartitionByPartition`如果为 `true`，则在写入前按分区在本地进行排序。若未设置，则其值等同于 `spark.clickhouse.write.repartitionByPartition`。                                                         | 0.3.0 |
+| spark.clickhouse.write.maxRetry                    | 3                                                | 针对因可重试错误码而失败的单次批量写入操作，所进行重试的最大次数。                                                                                                                                                                                                | 0.1.0 |
+| spark.clickhouse.write.repartitionByPartition      | true                                             | 在写入前，是否需要按照 ClickHouse 分区键重新分区数据，以匹配 ClickHouse 表的分布方式。                                                                                                                                                                          | 0.3.0 |
+| spark.clickhouse.write.repartitionNum              | 0                                                | 在写入前需要根据 ClickHouse 表的分布要求对数据进行重新分区，使用此配置指定重新分区的数量，值小于 1 表示无此要求。                                                                                                                                                                 | 0.1.0 |
+| spark.clickhouse.write.repartitionStrictly         | false                                            | 如果`true`，Spark 会在写入前严格地将传入记录分布到各个分区，以满足所需的分布要求，然后再将记录传递给数据源表。否则，Spark 可能会应用某些优化来加速查询，但会破坏该分布要求。注意，此配置依赖于 SPARK-37523（在 Spark 3.4 中可用），如果没有这个补丁，它的行为始终等同于`true`.                                                                  | 0.3.0 |
+| spark.clickhouse.write.retryInterval               | 10秒                                              | 写入重试之间的时间间隔（秒）。                                                                                                                                                                                                                  | 0.1.0 |
+| spark.clickhouse.write.retryableErrorCodes         | 241                                              | 写入失败时由 ClickHouse 服务器返回的可重试错误代码。                                                                                                                                                                                                 | 0.1.0 |
 
 
 
@@ -547,34 +546,34 @@ TBLPROPERTIES (
 
 ## 支持的数据类型 {#supported-data-types}
 
-本节介绍 Spark 与 ClickHouse 之间的数据类型映射关系。下表提供了从 ClickHouse 读取数据到 Spark 以及从 Spark 向 ClickHouse 写入数据时的数据类型转换快速参考。
+本节概述 Spark 与 ClickHouse 之间的数据类型映射。下表可作为在从 ClickHouse 读取数据到 Spark 以及将 Spark 中的数据写入 ClickHouse 时进行数据类型转换的快速参考。
 
 ### 从 ClickHouse 读取数据到 Spark {#reading-data-from-clickhouse-into-spark}
 
-| ClickHouse 数据类型                                              | Spark 数据类型                | 是否支持 | 是否为基本类型 | 备注                                              |
+| ClickHouse 数据类型                                               | Spark 数据类型                 | 是否支持  | 是否为原始类型 | 说明                                               |
 | ----------------------------------------------------------------- | ------------------------------ | --------- | ------------ | -------------------------------------------------- |
-| `Nothing`                                                         | `NullType`                     | ✅        | 是          |                                                    |
-| `Bool`                                                            | `BooleanType`                  | ✅        | 是          |                                                    |
-| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅        | 是          |                                                    |
-| `Int8`                                                            | `ByteType`                     | ✅        | 是          |                                                    |
-| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅        | 是          |                                                    |
-| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅        | 是          |                                                    |
-| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅        | 是          |                                                    |
-| `Float32`                                                         | `FloatType`                    | ✅        | 是          |                                                    |
-| `Float64`                                                         | `DoubleType`                   | ✅        | 是          |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅        | 是          |                                                    |
-| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅        | 是          | 由配置项 `READ_FIXED_STRING_AS` 控制 |
-| `Decimal`                                                         | `DecimalType`                  | ✅        | 是          | 精度和标度最高支持到 `Decimal128`             |
-| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅        | 是          |                                                    |
-| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅        | 是          |                                                    |
-| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅        | 是          |                                                    |
-| `Date`, `Date32`                                                  | `DateType`                     | ✅        | 是          |                                                    |
-| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅        | 是          |                                                    |
-| `Array`                                                           | `ArrayType`                    | ✅        | 否           | 数组元素类型也会进行转换               |
-| `Map`                                                             | `MapType`                      | ✅        | 否           | 键仅限 `StringType` 类型                   |
-| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅        | 是          |                                                    |
-| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅        | 是          |                                                    |
-| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅        | 否           | 使用对应的时间间隔类型                     |
+| `Nothing`                                                         | `NullType`                     | ✅        | 是           |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅        | 是           |                                                    |
+| `UInt8`, `Int16`                                                  | `ShortType`                    | ✅        | 是           |                                                    |
+| `Int8`                                                            | `ByteType`                     | ✅        | 是           |                                                    |
+| `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅        | 是           |                                                    |
+| `UInt32`,`Int64`, `UInt64`                                        | `LongType`                     | ✅        | 是           |                                                    |
+| `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅        | 是           |                                                    |
+| `Float32`                                                         | `FloatType`                    | ✅        | 是           |                                                    |
+| `Float64`                                                         | `DoubleType`                   | ✅        | 是           |                                                    |
+| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅        | 是           |                                                    |
+| `FixedString`                                                     | `BinaryType`, `StringType`     | ✅        | 是           | 由配置项 `READ_FIXED_STRING_AS` 控制               |
+| `Decimal`                                                         | `DecimalType`                  | ✅        | 是           | 精度和小数位数最高支持到 `Decimal128`             |
+| `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅        | 是           |                                                    |
+| `Decimal64`                                                       | `DecimalType(18, scale)`       | ✅        | 是           |                                                    |
+| `Decimal128`                                                      | `DecimalType(38, scale)`       | ✅        | 是           |                                                    |
+| `Date`, `Date32`                                                  | `DateType`                     | ✅        | 是           |                                                    |
+| `DateTime`, `DateTime32`, `DateTime64`                            | `TimestampType`                | ✅        | 是           |                                                    |
+| `Array`                                                           | `ArrayType`                    | ✅        | 否           | 数组元素类型也会被转换                             |
+| `Map`                                                             | `MapType`                      | ✅        | 否           | 键类型仅限为 `StringType`                          |
+| `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅        | 是           |                                                    |
+| `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅        | 是           |                                                    |
+| `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅        | 否           | 会使用具体的时间区间类型                           |
 | `Object`                                                          |                                | ❌        |              |                                                    |
 | `Nested`                                                          |                                | ❌        |              |                                                    |
 | `Tuple`                                                           |                                | ❌        |              |                                                    |
@@ -588,34 +587,34 @@ TBLPROPERTIES (
 | `AggregateFunction`                                               |                                | ❌        |              |                                                    |
 | `SimpleAggregateFunction`                                         |                                | ❌        |              |                                                    |
 
-### 从 Spark 向 ClickHouse 写入数据 {#inserting-data-from-spark-into-clickhouse}
+### 将 Spark 中的数据写入 ClickHouse {#inserting-data-from-spark-into-clickhouse}
 
 
-| Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
-|-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
-| `BooleanType`                       | `UInt8`              | ✅         | 是           |                                        |
-| `ByteType`                          | `Int8`               | ✅         | 是           |                                        |
-| `ShortType`                         | `Int16`              | ✅         | 是           |                                        |
-| `IntegerType`                       | `Int32`              | ✅         | 是           |                                        |
-| `LongType`                         | `Int64`              | ✅         | 是           |                                        |
-| `FloatType`                        | `Float32`            | ✅         | 是           |                                        |
-| `DoubleType`                        | `Float64`            | ✅         | 是           |                                        |
-| `StringType`                        | `String`             | ✅         | 是           |                                        |
-| `VarcharType`                       | `String`             | ✅         | 是           |                                        |
-| `CharType`                          | `String`             | ✅         | 是           |                                        |
-| `DecimalType`                       | `Decimal(p, s)`      | ✅         | 是           | 精度和小数位数最大支持到 `Decimal128`   |
-| `DateType`                          | `Date`               | ✅         | 是           |                                        |
-| `TimestampType`                     | `DateTime`           | ✅         | 是           |                                        |
-| `ArrayType` (list, tuple, or array) | `Array`              | ✅         | 否           | 数组元素类型也会被转换                  |
-| `MapType`                           | `Map`                | ✅         | 否           | 键类型仅限 `StringType`                 |
-| `Object`                            |                      | ❌         |              |                                        |
-| `Nested`                            |                      | ❌         |              |                                        |
+| Spark 数据类型                      | ClickHouse 数据类型  | 是否支持   | 是否为原始类型 | 说明                                       |
+|-------------------------------------|----------------------|-----------|--------------|--------------------------------------------|
+| `BooleanType`                       | `UInt8`              | ✅         | 是           |                                            |
+| `ByteType`                          | `Int8`               | ✅         | 是           |                                            |
+| `ShortType`                         | `Int16`              | ✅         | 是           |                                            |
+| `IntegerType`                       | `Int32`              | ✅         | 是           |                                            |
+| `LongType`                          | `Int64`              | ✅         | 是           |                                            |
+| `FloatType`                         | `Float32`            | ✅         | 是           |                                            |
+| `DoubleType`                        | `Float64`            | ✅         | 是           |                                            |
+| `StringType`                        | `String`             | ✅         | 是           |                                            |
+| `VarcharType`                       | `String`             | ✅         | 是           |                                            |
+| `CharType`                          | `String`             | ✅         | 是           |                                            |
+| `DecimalType`                       | `Decimal(p, s)`      | ✅         | 是           | 精度和小数位数最高支持到 `Decimal128`      |
+| `DateType`                          | `Date`               | ✅         | 是           |                                            |
+| `TimestampType`                     | `DateTime`           | ✅         | 是           |                                            |
+| `ArrayType`（list、tuple 或 array） | `Array`              | ✅         | 否           | 数组元素类型也会被转换                     |
+| `MapType`                           | `Map`                | ✅         | 否           | 键类型仅限于 `StringType`                 |
+| `Object`                            |                      | ❌         |              |                                            |
+| `Nested`                            |                      | ❌         |              |                                            |
 
 
 
 ## 贡献与支持 {#contributing-and-support}
 
-如果您希望为项目做出贡献或报告问题,欢迎您的参与!
-访问我们的 [GitHub 仓库](https://github.com/ClickHouse/spark-clickhouse-connector)提交问题、建议改进或提交 Pull Request。
-欢迎贡献!在开始之前,请查看仓库中的贡献指南。
+如果您希望为项目做出贡献或报告问题,我们欢迎您的参与!
+访问我们的 [GitHub 仓库](https://github.com/ClickHouse/spark-clickhouse-connector)以提交问题(issue)、提出改进建议或提交拉取请求(pull request)。
+我们欢迎各种形式的贡献!在开始之前,请先查看仓库中的贡献指南。
 感谢您帮助改进 ClickHouse Spark 连接器!

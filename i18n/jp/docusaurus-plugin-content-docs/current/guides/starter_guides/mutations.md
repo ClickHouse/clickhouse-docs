@@ -4,21 +4,21 @@ sidebar_label: 'データの更新と削除'
 sidebar_position: 1
 keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'ClickHouse データの更新と削除'
-description: 'ClickHouse でデータの更新および削除を行う方法を説明します'
+description: 'ClickHouse でデータの更新および削除を行う方法について説明します'
 show_related_blogs: false
 doc_type: 'guide'
 ---
 
 
 
-# ミューテーションによる ClickHouse データの更新と削除
+# 変更処理（ミューテーション）による ClickHouse データの更新と削除
 
-ClickHouse は大規模な分析ワークロード向けに最適化されていますが、状況によっては既存のデータを変更したり
+ClickHouse は大規模な分析ワークロード向けに最適化されていますが、状況によっては既存データを変更したり
 削除したりすることも可能です。これらの操作は「ミューテーション」と呼ばれ、`ALTER TABLE` コマンドを使って実行されます。
 
 :::tip
-頻繁に更新を行う必要がある場合は、ミューテーションイベントを発生させることなく行の更新および／または削除を行える ClickHouse の [deduplication](../developer/deduplication.md) の利用を検討してください。あるいは、[lightweight updates](/docs/sql-reference/statements/update)
-や [lightweight deletes](/guides/developer/lightweight-delete) の使用を検討してください。
+頻繁に更新を行う必要がある場合は、ミューテーションイベントを発生させずに行の更新や削除を行える ClickHouse の [重複排除](../developer/deduplication.md) の利用を検討してください。あるいは [lightweight updates](/docs/sql-reference/statements/update)
+や [lightweight deletes](/guides/developer/lightweight-delete) を使用してください。
 :::
 
 
@@ -31,7 +31,7 @@ ClickHouse は大規模な分析ワークロード向けに最適化されてい
 ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_expr>
 ```
 
-`<expression>`は、`<filter_expr>`の条件を満たす列の新しい値です。`<expression>`は、列と同じデータ型であるか、`CAST`演算子を使用して同じデータ型に変換可能である必要があります。`<filter_expr>`は、データの各行に対して`UInt8`型（ゼロまたは非ゼロ）の値を返す必要があります。複数の`UPDATE <column>`ステートメントは、カンマで区切って単一の`ALTER TABLE`コマンドにまとめることができます。
+`<expression>`は、`<filter_expr>`の条件を満たす列の新しい値です。`<expression>`は、列と同じデータ型であるか、`CAST`演算子を使用して同じデータ型に変換可能である必要があります。`<filter_expr>`は、データの各行に対して`UInt8`型の値（ゼロまたは非ゼロ）を返す必要があります。複数の`UPDATE <column>`ステートメントは、カンマで区切って単一の`ALTER TABLE`コマンドにまとめることができます。
 
 **例**：
 
@@ -108,7 +108,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
-軽量削除に関する注意点：
+軽量削除に関するいくつかの注意点：
 
 - この機能は`MergeTree`テーブルエンジンファミリーでのみ利用可能です。
 - 軽量削除はデフォルトで同期的に動作し、すべてのレプリカが削除を処理するまで待機します。この動作は[`lightweight_deletes_sync`設定](/operations/settings/settings#lightweight_deletes_sync)によって制御されます。

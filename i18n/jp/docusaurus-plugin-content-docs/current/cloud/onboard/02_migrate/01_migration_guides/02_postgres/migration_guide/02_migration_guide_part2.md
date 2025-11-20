@@ -2,22 +2,22 @@
 slug: /migrations/postgresql/rewriting-queries
 title: 'PostgreSQL クエリの書き換え'
 keywords: ['postgres', 'postgresql', 'rewriting queries']
-description: 'PostgreSQL から ClickHouse への移行ガイドのパート 2'
+description: 'PostgreSQL から ClickHouse への移行に関するガイド第 2 部'
 sidebar_label: 'Part 2'
 doc_type: 'guide'
 ---
 
-> これは、PostgreSQL から ClickHouse への移行ガイドの **パート 2** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）方式でどのように効率的に移行を行えるかを示します。ここで扱う多くの概念は、PostgreSQL から ClickHouse への手動による一括データ転送にも適用できます。
+> これは、PostgreSQL から ClickHouse への移行に関するガイドの **第 2 部** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）アプローチによる効率的な移行方法を説明します。ここで取り上げる多くの概念は、PostgreSQL から ClickHouse への手動による一括データ転送にも適用できます。
 
-PostgreSQL 環境で使用しているほとんどの SQL クエリは、ClickHouse でも変更なしに実行でき、多くの場合はより高速に動作します。
+PostgreSQL 環境で使用しているほとんどの SQL クエリは、変更を加えなくても ClickHouse 上でそのまま実行でき、多くの場合、より高速に動作します。
 
 
 
 ## CDCを使用した重複排除 {#deduplication-cdc}
 
-CDCを使用したリアルタイムレプリケーションでは、更新や削除によって重複行が発生する可能性があることに留意してください。これに対処するには、ビューやリフレッシュ可能なマテリアライズドビューを活用する手法が利用できます。
+CDCを用いたリアルタイムレプリケーションを使用する場合、更新や削除によって重複行が発生する可能性があることに留意してください。これに対処するには、ビューやリフレッシュ可能なマテリアライズドビューを活用する手法を使用できます。
 
-CDCを使用したリアルタイムレプリケーションでPostgreSQLからClickHouseへアプリケーションを移行する際に、スムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
+CDCを用いたリアルタイムレプリケーションで移行する際に、PostgreSQLからClickHouseへアプリケーションをスムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
 
 
 ## ClickHouseでクエリを最適化する {#optimize-queries-in-clickhouse}
@@ -50,8 +50,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
-Peak memory usage: 510.71 MiB.
+5行を取得しました。経過時間: 0.360秒。処理行数: 2437万行、140.45 MB (6773万行/秒、390.38 MB/秒)
+ピークメモリ使用量: 510.71 MiB。
 ```
 
 ```sql
@@ -72,7 +72,7 @@ LIMIT 5;
  J. Pablo Fern&#225;ndez |      12446818
  Matt                   |       12298764
 
-Time: 107620.508 ms (01:47.621)
+時間: 107620.508ミリ秒 (01:47.621)
 ```
 
 最も多くの`閲覧数`を獲得している`タグ`:
@@ -94,7 +94,7 @@ LIMIT 5
 │ android       │ 4258320338 │
 └────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
+5行を取得しました。経過時間: 0.908秒。処理行数: 5982万行、1.45 GB (6587万行/秒、1.59 GB/秒)
 ```
 
 ```sql
@@ -128,7 +128,7 @@ LIMIT 5;
  android        | 4186216900
 (5 rows)
 
-Time: 112508.083 ms (01:52.508)
+時間: 112508.083ミリ秒 (01:52.508)
 ```
 
 **集約関数**
@@ -149,13 +149,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                   2008
-MostViewedQuestionTitle: リスト内の特定の項目のインデックスを見つける方法は？
+MostViewedQuestionTitle: リスト内の指定された項目のインデックスを見つける方法
 MaxViewCount:           6316987
 
 Row 2:
 ──────
 Year:                   2009
-MostViewedQuestionTitle: Gitで最新のローカルコミットを取り消す方法は？
+MostViewedQuestionTitle: Gitで最新のローカルコミットを取り消す方法
 MaxViewCount:           13962748
 
 ...
@@ -163,7 +163,7 @@ MaxViewCount:           13962748
 Row 16:
 ───────
 Year:                   2023
-MostViewedQuestionTitle: pip 3を使用するたびに「error: externally-managed-environment」を解決する方法は？
+MostViewedQuestionTitle: pip 3を使用するたびに「error: externally-managed-environment」を解決する方法
 MaxViewCount:           506822
 
 Row 17:
@@ -172,11 +172,11 @@ Year:                   2024
 MostViewedQuestionTitle: 警告「サードパーティCookieがブロックされます。詳細はIssuesタブで確認してください」
 MaxViewCount:           66975
 
-17行を取得。経過時間: 0.677秒。処理: 2437万行、1.86 GB（3601万行/秒、2.75 GB/秒）
+17行のセット。経過時間: 0.677秒。処理: 2437万行、1.86 GB（3601万行/秒、2.75 GB/秒）
 ピークメモリ使用量: 554.31 MiB。
 ```
 
-これは、同等の Postgres クエリと比べて大幅に単純（かつ高速）です。
+これは、同等の Postgres クエリと比べて、はるかにシンプル（かつ高速）です。
 
 ```sql
 --Postgres
@@ -198,21 +198,21 @@ WHERE rn = 1
 ORDER BY Year;
  year |                                                 mostviewedquestiontitle                                                 | maxviewcount
 ------+-----------------------------------------------------------------------------------------------------------------------+--------------
- 2008 | How to find the index for a given item in a list?                                                                       |       6316987
- 2009 | How do I undo the most recent local commits in Git?                                                                     |       13962748
+ 2008 | リスト内の指定された項目のインデックスを見つける方法は?                                                                       |       6316987
+ 2009 | Gitで最新のローカルコミットを取り消すにはどうすればよいですか?                                                                     |       13962748
 
 ...
 
- 2023 | How do I solve "error: externally-managed-environment" every time I use pip 3?                                          |       506822
- 2024 | Warning "Third-party cookie will be blocked. Learn more in the Issues tab"                                              |       66975
-(17 rows)
+ 2023 | pip 3を使用するたびに「error: externally-managed-environment」を解決するにはどうすればよいですか?                                          |       506822
+ 2024 | 警告「サードパーティCookieはブロックされます。詳細は問題タブで確認してください」                                              |       66975
+(17行)
 
-Time: 125822.015 ms (02:05.822)
+時間: 125822.015 ms (02:05.822)
 ```
 
 **条件式と配列**
 
-条件式や配列関数を使うと、クエリを大幅に簡潔にできます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、増加率が最も大きいものを計算します。以下の ClickHouse クエリが、条件式や配列関数、そして `HAVING` 句と `SELECT` 句でエイリアスを再利用できる機能のおかげで、いかに簡潔になっているかに注目してください。
+条件式と配列関数を使うと、クエリを大幅に単純化できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、増加率が最も大きいものを算出します。以下の ClickHouse クエリが、条件式や配列関数、そして HAVING 句および SELECT 句でエイリアスを再利用できる機能のおかげで、どれだけ簡潔に書けているかに注目してください。
 
 ```sql
 --ClickHouse
@@ -237,8 +237,8 @@ LIMIT 5
 ```
 
 
-セット内の行数: 5. 経過時間: 0.247 秒。処理済み 5.08 百万行, 155.73 MB (20.58 百万行/秒, 630.61 MB/秒)
-ピークメモリ使用量: 403.04 MiB
+5 行のセット。経過時間: 0.247 秒。処理済み 5.08 百万行, 155.73 MB (20.58 百万行/秒, 630.61 MB/秒)
+ピークメモリ使用量: 403.04 MiB。
 
 ````
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
 sidebar_label: 'Интеграция PydanticAI'
-title: 'Как создать агента PydanticAI на основе ClickHouse MCP Server.'
+title: 'Как создать агента PydanticAI на базе ClickHouse MCP Server.'
 pagination_prev: null
 pagination_next: null
 description: 'Узнайте, как создать агента PydanticAI, который может взаимодействовать с ClickHouse MCP Server.'
@@ -15,21 +15,21 @@ doc_type: 'guide'
 # Как создать агента PydanticAI с использованием ClickHouse MCP Server
 
 В этом руководстве вы узнаете, как создать агента [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1),
-который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [MCP-сервера ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
+который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример ноутбука
-Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
+:::note Пример блокнота
+Этот пример доступен в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
 :::
 
 
 
 ## Предварительные требования {#prerequisites}
 
-- В вашей системе должен быть установлен Python.
-- В вашей системе должен быть установлен `pip`.
-- Вам потребуется API-ключ Anthropic или API-ключ другого провайдера LLM.
+- Необходимо установить Python в вашей системе.
+- Необходимо установить `pip` в вашей системе.
+- Необходим API-ключ Anthropic или API-ключ другого поставщика LLM
 
-Следующие шаги можно выполнить как из Python REPL, так и с помощью скрипта.
+Следующие шаги можно выполнить либо из Python REPL, либо с помощью скрипта.
 
 <VerticalStepper headerLevel="h2">
 
@@ -63,7 +63,7 @@ Enter Anthropic API Key: ········
 инструкции по настройке учетных данных можно найти в [документации PydanticAI](https://ai.pydantic.dev/models/)
 :::
 
-Далее определите учетные данные, необходимые для подключения к демонстрационной среде ClickHouse SQL:
+Далее определите учетные данные, необходимые для подключения к тестовой среде ClickHouse SQL:
 
 ```python
 env = {
@@ -105,33 +105,33 @@ agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 
 ```python
 async with agent.run_mcp_servers():
-    result = await agent.run("Кто создал больше всего PR для ClickHouse?")
+    result = await agent.run("Who's done the most PRs for ClickHouse?")
     print(result.output)
 ```
 
 Вы получите ответ, похожий на приведённый ниже:
 
-```response title="Ответ"
-На основе данных из GitHub-репозитория ClickHouse, вот топ-контрибьюторов по количеству созданных pull request'ов:
+```response title="Response"
+Based on the data from the ClickHouse GitHub repository, here are the top contributors by number of pull requests created:
 
-**Топ-контрибьюторы ClickHouse по открытым PR:**
+**Top contributors to ClickHouse by PRs opened:**
 
-1. **alexey-milovidov** — 3 370 открытых PR
-2. **azat** — 1 905 открытых PR
-3. **rschu1ze** — 979 открытых PR
-4. **alesapin** — 947 открытых PR
-5. **tavplubix** — 896 открытых PR
-6. **kssenii** — 871 открытый PR
-7. **Avogar** — 805 открытых PR
-8. **KochetovNicolai** — 700 открытых PR
-9. **Algunenano** — 658 открытых PR
-10. **kitaisreal** — 630 открытых PR
+1. **alexey-milovidov** - 3,370 PRs opened
+2. **azat** - 1,905 PRs opened
+3. **rschu1ze** - 979 PRs opened
+4. **alesapin** - 947 PRs opened
+5. **tavplubix** - 896 PRs opened
+6. **kssenii** - 871 PRs opened
+7. **Avogar** - 805 PRs opened
+8. **KochetovNicolai** - 700 PRs opened
+9. **Algunenano** - 658 PRs opened
+10. **kitaisreal** - 630 PRs opened
 
-**Alexey Milovidov** выделяется как безусловно самый активный контрибьютор с более чем 3 370 открытыми pull request'ами, что значительно больше, чем у любого другого участника. Это логично, поскольку Alexey Milovidov является одним из основателей и ведущих разработчиков ClickHouse.
+**Alexey Milovidov** stands out as by far the most active contributor with over 3,370 pull requests opened, which is significantly more than any other contributor. This makes sense as Alexey Milovidov is one of the founders and lead developers of ClickHouse.
 
-Данные также показывают, что alexey-milovidov очень активен в управлении PR: помимо создания собственных PR, у него 12 818 событий «закрытия» (вероятно, проверка и закрытие PR от других контрибьюторов).
+The data also shows that alexey-milovidov has been very active in managing PRs, with 12,818 "closed" events (likely reviewing and closing PRs from other contributors) in addition to creating his own PRs.
 
-Стоит отметить, что я отфильтровал различные аккаунты роботов и ботов, которые обрабатывают автоматизированные процессы, сосредоточившись на реальных участниках, чтобы дать вам наиболее содержательный ответ о том, кто внёс наибольший вклад в ClickHouse по количеству PR.
+It's worth noting that I filtered out various robot/bot accounts that handle automated processes, focusing on human contributors to give you the most meaningful answer about who has contributed the most PRs to ClickHouse.
 ```
 
 </VerticalStepper>

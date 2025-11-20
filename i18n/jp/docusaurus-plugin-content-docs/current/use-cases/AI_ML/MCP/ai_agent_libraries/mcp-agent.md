@@ -4,7 +4,7 @@ sidebar_label: 'mcp-agent を統合する'
 title: 'mcp-agent と ClickHouse MCP Server で AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'mcp-agent と ClickHouse MCP Server を使って AI エージェントを構築する方法を学びます'
+description: 'mcp-agent と ClickHouse MCP Server で AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'mcp-agent']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,10 +14,10 @@ doc_type: 'guide'
 
 # CrewAI と ClickHouse MCP Server を使って AI エージェントを構築する方法
 
-このガイドでは、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用して [ClickHouse の SQL Playground](https://sql.clickhouse.com/) と対話できる [mcp-agent](https://github.com/lastmile-ai/mcp-agent) ベースの AI エージェントの構築方法を説明します。
+このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できるようにするために、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用した [mcp-agent](https://github.com/lastmile-ai/mcp-agent) AI エージェントの構築方法を説明します。
 
 :::note Example notebook
-このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/mcp-agent/mcp-agent.ipynb) 内のノートブックとしても参照できます。
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/mcp-agent/mcp-agent.ipynb) にあるノートブックとして確認できます。
 :::
 
 
@@ -46,7 +46,7 @@ pip install -q ipywidgets
 
 ## 認証情報の設定 {#setup-credentials}
 
-次に、OpenAI APIキーを入力します:
+次に、OpenAI APIキーを指定する必要があります:
 
 ```python
 import os, getpass
@@ -72,7 +72,7 @@ env = {
 
 ## MCPサーバーとmcp-agentエージェントの初期化 {#initialize-mcp-and-agent}
 
-次に、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するよう設定し、
+次に、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するように設定し、
 エージェントを初期化して質問してみます:
 
 ```python
@@ -117,7 +117,7 @@ async with app.run() as mcp_agent_app:
     async with data_agent:
         llm = await data_agent.attach_llm(OpenAIAugmentedLLM)
         result = await llm.generate_str(
-            message="2025年の英国不動産価格について教えてください。ClickHouseを使って算出してください。"
+            message="2025年の英国不動産価格について教えてください。ClickHouseを使用して計算してください。"
         )
 
         logger.info(result)
@@ -254,57 +254,58 @@ ORDER BY avg_price DESC
 2025-10-10 11:26:51,452 - mcp-clickhouse - INFO - sql-clickhouse.clickhouse.com:8443 へのClickHouseクライアント接続を demo として作成中 (secure=True, verify=True, connect_timeout=30s, send_receive_timeout=30s)
 2025-10-10 11:26:51,952 - mcp-clickhouse - INFO - ClickHouseサーバー バージョン 25.8.1.8344 への接続に成功しました
 2025-10-10 11:26:52,166 - mcp-clickhouse - INFO - クエリが5行を返しました
-[INFO] 2025-10-10T11:27:51 mcp_agent.mcp_basic_agent - 概要 (要約)
+[INFO] 2025-10-10T11:27:51 mcp_agent.mcp_basic_agent - 要約 (TL;DR)
 - ClickHouseのUK Price Paidテーブルに基づくと、2025年にこれまで記録された取引は376,633件で、平均価格は£362,283、中央値は£281,000です。データには2025年1月から8月のみが含まれているようです(つまり2025年は不完全です)。平均値を歪める極端な外れ値(最小£100、最大£127,700,000)が存在します。
 ```
 
 
 
-私が算出したもの（方法）
+私が計算した内容（方法）
 ClickHouse の uk.price-paid テーブルに対して集計を実行しました:
-- uk.uk_price_paid_simple_partitioned から、2025 年全体の集計サマリー（count、mean、median、min、max）
-- 2025 年の月別内訳（transactions、mean、median）
-- 2025 年の平均価格上位タウン（取引件数が 50 件以上のタウン）
-- 年次比較: 2024 年 vs 2025 年（count、mean、median）
-- uk.uk_price_paid を用いた 2025 年の物件タイプ別内訳（counts、avg、median）
+- uk.uk_price_paid_simple_partitioned を用いた 2025 年全体のサマリー（件数、平均、中央値、最小値、最大値）
+- 2025 年の月別内訳（取引件数、平均、中央値）
+- 2025 年の平均価格が高い上位の町（取引件数が 50 件以上の町）
+- 年次比較: 2024 年 vs 2025 年（件数、平均、中央値）
+- uk.uk_price_paid を用いた 2025 年の物件タイプ別内訳（件数、平均、中央値）
 
-主要な数値（データセットより）
-- 2025 年全体（記録された取引）: transactions = 376,633、mean price = £362,282.66、median price = £281,000、min = £100、max =
+主要な数値（このデータセットから）
+- 2025 年全体（記録された取引）: 取引件数 = 376,633 件; 平均価格 = £362,282.66; 中央値 = £281,000; 最小値 = £100; 最大値 =
 £127,700,000。
-- 月別（2025 年）:（month, transactions, mean price, median price）
-  - Jan: 53,927、mean £386,053、median £285,000
-  - Feb: 58,740、mean £371,803、median £285,000
-  - Mar: 95,274、mean £377,200、median £315,000
-  - Apr: 24,987、mean £331,692、median £235,000
-  - May: 39,013、mean £342,380、median £255,000
-  - Jun: 41,446、mean £334,667、median £268,500
-  - Jul: 44,431、mean £348,293、median £277,500
-  - Aug: 18,815、mean £364,653、median £292,999
-  （データセットには 1〜8 月のみが含まれています。）
-- 平均価格上位タウン（2025 年、取引件数 ≥50 のタウン）
-  - TRING: 126 txns、avg £1,973,274
-  - BUCKHURST HILL: 98 txns、avg £1,441,331
-  - ASCOT: 175 txns、avg £1,300,748
-  - RADLETT: 69 txns、avg £1,160,217
-  - COBHAM: 115 txns、avg £1,035,192
-  - EAST MOLESEY、BEACONSFIELD、ESHER、CHALFONT ST GILES、THAMES DITTON もトップ 10 に含まれます（いずれも平均価格が高い通勤／富裕タウン）。
+- 月別（2025 年）:（月、取引件数、平均価格、中央値）
+  - 1 月: 53,927 件、平均 £386,053、中央値 £285,000
+  - 2 月: 58,740 件、平均 £371,803、中央値 £285,000
+  - 3 月: 95,274 件、平均 £377,200、中央値 £315,000
+  - 4 月: 24,987 件、平均 £331,692、中央値 £235,000
+  - 5 月: 39,013 件、平均 £342,380、中央値 £255,000
+  - 6 月: 41,446 件、平均 £334,667、中央値 £268,500
+  - 7 月: 44,431 件、平均 £348,293、中央値 £277,500
+  - 8 月: 18,815 件、平均 £364,653、中央値 £292,999
+  （このデータセットには 1〜8 月のデータのみ含まれます。）
+- 平均価格が高い上位の町（2025 年、取引件数 ≥ 50 の町）
+  - TRING: 126 件、平均 £1,973,274
+  - BUCKHURST HILL: 98 件、平均 £1,441,331
+  - ASCOT: 175 件、平均 £1,300,748
+  - RADLETT: 69 件、平均 £1,160,217
+  - COBHAM: 115 件、平均 £1,035,192
+  - EAST MOLESEY、BEACONSFIELD、ESHER、CHALFONT ST GILES、THAMES DITTON もトップ 10 に含まれます（いずれも平均価格が高い通勤圏／富裕層向けの町）。
 - 年次比較（2024 年 vs 2025 年、記録ベース）
-  - 2024 年: 859,960 transactions、mean £390,879、median £280,000
-  - 2025 年: 376,633 transactions、mean £362,283、median £281,000
-  （2025 年の件数が大幅に少ないのは、このデータセットに年の一部しか含まれていないためです。）
+  - 2024 年: 859,960 件の取引、平均 £390,879、中央値 £280,000
+  - 2025 年: 376,633 件の取引、平均 £362,283、中央値 £281,000
+  （2025 年の件数が大幅に少ないのは、このデータセットが年の一部のみを含んでいるためです。）
 - 物件タイプ別（2025 年）
-  - detached: 85,362 txns、avg £495,714、median £415,000
-  - semi-detached: 107,580 txns、avg £319,922、median £270,000
-  - flat: 62,975 txns、avg £298,529、median £227,000
-  - terraced: 112,832 txns、avg £286,616、median £227,000
-  - other: 7,884 txns、avg £1,087,765（median £315,000）— 少数グループおよび外れ値の影響に注意
+  - detached（一戸建て）: 85,362 件、平均 £495,714、中央値 £415,000
+  - semi-detached（セミデタッチド）: 107,580 件、平均 £319,922、中央値 £270,000
+  - flat（フラット）: 62,975 件、平均 £298,529、中央値 £227,000
+  - terraced（テラスド）: 112,832 件、平均 £286,616、中央値 £227,000
+  - other: 7,884 件、平均 £1,087,765（中央値 £315,000）— 少数グループおよび外れ値の影響に注意
 
-重要な注意点とデータ品質に関するメモ
-- 2025 年のデータセットは一部のみ（Jan–Aug のみ存在）と見られます。「2025 年」の合計値は通年の値ではありません。
-- 大きな外れ値が存在します（例: max £127.7M、min £100）。これらには入力ミスや非標準レコードが含まれている可能性が高く、mean を押し上げます。この場合、median の方がよりロバストな指標となることが多いです。
-- 「other」物件タイプの平均値は、件数の少なさ／不均質さと外れ値のために不安定です。
-- is_new、duration、その他のメタデータによるフィルタリングは行っていません。これらのフィルタを適用すると（たとえば新築や leasehold を除外するなど）結果が変わり得ます。
-- テーブルは Price Paid 形式のトランザクションレコード（記録された売買）であり、掲載価格や評価額を直接表すものではありません。
+重要な注意事項とデータ品質に関する補足
+- 2025 年のデータセットは部分的であるように見受けられます（1〜8 月のみ存在）。「2025 年」のトータルは通年値ではありません。
+- 大きな外れ値が存在します（例: 最大 £127.7M、最小 £100）。これらには入力ミスや標準的でないレコードが含まれている可能性があり、平均値を押し上げます。
+  この場合、中央値の方がより堅牢な指標となることが多いです。
+- 「other」物件タイプの平均値は、件数が少なく不均質であり、外れ値の影響もあるため安定しません。
+- is_new、duration、その他のメタデータによるフィルタリングは行っていません。それらのフィルタを適用すると（新築物件やリースホールドを除外するなど）結果が変わり得ます。
+- テーブルは Price Paid 形式の取引レコード（記録された売買）であり、掲載価格や評価額を直接表しているわけではありません。
 
 
 
@@ -313,7 +314,7 @@ ClickHouse の uk.price-paid テーブルに対して集計を実行しました
 - 明らかな外れ値（例：価格が£10k未満または£10M超）を除外し、平均値/中央値を再計算します。
 - 地域/郡/郵便番号エリアごとの集計とマップを生成します。
 - 月次比較または3ヶ月移動中央値を計算し、2025年を通じたトレンドを表示します。
-- 月別の前年同月比（YoY）成長率を生成します（例：2025年3月 vs 2024年3月）。
+- 月ごとの前年同月比（YoY）成長率を生成します（例：2025年3月 vs 2024年3月）。
 - 単純な外挿または時系列モデリングを使用して2025年全体の予測を行います（ただし、欠損月/外れ値の処理方法を決定した後の方が望ましい）。
 
 ご希望であれば、以下を実行できます：

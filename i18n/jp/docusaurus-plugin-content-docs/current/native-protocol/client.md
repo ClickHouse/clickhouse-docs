@@ -1,7 +1,7 @@
 ---
 slug: /native-protocol/client
 sidebar_position: 2
-title: 'ネイティブクライアントパケット'
+title: 'ネイティブクライアントのパケット'
 description: 'ネイティブプロトコルクライアント'
 doc_type: 'reference'
 keywords: ['クライアントパケット', 'ネイティブプロトコルクライアント', 'プロトコルパケット', 'クライアント通信', 'TCPクライアント']
@@ -11,13 +11,13 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 
 # クライアントパケット
 
-| value | name              | description        |
-|-------|-------------------|--------------------|
-| 0     | [Hello](#hello)   | クライアントハンドシェイクの開始 |
-| 1     | [Query](#query)   | クエリリクエスト    |
-| 2     | [Data](#data)     | データブロック      |
-| 3     | [Cancel](#cancel) | クエリのキャンセル  |
-| 4     | [Ping](#ping)     | Ping リクエスト     |
+| value | name              | description              |
+|-------|-------------------|--------------------------|
+| 0     | [Hello](#hello)   | クライアントハンドシェイク開始 |
+| 1     | [Query](#query)   | クエリリクエスト        |
+| 2     | [Data](#data)     | データブロック          |
+| 3     | [Cancel](#cancel) | クエリのキャンセル      |
+| 4     | [Ping](#ping)     | Ping リクエスト         |
 | 5     | TableStatus       | テーブルステータスリクエスト |
 
 `Data` は圧縮できます。
@@ -55,10 +55,10 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | field           | type                       | value      | description               |
 | --------------- | -------------------------- | ---------- | ------------------------- |
 | query_id        | String                     | `1ff-a123` | クエリID（UUIDv4を使用可能）   |
-| client_info     | [ClientInfo](#client-info) | 型を参照   | クライアント情報         |
-| settings        | [Settings](#settings)      | 型を参照   | 設定リスト          |
+| client_info     | [ClientInfo](#client-info) | See type   | クライアントに関するデータ         |
+| settings        | [Settings](#settings)      | See type   | 設定のリスト          |
 | secret          | String                     | `secret`   | サーバー間シークレット       |
-| [stage](#stage) | UVarInt                    | `2`        | 指定ステージまでクエリを実行 |
+| [stage](#stage) | UVarInt                    | `2`        | クエリステージまで実行 |
 | compression     | UVarInt                    | `0`        | 無効=0、有効=1     |
 | body            | String                     | `SELECT 1` | クエリテキスト                |
 
@@ -91,33 +91,33 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 
 | field     | type   | value             | description           |
 | --------- | ------ | ----------------- | --------------------- |
-| key       | String | `send_logs_level` | 設定キー        |
-| value     | String | `trace`           | 設定値      |
+| key       | String | `send_logs_level` | 設定のキー        |
+| value     | String | `trace`           | 設定の値      |
 | important | Bool   | `true`            | 無視可能かどうか |
 
-リストとしてエンコードされます。空のキーと値はリストの終端を示します。
+リストとしてエンコードされ、空のキーと値はリストの終わりを示します。
 
 ### ステージ {#stage}
 
 | value | name               | description                                 |
 | ----- | ------------------ | ------------------------------------------- |
 | 0     | FetchColumns       | カラム型のみを取得                     |
-| 1     | WithMergeableState | マージ可能な状態まで実行                       |
-| 2     | Complete           | 完全に実行（デフォルト推奨） |
+| 1     | WithMergeableState | マージ可能な状態まで                       |
+| 2     | Complete           | 完全に完了するまで（デフォルト推奨） |
 
 
-## Data {#data}
+## データ {#data}
 
-| field   | type                | description        |
+| フィールド   | 型                | 説明        |
 | ------- | ------------------- | ------------------ |
 | info    | BlockInfo           | エンコードされたブロック情報 |
 | columns | UVarInt             | カラム数      |
 | rows    | UVarInt             | 行数         |
 | columns | [[]Column](#column) | データを含むカラム  |
 
-### Column {#column}
+### カラム {#column}
 
-| field | type   | value           | description |
+| フィールド | 型   | 値           | 説明 |
 | ----- | ------ | --------------- | ----------- |
 | name  | String | `foo`           | カラム名 |
 | type  | String | `DateTime64(9)` | カラム型 |
@@ -131,4 +131,4 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 
 ## Ping {#ping}
 
-パケットボディなし。サーバーは[pongで応答](./server.md#pong)する必要があります。
+パケット本体なし。サーバーは[pongで応答](./server.md#pong)する必要があります。

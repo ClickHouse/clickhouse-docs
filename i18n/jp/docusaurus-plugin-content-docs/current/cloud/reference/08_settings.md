@@ -13,10 +13,10 @@ import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-setti
 
 # 設定の構成
 
-特定の[ユーザー](/operations/access-rights#user-account-management)または[ロール](/operations/access-rights#role-management)ごとに ClickHouse Cloud サービスの設定を行うには、[SQL-driven Settings Profiles](/operations/access-rights#settings-profiles-management) を使用する必要があります。Settings Profiles を適用すると、サービスが停止・アイドル状態・アップグレードされた場合でも、構成した設定が保持されます。Settings Profiles の詳細については、[こちら](/operations/settings/settings-profiles.md)を参照してください。
+特定の[ユーザー](/operations/access-rights#user-account-management)または[ロール](/operations/access-rights#role-management)に対して ClickHouse Cloud サービスの設定を指定するには、[SQL ベースの Settings Profiles](/operations/access-rights#settings-profiles-management) を使用する必要があります。Settings Profiles を適用すると、サービスが停止、アイドル状態、アップグレードされた場合でも、設定した内容が保持されます。Settings Profiles の詳細については、[このページ](/operations/settings/settings-profiles.md)を参照してください。
 
-なお、XML ベースの Settings Profiles および[設定ファイル](/operations/configuration-files.md)は、現在 ClickHouse Cloud ではサポートされていません。
+XML ベースの Settings Profiles や[設定ファイル](/operations/configuration-files.md)は、現時点では ClickHouse Cloud ではサポートされていないことに注意してください。
 
-ClickHouse Cloud サービスに対して指定可能な設定の詳細については、[ドキュメント](/operations/settings)でカテゴリ別に一覧をご確認ください。
+ClickHouse Cloud サービスで指定可能な設定についてさらに知りたい場合は、[ドキュメント](/operations/settings)でカテゴリ別に一覧化されたすべての設定を参照してください。
 
 <Image img={cloud_settings_sidebar} size="sm" alt="Cloud settings sidebar" border/>

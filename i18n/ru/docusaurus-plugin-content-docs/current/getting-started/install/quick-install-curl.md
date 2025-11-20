@@ -1,5 +1,5 @@
 ---
-description: 'Установите ClickHouse на любую платформу с помощью curl'
+description: 'Установите ClickHouse на любой платформе с помощью curl'
 keywords: ['ClickHouse', 'install', 'quick', 'curl']
 sidebar_label: 'Быстрая установка'
 slug: /install/quick-install-curl

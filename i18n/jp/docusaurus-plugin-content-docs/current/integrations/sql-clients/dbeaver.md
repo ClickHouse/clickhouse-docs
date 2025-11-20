@@ -2,7 +2,7 @@
 slug: /integrations/dbeaver
 sidebar_label: 'DBeaver'
 description: 'DBeaver はマルチプラットフォーム対応のデータベースツールです。'
-title: 'DBeaver を ClickHouse に接続する'
+title: 'DBeaver と ClickHouse を接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -26,15 +26,15 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-DBeaver には複数のエディションがあります。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。各エディションと機能の一覧は[こちら](https://dbeaver.com/edition/)を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
+DBeaver には複数のエディションがあります。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。各エディションとその機能については[こちら](https://dbeaver.com/edition/)を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
 
 :::note
-ClickHouse の `Nullable` カラムのサポートが改善された DBeaver バージョン 23.1.0 以降を使用してください。
+ClickHouse の `Nullable` 列のサポートが改善された DBeaver バージョン 23.1.0 以降を使用してください。
 :::
 
 
 
-## 1. ClickHouseの接続情報を収集する {#1-gather-your-clickhouse-details}
+## 1. ClickHouseの接続情報を準備する {#1-gather-your-clickhouse-details}
 
 DBeaverはHTTP(S)経由のJDBCを使用してClickHouseに接続します。次の情報が必要です:
 
@@ -66,7 +66,7 @@ DBeaverは https://dbeaver.io/download/ から入手できます。
   alt='ホスト名、ポート、ユーザー、パスワード、データベース名を設定'
 />
 
-- デフォルトでは**SSL > Use SSL**プロパティは無効になっています。ClickHouse CloudまたはHTTPポートでSSLが必要なサーバーに接続する場合は、**SSL > Use SSL**を有効にします：
+- デフォルトでは**SSL > Use SSL**プロパティは未設定です。ClickHouse CloudまたはHTTPポートでSSLが必要なサーバーに接続する場合は、**SSL > Use SSL**をオンに設定します：
 
 <Image img={dbeaver_use_ssl} size='md' border alt='必要に応じてSSLを有効化' />
 
@@ -113,4 +113,4 @@ DBeaverがClickHouseドライバーがインストールされていないこと
 
 ## 次のステップ {#next-steps}
 
-DBeaverの機能について詳しくは[DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki)を、ClickHouseの機能について詳しくは[ClickHouseドキュメント](https://clickhouse.com/docs)をご参照ください。
+DBeaverの機能については[DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki)を、ClickHouseの機能については[ClickHouseドキュメント](https://clickhouse.com/docs)を参照してください。

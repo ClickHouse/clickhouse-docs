@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxSimpleState'
 title: 'maxSimpleState'
-description: 'maxSimpleState コンビネーターの利用例'
+description: 'maxSimpleStateコンビネータの使用例'
 keywords: ['max', 'state', 'simple', 'combinator', 'examples', 'maxSimpleState']
 sidebar_label: 'maxSimpleState'
 doc_type: 'reference'
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用例 {#example-usage}
 
-[`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage)の例では、`maxSimpleState`と`minSimpleState`の両方の使用方法を示しています。
+[`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage)で示されている例では、`maxSimpleState`と`minSimpleState`の両方の使用方法を実演しています。
 
 
 ## 関連項目 {#see-also}

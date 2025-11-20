@@ -1,15 +1,15 @@
 ---
-title: 'clickhouse-local データベースの使用'
-sidebar_label: 'clickhouse-local データベースの使用'
+title: 'clickhouse-localデータベースの使用'
+sidebar_label: 'clickhouse-localデータベースの使用'
 slug: /chdb/guides/clickhouse-local
-description: 'chDB で clickhouse-local データベースを使用する方法を学ぶ'
+description: 'chDBでclickhouse-localデータベースを使用する方法を学ぶ'
 keywords: ['chdb', 'clickhouse-local']
 doc_type: 'guide'
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) は、ClickHouse を組み込んだ CLI です。
-サーバーをインストールしなくても、ClickHouse の機能を利用できます。
-このガイドでは、chDB から clickhouse-local データベースを利用する方法を解説します。
+[clickhouse-local](/operations/utilities/clickhouse-local)は、ClickHouseを組み込んだCLIツールです。
+サーバーをインストールすることなく、ユーザーはClickHouseの機能を利用できます。
+このガイドでは、chDBからclickhouse-localデータベースを使用する方法について説明します。
 
 
 
@@ -22,20 +22,20 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDBをインストールします。
-バージョン2.0.2以上であることを確認してください：
+次に chDB をインストールします。
+バージョン 2.0.2 以上であることを確認してください：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いて、[ipython](https://ipython.org/)をインストールします：
+続いて [ipython](https://ipython.org/) をインストールします：
 
 ```bash
 pip install ipython
 ```
 
-このガイドの残りの部分では、`ipython`を使用してコマンドを実行します。以下のコマンドで起動できます：
+このガイドの残りの部分では `ipython` を使用してコマンドを実行します。次のコマンドで起動できます：
 
 ```bash
 ipython
@@ -45,13 +45,13 @@ ipython
 ## clickhouse-localのインストール {#installing-clickhouse-local}
 
 clickhouse-localのダウンロードとインストールは、[ClickHouseのダウンロードとインストール](/install)と同じです。
-次のコマンドを実行することでインストールできます:
+次のコマンドを実行することで実行できます:
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-データをディレクトリに永続化してclickhouse-localを起動するには、`--path`オプションを指定する必要があります:
+データをディレクトリに永続化してclickhouse-localを起動するには、`--path`を指定する必要があります:
 
 ```bash
 ./clickhouse -m --path demo.chdb
@@ -86,7 +86,7 @@ FROM foo.randomNumbers
 └───────────────────────────────────────┘
 ```
 
-完了したら、必ずCLIから`exit;`で終了してください。このディレクトリに対してロックを保持できるプロセスは1つだけです。
+完了したら、必ずCLIから`exit;`してください。このディレクトリに対してロックを保持できるプロセスは1つだけです。
 これを行わないと、chDBからデータベースに接続しようとした際に以下のエラーが発生します:
 
 ```text

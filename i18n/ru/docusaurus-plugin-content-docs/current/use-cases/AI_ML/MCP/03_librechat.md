@@ -4,7 +4,7 @@ sidebar_label: 'Интеграция LibreChat'
 title: 'Настройка сервера ClickHouse MCP с LibreChat и ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве описано, как развернуть LibreChat с сервером ClickHouse MCP с использованием Docker.'
+description: 'В этом руководстве объясняется, как настроить LibreChat с сервером ClickHouse MCP с помощью Docker.'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -26,12 +26,12 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
 ## Установка Docker {#install-docker}
 
-Для запуска LibreChat и MCP-сервера необходим Docker. Чтобы установить Docker:
+Для запуска LibreChat и сервера MCP потребуется Docker. Чтобы установить Docker:
 
 1. Перейдите на сайт [docker.com](https://www.docker.com/products/docker-desktop)
 2. Скачайте Docker Desktop для вашей операционной системы
 3. Установите Docker, следуя инструкциям для вашей операционной системы
-4. Запустите Docker Desktop и убедитесь, что он работает
+4. Откройте Docker Desktop и убедитесь, что приложение запущено
    <br />
    Дополнительную информацию см. в [документации Docker](https://docs.docker.com/get-docker/).
 
@@ -70,10 +70,10 @@ ANTHROPIC_API_KEY=user_provided
 # ANTHROPIC_REVERSE_PROXY=
 ```
 
-Замените `user_provided` на ваш API-ключ провайдера LLM, которого вы хотите использовать.
+Замените `user_provided` на ваш API-ключ для выбранного провайдера LLM.
 
 :::note Использование локальной LLM
-Если у вас нет API-ключа, вы можете использовать локальную LLM, например Ollama. Вы увидите,
+Если у вас нет API-ключа, вы можете использовать локальную LLM, например Ollama. Вы узнаете,
 как это сделать позже на шаге [&quot;Install Ollama&quot;](#add-local-llm-using-ollama). Пока
 не изменяйте файл .env и переходите к следующим шагам.
 :::
@@ -87,7 +87,7 @@ ANTHROPIC_API_KEY=user_provided
 cp librechat.example.yaml librechat.yaml
 ```
 
-Эта команда создаст основной [файл конфигурации](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
+Это создаст основной [файл конфигурации](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
 
 
 ## Добавление MCP-сервера ClickHouse в Docker Compose {#add-clickhouse-mcp-server-to-docker-compose}
@@ -162,7 +162,7 @@ mcpServers:
 socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
 ```
 
-Для упрощения временно отключим аутентификацию:
+Для упрощения временно отключим требование аутентификации:
 
 ```text title="librechat.yaml"
 socialLogins: []
@@ -232,7 +232,7 @@ docker compose up
 
 <Image img={LibreInterface} alt='Выберите MCP-сервер' size='md' />
 
-Теперь вы можете отправлять запросы LLM для изучения примеров наборов данных ClickHouse. Попробуйте:
+Теперь вы можете отправить запрос LLM для изучения примеров наборов данных ClickHouse. Попробуйте:
 
 ```text title="Запрос"
 К каким наборам данных у вас есть доступ?

@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
-sidebar_label: 'Claude Desktop を連携する'
-title: 'Claude Desktop と ClickHouse MCP サーバーのセットアップ'
+sidebar_label: 'Claude Desktop を統合する'
+title: 'Claude Desktop と ClickHouse MCP サーバーをセットアップする'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Claude Desktop と ClickHouse MCP サーバーを連携して使用するためのセットアップ方法を説明します。'
+description: 'このガイドでは、ClickHouse MCP サーバーと連携して Claude Desktop をセットアップする方法を説明します。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -21,8 +21,8 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 # Claude DesktopでClickHouse MCPサーバーを使用する
 
-> このガイドでは、uvを使用してClaude DesktopでClickHouse MCPサーバーをセットアップし、
-> ClickHouseのサンプルデータセットに接続する方法について説明します。
+> このガイドでは、uvを使用してClaude DesktopにClickHouse MCPサーバーをセットアップし、
+> ClickHouseのサンプルデータセットに接続する方法を説明します。
 
 <iframe
   width='768'
@@ -52,15 +52,15 @@ Claude Desktopアプリのインストールも必要です。[Claude Desktopウ
 ## ClickHouse MCPサーバーの設定 {#configure-clickhouse-mcp-server}
 
 Claude Desktopのインストールが完了したら、[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を設定します。
-設定は[Claude Desktop設定ファイル](https://claude.ai/docs/configuration)を通じて行います。
+設定は[Claude Desktopの設定ファイル](https://claude.ai/docs/configuration)を使用して行います。
 
 このファイルを見つけるには、まず設定ページ(Macでは`Cmd+,`)を開き、左側のメニューから`Developer`タブをクリックします。
 次の画面が表示されるので、`Edit config`ボタンをクリックします:
 
-<Image img={ClaudeDesktopConfig} alt='Claude Desktop設定' size='md' />
+<Image img={ClaudeDesktopConfig} alt='Claude Desktop configuration' size='md' />
 
 これにより、設定ファイル(`claude_desktop_config.json`)を含むディレクトリが開きます。
-初めてこのファイルを開くと、次のような内容になっているはずです:
+初めてこのファイルを開くと、おそらく次の内容が含まれています:
 
 ```json
 {
@@ -108,7 +108,7 @@ Claude Desktopのインストールが完了したら、[ClickHouse MCPサーバ
 MCP mcp-clickhouse: spawn uv ENOENT
 ```
 
-この場合は、`command`を`uv`のフルパスに更新する必要があります。例えば、Cargo経由でインストールした場合は`/Users/<username>/.cargo/bin/uv`になります。
+その場合は、`command`を`uv`のフルパスに更新する必要があります。例えば、Cargo経由でインストールした場合は`/Users/<username>/.cargo/bin/uv`になります。
 :::
 
 
@@ -124,15 +124,15 @@ Claude Desktopを再起動したら、`Search and tools`アイコンをクリッ
 これで、ClickHouse MCPサーバーを使用する質問をClaudeに尋ねる準備が整いました。
 例えば、`SQLプレイグラウンドで最も興味深いデータセットは何ですか?`と尋ねることができます。
 
-Claudeは、MCPサーバー内の各ツールが初めて呼び出されるときに、その使用を確認するよう求めます:
+Claudeは、MCPサーバー内の各ツールが初めて呼び出されるときに、その使用を確認するよう求めてきます:
 
 <Image
   img={MCPPermission}
-  alt='list_databasesツールの使用許可を与える'
+  alt='list_databasesツールの使用を許可する'
   size='md'
 />
 
-以下は、ClickHouse MCPサーバーへのいくつかのツール呼び出しを含む会話の一部です:
+以下は、ClickHouse MCPサーバーへのツール呼び出しを含む会話の一部です:
 
 <Image img={ClaudeConversation} alt='Claudeとの会話' size='md' />
 

@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/production
-title: 'Выход в продакшн'
-sidebar_label: 'Продакшн'
+title: 'Выход в эксплуатацию'
+sidebar_label: 'Эксплуатация'
 pagination_prev: null
 pagination_next: null
-description: 'Выход в продакшн с ClickStack'
+description: 'Выход в эксплуатацию с ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'production', 'deployment', 'best practices', 'operations']
 ---
@@ -15,7 +15,7 @@ import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-c
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 
-При развертывании ClickStack в промышленной среде необходимо учесть несколько дополнительных аспектов, чтобы обеспечить безопасность, стабильность и корректную конфигурацию.
+При развёртывании ClickStack в продуктивной среде необходимо учитывать ряд дополнительных факторов, чтобы обеспечить безопасность, стабильность и корректную конфигурацию.
 
 
 ## Безопасность сети и портов {#network-security}
@@ -24,7 +24,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 **Рекомендация:**
 
-Открывайте только те порты, которые необходимы для работы в production-окружении. Обычно это конечные точки OTLP, API-сервер и фронтенд.
+Открывайте только те порты, которые необходимы для работы в production-среде. Обычно это конечные точки OTLP, API-сервер и фронтенд.
 
 Например, удалите или закомментируйте ненужные сопоставления портов в файле `docker-compose.yml`:
 
@@ -33,11 +33,11 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Только при необходимости для API
+  - "8080:8080"  # Только если необходимо для API
 # Избегайте открытия внутренних портов, таких как ClickHouse 8123 или MongoDB 27017.
 ```
 
-Дополнительные сведения об изоляции контейнеров и усилении защиты доступа см. в [документации по сетевым возможностям Docker](https://docs.docker.com/network/).
+Обратитесь к [документации по сетевым возможностям Docker](https://docs.docker.com/network/), чтобы узнать подробнее об изоляции контейнеров и усилении защиты доступа.
 
 
 ## Конфигурация секрета сессии {#session-secret}
@@ -81,31 +81,31 @@ openssl rand -hex 32
 Избегайте фиксации секретов в системе контроля версий. В production-окружении рекомендуется использовать инструменты управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигурации CI/CD для конкретных окружений).
 
 
-## Безопасный прием данных {#secure-ingestion}
+## Безопасный приём данных {#secure-ingestion}
 
-Весь прием данных должен осуществляться через порты OTLP, предоставляемые дистрибутивом ClickStack коллектора OpenTelemetry (OTel). По умолчанию требуется защищенный API-ключ для приема данных, который генерируется при запуске. Этот ключ необходим при отправке данных на порты OTel и находится в интерфейсе HyperDX в разделе `Team Settings → API Keys`.
+Весь приём данных должен осуществляться через порты OTLP, предоставляемые дистрибутивом ClickStack коллектора OpenTelemetry (OTel). По умолчанию для этого требуется защищённый API-ключ для приёма данных, который генерируется при запуске. Этот ключ необходим при отправке данных на порты OTel и находится в интерфейсе HyperDX в разделе `Team Settings → API Keys`.
 
-<Image img={ingestion_key} alt='Ключи приема данных' size='lg' />
+<Image img={ingestion_key} alt='Ключи приёма данных' size='lg' />
 
-Кроме того, рекомендуется включить TLS для конечных точек OTLP и создать [выделенного пользователя для приема данных в ClickHouse](#database-ingestion-user).
+Кроме того, рекомендуется включить TLS для конечных точек OTLP и создать [выделенного пользователя для приёма данных в ClickHouse](#database-ingestion-user).
 
 
 ## ClickHouse {#clickhouse}
 
-Для промышленных развертываний мы рекомендуем использовать [ClickHouse Cloud](https://clickhouse.com/cloud), который по умолчанию применяет отраслевые стандарты [практик безопасности](/cloud/security) — включая усиленное шифрование, аутентификацию и подключение, а также управляемый контроль доступа. См. раздел ["ClickHouse Cloud"](#clickhouse-cloud-production) для пошагового руководства по использованию ClickHouse Cloud с соблюдением лучших практик.
+Для промышленных развертываний мы рекомендуем использовать [ClickHouse Cloud](https://clickhouse.com/cloud), который по умолчанию применяет отраслевые стандарты [практик безопасности](/cloud/security), включая усиленное шифрование, аутентификацию и подключение, а также управляемый контроль доступа. См. раздел ["ClickHouse Cloud"](#clickhouse-cloud-production) для пошагового руководства по использованию ClickHouse Cloud с соблюдением лучших практик.
 
 ### Права пользователей {#user-permissions}
 
 #### Пользователь HyperDX {#hyperdx-user}
 
-Пользователь ClickHouse для HyperDX должен иметь права `readonly` с возможностью изменения следующих настроек:
+Пользователь ClickHouse для HyperDX должен иметь права `readonly` с доступом к изменению следующих настроек:
 
 - `max_rows_to_read` (не менее 1 миллиона)
 - `read_overflow_mode`
 - `cancel_http_readonly_queries_on_client_close`
 - `wait_end_of_query`
 
-По умолчанию пользователь `default` как в OSS, так и в ClickHouse Cloud имеет эти права, но мы рекомендуем создать отдельного пользователя с этими правами.
+По умолчанию пользователь `default` как в OSS, так и в ClickHouse Cloud имеет эти разрешения, но мы рекомендуем создать нового пользователя с этими правами.
 
 #### Пользователь базы данных и приема данных {#database-ingestion-user}
 
@@ -121,7 +121,7 @@ ClickHouse OSS предоставляет надежные функции без
 - **Установите надежный пароль** для пользователя `default` или отключите его.
 - **Избегайте внешнего доступа к ClickHouse**, если это не предусмотрено явно. По умолчанию ClickHouse привязывается только к `localhost`, если не изменен параметр `listen_host`.
 - **Используйте методы аутентификации**, такие как пароли, сертификаты, SSH-ключи или [внешние аутентификаторы](/operations/external-authenticators).
-- **Ограничьте доступ** с помощью фильтрации IP и предложения `HOST`. См. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
+- **Ограничьте доступ** с помощью фильтрации IP и конструкции `HOST`. См. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
 - **Включите управление доступом на основе ролей (RBAC)** для предоставления детализированных привилегий. См. [operations/access-rights](/operations/access-rights).
 - **Применяйте квоты и ограничения** с помощью [квот](/operations/quotas), [профилей настроек](/operations/settings/settings-profiles) и режимов только для чтения.
 - **Шифруйте данные в состоянии покоя** и используйте безопасное внешнее хранилище. См. [operations/storing-data](/operations/storing-data) и [cloud/security/CMEK](/cloud/security/cmek).
@@ -132,7 +132,7 @@ ClickHouse OSS предоставляет надежные функции без
 
 ### Настройка времени жизни (TTL) {#configure-ttl}
 
-Убедитесь, что [время жизни (TTL)](/use-cases/observability/clickstack/ttl) было [правильно настроено](/use-cases/observability/clickstack/ttl#modifying-ttl) для вашего развертывания ClickStack. Это определяет, как долго хранятся данные — значение по умолчанию в 3 дня часто требует изменения.
+Убедитесь, что [время жизни (TTL)](/use-cases/observability/clickstack/ttl) [правильно настроено](/use-cases/observability/clickstack/ttl#modifying-ttl) для вашего развертывания ClickStack. Это определяет, как долго хранятся данные — значение по умолчанию в 3 дня часто требует изменения.
 
 
 ## Рекомендации по MongoDB {#mongodb-guidelines}
@@ -179,7 +179,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 
 ### Развертывание ClickStack {#deploy-clickstack}
 
-Разверните ClickStack — предпочтительны модели развертывания [Helm](/use-cases/observability/clickstack/deployment/helm) или [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (модифицированная для исключения ClickHouse).
+Разверните ClickStack — предпочтительны модели развертывания [Helm](/use-cases/observability/clickstack/deployment/helm) или [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (модифицированный для исключения ClickHouse).
 
 :::note Раздельное развертывание компонентов
 Опытные пользователи могут развернуть [коллектор OTel](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) и [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) раздельно, используя соответствующие автономные режимы развертывания.

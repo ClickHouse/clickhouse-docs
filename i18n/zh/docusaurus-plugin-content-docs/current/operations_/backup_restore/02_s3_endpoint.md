@@ -2,14 +2,14 @@
 description: 'ClickHouse 备份与恢复概览'
 sidebar_label: 'S3 端点'
 slug: /operations/backup/s3_endpoint
-title: '在 S3 端点上进行备份与恢复'
+title: '在 S3 端点上进行备份和恢复'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# 通过 S3 端点进行备份/恢复 {#backup-to-a-local-disk}
+# 通过 S3 端点备份/恢复 {#backup-to-a-local-disk}
 
 本文介绍如何通过 S3 端点将数据备份到 S3 存储桶或从 S3 存储桶恢复数据。
 
@@ -23,7 +23,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 ### 增量备份到 S3 端点 {#incremental-backup-to-an-s3-endpoint}
 
-在本示例中,我们将创建一个备份到 S3 端点,然后从中恢复数据。
+在本示例中,我们将创建一个到 S3 端点的备份,然后从中恢复数据。
 
 :::note
 有关完整备份和增量备份之间差异的说明,请参阅["备份类型"](/operations/backup/overview/#backup-types)
@@ -38,7 +38,7 @@ import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 | 秘密访问密钥      | `40bwYnbqN7xU8bVePaUCh3+YEyGXu8UOMV9ANpwL`                   |
 
 :::tip
-创建 S3 存储桶的相关内容请参阅["将 S3 对象存储用作 ClickHouse 磁盘"](/integrations/data-ingestion/s3/index.md#configuring-s3-for-clickhouse-use)章节
+有关创建 S3 存储桶的内容,请参阅["将 S3 对象存储用作 ClickHouse 磁盘"](/integrations/data-ingestion/s3/index.md#configuring-s3-for-clickhouse-use)章节
 :::
 
 备份目标位置的指定格式如下:
@@ -127,7 +127,7 @@ SETTINGS base_backup = S3(
 
 #### 从增量备份恢复 {#restore-from-the-incremental-backup}
 
-此命令将增量备份恢复到新表 `test_table_restored` 中。  
+此命令将增量备份恢复到新表 `test_table_restored` 中。
 请注意,恢复增量备份时,基础备份也会自动包含在内。
 恢复时仅需指定**增量备份**:
 
@@ -148,7 +148,7 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 
 #### 验证行数 {#verify-the-count}
 
-原始表 `data` 进行了两次插入操作,第一次插入 1,000 行,第二次插入 100 行,总计 1,100 行。
+原始表 `data` 中进行了两次插入操作,一次插入 1,000 行,另一次插入 100 行,总计 1,100 行。
 验证恢复后的表是否包含 1,100 行:
 
 ```sql

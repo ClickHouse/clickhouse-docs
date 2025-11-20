@@ -1,25 +1,25 @@
 ---
-title: '适用于 Bun 的 chDB'
+title: '面向 Bun 的 chDB'
 sidebar_label: 'Bun'
 slug: /chdb/install/bun
-description: '如何在 Bun 运行时安装和使用 chDB'
+description: '如何在 Bun 运行环境中安装和使用 chDB'
 keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
 
 
-# 适用于 Bun 的 chDB
+# Bun 版 chDB
 
-`chDB-bun` 为 chDB 提供了实验性的 FFI（Foreign Function Interface，外部函数接口）绑定，使你能够在 Bun 应用中直接运行 ClickHouse 查询，而无需引入任何外部依赖。
+chDB-bun 为 chDB 提供了实验性的 FFI（Foreign Function Interface，外部函数接口）绑定，使你能够在 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
 
 
 
 ## 安装 {#installation}
 
-### 步骤 1:安装系统依赖项 {#install-system-dependencies}
+### 步骤 1：安装系统依赖项 {#install-system-dependencies}
 
-首先,安装所需的系统依赖项:
+首先，安装所需的系统依赖项：
 
 #### 安装 libchdb {#install-libchdb}
 
@@ -29,9 +29,9 @@ curl -sL https://lib.chdb.io | bash
 
 #### 安装构建工具 {#install-build-tools}
 
-您需要在系统上安装 `gcc` 或 `clang`:
+您需要在系统上安装 `gcc` 或 `clang`：
 
-### 步骤 2:安装 chDB-bun {#install-chdb-bun}
+### 步骤 2：安装 chDB-bun {#install-chdb-bun}
 
 
 ```bash
@@ -40,7 +40,7 @@ bun add github:chdb-io/chdb-bun
 ```
 
 
-# 或在本地克隆并构建
+# 或者在本地克隆并构建
 
 git clone [https://github.com/chdb-io/chdb-bun.git](https://github.com/chdb-io/chdb-bun.git)
 cd chdb-bun
@@ -137,6 +137,6 @@ try {
   console.log("统计信息:", stats)
 } finally {
   // 始终清理会话以释放资源
-  sess.cleanup() // 此操作会删除数据库文件
+  sess.cleanup() // 这会删除数据库文件
 }
 ```

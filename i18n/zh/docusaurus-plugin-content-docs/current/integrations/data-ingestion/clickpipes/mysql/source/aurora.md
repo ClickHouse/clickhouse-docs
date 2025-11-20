@@ -20,19 +20,19 @@ import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# Aurora MySQL 源配置指南
+# Aurora MySQL 源端设置指南
 
-本分步指南介绍如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
+本分步指南演示如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
 
 
 ## 启用二进制日志保留 {#enable-binlog-retention-aurora}
 
-二进制日志是一组记录 MySQL 服务器实例数据修改信息的日志文件,复制功能需要使用二进制日志文件。要在 Aurora MySQL 中配置二进制日志保留,您必须[启用二进制日志记录](#enable-binlog-logging)并[增加 binlog 保留时间](#binlog-retention-interval)。
+二进制日志是一组包含 MySQL 服务器实例数据修改信息的日志文件,是实现复制功能的必要条件。要在 Aurora MySQL 中配置二进制日志保留,您需要[启用二进制日志记录](#enable-binlog-logging)并[增加二进制日志保留时长](#binlog-retention-interval)。
 
 ### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
 
-自动备份功能决定 MySQL 的二进制日志记录是开启还是关闭。您可以在 RDS 控制台中为实例配置自动备份,导航至 **Modify** > **Additional configuration** > **Backup**,然后选中 **Enable automated backups** 复选框(如果尚未选中)。
+自动备份功能决定了 MySQL 的二进制日志记录是否开启。您可以在 RDS 控制台中为实例配置自动备份,具体操作为:依次进入 **Modify** > **Additional configuration** > **Backup**,然后勾选 **Enable automated backups** 复选框(如果尚未勾选)。
 
 <Image
   img={rds_backups}
@@ -41,15 +41,15 @@ import Image from '@theme/IdealImage';
   border
 />
 
-我们建议根据复制使用场景,将 **Backup retention period** 设置为合理的较长值。
+我们建议根据复制场景的实际需求,将 **Backup retention period** 设置为合理的较长时间。
 
-### 2. 增加 binlog 保留时间 {#binlog-retention-interval}
+### 2. 增加二进制日志保留时长 {#binlog-retention-interval}
 
 :::warning
-如果 ClickPipes 尝试恢复复制时,所需的 binlog 文件因配置的 binlog 保留时间已被清除,ClickPipe 将进入错误状态并需要重新同步。
+如果 ClickPipes 尝试恢复复制时,所需的二进制日志文件已因配置的保留时长而被清除,ClickPipe 将进入错误状态并需要重新同步。
 :::
 
-默认情况下,Aurora MySQL 会尽快清除二进制日志(即_惰性清除_)。我们建议将 binlog 保留时间增加到至少 **72 小时**,以确保在故障场景下二进制日志文件可用于复制。要设置二进制日志保留时间([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)),请使用 [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) 存储过程:
+默认情况下,Aurora MySQL 会尽快清除二进制日志(即_惰性清除_)。我们建议将二进制日志保留时长增加到至少 **72 小时**,以确保在故障场景下二进制日志文件可用于复制。要设置二进制日志保留时长([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)),请使用 [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) 存储过程:
 
 [//]: # "NOTE Most CDC providers recommend the maximum retention period for Aurora RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a mininum of 3 days/72 hours."
 
@@ -57,7 +57,7 @@ import Image from '@theme/IdealImage';
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-如果未设置此配置或设置的时间过短,可能会导致二进制日志出现缺失,影响 ClickPipes 恢复复制的能力。
+如果未设置此配置或设置的时长过短,可能会导致二进制日志出现缺失,影响 ClickPipes 恢复复制的能力。
 
 
 ## 配置 binlog 设置 {#binlog-settings}
@@ -65,7 +65,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 在 RDS 控制台中点击您的 MySQL 实例,然后进入 **Configuration** 选项卡,即可找到参数组。
 
 :::tip
-如果您使用的是 MySQL 集群,以下参数可以在 [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中找到,而非数据库实例组。
+如果您使用的是 MySQL 集群,以下参数可以在 [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中找到,而不是在数据库实例参数组中。
 :::
 
 <Image
@@ -76,7 +76,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 />
 
 <br />
-点击参数组链接,将跳转到其专用页面。您应该会在右上角看到 **Edit** 按钮。
+点击参数组链接,将跳转到其专用页面。您应该会在右上角看到一个 **Edit** 按钮。
 
 <Image img={edit_button} alt='编辑参数组' size='lg' border />
 
@@ -99,13 +99,13 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 然后,点击右上角的 **Save Changes**。您可能需要重启实例才能使更改生效——判断方法是查看 Aurora 实例的 **Configuration** 选项卡中,参数组链接旁边是否显示 `Pending reboot`。
 
 
-## 启用 GTID 模式(推荐) {#gtid-mode}
+## 启用 GTID 模式(推荐){#gtid-mode}
 
 :::tip
 MySQL ClickPipe 也支持在不启用 GTID 模式的情况下进行复制。但是,为了获得更好的性能和更便捷的故障排查,建议启用 GTID 模式。
 :::
 
-[全局事务标识符(GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) 是 MySQL 为每个已提交事务分配的唯一 ID。它们简化了 binlog 复制,并使故障排查更加简便。我们**推荐**启用 GTID 模式,以便 MySQL ClickPipe 可以使用基于 GTID 的复制。
+[全局事务标识符(GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html)是 MySQL 中为每个已提交事务分配的唯一 ID。它们简化了 binlog 复制,并使故障排查更加简便。我们**推荐**启用 GTID 模式,以便 MySQL ClickPipe 可以使用基于 GTID 的复制。
 
 Amazon Aurora MySQL v2(MySQL 5.7)和 v3(MySQL 8.0)以及 Aurora Serverless v2 均支持基于 GTID 的复制。要为您的 Aurora MySQL 实例启用 GTID 模式,请按照以下步骤操作:
 
@@ -131,7 +131,7 @@ Amazon Aurora MySQL v2(MySQL 5.7)和 v3(MySQL 8.0)以及 Aurora Serverless v2 �
    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
    ```
 
-2. 授予模式权限。以下示例显示了 `mysql` 数据库的权限。对要复制的每个数据库和主机重复执行这些命令:
+2. 授予 schema 权限。以下示例显示了 `mysql` 数据库的权限。对要复制的每个数据库和主机重复执行这些命令:
 
    ```sql
    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
@@ -172,4 +172,4 @@ Amazon Aurora MySQL v2(MySQL 5.7)和 v3(MySQL 8.0)以及 Aurora Serverless v2 �
 
 ## 下一步 {#whats-next}
 
-现在您的 Amazon Aurora MySQL 实例已配置 binlog 复制并安全连接到 ClickHouse Cloud,您可以[创建第一个 MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe)。关于 MySQL CDC 的常见问题,请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
+现在您的 Amazon Aurora MySQL 实例已配置 binlog 复制并安全连接到 ClickHouse Cloud，您可以[创建第一个 MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe)。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。

@@ -2,7 +2,7 @@
 sidebar_label: 'Looker Studio'
 slug: /integrations/lookerstudio
 keywords: ['clickhouse', 'looker', 'studio', 'connect', 'mysql', 'integrate', 'ui']
-description: 'Looker Studio（旧称 Google Data Studio）は、データをカスタマイズ可能で有用なレポートやダッシュボードに変換するためのオンラインツールです。'
+description: 'Looker Studio（旧称 Google Data Studio）は、データを柔軟にカスタマイズ可能なレポートやダッシュボードに変換するオンラインツールです。'
 title: 'Looker Studio'
 doc_type: 'guide'
 integration:
@@ -28,11 +28,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Looker Studio は、Google 公式の MySQL データソースを使用して、MySQL インターフェース経由で ClickHouse に接続できます。
+Looker Studio は、公式の Google MySQL データソースを使用して、MySQL インターフェイス経由で ClickHouse に接続できます。
 
 
 
-## ClickHouse Cloudのセットアップ {#clickhouse-cloud-setup}
+## ClickHouse Cloud のセットアップ {#clickhouse-cloud-setup}
 
 <MySQLCloudSetup />
 
@@ -44,7 +44,7 @@ Looker Studio は、Google 公式の MySQL データソースを使用して、M
 
 ## Looker StudioをClickHouseに接続する {#connecting-looker-studio-to-clickhouse}
 
-まず、Googleアカウントを使用してhttps://lookerstudio.google.comにログインし、新しいデータソースを作成します。
+まず、Googleアカウントを使用してhttps://lookerstudio.google.comにログインし、新しいデータソースを作成します:
 
 <Image
   size='md'
@@ -54,7 +54,7 @@ Looker Studio は、Google 公式の MySQL データソースを使用して、M
 />
 <br />
 
-Googleが提供する公式MySQLコネクタ(名称は単に**MySQL**)を検索します。
+Googleが提供する公式MySQLコネクタ(名称は単に**MySQL**)を検索します:
 
 <Image
   size='md'
@@ -74,7 +74,7 @@ Googleが提供する公式MySQLコネクタ(名称は単に**MySQL**)を検索�
 />
 <br />
 
-ClickHouseからデータを取得する方法には2つのオプションがあります。1つ目は、テーブルブラウザ機能を使用する方法です。
+ClickHouseからデータを取得する方法には2つのオプションがあります。1つ目は、テーブルブラウザ機能を使用する方法です:
 
 <Image
   size='md'
@@ -84,7 +84,7 @@ ClickHouseからデータを取得する方法には2つのオプションがあ
 />
 <br />
 
-または、カスタムクエリを指定してデータを取得することもできます。
+または、カスタムクエリを指定してデータを取得することもできます:
 
 <Image
   size='md'
@@ -104,7 +104,7 @@ ClickHouseからデータを取得する方法には2つのオプションがあ
 />
 <br />
 
-これで、データの探索や新しいレポートの作成を進めることができます。
+これで、データの探索や新しいレポートの作成を進めることができます!
 
 
 ## ClickHouse CloudでLooker Studioを使用する {#using-looker-studio-with-clickhouse-cloud}
@@ -124,7 +124,7 @@ Looker StudioのUIで「Enable SSL」オプションを選択します。ClickHo
 <Image
   size='md'
   img={looker_studio_mysql_cloud}
-  alt='ClickHouse Cloud SSL設定を使用したLooker Studio接続構成'
+  alt='ClickHouse CloudのSSL設定を使用したLooker Studioの接続構成'
   border
 />
 <br />

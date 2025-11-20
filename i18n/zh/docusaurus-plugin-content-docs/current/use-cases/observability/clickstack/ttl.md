@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/ttl
-title: '管理 TTL'
-sidebar_label: '管理 TTL'
+title: 'TTL 管理'
+sidebar_label: 'TTL 管理'
 pagination_prev: null
 pagination_next: null
-description: '在 ClickStack 中管理 TTL'
+description: '使用 ClickStack 进行 TTL 管理'
 doc_type: 'guide'
 keywords: ['clickstack', 'ttl', 'data retention', 'lifecycle', 'storage management']
 ---
@@ -59,21 +59,21 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 
 ClickHouse 中的分区允许根据列或 SQL 表达式在磁盘上逻辑分离数据。通过逻辑分离数据,每个分区可以独立操作,例如根据 TTL 策略在过期时删除。
 
-如上例所示,分区在表初始定义时通过 `PARTITION BY` 子句指定。此子句可以包含针对任何列的 SQL 表达式,其结果将决定行被发送到哪个分区。这会使数据在磁盘上通过公共文件夹名称前缀与每个分区逻辑关联,然后可以单独查询。对于上面的示例,默认的 `otel_logs` 表结构使用表达式 `toDate(Timestamp)` 按天分区。当行插入到 ClickHouse 时,此表达式将针对每一行进行计算,并路由到相应的分区(如果存在)(如果该行是当天的第一行,则会创建分区)。有关分区及其其他应用的更多详细信息,请参阅["表分区"](/partitions)。
+如上例所示,分区在表初始定义时通过 `PARTITION BY` 子句指定。此子句可以包含针对任何列的 SQL 表达式,其结果将决定行被发送到哪个分区。这会使数据在磁盘上通过公共文件夹名称前缀与每个分区逻辑关联,然后可以单独查询。对于上面的示例,默认的 `otel_logs` 表结构使用表达式 `toDate(Timestamp)` 按天分区。当行插入到 ClickHouse 时,此表达式将针对每一行进行计算,并路由到相应的分区(如果该分区存在)(如果该行是某一天的第一行,则会创建该分区)。有关分区及其其他应用的更多详细信息,请参阅["表分区"](/partitions)。
 
-<Image img={observability_14} alt='分区' size='lg' />
+<Image img={observability_14} alt='Partitions' size='lg' />
 
 
-表结构还包括 `TTL TimestampTime + toIntervalDay(3)`，并设置 `ttl_only_drop_parts = 1`。前者子句确保数据在超过 3 天后会被删除。设置 `ttl_only_drop_parts = 1` 会强制仅删除其中所有数据都已过期的数据 part（而不是尝试部分删除行）。在通过分区保证不同日期的数据永远不会被“合并”的情况下，就可以高效地删除数据。 
+表结构还包括一个 `TTL TimestampTime + toIntervalDay(3)` 设置以及 `ttl_only_drop_parts = 1`。前者确保数据在超过 3 天后会被删除。设置 `ttl_only_drop_parts = 1` 会强制仅删除其中所有数据都已过期的 part（而不是尝试部分删除行）。结合分区保证来自不同日期的数据不会被“合并”，从而可以高效地删除数据。 
 
 :::important `ttl_only_drop_parts`
-我们建议始终使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)。启用该设置后，当一个 part 中的所有行都已过期时，ClickHouse 会删除整个 part。与通过资源消耗较高的变更操作（当 `ttl_only_drop_parts=0` 时）对 TTL 过期行进行部分清理相比，删除整个 part 可以缩短 `merge_with_ttl_timeout` 的时间，并降低对系统性能的影响。如果数据按照与你执行 TTL 过期所使用的时间单位（例如天）进行分区，各个 part 自然只会包含该时间区间内的数据。这将确保可以高效地应用 `ttl_only_drop_parts=1`。
+我们建议始终使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)。启用该设置后，ClickHouse 会在一个 part 中所有行都过期时删除整个 part。删除整个 part，而不是对 TTL 已过期的行进行部分清理（当 `ttl_only_drop_parts=0` 时，需要通过资源开销较大的 mutation 来实现），可以缩短 `merge_with_ttl_timeout` 的等待时间，并降低对系统性能的影响。如果数据使用与 TTL 过期相同的时间单位进行分区，例如按天分区，那么各个 part 自然只包含该时间区间内的数据。这将确保可以高效应用 `ttl_only_drop_parts=1`。
 :::
 
-默认情况下，TTL 过期的数据会在 ClickHouse [合并数据 part](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时被删除。当 ClickHouse 检测到数据已过期时，会执行一次非计划合并。
+默认情况下，TTL 已过期的数据会在 ClickHouse [合并数据 part](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage) 时被删除。当 ClickHouse 检测到数据已过期时，会执行一次非计划内的合并。
 
-:::note TTL schedule
-如上所述，TTL 不会立即生效，而是按计划执行。MergeTree 表设置 `merge_with_ttl_timeout` 用于设置在重复执行带有删除 TTL 的合并之前的最小延迟时间（以秒为单位）。默认值为 14400 秒（4 小时）。但这只是最小延迟；触发一次 TTL 合并可能需要更长时间。如果该值设置得过低，将会执行许多非计划合并，可能消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制触发一次 TTL 过期。
+:::note TTL 调度
+TTL 不是立即应用，而是按调度执行，如上所述。MergeTree 表设置 `merge_with_ttl_timeout` 用于设置在重复执行带删除 TTL 的合并前的最小延迟时间（秒）。默认值为 14400 秒（4 小时）。但这只是最小延迟；触发 TTL 合并可能需要更长时间。如果该值过低，将会执行大量非计划内的合并，可能会消耗大量资源。可以使用命令 `ALTER TABLE my_table MATERIALIZE TTL` 强制立即执行一次 TTL 过期操作。
 :::
 
 
@@ -100,7 +100,7 @@ exporters:
 
 ### 列级 TTL {#column-level-ttl}
 
-上述示例在表级别设置数据过期。用户也可以在列级别设置数据过期。随着数据老化,可以利用此功能删除那些在调查分析中价值不足以证明其保留成本的列。例如,我们建议保留 `Body` 列,以防在插入时未提取的新动态元数据被添加,例如新的 Kubernetes 标签。一段时间后(例如 1 个月),如果这些额外的元数据明显没有用处,那么保留 `Body` 列的价值就会降低。
+上述示例在表级别使数据过期。用户也可以在列级别使数据过期。随着数据老化,可以使用此功能删除那些在调查分析中的价值不足以证明保留它们所需资源开销的列。例如,我们建议保留 `Body` 列,以防添加了在插入时未提取的新动态元数据,例如新的 Kubernetes 标签。一段时间后,例如 1 个月,可能会明显看出这些额外的元数据并不有用——从而降低了保留 `Body` 列的价值。
 
 下面展示了如何在 30 天后删除 `Body` 列。
 

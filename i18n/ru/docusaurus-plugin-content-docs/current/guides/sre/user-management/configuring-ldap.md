@@ -2,8 +2,8 @@
 sidebar_label: 'Настройка LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: 'Настройка ClickHouse для использования LDAP для аутентификации и назначения ролей'
-description: 'Описывает, как настроить ClickHouse для использования LDAP для аутентификации и назначения ролей'
+title: 'Настройка ClickHouse для использования LDAP для аутентификации и отображения ролей'
+description: 'Описывает, как настроить ClickHouse для использования LDAP для аутентификации и отображения ролей'
 keywords: ['LDAP configuration', 'LDAP authentication', 'role mapping', 'user management', 'SRE guide']
 doc_type: 'guide'
 ---
@@ -15,19 +15,19 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-ClickHouse можно настроить на использование LDAP для аутентификации пользователей базы данных ClickHouse. В этом руководстве приведён простой пример интеграции ClickHouse с системой LDAP, которая аутентифицируется через общедоступный каталог.
+ClickHouse можно настроить для использования LDAP для аутентификации пользователей базы данных ClickHouse. В этом руководстве приведён простой пример интеграции ClickHouse с системой LDAP, использующей общедоступный каталог для аутентификации.
 
 
 
-## 1. Configure LDAP connection settings in ClickHouse {#1-configure-ldap-connection-settings-in-clickhouse}
+## 1. Настройка параметров подключения LDAP в ClickHouse {#1-configure-ldap-connection-settings-in-clickhouse}
 
-1. Test your connection to this public LDAP server:
+1. Проверьте подключение к этому публичному LDAP-серверу:
 
    ```bash
    $ ldapsearch -x -b dc=example,dc=com -H ldap://ldap.forumsys.com
    ```
 
-   The reply will be something like this:
+   Ответ будет примерно таким:
 
    ```response
    # extended LDIF
@@ -48,7 +48,7 @@ ClickHouse можно настроить на использование LDAP д
    ...
    ```
 
-2. Edit the `config.xml` file and add the following to configure LDAP:
+2. Отредактируйте файл `config.xml` и добавьте следующее для настройки LDAP:
 
    ```xml
    <ldap_servers>
@@ -63,28 +63,28 @@ ClickHouse можно настроить на использование LDAP д
    ```
 
    :::note
-   The `<test_ldap_server>` tags is an arbitrary label to identify a particular LDAP server.
+   Тег `<test_ldap_server>` — это произвольная метка для идентификации конкретного LDAP-сервера.
    :::
 
-   These are the basic settings used above:
+   Ниже приведены основные параметры, используемые выше:
 
-   | Parameter        | Description                                   | Example                             |
-   | ---------------- | --------------------------------------------- | ----------------------------------- |
-   | host             | hostname or IP of LDAP server                 | ldap.forumsys.com                   |
-   | port             | directory port for LDAP server                | 389                                 |
-   | bind_dn          | template path to users                        | `uid={user_name},dc=example,dc=com` |
-   | enable_tls       | whether to use secure ldap                    | no                                  |
-   | tls_require_cert | whether to require certificate for connection | never                               |
+   | Параметр         | Описание                                           | Пример                              |
+   | ---------------- | -------------------------------------------------- | ----------------------------------- |
+   | host             | имя хоста или IP-адрес LDAP-сервера                | ldap.forumsys.com                   |
+   | port             | порт каталога для LDAP-сервера                     | 389                                 |
+   | bind_dn          | шаблон пути к пользователям                        | `uid={user_name},dc=example,dc=com` |
+   | enable_tls       | использовать ли защищённый LDAP                    | no                                  |
+   | tls_require_cert | требовать ли сертификат для подключения            | never                               |
 
    :::note
-   In this example, since the public server uses 389 and does not use a secure port, we disable TLS for demonstration purposes.
+   В этом примере, поскольку публичный сервер использует порт 389 и не использует защищённый порт, мы отключаем TLS в демонстрационных целях.
    :::
 
    :::note
-   View the [LDAP doc page](../../../operations/external-authenticators/ldap.md) for more details on the LDAP settings.
+   Подробнее о настройках LDAP см. на [странице документации LDAP](../../../operations/external-authenticators/ldap.md).
    :::
 
-3. Add the `<ldap>` section to `<user_directories>` section to configure the user role mapping. This section defines when a user is authenticated and what role the user will receive. In this basic example, any user authenticating to LDAP will receive the `scientists_role` which will be defined at a later step in ClickHouse. The section should look similar to this:
+3. Добавьте секцию `<ldap>` в секцию `<user_directories>` для настройки сопоставления ролей пользователей. Эта секция определяет, когда пользователь проходит аутентификацию и какую роль он получит. В этом базовом примере любой пользователь, прошедший аутентификацию через LDAP, получит роль `scientists_role`, которая будет определена на следующем шаге в ClickHouse. Секция должна выглядеть примерно так:
 
    ```xml
    <user_directories>
@@ -108,17 +108,17 @@ ClickHouse можно настроить на использование LDAP д
    </user_directories>
    ```
 
-   These are the basic settings used above:
+   Ниже приведены основные параметры, используемые выше:
 
-   | Parameter     | Description                                                                      | Example                                                       |
-   | ------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-   | server        | метка, определённая в предыдущей секции `ldap_servers`                           | test_ldap_server                                              |
-   | roles         | имя ролей в ClickHouse, к которым будут сопоставляться пользователи             | scientists_role                                               |
-   | base_dn       | базовый путь, с которого начинается поиск групп с пользователем                  | dc=example,dc=com                                             |
-   | search_filter | фильтр поиска LDAP для определения групп, выбираемых для сопоставления пользователей | `(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))` |
-   | attribute     | из какого атрибута должно быть возвращено значение                               | cn                                                            |
+   | Параметр      | Описание                                                                       | Пример                                                        |
+   | ------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------- |
+   | server        | метка, определённая в предыдущей секции ldap_servers                           | test_ldap_server                                              |
+   | roles         | имя ролей, определённых в ClickHouse, которым будут сопоставлены пользователи  | scientists_role                                               |
+   | base_dn       | базовый путь для начала поиска групп с пользователем                           | dc=example,dc=com                                             |
+   | search_filter | фильтр поиска LDAP для идентификации групп для сопоставления пользователей     | `(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))` |
+   | attribute     | имя атрибута, из которого должно быть возвращено значение                      | cn                                                            |
 
-4. Restart your ClickHouse server to apply the settings.
+4. Перезапустите сервер ClickHouse, чтобы применить настройки.
 
 
 ## 2. Настройка ролей и прав доступа к базе данных ClickHouse {#2-configure-clickhouse-database-roles-and-permissions}
@@ -181,6 +181,6 @@ ClickHouse можно настроить на использование LDAP д
    ```
 
 
-## Заключение {#summary}
+## Резюме {#summary}
 
-В этой статье рассмотрены основы настройки ClickHouse для аутентификации на LDAP-сервере и сопоставления пользователей с ролями. Также возможна настройка отдельных пользователей в ClickHouse с аутентификацией через LDAP без автоматического сопоставления ролей. Модуль LDAP можно использовать и для подключения к Active Directory.
+В данной статье были рассмотрены основы настройки ClickHouse для аутентификации на LDAP-сервере и сопоставления пользователей с ролями. Также возможна настройка отдельных пользователей в ClickHouse с аутентификацией через LDAP без автоматического сопоставления ролей. Модуль LDAP может также использоваться для подключения к Active Directory.

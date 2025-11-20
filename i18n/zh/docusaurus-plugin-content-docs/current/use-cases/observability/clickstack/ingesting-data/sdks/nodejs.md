@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/nodejs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'ClickStack 的 Node.js SDK - ClickHouse 可观测性栈'
+description: 'ClickStack 的 Node.js SDK - ClickHouse 可观测性技术栈'
 title: 'Node.js'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
@@ -12,13 +12,15 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志、指标、追踪和异常）。追踪通过自动化埋点自动生成，因此无需手动埋点也可以从追踪中获益。
+ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志、指标、
+跟踪和异常）。跟踪通过自动插桩自动生成，因此无需手动
+插桩就能从跟踪中获得价值。
 
 本指南集成了：
 
 * **日志**
 * **指标**
-* **追踪**
+* **跟踪**
 * **异常**
 
 
@@ -76,11 +78,11 @@ HyperDX.init({
 </TabItem>
 </Tabs>
 
-这将自动捕获 Node.js 应用程序的追踪、指标和日志。
+这将自动从 Node.js 应用程序中捕获追踪、指标和日志。
 
 ### 设置日志收集 {#setup-log-collection}
 
-默认情况下,`console.*` 日志会被自动收集。如果使用 `winston` 或 `pino` 等日志记录器,需要为日志记录器添加传输器以将日志发送到 ClickStack。如果使用其他类型的日志记录器,请[联系我们](mailto:support@clickhouse.com)或查看适用的平台集成(例如 [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes))。
+默认情况下,`console.*` 日志会被自动收集。如果使用 `winston` 或 `pino` 等日志记录器,需要为日志记录器添加传输器以将日志发送到 ClickStack。如果使用其他类型的日志记录器,请[联系我们](mailto:support@clickhouse.com)或探索我们的平台集成(如适用,例如 [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes))。
 
 <Tabs groupId="logging">
 <TabItem value="Winston" label="Winston" default>
@@ -109,7 +111,7 @@ export default logger
 </TabItem>
 <TabItem value="Pino" label="Pino">
 
-如果使用 `pino` 作为日志记录器,需要为日志记录器添加以下传输器,并指定 `mixin` 以关联日志与追踪。
+如果使用 `pino` 作为日志记录器,需要为日志记录器添加以下传输器,并指定 `mixin` 以将日志与追踪关联。
 
 ```typescript
 import pino from "pino"
@@ -142,7 +144,7 @@ export default logger
 
 ### 设置错误收集 {#setup-error-collection}
 
-ClickStack SDK 可以自动捕获应用程序中的未捕获异常和错误,并提供完整的堆栈追踪和代码上下文。
+ClickStack SDK 可以自动捕获应用程序中未捕获的异常和错误,并提供完整的堆栈追踪和代码上下文。
 
 要启用此功能,需要将以下代码添加到应用程序错误处理中间件的末尾,或使用 `recordException` 函数手动捕获异常。
 
@@ -184,7 +186,7 @@ const app = new Koa()
 
 HyperDX.setupKoaErrorHandler(app)
 
-// 添加您的路由等配置
+// 添加您的路由等
 
 app.listen(3030)
 ```
@@ -196,7 +198,7 @@ app.listen(3030)
 const HyperDX = require("@hyperdx/node-opentelemetry")
 
 function myErrorHandler(error, req, res, next) {
-  // 此方法可在应用程序的任何位置使用
+  // 可在应用程序的任何位置使用
   HyperDX.recordException(error)
 }
 ```
@@ -291,7 +293,7 @@ SDK 将自动对以下库进行插桩(跟踪):
 
 ### 使用 ClickStack OpenTelemetry CLI 运行应用程序 {#run-the-application-with-cli}
 
-或者,您可以使用 `opentelemetry-instrument` CLI 或 Node.js 的 `--require` 标志来自动插桩您的应用程序,无需修改任何代码。CLI 安装方式支持更广泛的自动插桩库和框架。
+或者,您可以使用 `opentelemetry-instrument` CLI 或 Node.js `--require` 标志来自动检测您的应用程序,无需修改任何代码。CLI 安装方式支持更广泛的自动检测库和框架。
 
 <Tabs groupId="cli">
 <TabItem value="npx" label="使用 NPX" default>
@@ -326,7 +328,7 @@ initSDK({
 
 </Tabs>
 
-_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,可以是您想要的任何名称。_
+_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用程序中标识您的服务,可以是任意名称。_
 
 ### 启用异常捕获 {#enabling-exception-capturing}
 
@@ -336,11 +338,11 @@ _`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,�
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
-之后,要自动捕获来自 Express、Koa 的异常,或手动捕获异常,请按照上面[设置错误收集](#setup-error-collection)部分的说明进行操作。
+之后,要自动捕获来自 Express、Koa 的异常,或手动捕获异常,请参照上文[设置错误收集](#setup-error-collection)部分的说明进行操作。
 
-### 自动插桩的库 {#auto-instrumented-libraries-2}
+### 自动检测的库 {#auto-instrumented-libraries-2}
 
-通过上述安装方法,以下库将被自动插桩(追踪):
+通过上述安装方法,以下库将被自动检测(追踪):
 
 
 - [`amqplib`](https://www.npmjs.com/package/amqplib)

@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)コンビネータを[`sum`](/sql-reference/aggregate-functions/reference/sum)集約関数に適用すると、行の値を処理する集約関数から配列カラムを処理する集約関数に変換され、行をまたいで配列内の各要素に対して集約処理を適用できるようになります。
+[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)コンビネータを[`sum`](/sql-reference/aggregate-functions/reference/sum)集約関数に適用すると、行の値を処理する集約関数から配列カラムを処理する集約関数に変換され、行をまたいで配列内の各要素に対して集約処理が適用されます。
 
 
 ## 使用例 {#example-usage}

@@ -14,12 +14,15 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`State`](/sql-reference/aggregate-functions/combinators#-state)コンビネータを[`avg`](/sql-reference/aggregate-functions/reference/avg)関数に適用すると、`AggregateFunction(avg, T)`型の中間状態が生成されます。ここで`T`は平均値の計算に使用される型です。
+[`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータを
+[`avg`](/sql-reference/aggregate-functions/reference/avg)
+関数に適用すると、`AggregateFunction(avg, T)` 型の中間状態が生成されます。ここで
+`T` は平均値の計算に使用される型です。
 
 
 ## 使用例 {#example-usage}
 
-この例では、`AggregateFunction`型を`avgState`関数と組み合わせて使用し、ウェブサイトのトラフィックデータを集計する方法を説明します。
+この例では、`AggregateFunction`型を`avgState`関数と組み合わせて使用し、ウェブサイトのトラフィックデータを集約する方法を説明します。
 
 まず、ウェブサイトのトラフィックデータ用のソーステーブルを作成します:
 
@@ -35,7 +38,7 @@ ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-平均レスポンス時間を格納する集計テーブルを作成します。`avg`は複雑な状態(合計とカウント)を必要とするため、`SimpleAggregateFunction`型を使用できないことに注意してください。そのため、`AggregateFunction`型を使用します:
+平均レスポンス時間を格納する集約テーブルを作成します。`avg`は複雑な状態(合計とカウント)を必要とするため、`SimpleAggregateFunction`型を使用できないことに注意してください。そのため、`AggregateFunction`型を使用します:
 
 ```sql
 CREATE TABLE page_performance
@@ -48,7 +51,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-新しいデータの挿入トリガーとして機能し、上記で定義したターゲットテーブルに中間状態データを格納するインクリメンタルマテリアライズドビューを作成します:
+新しいデータへの挿入トリガーとして機能し、上記で定義したターゲットテーブルに中間状態データを格納するインクリメンタルマテリアライズドビューを作成します:
 
 ```sql
 CREATE MATERIALIZED VIEW page_performance_mv
@@ -73,7 +76,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
     (3, 'About', 90);
 ```
 
-さらにデータを挿入して、ディスク上に2つ目のパートを作成します:
+さらにデータを挿入して、ディスク上に2番目のパートを作成します:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES

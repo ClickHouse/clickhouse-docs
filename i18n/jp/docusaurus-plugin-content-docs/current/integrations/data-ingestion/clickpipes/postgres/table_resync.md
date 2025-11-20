@@ -21,8 +21,8 @@ keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync'
 
 ### 2. ClickHouse上でテーブルをトランケートまたはドロップする {#truncate-drop-table}
 
-この手順は、次のステップでテーブルを再度追加する際のデータ重複を防ぐためのものです。ClickHouse Cloudの**SQLコンソール**タブに移動してクエリを実行することで実行できます。
-なお、ClickHouseにテーブルが既に存在し、かつ空でない場合は、テーブル追加をブロックする検証が行われます。
+この手順は、次のステップでテーブルを再度追加する際のデータ重複を避けるためのものです。ClickHouse Cloudの**SQLコンソール**タブに移動してクエリを実行することで行えます。
+なお、テーブルがClickHouseに既に存在し、かつ空でない場合は、テーブル追加をブロックする検証が実装されています。
 
 ### 3. ClickPipeに再度テーブルを追加する {#add-table-again}
 

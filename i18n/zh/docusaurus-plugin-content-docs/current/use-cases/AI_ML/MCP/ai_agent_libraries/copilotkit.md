@@ -4,7 +4,7 @@ sidebar_label: '集成 CopilotKit'
 title: '如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI Agent'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用存储在 ClickHouse 中的数据，结合 ClickHouse MCP 和 CopilotKit 构建智能体应用'
+description: '学习如何使用存储在 ClickHouse 中的数据，结合 ClickHouse MCP 和 CopilotKit 构建智能体应用'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,19 +14,19 @@ doc_type: 'guide'
 
 # 如何使用 CopilotKit 和 ClickHouse MCP Server 构建 AI Agent
 
-本示例演示如何使用存储在 ClickHouse 中的数据构建智能 Agent 应用。它通过 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
-从 ClickHouse 查询数据，并基于这些数据生成图表。
+本示例演示如何使用存储在 ClickHouse 中的数据构建 Agent 型应用程序。它使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
+从 ClickHouse 查询数据，并基于查询结果生成图表。
 
 [CopilotKit](https://github.com/CopilotKit/CopilotKit) 用于构建 UI，  
 并为用户提供聊天界面。
 
 :::note 示例代码
-此示例的代码可在 [examples 仓库](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) 中找到。
+本示例的代码位于 [examples 仓库](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit)。
 :::
 
 
 
-## 前置条件 {#prerequisites}
+## 前置要求 {#prerequisites}
 
 - `Node.js >= 20.14.0`
 - `uv >= 0.1.0`
@@ -43,18 +43,18 @@ doc_type: 'guide'
 
 1. 安装依赖项:
 
-运行 `npm install` 来安装 Node 依赖项。
+运行 `npm install` 安装 Node 依赖项。
 
 2. 安装 mcp-clickhouse:
 
-创建一个新文件夹 `external` 并将 mcp-clickhouse 代码仓库克隆到该文件夹中。
+创建新文件夹 `external` 并将 mcp-clickhouse 仓库克隆到该文件夹中。
 
 ```sh
 mkdir -p external
 git clone https://github.com/ClickHouse/mcp-clickhouse external/mcp-clickhouse
 ```
 
-安装 Python 依赖项并添加 fastmcp 命令行工具。
+安装 Python 依赖项并添加 fastmcp CLI 工具。
 
 ```sh
 cd external/mcp-clickhouse
@@ -65,7 +65,7 @@ uv add fastmcp
 
 ## 配置应用程序 {#configure-the-application}
 
-将 `env.example` 文件复制为 `.env`,然后编辑该文件以配置您的 `ANTHROPIC_API_KEY`。
+将 `env.example` 文件复制为 `.env`，然后编辑该文件以提供您的 `ANTHROPIC_API_KEY`。
 
 
 ## 使用自定义 LLM {#use-your-own-llm}

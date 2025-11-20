@@ -3,7 +3,7 @@ sidebar_label: 'Deepnote'
 sidebar_position: 11
 slug: /integrations/deepnote
 keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
-description: '使い慣れたノートブック環境の快適さはそのままに、非常に大きなデータセットに効率的にクエリを実行し、分析やモデリングを行えます。'
+description: '使い慣れたノートブック環境の中で、非常に大きなデータセットに効率よくクエリを実行し、分析やモデリングを行えます。'
 title: 'ClickHouse を Deepnote に接続する'
 doc_type: 'guide'
 integration:
@@ -24,9 +24,9 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> は、チームでインサイトを発見・共有するために設計された共同作業向けのデータノートブックです。Jupyter 互換であることに加えて、クラウド上で動作し、データサイエンスプロジェクトに効率的に取り組み、共同作業を行うための一元的なワークスペースを提供します。
+<a href="https://www.deepnote.com/" target="_blank">Deepnote</a> は、チームがインサイトを発見し共有するために構築された共同作業型のデータノートブックです。Jupyter 互換であることに加えて、クラウド上で動作し、データサイエンスプロジェクトに効率的に共同で取り組むための一元的なワークスペースを提供します。
 
-このガイドでは、すでに Deepnote アカウントをお持ちであり、稼働中の ClickHouse インスタンスがあることを前提とします。
+このガイドでは、すでに Deepnote アカウントをお持ちで、稼働中の ClickHouse インスタンスがあることを前提とします。
 
 
 
@@ -49,16 +49,16 @@ Deepnote データノートブックから ClickHouse へクエリを実行す�
 
    <Image size='md' img={deepnote_02} alt='ClickHouse詳細ダイアログ' border />
 
-   **_注意:_** ClickHouseへの接続がIPアクセスリストで保護されている場合は、DeepnoteのIPアドレスを許可する必要があります。詳細については、[Deepnoteのドキュメント](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)を参照してください。
+   **_注意:_** ClickHouseへの接続がIPアクセスリストで保護されている場合、DeepnoteのIPアドレスを許可する必要があります。詳細については、[Deepnoteのドキュメント](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)を参照してください。
 
 3. これでClickHouseとDeepnoteの統合が完了しました。
 
 
 ## ClickHouse統合の使用 {#using-clickhouse-integration}
 
-1. ノートブックの右側にあるClickHouse統合に接続します。
+1. まず、ノートブックの右側にあるClickHouse統合に接続します。
 
    <Image size='lg' img={deepnote_03} alt='ClickHouse詳細ダイアログ' border />
 
-2. 新しいClickHouseクエリブロックを作成し、データベースにクエリを実行します。クエリ結果はDataFrameとして保存され、SQLブロックで指定した変数に格納されます。
+2. 次に、新しいClickHouseクエリブロックを作成し、データベースに対してクエリを実行します。クエリ結果はDataFrameとして保存され、SQLブロックで指定した変数に格納されます。
 3. 既存の[SQLブロック](https://docs.deepnote.com/features/sql-cells)をClickHouseブロックに変換することもできます。

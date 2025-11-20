@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMaxIf'
 title: 'argMaxIf'
-description: 'argMaxIf コンビネータの利用例'
+description: 'argMaxIf コンビネーターの使用例'
 keywords: ['argMax', 'if', 'combinator', 'examples', 'argMaxIf']
 sidebar_label: 'argMaxIf'
 doc_type: 'reference'
@@ -12,14 +12,11 @@ doc_type: 'reference'
 # argMaxIf {#argmaxif}
 
 
-## Description {#description}
+## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-関数に適用することで、条件が真となる行において `val` の最大値に対応する `arg` の値を取得できます。
-これには `argMaxIf` 集約コンビネータ関数を使用します。
+[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`argMax`](/sql-reference/aggregate-functions/reference/argmax)関数に適用することで、条件が真である行において`val`の最大値に対応する`arg`の値を求めることができます。これには`argMaxIf`集約コンビネータ関数を使用します。
 
-`argMaxIf` 関数は、データセット内の最大値に関連付けられた値を取得する際に、
-特定の条件を満たす行のみを対象としたい場合に有用です。
+`argMaxIf`関数は、データセット内で最大値に関連付けられた値を求める必要があるものの、特定の条件を満たす行のみを対象としたい場合に有用です。
 
 
 ## 使用例 {#example-usage}

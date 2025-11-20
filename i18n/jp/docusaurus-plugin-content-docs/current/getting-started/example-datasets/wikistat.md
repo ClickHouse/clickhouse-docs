@@ -1,5 +1,5 @@
 ---
-description: '0.5 兆件のレコードを含む WikiStat データセットを探索します。'
+description: '0.5 兆件のレコードを含む WikiStat データセットを調査します。'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
@@ -9,13 +9,13 @@ keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews
 
 このデータセットには 0.5 兆件のレコードが含まれています。
 
-FOSDEM 2023 の動画をご覧ください: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+FOSDEM 2023 の動画: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-発表スライドはこちら: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+発表スライド: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
 データソース: [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
-リンク一覧の取得:
+リンク一覧の取得方法:
 
 ```shell
 for i in {2015..2023}; do
@@ -36,7 +36,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
 
 (約3日かかります)
 
-テーブルを作成する:
+テーブルを作成します：
 
 ```sql
 CREATE TABLE wikistat
@@ -68,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-または、クレンジング済みデータを読み込む場合:
+またはクレンジング済みデータをロードします：
 
 ```sql
 INSERT INTO wikistat WITH

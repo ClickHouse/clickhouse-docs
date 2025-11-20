@@ -1,7 +1,7 @@
 ---
 title: 'Экспорт JSON'
 slug: /integrations/data-formats/json/exporting
-description: 'Как экспортировать данные JSON из ClickHouse'
+description: 'Как экспортировать данные в формате JSON из ClickHouse'
 keywords: ['json', 'clickhouse', 'formats', 'exporting']
 doc_type: 'guide'
 ---
@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 # Экспорт JSON
 
-Почти любой формат JSON, используемый для импорта, может использоваться и для экспорта. Наиболее популярным является формат [`JSONEachRow`](/interfaces/formats/JSONEachRow):
+Почти любой формат JSON, используемый для импорта, может быть использован и для экспорта. Наиболее популярен формат [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -22,7 +22,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-Или можно использовать формат [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow), чтобы сэкономить место на диске за счёт опущенных имён столбцов:
+Или мы можем использовать формат [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow), чтобы сэкономить место на диске, опуская имена столбцов:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -35,7 +35,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 ```
 
 
-## Переопределение типов данных как строк {#overriding-data-types-as-strings}
+## Переопределение типов данных в строки {#overriding-data-types-as-strings}
 
 ClickHouse соблюдает типы данных и экспортирует JSON в соответствии со стандартами. Однако в случаях, когда необходимо представить все значения в виде строк, можно использовать формат [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow):
 
@@ -49,7 +49,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-Теперь числовой столбец `hits` представлен в виде строки. Экспорт в виде строк поддерживается для всех форматов JSON\*. Для этого используйте форматы `JSONStrings\*` и `JSONCompactStrings\*`:
+Теперь числовой столбец `hits` представлен в виде строки. Экспорт в виде строк поддерживается для всех форматов JSON\*, см. форматы `JSONStrings\*` и `JSONCompactStrings\*`:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -64,7 +64,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## Экспорт метаданных вместе с данными {#exporting-metadata-together-with-data}
 
-Стандартный формат [JSON](/interfaces/formats/JSON), широко используемый в приложениях, экспортирует не только результирующие данные, но также типы столбцов и статистику выполнения запроса:
+Стандартный формат [JSON](/interfaces/formats/JSON), широко используемый в приложениях, экспортирует не только результирующие данные, но и типы столбцов, а также статистику выполнения запроса:
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -137,7 +137,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 }
 ```
 
-Рассмотрите варианты [`JSONStrings`](/interfaces/formats/JSONStrings) или [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) для кодирования всех значений в виде строк.
+Для кодирования всех значений в виде строк используйте варианты [`JSONStrings`](/interfaces/formats/JSONStrings) или [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings).
 
 
 ## Компактный способ экспорта данных и структуры JSON {#compact-way-to-export-json-data-and-structure}
@@ -156,7 +156,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-В этом формате используется компактное представление JSON с двумя заголовочными строками, содержащими имена и типы столбцов. Этот формат можно использовать для загрузки данных в другой экземпляр ClickHouse (или другие приложения).
+При использовании этого формата данные выводятся в компактном JSON-формате с двумя заголовочными строками, содержащими имена и типы столбцов. Этот формат можно использовать для загрузки данных в другой экземпляр ClickHouse (или другие приложения).
 
 
 ## Экспорт JSON в файл {#exporting-json-to-a-file}

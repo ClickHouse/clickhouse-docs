@@ -1,5 +1,5 @@
 ---
-title: 'chDB 技術リファレンス'
+title: 'chDB テクニカルリファレンス'
 slug: /chdb/reference
 description: 'chDB のデータ形式'
 keywords: ['chdb', 'data formats']

@@ -12,9 +12,9 @@ doc_type: 'reference'
 # avgIf {#avgif}
 
 
-## 描述 {#description}
+## Description {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数,使用 `avgIf` 聚合组合器函数计算满足条件为真的行的算术平均值。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数,通过 `avgIf` 聚合组合器函数计算满足条件的行的算术平均值。
 
 
 ## 使用示例 {#example-usage}

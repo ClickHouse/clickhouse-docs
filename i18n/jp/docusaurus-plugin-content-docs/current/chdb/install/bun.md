@@ -2,7 +2,7 @@
 title: 'Bun 向け chDB'
 sidebar_label: 'Bun'
 slug: /chdb/install/bun
-description: 'Bun ランタイムで chDB をインストールして使う方法'
+description: 'Bun ランタイムで chDB をインストールして利用する方法'
 keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
@@ -11,27 +11,27 @@ doc_type: 'guide'
 
 # Bun 向け chDB
 
-`chDB-bun` は chDB 用の実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存なしに Bun アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
+chDB-bun は chDB 向けの実験的な FFI（Foreign Function Interface、外部関数インターフェイス）バインディングを提供し、外部への依存なしに Bun アプリケーションから直接 ClickHouse クエリを実行できるようにします。
 
 
 
 ## インストール {#installation}
 
-### ステップ1: システム依存関係をインストールする {#install-system-dependencies}
+### ステップ1: システム依存関係のインストール {#install-system-dependencies}
 
 まず、必要なシステム依存関係をインストールします:
 
-#### libchdbをインストールする {#install-libchdb}
+#### libchdbのインストール {#install-libchdb}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### ビルドツールをインストールする {#install-build-tools}
+#### ビルドツールのインストール {#install-build-tools}
 
-システムに`gcc`または`clang`のいずれかをインストールする必要があります:
+システムに`gcc`または`clang`のいずれかがインストールされている必要があります:
 
-### ステップ2: chDB-bunをインストールする {#install-chdb-bun}
+### ステップ2: chDB-bunのインストール {#install-chdb-bun}
 
 
 ```bash
@@ -53,9 +53,9 @@ bun run build
 
 ## 使用方法 {#usage}
 
-chDB-bunは2つのクエリモードをサポートしています:1回限りの操作のための一時クエリと、データベース状態を維持するための永続セッションです。
+chDB-bunは2つのクエリモードをサポートしています:一時的な操作のためのエフェメラルクエリと、データベース状態を維持するための永続的セッションです。
 
-### 一時クエリ {#ephemeral-queries}
+### エフェメラルクエリ {#ephemeral-queries}
 
 永続的な状態を必要としないシンプルな1回限りのクエリの場合:
 
@@ -66,7 +66,7 @@ import { query } from "chdb-bun"
 const result = query("SELECT version()", "CSV")
 console.log(result) // "23.10.1.1"
 
-// 異なる出力形式でのクエリ
+// 異なる出力フォーマットでのクエリ
 const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON")
 console.log(jsonResult)
 
@@ -79,14 +79,14 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV")
 console.log(systemInfo)
 ```
 
-### 永続セッション {#persistent-sessions}
+### 永続的セッション {#persistent-sessions}
 
 クエリ間で状態を維持する必要がある複雑な操作の場合:
 
 ```typescript
 import { Session } from "chdb-bun"
 
-// 永続ストレージを持つセッションを作成
+// 永続的ストレージを持つセッションを作成
 const sess = new Session("./chdb-bun-tmp")
 
 try {
@@ -116,7 +116,7 @@ try {
 
   // データをクエリ
   const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON")
-  console.log("Users:", users)
+  console.log("ユーザー:", users)
 
   // カスタム関数を作成して使用
   sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV")
@@ -134,7 +134,7 @@ try {
     `,
     "JSON"
   )
-  console.log("Statistics:", stats)
+  console.log("統計:", stats)
 } finally {
   // リソースを解放するため、常にセッションをクリーンアップ
   sess.cleanup() // データベースファイルを削除

@@ -3,18 +3,18 @@ slug: /use-cases/observability/clickstack/sdks/deno
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
-description: 'ClickStack 用 Deno SDK - ClickHouse オブザーバビリティスタック'
+description: 'ClickStack 向け Deno SDK - ClickHouse Observability スタック'
 title: 'Deno'
 doc_type: 'guide'
 keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
 
-このガイドでは、次の機能を扱います:
+このガイドでは、次の機能を扱います。
 
 - **ログ**
 
 :::note
-現在サポートしているのは OpenTelemetry Logging のみです。トレーシングのサポートについては、[こちらのガイド](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)を参照してください。
+現在は OpenTelemetry Logging のみをサポートしています。トレーシングのサポートについては、[こちらのガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
 
 

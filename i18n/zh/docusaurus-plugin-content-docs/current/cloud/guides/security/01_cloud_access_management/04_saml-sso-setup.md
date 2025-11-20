@@ -2,7 +2,7 @@
 sidebar_label: 'SAML SSO 设置'
 slug: /cloud/security/saml-setup
 title: 'SAML SSO 设置'
-description: '如何在 ClickHouse Cloud 中配置 SAML SSO'
+description: '如何在 ClickHouse Cloud 中设置 SAML SSO'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP', 'Okta', 'Google']
 ---
@@ -20,17 +20,17 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
-ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登录（SSO）。你可以通过身份提供商（IdP）进行身份验证，从而安全登录到你的 ClickHouse Cloud 组织。
+ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SSO）。这使您可以通过在身份提供方（IdP）完成身份验证，安全登录到您的 ClickHouse Cloud 组织。
 
-我们目前支持由服务提供商发起的 SSO、多组织使用单独连接，以及即时预配（just-in-time provisioning）。我们尚不支持跨域身份管理系统（SCIM）或属性映射。
+我们目前支持由服务提供方发起的 SSO、使用独立连接的多个组织，以及即时供应（just-in-time provisioning）。我们暂不支持跨域身份管理系统（SCIM）或属性映射。
 
 
 
 ## 开始之前 {#before-you-begin}
 
-您需要在身份提供商(IdP)中拥有管理员权限,并在 ClickHouse Cloud 组织中具有 **Admin** 角色。在 IdP 中完成连接配置后,请按照下述流程提供所需信息并联系我们以完成整个设置过程。
+您需要在身份提供商（IdP）中拥有管理员权限，并在 ClickHouse Cloud 组织中具有 **Admin** 角色。在身份提供商中设置好连接后，请联系我们并提供下述流程中所需的信息以完成配置。
 
-我们建议除了配置 SAML 连接外,还设置一个**指向您组织的直接链接**,以简化登录流程。不同的 IdP 处理方式有所不同。请继续阅读以了解如何针对您使用的 IdP 进行相应配置。
+我们建议在 SAML 连接之外额外设置一个**指向您组织的直接链接**，以简化登录流程。不同的身份提供商处理方式各不相同。请继续阅读以了解如何为您的身份提供商进行配置。
 
 
 ## 如何配置您的 IdP {#how-to-configure-your-idp}
@@ -39,7 +39,7 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 
 <details>
   <summary> 获取您的组织 ID </summary>
-  所有设置都需要您的组织 ID。获取组织 ID 的步骤:1.
+  所有设置都需要您的组织 ID。获取组织 ID 的步骤如下:1.
   登录您的 [ClickHouse Cloud](https://console.clickhouse.cloud)
   组织。
   <Image img={samlOrgId} size='md' alt='组织 ID' force />
@@ -62,14 +62,14 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 
 - 访问您组织的直接链接:`https://console.clickhouse.cloud/?connection={organizationid}`
 
-  具体配置步骤请参考下方您使用的身份提供商。
+  具体配置步骤请参考下方您使用的身份提供商说明。
 
 </details>
 
 <details>
    <summary>  获取您的连接信息  </summary>
 
-获取您的身份提供商 SSO URL 和 x.509 证书。请参考下方您使用的身份提供商,了解如何获取这些信息。
+获取您的身份提供商 SSO URL 和 x.509 证书。有关如何获取这些信息的说明,请参考下方您使用的身份提供商说明。
 
 </details>
 
@@ -88,7 +88,7 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
    
    6. 请同时告知我们此连接应允许哪些域(例如 domain.com、domain.ai 等)。
    
-   7. 创建工单。
+   7. 创建新工单。
    
    8. 我们将在 ClickHouse Cloud 中完成设置,并在准备好测试时通知您。
 
@@ -99,28 +99,28 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 
 1.  在您的身份提供商中分配用户访问权限。
 
-2.  通过 https://console.clickhouse.cloud 或您在上面"配置您的 SAML 集成"中配置的直接链接登录 ClickHouse。用户初始被分配"Member"角色,该角色可以登录组织并更新个人设置。
+2.  通过 https://console.clickhouse.cloud 或您在上述"配置您的 SAML 集成"中配置的直接链接登录 ClickHouse。用户初始被分配"Member"角色,该角色可以登录组织并更新个人设置。
 
 3.  退出 ClickHouse 组织。
 
-4.  使用您原来的身份验证方法登录,为您的新 SSO 账户分配 Admin 角色。
+4.  使用您原有的身份验证方法登录,为您的新 SSO 账户分配 Admin 角色。
 
 - 对于电子邮件 + 密码账户,请使用 `https://console.clickhouse.cloud/?with=email`。
 - 对于社交登录,请点击相应的按钮(**Continue with Google** 或 **Continue with Microsoft**)
 
 :::note
-上面 `?with=email` 中的 `email` 是字面参数值,不是占位符
+上述 `?with=email` 中的 `email` 是字面参数值,而非占位符
 :::
 
-5.  使用您原来的身份验证方法退出,然后通过 https://console.clickhouse.cloud 或您在上面"配置您的 SAML 集成"中配置的直接链接重新登录。
+5.  使用您原有的身份验证方法退出,然后通过 https://console.clickhouse.cloud 或您在上述"配置您的 SAML 集成"中配置的直接链接重新登录。
 
-6.  移除所有非 SAML 用户以强制组织使用 SAML。今后用户将通过您的身份提供商分配。
+6.  移除所有非 SAML 用户以强制组织使用 SAML。今后用户将通过您的身份提供商进行分配。
 
 </details>
 
 ### 配置 Okta SAML {#configure-okta-saml}
 
-您需要在 Okta 中为每个 ClickHouse 组织配置两个应用集成:一个 SAML 应用和一个书签来存放您的直接链接。
+您需要在 Okta 中为每个 ClickHouse 组织配置两个应用集成:一个 SAML 应用和一个用于存放直接链接的书签。
 
 <details>
    <summary>  1. 创建一个组来管理访问权限  </summary>
@@ -147,10 +147,7 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
     {" "}
     2. 创建书签应用以实现用户无缝登录{" "}
   </summary>
-  1. 在左侧选择 **Applications**,然后选择 **Applications**
-  子标题。2. 点击 **Browse App Catalog**。3. 搜索并选择
-  **Bookmark App**。4. 点击 **Add integration**。5. 为应用选择一个标签。
-  6. 输入 URL 为 `https://console.clickhouse.cloud/?connection=
+  1. 在左侧选择 **Applications**,然后选择 **Applications** 子标题。2. 点击 **Browse App Catalog**。3. 搜索并选择 **Bookmark App**。4. 点击 **Add integration**。5. 为应用选择一个标签。6. 输入 URL 为 `https://console.clickhouse.cloud/?connection=
   {organizationid}` 7. 转到 **Assignments** 选项卡,添加您在上面创建的组。
 </details>
 
@@ -163,9 +160,9 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
    
    3. 选择 SAML 2.0 并点击 Next。
    
-   4. 为您的应用程序输入名称,勾选 **Do not display application icon to users** 旁边的复选框,然后点击 **Next**。
+   4. 为您的应用输入名称,勾选 **Do not display application icon to users** 旁边的复选框,然后点击 **Next**。
    
-   5. 使用以下值填充 SAML 设置页面。
+   5. 使用以下值填充 SAML 设置屏幕。
    
       | 字段                          | 值 |
       |--------------------------------|-------|
@@ -184,7 +181,7 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 
 9. 点击 **Next**。
 
-10. 在反馈页面上输入所需信息并点击 **Finish**。
+10. 在反馈屏幕上输入所需信息并点击 **Finish**。
 
 11. 转到 **Assignments** 选项卡,添加您在上面创建的组。
 
@@ -193,29 +190,29 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
     <Image
       img={samlOktaSetup}
       size='md'
-      alt='Okta SAML Setup Instructions'
+      alt='Okta SAML 设置说明'
       force
     />
 
 13. 收集以下三项信息,然后转到上面的提交支持工单以完成流程。
 
 
-     - Identity Provider Single Sign-On URL
-     - Identity Provider Issuer
-     - X.509 Certificate
+     - 身份提供商单点登录 URL
+     - 身份提供商颁发者
+     - X.509 证书
 
 </details>
 
 ### 配置 Google SAML {#configure-google-saml}
 
-您需要在 Google 中为每个组织配置一个 SAML 应用,如果使用多组织 SSO,必须向用户提供直接链接 (`https://console.clickhouse.cloud/?connection={organizationId}`) 以便添加书签。
+您将在 Google 中为每个组织配置一个 SAML 应用,如果使用多组织 SSO,必须向用户提供直接链接 (`https://console.clickhouse.cloud/?connection={organizationId}`) 以便添加书签。
 
 <details>
    <summary>  创建 Google Web 应用  </summary>
    
    1. 转到您的 Google Admin 控制台 (admin.google.com)。
 
-<Image img={samlGoogleApp} size='md' alt='Google SAML App' force />
+<Image img={samlGoogleApp} size='md' alt='Google SAML 应用' force />
 
 2.  点击 **Apps**,然后点击左侧的 **Web and mobile apps**。
 
@@ -223,13 +220,13 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 
 4.  为应用输入名称并点击 **Continue**。
 
-5.  收集以下两项信息,然后转到上面的提交支持工单将信息提交给我们。注意:如果您在复制此数据之前完成设置,请从应用主页点击 **DOWNLOAD METADATA** 以获取 X.509 证书。
+5.  收集以下两项信息,然后转到上面的提交支持工单将信息提交给我们。注意:如果您在复制此数据之前完成了设置,请从应用主屏幕点击 **DOWNLOAD METADATA** 以获取 X.509 证书。
 
 
      - SSO URL
-     - X.509 Certificate
+     - X.509 证书
 
-7.  输入以下 ACS URL 和 Entity ID。
+7.  在下方输入 ACS URL 和 Entity ID。
 
     | 字段     | 值                                                                      |
     | --------- | -------------------------------------------------------------------------- |
@@ -250,7 +247,7 @@ ClickHouse Cloud 支持通过安全断言标记语言（SAML）实现单点登�
 12. 点击 **Finish**。
 
 
-14. 要启用应用程序,请点击所有人的 **OFF** 并将设置更改为所有人的 **ON**。也可以通过选择屏幕左侧的选项将访问权限限制为特定组或组织单位。
+14. 要启用应用程序,请点击 **OFF** 将所有人的设置更改为 **ON**。也可以通过选择屏幕左侧的选项将访问权限限制为特定组或组织单位。
 
 </details>
 
@@ -265,7 +262,7 @@ Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft En
    
    1. 登录到 Microsoft Entra 管理中心。
    
-   2. 在左侧导航到 **Applications > Enterprise** 应用程序。
+   2. 在左侧导航至 **Applications > Enterprise** 应用程序。
    
    3. 点击顶部菜单中的 **New application**。
    
@@ -352,11 +349,11 @@ ClickHouse Cloud 通过为每个组织提供独立的连接来支持多组织 SS
 
 ## 附加信息 {#additional-information}
 
-在身份验证方面,安全性是我们的首要考虑。因此,我们在实现 SSO 时做出了一些需要您了解的决策。
+在身份验证方面,安全性是我们的首要任务。因此,我们在实施 SSO 时做出了一些需要您了解的决策。
 
-- **我们仅处理服务提供方发起的身份验证流程。** 用户必须访问 `https://console.clickhouse.cloud` 并输入电子邮件地址,之后才会被重定向到您的身份提供方。为方便起见,我们提供了添加书签应用程序或快捷方式的说明,这样您的用户就无需记住该 URL。
+- **我们仅处理服务提供方发起的身份验证流程。** 用户必须访问 `https://console.clickhouse.cloud` 并输入电子邮件地址,然后才会被重定向到您的身份提供方。为方便起见,我们提供了添加书签或快捷方式的说明,这样您的用户就无需记住该 URL。
 
-- **我们不会自动关联 SSO 和非 SSO 账户。** 即使用户使用相同的电子邮件地址,您也可能在 ClickHouse 用户列表中看到同一用户的多个账户。
+- **我们不会自动关联 SSO 和非 SSO 账户。** 即使用户使用相同的电子邮件地址,您也可能在 ClickHouse 用户列表中看到该用户的多个账户。
 
 
 ## 常见问题排查 {#troubleshooting-common-issues}
@@ -367,4 +364,4 @@ ClickHouse Cloud 通过为每个组织提供独立的连接来支持多组织 SS
 | 您被重定向到身份提供商,然后又返回到登录页面                                                                                            | 身份提供商未配置邮箱属性映射                       | 按照上述针对您的身份提供商的说明配置用户邮箱属性,然后重新登录                                                                                                                |
 | 用户未分配到此应用程序                                                                                                                           | 用户尚未在身份提供商中分配到 ClickHouse 应用程序 | 在身份提供商中将用户分配到该应用程序,然后重新登录                                                                                                                                                   |
 | 您有多个集成了 SAML SSO 的 ClickHouse 组织,但无论使用哪个链接或磁贴,您始终登录到同一个组织 | 您仍然登录在第一个组织中                                     | 先退出登录,然后登录到其他组织                                                                                                                                                                                 |
-| URL 短暂显示 `access denied`                                                                                                                              | 您的邮箱域与我们配置的域不匹配                        | 联系支持团队以获取解决此错误的帮助                                                                                                                                                                       |
+| URL 短暂显示 `access denied`                                                                                                                              | 您的邮箱域与我们配置的域不匹配                        | 请联系技术支持以获取解决此错误的帮助                                                                                                                                                                       |

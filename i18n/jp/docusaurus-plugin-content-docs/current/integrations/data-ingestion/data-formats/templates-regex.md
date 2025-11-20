@@ -3,20 +3,20 @@ sidebar_label: '正規表現とテンプレート'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
 title: 'ClickHouse でテンプレートと正規表現を使ってカスタムテキストデータをインポート／エクスポートする'
-description: 'ClickHouse でテンプレートと正規表現を使ってカスタムテキストデータをインポートおよびエクスポートする方法を説明するページ'
+description: 'ClickHouse でテンプレートと正規表現を使ってカスタムテキストデータをインポート／エクスポートする方法を説明するページ'
 doc_type: 'guide'
 keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
 
 
-# ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする
+# ClickHouse における Template と Regex を用いたカスタムテキストデータのインポートとエクスポート
 
-非標準フォーマット、無効な JSON、壊れた CSV など、カスタムテキスト形式のデータを扱わなければならないことがよくあります。こうしたケースでは、CSV や JSON といった標準パーサーがそのまま使えるとは限りません。しかし ClickHouse には、強力な Template フォーマットと Regex フォーマットが用意されており、これらの問題に対応できます。
+カスタムテキスト形式のデータを扱わなければならない場面はよくあります。たとえば、非標準のフォーマット、無効な JSON、壊れた CSV などです。こうしたケースすべてで標準の CSV や JSON のパーサーがそのまま使えるとは限りません。しかし ClickHouse には、強力な Template フォーマットと Regexp フォーマットが用意されており、このような状況にも対応できます。
 
 
 
-## テンプレートベースのインポート {#importing-based-on-a-template}
+## テンプレートに基づくインポート {#importing-based-on-a-template}
 
 次の[ログファイル](assets/error.log)からデータをインポートしたいとします:
 
@@ -31,13 +31,13 @@ head error.log
 2023/01/16 05:34:55 [error]  client: 9.9.7.6, server: example.com "GET /h5/static/cert/icon_yanzhengma.png HTTP/1.1"
 ```
 
-このデータをインポートするには[Template](/interfaces/formats/Template)フォーマットを使用できます。入力データの各行に対して、値のプレースホルダーを含むテンプレート文字列を定義する必要があります:
+このデータをインポートするには[Template](/interfaces/formats/Template)フォーマットを使用できます。入力データの各行に対して値のプレースホルダーを含むテンプレート文字列を定義する必要があります:
 
 ```response
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
-データをインポートするテーブルを作成しましょう:
+データをインポートするためのテーブルを作成しましょう:
 
 ```sql
 CREATE TABLE error_log
@@ -57,7 +57,7 @@ ORDER BY (host, request, time)
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 ```
 
-カラム名とエスケープルールを`${name:escaping}`形式で定義します。CSV、JSON、Escaped、Quotedなど、[それぞれのエスケープルール](/interfaces/formats/Template)を実装する複数のオプションが利用可能です。
+カラム名とエスケープルールを`${name:escaping}`形式で定義します。ここではCSV、JSON、Escaped、Quotedなど、[それぞれのエスケープルール](/interfaces/formats/Template)を実装する複数のオプションが利用可能です。
 
 これで、データをインポートする際に指定したファイルを`format_template_row`設定オプションの引数として使用できます(_注意: テンプレートファイルとデータファイルはファイル末尾に余分な`\n`記号を**含めないでください**_):
 
@@ -67,7 +67,7 @@ SETTINGS format_template_row = 'row.template'
 FORMAT Template
 ```
 
-データがテーブルに正しく読み込まれたことを確認できます:
+データがテーブルに読み込まれたことを確認できます:
 
 ```sql
 SELECT
@@ -229,7 +229,7 @@ SETTINGS
 FORMAT Regexp
 ```
 
-ClickHouseは各キャプチャグループのデータを順序に基づいて対応するカラムに挿入します。データを確認してみましょう:
+ClickHouseは各キャプチャグループからのデータを、その順序に基づいて対応するカラムに挿入します。データを確認してみましょう:
 
 ```sql
 SELECT * FROM error_log LIMIT 5
@@ -245,7 +245,7 @@ SELECT * FROM error_log LIMIT 5
 └─────────────────────┴─────────┴─────────────┴──────────────────────────────┴──────────┘
 ```
 
-デフォルトでは、ClickHouseはマッチしない行がある場合にエラーを発生させます。マッチしない行をスキップしたい場合は、[format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched)オプションを使用して有効にしてください:
+デフォルトでは、ClickHouseは一致しない行がある場合にエラーを発生させます。一致しない行をスキップしたい場合は、[format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_skip_unmatched)オプションを使用して有効にしてください:
 
 ```sql
 SET format_regexp_skip_unmatched = 1;
@@ -254,7 +254,7 @@ SET format_regexp_skip_unmatched = 1;
 
 ## その他のフォーマット {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットと使用方法について詳しく確認できます：
+ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、より多くのフォーマットとその使用方法を確認できます：
 
 - [CSVおよびTSVフォーマット](csv-tsv.md)
 - [Parquet](parquet.md)
@@ -263,4 +263,4 @@ ClickHouseは、さまざまなシナリオやプラットフォームに対応�
 - [ネイティブおよびバイナリフォーマット](binary.md)
 - [SQLフォーマット](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせず、ローカル/リモートファイルを操作できるポータブルでフル機能を備えたツールです。
+また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせずにローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。

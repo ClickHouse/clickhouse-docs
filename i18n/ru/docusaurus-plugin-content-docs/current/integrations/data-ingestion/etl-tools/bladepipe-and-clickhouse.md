@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'BladePipe'
 sidebar_position: 20
-keywords: ['clickhouse', 'BladePipe', 'connect', 'integrate', 'cdc', 'etl', 'data integration']
+keywords: ['clickhouse', 'BladePipe', 'подключение', 'интеграция', 'cdc', 'etl', 'интеграция данных']
 slug: /integrations/bladepipe
-description: 'Потоковая загрузка данных в ClickHouse с помощью конвейеров BladePipe'
+description: 'Потоковая загрузка данных в ClickHouse с помощью конвейеров данных BladePipe'
 title: 'Подключение BladePipe к ClickHouse'
 doc_type: 'guide'
 ---
@@ -25,9 +25,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> — это инструмент для сквозной интеграции данных в реальном времени с задержкой менее секунды, обеспечивающий бесшовный обмен данными между платформами. 
+<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> — это инструмент для сквозной интеграции данных в режиме реального времени с задержкой менее секунды, обеспечивающий бесшовную передачу данных между платформами. 
 
-ClickHouse — один из готовых коннекторов BladePipe, что позволяет пользователям автоматически интегрировать данные из различных источников в ClickHouse. На этой странице пошагово показано, как загружать данные в ClickHouse в реальном времени.
+ClickHouse — один из встроенных коннекторов BladePipe, который позволяет пользователям автоматически интегрировать данные из различных источников в ClickHouse. На этой странице по шагам показано, как загружать данные в ClickHouse в реальном времени.
 
 
 
@@ -68,11 +68,11 @@ ClickHouse — один из готовых коннекторов BladePipe, ч
 
 3. В BladePipe нажмите «DataSource» > «Add DataSource».
 
-4. Выберите `ClickHouse`, заполните настройки, указав хост и порт ClickHouse, имя пользователя и пароль, затем нажмите «Test Connection».
+4. Выберите `ClickHouse` и заполните настройки, указав хост и порт ClickHouse, имя пользователя и пароль, затем нажмите «Test Connection».
 
    <Image img={bp_ck_1} size='lg' border alt='Добавление ClickHouse в качестве целевой системы' />
 
-5. Нажмите «Add DataSource» внизу, после чего экземпляр ClickHouse будет добавлен.
+5. Нажмите «Add DataSource» внизу, и экземпляр ClickHouse будет добавлен.
 
 
 ## Добавление MySQL в качестве источника {#3-add-mysql-as-a-source}
@@ -118,14 +118,14 @@ ClickHouse — один из готовых коннекторов BladePipe, ч
 
 ## Проверка данных {#5-verify-the-data}
 
-1. Остановите запись данных в экземпляр MySQL и дождитесь слияния данных в ClickHouse.
+1. Остановите запись данных в экземпляр MySQL и дождитесь завершения слияния данных в ClickHouse.
    :::note
    Поскольку время автоматического слияния в ClickHouse непредсказуемо, вы можете запустить слияние вручную, выполнив команду `OPTIMIZE TABLE xxx FINAL;`. Обратите внимание, что ручное слияние может завершиться неудачно.
 
-Также вы можете выполнить команду `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;`, чтобы создать представление и выполнять запросы к нему для гарантии полного слияния данных.
+В качестве альтернативы можно выполнить команду `CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;`, чтобы создать представление и выполнять запросы к нему для гарантии полного слияния данных.
 :::
 
-2. Создайте <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">задание проверки данных (Verification DataJob)</a>. После завершения задания проверьте результаты, чтобы убедиться, что данные в ClickHouse совпадают с данными в MySQL.
+2. Создайте <a href="https://doc.bladepipe.com/operation/job_manage/create_job/create_period_verification_correction_job" target="_blank">задание проверки данных (Verification DataJob)</a>. После завершения задания проверьте результаты, чтобы убедиться, что данные в ClickHouse идентичны данным в MySQL.
    <Image img={bp_ck_9} size='lg' border alt='Проверка данных' />
 
 </VerticalStepper>

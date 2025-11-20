@@ -3,7 +3,7 @@ slug: /integrations/postgresql
 sidebar_label: 'PostgreSQL'
 title: 'PostgreSQL'
 show_title: false
-description: 'Postgres と ClickHouse の統合方法を説明するページ'
+description: 'Postgres を ClickHouse と統合する方法を説明するページ'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -13,6 +13,6 @@ keywords: ['postgresql', 'database integration', 'external table', 'data source'
 
 import PostgreSQL from '@site/docs/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-> PostgreSQL から ClickHouse への移行に関する完全なガイド（データモデリングや同等の概念に関するアドバイスを含む）は[こちら](/migrations/postgresql/overview)をご覧ください。以下では、ClickHouse と PostgreSQL を接続する方法について説明します。
+> データモデリングや概念の対応関係に関するアドバイスを含む、PostgreSQL から ClickHouse への完全な移行ガイドは[こちら](/migrations/postgresql/overview)で参照できます。以下では、ClickHouse と PostgreSQL を接続する方法について説明します。
 
 <PostgreSQL />

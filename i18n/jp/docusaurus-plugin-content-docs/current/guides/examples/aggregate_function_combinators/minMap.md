@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/minMap'
 title: 'minMap'
-description: 'minMap コンビネータの使用例'
+description: 'minMap コンビネーター使用例'
 keywords: ['min', 'map', 'combinator', 'examples', 'minMap']
 sidebar_label: 'minMap'
 doc_type: 'reference'
@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## Description {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map)コンビネータを[`min`](/sql-reference/aggregate-functions/reference/min)関数に適用することで、`minMap`集約コンビネータ関数を使用してMap内の各キーごとの最小値を計算できます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map)コンビネータを[`min`](/sql-reference/aggregate-functions/reference/min)関数に適用することで、`minMap`集約コンビネータ関数を使用して、Map内の各キーごとの最小値を計算できます。
 
 
 ## 使用例 {#example-usage}

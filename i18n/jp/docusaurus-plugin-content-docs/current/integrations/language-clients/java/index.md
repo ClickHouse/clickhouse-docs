@@ -1,7 +1,7 @@
 ---
 title: 'Java'
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
-description: 'Java から ClickHouse に接続するためのオプション'
+description: 'Java から ClickHouse に接続する方法'
 slug: /integrations/java
 doc_type: 'reference'
 ---
@@ -11,11 +11,11 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# Java クライアント概要
+# Java クライアントの概要
 
-- [クライアント 0.8+](./client/client.mdx)
+- [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC ドライバー](./r2dbc.md)
+- [R2DBC Driver](./r2dbc.md)
 
 
 
@@ -23,7 +23,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Javaクライアントは、ClickHouseサーバーとのネットワーク通信の詳細を抽象化する独自のAPIを実装したライブラリです。現在はHTTPインターフェースのみがサポートされています。このライブラリは、さまざまなClickHouseフォーマットを扱うためのユーティリティやその他の関連機能を提供します。
 
-Javaクライアントは2015年に開発されました。そのコードベースは保守が非常に困難になり、APIが分かりにくく、さらなる最適化も難しい状態でした。そのため、2024年に新しいコンポーネント`client-v2`としてリファクタリングしました。明確なAPI、軽量なコードベース、パフォーマンスの向上、より優れたClickHouseフォーマットのサポート(主にRowBinaryとNative)を備えています。JDBCは近い将来このクライアントを使用する予定です。
+Javaクライアントは2015年に開発されました。そのコードベースは保守が非常に困難になり、APIが分かりにくく、さらなる最適化も難しい状態でした。そのため、2024年に新しいコンポーネント`client-v2`へとリファクタリングしました。明確なAPI、軽量なコードベース、パフォーマンスの向上、より優れたClickHouseフォーマットのサポート(主にRowBinaryとNative)を備えています。JDBCは近い将来このクライアントを使用する予定です。
 
 ### サポートされているデータ型 {#supported-data-types}
 
@@ -99,22 +99,22 @@ Javaクライアントは2015年に開発されました。そのコードベー
 | --------------------------------- | :-------: | :-------: | :--------------------------: |
 | HTTP接続                          |    ✔     |    ✔     |                              |
 | HTTP圧縮 (LZ4)                    |    ✔     |    ✔     |                              |
-| サーバーレスポンス圧縮 - LZ4       |    ✔     |    ✔     |                              |
-| クライアントリクエスト圧縮 - LZ4   |    ✔     |    ✔     |                              |
+| サーバーレスポンス圧縮 - LZ4      |    ✔     |    ✔     |                              |
+| クライアントリクエスト圧縮 - LZ4  |    ✔     |    ✔     |                              |
 | HTTPS                             |    ✔     |    ✔     |                              |
-| クライアントSSL証明書 (mTLS)       |    ✔     |    ✔     |                              |
+| クライアントSSL証明書 (mTLS)      |    ✔     |    ✔     |                              |
 | HTTPプロキシ                      |    ✔     |    ✔     |                              |
 | POJO SerDe                        |    ✔     |     ✗     |                              |
-| コネクションプール                 |    ✔     |    ✔     | Apache HTTP Client使用時 |
-| 名前付きパラメータ                 |    ✔     |    ✔     |                              |
-| 失敗時の再試行                     |    ✔     |    ✔     |                              |
-| フェイルオーバー                   |     ✗     |    ✔     |                              |
+| コネクションプール                |    ✔     |    ✔     | Apache HTTP Client使用時 |
+| 名前付きパラメータ                |    ✔     |    ✔     |                              |
+| 失敗時の再試行                    |    ✔     |    ✔     |                              |
+| フェイルオーバー                  |     ✗     |    ✔     |                              |
 | 負荷分散                          |     ✗     |    ✔     |                              |
-| サーバー自動検出                   |     ✗     |    ✔     |                              |
-| ログコメント                       |    ✔     |    ✔     |                              |
-| セッションロール                   |    ✔     |    ✔     |                              |
-| SSLクライアント認証                |    ✔     |    ✔     |                              |
-| セッションタイムゾーン             |    ✔     |    ✔     |                              |
+| サーバー自動検出                  |     ✗     |    ✔     |                              |
+| ログコメント                      |    ✔     |    ✔     |                              |
+| セッションロール                  |    ✔     |    ✔     |                              |
+| SSLクライアント認証               |    ✔     |    ✔     |                              |
+| セッションタイムゾーン            |    ✔     |    ✔     |                              |
 
 JDBCドライバは、基盤となるクライアント実装と同じ機能を継承します。その他のJDBC機能については、[ページ](/integrations/language-clients/java/jdbc)に記載されています。
 
@@ -123,12 +123,12 @@ JDBCドライバは、基盤となるクライアント実装と同じ機能を�
 - このリポジトリのすべてのプロジェクトは、ClickHouseのすべての[アクティブなLTSバージョン](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)でテストされています。
 - [サポートポリシー](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
 - セキュリティ修正や新しい改善を見逃さないよう、クライアントを継続的にアップグレードすることを推奨します
-- v2 APIへの移行に問題がある場合は、[issueを作成](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)してください。対応いたします。
+- v2 APIへの移行に問題がある場合は、[issueを作成](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)してください。対応いたします!
 
 ### ロギング {#logging}
 
 Javaクライアントは、ロギングに[SLF4J](https://www.slf4j.org/)を使用しています。`Logback`や`Log4j`など、SLF4J互換のロギングフレームワークを使用できます。
-例えば、Mavenを使用している場合は、`pom.xml`ファイルに以下の依存関係を追加できます。
+例えば、Mavenを使用している場合は、`pom.xml`ファイルに以下の依存関係を追加できます:
 
 ```xml title="pom.xml"
 <dependencies>
@@ -157,18 +157,18 @@ Javaクライアントは、ロギングに[SLF4J](https://www.slf4j.org/)を使
 
 #### ロギングの設定 {#configuring-logging}
 
-これは使用しているロギングフレームワークによって異なります。例えば、`Logback`を使用している場合は、`logback.xml`というファイルでロギングを設定できます。
+これは使用しているロギングフレームワークによって異なります。例えば、`Logback`を使用している場合は、`logback.xml`というファイルでロギングを設定できます:
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- コンソールアペンダー -->
+    <!-- コンソールAppender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- ファイルアペンダー -->
+    <!-- ファイルAppender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -177,7 +177,7 @@ Javaクライアントは、ロギングに[SLF4J](https://www.slf4j.org/)を使
         </encoder>
     </appender>
 
-    <!-- ルートロガー -->
+    <!-- ルートLogger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />

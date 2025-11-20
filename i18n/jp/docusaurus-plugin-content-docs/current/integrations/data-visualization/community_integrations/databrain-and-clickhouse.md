@@ -3,7 +3,7 @@ sidebar_label: 'Databrain'
 sidebar_position: 131
 slug: /integrations/databrain
 keywords: ['clickhouse', 'Databrain', 'connect', 'integrate', 'ui', 'analytics', 'embedded', 'dashboard', 'visualization']
-description: 'Databrain は、ClickHouse とシームレスに連携し、顧客向けのダッシュボード、メトリクス、データ可視化を構築できる埋め込み型アナリティクスプラットフォームです。'
+description: 'Databrain は、ClickHouse とシームレスに連携し、顧客向けのダッシュボード、メトリクス、データ可視化を構築するための組み込みアナリティクスプラットフォームです。'
 title: 'Databrain を ClickHouse に接続する'
 doc_type: 'guide'
 ---
@@ -23,9 +23,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Databrain](https://usedatabrain.com) は組み込み型のアナリティクスプラットフォームであり、インタラクティブなダッシュボードやメトリクス、データ可視化を構築して顧客と共有できます。Databrain は HTTPS インターフェイスを使用して ClickHouse に接続し、モダンで使いやすいインターフェイスから ClickHouse のデータを簡単に可視化および分析できます。
+[Databrain](https://usedatabrain.com) は、インタラクティブなダッシュボード、メトリクス、データ可視化をエンドユーザー向けに構築・共有できる埋め込み型アナリティクスプラットフォームです。Databrain は HTTPS インターフェイスを使って ClickHouse に接続し、モダンで使いやすい UI から ClickHouse のデータを簡単に可視化・分析できるようにします。
 
-<Image size="md" img={databrain_01} alt="ClickHouse のデータ可視化を表示している Databrain のダッシュボードインターフェイス" border />
+<Image size="md" img={databrain_01} alt="ClickHouse データの可視化を表示する Databrain ダッシュボード インターフェイス" border />
 
 <br/>
 
@@ -46,11 +46,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <ConnectionDetails />
 
-### 2. DatabrainのIPアドレスを許可する（必要な場合） {#2-allow-databrain-ip-addresses}
+### 2. DatabrainのIPアドレスを許可する(必要な場合) {#2-allow-databrain-ip-addresses}
 
 ClickHouseインスタンスでIPフィルタリングが有効になっている場合は、DatabrainのIPアドレスを許可リストに登録する必要があります。
 
-ClickHouse Cloudユーザーの場合：
+ClickHouse Cloudユーザーの場合:
 
 1. ClickHouse Cloudコンソールでサービスに移動します
 2. **Settings** → **Security**に移動します
@@ -79,10 +79,10 @@ ClickHouse Cloudユーザーの場合：
   border
 />
 
-5. 接続情報を入力します：
-   - **Destination Name**: この接続のわかりやすい名前を入力します（例：「Production ClickHouse」または「Analytics DB」）
-   - **Host**: ClickHouseホストのURLを入力します（例：`https://your-instance.region.aws.clickhouse.cloud`）
-   - **Port**: `8443`を入力します（ClickHouseのデフォルトHTTPSポート）
+5. 接続情報を入力します:
+   - **Destination Name**: この接続のわかりやすい名前を入力します(例: "Production ClickHouse"または"Analytics DB")
+   - **Host**: ClickHouseホストのURLを入力します(例: `https://your-instance.region.aws.clickhouse.cloud`)
+   - **Port**: `8443`を入力します(ClickHouseのデフォルトHTTPSポート)
    - **Username**: ClickHouseのユーザー名を入力します
    - **Password**: ClickHouseのパスワードを入力します
 
@@ -99,7 +99,7 @@ ClickHouse Cloudユーザーの場合：
 
 ### 4. ユーザー権限を設定する {#4-configure-user-permissions}
 
-接続に使用するClickHouseユーザーが必要な権限を持っていることを確認してください：
+接続に使用するClickHouseユーザーが必要な権限を持っていることを確認してください:
 
 ```sql
 -- スキーマ情報を読み取る権限を付与
@@ -112,7 +112,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 `your_databrain_user`と`your_database`を実際のユーザー名とデータベース名に置き換えてください。
 
 
-## DatabrainとClickHouseの使用 {#using-databrain-with-clickhouse}
+## ClickHouseでDatabrainを使用する {#using-databrain-with-clickhouse}
 
 ### データの探索 {#explore-your-data}
 
@@ -138,16 +138,16 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 3. Databrainの直感的なインターフェースを使用して以下を実行します:
    - ディメンションとメジャーの選択
    - フィルターと集計の適用
-   - 可視化タイプの選択(棒グラフ、折れ線グラフ、円グラフ、テーブルなど)
+   - 可視化タイプの選択（棒グラフ、折れ線グラフ、円グラフ、テーブルなど）
    - 高度な分析のためのカスタムSQLクエリの追加
 
-4. メトリクスを保存して、複数のダッシュボードで再利用します。
+4. メトリクスを保存して、複数のダッシュボード間で再利用します。
 
 ### ダッシュボードの構築 {#build-dashboards}
 
 1. **Create Dashboard**をクリックして、ダッシュボードの構築を開始します。
 
-2. 保存済みのメトリクスをドラッグ&ドロップして、ダッシュボードにメトリクスを追加します。
+2. 保存したメトリクスをドラッグアンドドロップして、ダッシュボードにメトリクスを追加します。
 
 3. ダッシュボードのレイアウトと外観をカスタマイズします。
 
@@ -162,11 +162,11 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 ### 高度な機能 {#advanced-features}
 
-DatabrainはClickHouseと連携する際に、以下の高度な機能を提供します:
+DatabrainはClickHouseを使用する際に、以下の高度な機能を提供します:
 
-- **カスタムSQLコンソール**: ClickHouseデータベースに対して直接カスタムSQLクエリを記述・実行
-- **マルチテナンシーとシングルテナンシー**: シングルテナントとマルチテナントの両方のアーキテクチャでClickHouseデータベースに接続
-- **レポートスケジューリング**: 自動レポートをスケジュールし、関係者にメール送信
+- **カスタムSQLコンソール**: ClickHouseデータベースに対して直接カスタムSQLクエリを記述および実行
+- **マルチテナンシーとシングルテナンシー**: シングルテナントとマルチテナントの両方のアーキテクチャでClickHouseデータベースを接続
+- **レポートスケジューリング**: 自動レポートをスケジュールし、関係者にメールで送信
 - **AI駆動のインサイト**: AIを使用してデータから要約とインサイトを生成
 - **組み込み分析**: ダッシュボードとメトリクスをアプリケーションに直接埋め込み
 - **セマンティックレイヤー**: 再利用可能なデータモデルとビジネスロジックを作成
@@ -194,9 +194,9 @@ ClickHouseに接続できない場合:
 4. **インデックスの最適化**: ClickHouseのプライマリキーとスキッピングインデックスを活用してください
 
 
-## さらに詳しく {#learn-more}
+## 詳細情報 {#learn-more}
 
-Databrainの機能と強力な分析の構築方法の詳細については、以下を参照してください：
+Databrainの機能と強力な分析の構築方法については、以下を参照してください:
 
 - [Databrainドキュメント](https://docs.usedatabrain.com/)
 - [ClickHouse統合ガイド](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)

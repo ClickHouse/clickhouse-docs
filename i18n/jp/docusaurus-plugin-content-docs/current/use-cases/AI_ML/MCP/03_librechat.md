@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'LibreChat を統合する'
-title: 'ClickHouse MCP サーバーを LibreChat と ClickHouse Cloud と連携するようにセットアップする'
+title: 'ClickHouse MCP サーバーを LibreChat と ClickHouse Cloud でセットアップする'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Docker を使用して LibreChat と ClickHouse MCP サーバーを連携させる方法を説明します。'
+description: 'このガイドでは、Docker を使用して LibreChat と ClickHouse MCP サーバーをセットアップする方法を説明します。'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -38,7 +38,7 @@ LibreChatとMCPサーバーを実行するには、Dockerが必要です。Docke
 
 ## LibreChatリポジトリのクローン {#clone-librechat-repo}
 
-ターミナル（コマンドプロンプト、ターミナル、PowerShell）を開き、以下のコマンドでLibreChatリポジトリをクローンします：
+ターミナル（コマンドプロンプト、ターミナル、またはPowerShell）を開き、以下のコマンドでLibreChatリポジトリをクローンします：
 
 ```bash
 git clone https://github.com/danny-avila/LibreChat.git
@@ -54,7 +54,7 @@ cd LibreChat
 cp .env.example .env
 ```
 
-任意のテキストエディタで`.env`ファイルを開きます。OpenAI、Anthropic、AWS Bedrockなど、多くの主要なLLMプロバイダーのセクションが表示されます。例:
+任意のテキストエディタで`.env`ファイルを開きます。OpenAI、Anthropic、AWS Bedrockなど、多数の主要なLLMプロバイダーのセクションが表示されます。例:
 
 
 ```text title=".venv"
@@ -67,10 +67,12 @@ ANTHROPIC_API_KEY=user_provided
 # ANTHROPIC_REVERSE_PROXY=
 ```
 
-`user_provided` を、利用したい LLM プロバイダーの API キーに置き換えてください。
+`user_provided` を、使用したい LLM プロバイダーの API キーに置き換えます。
 
 :::note ローカル LLM を使用する場合
-API キーがない場合は、Ollama のようなローカル LLM を利用できます。後の手順 [&quot;Install Ollama&quot;](#add-local-llm-using-ollama) で、その方法を説明します。今は .env ファイルを変更せず、次の手順に進んでください。
+API キーがない場合は、Ollama のようなローカル LLM を使用できます。
+その方法は、後のステップ [&quot;Install Ollama&quot;](#add-local-llm-using-ollama) で説明します。
+ここでは .env ファイルは変更せず、そのまま次のステップに進んでください。
 :::
 
 
@@ -89,7 +91,7 @@ cp librechat.example.yaml librechat.yaml
 
 次に、LLMが[ClickHouse SQLプレイグラウンド](https://sql.clickhouse.com/)と対話できるようにするため、LibreChatのDocker ComposeファイルにClickHouse MCPサーバーを追加します。
 
-`docker-compose.override.yml`という名前のファイルを作成し、以下の設定を追加します:
+`docker-compose.override.yml`というファイルを作成し、以下の設定を追加してください:
 
 ```yml title="docker-compose.override.yml"
 services:
@@ -111,7 +113,7 @@ services:
       - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
 ```
 
-独自のデータを探索する場合は、ClickHouse Cloudサービスの[ホスト、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)を使用してください。
+独自のデータを探索する場合は、ご利用のClickHouse Cloudサービスの[ホスト、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)を使用してください。
 
 <Link to='https://cloud.clickhouse.com/'>
   <CardHorizontal
@@ -120,9 +122,9 @@ services:
     badgeState='default'
     badgeText=''
     description="
-Cloudアカウントをお持ちでない場合は、今すぐClickHouse Cloudを始めて
-300ドル分のクレジットを受け取りましょう。30日間の無料トライアル終了後は、
-従量課金プランで継続するか、ボリュームベースの割引について詳しく知るために
+まだCloudアカウントをお持ちでない場合は、今すぐClickHouse Cloudを始めて
+300ドル分のクレジットを獲得しましょう。30日間の無料トライアル終了後は、
+従量課金プランで継続するか、ボリュームベースの割引について詳しくは
 お問い合わせください。詳細は料金ページをご覧ください。
 "
     icon='cloud'
@@ -160,25 +162,25 @@ socialLogins: []
 ```
 
 
-## Ollamaを使用したローカルLLMの追加（オプション） {#add-local-llm-using-ollama}
+## Ollamaを使用したローカルLLMの追加(オプション) {#add-local-llm-using-ollama}
 
 ### Ollamaのインストール {#install-ollama}
 
-[Ollamaウェブサイト](https://ollama.com/download)にアクセスし、お使いのシステム用のOllamaをインストールします。
+[Ollamaウェブサイト](https://ollama.com/download)にアクセスし、お使いのシステム用のOllamaをインストールしてください。
 
-インストール後、以下のようにモデルを実行できます:
+インストール後、次のようにモデルを実行できます:
 
 ```bash
 ollama run qwen3:32b
 ```
 
-このコマンドは、モデルがローカルマシンに存在しない場合、自動的にダウンロードします。
+モデルがローカルマシンに存在しない場合、このコマンドでモデルがダウンロードされます。
 
 利用可能なモデルの一覧については、[Ollamaライブラリ](https://ollama.com/library)を参照してください。
 
 ### librechat.yamlでのOllama設定 {#configure-ollama-in-librechat-yaml}
 
-モデルのダウンロード完了後、`librechat.yaml`で以下のように設定します:
+モデルのダウンロード完了後、`librechat.yaml`で設定を行います:
 
 ```text title="librechat.yaml"
 custom:
@@ -202,7 +204,7 @@ custom:
 
 ## すべてのサービスを起動する {#start-all-services}
 
-LibreChatプロジェクトフォルダのルートから、以下のコマンドを実行してサービスを起動します：
+LibreChatプロジェクトフォルダのルートから、以下のコマンドを実行してサービスを起動します:
 
 ```bash
 docker compose up
@@ -213,18 +215,18 @@ docker compose up
 
 ## ブラウザでLibreChatを開く {#open-librechat-in-browser}
 
-すべてのサービスが起動したら、ブラウザを開いて `http://localhost:3080/` にアクセスします
+すべてのサービスが起動したら、ブラウザを開いて `http://localhost:3080/` にアクセスします。
 
 まだアカウントをお持ちでない場合は、無料のLibreChatアカウントを作成してサインインしてください。ClickHouse MCPサーバーに接続されたLibreChatインターフェースが表示されます。オプションでローカルLLMも利用できます。
 
-チャットインターフェースから、MCPサーバーとして `clickhouse-playground` を選択します:
+チャットインターフェースから、MCPサーバーとして `clickhouse-playground` を選択します：
 
 <Image img={LibreInterface} alt='MCPサーバーを選択' size='md' />
 
-これでLLMにプロンプトを送信して、ClickHouseのサンプルデータセットを探索できます。試してみましょう:
+これで、LLMにプロンプトを送信してClickHouseのサンプルデータセットを探索できます。試してみましょう：
 
 ```text title="プロンプト"
-アクセスできるデータセットは何ですか?
+What datasets do you have access to?
 ```
 
 </VerticalStepper>

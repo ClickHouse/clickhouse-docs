@@ -1,7 +1,7 @@
 ---
-description: '在 macOS 上安装 ClickHouse'
-keywords: ['ClickHouse', 'install', 'macOS']
-sidebar_label: 'macOS'
+description: '在 MacOS 上安装 ClickHouse'
+keywords: ['ClickHouse', 'install', 'MacOS']
+sidebar_label: 'MacOS'
 slug: /install/macOS
 title: '使用 Homebrew 安装 ClickHouse'
 hide_title: true

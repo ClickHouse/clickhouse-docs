@@ -1,7 +1,7 @@
 ---
 slug: /updating-data
 title: 'Обновление данных'
-description: 'Оглавление раздела «Обновление данных»'
+description: 'Обновление данных: оглавление'
 keywords: ['update', 'updating data']
 doc_type: 'landing-page'
 ---
@@ -10,7 +10,7 @@ doc_type: 'landing-page'
 
 | Page                                                        | Description                                                                                                                                                      |
 |-------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Overview](/updating-data/overview)                         | Описывает различия в обновлении данных между ClickHouse и OLTP-базами данных, а также различные методы обновления, доступные в ClickHouse. |
-| [Update mutations](/managing-data/update_mutations)         | Узнайте, как выполнять обновление с помощью мутаций UPDATE.                                                                                                                      |
-| [Lightweight updates](/docs/sql-reference/statements/update) | Узнайте, как выполнять обновление с помощью «легковесных» обновлений (Lightweight Updates).                                                                                                                   |
-| [ReplacingMergeTree](/guides/replacing-merge-tree)          | Узнайте, как выполнять обновление с помощью ReplacingMergeTree.                                                                                                                |
+| [Overview](/updating-data/overview)                         | Обзор различий в обновлении данных между ClickHouse и OLTP-системами, а также методов, доступных для этого в ClickHouse.                                        |
+| [Update mutations](/managing-data/update_mutations)         | Узнайте, как выполнять обновление с помощью мутаций (Update Mutations).                                                                                          |
+| [Lightweight updates](/docs/sql-reference/statements/update) | Узнайте, как выполнять обновление с помощью лёгких обновлений (Lightweight Updates).                                                                             |
+| [ReplacingMergeTree](/guides/replacing-merge-tree)          | Узнайте, как выполнять обновление с помощью ReplacingMergeTree.                                                                                                  |

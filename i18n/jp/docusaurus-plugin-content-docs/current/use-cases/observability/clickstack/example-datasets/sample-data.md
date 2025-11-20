@@ -4,7 +4,7 @@ title: 'サンプルログ、トレース、メトリクス'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack の利用を開始するにあたり、ログ、セッション、トレース、メトリクスを含むサンプルデータセットを使ってみる'
+description: 'ClickStack の概要と、ログ、セッション、トレース、メトリクスを含むサンプルデータセットの利用方法'
 doc_type: 'guide'
 keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
 ---
@@ -52,8 +52,8 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 
 ## 取り込みAPIキーのコピー {#copy-ingestion-api-key}
 
-:::note ClickHouse CloudでのHyperDX
-ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。現在、取り込みキーはサポートされていません。
+:::note ClickHouse CloudのHyperDX
+ClickHouse CloudでHyperDXを使用する場合、取り込みキーのサポートが現在提供されていないため、この手順は不要です。
 :::
 
 [`Team Settings`](http://localhost:8080/team)に移動し、`API Keys`セクションから`Ingestion API Key`をコピーします。このAPIキーにより、OpenTelemetryコレクター経由のデータ取り込みが安全に実行されます。
@@ -63,7 +63,7 @@ ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。
 
 ## サンプルデータのダウンロード {#download-sample-data}
 
-UIにサンプルデータを投入するには、以下のファイルをダウンロードしてください:
+UIにサンプルデータを投入するには、以下のファイルをダウンロードしてください：
 
 [サンプルデータ](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
@@ -75,7 +75,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
 ```
 
-このファイルには、公開されている [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)（マイクロサービス構成のシンプルな EC サイト）から取得したログ、メトリクス、トレースのサンプルが含まれています。任意のディレクトリにこのファイルをコピーしてください。
+このファイルには、公開されている [OpenTelemetry デモ](https://github.com/ClickHouse/opentelemetry-demo)（マイクロサービスを用いたシンプルな EC サイト）のログ、メトリクス、トレースのサンプルが含まれています。任意のディレクトリにこのファイルをコピーしてください。
 
 
 ## サンプルデータの読み込み {#load-sample-data}
@@ -85,7 +85,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 まず、上記でコピーしたAPIキーをエクスポートします。
 
 :::note ClickHouse CloudのHyperDX
-ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。現在、取り込みキーはサポートされていません。
+ClickHouse CloudでHyperDXを使用する場合、この手順は不要です。現在、取り込みキーのサポートには対応していません。
 :::
 
 
@@ -109,18 +109,18 @@ for filename in $(tar -tf sample.tar.gz); do
 done
 ```
 
-これは、OTLP のログ、トレース、およびメトリクスのソースが OTel collector にデータを送信する状況をシミュレートします。本番環境では、これらのソースは各種言語向けクライアントや、別の OTel collector になる場合があります。
+これは、OTLP のログ、トレース、およびメトリックのソースが OTel collector にデータを送信する状況をシミュレートしています。本番環境では、これらのソースは各種言語のクライアントや、他の OTel collector になる場合もあります。
 
-`Search` ビューに戻ると、データの読み込みが開始されているはずです（データが表示されない場合は、時間範囲を `Last 1 hour` に変更してください）:
+`Search` ビューに戻ると、データの読み込みが開始されていることが確認できるはずです（データが表示されない場合は、時間範囲を `Last 1 hour` に変更してください）:
 
 <Image img={hyperdx_10} alt="HyperDX search" size="lg" />
 
-データの読み込みには数分かかります。次のステップに進む前に、読み込みが完了するまでお待ちください。
+データの読み込みには数分かかります。次の手順に進む前に、読み込みが完了するまでお待ちください。
 
 
 ## セッションの調査 {#explore-sessions}
 
-ユーザーが商品の支払いで問題を経験しているという報告があるとします。HyperDXのセッションリプレイ機能を使用して、ユーザーの体験を確認できます。
+ユーザーが商品の支払いに問題を抱えているという報告があるとします。HyperDXのセッションリプレイ機能を使用して、ユーザーの体験を確認できます。
 
 左側のメニューから[`Client Sessions`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572)を選択します。
 
@@ -149,32 +149,32 @@ done
 
 ## トレースの調査 {#explore-traces}
 
-`Trace`タブに移動して、完全な分散トレースを表示します。
+`Trace`タブに移動して、完全な分散トレースを確認します。
 
 <Image img={hyperdx_14} alt='セッショントレース' size='lg' />
 
-トレースを下にスクロールして、エラーの発生元である`checkout`サービススパンを確認します。`Payment`サービススパンを選択します。
+トレースを下にスクロールして、エラーの発生源である`checkout`サービススパンを確認します。`Payment`サービススパンを選択します。
 
 <Image img={hyperdx_15} alt='スパン' size='lg' />
 
-`Column Values`タブを選択して下にスクロールします。この問題はキャッシュが満杯になっていることに起因していることがわかります。
+`Column Values`タブを選択して下にスクロールします。キャッシュが満杯になっていることが問題の原因であることがわかります。
 
 <Image img={hyperdx_16} alt='カラム値' size='lg' />
 
-上にスクロールしてトレースに戻ると、先ほどの設定により、ログがスパンと相関していることがわかります。これらは追加のコンテキストを提供します。
+上にスクロールしてトレースに戻ると、先ほどの設定により、ログがスパンと関連付けられていることがわかります。これらは追加のコンテキストを提供します。
 
-<Image img={hyperdx_17} alt='相関ログ' size='lg' />
+<Image img={hyperdx_17} alt='関連付けられたログ' size='lg' />
 
 決済サービスでキャッシュが満杯になっており、それが決済の完了を妨げていることが確認できました。
 
 
 ## ログの調査 {#explore-logs}
 
-詳細を確認するには、[`Search` ビュー](http://localhost:8080/search)に戻ります：
+詳細を確認するには、[`Search` ビュー](http://localhost:8080/search)に戻ります:
 
-ソースから `Logs` を選択し、`payment` サービスにフィルタを適用します。
+ソースから `Logs` を選択し、`payment` サービスにフィルターを適用します。
 
-<Image img={hyperdx_18} alt='ログ' size='lg' />
+<Image img={hyperdx_18} alt='Logs' size='lg' />
 
 この問題は最近発生したものですが、影響を受けた決済の数が多いことがわかります。さらに、Visa決済に関連するキャッシュが問題を引き起こしているようです。
 
@@ -183,7 +183,7 @@ done
 
 コードに明らかにエラーが混入していますが、メトリクスを使用してキャッシュサイズを確認することができます。`Chart Explorer`ビューに移動します。
 
-データソースとして`Metrics`を選択します。チャートビルダーを使用して`visa_validation_cache.size (Gauge)`の`Maximum`をプロットし、再生ボタンを押します。キャッシュは最大サイズに達するまで増加し続けており、その後エラーが発生しました。
+データソースとして`Metrics`を選択します。チャートビルダーを使用して`visa_validation_cache.size (Gauge)`の`Maximum`をプロットし、再生ボタンを押します。キャッシュは最大サイズに達するまで増加し続けており、その後エラーが発生したことが確認できます。
 
 <Image img={hyperdx_19} alt='Metrics' size='lg' />
 

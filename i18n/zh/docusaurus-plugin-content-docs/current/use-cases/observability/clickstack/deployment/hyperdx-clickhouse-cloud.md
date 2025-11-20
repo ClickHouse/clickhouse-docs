@@ -36,7 +36,7 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 </TrackedLink>
 .
 
-如果您是 ClickHouse Cloud 新用户,请点击
+如果您是 ClickHouse Cloud 的新用户,请点击
 
 <TrackedLink
   href='/docs/cloud/overview'
@@ -55,11 +55,11 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 </TrackedLink>
 开始使用。::::
 
-此部署方案专为 ClickHouse Cloud 用户设计。在此部署模式下,ClickHouse 和 HyperDX 均托管在 ClickHouse Cloud 中,最大限度地减少了用户需要自行托管的组件数量。
+此部署方式专为使用 ClickHouse Cloud 的用户设计。在此部署模式中,ClickHouse 和 HyperDX 均托管在 ClickHouse Cloud 上,最大限度地减少了用户需要自行托管的组件数量。
 
 除了减少基础设施管理工作外,此部署模式还确保身份验证与 ClickHouse Cloud SSO/SAML 集成。与自托管部署不同,无需配置 MongoDB 实例来存储应用程序状态——例如仪表板、已保存的搜索、用户设置和告警。
 
-在此模式下,数据摄取完全由用户自主控制。您可以使用自行托管的 OpenTelemetry 收集器、客户端库直接摄取、ClickHouse 原生表引擎(如 Kafka 或 S3)、ETL 管道或 ClickPipes(ClickHouse Cloud 的托管摄取服务)将数据摄取到 ClickHouse Cloud 中。此方法提供了运行 ClickStack 最简单且性能最优的方式。
+在此模式下,数据摄取完全由用户自行控制。您可以使用自己托管的 OpenTelemetry 收集器、从客户端库直接摄取、ClickHouse 原生表引擎(如 Kafka 或 S3)、ETL 管道或 ClickPipes(ClickHouse Cloud 的托管摄取服务)将数据摄取到 ClickHouse Cloud 中。此方法提供了运行 ClickStack 的最简单且性能最优的方式。
 
 ### 适用场景 {#suitable-for}
 
@@ -67,33 +67,33 @@ import JSONSupport from "@site/docs/use-cases/observability/clickstack/deploymen
 
 1. 您已在 ClickHouse Cloud 中存储了可观测性数据,并希望使用 HyperDX 进行可视化。
 2. 您运行大规模可观测性部署,需要 ClickStack 与 ClickHouse Cloud 提供的专用性能和可扩展性。
-3. 您已在使用 ClickHouse Cloud 进行分析,并希望使用 ClickStack 插桩库对应用程序进行插桩——将数据发送到同一集群。在这种情况下,我们建议使用 [warehouses](/cloud/reference/warehouses) 来隔离可观测性工作负载的计算资源。
+3. 您已在使用 ClickHouse Cloud 进行分析,并希望使用 ClickStack 插桩库对应用程序进行插桩——将数据发送到同一集群。在这种情况下,我们建议使用[仓库](/cloud/reference/warehouses)来隔离可观测性工作负载的计算资源。
 
 
 ## 部署步骤 {#deployment-steps}
 
-以下指南假设您已经创建了 ClickHouse Cloud 服务。如果您尚未创建服务,请按照我们快速入门指南中的["创建 ClickHouse 服务"](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)步骤操作。
+以下指南假定您已创建 ClickHouse Cloud 服务。如果尚未创建服务,请参照快速入门指南中的["创建 ClickHouse 服务"](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)步骤操作。
 
 <VerticalStepper headerLevel="h3">
 
 ### 复制服务凭据(可选) {#copy-service-credentials}
 
-**如果您已有希望在服务中可视化的可观测性事件,可以跳过此步骤。**
+**如果您已有需要在服务中可视化的可观测性事件,可跳过此步骤。**
 
-导航到主服务列表,选择您打算用于在 HyperDX 中可视化可观测性事件的服务。
+导航至主服务列表,选择您计划用于在 HyperDX 中可视化可观测性事件的服务。
 
-从导航菜单中点击 `Connect` 按钮。将打开一个模态窗口,提供您服务的凭据以及如何通过不同接口和语言进行连接的说明。从下拉菜单中选择 `HTTPS`,并记录连接端点和凭据。
+点击导航菜单中的 `Connect` 按钮。将弹出一个对话框,显示您的服务凭据以及通过不同接口和语言进行连接的说明。从下拉菜单中选择 `HTTPS`,并记录连接端点和凭据。
 
 <Image img={cloud_connect} alt='ClickHouse Cloud 连接' size='lg' />
 
 ### 部署 Open Telemetry Collector(可选) {#deploy-otel-collector}
 
-**如果您已有希望在服务中可视化的可观测性事件,可以跳过此步骤。**
+**如果您已有需要在服务中可视化的可观测性事件,可跳过此步骤。**
 
-此步骤确保使用 Open Telemetry (OTel) 模式创建表,进而可以无缝地在 HyperDX 中创建数据源。这还提供了一个 OTLP 端点,可用于加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)并将 OTel 事件发送到 ClickStack。
+此步骤确保使用 Open Telemetry (OTel) 模式创建表,从而可以无缝地在 HyperDX 中创建数据源。这还提供了一个 OTLP 端点,可用于加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)并将 OTel 事件发送到 ClickStack。
 
 :::note 使用标准 Open Telemetry collector
-以下说明使用 OTel collector 的标准发行版,而非 ClickStack 发行版。后者需要 OpAMP 服务器进行配置。目前在私有预览版中不支持此功能。下面的配置复制了 ClickStack 发行版 collector 使用的版本,提供了一个可以发送事件的 OTLP 端点。
+以下说明使用 OTel collector 的标准发行版,而非 ClickStack 发行版。后者需要 OpAMP 服务器进行配置,目前在私有预览版中暂不支持。下面的配置复制了 ClickStack 发行版 collector 所使用的版本,提供了一个可接收事件的 OTLP 端点。
 :::
 
 下载 OTel collector 的配置文件:
@@ -260,7 +260,7 @@ service:
 
 </details>
 
-使用以下 Docker 命令部署采集器，将相应的环境变量设置为之前记录的连接设置，并根据您的操作系统选择下面对应的命令。
+使用以下 Docker 命令部署收集器，将相应的环境变量设置为先前记录的连接设置，并根据您的操作系统选择下方对应的命令。
 ```
 
 
@@ -268,7 +268,7 @@ service:
 # 修改为您的云端点地址
 export CLICKHOUSE_ENDPOINT=
 export CLICKHOUSE_PASSWORD=
-# 可选择性修改 
+# 可选择修改 
 export CLICKHOUSE_DATABASE=default
 ```
 
@@ -329,7 +329,7 @@ docker run --rm -it \
 
 您无需创建用户,系统将自动完成身份验证,然后提示您创建数据源。
 
-对于仅希望探索 HyperDX 界面的用户,我们推荐使用[示例数据集](/use-cases/observability/clickstack/sample-datasets),这些数据集使用 OTel 数据。
+对于仅希望体验 HyperDX 界面的用户,我们推荐使用[示例数据集](/use-cases/observability/clickstack/sample-datasets),这些数据集使用 OTel 数据。
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX Landing" size="lg"/>
 
@@ -342,7 +342,7 @@ docker run --rm -it \
 1. 在 ClickHouse Cloud 控制台中导航到您的服务
 2. 转到 **Settings** → **SQL Console Access**
 3. 为每个用户设置相应的权限级别:
-   - **Service Admin → Full Access** - 启用告警所需
+   - **Service Admin → Full Access** - 启用告警所需的权限
    - **Service Read Only → Read Only** - 可以查看可观测性数据并创建仪表板
    - **No access** - 无法访问 HyperDX
 
@@ -356,13 +356,13 @@ docker run --rm -it \
 
 HyperDX 原生支持 Open Telemetry,但不仅限于 Open Telemetry——用户可以根据需要使用自己的表结构。
 
-#### 使用 Open Telemetry 模式  {#using-otel-schemas}
+#### 使用 Open Telemetry 结构  {#using-otel-schemas}
 
-如果您使用上述 OTel 收集器在 ClickHouse 中创建数据库和表,请在创建源模型中保留所有默认值,并在 `Table` 字段中填入值 `otel_logs` 以创建日志源。所有其他设置应该会自动检测,然后您可以点击 `Save New Source`。
+如果您使用上述 OTel 收集器在 ClickHouse 中创建数据库和表,请在创建源模型中保留所有默认值,并在 `Table` 字段中填写 `otel_logs` 以创建日志源。所有其他设置应该会自动检测,然后您可以点击 `Save New Source`。
 
 <Image img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
 
-要为追踪和 OTel 指标创建源,用户可以从顶部菜单中选择 `Create New Source`。
+要创建追踪和 OTel 指标的数据源,用户可以从顶部菜单中选择 `Create New Source`。
 
 <Image img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 
@@ -370,19 +370,19 @@ HyperDX 原生支持 Open Telemetry,但不仅限于 Open Telemetry——用户�
 
 <Image img={hyperdx_create_trace_datasource} alt="HyperDX create trace source" size="lg"/>
 
-:::note 关联源
-请注意,ClickStack 中的不同数据源(如日志和追踪)可以相互关联。要启用此功能,需要在每个源上进行额外配置。例如,在日志源中,您可以指定相应的追踪源,反之亦然。详情请参阅["关联源"](/use-cases/observability/clickstack/config#correlated-sources)。
+:::note 关联数据源
+请注意,ClickStack 中的不同数据源(如日志和追踪)可以相互关联。要启用此功能,需要在每个数据源上进行额外配置。例如,在日志源中,您可以指定相应的追踪源,反之亦然。详情请参阅["关联数据源"](/use-cases/observability/clickstack/config#correlated-sources)。
 :::
 
-#### 使用自定义模式 {#using-custom-schemas}
+#### 使用自定义结构 {#using-custom-schemas}
 
-希望将 HyperDX 连接到现有数据服务的用户可以根据需要完成数据库和表设置。如果表符合 ClickHouse 的 Open Telemetry 模式,设置将自动检测。 
+希望将 HyperDX 连接到现有数据服务的用户可以根据需要完成数据库和表设置。如果表符合 ClickHouse 的 Open Telemetry 结构,设置将自动检测。 
 
-如果使用自己的模式,我们建议创建一个日志源并确保指定所需字段——详情请参阅["日志源设置"](/use-cases/observability/clickstack/config#logs)。
+如果使用您自己的结构,我们建议创建日志源并确保指定所需字段——详情请参阅["日志源设置"](/use-cases/observability/clickstack/config#logs)。
 
 </VerticalStepper>
 
 <JSONSupport/>
 
-此外,用户应联系 support@clickhouse.com 以确保在其 ClickHouse Cloud 服务上启用了 JSON。
+此外,用户应联系 support@clickhouse.com 以确保在其 ClickHouse Cloud 服务上启用 JSON。
 ```

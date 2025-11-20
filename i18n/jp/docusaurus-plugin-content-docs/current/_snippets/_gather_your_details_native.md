@@ -2,15 +2,15 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_native from '@site/static/images/_snippets/connection-details-native.png';
 import Image from '@theme/IdealImage';
 
-ネイティブ TCP で ClickHouse に接続するには、次の情報が必要です。
+ネイティブ TCP を使用して ClickHouse に接続するには、次の情報が必要です。
 
-| Parameter(s)              | Description                                                 |
-| ------------------------- | ----------------------------------------------------------- |
-| `HOST` and `PORT`         | 通常、TLS を使用する場合のポートは 9440、TLS を使用しない場合のポートは 9000 です。         |
-| `DATABASE NAME`           | 初期状態では `default` という名前のデータベースがあります。接続したいデータベースの名前を使用してください。 |
-| `USERNAME` and `PASSWORD` | 初期状態ではユーザー名は `default` です。ユースケースに適したユーザー名を使用してください。         |
+| Parameter(s)              | Description                                                     |
+| ------------------------- | --------------------------------------------------------------- |
+| `HOST` and `PORT`         | 通常、TLS を使用する場合のポートは 9440、TLS を使用しない場合のポートは 9000 です。             |
+| `DATABASE NAME`           | デフォルトで `default` という名前のデータベースが用意されています。接続したいデータベースの名前を指定してください。 |
+| `USERNAME` and `PASSWORD` | デフォルトのユーザー名は `default` です。利用目的に応じたユーザー名を使用してください。               |
 
-ClickHouse Cloud サービスの接続情報は、ClickHouse Cloud コンソールで確認できます。
+ClickHouse Cloud サービスの詳細は、ClickHouse Cloud コンソールで確認できます。
 接続するサービスを選択し、**Connect** をクリックします。
 
 <Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud サービスの接続ボタン" border />

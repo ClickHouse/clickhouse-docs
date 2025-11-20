@@ -14,13 +14,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 函数,通过 `quantilesTimingArrayIf` 聚合组合器函数计算满足条件的行中数组时间值的分位数。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if)
+组合器可应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+函数，用于计算满足条件的行中数组时间值的分位数，
+通过 `quantilesTimingArrayIf` 聚合组合器函数实现。
 
 
 ## 使用示例 {#example-usage}
 
-在此示例中,我们将创建一个表来存储不同端点的 API 响应时间,
-并使用 `quantilesTimingArrayIf` 来计算成功请求的响应时间分位数。
+在此示例中,我们将创建一个表来存储不同端点的 API 响应时间,并使用 `quantilesTimingArrayIf` 来计算成功请求的响应时间分位数。
 
 ```sql title="查询"
 CREATE TABLE api_responses(

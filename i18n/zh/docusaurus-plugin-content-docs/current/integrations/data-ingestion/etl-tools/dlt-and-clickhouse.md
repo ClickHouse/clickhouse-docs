@@ -2,7 +2,7 @@
 sidebar_label: 'dlt'
 keywords: ['clickhouse', 'dlt', 'connect', 'integrate', 'etl', 'data integration']
 description: '使用 dlt 集成将数据加载到 ClickHouse'
-title: '连接 dlt 与 ClickHouse'
+title: '将 dlt 连接到 ClickHouse'
 slug: /integrations/data-ingestion/etl-tools/dlt-and-clickhouse
 doc_type: 'guide'
 ---
@@ -14,13 +14,13 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> 是一个开源库，你可以将其添加到 Python 脚本中，把来自各种且常常杂乱的数据源的数据加载为结构良好、实时更新的数据集。
+<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> 是一个开源库，你可以将其添加到 Python 脚本中，将来自各种、往往十分杂乱的数据源的数据加载成结构良好的实时数据集。
 
 
 
-## 安装 dlt 及 ClickHouse 支持 {#install-dlt-with-clickhouse}
+## 安装带有 ClickHouse 支持的 dlt {#install-dlt-with-clickhouse}
 
-### 安装包含 ClickHouse 依赖的 `dlt` 库: {#to-install-the-dlt-library-with-clickhouse-dependencies}
+### 安装带有 ClickHouse 依赖的 `dlt` 库: {#to-install-the-dlt-library-with-clickhouse-dependencies}
 
 ```bash
 pip install "dlt[clickhouse]"
@@ -40,20 +40,20 @@ dlt init chess clickhouse
 ```
 
 :::note
-此命令将初始化您的数据管道,以 chess 作为数据源,ClickHouse 作为目标。
+此命令将初始化您的数据管道,使用 chess 作为数据源,ClickHouse 作为目标数据库。
 :::
 
-上述命令会生成多个文件和目录,包括 `.dlt/secrets.toml` 和 ClickHouse 的依赖文件。您可以通过执行以下命令来安装依赖文件中指定的必要依赖项:
+上述命令会生成多个文件和目录,包括 `.dlt/secrets.toml` 和 ClickHouse 的依赖项文件。您可以通过执行以下命令来安装依赖项文件中指定的必要依赖:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-或使用 `pip install dlt[clickhouse]`,这将安装 `dlt` 库以及使用 ClickHouse 作为目标所需的必要依赖项。
+或使用 `pip install dlt[clickhouse]`,这将安装 `dlt` 库以及使用 ClickHouse 作为目标数据库所需的必要依赖项。
 
 ### 设置 ClickHouse 数据库 {#2-setup-clickhouse-database}
 
-要将数据加载到 ClickHouse,您需要创建一个 ClickHouse 数据库。以下是您应该执行的大致步骤:
+要将数据加载到 ClickHouse,您需要创建一个 ClickHouse 数据库。以下是您应该执行的基本步骤:
 
 1. 您可以使用现有的 ClickHouse 数据库或创建一个新数据库。
 
@@ -78,7 +78,7 @@ GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 database = "dlt"                         # 您创建的数据库名称
 username = "dlt"                         # ClickHouse 用户名,默认通常为 "default"
 password = "Dlt*12345789234567"          # ClickHouse 密码(如有)
-host = "localhost"                       # ClickHouse 服务器主机
+host = "localhost"                       # ClickHouse 服务器主机地址
 port = 9000                              # ClickHouse 原生协议端口,默认为 9000
 http_port = 8443                         # 连接到 ClickHouse 服务器 HTTP 接口的端口。默认为 8443。
 secure = 1                               # 如果使用 HTTPS 则设置为 1,否则为 0。
@@ -92,14 +92,14 @@ dataset_table_separator = "___"          # 数据集表名与数据集之间的�
 
 如果您未使用外部暂存(即未在管道中设置 staging 参数),则必须设置 `http_port`。这是因为内置的 ClickHouse 本地存储暂存使用 <a href="https://github.com/ClickHouse/clickhouse-connect">clickhouse-connect</a> 库,该库通过 HTTP 与 ClickHouse 通信。
 
-请确保您的 ClickHouse 服务器配置为在 `http_port` 指定的端口上接受 HTTP 连接。例如,如果您设置 `http_port = 8443`,则 ClickHouse 应在端口 8443 上监听 HTTP 请求。如果您使用外部暂存,则可以省略 `http_port` 参数,因为在这种情况下不会使用 clickhouse-connect。
+请确保您的 ClickHouse 服务器已配置为在 `http_port` 指定的端口上接受 HTTP 连接。例如,如果您设置 `http_port = 8443`,则 ClickHouse 应在端口 8443 上监听 HTTP 请求。如果您使用外部暂存,则可以省略 `http_port` 参数,因为在这种情况下不会使用 clickhouse-connect。
 :::
 
 您可以传递类似于 `clickhouse-driver` 库使用的数据库连接字符串。上述凭据将如下所示:
 
 
 ```bash
-# 将此配置保持在 toml 文件的顶部,在任何节(section)开始之前。
+# 将此配置保持在 toml 文件的顶部，位于任何 section 之前。
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -112,7 +112,7 @@ destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhos
 
 dlt 库中的写入策略定义了数据应如何写入目标。写入策略分为三种类型:
 
-**Replace(替换)**: 此策略使用资源中的数据替换目标中的数据。它会删除所有类和对象,并在加载数据之前重新创建模式。您可以在<a href="https://dlthub.com/docs/general-usage/full-loading">此处</a>了解更多信息。
+**Replace(替换)**: 此策略使用资源中的数据替换目标中的数据。它会删除所有类和对象,并在加载数据之前重新创建架构。您可以在<a href="https://dlthub.com/docs/general-usage/full-loading">此处</a>了解更多信息。
 
 **Merge(合并)**: 此写入策略将资源中的数据与目标中的数据合并。对于 `merge` 策略,您需要为资源指定 `primary_key`。您可以在<a href="https://dlthub.com/docs/general-usage/incremental-loading">此处</a>了解更多信息。
 
@@ -129,7 +129,7 @@ dlt 库中的写入策略定义了数据应如何写入目标。写入策略分�
 
 ## 数据集 {#datasets}
 
-ClickHouse 不支持在单个数据库中使用多个数据集,而 `dlt` 出于多种原因需要依赖数据集。为了使 ClickHouse 能够与 `dlt` 配合使用,`dlt` 在您的 ClickHouse 数据库中生成的表将以数据集名称作为前缀,并通过可配置的 `dataset_table_separator` 进行分隔。此外,系统还会创建一个不包含任何数据的特殊哨兵表,以便 `dlt` 识别 ClickHouse 目标中已存在的虚拟数据集。
+ClickHouse 不支持在单个数据库中使用多个数据集,而 `dlt` 出于多种原因需要依赖数据集。为了使 ClickHouse 能够与 `dlt` 配合使用,`dlt` 在您的 ClickHouse 数据库中生成的表名将添加数据集名称作为前缀,前缀与表名之间通过可配置的 `dataset_table_separator` 分隔。此外,系统还会创建一个不包含任何数据的特殊哨兵表,以便 `dlt` 识别 ClickHouse 目标中已存在的虚拟数据集。
 
 
 ## 支持的文件格式 {#supported-file-formats}
@@ -181,9 +181,9 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 
 ClickHouse 支持将 Amazon S3、Google Cloud Storage 和 Azure Blob Storage 作为文件暂存目标。
 
-`dlt` 会将 Parquet 或 jsonl 文件上传到暂存位置,并使用 ClickHouse 表函数直接从暂存文件中加载数据。
+`dlt` 会将 Parquet 或 jsonl 文件上传到暂存位置，并使用 ClickHouse 表函数直接从暂存文件中加载数据。
 
-请参阅 filesystem 文档了解如何为暂存目标配置凭据:
+请参阅文件系统文档以了解如何为暂存目标配置凭据：
 
 - <a href='https://dlthub.com/docs/dlt-ecosystem/destinations/filesystem#aws-s3'>
     Amazon S3
@@ -195,7 +195,7 @@ ClickHouse 支持将 Amazon S3、Google Cloud Storage 和 Azure Blob Storage 作
     Azure Blob Storage
   </a>
 
-要运行启用了暂存的管道:
+要运行启用暂存的管道：
 
 ```bash
 pipeline = dlt.pipeline(
@@ -208,15 +208,15 @@ pipeline = dlt.pipeline(
 
 ### 使用 Google Cloud Storage 作为暂存区 {#using-google-cloud-storage-as-a-staging-area}
 
-dlt 支持在将数据加载到 ClickHouse 时使用 Google Cloud Storage (GCS) 作为暂存区。这由 ClickHouse 的 <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS 表函数</a>自动处理,dlt 在底层使用该函数。
+dlt 支持在将数据加载到 ClickHouse 时使用 Google Cloud Storage (GCS) 作为暂存区。这由 ClickHouse 的 <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS 表函数</a>自动处理，dlt 在底层使用该函数。
 
-ClickHouse GCS 表函数仅支持使用基于哈希的消息认证码 (HMAC) 密钥进行身份验证。为实现此功能,GCS 提供了模拟 Amazon S3 API 的 S3 兼容模式。ClickHouse 利用此特性通过其 S3 集成来访问 GCS 存储桶。
+ClickHouse GCS 表函数仅支持使用基于哈希的消息认证码 (HMAC) 密钥进行身份验证。为实现此功能，GCS 提供了模拟 Amazon S3 API 的 S3 兼容模式。ClickHouse 利用此特性通过其 S3 集成来访问 GCS 存储桶。
 
-在 dlt 中设置使用 HMAC 身份验证的 GCS 暂存:
+在 dlt 中设置使用 HMAC 身份验证的 GCS 暂存：
 
 1. 按照 <a href="https://cloud.google.com/storage/docs/authentication/managing-hmackeys#create">Google Cloud 指南</a>为您的 GCS 服务账号创建 HMAC 密钥。
 
-2. 在 dlt 项目的 ClickHouse 目标设置的 `config.toml` 文件中配置 HMAC 密钥以及服务账号的 `client_email`、`project_id` 和 `private_key`:
+2. 在 dlt 项目的 ClickHouse 目标设置的 `config.toml` 文件中配置 HMAC 密钥以及服务账号的 `client_email`、`project_id` 和 `private_key`：
 
 ```bash
 [destination.filesystem]
@@ -238,16 +238,16 @@ gcp_access_key_id = "JFJ$$*f2058024835jFffsadf"
 gcp_secret_access_key = "DFJdwslf2hf57)%$02jaflsedjfasoi"
 ```
 
-注意:除了 HMAC 密钥(`gcp_access_key_id` 和 `gcp_secret_access_key`)之外,您现在还需要在 `[destination.filesystem.credentials]` 下提供服务账号的 `client_email`、`project_id` 和 `private_key`。这是因为 GCS 暂存支持目前作为临时解决方案实现,尚未优化。
+注意：除了 HMAC 密钥（`gcp_access_key_id` 和 `gcp_secret_access_key`）之外，您现在还需要在 `[destination.filesystem.credentials]` 下提供服务账号的 `client_email`、`project_id` 和 `private_key`。这是因为 GCS 暂存支持目前作为临时解决方案实现，仍未优化。
 
-dlt 会将这些凭据传递给 ClickHouse,由其处理身份验证和 GCS 访问。
+dlt 会将这些凭据传递给 ClickHouse，由其处理身份验证和 GCS 访问。
 
-目前正在积极开发以简化和改进 ClickHouse dlt 目标的 GCS 暂存设置。完整的 GCS 暂存支持正在以下 GitHub issue 中跟踪:
+目前正在积极开发以简化和改进 ClickHouse dlt 目标的 GCS 暂存设置。正式的 GCS 暂存支持正在以下 GitHub 问题中跟踪：
 
-- 使 filesystem 目标在 s3 兼容模式下与 gcs <a href="https://github.com/dlt-hub/dlt/issues/1272">协同工作</a>
+- 使文件系统目标在 s3 兼容模式下与 gcs <a href="https://github.com/dlt-hub/dlt/issues/1272">协同工作</a>
 - Google Cloud Storage 暂存区<a href="https://github.com/dlt-hub/dlt/issues/1181">支持</a>
 
-### dbt 支持 {#dbt-support}
+### Dbt 支持 {#dbt-support}
 
 通过 dbt-clickhouse 支持与 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> 的集成。
 

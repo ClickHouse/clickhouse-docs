@@ -1,7 +1,7 @@
 ---
 slug: /data-modeling/projections
 title: '投影'
-description: '本页介绍什么是投影、如何利用投影提升查询性能，以及投影与物化视图有何不同。'
+description: '本页介绍什么是投影、如何通过投影提升查询性能，以及投影与物化视图之间的区别。'
 keywords: ['projection', 'projections', 'query optimization']
 sidebar_order: 1
 doc_type: 'guide'
@@ -12,13 +12,13 @@ import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
 
-# 预投影
+# 投影
 
 
 
 ## 简介 {#introduction}
 
-ClickHouse 提供了多种机制来加速实时场景中大规模数据的分析查询。其中一种加速查询的机制是使用_投影_（Projections）。投影通过按关注的属性对数据进行重新排序来优化查询。投影可以是：
+ClickHouse 提供了多种机制来加速实时场景中大量数据的分析查询。其中一种加速查询的机制是使用 _投影（Projections）_。投影通过按关注的属性对数据进行重新排序来帮助优化查询。具体可以是：
 
 1. 完全重新排序
 2. 原始表的子集，采用不同的排序方式
@@ -39,53 +39,53 @@ ClickHouse 提供了多种机制来加速实时场景中大规模数据的分析
 
 ## Projection 如何工作？ {#how-do-projections-work}
 
-实际上,Projection 可以理解为原始表的一个附加隐藏表。Projection 可以具有不同的行排序方式,因此拥有与原始表不同的主索引,并且能够自动增量地预计算聚合值。因此,使用 Projection 提供了两个"调优手段"来加速查询执行:
+实际上,Projection 可以理解为原始表的一个附加隐藏表。Projection 可以具有不同的行顺序,因此拥有与原始表不同的主索引,并且能够自动增量地预计算聚合值。因此,使用 Projection 提供了两个加速查询执行的"调优手段":
 
-- **合理利用主索引**
+- **合理使用主索引**
 - **预计算聚合**
 
-Projection 在某些方面类似于 [物化视图](/materialized-views),后者同样允许您使用多种行排序方式并在插入时预计算聚合。与需要显式更新的物化视图不同,Projection 会自动更新并与原始表保持同步。当查询针对原始表时,ClickHouse 会自动采样主键并选择一个能够生成相同正确结果但需要读取最少数据量的表,如下图所示:
+Projection 在某些方面类似于 [物化视图](/materialized-views),后者同样允许您使用多种行顺序并在插入时预计算聚合。与需要显式更新的物化视图不同,Projection 会自动更新并与原始表保持同步。当查询针对原始表时,ClickHouse 会自动采样主键并选择一个能够生成相同正确结果但需要读取最少数据量的表,如下图所示:
 
-<Image img={projections_1} size='md' alt='Projections in ClickHouse' />
+<Image img={projections_1} size='md' alt='ClickHouse 中的 Projection' />
 
 ### 使用 `_part_offset` 实现更智能的存储 {#smarter_storage_with_part_offset}
 
-从 25.5 版本开始,ClickHouse 在 Projection 中支持虚拟列 `_part_offset`,这提供了一种定义 Projection 的新方式。
+自 25.5 版本起,ClickHouse 在 Projection 中支持虚拟列 `_part_offset`,这提供了一种定义 Projection 的新方式。
 
 现在有两种方式来定义 Projection:
 
 - **存储完整列(原始行为)**:Projection 包含完整数据并可以直接读取,当过滤条件匹配 Projection 的排序顺序时可提供更快的性能。
 
-- **仅存储排序键 + `_part_offset`**:Projection 的工作方式类似于索引。ClickHouse 使用 Projection 的主索引来定位匹配的行,但从基表读取实际数据。这减少了存储开销,代价是在查询时需要稍多的 I/O 操作。
+- **仅存储排序键 + `_part_offset`**:Projection 的工作方式类似索引。ClickHouse 使用 Projection 的主索引来定位匹配的行,但从基表读取实际数据。这减少了存储开销,代价是在查询时需要稍多的 I/O 操作。
 
 上述方法也可以混合使用,在 Projection 中存储某些列,而通过 `_part_offset` 间接存储其他列。
 
 
 ## 何时使用投影？ {#when-to-use-projections}
 
-投影对新用户来说是一个很有吸引力的特性，因为它们会在数据插入时自动维护。此外，查询只需发送到单个表，投影会在可能的情况下被自动利用以加快响应时间。
+投影对新用户来说是一个极具吸引力的特性，因为它们会在数据插入时自动维护。此外，查询只需发送到单个表，投影会在可能的情况下自动被利用以加快响应时间。
 
-这与物化视图形成对比，在物化视图中，用户必须根据过滤条件选择合适的优化目标表或重写查询。这对用户应用程序提出了更高的要求，并增加了客户端的复杂性。
+这与物化视图形成对比。在物化视图中，用户必须根据过滤条件选择合适的优化目标表或重写查询。这对用户应用程序提出了更高的要求，并增加了客户端的复杂性。
 
 尽管有这些优势，投影也存在一些固有的限制，用户应该了解这些限制，因此应谨慎部署。
 
 - 投影不允许为源表和（隐藏的）目标表使用不同的 TTL，而物化视图允许使用不同的 TTL。
 - 带有投影的表不支持轻量级更新和删除操作。
 - 物化视图可以链式连接：一个物化视图的目标表可以作为另一个物化视图的源表，依此类推。投影无法实现这一点。
-- 投影不支持连接操作，但物化视图支持。
+- 投影不支持连接（join）操作，但物化视图支持。
 - 投影不支持过滤条件（`WHERE` 子句），但物化视图支持。
 
 我们建议在以下情况下使用投影：
 
-- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`，但物化视图在维护聚合方面更有效。查询优化器也更有可能利用使用简单重新排序的投影，即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用。
-- 用户能够接受可能带来的存储占用增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
+- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`，但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影，即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用。
+- 用户能够接受可能带来的存储占用增加以及两次写入数据的开销。请测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
 
 ## 示例 {#examples}
 
 ### 对不在主键中的列进行过滤 {#filtering-without-using-primary-keys}
 
-在本示例中,我们将展示如何向表添加投影。
+在本示例中,我们将展示如何向表中添加投影。
 我们还将了解如何使用投影来加速对表中非主键列进行过滤的查询。
 
 在本示例中,我们将使用 [sql.clickhouse.com](https://sql.clickhouse.com/) 上提供的纽约出租车数据集,该数据集按 `pickup_datetime` 排序。
@@ -164,7 +164,7 @@ WHERE query_id='<query_id>'
 
 如果您想了解如何创建表和插入数据,可以参考["英国房价数据集"](/getting-started/example-datasets/uk-price-paid)页面。
 
-我们可以在此数据集上运行两个简单的查询。第一个查询列出伦敦支付价格最高的郡,第二个查询计算各郡的平均价格:
+我们可以对该数据集运行两个简单的查询。第一个查询列出伦敦支付价格最高的郡,第二个查询计算各郡的平均价格:
 
 ```sql runnable
 SELECT
@@ -187,7 +187,7 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-请注意，尽管查询速度非常快，但这两条查询实际上都对全部 3003 万行数据进行了全表扫描，
+请注意，尽管速度非常快，这两个查询实际上都对全部 3003 万行数据进行了全表扫描，
 这是因为在创建表时，我们的 `ORDER BY` 子句中既没有包含 `town` 也没有包含 `price`：
 
 ```sql
@@ -200,7 +200,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-让我们看看能不能使用投影来加速这个查询。
+让我们看看能否通过使用投影来加速这个查询。
 
 为了保留原始表和查询结果，我们将创建一个新表，并使用 `INSERT INTO SELECT` 来复制数据：
 
@@ -209,7 +209,7 @@ CREATE TABLE uk.uk_price_paid_with_projections AS uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections SELECT * FROM uk.uk_price_paid;
 ```
 
-我们创建并填充投影 `prj_oby_town_price`，它会生成一个额外的（隐藏）表，该表带有按 town 和 price 排序的主索引，用于优化如下查询：在特定 town 中按最高支付价格列出各个 county：
+我们创建并填充投影 `prj_oby_town_price`。该投影会生成一个带有主索引、按 town 和 price 排序的额外（隐藏）表，用于优化如下查询：在指定 town 中按最高支付价格列出各县（county）：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -229,10 +229,10 @@ SETTINGS mutations_sync = 1
 ```
 
 [`mutations_sync`](/operations/settings/settings#mutations_sync) 设置
-用于强制以同步方式执行。
+用于强制执行同步操作。
 
-我们创建并填充投影 `prj_gby_county` —— 一个额外的（隐藏）表，
-以增量方式预先计算所有 130 个现有英国郡的 avg(price) 聚合值：
+我们创建并填充投影 `prj_gby_county` —— 一个额外的（隐藏的）数据表，
+用于以增量方式预先计算所有现有 130 个英国郡的 avg(price) 聚合值：
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections
@@ -252,14 +252,18 @@ SETTINGS mutations_sync = 1
 ```
 
 :::note
-如果在类似上面的 `prj_gby_county` 投影中使用了 `GROUP BY` 子句，那么（隐藏）表所使用的底层存储引擎会变成 `AggregatingMergeTree`，并且所有聚合函数都会被转换为 `AggregateFunction`。这可以确保数据能够被正确地增量聚合。
+如果在投影中使用了 `GROUP BY` 子句，例如上面的 `prj_gby_county`
+投影，那么（隐藏）表的底层存储引擎会变为 `AggregatingMergeTree`，
+并且所有聚合函数都会被转换为 `AggregateFunction`。这样可以确保数据能够被正确地进行增量聚合。
 :::
 
-下图可视化展示了主表 `uk_price_paid_with_projections` 及其两个投影：
+下图是主表 `uk_price_paid_with_projections`
+及其两个投影的可视化示意图：
 
-<Image img={projections_2} size="md" alt="主表 uk_price_paid_with_projections 及其两个投影的可视化表示" />
+<Image img={projections_2} size="md" alt="主表 uk_price_paid_with_projections 及其两个投影的可视化示意图" />
 
-如果我们现在再次运行那个查询，用于列出伦敦地区价格最高的前三笔成交记录，我们会看到查询性能有所提升：
+如果我们现在再次运行那个查询（列出伦敦中价格最高的三笔成交对应的行政郡），
+就会看到查询性能有所提升：
 
 ```sql runnable
 SELECT
@@ -271,7 +275,7 @@ ORDER BY price DESC
 LIMIT 3
 ```
 
-同样，对于列出平均支付价格最高的三个英国郡的查询：
+同样，对于这个查询（用于列出英国郡县中平均支付价格最高的前三个郡）：
 
 ```sql runnable
 SELECT
@@ -283,13 +287,14 @@ ORDER BY avg(price) DESC
 LIMIT 3
 ```
 
-请注意，这两个查询都针对原始表执行，并且在我们创建这两个投影之前，它们都进行了全表扫描（从磁盘流式读取了全部 3003 万行）。
+请注意，这两个查询都针对原始表执行，并且在我们创建这两个投影之前，这两个查询都进行了全表扫描（所有 30.03 百万行都从磁盘中被读取）。
 
-另外请注意，用于列出伦敦中支付价格最高的三条记录对应县区的查询需要流式读取 217 万行。而当我们直接使用一张专门针对该查询优化的第二张表时，只需要从磁盘流式读取 8.192 万行。
+另外请注意，用于列出伦敦中支付价格最高的三条记录所对应郡县的查询，会扫描 2.17 百万行。当我们直接使用为该查询优化的第二张表时，只从磁盘中读取了 81.92 千行。
 
-造成差异的原因是，目前上面提到的 `optimize_read_in_order` 优化尚不支持投影。
+出现这种差异的原因在于，目前上文提到的 `optimize_read_in_order` 优化尚不支持投影。
 
-我们查看 `system.query_log` 表，可以看到 ClickHouse 自动对上面两个查询使用了这两个投影（见下方的 projections 列）：
+我们检查 `system.query_log` 表，可以看到 ClickHouse
+自动为上面的两个查询使用了这两个投影（见下方的 projections 列）：
 
 ```sql
 SELECT
@@ -341,7 +346,7 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 
 ### 更多示例 {#further-examples}
 
-以下示例使用相同的英国房价数据集,对比使用投影和不使用投影的查询性能。
+以下示例使用相同的英国房价数据集,对比使用投影和不使用投影的查询效果。
 
 为了保留原始表(及其性能),我们再次使用 `CREATE AS` 和 `INSERT INTO SELECT` 创建表的副本。
 
@@ -372,7 +377,7 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
     )
 ```
 
-为现有数据填充投影。(如果不物化投影,则投影仅会为新插入的数据创建):
+为现有数据填充投影。(如果不进行物化,投影将仅为新插入的数据创建):
 
 ```sql
 ALTER TABLE uk.uk_price_paid_with_projections_v2
@@ -380,7 +385,7 @@ ALTER TABLE uk.uk_price_paid_with_projections_v2
 SETTINGS mutations_sync = 1
 ```
 
-以下查询对比了使用投影和不使用投影的性能。要禁用投影使用,我们使用 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections) 设置,该设置默认启用。
+以下查询对比使用投影和不使用投影的性能。要禁用投影使用,我们使用 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections) 设置,该设置默认启用。
 
 #### 查询 1. 每年平均价格 {#average-price-projections}
 
@@ -483,7 +488,7 @@ LIMIT 100
 
 > 目前,此机制仅裁剪整个数据分区。尚不支持颗粒级裁剪。
 
-为了演示这一点,我们定义表(使用包含 `_part_offset` 列的投影)并插入五个与上图匹配的示例行。
+为了演示这一点,我们定义表(使用包含 `_part_offset` 列的投影)并插入与上图匹配的五个示例行。
 
 ```sql
 CREATE TABLE page_views
@@ -509,7 +514,7 @@ SETTINGS
   max_bytes_to_merge_at_max_space_in_pool = 1; -- disable merge
 ```
 
-然后向表中插入数据:
+然后我们向表中插入数据:
 
 ```sql
 INSERT INTO page_views VALUES (
@@ -539,7 +544,7 @@ INSERT INTO page_views VALUES (
 - `region_proj` 按区域裁剪分区
 - `user_id_proj` 进一步按 `user_id` 裁剪
 
-使用 `EXPLAIN projections = 1` 可以看到此行为,它显示 ClickHouse 如何选择和应用投影。
+使用 `EXPLAIN projections = 1` 可以看到此行为,它显示了 ClickHouse 如何选择和应用投影。
 
 ```sql
 EXPLAIN projections=1
@@ -549,46 +554,46 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 
 ```response
     ┌─explain────────────────────────────────────────────────────────────────────────────────┐
- 1. │ 表达式 ((Project names + Projection))                                              │
- 2. │   表达式                                                                           │                                                                        
- 3. │     从 MergeTree 读取 (default.page_views)                                             │
- 4. │     投影:                                                                       │
- 5. │       名称: region_proj                                                                │
- 6. │         描述: 投影已分析并用于数据分片级过滤 │
- 7. │         条件: (region in ['us_west', 'us_west'])                                  │
- 8. │         搜索算法: 二分查找                                                │
- 9. │         数据分片: 3                                                                       │
-10. │         标记: 3                                                                       │
-11. │         范围: 3                                                                      │
-12. │         行数: 3                                                                        │
-13. │         Filtered 数据分片: 2                                                              │
-14. │       名称: user_id_proj                                                               │
-15. │         描述: 投影已分析并用于数据分片级过滤 │
-16. │         条件: (user_id in [107, 107])                                             │
-17. │         搜索算法: 二分查找                                                │
-18. │         数据分片: 1                                                                       │
-19. │         标记: 1                                                                       │
-20. │         范围: 1                                                                      │
-21. │         行数: 1                                                                        │
-22. │         Filtered 数据分片: 2                                                              │
+ 1. │ Expression ((Project names + Projection))                                              │
+ 2. │   Expression                                                                           │                                                                        
+ 3. │     ReadFromMergeTree (default.page_views)                                             │
+ 4. │     Projections:                                                                       │
+ 5. │       Name: region_proj                                                                │
+ 6. │         描述:投影已分析并用于数据分片级过滤 │
+ 7. │         Condition: (region in ['us_west', 'us_west'])                                  │
+ 8. │         搜索算法:二分查找                                                │
+ 9. │         Parts: 3                                                                       │
+10. │         Marks: 3                                                                       │
+11. │         Ranges: 3                                                                      │
+12. │         Rows: 3                                                                        │
+13. │         已过滤数据分片数:2                                                              │
+14. │       Name: user_id_proj                                                               │
+15. │         描述:投影已分析并用于数据分片级过滤 │
+16. │         Condition: (user_id in [107, 107])                                             │
+17. │         搜索算法:二分查找                                                │
+18. │         Parts: 1                                                                       │
+19. │         Marks: 1                                                                       │
+20. │         Ranges: 1                                                                      │
+21. │         Rows: 1                                                                        │
+22. │         已过滤数据分片数:2                                                              │
     └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-上面展示的 `EXPLAIN` 输出从上到下展示了逻辑查询计划：
+上面的 `EXPLAIN` 输出从上到下展示了逻辑查询计划：
 
-| 行号    | 描述                                                                              |
-| ----- | ------------------------------------------------------------------------------- |
-| 3     | 计划从基础表 `page_views` 中读取数据                                                       |
-| 5-13  | 使用 `region_proj` 找到满足 region = &#39;us&#95;west&#39; 的 3 个分片，并在 5 个分片中裁剪掉其中 2 个 |
-| 14-22 | 使用 `user_id_proj` 找到满足 `user_id = 107` 的 1 个分片，进一步从剩余的 3 个分片中裁剪掉 2 个            |
+| Row number | Description                                                                   |
+| ---------- | ----------------------------------------------------------------------------- |
+| 3          | 计划从 `page_views` 基表中读取数据                                                      |
+| 5-13       | 使用 `region_proj` 找出 `region = &#39;us&#95;west&#39;` 的 3 个分片，将 5 个分片中的 2 个裁剪掉 |
+| 14-22      | 使用 `user_id_proj` 找出 `user_id = 107` 的 1 个分片，在剩余的 3 个分片中再裁剪掉 2 个              |
 
-最终，只从基础表中读取了 **5 个分片中的 1 个**。
-通过综合利用多个 projection 的索引分析，ClickHouse 大幅减少了扫描的数据量，
+最终，仅从基表中读取了 **5 个分片中的 1 个**。
+通过结合多个 projection 的索引分析，ClickHouse 显著减少了扫描的数据量，
 在保持存储开销较低的同时提升了性能。
 
 
 ## 相关内容 {#related-content}
 
-- [ClickHouse 主索引实用入门](/guides/best-practices/sparse-primary-indexes#option-3-projections)
+- [ClickHouse 主索引实用介绍](/guides/best-practices/sparse-primary-indexes#option-3-projections)
 - [物化视图](/docs/materialized-views)
 - [ALTER PROJECTION](/sql-reference/statements/alter/projection)

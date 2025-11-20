@@ -4,7 +4,7 @@ sidebar_label: '集成 PydanticAI'
 title: '如何使用 ClickHouse MCP Server 构建 PydanticAI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建一个可以与 ClickHouse MCP Server 交互的 PydanticAI 智能体。'
+description: '了解如何构建能够与 ClickHouse MCP Server 交互的 PydanticAI 智能体。'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,11 +14,10 @@ doc_type: 'guide'
 
 # 如何使用 ClickHouse MCP Server 构建 PydanticAI 智能体
 
-在本指南中，你将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 智能体，
-它可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
+在本指南中,您将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 智能体,该智能体可以通过 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse SQL 演练场](https://sql.clickhouse.com/)进行交互。
 
-:::note 示例 Notebook
-你可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb)中找到对应的 Notebook 示例。
+:::note 示例笔记本
+此示例可在[示例代码库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb)中以笔记本形式找到。
 :::
 
 
@@ -47,7 +46,7 @@ pip install -q "pydantic-ai-slim[anthropic]" # 如果使用其他 LLM 提供商�
 
 ## 设置凭据 {#setup-credentials}
 
-接下来,您需要提供 Anthropic API 密钥:
+接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os, getpass
@@ -59,11 +58,11 @@ Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥,并且想要使用其他 LLM 提供商,
+如果您没有 Anthropic API 密钥，想要使用其他 LLM 提供商，
 可以在 [PydanticAI 文档](https://ai.pydantic.dev/models/)中查看设置凭据的说明
 :::
 
-接下来,定义连接到 ClickHouse SQL 演练场所需的凭据:
+接下来，定义连接到 ClickHouse SQL 演示环境所需的凭据：
 
 ```python
 env = {
@@ -78,7 +77,7 @@ env = {
 
 ## 初始化 MCP Server 和 PydanticAI agent {#initialize-mcp}
 
-现在配置 ClickHouse MCP Server 以指向 ClickHouse SQL 演练场:
+现在配置 ClickHouse MCP Server 以指向 ClickHouse SQL 演练场：
 
 ```python
 from pydantic_ai import Agent
@@ -99,9 +98,9 @@ agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 ```
 
 
-## 向 Agent 提问 {#ask-agent}
+## 向代理提问 {#ask-agent}
 
-最后,您可以向 Agent 提出问题:
+最后,您可以向代理提出问题:
 
 ```python
 async with agent.run_mcp_servers():

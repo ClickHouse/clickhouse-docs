@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/search
-title: 'ClickStack での検索'
+title: 'ClickStack を使用した検索'
 sidebar_label: '検索'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack での検索'
+description: 'ClickStack を使用した検索'
 doc_type: 'guide'
 keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
@@ -14,9 +14,9 @@ import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.p
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStack を使用すると、イベント（ログやトレース）に対してフルテキスト検索を行うことができます。イベントにマッチするキーワードを入力するだけで、すぐに検索を始められます。たとえば、ログに &quot;Error&quot; が含まれている場合は、検索バーに &quot;Error&quot; と入力するだけで見つけることができます。
+ClickStack を使用すると、イベント（ログやトレース）に対してフルテキスト検索を行うことができます。イベントに一致するキーワードを入力するだけで、すぐに検索を開始できます。たとえば、ログに「Error」が含まれている場合、検索バーに「Error」と入力するだけで、そのログを見つけることができます。
 
-同じ検索構文は、Dashboards や Charts でイベントをフィルタリングする際にも使用されます。
+同じ検索構文は、ダッシュボードやチャートでイベントをフィルタリングする場合にも利用されます。
 
 
 ## 検索機能 {#search-features}
@@ -28,7 +28,7 @@ ClickStack を使用すると、イベント（ログやトレース）に対し
 - 検索語は任意の順序で検索されます（例：`Hello World`は`Hello World`と`World Hello`を含むログに一致します）
 - `NOT`または`-`を使用してキーワードを除外できます（例：`Error NOT Exception`または`Error -Exception`）
 - `AND`と`OR`を使用して複数のキーワードを組み合わせることができます（例：`Error OR Exception`）
-- 完全一致は二重引用符を使用して行えます（例：`"Error tests not found"`）
+- 完全一致は二重引用符を使用して行うことができます（例：`"Error tests not found"`）
 
 <Image img={hyperdx_27} alt='検索' size='md' />
 
@@ -41,15 +41,15 @@ ClickStack を使用すると、イベント（ログやトレース）に対し
 ### 時刻入力 {#time-input}
 
 - 時刻入力は自然言語入力を受け付けます（例：`1 hour ago`、`yesterday`、`last week`）
-- 単一の時点を指定すると、その時点から現在までが検索されます
+- 単一の時点を指定すると、その時点から現在までの検索が行われます
 - 時間範囲は検索時に常に解析された時間範囲に変換され、時刻クエリのデバッグが容易になります
 - ヒストグラムバーをハイライトして特定の時間範囲にズームインすることもできます
 
 ### SQL検索構文 {#sql-syntax}
 
-検索入力をオプションでSQLモードに切り替えることができます。これにより、検索に有効な任意のSQL WHERE句を使用できます。Lucene構文では表現できない複雑なクエリに便利です。
+検索入力をSQLモードに切り替えることができます。これにより、検索に有効な任意のSQL WHERE句を使用できます。これはLucene構文では表現できない複雑なクエリに便利です。
 
-### SELECT文 {#select-statement}
+### Select文 {#select-statement}
 
 検索結果に表示するカラムを指定するには、`SELECT`入力を使用できます。これは検索ページで選択するカラムのSQL SELECT式です。現時点ではエイリアスはサポートされていません（例：`column as "alias"`は使用できません）。
 

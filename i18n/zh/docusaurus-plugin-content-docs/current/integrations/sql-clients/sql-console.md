@@ -5,7 +5,7 @@ title: 'SQL 控制台'
 slug: /integrations/sql-clients/sql-console
 description: '了解 SQL 控制台'
 doc_type: 'guide'
-keywords: ['sql console', 'query interface', 'web ui', 'sql editor', 'cloud console']
+keywords: ['sql 控制台', 'query interface', 'web ui', 'sql editor', 'cloud console']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -50,12 +50,12 @@ import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.
 
 # SQL 控制台
 
-SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快捷、最简单方式。你可以使用 SQL 控制台来：
+SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快捷、最简单方式。您可以使用 SQL 控制台来：
 
-- 连接到你的 ClickHouse Cloud 服务
-- 查看、筛选和排序表数据
-- 只需点击几下即可执行查询并可视化结果数据
-- 与团队成员共享查询，更高效地协作。
+- 连接到您的 ClickHouse Cloud 服务
+- 查看、过滤和排序表数据
+- 仅需几次点击即可执行查询并可视化结果数据
+- 与团队成员共享查询并更高效地协作。
 
 
 
@@ -89,7 +89,7 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快捷、�
   img={abc}
   size='lg'
   border
-  alt='表视图显示可选择和复制的数据'
+  alt='表视图,显示可以选择和复制的数据'
 />
 
 ### 检查单元格数据 {#inspecting-cell-data}
@@ -154,7 +154,7 @@ SQL 控制台支持同时对表进行过滤和排序。按照上述步骤添加�
 
 ### 从过滤和排序条件创建查询 {#creating-a-query-from-filters-and-sorts}
 
-SQL 控制台可以一键将您的排序和过滤条件直接转换为查询语句。只需在工具栏中点击"创建查询"按钮,并使用您选择的排序和过滤参数。点击"创建查询"后,会打开一个新的查询标签页,其中预填充了与当前表视图数据相对应的 SQL 命令。
+SQL 控制台可以一键将您的排序和过滤条件直接转换为查询语句。只需在工具栏中点击"创建查询"按钮,并使用您选择的排序和过滤参数。点击"创建查询"后,会打开一个新的查询标签页,其中预填充了与您的表视图数据相对应的 SQL 命令。
 
 <Image
   img={create_a_query_from_sorts_and_filters}
@@ -207,31 +207,31 @@ SQL 控制台可以一键将您的排序和过滤条件直接转换为查询语�
 
 在当前光标位置运行命令可以通过两种方式实现:
 
-- 从扩展运行选项菜单中选择"在光标处运行"(或使用相应的 `cmd / ctrl + shift + enter` 键盘快捷键)
+- 从扩展运行选项菜单中选择"光标处运行"(或使用相应的 `cmd / ctrl + shift + enter` 键盘快捷键)
 
 <Image
   img={run_at_cursor_2}
   size='lg'
   border
-  alt='扩展运行选项菜单中的"在光标处运行"选项'
+  alt='扩展运行选项菜单中的"光标处运行"选项'
 />
 
-- 从 SQL 编辑器上下文菜单中选择"在光标处运行"
+- 从 SQL 编辑器上下文菜单中选择"光标处运行"
 
 <Image
   img={run_at_cursor}
   size='lg'
   border
-  alt='SQL 编辑器上下文菜单中的"在光标处运行"选项'
+  alt='SQL 编辑器上下文菜单中的"光标处运行"选项'
 />
 
 :::note
-光标位置处的命令在执行时会闪烁黄色。
+光标位置处的命令在执行时会闪烁黄色高亮。
 :::
 
 ### 取消查询 {#canceling-a-query}
 
-当查询正在运行时,查询编辑器工具栏中的"运行"按钮将被替换为"取消"按钮。只需点击此按钮或按 `Esc` 键即可取消查询。注意:已经返回的任何结果在取消后将保留。
+当查询正在运行时,查询编辑器工具栏中的"运行"按钮将被替换为"取消"按钮。只需点击此按钮或按 `Esc` 键即可取消查询。注意:已返回的任何结果在取消后将保留。
 
 <Image
   img={cancel_a_query}
@@ -363,7 +363,7 @@ SQL 控制台可以一键将您的排序和过滤条件直接转换为查询语�
    GROUP BY year(date)
    ```
 
-1. 验证查询正确后,点击 **Run** 执行它。
+1. 验证查询正确后,点击 **Run** 执行。
 
 ### 调试 {#debugging}
 
@@ -381,31 +381,31 @@ SQL 控制台可以一键将您的排序和过滤条件直接转换为查询语�
 
 1. 点击 **Run**。查询会失败，因为我们尝试从 `pricee` 而不是 `price` 中获取值。
 2. 点击 **Fix Query**。
-3. GenAI 将尝试修复查询。在本例中，它将 `pricee` 修改为 `price`。它还发现，在这种场景下使用 `toYear` 是更合适的函数。
-4. 选择 **Apply** 将建议的更改应用到你的查询中，然后点击 **Run**。
+3. GenAI 会尝试修复查询。在本例中，它将 `pricee` 更改为 `price`。它还认为在这种场景下使用 `toYear` 是更合适的函数。
+4. 选择 **Apply** 将建议的更改添加到查询中，然后点击 **Run**。
 
-请记住，GenAI 是一项实验性功能。在对任何数据集运行由 GenAI 生成的查询时请谨慎操作。
+请记住，GenAI 是一项实验性功能。在针对任何数据集运行由 GenAI 生成的查询时请务必谨慎。
 
 
 ## 高级查询功能 {#advanced-querying-features}
 
 ### 搜索查询结果 {#searching-query-results}
 
-执行查询后,您可以使用结果面板中的搜索框快速搜索返回的结果集。此功能可帮助您预览添加 `WHERE` 子句后的结果,或简单地检查结果集中是否包含特定数据。在搜索框中输入值后,结果面板将更新并返回包含匹配项的记录。在此示例中,我们将在 `hackernews` 表中查找包含 `ClickHouse` 的评论中所有出现 `breakfast` 的记录(不区分大小写):
+查询执行后,您可以使用结果面板中的搜索输入框快速搜索返回的结果集。此功能可帮助您预览添加 `WHERE` 子句后的结果,或简单地检查结果集中是否包含特定数据。在搜索输入框中输入值后,结果面板将更新并返回包含匹配条目的记录。在此示例中,我们将在 `hackernews` 表中查找包含 `ClickHouse` 的评论中所有 `breakfast` 的实例(不区分大小写):
 
 <Image img={search_hn} size='lg' border alt='搜索 Hacker News 数据' />
 
-注意:任何字段只要匹配输入值就会被返回。例如,上面截图中的第三条记录的 `by` 字段不匹配 'breakfast',但 `text` 字段匹配:
+注意:任何与输入值匹配的字段都会被返回。例如,上面截图中的第三条记录在 `by` 字段中不匹配 'breakfast',但在 `text` 字段中匹配:
 
 <Image img={match_in_body} size='lg' border alt='正文中的匹配' />
 
 ### 调整分页设置 {#adjusting-pagination-settings}
 
-默认情况下,查询结果面板会在单个页面上显示所有结果记录。对于较大的结果集,分页显示结果可能更便于查看。您可以使用结果面板右下角的分页选择器来实现:
+默认情况下,查询结果面板会在单个页面上显示所有结果记录。对于较大的结果集,为便于查看,建议对结果进行分页。可以使用结果面板右下角的分页选择器来实现:
 
 <Image img={pagination} size='lg' border alt='分页选项' />
 
-选择页面大小后将立即对结果集应用分页,导航选项会出现在结果面板页脚的中间位置
+选择页面大小后将立即对结果集应用分页,导航选项会出现在结果面板页脚的中间位置。
 
 <Image img={pagination_nav} size='lg' border alt='分页导航' />
 
@@ -445,7 +445,7 @@ ORDER BY
 
 ### 创建图表 {#creating-charts}
 
-要开始构建可视化图表,请从查询结果面板工具栏中选择 'Chart' 选项。图表配置面板将会出现:
+要开始构建可视化图表,请从查询结果面板工具栏中选择"Chart"选项。图表配置面板将会出现:
 
 <Image
   img={switch_from_query_to_chart}
@@ -477,7 +477,7 @@ SQL 控制台支持十种图表类型,可以从图表配置面板中的图表类
 
 <Image img={update_query_name} size='lg' border alt='更新查询名称' />
 
-还可以在图表配置面板的 'Advanced' 部分调整更多高级图表特性。首先,我们将调整以下设置:
+还可以在图表配置面板的"Advanced"部分调整更多高级图表特性。首先,我们将调整以下设置:
 
 - 副标题
 - 轴标题
@@ -487,14 +487,14 @@ SQL 控制台支持十种图表类型,可以从图表配置面板中的图表类
 
 <Image img={update_subtitle_etc} size='lg' border alt='更新副标题等' />
 
-在某些场景中,可能需要独立调整每个字段的轴刻度。这也可以在图表配置面板的 'Advanced' 部分通过指定轴范围的最小值和最大值来完成。例如,上面的图表看起来不错,但为了展示 `trip_total` 和 `fare_total` 字段之间的相关性,需要对轴范围进行一些调整:
+在某些场景中,可能需要独立调整每个字段的轴刻度。这也可以在图表配置面板的"Advanced"部分通过指定轴范围的最小值和最大值来完成。例如,上面的图表看起来不错,但为了展示 `trip_total` 和 `fare_total` 字段之间的相关性,需要对轴范围进行一些调整:
 
 <Image img={adjust_axis_scale} size='lg' border alt='调整轴刻度' />
 
 
 ## 共享查询 {#sharing-queries}
 
-SQL 控制台支持与团队共享查询。查询共享后,团队所有成员都可以查看和编辑该查询。共享查询是团队协作的有效方式。
+SQL 控制台支持与团队共享查询。查询共享后,团队所有成员均可查看和编辑该查询。共享查询是团队协作的有效方式。
 
 要共享查询,请点击查询工具栏中的"Share"按钮。
 
@@ -505,7 +505,7 @@ SQL 控制台支持与团队共享查询。查询共享后,团队所有成员都
   alt='查询工具栏中的共享按钮'
 />
 
-系统将打开一个对话框,允许您与团队所有成员共享查询。如果您有多个团队,可以选择要共享查询的目标团队。
+系统将打开一个对话框,允许您与团队所有成员共享查询。如果您拥有多个团队,可以选择要共享查询的目标团队。
 
 <Image
   img={sql_console_edit_access}
@@ -528,7 +528,7 @@ SQL 控制台支持与团队共享查询。查询共享后,团队所有成员都
   alt='编辑成员对共享查询访问权限的界面'
 />
 
-在某些场景下,可能需要独立调整各字段的坐标轴刻度。这可以在图表配置面板的"Advanced"部分通过指定坐标轴范围的最小值和最大值来实现。例如,上图整体效果不错,但为了更好地展示 `trip_total` 和 `fare_total` 字段之间的相关性,需要对坐标轴范围进行适当调整:
+在某些场景下,可能需要独立调整各字段的坐标轴刻度。这可以在图表配置面板的"Advanced"部分通过指定坐标轴范围的最小值和最大值来实现。例如,上图整体效果良好,但为了更好地展示 `trip_total` 和 `fare_total` 字段之间的相关性,需要对坐标轴范围进行适当调整:
 
 <Image
   img={sql_console_access_queries}

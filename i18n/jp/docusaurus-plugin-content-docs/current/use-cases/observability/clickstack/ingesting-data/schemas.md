@@ -2,16 +2,16 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack - ClickHouse Observability Stack で使用されるテーブルとスキーマ'
+description: 'ClickStack で使用されるテーブルとスキーマ - ClickHouse Observability Stack'
 sidebar_label: 'テーブルとスキーマ'
 title: 'ClickStack で使用されるテーブルとスキーマ'
 doc_type: 'reference'
 keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-ClickStack の OpenTelemetry (OTel) コレクターは、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse 上にテーブルを作成し、データを挿入します。
+ClickStack の OpenTelemetry (OTel) コレクターは、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse にテーブルを作成し、データを挿入します。
 
-次のテーブルは、`default` データベース内の各データタイプごとに作成されます。OTel コレクターをホストしているイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
+`default` データベース内には、各データタイプごとに次のテーブルが作成されます。OTel コレクターを実行しているイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
 
 
 
@@ -132,7 +132,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 合計メトリクス {#sum}
+### サムメトリクス {#sum}
 
 
 ```sql
@@ -272,7 +272,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 集約テーブル {#summary-table}
+### 集計テーブル {#summary-table}
 
 
 ```sql

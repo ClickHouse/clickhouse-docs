@@ -11,15 +11,15 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
-このデータセットには、Stack Overflow 上で発生したすべての `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory`、および `PostLinks` が含まれています。
+このデータセットには、Stack Overflow 上で発生したすべての `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory`、`PostLinks` が含まれています。
 
-ユーザーは、2024年4月までのすべての投稿を含む、あらかじめ用意された Parquet 形式のデータをダウンロードするか、最新データを XML 形式でダウンロードしてこれを読み込むことができます。Stack Overflow は、このデータを定期的に更新しており、これまでのところおおむね 3 か月ごとに提供しています。
+ユーザーは、2024年4月までのすべての投稿を含む事前生成済みの Parquet 形式データをダウンロードするか、最新のデータを XML 形式でダウンロードして読み込むことができます。Stack Overflow はこのデータを定期的に更新しており、これまでのところ概ね3か月ごとに更新されています。
 
 次の図は、Parquet 形式を前提とした利用可能なテーブルのスキーマを示しています。
 
-<Image img={stackoverflow} alt="Stack Overflow スキーマ" size="md" />
+<Image img={stackoverflow} alt="Stack Overflow schema" size="md" />
 
-このデータのスキーマの詳細な説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)にあります。
+このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)で確認できます。
 
 
 ## 事前準備済みデータ {#pre-prepared-data}
@@ -30,9 +30,9 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 CREATE DATABASE stackoverflow
 ```
 
-以下のタイミングは、`eu-west-2`に配置された96 GiB、24 vCPUのClickHouse Cloudクラスターでの測定結果です。データセットは`eu-west-3`に配置されています。
+以下の処理時間は、`eu-west-2`に配置された96 GiB、24 vCPUのClickHouse Cloudクラスタでの測定結果です。データセットは`eu-west-3`に配置されています。
 
-### Posts {#posts}
+### 投稿 {#posts}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -71,7 +71,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 投稿データは年別でも利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-### Votes {#votes}
+### 投票 {#votes}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -93,7 +93,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 
 投票データは年別でも利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
-### Comments {#comments}
+### コメント {#comments}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -117,7 +117,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 
 コメントも年別で利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
-### Users {#users}
+### ユーザー {#users}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -143,7 +143,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-### Badges {#badges}
+### バッジ {#badges}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -163,7 +163,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### PostLinks {#postlinks}
+### 投稿リンク {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -182,7 +182,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### PostHistory {#posthistory}
+### 投稿履歴 {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -209,7 +209,7 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 
 ## 元のデータセット {#original-dataset}
 
-元のデータセットは、[https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) で圧縮（7zip）XML形式で入手できます。ファイル名は `stackoverflow.com*` で始まります。
+元のデータセットは、[https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) で圧縮(7zip)XML形式で入手できます。`stackoverflow.com*` で始まるファイルです。
 
 ### ダウンロード {#download}
 
@@ -223,24 +223,24 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-これらのファイルは最大35GBで、インターネット接続速度によってはダウンロードに約30分かかります。ダウンロードサーバーは約20MB/秒に制限されています。
+これらのファイルは最大35GBで、インターネット接続によってはダウンロードに約30分かかる場合があります。ダウンロードサーバーは約20MB/秒に制限されています。
 
 ### JSONへの変換 {#convert-to-json}
 
-本ドキュメント執筆時点では、ClickHouseは入力形式としてXMLをネイティブサポートしていません。データをClickHouseに読み込むには、まずNDJSONに変換する必要があります。
+本稿執筆時点では、ClickHouseは入力形式としてXMLをネイティブサポートしていません。ClickHouseにデータをロードするには、まずNDJSONに変換する必要があります。
 
-XMLからJSONへの変換には、XML文書用のシンプルな `jq` ラッパーである [`xq`](https://github.com/kislyuk/yq) Linuxツールを推奨します。
+XMLをJSONに変換するには、XML文書用のシンプルな`jq`ラッパーである[`xq`](https://github.com/kislyuk/yq) Linuxツールを推奨します。
 
-xqとjqをインストールします：
+xqとjqをインストールします:
 
 ```bash
 sudo apt install jq
 pip install yq
 ```
 
-以下の手順は上記のいずれのファイルにも適用できます。ここでは `stackoverflow.com-Posts.7z` ファイルを例として使用します。必要に応じて変更してください。
+以下の手順は上記のいずれのファイルにも適用できます。ここでは`stackoverflow.com-Posts.7z`ファイルを例として使用します。必要に応じて変更してください。
 
-[p7zip](https://p7zip.sourceforge.net/) を使用してファイルを展開します。これにより単一のxmlファイルが生成されます。この場合は `Posts.xml` です。
+[p7zip](https://p7zip.sourceforge.net/)を使用してファイルを展開します。これにより単一のxmlファイルが生成されます。この場合は`Posts.xml`です。
 
 > ファイルは約4.5倍に圧縮されています。圧縮時22GBのpostsファイルは、展開すると約97GBになります。
 
@@ -248,7 +248,7 @@ pip install yq
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-以下のコマンドは、xmlファイルを各10000行を含むファイルに分割します。
+以下は、xmlファイルをそれぞれ10000行を含むファイルに分割します。
 
 
 ```bash
@@ -258,15 +258,15 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-上記を実行すると、1 万行ずつ含むファイルのセットが生成されます。これにより、次のコマンドのメモリオーバーヘッドが過大にならないようにできます（XML から JSON への変換はメモリ上で行われます）。
+上記を実行すると、それぞれ 10000 行を含む複数のファイルが作成されます。これにより、次のコマンドのメモリオーバーヘッドが過大にならないようにしています（XML から JSON への変換はメモリ上で行われます）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-上記のコマンドにより、一つの `posts.json` ファイルが生成されます。
+上記のコマンドにより、1つの `posts.json` ファイルが生成されます。
 
-次のコマンドで ClickHouse にロードします。`posts.json` ファイルに対してスキーマを指定している点に注意してください。これは対象テーブルと整合するよう、データ型に応じて調整する必要があります。
+次のコマンドで ClickHouse にロードします。`posts.json` ファイル用のスキーマを指定している点に注意してください。ターゲットテーブルと整合するよう、データ型ごとに適宜調整する必要があります。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
@@ -393,8 +393,8 @@ LIMIT 3
 │ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-3行を返しました。経過時間: 4.779秒。処理行数: 2億9880万行、3.16 GB（6252万行/秒、661.05 MB/秒）
-ピークメモリ使用量: 6.05 GiB。
+3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
+Peak memory usage: 6.05 GiB.
 ```
 
 

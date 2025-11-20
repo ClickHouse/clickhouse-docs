@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/azure-marketplace-committed-contract
-title: 'Azure Marketplace コミット契約'
-description: 'Azure Marketplace のコミット契約を通じて ClickHouse Cloud を購読する'
+title: 'Azure Marketplace コミットメント契約'
+description: 'Azure Marketplace（コミットメント契約）経由で ClickHouse Cloud を契約する'
 keywords: ['Microsoft', 'Azure', 'marketplace', 'billing', 'committed', 'committed contract']
 doc_type: 'guide'
 ---
@@ -21,12 +21,12 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-コミット済み契約を通じて、[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上で ClickHouse Cloud の利用を開始できます。コミット済み契約は Private Offer とも呼ばれ、一定期間にわたって ClickHouse Cloud に対して特定の金額の利用をあらかじめ約束していただくための仕組みです。
+コミット契約を通じて、[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上で ClickHouse Cloud の利用を開始できます。コミット契約は Private Offer とも呼ばれ、一定期間にわたり、ClickHouse Cloud に対して一定額の利用を行うことをお客様があらかじめ約束する仕組みです。
 
 
 ## 前提条件 {#prerequisites}
 
-- 特定の契約条件に基づくClickHouseからのプライベートオファー
+- 特定の契約条件に基づいたClickHouseからのプライベートオファー
 
 
 ## サインアップ手順 {#steps-to-sign-up}
@@ -98,7 +98,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 - サブスクリプションとリソースグループ
 - SaaSサブスクリプションの名前を入力
-- プライベートオファーが適用される請求プランを選択します。プライベートオファーが作成された期間(例: 1年)のみに金額が表示されます。その他の請求期間オプションは$0として表示されます。
+- プライベートオファーの対象となる請求プランを選択します。プライベートオファーが作成された期間(例: 1年)のみに金額が設定されています。その他の請求期間オプションは$0の金額になります。
 - 継続請求を希望するかどうかを選択します。継続請求を選択しない場合、契約は請求期間の終了時に終了し、リソースは廃止予定に設定されます。
 - **Review + subscribe**をクリックします。
 
@@ -146,7 +146,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 <Image
   img={azure_marketplace_committed_9}
   size='md'
-  alt='Azure Marketplace今すぐアカウントを設定ボタン'
+  alt='Azure Marketplace configure account nowボタン'
   border
 />
 

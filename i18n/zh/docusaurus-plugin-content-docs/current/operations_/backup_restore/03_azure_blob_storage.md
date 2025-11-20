@@ -1,15 +1,15 @@
 ---
-description: '说明如何在 Azure Blob Storage 端点上执行备份和恢复'
+description: '详细介绍与 Azure Blob Storage 端点之间的备份和恢复'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: '在 Azure Blob Storage 上进行备份和恢复'
+title: '在 Azure Blob Storage 上执行备份和恢复'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# 备份/恢复到 Azure Blob 存储 {#backup-to-azure-blob-storage}
+# 备份/恢复至 Azure Blob 存储 {#backup-to-azure-blob-storage}
 
 
 ## 语法 {#syntax}

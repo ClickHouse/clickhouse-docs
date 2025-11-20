@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-payg
 title: 'AWS Marketplace 従量課金 (PAYG)'
-description: 'AWS Marketplace（従量課金 / PAYG）を通じて ClickHouse Cloud を利用開始します。'
+description: 'AWS Marketplace（従量課金制: PAYG）経由で ClickHouse Cloud をサブスクライブします。'
 keywords: ['aws', 'marketplace', 'billing', 'PAYG']
 doc_type: 'guide'
 ---
@@ -17,17 +17,17 @@ import aws_marketplace_payg_8 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-9.png';
 import Image from '@theme/IdealImage';
 
-[AWS Marketplace](https://aws.amazon.com/marketplace) から PAYG（従量課金制）のパブリックオファーを利用して ClickHouse Cloud を始めましょう。
+PAYG（従量課金制）のパブリックオファーを利用して、[AWS Marketplace](https://aws.amazon.com/marketplace) から ClickHouse Cloud の利用を開始しましょう。
 
 
 ## 前提条件 {#prerequisites}
 
 - 請求管理者によって購入権限が付与されたAWSアカウント。
-- 購入するには、このアカウントでAWS Marketplaceにログインしている必要があります。
+- 購入するには、このアカウントでAWS Marketplaceにログインする必要があります。
 - ClickHouse組織をサブスクリプションに接続するには、その組織の管理者である必要があります。
 
 :::note
-1つのAWSアカウントで購読できる「ClickHouse Cloud - Pay As You Go」サブスクリプションは1つのみであり、そのサブスクリプションは1つのClickHouse組織にのみ関連付けることができます。
+1つのAWSアカウントで購読できる「ClickHouse Cloud - Pay As You Go」サブスクリプションは1つのみであり、そのサブスクリプションは1つのClickHouse組織にのみ紐付けることができます。
 :::
 
 
@@ -67,7 +67,7 @@ import Image from '@theme/IdealImage';
 
 ### アカウントのセットアップ {#set-up-your-account}
 
-この時点ではセットアップは完了しておらず、ClickHouse Cloud組織はまだマーケットプレイス経由で請求されていないことに注意してください。マーケットプレイスサブスクリプションの「アカウントのセットアップ」をクリックして、ClickHouse Cloudにリダイレクトし、セットアップを完了する必要があります。
+この時点ではセットアップは完了しておらず、ClickHouse Cloud組織はまだマーケットプレイス経由で請求されていないことに注意してください。セットアップを完了するには、マーケットプレイスサブスクリプションの「アカウントのセットアップ」をクリックして、ClickHouse Cloudにリダイレクトする必要があります。
 
 <Image img={aws_marketplace_payg_4} alt='アカウントのセットアップ' border />
 
@@ -80,7 +80,7 @@ ClickHouse Cloudの新規ユーザーの場合は、以下の手順に従って�
 <details>
 <summary><strong>新規ユーザー向けの手順</strong></summary>
 
-ClickHouse Cloudの新規ユーザーの場合は、ページ下部の「Register」をクリックします。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスの確認後、ClickHouse Cloudのログインページを離れ、https://console.clickhouse.cloudで新しいユーザー名を使用してログインできます。
+ClickHouse Cloudの新規ユーザーの場合は、ページ下部の「登録」をクリックします。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスの確認後、ClickHouse Cloudのログインページを離れ、https://console.clickhouse.cloudで新しいユーザー名を使用してログインできます。
 
 <Image img={aws_marketplace_payg_5} size='md' alt='ClickHouse Cloudサインアップ' />
 

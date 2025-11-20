@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/countIf'
 title: 'countIf'
-description: 'countIf 组合器的使用示例'
+description: '使用 countIf 组合器的示例'
 keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
 sidebar_label: 'countIf'
 doc_type: 'reference'
@@ -12,9 +12,9 @@ doc_type: 'reference'
 # countIf {#countif}
 
 
-## 描述 {#description}
+## Description {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 函数,使用 `countIf` 聚合组合器函数来统计满足条件的行数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可应用于 [`count`](/sql-reference/aggregate-functions/reference/count) 函数,通过 `countIf` 聚合组合器函数来统计满足条件的行数。
 
 
 ## 使用示例 {#example-usage}
@@ -57,4 +57,4 @@ GROUP BY user_id;
 ## 另请参阅 {#see-also}
 
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

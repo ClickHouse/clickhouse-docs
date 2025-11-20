@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
-description: 'Apache Beam を使用して ClickHouse にデータを取り込む'
+description: 'Apache Beam を使用して ClickHouse にデータを取り込むことができます'
 title: 'Apache Beam と ClickHouse の連携'
 doc_type: 'guide'
 integration:
@@ -17,14 +17,14 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-**Apache Beam** は、バッチ処理とストリーム（連続）処理の両方のデータ処理パイプラインを定義および実行できる、オープンソースの統一プログラミングモデルです。Apache Beam の柔軟性は、ETL（Extract, Transform, Load）処理から複雑なイベント処理、リアルタイム分析まで、幅広いデータ処理シナリオをサポートできる点にあります。
-この統合では、基盤となるデータ挿入レイヤーとして ClickHouse 公式の [JDBC コネクタ](https://github.com/ClickHouse/clickhouse-java) を利用します。
+**Apache Beam** はオープンソースの統合プログラミングモデルであり、バッチ処理とストリーミング（連続的な）データ処理パイプラインの両方を定義・実行できます。Apache Beam の柔軟性は、ETL（Extract, Transform, Load）処理から複雑なイベント処理、リアルタイム分析に至るまで、幅広いデータ処理シナリオをサポートできる点にあります。
+この統合では、ClickHouse 公式の [JDBC コネクタ](https://github.com/ClickHouse/clickhouse-java) を基盤となる挿入レイヤーとして利用します。
 
 
 
 ## 統合パッケージ {#integration-package}
 
-Apache BeamとClickHouseを統合するために必要な統合パッケージは、[Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/)で保守・開発されています。これは、多くの主要なデータストレージシステムやデータベースの統合バンドルです。
+Apache BeamとClickHouseを統合するために必要な統合パッケージは、[Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/)で保守・開発されています。これは、多くの主要なデータストレージシステムおよびデータベースとの統合を提供するバンドルです。
 `org.apache.beam.sdk.io.clickhouse.ClickHouseIO`の実装は、[Apache Beamリポジトリ](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse)内に配置されています。
 
 
@@ -32,7 +32,7 @@ Apache BeamとClickHouseを統合するために必要な統合パッケージ�
 
 ### パッケージのインストール {#package-installation}
 
-パッケージ管理フレームワークに以下の依存関係を追加します:
+パッケージ管理フレームワークに以下の依存関係を追加してください:
 
 ```xml
 <dependency>
@@ -47,7 +47,7 @@ Apache BeamとClickHouseを統合するために必要な統合パッケージ�
 それ以前のバージョンでは、コネクタの機能が完全にサポートされない可能性があります。
 :::
 
-アーティファクトは[公式Mavenリポジトリ](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)から入手できます。
+アーティファクトは[公式Mavenリポジトリ](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)で入手できます。
 
 ### コード例 {#code-example}
 
@@ -70,7 +70,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // Pipelineオブジェクトを作成
+        // Pipelineオブジェクトを作成します。
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -80,7 +80,7 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // パイプラインに変換を適用
+        // パイプラインに変換を適用します。
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
@@ -98,7 +98,7 @@ public class Main {
         rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // パイプラインを実行
+        // パイプラインを実行します。
         p.run().waitUntilFinish();
     }
 }
@@ -106,7 +106,7 @@ public class Main {
 ```
 
 
-## サポートされているデータ型 {#supported-data-types}
+## サポートされるデータ型 {#supported-data-types}
 
 | ClickHouse                         | Apache Beam                | サポート状況 | 備考                                                                                                                                    |
 | ---------------------------------- | -------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -143,10 +143,10 @@ public class Main {
 | `withMaxRetries`            | `(int maxRetries)`          | `5`                           | 挿入失敗時の最大リトライ回数。                   |
 | `withMaxCumulativeBackoff`  | `(Duration maxBackoff)`     | `Duration.standardDays(1000)` | リトライ時の最大累積バックオフ期間。                |
 | `withInitialBackoff`        | `(Duration initialBackoff)` | `Duration.standardSeconds(5)` | 最初のリトライ前の初期バックオフ期間。                |
-| `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | true の場合、分散テーブルへの挿入操作を同期します。 |
-| `withInsertQuorum`          | `(Long quorum)`             | `null`                        | 挿入操作の確認に必要なレプリカ数。 |
+| `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | true の場合、分散テーブルの挿入操作を同期します。 |
+| `withInsertQuorum`          | `(Long quorum)`             | `null`                        | 挿入操作を確認するために必要なレプリカ数。 |
 | `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | true の場合、挿入操作で重複排除が有効になります。        |
-| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 対象の ClickHouse テーブルのスキーマ。                          |
+| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 対象となる ClickHouse テーブルのスキーマ。                          |
 
 
 ## 制限事項 {#limitations}
@@ -155,7 +155,7 @@ public class Main {
 
 - 現時点では、Sink操作のみがサポートされています。コネクタはSource操作をサポートしていません。
 - ClickHouseは、`ReplicatedMergeTree`または`ReplicatedMergeTree`上に構築された`Distributed`テーブルへの挿入時に重複排除を実行します。レプリケーションを使用しない場合、通常のMergeTreeへの挿入では、挿入が失敗した後に再試行が成功すると重複データが発生する可能性があります。ただし、各ブロックはアトミックに挿入され、ブロックサイズは`ClickHouseIO.Write.withMaxInsertBlockSize(long)`を使用して設定できます。重複排除は、挿入されたブロックのチェックサムを使用して実現されます。重複排除の詳細については、[重複排除](/guides/developer/deduplication)および[重複排除挿入設定](/operations/settings/settings#insert_deduplicate)を参照してください。
-- コネクタはDDLステートメントを実行しないため、挿入前にターゲットテーブルが存在している必要があります。
+- コネクタはDDL文を実行しないため、挿入前にターゲットテーブルが存在している必要があります。
 
 
 ## 関連コンテンツ {#related-content}

@@ -1,9 +1,9 @@
 ---
 description: 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset
-  к ClickHouse и построить дашборд на основе этих данных'
+  к ClickHouse и создать дашборд на основе этих данных'
 sidebar_label: 'Сотовые вышки'
 slug: /getting-started/example-datasets/cell-towers
-title: 'Геоданные на основе набора данных о сотовых вышках'
+title: 'Геоданные на основе набора данных сотовых вышек'
 keywords: ['cell tower data', 'geo data', 'OpenCelliD', 'geospatial dataset', 'getting started']
 doc_type: 'guide'
 ---
@@ -77,7 +77,7 @@ DESCRIBE TABLE cell_towers
 
 <SQLConsoleDetail />
 
-Это результат выполнения `DESCRIBE`. Далее в этом руководстве будут описаны выбранные типы полей.
+Это результат выполнения команды `DESCRIBE`. Далее в этом руководстве будут описаны выбранные типы полей.
 
 ```response
 ┌─name──────────┬─type──────────────────────────────────────────────────────────────────┬
@@ -134,7 +134,7 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </Tabs>
 
 
-## Выполнение примеров запросов {#examples}
+## Выполните примеры запросов {#examples}
 
 1. Количество вышек сотовой связи по типу:
 
@@ -154,7 +154,7 @@ SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
 5 rows in set. Elapsed: 0.011 sec. Processed 43.28 million rows, 43.28 MB (3.83 billion rows/s., 3.83 GB/s.)
 ```
 
-2. Вышки сотовой связи по [коду страны мобильной связи (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code):
+2. Вышки сотовой связи по [коду мобильной страны (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code):
 
 ```sql
 SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
@@ -280,9 +280,9 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 ## Обзор схемы {#review-of-the-schema}
 
-Перед созданием визуализаций в Superset ознакомьтесь со столбцами, которые будете использовать. Этот набор данных содержит информацию о местоположении (долгота и широта) и типах радиосвязи вышек сотовой связи по всему миру. Описания столбцов можно найти на [форуме сообщества](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186). Ниже описаны столбцы, используемые в создаваемых визуализациях.
+Перед созданием визуализаций в Superset ознакомьтесь со столбцами, которые вы будете использовать. Этот набор данных содержит информацию о местоположении (долгота и широта) и типах радиосвязи вышек сотовой связи по всему миру. Описания столбцов можно найти на [форуме сообщества](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186). Ниже описаны столбцы, используемые в создаваемых визуализациях.
 
-Вот описание столбцов с форума OpenCelliD:
+Ниже приведено описание столбцов, взятое с форума OpenCelliD:
 
 | Столбец | Описание                                          |
 | ------ | ---------------------------------------------------- |
@@ -301,12 +301,12 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 - `mcc`, или код страны мобильной связи, хранится как `UInt16`, поскольку диапазон значений составляет 1–999.
 - `lon` и `lat` имеют тип `Float64`.
 
-Остальные поля не используются в запросах и визуализациях данного руководства, но при желании вы можете ознакомиться с их описанием на форуме по ссылке выше.
+Остальные поля не используются в запросах или визуализациях в этом руководстве, но при желании вы можете ознакомиться с их описанием на форуме по ссылке выше.
 
 
 ## Создание визуализаций с помощью Apache Superset {#build-visualizations-with-apache-superset}
 
-Superset легко запустить из Docker. Если у вас уже запущен Superset, всё, что нужно сделать — это добавить ClickHouse Connect с помощью `pip install clickhouse-connect`. Если вам нужно установить Superset, откройте раздел **Launch Apache Superset in Docker** непосредственно ниже.
+Superset легко запустить из Docker. Если у вас уже запущен Superset, всё, что нужно сделать — это добавить ClickHouse Connect с помощью `pip install clickhouse-connect`. Если вам нужно установить Superset, откройте раздел **Запуск Apache Superset в Docker** непосредственно ниже.
 
 <SupersetDocker />
 
@@ -321,7 +321,7 @@ Superset легко запустить из Docker. Если у вас уже з
 
 <ConnectionDetails />
 
-В Superset база данных добавляется путём выбора типа базы данных и последующего указания параметров подключения. Откройте Superset и найдите **+**, в нём есть меню с опциями **Data**, а затем **Connect database**.
+В Superset база данных добавляется путём выбора типа базы данных и последующего указания параметров подключения. Откройте Superset и найдите значок **+**, в его меню есть пункт **Data**, а затем опция **Connect database**.
 
 <Image img={add_a_database} size='md' alt='Добавление базы данных' />
 Выберите **ClickHouse Connect** из списка:
@@ -333,7 +333,7 @@ Superset легко запустить из Docker. Если у вас уже з
 />
 
 :::note
-Если **ClickHouse Connect** отсутствует в списке опций, его необходимо установить. Команда для установки: `pip install clickhouse-connect`, дополнительная информация [доступна здесь](https://pypi.org/project/clickhouse-connect/).
+Если **ClickHouse Connect** отсутствует в списке доступных вариантов, его необходимо установить. Команда для установки: `pip install clickhouse-connect`, дополнительная информация [доступна здесь](https://pypi.org/project/clickhouse-connect/).
 :::
 
 #### Добавление параметров подключения {#add-your-connection-details}
@@ -348,7 +348,7 @@ Superset легко запустить из Docker. Если у вас уже з
   alt='Добавление ClickHouse в качестве источника данных Superset'
 />
 
-### Добавление таблицы **cell_towers** в качестве набора данных Superset {#add-the-table-cell_towers-as-a-superset-dataset}
+### Добавление таблицы **cell_towers** в качестве **набора данных** Superset {#add-the-table-cell_towers-as-a-superset-dataset}
 
 В Superset **набор данных** соответствует таблице внутри базы данных. Нажмите на добавление набора данных и выберите ваш сервис ClickHouse, базу данных, содержащую вашу таблицу (`default`), и выберите таблицу `cell_towers`:
 
@@ -358,7 +358,7 @@ Superset легко запустить из Docker. Если у вас уже з
   alt='Добавление таблицы cell_towers в качестве набора данных'
 />
 
-### Создание графиков {#create-some-charts}
+### Создание **графиков** {#create-some-charts}
 
 При добавлении графика в Superset необходимо указать набор данных (`cell_towers`) и тип графика. Поскольку набор данных OpenCelliD предоставляет координаты долготы и широты для вышек сотовой связи, мы создадим график типа **Map** (карта). Тип **deck.gL Scatterplot** подходит для этого набора данных, так как он хорошо работает с плотными точками данных на карте.
 
@@ -402,17 +402,17 @@ Superset легко запустить из Docker. Если у вас уже з
 
 Нажмите **UPDATE CHART** для отображения визуализации.
 
-### Добавление графиков на дашборд {#add-the-charts-to-a-dashboard}
+### Добавление графиков на **дашборд** {#add-the-charts-to-a-dashboard}
 
-Этот скриншот показывает расположение вышек сотовой связи с радио LTE, UMTS и GSM. Все графики создаются одинаковым образом и добавляются на дашборд.
+На этом скриншоте показаны расположения вышек сотовой связи с радио LTE, UMTS и GSM. Все графики создаются одинаковым образом и добавляются на дашборд.
 
 
-<Image img={superset_cell_tower_dashboard} size="md" alt="Дашборд базовых станций по типу радиосети в mcc 204"/>
+<Image img={superset_cell_tower_dashboard} size="md" alt="Дашборд базовых станций с разбивкой по типу радио в mcc 204"/>
 
 :::tip
 Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com).
 
-Этот [пример](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM) автоматически подставит имя пользователя и даже сам запрос.
+Этот [пример](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM) автоматически подставит имя пользователя и сам запрос.
 
-Хотя в Playground нельзя создавать таблицы, вы можете выполнять все запросы и даже использовать Superset (измените имя хоста и номер порта).
+Хотя вы не можете создавать таблицы в Playground, вы можете выполнять все запросы и даже использовать Superset (измените имя хоста и номер порта).
 :::

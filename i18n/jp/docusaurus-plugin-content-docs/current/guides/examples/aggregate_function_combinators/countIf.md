@@ -12,7 +12,7 @@ doc_type: 'reference'
 # countIf {#countif}
 
 
-## Description {#description}
+## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータを [`count`](/sql-reference/aggregate-functions/reference/count) 関数に適用することで、条件が真である行の数をカウントできます。これには `countIf` 集約コンビネータ関数を使用します。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 ## 使用例 {#example-usage}
 
 この例では、ユーザーのログイン試行を格納するテーブルを作成し、
-`countIf`を使用して成功したログインの回数をカウントします。
+`countIf`を使用してログイン成功回数をカウントします。
 
 ```sql title="Query"
 CREATE TABLE login_attempts(
@@ -44,7 +44,7 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-`countIf`関数は、各ユーザーについて`is_successful = 1`となる行のみをカウントします。
+`countIf`関数は、各ユーザーについて`is_successful = 1`の行のみをカウントします。
 
 ```response title="Response"
    ┌─user_id─┬─successful_logins─┐

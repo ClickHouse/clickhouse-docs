@@ -2,7 +2,7 @@
 sidebar_label: 'SQL 转储'
 slug: /integrations/data-formats/sql
 title: '在 ClickHouse 中插入和导出 SQL 数据'
-description: '介绍如何使用 SQL 转储在其他数据库与 ClickHouse 之间传输数据的页面。'
+description: '本页介绍如何使用 SQL 转储在其他数据库与 ClickHouse 之间传输数据。'
 doc_type: 'guide'
 keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
@@ -11,7 +11,7 @@ keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 
 # 在 ClickHouse 中插入和导出 SQL 数据
 
-ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础设施中。其中一种方式是使用 SQL 转储文件在其他数据库与 ClickHouse 之间传输数据。
+ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础设施中。其中一种方式是使用 SQL 转储文件在其他数据库和 ClickHouse 之间传输数据。
 
 
 
@@ -38,7 +38,7 @@ SET output_format_sql_insert_include_column_names = 0
 mysql some_db < dump.sql
 ```
 
-这里假设 `some_table` 表已存在于 `some_db` MySQL 数据库中。
+这里假设 `some_table` 表已存在于 MySQL 数据库 `some_db` 中。
 
 某些数据库管理系统可能对单个批次中可处理的值数量有限制。默认情况下,ClickHouse 会创建包含 65k 个值的批次,但可以通过 [`output_format_sql_insert_max_batch_size`](/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size) 选项进行调整:
 
@@ -79,14 +79,14 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-默认情况下,ClickHouse 会跳过未知列(由 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 选项控制),并处理转储中第一个找到的表的数据(当多个表被转储到单个文件时)。DDL 语句将被跳过。要从 MySQL 转储加载数据到表中([mysql.sql](assets/mysql.sql) 文件):
+默认情况下,ClickHouse 会跳过未知列(由 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 选项控制),并处理转储中找到的第一个表的数据(当多个表被转储到单个文件时)。DDL 语句将被跳过。要从 MySQL 转储加载数据到表中([mysql.sql](assets/mysql.sql) 文件):
 
 ```sql
 INSERT INTO some_data
 FROM INFILE 'mysql.sql' FORMAT MySQLDump
 ```
 
-我们也可以从 MySQL 转储文件自动创建表:
+我们还可以从 MySQL 转储文件自动创建表:
 
 ```sql
 CREATE TABLE table_from_mysql
@@ -119,7 +119,7 @@ ClickHouse 支持多种文本和二进制格式,以满足各种应用场景和�
 - [Parquet](parquet.md)
 - [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
 - [正则表达式和模板](templates-regex.md)
-- [原生和二进制格式](binary.md)
+- [原生格式和二进制格式](binary.md)
 - **SQL 格式**
 
-另外,您还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 这是一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地或远程文件。
+另外,您还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地或远程文件。

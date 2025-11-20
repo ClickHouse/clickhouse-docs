@@ -1,7 +1,7 @@
 ---
 sidebar_title: '查询洞察'
 slug: /cloud/get-started/query-insights
-description: '可视化 system.query_log 数据，简化查询调试与性能优化'
+description: '可视化 system.query_log 数据，以简化查询调试和性能优化'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
 title: '查询洞察'
 doc_type: 'guide'
@@ -17,7 +17,7 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 # 查询洞察
 
-**查询洞察（Query Insights）** 功能通过多种可视化和表格，使 ClickHouse 内置的查询日志更易于使用。ClickHouse 的 `system.query_log` 表是进行查询优化、调试，以及监控整个集群健康状况和性能的关键信息来源。
+**查询洞察（Query Insights）** 功能通过多种可视化和表格，使 ClickHouse 内置查询日志更易于使用。ClickHouse 的 `system.query_log` 表是进行查询优化、调试，以及监控整个集群健康状况和性能的关键信息来源。
 
 
 
@@ -35,19 +35,19 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 ## 顶层指标 {#top-level-metrics}
 
-顶部的统计框显示所选时间段内的基本顶层查询指标。下方提供了三个时间序列图表,分别按查询类型(SELECT、INSERT、其他)展示查询量、延迟和错误率。延迟图表可进一步调整以显示 p50、p90 和 p99 延迟:
+顶部的统计框显示所选时间段内的基本顶层查询指标。下方提供了三个时间序列图表,按查询类型(SELECT、INSERT、其他)分别展示所选时间窗口内的查询量、延迟和错误率。延迟图表可进一步调整以显示 p50、p90 和 p99 延迟:
 
 <Image
   img={insights_latency}
   size='md'
-  alt='Query Insights UI 延迟图表'
+  alt='查询洞察 UI 延迟图表'
   border
 />
 
 
 ## 最近查询 {#recent-queries}
 
-在顶层指标下方,表格展示了所选时间窗口内的查询日志条目(按标准化查询哈希值和用户分组):
+在顶层指标下方,表格显示了所选时间窗口内的查询日志条目(按规范化查询哈希值和用户分组):
 
 <Image
   img={insights_recent}
@@ -56,29 +56,29 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
   border
 />
 
-最近查询可以按任何可用字段进行筛选和排序。该表格还可以配置为显示或隐藏其他字段,例如表、p90 和 p99 延迟。
+最近查询可以按任何可用字段进行筛选和排序。该表格还可以配置为显示或隐藏其他字段,例如表名、p90 和 p99 延迟。
 
 
 ## 查询详情 {#query-drill-down}
 
-从最近查询表中选择一个查询将打开一个浮出面板,其中包含该查询的指标和相关信息:
+从最近查询表中选择一个查询后,将打开一个侧边面板,显示该查询的相关指标和详细信息:
 
 <Image
   img={insights_drilldown}
   size='md'
-  alt='Query Insights 用户界面查询详情'
+  alt='Query Insights UI Query Drill down'
   border
 />
 
-从浮出面板中可以看到,这个特定查询在过去 24 小时内已运行超过 3000 次。**Query info** 选项卡中的所有指标都是聚合指标,但我们也可以通过选择 **Query history** 选项卡来查看各个运行的指标:
+从侧边面板可以看到,该查询在过去 24 小时内已执行超过 3000 次。**查询信息**选项卡中的所有指标均为聚合指标,我们也可以通过选择**查询历史**选项卡来查看单次执行的指标:
 
 <Image
   img={insights_query_info}
   size='sm'
-  alt='Query Insights 用户界面查询信息'
+  alt='Query Insights UI Query Information'
   border
 />
 
 <br />
 
-在此面板中,可以展开每次查询运行的 `Settings` 和 `Profile Events` 项以查看更多信息。
+在此面板中,可以展开每次查询执行的 `Settings` 和 `Profile Events` 项来查看更多详细信息。

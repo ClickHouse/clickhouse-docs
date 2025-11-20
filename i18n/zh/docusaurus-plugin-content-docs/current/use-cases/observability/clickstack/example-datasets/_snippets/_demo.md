@@ -3,7 +3,7 @@ import architecture from "@site/static/images/use-cases/observability/hyperdx-de
 
 ### 演示架构 {#demo-architecture}
 
-该演示由使用不同编程语言编写的微服务组成,这些服务通过 gRPC 和 HTTP 相互通信,并配有使用 Locust 的负载生成器来模拟用户流量。此演示的原始源代码已修改为使用 [ClickStack 插桩](/use-cases/observability/clickstack/sdks)。
+该演示由使用不同编程语言编写的微服务组成,这些微服务通过 gRPC 和 HTTP 相互通信,并配有使用 Locust 的负载生成器来模拟用户流量。此演示的原始源代码已修改为使用 [ClickStack 插桩](/use-cases/observability/clickstack/sdks)。
 
 <Image img={architecture} alt='架构' size='lg' />
 

@@ -4,15 +4,14 @@ import clickpipesPricingFaq2 from '@site/static/images/cloud/manage/jan2025_faq/
 import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/external_clickpipes_pricing_faq_3.png';
 
 <details>
-  <summary>ClickPipes のレプリカとは何ですか？</summary>
+  <summary>ClickPipes レプリカとは何ですか？</summary>
 
-  ClickPipes は、ClickHouse Cloud サービスとは独立して実行およびスケールする専用インフラストラクチャ経由で、
-  リモートのデータソースからデータを取り込みます。
+  ClickPipes は、ClickHouse Cloud サービスとは独立して実行およびスケールする専用インフラストラクチャを介して、リモートデータソースからデータを取り込みます。
   このため、専用のコンピュートレプリカを使用します。
-  以下の図は、アーキテクチャを簡略化して示したものです。
+  以下の図は、簡略化したアーキテクチャを示しています。
 
-  ストリーミング ClickPipes の場合、ClickPipes レプリカはリモートデータソース（例：Kafka ブローカー）にアクセスし、
-  データを取得して処理し、宛先の ClickHouse サービスに取り込みます。
+  ストリーミング ClickPipes の場合、ClickPipes レプリカがリモートデータソース（例: Kafka ブローカー）にアクセスし、
+  データを取得・処理して、宛先の ClickHouse サービスに取り込みます。
 
   <Image img={clickpipesPricingFaq1} size="lg" alt="ClickPipes レプリカ - ストリーミング ClickPipes" border force />
 
@@ -27,25 +26,25 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 <details>
   <summary>デフォルトのレプリカ数とサイズはどのくらいですか？</summary>
 
-  各 ClickPipe のデフォルトはレプリカ 1 基で、2 GiB の RAM と 0.5 vCPU が割り当てられます。
+  各 ClickPipe のデフォルトはレプリカ 1 個で、2 GiB の RAM と 0.5 vCPU が割り当てられています。
   これは **0.25** ClickHouse コンピュートユニット（1 ユニット = 8 GiB RAM、2 vCPU）に相当します。
 </details>
 
 <details>
   <summary>ClickPipes レプリカはスケールできますか？</summary>
 
-  はい。ストリーミング用の ClickPipes は、水平方向と垂直方向の両方にスケールできます。
-  水平スケーリングではスループット向上のためにレプリカ数を増やし、垂直スケーリングでは各レプリカに割り当てるリソース（CPU と RAM）を増やして、より負荷の高いワークロードに対応します。
-  これは ClickPipe 作成時、またはそれ以外の任意のタイミングで **Settings** -&gt; **Advanced Settings** -&gt; **Scaling** から設定できます。
+  はい。ストリーミング向けの ClickPipes は、水平方向と垂直方向の両方にスケールできます。
+  水平スケーリングはスループットを増やすためにレプリカを追加し、垂直スケーリングは各レプリカに割り当てられるリソース（CPU と RAM）を増やして、より負荷の高いワークロードに対応します。
+  これは ClickPipe の作成時、または任意のタイミングで **Settings** -&gt; **Advanced Settings** -&gt; **Scaling** から設定できます。
 </details>
 
 <details>
   <summary>ClickPipes レプリカはいくつ必要ですか？</summary>
 
-  ワークロードのスループットおよびレイテンシ要件によって異なります。
-  まずはデフォルト値のレプリカ 1 基から開始し、レイテンシを計測したうえで、必要に応じてレプリカを追加することをお勧めします。
-  Kafka ClickPipes の場合は、Kafka ブローカーのパーティションも同様にスケールさせる必要があることに注意してください。
-  スケーリングのコントロールは、各ストリーミング ClickPipe の「settings」から利用できます。
+  ワークロードのスループットとレイテンシ要件によって異なります。
+  まずはレプリカ 1 個というデフォルト値から始めてレイテンシを計測し、必要に応じてレプリカを追加することをお勧めします。
+  Kafka ClickPipes の場合には、Kafka ブローカーのパーティションもそれに応じてスケールさせる必要があることに注意してください。
+  スケーリングのコントロールは、各ストリーミング ClickPipe の「settings」で利用できます。
 
   <Image img={clickpipesPricingFaq3} size="lg" alt="ClickPipes レプリカ - ClickPipes レプリカはいくつ必要ですか？" border force />
 </details>
@@ -53,29 +52,29 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 <details>
   <summary>ClickPipes の料金体系はどのようになっていますか？</summary>
 
-  2 つの要素で構成されています：
+  2 つの要素で構成されています:
 
-  * **Compute**: ユニットあたりの時間単価\
-    Compute は、ClickPipes レプリカの pod が実際にデータを取り込んでいるかどうかにかかわらず、その実行コストを表します。
-    これはすべての ClickPipes タイプに適用されます。
-  * **Ingested data**: GB あたりの単価\
-    取り込まれたデータレートは、レプリカの pod を経由して転送されるデータについて、すべてのストリーミング ClickPipes
+  * **Compute**: 1 ユニットあたり 1 時間単位の料金\
+    Compute は、ClickPipes レプリカ Pod がデータを実際に取り込んでいるかどうかに関わらず、それを実行するためのコストを表します。
+    すべての種類の ClickPipes に適用されます。
+  * **Ingested data**: 1 GB あたりの料金\
+    取り込まれたデータ料金は、ストリーミング ClickPipes
     （Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、
-    Azure Event Hubs）に適用されます。
-    取り込まれたデータサイズ（GB）は、ソースから受信したバイト数（非圧縮・圧縮いずれの場合も）に基づいて課金されます。
+    Azure Event Hubs）において、レプリカ Pod を経由して転送されるデータに適用されます。
+    取り込まれたデータサイズ（GB）は、ソースから受信したバイト数（非圧縮または圧縮）に基づいて課金されます。
 </details>
 
 <details>
-  <summary>ClickPipes のパブリック価格はいくらですか？</summary>
+  <summary>ClickPipes の公開価格はいくらですか？</summary>
 
-  * Compute: ユニットあたり 1 時間 $0.20（レプリカあたり 1 時間 $0.05）
-  * 取り込まれたデータ: 1 GB あたり $0.04
+  * Compute: 1 ユニットあたり 1 時間 $0.20（レプリカ 1 個あたり 1 時間 $0.05）
+  * Ingested data: 1 GB あたり $0.04
 </details>
 
 <details>
   <summary>具体例ではどのようになりますか？</summary>
 
-  たとえば、Kafka コネクタを使用し、単一レプリカ（0.25 compute unit）で 24 時間にわたって 1 TB のデータを取り込む場合のコストは次のとおりです：
+  例えば、単一レプリカ（0.25 コンピュートユニット）の Kafka コネクタを使用して、24 時間で 1 TB のデータを取り込む場合のコストは次のとおりです:
 
   $$
   (0.25 \times 0.20 \times 24) + (0.04 \times 1000) = $41.2
@@ -84,9 +83,9 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
   <br />
 
   オブジェクトストレージコネクタ（S3 および GCS）の場合、
-  ClickPipes の pod はデータを処理せず、
-  基盤となる ClickHouse サービスが実行する転送をオーケストレーションするだけなので、
-  ClickPipes の compute コストのみが発生します：
+  ClickPipes Pod はデータ処理を行わず、
+  基盤となる ClickHouse サービスによって実行される転送をオーケストレーションするだけなので、
+  ClickPipes のコンピュートコストのみが発生します:
 
   $$
   0.25 \times 0.20 \times 24 = $1.2
@@ -98,8 +97,8 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
 <summary>ClickPipes の料金は市場と比べてどうですか？</summary>
 
-ClickPipes の料金設計の基本的な考え方は、
-プラットフォームの運用コストをまかないつつ、データを ClickHouse Cloud に移行するための簡単で信頼性の高い方法を提供することです。
-この観点から市場を分析した結果、当社の価格設定は十分に競争力があると判断しています。
+ClickPipes の料金に関する基本的な考え方は、
+プラットフォームの運用コストをまかないつつ、ClickHouse Cloud へデータを移動するための、簡便で信頼性の高い手段を提供することです。
+こうした観点から市場分析を行った結果、当社の料金は競争力のある水準にあることが分かりました。
 
 </details>

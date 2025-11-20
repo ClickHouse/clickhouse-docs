@@ -33,11 +33,11 @@ SET my_setting=value;
 
 - **Custom Connection Parameters**. По умолчанию уже указан параметр `socket_timeout`, который может потребоваться изменить, если некоторые извлечения данных обновляются очень долго. Значение этого параметра указывается в миллисекундах. Остальные параметры можно найти [здесь](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java), добавляйте их в это поле через запятую
 - **JDBC Driver custom_http_params**. Это поле позволяет добавить параметры в строку подключения ClickHouse, передавая значения в [параметр драйвера `custom_http_params`](https://github.com/ClickHouse/clickhouse-jdbc#configuration). Например, так указывается `session_id` при активации флажка _Set Session ID_
-- **JDBC Driver `typeMappings`**. Это поле позволяет [передать список сопоставлений типов данных ClickHouse с типами данных Java, используемыми драйвером JDBC](https://github.com/ClickHouse/clickhouse-jdbc#configuration). Коннектор автоматически отображает большие целые числа как строки благодаря этому параметру. Вы можете изменить это поведение, передав свой набор сопоставлений _(не знаю зачем)_, используя
+- **JDBC Driver `typeMappings`**. Это поле позволяет [передать список сопоставлений типов данных ClickHouse с типами данных Java, используемыми драйвером JDBC](https://github.com/ClickHouse/clickhouse-jdbc#configuration). Благодаря этому параметру коннектор автоматически отображает большие целые числа как строки, вы можете изменить это, передав свой набор сопоставлений _(не знаю зачем)_, используя
   ```text
   UInt256=java.lang.Double,Int256=java.lang.Double
   ```
-  Подробнее о сопоставлении читайте в соответствующем разделе
+  Подробнее о сопоставлении типов читайте в соответствующем разделе
 
 
 - **Параметры URL JDBC-драйвера**. В этом поле можно передать остальные [параметры драйвера](https://github.com/ClickHouse/clickhouse-jdbc#configuration), например `jdbcCompliance`. Обратите внимание: значения параметров должны передаваться в формате URL Encoded. Если параметры `custom_http_params` или `typeMappings` указаны как в этом поле, так и в предыдущих полях вкладки Advanced, приоритет имеют значения из предыдущих двух полей вкладки Advanced

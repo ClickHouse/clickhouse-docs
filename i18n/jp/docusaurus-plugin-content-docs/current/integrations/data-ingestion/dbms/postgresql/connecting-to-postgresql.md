@@ -2,7 +2,7 @@
 slug: /integrations/postgresql/connecting-to-postgresql
 title: 'PostgreSQL への接続'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: 'PostgreSQL と ClickHouse を接続するさまざまな方法について説明するページ'
+description: 'PostgreSQL を ClickHouse と接続するさまざまな方法を説明するページ'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -13,14 +13,14 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ClickHouse を PostgreSQL に接続する
 
-このページでは、PostgreSQL を ClickHouse と統合するための次の方法について説明します。
+このページでは、PostgreSQL を ClickHouse と統合するための次のオプションについて説明します。
 
-- PostgreSQL のテーブルから読み取るために `PostgreSQL` テーブルエンジンを使用する方法
-- PostgreSQL のデータベースと ClickHouse のデータベースを同期するために、実験的な `MaterializedPostgreSQL` データベースエンジンを使用する方法
+- PostgreSQL のテーブルから読み取るための `PostgreSQL` テーブルエンジンの利用
+- PostgreSQL のデータベースと ClickHouse のデータベースを同期するための、実験的な `MaterializedPostgreSQL` データベースエンジンの利用
 
 :::tip
-ClickHouse Cloud 向けの、PeerDB によって提供されるマネージド統合サービス [ClickPipes](/integrations/clickpipes/postgres) の利用を推奨します。
-また、[PeerDB](https://github.com/PeerDB-io/peerdb) は、セルフホスト型 ClickHouse と ClickHouse Cloud の両方への PostgreSQL データベースレプリケーションのために設計された、オープンソースの CDC ツールとして利用できます。
+ClickHouse Cloud 向けの、PeerDB によって提供されるマネージド統合サービスである [ClickPipes](/integrations/clickpipes/postgres) の利用を推奨します。
+代替として、[PeerDB](https://github.com/PeerDB-io/peerdb) を、自己ホスト型 ClickHouse および ClickHouse Cloud の両方への PostgreSQL データベースレプリケーション専用に設計されたオープンソースの CDC ツールとして利用できます。
 :::
 
 
@@ -59,7 +59,7 @@ CREATE TABLE table1 (
 );
 ```
 
-5. テスト用にいくつかの行を追加します:
+5. テスト用にいくつかの行を追加しましょう:
 
 ```sql
 INSERT INTO table1
@@ -101,7 +101,7 @@ ClickHouse Cloudでこの機能を使用している場合、ClickHouse Cloudの
 clickhouse-client --user default --password ClickHouse123!
 ```
 
-2. 新しいデータベースを作成します:
+2. 新しいデータベースを作成しましょう:
 
 ```sql
 CREATE DATABASE db_in_ch;
@@ -131,7 +131,7 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 パラメータの完全なリストについては、[PostgreSQLテーブルエンジン](/engines/table-engines/integrations/postgresql)のドキュメントページを参照してください。
 :::
 
-### 3. 統合のテスト {#3-test-the-integration}
+### 3. 統合をテストする {#3-test-the-integration}
 
 1. ClickHouseで初期行を表示します:
 
@@ -139,7 +139,7 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 SELECT * FROM db_in_ch.table1
 ```
 
-ClickHouseテーブルには、PostgreSQLのテーブルに既に存在していた2行が自動的に入力されます:
+ClickHouseテーブルには、PostgreSQLのテーブルに既に存在していた2行が自動的に入力されるはずです:
 
 ```response
 Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
@@ -167,7 +167,7 @@ SELECT * FROM db_in_ch.table1
 ```
 
 
-応答は次のとおりです。
+レスポンスは次のようになります：
 
 ```response
 Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
@@ -190,7 +190,7 @@ VALUES
   (6, 'pqr');
 ```
 
-6. ClickHouse に追加された行が PostgreSQL のテーブルに表示されることを確認します。
+6. ClickHouse に追加した行が PostgreSQL のテーブルに表示されていることを確認します。
 
 ```sql
 db_in_psg=# SELECT * FROM table1;
@@ -205,8 +205,8 @@ id | column1
 (6 rows)
 ```
 
-この例では、`PostrgeSQL` テーブルエンジンを使用して、PostgreSQL と ClickHouse の基本的な連携方法を紹介しました。
-スキーマの指定、特定の列のみを返す設定、複数レプリカへの接続など、さらに多くの機能については、[PostgreSQL テーブルエンジンのドキュメントページ](/engines/table-engines/integrations/postgresql) を参照してください。また、ブログ記事「[ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)」もあわせてご覧ください。
+この例では、`PostrgeSQL` テーブルエンジンを使用した PostgreSQL と ClickHouse 間の基本的な連携方法を紹介しました。
+スキーマの指定、一部のカラムのみを返す設定、複数レプリカへの接続など、さらに多くの機能については、[PostgreSQL テーブルエンジンのドキュメントページ](/engines/table-engines/integrations/postgresql) を参照してください。また、[ClickHouse and PostgreSQL - a match made in data heaven - part 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres) というブログ記事もあわせてご覧ください。
 
 
 ## MaterializedPostgreSQLデータベースエンジンの使用 {#using-the-materializedpostgresql-database-engine}
@@ -280,7 +280,7 @@ VALUES
 host    db1             clickhouse_user 192.168.1.0/24          password
 ```
 
-_\*デモンストレーション目的のため、平文パスワード認証方式を使用しています。PostgreSQLのドキュメントに従って、アドレス行をサーバーのサブネットまたはアドレスで更新してください_
+_\*デモンストレーション目的のため、平文パスワード認証方式を使用しています。PostgreSQLのドキュメントに従って、アドレス行をサブネットまたはサーバーのアドレスで更新してください_
 
 8. 次のようなコマンドで`pg_hba.conf`設定を再読み込みします(バージョンに合わせて調整してください):
 
@@ -386,8 +386,8 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ### 4. まとめ {#4-summary}
 
-この統合ガイドでは、テーブルを含むデータベースをレプリケートする方法の簡単な例に焦点を当てましたが、データベース全体をレプリケートしたり、既存のレプリケーションに新しいテーブルやスキーマを追加したりするなど、より高度なオプションも存在します。このレプリケーションではDDLコマンドはサポートされていませんが、構造的な変更が行われた際に変更を検出してテーブルを再読み込みするようにエンジンを設定できます。
+この統合ガイドでは、テーブルを含むデータベースをレプリケートする方法の簡単な例に焦点を当てましたが、データベース全体をレプリケートしたり、既存のレプリケーションに新しいテーブルやスキーマを追加したりするなど、より高度なオプションも存在します。このレプリケーションではDDLコマンドはサポートされていませんが、構造的な変更が行われた際に変更を検出してテーブルを再読み込みするようにエンジンを設定することができます。
 
 :::info
-高度なオプションで利用可能な機能の詳細については、[リファレンスドキュメント](/engines/database-engines/materialized-postgresql)を参照してください。
+高度なオプションで利用可能なその他の機能については、[リファレンスドキュメント](/engines/database-engines/materialized-postgresql)を参照してください。
 :::

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-payg
 title: 'GCP Marketplace 従量課金 (PAYG)'
-description: 'GCP Marketplace（従量課金: PAYG）経由で ClickHouse Cloud を利用します。'
+description: 'GCP Marketplace（従量課金/PAYG）を通じて ClickHouse Cloud を利用開始します。'
 keywords: ['gcp', 'marketplace', 'billing', 'PAYG']
 doc_type: 'guide'
 ---
@@ -19,7 +19,7 @@ import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/ma
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 import Image from '@theme/IdealImage';
 
-[GCP Marketplace](https://console.cloud.google.com/marketplace) から PAYG（従量課金）パブリックオファーを利用して ClickHouse Cloud を使い始めましょう。
+[GCP Marketplace](https://console.cloud.google.com/marketplace) から PAYG（従量課金制）のパブリックオファーを利用して、ClickHouse Cloud の利用を開始します。
 
 
 ## 前提条件 {#prerequisites}
@@ -60,7 +60,7 @@ import Image from '@theme/IdealImage';
 <Image
   img={gcp_marketplace_payg_3}
   size='sm'
-  alt='GCP Marketplaceでのサブスクリプション設定'
+  alt='GCP Marketplaceでサブスクリプションを設定'
   border
 />
 
@@ -94,7 +94,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register**をクリックしてください。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスを確認した後、ClickHouse Cloudログインページを閉じ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
+ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register**をクリックしてください。新しいユーザーを作成し、メールアドレスを確認するよう求められます。メールアドレスを確認した後、ClickHouse Cloudログインページを離れ、[https://console.clickhouse.cloud](https://console.clickhouse.cloud)で新しいユーザー名を使用してログインできます。
 
 <br />
 
@@ -171,4 +171,4 @@ ClickHouse Cloudの新規ユーザーの場合は、ページ下部の**Register
 
 <br />
 
-問題が発生した場合は、お気軽に[サポートチーム](https://clickhouse.com/support/program)にお問い合わせください。
+問題が発生した場合は、遠慮なく[サポートチーム](https://clickhouse.com/support/program)にお問い合わせください。

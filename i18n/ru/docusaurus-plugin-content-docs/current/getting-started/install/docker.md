@@ -1,5 +1,5 @@
 ---
-description: 'Установка ClickHouse в Debian/Ubuntu Linux'
+description: 'Установка ClickHouse на Debian/Ubuntu Linux'
 keywords: ['ClickHouse', 'install', 'Docker']
 sidebar_label: 'Docker'
 slug: /install/docker

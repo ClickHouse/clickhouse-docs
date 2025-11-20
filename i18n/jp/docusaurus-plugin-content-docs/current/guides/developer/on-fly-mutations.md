@@ -1,9 +1,9 @@
 ---
 slug: /guides/developer/on-the-fly-mutations
-sidebar_label: 'オンザフライ・ミューテーション'
-title: 'オンザフライ・ミューテーション'
-keywords: ['オンザフライ・ミューテーション']
-description: 'オンザフライ・ミューテーションについて説明します'
+sidebar_label: 'オンザフライミューテーション'
+title: 'オンザフライミューテーション'
+keywords: ['On-the-fly mutation']
+description: 'オンザフライミューテーションについて説明します'
 doc_type: 'guide'
 ---
 
@@ -11,9 +11,9 @@ doc_type: 'guide'
 
 ## オンザフライミューテーション {#on-the-fly-mutations}
 
-オンザフライミューテーションを有効にすると、更新された行は即座に更新済みとしてマークされ、その後の`SELECT`クエリは自動的に変更後の値を返します。オンザフライミューテーションが無効の場合、変更後の値を確認するには、バックグラウンドプロセスによってミューテーションが適用されるまで待つ必要があります。
+オンザフライミューテーションが有効な場合、更新された行は即座に更新済みとしてマークされ、その後の`SELECT`クエリは自動的に変更後の値を返します。オンザフライミューテーションが無効な場合、変更後の値を確認するには、バックグラウンドプロセスによってミューテーションが適用されるまで待つ必要があります。
 
-オンザフライミューテーションは、クエリレベルの設定`apply_mutations_on_fly`を有効にすることで、`MergeTree`ファミリーのテーブルで利用できます。
+オンザフライミューテーションは、クエリレベルの設定`apply_mutations_on_fly`を有効にすることで、`MergeTree`ファミリーのテーブルに対して有効化できます。
 
 ```sql
 SET apply_mutations_on_fly = 1;
@@ -29,7 +29,7 @@ CREATE TABLE test_on_fly_mutations (id UInt64, v String)
 ENGINE = MergeTree ORDER BY id;
 
 -- オンザフライミューテーションが無効な場合のデフォルト動作を
--- 示すため、ミューテーションのバックグラウンド実体化を無効化
+-- 示すため、ミューテーションのバックグラウンド実体化を無効にする
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
@@ -82,7 +82,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 
 ## パフォーマンスへの影響 {#performance-impact}
 
-オンザフライミューテーションを有効にすると、ミューテーションは即座に実体化されず、`SELECT`クエリの実行時にのみ適用されます。ただし、ミューテーションはバックグラウンドで非同期に実体化されており、これは負荷の高い処理であることに注意してください。
+オンザフライミューテーションを有効にすると、ミューテーションは即座に実体化されず、`SELECT`クエリの実行時にのみ適用されます。ただし、ミューテーションはバックグラウンドで非同期的に実体化されており、これは負荷の高い処理であることに注意してください。
 
 送信されたミューテーションの数が、一定期間にわたってバックグラウンドで処理されるミューテーションの数を常に上回る場合、適用待ちの未実体化ミューテーションのキューは増加し続けます。その結果、最終的に`SELECT`クエリのパフォーマンスが低下します。
 
@@ -91,10 +91,10 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 
 ## サブクエリと非決定的関数のサポート {#support-for-subqueries-and-non-deterministic-functions}
 
-オンザフライミューテーションは、サブクエリと非決定的関数に対して限定的なサポートを提供します。妥当なサイズの結果を持つスカラーサブクエリのみがサポートされます(設定 `mutations_max_literal_size_to_replace` で制御)。定数の非決定的関数のみがサポートされます(例: `now()` 関数)。
+オンザフライミューテーションは、サブクエリと非決定的関数に対して限定的なサポートを提供します。妥当なサイズの結果を持つスカラーサブクエリのみがサポートされます(設定 `mutations_max_literal_size_to_replace` で制御)。定数の非決定的関数のみがサポートされます(例:`now()` 関数)。
 
 これらの動作は以下の設定で制御されます:
 
-- `mutations_execute_nondeterministic_on_initiator` - true の場合、非決定的関数はイニシエーターレプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルとして置換されます。デフォルト値: `false`
-- `mutations_execute_subqueries_on_initiator` - true の場合、スカラーサブクエリはイニシエーターレプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルとして置換されます。デフォルト値: `false`
-- `mutations_max_literal_size_to_replace` - `UPDATE` および `DELETE` クエリで置換するシリアライズされたリテラルの最大サイズ(バイト単位)。デフォルト値: `16384` (16 KiB)
+- `mutations_execute_nondeterministic_on_initiator` - true の場合、非決定的関数はイニシエーターレプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルとして置換されます。デフォルト値:`false`
+- `mutations_execute_subqueries_on_initiator` - true の場合、スカラーサブクエリはイニシエーターレプリカで実行され、`UPDATE` および `DELETE` クエリ内でリテラルとして置換されます。デフォルト値:`false`
+- `mutations_max_literal_size_to_replace` - `UPDATE` および `DELETE` クエリで置換するシリアライズされたリテラルの最大サイズ(バイト単位)。デフォルト値:`16384`(16 KiB)

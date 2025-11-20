@@ -3,7 +3,7 @@ sidebar_label: 'Cloud 支持'
 title: '支持'
 slug: /cloud/support
 description: '了解 Cloud 支持'
-keywords: ['ClickHouse Cloud', 'cloud support', 'customer support', 'technical assistance', 'managed service support']
+keywords: ['ClickHouse Cloud', 'cloud 支持', '客户支持', '技术支持', '托管服务支持']
 hide_title: true
 doc_type: 'guide'
 ---

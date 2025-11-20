@@ -14,18 +14,15 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，以返回所有输入值的总和。该函数返回 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 类型的结果。
+[`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum) 函数，用于返回所有输入值的总和。该函数返回 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) 类型的结果。
 
 
 ## 使用示例 {#example-usage}
 
 ### 跟踪点赞和点踩 {#tracking-post-votes}
 
-让我们看一个实际示例,使用一个表来跟踪帖子的投票情况。
-对于每个帖子,我们希望维护点赞数、点踩数的累计总数以及
-总体评分。使用带有 sum 的 `SimpleAggregateFunction` 类型非常适合
-这个场景,因为我们只需要存储累计总数,而不需要存储聚合的完整状态。
-因此,它会更快,并且不需要合并部分聚合状态。
+让我们看一个实际示例,使用一个跟踪帖子投票的表。
+对于每个帖子,我们希望维护点赞数、点踩数和总体评分的运行总计。使用带有 sum 的 `SimpleAggregateFunction` 类型适合此用例,因为我们只需要存储运行总计,而不需要存储聚合的完整状态。因此,它会更快,并且不需要合并部分聚合状态。
 
 首先,我们为原始数据创建一个表:
 
@@ -53,7 +50,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-然后我们创建一个带有 `SimpleAggregateFunction` 类型列的物化视图:
+然后我们创建一个包含 `SimpleAggregateFunction` 类型列的物化视图:
 
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates

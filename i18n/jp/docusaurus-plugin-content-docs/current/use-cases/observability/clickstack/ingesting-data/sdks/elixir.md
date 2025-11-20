@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/elixir
 pagination_prev: null
 pagination_next: null
 sidebar_position: 1
-description: 'ClickStack 向け Elixir SDK - ClickHouse オブザーバビリティスタック'
+description: 'ClickStack 用 Elixir SDK - ClickHouse オブザーバビリティスタック'
 title: 'Elixir'
 doc_type: 'guide'
 keywords: ['Elixir ClickStack SDK', 'Elixir observability', 'HyperDX Elixir', 'Elixir logging SDK', 'ClickStack Elixir integration']
@@ -18,7 +18,7 @@ keywords: ['Elixir ClickStack SDK', 'Elixir observability', 'HyperDX Elixir', 'E
     </tr>
   </tbody>
 </table>
-_🚧 OpenTelemetry のメトリクスおよびトレースのインストルメンテーションに近日対応予定です！_
+_🚧 OpenTelemetry メトリクスおよびトレーシング用インストルメンテーションは近日対応予定です。_
 
 
 
@@ -26,7 +26,7 @@ _🚧 OpenTelemetry のメトリクスおよびトレースのインストルメ
 
 ### ClickStack loggerバックエンドパッケージのインストール {#install-hyperdx-logger-backend-package}
 
-`mix.exs`の依存関係リストに`hyperdx`を追加することで、パッケージをインストールできます:
+`mix.exs`の依存関係リストに`hyperdx`を追加することで、パッケージをインストールできます：
 
 ```elixir
 def deps do
@@ -38,7 +38,7 @@ end
 
 ### loggerの設定 {#configure-logger}
 
-`config.exs`ファイルに以下を追加します:
+`config.exs`ファイルに以下を追加します：
 
 
 ```elixir
@@ -51,11 +51,11 @@ config :logger,
 
 ### 環境変数の設定 {#configure-environment-variables}
 
-その後、テレメトリをClickStackに送信するために、シェルで以下の環境変数を設定する必要があります:
+その後、ClickStackにテレメトリを送信するために、シェルで以下の環境変数を設定する必要があります:
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
-_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
+_`OTEL_SERVICE_NAME`環境変数は、HyperDXアプリ内でサービスを識別するために使用されます。任意の名前を設定できます。_

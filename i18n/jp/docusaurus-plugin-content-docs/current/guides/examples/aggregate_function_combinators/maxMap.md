@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxMap'
 title: 'maxMap'
-description: 'maxMap コンビネータの使用例'
+description: 'maxMap コンビネーターの使用例'
 keywords: ['max', 'map', 'combinator', 'examples', 'maxMap']
 sidebar_label: 'maxMap'
 doc_type: 'reference'
@@ -14,7 +14,9 @@ doc_type: 'reference'
 
 ## Description {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map)コンビネータを[`max`](/sql-reference/aggregate-functions/reference/max)関数に適用することで、`maxMap`集約コンビネータ関数を使用してMap内の各キーごとの最大値を計算できます。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`max`](/sql-reference/aggregate-functions/reference/max)
+関数に適用することで、`maxMap`
+集約コンビネータ関数を使用して、Map内の各キーごとの最大値を計算できます。
 
 
 ## 使用例 {#example-usage}

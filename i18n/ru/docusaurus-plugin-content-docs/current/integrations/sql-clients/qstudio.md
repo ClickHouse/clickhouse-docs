@@ -1,7 +1,7 @@
 ---
 slug: /integrations/qstudio
 sidebar_label: 'QStudio'
-description: 'QStudio — это бесплатный инструмент для работы с SQL.'
+description: 'QStudio — бесплатный инструмент для работы с SQL.'
 title: 'Подключение QStudio к ClickHouse'
 doc_type: 'guide'
 keywords: ['qstudio', 'sql client', 'database tool', 'query tool', 'ide']
@@ -18,7 +18,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-QStudio — это бесплатный графический интерфейс для работы с SQL, который позволяет запускать SQL-скрипты, легко просматривать таблицы, строить графики и экспортировать результаты. Он работает на любой операционной системе и с любой базой данных.
+QStudio — это бесплатный графический интерфейс для работы с SQL, который позволяет выполнять SQL-скрипты, удобно просматривать таблицы, строить графики и экспортировать результаты. Работает на любой операционной системе и с любой базой данных.
 
 QStudio подключается к ClickHouse с помощью JDBC.
 
@@ -26,7 +26,7 @@ QStudio подключается к ClickHouse с помощью JDBC.
 
 ## 1. Соберите данные для подключения к ClickHouse {#1-gather-your-clickhouse-details}
 
-QStudio использует JDBC через HTTP(S) для подключения к ClickHouse. Вам потребуются:
+QStudio использует JDBC через HTTP(S) для подключения к ClickHouse; вам потребуются:
 
 - адрес сервера (endpoint)
 - номер порта
@@ -36,15 +36,15 @@ QStudio использует JDBC через HTTP(S) для подключени
 <ConnectionDetails />
 
 
-## 2. Загрузите QStudio {#2-download-qstudio}
+## 2. Загрузка QStudio {#2-download-qstudio}
 
-QStudio можно загрузить по адресу https://www.timestored.com/qstudio/download/
+QStudio можно скачать по адресу https://www.timestored.com/qstudio/download/
 
 
 ## 3. Добавление базы данных {#3-add-a-database}
 
 - При первом запуске QStudio выберите в меню **Server->Add Server** или нажмите кнопку добавления сервера на панели инструментов.
-- Затем укажите следующие параметры:
+- Затем укажите параметры подключения:
 
 <Image
   img={qstudio_add_connection}
@@ -64,7 +64,7 @@ QStudio можно загрузить по адресу https://www.timestored.c
 Если QStudio обнаружит, что драйвер ClickHouse JDBC не установлен, будет предложено загрузить его автоматически:
 
 
-## 4. Выполнение запросов к ClickHouse {#4-query-clickhouse}
+## 4. Запросы к ClickHouse {#4-query-clickhouse}
 
 - Откройте редактор запросов и выполните запрос. Запросы можно выполнять следующими способами:
 - Ctrl + e — выполняет выделенный текст

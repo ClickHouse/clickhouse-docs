@@ -34,31 +34,31 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Microsoft Power BI 可以从 [ClickHouse Cloud](https://clickhouse.com/cloud) 或自托管部署中查询数据，或将数据加载到内存中。
+Microsoft Power BI 可以从 [ClickHouse Cloud](https://clickhouse.com/cloud) 或自建部署中查询数据，或将数据加载到内存中。
 
-可用于数据可视化的 Power BI 产品形态包括：
+你可以使用多种 Power BI 产品来可视化你的数据：
 
-* Power BI Desktop：用于创建仪表板和可视化的 Windows 桌面应用程序
-* Power BI Service：在 Azure 中以 SaaS 形式提供，用于托管在 Power BI Desktop 中创建的仪表板
+* Power BI Desktop：Windows 桌面应用程序，用于创建仪表板和可视化报表
+* Power BI Service：在 Azure 中以 SaaS 形式提供，用于托管由 Power BI Desktop 创建的仪表板
 
-Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Power BI Service。
+Power BI 要求你先在 Desktop 版本中创建仪表板，然后将其发布到 Power BI Service。
 
-本教程将引导你完成以下步骤：
+本教程将引导你完成以下内容：
 
-* [安装 ClickHouse ODBC Driver](#install-the-odbc-driver)
-* [在 Power BI Desktop 中安装 ClickHouse Power BI Connector](#power-bi-installation)
+* [安装 ClickHouse ODBC 驱动](#install-the-odbc-driver)
+* [在 Power BI Desktop 中安装 ClickHouse Power BI 连接器](#power-bi-installation)
 * [从 ClickHouse 查询数据并在 Power BI Desktop 中进行可视化](#query-and-visualise-data)
 * [为 Power BI Service 设置本地数据网关](#power-bi-service)
 
 
 
-## 前置条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
 ### Power BI 安装 {#power-bi-installation}
 
-本教程假设您已在 Windows 计算机上安装了 Microsoft Power BI Desktop。您可以在[此处](https://www.microsoft.com/en-us/download/details.aspx?id=58494)下载并安装 Power BI Desktop。
+本教程假定您已在 Windows 计算机上安装了 Microsoft Power BI Desktop。您可以从[此处](https://www.microsoft.com/en-us/download/details.aspx?id=58494)下载并安装 Power BI Desktop
 
-我们建议更新到最新版本的 Power BI。从 `2.137.751.0` 版本开始,ClickHouse 连接器默认可用。
+我们建议更新到最新版本的 Power BI。从 `2.137.751.0` 版本开始，ClickHouse 连接器默认可用。
 
 ### 收集 ClickHouse 连接信息 {#gather-your-clickhouse-connection-details}
 
@@ -116,7 +116,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 <Image
   size='md'
   img={powerbi_odbc_verify}
-  alt='ODBC 数据源管理器在驱动程序选项卡中显示 ClickHouse 驱动程序'
+  alt='ODBC 数据源管理器在"驱动程序"选项卡中显示 ClickHouse 驱动程序'
   border
 />
 <br />
@@ -131,7 +131,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 <Image
   size='md'
   img={powerbi_get_data}
-  alt='Power BI Desktop 主屏幕显示获取数据按钮'
+  alt='Power BI Desktop 主屏幕显示"获取数据"按钮'
   border
 />
 <br />
@@ -141,7 +141,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 <Image
   size='md'
   img={powerbi_search_clickhouse}
-  alt='Power BI 获取数据对话框在搜索栏中搜索 ClickHouse'
+  alt='Power BI"获取数据"对话框在搜索栏中搜索 ClickHouse'
   border
 />
 <br />
@@ -150,7 +150,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 
 选择连接器,并输入 ClickHouse 实例凭据:
 
-- Host(必需)- 您的实例域名/地址。请确保添加时不带前缀/后缀。
+- Host(必需)- 您的实例域名/地址。请确保添加时不带任何前缀/后缀。
 - Port(必需)- 您的实例端口。
 - Database - 您的数据库名称。
 - Options - [ClickHouse ODBC GitHub 页面](https://github.com/ClickHouse/clickhouse-odbc#configuration)中列出的任何 ODBC 选项
@@ -206,7 +206,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 
 ## ODBC 驱动程序(仅导入) {#odbc-driver-import-only}
 
-我们推荐使用支持 DirectQuery 的 ClickHouse 连接器。
+我们建议使用支持 DirectQuery 的 ClickHouse 连接器。
 
 在本地数据网关实例上安装 [ODBC 驱动程序](#install-the-odbc-driver),并按照上述说明进行[验证](#verify-odbc-driver)。
 
@@ -273,7 +273,7 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 />
 <br />
 
-选择"其他"->"ODBC"。
+选择"其他" -> "ODBC"。
 
 <Image
   size='md'
@@ -315,21 +315,21 @@ Power BI 要求你在 Desktop 版本中创建仪表板，并将其发布到 Powe
 />
 <br />
 
-导入完成后,您的 ClickHouse 数据即可在 Power BI 中正常访问。
+导入完成后,您的 ClickHouse 数据即可像往常一样在 Power BI 中访问。
 
 
 ## 已知限制 {#known-limitations}
 
 ### UInt64 {#uint64}
 
-UInt64 或更大的无符号整数类型不会自动加载到数据集中,因为 Int64 是 Power BI 支持的最大整数类型。
+UInt64 或更大的无符号整数类型不会自动加载到数据集中，因为 Int64 是 Power BI 支持的最大整数类型。
 
 :::note
-要正确导入数据,在导航器中点击"加载"按钮之前,请先点击"转换数据"。
+要正确导入数据，在导航器中点击"加载"按钮之前，请先点击"转换数据"。
 :::
 
-在此示例中,`pageviews` 表包含一个 UInt64 列,默认情况下被识别为"二进制"类型。
-点击"转换数据"会打开 Power Query 编辑器,我们可以在其中重新指定列的类型,例如将其设置为文本类型。
+在此示例中，`pageviews` 表包含一个 UInt64 列，默认情况下会被识别为"二进制"类型。
+点击"转换数据"会打开 Power Query 编辑器，在其中可以重新指定列的类型，例如将其设置为文本类型。
 
 <Image
   size='md'
@@ -339,4 +339,4 @@ UInt64 或更大的无符号整数类型不会自动加载到数据集中,因为
 />
 <br />
 
-完成后,点击左上角的"关闭并应用",然后继续加载数据。
+完成后，点击左上角的"关闭并应用"，然后继续加载数据。

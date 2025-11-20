@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Crunchy Bridge Postgres'
-description: 'ClickPipes のソースとして Crunchy Bridge Postgres を構成する'
+description: 'ClickPipes のソースとして Crunchy Bridge Postgres をセットアップする'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres ソース構成ガイド'
+title: 'Crunchy Bridge Postgres ソース設定ガイド'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'logical replication', 'data ingestion']
 doc_type: 'guide'
 ---
@@ -12,7 +12,7 @@ import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/
 import Image from '@theme/IdealImage';
 
 
-# Crunchy Bridge Postgres ソースセットアップガイド
+# Crunchy Bridge Postgres ソース設定ガイド
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
@@ -20,7 +20,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 
 ## 論理レプリケーションの有効化 {#enable-logical-replication}
 
-Crunchy Bridgeは[デフォルト](https://docs.crunchybridge.com/how-to/logical-replication)で論理レプリケーションが有効になっています。以下の設定が正しく構成されていることを確認してください。構成が正しくない場合は、適宜調整してください。
+Crunchy Bridgeは[デフォルト](https://docs.crunchybridge.com/how-to/logical-replication)で論理レプリケーションが有効になっています。以下の設定が正しく構成されていることを確認してください。正しく構成されていない場合は、必要に応じて調整してください。
 
 ```sql
 SHOW wal_level; -- logical である必要があります
@@ -39,7 +39,7 @@ SHOW max_replication_slots; -- 10 である必要があります
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. レプリケーション元のスキーマに対して、`clickpipes_user`に読み取り専用アクセスを付与します。以下の例では`public`スキーマに対する権限付与を示しています。複数のスキーマにアクセスを付与する場合は、各スキーマに対してこれら3つのコマンドを実行してください。
+2. レプリケート元のスキーマに対して、`clickpipes_user`に読み取り専用アクセスを付与します。以下の例では`public`スキーマに対する権限付与を示しています。複数のスキーマにアクセスを付与する場合は、各スキーマに対してこれら3つのコマンドを実行してください。
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -82,4 +82,4 @@ Crunchy Bridgeでファイアウォールルールを追加して、[ClickPipes 
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)し、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず記録しておいてください。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

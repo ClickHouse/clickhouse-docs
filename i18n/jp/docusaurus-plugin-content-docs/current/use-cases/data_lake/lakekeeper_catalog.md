@@ -4,7 +4,7 @@ sidebar_label: 'Lakekeeper カタログ'
 title: 'Lakekeeper カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Lakekeeper カタログを使ってデータをクエリする手順を説明します。'
+description: 'このガイドでは、ClickHouse と Lakekeeper Catalog を使用してデータをクエリする手順を説明します。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,20 +15,20 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge />
 
 :::note
-Lakekeeper カタログとの連携は、Iceberg テーブルに対してのみ動作します。
-この連携は AWS S3 とその他のクラウドストレージプロバイダーの両方をサポートします。
+Lakekeeper Catalog との連携は Iceberg テーブルに対してのみ動作します。
+この連携機能は AWS S3 とその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
-ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ（Unity、Glue、REST、Polaris など）との連携をサポートしています。このガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータにクエリを実行する手順を説明します。
 
 Lakekeeper は Apache Iceberg 向けのオープンソース REST カタログ実装で、次の機能を提供します。
 
 * 高いパフォーマンスと信頼性を実現する **Rust ネイティブ** 実装
 * Iceberg REST カタログ仕様に準拠した **REST API**
-* S3 互換ストレージと連携する **クラウドストレージ** 機能
+* S3 互換ストレージと連携する **クラウドストレージ** 統合
 
 :::note
-この機能は実験的であるため、次の設定を有効にする必要があります:
+この機能は実験的なため、次の設定で有効化する必要があります。
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
@@ -206,7 +206,7 @@ docker-compose logs -f
 ```
 
 :::note
-Lakekeeperのセットアップでは、まずサンプルデータをIcebergテーブルにロードする必要があります。ClickHouseからテーブルをクエリする前に、環境でテーブルが作成され、データが投入されていることを確認してください。テーブルの可用性は、使用するdocker-composeの構成とサンプルデータのロードスクリプトに依存します。
+Lakekeeperのセットアップでは、事前にサンプルデータをIcebergテーブルにロードする必要があります。ClickHouseを通じてクエリを実行する前に、環境でテーブルが作成され、データが投入されていることを確認してください。テーブルの可用性は、使用するdocker-composeの設定とサンプルデータのロードスクリプトに依存します。
 :::
 
 ### ローカルLakekeeperカタログへの接続 {#connecting-to-local-lakekeeper-catalog}
@@ -230,7 +230,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 
 ## ClickHouseを使用したLakekeeperカタログテーブルのクエリ {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
-接続が確立されたので、Lakekeeperカタログ経由でクエリを実行できます。例:
+接続が確立されたので、Lakekeeperカタログを介したクエリを開始できます。例：
 
 ```sql
 USE demo;
@@ -238,22 +238,22 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ(taxiデータセットなど)が含まれている場合、次のようなテーブルが表示されます:
+セットアップにサンプルデータ（taxiデータセットなど）が含まれている場合、次のようなテーブルが表示されます：
 
-```sql title="Response"
+```sql title="レスポンス"
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
 ```
 
 :::note
-テーブルが表示されない場合、通常は次のいずれかが原因です:
+テーブルが表示されない場合、通常は次のいずれかが原因です：
 
 1. 環境がまだサンプルテーブルを作成していない
 2. Lakekeeperカタログサービスが完全に初期化されていない
 3. サンプルデータの読み込みプロセスが完了していない
 
-Sparkログを確認して、テーブル作成の進行状況を確認できます:
+Sparkログを確認して、テーブル作成の進行状況を確認できます：
 
 ```bash
 docker-compose logs spark
@@ -261,29 +261,29 @@ docker-compose logs spark
 
 :::
 
-テーブルをクエリするには(利用可能な場合):
+テーブルをクエリするには（利用可能な場合）：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```sql title="レスポンス"
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
 ```
 
 :::note バッククォートが必要
-ClickHouseは複数の名前空間をサポートしていないため、バッククォートが必要です。
+ClickHouseは複数のネームスペースをサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルのDDLを確認するには:
+テーブルのDDLを確認するには：
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```sql title="レスポンス"
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -312,9 +312,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Data LakeからClickHouseへのデータ読み込み {#loading-data-from-your-data-lake-into-clickhouse}
+## Data LakeからClickHouseへのデータロード {#loading-data-from-your-data-lake-into-clickhouse}
 
-LakekeeperカタログからClickHouseにデータを読み込む場合は、まずローカルのClickHouseテーブルを作成します:
+LakekeeperカタログからClickHouseにデータをロードする場合は、まずローカルのClickHouseテーブルを作成します:
 
 ```sql
 CREATE TABLE taxis
@@ -344,7 +344,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-次に、`INSERT INTO SELECT`を使用してLakekeeperカタログテーブルからデータを読み込みます:
+次に、`INSERT INTO SELECT`を使用してLakekeeperカタログテーブルからデータをロードします:
 
 ```sql
 INSERT INTO taxis

@@ -1,17 +1,17 @@
 ---
 slug: /concepts/faq
 title: '常见问题'
-description: '常见问题着陆页'
+description: '常见问题导航页'
 pagination_prev: null
 pagination_next: null
 doc_type: 'landing-page'
-keywords: ['FAQ', 'questions', 'answers']
+keywords: ['FAQ', '问题', '答案']
 ---
 
-| Page                                                          | Description                                                                            |
-|---------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| [General Questions about ClickHouse](general/index.md)        | 关于 ClickHouse 的常见问题。                                                          |
-| [Why not use something like MapReduce?](general/mapreduce.md) | 说明为什么 MapReduce 的实现不适合 OLAP 场景。                                         |
-| [What does "не тормозит" mean](general/ne-tormozit.md)        | 解释“не тормозит”的含义，你可能在 ClickHouse T 恤上见过这个短语。                      |
-| [What is OLAP](general/olap.md)                               | 说明什么是联机分析处理（Online Analytical Processing，OLAP）。                        |
-| [Who is using ClickHouse](general/who-is-using-clickhouse.md) | 了解哪些人在使用 ClickHouse。                                                          |
+| 页面                                                          | 描述                                                                            |
+|---------------------------------------------------------------|---------------------------------------------------------------------------------|
+| [ClickHouse 常见问题](general/index.md)                       | 关于 ClickHouse 的常见问题。                                                    |
+| [为什么不使用 MapReduce 之类的方案?](general/mapreduce.md)    | 解释为什么 MapReduce 实现不适用于 OLAP 场景。                                   |
+| ["не тормозит" 是什么意思](general/ne-tormozit.md)           | 解释 "не тормозит" 的含义,您可能在 ClickHouse T 恤上看到过这个词。              |
+| [什么是 OLAP](general/olap.md)                                | 解释什么是在线分析处理(OLAP)。                                                  |
+| [谁在使用 ClickHouse](general/who-is-using-clickhouse.md)     | 了解哪些用户正在使用 ClickHouse。                                               |

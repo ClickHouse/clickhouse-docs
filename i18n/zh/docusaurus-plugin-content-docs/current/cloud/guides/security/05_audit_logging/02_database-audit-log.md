@@ -2,7 +2,7 @@
 sidebar_label: '数据库审计日志'
 slug: /cloud/security/audit-logging/database-audit-log
 title: '数据库审计日志'
-description: '本文介绍用户如何查看数据库审计日志'
+description: '本页介绍用户如何查看数据库审计日志'
 doc_type: 'guide'
 keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitoring']
 ---
@@ -14,7 +14,7 @@ keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitori
 ClickHouse 默认提供数据库审计日志功能。本页面重点介绍与安全相关的日志。有关系统记录数据的更多信息,请参阅[系统表](/operations/system-tables/overview)文档。
 
 :::tip 日志保留
-信息直接记录到系统表中,默认保留最多 30 天。此期限可能更长或更短,受系统中合并频率的影响。用户可以采取额外措施来延长日志存储时间,或将日志导出到安全信息和事件管理 (SIEM) 系统进行长期存储。详细信息见下文。
+信息直接记录到系统表中,默认保留最多 30 天。此期限可能更长或更短,受系统中合并操作频率的影响。用户可以采取额外措施来延长日志存储时间,或将日志导出到安全信息和事件管理 (SIEM) 系统以进行长期存储。详细信息见下文。
 :::
 
 
@@ -60,7 +60,7 @@ WHERE user=’compromised_account’
 
 ## 导出日志 {#exporting-logs}
 
-系统日志可以使用与 SIEM 系统兼容的多种格式写入或导出到存储位置。更多信息请参阅[表函数](/sql-reference/table-functions)文档。常用方法包括:
+系统日志可以使用与 SIEM 系统兼容的多种格式写入或导出到存储位置。有关更多信息,请参阅我们的[表函数](/sql-reference/table-functions)文档。最常用的方法有:
 
 - [写入 S3](/sql-reference/table-functions/s3)
 - [写入 GCS](/sql-reference/table-functions/gcs)

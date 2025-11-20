@@ -1,7 +1,7 @@
 ---
 slug: /integrations/marimo
 sidebar_label: 'marimo'
-description: 'marimo はデータと対話するための次世代 Python ノートブックです'
+description: 'marimo はデータと対話的に扱うための次世代 Python ノートブックです'
 title: 'ClickHouse での marimo の利用'
 doc_type: 'guide'
 keywords: ['marimo', 'notebook', 'data analysis', 'python', 'visualization']
@@ -19,11 +19,11 @@ import run_app_view from '@site/static/images/integrations/sql-clients/marimo/ru
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# ClickHouse で marimo を使う
+# ClickHouse での marimo の利用
 
 <CommunityMaintainedBadge/>
 
-[marimo](https://marimo.io/) は、SQL 機能を組み込んだ Python 向けのオープンソースなリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古い状態としてマーク）し、コードと出力の整合性を保つことで、不具合の発生を未然に防ぎます。すべての marimo ノートブックは純粋な Python コードとして保存され、スクリプトとして実行でき、アプリとしてデプロイできます。
+[marimo](https://marimo.io/) は、SQL が組み込まれた Python 向けのオープンソースのリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古い状態としてマーク）し、コードと出力の整合性を保つことで、バグの発生を未然に防ぎます。すべての marimo ノートブックは純粋な Python として保存され、スクリプトとして実行でき、アプリとしてデプロイ可能です。
 
 <Image img={marimo_connect} size="md" border alt="ClickHouse に接続" />
 
@@ -54,7 +54,7 @@ marimoエディタの左側にあるデータソースパネルに移動し、�
   alt='データベースの詳細情報を入力'
 />
 
-接続を確立するために実行可能なセルが表示されます。
+接続を確立するために実行できるセルが表示されます。
 
 <Image
   img={run_cell}

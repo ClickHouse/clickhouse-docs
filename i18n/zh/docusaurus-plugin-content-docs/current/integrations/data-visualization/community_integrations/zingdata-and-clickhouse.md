@@ -3,7 +3,7 @@ sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
 keywords: ['Zing Data']
-description: 'Zing Data 是一款简单易用的 ClickHouse 社交化商业智能工具，支持在 iOS、Android 和 Web 上使用。'
+description: 'Zing Data 是为 ClickHouse 打造的简洁社交化商业智能工具，可在 iOS、Android 和 Web 上使用。'
 title: '将 Zing Data 连接到 ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一款数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索和可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
 
 
 
@@ -43,7 +43,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    - 要在 Web 端使用 Zing Data 连接 ClickHouse,请访问 [Zing Web 控制台](https://console.getzingdata.com/)并创建账户。
 
 3. 添加数据源
-   - 要使用 Zing Data 与您的 ClickHouse 数据交互,您需要定义一个 **_数据源_**。在 Zing Data 移动应用菜单中,选择 **Sources**,然后点击 **Add a Datasource**。
+   - 要使用 Zing Data 与您的 ClickHouse 数据交互,您需要定义一个**_数据源_**。在 Zing Data 移动应用菜单中,选择 **Sources**,然后点击 **Add a Datasource**。
 
    - 要在 Web 端添加数据源,请点击顶部菜单中的 **Data Sources**,点击 **New Datasource** 并从下拉菜单中选择 **Clickhouse**
 
@@ -65,7 +65,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    />
    <br />
 
-5. 如果连接成功,Zing 将引导您进入表选择界面。选择所需的表并点击 **Save**。如果 Zing 无法连接到您的数据源,您将看到一条消息提示您检查凭据并重试。如果检查凭据并重试后仍然遇到问题,<a id="contact_link" href="mailto:hello@getzingdata.com">请在此联系 Zing 支持。</a>
+5. 如果连接成功,Zing 将引导您进入表选择界面。选择所需的表并点击 **Save**。如果 Zing 无法连接到您的数据源,您将看到一条消息提示您检查凭据并重试。如果在检查凭据并重试后仍然遇到问题,<a id="contact_link" href="mailto:hello@getzingdata.com">请在此联系 Zing 支持。</a>
 
    <Image
      size='md'
@@ -75,7 +75,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    />
    <br />
 
-6. 添加 ClickHouse 数据源后,您的 Zing 组织中的所有人都可以在 **Data Sources** / **Sources** 选项卡下访问它。
+6. 添加 ClickHouse 数据源后,您的 Zing 组织中的所有成员都可以在 **Data Sources** / **Sources** 选项卡下访问该数据源。
 
 
 ## 在 Zing Data 中创建图表和仪表板 {#creating-charts-and-dashboards-in-zing-data}
@@ -113,7 +113,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    <Image
      size='md'
      img={zing_07}
-     alt='Zing Data 中的 SQL 查询结果,以表格格式显示数据'
+     alt='Zing Data 中的 SQL 查询结果,数据以表格格式显示'
      border
    />
 

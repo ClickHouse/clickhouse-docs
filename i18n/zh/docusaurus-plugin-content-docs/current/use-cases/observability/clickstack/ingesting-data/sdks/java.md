@@ -3,22 +3,22 @@ slug: /use-cases/observability/clickstack/sdks/java
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
-description: 'ClickStack 的 Java SDK - ClickHouse 可观测性栈'
+description: 'ClickStack 的 Java SDK - ClickHouse 可观测性技术栈'
 title: 'Java'
 doc_type: 'guide'
-keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
+keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java 可观测性 SDK', 'ClickStack Java 集成', 'Java 应用监控']
 ---
 
-ClickStack 使用 OpenTelemetry 标准来采集遥测数据（日志和追踪）。追踪通过自动化探针自动生成，因此无需手动埋点也可以从追踪中获益。
+ClickStack 使用 OpenTelemetry 标准来收集遥测数据(日志和链路追踪)。链路追踪通过自动插桩自动生成,因此无需手动插桩即可从追踪中获得价值。
 
-**本指南将集成：**
+**本指南集成:**
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✅ 指标</td>
-      <td className="pe-2">✅ 追踪</td>
+      <td className="pe-2">✅ 链路追踪</td>
     </tr>
   </tbody>
 </table>
@@ -55,7 +55,7 @@ OTEL_LOGS_EXPORTER=otlp \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
-_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,可以设置为任意名称。_
+_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,可以是任意名称。_
 
 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量包含可通过 HyperDX 应用在 `Team Settings → API Keys` 中获取的 API 密钥。
 

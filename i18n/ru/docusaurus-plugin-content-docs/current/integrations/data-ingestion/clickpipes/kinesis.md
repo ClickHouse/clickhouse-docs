@@ -30,76 +30,76 @@ import Image from '@theme/IdealImage';
 
 ## Предварительные требования {#prerequisite}
 
-Вы должны ознакомиться с [введением в ClickPipes](./index.md) и настроить [учетные данные IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) или [роль IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Для получения информации о настройке роли, совместимой с ClickHouse Cloud, следуйте [руководству по доступу на основе ролей для Kinesis](./secure-kinesis.md).
+Убедитесь, что вы ознакомились с [введением в ClickPipes](./index.md) и настроили [учетные данные IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) или [роль IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Следуйте [руководству по ролевому доступу для Kinesis](./secure-kinesis.md), чтобы узнать, как настроить роль для работы с ClickHouse Cloud.
 
 
 ## Создание первого ClickPipe {#creating-your-first-clickpipe}
 
 1. Откройте SQL Console для вашего сервиса ClickHouse Cloud.
 
-<Image img={cp_service} alt='ClickPipes service' size='lg' border />
+<Image img={cp_service} alt='Сервис ClickPipes' size='lg' border />
 
 2. Нажмите кнопку `Data Sources` в меню слева и выберите "Set up a ClickPipe"
 
-<Image img={cp_step0} alt='Select imports' size='lg' border />
+<Image img={cp_step0} alt='Выбор импорта' size='lg' border />
 
 3. Выберите источник данных.
 
-<Image img={cp_step1} alt='Select data source type' size='lg' border />
+<Image img={cp_step1} alt='Выбор типа источника данных' size='lg' border />
 
-4. Заполните форму, указав имя для ClickPipe, описание (необязательно), IAM-роль или учетные данные, а также другие параметры подключения.
+4. Заполните форму, указав имя для вашего ClickPipe, описание (необязательно), IAM-роль или учетные данные, а также другие параметры подключения.
 
 <Image
   img={cp_step2_kinesis}
-  alt='Fill out connection details'
+  alt='Заполнение параметров подключения'
   size='lg'
   border
 />
 
-5. Выберите поток Kinesis и начальное смещение. В интерфейсе отобразится пример документа из выбранного источника (топик Kafka и т. д.). Вы также можете включить Enhanced Fan-out для потоков Kinesis, чтобы повысить производительность и стабильность ClickPipe (подробнее об Enhanced Fan-out можно узнать [здесь](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout))
+5. Выберите поток Kinesis и начальное смещение. В интерфейсе отобразится пример документа из выбранного источника (топик Kafka и т. д.). Вы также можете включить Enhanced Fan-out для потоков Kinesis, чтобы повысить производительность и стабильность вашего ClickPipe (дополнительную информацию об Enhanced Fan-out можно найти [здесь](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout))
 
 <Image
   img={cp_step3_kinesis}
-  alt='Set data format and topic'
+  alt='Установка формата данных и топика'
   size='lg'
   border
 />
 
-6. На следующем шаге выберите, хотите ли вы загружать данные в новую таблицу ClickHouse или использовать существующую. Следуйте инструкциям на экране для изменения имени таблицы, схемы и настроек. Вы можете видеть предварительный просмотр изменений в реальном времени в примере таблицы вверху.
+6. На следующем шаге вы можете выбрать, загружать ли данные в новую таблицу ClickHouse или использовать существующую. Следуйте инструкциям на экране, чтобы изменить имя таблицы, схему и настройки. Вы можете видеть предварительный просмотр изменений в реальном времени в примере таблицы вверху.
 
-<Image img={cp_step4a} alt='Set table, schema, and settings' size='lg' border />
+<Image img={cp_step4a} alt='Установка таблицы, схемы и настроек' size='lg' border />
 
-Вы также можете настроить дополнительные параметры с помощью предоставленных элементов управления
+Вы также можете настроить расширенные параметры с помощью предоставленных элементов управления
 
-<Image img={cp_step4a3} alt='Set advanced controls' size='lg' border />
+<Image img={cp_step4a3} alt='Установка расширенных параметров' size='lg' border />
 
-7. Альтернативно, вы можете загружать данные в существующую таблицу ClickHouse. В этом случае интерфейс позволит сопоставить поля из источника с полями ClickHouse в выбранной целевой таблице.
+7. Альтернативно, вы можете загружать данные в существующую таблицу ClickHouse. В этом случае интерфейс позволит вам сопоставить поля из источника с полями ClickHouse в выбранной целевой таблице.
 
-<Image img={cp_step4b} alt='Use an existing table' size='lg' border />
+<Image img={cp_step4b} alt='Использование существующей таблицы' size='lg' border />
 
-8. Наконец, настройте права доступа для внутреннего пользователя ClickPipes.
+8. Наконец, вы можете настроить права доступа для внутреннего пользователя ClickPipes.
 
    **Права доступа:** ClickPipes создаст выделенного пользователя для записи данных в целевую таблицу. Вы можете выбрать роль для этого внутреннего пользователя, используя пользовательскую роль или одну из предопределенных ролей:
-   - `Full access`: полный доступ к кластеру. Может быть полезно, если вы используете материализованное представление или словарь с целевой таблицей.
-   - `Only destination table`: права `INSERT` только для целевой таблицы.
+   - `Full access`: с полным доступом к кластеру. Это может быть полезно, если вы используете материализованное представление или словарь с целевой таблицей.
+   - `Only destination table`: с правами `INSERT` только для целевой таблицы.
 
-<Image img={cp_step5} alt='Permissions' border />
+<Image img={cp_step5} alt='Права доступа' border />
 
 9. Нажав "Complete Setup", система зарегистрирует ваш ClickPipe, и вы сможете увидеть его в сводной таблице.
 
-<Image img={cp_success} alt='Success notice' size='sm' border />
+<Image img={cp_success} alt='Уведомление об успехе' size='sm' border />
 
-<Image img={cp_remove} alt='Remove notice' size='lg' border />
+<Image img={cp_remove} alt='Уведомление об удалении' size='lg' border />
 
 Сводная таблица предоставляет элементы управления для отображения примеров данных из источника или целевой таблицы в ClickHouse
 
-<Image img={cp_destination} alt='View destination' size='lg' border />
+<Image img={cp_destination} alt='Просмотр назначения' size='lg' border />
 
 А также элементы управления для удаления ClickPipe и отображения сводки задачи загрузки.
 
-<Image img={cp_overview} alt='View overview' size='lg' border />
+<Image img={cp_overview} alt='Просмотр обзора' size='lg' border />
 
-10. **Поздравляем!** Вы успешно настроили свой первый ClickPipe. Если это потоковый ClickPipe, он будет непрерывно работать, загружая данные в реальном времени из удаленного источника данных. В противном случае он загрузит пакет данных и завершит работу.
+10. **Поздравляем!** Вы успешно настроили свой первый ClickPipe. Если это потоковый ClickPipe, он будет непрерывно работать, загружая данные в реальном времени из вашего удаленного источника данных. В противном случае он загрузит пакет данных и завершит работу.
 
 
 ## Поддерживаемые форматы данных {#supported-data-formats}
@@ -127,7 +127,7 @@ import Image from '@theme/IdealImage';
 - UUID
 - IPv4
 - IPv6
-- все типы LowCardinality в ClickHouse
+- все типы LowCardinality ClickHouse
 - Map с ключами и значениями любых из перечисленных выше типов (включая Nullable)
 - Tuple и Array с элементами любых из перечисленных выше типов (включая Nullable, только один уровень вложенности)
 - типы SimpleAggregateFunction (для целевых таблиц AggregatingMergeTree или SummingMergeTree)
@@ -135,12 +135,11 @@ import Image from '@theme/IdealImage';
 ### Поддержка типа Variant {#variant-type-support}
 
 Вы можете вручную указать тип Variant (например, `Variant(String, Int64, DateTime)`) для любого поля JSON
-во входном потоке данных. Из-за особенностей определения ClickPipes корректного подтипа варианта в определении Variant может использоваться только один целочисленный тип или тип datetime —
-например, `Variant(Int64, UInt32)` не поддерживается.
+во входном потоке данных. Из-за особенностей определения ClickPipes корректного подтипа варианта в определении Variant может использоваться только один целочисленный тип или тип даты-времени — например, `Variant(Int64, UInt32)` не поддерживается.
 
 ### Поддержка типа JSON {#json-type-support}
 
-Поля JSON, которые всегда представляют собой объект JSON, могут быть назначены целевому столбцу типа JSON. Вам потребуется вручную изменить тип целевого
+Поля JSON, которые всегда являются объектом JSON, могут быть назначены целевому столбцу типа JSON. Вам потребуется вручную изменить тип целевого
 столбца на желаемый тип JSON, включая любые фиксированные или пропускаемые пути.
 
 
@@ -151,12 +150,12 @@ import Image from '@theme/IdealImage';
 | Имя               | Описание                                                      | Рекомендуемый тип данных |
 | ----------------- | ------------------------------------------------------------- | ------------------------ |
 | \_key             | Ключ партиции Kinesis                                         | String                   |
-| \_timestamp       | Приблизительная временная метка поступления Kinesis (точность до миллисекунд) | DateTime64(3)            |
+| \_timestamp       | Приблизительная временная метка поступления Kinesis (с точностью до миллисекунд) | DateTime64(3)            |
 | \_stream          | Имя потока Kinesis                                            | String                   |
 | \_sequence_number | Порядковый номер Kinesis                                      | String                   |
 | \_raw_message     | Полное сообщение Kinesis                                      | String                   |
 
-Поле \_raw_message можно использовать в случаях, когда требуется только полная JSON-запись Kinesis (например, при использовании функций ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) для заполнения downstream-материализованного представления). Для таких конвейеров удаление всех «невиртуальных» колонок может повысить производительность ClickPipes.
+Поле \_raw_message можно использовать в случаях, когда требуется только полная JSON-запись Kinesis (например, при использовании функций ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) для заполнения материализованного представления). Для таких конвейеров удаление всех «невиртуальных» колонок может повысить производительность ClickPipes.
 
 
 ## Ограничения {#limitations}

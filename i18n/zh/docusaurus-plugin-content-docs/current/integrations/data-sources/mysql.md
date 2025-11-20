@@ -21,14 +21,14 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 本页介绍如何使用 `MySQL` 表引擎从 MySQL 表中读取数据。
 
 :::note
-在 ClickHouse Cloud 中，您也可以使用 [MySQL ClickPipe](/integrations/clickpipes/mysql)（目前处于公开测试阶段），将 MySQL 表中的数据轻松同步到 ClickHouse。
+对于 ClickHouse Cloud，你也可以使用 [MySQL ClickPipe](/integrations/clickpipes/mysql)（目前处于公测阶段），将 MySQL 表中的数据便捷地迁移到 ClickHouse。
 :::
 
 
 
 ## 使用 MySQL 表引擎将 ClickHouse 连接到 MySQL {#connecting-clickhouse-to-mysql-using-the-mysql-table-engine}
 
-`MySQL` 表引擎允许您将 ClickHouse 连接到 MySQL。**SELECT** 和 **INSERT** 语句可以在 ClickHouse 或 MySQL 表中执行。本文介绍了使用 `MySQL` 表引擎的基本方法。
+`MySQL` 表引擎允许您将 ClickHouse 连接到 MySQL。可以在 ClickHouse 或 MySQL 表中执行 **SELECT** 和 **INSERT** 语句。本文介绍了使用 `MySQL` 表引擎的基本方法。
 
 ### 1. 配置 MySQL {#1-configure-mysql}
 
@@ -72,12 +72,12 @@ GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 
 :::note
 如果您在 ClickHouse Cloud 中使用此功能,可能需要允许 ClickHouse Cloud IP 地址访问您的 MySQL 实例。
-请查看 ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) 了解出站流量详情。
+请查看 ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) 以获取出站流量详细信息。
 :::
 
 ### 2. 在 ClickHouse 中定义表 {#2-define-a-table-in-clickhouse}
 
-1. 现在让我们创建一个使用 `MySQL` 表引擎的 ClickHouse 表:
+1. 现在创建一个使用 `MySQL` 表引擎的 ClickHouse 表:
 
 ```sql
 CREATE TABLE mysql_table1 (
@@ -91,11 +91,11 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 
 | 参数 | 描述                  | 示例               |
 | --------- | ---------------------------- | --------------------- |
-| host      | 主机名或 IP               | mysql-host.domain.com |
+| host      | 主机名或 IP 地址               | mysql-host.domain.com |
 | database  | MySQL 数据库名称          | db1                   |
 | table     | MySQL 表名称             | table1                |
-| user      | 连接到 MySQL 的用户名 | mysql_clickhouse      |
-| password  | 连接到 MySQL 的密码 | Password123!          |
+| user      | 连接 MySQL 的用户名 | mysql_clickhouse      |
+| password  | 连接 MySQL 的密码 | Password123!          |
 
 :::note
 查看 [MySQL 表引擎](/engines/table-engines/integrations/mysql.md) 文档页面以获取完整的参数列表。
@@ -136,7 +136,7 @@ Query id: 6d590083-841e-4e95-8715-ef37d3e95197
 4 rows in set. Elapsed: 0.044 sec.
 ```
 
-3. 让我们向 ClickHouse 表添加一行:
+3. 向 ClickHouse 表添加一行:
 
 ```sql
 INSERT INTO mysql_table1
@@ -169,4 +169,4 @@ mysql> select id,column1 from db1.table1;
 ### 总结 {#summary}
 
 
-`MySQL` 表引擎允许你将 ClickHouse 与 MySQL 连接起来，在两者之间双向交换数据。想了解更多信息，请参阅 [MySQL 表引擎](/sql-reference/table-functions/mysql.md) 的文档页面。
+`MySQL` 表引擎允许你将 ClickHouse 连接到 MySQL，以在二者之间进行数据交换。欲了解更多详情，请查看 [MySQL 表引擎](/sql-reference/table-functions/mysql.md) 的文档页面。

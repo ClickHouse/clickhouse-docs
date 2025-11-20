@@ -13,28 +13,28 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 # ClickHouse Cloud 架构
 
-<Image img={Architecture} size='lg' alt='Cloud 架构'/>
+<Image img={Architecture} size='lg' alt="Cloud 架构"/>
 
 
 
-## 基于对象存储的存储 {#storage-backed-by-object-store}
+## 对象存储支持的存储 {#storage-backed-by-object-store}
 
 - 几乎无限的存储容量
 - 无需手动共享数据
-- 存储成本显著降低,尤其适用于访问频率较低的数据
+- 数据存储成本显著降低,尤其是对于访问频率较低的数据
 
 
 ## 计算 {#compute}
 
-- 自动扩缩容与闲置:无需预先规划容量,无需为峰值使用过度配置
-- 自动闲置与恢复:无需在无人使用时保持计算资源运行
+- 自动扩缩容与闲置：无需预先规划容量，无需为峰值使用过度配置
+- 自动闲置与恢复：无需在无人使用时保持计算资源运行
 - 默认安全且高可用
 
 
 ## 管理 {#administration}
 
-- 设置、监控、备份和计费均由我们为您完成。
-- 成本控制功能默认启用,您可以通过云控制台进行调整。
+- 设置、监控、备份和账单管理均由我们为您完成。
+- 成本控制功能默认启用，您可以通过 Cloud 控制台自行调整。
 
 
 ## 服务隔离 {#service-isolation}
@@ -58,7 +58,7 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## 计算-计算分离 {#compute-compute-separation}
 
-[计算-计算分离](/cloud/reference/warehouses)允许用户创建多个计算节点组,每个组都有自己的服务 URL,同时共享相同的对象存储。这实现了不同使用场景的计算隔离,例如将读操作与写操作分离,同时共享相同的数据。它还支持根据需要独立扩展各个计算组,从而提高资源利用效率。
+[计算-计算分离](/cloud/reference/warehouses)允许用户创建多个计算节点组,每个节点组都有自己的服务 URL,但都使用相同的共享对象存储。这实现了不同使用场景的计算隔离,例如将读操作与写操作分离,同时共享相同的数据。它还支持根据需要独立扩展各计算组,从而提高资源利用效率。
 
 
 ## 并发限制 {#concurrency-limits}

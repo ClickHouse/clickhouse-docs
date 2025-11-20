@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/hyperdx-only
-title: "仅 HyperDX"
+title: "仅部署 HyperDX"
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
 description: "仅部署 HyperDX"
-doc_type: "指南"
+doc_type: "guide"
 keywords:
   [
     "HyperDX 独立部署",
@@ -22,13 +22,13 @@ import hyperdx_logs from "@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx_2 from "@site/static/images/use-cases/observability/hyperdx-2.png"
 import JSONSupport from "@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md"
 
-此选项专为已拥有运行中的 ClickHouse 实例且已填充可观测性或事件数据的用户设计。
+此选项专为已拥有运行中的 ClickHouse 实例且已填充可观测性或事件数据的用户而设计。
 
-HyperDX 可以独立于其他组件使用,并兼容任何数据模式——不仅限于 OpenTelemetry (OTel)。这使其适用于已基于 ClickHouse 构建的自定义可观测性管道。
+HyperDX 可以独立于其他组件使用,并且兼容任何数据模式——不仅限于 OpenTelemetry (OTel)。这使其适用于已基于 ClickHouse 构建的自定义可观测性管道。
 
 要启用完整功能,您必须提供一个 MongoDB 实例来存储应用程序状态,包括仪表板、已保存的搜索、用户设置和告警。
 
-在此模式下,数据摄取完全由用户自行负责。您可以使用自托管的 OpenTelemetry 收集器、客户端库直接摄取、ClickHouse 原生表引擎(如 Kafka 或 S3)、ETL 管道或托管摄取服务(如 ClickPipes)将数据摄取到 ClickHouse 中。这种方法提供了最大的灵活性,适合已经在运营 ClickHouse 并希望在其上层叠加 HyperDX 以实现可视化、搜索和告警功能的团队。
+在此模式下,数据摄取完全由用户自行负责。您可以使用自己托管的 OpenTelemetry 收集器、客户端库的直接摄取、ClickHouse 原生表引擎(如 Kafka 或 S3)、ETL 管道或 ClickPipes 等托管摄取服务将数据摄取到 ClickHouse 中。这种方法提供了最大的灵活性,适合已经在运行 ClickHouse 并希望在其上层叠加 HyperDX 以实现可视化、搜索和告警功能的团队。
 
 ### 适用场景 {#suitable-for}
 
@@ -69,7 +69,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 如果系统提示创建数据源,请保留所有默认值,并在 `Table` 字段中填入 `otel_logs`。其他设置将自动检测,然后您可以点击 `Save New Source`。
 
 :::note 创建数据源
-创建数据源需要 ClickHouse 中存在相应的表。如果您还没有数据,我们建议部署 ClickStack OpenTelemetry collector 来创建表。
+创建数据源需要 ClickHouse 中已存在相应的表。如果您还没有数据,我们建议部署 ClickStack OpenTelemetry 收集器来创建表。
 :::
 
 </VerticalStepper>
@@ -77,7 +77,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 ## 使用 Docker Compose {#using-docker-compose}
 
-用户可以修改 [Docker Compose 配置](/use-cases/observability/clickstack/deployment/docker-compose)来达到与本指南相同的效果,只需从配置清单中移除 OTel 收集器和 ClickHouse 实例即可。
+用户可以修改 [Docker Compose 配置](/use-cases/observability/clickstack/deployment/docker-compose)来达到与本指南相同的效果，只需从配置清单中移除 OTel 收集器和 ClickHouse 实例即可。
 
 
 ## ClickStack OpenTelemetry 收集器 {#otel-collector}

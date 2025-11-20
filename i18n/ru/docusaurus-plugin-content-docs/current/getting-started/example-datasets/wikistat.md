@@ -68,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-Или загрузим очищенные данные:
+Или загрузим уже очищенные данные:
 
 ```sql
 INSERT INTO wikistat WITH

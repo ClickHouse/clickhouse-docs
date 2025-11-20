@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumMap'
 title: 'sumMap'
-description: 'sumMap コンビネータの使用例'
+description: 'sumMap 組み合わせ子の使用例'
 keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
 sidebar_label: 'sumMap'
 doc_type: 'reference'
@@ -12,7 +12,7 @@ doc_type: 'reference'
 # sumMap {#summap}
 
 
-## 説明 {#description}
+## Description {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`sum`](/sql-reference/aggregate-functions/reference/sum)
 関数に適用することで、`sumMap`

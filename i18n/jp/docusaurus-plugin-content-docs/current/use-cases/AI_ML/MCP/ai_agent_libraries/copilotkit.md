@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/copilotkit
 sidebar_label: 'CopilotKit を統合する'
-title: 'CopilotKit と ClickHouse MCP Server で AI エージェントを構築する方法'
+title: 'CopilotKit と ClickHouse MCP サーバーで AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
 description: 'ClickHouse MCP と CopilotKit を使用し、ClickHouse に保存されたデータを活用するエージェント型アプリケーションの構築方法を学びます'
@@ -14,12 +14,12 @@ doc_type: 'guide'
 
 # CopilotKit と ClickHouse MCP Server を使って AI エージェントを構築する方法
 
-これは、ClickHouse に保存されたデータを使ってエージェント型アプリケーションを構築する方法を示す例です。[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って ClickHouse からデータをクエリし、そのデータに基づいてチャートを生成します。
+これは、ClickHouse に保存されたデータを使ってエージェント型アプリケーションを構築する方法の一例です。[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使用して ClickHouse からデータをクエリし、そのデータに基づいてチャートを生成します。
 
-[CopilotKit](https://github.com/CopilotKit/CopilotKit) は、UI の構築とユーザー向けチャットインターフェイスの提供に使用します。
+[CopilotKit](https://github.com/CopilotKit/CopilotKit) は、UI の構築とユーザー向けのチャットインターフェイスの提供に使用します。
 
-:::note Example code
-このサンプルのコードは [examples リポジトリ](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) で確認できます。
+:::note サンプルコード
+このサンプルのコードは [examples リポジトリ](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) にあります。
 :::
 
 
@@ -34,7 +34,7 @@ doc_type: 'guide'
 
 プロジェクトをローカルにクローンします：`git clone https://github.com/ClickHouse/examples` を実行し、`ai/mcp/copilotkit` ディレクトリに移動してください。
 
-このセクションをスキップして `./install.sh` スクリプトを実行すれば、依存関係をインストールできます。依存関係を手動でインストールする場合は、以下の手順に従ってください。
+依存関係をインストールするには、このセクションをスキップして `./install.sh` スクリプトを実行してください。依存関係を手動でインストールする場合は、以下の手順に従ってください。
 
 
 ## 依存関係を手動でインストールする {#install-dependencies-manually}
@@ -68,12 +68,13 @@ uv add fastmcp
 
 ## 独自のLLMを使用する {#use-your-own-llm}
 
-Anthropic以外のLLMプロバイダーを使用する場合は、Copilotkitランタイムを変更して別のLLMアダプターを使用できます。サポートされているプロバイダーの一覧は[こちら](https://docs.copilotkit.ai/guides/bring-your-own-llm)をご覧ください。
+Anthropic以外のLLMプロバイダーを使用する場合は、Copilotkit runtimeを変更して別のLLMアダプターを使用することができます。
+サポートされているプロバイダーの一覧は[こちら](https://docs.copilotkit.ai/guides/bring-your-own-llm)です。
 
 
 ## 独自のClickHouseクラスタを使用する {#use-your-own-clickhouse-cluster}
 
-デフォルトでは、このサンプルは[ClickHouseデモクラスタ](https://sql.clickhouse.com/)に接続するように設定されています。以下の環境変数を設定することで、独自のClickHouseクラスタを使用することもできます：
+デフォルトでは、この例は[ClickHouseデモクラスタ](https://sql.clickhouse.com/)に接続するように設定されています。以下の環境変数を設定することで、独自のClickHouseクラスタを使用することもできます:
 
 - `CLICKHOUSE_HOST`
 - `CLICKHOUSE_PORT`
@@ -88,6 +89,6 @@ Anthropic以外のLLMプロバイダーを使用する場合は、Copilotkitラ�
 
 次のようなプロンプトでエージェントをテストできます:
 
-> "過去10年間のマンチェスターの価格推移を表示してください。"
+> "過去10年間のマンチェスターにおける価格推移を表示してください。"
 
 ブラウザで [http://localhost:3000](http://localhost:3000) を開いて結果を確認してください。

@@ -3,7 +3,7 @@ title: '在 AWS 上使用 BYOC 入门'
 slug: /cloud/reference/byoc/onboarding/aws
 sidebar_label: 'AWS'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
-description: '在您自己的云基础设施上部署 ClickHouse'
+description: '在您自有的云基础设施上部署 ClickHouse'
 doc_type: 'reference'
 ---
 
@@ -23,9 +23,9 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 
 ### 准备 AWS 账户 {#prepare-an-aws-account}
 
-建议客户准备一个专用的 AWS 账户来托管 ClickHouse BYOC 部署,以确保更好的隔离性。不过,使用共享账户和现有 VPC 也是可行的。详情请参阅下文的_设置 BYOC 基础设施_部分。
+建议客户准备一个专用的 AWS 账户来托管 ClickHouse BYOC 部署,以确保更好的隔离性。不过,使用共享账户和现有 VPC 也是可行的。详情请参阅下文的_设置 BYOC 基础设施_。
 
-准备好该账户和初始组织管理员邮箱后,您可以联系 ClickHouse 支持团队。
+使用此账户和初始组织管理员电子邮件,您可以联系 ClickHouse 支持团队。
 
 ### 初始化 BYOC 设置 {#initialize-byoc-setup}
 
@@ -50,20 +50,20 @@ module "clickhouse_onboarding" {
 
 ### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
 
-创建 CloudFormation 堆栈后,系统将提示您从云控制台设置基础设施,包括 S3、VPC 和 EKS 集群。某些配置必须在此阶段确定,因为之后无法更改。具体包括:
+创建 CloudFormation 堆栈后,系统将提示您从云控制台设置基础设施,包括 S3、VPC 和 EKS 集群。某些配置必须在此阶段确定,因为它们以后无法更改。具体包括:
 
 - **您要使用的区域**,您可以选择我们为 ClickHouse Cloud 提供的任何[公共区域](/cloud/reference/supported-regions)。
-- **BYOC 的 VPC CIDR 范围**:默认情况下,我们为 BYOC VPC CIDR 范围使用 `10.0.0.0/16`。如果您计划与其他账户使用 VPC 对等连接,请确保 CIDR 范围不重叠。为 BYOC 分配合适的 CIDR 范围,最小大小为 `/22`,以容纳必要的工作负载。
-- **BYOC VPC 的可用区**:如果您计划使用 VPC 对等连接,在源账户和 BYOC 账户之间对齐可用区可以帮助降低跨可用区流量成本。在 AWS 中,可用区后缀(`a, b, c`)在不同账户中可能代表不同的物理区域 ID。详情请参阅 [AWS 指南](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)。
+- **BYOC 的 VPC CIDR 范围**:默认情况下,我们使用 `10.0.0.0/16` 作为 BYOC VPC CIDR 范围。如果您计划与另一个账户使用 VPC 对等连接,请确保 CIDR 范围不重叠。为 BYOC 分配合适的 CIDR 范围,最小大小为 `/22`,以容纳必要的工作负载。
+- **BYOC VPC 的可用区**:如果您计划使用 VPC 对等连接,在源账户和 BYOC 账户之间对齐可用区可以帮助降低跨可用区流量成本。在 AWS 中,可用区后缀(`a, b, c`)在不同账户之间可能代表不同的物理区域 ID。详情请参阅 [AWS 指南](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)。
 
 #### 客户管理的 VPC {#customer-managed-vpc}
 
 默认情况下,ClickHouse Cloud 将为您的 BYOC 部署配置一个专用 VPC,以实现更好的隔离。不过,您也可以使用账户中的现有 VPC。这需要特定的配置,并且必须通过 ClickHouse 支持团队进行协调。
 
-**配置现有 VPC**
+**配置您的现有 VPC**
 
 1. 在 3 个不同的可用区中至少分配 3 个私有子网供 ClickHouse Cloud 使用。
-2. 确保每个子网的 CIDR 范围至少为 `/23`(例如 10.0.0.0/23),以便为 ClickHouse 部署提供足够的 IP 地址。
+2. 确保每个子网的最小 CIDR 范围为 `/23`(例如 10.0.0.0/23),以便为 ClickHouse 部署提供足够的 IP 地址。
 3. 为每个子网添加标签 `kubernetes.io/role/internal-elb=1`,以启用正确的负载均衡器配置。
 
 <br />
@@ -84,7 +84,7 @@ module "clickhouse_onboarding" {
 <br />
 
 4. 配置 S3 网关端点
-   如果您的 VPC 尚未配置 S3 网关端点,您需要创建一个,以便在 VPC 和 Amazon S3 之间实现安全的私有通信。此端点允许您的 ClickHouse 服务访问 S3 而无需通过公共互联网。请参考下面的截图查看示例配置。
+   如果您的 VPC 尚未配置 S3 网关端点,您需要创建一个,以便在 VPC 和 Amazon S3 之间实现安全的私有通信。此端点允许您的 ClickHouse 服务访问 S3,而无需通过公共互联网。请参考下面的屏幕截图以获取示例配置。
 
 <br />
 
@@ -202,12 +202,12 @@ module "clickhouse_onboarding" {
 
 ## 升级流程 {#upgrade-process}
 
-我们会定期升级软件,包括 ClickHouse 数据库版本升级、ClickHouse Operator、EKS 及其他组件。
+我们会定期升级软件,包括 ClickHouse 数据库版本、ClickHouse Operator、EKS 及其他组件。
 
-虽然我们致力于实现无缝升级(例如滚动升级和重启),但某些升级(如 ClickHouse 版本变更和 EKS 节点升级)可能会影响服务。客户可以指定维护窗口(例如每周二太平洋夏令时间凌晨 1:00),确保此类升级仅在计划时间内进行。
+虽然我们致力于实现无缝升级(例如滚动升级和重启),但某些升级(如 ClickHouse 版本变更和 EKS 节点升级)可能会影响服务。客户可以指定维护时间窗口(例如每周二太平洋夏令时间凌晨 1:00),以确保此类升级仅在计划时间内进行。
 
 :::note
-维护窗口不适用于安全和漏洞修复。这些修复作为计划外升级处理,我们会及时沟通以协调合适的时间并最大限度地减少运营影响。
+维护时间窗口不适用于安全和漏洞修复。这些修复作为周期外升级处理,我们会及时沟通协调合适的时间,以最大限度地减少对运营的影响。
 :::
 
 
@@ -217,15 +217,15 @@ module "clickhouse_onboarding" {
 
 Bootstrap IAM 角色具有以下权限:
 
-- **EC2 和 VPC 操作**: 用于设置 VPC 和 EKS 集群。
-- **S3 操作 (例如 `s3:CreateBucket`)**: 用于为 ClickHouse BYOC 存储创建存储桶。
-- **`route53:*` 权限**: 用于外部 DNS 在 Route 53 中配置记录。
-- **IAM 操作 (例如 `iam:CreatePolicy`)**: 用于控制器创建额外角色(详见下一节)。
-- **EKS 操作**: 仅限于名称以 `clickhouse-cloud` 前缀开头的资源。
+- **EC2 和 VPC 操作**:用于设置 VPC 和 EKS 集群。
+- **S3 操作(例如 `s3:CreateBucket`)**:用于为 ClickHouse BYOC 存储创建存储桶。
+- **`route53:*` 权限**:用于外部 DNS 在 Route 53 中配置记录。
+- **IAM 操作(例如 `iam:CreatePolicy`)**:用于控制器创建额外角色(详见下一节)。
+- **EKS 操作**:仅限于名称以 `clickhouse-cloud` 前缀开头的资源。
 
 ### 控制器创建的额外 IAM 角色 {#additional-iam-roles-created-by-the-controller}
 
-除了通过 CloudFormation 创建的 `ClickHouseManagementRole` 之外,控制器还会创建多个额外的角色。
+除了通过 CloudFormation 创建的 `ClickHouseManagementRole` 之外,控制器还会创建多个额外角色。
 
 这些角色由客户 EKS 集群内运行的应用程序使用:
 
@@ -234,7 +234,7 @@ Bootstrap IAM 角色具有以下权限:
   - 需要向 ClickHouse Cloud 拥有的 SQS 队列写入数据的权限。
 - **Load-Balancer Controller**
   - 标准 AWS 负载均衡器控制器。
-  - EBS CSI Controller 用于管理 ClickHouse 服务的存储卷。
+  - EBS CSI Controller 用于管理 ClickHouse 服务的卷。
 - **External-DNS**
   - 将 DNS 配置传播到 Route 53。
 - **Cert-Manager**
@@ -249,7 +249,7 @@ Bootstrap IAM 角色具有以下权限:
 
 ## 网络边界 {#network-boundaries}
 
-本节介绍客户 BYOC VPC 的不同网络流量类型:
+本节介绍客户 BYOC VPC 的不同网络流量类型：
 
 - **入站**：进入客户 BYOC VPC 的流量。
 - **出站**：从客户 BYOC VPC 发起并发送到外部目标的流量。
@@ -268,7 +268,7 @@ Istio 入口网关负责终止 TLS 连接。证书由 CertManager 通过 Let's E
 
 _入站，公共（可配置为私有）_
 
-ClickHouse Cloud 工程师需要通过 Tailscale 进行故障排查访问。他们使用即时配置的基于证书的身份验证来访问 BYOC 部署。
+ClickHouse Cloud 工程师需要通过 Tailscale 进行故障排查访问。他们为 BYOC 部署配置了即时基于证书的身份验证。
 
 ### 计费数据采集器 {#billing-scraper}
 

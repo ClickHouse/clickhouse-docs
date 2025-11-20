@@ -1,6 +1,6 @@
 ---
-description: '包含航空航班准点表现数据的数据集'
-sidebar_label: 'OnTime 航班数据'
+description: '包含航空航班准点表现的数据集'
+sidebar_label: 'OnTime 航空航班数据'
 slug: /getting-started/example-datasets/ontime
 title: 'OnTime'
 doc_type: 'guide'
@@ -148,12 +148,12 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-（如果服务器内存不足或遇到其他问题，请删除 `-P $(nproc)` 部分）
+（如果服务器出现内存不足或其他问题，请移除 `-P $(nproc)` 参数）
 
 
-## 从保存的副本导入 {#import-from-a-saved-copy}
+## 从已保存的副本导入 {#import-from-a-saved-copy}
 
-或者,您可以通过以下查询从已保存的副本导入数据:
+或者，您可以通过以下查询从已保存的副本导入数据：
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
@@ -359,7 +359,7 @@ ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-额外说明：
+额外内容：
 
 ```sql
 SELECT avg(cnt)
@@ -397,9 +397,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-你也可以在 Playground 中试用这些数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+你也可以在 Playground 中体验这些数据，[示例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-此性能测试由 Vadim Tkachenko 创建。参见：
+该性能测试由 Vadim Tkachenko 创建。参见：
 
 * [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
 * [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)

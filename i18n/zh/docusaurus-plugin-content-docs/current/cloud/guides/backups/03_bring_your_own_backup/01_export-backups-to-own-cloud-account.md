@@ -1,8 +1,8 @@
 ---
 sidebar_label: '导出备份'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
-title: '将备份导出到您自己的云账户'
-description: '介绍如何将备份导出到您自己的云账户'
+title: '将备份导出到您自己的云账号'
+description: '说明如何将备份导出到您自己的云账号'
 doc_type: 'guide'
 ---
 
@@ -10,19 +10,18 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge />
 
-ClickHouse Cloud 支持将备份保存到您自己的云服务提供商（CSP）账号中（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。\
-有关 ClickHouse Cloud 备份工作机制的详细信息，包括“完整”备份与“增量”备份，请参阅 [backups](/cloud/manage/backups/overview) 文档。
+ClickHouse Cloud 支持将备份保存到您自己的云服务提供商（CSP）账户（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。有关 ClickHouse Cloud 备份的工作原理（包括“完整”与“增量”备份），请参阅 [backups](/cloud/manage/backups/overview) 文档。
 
-本指南示例演示了如何将完整备份和增量备份保存到 AWS、GCP、Azure 对象存储，以及如何从这些备份中进行恢复。
+在本指南中，我们将展示如何将完整和增量备份保存到 AWS、GCP 和 Azure 对象存储，以及如何从这些备份中进行恢复。
 
 :::note
-用户需注意，如果将备份导出到同一云服务提供商的其他区域，将会产生 [data transfer](/cloud/manage/network-data-transfer) 流量费用。目前我们不支持跨云备份。
+用户需要注意，凡是将备份导出到同一云提供商中不同区域的用法，都会产生[数据传输](/cloud/manage/network-data-transfer)费用。目前，我们不支持跨云备份。
 :::
 
 
 ## 要求 {#requirements}
 
-您需要以下信息才能将备份导出/恢复到您自己的 CSP 存储桶。
+您需要以下详细信息才能将备份导出/恢复到您自己的 CSP 存储桶。
 
 ### AWS {#aws}
 
@@ -43,7 +42,7 @@ s3://testchbackups.s3.amazonaws.com/backups/
 2. AWS 访问密钥和密钥。也支持基于 AWS 角色的身份验证,可以用来替代 AWS 访问密钥和密钥。
 
 :::note
-要使用基于角色的身份验证,请遵循 Secure s3 [设置](https://clickhouse.com/docs/cloud/security/secure-s3)。此外,您需要将 `s3:PutObject` 和 `s3:DeleteObject` 权限添加到[此处](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)描述的 IAM 策略中。
+为了使用基于角色的身份验证,请遵循 Secure s3 [设置](https://clickhouse.com/docs/cloud/security/secure-s3)。此外,您需要将 `s3:PutObject` 和 `s3:DeleteObject` 权限添加到[此处](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role)描述的 IAM 策略中。
 :::
 
 ### Azure {#azure}
@@ -64,13 +63,13 @@ s3://testchbackups.s3.amazonaws.com/backups/
 
 
 <hr/>
-# 备份与恢复
+# 备份 / 还原
 
 
 
 ## 备份/恢复到 AWS S3 存储桶 {#backup--restore-to-aws-s3-bucket}
 
-### 执行数据库备份 {#take-a-db-backup}
+### 创建数据库备份 {#take-a-db-backup}
 
 **完整备份**
 
@@ -82,8 +81,8 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 其中 `uuid` 是唯一标识符,用于区分不同的备份集。
 
 :::note
-您需要为此子目录中的每个新备份使用不同的 UUID,否则将收到 `BACKUP_ALREADY_EXISTS` 错误。
-例如,如果您执行每日备份,则需要每天使用新的 UUID。
+您需要为此子目录中的每个新备份使用不同的 UUID,否则会收到 `BACKUP_ALREADY_EXISTS` 错误。
+例如,如果您每天执行备份,则需要每天使用新的 UUID。
 :::
 
 **增量备份**
@@ -139,7 +138,7 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 
 ## 备份/恢复到 Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 
-### 创建数据库备份 {#take-a-db-backup-2}
+### 执行数据库备份 {#take-a-db-backup-2}
 
 **完整备份**
 
@@ -158,7 +157,7 @@ TO S3('https://storage.googleapis.com/test_gcs_backups/<uuid>/my_incremental', '
 SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid>', 'key', 'secret')
 ```
 
-### 从备份中恢复 {#restore-from-a-backup-2}
+### 从备份恢复 {#restore-from-a-backup-2}
 
 ```sql
 RESTORE DATABASE test_backups

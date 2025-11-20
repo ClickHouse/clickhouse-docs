@@ -3,7 +3,7 @@ title: '概要'
 slug: /cloud/reference/byoc/overview
 sidebar_label: '概要'
 keywords: ['BYOC', 'cloud', 'bring your own cloud']
-description: '自前のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
+description: '自分のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
 doc_type: 'reference'
 ---
 

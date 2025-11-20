@@ -3,8 +3,8 @@ sidebar_label: 'Rocket BI'
 sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
-description: 'RocketBI 是一款自助式商业智能平台，可帮助你快速分析数据、构建拖拽式可视化报表，并直接在浏览器中与同事协作。'
-title: '目标：搭建你的第一个仪表盘'
+description: 'RocketBI 是一款自助式商业智能平台，可帮助你快速分析数据、构建拖拽式可视化图表，并直接在浏览器中与同事协作。'
+title: '目标：构建你的第一个仪表盘'
 doc_type: 'guide'
 ---
 
@@ -31,23 +31,23 @@ import rocketbi_18 from '@site/static/images/integrations/data-visualization/roc
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 目标：使用 Rocket.BI 构建你的第一个仪表盘
+# 目标：使用 Rocket.BI 构建你的第一个仪表板
 
 <CommunityMaintainedBadge/>
 
-在本指南中，你将安装 Rocket.BI 并构建一个简单的仪表盘。
-这个就是我们将要构建的仪表盘：
+在本指南中，你将安装 Rocket.BI 并构建一个简单的仪表板。
+这个仪表板如下所示：
 
-<Image size="md" img={rocketbi_01} alt="Rocket BI 仪表盘展示包含图表和 KPI 的销售指标" border />
+<Image size="md" img={rocketbi_01} alt="Rocket BI 仪表板，展示带有图表和关键指标的销售数据" border />
 <br/>
 
-你可以通过[此链接查看该仪表盘。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+你可以通过[此链接查看该仪表板](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)。
 
 
 
 ## 安装 {#install}
 
-使用我们预构建的 Docker 镜像启动 RocketBI。
+使用预构建的 Docker 镜像启动 RocketBI。
 
 获取 docker-compose.yml 和配置文件:
 
@@ -65,11 +65,11 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 如需从源代码构建或进行高级配置,请参阅 [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)
 
 
-## 构建仪表板 {#lets-build-the-dashboard}
+## 让我们构建仪表板 {#lets-build-the-dashboard}
 
-在仪表板中,您可以查看报表,点击 **+New** 开始创建可视化图表
+在仪表板中,您可以找到您的报告,点击 **+New** 开始可视化
 
-您可以创建**无限数量的仪表板**,并在单个仪表板中绘制**无限数量的图表**。
+您可以构建**无限数量的仪表板**并在一个仪表板中绘制**无限数量的图表**。
 
 <Image
   size='md'
@@ -85,7 +85,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 #### 创建指标控件 {#create-a-metrics-control}
 
-在筛选器选项卡中,选择您要使用的指标字段。请务必检查聚合设置。
+在筛选器选项卡中,选择您要使用的指标字段。请确保检查聚合设置。
 
 <Image
   size='md'
@@ -116,7 +116,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 />
 <br />
 
-添加具有不同查询范围的重复变体。例如,年、月、日或星期几。
+添加具有不同查找范围的重复变体。例如,年、月、日或星期几。
 
 <Image
   size='md'
@@ -135,9 +135,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
   border
 />
 
-### 现在,开始构建图表 {#now-let-build-the-charts}
+### 现在,让我们构建图表 {#now-let-build-the-charts}
 
-#### 饼图:按区域划分的销售指标 {#pie-chart-sales-metrics-by-regions}
+#### 饼图:按地区划分的销售指标 {#pie-chart-sales-metrics-by-regions}
 
 选择添加新图表,然后选择饼图
 
@@ -149,7 +149,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 />
 <br />
 
-首先将数据集中的"Region"列拖放到图例字段
+首先将数据集中的 "Region" 列拖放到图例字段
 
 <Image
   size='md'
@@ -179,9 +179,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 />
 <br />
 
-(您也可以将指标控件用于排序)
+(您也可以将指标控件用作排序)
 
-导航到图表设置进行进一步自定义
+导航到图表设置以进行进一步自定义
 
 <Image
   size='md'
@@ -212,7 +212,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 #### 在时间序列图表中使用日期控件 {#use-date-control-in-a-time-series-chart}
 
-使用堆叠柱状图
+让我们使用堆叠柱状图
 
 <Image
   size='md'
@@ -252,4 +252,4 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 />
 <br />
 
-现在,您已成功使用 rocket.BI 构建了第一个仪表板
+现在,您已成功使用 rocket.BI 构建了您的第一个仪表板

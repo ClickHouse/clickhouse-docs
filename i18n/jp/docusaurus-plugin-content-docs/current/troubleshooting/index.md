@@ -17,14 +17,14 @@ keywords: [
   'troubleshooting guide'
 ]
 title: '一般的な問題のトラブルシューティング'
-description: '遅いクエリ、メモリエラー、接続障害、設定の問題など、ClickHouse でよく発生する問題の解決方法を紹介します。'
+description: 'クエリの遅延、メモリエラー、接続問題、設定の問題など、ClickHouse でよく発生する問題の解決方法を紹介します。'
 ---
 
 
 
 # よくある問題のトラブルシューティング {#troubleshooting-common-issues}
 
-ClickHouseで問題が発生していますか？よくある問題の解決方法はこちらをご覧ください。
+ClickHouseで問題が発生していますか？よくある問題の解決策はこちらをご覧ください。
 
 
 ## パフォーマンスとエラー {#performance-and-errors}
@@ -59,12 +59,12 @@ ClickHouseで問題が発生していますか？よくある問題の解決方�
 ### エラーメッセージ {#error-messages}
 
 - **「Memory limit exceeded」** → [メモリ制限エラーのデバッグ](/docs/guides/developer/debugging-memory-issues)
-- **「Connection refused」** → [接続問題の修正](#connections-and-authentication)
+- **「Connection refused」** → [接続の問題を修正する](#connections-and-authentication)
 - **「Login failures」** → [ユーザー、ロール、権限の設定](/docs/operations/access-rights)
-- **「SSL certificate errors」** → [証明書問題の修正](/docs/knowledgebase/certificate_verify_failed_error)
+- **「SSL certificate errors」** → [証明書の問題を修正する](/docs/knowledgebase/certificate_verify_failed_error)
 - **「Table/database errors」** → [データベース作成ガイド](/docs/sql-reference/statements/create/database) | [テーブルUUIDの問題](/docs/engines/database-engines/atomic)
 - **「Network timeouts」** → [ネットワークトラブルシューティング](/docs/interfaces/http)
-- **その他の問題** → [クラスタ全体のエラー追跡](/docs/operations/system-tables/errors)
+- **その他の問題** → [クラスタ全体のエラーを追跡する](/docs/operations/system-tables/errors)
   </details>
 
 
@@ -169,7 +169,7 @@ ClickHouseへの接続ができない、認証の失敗、SSL証明書のエラ�
 </details>
 
 
-## さらにサポートが必要ですか？ {#still-need-help}
+## まだサポートが必要ですか？ {#still-need-help}
 
 解決策が見つからない場合：
 

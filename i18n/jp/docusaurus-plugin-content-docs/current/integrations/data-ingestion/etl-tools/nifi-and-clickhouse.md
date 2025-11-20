@@ -3,7 +3,7 @@ sidebar_label: 'NiFi'
 sidebar_position: 12
 keywords: ['clickhouse', 'NiFi', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/nifi
-description: 'NiFi データパイプラインを使用して ClickHouse にデータをストリーミングする'
+description: 'NiFi データパイプラインを使用して ClickHouse へデータをストリーミングする'
 title: 'Apache NiFi と ClickHouse を接続する'
 doc_type: 'guide'
 integration:
@@ -38,7 +38,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <a href='https://nifi.apache.org/' target='_blank'>
   Apache NiFi
 </a>
-は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETLデータパイプラインの作成が可能で、300以上のデータプロセッサが同梱されています。このステップバイステップのチュートリアルでは、Apache NiFiをClickHouseにソースおよび宛先として接続し、サンプルデータセットをロードする方法を説明します。
+は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETLデータパイプラインの作成が可能で、300以上のデータプロセッサが同梱されています。このステップバイステップのチュートリアルでは、Apache NiFiをソースと宛先の両方としてClickHouseに接続し、サンプルデータセットをロードする方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
@@ -56,74 +56,74 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 ## ClickHouse JDBCドライバーのダウンロード {#3-download-the-clickhouse-jdbc-driver}
 
 1. GitHubの<a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBCドライバーリリースページ</a>にアクセスし、最新のJDBCリリースバージョンを確認します
-2. リリースバージョンで「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含むJARファイルを探します。例: `clickhouse-jdbc-0.5.0-all.jar`
+2. リリースバージョン内で「Show all xx assets」をクリックし、「shaded」または「all」というキーワードを含むJARファイルを探します（例: `clickhouse-jdbc-0.5.0-all.jar`）
 3. JARファイルをApache NiFiからアクセス可能なフォルダに配置し、絶対パスをメモしておきます
 
 
 ## `DBCPConnectionPool` コントローラーサービスの追加とプロパティの設定 {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
 
-1. Apache NiFiでコントローラーサービスを設定するには、「歯車」ボタンをクリックしてNiFi Flow Configurationページにアクセスします
+1. Apache NiFi でコントローラーサービスを設定するには、「歯車」ボタンをクリックして NiFi Flow Configuration ページにアクセスします
 
    <Image
      img={nifi01}
      size='sm'
      border
-     alt='歯車ボタンがハイライトされたNiFi Flow Configurationページ'
+     alt='歯車ボタンがハイライトされた NiFi Flow Configuration ページ'
    />
 
-2. Controller Servicesタブを選択し、右上の`+`ボタンをクリックして新しいコントローラーサービスを追加します
+2. Controller Services タブを選択し、右上の `+` ボタンをクリックして新しいコントローラーサービスを追加します
 
    <Image
      img={nifi02}
      size='lg'
      border
-     alt='追加ボタンがハイライトされたController Servicesタブ'
+     alt='追加ボタンがハイライトされた Controller Services タブ'
    />
 
-3. `DBCPConnectionPool`を検索し、「Add」ボタンをクリックします
+3. `DBCPConnectionPool` を検索し、「Add」ボタンをクリックします
 
    <Image
      img={nifi03}
      size='lg'
      border
-     alt='DBCPConnectionPoolがハイライトされたコントローラーサービス選択ダイアログ'
+     alt='DBCPConnectionPool がハイライトされたコントローラーサービス選択ダイアログ'
    />
 
-4. 新しく追加された`DBCPConnectionPool`はデフォルトで無効状態になります。「歯車」ボタンをクリックして設定を開始します
+4. 新しく追加された `DBCPConnectionPool` はデフォルトで無効状態になります。「歯車」ボタンをクリックして設定を開始します
 
    <Image
      img={nifi04}
      size='lg'
      border
-     alt='無効なDBCPConnectionPoolと歯車ボタンがハイライトされたController Servicesリスト'
+     alt='歯車ボタンがハイライトされた無効な DBCPConnectionPool を表示するコントローラーサービスリスト'
    />
 
 5. 「Properties」セクションで、以下の値を入力します
 
 | プロパティ                    | 値                                                              | 備考                                               |
 | --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------- |
-| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 接続URLのHOSTNAMEを適切に置き換えてください   |
+| Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 接続 URL の HOSTNAME を適切に置き換えてください   |
 | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                                      |
-| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBCドライバーJARファイルの絶対パス |
-| Database User               | default                                                            | ClickHouseユーザー名                                  |
-| Password                    | password                                                           | ClickHouseパスワード                                  |
+| Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC ドライバー JAR ファイルへの絶対パス |
+| Database User               | default                                                            | ClickHouse ユーザー名                                  |
+| Password                    | password                                                           | ClickHouse パスワード                                  |
 
-6. Settingsセクションで、コントローラーサービスの名前を参照しやすいように「ClickHouse JDBC」に変更します
+6. Settings セクションで、コントローラーサービスの名前を「ClickHouse JDBC」に変更して参照しやすくします
 
    <Image
      img={nifi05}
      size='lg'
      border
-     alt='プロパティが入力されたDBCPConnectionPool設定ダイアログ'
+     alt='プロパティが入力された DBCPConnectionPool 設定ダイアログ'
    />
 
-7. 「稲妻」ボタンをクリックし、次に「Enable」ボタンをクリックして`DBCPConnectionPool`コントローラーサービスを有効化します
+7. 「稲妻」ボタンをクリックし、次に「Enable」ボタンをクリックして `DBCPConnectionPool` コントローラーサービスを有効化します
 
    <Image
      img={nifi06}
      size='lg'
      border
-     alt='稲妻ボタンがハイライトされたController Servicesリスト'
+     alt='稲妻ボタンがハイライトされたコントローラーサービスリスト'
    />
 
    <br />
@@ -135,17 +135,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='コントローラーサービス有効化の確認ダイアログ'
    />
 
-8. Controller Servicesタブを確認し、コントローラーサービスが有効化されていることを確認します
+8. Controller Services タブを確認し、コントローラーサービスが有効化されていることを確認します
 
    <Image
      img={nifi08}
      size='lg'
      border
-     alt='有効化されたClickHouse JDBCサービスが表示されたController Servicesリスト'
+     alt='有効化された ClickHouse JDBC サービスを表示するコントローラーサービスリスト'
    />
 
 
-## `ExecuteSQL`プロセッサを使用したテーブルからの読み取り {#5-read-from-a-table-using-the-executesql-processor}
+## `ExecuteSQL`プロセッサを使用してテーブルから読み取る {#5-read-from-a-table-using-the-executesql-processor}
 
 1. `ExecuteSQL`プロセッサを、適切な上流および下流のプロセッサとともに追加します
 
@@ -153,15 +153,15 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      img={nifi09}
      size='md'
      border
-     alt='ワークフロー内のExecuteSQLプロセッサを表示するNiFiキャンバス'
+     alt='ワークフロー内のExecuteSQLプロセッサを示すNiFiキャンバス'
    />
 
 2. `ExecuteSQL`プロセッサの「Properties」セクションで、以下の値を入力します
 
    | プロパティ                          | 値                            | 備考                                                    |
    | ----------------------------------- | ----------------------------- | ------------------------------------------------------- |
-   | Database Connection Pooling Service | ClickHouse JDBC               | ClickHouse用に設定されたController Serviceを選択        |
-   | SQL select query                    | SELECT \* FROM system.metrics | クエリをここに入力                                      |
+   | Database Connection Pooling Service | ClickHouse JDBC               | ClickHouse用に設定されたController Serviceを選択します |
+   | SQL select query                    | SELECT \* FROM system.metrics | ここにクエリを入力します                                   |
 
 3. `ExecuteSQL`プロセッサを起動します
 
@@ -172,7 +172,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='プロパティが入力されたExecuteSQLプロセッサの設定'
    />
 
-4. クエリが正常に処理されたことを確認するには、出力キュー内の`FlowFile`を1つ検査します
+4. クエリが正常に処理されたことを確認するには、出力キュー内の`FlowFile`の1つを検査します
 
    <Image
      img={nifi11}
@@ -181,13 +181,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='検査可能なフローファイルを表示するキューリストダイアログ'
    />
 
-5. 出力`FlowFile`の結果を表示するには、ビューを「formatted」に切り替えます
+5. ビューを「formatted」に切り替えて、出力`FlowFile`の結果を表示します
 
    <Image
      img={nifi12}
      size='lg'
      border
-     alt='フォーマット表示でクエリ結果を表示するFlowFileコンテンツビューア'
+     alt='フォーマット表示でクエリ結果を示すFlowFileコンテンツビューア'
    />
 
 
@@ -204,7 +204,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
    | Minimum Number of Records | 1000                | 単一のレコードを形成するためにマージする最小行数を設定します。この値をより大きな数値に変更してください。デフォルトは1行です |
    | Maximum Number of Records | 10000               | 「Minimum Number of Records」よりも大きな数値に変更します。デフォルトは1,000行です                                 |
 
-3. 複数のレコードが1つにマージされていることを確認するには、`MergeRecord`プロセッサの入力と出力を確認します。出力は複数の入力レコードの配列になっていることに注意してください
+3. 複数のレコードが1つにマージされていることを確認するには、`MergeRecord`プロセッサの入力と出力を調べます。出力は複数の入力レコードの配列になっていることに注意してください
 
    入力
 
@@ -245,6 +245,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      alt='宛先テーブルの行数を示すクエリ結果'
    />
 
-6. おめでとうございます - Apache NiFiを使用してClickHouseへのデータロードに成功しました！
+6. おめでとうございます - Apache NiFiを使用してClickHouseへのデータ読み込みに成功しました!
 
 </VerticalStepper>

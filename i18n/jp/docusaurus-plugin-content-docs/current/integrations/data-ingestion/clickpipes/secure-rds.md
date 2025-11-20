@@ -2,7 +2,7 @@
 slug: /integrations/clickpipes/secure-rds
 sidebar_label: 'AWS IAM DB 認証 (RDS/Aurora)'
 title: 'AWS IAM DB 認証 (RDS/Aurora)'
-description: 'この記事では、ClickPipes を利用するお客様が、ロールベースのアクセス制御を活用して Amazon RDS/Aurora に対して認証を行い、データベースへ安全にアクセスする方法を説明します。'
+description: 'このガイドでは、ClickPipes のお客様がロールベースのアクセス制御を活用して Amazon RDS/Aurora に対する認証を行い、データベースへ安全にアクセスする方法を説明します。'
 doc_type: 'guide'
 keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
 ---
@@ -10,12 +10,12 @@ keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-この記事では、ClickPipes のお客様がロールベースのアクセス制御を活用して Amazon Aurora および RDS で認証を行い、データベースに安全にアクセスする方法を説明します。
+この記事では、ClickPipes のお客様がロールベースのアクセス制御を活用して Amazon Aurora および RDS で認証を行い、データベースへ安全にアクセスする方法を説明します。
 
 :::warning
-AWS RDS Postgres と Aurora Postgres では、AWS IAM DB Authentication の制約により、`Initial Load Only` の ClickPipes しか実行できません。
+AWS RDS Postgres および Aurora Postgres では、AWS IAM DB Authentication の制約により、`Initial Load Only` の ClickPipes しか実行できません。
 
-MySQL と MariaDB にはこの制約は適用されないため、`Initial Load Only` と `CDC` の両方の ClickPipes を実行できます。
+MySQL および MariaDB ではこの制約は適用されず、`Initial Load Only` と `CDC` の両方の ClickPipes を実行できます。
 :::
 
 
@@ -25,11 +25,11 @@ MySQL と MariaDB にはこの制約は適用されないため、`Initial Load 
 
 1 - ClickHouse Cloudアカウントにログインします。
 
-2 - 統合を作成するClickHouseサービスを選択します。
+2 - 統合を作成するClickHouseサービスを選択します
 
-3 - **Settings**タブを選択します。
+3 - **Settings**タブを選択します
 
-4 - ページ下部の**Network security information**セクションまでスクロールします。
+4 - ページ下部の**Network security information**セクションまでスクロールします
 
 5 - 以下に示すように、サービスに属する**Service role ID (IAM)**の値をコピーします。
 
@@ -50,15 +50,15 @@ MySQL と MariaDB にはこの制約は適用されないため、`Initial Load 
 
 #### RDS/AuroraリソースIDの取得 {#obtaining-the-rds-resource-id}
 
-1. AWSアカウントにログインし、設定するRDSインスタンス/Auroraクラスターに移動します。
+1. AWSアカウントにログインし、設定するRDSインスタンス/Auroraクラスタに移動します。
 2. **Configuration**タブをクリックします。
-3. **Resource ID**の値をメモします。RDSの場合は`db-xxxxxxxxxxxxxx`、Auroraクラスターの場合は`cluster-xxxxxxxxxxxxxx`のような形式になります。この値を`{RDS_RESOURCE_ID}`と呼びます。これは、RDSインスタンスへのアクセスを許可するIAMポリシーで使用されるリソースIDです。
+3. **Resource ID**の値をメモします。RDSの場合は`db-xxxxxxxxxxxxxx`、Auroraクラスタの場合は`cluster-xxxxxxxxxxxxxx`のような形式になります。この値を`{RDS_RESOURCE_ID}`と呼びます。これは、RDSインスタンスへのアクセスを許可するIAMポリシーで使用されるリソースIDです。
 
 #### データベースユーザーのセットアップ {#setting-up-the-database-user}
 
 ##### PostgreSQL {#setting-up-the-database-user-postgres}
 
-1. RDS/Auroraインスタンスに接続し、次のコマンドで新しいデータベースユーザーを作成します:
+1. RDS/Auroraインスタンスに接続し、以下のコマンドで新しいデータベースユーザーを作成します：
    ```sql
    CREATE USER clickpipes_iam_user;
    GRANT rds_iam TO clickpipes_iam_user;
@@ -67,7 +67,7 @@ MySQL と MariaDB にはこの制約は適用されないため、`Initial Load 
 
 ##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
 
-1. RDS/Auroraインスタンスに接続し、次のコマンドで新しいデータベースユーザーを作成します:
+1. RDS/Auroraインスタンスに接続し、以下のコマンドで新しいデータベースユーザーを作成します：
    ```sql
    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
    ```
@@ -79,11 +79,11 @@ MySQL と MariaDB にはこの制約は適用されないため、`Initial Load 
 
 1 - IAMロールの作成と管理の権限を持つIAMユーザーで、WebブラウザからAWSアカウントにログインします。
 
-2 - IAMサービスコンソールに移動します。
+2 - IAMサービスコンソールに移動します
 
-3 - 次のIAMポリシーと信頼ポリシーを使用して、新しいIAMロールを作成します。
+3 - 以下のIAMポリシーと信頼ポリシーを使用して、新しいIAMロールを作成します。
 
-信頼ポリシー(ClickHouseインスタンスに属するIAMロールのarnで`{ClickHouse_IAM_ARN}`を置き換えてください):
+信頼ポリシー（`{ClickHouse_IAM_ARN}`をClickHouseインスタンスに属するIAMロールのarnに置き換えてください）：
 
 ```json
 {
@@ -100,7 +100,7 @@ MySQL と MariaDB にはこの制約は適用されないため、`Initial Load 
 }
 ```
 
-IAMポリシー(RDSインスタンスのリソースIDで`{RDS_RESOURCE_ID}`を置き換えてください)。`{RDS_REGION}`をRDS/Auroraインスタンスのリージョンに、`{AWS_ACCOUNT}`をAWSアカウントIDに置き換えてください:
+IAMポリシー（`{RDS_RESOURCE_ID}`をRDSインスタンスのリソースIDに置き換えてください）。`{RDS_REGION}`をRDS/Auroraインスタンスのリージョンに、`{AWS_ACCOUNT}`をAWSアカウントIDに置き換えてください：
 
 ```json
 {
@@ -117,6 +117,6 @@ IAMポリシー(RDSインスタンスのリソースIDで`{RDS_RESOURCE_ID}`を�
 }
 ```
 
-4 - 作成後、新しい**IAM Role Arn**をコピーします。これは、ClickPipesからAWSデータベースに安全にアクセスするために必要なものです。これを`{RDS_ACCESS_IAM_ROLE_ARN}`と呼びます。
+4 - 作成後、新しい**IAM Role Arn**をコピーします。これは、ClickPipesからAWSデータベースに安全にアクセスするために必要なものです。この値を`{RDS_ACCESS_IAM_ROLE_ARN}`と呼びます。
 
 これで、このIAMロールを使用してClickPipesからRDS/Auroraインスタンスで認証できるようになりました。

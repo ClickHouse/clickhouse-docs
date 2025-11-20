@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Экспорт резервных копий'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
-title: 'Экспорт резервных копий в собственный облачный аккаунт'
-description: 'Описывает, как экспортировать резервные копии в собственный облачный аккаунт'
+title: 'Экспорт резервных копий в собственную облачную учетную запись'
+description: 'Описание процесса экспорта резервных копий в собственную облачную учетную запись'
 doc_type: 'guide'
 ---
 
@@ -10,13 +10,13 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge />
 
-ClickHouse Cloud поддерживает создание резервных копий в ваш собственный аккаунт облачного провайдера (CSP) (AWS S3, Google Cloud Storage или Azure Blob Storage).
-Подробную информацию о том, как работают резервные копии ClickHouse Cloud, включая «полные» и «инкрементальные» резервные копии, см. в документации по [backups](/cloud/manage/backups/overview).
+ClickHouse Cloud поддерживает создание резервных копий в вашу собственную учетную запись облачного провайдера (AWS S3, Google Cloud Storage или Azure Blob Storage).
+Подробную информацию о работе резервных копий ClickHouse Cloud, включая «полные» и «инкрементные» резервные копии, см. в документации по [резервным копиям](/cloud/manage/backups/overview).
 
-В этом руководстве мы приводим примеры, как создавать полные и инкрементальные резервные копии в объектное хранилище AWS, GCP и Azure, а также как выполнять восстановление из этих резервных копий.
+В этом руководстве приведены примеры создания полных и инкрементных резервных копий в объектном хранилище AWS, GCP, Azure, а также восстановления данных из резервных копий.
 
 :::note
-Пользователям следует учитывать, что при экспорте резервных копий в другой регион у того же облачного провайдера будут взиматься платежи за [data transfer](/cloud/manage/network-data-transfer). В настоящее время мы не поддерживаем резервное копирование между разными облаками.
+Обратите внимание, что при экспорте резервных копий в другой регион того же облачного провайдера будут взиматься расходы на [передачу данных](/cloud/manage/network-data-transfer). В настоящее время кросс-облачное резервное копирование не поддерживается.
 :::
 
 
@@ -40,17 +40,17 @@ s3://testchbackups.s3.amazonaws.com/backups/
 
 Где: - `testchbackups` — имя корзины S3 для экспорта резервных копий. - `backups` — необязательный подкаталог.
 
-2. Ключ доступа и секретный ключ AWS. Также поддерживается аутентификация на основе ролей AWS, которую можно использовать вместо ключа доступа и секретного ключа AWS.
+2. Ключ доступа и секретный ключ AWS. Также поддерживается аутентификация на основе ролей AWS, которую можно использовать вместо ключа доступа и секретного ключа.
 
 :::note
-Для использования аутентификации на основе ролей следуйте инструкциям по [настройке](https://clickhouse.com/docs/cloud/security/secure-s3) Secure S3. Кроме того, необходимо добавить разрешения `s3:PutObject` и `s3:DeleteObject` к политике IAM, описанной [здесь](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role).
+Для использования аутентификации на основе ролей следуйте инструкциям по [настройке](https://clickhouse.com/docs/cloud/security/secure-s3) безопасного доступа к S3. Кроме того, необходимо добавить разрешения `s3:PutObject` и `s3:DeleteObject` к политике IAM, описанной [здесь](https://clickhouse.com/docs/cloud/security/secure-s3#option-2-manually-create-iam-role).
 :::
 
 ### Azure {#azure}
 
 1. Строка подключения к хранилищу Azure.
 2. Имя контейнера Azure в учетной записи хранения.
-3. Большой двоичный объект Azure (Blob) внутри контейнера.
+3. Blob-объект Azure внутри контейнера.
 
 ### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
 
@@ -83,7 +83,7 @@ TO S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key
 
 :::note
 Для каждой новой резервной копии в этом подкаталоге необходимо использовать отдельный UUID, иначе возникнет ошибка `BACKUP_ALREADY_EXISTS`.
-Например, при ежедневном резервном копировании необходимо использовать новый UUID каждый день.
+Например, при ежедневном резервном копировании нужно использовать новый UUID каждый день.
 :::
 
 **Инкрементное резервное копирование**
@@ -102,23 +102,23 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-См.: [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) для получения дополнительной информации.
+См.: [Настройка BACKUP/RESTORE для использования S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) для получения подробной информации.
 
 
-## Резервное копирование и восстановление в Azure Blob Storage {#backup--restore-to-azure-blob-storage}
+## Резервное копирование / Восстановление в Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
 ### Создание резервной копии БД {#take-a-db-backup-1}
 
-**Полная резервная копия**
+**Полное резервное копирование**
 
 ```sql
 BACKUP DATABASE test_backups
 TO AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>');
 ```
 
-Где `uuid` — уникальный идентификатор, который используется для различения набора резервных копий.
+Где `uuid` — это уникальный идентификатор, используемый для разделения наборов резервных копий.
 
-**Инкрементная резервная копия**
+**Инкрементное резервное копирование**
 
 ```sql
 BACKUP DATABASE test_backups
@@ -134,7 +134,7 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-См. раздел [Настройка BACKUP/RESTORE для использования конечной точки AzureBlobStorage](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительной информации.
+См.: [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительной информации.
 
 
 ## Резервное копирование и восстановление в Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}

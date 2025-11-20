@@ -2,16 +2,16 @@
 description: 'ClickHouse のバックアップとリストアの概要'
 sidebar_label: 'S3 エンドポイント'
 slug: /operations/backup/s3_endpoint
-title: 'S3 エンドポイントへのバックアップおよび復元'
+title: 'S3 エンドポイントへのバックアップおよび S3 エンドポイントからのリストア'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
 
 
-# S3エンドポイントを使用したバックアップ/リストア {#backup-to-a-local-disk}
+# S3エンドポイントへの/からのバックアップ/リストア {#backup-to-a-local-disk}
 
-この記事では、S3エンドポイントを経由してS3バケットへバックアップする方法、およびS3バケットからリストアする方法について説明します。
+この記事では、S3エンドポイント経由でS3バケットへのバックアップ、またはS3バケットからのリストアについて説明します。
 
 
 ## 構文 {#syntax}
@@ -128,7 +128,7 @@ SETTINGS base_backup = S3(
 #### 増分バックアップからの復元 {#restore-from-the-incremental-backup}
 
 このコマンドは、増分バックアップを新しいテーブル`test_table_restored`に復元します。  
-増分バックアップを復元する際、ベースバックアップも含まれることに注意してください。
+増分バックアップを復元する際には、ベースバックアップも含まれることに注意してください。
 復元時には**増分バックアップ**のみを指定します:
 
 
@@ -146,10 +146,10 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 └──────────────────────────────────────┴──────────┘
 ```
 
-#### 件数の確認 {#verify-the-count}
+#### 行数の検証 {#verify-the-count}
 
 元のテーブル `data` には2回の挿入が行われており、1回目は1,000行、2回目は100行で、合計1,100行です。
-復元されたテーブルに1,100行が含まれていることを確認します:
+復元されたテーブルに1,100行が含まれていることを検証します:
 
 ```sql
 SELECT count()
@@ -162,7 +162,7 @@ FROM test_db.test_table_restored
 └─────────┘
 ```
 
-#### 内容の確認 {#verify-the-content}
+#### 内容の検証 {#verify-the-content}
 
 元のテーブル `test_table` の内容と復元されたテーブル `test_table_restored` の内容を比較します:
 

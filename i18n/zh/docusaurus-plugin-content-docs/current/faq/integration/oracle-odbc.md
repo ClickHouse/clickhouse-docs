@@ -1,9 +1,9 @@
 ---
 slug: /faq/integration/oracle-odbc
-title: '通过 ODBC 使用 Oracle 时遇到编码问题怎么办？'
+title: '通过 ODBC 使用 Oracle 时遇到编码问题该怎么办？'
 toc_hidden: true
 toc_priority: 20
-description: '本页介绍在通过 ODBC 使用 Oracle 时遇到编码问题时应如何处理'
+description: '本页说明在通过 ODBC 使用 Oracle 时遇到编码问题时应如何处理。'
 doc_type: 'guide'
 keywords: ['oracle', 'odbc', 'encoding', 'integration', 'external dictionary']
 ---

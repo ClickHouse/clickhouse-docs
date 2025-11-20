@@ -1,5 +1,5 @@
 ---
-description: '自 2009 年以来纽约市出发的数十亿次出租车和网约车（Uber、Lyft 等）行程数据'
+description: '自 2009 年以来在纽约市出发的数十亿次出租车和网约车（Uber、Lyft 等）行程数据'
 sidebar_label: '纽约出租车数据'
 slug: /getting-started/example-datasets/nyc-taxi
 title: '纽约出租车数据'
@@ -10,23 +10,23 @@ keywords: ['example dataset', 'nyc taxi', 'tutorial', 'sample data', 'getting st
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-纽约出租车数据样本由自 2009 年以来在纽约市出发的 30 多亿次出租车和网约车（Uber、Lyft 等）行程构成。本入门指南使用的是一个包含 300 万行的数据样本。
+纽约出租车数据样本由自 2009 年以来从纽约市出发的 30 多亿次出租车和网约车（Uber、Lyft 等）行程组成。本入门指南使用的是一个包含 300 万行的数据样本。
 
-可以通过以下几种方式获取完整数据集：
+完整数据集可以通过以下几种方式获取：
 
 * 直接从 S3 或 GCS 将数据插入 ClickHouse Cloud
-* 下载已准备好的分区
-* 或者，用户可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
+* 下载预先准备好的分区
+* 或者，用户也可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
 
 :::note
 下面的示例查询是在 ClickHouse Cloud 的 **生产** 实例上执行的。更多信息请参见
-[“Playground 规格说明”](/getting-started/playground#specifications)。
+[“Playground 规格”](/getting-started/playground#specifications)。
 :::
 
 
-## 创建 trips 表 {#create-the-table-trips}
+## 创建表 trips {#create-the-table-trips}
 
-首先创建一个用于出租车行程数据的表:
+首先创建一个用于出租车行程的表:
 
 ```sql
 
@@ -130,7 +130,7 @@ FROM gcs(
 
 ## 示例查询 {#sample-queries}
 
-以下查询基于上述示例数据执行。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上对完整数据集运行这些示例查询,只需将以下查询修改为使用表 `nyc_taxi.trips` 即可。
+以下查询基于上述示例数据执行。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上对完整数据集运行示例查询,只需将以下查询修改为使用表 `nyc_taxi.trips`。
 
 让我们看看插入了多少行数据:
 
@@ -185,7 +185,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 下载预处理分区 {#download-of-prepared-partitions}
+## 下载预处理的分区 {#download-of-prepared-partitions}
 
 :::note
 以下步骤提供了原始数据集的相关信息,以及将预处理分区加载到自管理 ClickHouse 服务器环境的方法。
@@ -193,7 +193,7 @@ ORDER BY passenger_count ASC
 
 有关数据集的描述和下载说明,请参阅 https://github.com/toddwschneider/nyc-taxi-data 和 http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html。
 
-下载将获得约 227 GB 的未压缩 CSV 文件数据。使用 1 Gbit 连接下载大约需要一小时(从 s3.amazonaws.com 并行下载至少可以利用 1 Gbit 带宽的一半)。
+下载将获得约 227 GB 的未压缩 CSV 文件数据。在 1 Gbit 连接下,下载大约需要一小时(从 s3.amazonaws.com 并行下载至少可以利用 1 Gbit 带宽的一半)。
 部分文件可能无法完整下载。请检查文件大小,并重新下载任何可疑的文件。
 
 
@@ -201,9 +201,9 @@ ORDER BY passenger_count ASC
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
 # 验证校验和
 $ md5sum trips_mergetree.tar
-# 校验和应为: f3b8d469b41d9a82da064ded7245d12c
+# 校验和应为：f3b8d469b41d9a82da064ded7245d12c
 $ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # ClickHouse 数据目录的路径
-$ # 检查解压数据的权限,必要时进行修复
+$ # 检查解压数据的权限，必要时进行修复
 $ sudo service clickhouse-server restart
 $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 ```
@@ -252,9 +252,9 @@ ORDER BY year, count(*) DESC;
 
 测试使用的服务器配置如下:
 
-两颗 Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz,共 16 个物理核心,128 GiB 内存,8 块 6 TB 硬盘组成硬件 RAID-5
+两颗 Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz,共 16 个物理核心,128 GiB 内存,8x6 TB 硬盘(硬件 RAID-5)
 
-执行时间取三次运行中的最佳结果。从第二次运行开始,查询从文件系统缓存中读取数据。不会产生额外的缓存:每次运行都会重新读取和处理数据。
+执行时间取三次运行中的最佳值。从第二次运行开始,查询从文件系统缓存中读取数据。不会产生额外缓存:每次运行都会重新读取和处理数据。
 
 在三台服务器上创建表:
 
@@ -271,7 +271,7 @@ CREATE TABLE default.trips_mergetree_third ( trip_id UInt32,  vendor_id Enum8('1
 CREATE TABLE trips_mergetree_x3 AS trips_mergetree_third ENGINE = Distributed(perftest, default, trips_mergetree_third, rand());
 ```
 
-以下查询会重新分配数据：
+以下查询会重新分布数据：
 
 ```sql
 INSERT INTO trips_mergetree_x3 SELECT * FROM trips_mergetree;
@@ -288,7 +288,7 @@ Q4：1.241 秒。
 
 这并不意外，因为查询是线性扩展的。
 
-我们还有一个由 140 台服务器组成的集群的结果：
+我们还有一个由 140 台服务器组成的集群的测试结果：
 
 Q1：0.028 秒。
 Q2：0.043 秒。
@@ -296,7 +296,7 @@ Q3：0.051 秒。
 Q4：0.072 秒。
 
 在这种情况下，查询处理时间主要由网络延迟决定。
-我们使用位于与集群不同数据中心的客户端运行了查询，这额外引入了大约 20 毫秒的延迟。
+我们在与集群所在数据中心不同的另一个数据中心中运行客户端，这增加了大约 20 ms 的延迟。
 
 
 ## 总结 {#summary}

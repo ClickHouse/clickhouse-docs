@@ -2,8 +2,8 @@
 slug: /native-protocol/basics
 sidebar_position: 1
 title: 'Основы'
-description: 'Основы собственного протокола'
-keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protocol', 'client-server communication']
+description: 'Основы нативного протокола'
+keywords: ['нативный протокол', 'протокол TCP', 'основы протокола', 'бинарный протокол', 'взаимодействие клиент-сервер']
 doc_type: 'guide'
 ---
 
@@ -12,7 +12,7 @@ doc_type: 'guide'
 # Основы
 
 :::note
-Справочник по клиентскому протоколу находится в процессе подготовки.
+Справочник по клиентскому протоколу находится в разработке.
 
 Большинство примеров приведено только на Go.
 :::
@@ -20,7 +20,7 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-В этом документе описывается бинарный протокол для TCP‑клиентов ClickHouse.
+В этом документе описывается двоичный протокол для TCP‑клиентов ClickHouse.
 
 
 ## Varint {#varint}
@@ -44,7 +44,7 @@ _Signed_ varint не используется.
 :::
 
 <Tabs>
-<TabItem value="encode" label="Кодирование">
+<TabItem value="encode" label="Encode">
 
 ```go
 s := "Hello, world!"
@@ -59,7 +59,7 @@ buf = append(buf, s...)
 ```
 
 </TabItem>
-<TabItem value="decode" label="Декодирование">
+<TabItem value="decode" label="Decode">
 
 ```go
 r := bytes.NewReader([]byte{
@@ -92,7 +92,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="Шестнадцатеричный дамп">
+<TabItem value="hexdump" label="Hex dump">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -157,6 +157,6 @@ fmt.Println(d) // 1000
 </Tabs>
 
 
-## Boolean {#boolean}
+## Логический тип {#boolean}
 
-Логические значения представлены одним байтом: `1` соответствует `true`, а `0` — `false`.
+Логические значения представлены одним байтом: `1` соответствует `true`, `0` — `false`.

@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'ClickStack 的 Next.js SDK - ClickHouse 可观测性技术栈'
+description: '面向 ClickStack 的 Next.js SDK - ClickHouse 可观测性技术栈'
 title: 'Next.js'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
@@ -12,17 +12,17 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack 可以从你的
-[Next.js Serverless Functions](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
-（Next 13.2+）中接入原生 OpenTelemetry trace。
+ClickStack 可以从 Next 13.2+ 的
+[Next.js 无服务器函数](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+中摄取原生 OpenTelemetry 追踪数据。
 
-本指南集成：
+本指南涵盖集成：
 
-* **Console Logs（控制台日志）**
-* **Traces（追踪）**
+* **控制台日志（Console Logs）**
+* **追踪（Traces）**
 
 :::note
-如果你在寻找会话回放 / 浏览器端监控，你应该改为安装 [Browser integration](/use-cases/observability/clickstack/sdks/browser)。
+如果你需要会话回放 / 浏览器端监控，请改为安装 [浏览器集成（Browser integration）](/use-cases/observability/clickstack/sdks/browser)。
 :::
 
 
@@ -91,7 +91,7 @@ export async function register() {
 }
 ```
 
-这将允许 Next.js 在任何无服务器函数调用时导入 OpenTelemetry instrumentation。
+这将允许 Next.js 为任何无服务器函数调用导入 OpenTelemetry instrumentation。
 
 ### 配置环境变量 {#configure-environment-variables}
 
@@ -104,4 +104,4 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
 
-如果您在 Vercel 上部署,请确保为您的部署配置上述所有环境变量。
+如果您在 Vercel 上部署,请确保为您的部署配置了上述所有环境变量。

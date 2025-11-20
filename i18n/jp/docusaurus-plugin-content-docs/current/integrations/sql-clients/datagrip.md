@@ -2,13 +2,13 @@
 sidebar_label: 'DataGrip'
 slug: /integrations/datagrip
 description: 'DataGrip は、ClickHouse を標準でサポートするデータベース IDE です。'
-title: 'DataGrip から ClickHouse へ接続する'
+title: 'DataGrip を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
-keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL client', 'integrated development environment']
+keywords: ['DataGrip', 'database IDE', 'JetBrains', 'SQL クライアント', '統合開発環境']
 ---
 
 import Image from '@theme/IdealImage';
@@ -50,7 +50,7 @@ DataGripは https://www.jetbrains.com/datagrip/ から入手できます
 **ClickHouse**を選択します
 
 :::tip
-接続を確立すると順序が変わるため、ClickHouseがまだリストの最上部に表示されていない場合があります。
+接続を確立していくと順序が変わるため、ClickHouseがまだリストの最上部にない場合があります。
 :::
 
 <Image
@@ -73,21 +73,21 @@ DataGripは https://www.jetbrains.com/datagrip/ から入手できます
 />
 
 
-## 3. ClickHouseに接続する {#3-connect-to-clickhouse}
+## 3. ClickHouseへの接続 {#3-connect-to-clickhouse}
 
 - データベース接続の詳細を指定し、**Test Connection**をクリックします。
-  ステップ1で収集した接続情報(ホストURL、ポート、ユーザー名、パスワード、データベース名)を入力し、接続をテストします。
+  ステップ1で収集した接続情報を入力します。ホストURL、ポート、ユーザー名、パスワード、データベース名を入力したら、接続をテストします。
 
 :::tip
-**Host**フィールドには、`https://`などのプロトコルプレフィックスを含めず、ホスト名のみを入力してください(例: `your-host.clickhouse.cloud`)。
+**Host**フィールドには、ホスト名のみを入力してください（例：`your-host.clickhouse.cloud`）。`https://`などのプロトコルプレフィックスは含めないでください。
 
-ClickHouse Cloud接続の場合、ホストの下にある**URL**フィールドに`?ssl=true`を追加する必要があります。完全なJDBC URLは次のようになります:
+ClickHouse Cloud接続の場合、ホストの下にある**URL**フィールドに`?ssl=true`を追加する必要があります。完全なJDBC URLは次のようになります：
 
 `jdbc:clickhouse://your-host.clickhouse.cloud:8443/default?ssl=true`
 
 ClickHouse Cloudはすべての接続でSSL暗号化が必須です。`?ssl=true`パラメータがない場合、正しい認証情報を使用していても「Connection reset」エラーが発生します。
 
-JDBC URL設定の詳細については、[ClickHouse JDBCドライバ](https://github.com/ClickHouse/clickhouse-java)リポジトリを参照してください。
+JDBC URLの設定の詳細については、[ClickHouse JDBCドライバー](https://github.com/ClickHouse/clickhouse-java)リポジトリを参照してください。
 :::
 
 <Image
@@ -99,4 +99,4 @@ JDBC URL設定の詳細については、[ClickHouse JDBCドライバ](https://g
 
 ## 詳細情報 {#learn-more}
 
-DataGripの詳細については、DataGripドキュメントを参照してください。
+DataGripの詳細については、DataGripのドキュメントを参照してください。

@@ -39,16 +39,16 @@ pip install pandas ipython
 ipython
 ```
 
-Вы также можете использовать код в Python-скрипте или в вашем любимом notebook-окружении.
+Вы также можете использовать код в Python-скрипте или в вашем любимом ноутбуке.
 
 
 ## Введение в ClickPy {#an-intro-to-clickpy}
 
-Удалённый сервер ClickHouse, к которому мы будем выполнять запросы — [ClickPy](https://clickpy.clickhouse.com).
-ClickPy отслеживает все загрузки пакетов PyPI и позволяет изучать статистику пакетов через веб-интерфейс.
-Доступ к базе данных для выполнения запросов осуществляется с использованием пользователя `play`.
+Удалённый сервер ClickHouse, к которому мы будем выполнять запросы, — это [ClickPy](https://clickpy.clickhouse.com).
+ClickPy отслеживает все загрузки пакетов PyPI и позволяет исследовать статистику пакетов через пользовательский интерфейс.
+Для выполнения запросов к базе данных используется пользователь `play`.
 
-Подробнее о ClickPy можно узнать в [репозитории проекта на GitHub](https://github.com/ClickHouse/clickpy).
+Подробнее о ClickPy можно узнать в [его репозитории на GitHub](https://github.com/ClickHouse/clickpy).
 
 
 ## Запрос к сервису ClickPy ClickHouse {#querying-the-clickpy-clickhouse-service}
@@ -59,7 +59,7 @@ ClickPy отслеживает все загрузки пакетов PyPI и п
 import chdb
 ```
 
-Мы будем выполнять запросы к ClickPy с использованием функции `remoteSecure`.
+Мы будем выполнять запросы к ClickPy с помощью функции `remoteSecure`.
 Эта функция принимает как минимум имя хоста, имя таблицы и имя пользователя.
 
 Напишем следующий запрос для получения количества загрузок в день [пакета `openai`](https://clickpy.clickhouse.com/dashboard/openai) в виде Pandas DataFrame:
@@ -133,7 +133,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 ```
 
 
-## Объединение DataFrame в Pandas {#merging-pandas-dataframes}
+## Объединение Pandas DataFrames {#merging-pandas-dataframes}
 
 Теперь у нас есть два DataFrame, которые можно объединить по дате (столбец `x`) следующим образом:
 

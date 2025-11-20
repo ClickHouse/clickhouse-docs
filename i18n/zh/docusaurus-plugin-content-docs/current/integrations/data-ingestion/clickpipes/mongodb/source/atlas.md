@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'MongoDB Atlas'
-description: '关于如何将 MongoDB Atlas 设置为 ClickPipes 源的分步指南'
+description: '将 MongoDB Atlas 配置为 ClickPipes 数据源的分步指南'
 slug: /integrations/clickpipes/mongodb/source/atlas
-title: 'MongoDB Atlas 源设置指南'
+title: 'MongoDB Atlas 数据源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -16,7 +16,7 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# MongoDB Atlas 数据源设置指南
+# MongoDB Atlas 源配置指南
 
 
 
@@ -56,7 +56,7 @@ import Image from '@theme/IdealImage';
 
 ## 配置数据库用户 {#configure-database-user}
 
-登录 MongoDB Atlas 控制台后,在左侧导航栏的 Security 选项卡下点击 `Database Access`,然后点击"Add New Database User"。
+登录 MongoDB Atlas 控制台后,在左侧导航栏的 Security 选项卡下点击 `Database Access`,然后点击 "Add New Database User"。
 
 ClickPipes 需要密码身份验证:
 
@@ -67,7 +67,7 @@ ClickPipes 需要具有以下角色的用户:
 - `readAnyDatabase`
 - `clusterMonitor`
 
-您可以在 `Specific Privileges` 部分找到这些角色:
+您可以在 `Specific Privileges` 部分找到它们:
 
 <Image
   img={mongo_atlas_add_roles}
@@ -88,5 +88,5 @@ ClickPipes 需要具有以下角色的用户:
 
 ## 下一步 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md),开始将 MongoDB 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 MongoDB 实例时使用的连接详细信息,创建 ClickPipe 时需要用到这些信息。
+现在您可以[创建 ClickPipe](../index.md) 并开始将 MongoDB 实例中的数据导入到 ClickHouse Cloud。
+请务必记录设置 MongoDB 实例时使用的连接详细信息,因为在创建 ClickPipe 过程中需要用到这些信息。

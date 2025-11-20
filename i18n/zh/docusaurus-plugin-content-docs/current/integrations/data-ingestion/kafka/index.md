@@ -6,7 +6,7 @@ sidebar_position: 1
 slug: /integrations/kafka
 description: 'Kafka 与 ClickHouse 集成简介'
 title: '将 Kafka 集成到 ClickHouse'
-keywords: ['Apache Kafka', 'event streaming', 'data pipeline', 'message broker', 'real-time data']
+keywords: ['Apache Kafka', '事件流处理', '数据管道', '消息代理', '实时数据']
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -17,7 +17,7 @@ integration:
 
 # 将 Kafka 与 ClickHouse 集成
 
-[Apache Kafka](https://kafka.apache.org/) 是一个开源的分布式事件流平台，被成千上万家公司用于高性能数据管道、流式分析、数据集成以及关键业务应用。ClickHouse 提供多种方式**从** Kafka 以及其他兼容 Kafka API 的代理（例如 Redpanda、Amazon MSK）中读取数据，并向其写入数据。
+[Apache Kafka](https://kafka.apache.org/) 是一个开源的分布式事件流平台，被成千上万家公司用于高性能数据管道、流式分析、数据集成以及关键业务应用。ClickHouse 提供多种方式来**读取**和**写入** Kafka 以及其他兼容 Kafka API 的代理（例如 Redpanda、Amazon MSK）。
 
 
 
@@ -38,7 +38,7 @@ integration:
 [ClickPipes](../clickpipes/index.md) 是一个托管集成平台,可以像点击几个按钮一样简单地从各种数据源摄取数据。由于它是完全托管的并专为生产工作负载而构建,ClickPipes 显著降低了基础设施和运维成本,无需使用外部数据流和 ETL 工具。
 
 :::tip
-如果您是 ClickHouse Cloud 用户,推荐使用此选项。ClickPipes 是**完全托管**的,专为在云环境中提供**最佳性能**而构建。
+如果您是 ClickHouse Cloud 用户,推荐使用此选项。ClickPipes 是**完全托管**的,并专门构建以在云环境中提供**最佳性能**。
 :::
 
 #### 主要特性 {#clickpipes-for-kafka-main-features}
@@ -46,7 +46,7 @@ integration:
 [//]: # "TODO It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
 
 - 针对 ClickHouse Cloud 优化,提供极快的性能
-- 支持高吞吐量工作负载的水平和垂直扩展
+- 为高吞吐量工作负载提供水平和垂直扩展能力
 - 内置容错能力,支持可配置的副本和自动重试
 - 通过 ClickHouse Cloud UI、[Open API](/cloud/manage/api/api-overview) 或 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe) 进行部署和管理
 - 企业级安全性,支持云原生授权(IAM)和私有连接(PrivateLink)
@@ -62,7 +62,7 @@ integration:
 Kafka Connect 是一个开源框架,作为集中式数据中心,用于 Kafka 与其他数据系统之间的简单数据集成。[ClickHouse Kafka Connect Sink](https://github.com/ClickHouse/clickhouse-kafka-connect) 连接器提供了一个可扩展且高度可配置的选项,用于从 Apache Kafka 和其他兼容 Kafka API 的代理读取数据。
 
 :::tip
-如果您偏好**高度可配置性**或已经是 Kafka Connect 用户,推荐使用此选项。
+如果您偏好**高可配置性**或已经是 Kafka Connect 用户,推荐使用此选项。
 :::
 
 #### 主要特性 {#kafka-connect-sink-main-features}
@@ -98,7 +98,7 @@ Kafka Connect 是一个开源框架,作为集中式数据中心,用于 Kafka 与
 
 | 产品                  | 优势                                                                                                                                                                                                                                                                                           | 劣势                                                                                                                                                                                                            |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ClickPipes for Kafka** | • 可扩展架构,实现高吞吐量和低延迟<br/>• 内置监控和 schema 管理<br/>• 私有网络连接(通过 PrivateLink)<br/>• 支持 SSL/TLS 认证和 IAM 授权<br/>• 支持编程式配置(Terraform、API 端点) | • 不支持向 Kafka 推送数据<br/>• 至少一次语义                                                                                                                                                |
+| **ClickPipes for Kafka** | • 可扩展架构,实现高吞吐量和低延迟<br/>• 内置监控和模式管理<br/>• 私有网络连接(通过 PrivateLink)<br/>• 支持 SSL/TLS 认证和 IAM 授权<br/>• 支持编程式配置(Terraform、API 端点) | • 不支持向 Kafka 推送数据<br/>• 至少一次语义                                                                                                                                                |
 | **Kafka Connect Sink**   | • 精确一次语义<br/>• 允许对数据转换、批处理和错误处理进行细粒度控制<br/>• 可部署在私有网络中<br/>• 允许通过 Debezium 从 ClickPipes 尚未支持的数据库进行实时复制                                               | • 不支持向 Kafka 推送数据<br/>• 设置和维护操作复杂<br/>• 需要 Kafka 和 Kafka Connect 专业知识                                                                          |
 | **Kafka 表引擎**   | • 支持[向 Kafka 推送数据](./kafka-table-engine.md/#clickhouse-to-kafka)<br/>• 设置操作简单                                                                                                                                                                               | • 至少一次语义<br/>• 消费者水平扩展能力有限,无法独立于 ClickHouse 服务器进行扩展<br/>• 错误处理和调试选项有限<br/>• 需要 Kafka 专业知识 |
 
@@ -110,7 +110,7 @@ Kafka Connect 是一个开源框架,作为集中式数据中心,用于 Kafka 与
 
 - [**JDBC Connect Sink**](./kafka-connect-jdbc.md) - Kafka Connect JDBC Sink 连接器允许您将数据从 Kafka 主题导出到任何具有 JDBC 驱动程序的关系数据库。
 
-- **自定义代码** - 在需要对事件进行自定义处理的情况下,使用 Kafka 和 ClickHouse [客户端库](../../language-clients/index.md)编写自定义代码可能是合适的选择。
+- **自定义代码** - 在需要对事件进行自定义处理的情况下,使用 Kafka 和 ClickHouse [客户端库](../../language-clients/index.md)的自定义代码可能是合适的选择。
 
 [BYOC]: /cloud/reference/byoc/overview
 [Cloud]: /cloud/get-started

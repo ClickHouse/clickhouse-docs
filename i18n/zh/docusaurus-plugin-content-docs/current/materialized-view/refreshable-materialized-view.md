@@ -1,32 +1,32 @@
 ---
 slug: /materialized-view/refreshable-materialized-view
-title: '可刷新物化视图'
-description: '如何使用物化视图来加速查询'
-keywords: ['可刷新物化视图', '刷新', '物化视图', '加速查询', '查询优化']
+title: '可刷新的物化视图'
+description: '如何使用物化视图提升查询性能'
+keywords: ['可刷新的物化视图', '刷新', '物化视图', '提升查询性能', '查询优化']
 doc_type: 'guide'
 ---
 
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-[可刷新物化视图](/sql-reference/statements/create/view#refreshable-materialized-view) 在概念上类似于传统 OLTP 数据库中的物化视图，会将指定查询的结果存储起来以便快速读取，从而减少重复执行资源密集型查询的需求。与 ClickHouse 的[增量物化视图](/materialized-view/incremental-materialized-view)不同，这种方式需要定期在完整数据集上执行查询，并将查询结果存储到目标表中供后续查询使用。理论上，这个结果集应当小于原始数据集，从而使后续查询执行得更快。
+[可刷新的物化视图](/sql-reference/statements/create/view#refreshable-materialized-view) 在概念上类似于传统 OLTP 数据库中的物化视图，会存储指定查询的结果以便快速查询，从而减少重复执行资源密集型查询的需要。与 ClickHouse 的[增量物化视图](/materialized-view/incremental-materialized-view)不同，这种方式需要定期在完整数据集上执行查询，其结果会被写入目标表供后续查询使用。理论上，这个结果集应当小于原始数据集，从而使后续查询执行得更快。
 
-下图展示了可刷新物化视图的工作原理：
+下图说明了可刷新的物化视图的工作方式：
 
-<Image img={refreshableMaterializedViewDiagram} size="lg" alt="可刷新物化视图示意图" />
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="可刷新的物化视图示意图" />
 
-你也可以观看以下视频：
+你也可以观看下面的视频：
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
 ## 何时应该使用可刷新物化视图? {#when-should-refreshable-materialized-views-be-used}
 
-ClickHouse 增量物化视图功能极其强大,通常比可刷新物化视图的方式具有更好的扩展性,尤其是在需要对单表执行聚合的场景中。通过仅在数据插入时对每个数据块计算聚合,并在最终表中合并增量状态,查询始终只在数据子集上执行。这种方法可扩展至 PB 级数据,通常是首选方案。
+ClickHouse 增量物化视图功能极其强大,通常比可刷新物化视图的方法具有更好的扩展性,尤其是在需要对单表执行聚合的场景中。通过仅在数据插入时对每个数据块计算聚合,并在最终表中合并增量状态,查询始终只在数据子集上执行。这种方法可扩展至 PB 级数据量,通常是首选方案。
 
-然而,在某些使用场景中,这种增量处理方式并非必需或不适用。某些问题要么与增量方法不兼容,要么不需要实时更新,定期重建更为合适。例如,您可能希望定期对完整数据集上的视图执行完全重新计算,因为它使用了复杂的连接操作,而这与增量方法不兼容。
+然而,在某些使用场景中,这种增量处理过程并非必需或不适用。某些问题要么与增量方法不兼容,要么不需要实时更新,定期重建更为合适。例如,您可能希望定期对完整数据集上的视图执行完全重新计算,因为它使用了复杂的连接操作,这与增量方法不兼容。
 
-> 可刷新物化视图可以运行批处理流程来执行反规范化等任务。可以在可刷新物化视图之间创建依赖关系,使一个视图依赖于另一个视图的结果,并仅在其完成后才执行。这可以替代定时工作流或简单的 DAG,例如 [dbt](https://www.getdbt.com/) 作业。要了解更多关于如何在可刷新物化视图之间设置依赖关系的信息,请参阅 [CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) 的 `Dependencies` 部分。
+> 可刷新物化视图可以运行批处理过程,执行诸如反规范化等任务。可以在可刷新物化视图之间创建依赖关系,使一个视图依赖于另一个视图的结果,并仅在其完成后才执行。这可以替代定时工作流或简单的 DAG,例如 [dbt](https://www.getdbt.com/) 作业。要了解更多关于如何在可刷新物化视图之间设置依赖关系的信息,请参阅 [CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) 的 `Dependencies` 部分。
 
 
 ## 如何刷新可刷新物化视图? {#how-do-you-refresh-a-refreshable-materialized-view}
@@ -50,9 +50,9 @@ SYSTEM REFRESH VIEW table_name_mv;
 有关更多详细信息,请参阅[管理可刷新物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
 
 
-## 如何查看可刷新物化视图的最后刷新时间? {#when-was-a-refreshable-materialized-view-last-refreshed}
+## 可刷新物化视图的上次刷新时间是什么时候？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
-要查看可刷新物化视图的最后刷新时间,可以查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表,如下所示:
+要查询可刷新物化视图的上次刷新时间，可以查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表，如下所示：
 
 ```sql
 SELECT database, view, status,
@@ -68,7 +68,7 @@ FROM system.view_refreshes;
 ```
 
 
-## 如何更改刷新频率？ {#how-can-i-change-the-refresh-rate}
+## 如何更改刷新频率? {#how-can-i-change-the-refresh-rate}
 
 要更改可刷新物化视图的刷新频率,请使用 [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 语法。
 
@@ -150,7 +150,7 @@ ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
-然后我们可以创建一个可刷新的物化视图来填充该表:
+然后我们可以创建一个可刷新物化视图来填充该表:
 
 ```sql
 CREATE MATERIALIZED VIEW events_snapshot_mv
@@ -248,7 +248,7 @@ LEFT JOIN (
 
 在 [dbt 与 ClickHouse 集成指南](/integrations/dbt)中,我们使用以下表填充了 IMDb 数据集:`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
 
-然后我们可以编写以下查询来计算每个演员的汇总信息,按电影出演次数排序。
+然后我们可以编写以下查询来计算每个演员的汇总信息,按电影出演次数降序排列。
 
 ```sql
 SELECT
@@ -284,14 +284,14 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi  │        544 │                  0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴────────────────────┴───────────────┴────────────────┴─────────────────────┘
 
-返回 5 行。耗时:0.393 秒。处理了 545 万行,86.82 MB(1387 万行/秒,221.01 MB/秒)。
-内存使用峰值:1.38 GiB。
+返回 5 行。用时:0.393 秒。处理了 545 万行,86.82 MB(1387 万行/秒,221.01 MB/秒)。
+峰值内存使用量:1.38 GiB。
 ```
 
-返回结果所需的时间并不算长，但假设我们希望它再快一些，同时降低计算开销。
-再假设这个数据集也在不断更新——电影在持续上映，新演员和新导演也在不断涌现。
+返回结果所需的时间并不算长，但假设我们希望它更快、计算开销更低。
+再假设这个数据集还在不断更新——电影在持续上映，新的演员和导演也不断涌现。
 
-现在是使用可刷新的物化视图的时候了，所以我们先为结果创建一个目标表：
+现在是使用可刷新的物化视图的时候了，因此我们先为结果创建一个目标表：
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -308,7 +308,7 @@ ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-现在我们可以定义这个视图：
+现在我们可以定义视图：
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -342,7 +342,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-该视图会立即执行，并按照配置在此后每分钟执行一次，以确保源表中的更新能够被反映出来。我们之前用于获取演员汇总的查询在语法上变得更为简洁，而且执行速度也显著提升！
+该视图会立即执行，并按配置在此后每分钟执行一次，以确保源表中的更新能够得到反映。我们之前用于获取演员汇总的查询在语法上变得更简单，而且执行速度显著提升！
 
 ```sql
 SELECT *
@@ -364,7 +364,7 @@ LIMIT 5
 返回 5 行。耗时：0.007 秒。
 ```
 
-假设我们在源数据中添加了一位新演员“Clicky McClickHouse”，而他恰好出演了很多电影！
+假设我们在源数据中新增一位演员“Clicky McClickHouse”，而且 TA 恰好出演了很多电影！
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -377,7 +377,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-不到 60 秒，我们的目标表就已更新完毕，充分体现了 Clicky 的高产演戏生涯：
+不到 60 秒，我们的目标表就已更新，充分体现出 Clicky 高产的演艺生涯：
 
 ```sql
 SELECT *

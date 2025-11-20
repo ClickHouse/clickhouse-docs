@@ -1,7 +1,7 @@
 ---
-title: '查询性能 - 时序数据'
+title: '查询性能 - 时序'
 sidebar_label: '查询性能'
-description: '提升时序数据查询性能'
+description: '优化时序查询性能'
 slug: /use-cases/time-series/query-performance
 keywords: ['time-series', 'query performance', 'optimization', 'indexing', 'partitioning', 'query tuning', 'performance']
 show_related_blogs: true
@@ -14,15 +14,15 @@ doc_type: 'guide'
 
 在优化存储之后，下一步就是提升查询性能。
 本节将介绍两项关键技术：优化 `ORDER BY` 键以及使用物化视图。
-我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
+我们将看到，这些方法如何将查询时间从秒级缩短到毫秒级。
 
 
 
 ## 优化 `ORDER BY` 键 {#time-series-optimize-order-by}
 
-在尝试其他优化之前,应首先优化排序键以确保 ClickHouse 产生尽可能快的查询结果。
+在尝试其他优化之前,应首先优化排序键,以确保 ClickHouse 能够产生尽可能快的查询结果。
 选择合适的键很大程度上取决于您要运行的查询类型。假设我们的大多数查询都会按 `project` 和 `subproject` 列进行过滤。
-在这种情况下,将它们添加到排序键中是个好主意——同时也要添加 `time` 列,因为我们也会按时间进行查询。
+在这种情况下,将它们添加到排序键中是个好主意——同时也应添加 `time` 列,因为我们也会按时间进行查询。
 
 让我们创建该表的另一个版本,它具有与 `wikistat` 相同的列类型,但按 `(project, subproject, time)` 排序。
 
@@ -181,7 +181,7 @@ GROUP BY path, month;
 
 ### 回填目标表 {#time-series-backfill-destination-table}
 
-此目标表仅在向 `wikistat` 表插入新记录时才会填充数据,因此我们需要进行[回填](/docs/data-modeling/backfilling)操作。
+此目标表仅在向 `wikistat` 表插入新记录时才会填充数据,因此我们需要进行[回填](/docs/data-modeling/backfilling)。
 
 最简单的方法是使用 [`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 语句,[利用](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)视图的 `SELECT` 查询(转换逻辑)直接插入到物化视图的目标表中:
 
@@ -202,7 +202,7 @@ GROUP BY path, month;
 - 使用 `INSERT INTO SELECT` 查询,将原始数据集中的所有数据复制到该临时表
 - 删除临时表和临时物化视图。
 
-使用这种方法,原始数据集中的行会按数据块复制到临时表中(该表不存储任何这些行),对于每个数据块,会计算部分聚合状态并写入目标表,这些状态会在后台增量合并。
+使用这种方法,原始数据集中的行会按数据块复制到临时表中(该表不存储任何这些行),对于每个数据块,会计算部分状态并写入目标表,这些状态会在后台增量合并。
 
 ```sql
 CREATE TABLE wikistat_backfill
@@ -246,7 +246,7 @@ DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-现在我们可以查询物化视图，而不再查询原始表：
+现在我们可以查询物化视图，而不再直接查询原始表：
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -271,8 +271,8 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-查询返回 10 行。用时:0.004 秒。
+返回 10 行。耗时：0.004 秒。
 ```
 
-我们在这里的性能提升非常显著。
-之前这个查询计算出结果需要略多于 2 秒，而现在只需 4 毫秒。
+我们的性能提升非常显著。
+之前执行该查询得到结果需要略多于 2 秒，而现在只需 4 毫秒。

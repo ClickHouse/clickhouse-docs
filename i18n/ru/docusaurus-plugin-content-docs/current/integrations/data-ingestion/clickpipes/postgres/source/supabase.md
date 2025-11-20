@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Supabase Postgres'
-description: 'Настройка экземпляра Supabase как источника для ClickPipes'
+description: 'Настройка экземпляра Supabase в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Руководство по настройке источника Supabase'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'загрузка данных', 'синхронизация в реальном времени']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 :::note
 
-ClickPipes изначально поддерживает Supabase по IPv6 для бесшовной репликации.
+ClickPipes изначально поддерживает Supabase по IPv6, обеспечивая бесшовную репликацию.
 
 :::
 
@@ -47,7 +47,7 @@ ClickPipes изначально поддерживает Supabase по IPv6 дл
 
 <Image
   img={supabase_commands}
-  alt='Команды для создания пользователя и публикации'
+  alt='Команды создания пользователя и публикации'
   size='large'
   border
 />
@@ -71,16 +71,16 @@ ClickPipes изначально поддерживает Supabase по IPv6 дл
 
 Вы можете увеличить значение параметра `max_slot_wal_keep_size` для базы данных Supabase (минимум 100 ГБ или `102400`), следуя инструкциям в [документации Supabase](https://supabase.com/docs/guides/database/custom-postgres-config#cli-supported-parameters)
 
-Для получения более точных рекомендаций по выбору этого значения обратитесь к команде ClickPipes.
+Для получения рекомендаций по оптимальному значению этого параметра обратитесь к команде ClickPipes.
 
 :::
 
 
 ## Параметры подключения для Supabase {#connection-details-to-use-for-supabase}
 
-Перейдите в настройки вашего проекта Supabase: `Project Settings` -> `Database` (в разделе `Configuration`).
+Перейдите в настройки проекта Supabase: `Project Settings` -> `Database` (в разделе `Configuration`).
 
-**Важно**: Отключите опцию `Display connection pooler` на этой странице и перейдите в раздел `Connection parameters`, чтобы скопировать необходимые параметры.
+**Важно**: Отключите параметр `Display connection pooler` на этой странице и перейдите в раздел `Connection parameters`, где нужно записать или скопировать параметры подключения.
 
 <Image
   img={supabase_connection_details}
@@ -99,7 +99,7 @@ ClickPipes изначально поддерживает Supabase по IPv6 дл
 
 ## Примечание о RLS {#note-on-rls}
 
-Пользователь ClickPipes Postgres не должен быть ограничен политиками RLS, так как это может привести к потере данных. Отключить политики RLS для пользователя можно с помощью следующей команды:
+Пользователь ClickPipes Postgres не должен быть ограничен политиками RLS, так как это может привести к потере данных. Политики RLS для пользователя можно отключить, выполнив следующую команду:
 
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
@@ -109,4 +109,4 @@ ALTER USER clickpipes_user BYPASSRLS;
 ## Что дальше? {#whats-next}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud.
-Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся при создании ClickPipe.
+Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра Postgres — они понадобятся вам при создании ClickPipe.

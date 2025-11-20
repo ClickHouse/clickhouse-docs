@@ -1,6 +1,6 @@
 # tgzアーカイブを使用したClickHouseのインストール
 
-> `deb`または`rpm`パッケージのインストールが不可能なすべてのLinuxディストリビューションでは、公式のプリコンパイル済み`tgz`アーカイブを使用することを推奨します。
+> `deb`または`rpm`パッケージのインストールが不可能なすべてのLinuxディストリビューションでは、公式のプリコンパイル済み`tgz`アーカイブの使用を推奨します。
 
 <VerticalStepper>
 
@@ -14,7 +14,7 @@
 
 :::note
 本番環境では、最新の `stable` バージョンの使用を推奨します。
-リリース番号は、[こちらのGitHubページ](https://github.com/ClickHouse/ClickHouse/tags)で `-stable` の接尾辞が付いたものを確認できます。
+リリース番号は、[この GitHub ページ](https://github.com/ClickHouse/ClickHouse/tags)で `-stable` の接尾辞が付いたものを確認できます。
 :::
 
 
@@ -31,12 +31,12 @@ export LATEST_VERSION
 
 ## システムアーキテクチャの検出 {#detect-system-architecture}
 
-システムアーキテクチャを検出し、ARCH変数を適切に設定します：
+システムアーキテクチャを検出し、ARCH変数を適切に設定します:
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Intel/AMD 64ビットプロセッサ用
-  aarch64) ARCH=arm64 ;;        # ARM 64ビットプロセッサ用
+  x86_64) ARCH=amd64 ;;         # Intel/AMD 64ビットプロセッサ向け
+  aarch64) ARCH=arm64 ;;        # ARM 64ビットプロセッサ向け
   *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # サポートされていないアーキテクチャの場合は終了
 esac
 ```
@@ -44,7 +44,7 @@ esac
 
 ## 各ClickHouseコンポーネントのtarballをダウンロードする {#download-tarballs}
 
-各ClickHouseコンポーネントのtarballをダウンロードします。このループは、まずアーキテクチャ固有のパッケージを試行し、該当するものがない場合は汎用パッケージにフォールバックします。
+各ClickHouseコンポーネントのtarballをダウンロードします。このループは、まずアーキテクチャ固有のパッケージを試行し、それが失敗した場合は汎用パッケージにフォールバックします。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -57,13 +57,13 @@ done
 
 ## パッケージの展開とインストール {#extract-and-install}
 
-以下のコマンドを実行して、次のパッケージを展開しインストールします:
+以下のコマンドを実行して、次のパッケージを展開しインストールします：
 
 - `clickhouse-common-static`
 
 
 ```bash
-# clickhouse-common-staticパッケージを展開してインストール
+# clickhouse-common-staticパッケージの展開とインストール
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"

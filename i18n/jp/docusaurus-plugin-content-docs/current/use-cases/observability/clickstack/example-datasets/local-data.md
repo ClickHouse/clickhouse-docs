@@ -151,7 +151,7 @@ docker run -d \
 
 ## HyperDX UIへのアクセス {#navigate-to-the-hyperdx-ui}
 
-ローカルにデプロイしている場合は、[http://localhost:8080](http://localhost:8080) にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用している場合は、サービスを選択し、左メニューから`HyperDX`を選択してください。
+ローカルにデプロイしている場合は、[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用している場合は、サービスを選択し、左メニューから`HyperDX`を選択してください。
 
 
 ## システムログの確認 {#explore-system-logs}
@@ -167,18 +167,18 @@ docker run -d \
 
 左側のメニューからChart Explorerに移動します。ソースとして`Metrics`を選択し、集計タイプとして`Maximum`を選択します。
 
-`Select a Metric`メニューで`memory`と入力してから、`system.memory.utilization (Gauge)`を選択します。
+`Select a Metric`メニューで`memory`と入力し、`system.memory.utilization (Gauge)`を選択します。
 
-実行ボタンを押すと、時系列でメモリ使用率を可視化できます。
+実行ボタンを押して、時系列でメモリ使用率を可視化します。
 
 <Image img={hyperdx_21} alt='時系列のメモリ使用率' size='lg' />
 
-数値は浮動小数点の`%`として返されることに注意してください。より明確に表示するには、`Set number format`を選択します。
+数値は浮動小数点の`%`として返されます。より明確に表示するには、`Set number format`を選択します。
 
 <Image img={hyperdx_22} alt='数値フォーマット' size='lg' />
 
-表示されるメニューで、`Output format`ドロップダウンから`Percentage`を選択してから、`Apply`をクリックします。
+表示されるメニューで、`Output format`ドロップダウンから`Percentage`を選択し、`Apply`をクリックします。
 
-<Image img={hyperdx_23} alt='時系列のメモリ使用率（パーセント表示）' size='lg' />
+<Image img={hyperdx_23} alt='時系列のメモリ使用率(%)' size='lg' />
 
 </VerticalStepper>

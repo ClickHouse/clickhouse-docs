@@ -7,11 +7,11 @@ slug: /beta-and-experimental-features
 doc_type: 'reference'
 ---
 
-由于 ClickHouse 是开源的，它不仅接收来自 ClickHouse 员工的贡献，也接收来自社区的贡献。这些贡献的开发节奏各不相同；某些功能可能需要较长的原型设计阶段，或者需要更多时间来收集足够的社区反馈并进行迭代，才能被视为正式普遍可用（GA）。
+由于 ClickHouse 是开源的，它不仅接收来自 ClickHouse 员工的贡献，也接收来自社区的贡献。这些贡献的开发进度往往不同；某些功能可能需要较长的原型设计阶段，或者需要更多时间来获取足够的社区反馈并进行迭代，才能被视为正式普遍可用（GA, Generally Available）。
 
-由于功能何时被归类为正式普遍可用存在不确定性，我们将功能划分为两类：**Beta** 和 **Experimental**。
+由于功能何时被归类为正式普遍可用存在不确定性，我们将功能划分为两个类别：**Beta** 和 **Experimental**。
 
-**Beta** 功能由 ClickHouse 团队正式支持。**Experimental** 功能是由 ClickHouse 团队或社区主导的早期原型，目前尚未得到正式支持。
+**Beta** 功能由 ClickHouse 团队正式支持。**Experimental** 功能是由 ClickHouse 团队或社区推动的早期原型，不属于正式支持范围。
 
 下文将明确说明 **Beta** 和 **Experimental** 功能的特性：
 
@@ -19,15 +19,15 @@ doc_type: 'reference'
 
 ## Beta 功能 {#beta-features}
 
-- 正在积极开发中,以实现正式发布 (GA)
+- 正在积极开发中,以达到正式发布 (GA) 状态
 - 主要已知问题可在 GitHub 上追踪
-- 功能可能会在未来发生变化
+- 功能在未来可能会发生变化
 - 可能在 ClickHouse Cloud 中启用
 - ClickHouse 团队为 Beta 功能提供支持
 
 以下是 ClickHouse Cloud 中处于 Beta 阶段的功能,这些功能可在您的 ClickHouse Cloud 服务中使用。
 
-注意:请确保使用最新版本的 ClickHouse [兼容性](/operations/settings/settings#compatibility)设置,以使用最近引入的功能。
+注意:请确保使用最新版本的 ClickHouse [兼容性](/operations/settings/settings#compatibility)设置,以便使用最近引入的功能。
 
 
 ## 实验性功能 {#experimental-features}
@@ -36,12 +36,12 @@ doc_type: 'reference'
 - 可能会被移除
 - 可能引入破坏性变更
 - 功能可能会发生变化
-- 需要显式启用
+- 需要手动启用
 - ClickHouse 团队**不提供支持**
 - 可能缺少重要功能和文档
-- 无法在云服务中启用
+- 无法在云环境中启用
 
-请注意：除上述标记为 Beta 的功能外，ClickHouse Cloud 不允许启用任何其他实验性功能。
+请注意：除上述列为 Beta 版本的功能外，ClickHouse Cloud 不允许启用任何其他实验性功能。
 
 <!-- The inner content of the tags below are replaced at build time with a table generated from source
      Please do not modify or remove the tags

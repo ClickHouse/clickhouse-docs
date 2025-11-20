@@ -8,27 +8,27 @@ doc_type: 'guide'
 
 
 
-# 名前付きコレクションを使った ClickHouse と Kafka の統合
+# 名前付きコレクションを使用した ClickHouse と Kafka の統合
 
 
 
 ## はじめに {#introduction}
 
-このガイドでは、名前付きコレクションを使用してClickHouseをKafkaに接続する方法を説明します。名前付きコレクションの設定ファイルを使用すると、以下のような利点があります。
+本ガイドでは、名前付きコレクションを使用してClickHouseをKafkaに接続する方法について説明します。名前付きコレクションの設定ファイルを使用することには、以下のような利点があります。
 
 - 設定の一元管理が可能で、管理が容易になる
 - SQLテーブル定義を変更せずに設定を変更できる
-- 単一の設定ファイルを確認するだけで、設定のレビューやトラブルシューティングが容易になる
+- 単一の設定ファイルを確認するだけで、設定のレビューとトラブルシューティングが容易になる
 
-このガイドは、Apache Kafka 3.4.1およびClickHouse 24.5.1でテスト済みです。
+本ガイドは、Apache Kafka 3.4.1およびClickHouse 24.5.1でテスト済みです。
 
 
 ## 前提条件 {#assumptions}
 
-このドキュメントは以下を前提としています：
+このドキュメントは、以下の環境が整っていることを前提としています:
 
-1. 稼働中のKafkaクラスター
-2. セットアップ済みで稼働中のClickHouseクラスター
+1. 稼働中のKafkaクラスタ
+2. セットアップ済みで稼働中のClickHouseクラスタ
 3. SQLの基礎知識、およびClickHouseとKafkaの設定に関する知識
 
 
@@ -48,7 +48,7 @@ doc_type: 'guide'
 
 ## 設定 {#configuration}
 
-ClickHouseの`config.xml`ファイルに以下のセクションを追加します:
+ClickHouseの`config.xml`ファイルに以下のセクションを追加します：
 
 ```xml
 <!-- Kafka統合用の名前付きコレクション -->
@@ -102,14 +102,14 @@ ClickHouseの`config.xml`ファイルに以下のセクションを追加しま�
 ### 設定に関する注意事項 {#configuration-notes}
 
 1. Kafkaアドレスおよび関連する設定を、使用するKafkaクラスタのセットアップに合わせて調整してください。
-2. `<kafka>`の前のセクションには、ClickHouse Kafkaエンジンパラメータが含まれています。パラメータの完全なリストについては、[Kafkaエンジンパラメータ](/engines/table-engines/integrations/kafka)を参照してください。
+2. `<kafka>`より前のセクションには、ClickHouse Kafkaエンジンパラメータが含まれています。パラメータの完全なリストについては、[Kafkaエンジンパラメータ](/engines/table-engines/integrations/kafka)を参照してください。
 3. `<kafka>`内のセクションには、Kafkaの拡張設定オプションが含まれています。その他のオプションについては、[librdkafka設定](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)を参照してください。
 4. この例では、`SASL_SSL`セキュリティプロトコルと`PLAIN`メカニズムを使用しています。使用するKafkaクラスタの設定に基づいて、これらの設定を調整してください。
 
 
 ## テーブルとデータベースの作成 {#creating-tables-and-databases}
 
-ClickHouseクラスタに必要なデータベースとテーブルを作成します。ClickHouseを単一ノードとして実行している場合は、SQLコマンドのクラスタ指定部分を省略し、`ReplicatedMergeTree`の代わりに別のエンジンを使用してください。
+ClickHouseクラスタに必要なデータベースとテーブルを作成します。ClickHouseを単一ノードとして実行している場合は、SQLコマンドのクラスタ部分を省略し、`ReplicatedMergeTree`の代わりに任意のエンジンを使用してください。
 
 ### データベースの作成 {#create-the-database}
 
@@ -213,7 +213,7 @@ SELECT * FROM second_replicated_table LIMIT 10;
 
 ### 注意 {#note}
 
-このガイドでは、両方のKafkaトピックに取り込まれるデータは同じです。実際の使用では、これらは異なるでしょう。必要に応じて任意の数のKafkaクラスタを追加できます。
+このガイドでは、両方のKafkaトピックに取り込まれるデータは同じです。実際の使用では、これらは異なるデータになります。必要に応じて任意の数のKafkaクラスタを追加できます。
 
 出力例：
 

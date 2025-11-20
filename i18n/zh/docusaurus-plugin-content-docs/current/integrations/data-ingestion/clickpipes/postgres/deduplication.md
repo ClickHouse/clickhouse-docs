@@ -1,6 +1,6 @@
 ---
 sidebar_label: '去重策略'
-description: '处理重复行和已删除行。'
+description: '处理重复行和已删除的行。'
 slug: /integrations/clickpipes/postgres/deduplication
 title: '去重策略（使用 CDC）'
 keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
@@ -10,7 +10,7 @@ doc_type: 'guide'
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
 import Image from '@theme/IdealImage';
 
-从 Postgres 复制到 ClickHouse 的更新和删除操作，会由于 ClickHouse 的数据存储结构和复制过程而在 ClickHouse 中产生重复行。本文介绍导致这一现象的原因，以及在 ClickHouse 中处理重复数据可采用的策略。
+由于 ClickHouse 的数据存储结构以及复制过程，从 Postgres 复制到 ClickHouse 的更新和删除操作会在 ClickHouse 中产生重复行。本文将说明出现这种情况的原因，并介绍在 ClickHouse 中处理重复数据的策略。
 
 
 ## 数据如何进行复制? {#how-does-data-get-replicated}
@@ -21,11 +21,11 @@ ClickPipes 使用 [Postgres 逻辑解码](https://www.pgedge.com/blog/logical-re
 
 ### ReplacingMergeTree {#replacingmergetree}
 
-ClickPipes 使用 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 引擎将 Postgres 表映射到 ClickHouse。ClickHouse 在仅追加工作负载下性能最佳,不建议频繁执行 UPDATE 操作。这正是 ReplacingMergeTree 特别强大的地方。
+ClickPipes 使用 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 引擎将 Postgres 表映射到 ClickHouse。ClickHouse 在仅追加工作负载下性能最佳,不建议频繁执行 UPDATE 操作。这正是 ReplacingMergeTree 特别强大之处。
 
-使用 ReplacingMergeTree 时,更新操作被建模为插入具有更新版本(`_peerdb_version`)的行,而删除操作则是插入具有更新版本且 `_peerdb_is_deleted` 标记为 true 的行。ReplacingMergeTree 引擎在后台对数据进行去重/合并,并为给定的主键(id)保留行的最新版本,从而能够高效地将 UPDATE 和 DELETE 操作作为版本化插入来处理。
+使用 ReplacingMergeTree 时,更新操作被建模为插入具有更新版本(`_peerdb_version`)的行,而删除操作则是插入具有更新版本且 `_peerdb_is_deleted` 标记为 true 的行。ReplacingMergeTree 引擎在后台对数据进行去重/合并,并保留给定主键(id)的最新版本行,从而能够高效地将 UPDATE 和 DELETE 操作作为版本化插入来处理。
 
-以下是 ClickPipes 在 ClickHouse 中创建表时执行的 CREATE Table 语句示例。
+以下是 ClickPipes 在 ClickHouse 中创建表时执行的 CREATE TABLE 语句示例。
 
 ```sql
 CREATE TABLE users
@@ -77,7 +77,7 @@ _请注意以下查询中的 WHERE 子句,用于过滤已删除的行。_
 
 - **简单计数查询**:统计帖子数量。
 
-这是您可以运行的最简单的查询,用于检查同步是否正常。两个查询应该返回相同的计数。
+这是您可以运行的最简单的查询,用于检查同步是否正常。两个查询应返回相同的计数。
 
 ```sql
 -- PostgreSQL
@@ -89,7 +89,7 @@ SELECT count(*) FROM posts FINAL WHERE _peerdb_is_deleted=0;
 
 - **带 JOIN 的简单聚合**:累计浏览量最多的前 10 名用户。
 
-这是单表聚合的示例。此处存在重复数据会极大地影响求和函数的结果。
+这是单表聚合的示例。此处存在重复数据会极大影响 sum 函数的结果。
 
 
 ```sql
@@ -158,9 +158,9 @@ CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO
 
 #### 视图 {#views}
 
-[视图](/sql-reference/statements/create/view#normal-view)是从查询中隐藏 FINAL 关键字的好方法,因为它们不存储任何数据,只是在每次访问时从另一个表执行读取操作。
+[视图](/sql-reference/statements/create/view#normal-view)是从查询中隐藏 FINAL 关键字的好方法,因为它们不存储任何数据,只是在每次访问时从另一个表执行读取。
 
-以下是在 ClickHouse 中为数据库的每个表创建视图的示例,使用 FINAL 关键字并过滤已删除的行。
+以下是在 ClickHouse 中为数据库的每个表创建带有 FINAL 关键字和已删除行过滤器的视图的示例。
 
 ```sql
 CREATE VIEW posts_view AS SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0;
@@ -185,17 +185,17 @@ LIMIT 10
 
 #### 可刷新物化视图 {#refreshable-material-view}
 
-另一种方法是使用[可刷新物化视图](/materialized-view/refreshable-materialized-view),它允许您调度查询执行以对行进行去重并将结果存储在目标表中。每次按计划刷新时,目标表都会被最新的查询结果替换。
+另一种方法是使用[可刷新物化视图](/materialized-view/refreshable-materialized-view),它允许您调度查询执行以对行进行去重并将结果存储在目标表中。每次调度刷新时,目标表都会被最新的查询结果替换。
 
-此方法的主要优势在于,使用 FINAL 关键字的查询仅在刷新期间运行一次,从而消除了对目标表的后续查询使用 FINAL 的需要。
+此方法的主要优势在于,使用 FINAL 关键字的查询仅在刷新期间运行一次,从而无需对目标表的后续查询使用 FINAL。
 
-然而,缺点是目标表中的数据仅与最近一次刷新时一样新。话虽如此,对于许多用例,几分钟到几小时的刷新间隔可能已经足够。
+然而,缺点是目标表中的数据仅与最近一次刷新时一样新。也就是说,对于许多用例,从几分钟到几小时的刷新间隔可能就足够了。
 
 ```sql
--- 创建去重后的 posts 表
+-- 创建去重的 posts 表
 CREATE TABLE deduplicated_posts AS posts;
 
--- 创建物化视图并调度为每小时运行一次
+-- 创建物化视图并调度每小时运行一次
 CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0
 ```

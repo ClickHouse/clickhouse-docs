@@ -7,15 +7,15 @@ sidebar_label: '第 2 部分'
 doc_type: 'guide'
 ---
 
-> 这是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，演示如何采用实时复制（CDC）的方法高效完成迁移。文中介绍的许多概念同样适用于从 PostgreSQL 向 ClickHouse 手动执行批量数据传输的场景。
+> 本文是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，演示如何采用实时复制（CDC）方式高效完成迁移。文中介绍的许多概念同样适用于从 PostgreSQL 到 ClickHouse 的手动批量数据迁移。
 
-大多数在 PostgreSQL 环境中使用的 SQL 查询在 ClickHouse 中无需修改即可运行，而且通常会执行得更快。
+你在 PostgreSQL 部署中的大多数 SQL 查询在 ClickHouse 中通常无需修改即可运行，并且往往能以更快的速度执行。
 
 
 
 ## 使用 CDC 进行去重 {#deduplication-cdc}
 
-在使用 CDC 进行实时复制时,请注意更新和删除操作可能会产生重复行。为了处理这种情况,您可以使用视图和可刷新物化视图等技术。
+在使用 CDC 进行实时复制时,请注意更新和删除操作可能会产生重复行。为了处理这个问题,您可以使用视图和可刷新物化视图等技术。
 
 请参阅此[指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres),了解如何在使用 CDC 进行实时复制迁移时,以最小代价将应用程序从 PostgreSQL 迁移到 ClickHouse。
 
@@ -24,9 +24,9 @@ doc_type: 'guide'
 
 虽然可以在最少查询重写的情况下进行迁移,但建议充分利用 ClickHouse 的特性来显著简化查询并进一步提升查询性能。
 
-这里的示例涵盖了常见的查询模式,并展示了如何使用 ClickHouse 对其进行优化。这些示例在 PostgreSQL 和 ClickHouse 的等效资源(8 核,32GiB 内存)上使用完整的 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)(截至 2024 年 4 月)。
+这里的示例涵盖了常见的查询模式,并展示了如何使用 ClickHouse 对其进行优化。示例在 PostgreSQL 和 ClickHouse 的等效资源(8 核,32GiB 内存)上使用完整的 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)(截至 2024 年 4 月)。
 
-> 为简单起见,下面的查询省略了数据去重技术的使用。
+> 为简单起见,以下查询省略了数据去重技术的使用。
 
 > 这里的计数会略有不同,因为 Postgres 数据仅包含满足外键引用完整性的行。ClickHouse 不施加此类约束,因此拥有完整的数据集,例如包括匿名用户。
 
@@ -50,8 +50,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-返回 5 行。耗时:0.360 秒。处理了 2437 万行,140.45 MB(6773 万行/秒,390.38 MB/秒)。
-峰值内存使用:510.71 MiB。
+5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
+Peak memory usage: 510.71 MiB.
 ```
 
 ```sql
@@ -72,7 +72,7 @@ LIMIT 5;
  J. Pablo Fern&#225;ndez |      12446818
  Matt                   |       12298764
 
-时间:107620.508 毫秒(01:47.621)
+Time: 107620.508 ms (01:47.621)
 ```
 
 哪些 `tags` 获得最多的 `views`:
@@ -94,7 +94,7 @@ LIMIT 5
 │ android       │ 4258320338 │
 └────────────┴────────────┘
 
-返回 5 行。耗时:0.908 秒。处理了 5982 万行,1.45 GB(6587 万行/秒,1.59 GB/秒)。
+5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
 ```
 
 ```sql
@@ -128,7 +128,7 @@ LIMIT 5;
  android        | 4186216900
 (5 rows)
 
-时间:112508.083 毫秒(01:52.508)
+Time: 112508.083 ms (01:52.508)
 ```
 
 **聚合函数**
@@ -172,11 +172,11 @@ Year:                   2024
 MostViewedQuestionTitle: 警告 "第三方 cookie 将被阻止。在 Issues 选项卡中了解更多信息"
 MaxViewCount:           66975
 
-返回 17 行。耗时:0.677 秒。处理了 2437 万行,1.86 GB(每秒 3601 万行,2.75 GB/秒)
+返回 17 行。耗时:0.677 秒。处理了 2437 万行,1.86 GB(每秒 3601 万行,2.75 GB/s.)
 峰值内存使用量:554.31 MiB。
 ```
 
-这比等效的 Postgres 查询要简单得多（而且更快）：
+这比等价的 Postgres 查询要简单得多（而且更快）：
 
 ```sql
 --Postgres
@@ -198,21 +198,21 @@ WHERE rn = 1
 ORDER BY Year;
  year |                                                 mostviewedquestiontitle                                                 | maxviewcount
 ------+-----------------------------------------------------------------------------------------------------------------------+--------------
- 2008 | 如何查找列表中指定项的索引?                                                                       |       6316987
+ 2008 | 如何在列表中查找给定项的索引?                                                                       |       6316987
  2009 | 如何撤销 Git 中最近的本地提交?                                                                     |       13962748
 
 ...
 
- 2023 | 每次使用 pip 3 时如何解决"error: externally-managed-environment"错误?                                          |       506822
- 2024 | 警告"第三方 cookie 将被阻止。在 Issues 选项卡中了解更多信息"                                              |       66975
-(17 rows)
+ 2023 | 如何解决每次使用 pip 3 时出现的"error: externally-managed-environment"错误?                                          |       506822
+ 2024 | 警告"第三方 Cookie 将被阻止。在问题选项卡中了解更多信息"                                              |       66975
+(17 行)
 
-Time: 125822.015 ms (02:05.822)
+时间:125822.015 ms (02:05.822)
 ```
 
-**条件与数组**
+**条件语句与数组**
 
-条件函数和数组函数可以显著简化查询。下面的查询会计算从 2022 年到 2023 年间，出现次数超过 10000 次且百分比增幅最大的标签。请注意，由于使用了条件、数组函数，以及在 HAVING 和 SELECT 子句中复用别名的能力，下面这条 ClickHouse 查询语句非常简洁。
+条件函数和数组函数可以显著简化查询。下面的查询会计算那些在 2022 年到 2023 年期间出现次数超过 10000 次、且同比增幅百分比最大的标签。请注意，得益于条件函数、数组函数，以及在 `HAVING` 和 `SELECT` 子句中重用别名的能力，下面的 ClickHouse 查询非常简洁。
 
 ```sql
 --ClickHouse
@@ -237,8 +237,8 @@ LIMIT 5
 ```
 
 
-5 行数据已返回。耗时：0.247 秒。已处理 5.08 百万行，155.73 MB（20.58 百万行/秒，630.61 MB/秒）。
-峰值内存使用量：403.04 MiB。
+5 行结果。耗时：0.247 秒。已处理 508 万行，155.73 MB（每秒 2,058 万行，630.61 MB/秒）。
+峰值内存使用：403.04 MiB。
 
 ````
 
@@ -278,4 +278,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ````
 
-[点击查看第 3 部分](/migrations/postgresql/data-modeling-techniques)
+[点击此处查看第 3 篇](/migrations/postgresql/data-modeling-techniques)

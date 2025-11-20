@@ -2,7 +2,7 @@
 sidebar_label: 'Java Runner'
 slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: 'ユーザーは Google Dataflow Java Runner を使用して ClickHouse にデータをインポートできます'
+description: 'ユーザーは Google Dataflow Java Runner を使用して ClickHouse にデータをインジェストできます'
 title: 'Dataflow Java Runner'
 doc_type: 'guide'
 keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO connector']
@@ -15,7 +15,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Dataflow Java ランナーを使用すると、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービス上で実行できます。この方法は柔軟性が非常に高く、高度な ETL ワークフローに適しています。
+Dataflow Java ランナーを使用すると、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービス上で実行できます。この方法は柔軟性が高く、高度な ETL ワークフローに適しています。
 
 
 

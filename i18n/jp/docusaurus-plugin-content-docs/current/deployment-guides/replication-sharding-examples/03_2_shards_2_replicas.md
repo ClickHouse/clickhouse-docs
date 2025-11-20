@@ -3,7 +3,7 @@ slug: /architecture/cluster-deployment
 sidebar_label: 'レプリケーションとスケーリング'
 sidebar_position: 100
 title: 'レプリケーションとスケーリング'
-description: 'このチュートリアルでは、シンプルな ClickHouse クラスターの構築方法を学びます。'
+description: 'このチュートリアルでは、シンプルな ClickHouse クラスターの構成方法を学びます。'
 doc_type: 'guide'
 keywords: ['cluster deployment', 'replication', 'sharding', 'high availability', 'scalability']
 ---
@@ -19,9 +19,10 @@ import DedicatedKeeperServers from '@site/docs/deployment-guides/replication-sha
 import ExampleFiles from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_working_example.mdx';
 import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
-> この例では、レプリケーションとスケーリングの両方を行うシンプルな ClickHouse クラスターのセットアップ方法を説明します。2 つのシャードと 2 つのレプリカで構成され、クラスター内の調整とクォーラム維持のために 3 ノード構成の ClickHouse Keeper クラスターを使用します。
+> この例では、レプリケーションとスケーリングの両方を行うシンプルな ClickHouse クラスターのセットアップ方法を説明します。
+> このクラスターは、2 つのシャードと 2 つのレプリカに加え、クラスタ内の調整の管理とクォーラムの維持を行う 3 ノード構成の ClickHouse Keeper クラスターで構成されています。
 
-構築するクラスターのアーキテクチャは、次の図のとおりです。
+これからセットアップするクラスターのアーキテクチャを次に示します。
 
 <Image img={SharedReplicatedArchitecture} size="md" alt="2 つのシャードと 1 つのレプリカのアーキテクチャ図" />
 
@@ -41,9 +42,9 @@ import CloudTip from '@site/docs/deployment-guides/replication-sharding-examples
 
 <ExampleFiles />
 
-このチュートリアルでは、[Docker Compose](https://docs.docker.com/compose/)を使用してClickHouseクラスタをセットアップします。このセットアップは、個別のローカルマシン、仮想マシン、またはクラウドインスタンスでも動作するように変更可能です。
+このチュートリアルでは、[Docker compose](https://docs.docker.com/compose/)を使用してClickHouseクラスタをセットアップします。このセットアップは、個別のローカルマシン、仮想マシン、またはクラウドインスタンスでも動作するように変更できます。
 
-以下のコマンドを実行して、この例で使用するディレクトリ構造をセットアップします:
+この例のディレクトリ構造をセットアップするには、以下のコマンドを実行してください:
 
 ```bash
 mkdir cluster_2S_2R
@@ -52,7 +53,7 @@ cd cluster_2S_2R
 ```
 
 
-# clickhouse-keeperディレクトリの作成
+# clickhouse-keeperディレクトリを作成
 
 for i in {01..03}; do
 mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
@@ -164,7 +165,7 @@ services:
       - "127.0.0.1:9183:9181"
 ```
 
-次のサブディレクトリとファイルを作成します。
+次のサブディレクトリとファイルを作成します：
 
 ```bash
 for i in {01..04}; do
@@ -182,7 +183,7 @@ done
 
 ### サーバーのセットアップ {#server-setup}
 
-`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている空の設定ファイル`config.xml`をそれぞれ変更します。以下でハイライトされている行は、各ノードに応じて変更する必要があります:
+次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている空の設定ファイル`config.xml`をそれぞれ変更します。以下でハイライトされている行は、各ノード固有の内容に変更する必要があります:
 
 ```xml
 <clickhouse replace="true">
@@ -258,7 +259,7 @@ done
 </clickhouse>
 ```
 
-| Directory                                                 | File                                                                                                                                                                             |
+| ディレクトリ                                                 | ファイル                                                                                                                                                                             |
 | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
 | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -291,7 +292,7 @@ done
 クラスタの設定は`<remote_servers>`ブロックで行います。
 ここでは、クラスタ名`cluster_2S_2R`が定義されています。
 
-`<cluster_2S_2R></cluster_2S_2R>`ブロックは、`<shard></shard>`と`<replica></replica>`の設定を使用してクラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリは、`ON CLUSTER`句を使用してクラスタ全体で実行されるクエリです。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries`設定で無効にすることもできます。
+`<cluster_2S_2R></cluster_2S_2R>`ブロックは、`<shard></shard>`および`<replica></replica>`設定を使用してクラスタのレイアウトを定義し、分散DDLクエリのテンプレートとして機能します。分散DDLクエリは、`ON CLUSTER`句を使用してクラスタ全体で実行されるクエリです。デフォルトでは分散DDLクエリは許可されていますが、`allow_distributed_ddl_queries`設定で無効にすることもできます。
 
 `internal_replication`をtrueに設定することで、データはレプリカのいずれか1つにのみ書き込まれます。
 
@@ -354,7 +355,7 @@ ClickHouse Keeperのセットアップについては、チュートリアルの
 ```
 
 :::note
-ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行することは可能ですが、本番環境ではClickHouse Keeperを専用ホスト上で実行することを強く推奨します。
+ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行することは可能ですが、本番環境では専用ホスト上でClickHouse Keeperを実行することを強く推奨します。
 :::
 
 #### マクロ設定 {#macros-config-explanation}
@@ -413,11 +414,11 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 </clickhouse>
 ```
 
-この例では、簡略化のためにデフォルトユーザーはパスワードなしで設定されています。
-実際の環境では、このような設定は推奨されません。
+この例では、簡略化のためにデフォルトユーザーにはパスワードが設定されていません。
+実際の運用環境では、このような設定は推奨されません。
 
 :::note
-この例では、クラスタ内のすべてのノードで `users.xml` ファイルは同一です。
+この例では、クラスター内のすべてのノードで `users.xml` ファイルの内容は同一です。
 :::
 
 
@@ -449,8 +450,8 @@ ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行するこ�
 docker-compose up -d
 ```
 
-DockerがClickHouseとKeeperのイメージをプルし、
-その後コンテナを起動する様子が表示されます:
+DockerがClickHouseとKeeperのイメージをプルし始め、
+その後コンテナが起動する様子が表示されます:
 
 ```bash
 [+] Running 8/8
@@ -465,7 +466,7 @@ DockerがClickHouseとKeeperのイメージをプルし、
 ```
 
 クラスタが実行されていることを確認するには、いずれかのノードに接続して
-次のクエリを実行します。最初のノードに接続するコマンドを以下に示します:
+以下のクエリを実行します。最初のノードに接続するコマンドを以下に示します:
 
 
 ```bash
@@ -479,7 +480,7 @@ docker exec -it clickhouse-01 clickhouse-client
 cluster_2S_2R node 1 :)
 ```
 
-どのホストにどのクラスタートポロジーが定義されているかを確認するには、次のクエリを実行します。
+次のクエリを実行して、どのホストにどのクラスタートポロジーが定義されているかを確認します。
 
 ```sql title="Query"
 SELECT 
@@ -526,7 +527,7 @@ WHERE path IN ('/', '/clickhouse')
 
 ## データベースの作成 {#creating-a-database}
 
-クラスタが正しくセットアップされ、稼働していることを確認したので、次に[UK property prices](/getting-started/example-datasets/uk-price-paid)のサンプルデータセットチュートリアルで使用したものと同じテーブルを再作成します。このデータセットは、1995年以降のイングランドとウェールズにおける不動産物件の支払価格約3000万行で構成されています。
+クラスタが正しくセットアップされ、稼働していることを確認したので、次に[UK property prices](/getting-started/example-datasets/uk-price-paid)のサンプルデータセットチュートリアルで使用したものと同じテーブルを再作成します。このデータセットは、1995年以降のイングランドとウェールズにおける不動産物件の取引価格約3000万行で構成されています。
 
 各ホストのクライアントに接続するには、別々のターミナルタブまたはウィンドウから以下の各コマンドを実行します:
 
@@ -537,7 +538,7 @@ docker exec -it clickhouse-03 clickhouse-client
 docker exec -it clickhouse-04 clickhouse-client
 ```
 
-各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのデータベース以外にまだデータベースが作成されていないことを確認できます:
+各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのデータベース以外にデータベースがまだ作成されていないことを確認できます:
 
 ```sql title="クエリ"
 SHOW DATABASES;
@@ -560,7 +561,7 @@ CREATE DATABASE IF NOT EXISTS uk
 ON CLUSTER cluster_2S_2R;
 ```
 
-各ホストのクライアントから再度同じクエリを実行して、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されたことを確認できます:
+各ホストのクライアントから再度同じクエリを実行して、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体にデータベースが作成されたことを確認できます:
 
 ```sql
 SHOW DATABASES;
@@ -609,15 +610,15 @@ ENGINE = ReplicatedMergeTree('/clickhouse/tables/{database}/{table}/{shard}', '{
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-このクエリは、[UK property prices](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルで使用された元の`CREATE`文と同一ですが、`ON CLUSTER`句と`ReplicatedMergeTree`エンジンの使用が異なる点に注意してください。
+このクエリは、[UK property prices](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと同一ですが、`ON CLUSTER`句と`ReplicatedMergeTree`エンジンの使用が異なります。
 
 `ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL（データ定義言語）クエリを分散実行するために設計されており、これらのスキーマ変更がクラスター内のすべてのノードに適用されることを保証します。
 
-[`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)エンジンは、通常の`MergeTree`テーブルエンジンと同様に動作しますが、データのレプリケーションも行います。
+[`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)エンジンは通常の`MergeTree`テーブルエンジンと同様に動作しますが、データのレプリケーションも行います。
 このエンジンには2つのパラメータの指定が必要です：
 
-- `zoo_path`：テーブルのメタデータへのKeeper/ZooKeeperパス
-- `replica_name`：テーブルのレプリカ名
+- `zoo_path`: テーブルのメタデータへのKeeper/ZooKeeperパス
+- `replica_name`: テーブルのレプリカ名
 
 <br />
 
@@ -647,8 +648,10 @@ SHOW TABLES IN uk;
 
 ## 分散テーブルへのデータ挿入 {#inserting-data-using-distributed}
 
-テーブルにデータを挿入する際、`ON CLUSTER`は使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML(Data Manipulation Language)クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを使用する必要があります。
-2シャード1レプリカのクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルは異なるホスト上に配置されたシャードにアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
+テーブルにデータを挿入する際、`ON CLUSTER`は使用できません。これは`INSERT`、`UPDATE`、
+`DELETE`などのDML（Data Manipulation Language）クエリには適用されないためです。データを挿入するには、
+[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを利用する必要があります。
+2シャード1レプリカのクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルは異なるホストに配置されたシャードにアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
 分散テーブルは、クラスタ内のすべてのシャードに対するインターフェースとして機能します。
 
 任意のホストクライアントから、前のステップで作成した既存のレプリケートテーブルを使用して分散テーブルを作成するために、次のクエリを実行します:
@@ -659,7 +662,7 @@ ON CLUSTER cluster_2S_2R
 ENGINE = Distributed('cluster_2S_2R', 'uk', 'uk_price_paid_local', rand());
 ```
 
-各ホストで、`uk`データベース内に次のテーブルが表示されるようになります:
+各ホストで、`uk`データベースに次のテーブルが表示されます:
 
 ```sql
    ┌─name──────────────────────┐
@@ -709,7 +712,7 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-挿入されたデータがクラスタのノード間で均等に分散されていることを確認するために、次のクエリを実行します:
+挿入されたデータがクラスタのノード全体に均等に分散されていることを確認するために、次のクエリを実行します:
 
 ```sql
 SELECT count(*)
@@ -733,12 +736,12 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 
 ## まとめ {#conclusion}
 
-2シャード2レプリカのこのクラスタトポロジーの利点は、スケーラビリティと耐障害性の両方を提供することです。
-データは別々のホストに分散されるため、ノードあたりのストレージとI/O要件が削減され、クエリは両方のシャードで並列処理されることでパフォーマンスとメモリ効率が向上します。
+2つのシャードと2つのレプリカを持つこのクラスタトポロジの利点は、スケーラビリティと耐障害性の両方を提供することです。
+データは別々のホストに分散されるため、ノードごとのストレージとI/O要件が削減され、クエリは両方のシャードで並列処理されることでパフォーマンスとメモリ効率が向上します。
 重要な点として、各シャードが別のノードにバックアップレプリカを持つため、クラスタは1つのノードの損失に耐え、中断することなくクエリを処理し続けることができます。
 
-このクラスタトポロジーの主な欠点は、ストレージオーバーヘッドの増加です。各シャードが複製されるため、レプリカを持たない構成と比較して2倍のストレージ容量が必要になります。
-さらに、クラスタは単一ノードの障害には耐えられますが、どのノードが障害を起こすか、シャードがどのように分散されているかによっては、2つのノードが同時に失われるとクラスタが動作不能になる可能性があります。
-このトポロジーは可用性とコストのバランスを取っており、より高いレプリケーション係数のコストをかけずに一定レベルの耐障害性が必要な本番環境に適しています。
+このクラスタトポロジの主な欠点は、ストレージオーバーヘッドの増加です。各シャードが複製されるため、レプリカを持たない構成と比較して2倍のストレージ容量が必要になります。
+さらに、クラスタは単一ノードの障害には耐えられますが、どのノードが障害を起こすか、またシャードがどのように分散されているかによっては、2つのノードが同時に失われるとクラスタが動作不能になる可能性があります。
+このトポロジは可用性とコストのバランスを取っており、より高いレプリケーション係数のコストをかけずに一定レベルの耐障害性が必要な本番環境に適しています。
 
 ClickHouse Cloudがスケーラビリティと耐障害性の両方を提供しながらクエリを処理する方法については、[「Parallel Replicas」](/deployment-guides/parallel-replicas)のセクションを参照してください。

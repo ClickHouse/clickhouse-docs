@@ -3,7 +3,7 @@ sidebar_label: 'azureBlobStorage テーブル関数の使用'
 slug: /integrations/azure-data-factory/table-function
 description: 'ClickHouse の azureBlobStorage テーブル関数の使用'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: 'Azure のデータを ClickHouse に取り込むための ClickHouse azureBlobStorage テーブル関数の利用'
+title: 'ClickHouse の azureBlobStorage テーブル関数で Azure のデータを ClickHouse に取り込む'
 doc_type: 'guide'
 ---
 
@@ -18,7 +18,7 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 
 この関数は、ソースから直接データの選択、挿入、フィルタリングを可能にするテーブルライクなインターフェースを提供します。高度に最適化されており、`CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro`など、広く使用されている多数のファイル形式をサポートしています。完全なリストについては、["データ形式"](/interfaces/formats)を参照してください。
 
-このセクションでは、Azure Blob StorageからClickHouseへデータを転送するための基本的な手順と、この関数を効果的に使用するための重要な考慮事項について説明します。詳細および高度なオプションについては、公式ドキュメントを参照してください:
+このセクションでは、Azure Blob StorageからClickHouseへデータを転送するための簡単な導入ガイドと、この関数を効果的に使用するための重要な考慮事項について説明します。詳細および高度なオプションについては、公式ドキュメントを参照してください:
 [`azureBlobStorage`テーブル関数ドキュメントページ](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 
 
@@ -33,7 +33,7 @@ ClickHouseからAzure Blob Storageにアクセスするには、アクセスキ�
    <Image
      img={azureDataStoreSettings}
      size='lg'
-     alt='Azureデータストアの設定'
+     alt='Azure Data Storeの設定'
      border
    />
 
@@ -42,18 +42,22 @@ ClickHouseからAzure Blob Storageにアクセスするには、アクセスキ�
    <Image
      img={azureDataStoreAccessKeys}
      size='lg'
-     alt='Azureデータストアのアクセスキー'
+     alt='Azure Data Storeアクセスキー'
      border
    />
 
-4. 接続文字列をコピーします。これはazureBlobStorageテーブル関数のパラメータとして使用します。
+4. 接続文字列をコピーします。これはazureBlobStorageテーブル関数のパラメータとして使用されます。
 
 
 ## Azure Blob Storageからのデータクエリ {#querying-the-data-from-azure-blob-storage}
 
-お好みのClickHouseクエリコンソールを開きます。ClickHouse CloudのWebインターフェース、ClickHouse CLIクライアント、またはクエリ実行に使用するその他のツールが利用できます。接続文字列とClickHouseクエリコンソールの両方が準備できたら、Azure Blob Storageから直接データをクエリできます。
+お好みのClickHouseクエリコンソールを開きます。ClickHouse Cloud
+Webインターフェース、ClickHouse CLIクライアント、またはクエリ実行に使用する
+その他のツールが利用できます。接続文字列とClickHouseクエリ
+コンソールの準備が整ったら、Azure Blob Storageから直接データをクエリできます。
 
-次の例では、data-containerという名前のコンテナに配置されたJSONファイルに格納されているすべてのデータをクエリします:
+次の例では、data-containerという名前のコンテナ内に配置された
+JSONファイルに格納されているすべてのデータをクエリします:
 
 ```sql
 SELECT * FROM azureBlobStorage(
@@ -63,7 +67,8 @@ SELECT * FROM azureBlobStorage(
     'JSONEachRow');
 ```
 
-そのデータをローカルのClickHouseテーブル(例: my_table)にコピーしたい場合は、`INSERT INTO ... SELECT`ステートメントを使用できます:
+このデータをローカルのClickHouseテーブル（例: my_table）にコピーする場合は、
+`INSERT INTO ... SELECT`文を使用できます:
 
 ```sql
 INSERT INTO my_table
@@ -74,7 +79,8 @@ SELECT * FROM azureBlobStorage(
     'JSONEachRow');
 ```
 
-これにより、中間的なETLステップを必要とせずに、外部データを効率的にClickHouseに取り込むことができます。
+これにより、中間的なETL処理を必要とせずに、
+外部データを効率的にClickHouseに取り込むことができます。
 
 
 ## Environmental sensorsデータセットを使用したシンプルな例 {#simple-example-using-the-environmental-sensors-dataset}
@@ -83,7 +89,7 @@ SELECT * FROM azureBlobStorage(
 
 1. [Environmental Sensors Dataset](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)から[サンプルファイル](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)をダウンロードします
 
-2. Azure Portalで、ストレージアカウントをまだ持っていない場合は新しく作成します。
+2. Azure Portalで、ストレージアカウントをまだお持ちでない場合は新しく作成します。
 
 :::warning
 ストレージアカウントで**Allow storage account key access**が有効になっていることを確認してください。有効になっていない場合、アカウントキーを使用してデータにアクセスできません。
@@ -127,7 +133,7 @@ SELECT * FROM azureBlobStorage(
 Azure Blob Storageのような外部ソースをクエリする際の設定オプションとスキーマ推論の詳細については、[入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)を参照してください
 :::
 
-8. 次に、Azure Blob StorageからsensorsテーブルにデータをINSERTします:
+8. 次に、Azure Blob Storageからsensorsテーブルにデータを挿入します:
    ```sql
    INSERT INTO sensors
    SELECT sensor_id, lat, lon, timestamp, temperature
@@ -144,8 +150,8 @@ Azure Blob Storageのような外部ソースをクエリする際の設定オ�
 
 ## 追加リソース {#additional-resources}
 
-これは azureBlobStorage 関数を使用するための基本的な紹介です。より高度なオプションや設定の詳細については、公式ドキュメントを参照してください：
+これはazureBlobStorage関数を使用するための基本的な入門です。より高度なオプションや設定の詳細については、公式ドキュメントを参照してください：
 
-- [azureBlobStorage テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+- [azureBlobStorageテーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 - [入出力データのフォーマット](https://clickhouse.com/docs/sql-reference/formats)
 - [入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)

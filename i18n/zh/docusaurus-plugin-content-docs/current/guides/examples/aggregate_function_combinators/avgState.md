@@ -14,7 +14,7 @@ doc_type: 'reference'
 
 ## 描述 {#description}
 
-[`State`](/sql-reference/aggregate-functions/combinators#-state) 组合器可应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数,以生成 `AggregateFunction(avg, T)` 类型的中间状态,其中 `T` 是用于计算平均值的指定类型。
+[`State`](/sql-reference/aggregate-functions/combinators#-state) 组合器可应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数,以生成 `AggregateFunction(avg, T)` 类型的中间状态,其中 `T` 为求平均值所指定的类型。
 
 
 ## 使用示例 {#example-usage}
@@ -35,7 +35,7 @@ ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-创建用于存储平均响应时间的聚合表。注意,`avg` 函数不能使用 `SimpleAggregateFunction` 类型,因为它需要维护复杂的状态(总和与计数)。因此我们使用 `AggregateFunction` 类型:
+创建用于存储平均响应时间的聚合表。请注意,`avg` 函数不能使用 `SimpleAggregateFunction` 类型,因为它需要维护复杂的状态(总和与计数)。因此我们使用 `AggregateFunction` 类型:
 
 ```sql
 CREATE TABLE page_performance
@@ -107,9 +107,9 @@ FROM page_performance
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
-注意 `avg_response_time` 列的类型为 `AggregateFunction(avg, UInt32)`,它存储的是中间状态信息。同时还要注意,`avg_response_time` 的行数据对我们来说没有实际意义,我们会看到一些奇怪的文本字符,如 `�, n, F, }`。这是终端尝试将二进制数据显示为文本的结果。原因在于 `AggregateFunction` 类型以二进制格式存储其状态,该格式针对高效存储和计算进行了优化,而非为了人类可读性。这个二进制状态包含了计算平均值所需的全部信息。
+请注意,`avg_response_time` 列的类型为 `AggregateFunction(avg, UInt32)`,它存储的是中间状态信息。同时还要注意,`avg_response_time` 的行数据对我们来说没有实际意义,我们会看到一些奇怪的文本字符,如 `�, n, F, }`。这是终端尝试将二进制数据显示为文本的结果。原因在于 `AggregateFunction` 类型以二进制格式存储其状态,该格式针对高效存储和计算进行了优化,而非为了人类可读性。此二进制状态包含了计算平均值所需的全部信息。
 
-要使用这些数据,需要使用 `Merge` 组合器:
+要使用这些数据,请使用 `Merge` 组合器:
 
 ```sql
 SELECT

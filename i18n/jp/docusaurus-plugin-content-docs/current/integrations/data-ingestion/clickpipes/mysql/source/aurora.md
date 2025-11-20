@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Amazon Aurora MySQL'
-description: 'ClickPipes のソースとして Amazon Aurora MySQL を設定するための手順ガイド'
+description: 'ClickPipes のソースとして Amazon Aurora MySQL をセットアップするためのステップバイステップガイド'
 slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Aurora MySQL ソース設定ガイド'
 doc_type: 'guide'
@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 # Aurora MySQL ソース設定ガイド
 
-このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon Aurora MySQL を構成し、データを ClickHouse Cloud にレプリケートする方法を説明します。MySQL CDC に関する一般的な質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
+このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon Aurora MySQL を設定し、データを ClickHouse Cloud にレプリケートする方法を説明します。MySQL CDC に関するよくある質問については、[MySQL FAQs ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 
 
@@ -65,7 +65,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 パラメータグループは、RDSコンソールでMySQLインスタンスをクリックし、**Configuration**タブに移動すると確認できます。
 
 :::tip
-MySQLクラスターを使用している場合、以下のパラメータはDBインスタンスグループではなく、[DBクラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)パラメータグループで確認できます。
+MySQLクラスターを使用している場合、以下のパラメータはDBインスタンスグループではなく、[DBクラスター](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html)パラメータグループに含まれています。
 :::
 
 <Image
@@ -96,7 +96,7 @@ MySQLクラスターを使用している場合、以下のパラメータはDB�
 <Image img={binlog_row_image} alt='Binlog行イメージ' size='lg' border />
 
 <br />
-次に、右上の**Save Changes**をクリックします。変更を有効にするためにインスタンスの再起動が必要な場合があります。再起動が必要かどうかは、Auroraインスタンスの**Configuration**タブでパラメータグループリンクの横に`Pending reboot`と表示されているかで確認できます。
+次に、右上の**Save Changes**をクリックします。変更を有効にするには、インスタンスの再起動が必要な場合があります。再起動が必要かどうかは、Auroraインスタンスの**Configuration**タブでパラメータグループリンクの横に`Pending reboot`と表示されているかで確認できます。
 
 
 ## GTIDモードの有効化（推奨） {#gtid-mode}
@@ -123,21 +123,21 @@ GTIDベースのレプリケーションは、Amazon Aurora MySQL v2（MySQL 5.7
 
 ## データベースユーザーの設定 {#configure-database-user}
 
-管理者ユーザーとしてAurora MySQLインスタンスに接続し、以下のコマンドを実行します。
+管理者ユーザーとしてAurora MySQLインスタンスに接続し、以下のコマンドを実行してください:
 
-1. ClickPipes専用のユーザーを作成します。
+1. ClickPipes専用のユーザーを作成します:
 
    ```sql
    CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
    ```
 
-2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返してください。
+2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返してください:
 
    ```sql
    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
    ```
 
-3. ユーザーにレプリケーション権限を付与します。
+3. ユーザーにレプリケーション権限を付与します:
 
    ```sql
    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
@@ -153,7 +153,7 @@ Aurora MySQLインスタンスへのトラフィックを制限するには、Au
 
 <Image
   img={security_group_in_rds_mysql}
-  alt='Aurora MySQLでセキュリティグループを確認する場所'
+  alt='Aurora MySQLでセキュリティグループを見つける場所'
   size='lg'
   border
 />

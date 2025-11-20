@@ -4,7 +4,7 @@ sidebar_label: 'Nessie 目录'
 title: 'Nessie 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将带你一步步完成使用 ClickHouse 和 Nessie Catalog 查询数据的操作。'
+description: '在本指南中，我们将逐步演示如何使用 ClickHouse 和 Nessie Catalog 查询你的数据。'
 keywords: ['Nessie', 'REST', 'Transactional', 'Data Lake', 'Iceberg', 'Git-like']
 show_related_blogs: true
 doc_type: 'guide'
@@ -16,21 +16,21 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 与 Nessie Catalog 的集成仅适用于 Iceberg 表。
-此集成同时支持 AWS S3 和其他云存储服务商。
+此集成同时支持 AWS S3 和其他云存储服务提供商。
 :::
 
-ClickHouse 支持与多个 catalog（Unity、Glue、REST、Polaris 等）集成。本文将逐步介绍如何使用 ClickHouse 和 [Nessie](https://projectnessie.org/) catalog 查询数据。
+ClickHouse 支持与多个 catalog（Unity、Glue、REST、Polaris 等）集成。本文将引导你完成使用 ClickHouse 和 [Nessie](https://projectnessie.org/) catalog 查询数据的步骤。
 
-Nessie 是一个面向数据湖的开源事务型 catalog，提供：
+Nessie 是一个面向数据湖的开源事务型 catalog，提供以下功能：
 
-* 类 **Git 风格** 的基于分支和提交的数据版本控制
-* **跨表事务** 和可见性保证
-* 符合 Iceberg REST catalog 规范的 **REST API**
-* 面向 Hive、Spark、Dremio、Trino 等多种引擎的 **开放数据湖** 方案
+* 具有分支和提交的 **类 Git 风格** 数据版本控制
+* **跨表事务** 及可见性保证
+* **REST API**，兼容 Iceberg REST catalog 规范
+* **开放数据湖** 架构，支持 Hive、Spark、Dremio、Trino 等
 * 可在 Docker 或 Kubernetes 上进行 **生产级** 部署
 
 :::note
-由于该功能仍处于实验阶段，你需要通过以下方式启用它：
+由于该功能为实验性功能，你需要通过以下设置将其启用：
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
@@ -104,13 +104,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: "0:0" # 确保 root 权限
+    user: "0:0" # Ensures root permissions
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import # 挂载数据集文件夹
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import # Mount dataset folder
     networks:
       - iceberg_net
     environment:
@@ -138,7 +138,7 @@ networks:
 docker compose up -d
 ```
 
-**步骤 3:** 等待所有服务就绪。您可以检查日志:
+**步骤 3:** 等待所有服务就绪。您可以查看日志:
 
 ```bash
 docker-compose logs -f
@@ -218,7 +218,7 @@ SELECT count(*) FROM `default.taxis`;
 ```
 
 :::note 需要使用反引号
-由于 ClickHouse 不支持多级命名空间,因此需要使用反引号。
+由于 ClickHouse 不支持多个命名空间,因此需要使用反引号。
 :::
 
 查看表 DDL:

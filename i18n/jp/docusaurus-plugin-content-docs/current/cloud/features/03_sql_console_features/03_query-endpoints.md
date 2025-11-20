@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Query API エンドポイント'
+sidebar_title: 'クエリAPIエンドポイント'
 slug: /cloud/features/query-api-endpoints
-description: '保存済みクエリから REST API エンドポイントを簡単に作成'
+description: '保存済みクエリから簡単にREST APIエンドポイントを作成'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'Query API エンドポイント'
+title: 'クエリAPIエンドポイント'
 doc_type: 'guide'
 ---
 
@@ -11,14 +11,14 @@ import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link'
 
 
-# クエリ API エンドポイント
+# Query APIエンドポイント
 
 インタラクティブなデータ駆動型アプリケーションを構築するには、高速なデータベース、適切に構造化されたデータ、最適化されたクエリだけでは不十分です。
-フロントエンドやマイクロサービス側でも、できればよく設計された API を通じて、これらのクエリが返すデータを簡単に利用できる必要があります。
+フロントエンドやマイクロサービスも、これらのクエリが返すデータを簡単に利用できる必要があり、できれば適切に構造化されたAPIを介して行うことが望ましいです。
 
-**Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソール内の任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。
-ネイティブドライバーを使って ClickHouse Cloud サービスに接続することなく、HTTP 経由で API エンドポイントにアクセスし、保存済みクエリを実行できます。
+**Query APIエンドポイント**機能を使用すると、ClickHouse Cloudコンソールに保存された任意のSQLクエリから直接APIエンドポイントを作成できます。
+ネイティブドライバを介してClickHouse Cloudサービスに接続することなく、HTTP経由でAPIエンドポイントにアクセスし、保存されたクエリを実行できます。
 
-:::tip Guide
-少ない手順でクエリ API エンドポイントをセットアップする方法については、[Query API endpoints guide](/cloud/get-started/query-endpoints) を参照してください
+:::tip ガイド
+Query APIエンドポイントを簡単な手順で設定する方法については、[Query APIエンドポイントガイド](/cloud/get-started/query-endpoints)を参照してください
 :::

@@ -1,4 +1,4 @@
-| 区域         | VPC 服务名称                                               | 可用区 ID                    |
+| 区域         | VPC 终端节点服务名称                                       | 可用区 ID                     |
 |--------------|-------------------------------------------------------------|------------------------------|
 |ap-south-1    | com.amazonaws.vpce.ap-south-1.vpce-svc-0a786406c7ddc3a1b    | aps1-az1 aps1-az2 aps1-az3   |
 |ap-southeast-1| com.amazonaws.vpce.ap-southeast-1.vpce-svc-0a8b096ec9d2acb01| apse1-az1 apse1-az2 apse1-az3|

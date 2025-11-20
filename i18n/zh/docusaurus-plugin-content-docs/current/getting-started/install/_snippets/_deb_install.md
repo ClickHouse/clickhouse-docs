@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 <VerticalStepper>
 
 
-## 设置 Debian 仓库 {#setup-the-debian-repository}
+## 设置 Debian 软件源 {#setup-the-debian-repository}
 
 要安装 ClickHouse,请运行以下命令:
 
@@ -31,18 +31,18 @@ ARCH=$(dpkg --print-architecture)
 
 
 
-# 将 ClickHouse 仓库添加到 apt 源列表
+# 将 ClickHouse 软件源添加到 apt 源列表
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
 
 
-# 更新 apt 软件包列表
+# 更新 apt 包列表
 
 sudo apt-get update
 
 ```
 
-- 您可以根据需要将 `stable` 替换为 `lts` 以使用不同的[发布版本类型](/knowledgebase/production)。
+- 您可以根据需要将 `stable` 替换为 `lts` 以使用不同的[发布版本](/knowledgebase/production)。
 - 您可以从 [packages.clickhouse.com](https://packages.clickhouse.com/deb/pool/main/c/) 手动下载并安装软件包。
 <br/>
 <details>
@@ -51,28 +51,28 @@ sudo apt-get update
 
 
 ```bash
-# 安装必备软件包
+# 安装前置依赖包
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 ```
 
 
-# 添加 ClickHouse GPG 密钥以认证软件包
+# 添加 ClickHouse GPG 密钥以验证软件包
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
 
 
-# 将 ClickHouse 仓库添加到 apt 源列表中
+# 将 ClickHouse 软件源添加到 apt 源列表
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
     
 
 
-# 更新 apt 包列表
+# 更新 apt 软件包列表
 sudo apt-get update
 
 
 
-# 安装 ClickHouse 服务端和客户端软件包
+# 安装 ClickHouse 服务器和客户端包
 sudo apt-get install -y clickhouse-server clickhouse-client
 
 
@@ -84,7 +84,7 @@ sudo service clickhouse-server start
 
 # 启动 ClickHouse 命令行客户端
 
-clickhouse-client # 如果设置了密码，则使用 &quot;clickhouse-client --password&quot;。
+clickhouse-client # 如果已设置密码，请使用 &quot;clickhouse-client --password&quot;。
 
 ```
 
@@ -101,19 +101,19 @@ sudo apt-get install -y clickhouse-server clickhouse-client
 
 ## 启动 ClickHouse {#start-clickhouse-server}
 
-要启动 ClickHouse 服务器,请运行:
+要启动 ClickHouse 服务器，请运行：
 
 ```bash
 sudo service clickhouse-server start
 ```
 
-要启动 ClickHouse 客户端,请运行:
+要启动 ClickHouse 客户端，请运行：
 
 ```bash
 clickhouse-client
 ```
 
-如果您为服务器设置了密码,则需要运行:
+如果您为服务器设置了密码，则需要运行：
 
 ```bash
 clickhouse-client --password
@@ -148,15 +148,15 @@ sudo systemctl status clickhouse-keeper
 
 ## 软件包 {#packages}
 
-下面详细列出了可用的各种 deb 软件包:
+下表详细列出了可用的各种 deb 软件包:
 
 | 软件包                        | 说明                                                                                                                                                                                                                                                                           |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `clickhouse-common-static`     | 安装 ClickHouse 编译后的二进制文件。                                                                                                                                                                                                                                                            |
-| `clickhouse-server`            | 为 `clickhouse-server` 创建符号链接并安装默认服务器配置。                                                                                                                                                                                                        |
+| `clickhouse-server`            | 为 `clickhouse-server` 创建符号链接,并安装默认服务器配置。                                                                                                                                                                                                        |
 | `clickhouse-client`            | 为 `clickhouse-client` 和其他客户端相关工具创建符号链接,并安装客户端配置文件。                                                                                                                                                                                                                                              |
 | `clickhouse-common-static-dbg` | 安装带有调试信息的 ClickHouse 编译后的二进制文件。                                                                                                                                                                                                                                                            |
-| `clickhouse-keeper`            | 用于在专用 ClickHouse Keeper 节点上安装 ClickHouse Keeper。如果您在与 ClickHouse 服务器相同的服务器上运行 ClickHouse Keeper,则无需安装此软件包。安装 ClickHouse Keeper 和默认 ClickHouse Keeper 配置文件。 |
+| `clickhouse-keeper`            | 用于在专用 ClickHouse Keeper 节点上安装 ClickHouse Keeper。如果您在与 ClickHouse 服务器相同的服务器上运行 ClickHouse Keeper,则无需安装此软件包。该软件包会安装 ClickHouse Keeper 及其默认配置文件。 |
 
 <br />
-:::info 如果您需要安装特定版本的 ClickHouse,则必须安装相同版本的所有软件包:`sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7` :::
+:::info 如果您需要安装特定版本的 ClickHouse,必须安装相同版本的所有软件包:`sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7` :::

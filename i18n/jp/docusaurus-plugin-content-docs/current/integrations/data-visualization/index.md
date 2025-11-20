@@ -2,9 +2,9 @@
 sidebar_label: '概要'
 sidebar_position: 1
 keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
-title: 'ClickHouse でのデータ可視化'
+title: 'ClickHouse におけるデータの可視化'
 slug: /integrations/data-visualization
-description: 'ClickHouse でのデータ可視化について学ぶ'
+description: 'ClickHouse におけるデータ可視化について学ぶ'
 doc_type: 'guide'
 ---
 
@@ -25,7 +25,7 @@ doc_type: 'guide'
 
 <br/>
 
-データを ClickHouse に取り込んだので、次は分析です。多くの場合、これは BI ツールを使って可視化を作成することを意味します。一般的な BI や可視化ツールの多くは ClickHouse に接続できます。ClickHouse に標準で接続できるものもあれば、コネクタのインストールが必要なものもあります。以下の一部のツールについては、ドキュメントを用意しています:
+データを ClickHouse に取り込んだので、次は分析の段階です。多くの場合、これは BI ツールを使って可視化を作成することを伴います。一般的な BI / 可視化ツールの多くは ClickHouse に接続できます。ClickHouse にそのまま接続できるものもあれば、コネクタのインストールが必要なものもあります。以下のツールの一部については、ドキュメントを用意しています。
 
 - [Apache Superset](./superset-and-clickhouse.md)
 - [Astrato](./community_integrations/astrato-and-clickhouse.md)
@@ -56,8 +56,8 @@ doc_type: 'guide'
 | ツール                                                                | サポート方法                 | テスト済み | ドキュメント化 | コメント                                                                                                                                 |
 | ------------------------------------------------------------------- | ----------------------------- | ------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | [Apache Superset](./superset-and-clickhouse.md)                     | ClickHouse公式コネクタ | ✅     | ✅         |                                                                                                                                         |
-| [Astrato](./community_integrations/astrato-and-clickhouse.md)       | ネイティブコネクタ              | ✅     | ✅         | プッシュダウンSQLを使用してネイティブに動作します（ダイレクトクエリのみ）。                                                                                  |
-| [AWS QuickSight](./quicksight-and-clickhouse.md)                    | MySQLインターフェース               | ✅     | ✅         | 一部制限がありますが動作します。詳細は[ドキュメント](./quicksight-and-clickhouse.md)を参照してください                                   |
+| [Astrato](./community_integrations/astrato-and-clickhouse.md)       | ネイティブコネクタ              | ✅     | ✅         | プッシュダウンSQLを使用してネイティブに動作します(ダイレクトクエリのみ)。                                                                                  |
+| [AWS QuickSight](./quicksight-and-clickhouse.md)                    | MySQLインターフェース               | ✅     | ✅         | いくつかの制限がありますが動作します。詳細は[ドキュメント](./quicksight-and-clickhouse.md)を参照してください                                   |
 | [Chartbrew](./community_integrations/chartbrew-and-clickhouse.md)   | ClickHouse公式コネクタ | ✅     | ✅         |                                                                                                                                         |
 | [Databrain](./community_integrations/databrain-and-clickhouse.md)   | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |
 | [Deepnote](./community_integrations/deepnote.md)                    | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |
@@ -68,17 +68,17 @@ doc_type: 'guide'
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)   | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |
 | [Lightdash](./lightdash-and-clickhouse.md)                          | ネイティブコネクタ              | ✅     | ✅         |
 |  |
-| [Looker](./looker-and-clickhouse.md)                                | ネイティブコネクタ              | ✅     | ✅         | 一部制限がありますが動作します。詳細は[ドキュメント](./looker-and-clickhouse.md)を参照してください                                       |
+| [Looker](./looker-and-clickhouse.md)                                | ネイティブコネクタ              | ✅     | ✅         | いくつかの制限がありますが動作します。詳細は[ドキュメント](./looker-and-clickhouse.md)を参照してください                                       |
 | Looker                                                              | MySQLインターフェース               | 🚧     | ❌         |                                                                                                                                         |
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)           | ClickHouse公式コネクタ | ✅     | ✅         |                                                                                                                                         |
 | [Looker Studio](./looker-studio-and-clickhouse.md)                  | MySQLインターフェース               | ✅     | ✅         |                                                                                                                                         |
 | [Metabase](./metabase-and-clickhouse.md)                            | ClickHouse公式コネクタ | ✅     | ✅         |
 | [Mitzu](./community_integrations/mitzu-and-clickhouse.md)           | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |
 | [Omni](./omni-and-clickhouse.md)                                    | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |
-| [Power BI Desktop](./powerbi-and-clickhouse.md)                     | ClickHouse公式コネクタ | ✅     | ✅         | ODBC経由、ダイレクトクエリモードをサポート                                                                                                    |
+| [Power BI Desktop](./powerbi-and-clickhouse.md)                     | ClickHouse公式コネクタ | ✅     | ✅         | ODBC経由で、ダイレクトクエリモードをサポート                                                                                                    |
 | [Power BI service](/integrations/powerbi#power-bi-service)          | ClickHouse公式コネクタ | ✅     | ✅         | [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)のセットアップが必要 |
 | [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse) | ネイティブコネクタ              | ✅     | ✅         |
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)    | ネイティブコネクタ              | ✅     | ❌         |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)              | ClickHouse公式コネクタ | ✅     | ✅         |                                                                                                                                         |
-| [Tableau Online](./tableau/tableau-online-and-clickhouse.md)        | MySQLインターフェース               | ✅     | ✅         | 一部制限がありますが動作します。詳細は[ドキュメント](./tableau/tableau-online-and-clickhouse.md)を参照してください                       |
+| [Tableau Online](./tableau/tableau-online-and-clickhouse.md)        | MySQLインターフェース               | ✅     | ✅         | いくつかの制限がありますが動作します。詳細は[ドキュメント](./tableau/tableau-online-and-clickhouse.md)を参照してください                       |
 | [Zing Data](./community_integrations/zingdata-and-clickhouse.md)    | ネイティブコネクタ              | ✅     | ✅         |                                                                                                                                         |

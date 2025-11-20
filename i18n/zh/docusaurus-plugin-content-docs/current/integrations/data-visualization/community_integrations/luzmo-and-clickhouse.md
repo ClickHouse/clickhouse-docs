@@ -2,7 +2,7 @@
 sidebar_label: 'Luzmo'
 slug: /integrations/luzmo
 keywords: ['clickhouse', 'Luzmo', 'connect', 'integrate', 'ui', 'embedded']
-description: 'Luzmo 是一款嵌入式分析平台，提供对 ClickHouse 的原生集成，专为软件和 SaaS 应用打造。'
+description: 'Luzmo 是一款内嵌式分析平台，提供原生 ClickHouse 集成能力，专为软件和 SaaS 应用打造。'
 title: '将 Luzmo 与 ClickHouse 集成'
 sidebar: 'integrations'
 doc_type: 'guide'
@@ -47,19 +47,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 - **Host**: 这是您的 ClickHouse 数据库所在的主机地址。请注意,此处仅允许使用 `https` 以确保数据传输的安全性。主机 URL 的格式为:`https://url-to-clickhouse-db:port/database`
   默认情况下,插件将连接到 'default' 数据库和 443 端口。您可以在 '/' 后指定数据库名称来配置要连接的数据库。
-- **Username**: 用于连接到您的 ClickHouse 集群的用户名。
-- **Password**: 连接到您的 ClickHouse 集群的密码
+- **Username**: 用于连接 ClickHouse 集群的用户名。
+- **Password**: 用于连接 ClickHouse 集群的密码
 
 请参阅我们开发者文档中的示例,了解如何通过 API [创建到 ClickHouse 的连接](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody)。
 
 
 ## 2. 添加数据集 {#2-add-datasets}
 
-连接 ClickHouse 后,您可以按照[此处](https://academy.luzmo.com/article/ldx3iltg)的说明添加数据集。您可以选择 ClickHouse 中可用的一个或多个数据集,并在 Luzmo 中[关联](https://academy.luzmo.com/article/gkrx48x5)它们,以确保可以在仪表板中一起使用。另外,请务必查看这篇关于[为分析准备数据](https://academy.luzmo.com/article/u492qov0)的文章。
+连接 ClickHouse 后,您可以按照[此处](https://academy.luzmo.com/article/ldx3iltg)的说明添加数据集。您可以选择 ClickHouse 中可用的一个或多个数据集,并在 Luzmo 中[关联](https://academy.luzmo.com/article/gkrx48x5)它们,以便在仪表板中配合使用。另外,请务必查看[为分析准备数据](https://academy.luzmo.com/article/u492qov0)这篇文章。
 
 要了解如何使用 API 添加数据集,请参阅[开发者文档中的示例](https://developer.luzmo.com/api/createDataprovider?exampleSection=DataproviderCreateClickhouseRequestBody)。
 
-现在,您可以使用这些数据集构建精美的(嵌入式)仪表板,甚至可以为 AI 数据分析师([Luzmo IQ](https://luzmo.com/iq))提供支持,让其回答客户的问题。
+现在,您可以使用这些数据集构建精美的(嵌入式)仪表板,甚至可以驱动 AI 数据分析助手([Luzmo IQ](https://luzmo.com/iq))来回答客户的问题。
 
 <Image
   img={luzmo_03}

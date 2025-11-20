@@ -2,7 +2,7 @@
 sidebar_label: '控制台审计日志事件'
 slug: /cloud/security/audit-logging
 title: '控制台审计日志事件'
-description: '本文介绍会记录到控制台审计日志中的事件。'
+description: '本页介绍记录到控制台审计日志中的事件。'
 doc_type: 'reference'
 keywords: ['audit logging', 'security', 'compliance', 'logs', 'monitoring']
 ---
@@ -13,7 +13,7 @@ keywords: ['audit logging', 'security', 'compliance', 'logs', 'monitoring']
 
 针对组织捕获的不同类型事件分为 3 个类别:**组织**、**服务**和**用户**。有关审计日志以及如何导出或添加 API 集成的更多信息,请参阅上方指南部分中的[控制台审计日志](/cloud/security/audit-logging/console-audit-log)文档。
 
-以下事件将记录到审计日志中。
+审计日志会记录以下事件。
 
 ### 组织 {#organization}
 

@@ -2,7 +2,7 @@
 slug: /optimize/skipping-indexes/examples
 sidebar_label: 'Примеры индексов пропуска данных'
 sidebar_position: 2
-description: 'Сводные примеры индексов пропуска данных'
+description: 'Собранные воедино примеры индексов пропуска данных'
 title: 'Примеры индексов пропуска данных'
 doc_type: 'guide'
 keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
@@ -10,9 +10,9 @@ keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best
 
 
 
-# Примеры индексов с пропуском данных {#data-skipping-index-examples}
+# Примеры индексов пропуска данных {#data-skipping-index-examples}
 
-На этой странице собраны примеры индексов с пропуском данных ClickHouse, показывающие, как объявлять каждый тип, когда их использовать и как проверять их применение. Все возможности работают с [таблицами семейства MergeTree](/engines/table-engines/mergetree-family/mergetree).
+На этой странице собраны примеры индексов пропуска данных ClickHouse, показывающие, как объявлять каждый тип, когда их использовать и как проверять их применение. Все возможности работают с [таблицами семейства MergeTree](/engines/table-engines/mergetree-family/mergetree).
 
 **Синтаксис индекса:**
 
@@ -20,15 +20,15 @@ keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best
 INDEX name expr TYPE type(...) [GRANULARITY N]
 ```
 
-ClickHouse поддерживает пять типов индексов с пропуском:
+ClickHouse поддерживает пять типов индексов пропуска:
 
-| Тип индекса                             | Описание                                                      |
-| --------------------------------------- | ------------------------------------------------------------- |
-| **minmax**                              | Отслеживает минимальное и максимальное значения в каждой грануле |
-| **set(N)**                              | Хранит до N различных значений на гранулу                     |
-| **bloom_filter([false_positive_rate])** | Вероятностный фильтр для проверки существования               |
-| **ngrambf_v1**                          | N-граммный фильтр Блума для поиска подстрок                   |
-| **tokenbf_v1**                          | Токенизированный фильтр Блума для полнотекстового поиска      |
+| Тип индекса                             | Описание                                                    |
+| --------------------------------------- | ----------------------------------------------------------- |
+| **minmax**                              | Отслеживает минимальные и максимальные значения в каждой грануле |
+| **set(N)**                              | Хранит до N уникальных значений на гранулу                  |
+| **bloom_filter([false_positive_rate])** | Вероятностный фильтр для проверки существования             |
+| **ngrambf_v1**                          | N-граммный фильтр Блума для поиска подстрок                 |
+| **tokenbf_v1**                          | Токенизированный фильтр Блума для полнотекстового поиска    |
 
 Каждый раздел содержит примеры с демонстрационными данными и показывает, как проверить использование индекса при выполнении запросов.
 
@@ -53,7 +53,7 @@ ORDER BY ts;
 ALTER TABLE events ADD INDEX ts_minmax ts TYPE minmax GRANULARITY 1;
 ALTER TABLE events MATERIALIZE INDEX ts_minmax;
 
--- Запрос, который использует индекс
+-- Запрос, который использует преимущества индекса
 SELECT count() FROM events WHERE ts >= now() - 3600;
 
 -- Проверка использования
@@ -81,9 +81,9 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 Процесс создания и материализации, а также эффект до и после применения индекса показаны в [руководстве по базовым операциям](/optimize/skipping-indexes#basic-operation).
 
 
-## Общий фильтр Блума (скалярный) {#generic-bloom-filter-scalar}
+## Обычный фильтр Блума (скалярный) {#generic-bloom-filter-scalar}
 
-Индекс `bloom_filter` хорошо подходит для проверки равенства и принадлежности IN при поиске «иголки в стоге сена». Он принимает необязательный параметр — частоту ложноположительных срабатываний (по умолчанию 0.025).
+Индекс `bloom_filter` хорошо подходит для проверки равенства и принадлежности IN по принципу «поиск иголки в стоге сена». Он принимает необязательный параметр — вероятность ложноположительных срабатываний (по умолчанию 0,025).
 
 ```sql
 ALTER TABLE events ADD INDEX value_bf value TYPE bloom_filter(0.01) GRANULARITY 3;
@@ -98,7 +98,7 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 
 ## N-gram фильтр Блума (ngrambf_v1) для поиска подстрок {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
 
-Индекс `ngrambf_v1` разбивает строки на n-граммы. Он эффективен для запросов вида `LIKE '%...%'`. Поддерживает типы String/FixedString/Map (через mapKeys/mapValues), а также настраиваемые размер, количество хеш-функций и seed. Подробнее см. в документации по [N-gram фильтру Блума](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter).
+Индекс `ngrambf_v1` разбивает строки на n-граммы. Он эффективен для запросов вида `LIKE '%...%'`. Поддерживает типы String/FixedString/Map (через mapKeys/mapValues), а также настраиваемые параметры: размер, количество хеш-функций и начальное значение (seed). Подробнее см. в документации по [N-gram фильтру Блума](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter).
 
 ```sql
 -- Создание индекса для поиска подстрок
@@ -112,11 +112,11 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 ```
 
-[Это руководство](/use-cases/observability/schema-design#bloom-filters-for-text-search) содержит практические примеры и рекомендации по выбору между token и ngram индексами.
+[Данное руководство](/use-cases/observability/schema-design#bloom-filters-for-text-search) содержит практические примеры и рекомендации по выбору между token и ngram.
 
 **Вспомогательные функции для оптимизации параметров:**
 
-Четыре параметра ngrambf_v1 (размер n-граммы, размер битовой карты, количество хеш-функций, seed) существенно влияют на производительность и потребление памяти. Используйте эти функции для расчета оптимального размера битовой карты и количества хеш-функций на основе ожидаемого объема n-грамм и желаемой вероятности ложноположительных срабатываний:
+Четыре параметра ngrambf_v1 (размер n-граммы, размер битовой карты, количество хеш-функций, начальное значение) существенно влияют на производительность и потребление памяти. Используйте эти функции для расчета оптимального размера битовой карты и количества хеш-функций на основе ожидаемого объема n-грамм и желаемой вероятности ложных срабатываний:
 
 ```sql
 CREATE FUNCTION bfEstimateFunctions AS
@@ -135,7 +135,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 ## Токеновый фильтр Блума (tokenbf_v1) для поиска по словам {#token-bloom-filter-tokenbf-v1-for-word-based-search}
 
-`tokenbf_v1` индексирует токены, разделённые неалфавитно-цифровыми символами. Его следует использовать с функцией [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), шаблонами слов `LIKE` или операторами equals/IN. Поддерживает типы `String`/`FixedString`/`Map`.
+`tokenbf_v1` индексирует токены, разделённые не-алфавитно-цифровыми символами. Его следует использовать с функцией [`hasToken`](/sql-reference/functions/string-search-functions#hasToken), словесными шаблонами `LIKE` или операторами equals/IN. Поддерживает типы `String`/`FixedString`/`Map`.
 
 Подробнее см. страницы [Токеновый фильтр Блума](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter) и [Типы фильтров Блума](/optimize/skipping-indexes#skip-index-types).
 
@@ -150,7 +150,7 @@ EXPLAIN indexes = 1
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 ```
 
-См. примеры для мониторинга и рекомендации по выбору между токеновыми и n-граммными индексами [здесь](/use-cases/observability/schema-design#bloom-filters-for-text-search).
+Примеры для наблюдаемости и рекомендации по выбору между токеновыми и n-граммными индексами см. [здесь](/use-cases/observability/schema-design#bloom-filters-for-text-search).
 
 
 ## Добавление индексов при CREATE TABLE (несколько примеров) {#add-indexes-during-create-table-multiple-examples}
@@ -175,7 +175,7 @@ ORDER BY u64;
 ```
 
 
-## Материализация индексов на существующих данных и проверка {#materializing-on-existing-data-and-verifying}
+## Материализация на существующих данных и проверка {#materializing-on-existing-data-and-verifying}
 
 Вы можете добавить индекс к существующим частям данных с помощью `MATERIALIZE` и проверить отсечение гранул с помощью `EXPLAIN` или журналов трассировки, как показано ниже:
 
@@ -189,10 +189,10 @@ SELECT count() FROM t WHERE u64 IN (123, 456);
 SET send_logs_level = 'trace';
 ```
 
-Этот [рабочий пример с minmax](/best-practices/use-data-skipping-indices-where-appropriate#example) демонстрирует структуру вывода EXPLAIN и количество отсеченных гранул.
+Этот [рабочий пример minmax](/best-practices/use-data-skipping-indices-where-appropriate#example) демонстрирует структуру вывода EXPLAIN и счётчики отсечённых гранул.
 
 
-## Когда использовать и когда избегать индексы пропуска {#when-use-and-when-to-avoid}
+## Когда использовать индексы пропуска и когда их избегать {#when-use-and-when-to-avoid}
 
 **Используйте индексы пропуска, когда:**
 
@@ -202,7 +202,7 @@ SET send_logs_level = 'trace';
 
 **Избегайте индексов пропуска, когда:**
 
-- Большинство блоков, вероятно, содержат хотя бы одно совпадающее значение (блоки будут прочитаны в любом случае)
+- Большинство блоков, вероятно, содержат хотя бы одно совпадающее значение (блоки всё равно будут прочитаны)
 - Выполняется фильтрация по столбцам с высокой кардинальностью без корреляции с порядком данных
 
 :::note Важные замечания

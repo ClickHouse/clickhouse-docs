@@ -1,18 +1,18 @@
 ---
-description: 'Целевая страница руководства по варианту использования Data Lake'
+description: 'Целевая страница руководства по использованию озера данных'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
-title: 'Data Lake'
+title: 'Озеро данных'
 keywords: ['data lake', 'glue', 'unity', 'rest', 'OneLake']
 doc_type: 'landing-page'
 ---
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и др.).
 
 | Page | Description |
 |-----|-----|
-| [Querying data in S3 using ClickHouse and the Glue Data Catalog](/use-cases/data-lake/glue-catalog) | Выполняйте запросы к данным в S3-бакетах с помощью ClickHouse и Glue Data Catalog. |
+| [Querying data in S3 using ClickHouse and the Glue Data Catalog](/use-cases/data-lake/glue-catalog) | Выполняйте запросы к данным в хранилищах S3 с помощью ClickHouse и Glue Data Catalog. |
 | [Querying data in S3 using ClickHouse and the Unity Data Catalog](/use-cases/data-lake/unity-catalog) | Выполняйте запросы к данным с помощью Unity Catalog. |
 | [Querying data in S3 using ClickHouse and the REST Catalog](/use-cases/data-lake/rest-catalog) | Выполняйте запросы к данным с помощью REST Catalog (Tabular.io). |
 | [Querying data in S3 using ClickHouse and the Lakekeeper Catalog](/use-cases/data-lake/lakekeeper-catalog) | Выполняйте запросы к данным с помощью Lakekeeper Catalog. |

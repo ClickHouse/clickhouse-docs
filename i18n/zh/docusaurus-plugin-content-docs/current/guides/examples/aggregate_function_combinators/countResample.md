@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
-description: '将 Resample 组合子与 count 搭配使用的示例'
+description: '使用 Resample 组合子与 count 的示例'
 keywords: ['count', 'Resample', 'combinator', 'examples', 'countResample']
 sidebar_label: 'countResample'
 doc_type: 'reference'
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ### 基础示例 {#basic-example}
 
-让我们看一个示例。我们将创建一个包含员工的 `name`(姓名)、`age`(年龄)和 `wage`(工资)的表,并向其中插入一些数据:
+让我们看一个示例。我们将创建一个包含员工的 `name`（姓名）、`age`（年龄）和 `wage`（工资）字段的表，并向其中插入一些数据：
 
 ```sql
 CREATE TABLE employee_data
@@ -42,7 +42,7 @@ INSERT INTO employee_data (name, age, wage) VALUES
     ('Brian', 60, 16.0);
 ```
 
-让我们统计年龄位于 `[30,60)` 和 `[60,75)` 区间内的所有人员。由于我们使用整数表示年龄,因此实际得到的年龄区间为 `[30, 59]` 和 `[60,74]`。为此,我们对 `count` 函数应用 `Resample` 组合器:
+让我们统计年龄位于 `[30,60)` 和 `[60,75)` 区间内的所有人员。由于我们使用整数表示年龄，因此实际得到的是 `[30, 59]` 和 `[60,74]` 区间内的年龄。为此，我们将 `Resample` 组合器应用于 `count`：
 
 ```sql
 SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data

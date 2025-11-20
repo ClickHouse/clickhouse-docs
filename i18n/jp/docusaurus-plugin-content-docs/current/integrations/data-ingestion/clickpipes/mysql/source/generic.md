@@ -1,10 +1,10 @@
 ---
 sidebar_label: '汎用 MySQL'
-description: '任意の MySQL インスタンスを ClickPipes のソースとしてセットアップする'
+description: '任意の MySQL インスタンスを ClickPipes のソースとして設定する'
 slug: /integrations/clickpipes/mysql/source/generic
-title: '汎用 MySQL ソースセットアップガイド'
+title: '汎用 MySQL ソース設定ガイド'
 doc_type: 'guide'
-keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.x']
+keywords: ['汎用 mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.x']
 ---
 
 
@@ -13,13 +13,13 @@ keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.
 
 :::info
 
-サイドバーに表示されているサポート対象のプロバイダーを利用している場合は、そのプロバイダー向けの専用ガイドを参照してください。
+サイドバーに表示されているサポート対象プロバイダーを利用している場合は、そのプロバイダー専用のガイドを参照してください。
 
 :::
 
 
 
-## バイナリログ保持の有効化 {#enable-binlog-retention}
+## バイナリログの保持を有効にする {#enable-binlog-retention}
 
 バイナリログには、MySQLサーバーインスタンスに対して行われたデータ変更に関する情報が含まれており、レプリケーションに必要です。
 
@@ -92,11 +92,11 @@ binlog_row_image = FULL
 expire_logs_days = 1
 ```
 
-変更を有効にするには、MySQLインスタンスを再起動する必要があります。
+変更を有効にするためにMySQLインスタンスを再起動する必要があります。
 
 :::note
 
-MySQL 5.7では、`binlog_row_metadata`設定がまだ導入されていなかったため、カラム除外はサポートされていません。
+MySQL 5.7では`binlog_row_metadata`設定がまだ導入されていないため、カラムの除外はサポートされていません。
 
 :::
 
@@ -126,7 +126,7 @@ rootユーザーとしてMySQLインスタンスに接続し、以下のコマ�
 
 :::note
 
-`clickpipes_user`と`some_secure_password`は、任意のユーザー名とパスワードに置き換えてください。
+`clickpipes_user`と`some_secure_password`を任意のユーザー名とパスワードに置き換えてください。
 
 :::
 

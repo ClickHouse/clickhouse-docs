@@ -1,11 +1,11 @@
 ---
 slug: /guides/developer/lightweight-delete
-title: 'Легковесное удаление'
+title: 'Облегчённое удаление'
 keywords: ['lightweight delete']
-description: 'Обзор механизма легковесного удаления в ClickHouse'
+description: 'Обзор облегчённых удалений в ClickHouse'
 doc_type: 'reference'
 ---
 
-import Content from '@site/docs/ru/sql-reference/statements/delete.md';
+import Content from '@site/docs/sql-reference/statements/delete.md';
 
 <Content />

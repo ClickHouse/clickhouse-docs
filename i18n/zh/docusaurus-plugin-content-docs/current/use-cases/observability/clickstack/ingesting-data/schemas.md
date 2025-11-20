@@ -2,16 +2,16 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 使用的表和模式 - ClickHouse 可观测性栈'
-sidebar_label: '表和模式'
-title: 'ClickStack 使用的表和模式'
+description: 'ClickStack 使用的表与模式 - ClickHouse 可观测性栈'
+sidebar_label: '表与模式'
+title: 'ClickStack 使用的表与模式'
 doc_type: 'reference'
 keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-ClickStack OpenTelemetry (OTel) 收集器使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并写入数据。
+ClickStack OpenTelemetry (OTel) 采集器使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并写入数据。
 
-在 `default` 数据库中，会为每种数据类型创建下列表。用户可以通过修改运行 OTel 收集器的镜像所使用的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库。
+在 `default` 数据库中，会为每种数据类型创建以下表。用户可以通过修改运行 OTel 采集器的镜像中的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改此目标数据库。
 
 
 
@@ -221,7 +221,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ### 指数直方图 {#exponential-histograms}
 
 :::note
-HyperDX 目前暂不支持获取/显示指数直方图指标。用户可以在指标源中进行配置,后续版本将提供支持。
+HyperDX 目前暂不支持获取/显示指数直方图指标。用户可以在指标源中进行配置,但后续版本将会提供支持。
 :::
 
 

@@ -1,19 +1,19 @@
 ---
-description: '包含 130 万条记录的数据集，收录了酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。'
-sidebar_label: '纽约公共图书馆 “What''s on the Menu?” 数据集'
+description: '包含 130 万条历史记录的数据集，内容是酒店、餐厅和咖啡馆的菜单，以及菜品及其价格。'
+sidebar_label: 'New York Public Library "what''s on the menu?" 数据集'
 slug: /getting-started/example-datasets/menus
-title: '纽约公共图书馆 “What''s on the Menu?” 数据集'
+title: 'New York Public Library "What''s on the Menu?" 数据集'
 doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-该数据集由纽约公共图书馆（New York Public Library）创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
+该数据集由 New York Public Library 创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
 
 来源：http://menus.nypl.org/data  
-这些数据属于公共领域。
+这些数据属于公有领域。
 
-这些数据来自图书馆档案，可能并不完整，也不太适合统计分析。不过它也非常“诱人”。  
-其规模仅约为 130 万条菜单菜品记录——对 ClickHouse 来说数据量非常小，但仍然是一个很好的示例。
+这些数据来自图书馆档案，可能并不完整，也不太适合用于统计分析。但它也非常“美味”。  
+它只包含 130 万条关于菜单中菜品的记录——对 ClickHouse 来说数据量非常小，但仍然是一个很好的示例。
 
 
 
@@ -29,7 +29,7 @@ md5sum 2021_08_01_07_01_17_data.tgz
 # 校验和应为：db6126724de939a5481e3160a2d67d15
 ```
 
-如有需要，请将链接替换为来自 [http://menus.nypl.org/data](http://menus.nypl.org/data) 的最新链接。
+如有需要，请将链接替换为 [http://menus.nypl.org/data](http://menus.nypl.org/data) 中最新的链接。
 下载大小约为 35 MB。
 
 
@@ -119,7 +119,7 @@ CREATE TABLE menu_item
 
 ## 导入数据 {#import-data}
 
-将数据上传到 ClickHouse,运行以下命令:
+将数据上传到 ClickHouse 中,运行以下命令:
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -139,7 +139,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 ## 反规范化数据 {#denormalize-data}
 
-数据以[规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)存储在多个表中。这意味着如果要查询数据(例如从菜单项中查询菜品名称),就必须执行 [JOIN](/sql-reference/statements/select/join) 操作。
+数据以[规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)存储在多个表中。这意味着如果您想要查询数据(例如从菜单项中查询菜品名称),就必须执行 [JOIN](/sql-reference/statements/select/join) 操作。
 对于典型的分析任务,处理预先 JOIN 的数据要高效得多,可以避免每次都执行 `JOIN` 操作。这种数据称为"反规范化"数据。
 
 我们将创建一个表 `menu_item_denorm`,其中包含所有 JOIN 后的数据:
@@ -211,7 +211,7 @@ SELECT count() FROM menu_item_denorm;
 
 ### 菜品历史平均价格 {#query-averaged-historical-prices}
 
-查询：
+查询:
 
 ```sql
 SELECT
@@ -225,7 +225,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
+结果:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
@@ -249,11 +249,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────┘
 ```
 
-数据仅供参考。
+此数据仅供参考。
 
 ### 汉堡价格 {#query-burger-prices}
 
-查询：
+查询:
 
 ```sql
 SELECT
@@ -267,7 +267,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
+结果:
 
 
 ```text
@@ -321,11 +321,11 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-要查出伏特加，我们必须写上 `ILIKE '%vodka%'`，这本身就已经很能说明问题了。
+要查询伏特加，我们需要使用 `ILIKE '%vodka%'`，这充分说明了问题所在。
 
 ### 鱼子酱 {#query-caviar}
 
-我们来输出鱼子酱的价格，同时再输出任意一道包含鱼子酱的菜名。
+让我们查询鱼子酱的价格，同时输出任意一道含有鱼子酱的菜品名称。
 
 查询：
 
@@ -365,9 +365,9 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-至少他们还有鱼子酱配伏特加，真不错。
+至少他们还有鱼子酱配伏特加。真不错。
 
 
-## 在线演练场 {#playground}
+## 在线演示环境 {#playground}
 
-数据已上传至 ClickHouse Playground，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。
+数据已上传到 ClickHouse Playground，[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

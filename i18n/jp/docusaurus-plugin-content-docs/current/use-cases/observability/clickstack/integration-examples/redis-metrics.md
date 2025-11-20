@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis-metrics
-title: 'ClickStack を使った Redis メトリクスの監視'
+title: 'ClickStack を使った Redis メトリクスのモニタリング'
 sidebar_label: 'Redis メトリクス'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を使った Redis メトリクスの監視'
+description: 'ClickStack を使った Redis メトリクスのモニタリング'
 doc_type: 'guide'
 keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
@@ -20,13 +20,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # ClickStackによるRedisメトリクスの監視 {#redis-metrics-clickstack}
 
 :::note[TL;DR]
-本ガイドでは、OpenTelemetryコレクターのRedisレシーバーを設定し、ClickStackを使用してRedisのパフォーマンスメトリクスを監視する方法を説明します。以下の内容を学習できます:
+本ガイドでは、OpenTelemetryコレクターのRedisレシーバーを設定することで、ClickStackを使用してRedisのパフォーマンスメトリクスを監視する方法を説明します。以下の内容を学習できます:
 
 - OTelコレクターを設定してRedisメトリクスを収集する
 - カスタム設定でClickStackをデプロイする
 - 事前構築されたダッシュボードを使用してRedisのパフォーマンスを可視化する(コマンド数/秒、メモリ使用量、接続クライアント数、キャッシュパフォーマンス)
 
-本番環境のRedisを設定する前に統合をテストする場合は、サンプルメトリクスを含むデモデータセットが利用可能です。
+本番環境のRedisを設定する前に統合をテストしたい場合は、サンプルメトリクスを含むデモデータセットが利用可能です。
 
 所要時間:5〜10分
 :::
@@ -36,13 +36,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 このセクションでは、ClickStack OTelコレクターにRedisレシーバーを設定し、既存のRedisインストールからClickStackへメトリクスを送信する方法について説明します。
 
-既存のセットアップを設定する前にRedisメトリクス統合をテストする場合は、[次のセクション](#demo-dataset)の事前設定済みデモデータセットを使用できます。
+既存のセットアップを設定する前にRedis Metricsの統合をテストする場合は、[次のセクション](#demo-dataset)の事前設定済みデモデータセットを使用できます。
 
 ##### 前提条件 {#prerequisites}
 
 - ClickStackインスタンスが稼働中であること
-- 既存のRedisインストール（バージョン3.0以降）
-- ClickStackからRedisへのネットワークアクセス（デフォルトポート6379）
+- 既存のRedisがインストール済みであること（バージョン3.0以降）
+- ClickStackからRedisへのネットワークアクセスが可能であること（デフォルトポート6379）
 - 認証が有効な場合、Redisパスワード
 
 <VerticalStepper headerLevel="h4">
@@ -50,12 +50,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 #### Redis接続の確認 {#verify-redis}
 
 
-まず、Redis に接続できることと、`INFO` コマンドが正しく動作することを確認します。
+まず、Redis に接続できることと、`INFO` コマンドが正常に動作することを確認します。
 
 ```bash
 # 接続をテスト
 redis-cli ping
-# 期待される出力：PONG
+# 期待される出力: PONG
 ```
 
 
@@ -154,10 +154,10 @@ service:
 
 - カスタム設定では新しいレシーバー、プロセッサー、パイプラインのみを定義します
 - `memory_limiter` および `batch` プロセッサーと `clickhouse` エクスポーターは、ベースの ClickStack 設定で既に定義されているため、名前で参照するだけです
-- `resource` プロセッサーは、OpenTelemetry セマンティック規約に従って必須の `service.name` 属性を設定します
+- `resource` プロセッサーは OpenTelemetry セマンティック規約に従って必須の `service.name` 属性を設定します
 - 認証を使用する本番環境では、パスワードを環境変数に保存します：`${env:REDIS_PASSWORD}`
 - 必要に応じて `collection_interval` を調整します（デフォルトは 10 秒。値を小さくするとデータ量が増加します）
-- 複数の Redis インスタンスを使用する場合は、`service.name` をカスタマイズして区別します（例：`"redis-cache"`、`"redis-sessions"`）
+- 複数の Redis インスタンスの場合、`service.name` をカスタマイズして区別します（例：`"redis-cache"`、`"redis-sessions"`）
   :::
 
 #### カスタム設定を読み込むための ClickStack の設定 {#load-custom}
@@ -196,15 +196,15 @@ ports:
 
 * &quot;6379:6379&quot;
 
-# オプション: 認証を有効化する
+# オプション: 認証を有効にする
 
 # command: redis-server --requirepass your-redis-password
 
 ````
 
-##### オプション2: Docker run (オールインワンイメージ) {#all-in-one}
+##### オプション2: Docker run（オールインワンイメージ） {#all-in-one}
 
-`docker run`でオールインワンイメージを使用する場合:
+`docker run`でオールインワンイメージを使用する場合：
 ```bash
 docker run --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
@@ -214,10 +214,10 @@ docker run --name clickstack \
 ````
 
 
-**重要:** Redis が別のコンテナで動作している場合は、Docker ネットワークを使用します:
+**重要:** Redis が別のコンテナで実行されている場合は、Docker のネットワーク機能を使用してください。
 
 ```bash
-# ネットワークを作成する
+# ネットワークを作成
 docker network create monitoring
 ```
 
@@ -227,7 +227,7 @@ docker run -d --name redis --network monitoring redis:7-alpine
 
 
 
-# 同じネットワーク上で ClickStack を実行する（設定ファイル内のエンドポイントを「redis:6379」に更新）
+# 同じネットワーク上で ClickStack を実行する（設定のエンドポイントを「redis:6379」に更新）
 
 docker run --name clickstack \
 --network monitoring \
@@ -261,7 +261,7 @@ docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
 #### サンプルメトリクスデータセットをダウンロード {#download-sample}
 
 
-事前に生成されたメトリクスファイル（現実的なパターンを含む 24 時間分の Redis メトリクス）をダウンロードします：
+あらかじめ生成されたメトリクスファイル（現実的なパターンを含む 24 時間分の Redis メトリクス）をダウンロードします：
 
 ```bash
 # ゲージメトリクス（メモリ、断片化率）をダウンロード
@@ -295,7 +295,7 @@ ClickStackが完全に起動するまで約30秒待ちます。
 #### ClickStackへのメトリクスの読み込み {#load-metrics}
 
 
-メトリクスを直接 ClickHouse に読み込みます：
+メトリクスを直接 ClickHouse にロードします。
 
 ```bash
 # ゲージメトリクス（メモリ、断片化）をロードする
@@ -304,7 +304,7 @@ cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
 ```
 
 
-# 合計メトリクスを読み込む（commands、connections、keyspace）
+# 合計メトリクス（commands、connections、keyspace）をロードする
 
 cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVWithNames&quot;
@@ -313,17 +313,17 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 
 #### HyperDXでメトリクスを確認する {#verify-metrics}
 
-読み込みが完了したら、事前構築されたダッシュボードを使用してメトリクスを確認するのが最も迅速な方法です。
+読み込みが完了したら、メトリクスを確認する最も迅速な方法は、事前構築されたダッシュボードを使用することです。
 
 [ダッシュボードと可視化](#dashboards)セクションに進み、ダッシュボードをインポートしてすべてのRedisメトリクスを一度に表示してください。
 
 :::note
 デモデータセットの時間範囲は2025-10-20 00:00:00から2025-10-21 05:00:00です。HyperDXの時間範囲がこの期間と一致していることを確認してください。
 
-以下の注目すべきパターンを確認してください:
-- **06:00** - キャッシュウォーミング（低いヒット率が上昇）
-- **14:30-14:45** - トラフィックスパイク（クライアント接続数の増加、一部接続拒否）
-- **20:00** - メモリ圧迫（キーの退避が開始）
+以下の興味深いパターンに注目してください:
+- **06:00** - キャッシュウォーミング(低いヒット率が上昇中)
+- **14:30-14:45** - トラフィックスパイク(クライアント接続数が高く、一部の接続が拒否される)
+- **20:00** - メモリ圧迫(キーの削除が開始)
 :::
 
 </VerticalStepper>
@@ -366,19 +366,19 @@ ClickStackを使用したRedisの監視を開始できるよう、Redis Metrics�
 
 ### カスタム設定が読み込まれない {#troubleshooting-not-loading}
 
-環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` が正しく設定されているか確認してください:
+環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` が正しく設定されているか確認します:
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
-カスタム設定ファイルが `/etc/otelcol-contrib/custom.config.yaml` にマウントされているか確認してください:
+カスタム設定ファイルが `/etc/otelcol-contrib/custom.config.yaml` にマウントされているか確認します:
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
-カスタム設定の内容を表示して、読み取り可能であることを確認してください:
+カスタム設定の内容を表示して、読み取り可能であるか確認します:
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
@@ -396,31 +396,31 @@ docker exec <clickstack-container> redis-cli -h <redis-host> ping
 ```
 
 
-Redis の `INFO` コマンドが動作するか確認します：
+Redis の INFO コマンドが動作するかを確認します：
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
-# Redis統計情報が表示されるはずです
+# Redis統計情報が表示されます
 ```
 
-有効な構成に Redis レシーバーが含まれていることを確認します：
+有効な構成に Redis レシーバーが含まれていることを確認します:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
 ```
 
 
-コレクターログでエラーを確認します：
+コレクターログのエラーを確認します：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# 接続エラーまたは認証失敗を確認してください
+# 接続エラーまたは認証失敗を探します
 ```
 
 ### 認証エラー {#auth-errors}
 
 
-ログに認証エラーが記録されている場合は、次を確認します。
+ログに認証エラーが記録されている場合:
 
 ```bash
 # Redis が認証を必要とするか確認する
@@ -428,7 +428,7 @@ redis-cli CONFIG GET requirepass
 ```
 
 
-# 認証をテストする
+# 認証のテスト
 
 redis-cli -a <password> ping
 
@@ -439,7 +439,7 @@ docker exec <clickstack-container> printenv REDIS_PASSWORD
 
 ````
 
-パスワードを使用するように設定を更新してください：
+パスワードを使用するように設定を更新してください:
 ```yaml
 receivers:
   redis:
@@ -476,4 +476,4 @@ Docker Composeファイルまたは`docker run`コマンドで、両方のコン
 
 - 重要なメトリクスに対して[アラート](/use-cases/observability/clickstack/alerts)を設定する（メモリ使用量の閾値、接続数の上限、キャッシュヒット率の低下など）
 - 特定のユースケースに応じた追加のダッシュボードを作成する（レプリケーション遅延、永続化パフォーマンスなど）
-- 異なるエンドポイントとサービス名でレシーバー設定を複製し、複数のRedisインスタンスをモニタリングする
+- 異なるエンドポイントとサービス名でレシーバー設定を複製し、複数のRedisインスタンスを監視する

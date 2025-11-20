@@ -27,16 +27,16 @@ import dashboard_services from '@site/static/images/use-cases/observability/hype
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStack は、HyperDX におけるチャート表示をネイティブサポートしており、イベントを可視化できます。これらのチャートはダッシュボードに追加して、他のユーザーと共有できます。
+ClickStack はイベントの可視化をサポートしており、HyperDX でのチャート表示機能を標準で備えています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
 
-可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマから作成できます。
+可視化は、トレース、メトリクス、ログ、または任意のユーザー定義ワイドイベントスキーマから作成できます。
 
 
 ## ビジュアライゼーションの作成 {#creating-visualizations}
 
-HyperDXの**Chart Explorer**インターフェースを使用すると、メトリクス、トレース、ログを時系列で可視化でき、データ分析用のビジュアライゼーションを素早く作成できます。このインターフェースは、ダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorerを使用したビジュアライゼーション作成のプロセスを説明します。
+HyperDXの**Chart Explorer**インターフェースを使用すると、メトリクス、トレース、ログを時系列で可視化でき、データ分析のためのビジュアライゼーションを素早く作成できます。このインターフェースはダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorerを使用したビジュアライゼーション作成のプロセスを説明します。
 
-各ビジュアライゼーションは、**データソース**の選択から始まり、次に**メトリクス**を選択し、オプションで**フィルタ式**と**group by**フィールドを指定します。概念的には、HyperDXのビジュアライゼーションは内部的にSQL `GROUP BY`クエリにマッピングされます。ユーザーは選択したディメンション全体で集計するメトリクスを定義します。
+各ビジュアライゼーションは、**データソース**の選択から始まり、次に**メトリクス**を選択し、オプションで**フィルタ式**と**グループ化**フィールドを指定します。概念的には、HyperDXのビジュアライゼーションは内部的にSQL `GROUP BY`クエリにマッピングされます。ユーザーは選択したディメンション全体で集計するメトリクスを定義します。
 
 例えば、サービス名でグループ化されたエラー数（`count()`）をチャート化できます。
 
@@ -58,13 +58,13 @@ HyperDXの**Chart Explorer**インターフェースを使用すると、メト�
 
 - Metric: `Average`
 - Column: `Duration/1000`
-- Where: `<empty>`
+- Where: `<空>`
 - Group By: `ServiceName`
 - Alias: `Average Time`
 
 <Image img={visualization_2} alt='シンプルなビジュアライゼーション' size='lg' />
 
-ユーザーは、SQL `WHERE`句またはLucene構文を使用してイベントをフィルタリングし、イベントを可視化する時間枠を設定できます。複数の系列もサポートされています。
+ユーザーはSQL `WHERE`句またはLucene構文を使用してイベントをフィルタリングでき、イベントを可視化する時間枠を設定できます。複数の系列もサポートされています。
 
 例えば、フィルタ`ServiceName:"frontend"`を追加して、サービス`frontend`でフィルタリングします。`Add Series`をクリックして、エイリアス`Count`で時系列のイベント数の2番目の系列を追加します。
 
@@ -83,9 +83,9 @@ HyperDXの**Chart Explorer**インターフェースを使用すると、メト�
 
 ダッシュボードは関連する可視化をグループ化する機能を提供し、ユーザーがメトリクスを比較したり、パターンを並べて探索したりすることで、システム内の潜在的な根本原因を特定できるようにします。これらのダッシュボードは、アドホック調査に使用したり、継続的な監視のために保存したりできます。
 
-グローバルフィルターはダッシュボードレベルで適用でき、そのダッシュボード内のすべての可視化に自動的に反映されます。これにより、チャート全体で一貫したドリルダウンが可能になり、サービスやテレメトリータイプ間でのイベントの相関分析が簡素化されます。
+グローバルフィルターはダッシュボードレベルで適用でき、そのダッシュボード内のすべての可視化に自動的に反映されます。これにより、チャート全体で一貫したドリルダウンが可能になり、サービスやテレメトリータイプ間でのイベントの相関付けが簡素化されます。
 
-以下では、ログとトレースのデータソースを使用して、2つの可視化を含むダッシュボードを作成します。これらの手順は、[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)上で、または["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data)ガイドに記載されているように[sql.clickhouse.com](https://sql.clickhouse.com)でホストされているデータセットに接続することで、ローカル環境で再現できます。
+以下では、ログとトレースのデータソースを使用して、2つの可視化を含むダッシュボードを作成します。これらの手順は、[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)上で、または["リモートデモデータセット"](/use-cases/observability/clickstack/getting-started/remote-demo-data)ガイドに記載されているように[sql.clickhouse.com](https://sql.clickhouse.com)でホストされているデータセットに接続することで、ローカル環境で再現できます。
 
 <VerticalStepper headerLevel="h3">
 
@@ -146,7 +146,7 @@ LuceneまたはSQLフィルターは、時間範囲とともにダッシュボ�
 
 <Image img={dashboard_filter} alt='Dashboard with filtering' size='lg' />
 
-デモンストレーションとして、ダッシュボードにLuceneフィルター`ServiceName:"frontend"`を適用し、時間ウィンドウを過去3時間をカバーするように変更します。可視化が`frontend`サービスからのデータのみを反映するようになったことを確認してください。
+例として、ダッシュボードにLuceneフィルター`ServiceName:"frontend"`を適用し、時間ウィンドウを過去3時間をカバーするように変更します。可視化が`frontend`サービスからのデータのみを反映するようになったことに注目してください。
 
 ダッシュボードは自動保存されます。ダッシュボード名を設定するには、タイトルを選択して変更してから`Save Name`をクリックします。
 
@@ -180,11 +180,11 @@ HyperDXには、すぐに使用できるダッシュボードが標準で用意�
 
 ### ClickHouseダッシュボード {#clickhouse-dashboard}
 
-このダッシュボードは、ClickHouseの監視用の可視化機能を提供します。このダッシュボードにアクセスするには、左側のメニューから選択してください。
+このダッシュボードは、ClickHouseの監視に必要な可視化機能を提供します。このダッシュボードにアクセスするには、左側のメニューから選択してください。
 
-<Image img={dashboard_clickhouse} alt='ClickHouse dashboard' size='lg' />
+<Image img={dashboard_clickhouse} alt='ClickHouseダッシュボード' size='lg' />
 
-このダッシュボードでは、タブを使用して**Selects**、**Inserts**、**ClickHouse Infrastructure**の監視を分けて表示します。
+このダッシュボードでは、タブを使用して**Selects**、**Inserts**、**ClickHouse Infrastructure**の監視を分けて表示しています。
 
 :::note 必要なシステムテーブルへのアクセス権限
 このダッシュボードは、主要なメトリクスを表示するためにClickHouseの[システムテーブル](/operations/system-tables)にクエリを実行します。以下の権限が必要です:
@@ -202,15 +202,15 @@ HyperDXには、すぐに使用できるダッシュボードが標準で用意�
 
 サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これを使用するには、トレースを収集し、有効なトレースデータソースを設定しておく必要があります。
 
-サービス名はトレースデータから自動検出され、事前構築された一連の可視化機能が3つのタブに整理されています:HTTP Services、Database、Errors。
+サービス名はトレースデータから自動検出され、事前構築された一連の可視化機能が3つのタブに整理されています:HTTPサービス、データベース、エラー。
 
-可視化機能は、LuceneまたはSQL構文を使用してフィルタリングでき、時間ウィンドウを調整して詳細な分析を行うことができます。
+可視化機能は、LuceneまたはSQL構文を使用してフィルタリングでき、時間枠を調整することで焦点を絞った分析を行うことができます。
 
-<Image img={dashboard_services} alt='ClickHouse services' size='lg' />
+<Image img={dashboard_services} alt='ClickHouseサービス' size='lg' />
 
 ### Kubernetesダッシュボード {#kubernetes-dashboard}
 
-このダッシュボードでは、OpenTelemetry経由で収集されたKubernetesイベントを探索できます。高度なフィルタリングオプションが含まれており、Kubernetes Pod、Deployment、Node名、Namespace、Clusterでフィルタリングしたり、フリーテキスト検索を実行したりできます。
+このダッシュボードでは、OpenTelemetry経由で収集されたKubernetesイベントを探索できます。高度なフィルタリングオプションが含まれており、Kubernetes Pod、Deployment、ノード名、Namespace、Clusterでフィルタリングしたり、自由テキスト検索を実行したりできます。
 
 Kubernetesデータは、簡単にナビゲートできるように3つのタブに整理されています:Pods、Nodes、Namespaces。
 

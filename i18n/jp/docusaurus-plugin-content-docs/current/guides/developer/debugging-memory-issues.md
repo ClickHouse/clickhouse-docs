@@ -2,7 +2,7 @@
 slug: /guides/developer/debugging-memory-issues
 sidebar_label: 'メモリ問題のデバッグ'
 sidebar_position: 1
-description: 'メモリ問題のデバッグに役立つクエリ。'
+description: 'メモリ問題のデバッグに役立つクエリ集。'
 keywords: ['memory issues']
 title: 'メモリ問題のデバッグ'
 doc_type: 'guide'
@@ -30,7 +30,7 @@ LIMIT 100;
 ```
 
 
-## メモリ使用量のメトリクスを一覧表示する {#list-metrics-for-memory-usage}
+## メモリ使用量のメトリクスを一覧表示 {#list-metrics-for-memory-usage}
 
 ```sql
 SELECT
@@ -78,7 +78,7 @@ SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
 
-## プライマリキーとインデックス粒度が使用する総メモリ量を出力する {#output-total-memory-used-by-primary-keys}
+## プライマリキーとインデックス粒度が使用する総メモリ量の出力 {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT

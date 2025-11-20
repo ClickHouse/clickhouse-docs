@@ -8,7 +8,7 @@
 ## 下载并安装最新稳定版本 {#install-latest-stable}
 
 可以使用 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载所需版本。
-下载后需要解压归档文件并使用安装脚本进行安装。
+下载后,需要解压归档文件并使用安装脚本进行安装。
 
 以下是安装最新稳定版本的示例。
 
@@ -20,7 +20,7 @@
 
 ## 获取最新的 ClickHouse 版本 {#get-latest-version}
 
-从 GitHub 获取最新的 ClickHouse 版本并存储到 `LATEST_VERSION` 变量中。
+从 GitHub 获取最新的 ClickHouse 版本并将其存储在 `LATEST_VERSION` 变量中。
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -42,9 +42,9 @@ esac
 ```
 
 
-## 下载各 ClickHouse 组件的 tarball 包 {#download-tarballs}
+## 下载各 ClickHouse 组件的 tarball 压缩包 {#download-tarballs}
 
-下载各 ClickHouse 组件的 tarball 包。该循环会先尝试下载特定架构的安装包,若失败则回退到通用版本。
+下载各 ClickHouse 组件的 tarball 压缩包。该循环会先尝试下载特定架构的软件包,若失败则回退到通用版本。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -83,7 +83,7 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 
 ```bash
-# 解压并安装服务器包（含配置）
+# 解压并安装服务器软件包（含配置）
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure

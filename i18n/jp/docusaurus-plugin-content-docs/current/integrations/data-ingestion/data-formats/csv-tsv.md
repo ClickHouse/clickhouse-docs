@@ -9,9 +9,9 @@ doc_type: 'guide'
 
 
 
-# ClickHouse での CSV および TSV データの扱い方
+# ClickHouse での CSV および TSV データの扱い
 
-ClickHouse は、CSV 形式でのデータのインポートおよびエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対応できるよう、複数のフォーマットと設定を用意しています。
+ClickHouse は、CSV からのデータのインポートおよび CSV へのエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対応できるよう、複数のフォーマットと設定を提供しています。
 
 
 
@@ -30,7 +30,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-[CSVファイル](assets/data_small.csv)から`sometable`テーブルにデータをインポートするには、ファイルを直接clickhouse-clientにパイプします:
+[CSVファイル](assets/data_small.csv)から`sometable`テーブルにデータをインポートするには、ファイルを直接clickhouse-clientにパイプで渡します:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -110,12 +110,12 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 [ファイル](assets/data_small.csv)には1000行ありますが、最初の10行をスキップするように指定したため、ClickHouseは990行のみを読み込みました。
 
 :::tip
-`file()`関数を使用する場合、ClickHouse Cloudではファイルが存在するマシン上で`clickhouse client`でコマンドを実行する必要があります。別の方法として、[`clickhouse-local`](/operations/utilities/clickhouse-local.md)を使用してローカルでファイルを探索することもできます。
+`file()`関数を使用する場合、ClickHouse Cloudではファイルが存在するマシン上で`clickhouse client`内でコマンドを実行する必要があります。別の方法として、[`clickhouse-local`](/operations/utilities/clickhouse-local.md)を使用してローカルでファイルを探索することもできます。
 :::
 
 ### CSVファイル内のNULL値の扱い {#treating-null-values-in-csv-files}
 
-NULL値は、ファイルを生成したアプリケーションによって異なる方法でエンコードされる場合があります。デフォルトでは、ClickHouseはCSVでのNULL値として`\N`を使用します。ただし、[format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation)オプションを使用してこれを変更できます。
+NULL値は、ファイルを生成したアプリケーションによって異なる方法でエンコードされる場合があります。デフォルトでは、ClickHouseはCSV内のNULL値として`\N`を使用します。ただし、[format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation)オプションを使用してこれを変更できます。
 
 次のようなCSVファイルがあるとします:
 
@@ -127,7 +127,7 @@ Nothing,70
 ```
 
 
-このファイルからデータを読み込むと、ClickHouse は `Nothing` を文字列として扱います（これは正しい挙動です）:
+このファイルからデータを読み込むと、ClickHouse は `Nothing` を String として扱います（これは正しい挙動です）：
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -141,13 +141,13 @@ SELECT * FROM file('nulls.csv')
 └─────────┴─────────┘
 ```
 
-ClickHouse に `Nothing` を `NULL` として扱わせたい場合は、次のオプションでそのように定義できます。
+ClickHouse に `Nothing` を `NULL` として扱わせたい場合は、次のオプションで設定できます。
 
 ```sql
 SET format_csv_null_representation = 'Nothing'
 ```
 
-これで、期待どおりの場所に `NULL` が入るようになりました。
+これで、想定どおりの箇所に `NULL` が入るようになりました：
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -170,16 +170,16 @@ SELECT * FROM file('nulls.csv')
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
 ```
 
-ヘッダーを持つTSVファイルを扱うための[TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)形式も用意されています。また、CSVと同様に、[input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines)オプションを使用して最初のX行をスキップできます。
+ヘッダーを持つTSVファイルを扱うための[TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)形式も用意されています。また、CSVと同様に、[input_format_tsv_skip_first_lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines)オプションを使用して最初のX行をスキップすることができます。
 
 ### Raw TSV {#raw-tsv}
 
-TSVファイルがタブや改行をエスケープせずに保存されている場合があります。このようなファイルを処理するには、[TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)を使用してください。
+TSVファイルは、タブや改行をエスケープせずに保存されている場合があります。このようなファイルを処理するには、[TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)を使用してください。
 
 
 ## CSVへのエクスポート {#exporting-to-csv}
 
-前述の例で使用したフォーマットは、データのエクスポートにも使用できます。テーブル（またはクエリ）からCSVフォーマットにデータをエクスポートするには、同じ`FORMAT`句を使用します:
+前述の例で使用したフォーマットは、データのエクスポートにも使用できます。テーブル(またはクエリ)からCSVフォーマットにデータをエクスポートするには、同じ`FORMAT`句を使用します:
 
 ```sql
 SELECT *
@@ -214,7 +214,7 @@ FORMAT CSVWithNames
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-### エクスポートしたデータをCSVファイルに保存 {#saving-exported-data-to-a-csv-file}
+### エクスポートしたデータをCSVファイルに保存する {#saving-exported-data-to-a-csv-file}
 
 エクスポートしたデータをファイルに保存するには、[INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md)句を使用します:
 
@@ -239,7 +239,7 @@ ClickHouseが3600万行をCSVファイルに保存するのに**約1**秒しか�
 SET format_csv_delimiter = '|'
 ```
 
-これでClickHouseはCSVフォーマットの区切り文字として`|`を使用するようになります:
+これでClickHouseはCSVフォーマットの区切り文字として`|`を使用します:
 
 ```sql
 SELECT *
@@ -256,9 +256,9 @@ FORMAT CSV
 "2016_Greater_Western_Sydney_Giants_season"|"2017-05-01"|86
 ```
 
-### Windows向けCSVのエクスポート {#exporting-csv-for-windows}
+### Windows向けのCSVエクスポート {#exporting-csv-for-windows}
 
-Windows環境でCSVファイルを正常に動作させたい場合は、[output_format_csv_crlf_end_of_line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line)オプションの有効化を検討してください。これにより、改行文字として`\n`の代わりに`\r\n`が使用されます:
+Windows環境でCSVファイルを正常に動作させたい場合は、[output_format_csv_crlf_end_of_line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line)オプションを有効にすることを検討してください。これにより、改行文字として`\n`の代わりに`\r\n`が使用されます:
 
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
@@ -267,7 +267,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## CSVファイルのスキーマ推論 {#schema-inference-for-csv-files}
 
-多くの場合、未知のCSVファイルを扱う必要があるため、カラムに使用する型を調査する必要があります。ClickHouseはデフォルトで、指定されたCSVファイルの分析に基づいてデータ形式を推測しようとします。これは「スキーマ推論」として知られています。検出されたデータ型は、[file()](/sql-reference/table-functions/file.md)関数と組み合わせて`DESCRIBE`文を使用することで確認できます:
+多くの場合、未知のCSVファイルを扱う必要があるため、カラムに使用する型を調査しなければなりません。ClickHouseはデフォルトで、指定されたCSVファイルの分析に基づいてデータ形式を推測しようとします。これは「スキーマ推論」として知られています。検出されたデータ型は、[file()](/sql-reference/table-functions/file.md)関数と組み合わせて`DESCRIBE`文を使用することで確認できます:
 
 ```sql
 DESCRIBE file('data-small.csv', CSV)
@@ -291,7 +291,7 @@ SET input_format_csv_use_best_effort_in_schema_inference = 0
 
 ### 明示的なカラム型を使用したCSVのエクスポートとインポート {#exporting-and-importing-csv-with-explicit-column-types}
 
-ClickHouseでは、[CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)（および他の\*WithNames形式ファミリー）を使用してデータをエクスポートする際に、カラム型を明示的に設定することもできます:
+ClickHouseでは、[CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)(および他の\*WithNames形式ファミリー)を使用してデータをエクスポートする際に、カラム型を明示的に設定することもできます:
 
 ```sql
 SELECT *
@@ -310,7 +310,7 @@ FORMAT CSVWithNamesAndTypes
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-この形式には2つのヘッダー行が含まれます。1つはカラム名、もう1つはカラム型です。これにより、ClickHouse（および他のアプリケーション）は[このようなファイル](assets/data_csv_types.csv)からデータを読み込む際にカラム型を識別できます:
+この形式には2つのヘッダー行が含まれます。1つはカラム名、もう1つはカラム型です。これにより、ClickHouse(および他のアプリケーション)は[このようなファイル](assets/data_csv_types.csv)からデータを読み込む際にカラム型を識別できます:
 
 ```sql
 DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
@@ -324,7 +324,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 └───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-これで、ClickHouseは推測ではなく（2番目の）ヘッダー行に基づいてカラム型を識別します。
+これで、ClickHouseは推測ではなく(2行目の)ヘッダー行に基づいてカラム型を識別します。
 
 
 ## カスタム区切り文字、セパレータ、およびエスケープルール {#custom-delimiters-separators-and-escaping-rules}
@@ -376,7 +376,7 @@ FROM INFILE 'data_csv.csv.gz'
 COMPRESSION 'gzip' FORMAT CSV
 ```
 
-`COMPRESSION`句を省略した場合でも、ClickHouseはファイルの拡張子に基づいて圧縮形式を推測しようとします。同じ方法で、ファイルを圧縮形式に直接エクスポートすることもできます:
+`COMPRESSION`句を省略した場合でも、ClickHouseはファイルの拡張子に基づいて圧縮形式を推測します。同じ方法で、ファイルを圧縮形式に直接エクスポートすることもできます:
 
 ```sql
 SELECT *
@@ -390,13 +390,13 @@ COMPRESSION 'gzip' FORMAT CSV
 
 ## その他のフォーマット {#other-formats}
 
-ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットとその使用方法を詳しくご確認ください：
+ClickHouseは、さまざまなシナリオやプラットフォームに対応するため、テキスト形式とバイナリ形式の両方で多数のフォーマットをサポートしています。以下の記事で、その他のフォーマットとその使用方法を詳しくご確認ください:
 
-- **CSVおよびTSVフォーマット**
+- **CSVおよびTSV形式**
 - [Parquet](parquet.md)
-- [JSONフォーマット](/integrations/data-ingestion/data-formats/json/intro.md)
+- [JSON形式](/integrations/data-ingestion/data-formats/json/intro.md)
 - [正規表現とテンプレート](templates-regex.md)
-- [ネイティブおよびバイナリフォーマット](binary.md)
-- [SQLフォーマット](sql.md)
+- [ネイティブおよびバイナリ形式](binary.md)
+- [SQL形式](sql.md)
 
-また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これは、ClickHouseサーバーを必要とせずにローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。
+また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)もご確認ください。これはClickHouseサーバーを必要とせずにローカル/リモートファイルを操作できる、ポータブルでフル機能を備えたツールです。

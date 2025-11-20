@@ -1,14 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
 sidebar_label: 'ClickHouse Cloud リモート MCP'
-title: 'ClickHouse Cloud リモート MCP サーバーを有効にする'
+title: 'ClickHouse Cloud リモート MCP サーバーの有効化'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse Cloud リモート MCP の有効化と利用方法について説明します'
+description: 'このガイドでは、ClickHouse Cloud リモート MCP を有効化して使用する方法について説明します。'
 keywords: ['AI', 'ClickHouse Cloud', 'MCP']
 show_related_blogs: true
 sidebar_position: 1
-doc_type: 'ガイド'
+doc_type: 'guide'
 ---
 
 import {CardHorizontal} from '@clickhouse/click-ui/bundled'
@@ -25,18 +25,18 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 # ClickHouse Cloud リモート MCP サーバーの有効化
 
-> このガイドでは、ClickHouse Cloud リモート MCP サーバーの有効化と使用方法について説明します。本例では MCP クライアントとして Claude Code を使用しますが、MCP に対応している LLM クライアントであれば使用可能です。
+> 本ガイドでは、ClickHouse Cloud リモート MCP サーバーの有効化と使用方法について説明します。この例では MCP クライアントとして Claude Code を使用しますが、MCP に対応している任意の LLM クライアントを使用できます。
 
 <VerticalStepper headerLevel="h2">
 
 
-## ClickHouse CloudサービスのリモートMCPサーバーを有効にする {#enable-remote-mcp-server}
+## ClickHouse CloudサービスのリモートMCPサーバーを有効化する {#enable-remote-mcp-server}
 
-1. ClickHouse Cloudサービスに接続し、`Connect`ボタンをクリックして、サービスのリモートMCPサーバーを有効にします
+1. ClickHouse Cloudサービスに接続し、`Connect`ボタンをクリックして、サービスのリモートMCPサーバーを有効化します
 
 <Image img={img1} alt='接続モーダルでMCPを選択' size='md' />
 
-<Image img={img2} alt='MCPサーバーを有効にする' size='md' />
+<Image img={img2} alt='MCPサーバーを有効化' size='md' />
 
 2. `Connect`ビューまたは以下からClickHouse Cloud MCPサーバーのURLをコピーします
 
@@ -87,13 +87,13 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 
 1. Claude CodeでリモートMCPサーバーが接続されていることを確認します
 
-<Image img={img5} alt='Claude Code MCP success' size='md' />
+<Image img={img5} alt='Claude Code MCP 接続成功' size='md' />
 
-<Image img={img6} alt='Claude Code MCP Details' size='md' />
+<Image img={img6} alt='Claude Code MCP 詳細' size='md' />
 
-2. 完了です!これでClaude CodeからClickHouse Cloud Remote MCPサーバーを使用できるようになりました
+2. これで完了です。Claude CodeからClickHouse Cloud Remote MCPサーバーを使用できるようになりました
 
-<Image img={img7} alt='Claude Code MCP Usage' size='md' />
+<Image img={img7} alt='Claude Code MCP 使用例' size='md' />
 
 この例ではClaude Codeを使用していますが、同様の手順でMCPをサポートする任意のLLMクライアントを使用できます。
 

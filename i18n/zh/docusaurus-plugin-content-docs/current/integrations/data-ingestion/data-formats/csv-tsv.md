@@ -3,7 +3,7 @@ sidebar_label: 'CSV 和 TSV'
 slug: /integrations/data-formats/csv-tsv
 title: '在 ClickHouse 中处理 CSV 和 TSV 数据'
 description: '介绍如何在 ClickHouse 中处理 CSV 和 TSV 数据的页面'
-keywords: ['CSV format', 'TSV format', 'comma separated values', 'tab separated values', 'data import']
+keywords: ['CSV 格式', 'TSV 格式', '逗号分隔值', '制表符分隔值', '数据导入']
 doc_type: 'guide'
 ---
 
@@ -11,13 +11,13 @@ doc_type: 'guide'
 
 # 在 ClickHouse 中处理 CSV 和 TSV 数据
 
-ClickHouse 支持从 CSV 导入数据并导出为 CSV。由于 CSV 文件在格式细节上可能有所不同，包括表头行、自定义分隔符以及转义符，ClickHouse 提供了相应的格式和设置，以高效处理各种情况。
+ClickHouse 支持从 CSV 导入数据并导出为 CSV。由于 CSV 文件在格式细节上可能各不相同，包括表头行、自定义分隔符以及转义符号，ClickHouse 提供了多种格式和设置来高效处理每一种情况。
 
 
 
 ## 从 CSV 文件导入数据 {#importing-data-from-a-csv-file}
 
-在导入数据之前,我们先创建一个具有相应结构的表:
+在导入数据之前,让我们先创建一个具有相应结构的表:
 
 ```sql
 CREATE TABLE sometable
@@ -30,7 +30,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-要将 [CSV 文件](assets/data_small.csv) 中的数据导入到 `sometable` 表,我们可以直接通过管道将文件传输到 clickhouse-client:
+要将 [CSV 文件](assets/data_small.csv) 中的数据导入到 `sometable` 表,我们可以直接通过管道将文件传递给 clickhouse-client:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -44,7 +44,7 @@ FROM INFILE 'data_small.csv'
 FORMAT CSV
 ```
 
-在这里,我们使用 `FORMAT CSV` 子句让 ClickHouse 识别文件格式。我们还可以使用 [url()](/sql-reference/table-functions/url.md) 函数直接从 URL 加载数据,或使用 [s3()](/sql-reference/table-functions/s3.md) 函数从 S3 文件加载数据。
+在这里,我们使用 `FORMAT CSV` 子句以便 ClickHouse 理解文件格式。我们还可以使用 [url()](/sql-reference/table-functions/url.md) 函数直接从 URL 加载数据,或使用 [s3()](/sql-reference/table-functions/s3.md) 函数从 S3 文件加载数据。
 
 :::tip
 对于 `file()` 和 `INFILE`/`OUTFILE`,我们可以省略显式的格式设置。
@@ -53,7 +53,7 @@ FORMAT CSV
 
 ### 带标题的 CSV 文件 {#csv-files-with-headers}
 
-假设我们的 [CSV 文件包含标题行](assets/data_small_headers.csv):
+假设我们的 [CSV 文件包含标题](assets/data_small_headers.csv):
 
 ```bash
 head data-small-headers.csv
@@ -71,10 +71,10 @@ head data-small-headers.csv
 clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_headers.csv
 ```
 
-在这种情况下,ClickHouse 在导入数据时会跳过第一行。
+在这种情况下,ClickHouse 在从文件导入数据时会跳过第一行。
 
 :::tip
-从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始,ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行,因此无需使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
+从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始,ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题,因此无需使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
 :::
 
 ### 使用自定义分隔符的 CSV 文件 {#csv-files-with-custom-delimiters}
@@ -85,7 +85,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 SET format_csv_delimiter = ';'
 ```
 
-现在,当我们从 CSV 文件导入数据时,`;` 符号将被用作分隔符,而不是逗号。
+现在,当我们从 CSV 文件导入时,`;` 符号将被用作分隔符而不是逗号。
 
 ### 跳过 CSV 文件中的行 {#skipping-lines-in-a-csv-file}
 
@@ -110,12 +110,12 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 该 [文件](assets/data_small.csv) 有 1000 行,但 ClickHouse 只加载了 990 行,因为我们要求跳过前 10 行。
 
 :::tip
-在 ClickHouse Cloud 中使用 `file()` 函数时,您需要在文件所在的机器上通过 `clickhouse client` 运行命令。另一个选项是使用 [`clickhouse-local`](/operations/utilities/clickhouse-local.md) 在本地探索文件。
+在 ClickHouse Cloud 中使用 `file()` 函数时,您需要在文件所在的机器上通过 `clickhouse client` 运行命令。另一个选择是使用 [`clickhouse-local`](/operations/utilities/clickhouse-local.md) 在本地探索文件。
 :::
 
 ### 处理 CSV 文件中的 NULL 值 {#treating-null-values-in-csv-files}
 
-根据生成文件的应用程序不同,NULL 值可以有不同的编码方式。默认情况下,ClickHouse 在 CSV 中使用 `\N` 表示 NULL 值。但我们可以使用 [format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation) 选项来更改它。
+根据生成文件的应用程序不同,Null 值可以有不同的编码方式。默认情况下,ClickHouse 在 CSV 中使用 `\N` 作为 Null 值。但我们可以使用 [format_csv_null_representation](/operations/settings/settings-formats.md/#format_tsv_null_representation) 选项来更改它。
 
 假设我们有以下 CSV 文件:
 
@@ -127,7 +127,7 @@ Nothing,70
 ```
 
 
-如果我们从这个文件加载数据，ClickHouse 会将 `Nothing` 视为 String 类型（这是正确的）：
+如果我们从这个文件加载数据，ClickHouse 会将 `Nothing` 视为字符串类型（这是正确的）：
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -141,13 +141,13 @@ SELECT * FROM file('nulls.csv')
 └─────────┴─────────┘
 ```
 
-如果希望 ClickHouse 将 `Nothing` 当作 `NULL` 处理，可以使用以下选项进行设置：
+如果希望 ClickHouse 将 `Nothing` 视为 `NULL`，可以通过以下选项进行设置：
 
 ```sql
 SET format_csv_null_representation = 'Nothing'
 ```
 
-现在我们在预期的位置看到了 `NULL`：
+现在我们如预期地看到了 `NULL`：
 
 ```sql
 SELECT * FROM file('nulls.csv')
@@ -174,7 +174,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 
 ### 原始 TSV {#raw-tsv}
 
-有时 TSV 文件在保存时不会对制表符和换行符进行转义。对于此类文件,应使用 [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) 格式来处理。
+有时 TSV 文件在保存时不会对制表符和换行符进行转义。对于此类文件,应使用 [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) 格式进行处理。
 
 
 ## 导出为 CSV {#exporting-to-csv}
@@ -216,7 +216,7 @@ FORMAT CSVWithNames
 
 ### 将导出的数据保存到 CSV 文件 {#saving-exported-data-to-a-csv-file}
 
-要将导出的数据保存到文件,可以使用 [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) 子句:
+要将导出的数据保存到文件,我们可以使用 [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md) 子句:
 
 ```sql
 SELECT *
@@ -233,7 +233,7 @@ FORMAT CSVWithNames
 
 ### 使用自定义分隔符导出 CSV {#exporting-csv-with-custom-delimiters}
 
-如果想使用逗号以外的分隔符,可以使用 [format_csv_delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter) 设置选项:
+如果我们想使用逗号以外的分隔符,可以使用 [format_csv_delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter) 设置选项:
 
 ```sql
 SET format_csv_delimiter = '|'
@@ -258,7 +258,7 @@ FORMAT CSV
 
 ### 为 Windows 导出 CSV {#exporting-csv-for-windows}
 
-如果希望 CSV 文件在 Windows 环境中正常工作,应该考虑启用 [output_format_csv_crlf_end_of_line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line) 选项。这将使用 `\r\n` 作为换行符,而不是 `\n`:
+如果我们希望 CSV 文件在 Windows 环境中正常工作,应该考虑启用 [output_format_csv_crlf_end_of_line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line) 选项。这将使用 `\r\n` 作为换行符而不是 `\n`:
 
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
@@ -267,7 +267,7 @@ SET output_format_csv_crlf_end_of_line = 1;
 
 ## CSV 文件的模式推断 {#schema-inference-for-csv-files}
 
-在许多情况下,我们可能需要处理未知的 CSV 文件,因此必须确定列应使用哪些类型。默认情况下,ClickHouse 会尝试根据对给定 CSV 文件的分析来推断数据格式。这称为"模式推断"。可以使用 `DESCRIBE` 语句配合 [file()](/sql-reference/table-functions/file.md) 函数来查看检测到的数据类型:
+在许多情况下,我们可能需要处理未知的 CSV 文件,因此必须确定列应使用哪些类型。ClickHouse 默认会尝试根据对给定 CSV 文件的分析来推断数据格式。这称为"模式推断"。可以使用 `DESCRIBE` 语句配合 [file()](/sql-reference/table-functions/file.md) 函数来查看检测到的数据类型:
 
 ```sql
 DESCRIBE file('data-small.csv', CSV)
@@ -281,7 +281,7 @@ DESCRIBE file('data-small.csv', CSV)
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-在这里,ClickHouse 能够有效地推断出我们 CSV 文件的列类型。如果不希望 ClickHouse 进行推断,可以使用以下选项禁用此功能:
+在这里,ClickHouse 能够高效地推断出我们 CSV 文件的列类型。如果我们不希望 ClickHouse 进行推断,可以使用以下选项禁用此功能:
 
 ```sql
 SET input_format_csv_use_best_effort_in_schema_inference = 0
@@ -329,7 +329,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 ## 自定义分隔符、分隔符和转义规则 {#custom-delimiters-separators-and-escaping-rules}
 
-在复杂场景中,文本数据可能采用高度自定义的格式,但仍保持一定的结构。ClickHouse 为此类场景提供了专门的 [CustomSeparated](/interfaces/formats/CustomSeparated) 格式,允许设置自定义的转义规则、分隔符、行分隔符以及起始/结束符号。
+在复杂场景中,文本数据可能采用高度自定义的格式,但仍然具有结构性。ClickHouse 为此类情况提供了专门的 [CustomSeparated](/interfaces/formats/CustomSeparated) 格式,允许设置自定义转义规则、分隔符、行分隔符以及起始/结束符号。
 
 假设文件中包含以下数据:
 
@@ -337,7 +337,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 row('Akiba_Hebrew_Academy';'2017-08-01';241),row('Aegithina_tiphia';'2018-02-01';34),...
 ```
 
-可以看到,每一行数据都被包裹在 `row()` 中,行与行之间用 `,` 分隔,各个字段值用 `;` 分隔。在这种情况下,我们可以使用以下设置从该文件读取数据:
+可以看到,每一行数据都被包装在 `row()` 中,行与行之间用 `,` 分隔,各个字段值用 `;` 分隔。在这种情况下,我们可以使用以下设置从该文件读取数据:
 
 ```sql
 SET format_custom_row_before_delimiter = 'row(';
@@ -368,7 +368,7 @@ LIMIT 3
 
 ## 处理大型 CSV 文件 {#working-with-large-csv-files}
 
-CSV 文件可能很大,ClickHouse 能够高效处理任意大小的文件。大型文件通常以压缩格式提供,ClickHouse 可以直接处理而无需事先解压。我们可以在插入数据时使用 `COMPRESSION` 子句:
+CSV 文件可能很大,ClickHouse 能够高效处理任意大小的文件。大型文件通常以压缩格式提供,ClickHouse 可以直接处理,无需预先解压。在插入数据时可以使用 `COMPRESSION` 子句:
 
 ```sql
 INSERT INTO sometable
@@ -376,7 +376,7 @@ FROM INFILE 'data_csv.csv.gz'
 COMPRESSION 'gzip' FORMAT CSV
 ```
 
-如果省略 `COMPRESSION` 子句,ClickHouse 仍会尝试根据文件扩展名推断压缩格式。同样的方法也可用于直接导出压缩格式的文件:
+如果省略 `COMPRESSION` 子句,ClickHouse 仍会尝试根据文件扩展名自动识别压缩格式。同样的方式也可用于将文件直接导出为压缩格式:
 
 ```sql
 SELECT *
@@ -399,4 +399,4 @@ ClickHouse 支持多种文本和二进制格式,以满足各种应用场景和�
 - [Native and binary formats](binary.md)
 - [SQL formats](sql.md)
 
-另外,您还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 这是一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地或远程文件。
+另外,还可以了解 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 这是一个功能完整的便携式工具,无需 ClickHouse 服务器即可处理本地/远程文件。

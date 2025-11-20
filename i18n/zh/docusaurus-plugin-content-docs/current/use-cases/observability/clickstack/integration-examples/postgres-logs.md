@@ -37,30 +37,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## 与现有 PostgreSQL 集成 {#existing-postgres}
 
-本节介绍如何通过修改 ClickStack OTel 采集器配置,将现有 PostgreSQL 安装的日志发送到 ClickStack。
+本节介绍如何通过修改 ClickStack OTel 收集器配置，将现有 PostgreSQL 安装配置为向 ClickStack 发送日志。
 
-如果您想在配置现有环境之前测试 PostgreSQL 日志集成,可以使用["演示数据集"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset)部分中我们预配置的环境和示例数据进行测试。
+如果您想在配置自己的现有环境之前测试 PostgreSQL 日志集成，可以使用["演示数据集"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset)部分中我们预配置的环境和示例数据进行测试。
 
 ##### 前提条件 {#prerequisites}
 
 - ClickStack 实例正在运行
-- 现有 PostgreSQL 安装(版本 9.6 或更高)
-- 具有修改 PostgreSQL 配置文件的权限
+- 现有 PostgreSQL 安装（版本 9.6 或更高版本）
+- 具有修改 PostgreSQL 配置文件的访问权限
 - 足够的磁盘空间用于存储日志文件
 
 <VerticalStepper headerLevel="h4">
 
 #### 配置 PostgreSQL 日志记录 {#configure-postgres}
 
-PostgreSQL 支持多种日志格式。对于使用 OpenTelemetry 进行结构化解析,我们推荐使用 CSV 格式,它提供一致且易于解析的输出。
+PostgreSQL 支持多种日志格式。对于使用 OpenTelemetry 进行结构化解析，我们推荐使用 CSV 格式，该格式提供一致且易于解析的输出。
 
-`postgresql.conf` 文件通常位于:
+`postgresql.conf` 文件通常位于：
 
-- **Linux (apt/yum)**: `/etc/postgresql/{version}/main/postgresql.conf`
-- **macOS (Homebrew)**: `/usr/local/var/postgres/postgresql.conf` 或 `/opt/homebrew/var/postgres/postgresql.conf`
-- **Docker**: 配置通常通过环境变量或挂载的配置文件设置
+- **Linux (apt/yum)**：`/etc/postgresql/{version}/main/postgresql.conf`
+- **macOS (Homebrew)**：`/usr/local/var/postgres/postgresql.conf` 或 `/opt/homebrew/var/postgres/postgresql.conf`
+- **Docker**：配置通常通过环境变量或挂载的配置文件设置
 
-在 `postgresql.conf` 中添加或修改以下设置:
+在 `postgresql.conf` 中添加或修改以下设置：
 
 
 ```conf
@@ -70,18 +70,18 @@ log_destination = 'csvlog'
 ```
 
 
-# 推荐：启用连接日志
+# 推荐：记录连接
 log_connections = on
 log_disconnections = on
 
 
 
-# 可选：根据监控需求进行调优
+# 可选：根据监控需求进行调整
 
 #log&#95;min&#95;duration&#95;statement = 1000  # 记录耗时超过 1 秒的查询
 #log&#95;statement = &#39;ddl&#39;               # 记录 DDL 语句（CREATE、ALTER、DROP）
 #log&#95;checkpoints = on                # 记录 checkpoint 活动
-#log&#95;lock&#95;waits = on                 # 记录锁等待冲突
+#log&#95;lock&#95;waits = on                 # 记录锁等待情况
 
 ```
 
@@ -89,7 +89,7 @@ log_disconnections = on
 本指南使用 PostgreSQL 的 `csvlog` 格式来实现可靠的结构化解析。如果您使用 `stderr` 或 `jsonlog` 格式,需要相应调整 OpenTelemetry 采集器的配置。
 :::
 
-完成这些更改后,重启 PostgreSQL:
+完成上述更改后,重启 PostgreSQL:
 ```
 
 
@@ -99,13 +99,13 @@ sudo systemctl restart postgresql
 ```
 
 
-# Docker 环境
+# 针对 Docker
 
 docker restart
 
 ```
 
-验证日志正在写入：
+验证日志是否正在写入：
 ```
 
 
@@ -257,7 +257,7 @@ docker run --name clickstack \
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### 创建测试采集器配置 {#test-config}
+#### 创建测试收集器配置 {#test-config}
 
 创建一个名为 `postgres-logs-demo.yaml` 的文件,包含以下配置:
 
@@ -336,16 +336,16 @@ HyperDX 以您浏览器的本地时区显示时间戳。演示数据的时间跨
 
 ## 仪表板和可视化 {#dashboards}
 
-为了帮助您开始使用 ClickStack 监控 PostgreSQL,我们提供了 PostgreSQL 日志的基础可视化功能。
+为了帮助您开始使用 ClickStack 监控 PostgreSQL,我们提供了 PostgreSQL 日志的基本可视化。
 
 <VerticalStepper headerLevel="h4">
 
 #### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置 {#download}
 
-#### 导入预构建仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 {#import-dashboard}
 
 1. 打开 HyperDX 并导航到仪表板部分
-2. 点击右上角省略号菜单中的 **Import Dashboard**
+2. 点击右上角省略号下的 **Import Dashboard**
 
 <Image img={import_dashboard} alt='导入仪表板按钮' />
 
@@ -355,12 +355,12 @@ HyperDX 以您浏览器的本地时区显示时间戳。演示数据的时间跨
 
 #### 查看仪表板 {#created-dashboard}
 
-仪表板将创建完成,所有可视化组件均已预配置:
+仪表板将创建完成,所有可视化均已预配置:
 
 <Image img={logs_dashboard} alt='日志仪表板' />
 
 :::note
-对于演示数据集,请将时间范围设置为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**(根据您的本地时区调整)。导入的仪表板默认不会指定时间范围。
+对于演示数据集,请将时间范围设置为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**(根据您的本地时区进行调整)。导入的仪表板默认不会指定时间范围。
 :::
 
 </VerticalStepper>
@@ -415,4 +415,4 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 
 ## 投入生产环境 {#going-to-production}
 
-本指南基于 ClickStack 内置的 OpenTelemetry Collector 进行扩展,以便快速设置。对于生产环境部署,我们建议运行您自己的 OTel Collector,并将数据发送到 ClickStack 的 OTLP 端点。生产环境配置详情请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。
+本指南基于 ClickStack 内置的 OpenTelemetry Collector 进行扩展,以便快速设置。对于生产环境部署,我们建议运行您自己的 OTel Collector,并将数据发送到 ClickStack 的 OTLP 端点。生产环境配置请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

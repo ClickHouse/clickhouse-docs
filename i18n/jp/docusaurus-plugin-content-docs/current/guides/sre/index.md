@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['security and authentication', 'access control', 'RBAC', 'user management', 'SRE guide']
 ---
 
-| ページ                                                                   | 説明                                                                                                      |
+| Page                                                                   | Description                                                                                             |
 |------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [Users and Roles](/operations/access-rights)                   | ClickHouse による RBAC ベースのアクセス制御管理の仕組みについて説明します。              |
-| [External Authenticators](/operations/external-authenticators) | OSS 版 ClickHouse が外部サービスを利用したユーザーの認証および管理をどのようにサポートしているかを説明します。 |
+| [Users and Roles](/operations/access-rights)                   | ClickHouse における RBAC アプローチに基づいたアクセス制御管理の仕組みについて解説します。              |
+| [External Authenticators](/operations/external-authenticators) | OSS ClickHouse が外部サービスを利用してユーザーの認証および管理を行う方法について解説します。 |

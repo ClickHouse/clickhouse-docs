@@ -37,30 +37,30 @@ assert result.result_set[1][0] == 'first_value2'
 
 ## 流式查询 {#streaming-queries}
 
-ClickHouse Connect 客户端提供了多种以流式方式检索数据的方法(实现为 Python 生成器):
+ClickHouse Connect 客户端提供了多种以流式方式检索数据的方法(以 Python 生成器的形式实现):
 
 - `query_column_block_stream` -- 以数据块形式返回查询数据,作为使用原生 Python 对象的列序列
-- `query_row_block_stream` -- 以行块形式返回查询数据,使用原生 Python 对象
+- `query_row_block_stream` -- 以行数据块形式返回查询数据,使用原生 Python 对象
 - `query_rows_stream` -- 以行序列形式返回查询数据,使用原生 Python 对象
 - `query_np_stream` -- 将每个 ClickHouse 查询数据块作为 NumPy 数组返回
 - `query_df_stream` -- 将每个 ClickHouse 查询数据块作为 Pandas DataFrame 返回
 - `query_arrow_stream` -- 以 PyArrow RecordBlocks 形式返回查询数据
-- `query_df_arrow_stream` -- 将每个 ClickHouse 查询数据块作为 Arrow 支持的 Pandas DataFrame 或 Polars DataFrame 返回,具体取决于关键字参数 `dataframe_library`(默认为 "pandas")。
+- `query_df_arrow_stream` -- 将每个 ClickHouse 查询数据块作为基于 Arrow 的 Pandas DataFrame 或 Polars DataFrame 返回,具体取决于关键字参数 `dataframe_library`(默认为 "pandas")。
 
 这些方法均返回一个 `ContextStream` 对象,必须通过 `with` 语句打开才能开始消费流。
 
 ### 数据块 {#data-blocks}
 
-ClickHouse Connect 将主 `query` 方法的所有数据作为从 ClickHouse 服务器接收的数据块流进行处理。这些数据块以自定义的 "Native" 格式在 ClickHouse 之间传输。"数据块"就是二进制数据列的序列,其中每列包含相同数量的指定数据类型的数据值。(作为列式数据库,ClickHouse 以类似的形式存储这些数据。)查询返回的数据块大小由两个用户设置控制,这些设置可以在多个级别(用户配置文件、用户、会话或查询)设置。它们是:
+ClickHouse Connect 将主 `query` 方法的所有数据作为从 ClickHouse 服务器接收的数据块流进行处理。这些数据块以自定义的 "Native" 格式在 ClickHouse 之间传输。"数据块"是二进制数据列的序列,其中每列包含相同数量的指定数据类型的数据值。(作为列式数据库,ClickHouse 以类似的形式存储这些数据。)查询返回的数据块大小由两个用户设置控制,这些设置可以在多个级别(用户配置文件、用户、会话或查询)设置。它们是:
 
-- [max_block_size](/operations/settings/settings#max_block_size) -- 数据块的行数大小限制。默认值为 65536。
+- [max_block_size](/operations/settings/settings#max_block_size) -- 数据块的行数上限。默认值为 65536。
 - [preferred_block_size_bytes](/operations/settings/settings#preferred_block_size_bytes) -- 数据块的字节大小软限制。默认值为 1,000,0000。
 
-无论 `preferred_block_size_setting` 如何设置,每个数据块的行数永远不会超过 `max_block_size`。根据查询类型的不同,实际返回的数据块可以是任意大小。例如,对覆盖多个分片的分布式表的查询可能包含直接从每个分片检索的较小数据块。
+无论 `preferred_block_size_setting` 如何设置,每个数据块的行数永远不会超过 `max_block_size`。根据查询类型的不同,实际返回的数据块可以是任意大小。例如,对覆盖多个分片的分布式表的查询可能包含直接从各个分片检索的较小数据块。
 
-使用客户端的 `query_*_stream` 方法之一时,结果会逐块返回。ClickHouse Connect 一次只加载一个数据块。这允许处理大量数据,而无需将整个大型结果集加载到内存中。请注意,应用程序应准备好处理任意数量的数据块,并且无法控制每个数据块的确切大小。
+使用客户端的 `query_*_stream` 方法之一时,结果以逐块的方式返回。ClickHouse Connect 一次只加载一个数据块。这允许处理大量数据,而无需将整个大型结果集加载到内存中。请注意,应用程序应准备好处理任意数量的数据块,并且无法控制每个数据块的确切大小。
 
-### 慢速处理的 HTTP 数据缓冲区 {#http-data-buffer-for-slow-processing}
+### 用于慢速处理的 HTTP 数据缓冲区 {#http-data-buffer-for-slow-processing}
 
 由于 HTTP 协议的限制,如果数据块的处理速度明显慢于 ClickHouse 服务器流式传输数据的速度,ClickHouse 服务器将关闭连接,导致在处理线程中抛出异常。可以通过使用通用的 `http_buffer_size` 设置增加 HTTP 流缓冲区的大小(默认为 10 兆字节)来缓解这一问题。如果应用程序有足够的可用内存,在这种情况下使用较大的 `http_buffer_size` 值应该没有问题。如果使用 `lz4` 或 `zstd` 压缩,缓冲区中的数据将以压缩形式存储,因此使用这些压缩类型将增加可用的总缓冲区容量。
 
@@ -77,12 +77,12 @@ with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pi
 
 请注意,尝试在没有 `with` 语句的情况下使用 StreamContext 将引发错误。使用 Python 上下文可确保即使未消费所有数据和/或在处理过程中引发异常,流(在本例中为流式 HTTP 响应)也会被正确关闭。此外,`StreamContext` 只能使用一次来消费流。尝试在 `StreamContext` 退出后使用它将产生 `StreamClosedError`。
 
-您可以使用 `StreamContext` 的 `source` 属性来访问父 `QueryResult` 对象,其中包括列名和类型。
+您可以使用 `StreamContext` 的 `source` 属性来访问父 `QueryResult` 对象,其中包含列名和类型。
 
 ### 流类型 {#stream-types}
 
 
-`query_column_block_stream` 方法将数据块作为列数据序列返回,以原生 Python 数据类型存储。使用上述 `taxi_trips` 查询时,返回的数据将是一个列表,其中每个元素是另一个列表(或元组),包含相应列的所有数据。因此 `block[0]` 将是一个仅包含字符串的元组。列式格式最常用于对列中所有值执行聚合操作,例如累加总票价。
+`query_column_block_stream` 方法将数据块作为列数据序列返回,以原生 Python 数据类型存储。使用上述 `taxi_trips` 查询时,返回的数据将是一个列表,其中每个元素是另一个列表(或元组),包含相应列的所有数据。因此 `block[0]` 将是一个仅包含字符串的元组。列式格式最常用于对列中的所有值执行聚合操作,例如累加总票价。
 
 `query_row_block_stream` 方法将数据块作为行序列返回,类似于传统关系数据库。对于出租车行程数据,返回的数据将是一个列表,其中每个元素是另一个表示数据行的列表。因此 `block[0]` 将包含第一次出租车行程的所有字段(按顺序),`block[1]` 将包含第二次出租车行程的所有字段,依此类推。行式结果通常用于显示或转换处理。
 
@@ -116,11 +116,11 @@ client = clickhouse_connect.get_client()
 ```
 
 
-# 逐行流式读取大型结果集
+# 按行流式处理大型结果集
 
 with client.query&#95;rows&#95;stream(&quot;SELECT number, number * 2 as doubled FROM system.numbers LIMIT 100000&quot;) as stream:
 for row in stream:
-print(row)  # 处理每一行
+print(row)  # 逐行处理
 
 # 输出：
 
@@ -143,7 +143,7 @@ client = clickhouse_connect.get_client()
 ````
 
 
-# 按行块流式读取（比逐行处理更高效）
+# 以数据块方式流式读取行（比逐行处理更高效）
 
 with client.query&#95;row&#95;block&#95;stream(&quot;SELECT number, number * 2 FROM system.numbers LIMIT 100000&quot;) as stream:
 for block in stream:
@@ -166,7 +166,7 @@ client = clickhouse_connect.get_client()
 ````
 
 
-# 将查询结果以 Pandas DataFrame 流式读取
+# 以 Pandas DataFrame 的形式流式获取查询结果
 
 with client.query&#95;df&#95;stream(&quot;SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000&quot;) as stream:
 for df in stream:
@@ -274,7 +274,7 @@ print(np&#95;array)
 
 ### Pandas 查询 {#pandas-queries}
 
-`query_df` 方法以 Pandas DataFrame 的形式返回查询结果,而不是 ClickHouse Connect 的 `QueryResult` 对象。
+`query_df` 方法以 Pandas DataFrame 的形式返回查询结果,而不是 ClickHouse Connect 的 `QueryResult`。
 
 ```python
 import clickhouse_connect
@@ -283,7 +283,7 @@ client = clickhouse_connect.get_client()
 ````
 
 
-# 查询结果为 Pandas DataFrame
+# 查询返回一个 Pandas DataFrame
 df = client.query_df("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
 
 
@@ -312,7 +312,7 @@ print(df)
 
 ### PyArrow 查询 {#pyarrow-queries}
 
-`query_arrow` 方法以 PyArrow Table 形式返回查询结果。它直接使用 ClickHouse 的 `Arrow` 格式,因此只接受与主 `query` 方法相同的三个参数:`query`、`parameters` 和 `settings`。此外,还有一个额外的参数 `use_strings`,用于确定 Arrow Table 将 ClickHouse String 类型渲染为字符串(True 时)还是字节(False 时)。
+`query_arrow` 方法以 PyArrow Table 的形式返回查询结果。它直接使用 ClickHouse 的 `Arrow` 格式,因此只接受与主 `query` 方法相同的三个参数:`query`、`parameters` 和 `settings`。此外,还有一个额外的参数 `use_strings`,用于确定 Arrow Table 是将 ClickHouse String 类型渲染为字符串(True 时)还是字节(False 时)。
 
 ```python
 import clickhouse_connect
@@ -408,11 +408,11 @@ print(f"接收到 {type(df_batch)} 批次,包含 {len(df_batch)} 行,数据类�
 
 ```
 
-#### 注意事项和限制 {#notes-and-caveats}
+#### 注意事项与限制 {#notes-and-caveats}
 - Arrow 类型映射:以 Arrow 格式返回数据时,ClickHouse 会将类型映射到最接近的受支持 Arrow 类型。某些 ClickHouse 类型没有原生的 Arrow 等效类型,会以原始字节形式在 Arrow 字段中返回(通常为 `BINARY` 或 `FIXED_SIZE_BINARY`)。
   - 示例:`IPv4` 表示为 Arrow `UINT32`;`IPv6` 和大整数(`Int128/UInt128/Int256/UInt256`)通常表示为包含原始字节的 `FIXED_SIZE_BINARY`/`BINARY`。
   - 在这些情况下,DataFrame 列将包含由 Arrow 字段支持的字节值;需要由客户端代码根据 ClickHouse 语义解释/转换这些字节。
-- 不支持的 Arrow 数据类型(例如作为真正 Arrow 类型的 UUID/ENUM)不会被输出;值会使用最接近的受支持 Arrow 类型(通常为二进制字节)来表示。
+- 不支持的 Arrow 数据类型(例如作为真正 Arrow 类型的 UUID/ENUM)不会被输出;值使用最接近的受支持 Arrow 类型(通常为二进制字节)表示输出。
 - Pandas 要求:Arrow 支持的数据类型需要 pandas 2.x。对于较旧的 pandas 版本,请改用 `query_df`(非 Arrow)。
 - 字符串与二进制:`use_strings` 选项(当服务器设置 `output_format_arrow_string_as_string` 支持时)控制 ClickHouse `String` 列是作为 Arrow 字符串还是二进制返回。
 
@@ -423,7 +423,7 @@ print(f"接收到 {type(df_batch)} 批次,包含 {len(df_batch)} 行,数据类�
 ```
 
 
-`Date` 列可能会以 `UINT16` 的形式传入（表示自 Unix 纪元 1970‑01‑01 起的天数）。在 DataFrame 中进行转换既高效又直接：
+`Date` 列可能会以 `UINT16` 的形式传入（表示自 Unix 纪元 1970‑01‑01 起的天数）。在 DataFrame 内部进行转换既高效又简单：
 
 ```python
 # Polars
@@ -439,18 +439,18 @@ df[&quot;event&#95;date&quot;] = pd.to&#95;datetime(df[&quot;event&#95;date&quot
 ```
 
 
-像 `Int128` 这样的列可能会以携带原始字节的 `FIXED_SIZE_BINARY` 形式出现。Polars 提供对 128 位整数的原生支持：
+像 `Int128` 这样的列可能会以原始字节的形式作为 `FIXED_SIZE_BINARY` 类型传入。Polars 原生支持 128 位整数：
 
 ```python
 # Polars - 原生支持
 df = df.with_columns(pl.col("data").bin.reinterpret(dtype=pl.Int128, endianness="little"))
 ```
 
-截至 NumPy 2.3，尚无公开的 128 位整数 dtype，因此我们必须退回到纯 Python，可以像这样编写代码：
+截至 NumPy 2.3，还没有公开的 128 位整数 `dtype`，因此我们必须回退到纯 Python，可以像这样做：
 
 
 ```python
-# 假设我们有一个 pandas DataFrame，其中包含一个数据类型为 fixed_size_binary[16][pyarrow] 的 Int128 列
+# 假设我们有一个 pandas DataFrame,其中包含一个数据类型为 fixed_size_binary[16][pyarrow] 的 Int128 列
 ```
 
 
@@ -477,7 +477,7 @@ print([int.from&#95;bytes(n, byteorder=&quot;little&quot;) for n in df[&quot;int
 
 ## 读取格式 {#read-formats}
 
-读取格式控制客户端 `query`、`query_np` 和 `query_df` 方法返回值的数据类型。(`raw_query` 和 `query_arrow` 不会修改来自 ClickHouse 的数据,因此格式控制不适用。)例如,如果将 UUID 的读取格式从默认的 `native` 格式更改为 `string` 格式,那么对 `UUID` 列的 ClickHouse 查询将返回字符串值(使用标准的 8-4-4-4-12 RFC 1422 格式),而不是 Python UUID 对象。
+读取格式控制客户端 `query`、`query_np` 和 `query_df` 方法返回值的数据类型。(`raw_query` 和 `query_arrow` 不会修改来自 ClickHouse 的原始数据,因此格式控制不适用。)例如,如果将 UUID 的读取格式从默认的 `native` 格式更改为 `string` 格式,那么对 `UUID` 列的 ClickHouse 查询将返回字符串值(使用标准的 8-4-4-4-12 RFC 1422 格式),而不是 Python UUID 对象。
 
 任何格式化函数的 "data type" 参数都可以包含通配符。格式为单个小写字符串。
 
@@ -491,58 +491,58 @@ from clickhouse_connect.datatypes.format import set_read_format
 ```
 
 
-# 将 IPv6 和 IPv4 的值都作为字符串返回
+# 将 IPv6 和 IPv4 的值都以字符串形式返回
 set_read_format('IPv*', 'string')
 
 
 
-# 将所有 Date 类型以底层的 epoch 秒或 epoch 天形式返回
+# 将所有 Date 类型作为底层的 epoch 秒或 epoch 天返回
 
 set_read_format('Date\*', 'int')
 
 ````
 - 对于整个查询,使用可选的 `query_formats` 字典参数。在这种情况下,指定数据类型的任何列(或子列)都将使用配置的格式。
 ```python
-# 将任何 UUID 列以字符串形式返回
+# 将任何 UUID 列作为字符串返回
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})
 ````
 
-- 对于特定列中的值,使用可选的 `column_formats` 字典参数。键是 ClickHouse 返回的列名,值可以是数据列的格式,或者是包含 ClickHouse 类型名称和查询格式值的第二级 "format" 字典。这个二级字典可用于嵌套列类型,如 Tuple 或 Map。
+- 对于特定列中的值,使用可选的 `column_formats` 字典参数。键是 ClickHouse 返回的列名,值可以是数据列的格式,或者是一个二级"format"字典,包含 ClickHouse 类型名称和查询格式的值。这个二级字典可用于嵌套列类型,如 Tuple 或 Map。
 
 ```python
-# 将 `dev_address` 列中的 IPv6 值以字符串形式返回
+# 将 `dev_address` 列中的 IPv6 值作为字符串返回
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
 
 ### 读取格式选项(Python 类型) {#read-format-options-python-types}
 
-| ClickHouse 类型       | 原生 Python 类型      | 读取格式      | 说明                                                                                                          |
+| ClickHouse 类型       | 原生 Python 类型      | 读取格式      | 注释                                                                                                          |
 | --------------------- | ----------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------- |
 | Int[8-64], UInt[8-32] | int                     | -                 |                                                                                                                   |
-| UInt64                | int                     | signed            | Superset 目前无法处理大的无符号 UInt64 值                                                   |
-| [U]Int[128,256]       | int                     | string            | Pandas 和 NumPy 的 int 值最大为 64 位,因此这些值可以字符串形式返回                              |
-| BFloat16              | float                   | -                 | 所有 Python 浮点数内部均为 64 位                                                                          |
-| Float32               | float                   | -                 | 所有 Python 浮点数内部均为 64 位                                                                          |
+| UInt64                | int                     | signed            | Superset 目前不支持处理大的无符号 UInt64 值                                                   |
+| [U]Int[128,256]       | int                     | string            | Pandas 和 NumPy 的 int 值最大为 64 位,因此这些值可以作为字符串返回                              |
+| BFloat16              | float                   | -                 | 所有 Python 浮点数内部都是 64 位                                                                          |
+| Float32               | float                   | -                 | 所有 Python 浮点数内部都是 64 位                                                                          |
 | Float64               | float                   | -                 |                                                                                                                   |
 | Decimal               | decimal.Decimal         | -                 |                                                                                                                   |
-| String                | string                  | bytes             | ClickHouse String 列没有固有编码,因此也用于存储可变长度的二进制数据        |
-| FixedString           | bytes                   | string            | FixedString 是固定大小的字节数组,但有时会被当作 Python 字符串处理                              |
-| Enum[8,16]            | string                  | string, int       | Python 枚举不接受空字符串,因此所有枚举都会呈现为字符串或底层的 int 值 |
-| Date                  | datetime.date           | int               | ClickHouse 将 Date 存储为自 1970 年 1 月 1 日以来的天数。此值可以 int 形式获取                               |
-| Date32                | datetime.date           | int               | 与 Date 相同,但支持更广的日期范围                                                                      |
-| DateTime              | datetime.datetime       | int               | ClickHouse 以 epoch 秒形式存储 DateTime。此值可以 int 形式获取                                    |
-| DateTime64            | datetime.datetime       | int               | Python datetime.datetime 的精度限于微秒级。原始的 64 位 int 值可用               |
-| Time                  | datetime.timedelta      | int, string, time | 时间点以 Unix 时间戳形式保存。此值可以 int 形式获取                                 |
-| Time64                | datetime.timedelta      | int, string, time | Python datetime.timedelta 的精度限于微秒级。原始的 64 位 int 值可用              |
-| IPv4                  | `ipaddress.IPv4Address` | string            | IP 地址可以字符串形式读取,格式正确的字符串可以作为 IP 地址插入                |
-| IPv6                  | `ipaddress.IPv6Address` | string            | IP 地址可以字符串形式读取,格式正确的字符串可以作为 IP 地址插入                        |
-| Tuple                 | dict or tuple           | tuple, json       | 命名元组默认以字典形式返回。命名元组也可以 JSON 字符串形式返回               |
+| String                | string                  | bytes             | ClickHouse String 列没有固有编码,因此它们也用于可变长度的二进制数据        |
+| FixedString           | bytes                   | string            | FixedString 是固定大小的字节数组,但有时会被视为 Python 字符串                              |
+| Enum[8,16]            | string                  | string, int       | Python 枚举不接受空字符串,因此所有枚举都呈现为字符串或底层的 int 值 |
+| Date                  | datetime.date           | int               | ClickHouse 将 Date 存储为自 1970 年 1 月 1 日以来的天数。此值可作为 int 获取                               |
+| Date32                | datetime.date           | int               | 与 Date 相同,但支持更广泛的日期范围                                                                      |
+| DateTime              | datetime.datetime       | int               | ClickHouse 以 epoch 秒存储 DateTime。此值可作为 int 获取                                    |
+| DateTime64            | datetime.datetime       | int               | Python datetime.datetime 的精度限制为微秒。原始的 64 位 int 值可用               |
+| Time                  | datetime.timedelta      | int, string, time | 时间点保存为 Unix 时间戳。此值可作为 int 获取                                 |
+| Time64                | datetime.timedelta      | int, string, time | Python datetime.timedelta 的精度限制为微秒。原始的 64 位 int 值可用              |
+| IPv4                  | `ipaddress.IPv4Address` | string            | IP 地址可以作为字符串读取,格式正确的字符串可以作为 IP 地址插入                |
+| IPv6                  | `ipaddress.IPv6Address` | string            | IP 地址可以作为字符串读取,格式正确的字符串可以作为 IP 地址插入                        |
+| Tuple                 | dict or tuple           | tuple, json       | 命名元组默认作为字典返回。命名元组也可以作为 JSON 字符串返回               |
 | Map                   | dict                    | -                 |                                                                                                                   |
 | Nested                | Sequence[dict]          | -                 |                                                                                                                   |
-| UUID                  | uuid.UUID               | string            | UUID 可以按照 RFC 4122 格式化的字符串形式读取<br/>                                                       |
+| UUID                  | uuid.UUID               | string            | UUID 可以作为按照 RFC 4122 格式化的字符串读取<br/>                                                       |
 | JSON                  | dict                    | string            | 默认返回 Python 字典。`string` 格式将返回 JSON 字符串                         |
-| Variant               | object                  | -                 | 返回与该值存储的 ClickHouse 数据类型相匹配的 Python 类型                                 |
-| Dynamic               | object                  | -                 | 返回与该值存储的 ClickHouse 数据类型相匹配的 Python 类型                                 |
+| Variant               | object                  | -                 | 返回与存储值的 ClickHouse 数据类型匹配的 Python 类型                                 |
+| Dynamic               | object                  | -                 | 返回与存储值的 ClickHouse 数据类型匹配的 Python 类型                                 |
 
 
 ## 外部数据 {#external-data}
@@ -559,7 +559,7 @@ ClickHouse 查询可以接受任何 ClickHouse 格式的外部数据。这些二
 | structure | str or seq of str | 数据中列名 + 数据类型的列表(参见示例)。`structure` 或 `types` 必须提供其一                                       |
 | mime_type | str               | 文件数据的可选 MIME 类型。目前 ClickHouse 会忽略此 HTTP 子标头                                                         |
 
-要发送包含外部 CSV 文件(包含"电影"数据)的查询,并将该数据与 ClickHouse 服务器上已存在的 `directors` 表结合:
+要发送包含外部 CSV 文件(包含"电影"数据)的查询,并将该数据与 ClickHouse 服务器上已存在的 `directors` 表进行组合:
 
 ```python
 import clickhouse_connect
@@ -573,27 +573,19 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
                       external_data=ext_data).result_rows
 ```
 
-可以使用 `add_file` 方法向初始的 `ExternalData` 对象添加更多外部数据文件,该方法接受与构造函数相同的参数。对于 HTTP,所有外部数据都作为 `multi-part/form-data` 文件上传的一部分进行传输。
+可以使用 `add_file` 方法向初始 `ExternalData` 对象添加更多外部数据文件,该方法接受与构造函数相同的参数。对于 HTTP,所有外部数据都作为 `multi-part/form-data` 文件上传的一部分进行传输。
 
 
 ## 时区 {#time-zones}
 
-ClickHouse 提供了多种机制来为 DateTime 和 DateTime64 值应用时区。
+ClickHouse 提供了多种机制来为 DateTime 和 DateTime64 值应用时区。在内部，ClickHouse 服务器始终将任何 DateTime 或 `DateTime64` 对象存储为一个时区无关的数字，表示自纪元时间（1970-01-01 00:00:00 UTC）以来的秒数。对于 `DateTime64` 值，根据精度的不同，其表示可以是自纪元以来的毫秒、微秒或纳秒。因此，任何时区信息的应用始终发生在客户端。请注意，这涉及大量额外计算，因此在性能关键型应用中，建议将 DateTime 类型视为纪元时间戳，仅在用户显示和转换时例外（例如，Pandas Timestamps 始终使用表示纪元纳秒的 64 位整数以提高性能）。
 
-在内部实现上,ClickHouse 服务器始终将任何 DateTime 或 `DateTime64` 对象存储为不含时区信息的数值,该数值表示自纪元时间(1970-01-01 00:00:00 UTC)以来的秒数。
+在查询中使用时区感知数据类型时——特别是 Python 的 `datetime.datetime` 对象——`clickhouse-connect` 按照以下优先级规则应用客户端时区:
 
-对于 `DateTime64` 值,根据精度设置,其表示形式可以是自纪元以来的毫秒、微秒或纳秒。
+1. 如果为查询指定了查询方法参数 `client_tzs`，则应用特定列的时区
+2. 如果 ClickHouse 列具有时区元数据（即类型类似于 DateTime64(3, 'America/Denver')），则应用 ClickHouse 列的时区。（请注意，在 ClickHouse 23.2 版本之前，clickhouse-connect 无法获取 DateTime 列的时区元数据）
+3. 如果为查询指定了查询方法参数 `query_tz`，则应用"查询时区"。
+4. 如果对查询或会话应用了时区设置，则应用该时区。（此功能尚未在 ClickHouse 服务器中发布）
+5. 最后，如果客户端的 `apply_server_timezone` 参数已设置为 True（默认值），则应用 ClickHouse 服务器时区。
 
-因此,任何时区信息的应用都发生在客户端侧。
-
-需要注意的是,这会产生额外的计算开销,因此在性能敏感的应用中,建议将 DateTime 类型作为纪元时间戳处理,仅在用户显示和转换时进行时区处理(例如,Pandas Timestamps 始终使用 64 位整数表示纪元纳秒,以提升性能)。
-
-在查询中使用时区感知的数据类型时——特别是 Python 的 `datetime.datetime` 对象——`clickhouse-connect` 会按照以下优先级规则应用客户端时区:
-
-1. 如果为查询指定了查询方法参数 `client_tzs`,则应用特定列的时区
-2. 如果 ClickHouse 列包含时区元数据(即类型为 DateTime64(3, 'America/Denver') 这样的形式),则应用 ClickHouse 列的时区。(注意:在 ClickHouse 23.2 版本之前,clickhouse-connect 无法获取 DateTime 列的时区元数据)
-3. 如果为查询指定了查询方法参数 `query_tz`,则应用"查询时区"。
-4. 如果为查询或会话应用了时区设置,则应用该时区。(此功能尚未在 ClickHouse 服务器中发布)
-5. 最后,如果客户端的 `apply_server_timezone` 参数设置为 True(默认值),则应用 ClickHouse 服务器的时区。
-
-需要注意的是,如果根据上述规则应用的时区为 UTC,`clickhouse-connect` 将_始终_返回不含时区信息的 Python `datetime.datetime` 对象。如有需要,应用程序代码可以随后为该对象添加时区信息。
+请注意，如果根据这些规则应用的时区是 UTC，`clickhouse-connect` 将_始终_返回一个时区无关的 Python `datetime.datetime` 对象。如果需要，应用程序代码可以随后向这个时区无关的对象添加额外的时区信息。

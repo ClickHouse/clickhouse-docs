@@ -1,5 +1,5 @@
 ---
-description: '针对机器生成日志数据的新分析基准'
+description: '针对机器生成日志数据的新型分析基准'
 sidebar_label: '布朗大学基准'
 slug: /getting-started/example-datasets/brown-benchmark
 title: '布朗大学基准'
@@ -7,7 +7,7 @@ keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machi
 doc_type: 'guide'
 ---
 
-`MgBench` 是一个针对机器生成日志数据的新型分析基准，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
+`MgBench` 是一个用于机器生成日志数据的新型分析基准，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
 
 下载数据：
 
@@ -127,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: 过去一天中哪些计算机实验室机器处于离线状态?
+-- Q1.2: 过去一天中哪些计算机实验室的机器处于离线状态?
 
 SELECT machine_name,
        log_time
@@ -141,7 +141,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: 特定工作站在过去 10 天内的每小时平均指标是多少?
+-- Q1.3: 特定工作站在过去 10 天内每小时的平均指标是多少?
 
 SELECT dt,
        hr,
@@ -189,7 +189,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: 哪些外部可访问的虚拟机内存不足?
+-- Q1.5: 哪些外部可访问的虚拟机出现了内存不足?
 
 SELECT machine_name,
        dt,
@@ -210,7 +210,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.6: 所有文件服务器的每小时总网络流量是多少?
+-- Q1.6: 所有文件服务器每小时的总网络流量是多少?
 
 ```
 
@@ -240,7 +240,7 @@ LIMIT 10;
 ````
 
 ```sql
--- Q2.1: 过去两周内哪些请求导致了服务器错误?
+-- Q2.1: 过去 2 周内哪些请求导致了服务器错误?
 
 SELECT *
 FROM logs2
@@ -262,7 +262,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: 过去一个月顶级路径请求的平均深度是多少?
+-- Q2.3: 过去一个月顶级请求的平均路径深度是多少?
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -287,7 +287,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 在过去 3 个月中，哪些客户端发出了过多的请求？
+-- Q2.4: 在过去 3 个月中,哪些客户端发出了过多的请求?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -299,7 +299,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: 每日独立访客数是多少?
+-- Q2.5: 每日独立访客数是多少？
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -326,7 +326,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: 周末室内温度是否降至冰点?
+-- Q3.1: 周末室内温度是否达到冰点?
 
 SELECT *
 FROM logs3
@@ -350,7 +350,7 @@ ORDER BY ct DESC;
 ```
 
 
-下面的查询 3.5 使用了 UNION。用于设置合并 SELECT 查询结果的模式。该设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时才会生效。
+下面的查询 3.5 使用了 UNION。用于设置合并 SELECT 查询结果的模式。此设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时生效。
 
 ```sql
 SET union_default_mode = 'DISTINCT'
@@ -411,7 +411,7 @@ WHERE dt >= DATE '2019-06-01'
 ```
 
 ```sql
--- Q3.6: 每个设备类别的月度用电量指标是什么?
+-- Q3.6: 每个设备类别的月度用电量指标是什么？
 
 SELECT yr,
        mo,
@@ -455,4 +455,4 @@ ORDER BY yr,
          mo;
 ```
 
-这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询，参见[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询，例如这个[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

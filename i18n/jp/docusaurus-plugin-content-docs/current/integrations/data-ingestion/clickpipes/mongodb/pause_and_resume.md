@@ -14,7 +14,7 @@ import pause_status from '@site/static/images/integrations/data-ingestion/clickp
 import resume_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_button.png'
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
-MongoDB ClickPipe を一時停止できると便利なケースがあります。たとえば、既存データを静的な状態のまま分析したい場合や、MongoDB のアップグレードを行っている場合などです。ここでは、MongoDB ClickPipe を一時停止および再開する方法を説明します。
+MongoDB ClickPipe を一時停止すると便利なケースがいくつかあります。たとえば、既存データを静的な状態に保ったまま分析を実行したい場合や、MongoDB のアップグレードを行っている場合などです。ここでは、MongoDB ClickPipe を一時停止および再開する方法を説明します。
 
 
 ## MongoDB ClickPipeを一時停止する手順 {#pause-clickpipe-steps}

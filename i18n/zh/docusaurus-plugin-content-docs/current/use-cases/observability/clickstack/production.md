@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/production
-title: '投产'
+title: '迁移到生产环境'
 sidebar_label: '生产环境'
 pagination_prev: null
 pagination_next: null
-description: '将 ClickStack 投入生产环境'
+description: '使用 ClickStack 迁移到生产环境'
 doc_type: 'guide'
 keywords: ['clickstack', 'production', 'deployment', 'best practices', 'operations']
 ---
@@ -15,7 +15,7 @@ import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-c
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 
-在生产环境中部署 ClickStack 时，还需要额外注意一些事项，以确保安全性、稳定性以及配置正确无误。
+在生产环境中部署 ClickStack 时，还需要额外注意若干事项，以确保安全性、稳定性以及正确的配置。
 
 
 ## 网络和端口安全 {#network-security}
@@ -24,7 +24,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 **建议:**
 
-仅暴露生产环境所需的端口。通常包括 OTLP 端点、API 服务器和前端。
+仅暴露生产环境所需的端口,通常包括 OTLP 端点、API 服务器和前端。
 
 例如,在 `docker-compose.yml` 文件中删除或注释掉不必要的端口映射:
 
@@ -37,14 +37,14 @@ ports:
 # 避免暴露内部端口,如 ClickHouse 8123 或 MongoDB 27017。
 ```
 
-有关隔离容器和加强访问控制的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
+有关隔离容器和增强访问安全的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
 
 
 ## 会话密钥配置 {#session-secret}
 
 在生产环境中,必须为 `EXPRESS_SESSION_SECRET` 环境变量设置一个强随机值,以保护会话数据并防止篡改。
 
-以下是将其添加到应用服务的 `docker-compose.yml` 文件中的方法:
+以下是将其添加到应用服务的 `docker-compose.yml` 文件的方法:
 
 ```yaml
 app:
@@ -78,7 +78,7 @@ app:
 openssl rand -hex 32
 ```
 
-避免将密钥提交到源代码控制系统。在生产环境中,建议使用环境变量管理工具(例如 Docker Secrets、HashiCorp Vault 或针对特定环境的 CI/CD 配置)。
+避免将密钥提交到源代码控制系统。在生产环境中,建议使用环境变量管理工具(例如 Docker Secrets、HashiCorp Vault 或特定环境的 CI/CD 配置)。
 
 
 ## 安全数据接入 {#secure-ingestion}
@@ -113,20 +113,20 @@ openssl rand -hex 32
 
 ### 自管理安全 {#self-managed-security}
 
-如果您正在管理自己的 ClickHouse 实例,启用 **SSL/TLS**、强制身份验证并遵循加固访问的最佳实践至关重要。请参阅[此博客文章](https://www.wiz.io/blog/clickhouse-and-wiz)了解实际错误配置的背景以及如何避免它们。
+如果您正在管理自己的 ClickHouse 实例,启用 **SSL/TLS**、强制身份验证并遵循访问加固的最佳实践至关重要。请参阅[此博客文章](https://www.wiz.io/blog/clickhouse-and-wiz)了解实际错误配置的背景以及如何避免它们。
 
 ClickHouse OSS 开箱即提供强大的安全功能。但是,这些功能需要配置:
 
 - **使用 SSL/TLS**,通过 `config.xml` 中的 `tcp_port_secure` 和 `<openSSL>` 配置。请参阅 [guides/sre/configuring-ssl](/guides/sre/configuring-ssl)。
-- **为 `default` 用户设置强密码**或禁用该用户。
+- 为 `default` 用户**设置强密码**或禁用它。
 - **避免将 ClickHouse 暴露到外部**,除非明确需要。默认情况下,ClickHouse 仅绑定到 `localhost`,除非修改了 `listen_host`。
 - **使用身份验证方法**,例如密码、证书、SSH 密钥或[外部身份验证器](/operations/external-authenticators)。
-- **限制访问**,使用 IP 过滤和 `HOST` 子句。请参阅 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
-- **启用基于角色的访问控制 (RBAC)**,以授予细粒度权限。请参阅 [operations/access-rights](/operations/access-rights)。
-- **强制执行配额和限制**,使用[配额](/operations/quotas)、[设置配置文件](/operations/settings/settings-profiles)和只读模式。
+- 使用 IP 过滤和 `HOST` 子句**限制访问**。请参阅 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
+- **启用基于角色的访问控制 (RBAC)** 以授予细粒度权限。请参阅 [operations/access-rights](/operations/access-rights)。
+- 使用[配额](/operations/quotas)、[设置配置文件](/operations/settings/settings-profiles)和只读模式**强制执行配额和限制**。
 - **加密静态数据**并使用安全的外部存储。请参阅 [operations/storing-data](/operations/storing-data) 和 [cloud/security/CMEK](/cloud/security/cmek)。
-- **避免硬编码凭据。**使用[命名集合](/operations/named-collections)或 ClickHouse Cloud 中的 IAM 角色。
-- **审计访问和查询**,使用[系统日志](/operations/system-tables/query_log)和[会话日志](/operations/system-tables/session_log)。
+- **避免硬编码凭据。** 在 ClickHouse Cloud 中使用[命名集合](/operations/named-collections)或 IAM 角色。
+- 使用[系统日志](/operations/system-tables/query_log)和[会话日志](/operations/system-tables/session_log)**审计访问和查询**。
 
 另请参阅[外部身份验证器](/operations/external-authenticators)和[查询复杂度设置](/operations/settings/query-complexity),以管理用户并确保查询/资源限制。
 
@@ -148,15 +148,15 @@ ClickHouse OSS 开箱即提供强大的安全功能。但是,这些功能需要�
 
 ### 创建服务 {#create-a-service}
 
-按照 [ClickHouse Cloud 快速入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service)创建服务。
+按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service)创建服务。
 
 ### 复制连接详情 {#copy-connection-details}
 
 要查找 HyperDX 的连接详情,请导航到 ClickHouse Cloud 控制台,点击侧边栏上的 <b>Connect</b> 按钮,记录 HTTP 连接详情,特别是 URL。
 
-**虽然您可以使用此步骤中显示的默认用户名和密码连接 HyperDX,但我们建议创建专用用户 - 见下文**
+**虽然您可以使用此步骤中显示的默认用户名和密码连接 HyperDX,但我们建议创建专用用户 - 请参见下文**
 
-<Image img={connect_cloud} alt='连接 Cloud' size='md' background />
+<Image img={connect_cloud} alt='Connect Cloud' size='md' background />
 
 ### 创建 HyperDX 用户 {#create-a-user}
 
@@ -169,7 +169,7 @@ GRANT sql_console_read_only TO hyperdx;
 
 ### 准备数据摄取用户 {#prepare-for-ingestion}
 
-创建用于存储数据的 `otel` 数据库,以及具有有限权限的数据摄取用户 `hyperdx_ingest`。
+创建用于存储数据的 `otel` 数据库,以及具有有限权限的 `hyperdx_ingest` 摄取用户。
 
 ```sql
 CREATE DATABASE otel;

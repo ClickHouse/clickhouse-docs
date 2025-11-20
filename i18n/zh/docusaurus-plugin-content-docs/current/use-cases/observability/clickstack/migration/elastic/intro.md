@@ -8,7 +8,7 @@ sidebar_position: 0
 description: '从 Elastic 迁移到 ClickHouse 可观测性栈的概览'
 show_related_blogs: true
 keywords: ['Elasticsearch']
-doc_type: 'guide'
+doc_type: '指南'
 ---
 
 
@@ -25,7 +25,7 @@ doc_type: 'guide'
 - 您在大规模场景下遇到搜索性能不佳或面临数据摄取瓶颈。
 - 您希望使用 SQL 将可观测性信号与业务数据关联起来,统一可观测性和分析工作流。
 - 您致力于采用 OpenTelemetry 并希望避免供应商锁定。
-- 您希望利用 ClickHouse Cloud 中存储和计算的分离,实现几乎无限的扩展能力——在空闲期间仅为数据摄取计算和对象存储付费。
+- 您希望利用 ClickHouse Cloud 中存储和计算的分离,实现几乎无限的扩展能力——在空闲期间仅需为数据摄取计算和对象存储付费。
 
 但是,在以下情况下 ClickStack 可能不适合:
 

@@ -10,4 +10,4 @@ doc_type: 'landing-page'
 
 # 从 Elasticsearch 迁移到 ClickHouse
 
-关于可观测性相关的场景，请参阅 [从 Elasticsearch 迁移到 ClickStack](/use-cases/observability/clickstack/migration/elastic) 迁移文档。
+关于可观测性场景，请参阅 [从 Elasticsearch 迁移到 ClickStack](/use-cases/observability/clickstack/migration/elastic) 迁移文档。

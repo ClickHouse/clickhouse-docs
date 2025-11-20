@@ -19,11 +19,11 @@ doc_type: 'reference'
 
 ## 用法示例 {#example-usage}
 
-[`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage) 中给出的示例演示了 `maxSimpleState` 和 `minSimpleState` 的使用方法。
+[`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage) 中给出的示例展示了 `maxSimpleState` 和 `minSimpleState` 的使用方法。
 
 
 ## 另请参阅 {#see-also}
 
 - [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)
+- [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

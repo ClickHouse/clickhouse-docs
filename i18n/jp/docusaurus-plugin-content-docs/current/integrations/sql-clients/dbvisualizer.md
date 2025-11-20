@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'DbVisualizer'
 slug: /integrations/dbvisualizer
-description: 'DbVisualizer は ClickHouse を高度にサポートするデータベースツールです。'
+description: 'DbVisualizer は、ClickHouse を広くサポートするデータベースツールです。'
 title: 'DbVisualizer を ClickHouse に接続する'
 keywords: ['DbVisualizer', 'database visualization', 'SQL client', 'JDBC driver', 'database tool']
 doc_type: 'guide'
@@ -16,7 +16,7 @@ import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-cl
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# DbVisualizer から ClickHouse へ接続する
+# DbVisualizer を ClickHouse に接続する
 
 <CommunityMaintainedBadge/>
 
@@ -46,9 +46,9 @@ DbVisualizerには、ClickHouse用の最新JDBCドライバーが含まれてい
 
 ## 3. ClickHouse に接続する {#3-connect-to-clickhouse}
 
-DbVisualizer でデータベースに接続するには、まずデータベース接続を作成して設定する必要があります。
+DbVisualizer からデータベースに接続するには、まずデータベース接続を作成して設定する必要があります。
 
-1. **Database -> Create Database Connection** から新しい接続を作成し、ポップアップメニューからデータベース用のドライバーを選択します。
+1. メニューの **Database->Create Database Connection** から新しい接続を作成し、ポップアップメニューからデータベース用のドライバーを選択します。
 
 2. 新しい接続用の **Object View** タブが開きます。
 
@@ -56,18 +56,18 @@ DbVisualizer でデータベースに接続するには、まずデータベー�
 
 4. **Database Type** は **Auto Detect** のままにしておきます。
 
-5. **Driver Type** で選択したドライバーに緑色のチェックマークが付いていれば、そのまま使用できます。緑色のチェックマークが付いていない場合は、**Driver Manager** でドライバーを設定する必要がある場合があります。
+5. **Driver Type** で選択したドライバーに緑色のチェックマークが付いていれば、そのまま使用できます。緑色のチェックマークが付いていない場合は、**Driver Manager** でドライバーを設定する必要があります。
 
 6. 残りのフィールドに、データベースサーバーに関する情報を入力します。
 
-7. **Ping Server** ボタンをクリックして、指定したアドレスおよびポートにネットワーク接続を確立できることを確認します。
+7. **Ping Server** ボタンをクリックして、指定したアドレスとポートに対してネットワーク接続を確立できることを確認します。
 
 8. Ping Server の結果でサーバーに到達できることが確認できたら、**Connect** をクリックしてデータベースサーバーに接続します。
 
 :::tip
-データベースへの接続で問題が発生した場合の対処方法については、[Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) を参照してください。
+データベースへの接続に問題がある場合は、[Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) を参照して、問題解決のためのヒントを確認してください。
 
 
 ## 詳細情報 {#learn-more}
 
-DbVisualizerの詳細については、[DbVisualizerドキュメント](https://www.dbvis.com/docs/ug/)をご覧ください。
+DbVisualizerの詳細については、[DbVisualizerドキュメント](https://www.dbvis.com/docs/ug/)を参照してください。

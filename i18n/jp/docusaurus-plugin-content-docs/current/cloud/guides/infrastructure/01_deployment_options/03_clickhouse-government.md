@@ -1,8 +1,8 @@
 ---
-title: 'ClickHouse Government'
+title: 'ClickHouse Government（政府機関向け）'
 slug: /cloud/infrastructure/clickhouse-government
 keywords: ['government', 'fips', 'fedramp', 'gov cloud']
-description: 'ClickHouse Government 提供サービスの概要'
+description: 'ClickHouse Government オファリングの概要'
 doc_type: 'reference'
 ---
 
@@ -12,16 +12,16 @@ import private_gov_architecture from '@site/static/images/cloud/reference/privat
 
 ## 概要 {#overview}
 
-ClickHouse Governmentは、ClickHouse Cloudで稼働しているものと同じプロプライエタリ版のClickHouseと当社のClickHouse Operatorで構成されるセルフデプロイパッケージです。コンピュートとストレージの分離が構成されており、政府機関や公共部門組織の厳格な要件を満たすよう強化されています。S3互換ストレージを備えたKubernetes環境にデプロイされます。
+ClickHouse Governmentは、ClickHouse Cloudで稼働しているものと同じプロプライエタリ版のClickHouseと当社のClickHouse Operatorで構成される自己デプロイ型パッケージです。コンピュートとストレージの分離が構成されており、政府機関や公共部門組織の厳格な要件を満たすよう強化されています。S3互換ストレージを備えたKubernetes環境にデプロイされます。
 
 このパッケージは現在AWSで利用可能で、ベアメタルデプロイメントは近日提供予定です。
 
 :::note 注記
-ClickHouse Governmentは、政府機関、公共部門組織、またはこれらの機関や組織に販売を行うクラウドソフトウェア企業向けに設計されており、専用インフラストラクチャの完全な制御と管理を提供します。このオプションは[お問い合わせ](https://clickhouse.com/government)によってのみご利用いただけます。
+ClickHouse Governmentは、政府機関、公共部門組織、またはこれらの機関や組織に販売を行うクラウドソフトウェア企業向けに設計されており、専用インフラストラクチャの完全な制御と管理を提供します。このオプションは[お問い合わせ](https://clickhouse.com/government)いただくことでのみご利用いただけます。
 :::
 
 
-## オープンソースに対する利点 {#benefits-over-os}
+## オープンソース版に対する利点 {#benefits-over-os}
 
 以下の機能により、ClickHouse Governmentはセルフマネージド型オープンソースデプロイメントと差別化されています:
 
@@ -32,17 +32,17 @@ ClickHouse Governmentは、政府機関、公共部門組織、またはこれ�
 - コンピュートとストレージのネイティブ分離
 - [shared merge tree](/cloud/reference/shared-merge-tree)や[warehouse](/cloud/reference/warehouses)機能などの独自のクラウド機能
 
-### 多様なユースケースと条件での実証済み {#tested-proven}
+### 多様なユースケースと条件下でテスト・実証済み {#tested-proven}
 
 - ClickHouse Cloudで完全にテストおよび検証済み
 
 ### コンプライアンスパッケージ {#compliance-package}
 
-- 運用認可(ATO)を加速するための[NIST Risk Management Framework (RMF)](https://csrc.nist.gov/projects/risk-management/about-rmf)ドキュメント
+- 運用認可(ATO)を加速するための[NISTリスク管理フレームワーク(RMF)](https://csrc.nist.gov/projects/risk-management/about-rmf)ドキュメント
 
 ### 定期的に新機能が追加される充実したロードマップ {#full-featured-roadmap}
 
-近日追加予定の追加機能には以下が含まれます:
+近日追加予定の機能には以下が含まれます:
 
 - リソースをプログラムで管理するためのAPI
   - 自動バックアップ
@@ -54,14 +54,14 @@ ClickHouse Governmentは、政府機関、公共部門組織、またはこれ�
 
 ## アーキテクチャ {#architecture}
 
-ClickHouse Governmentは、デプロイメント環境内で完全に自己完結しており、Kubernetes内で管理されるコンピュートと、S3互換ストレージソリューション内のストレージで構成されています。
+ClickHouse Governmentは、お客様のデプロイメント環境内で完全に自己完結しており、Kubernetes内で管理されるコンピュートリソースと、S3互換ストレージソリューション内のストレージで構成されています。
 
 <br />
 
 <Image
   img={private_gov_architecture}
   size='md'
-  alt='ClickHouse Governmentアーキテクチャ'
+  alt='ClickHouse Government アーキテクチャ'
   background='black'
 />
 

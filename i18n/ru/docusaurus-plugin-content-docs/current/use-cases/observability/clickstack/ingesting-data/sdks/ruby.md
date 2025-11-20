@@ -9,19 +9,19 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-В этом руководстве интегрированы:
+В этом руководстве интегрируются:
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✖️ Логи</td>
-      <td className="pe-2">✖️ ️️Метрики</td>
+      <td className="pe-2">✖️ Метрики</td>
       <td className="pe-2">✅ Трейсы</td>
     </tr>
   </tbody>
 </table>
 
-_Чтобы отправлять логи в ClickStack, передавайте их через [коллектор OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
+_Чтобы отправлять логи в ClickStack, отправляйте их через [коллектор OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
 
 
 
@@ -35,11 +35,11 @@ _Чтобы отправлять логи в ClickStack, передавайте 
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-### Настройка OpenTelemetry и форматера логов {#configure-otel-logger-formatter}
+### Настройка OpenTelemetry и форматтера логгера {#configure-otel-logger-formatter}
 
 Далее необходимо инициализировать инструментарий трассировки OpenTelemetry
-и настроить форматер сообщений для логера Rails, чтобы логи автоматически
-связывались с трассировками. Без пользовательского форматера логи не будут
+и настроить форматтер сообщений логов для логгера Rails, чтобы логи автоматически
+связывались с трассировками. Без пользовательского форматтера логи не будут
 автоматически коррелироваться в ClickStack.
 
 В папке `config/initializers` создайте файл `hyperdx.rb` и добавьте в него

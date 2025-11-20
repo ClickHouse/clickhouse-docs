@@ -3,7 +3,7 @@ sidebar_label: 'Tableau Online'
 sidebar_position: 2
 slug: /integrations/tableau-online
 keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
-description: 'Tableau Online は、どこからでもデータの力を活用して、より迅速かつ自信を持って意思決定できるようにします。'
+description: 'Tableau Online は、場所を問わず、データの力を効率的に引き出し、より迅速かつ自信を持った意思決定を支援します。'
 title: 'Tableau Online'
 doc_type: 'guide'
 ---
@@ -28,7 +28,7 @@ Tableau Online は、公式の MySQL データソースを使用し、MySQL イ�
 
 
 
-## ClickHouse Cloudのセットアップ {#clickhouse-cloud-setup}
+## ClickHouse Cloud のセットアップ {#clickhouse-cloud-setup}
 
 <MySQLCloudSetup />
 
@@ -65,12 +65,12 @@ ClickHouseのセットアップ時に収集した接続情報を指定します�
 <Image
   size='md'
   img={tableau_online_03}
-  alt='サーバー、ポート、データベース、認証情報フィールドを含むTableau Online MySQL接続設定画面'
+  alt='サーバー、ポート、データベース、認証情報の各フィールドを含むTableau Online MySQL接続設定画面'
   border
 />
 <br />
 
-Tableau Onlineはデータベースを検査し、利用可能なテーブルのリストを表示します。目的のテーブルを右側のキャンバスにドラッグします。また、「今すぐ更新」をクリックしてデータをプレビューしたり、検査されたフィールドタイプや名前を微調整したりすることもできます。
+Tableau Onlineはデータベースを検査し、利用可能なテーブルのリストを表示します。目的のテーブルを右側のキャンバスにドラッグします。また、「今すぐ更新」をクリックしてデータをプレビューしたり、検査されたフィールドの型や名前を微調整したりすることもできます。
 
 <Image
   size='md'
@@ -85,14 +85,13 @@ Tableau Onlineはデータベースを検査し、利用可能なテーブルの
 注：Tableau OnlineをTableau Desktopと組み合わせて使用し、ClickHouseデータセットを共有する場合は、Tableau DesktopでもデフォルトのMySQLコネクタを使用してください。データソースのドロップダウンからMySQLを選択した際に表示される[こちら](https://www.tableau.com/support/drivers)のセットアップガイドに従ってください。M1 Macをお使いの場合は、ドライバーインストールの回避策について[このトラブルシューティングスレッド](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac)を確認してください。
 
 
-## Tableau OnlineをClickHouseに接続する(クラウドまたはオンプレミス環境でのSSL設定) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## Tableau OnlineをClickHouseに接続する（クラウドまたはSSL対応のオンプレミス環境） {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
-Tableau OnlineのMySQL接続設定ウィザードではSSL証明書を提供できないため、
-Tableau Desktopで接続を設定してからTableau Onlineにエクスポートする方法のみが利用可能です。ただし、この手順は非常に簡単です。
+Tableau OnlineのMySQL接続設定ウィザードではSSL証明書を提供できないため、Tableau Desktopで接続を設定してからTableau Onlineにエクスポートする方法のみが利用可能です。ただし、この手順は非常に簡単です。
 
 WindowsまたはMacマシンでTableau Desktopを起動し、「Connect」→「To a Server」→「MySQL」を選択します。
-最初にMySQLドライバをマシンにインストールする必要がある場合があります。
-Data Sourceドロップダウンから「MySQL」を選択すると表示される[こちら](https://www.tableau.com/support/drivers)のセットアップガイドに従ってインストールできます。
+おそらく、最初にマシンにMySQLドライバをインストールする必要があります。
+Data Sourceドロップダウンから MySQL を選択すると表示される[こちら](https://www.tableau.com/support/drivers)のセットアップガイドに従ってインストールできます。
 M1 Macをお使いの場合は、ドライバインストールの回避策について[このトラブルシューティングスレッド](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac)を確認してください。
 
 <Image
@@ -114,13 +113,12 @@ ClickHouse CloudインスタンスのMySQLユーザー認証情報と、ダウ�
 <Image
   size='sm'
   img={tableau_desktop_02}
-  alt='SSLオプションが有効化され、サーバー、ユーザー名、パスワード、証明書のフィールドが表示されたTableau Desktop MySQL接続ダイアログ'
+  alt='SSLオプションが有効で、サーバー、ユーザー名、パスワード、証明書のフィールドがあるTableau Desktop MySQL接続ダイアログ'
   border
 />
 <br />
 
-通常どおり(Tableau Onlineと同様に)目的のテーブルを選択し、
-「Server」→「Publish Data Source」→「Tableau Cloud」を選択します。
+通常どおり（Tableau Onlineと同様に）目的のテーブルを選択し、「Server」→「Publish Data Source」→ Tableau Cloud を選択します。
 
 <Image
   size='md'
@@ -130,7 +128,7 @@ ClickHouse CloudインスタンスのMySQLユーザー認証情報と、ダウ�
 />
 <br />
 
-重要:「Authentication」オプションで「Embedded password」を選択する必要があります。
+重要：「Authentication」オプションで「Embedded password」を選択する必要があります。
 
 <Image
   size='md'
@@ -153,6 +151,6 @@ ClickHouse CloudインスタンスのMySQLユーザー認証情報と、ダウ�
 最後に「Publish」をクリックすると、埋め込まれた認証情報を含むデータソースがTableau Onlineで自動的に開かれます。
 
 
-## 既知の制限事項（ClickHouse 23.11） {#known-limitations-clickhouse-2311}
+## 既知の制限事項 (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 
 既知の制限事項はすべてClickHouse `23.11`で修正されました。その他の非互換性が発生した場合は、[お問い合わせ](https://clickhouse.com/company/contact)いただくか、[新しいissue](https://github.com/ClickHouse/ClickHouse/issues)を作成してください。

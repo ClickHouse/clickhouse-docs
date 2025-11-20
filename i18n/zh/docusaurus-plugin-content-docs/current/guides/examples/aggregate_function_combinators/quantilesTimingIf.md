@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/quantilesTimingIf'
 title: 'quantilesTimingIf'
-description: 'quantilesTimingIf 组合器的使用示例'
+description: '使用 quantilesTimingIf 组合器的示例'
 keywords: ['quantilesTiming', 'if', 'combinator', 'examples', 'quantilesTimingIf']
 sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-在本示例中,我们将创建一个表来存储不同端点的 API 响应时间,
+在此示例中,我们将创建一个表来存储不同端点的 API 响应时间,
 并使用 `quantilesTimingIf` 计算成功请求的响应时间分位数。
 
 ```sql title="查询"

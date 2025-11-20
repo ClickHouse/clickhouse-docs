@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Neon Postgres'
-description: 'ClickPipes のソースとして Neon Postgres インスタンスをセットアップする'
+description: 'Neon PostgresインスタンスをClickPipesのソースとして設定する'
 slug: /integrations/clickpipes/postgres/source/neon-postgres
-title: 'Neon Postgres ソースセットアップガイド'
+title: 'Neon Postgresソースセットアップガイド'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'データ取り込み', 'リアルタイム同期']
 ---
 
 import neon_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-commands.png'
@@ -15,20 +15,20 @@ import neon_conn_details from '@site/static/images/integrations/data-ingestion/c
 import Image from '@theme/IdealImage';
 
 
-# Neon Postgres ソースセットアップガイド
+# Neon Postgresソースセットアップガイド
 
-このガイドでは、ClickPipes でレプリケーションに使用できる Neon Postgres のセットアップ方法を説明します。
-セットアップを行うにあたっては、事前に [Neon コンソール](https://console.neon.tech/app/projects) にサインインしていることを確認してください。
+このガイドでは、ClickPipesでレプリケーションに使用できるNeon Postgresのセットアップ方法について説明します。
+セットアップを開始する前に、[Neonコンソール](https://console.neon.tech/app/projects)にサインインしていることを確認してください。
 
 
 
 ## 権限を持つユーザーの作成 {#creating-a-user-with-permissions}
 
 CDC に適した必要な権限を持つ ClickPipes 用の新しいユーザーを作成し、
-レプリケーションに使用するパブリケーションも作成しましょう。
+レプリケーションに使用するパブリケーションも作成します。
 
-これを行うには、**SQL Editor** タブに移動してください。
-ここで、以下の SQL コマンドを実行できます:
+**SQL Editor** タブに移動してください。
+ここで、以下の SQL コマンドを実行します:
 
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
@@ -36,10 +36,10 @@ CDC に適した必要な権限を持つ ClickPipes 用の新しいユーザー�
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Give replication permission to the USER
+-- ユーザーにレプリケーション権限を付与
   ALTER USER clickpipes_user REPLICATION;
 
--- Create a publication. We will use this when creating the mirror
+-- パブリケーションを作成します。ミラー作成時にこれを使用します
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -74,7 +74,7 @@ Neonでは、UIから論理レプリケーションを有効化できます。�
   border
 />
 
-Neon Postgresインスタンスで以下の設定を確認します:
+Neon Postgresインスタンスで以下の設定を確認しましょう:
 
 ```sql
 SHOW wal_level; -- logicalである必要があります
@@ -83,10 +83,10 @@ SHOW max_replication_slots; -- 10である必要があります
 ```
 
 
-## IPホワイトリスト（Neonエンタープライズプラン向け） {#ip-whitelisting-for-neon-enterprise-plan}
+## IPホワイトリスト登録（Neonエンタープライズプラン向け） {#ip-whitelisting-for-neon-enterprise-plan}
 
 Neon Enterpriseプランをご利用の場合、[ClickPipes IP](../../index.md#list-of-static-ips)をホワイトリストに登録することで、ClickPipesからNeon Postgresインスタンスへのレプリケーションを許可できます。
-これを行うには、**Settings**タブをクリックして**IP Allow**セクションに移動します。
+これを行うには、**Settings**タブをクリックして**IP Allow**セクションに移動してください。
 
 <Image size='lg' img={neon_ip_allow} alt='IP許可画面' border />
 
@@ -95,7 +95,7 @@ Neon Enterpriseプランをご利用の場合、[ClickPipes IP](../../index.md#l
 
 ユーザー、パブリケーションの準備、およびレプリケーションの有効化が完了したので、接続詳細をコピーして新しいClickPipeを作成できます。
 **Dashboard**に移動し、接続文字列が表示されているテキストボックスで、
-表示を**Parameters Only**に変更してください。次のステップでこれらのパラメータが必要になります。
+表示を**Parameters Only**に変更します。次のステップでこれらのパラメータが必要になります。
 
 <Image size='lg' img={neon_conn_details} alt='接続詳細' border />
 
@@ -103,4 +103,4 @@ Neon Enterpriseプランをご利用の場合、[ClickPipes IP](../../index.md#l
 ## 次のステップ {#whats-next}
 
 これで[ClickPipeを作成](../index.md)して、PostgresインスタンスからClickHouse Cloudへのデータ取り込みを開始できます。
-ClickPipeの作成時に必要となるため、Postgresインスタンスのセットアップで使用した接続情報を必ず控えておいてください。
+Postgresインスタンスのセットアップ時に使用した接続情報は、ClickPipeの作成時に必要となるため、必ず控えておいてください。

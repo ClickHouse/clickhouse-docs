@@ -1,5 +1,5 @@
 ---
-description: 'Новый аналитический бенчмарк для машинных журналов (логов)'
+description: 'Новый аналитический бенчмарк для машинно‑генерируемых журналов'
 sidebar_label: 'Бенчмарк Университета Брауна'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Бенчмарк Университета Брауна'
@@ -7,7 +7,7 @@ keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machi
 doc_type: 'guide'
 ---
 
-`MgBench` — это новый аналитический бенчмарк для журнальных данных, сгенерированных машинами, [Andrew Crotty](http://cs.brown.edu/people/acrotty/).
+`MgBench` — это новый аналитический бенчмарк для машинно‑генерируемых журналов, созданный в Университете Брауна [Эндрю Кротти](http://cs.brown.edu/people/acrotty/).
 
 Скачайте данные:
 
@@ -86,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-Вставить данные:
+Вставьте данные:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -95,14 +95,14 @@ clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbe
 ```
 
 
-## Запуск тестовых запросов {#run-benchmark-queries}
+## Запуск бенчмарк-запросов {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: Какова загрузка CPU и сети для каждого веб-сервера с полуночи?
+-- Q1.1: Какова загрузка CPU/сети для каждого веб-сервера с полуночи?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -174,7 +174,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: Как часто каждый сервер блокировался на дисковом вводе-выводе за месяц?
+-- Q1.4: За 1 месяц, как часто каждый сервер блокировался на дисковом вводе-выводе?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -250,7 +250,7 @@ ORDER BY log_time;
 ````
 
 ```sql
--- Q2.2: Произошла ли утечка файла паролей пользователей в течение определенного двухнедельного периода?
+-- Q2.2: Был ли файл паролей пользователей скомпрометирован в течение определённого двухнедельного периода?
 
 SELECT *
 FROM logs2
@@ -287,7 +287,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: Какие клиенты за последние 3 месяца выполнили избыточное количество запросов?
+-- Q2.4: Какие клиенты за последние 3 месяца выполнили чрезмерное количество запросов?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -326,7 +326,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: Опускалась ли температура в помещении до нуля в выходные?
+-- Q3.1: Достигла ли температура в помещении точки замерзания в выходные?
 
 SELECT *
 FROM logs3
@@ -350,14 +350,14 @@ ORDER BY ct DESC;
 ```
 
 
-Запрос 3.5 ниже использует UNION. Установите режим объединения результатов запросов SELECT. Этот параметр используется только при применении UNION без явного указания UNION ALL или UNION DISTINCT.
+Запрос 3.5 ниже использует UNION. Задайте режим объединения результатов запросов SELECT. Этот параметр используется только при применении UNION без явного указания UNION ALL или UNION DISTINCT.
 
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: В каких частях здания зимой и летом наблюдаются значительные колебания температуры?
+-- Q3.5: В каких местах здания происходят значительные колебания температуры зимой и летом?
 
 WITH temperature AS (
   SELECT dt,
@@ -396,7 +396,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'WINTER'
+       'ЗИМА'
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -404,7 +404,7 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'SUMMER'
+       'ЛЕТО'
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';

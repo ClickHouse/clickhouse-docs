@@ -2,7 +2,7 @@
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
 description: 'TABLUM.IO は、ClickHouse を標準でサポートするデータ管理 SaaS です。'
-title: 'TABLUM.IO を ClickHouse に接続する'
+title: 'TABLUM.IO と ClickHouse を接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -18,49 +18,49 @@ import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# TABLUM.IO と ClickHouse の接続
+# TABLUM.IO を ClickHouse に接続する
 
 <CommunityMaintainedBadge/>
 
 
 
-## TABLUM.IOのスタートアップページを開く {#open-the-tablumio-startup-page}
+## TABLUM.IO スタートアップページを開く {#open-the-tablumio-startup-page}
 
 :::note
-LinuxサーバーのDocker上にTABLUM.IOのセルフホスト版をインストールすることができます。
+TABLUM.IO のセルフホスト版を Docker 経由で Linux サーバーにインストールすることができます。
 :::
 
 
 ## 1. サービスへのサインアップまたはサインイン {#1-sign-up-or-sign-in-to-the-service}
 
-まず、メールアドレスを使用してTABLUM.IOにサインアップするか、GoogleまたはFacebookアカウントでクイックログインを行います。
+まず、メールアドレスを使用してTABLUM.IOにサインアップするか、GoogleまたはFacebookアカウントでクイックログインしてください。
 
 <Image img={tablum_ch_0} size='md' border alt='TABLUM.IOログインページ' />
 
 
-## 2. ClickHouseコネクタの追加 {#2-add-a-clickhouse-connector}
+## 2. ClickHouseコネクタを追加する {#2-add-a-clickhouse-connector}
 
-ClickHouseの接続情報を準備し、**Connector**タブに移動して、ホストURL、ポート、ユーザー名、パスワード、データベース名、コネクタ名を入力します。これらのフィールドの入力が完了したら、**Test connection**ボタンをクリックして接続情報を検証し、その後**Save connector for me**をクリックして設定を永続化します。
+ClickHouseの接続情報を収集し、**Connector**タブに移動して、ホストURL、ポート、ユーザー名、パスワード、データベース名、コネクタ名を入力します。これらのフィールドを入力したら、**Test connection**ボタンをクリックして詳細を検証し、その後**Save connector for me**をクリックして保存します。
 
 :::tip
 接続情報に応じて、正しい**HTTP**ポートを指定し、**SSL**モードを適切に切り替えてください。
 :::
 
 :::tip
-通常、TLS使用時はポート8443、TLS非使用時はポート8123を使用します。
+通常、TLSを使用する場合はポート8443、TLSを使用しない場合はポート8123を使用します。
 :::
 
 <Image
   img={tablum_ch_1}
   size='lg'
   border
-  alt='TABLUM.IOでのClickHouseコネクタの追加'
+  alt='TABLUM.IOでClickHouseコネクタを追加'
 />
 
 
 ## 3. コネクタを選択する {#3-select-the-connector}
 
-**Dataset**タブに移動します。ドロップダウンから先ほど作成したClickHouseコネクタを選択します。右側のパネルに、利用可能なテーブルとスキーマの一覧が表示されます。
+**Dataset**タブに移動します。ドロップダウンから、先ほど作成したClickHouseコネクタを選択します。右側のパネルに、利用可能なテーブルとスキーマの一覧が表示されます。
 
 <Image
   img={tablum_ch_2}
@@ -86,11 +86,11 @@ SQLコンソールにクエリを入力し、**Run Query**を押します。結�
 />
 
 :::note
-TABLUM.IOでは次のことが可能です
+TABLUM.IOでは以下が可能です
 
-- TABLUM.IOアカウント内で複数のClickHouseコネクタを作成・利用する
-- データソースに関係なく、読み込まれた任意のデータに対してクエリを実行する
-- 結果を新しいClickHouseデータベースとして共有する
+- TABLUM.IOアカウント内で複数のClickHouseコネクタを作成・利用
+- データソースに関係なく、読み込まれた任意のデータに対してクエリを実行
+- 結果を新しいClickHouseデータベースとして共有
   :::
 
 

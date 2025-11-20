@@ -1,30 +1,30 @@
 ---
 slug: /use-cases/AI/ai-powered-sql-generation
-sidebar_label: 'AIを活用したSQL生成'
-title: 'AIを活用したSQL生成'
+sidebar_label: 'AI による SQL 生成'
+title: 'AI による SQL 生成'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse Client または clickhouse-local で AI を用いて SQL クエリを生成する方法を説明します。'
+description: 'このガイドでは、ClickHouse Client または clickhouse-local で AI を使用して SQL クエリを生成する方法を説明します。'
 keywords: ['AI', 'SQL generation']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-ClickHouse 25.7 以降、[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) と [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) には、自然言語による説明を SQL クエリに変換する [AI を活用した機能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation) が組み込まれています。この機能により、ユーザーはデータ要件を平易なテキストで記述でき、システムがそれに対応する SQL 文へと変換します。
+ClickHouse 25.7 以降では、[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) と [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) に、自然言語による説明を SQL クエリに変換する[AI 搭載機能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation)が含まれています。この機能により、ユーザーはデータ要件をプレーンテキストで記述でき、システムがそれに対応する SQL ステートメントへと変換します。
 
-この機能は、複雑な SQL 構文に不慣れなユーザーや、探索的データ分析のためのクエリを素早く生成する必要があるユーザーに特に有用です。標準的な ClickHouse テーブルで動作し、フィルタリング、集約、結合などの一般的なクエリパターンをサポートします。
+この機能は、複雑な SQL 構文に慣れていないユーザーや、探索的データ分析のためにクエリを迅速に生成する必要があるユーザーに特に有用です。この機能は標準的な ClickHouse テーブルで動作し、フィルタリング、集約、結合を含む一般的なクエリパターンをサポートします。
 
-この機能は、次の組み込みツール/関数を利用して実現されています。
+この機能は、次の組み込みツール／関数を利用して実現されています。
 
 * `list_databases` - ClickHouse インスタンス内で利用可能なすべてのデータベースを一覧表示
-* `list_tables_in_database` - 指定したデータベース内のすべてのテーブルを一覧表示
-* `get_schema_for_table` - 特定のテーブルの `CREATE TABLE` 文（スキーマ）を取得
+* `list_tables_in_database` - 特定のデータベース内のすべてのテーブルを一覧表示
+* `get_schema_for_table` - 特定のテーブルに対する `CREATE TABLE` ステートメント（スキーマ）を取得
 
 
 
 ## 前提条件 {#prerequisites}
 
-環境変数としてAnthropicまたはOpenAIのAPIキーを追加する必要があります:
+AnthropicまたはOpenAIのAPIキーを環境変数として追加する必要があります:
 
 ```bash
 export ANTHROPIC_API_KEY=your_api_key
@@ -38,7 +38,7 @@ export OPENAI_API_KEY=your_api_key
 
 [ClickHouse SQLプレイグラウンド](https://sql.clickhouse.com/)を使用して、この機能を確認していきます。
 
-以下のコマンドでClickHouse SQLプレイグラウンドに接続できます:
+ClickHouse SQLプレイグラウンドには、以下のコマンドで接続できます:
 
 ```bash
 clickhouse client -mn \
@@ -56,10 +56,10 @@ ClickHouseがインストール済みであることを前提としています�
 
 それでは、質問を始めましょう!
 
-テキストからSQLへの機能は、実質的にワンショットクエリ生成ツールです。会話履歴を保持しないため、質問にはできるだけ多くの有用なコンテキストを含めてください。以下について具体的に指定してください:
+テキストからSQLへの機能は、実質的にワンショットクエリ生成ツールです。会話履歴を保持しないため、質問にはできるだけ多くの有用なコンテキストを含めてください。以下について具体的に記述してください:
 
 期間または日付範囲
-実行したい分析のタイプ(平均、合計、ランキングなど)
+必要な分析のタイプ(平均、合計、ランキングなど)
 フィルタリング条件
 
 ### 高額な住宅市場を見つける {#finding-expensive-housing-markets}
@@ -108,9 +108,9 @@ Enterキーを押すと、AIが質問に答えようとする思考プロセス�
 
 AIは以下のステップに従います:
 
-1. スキーマ検出 - 利用可能なデータベースとテーブルを探索
-2. テーブル分析 - 関連するテーブルの構造を調査
-3. クエリ生成 - 質問と検出されたスキーマに基づいてSQLを作成
+1. スキーマ検出 - 利用可能なデータベースとテーブルを探索します
+2. テーブル分析 - 関連するテーブルの構造を調査します
+3. クエリ生成 - 質問と検出されたスキーマに基づいてSQLを作成します
 
 `uk_price_paid`テーブルが見つかり、実行するクエリが生成されたことがわかります。
 このクエリを実行すると、以下の出力が表示されます:
@@ -131,55 +131,55 @@ AIは以下のステップに従います:
 └────────────────┴────────────────────────┴─────────────────┴────────────┴─────────────┘
 ```
 
-フォローアップの質問をする場合は、質問を最初から組み立て直す必要があります。
+フォローアップの質問をする場合は、質問を最初から作成し直す必要があります。
 
 ### グレーター・ロンドンで高額な物件を見つける {#finding-expensive-properties-in-greater-london}
 
 この機能は会話履歴を保持しないため、各クエリは自己完結型である必要があります。フォローアップの質問をする際は、以前のクエリを参照するのではなく、完全なコンテキストを提供する必要があります。
-たとえば、前回の結果を見た後、グレーター・ロンドンの物件に絞り込みたい場合があります。「グレーター・ロンドンについてはどうですか？」と尋ねるのではなく、完全なコンテキストを含める必要があります：
+例えば、前回の結果を見た後、グレーター・ロンドンの物件に特に焦点を当てたい場合があります。「グレーター・ロンドンについてはどうですか？」と尋ねるのではなく、完全なコンテキストを含める必要があります：
 
 ```sql
-?? グレーター・ロンドンで年間を通じて最も高額な住宅購入場所を教えてもらえますか？;
+?? グレーター・ロンドンで過去数年間において最も高額な住宅購入場所を教えてもらえますか？;
 ```
 
-AIは、このデータを調べたばかりであっても、同じ発見プロセスを経ることに注意してください：
+AIは、このデータを調べたばかりであるにもかかわらず、同じ発見プロセスを経ることに注意してください：
 
 
 ```text
-• スキーマ検出によるAI SQL生成を開始しています...
+• スキーマ検出を行いながら AI による SQL 生成を開始します...
 ─────────────────────────────────────────────────
-🧠 処理中[INFO] テキスト生成成功 - モデル: claude-3-5-sonnet-latest, response_id: msg_012m4ayaSHTYtX98gxrDy1rz
-🔧 呼び出し中: list_databases [toolu_01...]
-✓ list_databases 完了
-  └─ 37個のデータベースが見つかりました: - amazon - bluesky - country - covid - default - dns - en...
-🔧 呼び出し中: list_databases [toolu_01...]
-🧠 処理中.✓ list_databases 完了
-  └─ 37個のデータベースが見つかりました: - amazon - bluesky - country - covid - default - dns - en...
-🧠 処理中.[INFO] テキスト生成成功 - モデル: claude-3-5-sonnet-latest, response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
-🔧 呼び出し中: list_tables_in_database [toolu_01...]
+🧠 thinking[INFO] テキスト生成に成功しました - model: claude-3-5-sonnet-latest, response_id: msg_012m4ayaSHTYtX98gxrDy1rz
+🔧 呼び出し: list_databases [toolu_01...]
+✓ list_databases が完了しました
+  └─ 37 個のデータベースが見つかりました: - amazon - bluesky - country - covid - default - dns - en...
+🔧 呼び出し: list_databases [toolu_01...]
+🧠 thinking.✓ list_databases が完了しました
+  └─ 37 個のデータベースが見つかりました: - amazon - bluesky - country - covid - default - dns - en...
+🧠 thinking.[INFO] テキスト生成に成功しました - model: claude-3-5-sonnet-latest, response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
+🔧 呼び出し: list_tables_in_database [toolu_01...]
   └─ 引数: {"database":"uk"}
-🧠 処理中..✓ list_tables_in_database 完了
-  └─ データベース 'uk' に9個のテーブルが見つかりました: - uk_codes - uk_postcode_to_iso - uk_price_p...
-🔧 呼び出し中: list_tables_in_database [toolu_01...]
+🧠 thinking..✓ list_tables_in_database が完了しました
+  └─ データベース 'uk' 内に 9 個のテーブルが見つかりました: - uk_codes - uk_postcode_to_iso - uk_price_p...
+🔧 呼び出し: list_tables_in_database [toolu_01...]
   └─ 引数: {"database":"uk"}
-✓ list_tables_in_database 完了
-  └─ データベース 'uk' に9個のテーブルが見つかりました: - uk_codes - uk_postcode_to_iso - uk_price_p...
-🧠 処理中[INFO] テキスト生成成功 - モデル: claude-3-5-sonnet-latest, response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
-🔧 呼び出し中: get_schema_for_table [toolu_01...]
+✓ list_tables_in_database が完了しました
+  └─ データベース 'uk' 内に 9 個のテーブルが見つかりました: - uk_codes - uk_postcode_to_iso - uk_price_p...
+🧠 thinking[INFO] テキスト生成に成功しました - model: claude-3-5-sonnet-latest, response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
+🔧 呼び出し: get_schema_for_table [toolu_01...]
   └─ 引数: {"database":"uk","table":"uk_price_paid"}
-🧠 処理中.✓ get_schema_for_table 完了
+🧠 thinking.✓ get_schema_for_table が完了しました
   └─ uk.uk_price_paid のスキーマ: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🔧 呼び出し中: get_schema_for_table [toolu_01...]
+🔧 呼び出し: get_schema_for_table [toolu_01...]
   └─ 引数: {"database":"uk","table":"uk_price_paid"}
-✓ get_schema_for_table 完了
+✓ get_schema_for_table が完了しました
   └─ uk.uk_price_paid のスキーマ: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🧠 処理中...[INFO] テキスト生成成功 - モデル: claude-3-5-sonnet-latest, response_id: msg_01QTMypS1XuhjgVpDir7N9wD
+🧠 thinking...[INFO] テキスト生成に成功しました - model: claude-3-5-sonnet-latest, response_id: msg_01QTMypS1XuhjgVpDir7N9wD
 ─────────────────────────────────────────────────
-• ✨ SQLクエリが正常に生成されました!
+• ✨ SQL クエリが正常に生成されました！
 :) SELECT     district,     toYear(date) AS year,     round(avg(price), 2) AS avg_price,     count() AS total_sales FROM uk.uk_price_paid WHERE county = 'GREATER LONDON' GROUP BY district, year HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10;
 ```
 
-これにより、Greater London に限定してフィルタし、結果を年ごとに集計する、より絞り込まれたクエリが生成されます。
+これにより、ロンドン広域行政区に絞ってフィルタし、結果を年ごとに集計する、より目的に沿ったクエリが生成されます。
 クエリの出力結果を以下に示します。
 
 ```text
@@ -197,4 +197,4 @@ AIは、このデータを調べたばかりであっても、同じ発見プロ
 └─────────────────────┴──────┴─────────────┴─────────────┘
 ```
 
-City of London は常に最も高価な地区として登場しています！AI が妥当なクエリを生成していることに気付くと思いますが、結果は時系列ではなく平均価格順で並べ替えられています。年ごとの推移を分析するには、結果のグループ化を変えるために、質問を「各年で最も高価な地区」を求める形に言い換えるとよいでしょう。
+City of London は常に最も高価な地区として登場しています！AI が妥当なクエリを生成していることに気付くと思いますが、結果は時系列ではなく平均価格で並べ替えられています。年ごとの推移を分析するには、結果のグルーピングが変わるように、「各年でもっとも高価な地区」を返すような形で、質問を言い換えてみるとよいでしょう。

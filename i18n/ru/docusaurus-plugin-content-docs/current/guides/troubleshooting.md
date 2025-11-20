@@ -170,7 +170,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 1. Настройки безопасного подключения:
    - Проверьте:
      - Настройку [tcp_port_secure](/operations/server-configuration-parameters/settings#tcp_port_secure).
-     - Настройки [SSL-сертификатов](/operations/server-configuration-parameters/settings#openssl).
+     - Настройки для [SSL-сертификатов](/operations/server-configuration-parameters/settings#openssl).
    - Используйте правильные параметры при подключении. Например, используйте параметр `port_secure` с `clickhouse_client`.
 
 1. Настройки пользователя:
@@ -195,4 +195,4 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
 Если ClickHouse работает слишком медленно, необходимо проанализировать нагрузку на ресурсы сервера и сеть при выполнении ваших запросов.
 
-Для профилирования запросов можно использовать утилиту clickhouse-benchmark. Она показывает количество обработанных запросов в секунду, количество обработанных строк в секунду и перцентили времени обработки запросов.
+Для профилирования запросов можно использовать утилиту clickhouse-benchmark. Она показывает количество обработанных запросов в секунду, количество обработанных строк в секунду и процентили времени обработки запросов.

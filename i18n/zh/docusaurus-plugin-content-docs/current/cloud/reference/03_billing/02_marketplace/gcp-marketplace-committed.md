@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/gcp-marketplace-committed-contract
 title: 'GCP Marketplace 承诺消费合约'
-description: '通过 GCP Marketplace（承诺消费合约）订阅 ClickHouse Cloud'
+description: '通过 GCP Marketplace 订阅 ClickHouse Cloud（承诺消费合约）'
 keywords: ['gcp', 'google', 'marketplace', 'billing', 'committed', 'committed contract']
 doc_type: 'guide'
 ---
@@ -22,7 +22,7 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-在 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上通过签订承诺合同开始使用 ClickHouse Cloud。承诺合同（也称为 Private Offer）允许客户承诺在一段时间内在 ClickHouse Cloud 上消费一定金额。
+通过在 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上签订承诺合同来开始使用 ClickHouse Cloud。承诺合同（也称为 Private Offer）允许客户承诺在一定时间内在 ClickHouse Cloud 上消费特定金额。
 
 
 ## 前提条件 {#prerequisites}
@@ -45,7 +45,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-2. 点击电子邮件中的 **Review Offer** 链接。这将带您进入 GCP Marketplace 页面,其中显示专属优惠详情。
+2. 点击电子邮件中的 **Review Offer** 链接。这将带您进入 GCP Marketplace 页面,其中显示专属优惠的详细信息。
 
 <br />
 
@@ -67,7 +67,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-3. 查看专属优惠详情,如果一切正确,请点击 **Accept**。
+3. 查看专属优惠的详细信息,如果一切正确,请点击 **Accept**。
 
 <br />
 
@@ -132,7 +132,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-如果您是新的 ClickHouse Cloud 用户,请点击页面底部的 **Register**。系统将提示您创建新用户并验证电子邮件地址。验证电子邮件后,您可以离开 ClickHouse Cloud 登录页面,并使用新用户名在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 登录。
+如果您是 ClickHouse Cloud 新用户,请点击页面底部的 **Register**。系统将提示您创建新用户并验证电子邮件地址。验证电子邮件后,您可以离开 ClickHouse Cloud 登录页面,并使用新用户名在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 登录。
 
 <br />
 
@@ -145,7 +145,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-请注意,如果您是新用户,还需要提供一些关于您业务的基本信息。请参见下面的截图。
+请注意,如果您是新用户,还需要提供一些关于您业务的基本信息。请参见下面的屏幕截图。
 
 <br />
 

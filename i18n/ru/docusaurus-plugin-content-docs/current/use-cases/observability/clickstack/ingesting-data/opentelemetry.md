@@ -2,8 +2,8 @@
 slug: /use-cases/observability/clickstack/ingesting-data/opentelemetry
 pagination_prev: null
 pagination_next: null
-description: 'Сбор данных с помощью OpenTelemetry для ClickStack — стека наблюдаемости ClickHouse'
-title: 'Сбор данных с помощью OpenTelemetry'
+description: 'Загрузка данных с помощью OpenTelemetry для ClickStack — стека наблюдаемости ClickHouse'
+title: 'Загрузка данных с помощью OpenTelemetry'
 doc_type: 'guide'
 keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry']
 ---
@@ -11,9 +11,9 @@ keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry'
 import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
-Все данные поступают в ClickStack через экземпляр **коллектора OpenTelemetry (OTel)**, который служит основной точкой входа для логов, метрик, трейсов и данных сессий. Для этого экземпляра мы рекомендуем использовать официальную [дистрибуцию коллектора ClickStack](#installing-otel-collector).
+Все данные поступают в ClickStack через экземпляр **сборщика OpenTelemetry (OTel collector)**, который является основной точкой входа для логов, метрик, трейсов и сессионных данных. Для этого экземпляра мы рекомендуем использовать официальный [дистрибутив ClickStack](#installing-otel-collector) сборщика.
 
-Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, которые собирают метрики и логи инфраструктуры (такие как OTel-коллекторы в роли [агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, например [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
+Пользователи отправляют данные в этот сборщик из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие метрики и логи инфраструктуры (такие сборщики OTel в роли [агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, например [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
 
 ## Установка коллектора ClickStack OpenTelemetry {#installing-otel-collector}
@@ -28,13 +28,13 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Коллектор ClickStack OTel также можно развернуть автономно, независимо от других компонентов стека.
 
-Если вы используете дистрибутив [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only), вы самостоятельно отвечаете за доставку данных в ClickHouse. Это можно сделать следующими способами:
+Если вы используете дистрибутив [только HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only), вы самостоятельно отвечаете за доставку данных в ClickHouse. Это можно сделать следующими способами:
 
 - Запустить собственный коллектор OpenTelemetry и настроить его на отправку данных в ClickHouse — см. ниже.
 - Отправлять данные напрямую в ClickHouse с помощью альтернативных инструментов, таких как [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) и т. д., или даже стандартного [дистрибутива OTel contrib collector](https://github.com/open-telemetry/opentelemetry-collector-contrib).
 
 :::note Мы рекомендуем использовать коллектор ClickStack OpenTelemetry
-Это позволяет использовать стандартизированный прием данных, строгие схемы и готовую совместимость с интерфейсом HyperDX. Использование схемы по умолчанию обеспечивает автоматическое определение источников и предварительно настроенное сопоставление столбцов.
+Это позволяет использовать стандартизированный прием данных, строгие схемы и готовую совместимость с пользовательским интерфейсом HyperDX. Использование схемы по умолчанию обеспечивает автоматическое определение источников и предварительно настроенные сопоставления столбцов.
 :::
 
 Подробнее см. раздел [«Развертывание коллектора»](/use-cases/observability/clickstack/ingesting-data/otel-collector).
@@ -57,7 +57,7 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 
 <Image img={ingestion_key} alt='Ключи приема данных' size='lg' />
 
-Для SDK языков программирования это можно задать либо через функцию `init`, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`, например:
+Для SDK языков программирования это можно задать либо с помощью функции `init`, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`, например:
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
@@ -99,7 +99,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Изменено, так как на одном хосте работают 2 коллектора
+      address: 0.0.0.0:9888 # Изменено, поскольку на одном хосте работают 2 коллектора
   pipelines:
     logs:
       receivers: [filelog]

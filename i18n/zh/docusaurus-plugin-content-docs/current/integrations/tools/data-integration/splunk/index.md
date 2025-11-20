@@ -2,8 +2,8 @@
 sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
 keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
-description: '将 ClickHouse Cloud 审计日志存储到 Splunk。'
-title: '将 ClickHouse Cloud 审计日志存储到 Splunk'
+description: '在 Splunk 中存储 ClickHouse Cloud 审计日志。'
+title: '在 Splunk 中存储 ClickHouse Cloud 审计日志'
 doc_type: 'guide'
 ---
 
@@ -27,11 +27,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-[Splunk](https://www.splunk.com/) 是一个数据分析和监控平台。
+[Splunk](https://www.splunk.com/) 是一款数据分析与监控平台。
 
-此附加组件允许用户将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它使用 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 来下载审计日志。
+此附加组件允许用户将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 下载审计日志。
 
-此附加组件仅提供一个模块化输入，不包含任何额外的 UI。
+此附加组件仅包含一个模块化输入，不提供任何额外的 UI。
 
 
 
@@ -41,12 +41,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 ## 适用于 Splunk Enterprise {#for-splunk-enterprise}
 
-从 [Splunkbase](https://splunkbase.splunk.com/app/7709) 下载适用于 Splunk 的 ClickHouse Cloud 审计附加组件。
+从 [Splunkbase](https://splunkbase.splunk.com/app/7709) 下载适用于 Splunk 的 ClickHouse Cloud 审计插件。
 
 <Image
   img={splunk_001}
   size='lg'
-  alt='Splunkbase 网站显示 ClickHouse Cloud 审计附加组件的下载页面'
+  alt='Splunkbase 网站显示 ClickHouse Cloud 审计插件的 Splunk 下载页面'
   border
 />
 
@@ -59,12 +59,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
   border
 />
 
-选择从 Splunkbase 下载的归档文件,然后点击"上传"。
+选择从 Splunkbase 下载的压缩文件,然后点击"上传"。
 
 <Image
   img={splunk_003}
   size='lg'
-  alt='用于上传 ClickHouse 附加组件的 Splunk 应用安装对话框'
+  alt='用于上传 ClickHouse 插件的 Splunk 应用安装对话框'
   border
 />
 
@@ -73,10 +73,10 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # 模块化输入配置
 
-要配置模块化输入，首先需要从你的 ClickHouse Cloud 部署中获取以下信息：
+要配置模块化输入，首先需要从 ClickHouse Cloud 部署中获取以下信息：
 
 - 组织 ID
-- 管理员 [API 密钥](/cloud/manage/openapi)
+- 管理员 [API Key](/cloud/manage/openapi)
 
 
 
@@ -146,7 +146,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <Image
   img={splunk_010}
   size='lg'
-  alt='Splunk 界面用于配置新的 ClickHouse Cloud Audit Logs 数据输入'
+  alt='用于配置新 ClickHouse Cloud Audit Logs 数据输入的 Splunk 界面'
   border
 />
 
@@ -155,15 +155,15 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <Image
   img={splunk_011}
   size='lg'
-  alt='Splunk 配置页面显示已完成的 ClickHouse 数据输入设置'
+  alt='显示已完成 ClickHouse 数据输入设置的 Splunk 配置页面'
   border
 />
 
 数据输入配置完成,现在可以开始浏览审计日志。
 
 
-# 使用
+# 使用方法
 
-模块化输入会将数据存储在 Splunk 中。要查看这些数据，可以使用 Splunk 的通用搜索视图。
+模块化输入会将数据存储在 Splunk 中。要查看这些数据，可以在 Splunk 中使用通用搜索视图。
 
-<Image img={splunk_012} size="lg" alt="Splunk 搜索界面显示 ClickHouse 审计日志数据" border />
+<Image img={splunk_012} size="lg" alt="显示 ClickHouse 审计日志数据的 Splunk 搜索界面" border />

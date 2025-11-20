@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 
 # 查询优化简明指南
 
-本节将结合常见场景，演示如何使用多种性能优化技术，例如 [analyzer](/operations/analyzer)、[查询剖析（query profiling）](/operations/optimizing-performance/sampling-query-profiler) 或[避免使用 Nullable 列](/optimize/avoid-nullable-columns)，以提升 ClickHouse 查询性能。
+本节将通过常见场景演示如何使用不同的性能和优化技术，例如 [analyzer](/operations/analyzer)、[查询分析](/operations/optimizing-performance/sampling-query-profiler) 或 [避免使用 Nullable 列](/optimize/avoid-nullable-columns)，以提升 ClickHouse 查询性能。
 
 
 
@@ -32,11 +32,11 @@ ClickHouse 提供了一套丰富的工具来帮助您了解查询的执行方式
 
 ## 一般性考虑 {#general-considerations}
 
-要理解查询性能,我们先来看看 ClickHouse 执行查询时会发生什么。
+要理解查询性能,让我们先看看在 ClickHouse 中执行查询时会发生什么。
 
-以下内容经过刻意简化,采用了一些简便方式;目的不是让您陷入细节,而是帮助您快速掌握基本概念。如需更多信息,可以阅读关于[查询分析器](/operations/analyzer)的内容。
+以下部分经过刻意简化并采用了一些简便方式;这里的目的不是让您陷入细节之中,而是帮助您快速掌握基本概念。如需更多信息,您可以阅读关于[查询分析器](/operations/analyzer)的内容。
 
-从高层次角度来看,ClickHouse 执行查询时会经历以下过程:
+从非常高层次的角度来看,当 ClickHouse 执行查询时,会发生以下过程:
 
 - **查询解析和分析**
 
@@ -44,19 +44,19 @@ ClickHouse 提供了一套丰富的工具来帮助您了解查询的执行方式
 
 - **查询优化**
 
-查询执行计划被优化,不必要的数据被剪除,并根据查询计划构建查询管道。
+查询执行计划被优化,不必要的数据被剪除,并从查询计划构建查询管道。
 
 - **查询管道执行**
 
-数据被并行读取和处理。在这个阶段,ClickHouse 实际执行查询操作,如过滤、聚合和排序。
+数据被并行读取和处理。这是 ClickHouse 实际执行查询操作(如过滤、聚合和排序)的阶段。
 
 - **最终处理**
 
 结果被合并、排序并格式化为最终结果,然后发送给客户端。
 
-实际上,还有许多[优化](/concepts/why-clickhouse-is-so-fast)在进行,我们将在本指南中进一步讨论,但目前这些主要概念已经让我们很好地理解了 ClickHouse 执行查询时的幕后过程。
+实际上,许多[优化](/concepts/why-clickhouse-is-so-fast)正在进行,我们将在本指南中进一步讨论它们,但目前这些主要概念已经让我们对 ClickHouse 执行查询时幕后发生的事情有了很好的理解。
 
-有了这个高层次的理解,接下来让我们了解 ClickHouse 提供的工具,以及如何使用这些工具来跟踪影响查询性能的指标。 
+有了这个高层次的理解,让我们来看看 ClickHouse 提供的工具以及如何使用它们来跟踪影响查询性能的指标。 
 
 
 ## 数据集 {#dataset}
@@ -65,25 +65,25 @@ ClickHouse 提供了一套丰富的工具来帮助您了解查询的执行方式
 
 让我们使用 NYC Taxi 数据集,该数据集包含纽约市的出租车行程数据。首先,我们从导入未经优化的 NYC Taxi 数据集开始。
 
-以下是创建表并从 S3 存储桶插入数据的命令。请注意,我们有意从数据中推断 schema,这种方式未经过优化。
+以下是创建表并从 S3 存储桶插入数据的命令。请注意,我们有意从数据中推断模式,这种方式并未经过优化。
 
 ```sql
--- 使用推断的 schema 创建表
+-- 使用推断的模式创建表
 CREATE TABLE trips_small_inferred
 ORDER BY () EMPTY
 AS SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 
--- 将数据插入到使用推断 schema 的表中
+-- 将数据插入到使用推断模式的表中
 INSERT INTO trips_small_inferred
 SELECT *
 FROM s3Cluster
 ('default','https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 ```
 
-让我们查看从数据中自动推断的表 schema。
+让我们查看从数据中自动推断出的表模式。
 
 ```sql
---- 显示推断的表 schema
+--- 显示推断的表模式
 SHOW CREATE TABLE trips_small_inferred
 
 Query id: d97361fd-c050-478e-b831-369469f0784d
@@ -244,9 +244,9 @@ ORDER BY memory_usage DESC
 LIMIT 30
 ```
 
-让我们把发现的这些长耗时查询单独拿出来，多执行几次，以便了解它们的响应时间。
+让我们把已经找到的长耗时查询单独挑出来，多次重新执行，以便了解其响应时间。 
 
-在这个阶段，务必通过将 `enable_filesystem_cache` 设置为 0 来关闭文件系统缓存，以提高结果的可重现性。
+在这一阶段，务必通过将 `enable_filesystem_cache` 设置为 0 来关闭文件系统缓存，以提高结果的可复现性。
 
 ```sql
 -- 禁用文件系统缓存
@@ -265,7 +265,7 @@ WHERE
 FORMAT JSON
 
 ----
-返回 1 行。耗时:1.699 秒。处理了 3.2904 亿行,8.88 GB(1.9372 亿行/秒,5.23 GB/秒)。
+返回 1 行。耗时:1.699 秒。已处理 3.2904 亿行,8.88 GB(1.9372 亿行/秒,5.23 GB/秒)
 峰值内存使用量:440.24 MiB。
 
 -- 运行查询 2
@@ -285,7 +285,7 @@ ORDER BY
     trip_count DESC;
 
 ---
-返回 4 行。耗时:1.419 秒。处理了 3.2904 亿行,5.72 GB(2.3186 亿行/秒,4.03 GB/秒)。
+返回 4 行。耗时:1.419 秒。已处理 3.2904 亿行,5.72 GB(2.3186 亿行/秒,4.03 GB/秒)
 峰值内存使用量:546.75 MiB。
 
 -- 运行查询 3
@@ -296,11 +296,11 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
-返回 1 行。耗时:1.414 秒。处理了 3.2904 亿行,8.88 GB(2.3263 亿行/秒,6.28 GB/秒)。
+返回 1 行。耗时:1.414 秒。已处理 3.2904 亿行,8.88 GB(2.3263 亿行/秒,6.28 GB/秒)
 峰值内存使用量:451.53 MiB。
 ```
 
-为便于阅读，我们将结果汇总在下表中。
+在表格中汇总，便于阅读。
 
 | Name    | Elapsed   | Rows processed | Peak memory |
 | ------- | --------- | -------------- | ----------- |
@@ -308,13 +308,13 @@ FORMAT JSON
 | Query 2 | 1.419 sec | 329.04 million | 546.75 MiB  |
 | Query 3 | 1.414 sec | 329.04 million | 451.53 MiB  |
 
-接下来我们更具体地看一下这些查询分别实现了什么。 
+我们来更具体地看一下这些查询分别实现了什么功能。 
 
-* Query 1 统计平均时速超过 30 英里/小时的行程的距离分布。
-* Query 2 统计每周行程的数量和平均费用。 
+* Query 1 计算平均时速超过 30 英里的行程的距离分布。
+* Query 2 统计每周行程的数量及其平均费用。 
 * Query 3 计算数据集中每次行程的平均耗时。
 
-这些查询本身都不算非常复杂，唯一的例外是第一个查询在每次执行时都会即时计算行程时间。尽管如此，每个查询的执行时间都超过一秒，而在 ClickHouse 的世界里，这已经算是非常长的时间了。我们还可以注意到这些查询的内存使用情况：每个查询大约 400 MiB 的内存占用已经相当可观。另外，每个查询似乎都读取了相同数量的行（即 3.2904 亿行）。我们先快速确认一下这个表中到底有多少行数据。
+这些查询本身都没有进行非常复杂的处理，唯一的例外是第一个查询，它在每次执行时都会动态计算行程时间。不过，这些查询每一个的执行时间都超过一秒，而在 ClickHouse 的世界里，这已经算是非常长的时间了。我们还可以注意到这些查询的内存使用情况：每个查询大约 400 MiB 的内存占用已经相当可观。另外，每个查询似乎都读取了相同数量的行（即 3.2904 亿行）。我们来快速确认一下这个表中到底有多少行数据。
 
 ```sql
 -- 统计表中的行数
@@ -334,15 +334,15 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 
 该表包含 3.2904 亿行数据,因此每个查询都会执行全表扫描。
 
-### Explain 语句 {#explain-statement}
+### EXPLAIN 语句 {#explain-statement}
 
-现在我们有了一些长时间运行的查询,让我们来了解它们是如何执行的。为此,ClickHouse 支持 [EXPLAIN 语句命令](/sql-reference/statements/explain)。这是一个非常有用的工具,可以提供查询执行各个阶段的详细视图,而无需实际运行查询。虽然对于非 ClickHouse 专家来说,查看这些信息可能会感到困惑,但它仍然是深入了解查询执行方式的重要工具。
+现在我们有了一些长时间运行的查询,让我们来了解它们是如何执行的。为此,ClickHouse 支持 [EXPLAIN 语句命令](/sql-reference/statements/explain)。这是一个非常有用的工具,无需实际运行查询即可提供查询执行各个阶段的详细视图。虽然对于非 ClickHouse 专家来说,这些信息可能会让人感到难以理解,但它仍然是深入了解查询执行方式的重要工具。
 
-文档提供了详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句是什么以及如何使用它来分析查询执行。我们不再重复指南中的内容,而是专注于几个有助于找出查询执行性能瓶颈的命令。
+文档提供了一份详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句的作用以及如何使用它来分析查询执行。我们不再重复该指南中的内容,而是重点介绍几个能够帮助我们找到查询执行性能瓶颈的命令。 
 
-**Explain indexes = 1**
+**EXPLAIN indexes = 1**
 
-让我们从 EXPLAIN indexes = 1 开始检查查询计划。查询计划是一个树形结构,显示查询将如何执行。在其中,您可以看到查询子句的执行顺序。EXPLAIN 语句返回的查询计划可以从下往上阅读。
+让我们从 EXPLAIN indexes = 1 开始检查查询计划。查询计划是一个树形结构,展示了查询将如何执行。在其中,您可以看到查询子句的执行顺序。EXPLAIN 语句返回的查询计划可以从下往上阅读。
 
 让我们尝试使用第一个长时间运行的查询。
 
@@ -366,13 +366,13 @@ Query id: f35c412a-edda-4089-914b-fa1622d69868
    └─────────────────────────────────────────────────────┘
 ````
 
-输出非常直观。查询首先从 `nyc_taxi.trips_small_inferred` 表中读取数据，然后应用 WHERE 子句，根据计算得到的值过滤行。过滤后的数据会被准备好用于聚合，并计算分位数。最后，对结果进行排序并输出。 
+输出一目了然。查询首先从 `nyc_taxi.trips_small_inferred` 表中读取数据，然后应用 WHERE 子句，根据计算得到的值过滤行。过滤后的数据将用于聚合，并在此基础上计算分位数。最后，对结果进行排序并输出。 
 
-在这里，我们可以注意到没有使用主键，这是合理的，因为在创建表时我们并未定义任何主键。其结果是，ClickHouse 会为该查询对整张表进行全表扫描。 
+在这里，我们可以注意到没有使用主键，这很合理，因为在创建表时我们并未定义任何主键。其结果是，ClickHouse 在执行该查询时对整张表进行了全表扫描。 
 
 **Explain Pipeline**
 
-`EXPLAIN PIPELINE` 展示了该查询的具体执行策略。在这里，你可以看到 ClickHouse 实际是如何执行我们之前看到的通用查询计划的。
+EXPLAIN Pipeline 展示了该查询的具体执行策略。在这里，你可以看到 ClickHouse 实际是如何执行我们之前看到的通用查询计划的。
 
 ```sql
 EXPLAIN PIPELINE
@@ -383,7 +383,7 @@ SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
 
-查询 ID:c7e11e7b-d970-4e35-936c-ecfc24e3b879
+Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
  1. │ (Expression)                                                                        │
@@ -401,9 +401,9 @@ WHERE speed_mph > 30
 ```
 
 
-在这里，我们可以看到用于执行该查询的线程数量为 59 个，这表明并行度很高。这会加快查询执行速度；在更小的机器上执行同样的查询会花费更长时间。并行运行的线程数量也可以解释该查询为什么会占用大量内存。
+在这里，我们可以看到用于执行查询的线程数量：59 个线程，这表明具有很高的并行度。这样可以加快查询执行速度；在较小的机器上执行同样的查询会花费更长时间。并行运行的线程数量也可以解释查询使用的大量内存。 
 
-理想情况下，你应该以同样的方式排查所有慢查询，以识别不必要的复杂查询计划，并了解每个查询读取的行数以及其消耗的资源。
+理想情况下，你应当以同样的方式排查所有慢查询，以识别不必要的复杂查询计划，并了解每个查询读取的行数以及消耗的资源。
 
 
 
@@ -421,7 +421,7 @@ WHERE speed_mph > 30
 
 > ClickHouse 利用[缓存](/operations/caches)在不同阶段加速查询性能。这对查询性能有利,但在故障排查期间,它可能会隐藏潜在的 I/O 瓶颈或不良的表结构设计。因此,我建议在测试期间关闭文件系统缓存。请确保在生产环境中启用它。
 
-一旦确定了潜在的优化方案,建议逐一实施,以便更好地跟踪它们对性能的影响。下图描述了总体方法。
+一旦确定了潜在的优化方案,建议您逐一实施,以便更好地跟踪它们对性能的影响。下图描述了一般方法。
 
 <Image img={queryOptimizationDiagram1} size='lg' alt='优化工作流程' />
 
@@ -432,15 +432,15 @@ _最后,要注意异常值;查询运行缓慢是很常见的情况,可能是因�
 
 现在我们已经有了测试框架,可以开始优化了。
 
-最好的起点是查看数据的存储方式。对于任何数据库来说,读取的数据越少,查询执行速度就越快。
+最好的起点是查看数据的存储方式。对于任何数据库而言,读取的数据越少,查询执行速度就越快。
 
-根据您数据导入的方式,您可能已经利用了 ClickHouse 的[功能](/interfaces/schema-inference)来基于导入的数据推断表结构。虽然这对于快速上手非常实用,但如果您想优化查询性能,就需要审查数据结构以最适合您的使用场景。
+根据您导入数据的方式,您可能已经利用了 ClickHouse 的[功能](/interfaces/schema-inference)来基于导入的数据推断表结构。虽然这对于快速上手非常实用,但如果您想优化查询性能,则需要审查数据结构以最适合您的使用场景。
 
 ### 可空类型 {#nullable}
 
-如[最佳实践文档](/best-practices/select-data-types#avoid-nullable-columns)所述,应尽可能避免使用可空列。虽然使用可空列很有吸引力,因为它们使数据导入机制更加灵活,但它们会对性能产生负面影响,因为每次都必须处理一个额外的列。
+如[最佳实践文档](/best-practices/select-data-types#avoid-nullable-columns)中所述,应尽可能避免使用可空列。虽然使用可空列很有吸引力,因为它们使数据导入机制更加灵活,但它们会对性能产生负面影响,因为每次都必须处理一个额外的列。
 
-运行一个统计 NULL 值行数的 SQL 查询可以轻松揭示表中哪些列实际需要可空值。
+运行一个统计具有 NULL 值的行数的 SQL 查询,可以轻松找出表中实际需要可空值的列。
 
 ```sql
 -- 查找非空值列
@@ -480,13 +480,13 @@ pickup_location_id_nulls:  0
 dropoff_location_id_nulls: 0
 ```
 
-我们只有两列包含空值:`mta_tax` 和 `payment_type`。其余字段不应使用 `Nullable` 列。
+我们只有两列具有空值:`mta_tax` 和 `payment_type`。其余字段不应使用 `Nullable` 列。
 
 ### 低基数 {#low-cardinality}
 
-应用于字符串的一个简单优化是充分利用 LowCardinality 数据类型。如低基数[文档](/sql-reference/data-types/lowcardinality)所述,ClickHouse 对 LowCardinality 列应用字典编码,这可以显著提高查询性能。
+应用于字符串的一个简单优化是充分利用 LowCardinality 数据类型。如低基数[文档](/sql-reference/data-types/lowcardinality)中所述,ClickHouse 对 LowCardinality 列应用字典编码,这显著提高了查询性能。
 
-判断哪些列适合使用 LowCardinality 的一个简单经验法则是:任何唯一值少于 10,000 的列都是理想的候选列。
+确定哪些列适合使用 LowCardinality 的一个简单经验法则是:任何唯一值少于 10,000 个的列都是理想的候选列。
 
 您可以使用以下 SQL 查询来查找唯一值数量较少的列。
 
@@ -510,13 +510,13 @@ uniq(dropoff_location_id): 260
 uniq(vendor_id):           3
 ```
 
-由于基数较低,这四列 `ratecode_id`、`pickup_location_id`、`dropoff_location_id` 和 `vendor_id` 都是 LowCardinality 字段类型的良好候选列。
+由于基数较低,这四列 `ratecode_id`、`pickup_location_id`、`dropoff_location_id` 和 `vendor_id` 是 LowCardinality 字段类型的良好候选列。
 
 ### 优化数据类型 {#optimize-data-type}
 
 ClickHouse 支持大量数据类型。确保选择适合您使用场景的最小数据类型,以优化性能并减少磁盘上的数据存储空间。
 
-对于数字类型,您可以检查数据集中的最小值/最大值,以确认当前的精度值是否与数据集的实际情况相符。 
+对于数字类型,您可以检查数据集中的最小值/最大值,以确认当前精度值是否与数据集的实际情况相符。 
 
 
 ```sql
@@ -533,14 +533,14 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
    └───────────────────┴───────────────────┘
 ```
 
-对于日期类型,应选择与数据集相匹配的精度,以便更好地满足您计划运行的查询需求。
+对于日期类型,应选择与数据集相匹配的精度,以便最好地满足您计划运行的查询需求。
 
 ### 应用优化 {#apply-the-optimizations}
 
-接下来创建一个新表来使用优化后的模式,并重新导入数据。
+下面创建一个新表来使用优化后的模式,并重新导入数据。
 
 ```sql
--- 创建优化后的表
+-- 使用优化后的数据创建表
 CREATE TABLE trips_small_no_pk
 (
     `vendor_id` LowCardinality(String),
@@ -567,15 +567,15 @@ INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 
 使用新表再次运行查询以检查性能改进情况。 
 
-| 名称    | 第 1 次运行 - 耗时 | 耗时   | 处理行数 | 峰值内存 |
+| Name    | Run 1 - Elapsed | Elapsed   | Rows processed | Peak memory |
 | ------- | --------------- | --------- | -------------- | ----------- |
 | Query 1 | 1.699 sec       | 1.353 sec | 329.04 million | 337.12 MiB  |
 | Query 2 | 1.419 sec       | 1.171 sec | 329.04 million | 531.09 MiB  |
 | Query 3 | 1.414 sec       | 1.188 sec | 329.04 million | 265.05 MiB  |
 
-可以看到查询时间和内存使用均有所改善。通过优化数据模式,我们减少了数据的总体积,从而降低了内存消耗并缩短了处理时间。 
+可以看到查询时间和内存使用均有所改善。通过优化数据模式,减少了数据的总体积,从而降低了内存消耗并缩短了处理时间。 
 
-接下来检查表的大小以查看具体差异。 
+下面检查表的大小以查看差异。 
 
 ```sql
 SELECT
@@ -598,7 +598,7 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
    └──────────────────────┴────────────┴──────────────┴───────────┘
 ```
 
-新表比原表小得多,磁盘空间减少了约 34%(从 7.38 GiB 降至 4.89 GiB)。
+新表比原表小得多。可以看到表的磁盘空间减少了约 34%(从 7.38 GiB 降至 4.89 GiB)。
 
 
 ## 主键的重要性 {#the-importance-of-primary-keys}
@@ -607,7 +607,7 @@ ClickHouse 中的主键与大多数传统数据库系统的工作方式不同。
 
 在 ClickHouse 中,主键的[目标](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)有所不同;它不强制唯一性,也不用于维护数据完整性。相反,它旨在优化查询性能。主键定义了数据在磁盘上的存储顺序,并实现为一个稀疏索引,该索引存储指向每个数据粒度(granule)第一行的指针。
 
-> ClickHouse 中的数据粒度(granule)是查询执行期间读取的最小数据单元。它们包含固定数量的行,由 index_granularity 参数确定,默认值为 8192 行。数据粒度连续存储并按主键排序。 
+> ClickHouse 中的数据粒度(Granule)是查询执行期间读取的最小数据单元。它们包含固定数量的行,由 index_granularity 参数确定,默认值为 8192 行。数据粒度连续存储并按主键排序。 
 
 选择一组合适的主键对性能至关重要,实际上,将相同的数据存储在不同的表中并使用不同的主键集来加速特定查询集是很常见的做法。 
 
@@ -621,7 +621,7 @@ ClickHouse 支持的其他选项,如投影(Projection)或物化视图(Materializ
 
 - 使用在大多数查询中用于过滤的字段
 - 优先选择基数较低的列
-- 考虑在主键中包含基于时间的组件,因为在时间戳数据集上按时间过滤是非常常见的 
+- 考虑在主键中包含基于时间的组件,因为在时间戳数据集上按时间过滤是非常常见的。 
 
 在我们的案例中,我们将使用以下主键进行实验:`passenger_count`、`pickup_datetime` 和 `dropoff_datetime`。 
 
@@ -715,10 +715,10 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     </tr>
 
     <tr>
-      <td>处理行数</td>
+      <td>已处理行数</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
-      <td>4,146 万</td>
+      <td>0.4146 亿</td>
     </tr>
 
     <tr>
@@ -754,7 +754,7 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     </tr>
 
     <tr>
-      <td>处理行数</td>
+      <td>已处理行数</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
       <td>2.7699 亿</td>
@@ -769,9 +769,9 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
   </tbody>
 </table>
 
-可以看到，在执行时间和内存使用方面整体上都有显著改进。
+可以看到，在执行时间和内存使用方面整体上都有显著提升。
 
-查询 2 从主键中获益最大。我们来看一下生成的查询计划与之前相比有什么不同。
+查询 2 从主键中获益最大。我们来看一下现在生成的查询计划与之前有什么不同。
 
 ```sql
 EXPLAIN indexes = 1
@@ -789,28 +789,28 @@ ORDER BY trip_count DESC
 查询 ID: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression ((Projection + Before ORDER BY [lifted up part]))                                                     │
- 2. │   Sorting (Sorting for ORDER BY)                                                                                 │
- 3. │     Expression (Before ORDER BY)                                                                                 │
- 4. │       Aggregating                                                                                                │
- 5. │         Expression (Before GROUP BY)                                                                             │
- 6. │           Expression                                                                                             │
+ 1. │ 表达式 ((投影 + ORDER BY 之前 [提升部分]))                                                                        │
+ 2. │   排序 (ORDER BY 排序)                                                                                           │
+ 3. │     表达式 (ORDER BY 之前)                                                                                       │
+ 4. │       聚合                                                                                                       │
+ 5. │         表达式 (GROUP BY 之前)                                                                                   │
+ 6. │           表达式                                                                                                 │
  7. │             ReadFromMergeTree (nyc_taxi.trips_small_pk)                                                          │
- 8. │             Indexes:                                                                                             │
- 9. │               PrimaryKey                                                                                         │
-10. │                 Keys:                                                                                            │
+ 8. │             索引:                                                                                                │
+ 9. │               主键                                                                                               │
+10. │                 键:                                                                                              │
 11. │                   pickup_datetime                                                                                │
-12. │                 Condition: and((pickup_datetime in (-Inf, 1238543999]), (pickup_datetime in [1230768000, +Inf))) │
-13. │                 Parts: 9/9                                                                                       │
-14. │                 Granules: 5061/40167                                                                             │
+12. │                 条件: and((pickup_datetime in (-Inf, 1238543999]), (pickup_datetime in [1230768000, +Inf)))     │
+13. │                 分区: 9/9                                                                                        │
+14. │                 颗粒: 5061/40167                                                                                 │
     └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-由于有了主键，只需读取表中一部分数据粒度（granule）。仅此一点就能大幅提升查询性能，因为 ClickHouse 需要处理的数据量显著减少。
+得益于主键，只选择了表中一部分数据粒度（granule）。仅此就能大幅提升查询性能，因为 ClickHouse 需要处理的数据量显著减少。
 
 
 ## 后续步骤 {#next-steps}
 
-希望本指南能帮助您深入理解如何使用 ClickHouse 诊断慢查询并提升其性能。要深入探索此主题,您可以阅读有关[查询分析器](/operations/analyzer)和[性能分析](/operations/optimizing-performance/sampling-query-profiler)的更多内容,以更好地理解 ClickHouse 执行查询的具体过程。
+希望本指南能够帮助您深入理解如何使用 ClickHouse 诊断慢查询并提升其性能。要进一步探索此主题,您可以阅读有关[查询分析器](/operations/analyzer)和[性能分析](/operations/optimizing-performance/sampling-query-profiler)的更多内容,以更好地理解 ClickHouse 执行查询的具体机制。
 
-随着您对 ClickHouse 特性的深入了解,建议您阅读有关[分区键](/optimize/partitioning-key)和[数据跳过索引](/optimize/skipping-indexes)的内容,以学习可用于加速查询的更高级技术。
+随着您对 ClickHouse 特性的深入了解,建议您阅读有关[分区键](/optimize/partitioning-key)和[数据跳过索引](/optimize/skipping-indexes)的内容,以掌握更多可用于加速查询的高级技术。

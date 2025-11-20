@@ -1,8 +1,8 @@
 ---
-title: 'ClickHouse へのデータ挿入'
+title: 'ClickHouse データの挿入'
 description: 'ClickHouse にデータを挿入する方法'
 keywords: ['INSERT', 'Batch Insert']
-sidebar_label: 'ClickHouse へのデータ挿入'
+sidebar_label: 'ClickHouse データの挿入'
 slug: /guides/inserting-data
 show_related_blogs: true
 doc_type: 'guide'
@@ -19,64 +19,64 @@ OLAP（オンライン分析処理）データベースとして、ClickHouseは
 より具体的には、ClickHouseは追記専用操作に最適化されており、結果整合性の保証のみを提供します。
 
 対照的に、PostgreSQLなどのOLTPデータベースは、完全なACID準拠のトランザクション挿入に特化して最適化されており、強力な整合性と信頼性の保証を実現します。
-PostgreSQLは、同時トランザクションを処理するためにMVCC（多版型同時実行制御）を使用しており、これはデータの複数バージョンを維持することを伴います。
-これらのトランザクションは一度に少数の行を処理する可能性があり、信頼性保証によって相当なオーバーヘッドが発生し、挿入性能が制限されます。
+PostgreSQLはMVCC（多版型同時実行制御）を使用して同時トランザクションを処理しており、これはデータの複数バージョンを維持することを伴います。
+これらのトランザクションは一度に少数の行を処理する可能性があり、信頼性保証によってかなりのオーバーヘッドが発生し、挿入性能が制限されます。
 
-高い挿入性能を実現しながら強力な整合性保証を維持するために、ユーザーはClickHouseにデータを挿入する際、以下に説明するシンプルなルールに従う必要があります。
+ClickHouseにデータを挿入する際に高い挿入性能を実現しつつ強力な整合性保証を維持するには、ユーザーは以下に説明する簡単なルールに従う必要があります。
 これらのルールに従うことで、ユーザーがClickHouseを初めて使用する際によく遭遇する問題を回避し、OLTPデータベースで機能する挿入戦略を再現しようとする際の問題を防ぐことができます。
 
 
-## インサートのベストプラクティス {#best-practices-for-inserts}
+## Insertのベストプラクティス {#best-practices-for-inserts}
 
-### 大きなバッチサイズでインサートする {#insert-in-large-batch-sizes}
+### 大きなバッチサイズでInsertする {#insert-in-large-batch-sizes}
 
-デフォルトでは、ClickHouseに送信される各インサートにより、ClickHouseはインサートからのデータと保存が必要なその他のメタデータを含むストレージパートを即座に作成します。
-そのため、各インサートに含まれるデータ量が少ない大量のインサートを送信するよりも、各インサートに含まれるデータ量が多い少量のインサートを送信する方が、必要な書き込み回数を削減できます。
-一般的に、一度に少なくとも1,000行、理想的には10,000行から100,000行の比較的大きなバッチでデータをインサートすることを推奨します。
-(詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)を参照してください)。
+デフォルトでは、ClickHouseに送信される各insertにより、ClickHouseはinsertからのデータと保存が必要なその他のメタデータを含むストレージパートを即座に作成します。
+したがって、各insertに含まれるデータ量が少ない大量のinsertを送信するよりも、各insertに含まれるデータ量が多い少量のinsertを送信する方が、必要な書き込み回数を削減できます。
+一般的に、少なくとも1回あたり1,000行、理想的には10,000行から100,000行の比較的大きなバッチでデータをinsertすることを推奨します。
+(詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)をご覧ください)。
 
-大きなバッチが不可能な場合は、以下で説明する非同期インサートを使用してください。
+大きなバッチが不可能な場合は、以下で説明する非同期insertを使用してください。
 
-### 冪等なリトライのために一貫したバッチを確保する {#ensure-consistent-batches-for-idempotent-retries}
+### 冪等なリトライのための一貫したバッチの確保 {#ensure-consistent-batches-for-idempotent-retries}
 
-デフォルトでは、ClickHouseへのインサートは同期的かつ冪等です(つまり、同じインサート操作を複数回実行しても、一度実行した場合と同じ効果があります)。
-MergeTreeエンジンファミリーのテーブルの場合、ClickHouseはデフォルトで自動的に[インサートの重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)を行います。
+デフォルトでは、ClickHouseへのinsertは同期的かつ冪等です(つまり、同じinsert操作を複数回実行しても、1回実行した場合と同じ効果があります)。
+MergeTreeエンジンファミリーのテーブルの場合、ClickHouseはデフォルトで自動的に[insertの重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)を行います。
 
-これは、以下のケースにおいてインサートが回復力を維持することを意味します:
+これは、以下のケースにおいてinsertが回復力を維持することを意味します:
 
-- 1. データを受信するノードに問題がある場合、インサートクエリはタイムアウトし(またはより具体的なエラーを返し)、確認応答を受け取りません。
+- 1. データを受信するノードに問題がある場合、insertクエリはタイムアウトし(またはより具体的なエラーを返し)、確認応答を受け取りません。
 - 2. データがノードによって書き込まれたが、ネットワークの中断により確認応答がクエリの送信者に返せない場合、送信者はタイムアウトまたはネットワークエラーを受け取ります。
 
-クライアントの観点からは、(i)と(ii)を区別することは困難です。しかし、どちらの場合でも、確認応答されなかったインサートは即座にリトライできます。
-リトライされたインサートクエリが同じ順序で同じデータを含んでいる限り、(確認応答されなかった)元のインサートが成功していた場合、ClickHouseは自動的にリトライされたインサートを無視します。
+クライアントの観点からは、(i)と(ii)を区別することは困難です。しかし、どちらの場合でも、確認応答されなかったinsertは即座にリトライできます。
+リトライされたinsertクエリが同じ順序で同じデータを含んでいる限り、(確認応答されなかった)元のinsertが成功していた場合、ClickHouseは自動的にリトライされたinsertを無視します。
 
-### MergeTreeテーブルまたは分散テーブルへインサートする {#insert-to-a-mergetree-table-or-a-distributed-table}
+### MergeTreeテーブルまたは分散テーブルへのInsert {#insert-to-a-mergetree-table-or-a-distributed-table}
 
-MergeTree(またはReplicatedテーブル)に直接インサートし、データがシャーディングされている場合は複数のノードにリクエストを分散し、`internal_replication=true`を設定することを推奨します。
-これにより、ClickHouseが利用可能なレプリカシャードにデータをレプリケートし、データの結果整合性を保証します。
+MergeTree(またはReplicatedテーブル)に直接insertし、データがシャーディングされている場合は複数のノードにリクエストを分散し、`internal_replication=true`を設定することを推奨します。
+これにより、ClickHouseが利用可能なレプリカシャードにデータをレプリケートし、データが最終的に一貫性を持つことを保証します。
 
-このクライアント側の負荷分散が不便な場合、ユーザーは[分散テーブル](/engines/table-engines/special/distributed)経由でインサートすることができ、これによりノード間で書き込みが分散されます。この場合も、`internal_replication=true`を設定することを推奨します。
-ただし、このアプローチは、分散テーブルを持つノードでローカルに書き込みを行い、その後シャードに送信する必要があるため、パフォーマンスがやや劣ることに注意してください。
+このクライアント側の負荷分散が不便な場合、ユーザーは[分散テーブル](/engines/table-engines/special/distributed)を介してinsertすることができ、これによりノード間で書き込みが分散されます。この場合も、`internal_replication=true`を設定することを推奨します。
+ただし、このアプローチは、分散テーブルを持つノードでローカルに書き込みを行い、その後シャードに送信する必要があるため、パフォーマンスがやや低下することに注意してください。
 
-### 小さなバッチには非同期インサートを使用する {#use-asynchronous-inserts-for-small-batches}
+### 小さなバッチには非同期insertを使用する {#use-asynchronous-inserts-for-small-batches}
 
 クライアント側でのバッチ処理が実現不可能なシナリオがあります。例えば、数百または数千の単一目的エージェントがログ、メトリクス、トレースなどを送信する可観測性のユースケースです。
 このシナリオでは、問題や異常をできるだけ早く検出するために、データのリアルタイム転送が重要です。
 さらに、監視対象システムでイベントのスパイクが発生するリスクがあり、クライアント側で可観測性データをバッファリングしようとすると、大きなメモリスパイクや関連する問題を引き起こす可能性があります。
-大きなバッチをインサートできない場合、ユーザーは[非同期インサート](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)を使用してバッチ処理をClickHouseに委任できます。
+大きなバッチをinsertできない場合、ユーザーは[非同期insert](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)を使用してバッチ処理をClickHouseに委任できます。
 
-非同期インサートでは、データはまずバッファに挿入され、その後、以下の図に示すように3つのステップでデータベースストレージに書き込まれます:
+非同期insertでは、データはまずバッファに挿入され、その後、以下の図に示すように3つのステップでデータベースストレージに書き込まれます:
 
-<Image img={postgres_inserts} size='md' alt='Postgresインサート' />
+<Image img={postgres_inserts} size='md' alt='Postgresのinsert' />
 
-非同期インサートが有効な場合、ClickHouseは:
+非同期insertが有効な場合、ClickHouseは:
 
-(1) インサートクエリを非同期で受信します。
+(1) insertクエリを非同期で受信します。
 (2) クエリのデータをまずインメモリバッファに書き込みます。
 (3) 次のバッファフラッシュが発生したときにのみ、データをソートしてパートとしてデータベースストレージに書き込みます。
 
-バッファがフラッシュされる前に、同じクライアントまたは他のクライアントからの他の非同期インサートクエリのデータをバッファに収集できます。
-バッファフラッシュから作成されるパートには、複数の非同期インサートクエリからのデータが含まれる可能性があります。
+バッファがフラッシュされる前に、同じクライアントまたは他のクライアントからの他の非同期insertクエリのデータをバッファに収集できます。
+バッファフラッシュから作成されるパートには、複数の非同期insertクエリからのデータが含まれる可能性があります。
 一般的に、これらのメカニズムは、データのバッチ処理をクライアント側からサーバー側(ClickHouseインスタンス)にシフトします。
 
 :::note
@@ -84,40 +84,40 @@ MergeTree(またはReplicatedテーブル)に直接インサートし、デー�
 :::
 
 
-非同期インサートの設定に関する詳細は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)を、詳しい解説は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)をご覧ください。
+非同期インサートの設定に関する詳細は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)、より詳しい解説は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)をご覧ください。
 :::
 
 ### 公式ClickHouseクライアントを使用する {#use-official-clickhouse-clients}
 
 ClickHouseは主要なプログラミング言語向けのクライアントを提供しています。
-これらのクライアントはインサートが正しく実行されるよう最適化されており、[Goクライアント](/integrations/go#async-insert)のように直接的に、またはクエリ、ユーザー、接続レベルの設定で有効化された場合に間接的に、非同期インサートをネイティブサポートしています。
+これらのクライアントはインサートが正しく実行されるよう最適化されており、[Goクライアント](/integrations/go#async-insert)のように直接的に、またはクエリ、ユーザー、接続レベルの設定で有効化することで間接的に、非同期インサートをネイティブサポートしています。
 
-利用可能なClickHouseクライアントとドライバーの完全なリストについては、[クライアントとドライバー](/interfaces/cli)をご覧ください。
+利用可能なClickHouseクライアントとドライバーの完全なリストについては、[クライアントとドライバー](/interfaces/cli)を参照してください。
 
 ### Nativeフォーマットを優先する {#prefer-the-native-format}
 
-ClickHouseはインサート時(およびクエリ時)に多数の[入力フォーマット](/interfaces/formats)をサポートしています。
-これはOLTPデータベースとの大きな違いであり、外部ソースからのデータ読み込みを大幅に容易にします。特に[テーブル関数](/sql-reference/table-functions)やディスク上のファイルからデータを読み込む機能と組み合わせることで効果的です。
+ClickHouseはインサート時（およびクエリ時）に多数の[入力フォーマット](/interfaces/formats)をサポートしています。
+これはOLTPデータベースとの大きな違いであり、外部ソースからのデータ読み込みを大幅に容易にします。特に[テーブル関数](/sql-reference/table-functions)やディスク上のファイルからのデータ読み込み機能と組み合わせた場合に効果的です。
 これらのフォーマットは、アドホックなデータ読み込みやデータエンジニアリングタスクに最適です。
 
 最適なインサートパフォーマンスを実現したいアプリケーションでは、[Native](/interfaces/formats/Native)フォーマットを使用してインサートを行うことを推奨します。
-このフォーマットはほとんどのクライアント(GoやPythonなど)でサポートされており、すでにカラム指向形式であるため、サーバー側の処理を最小限に抑えることができます。
+このフォーマットはほとんどのクライアント（GoやPythonなど）でサポートされており、すでにカラム指向形式であるため、サーバー側の処理を最小限に抑えることができます。
 これにより、データをカラム指向形式に変換する責任がクライアント側に置かれます。これはインサートを効率的にスケールさせる上で重要です。
 
-あるいは、行形式を希望する場合は[RowBinaryフォーマット](/interfaces/formats/RowBinary)(Javaクライアントで使用)を使用できます。これは通常、Nativeフォーマットよりも記述が容易です。
+あるいは、行形式を希望する場合は[RowBinaryフォーマット](/interfaces/formats/RowBinary)（Javaクライアントで使用）を使用できます。これは通常、Nativeフォーマットよりも記述が容易です。
 このフォーマットは、圧縮、ネットワークオーバーヘッド、サーバー側の処理の観点から、[JSON](/interfaces/formats/JSON)などの他の行形式よりも効率的です。
-[JSONEachRow](/interfaces/formats/JSONEachRow)フォーマットは、書き込みスループットが低く、迅速に統合したいユーザーに適しています。ただし、このフォーマットはClickHouseでの解析時にCPUオーバーヘッドが発生することに注意してください。
+[JSONEachRow](/interfaces/formats/JSONEachRow)フォーマットは、書き込みスループットが低く、迅速に統合したいユーザーに適しています。ただし、このフォーマットはClickHouseでの解析時にCPUオーバーヘッドが発生することに注意が必要です。
 
 ### HTTPインターフェースを使用する {#use-the-http-interface}
 
 多くの従来型データベースとは異なり、ClickHouseはHTTPインターフェースをサポートしています。
-ユーザーは上記のいずれかのフォーマットを使用して、データのインサートとクエリの両方にこのインターフェースを利用できます。
-これはロードバランサーでトラフィックを容易に切り替えられるため、ClickHouseのネイティブプロトコルよりも好ましい場合が多くあります。
+ユーザーは上記のいずれのフォーマットを使用しても、データのインサートとクエリの両方にこのインターフェースを利用できます。
+ロードバランサーでトラフィックを容易に切り替えられるため、ClickHouseのネイティブプロトコルよりも好ましい場合が多くあります。
 ネイティブプロトコルとのインサートパフォーマンスの差は小さく、ネイティブプロトコルの方がわずかにオーバーヘッドが少なくなります。
-既存のクライアントはこれらのプロトコルのいずれか(場合によっては両方、例えばGoクライアント)を使用しています。
+既存のクライアントはこれらのプロトコルのいずれか（場合によっては両方、例えばGoクライアント）を使用しています。
 ネイティブプロトコルではクエリの進行状況を容易に追跡できます。
 
-詳細については[HTTPインターフェース](/interfaces/http)をご覧ください。
+詳細については[HTTPインターフェース](/interfaces/http)を参照してください。
 
 
 ## 基本的な例 {#basic-example}
@@ -127,9 +127,9 @@ ClickHouseでは、おなじみの`INSERT INTO TABLE`コマンドを使用でき
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
     (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
-    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
-    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
-    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
+    (102, 'バッチごとに大量の行を挿入する',                     yesterday(), 1.41421 ),
+    (102, 'よく使用するクエリに基づいてデータをソートする', today(),     2.718   ),
+    (101, 'グラニュールは読み取られるデータの最小単位',      now() + 5,   3.14159 )
 ```
 
 正常に動作したことを確認するために、次の`SELECT`クエリを実行します:
@@ -143,9 +143,9 @@ SELECT * FROM helloworld.my_first_table
 ```response
 user_id message                                             timestamp           metric
 101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
-101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
-102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
-102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
+101         グラニュールは読み取られるデータの最小単位           2024-11-13 20:01:27 3.14159
+102         バッチごとに大量の行を挿入する                          2024-11-12 00:00:00 1.41421
+102         よく使用するクエリに基づいてデータをソートする  2024-11-13 00:00:00     2.718
 ```
 
 
@@ -156,7 +156,7 @@ Postgresからデータを読み込む場合、以下の方法を使用できま
 - `ClickPipes`：PostgreSQLデータベースレプリケーション専用に設計されたETLツール。以下の両方で利用可能です：
   - ClickHouse Cloud - ClickPipesの[マネージド取り込みサービス](/integrations/clickpipes/postgres)を通じて利用可能。
   - セルフマネージド - [PeerDBオープンソースプロジェクト](https://github.com/PeerDB-io/peerdb)経由で利用可能。
-- [PostgreSQLテーブルエンジン](/integrations/postgresql#using-the-postgresql-table-engine)を使用して、前述の例のようにデータを直接読み取る方法。既知のウォーターマーク（例：タイムスタンプ）に基づくバッチレプリケーションで十分な場合や、一度限りの移行の場合に適しています。この方法は数千万行規模まで対応可能です。より大規模なデータセットを移行する場合は、データをチャンクに分割して複数のリクエストで処理することを検討してください。各チャンクに対してステージングテーブルを使用し、そのパーティションを最終テーブルに移動する前に準備できます。これにより、失敗したリクエストを再試行できます。このバルクロード戦略の詳細については、こちらを参照してください。
+- [PostgreSQLテーブルエンジン](/integrations/postgresql#using-the-postgresql-table-engine)を使用して、前述の例のようにデータを直接読み取る方法。既知のウォーターマーク（タイムスタンプなど）に基づくバッチレプリケーションで十分な場合や、一度限りの移行の場合に適しています。この方法は数千万行規模まで対応可能です。より大規模なデータセットを移行する場合は、データをチャンクに分割して複数のリクエストで処理することを検討してください。各チャンクに対してステージングテーブルを使用し、パーティションを最終テーブルに移動する前に準備できます。これにより、失敗したリクエストの再試行が可能になります。この一括読み込み戦略の詳細については、こちらを参照してください。
 - PostgreSQLからCSV形式でデータをエクスポートする方法。エクスポートしたデータは、ローカルファイルから、またはテーブル関数を使用してオブジェクトストレージ経由でClickHouseに挿入できます。
 
 :::note 大規模データセットの挿入にサポートが必要ですか？
@@ -172,7 +172,7 @@ Postgresからデータを読み込む場合、以下の方法を使用できま
 - `clickhouse-server`が実行中であること
 - `wget`、`zcat`、`curl`が使用可能なターミナルにアクセスできること
 
-この例では、clickhouse-clientをバッチモードで使用して、コマンドラインからClickHouseにCSVファイルを挿入する方法を説明します。clickhouse-clientをバッチモードで使用したコマンドライン経由のデータ挿入に関する詳細情報と例については、["バッチモード"](/interfaces/cli#batch-mode)を参照してください。
+この例では、clickhouse-clientをバッチモードで使用して、コマンドラインからClickHouseにCSVファイルを挿入する方法を説明します。clickhouse-clientをバッチモードで使用したコマンドライン経由でのデータ挿入の詳細と例については、[「バッチモード」](/interfaces/cli#batch-mode)を参照してください。
 
 この例では、2800万行のHacker Newsデータを含む[Hacker Newsデータセット](/getting-started/example-datasets/hacker-news)を使用します。
 
@@ -216,7 +216,7 @@ ORDER BY id
 _EOF
 ```
 
-エラーが表示されなければ、テーブルは正常に作成されています。上記のコマンドでは、ヒアドキュメント区切り文字（`_EOF`）の周りに単一引用符を使用して、変数展開を防いでいます。単一引用符がない場合、カラム名の周りのバッククォートをエスケープする必要があります。
+エラーがなければ、テーブルは正常に作成されています。上記のコマンドでは、ヒアドキュメント区切り文字（`_EOF`）の周りにシングルクォートを使用して、変数展開を防いでいます。シングルクォートがない場合、カラム名の周りのバッククォートをエスケープする必要があります。
 
 ### コマンドラインからのデータ挿入 {#insert-data-via-cmd}
 
@@ -246,7 +246,7 @@ clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackerne
 28.74 million
 ```
 
-### curlを使用したコマンドライン経由のデータ挿入 {#insert-using-curl}
+### curlを使用したコマンドライン経由でのデータ挿入 {#insert-using-curl}
 
 前の手順では、まず`wget`を使用してローカルマシンにcsvファイルをダウンロードしました。単一のコマンドを使用してリモートURLから直接データを挿入することも可能です。
 

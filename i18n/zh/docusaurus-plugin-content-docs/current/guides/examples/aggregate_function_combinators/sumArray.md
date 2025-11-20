@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 ## 使用示例 {#example-usage}
 
-在本示例中,我们将使用一个包含不同产品类别每日销售数据的样本数据集来演示 `sumArray` 的工作方式。我们将计算每天所有类别的销售总额。
+在本示例中,我们将使用一个包含不同产品类别每日销售数据的样本数据集来演示 `sumArray` 的工作原理。我们将计算每天所有类别的销售总额。
 
 ```sql title="查询"
 CREATE TABLE daily_category_sales
@@ -44,12 +44,12 @@ FROM daily_category_sales
 GROUP BY date, category_sales;
 ```
 
-`sumArray` 函数会对每个 `category_sales` 数组中的所有元素进行求和。例如,在 `2024-01-01` 这一天,它计算 `100 + 200 + 150 = 450`。这与 `arraySum` 的结果相同。
+`sumArray` 函数会对每个 `category_sales` 数组中的所有元素求和。例如,在 `2024-01-01` 这一天,它计算 `100 + 200 + 150 = 450`。这与 `arraySum` 的结果相同。
 
 
 ## 另请参阅 {#see-also}
 
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`arraySum`](/sql-reference/functions/array-functions#arraySum)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+- [`Array 组合器`](/sql-reference/aggregate-functions/combinators#-array)
 - [`sumMap`](/examples/aggregate-function-combinators/sumMap)

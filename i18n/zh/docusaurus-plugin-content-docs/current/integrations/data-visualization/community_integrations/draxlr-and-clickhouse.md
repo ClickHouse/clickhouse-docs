@@ -3,7 +3,7 @@ sidebar_label: 'Draxlr'
 sidebar_position: 131
 slug: /integrations/draxlr
 keywords: ['clickhouse', 'Draxlr', 'connect', 'integrate', 'ui']
-description: 'Draxlr 是一款具备数据可视化和分析功能的商业智能工具。'
+description: 'Draxlr 是一款用于数据可视化和分析的商业智能工具。'
 title: '将 Draxlr 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -26,7 +26,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团队能够在几分钟内完成数据探索、可视化和洞察发布。本文将带你完成建立连接的各个步骤。
+Draxlr 提供直观的界面，便于连接到你的 ClickHouse 数据库，使你的团队能够在几分钟内完成数据探索、可视化和洞察发布。本文将引导你完成建立稳定连接的各个步骤。
 
 
 
@@ -39,9 +39,9 @@ Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团�
 
 1. 点击导航栏上的 **Connect a Database** 按钮。
 
-2. 从可用数据库列表中选择 **ClickHouse**,然后点击下一步。
+2. 从可用数据库列表中选择 **ClickHouse**,然后点击"下一步"。
 
-3. 选择一个托管服务,然后点击下一步。
+3. 选择一个托管服务,然后点击"下一步"。
 
 4. 在 **Connection Name** 字段中输入任意名称。
 
@@ -50,7 +50,7 @@ Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团�
 <Image
   size='md'
   img={draxlr_01}
-  alt='Draxlr 连接表单,显示 ClickHouse 数据库配置选项'
+  alt='显示 ClickHouse 数据库配置选项的 Draxlr 连接表单'
   border
 />
 
@@ -61,23 +61,23 @@ Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团�
 
 1. 点击列表中的任意表。
 
-2. 页面将跳转到探索界面,显示该表中的数据。
+2. 系统将跳转到探索页面,显示该表中的数据。
 
-3. 您可以添加筛选条件、执行表连接并对数据进行排序。
+3. 您可以添加过滤器、执行表连接并对数据进行排序。
 
 <Image
   size='md'
   img={draxlr_02}
-  alt='Draxlr 数据探索界面,显示筛选和排序选项'
+  alt='Draxlr 数据探索界面,显示过滤和排序选项'
   border
 />
 
-4. 您还可以点击 **Graph** 按钮并选择图表类型来可视化数据。
+4. 您还可以点击 **Graph** 按钮,选择图表类型来可视化数据。
 
 <Image
   size='md'
   img={draxlr_05}
-  alt='Draxlr 针对 ClickHouse 数据的图表可视化选项'
+  alt='Draxlr 的 ClickHouse 数据图表可视化选项'
   border
 />
 
@@ -91,7 +91,7 @@ Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团�
 <Image
   size='md'
   img={draxlr_03}
-  alt='Draxlr 的 ClickHouse SQL 查询界面'
+  alt='ClickHouse 的 Draxlr SQL 查询界面'
   border
 />
 
@@ -136,4 +136,4 @@ Draxlr 提供直观的界面来连接你的 ClickHouse 数据库，使你的团�
 
 ## 了解更多 {#learn-more}
 
-要了解更多关于 Draxlr 的信息,请访问 [Draxlr 文档](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928)站点。
+要了解更多关于 Draxlr 的信息,请访问 [Draxlr 文档](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928)网站。

@@ -13,7 +13,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-В этом документе описывается, как управлять синхронизацией Postgres ClickPipe, когда ClickPipe работает в **режиме CDC (Running)**.
+В этом документе описывается, как управлять синхронизацией Postgres ClickPipe, когда ClickPipe работает в режиме **CDC (Running)**.
 
 
 ## Обзор {#overview}
@@ -65,4 +65,4 @@ import Image from '@theme/IdealImage';
 
 Вы можете увидеть, сколько времени занимает каждый пакет, в таблице **CDC Syncs** на вкладке **Metrics** ClickPipe. Обратите внимание, что длительность здесь включает время отправки, а также, если нет входящих строк, ClickPipe ожидает, и время ожидания также включается в длительность.
 
-<Image img={cdc_syncs} alt='Таблица синхронизаций CDC' size='md' />
+<Image img={cdc_syncs} alt='Таблица CDC Syncs' size='md' />

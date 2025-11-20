@@ -31,9 +31,9 @@ import Image from "@theme/IdealImage"
 
 ### 生成访问密钥 {#generate-an-access-key}
 
-### 创建服务账号 HMAC 密钥和密文 {#create-a-service-account-hmac-key-and-secret}
+### 创建服务账号 HMAC 密钥和密钥 {#create-a-service-account-hmac-key-and-secret}
 
-打开 **Cloud Storage > Settings > Interoperability**,选择现有的 **Access key**,或点击 **CREATE A KEY FOR A SERVICE ACCOUNT**。本指南介绍如何为新服务账号创建新密钥。
+打开 **Cloud Storage > Settings > Interoperability**,选择现有的 **Access key**,或点击 **CREATE A KEY FOR A SERVICE ACCOUNT**。本指南介绍为新服务账号创建新密钥的步骤。
 
 <Image
   size='md'

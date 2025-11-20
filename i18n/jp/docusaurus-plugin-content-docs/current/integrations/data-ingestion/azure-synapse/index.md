@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Azure Synapse'
 slug: /integrations/azure-synapse
-description: 'ClickHouse と Azure Synapse の連携概要'
+description: 'ClickHouse と Azure Synapse の概要'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'ClickHouse と Azure Synapse の連携'
 doc_type: 'guide'
@@ -18,10 +18,10 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) は、ビッグデータ、データサイエンス、データウェアハウスを統合した分析サービスで、高速かつ大規模なデータ分析を可能にします。
-Synapse では、Spark プールがオンデマンドでスケーラブルな [Apache Spark](https://spark.apache.org) クラスターを提供し、ユーザーは複雑なデータ変換、機械学習、外部システムとの連携を実行できます。
+[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) は、ビッグデータ、データサイエンス、データウェアハウジングを統合した分析サービスであり、高速かつ大規模なデータ分析を実現します。
+Synapse 内では、Spark プールがオンデマンドでスケーラブルな [Apache Spark](https://spark.apache.org) クラスターを提供し、ユーザーは複雑なデータ変換や機械学習、外部システムとの連携を実行できます。
 
-この記事では、Azure Synapse 上で Apache Spark を使用する際に、[ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector) を統合する方法を説明します。
+この記事では、Azure Synapse 内で Apache Spark を利用する際に、[ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector) を統合する方法を説明します。
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -37,12 +37,12 @@ Azure Synapseは3つのレベルの[パッケージ管理](https://learn.microso
 
 <br />
 
-[Apache Sparkプールのライブラリ管理ガイド](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)に従い、以下の必須依存関係をSparkアプリケーションに追加してください。
+[Apache Sparkプールのライブラリ管理ガイド](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)に従って、以下の必須依存関係をSparkアプリケーションに追加してください
 
 - `clickhouse-spark-runtime-{spark_version}_{scala_version}-{connector_version}.jar` - [公式Maven](https://mvnrepository.com/artifact/com.clickhouse.spark)
 - `clickhouse-jdbc-{java_client_version}-all.jar` - [公式Maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
-ニーズに適したバージョンを確認するには、[Sparkコネクタ互換性マトリックス](/integrations/apache-spark/spark-native-connector#compatibility-matrix)のドキュメントをご参照ください。
+ニーズに適したバージョンを確認するには、[Sparkコネクタ互換性マトリックス](/integrations/apache-spark/spark-native-connector#compatibility-matrix)のドキュメントをご覧ください。
 
 
 ## ClickHouseをカタログとして追加する {#add-clickhouse-as-catalog}
@@ -51,11 +51,12 @@ Sparkの設定をセッションに追加する方法はいくつかあります
 
 - セッションと共に読み込むカスタム設定ファイル
 - Azure Synapse UIを介した設定の追加
-- Synapseノートブック内での設定の追加
+- Synapseノートブックでの設定の追加
 
-[Apache Spark設定の管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)の手順に従い、[コネクタに必要なSpark設定](/integrations/apache-spark/spark-native-connector#register-the-catalog-required)を追加してください。
+[Apache Spark設定の管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)の手順に従い、
+[コネクタに必要なSpark設定](/integrations/apache-spark/spark-native-connector#register-the-catalog-required)を追加してください。
 
-例えば、ノートブック内で以下の設定を使用してSparkセッションを構成できます:
+例えば、ノートブックで以下の設定を使用してSparkセッションを構成できます:
 
 ```python
 %%configure -f
@@ -72,7 +73,7 @@ Sparkの設定をセッションに追加する方法はいくつかあります
 }
 ```
 
-以下のように、最初のセルに配置されていることを確認してください:
+以下のように最初のセルに配置してください:
 
 <Image
   img={sparkConfigViaNotebook}
@@ -90,7 +91,7 @@ ClickHouse Cloudを使用する場合は、[必要なSpark設定](/integrations/
 
 ## セットアップの検証 {#setup-verification}
 
-依存関係と設定が正しく適用されたことを確認するには、セッションのSpark UIにアクセスし、`Environment`タブを開いてください。
+依存関係と設定が正しく設定されたことを確認するには、セッションのSpark UIにアクセスし、`Environment`タブを開いてください。
 そこで、ClickHouse関連の設定を探します：
 
 <Image
@@ -106,5 +107,5 @@ ClickHouse Cloudを使用する場合は、[必要なSpark設定](/integrations/
 - [ClickHouse Spark コネクタドキュメント](/integrations/apache-spark)
 - [Azure Synapse Spark プールの概要](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)
 - [Apache Spark ワークロードのパフォーマンス最適化](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-performance)
-- [Synapse における Apache Spark プール用ライブラリの管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)
-- [Synapse における Apache Spark 設定の管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)
+- [Synapse での Apache Spark プール用ライブラリの管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-manage-pool-packages)
+- [Synapse での Apache Spark 設定の管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-create-spark-configuration)

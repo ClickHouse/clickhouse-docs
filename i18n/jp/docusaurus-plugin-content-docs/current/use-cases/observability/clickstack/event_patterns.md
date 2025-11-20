@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/event_patterns
-title: 'ClickStack を用いたイベントパターン'
+title: 'ClickStack でのイベントパターン'
 sidebar_label: 'イベントパターン'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いたイベントパターン'
+description: 'ClickStack でのイベントパターン'
 doc_type: 'guide'
 keywords: ['clickstack', 'event patterns', 'log analysis', 'pattern matching', 'observability']
 ---
@@ -13,13 +13,13 @@ import Image from '@theme/IdealImage';
 import event_patterns from '@site/static/images/use-cases/observability/event_patterns.png';
 import event_patterns_highlight from '@site/static/images/use-cases/observability/event_patterns_highlight.png';
 
-ClickStack のイベントパターンは、類似したメッセージを自動的にクラスタリングすることで、大量のログやトレースをすばやく把握できるようにし、数百万件の個々のイベントを精査する代わりに、意味のある少数のグループだけを確認すればよいようにしてくれます。
+ClickStack のイベントパターン機能を使うと、類似したメッセージを自動的にクラスタリングしてくれるため、大量のログやトレースをすばやく把握できます。その結果、何百万もの個々のイベントを精査するのではなく、意味のある少数のグループだけを確認すれば済みます。
 
 <Image img={event_patterns} alt="イベントパターン" size="lg" />
 
-これにより、どのエラーや警告が新しいものか、どれが繰り返し発生しているか、どれがログボリュームの急増を引き起こしているかを、はるかに簡単に見分けられます。パターンは動的に生成されるため、正規表現を定義したりパースルールを保守したりする必要はありません。フォーマットに依存せず、ClickStack が自動的にイベントに適応します。
+これにより、どのエラーや警告が新しいものか、どれが繰り返し発生しているのか、そしてどれがログ量の急増を引き起こしているのかを、はるかに簡単に見分けられます。パターンは動的に生成されるため、正規表現を定義したりパースルールを保守したりする必要はありません。ClickStack はフォーマットを問わずイベントに自動的に適応します。
 
-インシデント対応にとどまらず、この高レベルなビューは、コスト削減のために削減可能なノイズの多いログソースを特定したり、サービスがどのような種類のログを出力しているかを把握したり、システムがすでに重要なシグナルを出しているかどうかをより迅速に判断したりするのにも役立ちます。
+インシデントレスポンス以外にも、このような高レベルなビューは、コスト削減のために削減可能なノイズの多いログソースの特定、サービスが生成しているログの種類の把握、およびシステムがすでに関心のあるシグナルを出しているかどうかを素早く判断するのに役立ちます。
 
 
 ## イベントパターンへのアクセス {#accessing-event-patterns}
@@ -35,8 +35,8 @@ ClickStack のイベントパターンは、類似したメッセージを自動
 
 ## 推奨事項 {#recommendations}
 
-イベントパターンは、データの**絞り込まれたサブセット**に適用した場合に最も効果的です。例えば、イベントパターンを有効にする前に単一のサービスに絞り込むことで、数千のサービスに対してパターンを一度に適用するよりも、関連性が高く有用なメッセージを抽出できます。
+イベントパターンは、データの**絞り込まれたサブセット**に適用した場合に最も効果的です。例えば、イベントパターンを有効にする前に単一のサービスに絞り込むことで、数千のサービス全体にパターンを適用する場合と比較して、より関連性が高く有用なメッセージが抽出されます。
 
-また、IDやペイロードが異なる繰り返し発生するエラーを簡潔なクラスターにグループ化する、エラーメッセージの要約にも特に有効です。
+また、IDやペイロードが異なる繰り返し発生するエラーを簡潔なクラスターにグループ化する、エラーメッセージの要約においても特に有効です。
 
-実際の使用例については、[リモートデモデータセット](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns)でイベントパターンがどのように使用されているかをご覧ください。
+実際の使用例については、[リモートデモデータセット](/use-cases/observability/clickstack/getting-started/remote-demo-data#identify-error-patterns)でイベントパターンがどのように使用されているかを参照してください。

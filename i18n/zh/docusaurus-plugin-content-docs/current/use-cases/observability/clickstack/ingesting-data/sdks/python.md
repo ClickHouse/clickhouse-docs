@@ -3,18 +3,16 @@ slug: /use-cases/observability/clickstack/sdks/python
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: '用于 ClickStack 的 Python —— ClickHouse 可观测性栈'
+description: '适用于 ClickStack 的 Python —— ClickHouse 可观测性技术栈'
 title: 'Python'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', '日志', '集成', '应用监控']
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和
-追踪）。追踪通过自动埋点自动生成，因此不需要手动
-埋点也能从追踪中受益。
+ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和链路追踪）。链路追踪通过自动埋点自动生成，因此无需手动埋点就可以从链路追踪中获益。
 
 本指南集成了：
 
@@ -53,7 +51,7 @@ _`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识您的服务,�
 
 ### 使用 OpenTelemetry Python 代理运行应用程序 {#run-the-application-with-otel-python-agent}
 
-现在您可以使用 OpenTelemetry Python 代理(`opentelemetry-instrument`)运行应用程序。
+现在您可以使用 OpenTelemetry Python 代理 (`opentelemetry-instrument`) 运行应用程序。
 
 ```shell
 opentelemetry-instrument python app.py
@@ -63,7 +61,7 @@ opentelemetry-instrument python app.py
 
 在这种情况下,OpenTelemetry Python 代理需要进行额外配置才能正常工作。
 
-要为使用预分叉(pre-fork)Web 服务器模式的应用服务器配置 OpenTelemetry,请确保在 post-fork 钩子中调用 `configure_opentelemetry` 方法。
+要为使用预分叉 Web 服务器模式的应用程序服务器配置 OpenTelemetry,请确保在 post-fork 钩子中调用 `configure_opentelemetry` 方法。
 
 <Tabs groupId="python-alternative">
 <TabItem value="gunicorn" label="Gunicorn" default>
@@ -91,7 +89,7 @@ def init_tracing():
 
 <TabItem value="uvicorn" label="uvicorn" default>
 
-OpenTelemetry [目前无法正常工作](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)于使用 `--reload` 标志或多工作进程(`--workers`)运行的 `uvicorn`。我们建议在测试时禁用这些标志,或改用 Gunicorn。
+OpenTelemetry [目前无法](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385)与使用 `--reload` 标志或多工作进程 (`--workers`) 运行的 `uvicorn` 配合使用。我们建议在测试时禁用这些标志,或改用 Gunicorn。
 
 </TabItem>
 
@@ -124,7 +122,7 @@ logger.setLevel(logging.DEBUG)
 
 ### 导出到控制台 {#exporting-to-the-console}
 
-OpenTelemetry Python SDK 通常会在错误发生时在控制台中显示错误信息。但是,如果您没有遇到任何错误,却发现数据未按预期显示在 HyperDX 中,您可以选择启用调试模式。启用调试模式后,所有遥测数据都会打印到控制台,以便您验证应用程序是否已正确插桩并包含预期数据。
+OpenTelemetry Python SDK 通常会在错误发生时在控制台中显示错误信息。但是,如果您没有遇到任何错误,却发现数据未按预期显示在 HyperDX 中,您可以选择启用调试模式。启用调试模式后,所有遥测数据都将打印到控制台,以便您验证应用程序是否已正确地使用预期数据进行了插桩。
 
 ```shell
 export DEBUG=true

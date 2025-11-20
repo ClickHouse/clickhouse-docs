@@ -1,18 +1,17 @@
 ---
-description: '1億5,000万件を超える Amazon 製品のカスタマーレビュー'
-sidebar_label: 'Amazon カスタマーレビュー'
+description: '1億5,000万件以上のAmazon商品のカスタマーレビュー'
+sidebar_label: 'Amazonカスタマーレビュー'
 slug: /getting-started/example-datasets/amazon-reviews
-title: 'Amazon カスタマーレビュー'
+title: 'Amazonカスタマーレビュー'
 doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-このデータセットには、1億5,000万件を超える Amazon 製品のカスタマーレビューが含まれています。データは AWS S3 上の Snappy 圧縮の Parquet ファイルで提供されており、圧縮後の合計サイズは 49GB です。これを ClickHouse に取り込む手順を見ていきます。
+このデータセットには、Amazon商品のカスタマーレビューが1億5,000万件以上含まれています。データはAWS S3上のSnappy圧縮されたParquetファイルとして提供されており、圧縮後の合計サイズは49GBです。これをClickHouseに取り込む手順を順を追って説明します。
 
 :::note
-以下のクエリは、ClickHouse Cloud の **Production** インスタンス上で実行されています。詳細については
-["Playground specifications"](/getting-started/playground#specifications)
-を参照してください。
+以下のクエリは、ClickHouse Cloudの**Production**インスタンス上で実行されました。詳細については
+["Playground specifications"](/getting-started/playground#specifications) を参照してください。
 :::
 
 
@@ -46,7 +45,7 @@ total_votes:       0
 vine:              false
 verified_purchase: true
 review_headline:   ケースは頑丈で、望み通りに保護してくれる
-review_body:       防水機能は期待していません(底部のゴムシールは気になったので外しました)。しかし、ケースは頑丈で、望み通りに保護してくれます。
+review_body:       防水機能は当てにしていません(底部のゴムシールは気になったので外しました)。しかし、ケースは頑丈で、望み通りに保護してくれます。
 
 Row 2:
 ──────
@@ -82,7 +81,7 @@ total_votes:       0
 vine:              false
 verified_purchase: true
 review_headline:   しかし全体的にこのケースはかなり頑丈で、携帯電話をしっかり保護してくれる
-review_body:       最初は前面部分を携帯電話に固定するのが少し難しかったですが、全体的にこのケースはかなり頑丈で、携帯電話をしっかり保護してくれます。これが私の求めていたものです。このケースをまた購入したいと思います。
+review_body:       最初は前面部分を携帯電話に固定するのが少し難しかったですが、全体的にこのケースはかなり頑丈で、携帯電話をしっかり保護してくれます。これが私の必要としているものです。このケースをまた購入したいと思います。
 ```
 
 2. このデータをClickHouseに保存するために、`amazon_reviews`という名前の新しい`MergeTree`テーブルを定義しましょう:
@@ -117,7 +116,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. 以下の`INSERT`コマンドは`s3Cluster`テーブル関数を使用しており、クラスタのすべてのノードを使って複数のS3ファイルを並列処理できます。また、ワイルドカードを使用して、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`という名前で始まるすべてのファイルを挿入します:
+3. 以下の`INSERT`コマンドは`s3Cluster`テーブル関数を使用しており、クラスタのすべてのノードを使用して複数のS3ファイルを並列処理できます。また、ワイルドカードを使用して、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`という名前で始まるすべてのファイルを挿入します:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -127,17 +126,17 @@ FROM s3Cluster('default',
 
 
 :::tip
-ClickHouse Cloud では、クラスター名は `default` です。`default` をお使いのクラスター名に変更するか、クラスターがない場合は `s3Cluster` の代わりに `s3` テーブル関数を使用してください。
+ClickHouse Cloud では、クラスタ名は `default` です。`default` をお使いのクラスタ名に変更するか、クラスタがない場合は `s3Cluster` の代わりに `s3` テーブル関数を使用してください。
 :::
 
-5. このクエリはそれほど時間はかからず、平均して 1 秒あたり約 300,000 行を処理します。5 分ほど経てば、すべての行が挿入されたことを確認できるはずです。
+5. このクエリはそれほど時間がかからず、平均で毎秒約 300,000 行を処理します。5 分程度で、すべての行が挿入されていることを確認できるはずです。
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. データがどれくらいの領域を使用しているか確認しましょう:
+6. データがどれくらいの領域を使用しているか確認してみましょう。
 
 ```sql runnable
 SELECT
@@ -153,7 +152,7 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-元のデータは約 70G でしたが、ClickHouse で圧縮すると約 30G になります。
+元のデータは約 70G でしたが、ClickHouse で圧縮すると約 30G に収まりました。
 
 
 ## クエリ例 {#example-queries}

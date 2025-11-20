@@ -8,15 +8,15 @@ keywords: ['example dataset', 'tpch', 'benchmark', 'sample data', 'performance t
 ---
 
 一个广泛使用的基准测试，用于模拟某批发供应商的内部数据仓库。
-数据以第三范式进行存储，这在查询执行时需要大量 `JOIN` 操作。
-尽管年代久远，且在数据服从均匀且相互独立分布这一点上的假设并不现实，TPC-H 至今仍是最流行的 OLAP 基准测试。
+数据以第三范式结构进行存储，在查询执行时需要进行大量 `JOIN` 操作。
+尽管年代久远，且在数据服从均匀且相互独立分布这一假设上并不现实，TPC-H 仍然是迄今最流行的 OLAP 基准测试。
 
 **参考文献**
 
 - [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess 等, 2000)
+- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz 等), 2013
+- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler 等), 2020
 
 
 
@@ -30,7 +30,7 @@ cd tpch-kit/dbgen
 make
 ```
 
-然后生成数据。参数 `-s` 用于指定规模因子。例如,使用 `-s 100` 时,将为 'lineitem' 表生成 6 亿行数据。
+然后,生成数据。参数 `-s` 指定规模因子。例如,使用 `-s 100` 时,将为 'lineitem' 表生成 6 亿行数据。
 
 ```bash
 ./dbgen -s 100
@@ -38,7 +38,7 @@ make
 
 规模因子为 100 时的详细表大小:
 
-| 表名     | 大小(行数)     | 大小(ClickHouse 压缩后)         |
+| 表名     | 大小(行数)     | 大小(在 ClickHouse 中压缩后)    |
 | -------- | -------------- | ------------------------------- |
 | nation   | 25             | 2 kB                            |
 | region   | 5              | 1 kB                            |
@@ -59,9 +59,9 @@ make
 - 替换参数已被规范第 2.1.x.4 节中用于查询验证的值所替换。
 - 根据第 1.4.2.1 节,表定义不使用可选的 `NOT NULL` 约束,即使 `dbgen` 默认生成这些约束。
   ClickHouse 中 `SELECT` 查询的性能不受 `NOT NULL` 约束存在与否的影响。
-- 根据第 1.3.1 节,我们使用 ClickHouse 的原生数据类型(如 `Int32`、`String`)来实现规范中提到的抽象数据类型
-  (如 `Identifier`、`Variable text, size N`)。这样做的唯一效果是提高可读性,`dbgen` 生成的 SQL-92 数据类型
-  (如 `INTEGER`、`VARCHAR(40)`)在 ClickHouse 中同样可用。
+- 根据第 1.3.1 节,我们使用 ClickHouse 的原生数据类型(例如 `Int32`、`String`)来实现规范中提到的抽象数据类型
+  (例如 `Identifier`、`Variable text, size N`)。这样做的唯一效果是提高可读性,`dbgen` 生成的 SQL-92 数据类型
+  (例如 `INTEGER`、`VARCHAR(40)`)在 ClickHouse 中同样适用。
 
 ```sql
 CREATE TABLE nation (
@@ -133,7 +133,7 @@ o&#95;shippriority   Int32,
 o&#95;comment        String)
 ORDER BY (o&#95;orderkey);
 -- 下列为另一种排序键设置，虽不符合官方 TPC-H 规则，但在
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot; 一文的第 4.5 节中被推荐：
+-- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot; 一文的 4.5 节中被推荐：
 -- ORDER BY (o&#95;orderdate, o&#95;orderkey);
 
 CREATE TABLE lineitem (
@@ -155,12 +155,12 @@ l&#95;shipmode       String,
 l&#95;comment        String)
 ORDER BY (l&#95;orderkey, l&#95;linenumber);
 -- 下列为另一种排序键设置，虽不符合官方 TPC-H 规则，但在
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot; 一文的第 4.5 节中被推荐：
+-- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot; 一文的 4.5 节中被推荐：
 -- ORDER BY (l&#95;shipdate, l&#95;orderkey, l&#95;linenumber);
 
 ````
 
-可以按如下方式导入数据：
+数据可以按以下方式导入：
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -174,7 +174,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ````
 
 :::note
-你也可以选择从公共 S3 存储桶中导入数据，而不必使用 tpch-kit 自行生成表。请先使用上面的 `CREATE` 语句创建空表。
+除了使用 tpch-kit 自行生成表之外，你也可以从公共 S3 存储桶中导入数据。请确保先使用上面的 `CREATE` 语句创建空表。
 
 
 ```sql
@@ -205,7 +205,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 ## 查询 {#queries}
 
 :::note
-需要启用 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 设置,以便按照 SQL 标准生成正确的结果。
+需要启用 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 设置,以便根据 SQL 标准生成正确的结果。
 :::
 
 :::note
@@ -398,9 +398,9 @@ WHERE
 ```
 
 ::::note
-截至 2025 年 2 月，由于 `Decimal` 加法存在一个缺陷，该查询无法直接使用。对应的 issue：[[https://github.com/ClickHouse/ClickHouse/issues/70136]](https://github.com/ClickHouse/ClickHouse/issues/70136)
+截至 2025 年 2 月，由于 `Decimal` 加法存在一个 bug，该查询无法直接使用。对应的 issue： [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-下面的替代写法可以正常工作，并已验证能够返回参考结果。
+下面这种替代写法可以正常运行，并已验证能够返回参考结果。
 
 ```sql
 SELECT
@@ -459,7 +459,7 @@ ORDER BY
     l_year;
 ```
 
-**问题 8**
+**Q8**
 
 ```sql
 SELECT
@@ -538,7 +538,7 @@ ORDER BY
     o_year DESC;
 ```
 
-**问题 10**
+**Q10**
 
 ```sql
 SELECT
@@ -607,7 +607,7 @@ ORDER BY
     value DESC;
 ```
 
-**问题 12**
+**Q12**
 
 ```sql
 SELECT
@@ -664,7 +664,7 @@ ORDER BY
     c_count DESC;
 ```
 
-**问题 14**
+**Q14**
 
 
 ```sql
@@ -683,7 +683,7 @@ WHERE
     AND l_shipdate < DATE '1995-09-01' + INTERVAL '1' MONTH;
 ```
 
-**Q15**
+**问题15**
 
 ```sql
 CREATE VIEW revenue0 (supplier_no, total_revenue) AS
@@ -756,7 +756,7 @@ ORDER BY
     p_size;
 ```
 
-**问题 17**
+**Q17**
 
 ```sql
 SELECT
@@ -778,7 +778,7 @@ WHERE
     );
 ```
 
-**Q18**
+**问题18**
 
 ```sql
 SELECT
@@ -816,7 +816,7 @@ ORDER BY
     o_orderdate;
 ```
 
-**问题 19**
+**Q19**
 
 
 ```sql
@@ -899,7 +899,7 @@ ORDER BY
     s_name;
 ```
 
-**Q21**
+**问题 21**
 
 ```sql
 SELECT

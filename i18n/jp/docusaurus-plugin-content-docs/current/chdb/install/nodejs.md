@@ -1,8 +1,8 @@
 ---
-title: 'Node.js 向け chDB'
+title: 'Node.js 用 chDB'
 sidebar_label: 'Node.js'
 slug: /chdb/install/nodejs
-description: 'Node.js での chDB のインストールと使用方法'
+description: 'Node.js での chDB のインストールと利用方法'
 keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 # Node.js 向け chDB
 
-chDB-node は chDB 用の Node.js バインディングを提供し、外部への依存関係を一切追加することなく、Node.js アプリケーションから直接 ClickHouse クエリを実行できるようにします。
+chDB-node は chDB 用の Node.js バインディングを提供し、外部への依存なしに Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
 
 
@@ -24,11 +24,11 @@ npm install chdb
 
 ## 使用方法 {#usage}
 
-chDB-nodeは2つのクエリモードをサポートしています：シンプルな操作のためのスタンドアロンクエリと、データベース状態を維持するためのセッションベースクエリです。
+chDB-nodeは2つのクエリモードをサポートしています:シンプルな操作のためのスタンドアロンクエリと、データベース状態を維持するためのセッションベースクエリです。
 
 ### スタンドアロンクエリ {#standalone-queries}
 
-永続的な状態を必要としない、シンプルな単発クエリの場合：
+永続的な状態を必要としない、シンプルな単発クエリの場合:
 
 ```javascript
 const { query } = require("chdb")
@@ -165,7 +165,7 @@ try {
 
 ## エラー処理 {#error-handling}
 
-chDBを使用する際は、常に適切にエラーを処理してください：
+chDBを使用する際は、常に適切にエラーを処理してください:
 
 ```javascript
 const { query, Session } = require("chdb")

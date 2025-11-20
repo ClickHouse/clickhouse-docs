@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'ClickStack による PostgreSQL ログの監視'
+title: 'ClickStack を使用した PostgreSQL ログのモニタリング'
 sidebar_label: 'PostgreSQL ログ'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack による PostgreSQL ログの監視'
+description: 'ClickStack を使用した PostgreSQL ログのモニタリング'
 doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'logs', 'OTEL', 'ClickStack', 'database monitoring']
 ---
@@ -24,14 +24,14 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 :::note[要約]
 本ガイドでは、OpenTelemetryコレクターを設定してPostgreSQLサーバーログを取り込み、ClickStackでPostgreSQLを監視する方法を説明します。以下の内容を学習できます:
 
-- 構造化解析のためにPostgreSQLログをCSV形式で出力するよう設定する
+- 構造化解析のためにPostgreSQLのログをCSV形式で出力するように設定する
 - ログ取り込み用のカスタムOTelコレクター設定を作成する
 - カスタム設定を使用してClickStackをデプロイする
-- 事前構築されたダッシュボードを使用してPostgreSQLログのインサイト(エラー、スロークエリ、接続)を可視化する
+- 事前構築されたダッシュボードを使用してPostgreSQLログの分析情報(エラー、低速クエリ、接続)を可視化する
 
 本番環境のPostgreSQLを設定する前に統合をテストしたい場合は、サンプルログを含むデモデータセットが利用可能です。
 
-所要時間:10〜15分
+所要時間: 10〜15分
 :::
 
 
@@ -39,12 +39,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 このセクションでは、ClickStack OTelコレクターの設定を変更して、既存のPostgreSQLインストールからClickStackにログを送信する方法について説明します。
 
-既存のセットアップを設定する前にPostgreSQLログ統合をテストしたい場合は、["デモデータセット"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset)セクションにある事前設定済みのセットアップとサンプルデータを使用してテストできます。
+既存の設定を構成する前にPostgreSQLログ統合をテストしたい場合は、[「デモデータセット」](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset)セクションで事前設定済みのセットアップとサンプルデータを使用してテストできます。
 
 ##### 前提条件 {#prerequisites}
 
 - ClickStackインスタンスが稼働していること
-- 既存のPostgreSQLインストール（バージョン9.6以降）
+- 既存のPostgreSQLインストール(バージョン9.6以降)
 - PostgreSQL設定ファイルを変更するアクセス権限
 - ログファイル用の十分なディスク容量
 
@@ -52,34 +52,34 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 #### PostgreSQLログの設定 {#configure-postgres}
 
-PostgreSQLは複数のログ形式をサポートしています。OpenTelemetryで構造化解析を行う場合は、一貫性があり解析可能な出力を提供するCSV形式を推奨します。
+PostgreSQLは複数のログ形式をサポートしています。OpenTelemetryによる構造化解析には、一貫性があり解析可能な出力を提供するCSV形式を推奨します。
 
-`postgresql.conf`ファイルは通常、以下の場所にあります：
+`postgresql.conf`ファイルは通常、以下の場所にあります:
 
 - **Linux (apt/yum)**: `/etc/postgresql/{version}/main/postgresql.conf`
-- **macOS (Homebrew)**: `/usr/local/var/postgres/postgresql.conf` または `/opt/homebrew/var/postgres/postgresql.conf`
-- **Docker**: 設定は通常、環境変数またはマウントされた設定ファイルで行われます
+- **macOS (Homebrew)**: `/usr/local/var/postgres/postgresql.conf` or `/opt/homebrew/var/postgres/postgresql.conf`
+- **Docker**: 設定は通常、環境変数またはマウントされた設定ファイルを介して行われます
 
-`postgresql.conf`に以下の設定を追加または変更してください：
+`postgresql.conf`に以下の設定を追加または変更してください:
 
 
 ```conf
-# CSVログ記録に必要
+# CSV ログ記録に必要
 logging_collector = on
 log_destination = 'csvlog'
 ```
 
 
-# 推奨: 接続ログの記録
+# 推奨: 接続のログ記録
 log_connections = on
 log_disconnections = on
 
 
 
-# オプション: 監視要件に応じて調整する
+# （任意）監視ニーズに応じて調整する
 
-#log&#95;min&#95;duration&#95;statement = 1000  # 1 秒より長くかかるクエリをログに記録
-#log&#95;statement = &#39;ddl&#39;               # DDL ステートメント (CREATE, ALTER, DROP) をログに記録
+#log&#95;min&#95;duration&#95;statement = 1000  # 1秒を超えるクエリをログに記録
+#log&#95;statement = &#39;ddl&#39;               # DDL ステートメント（CREATE、ALTER、DROP）をログに記録
 #log&#95;checkpoints = on                # チェックポイント処理をログに記録
 #log&#95;lock&#95;waits = on                 # ロック待ちをログに記録
 
@@ -99,13 +99,13 @@ sudo systemctl restart postgresql
 ```
 
 
-# Docker の場合
+# Docker を使用する場合
 
 docker restart
 
 ```
 
-ログが書き込まれていることを確認する:
+ログが書き込まれていることを確認します：
 ```
 
 
@@ -169,7 +169,7 @@ service:
 この設定の内容:
 
 - 標準的な場所からPostgreSQL CSVログを読み取ります
-- 複数行にわたるログエントリを処理します(エラーは複数行にまたがることがよくあります)
+- 複数行のログエントリを処理します(エラーは複数行にまたがることがよくあります)
 - すべての標準PostgreSQLログフィールドを含むCSV形式を解析します
 - 元のログのタイミングを保持するためにタイムスタンプを抽出します
 - HyperDXでのフィルタリング用に`source: postgresql`属性を追加します
@@ -178,15 +178,15 @@ service:
 :::note
 
 - カスタム設定では新しいレシーバーとパイプラインのみを定義します
-- プロセッサー(`memory_limiter`、`transform`、`batch`)とエクスポーター(`clickhouse`)は、ベースとなるClickStack設定ですでに定義されているため、名前で参照するだけです
-- `csv_parser`オペレーターは、すべての標準PostgreSQL CSVログフィールドを構造化された属性として抽出します
-- この設定では、コレクターの再起動時にログを再取り込みしないように`start_at: end`を使用しています。テストの場合は、`start_at: beginning`に変更すると、過去のログをすぐに確認できます。
-- `include`パスをPostgreSQLログディレクトリの場所に合わせて調整してください
+- プロセッサー(`memory_limiter`、`transform`、`batch`)とエクスポーター(`clickhouse`)は、ベースとなるClickStack設定ですでに定義されているため、名前で参照するだけで使用できます
+- `csv_parser`オペレーターは、すべての標準PostgreSQL CSVログフィールドを構造化された属性に抽出します
+- この設定では、コレクターの再起動時にログを再取り込みしないように`start_at: end`を使用しています。テストの場合は、履歴ログをすぐに確認するために`start_at: beginning`に変更してください。
+- PostgreSQLログディレクトリの場所に合わせて`include`パスを調整してください
   :::
 
 #### カスタム設定を読み込むためのClickStackの設定 {#load-custom}
 
-既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、以下の手順が必要です:
+既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、以下の手順を実行する必要があります:
 
 1. カスタム設定ファイルを`/etc/otelcol-contrib/custom.config.yaml`にマウントします
 2. 環境変数`CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`を設定します
@@ -267,7 +267,7 @@ receivers:
   filelog/postgres:
     include:
       - /tmp/postgres-demo/postgresql.log
-    start_at: beginning  # デモデータは先頭から読み込む
+    start_at: beginning  # デモデータは最初から読み込む
     multiline:
       line_start_pattern: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
     operators:
@@ -304,7 +304,7 @@ EOF
 
 #### デモ設定でClickStackを実行 {#run-demo}
 
-デモログと設定を使用してClickStackを実行します:
+デモログと設定でClickStackを実行します:
 
 ```bash
 docker run --name clickstack-demo \
@@ -317,14 +317,14 @@ docker run --name clickstack-demo \
 
 #### HyperDXでログを確認 {#verify-demo-logs}
 
-ClickStackが起動したら:
+ClickStackが実行されたら:
 
-1. [HyperDX](http://localhost:8080/)を開き、アカウントにログインします(初回の場合はアカウントの作成が必要です)
+1. [HyperDX](http://localhost:8080/)を開き、アカウントにログインします(最初にアカウントを作成する必要がある場合があります)
 2. 検索ビューに移動し、ソースを`Logs`に設定します
 3. 時間範囲を**2025-11-09 00:00:00 - 2025-11-12 00:00:00**に設定します
 
 :::note[タイムゾーン表示]
-HyperDXはブラウザのローカルタイムゾーンでタイムスタンプを表示します。デモデータは**2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**の期間です。広めの時間範囲を指定することで、場所に関係なくデモログを確認できます。ログが表示されたら、より見やすい可視化のために範囲を24時間に絞り込むことができます。
+HyperDXはブラウザのローカルタイムゾーンでタイムスタンプを表示します。デモデータは**2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**の期間です。広い時間範囲を指定することで、場所に関係なくデモログを確実に表示できます。ログが表示されたら、より明確な可視化のために範囲を24時間に絞り込むことができます。
 :::
 
 <Image img={logs_search_view} alt='ログ検索ビュー' />
@@ -368,7 +368,7 @@ ClickStackを使用したPostgreSQLの監視を開始できるよう、PostgreSQ
 
 ## トラブルシューティング {#troubleshooting}
 
-### カスタム設定が読み込まれない {#troubleshooting-not-loading}
+### カスタム設定が読み込まれない場合 {#troubleshooting-not-loading}
 
 環境変数が設定されていることを確認してください:
 
@@ -382,7 +382,7 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
-### HyperDXにログが表示されない {#no-logs}
+### HyperDXにログが表示されない場合 {#no-logs}
 
 有効な設定にfilelogレシーバーが含まれていることを確認してください:
 
@@ -390,7 +390,7 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head 
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
 ```
 
-コレクターログでエラーを確認してください:
+コレクターログにエラーがないか確認してください:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
@@ -408,11 +408,11 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 PostgreSQLログ監視を設定した後:
 
 - 重要なイベント（接続障害、スロークエリ、エラー急増）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- 包括的なデータベース監視のため、ログと[PostgreSQLメトリクス](/use-cases/observability/clickstack/integrations/postgresql-metrics)を関連付ける
+- 包括的なデータベース監視のため、ログを[PostgreSQLメトリクス](/use-cases/observability/clickstack/integrations/postgresql-metrics)と関連付ける
 - アプリケーション固有のクエリパターン用のカスタムダッシュボードを作成する
 - パフォーマンス要件に応じたスロークエリを特定するため、`log_min_duration_statement`を設定する
 
 
 ## 本番環境への移行 {#going-to-production}
 
-本ガイドでは、迅速なセットアップのためにClickStackの組み込みOpenTelemetry Collectorを拡張する方法を説明しています。本番環境へのデプロイでは、独自のOTel Collectorを実行し、ClickStackのOTLPエンドポイントにデータを送信することを推奨します。本番環境の構成については、[OpenTelemetryデータの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry)を参照してください。
+本ガイドでは、迅速なセットアップのためにClickStackの組み込みOpenTelemetry Collectorを拡張します。本番環境へのデプロイでは、独自のOTel Collectorを実行し、ClickStackのOTLPエンドポイントにデータを送信することを推奨します。本番環境の構成については、[OpenTelemetryデータの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry)を参照してください。

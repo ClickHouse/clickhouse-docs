@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/argMinIf'
 title: 'argMinIf'
-description: 'Пример использования комбинатора агрегатной функции argMinIf'
+description: 'Пример использования комбинатора argMinIf'
 keywords: ['argMin', 'if', 'combinator', 'examples', 'argMinIf']
 sidebar_label: 'argMinIf'
 doc_type: 'reference'
@@ -15,10 +15,10 @@ doc_type: 'reference'
 ## Описание {#description}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может применяться к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-для поиска значения `arg`, соответствующего минимальному значению `val` для строк, где условие истинно,
+для поиска значения `arg`, соответствующего минимальному значению `val` среди строк, удовлетворяющих условию,
 с помощью агрегатной функции-комбинатора `argMinIf`.
 
-Функция `argMinIf` полезна, когда нужно найти значение, связанное
+Функция `argMinIf` полезна, когда требуется найти значение, связанное
 с минимальным значением в наборе данных, но только для строк, удовлетворяющих заданному
 условию.
 

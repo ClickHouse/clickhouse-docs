@@ -26,17 +26,17 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-DBeaver 提供多个版本。本指南中使用的是 [DBeaver Community](https://dbeaver.io/)。请在[此处](https://dbeaver.com/edition/)查看不同版本及其功能。DBeaver 通过 JDBC 连接到 ClickHouse。
+DBeaver 提供多个版本。在本指南中使用的是 [DBeaver Community](https://dbeaver.io/)。关于不同版本及其功能，请参见[此处](https://dbeaver.com/edition/)。DBeaver 通过 JDBC 连接到 ClickHouse。
 
 :::note
-为在 ClickHouse 中更好地支持 `Nullable` 列，请使用 23.1.0 或更高版本的 DBeaver。
+为获得对 ClickHouse 中 `Nullable` 列的更好支持，请使用 23.1.0 或更高版本的 DBeaver。
 :::
 
 
 
-## 1. 收集 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
+## 1. 收集您的 ClickHouse 连接信息 {#1-gather-your-clickhouse-details}
 
-DBeaver 通过 JDBC over HTTP(S) 连接到 ClickHouse，您需要准备以下信息:
+DBeaver 使用 JDBC 通过 HTTP(S) 连接到 ClickHouse；您需要准备以下信息：
 
 - 端点地址
 - 端口号
@@ -46,12 +46,12 @@ DBeaver 通过 JDBC over HTTP(S) 连接到 ClickHouse，您需要准备以下信
 
 ## 2. 下载 DBeaver {#2-download-dbeaver}
 
-DBeaver 可从 https://dbeaver.io/download/ 下载
+DBeaver 可在 https://dbeaver.io/download/ 下载
 
 
 ## 3. 添加数据库 {#3-add-a-database}
 
-- 使用 **Database > New Database Connection** 菜单或 **Database Navigator** 中的 **New Database Connection** 图标来打开 **Connect to a database** 对话框:
+- 使用 **Database > New Database Connection** 菜单或 **Database Navigator** 中的 **New Database Connection** 图标,打开 **Connect to a database** 对话框:
 
 <Image img={dbeaver_add_database} size='md' border alt='添加新数据库' />
 
@@ -88,7 +88,7 @@ DBeaver 可从 https://dbeaver.io/download/ 下载
   alt='下载 ClickHouse 驱动程序'
 />
 
-- 下载驱动程序后,再次**测试**连接:
+- 下载驱动程序后,再次 **测试** 连接:
 
 <Image
   img={dbeaver_test_connection}
@@ -102,7 +102,7 @@ DBeaver 可从 https://dbeaver.io/download/ 下载
 
 打开查询编辑器并运行查询。
 
-- 右键单击您的连接并选择 **SQL Editor > Open SQL Script** 打开查询编辑器:
+- 右键单击您的连接,选择 **SQL Editor > Open SQL Script** 打开查询编辑器:
 
 <Image img={dbeaver_sql_editor} size='md' border alt='打开 SQL 编辑器' />
 
@@ -113,4 +113,4 @@ DBeaver 可从 https://dbeaver.io/download/ 下载
 
 ## 后续步骤 {#next-steps}
 
-请参阅 [DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki) 了解 DBeaver 的功能特性，以及 [ClickHouse 文档](https://clickhouse.com/docs) 了解 ClickHouse 的功能特性。
+请参阅 [DBeaver wiki](https://github.com/dbeaver/dbeaver/wiki) 了解 DBeaver 的功能，以及 [ClickHouse 文档](https://clickhouse.com/docs) 了解 ClickHouse 的功能。

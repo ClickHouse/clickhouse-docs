@@ -47,7 +47,7 @@ https://mcp.clickhouse.cloud/mcp
 
 ## 在 Claude Code 中添加 ClickHouse MCP 服务器 {#add-clickhouse-mcp-server-claude-code}
 
-1. 在工作目录中,运行以下命令将 ClickHouse Cloud MCP 服务器配置添加到 Claude Code。在本示例中,我们将 Claude Code 配置中的 MCP 服务器命名为 `clickhouse_cloud`
+1. 在工作目录中运行以下命令,将 ClickHouse Cloud MCP 服务器配置添加到 Claude Code。在本示例中,我们将 Claude Code 配置中的 MCP 服务器命名为 `clickhouse_cloud`
 
 ```bash
 claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp

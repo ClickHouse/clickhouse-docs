@@ -4,8 +4,7 @@ sidebar_label: 'Unity catalog'
 title: 'Unity catalog'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将向您演示如何使用 ClickHouse 和 Unity Catalog 查询
- 存储在 S3 存储桶中的数据。'
+description: '在本指南中，我们将向你展示如何使用 ClickHouse 和 Unity Catalog 查询 S3 存储桶中的数据。'
 keywords: ['Unity', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
@@ -16,16 +15,16 @@ import BetaBadge from '@theme/badges/BetaBadge';
 <BetaBadge />
 
 :::note
-与 Unity Catalog 的集成适用于托管表和外部表。
-目前此集成仅在 AWS 上受支持。
+与 Unity Catalog 的集成支持托管表和外部表。
+此集成目前仅支持 AWS。
 :::
 
-ClickHouse 支持与多个目录服务集成（Unity、Glue、Polaris 等）。本指南将引导你使用 ClickHouse 和 [Unity Catalog](https://www.databricks.com/product/unity-catalog) 查询由 Databricks 管理的数据。
+ClickHouse 支持与多个数据目录(Unity、Glue、Polaris 等)集成。本指南将指导您使用 ClickHouse 和 [Unity Catalog](https://www.databricks.com/product/unity-catalog) 查询由 Databricks 管理的数据。
 
-Databricks 的 lakehouse 支持多种数据格式。使用 ClickHouse 时，你可以将 Unity Catalog 中的表以 Delta 和 Iceberg 的形式进行查询。
+Databricks 的湖仓架构支持多种数据格式。通过 ClickHouse,您可以以 Delta 和 Iceberg 格式查询 Unity Catalog 表。
 
 :::note
-由于此功能仍处于实验阶段，你需要通过以下方式启用它：
+由于此功能为实验性功能,您需要通过以下设置启用:
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
@@ -36,7 +35,7 @@ Databricks 的 lakehouse 支持多种数据格式。使用 ClickHouse 时，你�
 
 除了启用外部访问之外,还需确保配置集成的主体对包含表的 schema 具有 `EXTERNAL USE SCHEMA` [权限](https://docs.databricks.com/aws/en/external-access/admin#external-schema)。
 
-配置好 catalog 后,您需要为 ClickHouse 生成凭据。根据您与 Unity 的交互模式,可以使用以下两种方法:
+配置好 catalog 后,您必须为 ClickHouse 生成凭据。根据您与 Unity 的交互模式,可以使用以下两种方法:
 
 - 对于 Iceberg 客户端,使用[服务主体](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m)进行身份验证。
 
@@ -45,7 +44,7 @@ Databricks 的 lakehouse 支持多种数据格式。使用 ClickHouse 时，你�
 
 ## 在 Unity Catalog 与 ClickHouse 之间创建连接 {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
-完成 Unity Catalog 配置和身份验证设置后,即可在 ClickHouse 与 Unity Catalog 之间建立连接。
+完成 Unity Catalog 配置和身份验证后,即可在 ClickHouse 与 Unity Catalog 之间建立连接。
 
 ### 读取 Delta {#read-delta}
 
@@ -126,7 +125,7 @@ SELECT count(*) FROM `uniform.delta_hits`
 ```
 
 :::note 需要使用反引号
-由于 ClickHouse 不支持多级命名空间,因此需要使用反引号。
+由于 ClickHouse 不支持多个命名空间,因此需要使用反引号。
 :::
 
 查看表的 DDL:

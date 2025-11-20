@@ -1,23 +1,23 @@
 ---
 slug: /guides/sizing-and-hardware-recommendations
-sidebar_label: 'サイジングとハードウェアに関する推奨事項'
+sidebar_label: 'サイジングとハードウェアの推奨事項'
 sidebar_position: 4
-title: 'サイジングとハードウェアに関する推奨事項'
-description: 'このガイドでは、オープンソース版の利用者を対象に、ハードウェア、コンピュート、メモリ、ディスク構成に関する一般的な推奨事項を説明します。'
+title: 'サイジングとハードウェアの推奨事項'
+description: 'このガイドでは、オープンソース版ユーザー向けに、ハードウェア、コンピュート、メモリ、ディスク構成に関する一般的な推奨事項について説明します。'
 doc_type: 'guide'
 keywords: ['sizing', 'hardware', 'capacity planning', 'best practices', 'performance']
 ---
 
 
 
-# サイジングとハードウェアに関する推奨事項
+# サイジングとハードウェアの推奨事項
 
-このガイドでは、オープンソースユーザー向けのハードウェア、コンピュート、メモリ、およびディスク構成に関する一般的な推奨事項を説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud) の利用をお勧めします。ClickHouse Cloud は、インフラストラクチャ管理にかかるコストを最小限に抑えつつ、ワークロードに応じて自動的にスケールし、適応します。
+本ガイドでは、オープンソース版ユーザー向けのハードウェア、コンピュート、メモリ、ディスク構成に関する一般的な推奨事項について説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud)の利用を推奨します。ClickHouse Cloudは、インフラストラクチャ管理に関するコストを最小限に抑えながら、ワークロードに応じて自動的にスケーリングし適応します。
 
-ClickHouse クラスターの構成は、アプリケーションのユースケースおよびワークロードパターンに大きく依存します。アーキテクチャを設計する際には、次の要素を考慮する必要があります。
+ClickHouseクラスタの構成は、アプリケーションのユースケースとワークロードパターンに大きく依存します。アーキテクチャを計画する際には、以下の要素を考慮する必要があります:
 
-- 同時実行数（1 秒あたりのリクエスト数）
-- スループット（1 秒あたりに処理される行数）
+- 同時実行数(1秒あたりのリクエスト数)
+- スループット(1秒あたりに処理される行数)
 - データ量
 - データ保持ポリシー
 - ハードウェアコスト
@@ -42,9 +42,9 @@ ClickHouseで使用するディスクの種類は、データ量、レイテン�
 
 ## CPU {#cpu}
 
-### どのCPUを使用すべきか? {#which-cpu-should-i-use}
+### どのCPUを使用すべきか？ {#which-cpu-should-i-use}
 
-使用すべきCPUのタイプは、使用パターンによって異なります。ただし一般的に、頻繁に多数の同時クエリを実行し、より多くのデータを処理する、または計算集約的なUDFを使用するアプリケーションでは、より多くのCPUコアが必要になります。
+使用すべきCPUの種類は、使用パターンによって異なります。ただし一般的に、頻繁に多数の同時クエリを実行し、より多くのデータを処理する、または計算集約的なUDFを使用するアプリケーションでは、より多くのCPUコアが必要になります。
 
 **低レイテンシまたは顧客向けアプリケーション**
 
@@ -60,11 +60,11 @@ ClickHouseで使用するディスクの種類は、データ量、レイテン�
 
 ---
 
-### CPU使用率はどの程度にすべきか? {#what-should-cpu-utilization-be}
+### CPU使用率はどの程度であるべきか？ {#what-should-cpu-utilization-be}
 
 ClickHouseには標準的なCPU使用率の目標値はありません。[iostat](https://linux.die.net/man/1/iostat)などのツールを使用して平均CPU使用率を測定し、予期しないトラフィックの急増に対応できるようサーバーのサイズを適宜調整してください。ただし、アドホッククエリを伴う分析またはデータウェアハウスのユースケースでは、CPU使用率を10〜20%に目標設定することを推奨します。
 
-### いくつのCPUコアを使用すべきか? {#how-many-cpu-cores-should-i-use}
+### いくつのCPUコアを使用すべきか？ {#how-many-cpu-cores-should-i-use}
 
 使用すべきCPU数はワークロードによって異なります。ただし、CPUタイプに基づいて、一般的に以下のメモリ対CPUコア比を推奨します:
 
@@ -77,15 +77,15 @@ ClickHouseには標準的なCPU使用率の目標値はありません。[iostat
 
 ## メモリ {#memory}
 
-CPUの選択と同様に、メモリ対ストレージ比率およびメモリ対CPU比率の選択は、ユースケースに依存します。
+CPUの選択と同様に、メモリ対ストレージ比率およびメモリ対CPU比率の選択は、ユースケースによって異なります。
 
 必要なRAM容量は、一般的に以下の要因に依存します:
 
 - クエリの複雑さ
 - クエリで処理されるデータ量
 
-ただし、一般的には、メモリが多いほどクエリの実行速度が速くなります。
-コスト重視のユースケースの場合、設定([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by)および[`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort))を有効にしてデータをディスクにスピルすることで、少ないメモリ量でも動作しますが、これによりクエリパフォーマンスが大幅に低下する可能性があることに注意してください。
+ただし、一般的には、メモリが多いほどクエリの実行速度は速くなります。
+コストを重視するユースケースの場合、設定([`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by)および[`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort))を有効にしてデータをディスクにスピルすることで、少ないメモリ量でも動作しますが、これによりクエリパフォーマンスが大幅に低下する可能性があることに注意してください。
 
 ### メモリ対ストレージ比率はどのくらいにすべきか? {#what-should-the-memory-to-storage-ratio-be}
 
@@ -209,7 +209,7 @@ ClickHouseの構成は、お客様のアプリケーション固有の要件に�
   </tr>
 </table>
 
-### Fortune 500通信事業者のロギングユースケース {#fortune-500-telecom-operator-for-a-logging-use-case}
+### Fortune 500通信事業者のログユースケース {#fortune-500-telecom-operator-for-a-logging-use-case}
 
 
 <table>
@@ -221,7 +221,7 @@ ClickHouseの構成は、お客様のアプリケーション固有の要件に�
         <td>4860TB</td>
     </tr>
     <tr>
-        <td><strong>総ストレージ容量（圧縮後）</strong></td>
+        <td><strong>総ストレージ容量(圧縮後)</strong></td>
         <td>608TB</td>
     </tr>
     <tr>
@@ -236,34 +236,34 @@ ClickHouseの構成は、お客様のアプリケーション固有の要件に�
         <td col="2"><strong><em>CPU</em></strong></td>
     </tr>
     <tr>
-        <td><strong>レプリカ数（HAペアを含む）</strong></td>
+        <td><strong>レプリカ数(HAペアを含む)</strong></td>
         <td>38</td>
     </tr>
     <tr>
-        <td><strong>ノードあたりの vCPU 数</strong></td>
+        <td><strong>ノードあたりのvCPU数</strong></td>
         <td>42</td>
     </tr>
     <tr>
-        <td><strong>総 vCPU 数</strong></td>
+        <td><strong>総vCPU数</strong></td>
         <td>1600</td>
     </tr>
     <tr>
         <td col="2"><strong><em>メモリ</em></strong></td>
     </tr>
     <tr>
-        <td><strong>総 RAM 容量</strong></td>
+        <td><strong>総RAM容量</strong></td>
         <td>10TB</td>
     </tr>
     <tr>
-        <td><strong>レプリカあたりの RAM 容量</strong></td>
+        <td><strong>レプリカあたりのRAM容量</strong></td>
         <td>256GB</td>
     </tr>
     <tr>
-        <td><strong>RAM と vCPU の比率</strong></td>
+        <td><strong>RAM対vCPU比</strong></td>
         <td>6 GB:1</td>
     </tr>
     <tr>
-        <td><strong>RAM とディスクの比率</strong></td>
+        <td><strong>RAM対ディスク比</strong></td>
         <td>1:60</td>
     </tr>
 </table>
@@ -272,7 +272,7 @@ ClickHouseの構成は、お客様のアプリケーション固有の要件に�
 
 ## 参考資料 {#further-reading}
 
-以下は、オープンソース版ClickHouseを使用している企業のアーキテクチャに関する公開ブログ記事です:
+以下は、オープンソース版ClickHouseを使用している企業のアーキテクチャに関する公開ブログ記事です：
 
 - [Cloudflare](https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/?utm_source=linkedin&utm_medium=social&utm_campaign=blog)
 - [eBay](https://innovation.ebayinc.com/tech/engineering/ou-online-analytical-processing/)

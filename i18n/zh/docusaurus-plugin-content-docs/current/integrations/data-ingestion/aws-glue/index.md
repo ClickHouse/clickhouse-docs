@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/glue
 description: '集成 ClickHouse 和 Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
-title: '将 Amazon Glue 与 ClickHouse 和 Spark 集成'
+title: '集成 Amazon Glue、ClickHouse 和 Spark'
 doc_type: 'guide'
 ---
 
@@ -20,7 +20,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-[Amazon Glue](https://aws.amazon.com/glue/) 是 Amazon Web Services（AWS）提供的一项全托管、无服务器数据集成服务。它简化了用于分析、机器学习和应用开发的数据发现、准备和转换过程。
+[Amazon Glue](https://aws.amazon.com/glue/) 是由 Amazon Web Services (AWS) 提供的全托管、无服务器数据集成服务。它简化了为分析、机器学习和应用开发而进行的数据发现、准备和转换过程。
 
 
 
@@ -29,17 +29,17 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 要将您的 Glue 代码与 ClickHouse 集成,可以通过以下方式之一在 Glue 中使用我们的官方 Spark 连接器:
 
 - 从 AWS Marketplace 安装 ClickHouse Glue 连接器(推荐)。
-- 手动将 Spark 连接器的 JAR 文件添加到您的 Glue 作业中。
+- 手动将 Spark 连接器的 jar 文件添加到您的 Glue 作业中。
 
 <Tabs>
 <TabItem value="AWS Marketplace" label="AWS Marketplace" default>
 
 1. <h3 id='subscribe-to-the-connector'>订阅连接器</h3>
    要在您的账户中访问该连接器,请从 AWS Marketplace 订阅 ClickHouse AWS Glue
-   连接器。
+   Connector。
 
 2. <h3 id='grant-required-permissions'>授予所需权限</h3>
-   确保您的 Glue 作业的 IAM 角色具有必要的权限,详见最小权限
+   确保您的 Glue 作业的 IAM 角色具有必要的权限,详见最低权限
    [指南](https://docs.aws.amazon.com/glue/latest/dg/getting-started-min-privs-job.html#getting-started-min-privs-connectors)。
 
 3. <h3 id='activate-the-connector'>
@@ -65,15 +65,15 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 
 :::note
-Glue 连接器中使用的 JAR 文件是为 `Spark 3.3`、`Scala 2` 和 `Python 3` 构建的。在配置 Glue 作业时,请确保选择这些版本。
+Glue 连接器中使用的 JAR 文件是为 `Spark 3.3`、`Scala 2` 和 `Python 3` 构建的。配置 Glue 作业时,请确保选择这些版本。
 :::
 
 </TabItem>
 <TabItem value="Manual Installation" label="手动安装">
-要手动添加所需的 JAR 文件,请按照以下步骤操作:
-1. 将以下 JAR 文件上传到 S3 存储桶 - `clickhouse-jdbc-0.6.X-all.jar` 和 `clickhouse-spark-runtime-3.X_2.X-0.8.X.jar`。
+要手动添加所需的 jar 文件,请按照以下步骤操作:
+1. 将以下 jar 文件上传到 S3 存储桶 - `clickhouse-jdbc-0.6.X-all.jar` 和 `clickhouse-spark-runtime-3.X_2.X-0.8.X.jar`。
 2. 确保 Glue 作业可以访问此存储桶。
-3. 在 `Job details` 选项卡下,向下滚动并展开 `Advanced properties` 下拉菜单,然后在 `Dependent JARs path` 中填写 JAR 文件路径:
+3. 在 `Job details` 选项卡下,向下滚动并展开 `Advanced properties` 下拉菜单,然后在 `Dependent JARs path` 中填写 jar 文件路径:
 
 <Image
   img={dependent_jars_path_option}
@@ -114,7 +114,7 @@ object ClickHouseGlueExample {
       .config("spark.sql.catalog.clickhouse.user", "default")
       .config("spark.sql.catalog.clickhouse.password", "<your-password>")
       .config("spark.sql.catalog.clickhouse.database", "default")
-      // 用于 ClickHouse cloud
+      // 适用于 ClickHouse Cloud
       .config("spark.sql.catalog.clickhouse.option.ssl", "true")
       .config("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
       .getOrCreate
@@ -196,7 +196,7 @@ spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
 spark.conf.set("spark.clickhouse.write.format", "json")
 spark.conf.set("spark.clickhouse.read.format", "arrow")
 
-# 用于 ClickHouse Cloud
+# 适用于 ClickHouse Cloud
 
 spark.conf.set("spark.sql.catalog.clickhouse.option.ssl", "true")
 spark.conf.set("spark.sql.catalog.clickhouse.option.ssl_mode", "NONE")
@@ -225,5 +225,5 @@ job.commit()
 </TabItem>
 </Tabs>
 
-如需了解更多详情,请参阅 [Spark 文档](/integrations/apache-spark)。
+有关更多详细信息,请访问我们的 [Spark 文档](/integrations/apache-spark)。
 ```

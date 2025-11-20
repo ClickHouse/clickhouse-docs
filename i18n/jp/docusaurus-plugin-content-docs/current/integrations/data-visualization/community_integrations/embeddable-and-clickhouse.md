@@ -2,7 +2,7 @@
 sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
 keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
-description: 'Embeddable は、高速でインタラクティブな、完全カスタムの分析エクスペリエンスをアプリに直接組み込むための開発者向けツールキットです。'
+description: 'Embeddable は、高速でインタラクティブ、かつ完全にカスタマイズ可能な分析エクスペリエンスを、アプリケーションに直接組み込むための開発者向けツールキットです。'
 title: 'Embeddable を ClickHouse に接続する'
 doc_type: 'guide'
 ---
@@ -15,11 +15,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Embeddable](https://embeddable.com/) では、コード内（自社のコードリポジトリに保存）で [Data Models](https://docs.embeddable.com/data-modeling/introduction) と [Components](https://docs.embeddable.com/development/introduction) を定義し、**SDK** を使ってそれらを強力な Embeddable の **ノーコードビルダー** からチームが利用できるようにします。
+[Embeddable](https://embeddable.com/) では、（自社のコードリポジトリで管理される）コード内で [Data Models](https://docs.embeddable.com/data-modeling/introduction) と [Components](https://docs.embeddable.com/development/introduction) を定義し、**SDK** を使ってそれらを強力な Embeddable の **ノーコードビルダー** 上でチームが利用できるようにします。
 
-その結果として、製品チームが設計し、エンジニアリングチームが構築し、カスタマーサクセスやデータチームが運用する、高速でインタラクティブな顧客向け分析機能を、自社プロダクトの中に直接提供できるようになります。本来あるべき姿のとおりに。
+その結果として、プロダクトに直接組み込まれた、高速でインタラクティブな顧客向けアナリティクスを提供できるようになります。プロダクトチームが設計し、エンジニアリングチームが構築し、カスタマー対応チームとデータチームが運用する――本来あるべき形で。
 
-組み込みの行レベルセキュリティにより、各ユーザーは自分に閲覧が許可されたデータだけを見ることができます。さらに、2 段階の完全に構成可能なキャッシュにより、スケールさせながら高速なリアルタイム分析を提供できます。
+組み込みの行レベルセキュリティにより、各ユーザーは自分に閲覧権限が与えられたデータだけを正確に確認できます。また、2 段階の完全に構成可能なキャッシュによって、高速かつリアルタイムなアナリティクスを大規模に提供できます。
 
 
 
@@ -28,12 +28,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <ConnectionDetails />
 
 
-## 2. ClickHouse接続タイプの作成 {#2-create-a-clickhouse-connection-type}
+## 2. ClickHouse接続タイプを作成する {#2-create-a-clickhouse-connection-type}
 
-Embeddable APIを使用してデータベース接続を追加します。この接続はClickHouseサービスへの接続に使用されます。以下のAPI呼び出しで接続を追加できます:
+Embeddable APIを使用してデータベース接続を追加します。この接続は、ClickHouseサービスへの接続に使用されます。以下のAPI呼び出しで接続を追加できます:
 
 ```javascript
-// セキュリティ上の理由から、クライアント側から*絶対に*呼び出さないでください
+// セキュリティ上の理由から、クライアント側から*決して*呼び出さないでください
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
   headers: {
@@ -63,7 +63,7 @@ Status 201 { errorMessage: null }
 
 `name`は、この接続を識別するための一意の名前です。
 
-- デフォルトでは、データモデルは「default」という名前の接続を探しますが、異なるデータモデルを異なる接続に接続するために、モデルに異なる`data_source`名を指定できます(モデル内でdata_source名を指定するだけです)
+- デフォルトでは、データモデルは「default」という名前の接続を探しますが、異なるデータモデルを異なる接続に接続するために、モデルに異なる`data_source`名を指定することができます(モデル内でdata_source名を指定するだけです)
 
 `type`は、Embeddableが使用するドライバーを指定します
 

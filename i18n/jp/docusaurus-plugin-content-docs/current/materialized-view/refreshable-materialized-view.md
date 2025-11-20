@@ -9,30 +9,30 @@ doc_type: 'guide'
 import refreshableMaterializedViewDiagram from '@site/static/images/materialized-view/refreshable-materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-[リフレッシュ可能マテリアライズドビュー](/sql-reference/statements/create/view#refreshable-materialized-view) は、従来の OLTP データベースにおけるマテリアライズドビューと概念的には似ており、特定のクエリ結果を保存して高速に取得できるようにすることで、リソース負荷の高いクエリを繰り返し実行する必要性を減らします。ClickHouse の [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) と異なり、こちらはクエリを全データセットに対して定期的に実行する必要があり、その結果がクエリ用のターゲットテーブルに保存されます。この結果セットは、理論的には元のデータセットよりも小さくなるため、その後のクエリをより高速に実行できるようになります。
+[リフレッシュ可能なマテリアライズドビュー](/sql-reference/statements/create/view#refreshable-materialized-view) は、指定したクエリの結果を保持して高速に取得できるようにし、リソース集約的なクエリを繰り返し実行する必要性を減らすという点で、従来の OLTP データベースにおけるマテリアライズドビューと概念的に類似しています。ClickHouse の [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) とは異なり、こちらは定期的にクエリをフルデータセットに対して実行し、その結果をクエリ用のターゲットテーブルに保存します。理論上、この結果セットは元のデータセットより小さくなり、その後のクエリをより高速に実行できるようになります。
 
-次の図は、リフレッシュ可能マテリアライズドビューの動作を説明しています。
+次の図は、リフレッシュ可能なマテリアライズドビューの動作を説明しています。
 
-<Image img={refreshableMaterializedViewDiagram} size="lg" alt="リフレッシュ可能マテリアライズドビューの図" />
+<Image img={refreshableMaterializedViewDiagram} size="lg" alt="リフレッシュ可能なマテリアライズドビューの図" />
 
-次の動画も参照してください。
+次の動画も参照できます。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
-## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか？ {#when-should-refreshable-materialized-views-be-used}
+## リフレッシュ可能なマテリアライズドビューはいつ使用すべきか? {#when-should-refreshable-materialized-views-be-used}
 
-ClickHouseのインクリメンタルマテリアライズドビューは非常に強力であり、特に単一テーブルに対する集計を実行する必要がある場合、リフレッシュ可能なマテリアライズドビューで使用されるアプローチよりも通常ははるかに優れたスケーラビリティを発揮します。データが挿入される際に各ブロックに対してのみ集計を計算し、最終テーブルでインクリメンタルな状態をマージすることで、クエリは常にデータのサブセットに対してのみ実行されます。この方法は潜在的にペタバイト規模のデータまでスケールし、通常は推奨される方法です。
+ClickHouseのインクリメンタルマテリアライズドビューは非常に強力であり、特に単一テーブルに対する集計を実行する必要がある場合、リフレッシュ可能なマテリアライズドビューで使用されるアプローチよりも通常ははるかに優れたスケーラビリティを持ちます。データが挿入される際に各ブロックに対してのみ集計を計算し、最終テーブルでインクリメンタルな状態をマージすることで、クエリは常にデータのサブセットに対してのみ実行されます。この方法は潜在的にペタバイト規模のデータまでスケールし、通常は推奨される方法です。
 
-しかし、このインクリメンタルプロセスが不要である、または適用できないユースケースも存在します。一部の問題はインクリメンタルアプローチと互換性がないか、リアルタイム更新を必要とせず、定期的な再構築の方が適切な場合があります。例えば、複雑な結合を使用しているためインクリメンタルアプローチと互換性がない場合、データセット全体に対してビューの完全な再計算を定期的に実行したい場合があります。
+しかし、このインクリメンタルプロセスが不要である、または適用できないユースケースも存在します。一部の問題はインクリメンタルアプローチと互換性がないか、リアルタイム更新を必要とせず、定期的な再構築がより適切な場合があります。例えば、複雑な結合を使用しているためインクリメンタルアプローチと互換性がない場合、完全なデータセットに対してビューの完全な再計算を定期的に実行したい場合があります。
 
-> リフレッシュ可能なマテリアライズドビューは、非正規化などのタスクを実行するバッチプロセスを実行できます。リフレッシュ可能なマテリアライズドビュー間に依存関係を作成することができ、あるビューが別のビューの結果に依存し、それが完了した後にのみ実行されるようにできます。これにより、スケジュールされたワークフローや[dbt](https://www.getdbt.com/)ジョブのようなシンプルなDAGを置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係を設定する方法の詳細については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies)の`Dependencies`セクションを参照してください。
+> リフレッシュ可能なマテリアライズドビューは、非正規化などのタスクを実行するバッチプロセスを実行できます。リフレッシュ可能なマテリアライズドビュー間に依存関係を作成することができ、あるビューが別のビューの結果に依存し、それが完了した後にのみ実行されるようにできます。これにより、スケジュールされたワークフローや[dbt](https://www.getdbt.com/)ジョブのような単純なDAGを置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係を設定する方法の詳細については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies)の`Dependencies`セクションを参照してください。
 
 
 ## リフレッシュ可能なマテリアライズドビューをリフレッシュする方法 {#how-do-you-refresh-a-refreshable-materialized-view}
 
 リフレッシュ可能なマテリアライズドビューは、作成時に定義された間隔で自動的にリフレッシュされます。
-例えば、以下のマテリアライズドビューは1分ごとにリフレッシュされます:
+例えば、以下のマテリアライズドビューは1分ごとにリフレッシュされます。
 
 ```sql
 CREATE MATERIALIZED VIEW table_name_mv
@@ -40,19 +40,19 @@ REFRESH EVERY 1 MINUTE TO table_name AS
 ...
 ```
 
-マテリアライズドビューを強制的にリフレッシュする場合は、`SYSTEM REFRESH VIEW`句を使用します:
+マテリアライズドビューを強制的にリフレッシュする場合は、`SYSTEM REFRESH VIEW`句を使用します。
 
 ```sql
 SYSTEM REFRESH VIEW table_name_mv;
 ```
 
-ビューのキャンセル、停止、開始も可能です。
+ビューのキャンセル、停止、または開始も可能です。
 詳細については、[リフレッシュ可能なマテリアライズドビューの管理](/sql-reference/statements/system#refreshable-materialized-views)のドキュメントを参照してください。
 
 
-## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか? {#when-was-a-refreshable-materialized-view-last-refreshed}
+## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
-リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされた時刻を確認するには、以下のように[`system.view_refreshes`](/operations/system-tables/view_refreshes)システムテーブルをクエリします:
+リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされた時刻を確認するには、以下のように[`system.view_refreshes`](/operations/system-tables/view_refreshes)システムテーブルをクエリします：
 
 ```sql
 SELECT database, view, status,
@@ -196,9 +196,9 @@ FORMAT PrettyCompactMonoBlock
 
 ### Stack Overflow {#stack-overflow}
 
-[データの非正規化ガイド](/data-modeling/denormalization)では、Stack Overflowデータセットを使用したデータ非正規化のさまざまな手法を紹介しています。以下のテーブルにデータを投入します:`votes`、`users`、`badges`、`posts`、`postlinks`。
+[データの非正規化ガイド](/data-modeling/denormalization)では、Stack Overflowデータセットを使用してデータを非正規化するさまざまな手法を紹介しています。以下のテーブルにデータを投入します：`votes`、`users`、`badges`、`posts`、`postlinks`。
 
-そのガイドでは、以下のクエリを使用して`postlinks`データセットを`posts`テーブルに非正規化する方法を示しました:
+そのガイドでは、以下のクエリを使用して`postlinks`データセットを`posts`テーブルに非正規化する方法を示しました：
 
 ```sql
 SELECT
@@ -217,9 +217,9 @@ LEFT JOIN (
 
 次に、このデータを`posts_with_links`テーブルに一度だけ挿入する方法を示しましたが、本番システムでは、この操作を定期的に実行する必要があります。
 
-`posts`テーブルと`postlinks`テーブルの両方が更新される可能性があります。そのため、インクリメンタルマテリアライズドビューを使用してこの結合を実装するのではなく、このクエリを一定の間隔(例えば1時間ごと)で実行するようにスケジュールし、結果を`post_with_links`テーブルに格納するだけで十分な場合があります。
+`posts`テーブルと`postlinks`テーブルの両方が更新される可能性があります。したがって、インクリメンタルマテリアライズドビューを使用してこの結合を実装しようとするのではなく、このクエリを一定の間隔（例えば1時間ごと）で実行するようにスケジュールし、結果を`post_with_links`テーブルに格納するだけで十分な場合があります。
 
-ここでリフレッシュ可能なマテリアライズドビューが役立ちます。以下のクエリで作成できます:
+ここでリフレッシュ可能なマテリアライズドビューが役立ちます。以下のクエリで作成できます：
 
 ```sql
 CREATE MATERIALIZED VIEW posts_with_links_mv
@@ -238,17 +238,17 @@ LEFT JOIN (
 ) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
 ```
 
-このビューは即座に実行され、その後は設定に従って1時間ごとに実行され、ソーステーブルの更新が反映されます。重要な点として、クエリが再実行されると、結果セットがアトミックかつ透過的に更新されます。
+このビューは即座に実行され、その後は設定に従って1時間ごとに実行され、ソーステーブルの更新が反映されます。重要なのは、クエリが再実行されると、結果セットがアトミックかつ透過的に更新されることです。
 
 :::note
-ここでの構文は、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view)句を含めることを除いて、インクリメンタルマテリアライズドビューと同じです:
+ここでの構文は、[`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view)句を含めることを除いて、インクリメンタルマテリアライズドビューと同じです：
 :::
 
 ### IMDb {#imdb}
 
-[dbtとClickHouseの統合ガイド](/integrations/dbt)では、以下のテーブルを持つIMDbデータセットを投入しました:`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles`。
+[dbtとClickHouseの統合ガイド](/integrations/dbt)では、以下のテーブルを持つIMDbデータセットを投入しました：`actors`、`directors`、`genres`、`movie_directors`、`movies`、`roles`。
 
-次に、各俳優の要約を計算し、映画出演数の多い順に並べるために、以下のクエリを使用できます。
+次に、各俳優の要約を計算し、映画出演回数の多い順に並べるために、以下のクエリを使用できます。
 
 ```sql
 SELECT
@@ -284,14 +284,14 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi  │        544 │                  0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴────────────────────┴───────────────┴────────────────┴─────────────────────┘
 
-5行を取得しました。経過時間: 0.393秒。処理済み: 545万行、86.82 MB (1387万行/秒、221.01 MB/秒)
-ピークメモリ使用量: 1.38 GiB
+5行が返されました。経過時間: 0.393秒。処理された行数: 545万行、86.82 MB (1387万行/秒、221.01 MB/秒)
+ピークメモリ使用量: 1.38 GiB。
 ```
 
-結果が返ってくるまでそれほど時間はかかりませんが、これをさらに高速にし、計算コストも抑えたいとしましょう。
-また、このデータセットは常に更新されており、新作映画が次々と公開されるのに伴い、新しい俳優や監督も登場しているとします。
+結果が返ってくるまでそれほど時間はかかりませんが、これをさらに高速にし、計算コストも下げたいとします。
+また、このデータセットは常に更新されているとします。映画は次々と公開され、新しい俳優や監督も登場しています。
 
-ここでリフレッシュ可能なマテリアライズドビューの出番です。まずは結果を格納するためのターゲットテーブルを作成しましょう。
+そこで、リフレッシュ可能なマテリアライズドビューの出番です。まずは結果を格納するターゲットテーブルを作成しましょう。
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -342,7 +342,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-このビューは直ちに実行され、その後は設定どおり毎分実行されるため、ソーステーブルへの更新が反映されるようになります。これにより、先ほどの俳優の集計を取得するクエリは、構文的により単純になり、かつ大幅に高速になります。
+ビューは直ちに実行され、その後は設定どおり毎分実行されるため、ソーステーブルへの更新内容が反映されます。先ほどの俳優の集計を取得するクエリは、構文的により簡潔になり、しかも大幅に高速になります。
 
 ```sql
 SELECT *
@@ -364,7 +364,7 @@ LIMIT 5
 5行が返されました。経過時間: 0.007秒
 ```
 
-たくさんの映画に出演している新しい俳優「Clicky McClickHouse」をソースデータに追加するとしましょう。
+たとえば、ソースデータに新しい俳優「Clicky McClickHouse」を追加し、この俳優が多くの映画に出演していたとします。
 
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
@@ -377,7 +377,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-60秒もしないうちに、Clickyの大活躍ぶりを反映してターゲットテーブルが更新されます。
+60秒も経たないうちに、ターゲットテーブルはClickyの驚くほど多作な演技ぶりを反映するように更新されます。
 
 ```sql
 SELECT *

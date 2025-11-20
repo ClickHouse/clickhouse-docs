@@ -4,7 +4,7 @@ title: "Helm"
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: "Helmを使用したClickStackのデプロイ - ClickHouse Observability Stack"
+description: "HelmによるClickStackのデプロイ - ClickHouse Observability Stack"
 doc_type: "guide"
 keywords:
   [
@@ -86,7 +86,7 @@ kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2"
 
 ### ポートフォワーディング {#forward-ports}
 
-ポートフォワーディングにより、HyperDXへのアクセスとセットアップが可能になります。本番環境にデプロイする場合は、適切なネットワークアクセス、TLS終端、スケーラビリティを確保するため、Ingressまたはロードバランサーでサービスを公開してください。ポートフォワーディングは、ローカル開発や単発の管理タスクに適しており、長期運用や高可用性環境には適していません。
+ポートフォワーディングにより、HyperDXへのアクセスとセットアップが可能になります。本番環境にデプロイする場合は、適切なネットワークアクセス、TLS終端、およびスケーラビリティを確保するために、Ingressまたはロードバランサーを介してサービスを公開してください。ポートフォワーディングは、ローカル開発や単発の管理タスクに適しており、長期運用や高可用性環境には適していません。
 
 ```shell
 kubectl port-forward \
@@ -98,14 +98,14 @@ kubectl port-forward \
 
 [http://localhost:8080](http://localhost:8080)にアクセスして、HyperDX UIを開きます。
 
-要件を満たすユーザー名とパスワードを入力してユーザーを作成します。
+要件を満たすユーザー名とパスワードを指定して、ユーザーを作成します。
 
 <Image img={hyperdx_login} alt='HyperDX UI' size='lg' />
 
-`Create`をクリックすると、HelmチャートでデプロイされたClickHouseインスタンス用のデータソースが作成されます。
+`Create`をクリックすると、HelmチャートでデプロイされたClickHouseインスタンスのデータソースが作成されます。
 
-:::note デフォルト接続の上書き
-統合されたClickHouseインスタンスへのデフォルト接続を上書きできます。詳細については、["ClickHouse Cloudの使用"](#using-clickhouse-cloud)を参照してください。
+:::note デフォルト接続のオーバーライド
+統合されたClickHouseインスタンスへのデフォルト接続をオーバーライドできます。詳細については、["ClickHouse Cloudの使用"](#using-clickhouse-cloud)を参照してください。
 :::
 
 代替のClickHouseインスタンスを使用する例については、["ClickHouse Cloud接続の作成"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
@@ -156,9 +156,9 @@ APIキーやデータベース認証情報などの機密データを扱うに�
 
 #### 事前設定されたシークレットの使用 {#using-pre-configured-secrets}
 
-Helmチャートには、[`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml)に配置されたデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレット管理の基本構造を提供します。
+Helmチャートには、[`charts/hdx-oss-v2/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/hdx-oss-v2/templates/secrets.yaml)にあるデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレットを管理するための基本構造を提供します。
 
-シークレットを手動で適用する必要がある場合は、提供された`secrets.yaml`テンプレートを変更して適用します：
+シークレットを手動で適用する必要がある場合は、提供されている`secrets.yaml`テンプレートを変更して適用します：
 
 ```yaml
 apiVersion: v1
@@ -180,7 +180,7 @@ kubectl apply -f secrets.yaml
 
 #### カスタムシークレットの作成 {#creating-a-custom-secret}
 
-必要に応じて、Kubernetesシークレットを手動で作成することもできます：
+必要に応じて、カスタムKubernetesシークレットを手動で作成できます：
 
 ```shell
 kubectl create secret generic hyperdx-secret \
@@ -190,7 +190,7 @@ kubectl create secret generic hyperdx-secret \
 
 #### シークレットの参照 {#referencing-a-secret}
 
-`values.yaml`でシークレットを参照するには：
+`values.yaml`でシークレットを参照するには:
 
 ```yaml
 hyperdx:
@@ -217,13 +217,13 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 
-# デフォルト接続設定を上書きする方法
+# デフォルトの接続先を上書きする方法
 
 helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD}
 
 ````
 
-または、`values.yaml`ファイルを使用します:
+または、`values.yaml`ファイルを使用します：
 
 ```yaml
 clickhouse:
@@ -245,8 +245,8 @@ hyperdx:
         "name": "外部ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
-        "username": "あなたのユーザー名",
-        "password": "あなたのパスワード"
+        "username": "your-username",
+        "password": "your-password"
       }
     ]
 ````
@@ -283,13 +283,13 @@ helm install myrelease hyperdx-helm --set clickhouse.enabled=false --set clickho
 
 ## チャートのアップグレード {#upgrading-the-chart}
 
-新しいバージョンにアップグレードする場合:
+新しいバージョンにアップグレードするには：
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 -f values.yaml
 ```
 
-利用可能なチャートバージョンを確認する場合:
+利用可能なチャートバージョンを確認するには：
 
 ```shell
 helm search repo hyperdx
@@ -298,7 +298,7 @@ helm search repo hyperdx
 
 ## HyperDXのアンインストール {#uninstalling-hyperdx}
 
-デプロイメントを削除するには:
+デプロイメントを削除するには、以下を実行します:
 
 ```shell
 helm uninstall my-hyperdx
@@ -329,7 +329,7 @@ kubectl get pods -l app.kubernetes.io/name=hdx-oss-v2
 
 <JSONSupport />
 
-ユーザーはこれらの環境変数をパラメータまたは `values.yaml` のいずれかで設定できます。例:
+ユーザーはこれらの環境変数をパラメータまたは`values.yaml`のいずれかで設定できます。例:
 
 _values.yaml_
 
@@ -347,7 +347,7 @@ otel:
       value: "--feature-gates=clickhouse.json"
 ```
 
-または `--set` 経由で:
+または`--set`を使用:
 
 ```shell
 helm install myrelease hyperdx-helm --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \

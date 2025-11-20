@@ -1,21 +1,21 @@
 ---
-description: '機械学習とGenAIのユースケースガイド用ランディングページ'
+description: '機械学習と GenAI のユースケースガイド用ランディングページ'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/AI/ask-ai
-title: '機械学習とGenAI'
+title: '機械学習と GenAI'
 keywords: ['machine learning', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
 
-# 機械学習と GenAI
+# 機械学習とGenAI
 
-ClickHouse は、機械学習ワークロードを支えるリアルタイムデータベースとして最適です。
-ClickHouse を使えば、分析データに対して GenAI を活用するのがこれまでになく簡単になります。
-このセクションでは、ClickHouse が機械学習および GenAI にどのように利用されるかを説明したガイドをいくつか紹介します。
+ClickHouseは、機械学習ワークロードを支えるリアルタイムデータベースとして最適です。
+ClickHouseを使用すれば、分析データに対してGenAIを活用することがこれまで以上に簡単になります。
+このセクションでは、ClickHouseを機械学習とGenAIに活用する方法に関するガイドをいくつか紹介します。
 
-| Section                                                              | Description                                                                                                                                      |
+| セクション                                                              | 説明                                                                                                                                      |
 |----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| [AI chat](/use-cases/AI_ML/AIChat)                                   | このガイドでは、ClickHouse Cloud Console で AI Chat 機能を有効化して利用する方法を説明します。                                                   |
-| [MCP](/use-cases/AI/MCP)                                             | Model Context Protocol (MCP) を ClickHouse と組み合わせて利用するためのセットアップ手順をまとめたガイド集です。                                  |
-| [AI-powered SQL generation](/use-cases/AI/ai-powered-sql-generation) | この機能により、ユーザーはデータ要件を自然文で記述でき、システムがそれを対応する SQL 文へと変換します。                                          |
+| [AIチャット](/use-cases/AI_ML/AIChat)                                   | このガイドでは、ClickHouse Cloud ConsoleでAIチャット機能を有効化して使用する方法を説明します。                                                   |
+| [MCP](/use-cases/AI/MCP)                                             | ClickHouseでModel Context Protocol (MCP)を使用するためのセットアップガイド集                                                       |
+| [AI駆動型SQL生成](/use-cases/AI/ai-powered-sql-generation) | この機能により、ユーザーはデータ要件を平文で記述でき、システムがそれを対応するSQLステートメントに変換します。 |

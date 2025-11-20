@@ -9,13 +9,13 @@ keywords: ['access management', 'security', 'user management', 'permissions', 'a
 
 # Управление доступом в Cloud
 
-В этом разделе представлены подробные руководства по управлению доступом в ClickHouse Cloud.
+В этом разделе содержатся подробные руководства по управлению доступом в ClickHouse Cloud.
 
-| Страница                                                   | Описание                                           |
+| Страница                                               | Описание                                              |
 |--------------------------------------------------------|-------------------------------------------------------|
-| [Manage my account](/cloud/security/manage-my-account) | Описывает, как управлять своей учетной записью, включая пароли, MFA и восстановление доступа |
-| [Manage cloud users](/cloud/security/manage-cloud-users) | Руководство для администраторов по управлению доступом пользователей в консоли ClickHouse Cloud |
-| [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Руководство для администраторов по управлению пользователями SQL-консоли |
-| [Manage database users](/cloud/security/manage-database-users) | Руководство для администраторов по управлению пользователями базы данных |
-| [SAML SSO setup](/cloud/security/saml-setup) | Руководство для администраторов по настройке и устранению неполадок интеграций SAML |
-| [Common access management queries](/cloud/security/common-access-management-queries) | Подробные примеры настройки и проверки прав доступа к базе данных |
+| [Управление моей учетной записью](/cloud/security/manage-my-account) | Описывает, как управлять своей учетной записью пользователя, включая пароли, MFA и восстановление доступа |
+| [Управление пользователями Cloud](/cloud/security/manage-cloud-users) | Руководство администратора по управлению доступом пользователей в консоли ClickHouse Cloud |
+| [Управление назначением ролей в SQL Console](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Руководство администратора по управлению пользователями SQL Console |
+| [Управление пользователями базы данных](/cloud/security/manage-database-users) | Руководство администратора по управлению пользователями базы данных |
+| [Настройка SAML SSO](/cloud/security/saml-setup) | Руководство администратора по настройке и устранению неполадок интеграций SAML |
+| [Типовые запросы для управления доступом](/cloud/security/common-access-management-queries) | Подробные примеры настройки и проверки прав доступа к базе данных |

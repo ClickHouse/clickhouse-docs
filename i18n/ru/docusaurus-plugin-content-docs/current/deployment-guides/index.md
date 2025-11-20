@@ -11,8 +11,8 @@ doc_type: 'landing-page'
 В этом разделе рассматриваются следующие темы:
 
 | Тема                                                            |
-|-----------------------------------------------------------------|
-| [Введение](/architecture/introduction)                          |
-| [Масштабирование вширь](/architecture/horizontal-scaling) |
+|------------------------------------------------------------------|
+| [Введение](/architecture/introduction)                    |
+| [Масштабирование по горизонтали](/architecture/horizontal-scaling)               |
 | [Репликация для отказоустойчивости](/architecture/replication)  |
-| [Развертывание кластера](/architecture/cluster-deployment)      |
+| [Развертывание кластера](/architecture/cluster-deployment)        |

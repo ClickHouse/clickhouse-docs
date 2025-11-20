@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxSimpleState'
 title: 'maxSimpleState'
-description: 'Пример использования комбинатора агрегатной функции maxSimpleState'
+description: 'Пример использования комбинатора maxSimpleState'
 keywords: ['max', 'state', 'simple', 'combinator', 'examples', 'maxSimpleState']
 sidebar_label: 'maxSimpleState'
 doc_type: 'reference'

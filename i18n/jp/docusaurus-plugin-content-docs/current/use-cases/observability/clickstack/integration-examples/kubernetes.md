@@ -2,41 +2,41 @@
 slug: /use-cases/observability/clickstack/integrations/kubernetes
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 向け Kubernetes 連携 - ClickHouse Observability Stack'
+description: 'ClickStack 向け Kubernetes 連携 - ClickHouse Observability スタック'
 title: 'Kubernetes'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
-ClickStack は OpenTelemetry (OTel) コレクターを使用して、Kubernetes クラスターからログ、メトリクス、および Kubernetes イベントを収集し、それらを ClickStack に転送します。ClickStack はネイティブな OTel ログ形式をサポートしており、追加のベンダー固有設定は不要です。
+ClickStack は OpenTelemetry (OTel) コレクターを使用して、Kubernetes クラスターからログ、メトリクス、および Kubernetes イベントを収集し、それらを ClickStack に転送します。OTel のネイティブなログ形式をサポートしており、ベンダー固有の追加設定は不要です。
 
-このガイドでは次の項目を扱います:
+このガイドでは、次のデータを取り込みます:
 
-- **Logs**
-- **Infra Metrics**
+- **ログ**
+- **インフラメトリクス**
 
 :::note
-アプリケーションレベルのメトリクスや APM / トレースを送信するには、対応する言語インテグレーションをアプリケーションにも追加する必要があります。
+アプリケーションレベルのメトリクスや APM/トレースを送信するには、対応する言語向けインテグレーションをアプリケーションに追加する必要があります。
 :::
 
-以下のガイドでは、取り込み用 API キーで保護された [ClickStack OTel コレクターをゲートウェイとしてデプロイ済みである](/use-cases/observability/clickstack/ingesting-data/otel-collector) ことを前提としています。
+このガイドでは、インジェスト用 API キーで保護された [ClickStack OTel コレクターをゲートウェイとしてデプロイしている](/use-cases/observability/clickstack/ingesting-data/otel-collector)ことを前提とします。
 
 
 
-## OTel Helmチャート設定ファイルの作成 {#creating-the-otel-helm-chart-config-files}
+## OTel Helm チャート設定ファイルの作成 {#creating-the-otel-helm-chart-config-files}
 
-各ノードとクラスタ自体の両方からログとメトリクスを収集するには、2つの独立したOpenTelemetryコレクターをデプロイする必要があります。1つはDaemonSetとしてデプロイされ、各ノードからログとメトリクスを収集します。もう1つはDeploymentとしてデプロイされ、クラスタ自体からログとメトリクスを収集します。
+各ノードとクラスタ自体の両方からログとメトリクスを収集するには、2つの独立した OpenTelemetry コレクターをデプロイする必要があります。1つは DaemonSet としてデプロイされ、各ノードからログとメトリクスを収集します。もう1つはデプロイメントとしてデプロイされ、クラスタ自体からログとメトリクスを収集します。
 
-### APIキーシークレットの作成 {#create-api-key-secret}
+### API キーシークレットの作成 {#create-api-key-secret}
 
-HyperDXの[取り込みAPIキー](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)を使用して新しいKubernetesシークレットを作成します。これは、以下でインストールされるコンポーネントがClickStack OTelコレクターに安全にデータを取り込むために使用されます:
+HyperDX の [ingestion API Key](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) を使用して新しい Kubernetes シークレットを作成します。これは、以下でインストールされるコンポーネントが ClickStack OTel コレクターに安全にデータを取り込むために使用されます:
 
 ```shell
 kubectl create secret generic hyperdx-secret \
 --from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
 ```
 
-さらに、ClickStack OTelコレクターの場所を指定する設定マップを作成します:
+さらに、ClickStack OTel コレクターの場所を指定する ConfigMap を作成します:
 
 
 ```shell
@@ -46,7 +46,7 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 
 ### DaemonSet設定の作成 {#creating-the-daemonset-configuration}
 
-DaemonSetはクラスター内の各ノードからログとメトリクスを収集しますが、Kubernetesイベントやクラスター全体のメトリクスは収集しません。
+DaemonSetはクラスタ内の各ノードからログとメトリクスを収集しますが、Kubernetesイベントやクラスタ全体のメトリクスは収集しません。
 
 DaemonSetマニフェストをダウンロードします:
 
@@ -164,7 +164,7 @@ exporters: - otlphttp
 
 ### デプロイメント設定の作成 {#creating-the-deployment-configuration}
 
-Kubernetes イベントとクラスタ全体のメトリクスを収集するには、別の OpenTelemetry コレクターをデプロイメントとしてデプロイする必要があります。
+Kubernetes イベントとクラスタ全体のメトリクスを収集するには、デプロイメントとして別の OpenTelemetry コレクターをデプロイする必要があります。
 
 デプロイメントマニフェストをダウンロードします:
 
@@ -186,30 +186,30 @@ image:
 ```
 
 
-# これらのコレクターは1つのみ必要です - 複数あるとデータが重複します
+# これらのコレクターは1つのみ必要です - 複数存在すると重複データが生成されます
 
 replicaCount: 1
 
 presets:
 kubernetesAttributes:
-enabled: true # 有効にすると、プロセッサは関連するPodのすべてのラベルを抽出し、リソース属性として追加します。# ラベルの正確な名前がキーになります。
-extractAllPodLabels: true # 有効にすると、プロセッサは関連するPodのすべてのアノテーションを抽出し、リソース属性として追加します。# アノテーションの正確な名前がキーになります。
+enabled: true # 有効にすると、プロセッサは関連するポッドのすべてのラベルを抽出し、リソース属性として追加します。ラベルの正確な名前がキーになります。
+extractAllPodLabels: true # 有効にすると、プロセッサは関連するポッドのすべてのアノテーションを抽出し、リソース属性として追加します。アノテーションの正確な名前がキーになります。
 extractAllPodAnnotations: true
 
-# Kubernetesイベントを収集するようコレクターを設定します。
+# Kubernetesイベントを収集するようにコレクターを設定します。
 
-# k8sobjectレシーバーをログパイプラインに追加し、デフォルトでKubernetesイベントを収集します。
+# k8sobject receiverをログパイプラインに追加し、デフォルトでKubernetesイベントを収集します。
 
-# 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+# 詳細情報: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
 
 kubernetesEvents:
 enabled: true
 
-# クラスターレベルのメトリクスを収集するようKubernetes Cluster Receiverを設定します。
+# クラスターレベルのメトリクスを収集するようにKubernetes Cluster Receiverを設定します。
 
-# k8s_clusterレシーバーをメトリクスパイプラインに追加し、必要なルールをClusterRoleに追加します。
+# k8s_cluster receiverをメトリクスパイプラインに追加し、必要なルールをClusterRoleに追加します。
 
-# 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
+# 詳細情報: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
 
 clusterMetrics:
 enabled: true
@@ -251,7 +251,7 @@ exporters: - otlphttp
 
 ## OpenTelemetryコレクターのデプロイ {#deploying-the-otel-collector}
 
-[OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector)を使用して、OpenTelemetryコレクターをKubernetesクラスターにデプロイできます。
+OpenTelemetryコレクターは、[OpenTelemetry Helm Chart](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector)を使用してKubernetesクラスターにデプロイできるようになりました。
 
 OpenTelemetry Helmリポジトリを追加します:
 
@@ -266,12 +266,13 @@ helm install my-opentelemetry-collector-deployment open-telemetry/opentelemetry-
 helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
 ```
 
-これで、Kubernetesクラスターからのメトリクス、ログ、KubernetesイベントがHyperDX内に表示されます。
+これで、Kubernetesクラスターからのメトリクス、ログ、Kubernetesイベントが
+HyperDX内に表示されるようになります。
 
 
 ## リソースタグのPodへの転送（推奨） {#forwarding-resouce-tags-to-pods}
 
-アプリケーションレベルのログ、メトリクス、トレースをKubernetesメタデータ（例：Pod名、Namespace等）と関連付けるには、`OTEL_RESOURCE_ATTRIBUTES`環境変数を使用してKubernetesメタデータをアプリケーションに転送します。
+アプリケーションレベルのログ、メトリクス、トレースをKubernetesメタデータ（例：Pod名、Namespaceなど）と関連付けるには、`OTEL_RESOURCE_ATTRIBUTES`環境変数を使用してKubernetesメタデータをアプリケーションに転送します。
 
 以下は、環境変数を使用してKubernetesメタデータをアプリケーションに転送するデプロイメントの例です：
 

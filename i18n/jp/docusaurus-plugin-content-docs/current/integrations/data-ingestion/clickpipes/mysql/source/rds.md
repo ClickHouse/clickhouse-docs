@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon RDS MySQL'
-description: 'ClickPipes のソースとして Amazon RDS MySQL を設定するためのステップバイステップガイド'
+description: 'ClickPipes のソースとして Amazon RDS MySQL をセットアップするための手順ガイド'
 slug: /integrations/clickpipes/mysql/source/rds
-title: 'RDS MySQL ソース設定ガイド'
+title: 'RDS MySQL ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 # RDS MySQL ソースセットアップガイド
 
-このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon RDS MySQL を設定し、ClickHouse Cloud にデータをレプリケートする方法を説明します。MySQL CDC に関するよくある質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
+このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して Amazon RDS MySQL を設定し、ClickHouse Cloud にデータをレプリケートする方法を説明します。MySQL CDC に関するよくある質問については、[MySQL FAQs ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 
 
@@ -32,7 +32,7 @@ import Image from '@theme/IdealImage';
 
 ### 1. 自動バックアップによるバイナリログの有効化 {#enable-binlog-logging}
 
-自動バックアップ機能により、MySQLのバイナリログの有効/無効が決定されます。自動バックアップは、RDSコンソールで**変更** > **追加設定** > **バックアップ**に移動し、**自動バックアップを有効にする**チェックボックスを選択する(まだ選択されていない場合)ことで、インスタンスに対して設定できます。
+自動バックアップ機能により、MySQLのバイナリログの有効/無効が決定されます。自動バックアップは、RDSコンソールで**Modify** > **Additional configuration** > **Backup**に移動し、**Enable automated backups**チェックボックスを選択する(まだ選択されていない場合)ことで、インスタンスに対して設定できます。
 
 <Image
   img={rds_backups}
@@ -41,7 +41,7 @@ import Image from '@theme/IdealImage';
   border
 />
 
-レプリケーションのユースケースに応じて、**バックアップ保持期間**を適切に長い値に設定することを推奨します。
+レプリケーションのユースケースに応じて、**Backup retention period**を十分に長い値に設定することを推奨します。
 
 ### 2. バイナリログ保持期間の延長 {#binlog-retention-interval}
 
@@ -49,7 +49,7 @@ import Image from '@theme/IdealImage';
 ClickPipesがレプリケーションを再開しようとした際に、設定されたバイナリログ保持期間により必要なバイナリログファイルが削除されている場合、ClickPipeはエラー状態となり、再同期が必要になります。
 :::
 
-デフォルトでは、Amazon RDSはバイナリログを可能な限り早く削除します(いわゆる_遅延削除_)。障害シナリオにおけるレプリケーション用のバイナリログファイルの可用性を確保するため、バイナリログ保持期間を少なくとも**72時間**に延長することを推奨します。バイナリログ保持期間([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours))を設定するには、[`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration)プロシージャを使用します:
+デフォルトでは、Amazon RDSはバイナリログを可能な限り早く削除します(すなわち、_遅延削除_)。障害シナリオにおけるレプリケーション用のバイナリログファイルの可用性を確保するため、バイナリログ保持期間を少なくとも**72時間**に延長することを推奨します。バイナリログ保持期間([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours))を設定するには、[`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration)プロシージャを使用します:
 
 [//]: # "NOTE Most CDC providers recommend the maximum retention period for RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a minimum of 3 days/72 hours."
 
@@ -57,7 +57,7 @@ ClickPipesがレプリケーションを再開しようとした際に、設定�
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-この設定が行われていない場合、または短い期間に設定されている場合、バイナリログに欠損が生じ、ClickPipesのレプリケーション再開機能が損なわれる可能性があります。
+この設定が行われていない場合、または短い期間に設定されている場合、バイナリログに欠落が生じ、ClickPipesのレプリケーション再開機能が損なわれる可能性があります。
 
 
 ## binlog設定の構成 {#binlog-settings}
@@ -84,23 +84,23 @@ MySQLクラスターを使用している場合、以下のパラメータはDB�
 
 1. `binlog_format`を`ROW`に設定
 
-<Image img={binlog_format} alt='BinlogフォーマットをROWに設定' size='lg' border />
+<Image img={binlog_format} alt='binlogフォーマットをROWに設定' size='lg' border />
 
 2. `binlog_row_metadata`を`FULL`に設定
 
 <Image
   img={binlog_row_metadata}
-  alt='Binlog行メタデータをFULLに設定'
+  alt='binlog行メタデータをFULLに設定'
   size='lg'
   border
 />
 
 3. `binlog_row_image`を`FULL`に設定
 
-<Image img={binlog_row_image} alt='Binlog行イメージをFULLに設定' size='lg' border />
+<Image img={binlog_row_image} alt='binlog行イメージをFULLに設定' size='lg' border />
 
 <br />
-次に、右上の**Save Changes**をクリックします。変更を有効にするためにインスタンスの再起動が必要な場合があります。再起動が必要かどうかは、RDSインスタンスの**Configuration**タブでパラメータグループのリンクの横に`Pending reboot`と表示されることで確認できます。
+次に、右上の**Save Changes**をクリックします。変更を有効にするには、インスタンスの再起動が必要な場合があります。再起動が必要かどうかは、RDSインスタンスの**Configuration**タブでパラメータグループのリンクの横に`Pending reboot`と表示されているかで確認できます。
 
 
 ## GTIDモードの有効化 {#gtid-mode}
@@ -130,7 +130,7 @@ GTIDベースのレプリケーションは、Amazon RDS for MySQLのバージ�
 
 ## データベースユーザーの設定 {#configure-database-user}
 
-管理者ユーザーとしてRDS MySQLインスタンスに接続し、以下のコマンドを実行します:
+管理者ユーザーとしてRDS MySQLインスタンスに接続し、以下のコマンドを実行してください:
 
 1. ClickPipes専用のユーザーを作成します:
 
@@ -138,7 +138,7 @@ GTIDベースのレプリケーションは、Amazon RDS for MySQLのバージ�
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
    ```
 
-2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケーション対象の各データベースとホストに対してこれらのコマンドを繰り返します:
+2. スキーマ権限を付与します。以下の例は`mysql`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返してください:
 
    ```sql
    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
@@ -156,7 +156,7 @@ GTIDベースのレプリケーションは、Amazon RDS for MySQLのバージ�
 
 ### IPベースのアクセス制御 {#ip-based-access-control}
 
-Aurora MySQLインスタンスへのトラフィックを制限するには、RDSセキュリティグループの**インバウンドルール**に[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)を追加します。
+Aurora MySQLインスタンスへのトラフィックを制限するには、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)をRDSセキュリティグループの**インバウンドルール**に追加します。
 
 <Image
   img={security_group_in_rds_mysql}
@@ -174,7 +174,7 @@ Aurora MySQLインスタンスへのトラフィックを制限するには、RD
 
 ### AWS PrivateLinkによるプライベートアクセス {#private-access-via-aws-privatelink}
 
-プライベートネットワーク経由でRDSインスタンスに接続するには、AWS PrivateLinkを使用します。接続を設定するには、[ClickPipes用AWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
+プライベートネットワーク経由でRDSインスタンスに接続するには、AWS PrivateLinkを使用します。接続を設定するには、[ClickPipes用のAWS PrivateLink設定ガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください。
 
 
 ## 次のステップ {#next-steps}

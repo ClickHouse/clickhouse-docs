@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/search
-title: '使用 ClickStack 搜索'
+title: '使用 ClickStack 实现搜索'
 sidebar_label: '搜索'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 搜索'
+description: '使用 ClickStack 实现搜索'
 doc_type: 'guide'
 keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 ---
@@ -14,9 +14,9 @@ import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.p
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStack 允许你对事件（日志和追踪）进行全文搜索。你只需输入与事件匹配的关键词即可开始搜索。例如，如果日志中包含 “Error”，只需在搜索栏中输入 “Error” 即可将其找到。
+ClickStack 允许你对事件（日志和追踪）进行全文搜索。你只需输入与事件匹配的关键字即可开始搜索。比如，如果你的日志中包含 &quot;Error&quot;，只需在搜索栏中输入 &quot;Error&quot; 即可找到对应记录。
 
-同样的搜索语法也适用于在 Dashboards 和 Charts 中筛选事件。
+同样的搜索语法也可用于在 Dashboards 和 Charts 中筛选事件。
 
 
 ## 搜索功能 {#search-features}
@@ -42,12 +42,12 @@ ClickStack 允许你对事件（日志和追踪）进行全文搜索。你只需
 
 - 时间输入支持自然语言输入(例如 `1 hour ago`、`yesterday`、`last week`)
 - 指定单个时间点将从该时间点搜索至当前时间
-- 搜索时,时间范围会自动转换为解析后的时间范围,便于调试时间查询
+- 搜索时,时间范围始终会转换为解析后的时间范围,便于调试时间查询
 - 还可以高亮直方图柱状图以缩放到特定时间范围
 
 ### SQL 搜索语法 {#sql-syntax}
 
-可以选择将搜索输入切换为 SQL 模式。该模式接受任何有效的 SQL WHERE 子句进行搜索。这对于无法用 Lucene 语法表达的复杂查询非常有用。
+可以选择将搜索输入切换为 SQL 模式。该模式接受任何有效的 SQL WHERE 子句进行搜索。这对于无法用 Lucene 语法表达的复杂查询很有用。
 
 ### Select 语句 {#select-statement}
 

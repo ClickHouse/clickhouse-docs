@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 参见 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
 
-在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册需要信用卡、电子邮箱和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取一个新的访问密钥。
+在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册时需要提供信用卡、电子邮箱和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取新的访问密钥。
 
 在控制台中运行以下命令：
 
@@ -101,7 +101,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-用于获取数据示例的查询：
+用于获取数据样本的查询语句：
 
 
 ```sql

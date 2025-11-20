@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
 sidebar_label: 'AI チャット'
-title: 'ClickHouse Cloud での AI チャットの利用'
+title: 'ClickHouse Cloud で AI チャットを利用する'
 pagination_prev: null
 pagination_next: null
 description: 'ClickHouse Cloud コンソールで AI チャット機能を有効化して利用するためのガイド'
@@ -22,23 +22,23 @@ import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_res
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
 
-# ClickHouse CloudでAIチャットを使用する
+# ClickHouse CloudでのAIチャットの使用
 
-> このガイドでは、ClickHouse Cloud ConsoleでAIチャット機能を有効化し、使用する方法について説明します。
+> このガイドでは、ClickHouse Cloud ConsoleのAIチャット機能を有効化して使用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
 
 ## 前提条件 {#prerequisites}
 
-1. AI機能が有効化されたClickHouse Cloud組織へのアクセス権が必要です（利用できない場合は、組織管理者またはサポートにお問い合わせください）。
+1. AI機能が有効化されたClickHouse Cloud組織へのアクセス権が必要です（利用できない場合は、組織の管理者またはサポートにお問い合わせください）。
 
 
 ## AI Chatパネルを開く {#open-panel}
 
 1. ClickHouse Cloudサービスに移動します。
 2. 左サイドバーで「Ask AI」というラベルの付いたスパークルアイコンをクリックします。
-3. (ショートカット) <kbd>⌘</kbd> + <kbd>'</kbd> (macOS) または <kbd>Ctrl</kbd> + <kbd>'</kbd> (Linux/Windows) を押すと開閉の切り替えができます。
+3. （ショートカット）<kbd>⌘</kbd> + <kbd>'</kbd>（macOS）または<kbd>Ctrl</kbd> + <kbd>'</kbd>（Linux/Windows）を押すと開閉を切り替えられます。
 
 <Image img={img_open} alt='AI Chatフライアウトを開く' size='md' />
 
@@ -58,7 +58,7 @@ AI Chatは現在、以下をサポートしています：
 - **Agent**: スキーマとメタデータに対するマルチステップ推論（サービスが起動している必要があります）。
 - **Docs AI (Ask)**: 公式ClickHouseドキュメントとベストプラクティスリファレンスに基づいた集中的なQ&A。
 
-モードを切り替えるには、フライアウトの左下にあるモードセレクターを使用してください。
+フライアウトの左下にあるモードセレクターを使用して切り替えます。
 
 <Image img={img_modes} alt='モード選択' size='sm' />
 
@@ -84,20 +84,20 @@ AI Chatは現在、以下をサポートしています：
 
 ## チャット履歴の表示 {#history}
 
-1. 下部セクションに最近のチャットが一覧表示されます。
+1. 下部のセクションに最近のチャットが一覧表示されます。
 2. 過去のチャットを選択すると、そのメッセージが読み込まれます。
-3. ゴミ箱アイコンで会話を削除します。
+3. ゴミ箱アイコンで会話を削除できます。
 
 <Image img={img_history} alt='チャット履歴リスト' size='md' />
 
 
 ## 生成されたSQLの操作 {#sql-actions}
 
-アシスタントがSQLを返した場合：
+アシスタントがSQLを返した場合:
 
-- 正確性を確認します。
+- 正確性を確認してください。
 - 「エディタで開く」をクリックして、クエリを新しいSQLタブに読み込みます。
-- コンソール内で変更および実行します。
+- コンソール内で変更および実行してください。
 
 <Image img={img_result_actions} alt='結果のアクション' size='md' />
 
@@ -106,7 +106,7 @@ AI Chatは現在、以下をサポートしています：
 
 ## レスポンスの停止または中断 {#interrupt}
 
-レスポンスに時間がかかりすぎている場合や、意図しない方向に進んでいる場合:
+レスポンスに時間がかかりすぎている場合や、意図しない方向に進んでいる場合：
 
 1. 「停止」ボタンをクリックします（処理中に表示されます）。
 2. メッセージは中断済みとしてマークされます。プロンプトを修正して再送信できます。

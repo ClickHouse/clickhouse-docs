@@ -4,11 +4,11 @@ sidebar_position: 1
 slug: /integrations/migration/overview
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
 title: 'ClickHouse へのデータ移行'
-description: 'ClickHouse へのデータ移行に利用可能なオプションを説明するページ'
+description: 'ClickHouse へデータを移行するための選択肢を説明するページ'
 doc_type: 'guide'
 ---
 
-# ClickHouse へのデータ移行
+# ClickHouseへのデータ移行
 
 <div class='vimeo-container'>
   <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"
@@ -24,11 +24,11 @@ doc_type: 'guide'
 
 <br/>
 
-現在データがどこにあるかに応じて、ClickHouse Cloud にデータを移行する方法はいくつかあります。
+現在データが保存されている場所に応じて、ClickHouse Cloudへデータを移行するための複数のオプションがあります:
 
-- [Self-managed to Cloud](/cloud/migration/clickhouse-to-cloud): `remoteSecure` 関数を使用してデータを転送します
-- [Another DBMS](/cloud/migration/clickhouse-local): [clickhouse-local] ETL ツールと、現在使用している DBMS 向けの適切な ClickHouse テーブル関数を組み合わせて使用します
-- [Anywhere!](/cloud/migration/etl-tool-to-clickhouse): さまざまな種類のデータソースに接続できる一般的な ETL/ELT ツールを利用します
-- [Object Storage](/integrations/migration/object-storage-to-clickhouse): S3 から ClickHouse へ簡単にデータを取り込めます
+- [セルフマネージドからクラウドへ](/cloud/migration/clickhouse-to-cloud): `remoteSecure`関数を使用したデータ転送
+- [他のDBMSから](/cloud/migration/clickhouse-local): [clickhouse-local] ETLツールと、使用中のDBMSに対応するClickHouseテーブル関数を使用
+- [あらゆる場所から!](/cloud/migration/etl-tool-to-clickhouse): 多様なデータソースに接続可能な、広く利用されているETL/ELTツールを使用
+- [オブジェクトストレージから](/integrations/migration/object-storage-to-clickhouse): S3からClickHouseへ簡単にデータを挿入
 
-[Redshift からの移行](/migrations/redshift/migration-guide)の例では、ClickHouse にデータを移行する 3 通りの方法を紹介しています。
+[Redshiftからの移行](/migrations/redshift/migration-guide)の例では、ClickHouseへデータを移行する3つの異なる方法を紹介しています。

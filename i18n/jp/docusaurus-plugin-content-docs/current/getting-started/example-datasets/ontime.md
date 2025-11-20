@@ -1,5 +1,5 @@
 ---
-description: '航空便の定時運航実績を含むデータセット'
+description: '航空便の定時運航パフォーマンスを含むデータセット'
 sidebar_label: 'OnTime 航空便データ'
 slug: /getting-started/example-datasets/ontime
 title: 'OnTime'
@@ -243,7 +243,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改良版:
+同じクエリの改善版:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -279,7 +279,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改良版:
+同じクエリの改善版:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -313,7 +313,7 @@ JOIN
 ORDER BY Year;
 ```
 
-同じクエリの改良版:
+同じクエリの改善版:
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -397,9 +397,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Playground でもデータを試すことができます（[サンプル](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)）。
+Playground でデータを試すこともできます（[サンプル](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)）。
 
-このパフォーマンステストは Vadim Tkachenko によって作成されました。詳しくは次も参照してください。
+このパフォーマンス・テストは Vadim Tkachenko によって作成されました。詳細は次を参照してください。
 
 * [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
 * [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)

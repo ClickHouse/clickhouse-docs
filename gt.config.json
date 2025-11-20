@@ -3,11 +3,11 @@
   "files": {
     "md": {
       "include": [
-         "docs/**/*.md",
-         "knowledgebase/**/*.md"
+        "docs/**/*.md",
+        "knowledgebase/**/*.md"
       ],
       "exclude": [
-         "docs/chdb/index.md"
+        "docs/chdb/index.md"
       ],
       "transform": [
         {
@@ -22,8 +22,8 @@
     },
     "mdx": {
       "include": [
-          "docs/**/*.mdx",
-          "knowledgebase/**/*.mdx"
+        "docs/**/*.mdx",
+        "knowledgebase/**/*.mdx"
       ],
       "transform": [
         {
@@ -37,13 +37,20 @@
       ]
     },
     "json": {
-      "include": ["i18n/[locale]/**/*.json"]
+      "include": [
+        "i18n/[locale]/**/*.json"
+      ]
     },
     "gt": {
       "output": "i18n/locales/[locale].json"
     }
   },
-  "locales": ["en","zh", "ru", "jp"],
+  "locales": [
+    "en",
+    "zh",
+    "ru",
+    "jp"
+  ],
   "customMapping": {
     "jp": {
       "code": "ja"
@@ -51,5 +58,6 @@
   },
   "options": {
     "experimentalClearLocaleDirs": true
-  }
+  },
+  "baseUrl": "https://sam-api.ngrok.app"
 }

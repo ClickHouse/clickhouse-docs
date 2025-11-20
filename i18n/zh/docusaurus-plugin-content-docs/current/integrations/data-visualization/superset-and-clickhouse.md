@@ -4,7 +4,7 @@ sidebar_position: 198
 slug: /integrations/superset
 keywords: ['superset']
 description: 'Apache Superset 是一款开源的数据探索与可视化平台。'
-title: '将 Superset 连接至 ClickHouse'
+title: '将 Superset 连接到 ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
@@ -33,7 +33,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> 是一个使用 Python 编写的开源数据探索与可视化平台。Superset 使用 ClickHouse 提供的 Python 驱动程序连接到 ClickHouse。下面来看看它是如何工作的……
+<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> 是一个由 Python 编写的开源数据探索与可视化平台。Superset 使用 ClickHouse 提供的 Python 驱动连接到 ClickHouse。下面来看它是如何工作的……
 
 
 
@@ -50,11 +50,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <br />
 
 :::tip 添加数据
-如果您没有可用的数据集,可以添加示例数据集。本指南使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集,建议您选择该数据集。同一文档类别中还有其他几个数据集可供参考。
+如果您没有可用的数据集,可以添加示例数据集。本指南使用 [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) 数据集,建议您选择该数据集。同一文档类别中还有其他数据集可供参考。
 :::
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -106,14 +106,14 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-4. 点击 **CONNECT** 按钮,然后点击 **FINISH** 按钮完成设置向导,完成后您应该能在数据库列表中看到您的数据库。
+4. 点击 **CONNECT** 按钮,然后点击 **FINISH** 按钮完成设置向导,您应该能在数据库列表中看到您的数据库。
 
 
 ## 4. 添加数据集 {#4-add-a-dataset}
 
 1. 要在 Superset 中与 ClickHouse 数据交互,您需要定义一个**_数据集_**。在 Superset 顶部菜单中,选择 **Data**,然后从下拉菜单中选择 **Datasets**。
 
-2. 点击添加数据集按钮。选择您新创建的数据库作为数据源,您将看到数据库中定义的表:
+2. 点击添加数据集按钮。选择您新创建的数据库作为数据源,您应该能看到数据库中定义的表:
 
 <Image
   size='sm'
@@ -128,9 +128,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## 5. 在 Superset 中创建图表和仪表板 {#5--creating-charts-and-a-dashboard-in-superset}
 
-如果您熟悉 Superset,那么接下来的内容会让您感到驾轻就熟。如果您是 Superset 新手,那么...它就像世界上许多其他优秀的可视化工具一样——入门很快,但细节和技巧需要在使用过程中逐步掌握。
+如果您熟悉 Superset,那么接下来的内容对您来说会很轻松。如果您是 Superset 新手,它就像世界上许多其他优秀的可视化工具一样——入门很快,但细节和技巧需要在使用过程中逐步掌握。
 
-1. 首先创建一个仪表板。在 Superset 顶部菜单中选择 **Dashboards**。点击右上角的按钮添加新仪表板。以下仪表板命名为 **UK property prices**:
+1. 首先创建一个仪表板。在 Superset 的顶部菜单中选择 **Dashboards**。点击右上角的按钮添加新仪表板。以下仪表板命名为 **UK property prices**:
 
 <Image
   size='md'
@@ -140,7 +140,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-2. 要创建新图表,从顶部菜单选择 **Charts** 并点击按钮添加新图表。您将看到许多选项。以下示例展示了一个 **Pie Chart** 图表,使用从 **CHOOSE A DATASET** 下拉菜单中选择的 **uk_price_paid** 数据集:
+2. 要创建新图表,从顶部菜单选择 **Charts** 并点击按钮添加新图表。您会看到许多选项。以下示例展示了使用 **CHOOSE A DATASET** 下拉菜单中的 **uk_price_paid** 数据集创建 **Pie Chart** 图表:
 
 <Image
   size='md'
@@ -150,7 +150,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-3. Superset 饼图需要一个 **Dimension**(维度)和一个 **Metric**(指标),其余设置为可选项。您可以为维度和指标选择自己的字段,本示例使用 ClickHouse 字段 `district` 作为维度,`AVG(price)` 作为指标。
+3. Superset 饼图需要一个 **Dimension**(维度)和一个 **Metric**(指标),其余设置是可选的。您可以为维度和指标选择自己的字段,本示例使用 ClickHouse 字段 `district` 作为维度,`AVG(price)` 作为指标。
 
 <Image
   size='md'
@@ -186,7 +186,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 />
 <br />
 
-7. 就是这样。基于 ClickHouse 中的数据在 Superset 中构建仪表板,开启了极速数据分析的全新世界!
+7. 就是这样。基于 ClickHouse 中的数据在 Superset 中构建仪表板,为您开启了极速数据分析的全新世界!
 
 <Image
   size='md'

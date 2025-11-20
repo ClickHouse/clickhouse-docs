@@ -1,5 +1,5 @@
 :::important best practices
-При настройке ClickHouse Server путём добавления или изменения файлов конфигурации следует:
+При настройке ClickHouse Server путём добавления или редактирования конфигурационных файлов следует:
 
 - Добавлять файлы в каталог `/etc/clickhouse-server/config.d/`
 - Добавлять файлы в каталог `/etc/clickhouse-server/users.d/`

@@ -2,7 +2,7 @@
 sidebar_label: 'データベース監査ログ'
 slug: /cloud/security/audit-logging/database-audit-log
 title: 'データベース監査ログ'
-description: 'このページでは、ユーザーがデータベース監査ログを参照する方法について説明します'
+description: 'このページでは、ユーザーがデータベース監査ログを確認する方法について説明します'
 doc_type: 'guide'
 keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitoring']
 ---
@@ -14,7 +14,7 @@ keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitori
 ClickHouseはデフォルトでデータベース監査ログを提供します。このページではセキュリティ関連のログに焦点を当てています。システムによって記録されるデータの詳細については、[システムテーブル](/operations/system-tables/overview)のドキュメントを参照してください。
 
 :::tip ログの保持期間
-情報はシステムテーブルに直接記録され、デフォルトで最大30日間保持されます。この期間は、システム内のマージの頻度によって長くなることも短くなることもあります。ログをより長期間保存したり、長期保存のためにセキュリティ情報およびイベント管理(SIEM)システムにエクスポートしたりするなど、追加の措置を講じることができます。詳細は以下を参照してください。
+情報はシステムテーブルに直接記録され、デフォルトで最大30日間保持されます。この期間は、システム内のマージの頻度によって長くなることも短くなることもあります。ログをより長期間保存する場合や、セキュリティ情報およびイベント管理(SIEM)システムにエクスポートして長期保存する場合は、追加の対策を講じることができます。詳細は以下を参照してください。
 :::
 
 
@@ -37,7 +37,7 @@ WHERE type='LoginFailure'
 LIMIT 100
 ```
 
-[system.query_log](/operations/system-tables/query_log)は、ClickHouseインスタンスで実行されたクエリアクティビティを記録します。この情報は、脅威アクターが実行したクエリを特定する際に役立ちます。
+[system.query_log](/operations/system-tables/query_log)は、ClickHouseインスタンスで実行されたクエリアクティビティを記録します。この情報は、脅威アクターが実行したクエリを特定する際に有用です。
 
 「compromised_account」ユーザーのアクティビティを検索するサンプルクエリ
 
@@ -60,7 +60,7 @@ WHERE user=’compromised_account’
 
 ## ログのエクスポート {#exporting-logs}
 
-システムログは、SIEMシステムと互換性のある各種形式を使用して、ストレージに書き込みまたはエクスポートすることができます。詳細については、[テーブル関数](/sql-reference/table-functions)のドキュメントを参照してください。最も一般的な方法は次のとおりです。
+システムログは、SIEMシステムと互換性のある様々な形式を使用して、ストレージに書き込みまたはエクスポートできます。詳細については、[テーブル関数](/sql-reference/table-functions)のドキュメントを参照してください。最も一般的な方法は次のとおりです。
 
 - [S3への書き込み](/sql-reference/table-functions/s3)
 - [GCSへの書き込み](/sql-reference/table-functions/gcs)

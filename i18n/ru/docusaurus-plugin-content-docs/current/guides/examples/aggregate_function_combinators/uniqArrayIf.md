@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArrayIf'
 title: 'uniqArrayIf'
-description: 'Пример использования комбинирования uniqArrayIf'
+description: 'Пример использования комбинатора uniqArrayIf'
 keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
 sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
@@ -18,11 +18,11 @@ doc_type: 'reference'
 для подсчёта количества уникальных значений в массивах для строк, удовлетворяющих
 заданному условию, используя агрегатную функцию-комбинатор `uniqArrayIf`.
 
-:::note Комбинаторы `-If` и `-Array` можно комбинировать. Однако `Array` должен идти первым, затем `If`.
+:::note Комбинаторы `-If` и `-Array` можно комбинировать. При этом `Array` должен указываться первым, затем `If`.
 :::
 
-Это удобно, когда требуется подсчитать уникальные элементы в массиве на основе
-определённых условий без необходимости использовать `arrayJoin`.
+Это удобно, когда требуется подсчитать уникальные элементы в массиве по
+определённым условиям без необходимости использовать `arrayJoin`.
 
 
 ## Примеры использования {#example-usage}
@@ -83,5 +83,5 @@ total_unique_products:       7
 ## См. также {#see-also}
 
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [Комбинатор `Array`](/sql-reference/aggregate-functions/combinators#-array)
-- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
+- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

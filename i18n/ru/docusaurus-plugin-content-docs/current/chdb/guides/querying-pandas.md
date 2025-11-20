@@ -1,16 +1,16 @@
 ---
-title: 'Как выполнять запросы к DataFrame Pandas с помощью chDB'
+title: 'Как выполнять запросы к DataFrames Pandas с помощью chDB'
 sidebar_label: 'Запросы к Pandas'
 slug: /chdb/guides/pandas
-description: 'Узнайте, как выполнять запросы к DataFrame Pandas с помощью chDB'
+description: 'Узнайте, как выполнять запросы к DataFrames Pandas с помощью chDB'
 keywords: ['chDB', 'Pandas']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
 [Pandas](https://pandas.pydata.org/) — это популярная библиотека для обработки и анализа данных в Python.
-Во второй версии chDB мы улучшили производительность выполнения запросов к DataFrame Pandas и добавили табличную функцию `Python`.
-В этом руководстве мы разберём, как выполнять запросы к Pandas с помощью табличной функции `Python`.
+Во второй версии chDB мы улучшили производительность выполнения запросов к DataFrames Pandas и добавили табличную функцию `Python`.
+В этом руководстве мы рассмотрим, как выполнять запросы к Pandas с использованием табличной функции `Python`.
 
 
 
@@ -30,19 +30,19 @@ source .venv/bin/activate
 pip install "chdb>=2.0.2"
 ```
 
-Далее установим Pandas и несколько других библиотек:
+Теперь установим Pandas и несколько других библиотек:
 
 ```bash
 pip install pandas requests ipython
 ```
 
-Для выполнения команд в остальной части руководства мы будем использовать `ipython`. Запустить его можно следующей командой:
+Для выполнения команд в остальной части руководства мы будем использовать `ipython`, который можно запустить следующей командой:
 
 ```bash
 ipython
 ```
 
-Также вы можете использовать код в Python-скрипте или в вашем любимом ноутбуке.
+Вы также можете использовать этот код в Python-скрипте или в вашем любимом notebook.
 
 
 ## Создание Pandas DataFrame из URL {#creating-a-pandas-dataframe-from-a-url}
@@ -168,7 +168,7 @@ Name: 0, dtype: object
 import chdb
 ```
 
-Запросы к Pandas DataFrames можно выполнять с помощью табличной функции `Python`:
+Для выполнения запросов к Pandas DataFrames используется табличная функция `Python`:
 
 ```sql
 SELECT *
@@ -230,7 +230,7 @@ SETTINGS describe_compact_output=1
 41            referee_country_name  String
 ```
 
-Затем можно узнать, какие судьи отсудили более одного матча, выполнив следующий запрос:
+Теперь можно узнать, какие судьи обслуживали более одного матча, выполнив следующий запрос:
 
 ```python
 chdb.query("""
@@ -287,7 +287,7 @@ LIMIT 10
 ## Объединение Pandas DataFrames {#joining-pandas-dataframes}
 
 Мы также можем объединять DataFrames в запросе.
-Например, чтобы получить общую информацию о матче, можно написать следующий запрос:
+Например, чтобы получить обзор матча, можно написать следующий запрос:
 
 ```python
 chdb.query("""
@@ -304,8 +304,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Аргентина
-away_team_away_team_name     Колумбия
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527
@@ -349,7 +349,7 @@ FROM Python(events_df)
 """)
 ```
 
-Теперь можем выполнить запрос, который возвращает топ получателей передач:
+Теперь можно выполнить запрос, который возвращает топ получателей передач:
 
 ```python
 sess.query("""

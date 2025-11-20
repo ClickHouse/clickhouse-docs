@@ -1,7 +1,7 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumSimpleState'
 title: 'sumSimpleState'
-description: 'Пример использования комбинатора агрегатной функции sumSimpleState'
+description: 'Пример использования комбинатора sumSimpleState'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
 sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
@@ -15,23 +15,24 @@ doc_type: 'reference'
 ## Описание {#description}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может применяться к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
-для вычисления суммы всех входных значений. Возвращает результат типа [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
+для вычисления суммы всех входных значений. Возвращает результат
+типа [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 
-## Примеры использования {#example-usage}
+## Пример использования {#example-usage}
 
-### Отслеживание положительных и отрицательных оценок {#tracking-post-votes}
+### Отслеживание положительных и отрицательных голосов {#tracking-post-votes}
 
 Рассмотрим практический пример с использованием таблицы, которая отслеживает голоса за публикации.
-Для каждой публикации необходимо поддерживать текущие итоги положительных оценок, отрицательных оценок и
-общий балл. Использование типа `SimpleAggregateFunction` с функцией sum подходит для
+Для каждой публикации необходимо поддерживать текущие итоги положительных голосов, отрицательных голосов и
+общий счёт. Использование типа `SimpleAggregateFunction` с функцией sum подходит для
 данного случая, поскольку нам нужно хранить только текущие итоги, а не полное состояние
 агрегации. В результате это будет быстрее и не потребует слияния
 частичных агрегатных состояний.
 
 Сначала создадим таблицу для исходных данных:
 
-```sql title="Query"
+```sql title="Запрос"
 CREATE TABLE raw_votes
 (
     post_id UInt32,
@@ -62,11 +63,11 @@ CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- Начальное значение для состояния sum (1 для положительной оценки, 0 в остальных случаях)
+  -- Начальное значение для состояния sum (1 для положительного голоса, 0 в противном случае)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- Начальное значение для состояния sum (1 для отрицательной оценки, 0 в остальных случаях)
+  -- Начальное значение для состояния sum (1 для отрицательного голоса, 0 в противном случае)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- Начальное значение для состояния sum (1 для положительной оценки, -1 для отрицательной)
+  -- Начальное значение для состояния sum (1 для положительного голоса, -1 для отрицательного)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```

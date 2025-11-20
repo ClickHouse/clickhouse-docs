@@ -15,25 +15,25 @@ keywords: [
   'debug',
   'solutions'
 ]
-title: '经验分享 - 调试洞见'
-description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
+title: '实践经验 - 调试洞见'
+description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接故障和配置问题。'
 ---
 
 
 
-# ClickHouse 运维:社区调试经验 {#clickhouse-operations-community-debugging-insights}
+# ClickHouse 运维：社区调试经验 {#clickhouse-operations-community-debugging-insights}
 
-_本指南是从社区交流活动中总结的系列经验之一。如需了解更多实际解决方案和见解,可以[按具体问题浏览](./community-wisdom.md)。_
-_运维成本居高不下?请参阅[成本优化](./cost-optimization.md)社区经验指南。_
+_本指南汇集了社区交流会中积累的实践经验。如需了解更多实际问题的解决方案和见解，可以[按具体问题浏览](./community-wisdom.md)。_
+_运维成本居高不下？请参阅[成本优化](./cost-optimization.md)社区经验指南。_
 
 
 ## 核心系统表 {#essential-system-tables}
 
-这些系统表是生产环境调试的基础:
+这些系统表是生产环境调试的基础：
 
 ### system.errors {#system-errors}
 
-显示 ClickHouse 实例中的所有活跃错误。
+显示 ClickHouse 实例中的所有活动错误。
 
 ```sql
 SELECT name, value, changed
@@ -66,7 +66,7 @@ ORDER BY create_time DESC;
 
 ### system.merges {#system-merges}
 
-显示当前的合并操作,可用于识别卡住的进程。
+显示当前的合并操作，可用于识别卡住的进程。
 
 ```sql
 SELECT database, table, elapsed, progress, is_mutation, total_size_bytes_compressed
@@ -91,13 +91,13 @@ ORDER BY count() DESC;
 
 ### 磁盘空间问题 {#disk-space-problems}
 
-在副本部署中,磁盘空间耗尽会引发连锁反应。当某个节点空间不足时,其他节点仍会持续尝试与其同步,导致网络流量激增并产生令人困惑的症状。曾有社区成员花费4小时排查问题,最终发现根本原因仅仅是磁盘空间不足。可以使用此[查询](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases)来监控特定集群的磁盘存储情况。
+在副本部署中,磁盘空间耗尽会引发连锁反应。当某个节点空间不足时,其他节点仍会持续尝试与其同步,导致网络流量激增并产生令人困惑的症状。曾有社区成员花费4小时排查问题,最终发现根本原因仅仅是磁盘空间不足。可使用此[查询](/knowledgebase/useful-queries-for-troubleshooting#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases)来监控特定集群的磁盘存储情况。
 
 AWS 用户需要注意,默认的通用型 EBS 卷存在 16TB 的容量限制。
 
 ### 数据分片过多错误 {#too-many-parts-error}
 
-频繁的小批量插入会导致性能问题。社区发现,当插入速率超过每秒10次时,经常会触发"数据分片过多"错误,这是因为 ClickHouse 无法足够快地合并数据分片。
+频繁的小批量插入会导致性能问题。社区发现,当插入速率超过每秒10次时,往往会触发"数据分片过多"错误,因为 ClickHouse 无法足够快地合并数据分片。
 
 **解决方案:**
 
@@ -114,7 +114,7 @@ AWS 用户需要注意,默认的通用型 EBS 卷存在 16TB 的容量限制。
 
 ### `ALTER` 操作风险 {#alter-operation-risks}
 
-在多TB级别的表上执行大型 `ALTER` 操作可能会消耗大量资源,并可能导致数据库锁定。一个社区案例中,在14TB数据上将 Integer 类型更改为 Float 类型,导致整个数据库被锁定,最终需要从备份重建。
+在多TB级别的表上执行大型 `ALTER` 操作可能会消耗大量资源,并可能导致数据库锁定。一个社区案例中,在14TB数据上将整数类型更改为浮点类型,导致整个数据库被锁定,最终需要从备份重建。
 
 **监控高成本的变更操作:**
 
@@ -131,7 +131,7 @@ WHERE is_done = 0;
 
 ### 外部聚合 {#external-aggregation}
 
-为内存密集型操作启用外部聚合。虽然速度较慢,但可以通过溢写到磁盘来防止内存溢出崩溃。您可以使用 `max_bytes_before_external_group_by` 参数来实现,这将有助于防止大型 `GROUP BY` 操作导致的内存溢出崩溃。您可以在[此处](/operations/settings/settings#max_bytes_before_external_group_by)了解有关此设置的更多信息。
+为内存密集型操作启用外部聚合。虽然速度较慢,但可以通过将数据溢出到磁盘来防止内存不足导致的崩溃。您可以使用 `max_bytes_before_external_group_by` 设置来实现此功能,这有助于防止大型 `GROUP BY` 操作时出现内存不足崩溃。您可以在[此处](/operations/settings/settings#max_bytes_before_external_group_by)了解有关此设置的更多信息。
 
 ```sql
 SELECT
@@ -146,7 +146,7 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB 阈值
 
 ### 异步插入详情 {#async-insert-details}
 
-异步插入会在服务器端自动批处理小批量插入以提高性能。您可以配置是否在返回确认之前等待数据写入磁盘——立即返回速度更快但持久性较低。现代版本支持去重功能以处理批次内的重复数据。
+异步插入会在服务器端自动批量处理小型插入操作以提高性能。您可以配置是否在返回确认之前等待数据写入磁盘——立即返回速度更快但持久性较低。现代版本支持去重功能以处理批次内的重复数据。
 
 **相关文档**
 
@@ -175,10 +175,10 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB 阈值
 
 | 问题           | 检测方法                        | 解决方案                           |
 | --------------- | -------------------------------- | ---------------------------------- |
-| 磁盘空间      | 检查 `system.parts` 总字节数 | 监控使用量，规划扩容        |
+| 磁盘空间      | 检查 `system.parts` 总字节数 | 监控使用情况，规划扩容        |
 | 分片过多  | 统计每个表的分片数            | 批量插入，启用 async_insert |
 | 复制延迟 | 检查 `system.replicas` 延迟    | 监控网络，重启副本  |
-| 数据异常        | 验证分区日期         | 实施时间戳校验     |
+| 数据异常        | 验证分区日期         | 实施时间戳验证     |
 | Mutation 卡住 | 检查 `system.mutations` 状态  | 先在小数据集上测试           |
 
 ### 视频资源 {#video-sources}

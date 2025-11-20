@@ -1,5 +1,5 @@
 ---
-description: 'COVID-19 Open-Data 是一个大型开源 COVID-19 流行病学数据库，包含与人口统计、经济状况和政府响应等相关因素的数据'
+description: 'COVID-19 Open-Data 是一个大型的开源 COVID-19 流行病学数据库，包含与人口统计、经济和政府应对等相关因素的数据'
 sidebar_label: 'COVID-19 open-data'
 slug: /getting-started/example-datasets/covid19
 title: 'COVID-19 Open-Data'
@@ -7,17 +7,17 @@ keywords: ['COVID-19 data', 'epidemiological data', 'health dataset', 'example d
 doc_type: 'guide'
 ---
 
-COVID-19 Open-Data 旨在构建最大的 COVID-19 流行病学数据库，并提供一套功能强大的丰富协变量。它包含与人口统计、经济、流行病学、地理、健康、住院、人口流动、政府应对、天气等相关的开放、公开来源并具有许可的数据。
+COVID-19 Open-Data 旨在构建最大规模的 Covid-19 流行病学数据库，并提供一套功能强大的丰富协变量。它包含与人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等相关的开放、公共来源及已授权数据。
 
-详细信息请参见 GitHub 仓库 [这里](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
+详细信息见 GitHub [此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
 
 将这些数据导入 ClickHouse 非常简单……
 
 :::note
-以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。你也可以很方便地在本地安装的实例上运行它们。
+以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的**生产**实例上执行的。你也可以很方便地在本地安装环境中运行它们。
 :::
 
-1. 我们先来看一下这些数据长什么样：
+1. 我们先来看一下这些数据的样子：
 
 ```sql
 DESCRIBE url(
@@ -45,7 +45,7 @@ DESCRIBE url(
 返回了 10 行数据。耗时：0.745 秒。
 ```
 
-2. 现在我们来查看几行数据：
+2. 现在让我们查看几行数据：
 
 ```sql
 SELECT *
@@ -53,7 +53,7 @@ FROM url('https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv')
 LIMIT 100;
 ```
 
-注意，`url` 函数可以轻松地从 CSV 文件中读取数据：
+注意，使用 `url` 函数可以轻松从 CSV 文件中读取数据：
 
 
 ```response
@@ -68,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们已经了解了数据的结构，可以来创建一张表：
+3. 现在既然已经了解了数据的结构，我们就来创建一张表：
 
 ```sql
 CREATE TABLE covid19 (
@@ -87,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 使用以下命令将完整数据集插入到 `covid19` 表中：
+4. 使用以下命令将整个数据集插入到 `covid19` 表：
 
 ```sql
 INSERT INTO covid19
@@ -109,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. 这一步执行得很快——来看一下已经插入了多少行：
+5. 这个过程非常快——来看看插入了多少行：
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -122,7 +122,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. 我们来看一下记录的 Covid-19 总病例数：
+6. 我们来看一下记录到的 Covid-19 病例总数：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -131,12 +131,12 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 13.9 亿                                     │
+│ 13.9亿                                      │
 └────────────────────────────────────────────┘
 ```
 
 
-7. 你会注意到日期中有很多 0 —— 要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新增病例的每日平均值：
+7. 你会注意到这些数据中有很多日期为 0 的情况——要么是周末，要么是有些天并不是每天上报数据。我们可以使用窗口函数来平滑新发病例的每日平均值：
 
 ```sql
 SELECT
@@ -147,7 +147,7 @@ SELECT
 FROM covid19;
 ```
 
-8. 此查询用于确定每个地区的最新数值。我们不能使用 `max(date)`，因为并不是所有国家每天都有上报数据，所以通过 `ROW_NUMBER` 取出最后一行：
+8. 此查询用于获取每个地区的最新数值。我们不能使用 `max(date)`，因为并非所有国家每天都有上报数据，所以我们使用 `ROW_NUMBER` 来选取最后一行：
 
 ```sql
 WITH latest_deaths_data AS
@@ -166,7 +166,7 @@ FROM latest_deaths_data
 WHERE rn=1;
 ```
 
-9. 我们可以使用 `lagInFrame` 来计算每天新增病例的 `LAG` 值。在这个查询中，我们按 `US_DC` 这个地区进行过滤：
+9. 我们可以使用 `lagInFrame` 来计算每天新增病例的 `LAG` 值。在此查询中，我们按 `US_DC` 地区进行筛选：
 
 ```sql
 SELECT
@@ -236,35 +236,35 @@ WHERE location_key = 'US_DC';
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
-│ 2020-03-08 │             0 │            nan │ decrease  │
-│ 2020-03-09 │             2 │            inf │ increase  │
-│ 2020-03-10 │             0 │           -100 │ decrease  │
-│ 2020-03-11 │             6 │            inf │ increase  │
-│ 2020-03-12 │             0 │           -100 │ decrease  │
-│ 2020-03-13 │             0 │            nan │ decrease  │
-│ 2020-03-14 │             6 │            inf │ increase  │
-│ 2020-03-15 │             1 │            -83 │ decrease  │
-│ 2020-03-16 │             5 │            400 │ increase  │
-│ 2020-03-17 │             9 │             80 │ increase  │
-│ 2020-03-18 │             8 │            -11 │ decrease  │
-│ 2020-03-19 │            32 │            300 │ increase  │
-│ 2020-03-20 │             6 │            -81 │ decrease  │
-│ 2020-03-21 │            21 │            250 │ increase  │
-│ 2020-03-22 │            18 │            -14 │ decrease  │
-│ 2020-03-23 │            21 │             17 │ increase  │
-│ 2020-03-24 │            46 │            119 │ increase  │
-│ 2020-03-25 │            48 │              4 │ increase  │
-│ 2020-03-26 │            36 │            -25 │ decrease  │
-│ 2020-03-27 │            37 │              3 │ increase  │
-│ 2020-03-28 │            38 │              3 │ increase  │
-│ 2020-03-29 │            59 │             55 │ increase  │
-│ 2020-03-30 │            94 │             59 │ increase  │
-│ 2020-03-31 │            91 │             -3 │ decrease  │
-│ 2020-04-01 │            67 │            -26 │ decrease  │
-│ 2020-04-02 │           104 │             55 │ increase  │
-│ 2020-04-03 │           145 │             39 │ increase  │
+│ 2020-03-08 │             0 │            nan │ 下降  │
+│ 2020-03-09 │             2 │            inf │ 上升  │
+│ 2020-03-10 │             0 │           -100 │ 下降  │
+│ 2020-03-11 │             6 │            inf │ 上升  │
+│ 2020-03-12 │             0 │           -100 │ 下降  │
+│ 2020-03-13 │             0 │            nan │ 下降  │
+│ 2020-03-14 │             6 │            inf │ 上升  │
+│ 2020-03-15 │             1 │            -83 │ 下降  │
+│ 2020-03-16 │             5 │            400 │ 上升  │
+│ 2020-03-17 │             9 │             80 │ 上升  │
+│ 2020-03-18 │             8 │            -11 │ 下降  │
+│ 2020-03-19 │            32 │            300 │ 上升  │
+│ 2020-03-20 │             6 │            -81 │ 下降  │
+│ 2020-03-21 │            21 │            250 │ 上升  │
+│ 2020-03-22 │            18 │            -14 │ 下降  │
+│ 2020-03-23 │            21 │             17 │ 上升  │
+│ 2020-03-24 │            46 │            119 │ 上升  │
+│ 2020-03-25 │            48 │              4 │ 上升  │
+│ 2020-03-26 │            36 │            -25 │ 下降  │
+│ 2020-03-27 │            37 │              3 │ 上升  │
+│ 2020-03-28 │            38 │              3 │ 上升  │
+│ 2020-03-29 │            59 │             55 │ 上升  │
+│ 2020-03-30 │            94 │             59 │ 上升  │
+│ 2020-03-31 │            91 │             -3 │ 下降  │
+│ 2020-04-01 │            67 │            -26 │ 下降  │
+│ 2020-04-02 │           104 │             55 │ 上升  │
+│ 2020-04-03 │           145 │             39 │ 上升  │
 ```
 
 :::note
-如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，该数据集自 2022 年 9 月 15 日起已停止更新。
+如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
 :::

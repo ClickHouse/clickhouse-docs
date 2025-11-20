@@ -6,13 +6,13 @@ keywords: ['json', 'schema', 'inference', 'schema inference']
 doc_type: 'guide'
 ---
 
-ClickHouse 可以自动识别 JSON 数据的结构。这可用于直接查询 JSON 数据，例如使用 `clickhouse-local` 查询磁盘上的数据或 S3 存储桶中的数据，和/或在将数据加载到 ClickHouse 之前自动创建表结构。
+ClickHouse 可以自动推断 JSON 数据的结构。这样可以用于直接查询 JSON 数据，例如使用 `clickhouse-local` 查询磁盘上的数据或 S3 存储桶中的数据，和/或在将数据加载到 ClickHouse 之前自动创建模式。
 
 
 
 ## 何时使用类型推断 {#when-to-use-type-inference}
 
-- **结构一致** - 用于推断类型的数据包含所有您关注的键。类型推断基于数据采样,采样上限为[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)或[最大字节数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)。采样范围之外包含额外列的数据将被忽略,且无法查询。
+- **结构一致** - 用于推断类型的数据包含您所需的全部键。类型推断基于数据采样,采样上限为[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)或[最大字节数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)。采样范围之外包含额外列的数据将被忽略,且无法查询。
 - **类型一致** - 特定键的数据类型需要兼容,即必须能够自动将一种类型强制转换为另一种类型。
 
 如果您的 JSON 数据更加动态,会添加新键且同一路径可能存在多种类型,请参阅["处理半结构化和动态数据"](/integrations/data-formats/json/inference#working-with-semi-structured-data)。
@@ -20,9 +20,9 @@ ClickHouse 可以自动识别 JSON 数据的结构。这可用于直接查询 JS
 
 ## 检测类型 {#detecting-types}
 
-以下内容假设 JSON 结构一致,每个路径只有单一类型。
+以下内容假设 JSON 结构一致,且每个路径具有单一类型。
 
-我们之前的示例使用了 `NDJSON` 格式的简化版 [Python PyPI 数据集](https://clickpy.clickhouse.com/)。在本节中,我们将探索一个具有嵌套结构的更复杂数据集 - [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download),其中包含 250 万篇学术论文。该数据集以 `NDJSON` 格式分发,每一行代表一篇已发表的学术论文。下面是一个示例行:
+我们之前的示例使用了 `NDJSON` 格式的简化版 [Python PyPI 数据集](https://clickpy.clickhouse.com/)。在本节中,我们将探索一个具有嵌套结构的更复杂数据集 - [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download),其中包含 250 万篇学术论文。该数据集以 `NDJSON` 格式分发,每一行代表一篇已发表的学术论文。下面显示了一个示例行:
 
 ```json
 {
@@ -52,14 +52,14 @@ ClickHouse 可以自动识别 JSON 数据的结构。这可用于直接查询 JS
 }
 ```
 
-此数据需要比之前示例复杂得多的 schema。我们在下面概述定义此 schema 的过程,并介绍诸如 `Tuple` 和 `Array` 等复杂类型。
+此数据需要比之前示例复杂得多的模式。我们在下面概述定义此模式的过程,并介绍诸如 `Tuple` 和 `Array` 等复杂类型。
 
 此数据集存储在公共 S3 存储桶中,位置为 `s3://datasets-documentation/arxiv/arxiv.json.gz`。
 
-您可以看到上述数据集包含嵌套的 JSON 对象。虽然用户应该起草和版本化他们的 schema,但类型推断功能允许从数据中自动推断类型。这使得 schema DDL 可以自动生成,无需手动构建,从而加速开发过程。
+您可以看到上述数据集包含嵌套的 JSON 对象。虽然用户应该起草和版本化他们的模式,但类型推断功能允许从数据中自动推断类型。这使得模式 DDL 可以自动生成,避免了手动构建的需要,并加速了开发过程。
 
 :::note 自动格式检测
-除了检测 schema 外,JSON schema 推断还会根据文件扩展名和内容自动推断数据格式。因此,上述文件会被自动检测为 NDJSON 格式。
+除了检测模式外,JSON 模式推断还会根据文件扩展名和内容自动推断数据格式。因此,上述文件会被自动检测为 NDJSON 格式。
 :::
 
 使用 [s3 函数](/sql-reference/table-functions/s3) 配合 `DESCRIBE` 命令可以显示将被推断的类型。
@@ -89,14 +89,14 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note 避免使用 null
-您可以看到许多列被检测为 Nullable。我们[不建议在非绝对必要时使用 Nullable](/sql-reference/data-types/nullable#storage-features) 类型。您可以使用 [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable) 来控制何时应用 Nullable。
+您可以看到许多列被检测为 Nullable。我们[不建议在非绝对必要时使用 Nullable](/sql-reference/data-types/nullable#storage-features) 类型。您可以使用 [schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable) 来控制何时应用 Nullable 的行为。
 :::
 
-我们可以看到大多数列已自动检测为 `String` 类型,`update_date` 列被正确检测为 `Date` 类型。`versions` 列被创建为 `Array(Tuple(created String, version String))` 以存储对象列表,而 `authors_parsed` 被定义为 `Array(Array(String))` 以处理嵌套数组。
+我们可以看到大多数列已自动检测为 `String` 类型,`update_date` 列被正确检测为 `Date` 类型。`versions` 列被创建为 `Array(Tuple(created String, version String))` 以存储对象列表,`authors_parsed` 被定义为 `Array(Array(String))` 以处理嵌套数组。
 
 
 :::note 控制类型检测
-日期和日期时间的自动检测可以分别通过设置 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) 和 [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) 来控制（两者默认启用）。将对象推断为元组的行为由设置 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) 控制。其他控制 JSON 模式推断的设置（例如数字的自动检测）可以在[此处](/interfaces/schema-inference#text-formats)找到。
+日期和日期时间的自动检测可以分别通过设置 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) 和 [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) 来控制（两者默认均启用）。将对象推断为元组的行为由设置 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) 控制。其他控制 JSON 模式推断的设置（例如数字的自动检测）可以在[这里](/interfaces/schema-inference#text-formats)找到。
 :::
 
 
@@ -187,11 +187,11 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-以上是该数据的正确模式。模式推断基于数据采样和逐行读取。列值根据格式提取,使用递归解析器和启发式方法来确定每个值的类型。模式推断中从数据读取的最大行数和字节数由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)(默认为 25000)和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)(默认为 32MB)控制。如果检测结果不正确,用户可以提供提示,详见[此处](/operations/settings/formats#schema_inference_make_columns_nullable)。
+以上是该数据的正确模式。模式推断基于对数据进行采样并逐行读取。列值根据格式提取,使用递归解析器和启发式方法来确定每个值的类型。模式推断中从数据读取的最大行数和字节数由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)(默认为 25000)和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)(默认为 32MB)控制。如果检测结果不正确,用户可以提供提示,详见[此处](/operations/settings/formats#schema_inference_make_columns_nullable)。
 
-### 从数据片段创建表 {#creating-tables-from-snippets}
+### 从片段创建表 {#creating-tables-from-snippets}
 
-上面的示例使用 S3 上的文件来创建表模式。用户可能希望从单行数据片段创建模式。这可以使用 [format](/sql-reference/table-functions/format) 函数实现,如下所示:
+上述示例使用 S3 上的文件来创建表模式。用户可能希望从单行片段创建模式。这可以使用 [format](/sql-reference/table-functions/format) 函数实现,如下所示:
 
 ```sql
 CREATE TABLE arxiv
@@ -379,8 +379,8 @@ Elapsed: 0.755 sec.
 
 
 从服务器接收到异常（版本 24.12.1）：
-代码：636。DB::Exception：从 sql-clickhouse.clickhouse.com:9440 接收到。DB::Exception：无法从 JSON 格式文件中推断出表结构。错误：
-代码：53。DB::Exception：第 1 行中列 &#39;a&#39; 自动推断出的类型 Tuple(b Int64) 与前面行推断出的类型 Int64 不一致。你可以通过设置 schema&#95;inference&#95;hints 为该列显式指定类型。
+代码: 636. DB::Exception: 从 sql-clickhouse.clickhouse.com:9440 收到。DB::Exception: 无法从 JSON 格式文件中推断表结构。错误：
+代码: 53. DB::Exception: 第 1 行中列 &#39;a&#39; 自动推断出的类型 Tuple(b Int64) 与此前行定义的类型不一致：Int64。你可以通过设置 schema&#95;inference&#95;hints 为该列显式指定类型。
 
 ````
 

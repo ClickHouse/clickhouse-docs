@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 在此示例中,我们将使用 [SQL playground](https://sql.clickhouse.com/) 中提供的 `hits` 数据集。
 
-假设您想要查询网站上每个不同着陆页域名(`URLDomain`)下,访问该域名的访客所记录的所有唯一用户代理操作系统代码(`OS`)。这可以帮助您了解与网站不同部分交互的操作系统的多样性。
+假设您想要查找网站上每个不同的着陆页域名(`URLDomain`)所记录的所有唯一用户代理操作系统代码(`OS`)。这可以帮助您了解与网站不同部分交互的操作系统的多样性。
 
 ```sql runnable
 SELECT
@@ -38,4 +38,4 @@ LIMIT 20;
 ## 另请参阅 {#see-also}
 
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Distinct 组合器`](/sql-reference/aggregate-functions/combinators#-distinct)
+- [`Distinct 组合子`](/sql-reference/aggregate-functions/combinators#-distinct)

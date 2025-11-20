@@ -2,8 +2,8 @@
 slug: /use-cases/observability/clickstack/ingesting-data/opentelemetry
 pagination_prev: null
 pagination_next: null
-description: '使用 OpenTelemetry 向 ClickStack 摄取数据 - ClickHouse 可观测性栈'
-title: '使用 OpenTelemetry 进行数据摄取'
+description: '使用 OpenTelemetry 为 ClickStack 采集数据 - ClickHouse 可观测性技术栈'
+title: '使用 OpenTelemetry 采集数据'
 doc_type: 'guide'
 keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry']
 ---
@@ -11,9 +11,9 @@ keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry'
 import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
-所有数据都会通过一个 **OpenTelemetry (OTel) collector** 实例接入 ClickStack，该实例是日志、指标、追踪和会话数据的主要入口。对于这个实例，我们推荐使用 collector 的官方 [ClickStack 发行版](#installing-otel-collector)。
+所有数据通过 **OpenTelemetry (OTel) 收集器**实例接入 ClickStack,该实例作为日志、指标、追踪和会话数据的主要入口。我们建议使用官方的 [ClickStack 发行版](#installing-otel-collector)收集器。
 
-用户可以通过[语言 SDK](/use-cases/observability/clickstack/sdks)，或者通过用于采集基础设施指标和日志的数据采集代理（例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel collector，或其他技术，如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/)）向该 collector 发送数据。
+用户可以通过[语言 SDK](/use-cases/observability/clickstack/sdks)或数据收集代理向该收集器发送数据,这些代理用于收集基础设施指标和日志(例如以[代理](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)角色运行的 OTel 收集器,或其他技术如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/))。
 
 
 ## 安装 ClickStack OpenTelemetry 采集器 {#installing-otel-collector}
@@ -28,13 +28,13 @@ ClickStack OpenTelemetry 采集器包含在大多数 ClickStack 发行版中,包
 
 ClickStack OTel 采集器也可以独立部署,无需依赖堆栈中的其他组件。
 
-如果您使用的是 [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) 发行版,则需要自行负责将数据导入 ClickHouse。可以通过以下方式实现:
+如果您使用的是 [仅 HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) 发行版,则需要自行负责将数据传输到 ClickHouse。可以通过以下方式实现:
 
 - 运行您自己的 OpenTelemetry 采集器并将其指向 ClickHouse - 详见下文。
-- 使用其他工具直接发送数据到 ClickHouse,例如 [Vector](https://vector.dev/)、[Fluentd](https://www.fluentd.org/) 等,甚至可以使用默认的 [OTel contrib 采集器发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)。
+- 使用其他工具直接发送到 ClickHouse,例如 [Vector](https://vector.dev/)、[Fluentd](https://www.fluentd.org/) 等,甚至可以使用默认的 [OTel contrib 采集器发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)。
 
 :::note 我们建议使用 ClickStack OpenTelemetry 采集器
-这样可以让用户受益于标准化的数据摄取、强制的 schema 约束,以及与 HyperDX UI 的开箱即用兼容性。使用默认 schema 可以实现自动源检测和预配置的列映射。
+这使用户能够受益于标准化的数据摄取、强制模式约束以及与 HyperDX UI 的开箱即用兼容性。使用默认模式可以实现自动源检测和预配置的列映射。
 :::
 
 有关更多详细信息,请参阅["部署采集器"](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
@@ -63,7 +63,7 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-代理同样应在任何 OTLP 通信中包含此授权标头。例如,如果以代理角色部署 [OTel 收集器的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib),可以使用 OTLP 导出器。下面显示了一个使用此[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)的代理配置示例。请注意需要指定授权密钥 - 参见 `<YOUR_API_INGESTION_KEY>`。
+代理同样应在任何 OTLP 通信中包含此授权标头。例如,如果以代理角色部署 [OTel 收集器的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib),则可以使用 OTLP 导出器。下面显示了一个使用此[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)的代理配置示例。请注意需要指定授权密钥 - 参见 `<YOUR_API_INGESTION_KEY>`。
 
 
 ```yaml
@@ -86,7 +86,7 @@ exporters:
       authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
  
-  # gRPC 配置(可选)
+  # gRPC 配置（可选）
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -99,7 +99,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 已修改,因为同一主机上运行了 2 个采集器
+      address: 0.0.0.0:9888 # 已修改，因同一主机上运行 2 个采集器
   pipelines:
     logs:
       receivers: [filelog]

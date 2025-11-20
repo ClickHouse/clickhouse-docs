@@ -2,7 +2,7 @@
 sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
 keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
-description: 'Amazon QuickSight помогает компаниям выстраивать работу с опорой на данные, предоставляя единую платформу бизнес‑аналитики (BI).'
+description: 'Amazon QuickSight обеспечивает поддержку ориентированных на данные организаций за счет единой платформы бизнес-аналитики (BI).'
 title: 'QuickSight'
 doc_type: 'guide'
 integration:
@@ -26,13 +26,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-QuickSight может подключаться к локальному развертыванию ClickHouse (23.11+) через интерфейс MySQL, используя официальный источник данных MySQL и режим Direct Query.
+QuickSight может подключаться к локально развернутому ClickHouse (23.11+) через интерфейс MySQL, используя официальный источник данных MySQL и режим Direct Query.
 
 
 
 ## Настройка локального сервера ClickHouse {#on-premise-clickhouse-server-setup}
 
-Обратитесь к [официальной документации](/interfaces/mysql) по настройке сервера ClickHouse с включённым интерфейсом MySQL.
+Обратитесь к [официальной документации](/interfaces/mysql) для получения информации о настройке сервера ClickHouse с включённым интерфейсом MySQL.
 
 Помимо добавления записи в файл `config.xml` сервера
 

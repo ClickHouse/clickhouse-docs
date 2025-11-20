@@ -21,9 +21,9 @@ import Image from '@theme/IdealImage';
 
 # 适用于 ClickPipes 的 AWS PrivateLink
 
-您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露到公共互联网。
+您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露在公共互联网中。
 
-本文档概述了 ClickPipes 的反向私有端点功能，该功能允许您配置 AWS PrivateLink VPC 端点。
+本文档概述了 ClickPipes 的反向私有终端节点功能，该功能允许您设置 AWS PrivateLink VPC 终端节点。
 
 
 
@@ -38,7 +38,7 @@ ClickPipes 反向私有端点功能仅支持以下数据源类型：
 
 ## 支持的 AWS PrivateLink 端点类型 {#aws-privatelink-endpoint-types}
 
-ClickPipes 反向私有端点可以通过以下 AWS PrivateLink 方式之一进行配置:
+ClickPipes 反向私有端点可以使用以下 AWS PrivateLink 方式之一进行配置:
 
 - [VPC 资源](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)
 - [MSK ClickPipe 的 MSK 多 VPC 连接](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
@@ -48,8 +48,8 @@ ClickPipes 反向私有端点可以通过以下 AWS PrivateLink 方式之一进�
 
 您可以通过 [PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html) 在 ClickPipes 中访问 VPC 资源。此方式无需在数据源前设置负载均衡器。
 
-资源配置可以指定特定主机或 RDS 集群 ARN。
-不支持跨区域访问。
+资源配置可以针对特定主机或 RDS 集群 ARN。
+不支持跨区域。
 
 对于从 RDS 集群摄取数据的 Postgres CDC,这是首选方式。
 
@@ -66,7 +66,7 @@ ClickPipes 反向私有端点可以通过以下 AWS PrivateLink 方式之一进�
 资源网关是接收 VPC 中指定资源流量的接入点。
 
 :::note
-建议您的资源网关所附加的子网具有足够的可用 IP 地址。
+建议您的资源网关附加的子网具有足够的可用 IP 地址。
 建议每个子网至少使用 `/26` 子网掩码。
 
 对于每个 VPC 端点(每个反向私有端点),AWS 要求每个子网有连续的 16 个 IP 地址块(`/28` 子网掩码)。
@@ -94,7 +94,7 @@ aws vpc-lattice get-resource-gateway \
 
 #### 创建 VPC 资源配置 {#create-resource-configuration}
 
-资源配置与资源网关关联,使您的资源可被访问。
+资源配置与资源网关关联,以使您的资源可访问。
 
 您可以从 [AWS 控制台](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html)创建资源配置,或使用以下命令:
 
@@ -167,7 +167,7 @@ aws ram create-resource-share \
 有关更多详细信息,请参阅 AWS 指南中的[附加集群策略](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-cluster-owner-action-policy.html)部分。
 :::
 
-请参阅我们的 [MSK 设置指南(用于 ClickPipes)](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) 了解如何设置连接。
+请参阅我们的 [ClickPipes MSK 设置指南](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes)了解如何设置连接。
 
 ### VPC 端点服务 {#vpc-endpoint-service}
 
@@ -252,8 +252,8 @@ VPC 端点服务可以[配置私有 DNS](https://docs.aws.amazon.com/vpc/latest/
 7. 点击 `Create` 并等待反向私有端点就绪。
 
    如果您正在创建新端点,设置端点需要一些时间。
-   端点就绪后页面将自动刷新。
-   VPC 端点服务可能需要在 AWS 控制台中接受连接请求。
+   端点就绪后,页面将自动刷新。
+   VPC 端点服务可能需要在您的 AWS 控制台中接受连接请求。
 
 <Image
   img={cp_rpe_step3}
@@ -267,9 +267,9 @@ VPC 端点服务可以[配置私有 DNS](https://docs.aws.amazon.com/vpc/latest/
    在端点列表中,您可以看到可用端点的 DNS 名称。
    它可以是 ClickPipes 内部预配的 DNS 名称,也可以是 PrivateLink 服务提供的私有 DNS 名称。
    DNS 名称不是完整的网络地址。
-   请根据数据源添加相应的端口。
+   请根据数据源添加端口。
 
-   MSK 连接字符串可在 AWS 控制台中获取。
+   MSK 连接字符串可在 AWS 控制台中访问。
 
    要查看完整的 DNS 名称列表,请在云服务设置中访问。
 
@@ -309,8 +309,8 @@ VPC 端点服务可以[配置私有 DNS](https://docs.aws.amazon.com/vpc/latest/
 
 ## 支持的 AWS 区域 {#aws-privatelink-regions}
 
-ClickPipes 的 AWS PrivateLink 支持仅限于特定的 AWS 区域。
-请参阅 [ClickPipes 区域列表](/integrations/clickpipes#list-of-static-ips)以查看可用区域。
+ClickPipes 对 AWS PrivateLink 的支持仅限于特定的 AWS 区域。
+请参阅 [ClickPipes 区域列表](/integrations/clickpipes#list-of-static-ips)查看可用区域。
 
 此限制不适用于已启用跨区域连接的 PrivateLink VPC 终端节点服务。
 
@@ -321,5 +321,4 @@ ClickPipes 的 AWS PrivateLink 支持仅限于特定的 AWS 区域。
 
 目前,仅 VPC 端点服务支持跨区域连接。
 
-私有端点与特定的 ClickHouse 服务绑定,无法在服务之间转移。
-单个 ClickHouse 服务的多个 ClickPipes 可以重用同一个端点。
+私有端点与特定的 ClickHouse 服务关联,无法在不同服务之间转移。单个 ClickHouse 服务的多个 ClickPipes 可以重用同一端点。

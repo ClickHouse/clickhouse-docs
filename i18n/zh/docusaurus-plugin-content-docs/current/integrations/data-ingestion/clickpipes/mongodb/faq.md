@@ -36,7 +36,7 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 ### 如何在 ClickHouse 中展平嵌套的 MongoDB 文档? {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
-默认情况下,MongoDB 文档在 ClickHouse 中以 JSON 类型复制,保留嵌套结构。您有多种方式来展平这些数据。如果您想将数据展平为列,可以使用普通视图、物化视图或查询时访问。
+默认情况下,MongoDB 文档在 ClickHouse 中以 JSON 类型复制,保留嵌套结构。您有多种选项来展平这些数据。如果您想将数据展平为列,可以使用普通视图、物化视图或查询时访问。
 
 1. **普通视图**:使用普通视图封装展平逻辑。
 2. **物化视图**:对于较小的数据集,您可以使用带有 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier) 的可刷新物化视图来定期展平和去重数据。对于较大的数据集,我们建议使用不带 `FINAL` 的增量物化视图来实时展平数据,然后在查询时去重数据。
@@ -50,11 +50,11 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 ### 如果我从 MongoDB 数据库中删除数据库/表会发生什么? {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
-当您从 MongoDB 中删除数据库/表时,ClickPipes 将继续运行,但已删除的数据库/表将停止复制变更。ClickHouse 中的相应表将被保留。
+当您从 MongoDB 中删除数据库/表时,ClickPipes 将继续运行,但已删除的数据库/表将停止复制更改。ClickHouse 中的相应表将被保留。
 
 ### MongoDB CDC 连接器如何处理事务? {#how-does-mongodb-cdc-connector-handle-transactions}
 
-事务中的每个文档变更都会单独处理并发送到 ClickHouse。变更按照它们在 oplog 中出现的顺序应用;只有已提交的变更才会复制到 ClickHouse。如果 MongoDB 事务被回滚,这些变更不会出现在变更流中。
+事务中的每个文档更改都会单独处理并发送到 ClickHouse。更改按照它们在 oplog 中出现的顺序应用;只有已提交的更改才会复制到 ClickHouse。如果 MongoDB 事务被回滚,这些更改不会出现在变更流中。
 
 有关更多示例,请参阅我们的 [JSON 使用指南](./quickstart)。
 
@@ -64,7 +64,7 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 ### 复制是如何管理的? {#how-is-replication-managed}
 
-我们使用 MongoDB 的原生 Change Streams API 来跟踪数据库中的变更。Change Streams API 通过利用 MongoDB 的 oplog(操作日志)提供可恢复的数据库变更流。ClickPipe 使用 MongoDB 的恢复令牌来跟踪 oplog 中的位置,并确保每个变更都复制到 ClickHouse。
+我们使用 MongoDB 的原生 Change Streams API 来跟踪数据库中的更改。Change Streams API 通过利用 MongoDB 的 oplog(操作日志)提供可恢复的数据库更改流。ClickPipe 使用 MongoDB 的恢复令牌来跟踪 oplog 中的位置,并确保每个更改都复制到 ClickHouse。
 
 ### 我应该使用哪种读取偏好? {#which-read-preference-should-i-use}
 
@@ -73,4 +73,4 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 ### MongoDB ClickPipe 是否支持分片集群？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
 
-是的，MongoDB ClickPipe 同时支持副本集和分片集群。
+是的,MongoDB ClickPipe 支持副本集和分片集群。

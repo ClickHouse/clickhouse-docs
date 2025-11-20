@@ -1,35 +1,35 @@
 ---
 slug: /use-cases/observability/clickstack/ingesting-data/overview
-title: 'ClickStack へのデータ取り込み'
+title: 'ClickStack へのデータの取り込み'
 sidebar_label: '概要'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/ingesting-data/opentelemetry
 description: 'ClickStack へのデータ取り込みの概要'
-doc_type: 'ガイド'
+doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
 import architecture_with_flow from '@site/static/images/use-cases/observability/simple-architecture-with-flow.png';
 
-すべてのデータは、**OpenTelemetry (OTel) collector** を介して ClickStack に取り込まれます。この collector は、ログ、メトリクス、トレース、およびセッションデータの主なエントリポイントとして機能します。
+すべてのデータは、ログ、メトリクス、トレース、セッションデータの主なエントリポイントとして機能する **OpenTelemetry (OTel) コレクター** を介して ClickStack に取り込まれます。
 
 <Image img={architecture_with_flow} alt="フロー付きのシンプルなアーキテクチャ" size="md" />
 
-この collector は、2 つの OTLP エンドポイントを公開します:
+このコレクターは、2 つの OTLP エンドポイントを公開します:
 
 * **HTTP** - ポート `4318`
 * **gRPC** - ポート `4317`
 
-ユーザーは、[language SDKs](/use-cases/observability/clickstack/sdks) から直接、または OTel と互換性のあるデータ収集エージェント (例: インフラストラクチャのメトリクスやログを収集する他の OTel collector など) から、これらのエンドポイントにデータを送信できます。
+ユーザーは、[言語 SDK](/use-cases/observability/clickstack/sdks) から直接、または OTel 互換のデータ収集エージェント（例: インフラストラクチャのメトリクスやログを収集する他の OTel コレクター）から、これらのエンドポイントへデータを送信できます。
 
 より具体的には、次のとおりです。
 
-* [**Language SDKs**](/use-cases/observability/clickstack/sdks) は、アプリケーション内部からのテレメトリ、特に **traces** と **logs** の収集を担当し、このデータを OTLP エンドポイント経由で OpenTelemetry collector にエクスポートします。この collector が ClickHouse への取り込みを処理します。ClickStack で利用可能な language SDKs の詳細については、[SDKs](/use-cases/observability/clickstack/sdks) を参照してください。
+* [**言語 SDK**](/use-cases/observability/clickstack/sdks) は、アプリケーション内部からのテレメトリ、特に **トレース** と **ログ** の収集を担当し、このデータを OTLP エンドポイント経由で OpenTelemetry コレクターにエクスポートします。コレクターは ClickHouse への取り込みを処理します。ClickStack で利用可能な言語 SDK の詳細については、[SDKs](/use-cases/observability/clickstack/sdks) を参照してください。
 
-* **Data collection agents** は、サーバー、Kubernetes ノード、またはアプリケーションのそばなど、エッジにデプロイされるエージェントです。これらはインフラストラクチャのテレメトリ (例: logs、metrics) を収集したり、SDKs でインストルメントされたアプリケーションから直接イベントを受信します。この場合、エージェントはアプリケーションと同じホスト上で、しばしば sidecar や DaemonSet として動作します。これらのエージェントは、中央の ClickStack OTel collector にデータを転送します。この collector は [gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) として機能し、通常、クラスター、データセンター、またはリージョンごとに 1 回デプロイされます。[gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) は、エージェントやアプリケーションから OTLP イベントを受信し、ClickHouse への取り込みを処理します。詳細については [OTel collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) を参照してください。これらのエージェントは、他の OTel collector インスタンスである場合もあれば、[Fluentd](https://www.fluentd.org/) や [Vector](https://vector.dev/) のような別のテクノロジーである場合もあります。
+* **データ収集エージェント** は、サーバー、Kubernetes ノード、またはアプリケーションのサイドなど、エッジにデプロイされるエージェントです。これらはインフラストラクチャのテレメトリ（例: ログ、メトリクス）を収集するか、SDK でインスツルメントされたアプリケーションからイベントを直接受信します。この場合、エージェントはしばしばサイドカーや DaemonSet として、アプリケーションと同じホスト上で動作します。これらのエージェントは、中央の ClickStack OTel コレクターにデータを転送します。これは通常、クラスター、データセンター、またはリージョンごとに 1 度デプロイされる [ゲートウェイ](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) として機能します。[ゲートウェイ](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) は、エージェントやアプリケーションから OTLP イベントを受信し、ClickHouse への取り込みを処理します。詳細については [OTel コレクター](/use-cases/observability/clickstack/ingesting-data/otel-collector) を参照してください。これらのエージェントは、他の OTel コレクターのインスタンスである場合もあれば、[Fluentd](https://www.fluentd.org/) や [Vector](https://vector.dev/) などの別の技術スタックである場合もあります。
 
-:::note OpenTelemetry compatibility
-ClickStack は、拡張されたテレメトリと機能を備えた独自の language SDKs とカスタム OpenTelemetry を提供していますが、ユーザーは既存の OpenTelemetry SDKs やエージェントもシームレスに利用できます。
+:::note OpenTelemetry 互換性
+ClickStack は、拡張されたテレメトリと機能を備えた独自の言語 SDK とカスタム OpenTelemetry コレクターを提供しますが、ユーザーは既存の OpenTelemetry SDK やエージェントもシームレスに利用できます。
 :::

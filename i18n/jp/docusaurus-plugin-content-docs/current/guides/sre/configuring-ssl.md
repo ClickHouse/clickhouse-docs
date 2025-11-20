@@ -3,7 +3,7 @@ slug: /guides/sre/configuring-ssl
 sidebar_label: 'SSL-TLS の設定'
 sidebar_position: 20
 title: 'SSL-TLS の設定'
-description: 'このガイドでは、ClickHouse が接続を検証するために OpenSSL 証明書を使用するよう構成するための、シンプルで最小限の設定を説明します。'
+description: 'このガイドでは、ClickHouse が接続を検証するために OpenSSL 証明書を使用するように設定するための、シンプルで最小限の設定方法を説明します。'
 keywords: ['SSL configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide']
 doc_type: 'guide'
 ---
@@ -13,23 +13,23 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 
 
-# SSL-TLS の設定
+# SSL-TLS の構成
 
 <SelfManaged />
 
-このガイドでは、ClickHouse が接続の検証に OpenSSL 証明書を使用できるように構成するための、シンプルで最小限の設定について説明します。このデモンストレーションでは、自己署名の Certificate Authority (CA) 証明書と鍵を作成し、ノード証明書と組み合わせて、適切な設定で接続を確立します。
+このガイドでは、ClickHouse が接続を検証する際に OpenSSL 証明書を使用するように構成するための、シンプルかつ最小限の設定を示します。このデモンストレーションでは、自己署名の認証局 (CA) 証明書とキーを作成し、ノード証明書と組み合わせて、適切な設定で接続を確立します。
 
 :::note
-TLS の実装は複雑であり、完全に安全で堅牢なデプロイメントを実現するためには、多くのオプションを検討する必要があります。ここでは、基本的な SSL/TLS 設定の例を示すチュートリアルです。組織に適した証明書を発行するには、PKI／セキュリティチームに相談してください。
+TLS の実装は複雑であり、完全に安全かつ堅牢なデプロイを行うには、考慮すべき多くのオプションがあります。ここでは、基本的な SSL/TLS 構成例のみを扱う入門的なチュートリアルです。組織に適した証明書を生成するには、PKI/セキュリティチームに相談してください。
 
-入門として、証明書の利用に関するこの[基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates)を参照してください。
+概要については、この[証明書の利用に関する基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates)を参照してください。
 :::
 
 
 
 ## 1. ClickHouseデプロイメントの作成 {#1-create-a-clickhouse-deployment}
 
-本ガイドは、Ubuntu 20.04を使用し、DEBパッケージ(apt使用)により以下のホストにClickHouseをインストールした環境で作成されています。ドメインは`marsnet.local`です:
+本ガイドは、Ubuntu 20.04を使用し、DEBパッケージ(apt使用)で以下のホストにClickHouseをインストールした環境で作成されています。ドメインは`marsnet.local`です:
 
 | ホスト      | IPアドレス    |
 | --------- | ------------- |
@@ -208,7 +208,7 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
 3. `chnode1`と`chnode2`に以下のクラスタ設定を更新・追加します。`chnode3`はClickHouse Keeperのクォーラムに使用されます。
 
    :::note
-   この構成では、1つのサンプルクラスタのみを設定します。テストサンプルクラスタは削除するか、コメントアウトする必要があります。テスト中の既存のクラスタが存在する場合は、ポートを更新し、`<secure>`オプションを追加する必要があります。`default`ユーザーがインストール時または`users.xml`ファイルでパスワードを持つように初期設定されている場合は、`<user>`と`<password>`を設定する必要があります。
+   この構成では、1つのサンプルクラスタのみを設定します。テストサンプルクラスタは削除するかコメントアウトする必要があります。テスト中の既存クラスタが存在する場合は、ポートを更新し、`<secure>`オプションを追加する必要があります。`default`ユーザーがインストール時または`users.xml`ファイルでパスワードを持つように初期設定されている場合は、`<user>`と`<password>`を設定する必要があります。
    :::
 
    以下は、2つのサーバー上に1つのシャードレプリカを持つクラスタを作成します（各ノードに1つずつ）。
@@ -237,7 +237,7 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
    ```
 
 
-4. テスト用の `ReplicatedMergeTree` テーブルを作成できるように、マクロの値を定義します。`chnode1` 上で次のように設定します:
+4. テスト用に ReplicatedMergeTree テーブルを作成できるよう、マクロの値を定義します。`chnode1` 上で以下を設定します:
     ```xml
     <macros>
         <shard>1</shard>
@@ -245,7 +245,7 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
     </macros>
     ```
 
-    `chnode2` 上でも次のように設定します:
+    `chnode2` 上で以下を設定します:
     ```xml
     <macros>
         <shard>1</shard>
@@ -362,7 +362,7 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
     ```
 
 
-6. MySQL と PostgreSQL のデフォルトのエミュレーションポートを無効にします：
+6. MySQL および PostgreSQL のデフォルトのエミュレーション用ポートを無効化します:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
@@ -378,7 +378,7 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
    service clickhouse-server start
    ```
 
-2. セキュアポートが起動してリスニング状態にあることを確認します。各ノードで以下の例のような出力が表示されるはずです:
+2. セキュアポートが起動してリスニング状態にあることを確認します。各ノードで以下の例のような出力が表示されます:
 
    ```bash
    root@chnode1:/etc/clickhouse-server# netstat -ano | grep tcp
@@ -410,8 +410,8 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
    | 9440            | セキュア Native TCP プロトコル    |
    | 9444            | ClickHouse Keeper Raft ポート   |
 
-3. ClickHouse Keeper のヘルスチェック
-   TLS なしで `echo` を使用した場合、通常の [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) コマンドは動作しません。以下は `openssl` を使用してコマンドを実行する方法です。
+3. ClickHouse Keeper の健全性を確認します
+   一般的な [4文字コマンド (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) は、TLS なしで `echo` を使用しても動作しません。以下は `openssl` でコマンドを使用する方法です。
    - `openssl` で対話型セッションを開始します
 
 
@@ -422,17 +422,17 @@ ClickHouse Keeperの推奨ポートは`9281`です。ただし、環境内の別
 ```response
 CONNECTED(00000003)
 depth=0 CN = chnode1
-verify error:num=20:unable to get local issuer certificate
+verify error:num=20:ローカル発行者の証明書を取得できません
 verify return:1
 depth=0 CN = chnode1
-verify error:num=21:unable to verify the first certificate
+verify error:num=21:最初の証明書を検証できません
 verify return:1
 ---
-Certificate chain
+証明書チェーン
  0 s:CN = chnode1
    i:CN = marsnet.local CA
 ---
-Server certificate
+サーバー証明書
 -----BEGIN CERTIFICATE-----
 MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 ...
@@ -486,13 +486,13 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    clickhouse :)
    ```
 
-5. `https` インターフェース `https://chnode1.marsnet.local:8443/play` から Play UI にログインします。
+5. `https` インターフェイスで `https://chnode1.marsnet.local:8443/play` にアクセスして Play UI にログインします。
 
-   <Image img={configuringSsl01} alt="Configuring SSL" size="md" border />
+   <Image img={configuringSsl01} alt="SSL の構成" size="md" border />
 
    :::note
-   ワークステーションからアクセスしており、証明書がクライアントマシンのルート CA ストアに登録されていないため、ブラウザには信頼されていない証明書として表示されます。
-   公開認証局またはエンタープライズ CA によって発行された証明書を使用する場合は、信頼された証明書として表示されるはずです。
+   ワークステーションからアクセスしており、証明書がクライアントマシンのルート CA ストアに存在しないため、ブラウザには未信頼の証明書として表示されます。
+   公的認証局またはエンタープライズ CA が発行した証明書を使用する場合は、信頼された証明書として表示されるはずです。
    :::
 
 6. レプリケートテーブルを作成します:
@@ -515,7 +515,7 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
    ```
 
-7. `chnode1` 上で数行のデータを追加します:
+7. `chnode1` に 2 行追加します:
    ```sql
    INSERT INTO repl_table
    (id, column1, column2)
@@ -525,7 +525,7 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
    ```
 
 
-8. `chnode2` 上の行を表示してレプリケーションを確認します:
+8. `chnode2` 上の行を表示して、レプリケーションを確認します:
     ```sql
     SELECT * FROM repl_table
     ```
@@ -541,4 +541,4 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 ## Summary {#summary}
 
-本記事では、ClickHouse環境でSSL/TLSを構成する方法について説明しました。本番環境では要件に応じて設定内容が異なります（証明書検証レベル、プロトコル、暗号方式など）。これにより、セキュアな接続の構成と実装に必要な手順について理解を深めることができたはずです。
+本記事では、ClickHouse環境でSSL/TLSを設定する方法について説明しました。本番環境では要件に応じて設定内容が異なります（証明書検証レベル、プロトコル、暗号化方式など）。これにより、安全な接続の設定と実装に必要な手順について理解を深めることができたはずです。

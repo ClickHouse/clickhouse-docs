@@ -1,9 +1,9 @@
 ---
-title: 'AWS 向け BYOC のオンボーディング'
+title: 'AWS向けBYOCオンボーディング'
 slug: /cloud/reference/byoc/onboarding/aws
 sidebar_label: 'AWS'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
-description: 'お客様のクラウドインフラストラクチャ上に ClickHouse をデプロイする'
+description: '自社のクラウドインフラストラクチャにClickHouseをデプロイ'
 doc_type: 'reference'
 ---
 
@@ -23,13 +23,13 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 
 ### AWSアカウントの準備 {#prepare-an-aws-account}
 
-ClickHouse BYOCデプロイメントをホストするための専用AWSアカウントを準備することで、より優れた分離性を確保できます。ただし、共有アカウントや既存のVPCを使用することも可能です。詳細は以下の「_BYOCインフラストラクチャのセットアップ_」を参照してください。
+ClickHouse BYOCデプロイメントをホストするための専用AWSアカウントを準備することで、より優れた分離性を確保できます。ただし、共有アカウントや既存のVPCを使用することも可能です。詳細については、以下の「_BYOCインフラストラクチャのセットアップ_」を参照してください。
 
-このアカウントと初期組織管理者のメールアドレスを用意して、ClickHouseサポートにお問い合わせください。
+このアカウントと初期組織管理者のメールアドレスをご用意の上、ClickHouseサポートまでお問い合わせください。
 
 ### BYOCセットアップの初期化 {#initialize-byoc-setup}
 
-初期BYOCセットアップは、CloudFormationテンプレートまたはTerraformモジュールのいずれかを使用して実行できます。どちらの方法でも同じIAMロールが作成され、ClickHouse CloudのBYOCコントローラーがお客様のインフラストラクチャを管理できるようになります。なお、ClickHouseの実行に必要なS3、VPC、およびコンピュートリソースは、この初期セットアップには含まれていません。
+初期BYOCセットアップは、CloudFormationテンプレートまたはTerraformモジュールのいずれかを使用して実行できます。どちらの方法でも同じIAMロールが作成され、ClickHouse CloudのBYOCコントローラーがお客様のインフラストラクチャを管理できるようになります。なお、ClickHouseの実行に必要なS3、VPC、およびコンピュートリソースは、この初期セットアップには含まれません。
 
 #### CloudFormationテンプレート {#cloudformation-template}
 
@@ -54,7 +54,7 @@ CloudFormationスタックを作成した後、クラウドコンソールから
 
 - **使用するリージョン**：ClickHouse Cloudで提供している[パブリックリージョン](/cloud/reference/supported-regions)のいずれかを選択できます。
 - **BYOCのVPC CIDR範囲**：デフォルトでは、BYOC VPCのCIDR範囲として`10.0.0.0/16`を使用します。別のアカウントとのVPCピアリングを使用する予定がある場合は、CIDR範囲が重複しないようにしてください。必要なワークロードに対応するため、最小サイズ`/22`の適切なCIDR範囲をBYOCに割り当ててください。
-- **BYOC VPCのアベイラビリティーゾーン**：VPCピアリングを使用する予定がある場合、ソースアカウントとBYOCアカウント間でアベイラビリティーゾーンを揃えることで、クロスAZトラフィックコストを削減できます。AWSでは、アベイラビリティーゾーンのサフィックス（`a, b, c`）がアカウント間で異なる物理ゾーンIDを表す場合があります。詳細は[AWSガイド](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)を参照してください。
+- **BYOC VPCのアベイラビリティーゾーン**：VPCピアリングを使用する予定がある場合、ソースアカウントとBYOCアカウント間でアベイラビリティーゾーンを揃えることで、クロスAZトラフィックコストを削減できます。AWSでは、アベイラビリティーゾーンのサフィックス（`a, b, c`）がアカウント間で異なる物理ゾーンIDを表す場合があります。詳細については、[AWSガイド](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)を参照してください。
 
 #### お客様管理のVPC {#customer-managed-vpc}
 
@@ -105,13 +105,13 @@ CloudFormationスタックを作成した後、クラウドコンソールから
 - サービスをデプロイするAWSリージョン
 - VPC ID
 - ClickHouse用に割り当てたプライベートサブネットID
-- これらのサブネットが配置されているアベイラビリティゾーン
+- これらのサブネットが配置されているアベイラビリティーゾーン
 
 ### オプション: VPCピアリングの設定 {#optional-setup-vpc-peering}
 
-ClickHouse BYOCのVPCピアリングを作成または削除するには、以下の手順に従ってください:
+ClickHouse BYOC用のVPCピアリングを作成または削除するには、以下の手順に従ってください:
 
-#### ステップ1: ClickHouse BYOCのプライベートロードバランサーを有効化 {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+#### ステップ1: ClickHouse BYOC用のプライベートロードバランサーを有効化 {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
 
 プライベートロードバランサーを有効化するには、ClickHouseサポートに連絡してください。
 
@@ -120,8 +120,8 @@ ClickHouse BYOCのVPCピアリングを作成または削除するには、以�
 1. ClickHouse BYOCアカウントのVPCダッシュボードに移動します。
 2. Peering Connectionsを選択します。
 3. Create Peering Connectionをクリックします。
-4. VPC RequesterをClickHouseのVPC IDに設定します。
-5. VPC AccepterをターゲットとなるVPC IDに設定します。(該当する場合は別のアカウントを選択)
+4. VPC RequesterをClickHouse VPC IDに設定します。
+5. VPC Accepterをターゲット VPC IDに設定します。(該当する場合は別のアカウントを選択)
 6. Create Peering Connectionをクリックします。
 
 <br />
@@ -137,7 +137,7 @@ ClickHouse BYOCのVPCピアリングを作成または削除するには、以�
 
 #### ステップ3: ピアリング接続リクエストの承認 {#step-3-accept-the-peering-connection-request}
 
-ピアリング先のアカウントに移動し、(VPC -> Peering connections -> Actions -> Accept request)ページでこのVPCピアリングリクエストを承認できます。
+ピアリングアカウントに移動し、(VPC -> Peering connections -> Actions -> Accept request)ページでこのVPCピアリングリクエストを承認できます。
 
 <br />
 
@@ -155,7 +155,7 @@ ClickHouse BYOCのVPCピアリングを作成または削除するには、以�
 ClickHouse BYOCアカウントで、
 
 1. VPCダッシュボードでRoute Tablesを選択します。
-2. ClickHouseのVPC IDを検索します。プライベートサブネットに関連付けられた各ルートテーブルを編集します。
+2. ClickHouse VPC IDを検索します。プライベートサブネットに関連付けられている各ルートテーブルを編集します。
 3. RoutesタブのEditボタンをクリックします。
 4. Add another routeをクリックします。
 5. DestinationにターゲットVPCのCIDR範囲を入力します。
@@ -169,7 +169,7 @@ ClickHouse BYOCアカウントで、
 
 #### ステップ5: ターゲットVPCルートテーブルへの宛先追加 {#step-5-add-destination-to-the-target-vpc-route-tables}
 
-ピアリング先のAWSアカウントで、
+ピアリングAWSアカウントで、
 
 1. VPCダッシュボードでRoute Tablesを選択します。
 2. ターゲットVPC IDを検索します。
@@ -184,30 +184,30 @@ ClickHouse BYOCアカウントで、
 
 <br />
 
-#### ステップ6: ピアリングされたVPCアクセスを許可するためのセキュリティグループの編集 {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### ステップ6: ピアリングVPCアクセスを許可するためのセキュリティグループの編集 {#step-6-edit-security-group-to-allow-peered-vpc-access}
 
-ClickHouse BYOCアカウントで、ピアリングされたVPCからのトラフィックを許可するためにセキュリティグループの設定を更新する必要があります。ピアリングされたVPCのCIDR範囲を含むインバウンドルールの追加を依頼するには、ClickHouseサポートに連絡してください。
+ClickHouse BYOCアカウントで、ピアリングVPCからのトラフィックを許可するためにセキュリティグループの設定を更新する必要があります。ピアリングVPCのCIDR範囲を含むインバウンドルールの追加を依頼するには、ClickHouseサポートに連絡してください。
 
 ---
 
-これでClickHouseサービスがピアリングされたVPCからアクセス可能になります。
+これでClickHouseサービスがピアリングVPCからアクセス可能になります。
 
-ClickHouseにプライベートアクセスするために、ユーザーのピアリングされたVPCからの安全な接続のためにプライベートロードバランサーとエンドポイントがプロビジョニングされます。プライベートエンドポイントは、パブリックエンドポイントの形式に`-private`サフィックスを付けた形式になります。例:
+ClickHouseにプライベートアクセスするために、ユーザーのピアリングVPCからの安全な接続用にプライベートロードバランサーとエンドポイントがプロビジョニングされます。プライベートエンドポイントは、パブリックエンドポイントの形式に`-private`サフィックスを付けたものになります。例:
 
 - **パブリックエンドポイント**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 - **プライベートエンドポイント**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
-オプションとして、ピアリングが正常に動作していることを確認した後、ClickHouse BYOCのパブリックロードバランサーの削除を依頼できます。
+オプションとして、ピアリングが正常に動作していることを確認した後、ClickHouse BYOC用のパブリックロードバランサーの削除を依頼できます。
 
 
 ## アップグレードプロセス {#upgrade-process}
 
 ClickHouseデータベースのバージョンアップグレード、ClickHouse Operator、EKS、その他のコンポーネントを含むソフトウェアを定期的にアップグレードしています。
 
-シームレスなアップグレード(ローリングアップグレードや再起動など)を目指していますが、ClickHouseバージョンの変更やEKSノードのアップグレードなど、一部のアップグレードはサービスに影響を与える可能性があります。お客様はメンテナンスウィンドウ(例:毎週火曜日午前1:00 PDT)を指定することで、このようなアップグレードをスケジュールされた時間内にのみ実行することができます。
+シームレスなアップグレード(ローリングアップグレードや再起動など)を目指していますが、ClickHouseバージョンの変更やEKSノードのアップグレードなど、一部のアップグレードはサービスに影響を与える可能性があります。お客様はメンテナンスウィンドウ(例:毎週火曜日午前1時PDT)を指定することで、このようなアップグレードをスケジュールされた時間内にのみ実行することができます。
 
 :::note
-メンテナンスウィンドウはセキュリティおよび脆弱性の修正には適用されません。これらは定期外アップグレードとして処理され、適切な時間を調整し運用への影響を最小限に抑えるため、タイムリーに連絡が行われます。
+メンテナンスウィンドウはセキュリティおよび脆弱性の修正には適用されません。これらは定期外アップグレードとして処理され、適切な時間を調整し運用への影響を最小限に抑えるため、タイムリーなコミュニケーションが行われます。
 :::
 
 
@@ -256,25 +256,25 @@ CloudFormationで作成される`ClickHouseManagementRole`に加えて、コン�
 - **パブリック**: パブリックインターネットからアクセス可能なネットワークエンドポイント。
 - **プライベート**: VPCピアリング、VPC Private Link、Tailscaleなどのプライベート接続を通じてのみアクセス可能なネットワークエンドポイント。
 
-**Istio ingressはAWS NLBの背後にデプロイされ、ClickHouseクライアントトラフィックを受け入れます。**
+**Istio ingressは、ClickHouseクライアントトラフィックを受け入れるためにAWS NLBの背後にデプロイされています。**
 
 _インバウンド、パブリック（プライベート可）_
 
 Istio ingressゲートウェイはTLSを終端します。Let's Encryptを使用してCertManagerによってプロビジョニングされた証明書は、EKSクラスター内にシークレットとして保存されます。IstioとClickHouse間のトラフィックは、同じVPC内に存在するため[AWSによって暗号化](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types)されます。
 
-デフォルトでは、ingressはIP許可リストフィルタリングによりパブリックにアクセス可能です。顧客はVPCピアリングを設定してプライベートにし、パブリック接続を無効にすることができます。アクセスを制限するために[IPフィルター](/cloud/security/setting-ip-filters)の設定を強く推奨します。
+デフォルトでは、ingressはIP許可リストフィルタリングを使用してパブリックにアクセス可能です。顧客はVPCピアリングを設定してプライベートにし、パブリック接続を無効にすることができます。アクセスを制限するために[IPフィルター](/cloud/security/setting-ip-filters)の設定を強く推奨します。
 
 ### トラブルシューティングアクセス {#troubleshooting-access}
 
 _インバウンド、パブリック（プライベート可）_
 
-ClickHouse Cloudのエンジニアは、Tailscale経由でのトラブルシューティングアクセスを必要とします。BYOCデプロイメントに対しては、ジャストインタイムの証明書ベース認証がプロビジョニングされます。
+ClickHouse Cloudのエンジニアは、Tailscale経由でトラブルシューティングアクセスを必要とします。BYOCデプロイメントに対しては、ジャストインタイムの証明書ベース認証がプロビジョニングされます。
 
 ### 課金スクレイパー {#billing-scraper}
 
 _アウトバウンド、プライベート_
 
-課金スクレイパーはClickHouseから課金データを収集し、ClickHouse Cloudが所有するS3バケットに送信します。
+課金スクレイパーは、ClickHouseから課金データを収集し、ClickHouse Cloudが所有するS3バケットに送信します。
 
 これはClickHouseサーバーコンテナと並行してサイドカーとして実行され、定期的にCPUとメモリのメトリクスをスクレイピングします。同一リージョン内のリクエストは、VPCゲートウェイサービスエンドポイントを経由してルーティングされます。
 
@@ -290,4 +290,4 @@ AlertManagerは、顧客のClickHouseクラスターが正常でない場合にC
 
 _アウトバウンド_
 
-State ExporterはClickHouseサービスの状態情報を、ClickHouse Cloudが所有するSQSに送信します。
+State Exporterは、ClickHouseサービスの状態情報をClickHouse Cloudが所有するSQSに送信します。

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/get-started/cloud/resource-tour
 title: 'リソースツアー'
-description: 'クエリ最適化、スケーリング戦略、監視、ベストプラクティスに関する ClickHouse Cloud ドキュメントリソースの概要'
+description: 'クエリ最適化、スケーリング戦略、モニタリング、およびベストプラクティスに関する ClickHouse Cloud ドキュメントリソースの概要'
 keywords: ['clickhouse cloud']
 hide_title: true
 doc_type: 'guide'
@@ -14,23 +14,24 @@ import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_
 
 # リソースツアー
 
-この記事では、ClickHouse Cloud のデプロイメントを最大限に活用するために、
+この記事では、ClickHouse Cloud デプロイメントを最大限に活用するために、
 ドキュメント内で利用できる各種リソースの概要を紹介します。
-以下のトピックごとに整理されたリソースを参照してください：
+以下のトピック別に整理されたリソースを参照してください。
 
 - [クエリ最適化手法とパフォーマンスチューニング](#query-optimization)
-- [監視](#monitoring)
+- [モニタリング](#monitoring)
 - [セキュリティのベストプラクティスとコンプライアンス機能](#security)
 - [コスト最適化と課金](#cost-optimization)
 
-より具体的なトピックに進む前に、まずは一般的な ClickHouse ベストプラクティスガイドに目を通すことをおすすめします。このガイドでは、
-ClickHouse を使用する際に従うべき共通のベストプラクティスを解説しています：
+より具体的なトピックに進む前に、まずは ClickHouse の一般的なベストプラクティスをまとめた
+ガイドから読み始めることをおすすめします。これらのガイドでは、ClickHouse を使用する際に
+従うべき一般的なベストプラクティスを解説しています。
 
 <TableOfContentsBestPractices />
 
 
 
-## クエリ最適化手法とパフォーマンスチューニング {#query-optimization}
+## クエリ最適化技術とパフォーマンスチューニング {#query-optimization}
 
 <TableOfContentsOptimizationAndPerformance />
 
@@ -39,9 +40,9 @@ ClickHouse を使用する際に従うべき共通のベストプラクティス
 
 | ページ                                                                       | 説明                                                                   |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| [Advanced dashboard](/cloud/manage/monitor/advanced-dashboard)             | 組み込みの高度なダッシュボードを使用してサービスの健全性とパフォーマンスを監視する |
-| [Prometheus integration](/integrations/prometheus)                         | Prometheusを使用してCloudサービスを監視する                                      |
-| [Cloud Monitoring Capabilities](/use-cases/observability/cloud-monitoring) | 組み込みのモニタリング機能と統合オプションの概要を確認する   |
+| [Advanced dashboard](/cloud/manage/monitor/advanced-dashboard)             | 組み込みの高度なダッシュボードを使用してサービスの状態とパフォーマンスを監視します |
+| [Prometheus integration](/integrations/prometheus)                         | Prometheusを使用してCloudサービスを監視します                                      |
+| [Cloud Monitoring Capabilities](/use-cases/observability/cloud-monitoring) | 組み込みのモニタリング機能と統合オプションの概要を確認します   |
 
 
 ## セキュリティ {#security}
@@ -53,5 +54,5 @@ ClickHouse を使用する際に従うべき共通のベストプラクティス
 
 | ページ                                                 | 説明                                                                                               |
 | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| [データ転送](/cloud/manage/network-data-transfer) | ClickHouse Cloudがインバウンドおよびアウトバウンドで転送されるデータを計測する方法について理解する                                |
-| [通知](/cloud/notifications)                | ClickHouse Cloudサービスの通知を設定します。例えば、クレジット使用量がしきい値を超えた場合などに通知を受け取ることができます |
+| [データ転送](/cloud/manage/network-data-transfer) | ClickHouse Cloudがイングレスおよびエグレスのデータ転送量を計測する仕組みを理解する                                |
+| [通知](/cloud/notifications)                | ClickHouse Cloudサービスの通知を設定する。例：クレジット使用量が閾値を超えた場合 |

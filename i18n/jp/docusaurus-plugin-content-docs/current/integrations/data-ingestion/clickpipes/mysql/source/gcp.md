@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Cloud SQL For MySQL '
-description: 'ClickPipes のソースとして Cloud SQL for MySQL を設定するためのステップバイステップガイド'
+description: 'Cloud SQL for MySQL を ClickPipes のソースとして設定するための手順ガイド'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL ソース設定ガイド'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 # Cloud SQL for MySQL ソースセットアップガイド
 
-このガイドでは、MySQL ClickPipe を使用してデータをレプリケートできるように、Cloud SQL for MySQL インスタンスを構成する手順をステップバイステップで説明します。
+このドキュメントは、MySQL ClickPipe を使用してデータをレプリケートするために、Cloud SQL for MySQL インスタンスを構成する手順をステップバイステップで説明したガイドです。
 
 
 
@@ -26,21 +26,21 @@ import Image from '@theme/IdealImage';
 
 バイナリログは、MySQLサーバーインスタンスに対して行われたデータ変更に関する情報を含むログファイルのセットです。バイナリログファイルはレプリケーションに必要です。
 
-### PITRを使用したバイナリログの有効化{#enable-binlog-logging-gcp}
+### PITRを使用したバイナリロギングの有効化{#enable-binlog-logging-gcp}
 
-PITR機能は、Google CloudのMySQLでバイナリログを有効にするか無効にするかを制御します。Cloud SQLインスタンスを編集し、以下のセクションまでスクロールすることで、Cloudコンソールから設定できます。
+PITR機能は、Google CloudのMySQLでバイナリロギングのオン/オフを制御します。この設定は、Cloud SQLインスタンスを編集し、以下のセクションまでスクロールすることで、Cloudコンソールから行えます。
 
-<Image img={gcp_pitr} alt='Cloud SQLでPITRを有効化' size='lg' border />
+<Image img={gcp_pitr} alt='Cloud SQLでPITRを有効にする' size='lg' border />
 
 レプリケーションのユースケースに応じて、十分に長い値を設定することを推奨します。
 
 まだ設定されていない場合は、Cloud SQLを編集してデータベースフラグセクションで以下を設定してください:
 
-1. `binlog_expire_logs_seconds` を `86400`(1日)以上の値に設定
-2. `binlog_row_metadata` を `FULL` に設定
-3. `binlog_row_image` を `FULL` に設定
+1. `binlog_expire_logs_seconds`を`86400`以上の値(1日)に設定
+2. `binlog_row_metadata`を`FULL`に設定
+3. `binlog_row_image`を`FULL`に設定
 
-これを行うには、インスタンス概要ページの右上にある `Edit` ボタンをクリックします。
+これを行うには、インスタンス概要ページの右上にある`Edit`ボタンをクリックします。
 
 <Image
   img={gcp_mysql_edit_button}
@@ -49,11 +49,11 @@ PITR機能は、Google CloudのMySQLでバイナリログを有効にするか�
   border
 />
 
-次に、`Flags` セクションまでスクロールし、上記のフラグを追加します。
+次に、`Flags`セクションまでスクロールして、上記のフラグを追加します。
 
 <Image
   img={gcp_mysql_flags}
-  alt='GCPでのbinlogフラグの設定'
+  alt='GCPでbinlogフラグを設定'
   size='lg'
   border
 />
@@ -69,7 +69,7 @@ rootユーザーとしてCloud SQL MySQLインスタンスに接続し、以下�
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
    ```
 
-2. スキーマ権限を付与します。以下の例は`clickpipes`データベースに対する権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返します:
+2. スキーマ権限を付与します。以下の例は`clickpipes`データベースの権限を示しています。レプリケートする各データベースとホストに対してこれらのコマンドを繰り返します:
 
    ```sql
    GRANT SELECT ON `clickpipes`.* TO 'clickpipes_user'@'host';
@@ -86,9 +86,9 @@ rootユーザーとしてCloud SQL MySQLインスタンスに接続し、以下�
 ## ネットワークアクセスの設定 {#configure-network-access-gcp-mysql}
 
 Cloud SQLインスタンスへのトラフィックを制限したい場合は、[ドキュメント化された静的NAT IP](../../index.md#list-of-static-ips)をCloud SQL MySQLインスタンスの許可リストIPに追加してください。
-これは、インスタンスを編集するか、Cloudコンソールのサイドバーにある`Connections`タブから実行できます。
+これは、インスタンスを編集するか、Cloudコンソールのサイドバーにある`Connections`タブに移動することで実行できます。
 
-<Image img={gcp_mysql_ip} alt='GCP MySQLでのIP許可リスト設定' size='lg' border />
+<Image img={gcp_mysql_ip} alt='GCP MySQLにおけるIP許可リスト' size='lg' border />
 
 
 ## ルートCA証明書のダウンロードと使用 {#download-root-ca-certificate-gcp-mysql}

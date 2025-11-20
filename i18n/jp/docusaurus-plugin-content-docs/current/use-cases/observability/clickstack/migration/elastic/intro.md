@@ -1,11 +1,11 @@
 ---
 slug: /use-cases/observability/clickstack/migration/elastic/intro
-title: 'Elastic から ClickStack への移行'
+title: 'ElasticからClickStackへの移行'
 pagination_prev: null
 pagination_next: null
 sidebar_label: '概要'
 sidebar_position: 0
-description: 'Elastic から ClickHouse Observability Stack への移行の概要'
+description: 'ElasticからClickHouse Observability Stackへ移行する際の概要'
 show_related_blogs: true
 keywords: ['Elasticsearch']
 doc_type: 'guide'
@@ -15,13 +15,13 @@ doc_type: 'guide'
 
 ## ElasticからClickStackへの移行 {#migrating-to-clickstack-from-elastic}
 
-本ガイドは、Elastic Stackから移行するユーザー、特にElastic Agent経由で収集しElasticsearchに保存されたログ、トレース、メトリクスの監視にKibanaを使用しているユーザーを対象としています。ClickStackにおける同等の概念とデータ型を概説し、KibanaのLuceneベースのクエリをHyperDXの構文に変換する方法を説明し、スムーズな移行のためのデータとエージェントの両方の移行に関するガイダンスを提供します。
+本ガイドは、Elastic Stackから移行するユーザー、特にElastic Agent経由で収集しElasticsearchに保存されたログ、トレース、メトリクスを監視するためにKibanaを使用しているユーザーを対象としています。ClickStackにおける同等の概念とデータ型を概説し、KibanaのLuceneベースのクエリをHyperDXの構文に変換する方法を説明し、スムーズな移行のためのデータとエージェントの両方の移行に関するガイダンスを提供します。
 
 移行を開始する前に、ClickStackとElastic Stackのトレードオフを理解することが重要です。
 
 以下の場合、ClickStackへの移行を検討すべきです:
 
-- 大量のオブザーバビリティデータを取り込んでおり、非効率的な圧縮とリソース使用率の低さによりElasticのコストが高すぎると感じている場合。ClickStackはストレージとコンピュートコストを大幅に削減でき、生データに対して少なくとも10倍の圧縮を提供します。
+- 大量のオブザーバビリティデータを取り込んでおり、非効率的な圧縮とリソース利用率の低さによりElasticのコストが高すぎると感じている場合。ClickStackはストレージとコンピュートコストを大幅に削減でき、生データに対して少なくとも10倍の圧縮率を実現します。
 - 大規模環境での検索パフォーマンスが低い、または取り込みのボトルネックに直面している場合。
 - SQLを使用してオブザーバビリティシグナルとビジネスデータを関連付け、オブザーバビリティと分析ワークフローを統合したい場合。
 - OpenTelemetryにコミットしており、ベンダーロックインを回避したい場合。

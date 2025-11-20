@@ -2,7 +2,7 @@
 title: 'Установка chDB для Python'
 sidebar_label: 'Python'
 slug: /chdb/install/python
-description: 'Установка chDB для Python'
+description: 'Как установить chDB для Python'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
@@ -35,7 +35,7 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 ```
 
 
-# Запрос с указанием формата
+# Запрос с форматированием
 
 python3 -m chdb &quot;SELECT version()&quot; JSON
 
@@ -64,20 +64,20 @@ print(f&quot;Время выполнения: {result.elapsed()} секунд&qu
 
 ### API на основе соединений (рекомендуется) {#connection-based-api}
 
-Для более эффективного управления ресурсами и повышения производительности:
+Для лучшего управления ресурсами и производительности:
 
 ```python
 import chdb
 ````
 
 
-# Создать подключение (по умолчанию в памяти)
+# Создать соединение (по умолчанию в памяти)
 conn = chdb.connect(":memory:")
 # Или использовать файловое хранилище: conn = chdb.connect("mydata.db")
 
 
 
-# Создаём курсор для выполнения запроса
+# Создаем курсор для выполнения запроса
 cur = conn.cursor()
 
 
@@ -87,19 +87,19 @@ cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3"
 
 
 
-# Получение результатов разными способами
+# Получение результатов различными способами
 print(cur.fetchone())    # Одна строка: (0, '0')
 print(cur.fetchmany(2))  # Несколько строк: ((1, '1'), (2, '2'))
 
 
 
-# Получение метаданных
+# Получить метаданные
 print(cur.column_names())  # ['number', 'str']
 print(cur.column_types())  # ['UInt64', 'String']
 
 
 
-# Использование курсора в качестве итератора
+# Использование курсора как итератора
 for row in cur:
     print(row)
 
@@ -139,7 +139,7 @@ result = chdb.query("""
 
 
 
-# Запрос к CSV-файлу с заголовками
+# Запрос к CSV с заголовками
 result = chdb.query("""
     SELECT * FROM file('data.csv', CSVWithNames) 
     WHERE column1 > 100
@@ -179,14 +179,14 @@ print(json_result)
 
 
 
-# Красивый формат для отладки
+# Формат Pretty для отладки
 
 pretty&#95;result = chdb.query(&#39;SELECT * FROM system.numbers LIMIT 3&#39;, &#39;Pretty&#39;)
 print(pretty&#95;result)
 
 ````
 
-### Операции DataFrame {#dataframe-operations}
+### Операции с DataFrame {#dataframe-operations}
 
 #### Устаревший API DataFrame {#legacy-dataframe-api}
 
@@ -209,7 +209,7 @@ tbl2=df2
 print(result_df)
 
 
-# Выполнение запроса к результирующему DataFrame
+# Запрос к результирующему DataFrame
 
 summary = result&#95;df.query(&#39;SELECT b, sum(a) FROM **table** GROUP BY b&#39;)
 print(summary)
@@ -225,7 +225,7 @@ import pyarrow as pa
 ````
 
 
-# Непосредственное выполнение запросов к DataFrame Pandas
+# Прямой запрос к DataFrame библиотеки Pandas
 
 df = pd.DataFrame({
 "customer_id": [1, 2, 3, 1, 2],
@@ -241,7 +241,7 @@ df = pd.DataFrame({
 })
 
 
-# Прямой запрос к DataFrame с поддержкой JSON
+# Прямые запросы к DataFrame с поддержкой JSON
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -255,7 +255,7 @@ result = chdb.query("""
 
 
 
-# Query Arrow Table
+# Запрос к таблице Arrow
 
 arrow_table = pa.table({
 "id": [1, 2, 3, 4],
@@ -271,7 +271,7 @@ ORDER BY score DESC
 
 ````
 
-### Stateful sessions {#stateful-sessions}
+### Сессии с сохранением состояния {#stateful-sessions}
 
 Сессии сохраняют состояние запросов между операциями, что позволяет реализовывать сложные рабочие процессы:
 
@@ -286,7 +286,7 @@ sess = session.Session()
 
 
 
-# Или постоянная сессия с указанным путём
+# Или постоянная сессия с указанным путем
 # sess = session.Session("/path/to/data")
 
 
@@ -317,7 +317,7 @@ sess.query("""
 
 
 
-# Создание материализованного представления
+# Создать материализованные представления
 sess.query("""
     CREATE MATERIALIZED VIEW daily_sales AS
     SELECT 
@@ -330,15 +330,15 @@ sess.query("""
 
 
 
-# Выполнить запрос к представлению
+# Запрос к представлению
 result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
 print(result)
 
 
 
-# Session автоматически управляет ресурсами
+# Сессия автоматически управляет ресурсами
 
-sess.close()  # Необязателен — автоматически закрывается при удалении объекта
+sess.close()  # Необязательно — автоматически закрывается при удалении объекта
 
 ```
 
@@ -370,15 +370,15 @@ SETTINGS max&#95;threads = 4
 
 ### Интерфейс Python DB-API 2.0 {#python-db-api-20}
 
-Стандартный интерфейс базы данных для обеспечения совместимости с существующими приложениями на Python:
+Стандартный интерфейс для работы с базой данных, обеспечивающий совместимость с существующими приложениями на Python:
 
 ```python
 import chdb.dbapi as dbapi
 ````
 
 
-# Проверка сведений о драйвере
-print(f"chDB driver version: {dbapi.get_client_info()}")
+# Проверка информации о драйвере
+print(f"Версия драйвера chDB: {dbapi.get_client_info()}")
 
 
 
@@ -434,7 +434,7 @@ data
 
 ### Пользовательские функции (UDF) {#user-defined-functions}
 
-Расширение SQL с помощью пользовательских функций Python:
+Расширьте возможности SQL с помощью пользовательских функций Python:
 
 #### Базовое использование UDF {#basic-udf-usage}
 
@@ -458,7 +458,7 @@ def reverse_string(text):
 
 
 
-# Функция обработки JSON  
+# Функция для обработки JSON  
 @chdb_udf()
 def extract_json_field(json_str, field):
     import json
@@ -499,11 +499,11 @@ def calculate_bmi(height_str, weight_str):
 
 # UDF для проверки данных
 
-@chdb_udf(return_type="UInt8")
+@chdb*udf(return_type="UInt8")
 def is_valid_email(email):
-    import re
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return 1 if re.match(pattern, email) else 0
+import re
+pattern = r'^[a-zA-Z0-9.*%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+return 1 if re.match(pattern, email) else 0
 
 
 # Использование в сложных запросах
@@ -578,7 +578,7 @@ sess = session.Session()
 ````
 
 
-# Подготовка крупного набора данных
+# Создание большого набора данных
 sess.query("""
     CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
@@ -587,15 +587,15 @@ sess.query("""
 
 
 
-# Пример 1: Базовая потоковая обработка с менеджером контекста
+# Пример 1: Базовая потоковая передача с контекстным менеджером
 total_rows = 0
 with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
     for chunk in stream:
         chunk_rows = len(chunk.data().split('\n')) - 1
         total_rows += chunk_rows
-        print(f"Обработан фрагмент: {chunk_rows} строк(и)")
+        print(f"Обработан фрагмент: {chunk_rows} строк")
         
-        # При необходимости — досрочное завершение
+        # Досрочное завершение при необходимости
         if total_rows > 100000:
             break
 
@@ -603,7 +603,7 @@ print(f"Всего обработано строк: {total_rows}")
 
 
 
-# Пример 2: Ручная итерация с явным освобождением ресурсов
+# Пример 2: Ручная итерация с явной очисткой ресурсов
 stream = sess.send_query("SELECT * FROM large_data WHERE id % 100 = 0", "JSONEachRow")
 processed_count = 0
 
@@ -615,12 +615,12 @@ while True:
     # Обработка данных фрагмента
     lines = chunk.data().strip().split('\n')
     for line in lines:
-        if line:  # Пропустить пустые строки
+        if line:  # Пропуск пустых строк
             processed_count += 1
     
-    print(f"Processed {processed_count} records so far...")
+    print(f"Обработано {processed_count} записей...")
     
-stream.close()  # Важно: явное освобождение ресурсов
+stream.close()  # Важно: явная очистка ресурсов
 
 
 
@@ -635,7 +635,7 @@ stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
 
 
-# Создание RecordBatchReader с пользовательским размером пакета
+# Создание RecordBatchReader с заданным размером пакета
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
 
@@ -655,7 +655,7 @@ sess.close()
 
 ### Движок таблиц Python {#python-table-engine}
 
-#### Запросы к Pandas DataFrame {#query-pandas-dataframes}
+#### Запросы к Pandas DataFrames {#query-pandas-dataframes}
 
 ```python
 import chdb
@@ -679,7 +679,7 @@ df = pd.DataFrame({
 })
 
 
-# Расширенные запросы с операциями над JSON
+# Продвинутые запросы с операциями JSON
 result = chdb.query("""
     SELECT 
         customer_name,
@@ -701,7 +701,7 @@ result = chdb.query("""
 
 
 
-# Оконные функции для DataFrames
+# Оконные функции в DataFrames
 
 window&#95;result = chdb.query(&quot;&quot;&quot;
 SELECT
@@ -787,7 +787,7 @@ import chdb
 ````
 
 
-# DataFrame со смешанными JSON-объектами
+# DataFrame со смешанными объектами JSON
 
 df_with_json = pd.DataFrame({
 "user_id": [1, 2, 3, 4],
@@ -800,7 +800,7 @@ df_with_json = pd.DataFrame({
 })
 
 
-# Управление определением JSON с помощью настроек
+# Управление определением типов JSON с помощью настроек
 result = chdb.query("""
     SELECT 
         user_id,
@@ -815,7 +815,7 @@ print(result)
 
 
 
-# Расширенные операции с JSON
+# Продвинутые операции с JSON
 
 complex&#95;json = chdb.query(&quot;&quot;&quot;
 SELECT
@@ -875,14 +875,14 @@ fast_result = chdb.query("""
 
 
 
-# 3. Используйте стриминг для больших наборов данных
+# 3. Используйте потоковую обработку для больших наборов данных
 from chdb import session
 
 sess = session.Session()
 
 
 
-# Подготовка большого набора данных
+# Создание большого набора данных
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -894,7 +894,7 @@ sess.query("""
 
 
 
-# Потоковая обработка с постоянным объёмом памяти
+# Потоковая обработка с постоянным потреблением памяти
 total_amount = 0
 processed_rows = 0
 
@@ -908,7 +908,7 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
                 total_amount += row['total']
                 processed_rows += 1
         
-        print(f"Обработано {processed_rows} записей о клиентах, текущая сумма: {total_amount}")
+        print(f"Обработано {processed_rows} записей клиентов, промежуточная сумма: {total_amount}")
         
         # Досрочное завершение для демонстрации
         if processed_rows > 1000:
@@ -918,18 +918,18 @@ print(f"Итоговый результат: обработано {processed_row
 
 
 
-# Потоковая передача во внешние системы (например, Delta Lake)
+# Потоковая передача данных во внешние системы (например, Delta Lake)
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
 
 
-# Обработка по пакетам
+# Обработка пакетами
 
 for batch in batch&#95;reader:
-print(f&quot;Обработка пакета из {batch.num_rows} строк...&quot;)
+print(f&quot;Обработка пакета с {batch.num_rows} строками...&quot;)
 
-# Преобразовать или экспортировать каждый пакет
+# Преобразование или экспорт каждого пакета
 
 # df&#95;batch = batch.to&#95;pandas()
 

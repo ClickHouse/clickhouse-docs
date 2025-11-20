@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Приёмник ClickHouse для Kafka в Confluent Cloud'
+sidebar_label: 'Kafka Connector Sink на Confluent Cloud'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: 'Руководство по использованию полностью управляемого приёмника ClickHouse (Sink) в Confluent Cloud'
+description: 'Руководство по использованию полностью управляемого коннектора ClickHouse Sink на Confluent Cloud'
 title: 'Интеграция Confluent Cloud с ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -16,7 +16,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 
 
-# Интеграция ClickHouse с Confluent Cloud
+# Интеграция Confluent Cloud с ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -34,7 +34,7 @@ import Image from '@theme/IdealImage';
 
 ## Предварительные требования {#prerequisites}
 
-Предполагается, что вы знакомы со следующим:
+Предполагается, что вы знакомы с:
 
 - [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 - Confluent Cloud
@@ -48,8 +48,8 @@ import Image from '@theme/IdealImage';
 
 #### Важные замечания {#important-notes}
 
-- Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Изменить это поведение можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-- Большее количество партиций не всегда означает более высокую производительность — подробности и рекомендации по производительности см. в нашем предстоящем руководстве.
+- Имя топика Kafka должно совпадать с именем таблицы ClickHouse. Изменить это можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+- Большее количество партиций не всегда означает более высокую производительность — подробности и советы по производительности см. в нашем предстоящем руководстве.
 
 #### Сбор параметров подключения {#gather-your-connection-details}
 
@@ -69,7 +69,7 @@ import Image from '@theme/IdealImage';
 - имя базы данных в ClickHouse, в которую будут записываться данные
 - имя топика в Kafka, который будет использоваться для записи данных в ClickHouse
 
-Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для настройки интервалов опроса, размеров пакетов и других параметров оптимизации производительности.
+Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для настройки интервалов опроса, размеров пакетов и других параметров для оптимизации производительности.
 
 #### Известные ограничения {#known-limitations}
 

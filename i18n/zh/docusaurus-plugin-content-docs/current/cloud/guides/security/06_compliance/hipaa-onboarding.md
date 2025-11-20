@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'HIPAA 入门'
+sidebar_label: 'HIPAA 合规接入'
 slug: /cloud/security/compliance/hipaa-onboarding
-title: 'HIPAA 入门'
-description: '了解如何开始使用符合 HIPAA 要求的服务'
+title: 'HIPAA 合规接入'
+description: '详细了解如何接入符合 HIPAA 合规要求的服务'
 doc_type: 'guide'
 keywords: ['hipaa', 'compliance', 'healthcare', 'security', 'data protection']
 ---
@@ -18,11 +18,11 @@ import hipaa4 from '@site/static/images/cloud/security/compliance/hipaa_4.png';
 
 <EnterprisePlanFeatureBadge feature="HIPAA" />
 
-ClickHouse 提供符合 1996 年《健康保险携带和责任法案》(HIPAA) 安全规则的服务。客户在签署业务伙伴协议 (Business Associate Agreement，BAA) 并将服务部署到合规区域后，可以在这些服务中处理受保护健康信息 (PHI)。
+ClickHouse 提供符合 1996 年《健康信息可携性与责任法案 (HIPAA)》安全规则要求的服务。客户在签署业务伙伴协议 (BAA) 并将服务部署到符合要求的区域后，可以在这些服务中处理受保护的健康信息 (PHI)。
 
-有关 ClickHouse 合规计划以及第三方审计报告可用性的更多信息，请查阅我们的[合规性概览](/cloud/security/compliance-overview)和 [Trust Center](https://trust.clickhouse.com)。此外，客户还应查看我们的[安全功能](/cloud/security)页面，以便为其工作负载选择并实施适当的安全控制措施。
+有关 ClickHouse 合规计划以及第三方审计报告可用性的更多信息，请查阅我们的[合规性概览](/cloud/security/compliance-overview)和 [Trust Center](https://trust.clickhouse.com)。此外，客户还应查阅我们的[安全功能](/cloud/security)页面，以便为其工作负载选择并实施适当的安全控制措施。
 
-本页面介绍在 ClickHouse Cloud 中启用 HIPAA 合规服务部署的流程。
+本页面介绍在 ClickHouse Cloud 中启用部署符合 HIPAA 要求的服务的流程。
 
 
 ## 启用并部署符合 HIPAA 标准的服务 {#enable-hipaa-compliant-services}
@@ -95,12 +95,12 @@ ClickHouse 提供符合 1996 年《健康保险携带和责任法案》(HIPAA) �
 如果需要从标准区域迁移到 HIPAA 合规区域,请按照以下步骤执行自助迁移:
 
 1. 选择要迁移的服务。
-2. 点击左侧的 **备份(Backups)**。
-3. 选择要恢复的备份左侧的三点菜单。
-4. 选择 **区域类型(Region type)** 以将备份恢复到 HIPAA 合规区域。
+2. 点击左侧的 **Backups**。
+3. 选择要恢复的备份左侧的三点图标。
+4. 选择 **Region type** 将备份恢复到 HIPAA 合规区域。
 5. 恢复完成后,运行一些查询以验证架构和记录数是否符合预期。
 6. 删除旧服务。
 
 :::info 限制
-服务必须保持在相同的云服务提供商和地理区域内。此过程会将服务迁移到同一云服务提供商和区域内的合规环境。
+服务必须保持在相同的云提供商和地理区域内。此过程会将服务迁移到同一云提供商和区域内的合规环境。
 :::

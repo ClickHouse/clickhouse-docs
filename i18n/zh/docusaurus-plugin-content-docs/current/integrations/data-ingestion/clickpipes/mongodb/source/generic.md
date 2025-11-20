@@ -9,11 +9,11 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 
 
 
-# 通用 MongoDB 源配置指南
+# 通用 MongoDB Source 设置指南
 
 :::info
 
-如果你使用 MongoDB Atlas，请参考[此处](./atlas)的专用指南。
+如果你使用 MongoDB Atlas，请参考[此指南](./atlas)。
 
 :::
 
@@ -21,9 +21,9 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 
 ## 启用 oplog 保留 {#enable-oplog-retention}
 
-复制功能要求 oplog 保留时间至少为 24 小时。我们建议将 oplog 保留时间设置为 72 小时或更长,以确保在完成初始快照之前 oplog 不会被截断。
+复制功能要求 oplog 至少保留 24 小时。我们建议将 oplog 保留时间设置为 72 小时或更长，以确保在完成初始快照之前 oplog 不会被截断。
 
-您可以在 MongoDB shell 中运行以下命令来检查当前的 oplog 保留时间(运行此命令需要 `clusterMonitor` 角色):
+您可以在 MongoDB shell 中运行以下命令来检查当前的 oplog 保留时间(您必须具有 `clusterMonitor` 角色才能运行此命令):
 
 ```javascript
 db.getSiblingDB("admin").serverStatus().oplogTruncation.oplogMinRetentionHours
@@ -55,12 +55,12 @@ db.getSiblingDB("admin").createUser({
 
 :::note
 
-请务必将 `clickpipes_user` 和 `some_secure_password` 替换为您期望的用户名和密码。
+请确保将 `clickpipes_user` 和 `some_secure_password` 替换为您期望的用户名和密码。
 
 :::
 
 
-## 下一步 {#whats-next}
+## 下一步操作 {#whats-next}
 
-现在您可以[创建 ClickPipe](../index.md),开始将 MongoDB 实例中的数据导入 ClickHouse Cloud。
-请务必记录设置 MongoDB 实例时使用的连接详细信息,创建 ClickPipe 时需要用到这些信息。
+现在您可以[创建 ClickPipe](../index.md),并开始将 MongoDB 实例中的数据导入到 ClickHouse Cloud。
+请务必记录您在设置 MongoDB 实例时使用的连接详细信息,因为在创建 ClickPipe 过程中需要用到这些信息。

@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'ベストプラクティス'
-description: 'Kafka ClickPipes を利用する際に推奨されるベストプラクティスの詳細'
+description: 'Kafka ClickPipes を使用する際のベストプラクティスの詳細'
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'ベストプラクティス'
@@ -15,7 +15,7 @@ keywords: ['kafka best practices', 'clickpipes', 'compression', 'authentication'
 
 ## メッセージ圧縮 {#compression}
 
-Kafkaトピックには圧縮の使用を強く推奨します。圧縮により、パフォーマンスへの影響をほぼ受けることなく、データ転送コストを大幅に削減できます。
+Kafkaトピックには圧縮の使用を強く推奨します。圧縮により、パフォーマンスへの影響をほぼ与えることなく、データ転送コストを大幅に削減できます。
 Kafkaにおけるメッセージ圧縮の詳細については、この[ガイド](https://www.confluent.io/blog/apache-kafka-message-compression/)を参照することをお勧めします。
 
 
@@ -26,12 +26,12 @@ Kafkaにおけるメッセージ圧縮の詳細については、この[ガイ�
 
 ## 配信セマンティクス {#delivery-semantics}
 
-ClickPipes for Kafkaは`at-least-once`配信セマンティクス(最も一般的に使用されるアプローチの1つ)を提供します。配信セマンティクスに関するフィードバックは[お問い合わせフォーム](https://clickhouse.com/company/contact?loc=clickpipes)からお寄せください。exactly-onceセマンティクスが必要な場合は、公式の[`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sinkの使用を推奨します。
+ClickPipes for Kafkaは`at-least-once`配信セマンティクス(最も一般的に使用されるアプローチの1つ)を提供します。配信セマンティクスに関するフィードバックは[お問い合わせフォーム](https://clickhouse.com/company/contact?loc=clickpipes)からお寄せください。exactly-onceセマンティクスが必要な場合は、公式の[`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse)シンクの使用を推奨します。
 
 
 ## 認証 {#authentication}
 
-Apache Kafkaプロトコルのデータソースに対して、ClickPipesはTLS暗号化を使用した[SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html)認証、および`SASL/SCRAM-SHA-256`と`SASL/SCRAM-SHA-512`をサポートしています。ストリーミングソース(Redpanda、MSKなど)に応じて、互換性に基づいてこれらの認証メカニズムのすべてまたは一部が有効になります。認証要件が異なる場合は、[フィードバックをお寄せください](https://clickhouse.com/company/contact?loc=clickpipes)。
+Apache Kafkaプロトコルのデータソースに対して、ClickPipesはTLS暗号化を使用した[SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html)認証、および`SASL/SCRAM-SHA-256`と`SASL/SCRAM-SHA-512`をサポートしています。ストリーミングソース(Redpanda、MSKなど)によって、互換性に基づいてこれらの認証メカニズムのすべてまたは一部が有効になります。認証要件が異なる場合は、[フィードバックをお寄せください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
 ### IAM {#iam}
 
@@ -39,13 +39,13 @@ Apache Kafkaプロトコルのデータソースに対して、ClickPipesはTLS�
 MSK ClickPipeのIAM認証はベータ機能です。
 :::
 
-ClickPipesは以下のAWS MSK認証をサポートしています
+ClickPipesは以下のAWS MSK認証をサポートしています。
 
 - [SASL/SCRAM-SHA-512](https://docs.aws.amazon.com/msk/latest/developerguide/msk-password.html)認証
 - [IAM認証情報またはロールベースアクセス](https://docs.aws.amazon.com/msk/latest/developerguide/how-to-use-iam-access-control.html)認証
 
 IAM認証を使用してMSKブローカーに接続する場合、IAMロールには必要な権限が必要です。
-以下は、MSK用Apache Kafka APIに必要なIAMポリシーの例です:
+以下は、MSK用Apache Kafka APIに必要なIAMポリシーの例です。
 
 ```json
 {
@@ -114,12 +114,12 @@ ClickPipesはデータをバッチ単位でClickHouseに挿入します。これ
 
 バッチは以下のいずれかの条件が満たされた時点で挿入されます:
 
-- バッチサイズが最大サイズに達した場合（100,000行、またはポッドメモリ1GBあたり32MB）
-- バッチが最大時間開かれている場合（5秒）
+- バッチサイズが最大サイズに達した場合(100,000行、またはポッドメモリ1GBあたり32MB)
+- バッチが最大時間開かれている場合(5秒)
 
 ### レイテンシ {#latency}
 
-レイテンシ（Kafkaメッセージが生成されてからClickHouseで利用可能になるまでの時間として定義）は、複数の要因（ブローカーレイテンシ、ネットワークレイテンシ、メッセージサイズ/フォーマットなど）に依存します。上記のセクションで説明した[バッチ処理](#batching)もレイテンシに影響を与えます。想定されるレイテンシを判断するために、典型的な負荷で特定のユースケースをテストすることを常に推奨します。
+レイテンシ(Kafkaメッセージが生成されてからClickHouseで利用可能になるまでの時間として定義)は、複数の要因(ブローカーレイテンシ、ネットワークレイテンシ、メッセージサイズ/フォーマットなど)に依存します。上記のセクションで説明した[バッチ処理](#batching)もレイテンシに影響を与えます。予想されるレイテンシを判断するため、典型的な負荷で特定のユースケースをテストすることを常に推奨します。
 
 ClickPipesはレイテンシに関する保証を提供していません。特定の低レイテンシ要件がある場合は、[お問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
@@ -131,20 +131,20 @@ ClickPipesはアベイラビリティゾーン分散アーキテクチャによ�
 これには少なくとも2つのコンシューマーへのスケーリングが必要です。
 
 実行中のコンシューマー数に関わらず、フォールトトレランスは設計上利用可能です。
-コンシューマーまたはその基盤となるインフラストラクチャに障害が発生した場合、
+コンシューマーまたはその基盤インフラストラクチャに障害が発生した場合、
 ClickPipeは自動的にコンシューマーを再起動し、メッセージの処理を継続します。
 
 ### ベンチマーク {#benchmarks}
 
-以下は、ClickPipes for Kafkaの非公式ベンチマークで、ベースラインパフォーマンスの一般的な目安として使用できます。メッセージサイズ、データ型、データフォーマットなど、多くの要因がパフォーマンスに影響を与える可能性があることを理解することが重要です。結果は環境により異なる場合があり、ここで示す内容は実際のパフォーマンスを保証するものではありません。
+以下は、ClickPipes for Kafkaの非公式ベンチマークであり、ベースラインパフォーマンスの一般的な目安として使用できます。メッセージサイズ、データ型、データフォーマットなど、多くの要因がパフォーマンスに影響を与える可能性があることを理解することが重要です。結果は環境により異なる場合があり、ここで示す内容は実際のパフォーマンスを保証するものではありません。
 
 ベンチマーク詳細:
 
 - ClickHouse側の挿入処理によってスループットがボトルネックにならないよう、十分なリソースを持つ本番環境のClickHouse Cloudサービスを使用しました。
-- ClickHouse Cloudサービス、Kafkaクラスタ（Confluent Cloud）、およびClickPipeはすべて同じリージョン（`us-east-2`）で実行されていました。
-- ClickPipeは単一のLサイズレプリカ（4 GiBのRAMと1 vCPU）で構成されていました。
+- ClickHouse Cloudサービス、Kafkaクラスタ(Confluent Cloud)、およびClickPipeはすべて同じリージョン(`us-east-2`)で実行されていました。
+- ClickPipeは単一のLサイズレプリカ(4 GiBのRAMと1 vCPU)で構成されていました。
 - サンプルデータには、`UUID`、`String`、`Int`データ型が混在したネストされたデータが含まれていました。`Float`、`Decimal`、`DateTime`などの他のデータ型は、パフォーマンスが低下する可能性があります。
-- 圧縮データと非圧縮データを使用した場合のパフォーマンスに顕著な差はありませんでした。
+- 圧縮データと非圧縮データの使用において、パフォーマンスに顕著な差はありませんでした。
 
 | レプリカサイズ | メッセージサイズ | データフォーマット | スループット |
 | ------------ | ------------ | ----------- | ---------- |

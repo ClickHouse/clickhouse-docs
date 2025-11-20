@@ -2,8 +2,8 @@
 sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
-description: 'Mitzu はコード不要でデータウェアハウスネイティブなプロダクト分析アプリケーションです。'
-title: 'Mitzu を ClickHouse に接続する'
+description: 'Mitzuは、ノーコードのウェアハウスネイティブなプロダクト分析アプリケーションです。'
+title: 'MitzuとClickHouseの接続'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -26,19 +26,19 @@ import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Mitzu を ClickHouse に接続する
+# MitzuをClickHouseに接続する
 
 <CommunityMaintainedBadge/>
 
-Mitzu は、ノーコードでデータウェアハウスネイティブなプロダクト分析アプリケーションです。Amplitude、Mixpanel、PostHog のようなツールと同様に、Mitzu を使えば、ユーザーは SQL や Python の専門知識がなくてもプロダクトの利用状況データを分析できます。
+Mitzuは、ノーコードでウェアハウスネイティブなプロダクト分析アプリケーションです。Amplitude、Mixpanel、PostHogなどのツールと同様に、MitzuはSQLやPythonの専門知識がなくてもプロダクトの利用データを分析できます。
 
-しかし、これらのプラットフォームとは異なり、Mitzu は企業のプロダクト利用データを複製しません。その代わりに、企業が既に保有しているデータウェアハウスまたはデータレイク上のデータに対して、ネイティブな SQL クエリを直接生成します。
+ただし、これらのプラットフォームとは異なり、Mitzuは企業のプロダクト利用データを複製しません。代わりに、企業の既存のデータウェアハウスまたはデータレイク上で直接ネイティブSQLクエリを生成します。
 
 
 
 ## 目標 {#goal}
 
-このガイドでは、以下の内容について説明します：
+このガイドでは、以下について説明します:
 
 - ウェアハウスネイティブなプロダクト分析
 - MitzuとClickHouseの統合方法
@@ -48,7 +48,7 @@ Mitzuで使用するデータセットをお持ちでない場合は、NYC Taxi 
 このデータセットはClickHouse Cloudで利用可能です。また、[こちらの手順](/getting-started/example-datasets/nyc-taxi)に従って読み込むこともできます。
 :::
 
-このガイドは、Mitzuの使用方法に関する簡単な概要です。より詳細な情報については、[Mitzuのドキュメント](https://docs.mitzu.io/)を参照してください。
+このガイドは、Mitzuの使用方法に関する簡単な概要です。詳細については、[Mitzuのドキュメント](https://docs.mitzu.io/)を参照してください。
 
 
 ## 1. 接続情報を収集する {#1-gather-your-connection-details}
@@ -58,7 +58,7 @@ Mitzuで使用するデータセットをお持ちでない場合は、NYC Taxi 
 
 ## 2. Mitzuにサインインまたはサインアップする {#2-sign-in-or-sign-up-to-mitzu}
 
-最初のステップとして、[https://app.mitzu.io](https://app.mitzu.io)にアクセスしてサインアップしてください。
+最初のステップとして、[https://app.mitzu.io](https://app.mitzu.io)にアクセスしてサインアップします。
 
 <Image
   size='lg'
@@ -94,34 +94,34 @@ Mitzuで使用するデータセットをお持ちでない場合は、NYC Taxi 
 
 ## 5. イベントテーブルの設定 {#5-configure-event-tables}
 
-接続を保存したら、`Event tables`タブを選択し、`Add table`ボタンをクリックします。モーダルウィンドウで、データベースとMitzuに追加するテーブルを選択します。
+接続が保存されたら、`Event tables`タブを選択し、`Add table`ボタンをクリックします。モーダルで、データベースとMitzuに追加したいテーブルを選択します。
 
-チェックボックスを使用して少なくとも1つのテーブルを選択し、`Configure table`ボタンをクリックします。モーダルウィンドウが開き、各テーブルのキー列を設定できます。
+チェックボックスを使用して少なくとも1つのテーブルを選択し、`Configure table`ボタンをクリックします。これにより、各テーブルのキー列を設定できるモーダルウィンドウが開きます。
 
 <Image
   size='lg'
   img={mitzu_04}
-  alt='データベーステーブルを表示するMitzuテーブル選択インターフェース'
+  alt='データベーステーブルを表示するMitzuのテーブル選択インターフェース'
   border
 />
 <br />
 
 > ClickHouseセットアップでプロダクト分析を実行するには、テーブルからいくつかのキー列を指定する必要があります。
 >
-> 以下の列が必要です:
+> 以下の列が必要です：
 >
-> - **User id** - ユーザーの一意識別子の列
-> - **Event time** - イベントのタイムスタンプ列
-> - Optional[**Event name**] - テーブルに複数のイベントタイプが含まれる場合、この列でイベントをセグメント化します
+> - **User id** - ユーザーの一意識別子の列。
+> - **Event time** - イベントのタイムスタンプ列。
+> - オプション[**Event name**] - テーブルに複数のイベントタイプが含まれる場合、この列でイベントをセグメント化します。
 
 <Image
   size='lg'
   img={mitzu_05}
-  alt='列マッピングオプションを表示するMitzuイベントカタログ設定'
+  alt='列マッピングオプションを表示するMitzuのイベントカタログ設定'
   border
 />
 <br />
-すべてのテーブルを設定したら、`Save & update event catalog`ボタンをクリックします。Mitzuは上記で定義されたテーブルからすべてのイベントとそのプロパティを検出します。この手順は、データセットのサイズに応じて数分かかる場合があります。
+すべてのテーブルが設定されたら、`Save & update event catalog`ボタンをクリックすると、Mitzuは上記で定義されたテーブルからすべてのイベントとそのプロパティを検出します。この手順は、データセットのサイズに応じて数分かかる場合があります。
 
 
 ## 4. セグメンテーションクエリの実行 {#4-run-segmentation-queries}
@@ -140,20 +140,20 @@ Exploreページの左側にはイベント選択エリアがあり、上部で�
 <br />
 
 :::tip フィルタとブレークダウン
-フィルタリングは想定通りに行えます。プロパティ(ClickHouseカラム)を選択し、フィルタリングしたい値をドロップダウンから選択します。
-ブレークダウンには、任意のイベントプロパティまたはユーザープロパティを選択できます(ユーザープロパティの統合方法については以下を参照してください)。
+フィルタリングは想定通りに行えます。プロパティ(ClickHouseカラム)を選択し、ドロップダウンからフィルタリングする値を選択してください。
+ブレークダウンには、任意のイベントプロパティまたはユーザープロパティを選択できます(ユーザープロパティの統合方法については以下を参照)。
 :::
 
 
-## 5. ファネルクエリの実行 {#5-run-funnel-queries}
+## 5. ファネルクエリを実行する {#5-run-funnel-queries}
 
-ファネルに最大9つのステップを選択します。ユーザーがファネルを完了できる期間を設定してください。
+ファネルのステップを最大9つまで選択します。ユーザーがファネルを完了できる期間を設定してください。
 SQLコードを一切書くことなく、コンバージョン率のインサイトを即座に取得できます。
 
 <Image
   size='lg'
   img={mitzu_07}
-  alt='ステップ間のコンバージョン率を表示するMitzuファネル分析ビュー'
+  alt='ステップ間のコンバージョン率を表示するMitzuファネル分析画面'
   border
 />
 
@@ -166,7 +166,7 @@ SQLコードを一切書くことなく、コンバージョン率のインサ�
 
 ## 6. リテンション分析クエリの実行 {#6-run-retention-queries}
 
-リテンション率の計算のために最大2つのステップを選択します。繰り返しウィンドウのリテンション期間を選択してください。
+リテンション率の計算のために最大2つのステップを選択します。繰り返しウィンドウのリテンションウィンドウを選択してください。
 SQLコードを一行も書くことなく、即座にコンバージョン率のインサイトを取得できます。
 
 <Image
@@ -190,7 +190,7 @@ SQLコードを一行も書くことなく、即座にコンバージョン率�
 <Image
   size='lg'
   img={mitzu_09}
-  alt='イベント間のユーザー経路フローを示すMitzuジャーニーの可視化'
+  alt='イベント間のユーザー経路フローを示すMitzuジャーニー可視化'
   border
 />
 <br />
@@ -236,11 +236,11 @@ Mitzu UIで制限に遭遇した場合は、SQLコードをコピーしてBIツ�
 
 ご不明な点がございましたら、[support@mitzu.io](email://support@mitzu.io)までお気軽にお問い合わせください。
 
-また、Slackコミュニティには[こちら](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)からご参加いただけます。
+または、[こちら](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)からSlackコミュニティにご参加いただけます。
 
 
 ## 詳細情報 {#learn-more}
 
 Mitzuの詳細については、[mitzu.io](https://mitzu.io)をご覧ください。
 
-ドキュメントは[docs.mitzu.io](https://docs.mitzu.io)でご確認いただけます。
+ドキュメントページは[docs.mitzu.io](https://docs.mitzu.io)でご確認いただけます。

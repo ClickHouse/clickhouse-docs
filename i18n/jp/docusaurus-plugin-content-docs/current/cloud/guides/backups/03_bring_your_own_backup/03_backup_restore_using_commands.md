@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'コマンドを使用したバックアップとリストア'
+sidebar_label: 'コマンドによるバックアップとリストア'
 slug: /cloud/manage/backups/backup-restore-via-commands
-title: 'コマンドを使用してバックアップを取得または復元する'
-description: '独自のバケットを使用して、コマンドでバックアップを取得または復元する方法を説明するページ'
+title: 'コマンドを使用してバックアップを取得またはリストアする'
+description: '独自のバケットを使用し、コマンドでバックアップを取得またはリストアする方法を説明するページ'
 sidebar_position: 3
 doc_type: 'guide'
 keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud features']
@@ -14,8 +14,8 @@ import TabItem from '@theme/TabItem';
 
 # コマンドを使用したバックアップの取得または復元 {#commands-experience}
 
-ユーザーは、[ユーザーインターフェース経由](/cloud/manage/backups/backup-restore-via-ui)でのバックアップや復元に加えて、`BACKUP`および`RESTORE`コマンドを使用してストレージバケットへバックアップをエクスポートできます。
-このガイドでは、3つすべてのCSP向けのコマンドを記載しています。
+ユーザーは、[ユーザーインターフェース経由](/cloud/manage/backups/backup-restore-via-ui)でのバックアップまたは復元に加えて、`BACKUP`および`RESTORE`コマンドを利用してストレージバケットにバックアップをエクスポートすることができます。
+このガイドでは、3つすべてのCSPに対応したコマンドを記載しています。
 
 
 ## 要件 {#requirements}
@@ -24,16 +24,16 @@ import TabItem from '@theme/TabItem';
 
 <Tabs>
   <TabItem value="AWS" label="AWS" default>
-    1. AWS S3エンドポイント(形式: `s3://<bucket_name>.s3.amazonaws.com/<optional_directory>`)
+    1. AWS S3エンドポイント（形式: `s3://<bucket_name>.s3.amazonaws.com/<optional_directory>`）
        例: `s3://testchbackups.s3.amazonaws.com/`
        各項目の説明:
-         * `testchbackups` はバックアップのエクスポート先となるS3バケット名です。
+         * `testchbackups` はバックアップのエクスポート先となるS3バケットの名前です。
          * `backups` はオプションのサブディレクトリです。
     2. AWSアクセスキーとシークレット。AWSロールベース認証もサポートされており、上記のセクションで説明されているように、AWSアクセスキーとシークレットの代わりに使用できます。
     <br/>
   </TabItem>
   <TabItem value="GCP" label="GCP">
-   1.  GCSエンドポイント(形式: `https://storage.googleapis.com/<bucket_name>/`)
+   1.  GCSエンドポイント（形式: `https://storage.googleapis.com/<bucket_name>/`）
    2. アクセスHMACキーとHMACシークレット。
    <br/>
   </TabItem>
@@ -46,9 +46,9 @@ import TabItem from '@theme/TabItem';
 </Tabs>
 
 
-## 特定のデータベースのバックアップ / リストア {#backup_restore_db}
+## 特定のデータベースのバックアップ/リストア {#backup_restore_db}
 
-ここでは、_単一_のデータベースのバックアップとリストアを示します。
+ここでは、_単一_のデータベースのバックアップとリストアについて説明します。
 完全なバックアップおよびリストアコマンドについては、[バックアップコマンドの概要](/operations/backup#command-summary)を参照してください。
 
 ### AWS S3 {#aws-s3-bucket}
@@ -65,11 +65,11 @@ TO S3(
 )
 ```
 
-ここで、`uuid`は一意の識別子であり、バックアップのセットを区別するために使用されます。
+`uuid`は一意の識別子で、バックアップのセットを区別するために使用されます。
 
 :::note
 このサブディレクトリ内の新しいバックアップごとに異なるuuidを使用する必要があります。そうしないと、`BACKUP_ALREADY_EXISTS`エラーが発生します。
-例えば、日次バックアップを取得する場合、毎日新しいuuidを使用する必要があります。
+例えば、日次バックアップを取得する場合は、毎日新しいuuidを使用する必要があります。
 :::
 
   </TabItem>
@@ -100,11 +100,11 @@ TO S3(
 )
 ```
 
-ここで、`uuid`は一意の識別子であり、バックアップを識別するために使用されます。
+`uuid`は一意の識別子で、バックアップを識別するために使用されます。
 
 :::note
 このサブディレクトリ内の新しいバックアップごとに異なるuuidを使用する必要があります。そうしないと、`BACKUP_ALREADY_EXISTS`エラーが発生します。
-例えば、日次バックアップを取得する場合、毎日新しいuuidを使用する必要があります。
+例えば、日次バックアップを取得する場合は、毎日新しいuuidを使用する必要があります。
 :::
 
   </TabItem>
@@ -129,15 +129,15 @@ BACKUP DATABASE test_backups
 TO AzureBlobStorage(
   '<AzureBlobStorage endpoint connection string>',
   '<container>',
-  '<blob>/<>'
+  '<blob>/<uuid>'
 )
 ```
 
-ここで、`uuid`は一意の識別子であり、バックアップを識別するために使用されます。
+`uuid`は一意の識別子で、バックアップを識別するために使用されます。
 
 :::note
 このサブディレクトリ内の新しいバックアップごとに異なるuuidを使用する必要があります。そうしないと、`BACKUP_ALREADY_EXISTS`エラーが発生します。
-例えば、日次バックアップを取得する場合、毎日新しいuuidを使用する必要があります。
+例えば、日次バックアップを取得する場合は、毎日新しいuuidを使用する必要があります。
 :::
 
 </TabItem>
@@ -159,7 +159,7 @@ FROM AzureBlobStorage(
 サービス全体をバックアップするには、以下のコマンドを使用します。
 このバックアップには、作成されたエンティティ、設定プロファイル、ロールポリシー、クォータ、および関数に関するすべてのユーザーデータとシステムデータが含まれます。
 ここではAWS S3の例を示します。
-上記で説明した構文を使用して、これらのコマンドをGCSやAzure Blob Storageのバックアップにも利用できます。
+上記で説明した構文を使用して、これらのコマンドをGCSおよびAzure Blob Storageのバックアップにも利用できます。
 
 <Tabs>
 <TabItem value="Backup" label="バックアップ" default>
@@ -201,36 +201,36 @@ FROM S3(
 ## よくある質問 {#backups-faq}
 
 <details>
-<summary>クラウドオブジェクトストレージ内のバックアップはどうなりますか?ClickHouseによって自動的にクリーンアップされますか?</summary>
+<summary>クラウドオブジェクトストレージ内のバックアップはどうなりますか？ClickHouseによって自動的にクリーンアップされますか？</summary>
 
-バックアップをお客様のバケットにエクスポートする機能を提供していますが、一度書き込まれたバックアップのクリーンアップや削除は行いません。バケット内のバックアップのライフサイクル管理(必要に応じた削除、アーカイブ、またはコスト最適化のための低コストストレージへの移動など)はお客様の責任となります。
+バックアップをお客様のバケットにエクスポートする機能を提供していますが、一度書き込まれたバックアップのクリーンアップや削除は行いません。バケット内のバックアップのライフサイクル管理（必要に応じた削除、アーカイブ、またはコスト最適化のための低コストストレージへの移動を含む）は、お客様の責任となります。
 
 </details>
 
 <details>
-<summary>既存のバックアップを別の場所に移動した場合、リストアプロセスはどうなりますか?</summary>
+<summary>既存のバックアップを別の場所に移動した場合、リストアプロセスはどうなりますか？</summary>
 
 バックアップが別の場所に移動された場合、リストアコマンドを更新して、バックアップが保存されている新しい場所を参照する必要があります。
 
 </details>
 
 <details>
-<summary>オブジェクトストレージへのアクセスに必要な認証情報を変更した場合はどうなりますか?</summary>
+<summary>オブジェクトストレージへのアクセスに必要な認証情報を変更した場合はどうなりますか？</summary>
 
 バックアップが再び正常に実行されるようにするには、UI内で変更された認証情報を更新する必要があります。
 
 </details>
 
 <details>
-<summary>外部バックアップのエクスポート先を変更した場合はどうなりますか?</summary>
+<summary>外部バックアップのエクスポート先を変更した場合はどうなりますか？</summary>
 
 UI内で新しい場所を更新する必要があり、バックアップは新しい場所に対して実行されるようになります。古いバックアップは元の場所に残ります。
 
 </details>
 
 <details>
-<summary>有効にしたサービスの外部バックアップを無効にするにはどうすればよいですか?</summary>
+<summary>有効にしたサービスの外部バックアップを無効にするにはどうすればよいですか？</summary>
 
-サービスの外部バックアップを無効にするには、サービス設定画面に移動し、「Change external backup」をクリックします。次の画面で「Remove setup」をクリックすると、サービスの外部バックアップが無効になります。
+サービスの外部バックアップを無効にするには、サービス設定画面に移動し、「外部バックアップを変更」をクリックします。次の画面で「設定を削除」をクリックすると、サービスの外部バックアップが無効になります。
 
 </details>

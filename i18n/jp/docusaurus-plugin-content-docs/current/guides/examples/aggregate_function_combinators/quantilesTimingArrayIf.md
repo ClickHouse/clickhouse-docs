@@ -14,13 +14,13 @@ doc_type: 'reference'
 
 ## 説明 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array)および[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)関数に適用することで、条件が真である行について、配列内のタイミング値の分位数を計算できます。この計算には`quantilesTimingArrayIf`集約コンビネータ関数を使用します。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array)コンビネータと[`If`](/sql-reference/aggregate-functions/combinators#-if)コンビネータを[`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)関数に適用することで、条件が真である行について、配列内のタイミング値の分位数を計算できます。これには`quantilesTimingArrayIf`集約コンビネータ関数を使用します。
 
 
 ## 使用例 {#example-usage}
 
-この例では、異なるエンドポイントのAPIレスポンス時間を格納するテーブルを作成し、
-`quantilesTimingArrayIf`を使用して成功したリクエストのレスポンス時間の分位数を計算します。
+この例では、異なるエンドポイントのAPIレスポンスタイムを格納するテーブルを作成し、
+`quantilesTimingArrayIf`を使用して成功したリクエストのレスポンスタイム分位数を計算します。
 
 ```sql title="クエリ"
 CREATE TABLE api_responses(

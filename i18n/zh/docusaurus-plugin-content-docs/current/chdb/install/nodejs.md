@@ -1,5 +1,5 @@
 ---
-title: '适用于 Node.js 的 chDB'
+title: '面向 Node.js 的 chDB'
 sidebar_label: 'Node.js'
 slug: /chdb/install/nodejs
 description: '如何在 Node.js 中安装和使用 chDB'
@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 # 面向 Node.js 的 chDB
 
-`chDB-node` 提供了 chDB 的 Node.js 绑定，使你能够在 Node.js 应用中直接运行 ClickHouse 查询，且无需任何外部依赖。
+`chDB-node` 为 chDB 提供了 Node.js 绑定，使你能够在 Node.js 应用中直接运行 ClickHouse 查询，而且完全不依赖任何外部组件。
 
 
 
@@ -165,7 +165,7 @@ try {
 
 ## 错误处理 {#error-handling}
 
-在使用 chDB 时，务必妥善处理错误：
+在使用 chDB 时，请务必妥善处理错误：
 
 ```javascript
 const { query, Session } = require("chdb")
@@ -200,7 +200,7 @@ function safeSessionQuery() {
   } catch (error) {
     console.error("会话查询错误：", error.message)
   } finally {
-    // 即使发生错误也要执行清理
+    // 始终执行清理操作，即使发生错误
     session.cleanup()
   }
 }

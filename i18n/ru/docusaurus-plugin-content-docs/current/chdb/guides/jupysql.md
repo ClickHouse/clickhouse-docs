@@ -2,7 +2,7 @@
 title: 'JupySQL и chDB'
 sidebar_label: 'JupySQL'
 slug: /chdb/guides/jupysql
-description: 'Как установить chDB для JupySQL'
+description: 'Как установить chDB для Bun'
 keywords: ['chdb', 'JupySQL']
 doc_type: 'guide'
 ---
@@ -10,11 +10,11 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) — это библиотека Python, которая позволяет выполнять SQL-запросы в ноутбуках Jupyter и оболочке IPython.
-В этом руководстве мы рассмотрим, как выполнять запросы к данным с помощью chDB и JupySQL.
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) — это библиотека Python, которая позволяет выполнять SQL-запросы в блокнотах Jupyter и оболочке IPython.
+В этом руководстве мы узнаем, как выполнять запросы к данным с помощью chDB и JupySQL.
 
 <div class="vimeo-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
 
@@ -52,8 +52,8 @@ jupyter lab
 
 ## Загрузка набора данных {#downloading-a-dataset}
 
-Мы будем использовать один из наборов данных [tennis_atp Джеффа Сакмана](https://github.com/JeffSackmann/tennis_atp), который содержит метаданные об игроках и их рейтингах за определенный период времени.
-Начнем с загрузки файлов рейтингов:
+Мы будем использовать один из наборов данных [tennis_atp Джеффа Сакмана](https://github.com/JeffSackmann/tennis_atp), который содержит метаданные об игроках и их рейтингах за определённый период времени.
+Начнём с загрузки файлов рейтингов:
 
 ```python
 from urllib.request import urlretrieve
@@ -78,14 +78,14 @@ for file in files:
 from chdb import dbapi
 ```
 
-Затем создадим подключение к chDB.
-Все сохраняемые данные будут записываться в директорию `atp.chdb`:
+Затем создадим соединение с chDB.
+Все сохраняемые данные будут записываться в каталог `atp.chdb`:
 
 ```python
 conn = dbapi.connect(path="atp.chdb")
 ```
 
-Теперь загрузим магическую команду `sql` и создадим подключение к chDB:
+Теперь загрузим магическую команду `sql` и создадим соединение с chDB:
 
 ```python
 %load_ext sql
@@ -170,7 +170,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 ## Импорт CSV-файлов в chDB {#importing-csv-files-into-chdb}
 
 Теперь сохраним данные из этих CSV-файлов в таблицу.
-База данных по умолчанию не сохраняет данные на диск, поэтому сначала необходимо создать другую базу данных:
+База данных по умолчанию не сохраняет данные на диск, поэтому сначала нужно создать другую базу данных:
 
 ```python
 %sql CREATE DATABASE atp
@@ -215,7 +215,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 Результат выглядит корректно — вывод, как и ожидалось, совпадает с результатом прямого запроса к CSV-файлам.
 
-Выполним аналогичные действия для метаданных игроков.
+Выполним тот же процесс для метаданных игроков.
 На этот раз все данные находятся в одном CSV-файле, поэтому загрузим его:
 
 ```python
@@ -226,9 +226,9 @@ _ = urlretrieve(
 ```
 
 Затем создадим таблицу `players` на основе содержимого CSV-файла.
-Также преобразуем поле `dob` к типу `Date32`.
+Также приведем поле `dob` к типу `Date32`.
 
-> В ClickHouse тип `Date` поддерживает только даты начиная с 1970 года. Поскольку столбец `dob` содержит даты до 1970 года, используем тип `Date32`.
+> В ClickHouse тип `Date` поддерживает только даты начиная с 1970 года. Поскольку столбец `dob` содержит даты до 1970 года, используется тип `Date32`.
 
 ```python
 %%sql
@@ -255,7 +255,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ```text
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
-| id_игрока | имя        | фамилия   | рука |    дата_рожд     | мок | рост | id_wikidata |
+| player_id | name_first | name_last | hand |    dob     | ioc | height | wikidata_id |
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 |   100001  |  Gardnar   |   Mulloy  |  R   | 1913-11-22 | USA |  185   |    Q54544   |
 |   100002  |   Pancho   |   Segura  |  R   | 1921-06-20 | ECU |  168   |    Q54581   |
@@ -273,11 +273,11 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ## Запросы к chDB {#querying-chdb}
 
-Загрузка данных завершена, теперь переходим к самому интересному — выполнению запросов!
+Загрузка данных завершена, теперь переходим к самому интересному — запросам к данным!
 
 Теннисисты получают очки в зависимости от результатов выступлений на турнирах.
 Очки каждого игрока учитываются за скользящий 52-недельный период.
-Напишем запрос, который находит максимальное количество очков, набранных каждым игроком, вместе с его рейтингом на тот момент:
+Напишем запрос, который находит максимальное количество очков, накопленное каждым игроком, вместе с его рейтингом на тот момент:
 
 ```python
 %%sql
@@ -309,7 +309,7 @@ LIMIT 10
 +------------+-----------+-----------+------+------------+
 ```
 
-Интересно, что некоторые игроки из этого списка набрали большое количество очков, не занимая при этом первое место с таким результатом.
+Интересно, что некоторые игроки из этого списка накопили большое количество очков, не занимая при этом первое место с таким результатом.
 
 
 ## Сохранение запросов {#saving-queries}
@@ -405,7 +405,7 @@ LIMIT 10
 
 ## Построение гистограмм {#plotting-histograms}
 
-JupySQL также имеет ограниченные возможности построения графиков.
+JupySQL также имеет ограниченные возможности для построения графиков.
 Можно создавать диаграммы размаха или гистограммы.
 
 Создадим гистограмму, но сначала напишем (и сохраним) запрос, который вычисляет позиции в топ-100, которых достиг каждый игрок.
@@ -435,5 +435,5 @@ plot = (
 <Image
   img={PlayersPerRank}
   size='md'
-  alt='Гистограмма рейтингов игроков в наборе данных ATP'
+  alt='Гистограмма позиций игроков в наборе данных ATP'
 />

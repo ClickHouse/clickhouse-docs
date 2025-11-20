@@ -2,7 +2,7 @@
 sidebar_label: 'Power BI'
 slug: /integrations/powerbi
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui']
-description: 'Microsoft Power BI は、ビジネス インテリジェンスに特化して Microsoft が開発した対話型のデータ可視化ソフトウェア製品です。'
+description: 'Microsoft Power BI は、主にビジネス インテリジェンスを目的として Microsoft によって開発された、対話型のデータ可視化ソフトウェア製品です。'
 title: 'Power BI'
 doc_type: 'guide'
 integration:
@@ -34,21 +34,21 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Microsoft Power BI は、[ClickHouse Cloud](https://clickhouse.com/cloud) またはセルフマネージド環境の ClickHouse からデータをクエリしたり、メモリ内に読み込んだりできます。
+Microsoft Power BI は、[ClickHouse Cloud](https://clickhouse.com/cloud) またはセルフマネージド環境の ClickHouse からデータをクエリしたり、メモリにロードしたりできます。
 
 データを可視化するために利用できる Power BI には、いくつかの種類があります。
 
-* Power BI Desktop: ダッシュボードとビジュアルを作成するための Windows デスクトップ アプリケーション
-* Power BI Service: Power BI Desktop で作成したダッシュボードをホストするための、Azure 上で提供される SaaS サービス
+* Power BI Desktop: ダッシュボードやビジュアルを作成するための Windows デスクトップアプリケーション
+* Power BI Service: Power BI Desktop で作成したダッシュボードをホストするための、Azure 上で提供される SaaS
 
 Power BI では、Desktop 版でダッシュボードを作成し、それを Power BI Service に発行する必要があります。
 
 このチュートリアルでは、次の手順について説明します。
 
-* [ClickHouse ODBC Driver のインストール](#install-the-odbc-driver)
-* [ClickHouse Power BI Connector を Power BI Desktop にインストール](#power-bi-installation)
+* [ClickHouse ODBC ドライバーのインストール](#install-the-odbc-driver)
+* [ClickHouse Power BI Connector の Power BI Desktop へのインストール](#power-bi-installation)
 * [Power BI Desktop での可視化のために ClickHouse からデータをクエリ](#query-and-visualise-data)
-* [Power BI Service 用のオンプレミス データ ゲートウェイの設定](#power-bi-service)
+* [Power BI Service 用オンプレミス データ ゲートウェイのセットアップ](#power-bi-service)
 
 
 
@@ -62,7 +62,7 @@ Power BI を最新バージョンに更新することを推奨します。Click
 
 ### ClickHouse 接続情報の収集 {#gather-your-clickhouse-connection-details}
 
-ClickHouse インスタンスに接続するには、以下の情報が必要です:
+ClickHouse インスタンスへの接続には、以下の情報が必要です:
 
 - ホスト名 - ClickHouse のホスト名
 - ユーザー名 - ユーザー認証情報
@@ -72,7 +72,7 @@ ClickHouse インスタンスに接続するには、以下の情報が必要で
 
 ## Power BI Desktop {#power-bi-desktop}
 
-Power BI Desktopでデータのクエリを開始するには、以下の手順を完了する必要があります：
+Power BI Desktopでデータのクエリを開始するには、以下の手順を完了する必要があります:
 
 1. ClickHouse ODBCドライバーをインストールする
 2. ClickHouseコネクタを見つける
@@ -99,14 +99,14 @@ Power BI Desktopでデータのクエリを開始するには、以下の手順�
 
 #### ODBCドライバーの確認 {#verify-odbc-driver}
 
-ドライバーのインストールが完了したら、以下の方法でインストールが成功したことを確認できます：
+ドライバーのインストールが完了したら、以下の方法でインストールが成功したことを確認できます:
 
 スタートメニューでODBCを検索し、「ODBC データソース **(64ビット)**」を選択します。
 
 <Image
   size='md'
   img={powerbi_odbc_search}
-  alt='ODBCデータソース（64ビット）オプションを表示するWindows検索'
+  alt='ODBCデータソース(64ビット)オプションを表示するWindows検索'
   border
 />
 <br />
@@ -124,7 +124,7 @@ ClickHouseドライバーが一覧に表示されていることを確認しま�
 ### ClickHouseコネクタの検索 {#find-the-clickhouse-connector}
 
 :::note
-Power BI Desktopのバージョン`2.137.751.0`以降で利用可能
+Power BI Desktopバージョン`2.137.751.0`以降で利用可能
 :::
 Power BI Desktopのスタート画面で、「データを取得」をクリックします。
 
@@ -148,10 +148,10 @@ Power BI Desktopのスタート画面で、「データを取得」をクリッ�
 
 ### ClickHouseへの接続 {#connect-to-clickhouse}
 
-コネクタを選択し、ClickHouseインスタンスの認証情報を入力します：
+コネクタを選択し、ClickHouseインスタンスの認証情報を入力します:
 
-- Host（必須） - インスタンスのドメイン/アドレス。プレフィックスやサフィックスを付けずに追加してください。
-- Port（必須） - インスタンスのポート。
+- Host(必須) - インスタンスのドメイン/アドレス。プレフィックスやサフィックスを付けずに追加してください。
+- Port(必須) - インスタンスのポート。
 - Database - データベース名。
 - Options - [ClickHouse ODBC GitHubページ](https://github.com/ClickHouse/clickhouse-odbc#configuration)に記載されている任意のODBCオプション
 - Data Connectivity mode - DirectQuery
@@ -197,20 +197,20 @@ ClickHouseに直接クエリを実行する場合は、DirectQueryを選択す�
 <br />
 
 
-## Power BI service {#power-bi-service}
+## Power BI サービス {#power-bi-service}
 
-Microsoft Power BI Serviceを使用するには、[オンプレミス データ ゲートウェイ](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem)を作成する必要があります。
+Microsoft Power BI サービスを使用するには、[オンプレミス データ ゲートウェイ](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem)を作成する必要があります。
 
-カスタムコネクタの設定方法の詳細については、Microsoftのドキュメント「[オンプレミス データ ゲートウェイでカスタム データ コネクタを使用する](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)」を参照してください。
+カスタム コネクタのセットアップ方法の詳細については、Microsoft のドキュメント「[オンプレミス データ ゲートウェイでカスタム データ コネクタを使用する](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)」を参照してください。
 
 
 ## ODBCドライバー(インポートのみ) {#odbc-driver-import-only}
 
-DirectQueryを使用するClickHouse Connectorの利用を推奨します。
+DirectQueryを使用するClickHouse Connectorの使用を推奨します。
 
 オンプレミスデータゲートウェイインスタンスに[ODBCドライバー](#install-the-odbc-driver)をインストールし、上記の手順に従って[検証](#verify-odbc-driver)を行ってください。
 
-### 新しいユーザーDSNを作成する {#create-a-new-user-dsn}
+### 新しいユーザーDSNの作成 {#create-a-new-user-dsn}
 
 ドライバーのインストールが完了したら、ODBCデータソースを作成できます。スタートメニューでODBCを検索し、「ODBC Data Sources (64-bit)」を選択します。
 
@@ -222,7 +222,7 @@ DirectQueryを使用するClickHouse Connectorの利用を推奨します。
 />
 <br />
 
-ここで新しいユーザーDSNを追加します。左側の「追加」ボタンをクリックしてください。
+ここで新しいユーザーDSNを追加する必要があります。左側の「追加」ボタンをクリックします。
 
 <Image
   size='md'
@@ -253,13 +253,13 @@ ODBCドライバーのUnicodeバージョンを選択します。
 <br />
 
 :::note
-SSLが有効なデプロイメント(ClickHouse Cloudやセルフマネージドインスタンスなど)を使用している場合、`SSLMode`フィールドには`require`を指定してください。
+SSLが有効なデプロイメント(例: ClickHouse Cloudまたはセルフマネージドインスタンス)を使用している場合、`SSLMode`フィールドには`require`を指定する必要があります。
 
-- `Host`にはプロトコル(`http://`または`https://`)を含めないでください。
+- `Host`には常にプロトコル(つまり`http://`または`https://`)を含めないでください。
 - `Timeout`は秒数を表す整数です。デフォルト値: `30 seconds`。
   :::
 
-### Power BIへのデータ取り込み {#get-data-into-power-bi}
+### Power BIへのデータ取得 {#get-data-into-power-bi}
 
 Power BIをまだインストールしていない場合は、[Power BI Desktopをダウンロードしてインストール](https://www.microsoft.com/en-us/download/details.aspx?id=58494)してください。
 
@@ -273,12 +273,12 @@ Power BI Desktopのスタート画面で、「データを取得」をクリッ�
 />
 <br />
 
-「その他」→「ODBC」を選択します。
+「その他」->「ODBC」を選択します。
 
 <Image
   size='md'
   img={powerbi_select_odbc}
-  alt='その他カテゴリーでODBCオプションが選択されたPower BIのデータを取得ダイアログ'
+  alt='その他カテゴリーの下でODBCオプションが選択されたPower BIのデータを取得ダイアログ'
   border
 />
 <br />
@@ -294,7 +294,7 @@ Power BI Desktopのスタート画面で、「データを取得」をクリッ�
 <br />
 
 :::note
-データソースの作成時に認証情報を指定しなかった場合、ユーザー名とパスワードの入力が求められます。
+データソースの作成時に認証情報を指定しなかった場合、ユーザー名とパスワードの入力を求められます。
 :::
 
 <Image
@@ -315,7 +315,7 @@ Power BI Desktopのスタート画面で、「データを取得」をクリッ�
 />
 <br />
 
-インポートが完了すると、ClickHouseデータは通常通りPower BIでアクセス可能になります。
+インポートが完了すると、ClickHouseデータは通常どおりPower BIでアクセス可能になります。
 
 
 ## 既知の制限事項 {#known-limitations}
@@ -329,7 +329,8 @@ UInt64以上の符号なし整数型は、Power BIがサポートする整数型
 :::
 
 この例では、`pageviews`テーブルにUInt64型の列があり、デフォルトでは「バイナリ」として認識されます。
-「データの変換」を選択するとPower Queryエディターが開き、列の型を再割り当てできます。たとえば、テキスト型に設定できます。
+「データの変換」を選択するとPower Queryエディターが開き、列の型を再割り当てできます。たとえば、
+テキスト型に設定できます。
 
 <Image
   size='md'
@@ -339,4 +340,4 @@ UInt64以上の符号なし整数型は、Power BIがサポートする整数型
 />
 <br />
 
-完了したら、左上隅の「閉じて適用」をクリックし、データの読み込みを続行します。
+完了したら、左上隅の「閉じて適用」をクリックし、データの読み込みを続行してください。

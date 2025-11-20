@@ -1,17 +1,17 @@
 ---
-title: '面向 Go 的 chDB'
+title: '适用于 Go 的 chDB'
 sidebar_label: 'Go'
 slug: /chdb/install/go
-description: '如何在 Go 中安装和使用 chDB'
+description: '如何在 Go 中安装与使用 chDB'
 keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
-doc_type: 'guide'
+doc_type: '指南'
 ---
 
 
 
-# 适用于 Go 的 chDB
+# 面向 Go 的 chDB
 
-`chDB-go` 为 `chDB` 提供 Go 语言绑定，使你可以在 Go 应用程序中直接运行 ClickHouse 查询，而无需任何外部依赖。
+chDB-go 为 chDB 提供 Go 语言绑定，使您能够在 Go 应用程序中直接运行 ClickHouse 查询，而完全不依赖任何外部组件。
 
 
 
@@ -44,7 +44,7 @@ go get github.com/chdb-io/chdb-go
 
 ### 命令行界面 {#cli}
 
-chDB-go 包含一个用于快速查询的 CLI：
+chDB-go 包含一个用于快速查询的命令行界面:
 
 
 ```bash
@@ -53,7 +53,7 @@ chDB-go 包含一个用于快速查询的 CLI：
 ```
 
 
-# 交互模式
+# 交互式模式
 ./chdb-go
 
 
@@ -68,7 +68,7 @@ chDB-go 包含一个用于快速查询的 CLI：
 
 #### 无状态查询 {#stateless-queries}
 
-用于简单的一次性查询：
+对于简单的一次性查询：
 
 ```go
 package main
@@ -88,9 +88,9 @@ func main() {
 }
 ````
 
-#### 带会话的有状态查询 {#stateful-queries}
+#### 有状态查询（使用会话）{#stateful-queries}
 
-用于需要持久化状态的复杂查询：
+对于需要持久化状态的复杂查询：
 
 ```go
 package main
@@ -182,7 +182,7 @@ func main() {
 
 #### 大数据集的流式查询 {#query-streaming}
 
-对于无法完全加载到内存的大数据集,使用流式查询：
+对于无法完全加载到内存的大数据集，可使用流式查询：
 
 ```go
 package main
@@ -243,10 +243,10 @@ func main() {
 
 
 **查询流式处理的优势：**
-- **内存高效** - 处理大型数据集而无需将所有数据一次性加载到内存中
-- **实时处理** - 数据一到达（从首个数据块开始）即可立即开始处理
-- **支持取消** - 可以使用 `Cancel()` 取消长时间运行的查询
-- **错误处理** - 使用 `Error()` 在流式处理过程中检查错误
+- **内存高效** - 处理大规模数据集而无需将所有数据全部加载到内存中
+- **实时处理** - 一旦首个数据块到达即可开始处理数据
+- **支持取消** - 可使用 `Cancel()` 取消长时间运行的查询
+- **错误处理** - 可使用 `Error()` 在流式处理过程中检查错误
 
 
 

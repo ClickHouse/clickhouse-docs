@@ -2,7 +2,7 @@
 sidebar_label: 'ストアドプロシージャとクエリパラメータ'
 sidebar_position: 19
 keywords: ['clickhouse', 'stored procedures', 'prepared statements', 'query parameters', 'UDF', 'parameterized views']
-description: 'ClickHouse におけるストアドプロシージャ、プリペアドステートメント、クエリパラメータに関するガイド'
+description: 'ClickHouseにおけるストアドプロシージャ、プリペアドステートメント、およびクエリパラメータのガイド'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: 'ストアドプロシージャとクエリパラメータ'
 doc_type: 'guide'
@@ -12,20 +12,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickHouse におけるストアドプロシージャとクエリパラメータ
+# ClickHouseにおけるストアドプロシージャとクエリパラメータ
 
-従来型のリレーショナルデータベースを使っていた方は、ClickHouse でもストアドプロシージャやプリペアドステートメントを利用したいと考えるかもしれません。
-このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
+従来のリレーショナルデータベースを使用していた方は、ClickHouseでストアドプロシージャやプリペアドステートメントを探しているかもしれません。
+本ガイドでは、これらの概念に対するClickHouseのアプローチを説明し、推奨される代替手段を提供します。
 
 
 
 ## ClickHouseにおけるストアドプロシージャの代替手段 {#alternatives-to-stored-procedures}
 
-ClickHouseは、制御フロー論理（`IF`/`ELSE`、ループなど）を持つ従来のストアドプロシージャをサポートしていません。
+ClickHouseは、制御フロー論理(`IF`/`ELSE`、ループなど)を持つ従来のストアドプロシージャをサポートしていません。
 これは、分析データベースとしてのClickHouseのアーキテクチャに基づく意図的な設計上の決定です。
 分析データベースではループは推奨されません。なぜなら、O(n)個の単純なクエリを処理することは、通常、より少数の複雑なクエリを処理するよりも遅いためです。
 
-ClickHouseは以下のために最適化されています：
+ClickHouseは以下のために最適化されています:
 
 - **分析ワークロード** - 大規模データセットに対する複雑な集計
 - **バッチ処理** - 大量のデータを効率的に処理
@@ -33,13 +33,13 @@ ClickHouseは以下のために最適化されています：
 
 手続き型ロジックを持つストアドプロシージャは、これらの最適化に反します。代わりに、ClickHouseはその強みに沿った代替手段を提供しています。
 
-### ユーザー定義関数（UDF） {#user-defined-functions}
+### ユーザー定義関数(UDF) {#user-defined-functions}
 
-ユーザー定義関数を使用すると、制御フローなしで再利用可能なロジックをカプセル化できます。ClickHouseは2つのタイプをサポートしています：
+ユーザー定義関数を使用すると、制御フローなしで再利用可能なロジックをカプセル化できます。ClickHouseは2つのタイプをサポートしています:
 
 #### ラムダベースのUDF {#lambda-based-udfs}
 
-SQL式とラムダ構文を使用して関数を作成します：
+SQL式とラムダ構文を使用して関数を作成します:
 
 <details>
 <summary>例で使用するサンプルデータ</summary>
@@ -105,17 +105,17 @@ SELECT format_phone('5551234567');
 -- 結果: (555) 123-4567
 ```
 
-**制限事項：**
+**制限事項:**
 
 - ループや複雑な制御フローは使用不可
-- データの変更（`INSERT`/`UPDATE`/`DELETE`）は不可
+- データの変更(`INSERT`/`UPDATE`/`DELETE`)は不可
 - 再帰関数は許可されていません
 
-完全な構文については、[`CREATE FUNCTION`](/sql-reference/statements/create/function)を参照してください。
+完全な構文については[`CREATE FUNCTION`](/sql-reference/statements/create/function)を参照してください。
 
 #### 実行可能UDF {#executable-udfs}
 
-より複雑なロジックには、外部プログラムを呼び出す実行可能UDFを使用します：
+より複雑なロジックには、外部プログラムを呼び出す実行可能UDFを使用します:
 
 ```xml
 <!-- /etc/clickhouse-server/sentiment_analysis_function.xml -->
@@ -141,14 +141,14 @@ SELECT
 FROM customer_reviews;
 ```
 
-実行可能UDFは、任意の言語（Python、Node.js、Goなど）で任意のロジックを実装できます。
+実行可能UDFは、任意の言語(Python、Node.js、Goなど)で任意のロジックを実装できます。
 
-詳細については、[実行可能UDF](/sql-reference/functions/udf)を参照してください。
+詳細については[実行可能UDF](/sql-reference/functions/udf)を参照してください。
 
 ### パラメータ化ビュー {#parameterized-views}
 
 パラメータ化ビューは、データセットを返す関数のように動作します。
-動的フィルタリングを伴う再利用可能なクエリに最適です：
+動的フィルタリングを伴う再利用可能なクエリに最適です:
 
 <details>
 <summary>例で使用するサンプルデータ</summary>
@@ -253,7 +253,7 @@ SELECT * FROM top_products_by_category(
 
 ### マテリアライズドビュー {#materialized-views}
 
-マテリアライズドビューは、従来ストアドプロシージャで行われていた高コストな集計処理を事前計算するのに最適です。従来のデータベースから移行する場合、マテリアライズドビューは、ソーステーブルにデータが挿入される際に自動的にデータを変換・集計する**INSERTトリガー**として考えることができます:
+マテリアライズドビューは、従来ストアドプロシージャで行われていた高コストな集計処理を事前計算するのに最適です。従来のデータベースから移行する場合は、マテリアライズドビューをソーステーブルへのデータ挿入時に自動的にデータを変換・集計する**INSERTトリガー**として考えるとよいでしょう。
 
 ```sql
 -- ソーステーブル
@@ -297,7 +297,7 @@ INSERT INTO page_views VALUES
 (102, '/home', '2024-01-17 10:30:00', 'session_b2'),
 (102, '/contact', '2024-01-17 10:35:00', 'session_b2');
 
--- 事前集計データをクエリ
+-- 事前集計されたデータをクエリ
 SELECT
 user_id,
 sum(page_views) AS total_views,
@@ -313,7 +313,7 @@ GROUP BY user_id;
 スケジュールされたバッチ処理（夜間ストアドプロシージャなど）の場合：
 
 ```sql
--- 毎日午前2時に自動リフレッシュ
+-- 毎日午前2時に自動的にリフレッシュ
 CREATE MATERIALIZED VIEW monthly_sales_report
 REFRESH EVERY 1 DAY OFFSET 2 HOUR
 AS SELECT
@@ -327,7 +327,7 @@ FROM orders
 WHERE order_date >= today() - INTERVAL 13 MONTH
 GROUP BY month, region, product_category;
 
--- クエリは常に最新データを取得
+-- クエリは常に最新のデータを保持
 SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
 ````
@@ -340,7 +340,7 @@ WHERE month = toStartOfMonth(today());
 
 #### アプリケーションコードの使用 {#using-application-code}
 
-MySQLストアドプロシージャがClickHouseのアプリケーションコードにどのように変換されるかを示す比較例：
+MySQLストアドプロシージャがClickHouseのアプリケーションコードにどのように変換されるかを示す比較例を以下に示します：
 
 <Tabs>
 <TabItem value="mysql" label="MySQLストアドプロシージャ" default>
@@ -396,12 +396,12 @@ BEGIN
 ```
 
 
--- ロイヤルティポイント取引を挿入
+-- ロイヤルティポイントトランザクションを挿入
 INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
 VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
 CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
 
--- 顧客をアップグレードすべきかチェック
+-- 顧客のアップグレード条件を確認
 IF v&#95;previous&#95;orders + 1 &gt;= 10 AND v&#95;customer&#95;tier = &#39;bronze&#39; THEN
 UPDATE customers SET tier = &#39;silver&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
 SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;SILVER&#39;;
@@ -417,7 +417,7 @@ END$$
 
 DELIMITER ;
 
--- ストアドプロシージャを呼び出し
+-- ストアドプロシージャを呼び出す
 CALL process&#95;order(12345, 5678, 250.00, @status, @points);
 SELECT @status, @points;
 
@@ -443,12 +443,12 @@ client = clickhouse_connect.get_client(host='localhost')
 
 def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
     """
-    ストアドプロシージャに相当するビジネスロジックを用いて注文を処理します。
+    ストアドプロシージャに相当するビジネスロジックを使用して注文を処理します。
     戻り値: (status_message, loyalty_points)
 
     注意: ClickHouseは分析処理に最適化されており、OLTPトランザクションには適していません。
-    トランザクション処理が必要な場合は、OLTPデータベース(PostgreSQL、MySQL)を使用し、
-    分析データをClickHouseに同期してレポート作成に活用してください。
+    トランザクション処理にはOLTPデータベース(PostgreSQL、MySQL)を使用し、
+    分析データをClickHouseに同期してレポート作成を行ってください。
     """
 
     # ステップ1: 顧客情報を取得
@@ -564,7 +564,7 @@ def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tupl
 ```
 
 
-# 関数を使う
+# 関数の使用
 
 status, points = process&#95;order(
 order&#95;id=12345,
@@ -583,17 +583,17 @@ print(f&quot;Status: {status}, Loyalty Points: {points}&quot;)
 
 #### 主な違い {#key-differences}
 
-1. **制御フロー** - MySQLストアドプロシージャは`IF/ELSE`、`WHILE`ループを使用します。ClickHouseでは、このロジックをアプリケーションコード(Python、Javaなど)で実装します
+1. **制御フロー** - MySQLストアドプロシージャは`IF/ELSE`、`WHILE`ループを使用します。ClickHouseでは、このロジックをアプリケーションコード（Python、Javaなど）で実装します
 2. **トランザクション** - MySQLはACIDトランザクションのために`BEGIN/COMMIT/ROLLBACK`をサポートしています。ClickHouseは追記専用ワークロードに最適化された分析データベースであり、トランザクション更新には対応していません
-3. **更新** - MySQLは`UPDATE`文を使用します。ClickHouseでは可変データに対して[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)または[CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)と組み合わせた`INSERT`を推奨します
-4. **変数と状態** - MySQLストアドプロシージャは変数を宣言できます(`DECLARE v_discount`)。ClickHouseでは、状態をアプリケーションコードで管理します
-5. **エラー処理** - MySQLは`SIGNAL`と例外ハンドラをサポートしています。アプリケーションコードでは、使用する言語のネイティブなエラー処理(try/catch)を使用します
+3. **更新** - MySQLは`UPDATE`文を使用します。ClickHouseでは、可変データに対して[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)または[CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)と`INSERT`を組み合わせて使用することを推奨します
+4. **変数と状態** - MySQLストアドプロシージャは変数を宣言できます（`DECLARE v_discount`）。ClickHouseでは、アプリケーションコードで状態を管理します
+5. **エラー処理** - MySQLは`SIGNAL`と例外ハンドラをサポートしています。アプリケーションコードでは、使用する言語のネイティブなエラー処理（try/catch）を使用します
 
 :::tip
 **各アプローチの使い分け:**
-- **OLTPワークロード**(注文、決済、ユーザーアカウント) → ストアドプロシージャを使用したMySQL/PostgreSQLを使用
-- **分析ワークロード**(レポート、集計、時系列) → アプリケーションオーケストレーションを使用したClickHouseを使用
-- **ハイブリッドアーキテクチャ** → 両方を使用! OLTPからClickHouseへトランザクションデータをストリーミングして分析に活用
+- **OLTPワークロード**（注文、支払い、ユーザーアカウント）→ ストアドプロシージャを使用したMySQL/PostgreSQLを使用
+- **分析ワークロード**（レポート、集計、時系列）→ アプリケーションオーケストレーションを使用したClickHouseを使用
+- **ハイブリッドアーキテクチャ** → 両方を使用！OLTPからClickHouseへトランザクションデータをストリーミングして分析を実行
 :::
 
 #### ワークフローオーケストレーションツールの使用 {#using-workflow-orchestration-tools}
@@ -606,7 +606,7 @@ print(f&quot;Status: {status}, Loyalty Points: {points}&quot;)
 **外部オーケストレーションの利点:**
 - 完全なプログラミング言語機能
 - より優れたエラー処理とリトライロジック
-- 外部システムとの統合(API、他のデータベース)
+- 外部システムとの統合（API、他のデータベース）
 - バージョン管理とテスト
 - 監視とアラート
 - より柔軟なスケジューリング
@@ -615,7 +615,7 @@ print(f&quot;Status: {status}, Loyalty Points: {points}&quot;)
 
 ## ClickHouseにおけるプリペアドステートメントの代替手段 {#alternatives-to-prepared-statements-in-clickhouse}
 
-ClickHouseはRDBMSの意味での従来の「プリペアドステートメント」を持っていませんが、同じ目的を果たす**クエリパラメータ**を提供しています。これにより、SQLインジェクションを防ぐ安全なパラメータ化クエリを実現できます。
+ClickHouseはRDBMSの意味での従来の「プリペアドステートメント」を持ちませんが、同じ目的を果たす**クエリパラメータ**を提供しています。これにより、SQLインジェクションを防ぐ安全なパラメータ化されたクエリを実現できます。
 
 ### 構文 {#query-parameters-syntax}
 
@@ -846,7 +846,7 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 
 **動作しないもの:**
 ```sql
--- ✗ SELECT内のカラム名（Identifierの使用には注意が必要）
+-- ✗ SELECT内のカラム名（Identifierは慎重に使用）
 SELECT {column: Identifier} FROM users;  -- サポートは限定的
 
 -- ✗ 任意のSQLフラグメント
@@ -889,7 +889,7 @@ def get_user_orders(user_id: int, start_date: str):
     if not isinstance(user_id, int) or user_id <= 0:
         raise ValueError("Invalid user_id")
 
-    # パラメータによる型安全性の確保
+    # パラメータで型安全性を確保
     return client.query(
         """
         SELECT * FROM orders
@@ -902,11 +902,11 @@ def get_user_orders(user_id: int, start_date: str):
 
 ### MySQLプロトコルのプリペアドステートメント {#mysql-protocol-prepared-statements}
 
-ClickHouseの[MySQLインターフェース](/interfaces/mysql)は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対する最小限のサポートを提供しており、主にTableau Onlineなどクエリをプリペアドステートメントでラップするツールとの接続を可能にするためのものです。
+ClickHouseの[MySQLインターフェース](/interfaces/mysql)は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対する最小限のサポートを提供しています。これは主に、クエリをプリペアドステートメントでラップするTableau Onlineなどのツールとの接続を可能にするためのものです。
 
 **主な制限事項:**
 
-- **パラメータバインディングは非対応** - バインドパラメータで`?`プレースホルダーを使用することはできません
+- **パラメータバインディングには非対応** - バインドパラメータと共に`?`プレースホルダーを使用することはできません
 - クエリは保存されますが、`PREPARE`時には解析されません
 - 実装は最小限であり、特定のBIツールとの互換性を目的として設計されています
 
@@ -915,7 +915,7 @@ ClickHouseの[MySQLインターフェース](/interfaces/mysql)は、プリペ�
 ```sql
 -- このパラメータ付きMySQLスタイルのプリペアドステートメントはClickHouseでは動作しません
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
-EXECUTE stmt USING @user_id;  -- パラメータバインディングは非対応
+EXECUTE stmt USING @user_id;  -- パラメータバインディングには非対応
 ```
 
 :::tip

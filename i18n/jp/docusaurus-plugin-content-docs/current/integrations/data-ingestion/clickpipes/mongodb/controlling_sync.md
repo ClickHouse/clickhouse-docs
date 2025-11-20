@@ -1,6 +1,6 @@
 ---
 title: 'MongoDB ClickPipe の同期を制御する'
-description: 'MongoDB ClickPipe の同期を制御する方法についてのドキュメント'
+description: 'MongoDB ClickPipe の同期を制御する方法に関するドキュメント'
 slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: '同期の制御'
 doc_type: 'guide'
@@ -13,18 +13,18 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、ClickPipe が **CDC（実行中）モード** のときに、MongoDB ClickPipe の同期を制御する方法について説明します。
+このドキュメントでは、ClickPipe が **CDC (Running) モード** のときに MongoDB ClickPipe の同期を制御する方法について説明します。
 
 
 ## 概要 {#overview}
 
-データベースClickPipesは、ソースデータベースからのデータ取得とターゲットデータベースへのデータ送信という2つの並列プロセスで構成されるアーキテクチャを持っています。データ取得プロセスは、データの取得頻度と1回あたりの取得データ量を定義する同期設定によって制御されます。「1回あたり」とは1バッチを意味します。ClickPipeはデータをバッチ単位で取得および送信するためです。
+Database ClickPipesは、ソースデータベースからのデータ取得とターゲットデータベースへのデータ送信という2つの並列プロセスで構成されるアーキテクチャを持っています。データ取得プロセスは、データの取得頻度と1回あたりの取得データ量を定義する同期設定によって制御されます。「1回あたり」とは1バッチを意味します。ClickPipeはデータをバッチ単位で取得および送信するためです。
 
-MongoDB ClickPipeの同期を制御する主な方法は2つあります。以下の設定のいずれかが発動すると、ClickPipeはデータ送信を開始します。
+MongoDB ClickPipeの同期を制御する主な方法は2つあります。以下の設定のいずれかが条件を満たすと、ClickPipeはデータ送信を開始します。
 
 ### 同期間隔 {#interval}
 
-パイプの同期間隔は、ClickPipeがソースデータベースからレコードを取得する時間(秒単位)です。ClickHouseへのデータ送信にかかる時間は、この間隔には含まれません。
+パイプの同期間隔は、ClickPipeがソースデータベースからレコードを取得する時間（秒単位）です。ClickHouseへのデータ送信にかかる時間は、この間隔には含まれません。
 
 デフォルトは**1分**です。
 同期間隔は任意の正の整数値に設定できますが、10秒以上に保つことを推奨します。
@@ -53,6 +53,6 @@ ClickPipeを作成する場合、以下に示すように作成ウィザード�
 
 ### 同期制御動作の監視 {#monitoring}
 
-ClickPipeの**Metrics**タブにある**CDC Syncs**テーブルで、各バッチにかかる時間を確認できます。ここでの期間にはデータ送信時間が含まれており、また受信する行がない場合、ClickPipeは待機し、その待機時間も期間に含まれることに注意してください。
+各バッチにかかる時間は、ClickPipeの**Metrics**タブにある**CDC Syncs**テーブルで確認できます。ここでの期間にはデータ送信時間が含まれており、また受信する行がない場合、ClickPipeは待機し、その待機時間も期間に含まれることに注意してください。
 
 <Image img={cdc_syncs} alt='CDC Syncsテーブル' size='md' />

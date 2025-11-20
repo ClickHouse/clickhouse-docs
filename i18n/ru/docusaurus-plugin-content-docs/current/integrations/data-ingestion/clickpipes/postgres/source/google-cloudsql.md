@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Google Cloud SQL'
-description: 'Настройка экземпляра Google Cloud SQL Postgres в качестве источника для ClickPipes'
+description: 'Настройка экземпляра PostgreSQL в Google Cloud SQL в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/google-cloudsql
-title: 'Руководство по настройке источника Google Cloud SQL Postgres'
+title: 'Руководство по настройке источника PostgreSQL в Google Cloud SQL'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'logical decoding', 'firewall']
 ---
@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к соответствующему руководству для этого провайдера.
+Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к руководству, посвящённому этому провайдеру.
 
 :::
 
@@ -30,12 +30,12 @@ import Image from '@theme/IdealImage';
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
-Postgres 12 и новее
+Postgres 12 и выше
 
 
 ## Включение логической репликации {#enable-logical-replication}
 
-**Вам не требуется** выполнять приведенные ниже шаги, если параметр `cloudsql.logical_decoding` включен, а `wal_sender_timeout` установлен в 0. Эти параметры обычно уже настроены, если вы выполняете миграцию с другого инструмента репликации данных.
+**Вам не требуется** выполнять приведенные ниже шаги, если параметр `cloudsql.logical_decoding` включен, а `wal_sender_timeout` равен 0. Эти параметры, как правило, уже настроены, если вы выполняете миграцию с другого инструмента репликации данных.
 
 1. Нажмите кнопку **Edit** на странице Overview.
 
@@ -96,13 +96,13 @@ Postgres 12 и новее
 [//]: # "TODO Add SSH Tunneling"
 
 
-## Добавление IP-адресов ClickPipes в брандмауэр {#add-clickpipes-ips-to-firewall}
+## Добавление IP-адресов ClickPipes в межсетевой экран {#add-clickpipes-ips-to-firewall}
 
 Выполните следующие шаги, чтобы добавить IP-адреса ClickPipes в вашу сеть.
 
 :::note
 
-Если вы используете SSH-туннелирование, добавьте [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в правила брандмауэра Jump Server/Bastion.
+Если вы используете SSH-туннелирование, необходимо добавить [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в правила межсетевого экрана Jump Server/Bastion.
 
 :::
 
@@ -128,13 +128,13 @@ Postgres 12 и новее
 
 <Image
   img={firewall1}
-  alt='Добавление сетей ClickPipes в брандмауэр'
+  alt='Добавление сетей ClickPipes в межсетевой экран'
   size='lg'
   border
 />
 <Image
   img={firewall2}
-  alt='Сети ClickPipes добавлены в брандмауэр'
+  alt='Сети ClickPipes добавлены в межсетевой экран'
   size='lg'
   border
 />
@@ -143,4 +143,4 @@ Postgres 12 и новее
 ## Что дальше? {#whats-next}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать загружать данные из вашего экземпляра Postgres в ClickHouse Cloud.
-Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся при создании ClickPipe.
+Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра Postgres — они понадобятся вам при создании ClickPipe.

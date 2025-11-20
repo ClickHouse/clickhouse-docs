@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
-sidebar_label: 'AnythingLLM を統合する'
+sidebar_label: 'AnythingLLM を連携する'
 title: 'ClickHouse MCP サーバーを AnythingLLM と ClickHouse Cloud でセットアップする'
 pagination_prev: null
 pagination_next: null
@@ -41,7 +41,7 @@ LibreChatとMCPサーバーを実行するには、Dockerが必要です。Docke
 
 ## AnythingLLM Dockerイメージの取得 {#pull-anythingllm-docker-image}
 
-以下のコマンドを実行して、AnythingLLM Dockerイメージをマシンに取得します:
+以下のコマンドを実行して、AnythingLLM Dockerイメージをマシンに取得します。
 
 ```bash
 docker pull anythingllm/anythingllm
@@ -61,13 +61,13 @@ touch "$STORAGE_LOCATION/.env"
 
 ## MCPサーバー設定ファイルの構成 {#configure-mcp-server-config-file}
 
-`plugins`ディレクトリを作成します：
+`plugins`ディレクトリを作成します:
 
 ```bash
 mkdir -p "$STORAGE_LOCATION/plugins"
 ```
 
-`plugins`ディレクトリ内に`anythingllm_mcp_servers.json`というファイルを作成し、以下の内容を追加します：
+`plugins`ディレクトリ内に`anythingllm_mcp_servers.json`というファイルを作成し、以下の内容を追加します:
 
 ```json
 {
@@ -92,7 +92,7 @@ mkdir -p "$STORAGE_LOCATION/plugins"
 }
 ```
 
-独自のデータを探索する場合は、ClickHouse Cloudサービスの[ホスト、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)を使用してください。
+独自のデータを探索する場合は、ご利用のClickHouse Cloudサービスの[ホスト、ユーザー名、パスワード](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)を使用してください。
 
 
 ## AnythingLLM Dockerコンテナの起動 {#start-anythingllm-docker-container}
@@ -108,18 +108,18 @@ docker run -p 3001:3001 \
 mintplexlabs/anythingllm
 ```
 
-起動後、ブラウザで`http://localhost:3001`にアクセスします。
+起動後、ブラウザで `http://localhost:3001` にアクセスします。
 使用するモデルを選択し、APIキーを入力してください。
 
 
 ## MCPサーバーの起動を待つ {#wait-for-mcp-servers-to-start-up}
 
-UIの左下にあるツールアイコンをクリックします:
+UIの左下にあるツールアイコンをクリックします：
 
 <Image img={ToolIcon} alt='ツールアイコン' size='md' />
 
 `Agent Skills`をクリックし、`MCP Servers`セクションを確認します。
-`Mcp ClickHouse`が`On`に設定されるまで待ちます
+`Mcp ClickHouse`が`On`に設定されるまで待ちます。
 
 <Image img={MCPServers} alt='MCPサーバー準備完了' size='md' />
 

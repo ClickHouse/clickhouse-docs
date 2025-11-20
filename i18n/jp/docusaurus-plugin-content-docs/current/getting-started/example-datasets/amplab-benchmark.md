@@ -1,5 +1,5 @@
 ---
-description: 'データウェアハウジングソリューションのパフォーマンス比較に使用されるベンチマークデータセット。'
+description: 'データウェアハウジングソリューションのパフォーマンスを比較するために使用されるベンチマークデータセット。'
 sidebar_label: 'AMPLab ビッグデータベンチマーク'
 slug: /getting-started/example-datasets/amplab-benchmark
 title: 'AMPLab ビッグデータベンチマーク'
@@ -9,9 +9,9 @@ doc_type: 'guide'
 
 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/) を参照してください。
 
-[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントを作成します。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) で新しいアクセスキーを取得します。
+[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントにサインアップします。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) で新しいアクセスキーを取得します。
 
-コンソールで次を実行します。
+コンソールで次を実行します:
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -101,7 +101,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-サンプルデータ取得用のクエリ：
+データサンプルを取得するためのクエリ：
 
 
 ```sql

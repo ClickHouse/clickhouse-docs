@@ -3,7 +3,7 @@ slug: /integrations/sqlite
 sidebar_label: 'SQLite'
 title: 'SQLite'
 hide_title: true
-description: 'SQLite エンジンを使用した連携方法について説明するページ'
+description: 'SQLiteエンジンを使用した連携について説明するページ'
 doc_type: 'reference'
 keywords: ['sqlite', '組み込みデータベース', '連携', 'データソース', 'ファイルデータベース']
 ---

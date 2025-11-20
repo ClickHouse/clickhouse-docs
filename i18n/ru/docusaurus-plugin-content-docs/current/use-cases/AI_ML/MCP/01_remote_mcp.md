@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
 sidebar_label: 'Удалённый MCP в ClickHouse Cloud'
-title: 'Включение удалённого MCP-сервера ClickHouse Cloud'
+title: 'Включение удалённого MCP-сервера в ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как включить и использовать удалённый MCP в ClickHouse Cloud'
@@ -25,7 +25,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 # Включение удалённого MCP-сервера ClickHouse Cloud
 
-> В этом руководстве описывается, как включить и использовать удалённый MCP-сервер ClickHouse Cloud. В качестве примера мы используем Claude Code в роли MCP-клиента, но подойдёт любой LLM-клиент с поддержкой MCP.
+> В этом руководстве описывается, как включить и использовать удалённый MCP-сервер ClickHouse Cloud. В данном примере мы будем использовать Claude Code в качестве MCP-клиента, однако можно использовать любой LLM-клиент с поддержкой MCP.
 
 <VerticalStepper headerLevel="h2">
 
@@ -47,7 +47,7 @@ https://mcp.clickhouse.cloud/mcp
 
 ## Добавление MCP-сервера ClickHouse в Claude Code {#add-clickhouse-mcp-server-claude-code}
 
-1. В рабочем каталоге выполните следующую команду, чтобы добавить конфигурацию MCP-сервера ClickHouse Cloud в Claude Code. В данном примере MCP-сервер в конфигурации Claude Code назван `clickhouse_cloud`
+1. В рабочем каталоге выполните следующую команду для добавления конфигурации MCP-сервера ClickHouse Cloud в Claude Code. В данном примере MCP-сервер в конфигурации Claude Code назван `clickhouse_cloud`
 
 ```bash
 claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mcp
@@ -95,6 +95,6 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 
 <Image img={img7} alt='Использование MCP в Claude Code' size='md' />
 
-Хотя в этом примере использовался Claude Code, вы можете использовать любой LLM-клиент с поддержкой MCP, выполнив аналогичные шаги.
+Хотя в этом примере использовался Claude Code, вы можете использовать любой LLM-клиент с поддержкой MCP, выполнив аналогичные действия.
 
 </VerticalStepper>

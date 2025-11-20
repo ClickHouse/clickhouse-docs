@@ -3,8 +3,8 @@ sidebar_label: 'Rust'
 sidebar_position: 5
 keywords: ['clickhouse', 'rs', 'rust', 'cargo', 'crate', 'http', 'client', 'connect', 'integrate']
 slug: /integrations/rust
-description: 'ClickHouse 官方 Rust 客户端。'
-title: 'ClickHouse 官方 Rust 客户端'
+description: '用于连接 ClickHouse 的官方 Rust 客户端。'
+title: 'ClickHouse Rust 客户端'
 doc_type: 'reference'
 ---
 
@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 # ClickHouse Rust 客户端
 
-用于连接 ClickHouse 的官方 Rust 客户端，最初由 [Paul Loyd](https://github.com/loyd) 开发。客户端源代码可在 [GitHub 代码仓库](https://github.com/ClickHouse/clickhouse-rs) 中获取。
+用于连接 ClickHouse 的官方 Rust 客户端，最初由 [Paul Loyd](https://github.com/loyd) 开发。客户端源代码可在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-rs) 中获取。
 
 
 
@@ -25,12 +25,12 @@ doc_type: 'reference'
 - 支持 TLS(通过 `native-tls` 和 `rustls-tls` 特性)。
 - 支持压缩和解压缩(LZ4)。
 - 提供用于数据查询或插入、执行 DDL 以及客户端批处理的 API。
-- 提供便捷的 mock 对象用于单元测试。
+- 提供便捷的模拟对象用于单元测试。
 
 
 ## 安装 {#installation}
 
-要使用此 crate,请在 `Cargo.toml` 中添加以下内容:
+要使用该 crate,请在 `Cargo.toml` 中添加以下内容:
 
 ```toml
 [dependencies]
@@ -46,10 +46,10 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 ## Cargo 特性 {#cargo-features}
 
 - `lz4`(默认启用)— 启用 `Compression::Lz4` 和 `Compression::Lz4Hc(_)` 变体。启用后,除 `WATCH` 查询外,所有查询默认使用 `Compression::Lz4` 压缩。
-- `native-tls` — 通过 `hyper-tls` 支持 `HTTPS` 协议的 URL,该库链接 OpenSSL。
-- `rustls-tls` — 通过 `hyper-rustls` 支持 `HTTPS` 协议的 URL,该库不链接 OpenSSL。
+- `native-tls` — 通过 `hyper-tls` 支持使用 `HTTPS` 协议的 URL,该库链接 OpenSSL。
+- `rustls-tls` — 通过 `hyper-rustls` 支持使用 `HTTPS` 协议的 URL,该库不链接 OpenSSL。
 - `inserter` — 启用 `client.inserter()` 方法。
-- `test-util` — 添加 mock 功能。参见[示例](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)。仅应在 `dev-dependencies` 中使用。
+- `test-util` — 添加模拟(mock)功能。参见[示例](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)。仅应在 `dev-dependencies` 中使用。
 - `watch` — 启用 `client.watch` 功能。详情请参见相应章节。
 - `uuid` — 添加 `serde::uuid` 以支持 [uuid](https://docs.rs/uuid) crate。
 - `time` — 添加 `serde::time` 以支持 [time](https://docs.rs/time) crate。
@@ -70,9 +70,9 @@ v22.6 之前的 ClickHouse 服务器在[某些罕见情况下会错误地处理 
 
 ## 示例 {#examples}
 
-我们在客户端代码仓库中提供了[示例代码](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples),涵盖客户端使用的各种场景。您可以在[示例 README](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview) 中查看概述。
+我们通过客户端代码库中的[示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples)来涵盖客户端使用的各种场景。您可以在[示例 README](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview)中查看概述。
 
-如果示例或后续文档中有不清楚或遗漏的内容,欢迎[联系我们](./rust.md#contact-us)。
+如果示例或后续文档中有不清楚或缺失的内容,欢迎[联系我们](./rust.md#contact-us)。
 
 
 ## 使用方法 {#usage}
@@ -152,10 +152,10 @@ while let Some(row) = cursor.next().await? { .. }
 - 可以使用便捷的 `fetch_one::<Row>()` 和 `fetch_all::<Row>()` 方法分别获取第一行或所有行。
 - `sql::Identifier` 可用于绑定表名。
 
-注意:由于整个响应是流式传输的,游标即使在产生一些行之后也可能返回错误。如果在您的使用场景中发生这种情况,可以尝试使用 `query(...).with_option("wait_end_of_query", "1")` 以在服务器端启用响应缓冲。[更多详情](/interfaces/http/#response-buffering)。`buffer_size` 选项也可能有用。
+注意:由于整个响应是流式传输的,游标即使在产生一些行之后也可能返回错误。如果在您的使用场景中发生这种情况,可以尝试使用 `query(...).with_option("wait_end_of_query", "1")` 在服务器端启用响应缓冲。[更多详情](/interfaces/http/#response-buffering)。`buffer_size` 选项也可能有用。
 
 :::warning
-在查询行时谨慎使用 `wait_end_of_query`,因为它会导致服务器端更高的内存消耗,并可能降低整体性能。
+在查询行时谨慎使用 `wait_end_of_query`,因为它会导致服务器端内存消耗增加,并可能降低整体性能。
 :::
 
 ### 插入行 {#inserting-rows}
@@ -177,12 +177,12 @@ insert.end().await?;
 ```
 
 - 如果未调用 `end()`,`INSERT` 将被中止。
-- 行以流的方式逐步发送以分散网络负载。
-- 只有当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时,ClickHouse 才会原子性地插入批次。
+- 行以流的方式逐步发送,以分散网络负载。
+- 只有当所有行都位于同一分区且数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时,ClickHouse 才会原子性地插入批次。
 
 ### 异步插入(服务器端批处理) {#async-insert-server-side-batching}
 
-您可以使用 [ClickHouse 异步插入](/optimize/asynchronous-inserts)来避免对传入数据进行客户端批处理。只需向 `insert` 方法提供 `async_insert` 选项即可实现(甚至可以提供给 `Client` 实例本身,这样它将影响所有 `insert` 调用)。
+您可以使用 [ClickHouse 异步插入](/optimize/asynchronous-inserts)来避免对传入数据进行客户端批处理。只需向 `insert` 方法提供 `async_insert` 选项即可实现(甚至可以提供给 `Client` 实例本身,这样将影响所有 `insert` 调用)。
 
 
 ```rust
@@ -196,9 +196,9 @@ let client = Client::default()
 
 - 客户端代码库中的[异步插入示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
 
-### Inserter 特性（客户端批处理）{#inserter-feature-client-side-batching}
+### Inserter 功能（客户端批处理） {#inserter-feature-client-side-batching}
 
-需要启用 `inserter` cargo 特性。
+需要启用 `inserter` cargo 功能。
 
 ```rust
 let mut inserter = client.inserter("some")?
@@ -217,15 +217,15 @@ if stats.rows > 0 {
     );
 }
 
-// don't forget to finalize the inserter during the application shutdown
-// and commit the remaining rows. `.end()` will provide stats as well.
+// 不要忘记在应用程序关闭时完成 inserter 操作
+// 并提交剩余的行。`.end()` 也会返回统计信息。
 inserter.end().await?;
 ```
 
 - 当达到任一阈值（`max_bytes`、`max_rows`、`period`）时，`Inserter` 会在 `commit()` 中结束当前活动的插入操作。
-- 可以使用 `with_period_bias` 调整结束活动 `INSERT` 之间的时间间隔，以避免并行插入器造成的负载峰值。
-- 可以使用 `Inserter::time_left()` 检测当前周期何时结束。如果您的数据流很少产生数据项，请再次调用 `Inserter::commit()` 以检查限制条件。
-- 时间阈值通过使用 [quanta](https://docs.rs/quanta) crate 实现，以提升 `inserter` 的性能。如果启用了 `test-util`，则不使用此功能（因此，在自定义测试中可以通过 `tokio::time::advance()` 管理时间）。
+- 可以使用 `with_period_bias` 调整结束活动 `INSERT` 之间的时间间隔，以避免并行 inserter 造成的负载峰值。
+- `Inserter::time_left()` 可用于检测当前周期何时结束。如果您的数据流很少发出数据项，请再次调用 `Inserter::commit()` 以检查限制条件。
+- 时间阈值通过使用 [quanta](https://docs.rs/quanta) crate 实现，以加速 `inserter` 的性能。如果启用了 `test-util`，则不使用该 crate（因此，在自定义测试中可以通过 `tokio::time::advance()` 管理时间）。
 - `commit()` 调用之间的所有行都会在同一个 `INSERT` 语句中插入。
 
 :::warning
@@ -237,9 +237,9 @@ inserter.end().await?;
 
 :::
 
-### 执行 DDL {#executing-ddls}
+### 执行 DDL 语句 {#executing-ddls}
 
-对于单节点部署，可以像这样执行 DDL：
+对于单节点部署，像这样执行 DDL 语句就足够了：
 
 ```rust
 client.query("DROP TABLE IF EXISTS some").execute().await?;
@@ -262,7 +262,7 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // 此设置仅应用于此特定查询；
+    // 此设置仅应用于这个特定查询；
     // 它将覆盖全局客户端设置。
     .with_option("limit", "3")
     .fetch_all::<u64>()
@@ -286,7 +286,7 @@ let numbers = client
 除了 `query` 之外，`insert` 和 `inserter` 方法的工作方式类似。
 
 :::danger
-如果手动设置 `query_id`，请确保它是唯一的。UUID 是一个不错的选择。
+如果您手动设置 `query_id`，请确保它是唯一的。UUID 是一个不错的选择。
 :::
 
 另请参阅：客户端代码库中的 [query_id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)。
@@ -358,12 +358,12 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 - [容器类 ClickHouse 数据类型](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/data_types_derive_containers.rs)
   :::
 
-- `(U)Int(8|16|32|64|128)` 与相应的 `(u|i)(8|16|32|64|128)` 类型或其封装的新类型相互映射。
-- `(U)Int256` 不直接支持,但存在[相应的解决方法](https://github.com/ClickHouse/clickhouse-rs/issues/48)。
-- `Float(32|64)` 与相应的 `f(32|64)` 或其封装的新类型相互映射。
-- `Decimal(32|64|128)` 与相应的 `i(32|64|128)` 或其封装的新类型相互映射。建议使用 [`fixnum`](https://github.com/loyd/fixnum) 或其他有符号定点数实现,会更加方便。
-- `Boolean` 与 `bool` 或其封装的新类型相互映射。
-- `String` 与任何字符串或字节类型相互映射,例如 `&str`、`&[u8]`、`String`、`Vec<u8>` 或 [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html)。同时也支持新类型。存储字节时,建议使用 [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/),因为效率更高。
+- `(U)Int(8|16|32|64|128)` 映射到相应的 `(u|i)(8|16|32|64|128)` 类型或其封装的新类型。
+- `(U)Int256` 不直接支持,但有[相应的解决方法](https://github.com/ClickHouse/clickhouse-rs/issues/48)。
+- `Float(32|64)` 映射到相应的 `f(32|64)` 或其封装的新类型。
+- `Decimal(32|64|128)` 映射到相应的 `i(32|64|128)` 或其封装的新类型。建议使用 [`fixnum`](https://github.com/loyd/fixnum) 或其他有符号定点数实现,这样更方便。
+- `Boolean` 映射到 `bool` 或其封装的新类型。
+- `String` 映射到任何字符串或字节类型,例如 `&str`、`&[u8]`、`String`、`Vec<u8>` 或 [`SmartString`](https://docs.rs/smartstring/latest/smartstring/struct.SmartString.html)。也支持新类型。要存储字节,建议使用 [`serde_bytes`](https://docs.rs/serde_bytes/latest/serde_bytes/),因为它更高效。
 
 ```rust
 #[derive(Row, Debug, Serialize, Deserialize)]
@@ -406,7 +406,7 @@ enum Level {
 }
 ```
 
-- `UUID` 通过 `serde::uuid` 与 [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html) 相互映射。需要启用 `uuid` 特性。
+- `UUID` 通过 `serde::uuid` 映射到 [`uuid::Uuid`](https://docs.rs/uuid/latest/uuid/struct.Uuid.html)。需要启用 `uuid` 特性。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -416,8 +416,8 @@ struct MyRow {
 }
 ```
 
-- `IPv6` 与 [`std::net::Ipv6Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv6Addr.html) 相互映射。
-- `IPv4` 通过 `serde::ipv4` 与 [`std::net::Ipv4Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv4Addr.html) 相互映射。
+- `IPv6` 映射到 [`std::net::Ipv6Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv6Addr.html)。
+- `IPv4` 通过 `serde::ipv4` 映射到 [`std::net::Ipv4Addr`](https://doc.rust-lang.org/stable/std/net/struct.Ipv4Addr.html)。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -427,7 +427,7 @@ struct MyRow {
 }
 ```
 
-- `Date` 与 `u16` 或其封装的新类型相互映射,表示自 `1970-01-01` 以来经过的天数。此外,通过 `serde::time::date` 支持 [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html),需要启用 `time` 特性。
+- `Date` 映射到 `u16` 或其封装的新类型,表示自 `1970-01-01` 以来经过的天数。此外,通过 `serde::time::date` 支持 [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html),需要启用 `time` 特性。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -438,7 +438,7 @@ struct MyRow {
 }
 ```
 
-- `Date32` 与 `i32` 或其封装的新类型相互映射,表示自 `1970-01-01` 以来经过的天数。此外,通过 `serde::time::date32` 支持 [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html),需要启用 `time` 特性。
+- `Date32` 映射到 `i32` 或其封装的新类型,表示自 `1970-01-01` 以来经过的天数。此外,通过 `serde::time::date32` 支持 [`time::Date`](https://docs.rs/time/latest/time/struct.Date.html),需要启用 `time` 特性。
 
 
 ```rust
@@ -450,7 +450,7 @@ struct MyRow {
 }
 ```
 
-* `DateTime` 映射自/到 `u32`（或其上的 newtype），表示自 UNIX 纪元以来经过的秒数。另外，也支持通过 `serde::time::datetime` 使用 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，这需要启用 `time` 功能。
+* `DateTime` 映射自/到 `u32` 或其外包的新类型，并表示自 UNIX 纪元以来经过的秒数。同时，通过使用 `serde::time::datetime` 也支持 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，这需要启用 `time` 特性。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -461,12 +461,12 @@ struct MyRow {
 }
 ```
 
-* `DateTime64(_)` 会映射为/从 `i32` 或其外包的新类型进行映射，并表示自 UNIX 纪元以来经过的时间。此外，也支持通过 `serde::time::datetime64::*` 使用 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，这需要启用 `time` 特性。
+* `DateTime64(_)` 会映射为/自 `i32` 或其封装的新类型，表示自 UNIX 纪元以来经过的时间。另外，还支持通过 `serde::time::datetime64::*` 使用 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，这需要启用 `time` 特性。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // 根据 `DateTime64(X)` 的精度,表示经过的秒/微秒/毫秒/纳秒
+    ts: i64, // 根据 `DateTime64(X)` 的精度表示经过的秒/微秒/毫秒/纳秒
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
     dt64s: OffsetDateTime,  // `DateTime64(0)` 秒级精度
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
@@ -478,11 +478,11 @@ struct MyRow {
 }
 ```
 
-* `Tuple(A, B, ...)` 映射到/从 `(A, B, ...)` 或其外层 newtype。
+* `Tuple(A, B, ...)` 映射到/从 `(A, B, ...)` 或其外层的 newtype。
 * `Array(_)` 映射到/从任意 slice，例如 `Vec<_>`、`&[_]`。也支持 newtype。
 * `Map(K, V)` 的行为类似于 `Array((K, V))`。
-* `LowCardinality(_)` 可无缝使用。
-* `Nullable(_)` 映射到/从 `Option<_>`。对于 `clickhouse::serde::*` 辅助工具，请添加 `::option`。
+* `LowCardinality(_)` 得到无缝支持。
+* `Nullable(_)` 映射到/从 `Option<_>`。对于 `clickhouse::serde::*` 辅助函数，请添加 `::option`。
 
 ```rust
 #[derive(Row, Serialize, Deserialize)]
@@ -492,7 +492,7 @@ struct MyRow {
 }
 ```
 
-* 通过提供多个数组并对其重命名来支持 `Nested`。
+* 通过提供多个数组并进行重命名来支持 `Nested`。
 
 ```rust
 // 创建表 test(items Nested(name String, count UInt32))
@@ -505,7 +505,7 @@ struct MyRow {
 }
 ```
 
-* 支持 `Geo` 类型。`Point` 的行为类似于元组 `(f64, f64)`，其余类型只是 `Point` 的切片。
+* 支持 `Geo` 类型。`Point` 的行为类似于元组 `(f64, f64)`，其余类型只是点的切片。
 
 ```rust
 type Point = (f64, f64);
@@ -526,7 +526,7 @@ struct MyRow {
 }
 ```
 
-* 尚不支持 `Variant`、`Dynamic` 和（新）`JSON` 数据类型。
+* `Variant`、`Dynamic` 和（新的）`JSON` 数据类型尚不受支持。
 
 
 ## 模拟测试 {#mocking}
@@ -536,13 +536,13 @@ struct MyRow {
 参见[示例](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)。
 
 
-## 故障排查 {#troubleshooting}
+## 故障排除 {#troubleshooting}
 
 ### CANNOT_READ_ALL_DATA {#cannot_read_all_data}
 
 `CANNOT_READ_ALL_DATA` 错误最常见的原因是应用程序端的行定义与 ClickHouse 中的定义不匹配。
 
-考虑以下表:
+以下面的表为例:
 
 ```sql
 CREATE OR REPLACE TABLE event_log (id UInt32)
@@ -550,12 +550,12 @@ ENGINE = MergeTree
 ORDER BY timestamp
 ```
 
-然后,如果在应用程序端定义 `EventLog` 时类型不匹配,例如:
+如果在应用程序端定义 `EventLog` 时使用了不匹配的类型,例如:
 
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- 应该是 u32!
+    id: String, // <- 应该是 u32 类型!
 }
 ```
 
@@ -583,4 +583,4 @@ struct EventLog {
 
 ## 联系我们 {#contact-us}
 
-如果您有任何问题或需要帮助,请随时通过 [Community Slack](https://clickhouse.com/slack) 或 [GitHub issues](https://github.com/ClickHouse/clickhouse-rs/issues) 与我们联系。
+如果您有任何问题或需要帮助,欢迎通过 [Community Slack](https://clickhouse.com/slack) 或 [GitHub Issues](https://github.com/ClickHouse/clickhouse-rs/issues) 与我们联系。

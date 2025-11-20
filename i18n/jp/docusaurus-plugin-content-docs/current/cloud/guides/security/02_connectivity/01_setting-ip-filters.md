@@ -2,7 +2,7 @@
 sidebar_label: 'IP フィルターの設定'
 slug: /cloud/security/setting-ip-filters
 title: 'IP フィルターの設定'
-description: 'このページでは、ClickHouse Cloud で ClickHouse サービスへのアクセスを制御するための IP フィルターの設定方法について説明します。'
+description: 'このページでは、ClickHouse Cloud で IP フィルターを設定して、ClickHouse サービスへのアクセスを制御する方法を説明します。'
 doc_type: 'guide'
 keywords: ['IP filters', 'IP access list']
 ---
@@ -23,9 +23,9 @@ ClickHouse CloudサービスのIPアクセスリストの作成を省略した�
 
 ## 準備 {#prepare}
 
-開始する前に、アクセスリストに追加するIPアドレスまたはアドレス範囲を収集してください。リモートワーカー、オンコール拠点、VPNなどを考慮してください。IPアクセスリストのユーザーインターフェースは、個別のアドレスとCIDR表記に対応しています。
+開始する前に、アクセスリストに追加するIPアドレスまたはIPアドレス範囲を収集してください。リモートワーカー、オンコール拠点、VPNなどを考慮してください。IPアクセスリストのユーザーインターフェースは、個別のアドレスとCIDR表記に対応しています。
 
-Classless Inter-domain Routing（CIDR）表記を使用すると、従来のクラスA、B、またはC（8、16、または24ビット）のサブネットマスクサイズよりも小さいIPアドレス範囲を指定できます。必要に応じて、[ARIN](https://account.arin.net/public/cidrCalculator)などの組織がCIDR計算ツールを提供しています。CIDR表記の詳細については、[Classless Inter-domain Routing (CIDR)](https://www.rfc-editor.org/rfc/rfc4632.html) RFCを参照してください。
+Classless Inter-domain Routing（CIDR）表記を使用すると、従来のクラスA、B、またはC（8、16、または24ビット）のサブネットマスクサイズよりも小さいIPアドレス範囲を指定できます。必要に応じて、[ARIN](https://account.arin.net/public/cidrCalculator)やその他の組織がCIDR計算ツールを提供しています。CIDR表記の詳細については、[Classless Inter-domain Routing（CIDR）](https://www.rfc-editor.org/rfc/rfc4632.html) RFCを参照してください。
 
 
 ## IPアクセスリストの作成または変更 {#create-or-modify-an-ip-access-list}
@@ -44,7 +44,7 @@ ClickHouse Cloudサービスリストからサービスを選択し、**Settings
 
 サイドバーが表示され、以下の設定オプションが利用できます:
 
-- あらゆる場所からサービスへの受信トラフィックを許可
+- 任意の場所からサービスへの受信トラフィックを許可
 - 特定の場所からサービスへのアクセスを許可
 - サービスへのすべてのアクセスを拒否
 
@@ -56,7 +56,7 @@ APIキーを作成する際、IP許可リストのデフォルト設定は「ど
 
 APIキーリストから、**Actions**列のAPIキーの横にある3つのドットをクリックし、**Edit**を選択します。画面下部にIPアクセスリストと以下の設定オプションがあります:
 
-- あらゆる場所からサービスへの受信トラフィックを許可
+- 任意の場所からサービスへの受信トラフィックを許可
 - 特定の場所からサービスへのアクセスを許可
 - サービスへのすべてのアクセスを拒否
 
@@ -71,9 +71,9 @@ APIキーリストから、**Actions**列のAPIキーの横にある3つのド�
   border
 />
 
-### 可能な操作 {#possible-actions}
+### 実行可能なアクション {#possible-actions}
 
-1. エントリを追加するには、**+ Add new IP**を使用します
+1. 追加のエントリを追加するには、**+ Add new IP**を使用します
 
 この例では、`London server`という説明を付けて単一のIPアドレスを追加しています:
 

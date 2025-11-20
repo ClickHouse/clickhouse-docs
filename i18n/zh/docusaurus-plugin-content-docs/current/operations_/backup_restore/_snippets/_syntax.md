@@ -1,7 +1,7 @@
 ```sql
 -- 核心命令
 BACKUP | RESTORE [ASYNC]
---- 备份/恢复对象（或排除对象）
+--- 备份/恢复的对象（或排除的对象）
 TABLE [db.]table_name           [AS [db.]table_name_in_backup] |
 DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup] |
 DATABASE database_name          [AS database_name_in_backup] |
@@ -11,7 +11,7 @@ VIEW view_name                  [AS view_name_in_backup] |
 ALL [EXCEPT {TABLES|DATABASES}...] } [,...]
 --- 
 [ON CLUSTER 'cluster_name']
---- 备份或恢复的目标/源位置
+--- 备份或恢复的目标位置/源位置
 TO|FROM 
 File('<path>/<filename>') | 
 Disk('<disk_name>', '<path>/') | 
@@ -21,4 +21,4 @@ AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account
 [SETTINGS ...]
 ```
 
-**有关每个命令的更多详细信息，请参阅[《命令摘要》](/operations/backup/overview/#command-summary)。**
+**有关每个命令的更多详细信息，请参见[“命令汇总”](/operations/backup/overview/#command-summary)。**

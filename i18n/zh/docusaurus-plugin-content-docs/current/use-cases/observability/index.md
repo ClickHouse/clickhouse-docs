@@ -3,12 +3,12 @@ slug: /use-cases/observability
 title: '可观测性'
 pagination_prev: null
 pagination_next: null
-description: '可观测性用例指南的入口页'
+description: '可观测性用例指南的入口页面'
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 doc_type: 'guide'
 ---
 
-ClickHouse 在可观测性场景下具备无与伦比的速度、扩展性和成本效益。本指南根据你的需求提供两条路径：
+在可观测性场景中，ClickHouse 具备无与伦比的性能、扩展能力和成本效益。本指南根据你的需求提供两条路径：
 
 
 
@@ -16,7 +16,7 @@ ClickHouse 在可观测性场景下具备无与伦比的速度、扩展性和成
 
 ClickHouse 可观测性技术栈是我们为大多数用户**推荐的方案**。
 
-**ClickStack** 是一个基于 ClickHouse 和 OpenTelemetry (OTel) 构建的生产级可观测性平台,将日志、追踪、指标和会话统一到单个高性能可扩展解决方案中,支持从单节点部署到**多 PB** 规模。
+**ClickStack** 是一个基于 ClickHouse 和 OpenTelemetry (OTel) 构建的生产级可观测性平台,将日志、追踪、指标和会话统一到单个高性能可扩展解决方案中,支持从单节点部署到**多 PB 级**规模。
 
 | 章节                                                                 | 说明                                     |
 | ----------------------------------------------------------------------- | ----------------------------------------------- |
@@ -42,4 +42,4 @@ ClickHouse 可观测性技术栈是我们为大多数用户**推荐的方案**�
 | [数据管理](/observability/managing-data)                         | 用于可观测性的 ClickHouse 部署通常涉及大规模数据集,需要进行管理。ClickHouse 提供了协助数据管理的功能。 |
 | [集成 OpenTelemetry](/observability/integrating-opentelemetry) | 使用 OpenTelemetry 与 ClickHouse 收集和导出日志和链路追踪数据。                                                                                       |
 | [使用可视化工具](/observability/grafana)                   | 了解如何使用 ClickHouse 的可观测性可视化工具,包括 HyperDX 和 Grafana。                                                                   |
-| [演示应用程序](/observability/demo-application)                   | 探索已分叉并适配 ClickHouse 日志和链路追踪功能的 OpenTelemetry 演示应用程序。                                                                      |
+| [演示应用程序](/observability/demo-application)                   | 探索专为与 ClickHouse 配合使用而分叉的 OpenTelemetry 演示应用程序,用于日志和链路追踪。                                                                      |

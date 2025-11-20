@@ -1,8 +1,8 @@
 ---
 slug: /optimize/avoid-nullable-columns
-sidebar_label: 'Nullable カラムを避ける'
-title: 'Nullable カラムを避ける'
-description: 'ClickHouse で Nullable カラムを避けるべき理由'
+sidebar_label: 'Nullable列を避ける'
+title: 'Nullable列を避ける'
+description: 'ClickHouseでNullable列を避けるべき理由'
 doc_type: 'guide'
 keywords: ['avoid nullable columns', 'nullable columns', 'data types', 'best practices', 'performance optimization']
 ---

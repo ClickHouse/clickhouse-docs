@@ -1,5 +1,5 @@
 ---
-description: 'tgz アーカイブを使用して ClickHouse をインストールする'
+description: 'MacOS に ClickHouse をインストールする'
 keywords: ['ClickHouse', 'install', 'Linux', 'tar']
 sidebar_label: 'その他の Linux'
 slug: /install/linux_other

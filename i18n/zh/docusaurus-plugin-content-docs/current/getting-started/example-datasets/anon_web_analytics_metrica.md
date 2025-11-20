@@ -1,19 +1,19 @@
 ---
-description: '一个由两个表组成的数据集，包含已匿名化的 Web 分析数据（hits 和 visits）'
-sidebar_label: '匿名化 Web 分析'
+description: '由两个表组成的数据集，包含经匿名化处理的网页分析数据（hits 和 visits）'
+sidebar_label: '匿名化网页分析'
 slug: /getting-started/example-datasets/metrica
-keywords: ['web analytics data', 'anonymized data', 'website traffic data', 'example dataset', 'getting started']
-title: '匿名化 Web 分析'
+keywords: ['网页分析数据', '匿名化数据', '网站流量数据', '示例数据集', '入门']
+title: '匿名化网页分析'
 doc_type: 'guide'
 ---
 
 
 
-# 匿名化网页分析数据
+# 匿名化的网站分析数据
 
-该数据集由两个表组成，包含匿名化的网页分析数据，分别为点击明细（`hits_v1`）和访问明细（`visits_v1`）。
+此数据集由两个表组成，包含匿名化的网站分析数据：点击记录（`hits_v1`）和访问记录（`visits_v1`）。
 
-这些表可以作为压缩的 `tsv.xz` 文件下载。除了本文档中使用的示例外，还提供了一个扩展版本（7.5GB）的 `hits` 表，包含 1 亿行数据，可从 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 下载 TSV 文件。
+这些表可以作为压缩的 `tsv.xz` 文件下载。除了本文档中使用的示例之外，还提供了一个扩展版（7.5GB）的 `hits` 表，以 TSV 格式包含 1 亿行数据，下载地址为 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz)。
 
 
 
@@ -35,13 +35,13 @@ md5sum hits_v1.tsv
 clickhouse-client --query "CREATE DATABASE IF NOT EXISTS datasets"
 ```
 
-针对 hits_v1
+对于 hits_v1
 
 ```bash
 clickhouse-client --query "CREATE TABLE datasets.hits_v1 ( WatchID UInt64,  JavaEnable UInt8,  Title String,  GoodEvent Int16,  EventTime DateTime,  EventDate Date,  CounterID UInt32,  ClientIP UInt32,  ClientIP6 FixedString(16),  RegionID UInt32,  UserID UInt64,  CounterClass Int8,  OS UInt8,  UserAgent UInt8,  URL String,  Referer String,  URLDomain String,  RefererDomain String,  Refresh UInt8,  IsRobot UInt8,  RefererCategories Array(UInt16),  URLCategories Array(UInt16), URLRegions Array(UInt32),  RefererRegions Array(UInt32),  ResolutionWidth UInt16,  ResolutionHeight UInt16,  ResolutionDepth UInt8,  FlashMajor UInt8, FlashMinor UInt8,  FlashMinor2 String,  NetMajor UInt8,  NetMinor UInt8, UserAgentMajor UInt16,  UserAgentMinor FixedString(2),  CookieEnable UInt8, JavascriptEnable UInt8,  IsMobile UInt8,  MobilePhone UInt8,  MobilePhoneModel String,  Params String,  IPNetworkID UInt32,  TraficSourceID Int8, SearchEngineID UInt16,  SearchPhrase String,  AdvEngineID UInt8,  IsArtifical UInt8,  WindowClientWidth UInt16,  WindowClientHeight UInt16,  ClientTimeZone Int16,  ClientEventTime DateTime,  SilverlightVersion1 UInt8, SilverlightVersion2 UInt8,  SilverlightVersion3 UInt32,  SilverlightVersion4 UInt16,  PageCharset String,  CodeVersion UInt32,  IsLink UInt8,  IsDownload UInt8,  IsNotBounce UInt8,  FUniqID UInt64,  HID UInt32,  IsOldCounter UInt8, IsEvent UInt8,  IsParameter UInt8,  DontCountHits UInt8,  WithHash UInt8, HitColor FixedString(1),  UTCEventTime DateTime,  Age UInt8,  Sex UInt8,  Income UInt8,  Interests UInt16,  Robotness UInt8,  GeneralInterests Array(UInt16), RemoteIP UInt32,  RemoteIP6 FixedString(16),  WindowName Int32,  OpenerName Int32,  HistoryLength Int16,  BrowserLanguage FixedString(2),  BrowserCountry FixedString(2),  SocialNetwork String,  SocialAction String,  HTTPError UInt16, SendTiming Int32,  DNSTiming Int32,  ConnectTiming Int32,  ResponseStartTiming Int32,  ResponseEndTiming Int32,  FetchTiming Int32,  RedirectTiming Int32, DOMInteractiveTiming Int32,  DOMContentLoadedTiming Int32,  DOMCompleteTiming Int32,  LoadEventStartTiming Int32,  LoadEventEndTiming Int32, NSToDOMContentLoadedTiming Int32,  FirstPaintTiming Int32,  RedirectCount Int8, SocialSourceNetworkID UInt8,  SocialSourcePage String,  ParamPrice Int64, ParamOrderID String,  ParamCurrency FixedString(3),  ParamCurrencyID UInt16, GoalsReached Array(UInt32),  OpenstatServiceName String,  OpenstatCampaignID String,  OpenstatAdID String,  OpenstatSourceID String,  UTMSource String, UTMMedium String,  UTMCampaign String,  UTMContent String,  UTMTerm String, FromTag String,  HasGCLID UInt8,  RefererHash UInt64,  URLHash UInt64,  CLID UInt32,  YCLID UInt64,  ShareService String,  ShareURL String,  ShareTitle String,  ParsedParams Nested(Key1 String,  Key2 String, Key3 String, Key4 String, Key5 String,  ValueDouble Float64),  IslandID FixedString(16),  RequestNum UInt32,  RequestTry UInt8) ENGINE = MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDate, intHash32(UserID)) SAMPLE BY intHash32(UserID) SETTINGS index_granularity = 8192"
 ```
 
-或针对 hits_100m_obfuscated
+或者对于 hits_100m_obfuscated
 
 
 ```bash
@@ -100,7 +100,7 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.visits_v1"
 
 ## JOIN 示例 {#an-example-join}
 
-ClickHouse 测试例程中使用了 hits 和 visits 数据集,这是测试套件中的查询之一。其余测试可参考本页末尾的 _后续步骤_ 部分。
+ClickHouse 测试程序中使用了 hits 和 visits 数据集,这是测试套件中的一个查询示例。其余测试可参考本页末尾的 _后续步骤_ 部分。
 
 ```sql
 clickhouse-client --query "SELECT
@@ -141,12 +141,12 @@ FORMAT PrettyCompact"
 ```
 
 
-## 下一步 {#next-steps}
+## 后续步骤 {#next-steps}
 
-[ClickHouse 稀疏主索引实用介绍](/guides/best-practices/sparse-primary-indexes.md)使用 hits 数据集讨论了 ClickHouse 索引与传统关系型数据库的区别、ClickHouse 如何构建和使用稀疏主索引,以及索引最佳实践。
+[ClickHouse 稀疏主索引实用指南](/guides/best-practices/sparse-primary-indexes.md)使用 hits 数据集讨论了 ClickHouse 索引与传统关系型数据库的差异、ClickHouse 如何构建和使用稀疏主索引，以及索引最佳实践。
 
 更多针对这些表的查询示例可以在 ClickHouse [有状态测试](https://github.com/ClickHouse/ClickHouse/blob/d7129855757f38ceec3e4ecc6dafacdabe9b178f/tests/queries/1_stateful/00172_parallel_join.sql)中找到。
 
 :::note
-测试套件使用的数据库名称为 `test`,表名为 `hits` 和 `visits`。您可以重命名数据库和表,或修改测试文件中的 SQL 语句。
+测试套件使用数据库名称 `test`，表名为 `hits` 和 `visits`。您可以重命名数据库和表，或编辑测试文件中的 SQL。
 :::

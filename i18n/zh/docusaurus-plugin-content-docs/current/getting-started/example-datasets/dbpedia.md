@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 [dbpedia 数据集](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M) 包含来自 Wikipedia 的 100 万篇文章，以及使用 OpenAI 的 [text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) 模型生成的向量嵌入。
 
-该数据集非常适合作为入门示例，用于理解向量嵌入、向量相似度搜索和生成式 AI。我们使用此数据集在 ClickHouse 中演示[近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md)，以及一个简单但功能强大的问答应用。
+该数据集是理解向量嵌入、向量相似度搜索和生成式 AI 的极佳入门数据集。我们使用该数据集来演示 ClickHouse 中的[近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md)，以及一个简单但功能强大的问答应用。
 
 
 
@@ -20,7 +20,7 @@ doc_type: 'guide'
 
 ## 创建表 {#create-table}
 
-创建 `dbpedia` 表来存储文章 ID、标题、文本和嵌入向量:
+创建 `dbpedia` 表来存储文章 ID、标题、文本和嵌入向量：
 
 ```sql
 CREATE TABLE dbpedia
@@ -42,7 +42,7 @@ CREATE TABLE dbpedia
 $ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
 ```
 
-或者,可以按如下所示运行单独的 SQL 语句来加载这 25 个 Parquet 文件:
+或者,也可以运行如下所示的单独 SQL 语句来逐个加载这 25 个 Parquet 文件:
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -52,7 +52,7 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 
 ```
 
-验证 `dbpedia` 表中包含 100 万行数据:
+验证 `dbpedia` 表中是否包含 100 万行数据:
 
 ```sql
 SELECT count(*)
@@ -70,16 +70,17 @@ FROM dbpedia
 
 使用向量嵌入的语义搜索(也称为_相似性搜索_)包括以下步骤:
 
-- 接受用户的自然语言搜索查询,例如 _"介绍一些风景优美的铁路旅程"_、_"以欧洲为背景的悬疑小说"_ 等
+- 接受用户以自然语言输入的搜索查询,例如 _"介绍一些风景优美的铁路旅程"_、_"以欧洲为背景的悬疑小说"_ 等
 - 使用 LLM 模型为搜索查询生成嵌入向量
 - 在数据集中查找与搜索嵌入向量最接近的邻近项
 
-_最近邻_是与用户查询相关的文档、图像或内容。检索到的结果是生成式 AI 应用中检索增强生成 (RAG) 的关键输入。
+_最近邻_是指与用户查询相关的文档、图像或内容。
+检索到的结果是生成式 AI 应用中检索增强生成(RAG)的关键输入。
 
 
 ## 运行暴力向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
 
-KNN(k 近邻)搜索或暴力搜索需要计算数据集中每个向量到搜索嵌入向量的距离,然后对距离进行排序以获得最近邻。使用 `dbpedia` 数据集时,一种快速直观观察语义搜索效果的方法是使用数据集本身的嵌入向量作为搜索向量。例如:
+KNN(k-最近邻)搜索或暴力搜索需要计算数据集中每个向量到搜索嵌入向量的距离,然后对距离进行排序以获得最近邻。使用 `dbpedia` 数据集时,一种快速直观观察语义搜索效果的方法是使用数据集本身的嵌入向量作为搜索向量。例如:
 
 ```sql title="查询"
 SELECT id, title
@@ -116,7 +117,7 @@ LIMIT 20
 ```
 
 记录查询延迟,以便与 ANN(使用向量索引)的查询延迟进行比较。
-同时记录冷操作系统文件缓存和 `max_threads=1` 情况下的查询延迟,以了解真实的计算资源使用量和存储带宽使用量(将其推算到包含数百万向量的生产数据集!)
+同时记录冷操作系统文件缓存和 `max_threads=1` 情况下的查询延迟,以了解真实的计算使用量和存储带宽使用量(将其推算到包含数百万向量的生产数据集!)
 
 
 ## 构建向量相似度索引 {#build-vector-similarity-index}
@@ -129,14 +130,14 @@ ALTER TABLE dbpedia ADD INDEX vector_index vector TYPE vector_similarity('hnsw',
 ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 ```
 
-索引创建和搜索的参数及性能考量详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
+索引创建和搜索的参数及性能考量因素详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
 
 构建并保存索引可能需要几分钟时间,具体取决于可用 CPU 核心数和存储带宽。
 
 
 ## 执行 ANN 搜索 {#perform-ann-search}
 
-_近似最近邻_（Approximate Nearest Neighbours,简称 ANN）是指一组技术(例如图和随机森林等特殊数据结构),这些技术的计算速度远快于精确向量搜索。其结果准确度通常对于实际使用来说"足够好"。许多近似技术提供参数来调整结果准确度与搜索时间之间的权衡。
+_近似最近邻_（Approximate Nearest Neighbours，简称 ANN）是指一组技术（例如图和随机森林等特殊数据结构），这些技术的计算速度远快于精确向量搜索。其结果准确度通常对于实际使用来说"足够好"。许多近似技术提供参数来调整结果准确度与搜索时间之间的权衡。
 
 一旦构建了向量相似度索引,向量搜索查询将自动使用该索引:
 
@@ -183,9 +184,9 @@ LIMIT 20
 
 ## 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
 
-到目前为止看到的相似性搜索查询使用 `dbpedia` 表中的现有向量之一作为搜索向量。在实际应用中,需要根据用户输入的查询生成搜索向量,该查询可能是自然语言形式。搜索向量应使用与为数据集生成嵌入向量相同的 LLM 模型来生成。
+到目前为止看到的相似性搜索查询使用 `dbpedia` 表中的现有向量之一作为搜索向量。在实际应用中,需要为用户输入的查询生成搜索向量,该查询可能是自然语言形式。搜索向量应使用与为数据集生成嵌入向量相同的 LLM 模型来生成。
 
-下面列出了一个示例 Python 脚本,演示如何通过编程方式调用 OpenAI API,使用 `text-embedding-3-large` 模型生成嵌入向量。然后将搜索嵌入向量作为参数传递给 `SELECT` 查询中的 `cosineDistance()` 函数。
+下面列出了一个示例 Python 脚本,演示如何以编程方式调用 OpenAI API,使用 `text-embedding-3-large` 模型生成嵌入向量。然后将搜索嵌入向量作为参数传递给 `SELECT` 查询中的 `cosineDistance()` 函数。
 
 运行该脚本需要在环境变量 `OPENAI_API_KEY` 中设置 OpenAI API 密钥。OpenAI API 密钥可以在 https://platform.openai.com 注册后获取。
 
@@ -225,7 +226,7 @@ while True:
 
 ## 问答演示应用 {#q-and-a-demo-application}
 
-上述示例演示了使用 ClickHouse 进行语义搜索和文档检索。接下来将展示一个非常简单但极具潜力的生成式 AI 示例应用。
+上述示例演示了使用 ClickHouse 进行语义搜索和文档检索。接下来将展示一个非常简单但潜力巨大的生成式 AI 示例应用。
 
 该应用执行以下步骤:
 
@@ -233,7 +234,7 @@ while True:
 2. 通过调用 OpenAI API 使用 `text-embedding-3-large` 模型为_主题_生成嵌入向量
 3. 使用向量相似度搜索在 `dbpedia` 表上检索高度相关的 Wikipedia 文章/文档
 4. 接受用户关于该_主题_的自然语言自由形式问题
-5. 使用 OpenAI `gpt-3.5-turbo` Chat API 基于步骤 #3 中检索到的文档知识来回答问题。
+5. 使用 OpenAI `gpt-3.5-turbo` Chat API 基于步骤 #3 中检索到的文档中的知识来回答问题。
    步骤 #3 中检索到的文档作为_上下文_传递给 Chat API,这是生成式 AI 中的关键环节。
 
 下面首先列出运行问答应用的几个对话示例,然后是问答应用的代码。运行该应用需要在环境变量 `OPENAI_API_KEY` 中设置 OpenAI API 密钥。OpenAI API 密钥可以在 https://platform.openai.com 注册后获取。
@@ -245,7 +246,7 @@ $ python3 QandA.py
 正在为 'FIFA world cup 1990' 生成嵌入向量并从 ClickHouse 收集 100 篇相关文章...
 
 输入您的问题: Who won the golden boot
-意大利的萨尔瓦托雷·斯基拉奇在 1990 年 FIFA 世界杯上赢得了金靴奖。
+意大利的 Salvatore Schillaci 在 1990 年 FIFA 世界杯上赢得了金靴奖。
 
 
 输入主题: Cricket world cup
@@ -274,12 +275,12 @@ def get_embedding(text, model):
 
 while True:
     # 从用户获取感兴趣的主题
-    print("输入主题: ", end="", flush=True)
+    print("Enter a topic : ", end="", flush=True)
     input_query = sys.stdin.readline()
     input_query = input_query.rstrip()
 
     # 为搜索主题生成嵌入向量并查询 ClickHouse
-    print("正在为 '" + input_query + "' 生成嵌入向量并从 ClickHouse 收集 100 篇相关文章...");
+    print("Generating the embedding for '" + input_query + "' and collecting 100 articles related to it from ClickHouse...");
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
@@ -291,10 +292,10 @@ while True:
     for row in result.result_rows:
         results = results + row[2]
 
-    print("\n输入您的问题: ", end="", flush=True)
+    print("\nEnter your question : ", end="", flush=True)
     question = sys.stdin.readline();
 
-    # OpenAI Chat API 的提示词
+    # OpenAI Chat API 的提示
     query = f"""使用以下内容回答后续问题。如果找不到答案,请写"我不知道。"
 
 内容:

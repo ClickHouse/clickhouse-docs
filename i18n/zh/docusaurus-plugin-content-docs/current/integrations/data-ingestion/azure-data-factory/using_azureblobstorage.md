@@ -16,7 +16,7 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 
 这是将数据从 Azure Blob Storage 或 Azure Data Lake Storage 复制到 ClickHouse 最高效、最直接的方式之一。通过此表函数,您可以让 ClickHouse 直接连接到 Azure 存储并按需读取数据。
 
-它提供了类似表的接口,允许您直接从源数据进行查询、插入和过滤操作。该函数经过高度优化,支持多种广泛使用的文件格式,包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参见["数据格式"](/interfaces/formats)。
+它提供了类似表的接口,允许您直接从源选择、插入和过滤数据。该函数经过高度优化,支持多种广泛使用的文件格式,包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参见["数据格式"](/interfaces/formats)。
 
 在本节中,我们将介绍从 Azure Blob Storage 向 ClickHouse 传输数据的简单入门指南,以及有效使用此函数的重要注意事项。有关更多详细信息和高级选项,请参阅官方文档:[`azureBlobStorage` 表函数文档页面](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 
@@ -45,7 +45,7 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
      border
    />
 
-4. 复制该连接字符串 — 您将在 azureBlobStorage 表函数中将其用作参数。
+4. 复制连接字符串 — 您将在 azureBlobStorage 表函数中将其用作参数。
 
 
 ## 从 Azure Blob Storage 查询数据 {#querying-the-data-from-azure-blob-storage}
@@ -81,9 +81,9 @@ SELECT * FROM azureBlobStorage(
 
 ## 使用环境传感器数据集的简单示例 {#simple-example-using-the-environmental-sensors-dataset}
 
-作为示例,我们将从环境传感器数据集下载单个文件。
+作为示例,我们将从环境传感器数据集下载一个文件。
 
-1. 从[环境传感器数据集](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)下载[示例文件](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)
+1. 从[环境传感器数据集](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)下载一个[示例文件](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)
 
 2. 在 Azure 门户中,如果您还没有存储账户,请创建一个新的存储账户。
 
@@ -141,7 +141,7 @@ SELECT * FROM azureBlobStorage(
    SETTINGS format_csv_delimiter = ';'
    ```
 
-您的 sensors 表现在已填充了存储在 Azure Blob Storage 中的 `2019-06_bmp180.csv.zst` 文件数据。
+您的 sensors 表现在已填充了存储在 Azure Blob Storage 中的 `2019-06_bmp180.csv.zst` 文件的数据。
 
 
 ## 其他资源 {#additional-resources}

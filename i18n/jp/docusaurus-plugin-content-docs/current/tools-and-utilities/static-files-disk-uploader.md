@@ -2,15 +2,15 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'clickhouse-static-files-disk-uploader ユーティリティについて説明します'
-doc_type: 'guide'
+description: 'clickhouse-static-files-disk-uploader ユーティリティの概要'
+doc_type: 'ガイド'
 ---
 
 
 
 # clickhouse-static-files-disk-uploader
 
-指定した ClickHouse テーブルのメタデータを含むデータディレクトリを出力します。このメタデータを使用すると、`web` ディスクをバックエンドとする読み取り専用データセットを持つ ClickHouse テーブルを、別のサーバー上に作成できます。
+指定した ClickHouse テーブルのメタデータを含むデータディレクトリを出力します。このメタデータを使用して、`web` ディスクをバックエンドとする読み取り専用データセットを保持した ClickHouse テーブルを、別のサーバー上に作成できます。
 
 このツールをデータ移行には使用しないでください。代わりに、[`BACKUP` および `RESTORE` コマンド](/operations/backup) を使用してください。
 
@@ -29,17 +29,17 @@ $ clickhouse static-files-disk-uploader [args]
 | ------------------------ | ----------------------------------------------------------------------------------------- |
 | `-h`, `--help`           | ヘルプ情報を表示します                                                                   |
 | `--metadata-path [path]` | 指定されたテーブルのメタデータを含むパス                                      |
-| `--test-mode`            | `test`モードを有効にし、テーブルメタデータを含むPUTリクエストを指定されたURLに送信します |
-| `--link`                 | 出力ディレクトリにファイルをコピーする代わりにシンボリックリンクを作成します                         |
+| `--test-mode`            | `test`モードを有効にします。テーブルメタデータを含むPUTリクエストを指定されたURLに送信します |
+| `--link`                 | 出力ディレクトリへのファイルコピーの代わりにシンボリックリンクを作成します                         |
 | `--url [url]`            | `test`モード用のWebサーバーURL                                                            |
 | `--output-dir [dir]`     | `non-test`モードでファイルを出力するディレクトリ                                              |
 
 
-## 指定したテーブルのメタデータパスを取得する {#retrieve-metadata-path-for-the-specified-table}
+## 指定されたテーブルのメタデータパスを取得する {#retrieve-metadata-path-for-the-specified-table}
 
-`clickhouse-static-files-disk-uploader`を使用する場合は、対象テーブルのメタデータパスを取得する必要があります。
+`clickhouse-static-files-disk-uploader`を使用する場合、対象テーブルのメタデータパスを取得する必要があります。
 
-1. 対象のテーブルとデータベースを指定して、以下のクエリを実行します：
+1. 対象のテーブルとデータベースを指定して、以下のクエリを実行します:
 
 <br />
 
@@ -49,7 +49,7 @@ SELECT data_paths
   WHERE name = 'mytable' AND database = 'default';
 ```
 
-2. 指定したテーブルのデータディレクトリへのパスが返されます：
+2. 指定されたテーブルのデータディレクトリへのパスが返されます:
 
 <br />
 
@@ -79,7 +79,7 @@ Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destina
 
 この手順は、データディレクトリをローカルファイルシステムに出力する場合と似ていますが、`--test-mode`フラグを追加する点が異なります。出力ディレクトリを指定する代わりに、`--url`フラグでターゲットURLを指定する必要があります。
 
-`test`モードを有効にすると、テーブルメタデータディレクトリはPUTリクエストによって指定されたURLにアップロードされます。
+`test`モードを有効にすると、テーブルメタデータディレクトリがPUTリクエストによって指定されたURLにアップロードされます。
 
 ```bash
 $ clickhouse static-files-disk-uploader --test-mode --url http://nginx:80/test1 --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/

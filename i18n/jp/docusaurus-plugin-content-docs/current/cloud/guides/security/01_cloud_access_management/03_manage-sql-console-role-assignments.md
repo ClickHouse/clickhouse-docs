@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
-sidebar_label: 'SQL コンソールのロール割り当て管理'
-title: 'SQL コンソールのロール割り当て管理'
-description: 'SQL コンソールのロール割り当てを管理する方法を解説したガイド'
+sidebar_label: 'SQL コンソールのロール割り当てを管理'
+title: 'SQL コンソールのロール割り当てを管理'
+description: 'SQL コンソールのロール割り当ての管理方法を説明するガイド'
 doc_type: 'guide'
 keywords: ['sql console', 'role assignments', 'access management', 'permissions', 'security']
 ---
@@ -23,7 +23,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 
 <VerticalStepper headerLevel="h3">
 
-### サービス設定にアクセスする {#access-service-settings}
+### サービス設定へのアクセス {#access-service-settings}
 
 サービスページから、SQLコンソールのアクセス設定を調整するサービスの右上隅にあるメニューをクリックします。
 
@@ -33,13 +33,13 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 
 <Image img={step_2} size='lg' />
 
-### SQLコンソールアクセスを調整する {#adjust-sql-console-access}
+### SQLコンソールアクセスの調整 {#adjust-sql-console-access}
 
 「Security」セクション内の「SQL console access」エリアを見つけます:
 
 <Image img={step_3} size='md' />
 
-### Service Adminの設定を更新する {#update-settings-for-service-admin}
+### Service Adminの設定を更新 {#update-settings-for-service-admin}
 
 Service Adminのドロップダウンメニューを選択して、Service Adminロールのアクセス制御設定を変更します:
 
@@ -53,7 +53,7 @@ Service Adminのドロップダウンメニューを選択して、Service Admin
 | `Read only`   |
 | `Full access` |
 
-### Service Read Onlyの設定を更新する {#update-settings-for-service-read-only}
+### Service Read Onlyの設定を更新 {#update-settings-for-service-read-only}
 
 Service Read Onlyのドロップダウンメニューを選択して、Service Read Onlyロールのアクセス制御設定を変更します:
 
@@ -67,13 +67,13 @@ Service Read Onlyのドロップダウンメニューを選択して、Service R
 | `Read only`   |
 | `Full access` |
 
-### アクセス権を持つユーザーを確認する {#review-users-with-access}
+### アクセス権を持つユーザーの確認 {#review-users-with-access}
 
-ユーザー数を選択すると、サービスのユーザー概要を表示できます:
+ユーザー数を選択することで、サービスのユーザー概要を表示できます:
 
 <Image img={step_6} size='md' />
 
-ページの右側にタブが開き、ユーザーの総数とそれぞれのロールが表示されます:
+ページの右側にタブが開き、ユーザーの総数とそのロールが表示されます:
 
 <Image img={step_7} size='md' />
 

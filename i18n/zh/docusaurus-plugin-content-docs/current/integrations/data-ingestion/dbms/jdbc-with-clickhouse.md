@@ -19,34 +19,34 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 # 使用 JDBC 将 ClickHouse 连接到外部数据源
 
 :::note
-使用 JDBC 需要 ClickHouse JDBC Bridge，因此你需要在本地机器上使用 `clickhouse-local` 将数据库中的数据流式传输到 ClickHouse Cloud。有关详细信息，请访问文档 **Migrate** 部分中的 [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) 页面。
+使用 JDBC 需要 ClickHouse JDBC Bridge，因此你需要在本地机器上使用 `clickhouse-local`，将数据库中的数据流式传输到 ClickHouse Cloud。有关详情，请访问文档 **Migrate** 部分中的 [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) 页面。
 :::
 
-**概览：** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> 结合 [JDBC 表函数](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎](/engines/table-engines/integrations/jdbc.md)，可以让 ClickHouse 访问任何具备可用 <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> 的外部数据源的数据：
+**概览：** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> 结合 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎](/engines/table-engines/integrations/jdbc.md) 使用，可以让 ClickHouse 访问任意具备可用 <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC 驱动</a> 的外部数据源：
 
 <Image img={Jdbc01} size="lg" alt="ClickHouse JDBC Bridge 架构图" background='white'/>
-当某个外部数据源没有原生内置的[集成引擎](/engines/table-engines/integrations)、表函数或外部字典，但存在该数据源的 JDBC driver 时，这种方式就非常实用。
+当外部数据源没有原生内置的[集成引擎](/engines/table-engines/integrations)、表函数或外部字典，但存在该数据源的 JDBC 驱动时，这种方式就非常实用。
 
-你可以使用 ClickHouse JDBC Bridge 进行读写操作，并且可以并行连接多个外部数据源。例如，你可以在 ClickHouse 上对多个外部和内部数据源实时执行分布式查询。
+你可以使用 ClickHouse JDBC Bridge 进行读写操作，并且可以并行连接多个外部数据源。比如，你可以在 ClickHouse 中跨多个外部和内部数据源实时运行分布式查询。
 
-在本课中，我们将向你展示如何轻松安装、配置和运行 ClickHouse JDBC Bridge，以便将 ClickHouse 连接到外部数据源。本课中我们将使用 MySQL 作为外部数据源。
+在本课程中，我们将演示如何轻松安装、配置和运行 ClickHouse JDBC Bridge，以将 ClickHouse 连接到外部数据源。本课程将使用 MySQL 作为外部数据源。
 
 让我们开始吧！
 
 :::note Prerequisites
 你可以访问一台具备以下条件的机器：
-1. 有 Unix shell 并可以访问互联网
-2. 已安装 <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a>
-3. 已安装当前版本的 **Java**（例如 <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> 版本 >= 17）
-4. 已安装并运行当前版本的 **MySQL**（例如 <a href="https://www.mysql.com" target="_blank">MySQL</a> 版本 >= 8）
-5. 已安装并运行当前版本的 **ClickHouse**（参见[安装说明](/getting-started/install/install.mdx)）
+1. 拥有 Unix shell 和互联网访问权限
+2. 安装了 <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a>
+3. 安装了当前版本的 **Java**（例如 <a href="https://openjdk.java.net" target="_blank">OpenJDK</a>，版本 >= 17）
+4. 安装并运行了当前版本的 **MySQL**（例如 <a href="https://www.mysql.com" target="_blank">MySQL</a>，版本 >= 8）
+5. 安装并运行了当前版本的 **ClickHouse**（[安装说明](/getting-started/install/install.mdx)）
 :::
 
 
 
 ## 在本地安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-locally}
 
-使用 ClickHouse JDBC Bridge 最简单的方式是将其安装并运行在 ClickHouse 所在的同一主机上:<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge 本地部署示意图" background='white'/>
+使用 ClickHouse JDBC Bridge 最简单的方式是将其安装并运行在 ClickHouse 所在的同一主机上:<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge 本地部署图" background='white'/>
 
 首先连接到运行 ClickHouse 的机器上的 Unix shell,并创建一个本地文件夹,稍后我们将在其中安装 ClickHouse JDBC Bridge(您可以自由命名该文件夹并将其放置在任意位置):
 
@@ -69,7 +69,7 @@ mkdir -p config/datasources
 touch config/datasources/mysql8.json
 ```
 
-现在可以将以下配置复制并粘贴到文件 `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` 中:
+现在您可以将以下配置复制并粘贴到文件 `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` 中:
 
 ```json
 {
@@ -87,10 +87,10 @@ touch config/datasources/mysql8.json
 :::note
 在上述配置文件中
 
-- 您可以为数据源使用任何名称,我们使用了 `mysql8`
+- 您可以为数据源使用任意名称,我们使用了 `mysql8`
 - 在 `jdbcUrl` 的值中,您需要根据正在运行的 MySQL 实例将 `<host>` 和 `<port>` 替换为相应的值,例如 `"jdbc:mysql://localhost:3306"`
 - 您需要将 `<username>` 和 `<password>` 替换为您的 MySQL 凭据,如果不使用密码,可以删除上述配置文件中的 `"password": "<password>"` 行
-- 在 `driverUrls` 的值中,我们只需指定一个可以下载 MySQL JDBC 驱动程序<a href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/" target="_blank">当前版本</a>的 URL。这就是我们需要做的全部工作,ClickHouse JDBC Bridge 将自动下载该 JDBC 驱动程序(到操作系统特定的目录中)。
+- 在 `driverUrls` 的值中,我们只需指定一个可以下载 MySQL JDBC 驱动程序<a href="https://repo1.maven.org/maven2/mysql/mysql-connector-java/" target="_blank">当前版本</a>的 URL。这就是我们需要做的全部,ClickHouse JDBC Bridge 将自动下载该 JDBC 驱动程序(到操作系统特定的目录中)。
   :::
 
 <br />
@@ -136,9 +136,9 @@ SELECT * FROM mytable;
 ```
 
 :::note
-jdbc 引擎子句的第一个参数使用的是我们在上面配置的命名数据源的名称。
+jdbc 引擎子句的第一个参数使用的是我们在上面配置的命名数据源的名称
 
-ClickHouse JDBC 引擎表的结构必须与连接的 MySQL 表的结构保持一致,例如列名和顺序必须相同,列数据类型必须兼容。
+ClickHouse JDBC 引擎表的结构必须与所连接的 MySQL 表的结构保持一致,例如列名和顺序必须相同,列数据类型必须兼容
 :::
 
 
@@ -153,7 +153,7 @@ ClickHouse JDBC 引擎表的结构必须与连接的 MySQL 表的结构保持一
   background='white'
 />
 这样做的优势在于每个 ClickHouse 主机都可以访问 JDBC Bridge。
-否则,需要为每个需要通过 Bridge 访问外部数据源的 ClickHouse 
+否则,需要为每个需要通过 Bridge 访问外部数据源的 ClickHouse
 实例分别进行本地安装。
 
 要外部安装 ClickHouse JDBC Bridge,请执行以下步骤:

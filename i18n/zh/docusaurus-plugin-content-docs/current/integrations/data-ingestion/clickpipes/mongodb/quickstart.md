@@ -1,8 +1,8 @@
 ---
-title: '在 ClickHouse 中使用 JSON'
-sidebar_label: '使用 JSON'
+title: '在 ClickHouse 中处理 JSON'
+sidebar_label: '处理 JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
-description: '通过 ClickPipes 将 MongoDB 中的 JSON 数据复制到 ClickHouse 时的常见使用模式'
+description: '通过 ClickPipes 将来自 MongoDB 的 JSON 数据复制到 ClickHouse 后进行处理的常见模式'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 ---
@@ -13,27 +13,27 @@ keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
 
 本指南介绍了通过 ClickPipes 将 MongoDB 中的 JSON 数据复制到 ClickHouse 时的一些常见使用模式。
 
-假设我们在 MongoDB 中创建了一个名为 `t1` 的集合，用于跟踪客户订单：
+假设我们在 MongoDB 中创建了一个集合 `t1` 来跟踪客户订单：
 
 ```javascript
 db.t1.insertOne({
   "order_id": "ORD-001234",
   "customer_id": 98765,
-  "status": "completed",
+  "status": "已完成",
   "total_amount": 299.97,
   "order_date": new Date(),
   "shipping": {
-    "method": "express",
+    "method": "快递",
     "city": "Seattle",
     "cost": 19.99
   },
   "items": [
     {
-      "category": "electronics",
+      "category": "电子产品",
       "price": 149.99
     },
     {
-      "category": "accessories",
+      "category": "配件",
       "price": 24.99
     }
   ]
@@ -55,7 +55,7 @@ _peerdb_version:    0
 
 ## 表结构 {#table-schema}
 
-复制表使用以下标准结构:
+复制表使用以下标准结构：
 
 ```shell
 ┌─name───────────────┬─type──────────┐
@@ -67,17 +67,17 @@ _peerdb_version:    0
 └────────────────────┴───────────────┘
 ```
 
-- `_id`: 来自 MongoDB 的主键
-- `doc`: 以 JSON 数据类型复制的 MongoDB 文档
-- `_peerdb_synced_at`: 记录行最后一次同步的时间
-- `_peerdb_version`: 跟踪行的版本;当行被更新或删除时递增
-- `_peerdb_is_deleted`: 标记行是否已删除
+- `_id`：来自 MongoDB 的主键
+- `doc`：以 JSON 数据类型复制的 MongoDB 文档
+- `_peerdb_synced_at`：记录行最后一次同步的时间
+- `_peerdb_version`：跟踪行的版本；当行被更新或删除时递增
+- `_peerdb_is_deleted`：标记行是否已删除
 
 ### ReplacingMergeTree 表引擎 {#replacingmergetree-table-engine}
 
-ClickPipes 使用 `ReplacingMergeTree` 表引擎系列将 MongoDB 集合映射到 ClickHouse 中。使用此引擎时,更新操作被建模为针对给定主键 (`_id`) 插入具有更新版本 (`_peerdb_version`) 的文档,从而能够高效地将更新、替换和删除操作作为版本化插入来处理。
+ClickPipes 使用 `ReplacingMergeTree` 表引擎系列将 MongoDB 集合映射到 ClickHouse 中。使用此引擎时，更新操作被建模为针对给定主键（`_id`）插入文档的新版本（`_peerdb_version`），从而能够高效地将更新、替换和删除操作作为版本化插入来处理。
 
-`ReplacingMergeTree` 在后台异步清除重复数据。要保证同一行不存在重复数据,请使用 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier)。例如:
+`ReplacingMergeTree` 在后台异步清除重复项。要保证同一行不存在重复项，请使用 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier)。例如：
 
 ```sql
 SELECT * FROM t1 FINAL;
@@ -85,13 +85,13 @@ SELECT * FROM t1 FINAL;
 
 ### 处理删除操作 {#handling-deletes}
 
-来自 MongoDB 的删除操作会作为新行传播,并使用 `_peerdb_is_deleted` 列标记为已删除。通常您需要在查询中过滤掉这些行:
+来自 MongoDB 的删除操作会作为新行传播，并使用 `_peerdb_is_deleted` 列标记为已删除。通常您需要在查询中过滤掉这些行：
 
 ```sql
 SELECT * FROM t1 FINAL WHERE _peerdb_is_deleted = 0;
 ```
 
-您也可以创建行级策略来自动过滤已删除的行,而无需在每个查询中指定过滤条件:
+您也可以创建行级策略来自动过滤已删除的行，而无需在每个查询中指定过滤条件：
 
 ```sql
 CREATE ROW POLICY policy_name ON t1
@@ -130,7 +130,7 @@ SELECT doc.^shipping as shipping_info FROM t1;
 
 ### Dynamic 类型 {#dynamic-type}
 
-在 ClickHouse 中,JSON 的每个字段都是 `Dynamic` 类型。Dynamic 类型允许 ClickHouse 在无需预先知道类型的情况下存储任意类型的值。您可以使用 `toTypeName` 函数验证这一点:
+在 ClickHouse 中,JSON 的每个字段都是 `Dynamic` 类型。Dynamic 类型允许 ClickHouse 存储任意类型的值,无需预先知道类型。您可以使用 `toTypeName` 函数验证:
 
 ```sql title="查询"
 SELECT toTypeName(doc.customer_id) AS type FROM t1;
@@ -273,11 +273,11 @@ LIMIT 10;
 
 ### 可刷新物化视图 {#refreshable-materialized-view}
 
-您可以创建[可刷新物化视图](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view),它允许您调度查询执行以去重行并将结果存储在展平的目标表中。每次按计划刷新时,目标表都会被最新的查询结果替换。
+您可以创建[可刷新物化视图](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view),它使您能够调度查询执行以去重行并将结果存储在展平的目标表中。每次按计划刷新时,目标表都会被最新的查询结果替换。
 
-此方法的主要优势在于使用 `FINAL` 关键字的查询仅在刷新期间运行一次,从而消除了对目标表的后续查询使用 `FINAL` 的需要。
+此方法的关键优势在于使用 `FINAL` 关键字的查询仅在刷新期间运行一次,从而无需在目标表的后续查询中使用 `FINAL`。
 
-缺点是目标表中的数据仅与最近一次刷新时一样新。对于许多用例,从几分钟到几小时的刷新间隔可以在数据新鲜度和查询性能之间提供良好的平衡。
+缺点是目标表中的数据仅与最近一次刷新时一样新。对于许多用例,从几分钟到几小时的刷新间隔在数据新鲜度和查询性能之间提供了良好的平衡。
 
 ```sql
 CREATE TABLE flattened_t1 (
@@ -323,7 +323,7 @@ LIMIT 10;
 
 ### 增量物化视图 {#incremental-materialized-view}
 
-如果您想实时访问展平的列,可以创建[增量物化视图](https://clickhouse.com/docs/materialized-view/incremental-materialized-view)。如果您的表有频繁的更新,不建议在物化视图中使用 `FINAL` 修饰符,因为每次更新都会触发合并。相反,您可以通过在物化视图之上构建普通视图来在查询时去重数据。
+如果您想实时访问展平的列,可以创建[增量物化视图](https://clickhouse.com/docs/materialized-view/incremental-materialized-view)。如果您的表有频繁的更新,不建议在物化视图中使用 `FINAL` 修饰符,因为每次更新都会触发合并。相反,您可以通过在物化视图之上构建普通视图来在查询时对数据进行去重。
 
 
 ```sql

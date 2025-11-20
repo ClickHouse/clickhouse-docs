@@ -1,5 +1,5 @@
 ---
-description: 'TPC-H ベンチマークのデータセットとクエリ。'
+description: 'TPC-H ベンチマークデータセットとクエリ。'
 sidebar_label: 'TPC-H'
 slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
@@ -7,9 +7,9 @@ doc_type: 'guide'
 keywords: ['example dataset', 'tpch', 'benchmark', 'sample data', 'performance testing']
 ---
 
-卸売サプライヤーの社内データウェアハウスをモデル化した、広く利用されているベンチマークです。
-データは第3正規形で表現されており、クエリ実行時には多数の `JOIN` が必要になります。
-登場から年月が経ち、さらにデータが一様かつ独立に分布しているという非現実的な仮定を置いているにもかかわらず、TPC-H は現在も最も一般的な OLAP ベンチマークの 1 つです。
+卸売業者の社内データウェアハウスをモデル化した、広く利用されているベンチマークです。
+データは第 3 正規形で格納されており、クエリ実行時には多数の `JOIN` が必要になります。
+登場から時間が経ち、データが一様かつ互いに独立に分布しているという非現実的な仮定に基づいているにもかかわらず、TPC-H は現在でも最も一般的な OLAP ベンチマークの 1 つです。
 
 **参考文献**
 
@@ -30,15 +30,15 @@ cd tpch-kit/dbgen
 make
 ```
 
-次に、データを生成します。パラメータ `-s` はスケールファクタを指定します。例えば、`-s 100` を指定すると、'lineitem' テーブルに6億行が生成されます。
+次に、データを生成します。パラメータ `-s` はスケールファクタを指定します。例えば、`-s 100` を指定すると、'lineitem' テーブルに対して6億行が生成されます。
 
 ```bash
 ./dbgen -s 100
 ```
 
-スケールファクタ100での詳細なテーブルサイズ:
+スケールファクタ100における詳細なテーブルサイズ:
 
-| テーブル    | サイズ(行数) | サイズ(ClickHouseでの圧縮後) |
+| テーブル    | サイズ (行数) | サイズ (ClickHouseでの圧縮後) |
 | -------- | -------------- | ------------------------------- |
 | nation   | 25             | 2 kB                            |
 | region   | 5              | 1 kB                            |
@@ -49,7 +49,7 @@ make
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.000.000    | 26.69 GB                        |
 
-(ClickHouseでの圧縮サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。)
+(ClickHouseでの圧縮後サイズは `system.tables.total_bytes` から取得され、以下のテーブル定義に基づいています。)
 
 次に、ClickHouseでテーブルを作成します。
 
@@ -58,7 +58,7 @@ TPC-H仕様の規則に可能な限り厳密に従います:
 - プライマリキーは、仕様のセクション1.4.2.2で言及されている列に対してのみ作成されます。
 - 置換パラメータは、仕様のセクション2.1.x.4におけるクエリ検証用の値に置き換えられています。
 - セクション1.4.2.1に従い、テーブル定義ではオプションの `NOT NULL` 制約を使用しません。これは `dbgen` がデフォルトでそれらを生成する場合でも同様です。
-  ClickHouseにおける `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無に影響されません。
+  ClickHouseにおける `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無による影響を受けません。
 - セクション1.3.1に従い、仕様で言及されている抽象データ型(例: `Identifier`、`Variable text, size N`)を実装するために、ClickHouseのネイティブデータ型(例: `Int32`、`String`)を使用します。これによる唯一の効果は可読性の向上であり、`dbgen` が生成するSQL-92データ型(例: `INTEGER`、`VARCHAR(40)`)もClickHouseで動作します。
 
 ```sql
@@ -130,8 +130,8 @@ o&#95;clerk          String,
 o&#95;shippriority   Int32,
 o&#95;comment        String)
 ORDER BY (o&#95;orderkey);
--- 以下は、公式な TPC-H 規則には準拠していませんが、
--- 『Quantifying TPC-H Choke Points and Their Optimizations』4.5 節で推奨されている代替の order key です:
+-- 以下は代替の order key であり、公式な TPC-H 規則には準拠しませんが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」の 4.5 節で推奨されています:
 -- ORDER BY (o&#95;orderdate, o&#95;orderkey);
 
 CREATE TABLE lineitem (
@@ -152,13 +152,13 @@ l&#95;shipinstruct   String,
 l&#95;shipmode       String,
 l&#95;comment        String)
 ORDER BY (l&#95;orderkey, l&#95;linenumber);
--- 以下は、公式な TPC-H 規則には準拠していませんが、
--- 『Quantifying TPC-H Choke Points and Their Optimizations』4.5 節で推奨されている代替の order key です:
+-- 以下は代替の order key であり、公式な TPC-H 規則には準拠しませんが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」の 4.5 節で推奨されています:
 -- ORDER BY (l&#95;shipdate, l&#95;orderkey, l&#95;linenumber);
 
 ````
 
-データは以下のようにインポートできます:
+データは以下の手順でインポートできます:
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -172,7 +172,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ````
 
 :::note
-`tpch-kit` を使用して自分でテーブルを生成する代わりに、パブリックな S3 バケットからデータをインポートすることもできます。必ず、先に上記の `CREATE` ステートメントを使用して空のテーブルを作成してください。
+tpch-kit を使用して自分でテーブルを生成する代わりに、公開 S3 バケットからデータをインポートすることもできます。あらかじめ、上記の `CREATE` 文を使用して空のテーブルを作成しておいてください。
 
 
 ```sql
@@ -207,8 +207,8 @@ SQL標準に準拠した正しい結果を生成するには、設定[`join_use_
 :::
 
 :::note
-一部のTPC-Hクエリでは、v25.8以降で利用可能な相関サブクエリを使用しています。
-これらのクエリを実行するには、少なくともこのバージョンのClickHouseを使用してください。
+一部のTPC-Hクエリは、v25.8以降で利用可能な相関サブクエリを使用しています。
+これらのクエリを実行するには、少なくともこのClickHouseバージョンを使用してください。
 
 ClickHouseバージョン25.5、25.6、25.7では、追加で以下の設定が必要です:
 
@@ -396,9 +396,9 @@ WHERE
 ```
 
 ::::note
-2025年2月時点では、`Decimal` の加算に関するバグにより、このクエリはそのままでは動作しません。対応する issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+2025年2月時点では、Decimal の加算に関するバグにより、このクエリはそのままでは動作しません。対応する issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-こちらの代替版のクエリは正常に動作し、参照結果が返ってくることを検証済みです。
+この代替の記述方法は正常に動作し、参照結果が返されることが確認されています。
 
 ```sql
 SELECT

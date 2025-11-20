@@ -35,13 +35,13 @@ DROP DATABASE db1;
 
 ## 非管理员用户 {#non-admin-users}
 
-用户应该拥有必要的权限,而不应全部设为管理员用户。本文档的其余部分提供了示例场景和所需的角色。
+用户应当拥有必要的权限,而不应全部设为管理员用户。本文档的其余部分提供了示例场景以及所需的角色。
 
 ### 准备工作 {#preparation}
 
 创建以下表和用户以供示例使用。
 
-#### 创建示例数据库、表和数据行 {#creating-a-sample-database-table-and-rows}
+#### 创建示例数据库、表和行 {#creating-a-sample-database-table-and-rows}
 
 <VerticalStepper headerLevel="h5">
 
@@ -113,7 +113,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 #### 创建角色 {#creating-roles}
 
-在这组示例中:
+通过这组示例:
 
 - 将创建用于不同权限的角色,例如列和行权限
 - 将向角色授予权限
@@ -174,7 +174,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 
     :::note
-    将策略附加到表时,系统会应用该策略,此时只有策略中定义的用户和角色能够对表执行操作,其他所有用户的任何操作都将被拒绝。为了避免将限制性行策略应用于其他用户,必须定义另一个策略来允许其他用户和角色进行常规访问或其他类型的访问。
+    将策略附加到表时,系统会应用该策略,只有已定义的用户和角色能够对表执行操作,其他所有用户的任何操作都将被拒绝。为了避免将限制性行策略应用于其他用户,必须定义另一个策略来允许其他用户和角色拥有常规访问权限或其他类型的访问权限。
     :::
 
 </VerticalStepper>
@@ -265,7 +265,7 @@ Query id: cef9a083-d5ce-42ff-9678-f08dc60d4bb9
 
 <VerticalStepper headerLevel="h5">
 
-##### 使用 `row_user` 登录 ClickHouse 客户端 {#login-row-user}
+##### 使用 `row_user` 用户登录 ClickHouse 客户端 {#login-row-user}
 
 ```bash
 clickhouse-client --user row_user --password password
@@ -296,13 +296,13 @@ Query id: a79a113c-1eca-4c3f-be6e-d034f9a220fb
 
 ## 修改用户和角色 {#modifying-users-and-roles}
 
-用户可以被分配多个角色以组合所需的权限。当使用多个角色时,系统会组合这些角色来确定权限,最终效果是角色权限将累积叠加。
+用户可以被分配多个角色以组合所需的权限。当使用多个角色时，系统会合并这些角色来确定权限，最终效果是角色权限会累积叠加。
 
-例如,如果 `role1` 仅允许查询 `column1`,而 `role2` 允许查询 `column1` 和 `column2`,那么用户将可以访问这两列。
+例如，如果 `role1` 仅允许查询 `column1`，而 `role2` 允许查询 `column1` 和 `column2`，那么用户将可以访问这两列。
 
 <VerticalStepper headerLevel="h5">
 
-##### 使用管理员账户创建新用户,通过默认角色同时限制行和列 {#create-restricted-user}
+##### 使用管理员账户创建新用户，通过默认角色同时限制行和列 {#create-restricted-user}
 
 ```sql
 CREATE USER row_and_column_user IDENTIFIED BY 'password' DEFAULT ROLE A_rows_users;
@@ -326,7 +326,7 @@ GRANT SELECT(id, column1) ON db1.table1 TO A_rows_users;
 clickhouse-client --user row_and_column_user --password password;
 ```
 
-##### 测试查询所有列: {#test-all-columns-restricted}
+##### 测试查询所有列： {#test-all-columns-restricted}
 
 ```sql
 SELECT *
@@ -345,7 +345,7 @@ To execute this query it's necessary to have grant
 SELECT(id, column1, column2) ON db1.table1. (ACCESS_DENIED)
 ```
 
-##### 测试查询受限列: {#test-limited-columns}
+##### 测试查询受限列： {#test-limited-columns}
 
 ```sql
 SELECT
@@ -368,7 +368,7 @@ Query id: 5e30b490-507a-49e9-9778-8159799a6ed0
 
 ## 故障排查 {#troubleshooting}
 
-有时权限会交叉或组合产生意外结果,可以使用管理员账户执行以下命令来定位问题
+有时权限会交叉或组合产生意外结果,可以使用管理员账户执行以下命令来缩小问题范围:
 
 ### 列出用户的授权和角色 {#listing-the-grants-and-roles-for-a-user}
 
@@ -414,7 +414,7 @@ Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 └────────────────────────────────────────┘
 ```
 
-### 查看策略定义和当前权限 {#view-how-a-policy-was-defined-and-current-privileges}
+### 查看策略的定义方式和当前权限 {#view-how-a-policy-was-defined-and-current-privileges}
 
 ```sql
 SHOW CREATE ROW POLICY A_row_filter ON db1.table1
@@ -476,4 +476,4 @@ DROP USER row_user;
 
 ## 总结 {#summary}
 
-本文介绍了创建 SQL 用户和角色的基础知识,并提供了设置和修改用户及角色权限的操作步骤。如需了解更多详细信息,请参阅我们的用户指南和参考文档。
+本文介绍了创建 SQL 用户和角色的基础知识,并提供了为用户和角色设置和修改权限的操作步骤。如需了解更多详细信息,请参阅我们的用户指南和参考文档。

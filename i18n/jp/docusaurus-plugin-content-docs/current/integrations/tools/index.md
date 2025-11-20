@@ -10,6 +10,6 @@ doc_type: 'landing-page'
 
 | Page      | Description                                                                                                                     |
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|
-| [SQL Client](/integrations/sql-clients) | ClickHouse をさまざまな一般的なデータベース管理・分析・可視化ツールと連携する方法                                                                   |
-| [Data Integrations](/integrations/tools/data-integrations)    | ClickHouse 向けのデータ統合 |
-| [Misc](/integrations/audit-splunk)     | ClickHouse 向けのその他のツール                                                                               |
+| [SQL Client](/integrations/sql-clients) | ClickHouse をさまざまな一般的なデータベース管理、分析、可視化ツールと統合する方法                                                                   |
+| [Data Integrations](/integrations/tools/data-integrations)    | ClickHouse 用の各種データ連携機能 |
+| [Misc](/integrations/audit-splunk)     | ClickHouse 用のその他のツール                                                                               |

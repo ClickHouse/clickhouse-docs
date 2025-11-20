@@ -3,7 +3,7 @@ slug: /integrations/rabbitmq
 sidebar_label: 'RabbitMQ'
 title: 'RabbitMQ'
 hide_title: true
-description: 'Страница, описывающая интеграцию с RabbitMQEngine'
+description: 'Страница, описывающая интеграцию движка RabbitMQEngine'
 doc_type: 'reference'
 keywords: ['rabbitmq', 'message queue', 'streaming', 'integration', 'data ingestion']
 ---

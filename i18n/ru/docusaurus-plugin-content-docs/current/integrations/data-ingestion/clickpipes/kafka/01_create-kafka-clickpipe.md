@@ -1,11 +1,11 @@
 ---
 sidebar_label: 'Создание первого Kafka ClickPipe'
-description: 'Пошаговое руководство по созданию вашего первого Kafka ClickPipe.'
+description: 'Пошаговое руководство по созданию первого Kafka ClickPipe.'
 slug: /integrations/clickpipes/kafka/create-your-first-kafka-clickpipe
 sidebar_position: 1
 title: 'Создание первого Kafka ClickPipe'
 doc_type: 'guide'
-keywords: ['create kafka clickpipe', 'kafka', 'clickpipes', 'data sources', 'setup guide']
+keywords: ['создание kafka clickpipe', 'kafka', 'clickpipes', 'источники данных', 'руководство по настройке']
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -49,7 +49,7 @@ import Image from '@theme/IdealImage';
 
 ## Настройка реестра схем (необязательно) {#4-configure-your-schema-registry}
 
-Для потоков Avro требуется корректная схема. Подробнее о настройке реестра схем см. в разделе [Реестры схем](./02_schema-registries.md).
+Для потоков Avro требуется действительная схема. Подробнее о настройке реестра схем см. в разделе [Реестры схем](./02_schema-registries.md).
 
 
 ## Настройка обратной приватной конечной точки (опционально) {#5-configure-reverse-private-endpoint}
@@ -58,11 +58,11 @@ import Image from '@theme/IdealImage';
 Подробнее см. в [документации по AWS PrivateLink](../aws-privatelink.md).
 
 
-## Выберите топик {#6-select-your-topic}
+## Выберите тему {#6-select-your-topic}
 
-Выберите топик, и в интерфейсе отобразится пример документа из этого топика.
+Выберите тему, и в интерфейсе отобразится пример документа из этой темы.
 
-<Image img={cp_step3} alt='Выберите топик' size='md' />
+<Image img={cp_step3} alt='Выберите тему' size='md' />
 
 
 ## Настройка целевой таблицы {#7-configure-your-destination-table}
@@ -76,19 +76,19 @@ import Image from '@theme/IdealImage';
 <Image img={cp_table_settings} alt='Настройка дополнительных параметров' size='md' />
 
 
-## Настройка разрешений {#8-configure-permissions}
+## Настройка прав доступа {#8-configure-permissions}
 
-ClickPipes создаст выделенного пользователя для записи данных в целевую таблицу. Вы можете выбрать роль для этого внутреннего пользователя, используя пользовательскую роль или одну из предопределённых ролей:
+ClickPipes создаст выделенного пользователя для записи данных в целевую таблицу. Вы можете выбрать роль для этого внутреннего пользователя: использовать пользовательскую роль или одну из предопределённых:
 
 - `Full access`: полный доступ к кластеру. Может быть полезно при использовании материализованных представлений или словарей с целевой таблицей.
 - `Only destination table`: только разрешения `INSERT` для целевой таблицы.
 
-<Image img={cp_step5} alt='Разрешения' size='md' />
+<Image img={cp_step5} alt='Права доступа' size='md' />
 
 
 ## Завершение настройки {#9-complete-setup}
 
-Нажмите «Create ClickPipe», чтобы создать и запустить ваш ClickPipe. Он появится в разделе Data Sources.
+Нажмите на кнопку «Create ClickPipe», чтобы создать и запустить ваш ClickPipe. Он появится в разделе Data Sources.
 
 <Image img={cp_overview} alt='Просмотр обзора' size='md' />
 

@@ -1,6 +1,6 @@
 ---
 title: '控制 MySQL ClickPipe 的同步'
-description: '关于如何控制 MySQL ClickPipe 同步的文档'
+description: '用于控制 MySQL ClickPipe 同步的文档'
 slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: '控制同步'
 keywords: ['MySQL ClickPipe', 'ClickPipe sync control', 'MySQL CDC replication', 'ClickHouse MySQL connector', 'database synchronization ClickHouse']
@@ -13,7 +13,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-本文档介绍在 ClickPipe 处于 **CDC（运行）模式** 时，如何控制 MySQL ClickPipe 的同步。
+本文档介绍在 ClickPipe 处于 **CDC（运行中）模式** 时，如何控制 MySQL ClickPipe 的同步。
 
 
 ## 概述 {#overview}
@@ -36,7 +36,7 @@ import Image from '@theme/IdealImage';
 默认值为 **100,000** 条记录。
 安全的最大值为 1000 万条。
 
-### 例外情况:源端的长时间运行事务 {#transactions}
+### 例外情况:源数据库上的长时间运行事务 {#transactions}
 
 当源数据库上运行事务时,ClickPipe 会等待直到收到事务的 COMMIT 后才会继续。这将**覆盖**同步间隔和拉取批次大小的设置。
 
@@ -59,4 +59,4 @@ import Image from '@theme/IdealImage';
 
 您可以在 ClickPipe 的 **Metrics** 选项卡中的 **CDC Syncs** 表中查看每个批次所需的时间。请注意,此处的持续时间包括推送时间,并且如果没有传入的数据行,ClickPipe 会进入等待状态,等待时间也包含在持续时间内。
 
-<Image img={cdc_syncs} alt='CDC Syncs 表' size='md' />
+<Image img={cdc_syncs} alt='CDC 同步表' size='md' />

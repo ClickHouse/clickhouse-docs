@@ -1,4 +1,4 @@
-この例でバックアップとリストアを行う対象となるテスト用データベースとテーブルを作成するために、次のコマンドを実行します。
+この例でバックアップおよびリストアを行うテスト用データベースとテーブルを作成するために、次のコマンドを実行します。
 
 <details>
 <summary>セットアップ用コマンド</summary>
@@ -23,7 +23,7 @@ CREATE TABLE test_db.test_table (
 ORDER BY id;
 ```
 
-前処理として、ランダムなデータを 1000 行挿入します:
+前処理として、ランダムな 1,000 行のデータを挿入します:
 
 ```sql
 INSERT INTO test_table (id, name, email, age, salary, created_at, is_active, department, score, country)
@@ -41,7 +41,7 @@ SELECT
 FROM numbers(1000);
 ```
 
-次に、以下のパスにバックアップ先を指定するファイルを作成します:
+次に、バックアップ先を指定するファイルを、以下のパスに作成します:
 
 ```text
 /etc/clickhouse-server/config.d/backup_disk.xml
@@ -53,19 +53,19 @@ FROM numbers(1000);
         <disks>
             <backups>
                 <type>local</type>
-                <path>/backups/</path> -- MacOS の場合は /Users/backups/ を指定
+                <path>/backups/</path> -- MacOS の場合は /Users/backups/ を使用
             </backups>
         </disks>
     </storage_configuration>
     <backups>
         <allowed_disk>backups</allowed_disk>
-        <allowed_path>/backups/</allowed_path> -- MacOS の場合は /Users/backups/ を指定
+        <allowed_path>/backups/</allowed_path> -- MacOS の場合は /Users/backups/ を使用
     </backups>
 </clickhouse>
 ```
 
 :::note
-clickhouse-server が起動中の場合は、変更を反映させるために再起動する必要があります。
+clickhouse-server が起動中の場合は、変更を反映させるために再起動が必要です。
 :::
 
 </details>

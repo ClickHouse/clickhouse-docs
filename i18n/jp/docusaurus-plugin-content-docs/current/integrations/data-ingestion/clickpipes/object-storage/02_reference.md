@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'リファレンス'
-description: 'サポートされるフォーマット、Exactly-Once セマンティクス、ビュー対応、スケーリング、制限事項、オブジェクトストレージ ClickPipes における認証の詳細'
+description: 'サポートされるフォーマット、Exactly-Once セマンティクス、ビュー対応、スケーリング、制約事項、オブジェクトストレージ ClickPipes における認証の詳細'
 slug: /integrations/clickpipes/object-storage/reference
 sidebar_position: 1
 title: 'リファレンス'
@@ -40,38 +40,38 @@ import Image from '@theme/IdealImage';
 - [Avro](/interfaces/formats/Avro)
 
 
-## Exactly-once semantics {#exactly-once-semantics}
+## 厳密に1回のセマンティクス {#exactly-once-semantics}
 
-大規模なデータセットの取り込み時には、さまざまな種類の障害が発生する可能性があり、部分的な挿入や重複データが生じることがあります。Object Storage ClickPipesは挿入の失敗に対して耐性を持ち、exactly-onceセマンティクスを提供します。これは一時的な「ステージング」テーブルを使用することで実現されます。データはまずステージングテーブルに挿入されます。この挿入で問題が発生した場合、ステージングテーブルをトランケートし、クリーンな状態から挿入を再試行できます。挿入が完了し成功した場合にのみ、ステージングテーブル内のパーティションがターゲットテーブルに移動されます。この戦略の詳細については、[このブログ記事](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)をご覧ください。
+大規模なデータセットの取り込み時には、さまざまな種類の障害が発生する可能性があり、部分的な挿入や重複データが生じることがあります。Object Storage ClickPipesは挿入の失敗に対して耐性があり、厳密に1回のセマンティクスを提供します。これは一時的な「ステージング」テーブルを使用することで実現されます。データはまずステージングテーブルに挿入されます。この挿入で問題が発生した場合、ステージングテーブルを切り詰めて、クリーンな状態から挿入を再試行できます。挿入が完了し成功した場合にのみ、ステージングテーブル内のパーティションがターゲットテーブルに移動されます。この戦略の詳細については、[このブログ記事](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)をご覧ください。
 
-### View support {#view-support}
+### ビューのサポート {#view-support}
 
-ターゲットテーブル上のマテリアライズドビューもサポートされています。ClickPipesは、ターゲットテーブルだけでなく、依存するマテリアライズドビューに対してもステージングテーブルを作成します。
+ターゲットテーブル上のマテリアライズドビューもサポートされています。ClickPipesは、ターゲットテーブルだけでなく、依存するすべてのマテリアライズドビューに対してもステージングテーブルを作成します。
 
 非マテリアライズドビューに対してはステージングテーブルを作成しません。つまり、1つ以上の下流のマテリアライズドビューを持つターゲットテーブルがある場合、それらのマテリアライズドビューはターゲットテーブルからビュー経由でデータを選択することを避ける必要があります。そうしないと、マテリアライズドビューでデータが欠落する可能性があります。
 
 
 ## スケーリング {#scaling}
 
-Object Storage ClickPipesは、[垂直オートスケーリング設定](/manage/scaling#configuring-vertical-auto-scaling)で決定されるClickHouseサービスの最小サイズに基づいてスケーリングされます。ClickPipeのサイズはパイプ作成時に決定され、その後のClickHouseサービス設定の変更はClickPipeのサイズに影響しません。
+Object Storage ClickPipesは、[設定された垂直オートスケーリング設定](/manage/scaling#configuring-vertical-auto-scaling)によって決定されるClickHouseサービスの最小サイズに基づいてスケーリングされます。ClickPipeのサイズはパイプ作成時に決定されます。パイプ作成後のClickHouseサービス設定の変更は、ClickPipeのサイズに影響しません。
 
 大規模なデータ取り込みジョブのスループットを向上させるには、ClickPipeを作成する前にClickHouseサービスをスケーリングすることを推奨します。
 
 
 ## 制限事項 {#limitations}
 
-- 宛先テーブル、そのマテリアライズドビュー（カスケードマテリアライズドビューを含む）、またはマテリアライズドビューのターゲットテーブルへの変更は、再試行される一時的なエラーを引き起こす可能性があります。最良の結果を得るには、パイプを停止し、必要な変更を行った後、パイプを再起動して変更を適用し、エラーを回避することを推奨します。
-- サポートされるビューの種類には制限があります。詳細については、[exactly-onceセマンティクス](#exactly-once-semantics)および[ビューサポート](#view-support)のセクションを参照してください。
+- 宛先テーブル、そのマテリアライズドビュー(カスケードマテリアライズドビューを含む)、またはマテリアライズドビューのターゲットテーブルへの変更は、再試行される一時的なエラーを引き起こす可能性があります。最良の結果を得るには、パイプを停止し、必要な変更を行った後、パイプを再起動して変更を適用し、エラーを回避することを推奨します。
+- サポートされるビューの種類には制限があります。詳細については、[exactly-onceセマンティクス](#exactly-once-semantics)および[ビューサポート](#view-support)のセクションをご参照ください。
 - GCPまたはAzureにデプロイされたClickHouse CloudインスタンスのS3 ClickPipesでは、ロール認証は利用できません。AWS ClickHouse Cloudインスタンスでのみサポートされています。
 - ClickPipesは10GB以下のサイズのオブジェクトのみ取り込みを試みます。ファイルが10GBを超える場合、ClickPipes専用のエラーテーブルにエラーが記録されます。
-- 10万ファイルを超えるコンテナで継続的な取り込みを行うAzure Blob Storageパイプは、新しいファイルの検出に約10〜15秒のレイテンシが発生します。レイテンシはファイル数に応じて増加します。
+- 10万ファイルを超えるコンテナで継続的な取り込みを行うAzure Blob Storageパイプは、新しいファイルの検出に約10〜15秒の遅延が発生します。遅延はファイル数に応じて増加します。
 - Object Storage ClickPipesは、[S3テーブル関数](/sql-reference/table-functions/s3)とリスト構文を共有**しません**。また、Azureは[AzureBlobStorageテーブル関数](/sql-reference/table-functions/azureBlobStorage)と共有しません。
   - `?` - 任意の1文字に一致
   - `*` - `/`を除く任意の数の任意の文字に一致(空文字列を含む)
   - `**` - `/`を含む任意の数の任意の文字に一致(空文字列を含む)
 
 :::note
-これは有効なパスです(S3の場合):
+これは有効なパス(S3用)です:
 
 https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/**.ndjson.gz
 
@@ -83,12 +83,12 @@ https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/{documents-01,doc
 
 ## 継続的な取り込み {#continuous-ingest}
 
-ClickPipesは、S3、GCS、Azure Blob Storage、DigitalOcean Spacesからの継続的なデータ取り込みをサポートしています。有効にすると、ClickPipesは指定されたパスから継続的にデータを取り込み、30秒ごとに新しいファイルをポーリングします。ただし、新しいファイルは最後に取り込まれたファイルよりも辞書順で後である必要があります。つまり、取り込み順序を定義するような命名規則に従う必要があります。例えば、`file1`、`file2`、`file3`などと命名されたファイルは順次取り込まれます。`file0`のような名前の新しいファイルが追加された場合、最後に取り込まれたファイルよりも辞書順で後ではないため、ClickPipesはそれを取り込みません。
+ClickPipesは、S3、GCS、Azure Blob Storage、およびDigitalOcean Spacesからの継続的なデータ取り込みをサポートしています。有効にすると、ClickPipesは指定されたパスから継続的にデータを取り込み、30秒ごとに新しいファイルをポーリングします。ただし、新しいファイルは最後に取り込まれたファイルよりも辞書順で後である必要があります。つまり、取り込み順序を定義するようにファイル名を付ける必要があります。例えば、`file1`、`file2`、`file3`などと名付けられたファイルは順次取り込まれます。`file0`のような名前で新しいファイルが追加された場合、最後に取り込まれたファイルよりも辞書順で後ではないため、ClickPipesはそれを取り込みません。
 
 
 ## 取り込み済みファイルの追跡 {#tracking-ingested-files}
 
-取り込み済みのファイルを追跡するには、フィールドマッピングに `_file` [仮想カラム](/sql-reference/table-functions/s3#virtual-columns)を含めます。`_file` 仮想カラムにはソースオブジェクトのファイル名が含まれているため、処理済みのファイルをクエリで簡単に特定できます。
+取り込み済みのファイルを追跡するには、フィールドマッピングに `_file` [仮想カラム](/sql-reference/table-functions/s3#virtual-columns) を含めます。`_file` 仮想カラムにはソースオブジェクトのファイル名が含まれるため、処理済みのファイルをクエリで簡単に特定できます。
 
 
 ## 認証 {#authentication}
@@ -100,14 +100,14 @@ ClickPipesは、S3、GCS、Azure Blob Storage、DigitalOcean Spacesからの継�
 パブリックバケットは、ポリシーで`s3:GetObject`と`s3:ListBucket`の両方のアクションを許可する必要があります。
 
 保護されたバケットには、[IAM認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)または[IAMロール](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)のいずれかを使用してアクセスできます。
-IAMロールを使用する場合は、[このガイド](/cloud/data-sources/secure-s3)に従ってIAMロールを作成する必要があります。作成後、新しいIAMロールのARNをコピーし、ClickPipe設定の「IAM ARN role」に貼り付けます。
+IAMロールを使用する場合は、[このガイド](/cloud/data-sources/secure-s3)で指定されている手順に従ってIAMロールを作成する必要があります。作成後、新しいIAMロールのARNをコピーし、ClickPipe設定の「IAM ARN role」として貼り付けてください。
 
 ### GCS {#gcs}
 
 S3と同様に、パブリックバケットには設定なしでアクセスでき、保護されたバケットにはAWS IAM認証情報の代わりに[HMACキー](https://cloud.google.com/storage/docs/authentication/managing-hmackeys)を使用できます。Google Cloudの[キーの設定方法に関するガイド](https://cloud.google.com/storage/docs/authentication/hmackeys)を参照してください。
 
 GCSのサービスアカウントは直接サポートされていません。非パブリックバケットで認証する場合は、HMAC(IAM)認証情報を使用する必要があります。
-HMAC認証情報に付与されるサービスアカウントの権限は、`storage.objects.list`と`storage.objects.get`である必要があります。
+HMAC認証情報に付与するサービスアカウントの権限は、`storage.objects.list`と`storage.objects.get`である必要があります。
 
 ### DigitalOcean Spaces {#dospaces}
 

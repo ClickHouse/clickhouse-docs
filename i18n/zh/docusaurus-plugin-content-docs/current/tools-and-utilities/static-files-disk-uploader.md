@@ -2,7 +2,7 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: '提供 clickhouse-static-files-disk-uploader 实用工具的说明'
+description: '介绍 clickhouse-static-files-disk-uploader 工具'
 doc_type: 'guide'
 ---
 
@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 # clickhouse-static-files-disk-uploader
 
-输出一个数据目录，其中包含指定 ClickHouse 表的元数据。可以使用这些元数据在另一台服务器上创建一个 ClickHouse 表，该表包含由 `web` 磁盘驱动的只读数据集。
+输出一个数据目录，其中包含指定 ClickHouse 表的元数据。此元数据可用于在另一台服务器上创建一个 ClickHouse 表，该表包含由 `web` 磁盘提供支持的只读数据集。
 
 不要使用此工具迁移数据。请改用 [`BACKUP` 和 `RESTORE` 命令](/operations/backup)。
 
@@ -25,14 +25,14 @@ $ clickhouse static-files-disk-uploader [args]
 
 ## 命令 {#commands}
 
-| 命令                     | 说明                                                                                      |
+| 命令                  | 描述                                                                               |
 | ------------------------ | ----------------------------------------------------------------------------------------- |
-| `-h`, `--help`           | 打印帮助信息                                                                               |
-| `--metadata-path [path]` | 包含指定表元数据的路径                                                                      |
-| `--test-mode`            | 启用 `test` 模式,向指定 URL 提交包含表元数据的 PUT 请求                                      |
-| `--link`                 | 创建符号链接而非复制文件到输出目录                                                           |
-| `--url [url]`            | `test` 模式使用的 Web 服务器 URL                                                           |
-| `--output-dir [dir]`     | `non-test` 模式下的文件输出目录                                                            |
+| `-h`, `--help`           | 打印帮助信息                                                                   |
+| `--metadata-path [path]` | 包含指定表元数据的路径                                      |
+| `--test-mode`            | 启用 `test` 模式,向指定 URL 提交包含表元数据的 PUT 请求 |
+| `--link`                 | 创建符号链接,而非将文件复制到输出目录                         |
+| `--url [url]`            | `test` 模式使用的 Web 服务器 URL                                                            |
+| `--output-dir [dir]`     | `non-test` 模式下的文件输出目录                                              |
 
 
 ## 检索指定表的元数据路径 {#retrieve-metadata-path-for-the-specified-table}
@@ -68,7 +68,7 @@ SELECT data_paths
 $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee/
 ```
 
-如果执行成功,您将看到以下消息,且 `output` 目录中将包含指定表的元数据:
+如果成功,您将看到以下消息,且 `output` 目录将包含指定表的元数据:
 
 ```repsonse
 Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destination path: "output"

@@ -2,7 +2,7 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: 'Страница, описывающая использование MinIO с ClickHouse'
+description: 'Страница о том, как использовать MinIO с ClickHouse'
 title: 'Использование MinIO'
 doc_type: 'guide'
 integration:
@@ -11,13 +11,13 @@ integration:
 keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
-# Работа с MinIO
+# Использование MinIO
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-Все функции и таблицы `S3` совместимы с [MinIO](https://min.io/). Пользователи могут получить более высокую пропускную способность при использовании самостоятельно развернутых хранилищ MinIO, особенно при оптимальной сетевой близости.
+Все функции и таблицы `S3` совместимы с [MinIO](https://min.io/). Пользователи могут получить более высокую пропускную способность на самостоятельно развернутых хранилищах MinIO, особенно при оптимальной сетевой близости.
 
 Конфигурация `backed merge tree` также совместима, с некоторыми незначительными изменениями в настройках:
 
@@ -47,5 +47,5 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 ```
 
 :::tip
-Обратите внимание на двойной слеш в теге endpoint — он нужен, чтобы указать корень бакета.
+Обратите внимание на двойной слэш в теге endpoint — он нужен, чтобы указать корень бакета.
 :::

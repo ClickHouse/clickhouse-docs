@@ -16,11 +16,11 @@ doc_type: 'landing-page'
 - [Что означает «ClickHouse»?](../../faq/general/dbms-naming.md)
 - [Что означает «Не тормозит»?](../../faq/general/ne-tormozit.md)
 - [Что такое OLAP?](../../faq/general/olap.md)
-- [Что такое колонко-ориентированная база данных?](../../faq/general/columnar-database.md)
+- [Что такое колоночная база данных?](../../faq/general/columnar-database.md)
 - [Как выбрать первичный ключ?](../../guides/best-practices/sparse-primary-indexes.md)
 - [Почему бы не использовать что-то вроде MapReduce?](../../faq/general/mapreduce.md)
 - [Как внести вклад в разработку ClickHouse?](/knowledgebase/how-do-i-contribute-code-to-clickhouse)
 
-:::info Не нашли нужную информацию?
-Загляните в нашу [Базу знаний](/knowledgebase/) и изучите множество полезных статей в этой документации.
+:::info Не нашли то, что искали?
+Загляните в нашу [Базу знаний](/knowledgebase/) и ознакомьтесь со многими полезными статьями в этой документации.
 :::

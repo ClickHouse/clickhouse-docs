@@ -2,7 +2,7 @@
 slug: /tutorial
 sidebar_label: '高级教程'
 title: '高级教程'
-description: '通过纽约市出租车示例数据集，学习如何在 ClickHouse 中导入和查询数据。'
+description: '通过纽约市出租车示例数据集，学习如何在 ClickHouse 中摄取和查询数据。'
 sidebar_position: 0.5
 keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']
 show_related_blogs: true
@@ -94,7 +94,7 @@ doc_type: 'guide'
 
 现在您已经创建了表,接下来从 S3 中的 CSV 文件添加纽约市出租车数据。
 
-1. 以下命令从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入约 2,000,000 行数据:
+1. 以下命令将从 S3 中的两个不同文件 `trips_1.tsv.gz` 和 `trips_2.tsv.gz` 向您的 `trips` 表插入约 2,000,000 行数据:
 
    ```sql
    INSERT INTO trips
@@ -281,7 +281,7 @@ doc_type: 'guide'
     </p>
     </details>
 
-- 显示每个区域按小时统计的上车次数:
+- 显示每个街区按小时统计的接客次数：
 
   ```sql
   SELECT
@@ -341,7 +341,7 @@ doc_type: 'guide'
 
 
 
-7. 检索前往拉瓜迪亚机场或肯尼迪机场（LaGuardia / JFK）的行程：
+7. 检索前往拉瓜迪亚机场或肯尼迪机场的行程：
     ```sql
     SELECT
         pickup_datetime,
@@ -388,11 +388,11 @@ doc_type: 'guide'
 字典是存储在内存中的键值对映射。详细信息请参阅[字典](/sql-reference/dictionaries/index.md)
 
 创建一个与 ClickHouse 服务中的表关联的字典。
-该表和字典基于一个 CSV 文件,文件中每一行对应纽约市的一个街区。
+该表和字典基于一个 CSV 文件,该文件为纽约市的每个街区包含一行数据。
 
 这些街区映射到纽约市五个行政区的名称(布朗克斯、布鲁克林、曼哈顿、皇后区和史泰登岛),以及纽瓦克机场 (EWR)。
 
-以下是 CSV 文件的表格格式摘录。文件中的 `LocationID` 列映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列:
+以下是您使用的 CSV 文件的表格格式摘录。文件中的 `LocationID` 列映射到 `trips` 表中的 `pickup_nyct2010_gid` 和 `dropoff_nyct2010_gid` 列:
 
 | LocationID | Borough       | Zone                    | service_zone |
 | ---------- | ------------- | ----------------------- | ------------ |
@@ -402,7 +402,7 @@ doc_type: 'guide'
 | 4          | Manhattan     | Alphabet City           | Yellow Zone  |
 | 5          | Staten Island | Arden Heights           | Boro Zone    |
 
-1. 运行以下 SQL 命令,创建一个名为 `taxi_zone_dictionary` 的字典,并从 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
+1. 运行以下 SQL 命令,该命令创建一个名为 `taxi_zone_dictionary` 的字典,并从 S3 中的 CSV 文件填充该字典。文件的 URL 为 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`。
 
 ```sql
 CREATE DICTIONARY taxi_zone_dictionary
@@ -419,7 +419,7 @@ LAYOUT(HASHED_ARRAY())
 ```
 
 :::note
-将 `LIFETIME` 设置为 0 会禁用自动更新,以避免对 S3 存储桶产生不必要的流量。在其他情况下,您可能需要进行不同的配置。详细信息请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+将 `LIFETIME` 设置为 0 会禁用自动更新,以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下,您可能需要进行不同的配置。详细信息请参阅[使用 LIFETIME 刷新字典数据](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
 :::
 
 3. 验证是否成功。以下查询应返回 265 行,即每个街区一行:
@@ -428,15 +428,15 @@ LAYOUT(HASHED_ARRAY())
    SELECT * FROM taxi_zone_dictionary
    ```
 
-4. 使用 `dictGet` 函数([或其变体](./sql-reference/functions/ext-dict-functions.md))从字典中检索值。您需要传入字典的名称、要获取的值以及键(在本例中是 `taxi_zone_dictionary` 的 `LocationID` 列)。
+4. 使用 `dictGet` 函数([或其变体](./sql-reference/functions/ext-dict-functions.md))从字典中检索值。您需要传入字典的名称、您想要的值以及键(在我们的示例中是 `taxi_zone_dictionary` 的 `LocationID` 列)。
 
-   例如,以下查询返回 `LocationID` 为 132 的 `Borough`,对应于 JFK 机场:
+   例如,以下查询返回 `LocationID` 为 132 的 `Borough`,对应于 JFK 机场):
 
    ```sql
    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
    ```
 
-   JFK 位于皇后区。注意检索该值的时间基本为 0:
+   JFK 位于皇后区。请注意,检索该值的时间基本为 0:
 
    ```response
    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
@@ -446,7 +446,7 @@ LAYOUT(HASHED_ARRAY())
    1 rows in set. Elapsed: 0.004 sec.
    ```
 
-5. 使用 `dictHas` 函数检查字典中是否存在某个键。例如,以下查询返回 `1`(在 ClickHouse 中表示"真"):
+5. 使用 `dictHas` 函数检查字典中是否存在某个键。例如,以下查询返回 `1`(在 ClickHouse 中表示 "true"):
 
    ```sql
    SELECT dictHas('taxi_zone_dictionary', 132)
@@ -470,7 +470,7 @@ LAYOUT(HASHED_ARRAY())
    ```
 
 
-此查询计算每个行政区内以 LaGuardia 或 JFK 机场为终点的出租车行程次数。结果如下所示，请注意有相当多的行程其上车所在社区是未知的：
+此查询统计了在各行政区内以 LaGuardia 或 JFK 机场为终点的出租车行程次数。结果如下所示，可以注意到有相当多的行程其上车街区未知：
 
 ```response
 ┌─total─┬─borough_name──┐
@@ -542,9 +542,11 @@ LAYOUT(HASHED_ARRAY())
 
 ## 下一步 {#next-steps}
 
-通过以下文档深入了解 ClickHouse:
+通过以下文档深入了解 ClickHouse：
 
-- [ClickHouse 主索引介绍](./guides/best-practices/sparse-primary-indexes.md): 了解 ClickHouse 如何使用稀疏主索引在查询时高效定位相关数据。
-- [集成外部数据源](/integrations/index.mdx): 查看数据源集成选项,包括文件、Kafka、PostgreSQL、数据管道等。
-- [ClickHouse 数据可视化](./integrations/data-visualization/index.md): 将您常用的 UI/BI 工具连接到 ClickHouse。
-- [SQL 参考](./sql-reference/index.md): 浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
+- [ClickHouse 主索引介绍](./guides/best-practices/sparse-primary-indexes.md)：了解 ClickHouse 如何使用稀疏主索引在查询时高效定位相关数据。
+- [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等多种方式。
+- [ClickHouse 数据可视化](./integrations/data-visualization/index.md)：将您常用的 UI/BI 工具连接到 ClickHouse。
+- [SQL 参考手册](./sql-reference/index.md)：浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
+
+test again

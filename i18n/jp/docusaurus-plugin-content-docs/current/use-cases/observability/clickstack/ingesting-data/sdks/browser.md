@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/sdks/browser
 pagination_prev: null
 pagination_next: null
 sidebar_position: 0
-description: 'ClickStack 向けブラウザ SDK - ClickHouse Observability スタック'
+description: 'ClickStack 用ブラウザ SDK - ClickHouse オブザーバビリティスタック'
 title: 'ブラウザ JS'
 doc_type: 'guide'
 keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'frontend']
@@ -12,18 +12,19 @@ keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'fronten
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack ブラウザー SDK を使用すると、フロントエンドアプリケーションにインストルメンテーションを行い、
-イベントを ClickStack に送信できるようになります。これにより、ネットワーク
-リクエストや例外をバックエンドイベントと合わせて、1 つのタイムラインで確認できます。
+ClickStack ブラウザー SDK を使用すると、フロントエンドアプリケーションを計測し、
+イベントを ClickStack に送信できます。これにより、バックエンドのイベントとあわせて、
+単一のタイムライン上でネットワークリクエストや例外を確認できます。
 
-さらに、セッションリプレイデータを自動的に取得して関連付けるため、
-ユーザーがアプリケーション利用時に「何を見ていたか」を視覚的に追いながらデバッグできます。
+さらに、セッションリプレイデータを自動的に収集して関連付けることで、
+ユーザーがアプリケーションを使用していたときに画面上で何を見ていたかを、
+視覚的に追跡しながらデバッグできます。
 
-このガイドでは次の内容を扱います:
+このガイドでは、次の内容を統合します。
 
 * **コンソールログ**
 * **セッションリプレイ**
-* **XHR/Fetch/WebSocket リクエスト**
+* **XHR/Fetch/Websocket リクエスト**
 * **例外**
 
 
@@ -36,7 +37,7 @@ ClickStack ブラウザー SDK を使用すると、フロントエンドアプ�
 
 **パッケージインポートによるインストール（推奨）**
 
-以下のコマンドで[browserパッケージ](https://www.npmjs.com/package/@hyperdx/browser)をインストールします。
+以下のコマンドを使用して[browserパッケージ](https://www.npmjs.com/package/@hyperdx/browser)をインストールします。
 
 ```shell
 npm install @hyperdx/browser
@@ -51,9 +52,9 @@ HyperDX.init({
   url: "http://localhost:4318",
   apiKey: "YOUR_INGESTION_API_KEY",
   service: "my-frontend-app",
-  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドとバックエンド間のトレースをリンクするために設定
+  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストのトレースをリンクするために設定
   consoleCapture: true, // コンソールログをキャプチャ（デフォルトはfalse）
-  advancedNetworkCapture: true // HTTPリクエスト/レスポンスの完全なヘッダーとボディをキャプチャ（デフォルトはfalse）
+  advancedNetworkCapture: true // HTTPリクエスト/レスポンスのヘッダーとボディを完全にキャプチャ（デフォルトはfalse）
 })
 ```
 
@@ -62,9 +63,9 @@ HyperDX.init({
 
 **スクリプトタグによるインストール（代替方法）**
 
-NPMによるインストールの代わりに、スクリプトタグを使用してスクリプトを読み込むこともできます。これにより`HyperDX`グローバル変数が公開され、NPMパッケージと同様に使用できます。
+NPMによるインストールの代わりに、スクリプトタグを使用してスクリプトを読み込んでインストールすることもできます。これにより`HyperDX`グローバル変数が公開され、NPMパッケージと同じ方法で使用できます。
 
-バンドラーを使用していないサイトの場合は、この方法を推奨します。
+バンドラーを使用せずにサイトを構築している場合は、この方法を推奨します。
 
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
@@ -73,7 +74,7 @@ NPMによるインストールの代わりに、スクリプトタグを使用�
     url: "http://localhost:4318",
     apiKey: "YOUR_INGESTION_API_KEY",
     service: "my-frontend-app",
-    tracePropagationTargets: [/api.myapp.domain/i] // フロントエンドとバックエンド間のトレースをリンクするために設定
+    tracePropagationTargets: [/api.myapp.domain/i] // フロントエンドからバックエンドへのリクエストのトレースをリンクするために設定
   })
 </script>
 ```
@@ -83,15 +84,15 @@ NPMによるインストールの代わりに、スクリプトタグを使用�
 
 ### オプション {#options}
 
-- `apiKey` - ClickStackインジェストAPIキー。
-- `service` - HyperDX UIでイベントが表示される際のサービス名。
-- `tracePropagationTargets` - フロントエンドとバックエンドのトレースをリンクするために、HTTPリクエストと照合する正規表現パターンのリスト。パターンに一致するすべてのリクエストに`traceparent`ヘッダーが追加されます。バックエンドAPIのドメイン（例：`api.yoursite.com`）を設定してください。
-- `consoleCapture` - （オプション）すべてのコンソールログをキャプチャするかどうか（デフォルトは`false`）。
-- `advancedNetworkCapture` - （オプション）リクエスト/レスポンスの完全なヘッダーとボディをキャプチャするかどうか（デフォルトはfalse）。
-- `url` - （オプション）OpenTelemetryコレクターのURL。セルフホスト環境でのみ必要です。
+- `apiKey` - ClickStack取り込みAPIキー。
+- `service` - HyperDX UIでイベントが表示されるサービス名。
+- `tracePropagationTargets` - フロントエンドとバックエンドのトレースをリンクするためにHTTPリクエストと照合する正規表現パターンのリスト。パターンに一致するすべてのリクエストに追加の`traceparent`ヘッダーが追加されます。バックエンドAPIドメイン（例：`api.yoursite.com`）に設定してください。
+- `consoleCapture` - （オプション）すべてのコンソールログをキャプチャします（デフォルトは`false`）。
+- `advancedNetworkCapture` - （オプション）リクエスト/レスポンスのヘッダーとボディを完全にキャプチャします（デフォルトはfalse）。
+- `url` - （オプション）OpenTelemetryコレクターURL。セルフホスト型インスタンスでのみ必要です。
 - `maskAllInputs` - （オプション）セッションリプレイですべての入力フィールドをマスクするかどうか（デフォルトは`false`）。
 - `maskAllText` - （オプション）セッションリプレイですべてのテキストをマスクするかどうか（デフォルトは`false`）。
-- `disableIntercom` - （オプション）Intercom連携を無効にするかどうか（デフォルトは`false`）
+- `disableIntercom` - （オプション）Intercom統合を無効にするかどうか（デフォルトは`false`）
 - `disableReplay` - （オプション）セッションリプレイを無効にするかどうか（デフォルトは`false`）
 
 
@@ -118,7 +119,7 @@ HyperDX.setGlobalAttributes({
 Reactを使用している場合、エラーバウンダリコンポーネントを`attachToReactErrorBoundary`関数に渡すことで、Reactエラーバウンダリ内で発生するエラーを自動的にキャプチャできます。
 
 ```javascript
-// ErrorBoundaryをインポート（例としてreact-error-boundaryを使用）
+// ErrorBoundaryをインポート(例としてreact-error-boundaryを使用)
 import { ErrorBoundary } from "react-error-boundary"
 
 // これによりErrorBoundaryコンポーネントにフックし、そのすべてのインスタンス内で
@@ -128,9 +129,9 @@ HyperDX.attachToReactErrorBoundary(ErrorBoundary)
 
 ### カスタムアクションの送信 {#send-custom-actions}
 
-特定のアプリケーションイベント（例：サインアップ、送信など）を明示的に追跡するには、イベント名とオプションのイベントメタデータを指定して`addAction`関数を呼び出します。
+特定のアプリケーションイベント(例:サインアップ、送信など)を明示的に追跡するには、イベント名とオプションのイベントメタデータを指定して`addAction`関数を呼び出します。
 
-例：
+例:
 
 ```javascript
 HyperDX.addAction("Form-Completed", {
@@ -152,7 +153,7 @@ HyperDX.enableAdvancedNetworkCapture()
 
 フロントエンドアプリケーションが異なるドメインへAPIリクエストを行う場合、オプションで`Timing-Allow-Origin`[ヘッダー](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)をリクエストと共に送信するように設定できます。これにより、ClickStackは[`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming)を介して、DNSルックアップ、レスポンスダウンロードなど、リクエストの詳細なリソースタイミング情報をキャプチャできるようになります。
 
-`express`と`cors`パッケージを使用している場合、以下のスニペットを使用してヘッダーを有効化できます：
+`express`と`cors`パッケージを使用している場合、以下のスニペットを使用してヘッダーを有効化できます:
 
 ```javascript
 var cors = require("cors")

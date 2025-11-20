@@ -4,7 +4,7 @@ sidebar_position: 0
 slug: /cloud/manage/backups/overview
 title: '概要'
 keywords: ['backups', 'cloud backups', 'restore']
-description: 'ClickHouse Cloud におけるバックアップの概要'
+description: 'ClickHouse Cloudのバックアップ機能の概要'
 doc_type: 'guide'
 ---
 
@@ -20,7 +20,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 # バックアップの確認と復元
 
-このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップを構成する際に利用できるオプション、そしてバックアップから復元する方法について説明します。
+このガイドでは、ClickHouse Cloudにおけるバックアップの動作、サービスのバックアップ設定オプション、およびバックアップからの復元方法について説明します。
 
 
 
@@ -38,9 +38,9 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 ## バックアップコストについて {#understanding-backup-cost}
 
-デフォルトポリシーでは、ClickHouse Cloudは24時間の保持期間で毎日バックアップを実行します。より多くのデータを保持するスケジュールを選択したり、バックアップの頻度を高めたりすると、バックアップに対する追加のストレージ料金が発生する可能性があります。
+デフォルトポリシーでは、ClickHouse Cloudは24時間の保持期間で毎日バックアップを実行します。より多くのデータを保持するスケジュールを選択したり、より頻繁にバックアップを実行したりすると、バックアップに対する追加のストレージ料金が発生する可能性があります。
 
-バックアップコストを把握するには、使用状況画面からサービスごとのバックアップコストを確認できます(下図参照)。カスタマイズしたスケジュールでバックアップを数日間実行すると、コストの概算を把握し、月間のバックアップコストを算出できます。
+バックアップコストを把握するには、使用状況画面からサービスごとのバックアップコストを確認できます（下図参照）。カスタマイズしたスケジュールでバックアップを数日間実行すると、コストの概算を把握し、月間のバックアップコストを推定できます。
 
 <Image
   img={backup_usage}
@@ -49,7 +49,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
   border
 />
 
-バックアップの総コストを見積もるには、スケジュールを設定する必要があります。また、スケジュールを設定する前に月間コストの見積もりを取得できるよう、[料金計算ツール](https://clickhouse.com/pricing)の更新にも取り組んでいます。コストを見積もるには、以下の情報を入力する必要があります:
+バックアップの総コストを見積もるには、スケジュールを設定する必要があります。また、スケジュールを設定する前に月間コストの見積もりを取得できるよう、[料金計算ツール](https://clickhouse.com/pricing)の更新にも取り組んでいます。コストを見積もるには、以下の情報を入力する必要があります：
 
 - フルバックアップと増分バックアップのサイズ
 - 希望する実行頻度
@@ -65,7 +65,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 バックアップは、バックアップ元の既存サービスではなく、新しいClickHouse Cloudサービスに復元されます。
 
-**Restore**バックアップアイコンをクリックすると、作成される新しいサービスのサービス名を指定してから、このバックアップを復元できます:
+**Restore**バックアップアイコンをクリックすると、作成される新しいサービスのサービス名を指定し、バックアップを復元できます:
 
 <Image
   img={backup_restore}
@@ -78,7 +78,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 <Image
   img={backup_service_provisioning}
   size='md'
-  alt='プロビジョニング中のサービス'
+  alt='サービスのプロビジョニング中'
   border
 />
 
@@ -89,16 +89,16 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 バックアップの復元が完了したら、次のいずれかを実行してください。
 
-- 新しく復元されたサービスを使用し、元のサービスを削除する
-- 新しく復元されたサービスから元のサービスにデータを移行し、新しく復元されたサービスを削除する
+- 新しい復元されたサービスを使用し、元のサービスを削除する。
+- 新しい復元されたサービスから元のサービスにデータを移行し、新しい復元されたサービスを削除する。
 
-### **新しく復元されたサービス**を使用する {#use-the-new-restored-service}
+### **新しい復元されたサービス**を使用する {#use-the-new-restored-service}
 
 新しいサービスを使用するには、次の手順を実行します。
 
-1. 新しいサービスに、ユースケースに必要なIPアクセスリストのエントリが設定されていることを確認します
-1. 新しいサービスに必要なデータが含まれていることを確認します
-1. 元のサービスを削除します
+1. 新しいサービスに、ユースケースに必要なIPアクセスリストのエントリが設定されていることを確認します。
+1. 新しいサービスに必要なデータが含まれていることを確認します。
+1. 元のサービスを削除します。
 
 ### **新しく復元されたサービス**から**元のサービス**にデータを移行する {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
@@ -172,12 +172,12 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 ユーザーが誤ってテーブルを削除することを防ぐには、[`GRANT`ステートメント](/sql-reference/statements/grant)を使用して、特定のユーザーまたはロールの[`DROP TABLE`コマンド](/sql-reference/statements/drop#drop-table)に対する権限を取り消すことができます。
 
 :::note
-データの誤削除を防ぐため、ClickHouse Cloudではデフォルトで`1TB`を超えるサイズのテーブルを削除することはできません。
-このしきい値を超えるテーブルを削除する場合は、`max_table_size_to_drop`設定を使用してください:
+データの誤削除を防ぐため、ClickHouse Cloudではデフォルトで`1TB`を超えるサイズのテーブルを削除できないことに注意してください。
+この閾値を超えるテーブルを削除したい場合は、`max_table_size_to_drop`設定を使用して実行できます:
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに増やす
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに引き上げます
 ```
 
 :::
@@ -192,6 +192,6 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに増やす
 デフォルトのバックアップスケジュールとは異なるスケジュールを設定する場合は、[設定可能なバックアップ](/cloud/manage/backups/configurable-backups)を参照してください。
 
 
-## 独自のクラウドアカウントへバックアップをエクスポートする {#export-backups-to-your-own-cloud-account}
+## 独自のクラウドアカウントへのバックアップのエクスポート {#export-backups-to-your-own-cloud-account}
 
-独自のクラウドアカウントへバックアップをエクスポートする場合は、[こちら](/cloud/manage/backups/export-backups-to-own-cloud-account)を参照してください。
+バックアップを独自のクラウドアカウントにエクスポートする場合は、[こちら](/cloud/manage/backups/export-backups-to-own-cloud-account)を参照してください。

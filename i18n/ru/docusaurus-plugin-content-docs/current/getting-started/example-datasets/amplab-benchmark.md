@@ -1,17 +1,18 @@
 ---
-description: 'Тестовый набор данных, используемый для сравнения производительности решений для хранилищ данных.'
-sidebar_label: 'AMPLab: тест производительности для больших данных'
+description: 'Тестовый набор данных, используемый для сравнения производительности решений
+  для хранилищ данных.'
+sidebar_label: 'Тест AMPLab для больших данных'
 slug: /getting-started/example-datasets/amplab-benchmark
-title: 'AMPLab: тест производительности для больших данных'
+title: 'AMPLab: тестовый набор для больших данных'
 keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
 doc_type: 'guide'
 ---
 
 См. [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
 
-Создайте бесплатную учетную запись на [https://aws.amazon.com](https://aws.amazon.com). Для этого потребуется банковская карта, адрес электронной почты и номер телефона. Получите новый ключ доступа по адресу [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential)
+Зарегистрируйтесь для получения бесплатной учетной записи на [https://aws.amazon.com](https://aws.amazon.com). Для этого потребуются банковская карта, адрес электронной почты и номер телефона. Получите новый ключ доступа на [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential)
 
-Выполните в консоли следующую команду:
+Выполните в консоли следующее:
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -90,7 +91,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Вернитесь к консоли:
+Вернитесь в консоль:
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -101,7 +102,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-Запросы для получения выборок данных:
+Запросы для получения образцов данных:
 
 
 ```sql

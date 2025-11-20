@@ -1,6 +1,6 @@
 # 使用 Docker 安装 ClickHouse
 
-为方便起见，下面重现了 [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/) 上的指南。可用的 Docker 镜像基于官方的 ClickHouse deb 软件包构建。
+为方便起见，下面复述了 [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/) 上的指南。这里提供的 Docker 镜像基于官方的 ClickHouse deb 软件包构建。
 
 Docker 拉取命令：
 
@@ -20,14 +20,14 @@ docker pull clickhouse/clickhouse-server
 ### 兼容性 {#compatibility}
 
 - amd64 镜像需要支持 [SSE3 指令集](https://en.wikipedia.org/wiki/SSE3)。
-  2005 年之后的几乎所有 x86 CPU 都支持 SSE3。
+  几乎所有 2005 年之后的 x86 CPU 都支持 SSE3。
 - arm64 镜像需要支持 [ARMv8.2-A 架构](https://en.wikipedia.org/wiki/AArch64#ARMv8.2-A),
   以及 Load-Acquire RCpc 寄存器。该寄存器在 ARMv8.2-A 版本中为可选,在
   [ARMv8.3-A](https://en.wikipedia.org/wiki/AArch64#ARMv8.3-A) 中为必需。Graviton >=2、Azure 和 GCP 实例支持该架构。
   不支持的设备示例包括 Raspberry Pi 4(ARMv8.0-A)和 Jetson AGX Xavier/Orin(ARMv8.2-A)。
-- 从 ClickHouse 24.11 开始,Ubuntu 镜像使用 `ubuntu:22.04` 作为基础镜像。这需要 Docker 版本 >= `20.10.10`,
+- 从 ClickHouse 24.11 开始,Ubuntu 镜像开始使用 `ubuntu:22.04` 作为基础镜像。这需要 Docker 版本 >= `20.10.10`,
   其中包含此[补丁](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468)。作为替代方案,您可以
-  使用 `docker run --security-opt seccomp=unconfined`,但这存在安全风险。
+  使用 `docker run --security-opt seccomp=unconfined`,但这会带来安全风险。
 
 
 ## 如何使用此镜像 {#how-to-use-image}
@@ -47,7 +47,7 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
-# 或
+# OR
 docker exec -it some-clickhouse-server clickhouse-client
 ```
 
@@ -72,7 +72,7 @@ docker rm some-clickhouse-server
 
 :::note
 预定义用户 `default` 在未设置密码的情况下无法进行网络访问,
-请参阅下文的"启动时如何创建默认数据库和用户"以及"管理 `default` 用户"
+请参阅下文的"如何在启动时创建默认数据库和用户"以及"管理 `default` 用户"
 :::
 
 您可以通过使用主机端口[映射特定端口](https://docs.docker.com/config/containers/container-networking/)的方式,将运行在 Docker 中的 ClickHouse 暴露出来:
@@ -99,7 +99,7 @@ echo 'SELECT version()' | curl 'http://localhost:8123/' --data-binary @-
 通常您可能需要在容器内挂载以下文件夹以实现数据持久化:
 
 - `/var/lib/clickhouse/` - ClickHouse 存储数据的主文件夹
-- `/var/log/clickhouse-server/` - 日志文件
+- `/var/log/clickhouse-server/` - 日志文件夹
 
 ```bash
 docker run -d \
@@ -117,9 +117,9 @@ docker run -d \
 
 ## Linux capabilities {#linear-capabilities}
 
-ClickHouse 的某些高级功能需要启用若干 [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
+ClickHouse 具有一些高级功能,需要启用若干 [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
 
-这些 capabilities 是可选的,可以通过以下 [docker 命令行参数](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)启用:
+这些 capabilities 是可选的,可以使用以下 [docker 命令行参数](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)启用:
 
 ```bash
 docker run -d \
@@ -134,7 +134,7 @@ docker run -d \
 
 该容器开放端口 8123 用于 [HTTP 接口](https://clickhouse.com/docs/interfaces/http_interface/),开放端口 9000 用于[原生客户端](https://clickhouse.com/docs/interfaces/tcp/)。
 
-ClickHouse 的配置通过 "config.xml" 文件进行管理([文档](https://clickhouse.com/docs/operations/configuration_files/))
+ClickHouse 配置通过 "config.xml" 文件进行设置([文档](https://clickhouse.com/docs/operations/configuration_files/))
 
 ### 使用自定义配置启动服务器实例 {#start-server-instance-with-custom-config}
 
@@ -155,7 +155,7 @@ docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit no
 ### 以 root 身份启动服务器 {#start-server-from-root}
 
 在启用了用户命名空间的情况下,以 root 身份启动服务器会很有用。
-执行以下命令:
+运行以下命令:
 
 ```bash
 docker run --rm -e CLICKHOUSE_RUN_AS_ROOT=1 --name clickhouse-server-userns -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
@@ -163,7 +163,7 @@ docker run --rm -e CLICKHOUSE_RUN_AS_ROOT=1 --name clickhouse-server-userns -v "
 
 ### 如何在启动时创建默认数据库和用户 {#how-to-create-default-db-and-user}
 
-有时您可能希望在容器启动时创建用户(默认使用名为 `default` 的用户)和数据库。您可以通过环境变量 `CLICKHOUSE_DB`、`CLICKHOUSE_USER`、`CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT` 和 `CLICKHOUSE_PASSWORD` 来实现:
+有时您可能希望在容器启动时创建用户(默认使用名为 `default` 的用户)和数据库。您可以使用环境变量 `CLICKHOUSE_DB`、`CLICKHOUSE_USER`、`CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT` 和 `CLICKHOUSE_PASSWORD` 来实现:
 
 ```bash
 docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 -e CLICKHOUSE_PASSWORD=password -p 9000:9000/tcp clickhouse/clickhouse-server
@@ -182,8 +182,8 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 
 ## 如何扩展此镜像 {#how-to-extend-image}
 
-要在基于此镜像的派生镜像中执行额外的初始化操作,请在 `/docker-entrypoint-initdb.d` 目录下添加一个或多个 `*.sql`、`*.sql.gz` 或 `*.sh` 脚本。入口点调用 `initdb` 后,会在启动服务前依次运行该目录中的所有 `*.sql` 文件、执行所有可执行的 `*.sh` 脚本,并 source 所有不可执行的 `*.sh` 脚本,以完成进一步的初始化。
-此外,您还可以提供环境变量 `CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`,它们将在初始化期间供 clickhouse-client 使用。
+要在基于此镜像的派生镜像中执行额外的初始化操作,请在 `/docker-entrypoint-initdb.d` 目录下添加一个或多个 `*.sql`、`*.sql.gz` 或 `*.sh` 脚本。入口点调用 `initdb` 后,会依次运行该目录中的所有 `*.sql` 文件、执行所有可执行的 `*.sh` 脚本,并 source 所有不可执行的 `*.sh` 脚本,从而在启动服务前完成进一步的初始化。
+此外,您还可以提供环境变量 `CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`,它们将在初始化过程中供 clickhouse-client 使用。
 
 例如,要添加另一个用户和数据库,请将以下内容添加到 `/docker-entrypoint-initdb.d/init-db.sh`:
 

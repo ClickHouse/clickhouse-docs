@@ -21,7 +21,7 @@ import createMessageInTopic from '@site/static/images/integrations/data-ingestio
 
 HTTP Sink 连接器与数据类型无关,因此不需要 Kafka schema,同时支持 ClickHouse 特定的数据类型,如 Map 和 Array。这种额外的灵活性会带来配置复杂度的轻微增加。
 
-下面我们介绍一个简单的安装过程,从单个 Kafka 主题拉取消息并将数据行插入到 ClickHouse 表中。
+下面我们介绍一个简单的安装过程,从单个 Kafka 主题拉取消息并将行插入到 ClickHouse 表中。
 
 :::note
 HTTP 连接器基于 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) 分发。
@@ -86,7 +86,7 @@ ORDER BY tuple()
   - `Auth password` - ClickHouse 密码
 
 :::note
-此 HTTP Url 容易出错。请确保转义准确以避免问题。
+此 HTTP URL 容易出错。确保转义准确以避免问题。
 :::
 
 <Image
@@ -105,7 +105,7 @@ ORDER BY tuple()
     - `Batch batch size` - 根据 ClickHouse 建议,将此设置为**至少 1000**。
     - `Batch json as array` - true
     - `Retry on HTTP codes` - 400-500,但根据需要进行调整,例如,如果您在 ClickHouse 前面有 HTTP 代理,这可能会改变。
-    - `Maximum Reties` - 默认值(10)是合适的,但可以根据需要调整以实现更强大的重试。
+    - `Maximum Reties` - 默认值 (10) 是合适的,但可以根据需要调整以实现更强大的重试。
 
 <Image
   img={httpAdvanced}
@@ -135,7 +135,7 @@ ORDER BY tuple()
 
 来自 [Sink 文档](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp):
 
-> HTTP Sink 连接器不会对包含不同 Kafka 头值的消息进行批处理请求。
+> HTTP Sink 连接器不会对包含不同 Kafka 标头值的消息进行批处理请求。
 
 
 1. 验证您的 Kafka 记录具有相同的键。
@@ -169,21 +169,21 @@ Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote
 http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRow
 ```
 
-以下附加参数与在 ClickHouse 中使用 HTTP Sink 相关。完整的参数列表可以在[这里](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到:
+以下附加参数与在 ClickHouse 中使用 HTTP Sink 相关。完整的参数列表可以在[此处](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到:
 
 - `request.method` - 设置为 **POST**
 - `retry.on.status.codes` - 设置为 400-500 以在任何错误代码时重试。根据数据中的预期错误进行调整。
 - `request.body.format` - 在大多数情况下,这将是 JSON。
-- `auth.type` - 如果在 ClickHouse 中启用了安全认证,则设置为 BASIC。目前不支持其他 ClickHouse 兼容的身份验证机制。
+- `auth.type` - 如果您在 ClickHouse 中启用了安全性,则设置为 BASIC。目前不支持其他 ClickHouse 兼容的身份验证机制。
 - `ssl.enabled` - 如果使用 SSL,则设置为 true。
 - `connection.user` - ClickHouse 的用户名。
 - `connection.password` - ClickHouse 的密码。
 - `batch.max.size` - 单个批次中发送的行数。确保将此设置为适当的较大数值。根据 ClickHouse 的[建议](/sql-reference/statements/insert-into#performance-considerations),应将 1000 视为最小值。
-- `tasks.max` - HTTP Sink 连接器支持运行一个或多个任务。这可用于提高性能。与批次大小一起,这是您提高性能的主要方式。
+- `tasks.max` - HTTP Sink 连接器支持运行一个或多个任务。这可用于提高性能。与批次大小一起,这是您提高性能的主要手段。
 - `key.converter` - 根据键的类型进行设置。
-- `value.converter` - 根据主题上的数据类型进行设置。此数据不需要模式。这里的格式必须与参数 `http.api.url` 中指定的 FORMAT 一致。最简单的方法是使用 JSON 和 org.apache.kafka.connect.json.JsonConverter 转换器。通过转换器 org.apache.kafka.connect.storage.StringConverter 将值视为字符串也是可行的 - 但这需要用户在 insert 语句中使用函数提取值。如果使用 io.confluent.connect.avro.AvroConverter 转换器,ClickHouse 也支持 [Avro 格式](/interfaces/formats/Avro)。
+- `value.converter` - 根据主题上的数据类型进行设置。此数据不需要模式。这里的格式必须与参数 `http.api.url` 中指定的 FORMAT 一致。最简单的方法是使用 JSON 和 org.apache.kafka.connect.json.JsonConverter 转换器。通过转换器 org.apache.kafka.connect.storage.StringConverter 将值视为字符串也是可行的 - 尽管这将要求用户在插入语句中使用函数提取值。如果使用 io.confluent.connect.avro.AvroConverter 转换器,ClickHouse 也支持 [Avro 格式](/interfaces/formats/Avro)。
 
-完整的设置列表,包括如何配置代理、重试和高级 SSL,可以在[这里](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到。
+完整的设置列表,包括如何配置代理、重试和高级 SSL,可以在[此处](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到。
 
 
 Github 示例数据的配置文件可以在[这里](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)找到,假设 Connect 以独立模式运行,且 Kafka 托管在 Confluent Cloud 中。

@@ -1,10 +1,10 @@
 ---
 slug: /native-protocol/server
 sidebar_position: 3
-title: '服务器包'
+title: '服务器数据包'
 description: '原生协议服务器'
 doc_type: 'reference'
-keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specification', 'networking']
+keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', '网络']
 ---
 
 
@@ -18,16 +18,16 @@ keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specifi
 | 2     | [Exception](#exception)          | 查询处理异常                                                    |
 | 3     | [Progress](#progress)            | 查询进度                                                        |
 | 4     | [Pong](#pong)                    | Ping 响应                                                       |
-| 5     | [EndOfStream](#end-of-stream)    | 所有数据包已传输                                                |
-| 6     | [ProfileInfo](#profile-info)     | 性能分析信息                                                    |
+| 5     | [EndOfStream](#end-of-stream)    | 所有数据包均已传输                                              |
+| 6     | [ProfileInfo](#profile-info)     | 性能剖析（profiling）数据                                       |
 | 7     | Totals                           | 汇总值                                                          |
 | 8     | Extremes                         | 极值（最小值、最大值）                                          |
 | 9     | TablesStatusResponse             | 对 TableStatus 请求的响应                                       |
 | 10    | [Log](#log)                      | 查询系统日志                                                    |
-| 11    | TableColumns                     | 列描述                                                          |
-| 12    | UUIDs                            | 唯一数据分片 ID 列表                                            |
-| 13    | ReadTaskRequest                  | 字符串（UUID），用于描述需要获取下一个任务的请求               |
-| 14    | [ProfileEvents](#profile-events) | 来自服务器的性能事件数据包                                     |
+| 11    | TableColumns                     | 列说明                                                          |
+| 12    | UUIDs                            | 唯一分片 ID 列表                                                |
+| 13    | ReadTaskRequest                  | 以字符串（UUID）形式描述的需要获取下一个任务的请求             |
+| 14    | [ProfileEvents](#profile-events) | 来自服务器的性能事件数据包                                      |
 
 `Data`、`Totals` 和 `Extremes` 可以压缩。
 
@@ -75,26 +75,26 @@ keywords: ['native protocol', 'tcp protocol', 'client-server', 'protocol specifi
 
 | field       | type    | value    | description       |
 | ----------- | ------- | -------- | ----------------- |
-| rows        | UVarInt | `65535`  | 行数         |
-| bytes       | UVarInt | `871799` | 字节数        |
-| total_rows  | UVarInt | `0`      | 总行数        |
-| wrote_rows  | UVarInt | `0`      | 客户端写入行数  |
-| wrote_bytes | UVarInt | `0`      | 客户端写入字节数 |
+| rows        | UVarInt | `65535`  | 行数              |
+| bytes       | UVarInt | `871799` | 字节数            |
+| total_rows  | UVarInt | `0`      | 总行数            |
+| wrote_rows  | UVarInt | `0`      | 来自客户端的行数  |
+| wrote_bytes | UVarInt | `0`      | 来自客户端的字节数 |
 
 
 ## Pong {#pong}
 
-对 [客户端 ping](./client.md#ping) 的响应，无包体。
+[客户端 ping](./client.md#ping) 的响应，无数据包体。
 
 
 ## 流结束 {#end-of-stream}
 
-不再发送 **Data** 数据包,查询结果已从服务器完全流式传输到客户端。
+不会再发送 **Data** 数据包，查询结果已从服务器完全流式传输到客户端。
 
 无数据包体。
 
 
-## 性能分析信息 {#profile-info}
+## 配置信息 {#profile-info}
 
 | 字段                         | 类型    |
 | ---------------------------- | ------- |

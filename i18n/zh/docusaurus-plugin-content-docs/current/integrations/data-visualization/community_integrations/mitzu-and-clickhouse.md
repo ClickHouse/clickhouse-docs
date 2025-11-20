@@ -2,7 +2,7 @@
 sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
-description: 'Mitzu 是一款零代码、原生于数据仓库的产品分析应用。'
+description: 'Mitzu 是一款零代码的、原生对接数据仓库的产品分析应用。'
 title: '将 Mitzu 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -30,9 +30,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 Amplitude、Mixpanel 和 PostHog 等工具类似，Mitzu 让用户无需掌握 SQL 或 Python 技能即可分析产品使用数据。
+Mitzu 是一款零代码、以数据仓库为核心的产品分析应用。与 Amplitude、Mixpanel 和 PostHog 等工具类似，Mitzu 让用户在无需掌握 SQL 或 Python 专业技能的情况下即可分析产品使用数据。
 
-不过，与这些平台不同的是，Mitzu 并不会复制公司的产品使用数据，而是直接在公司现有的数据仓库或数据湖之上生成原生 SQL 查询。
+不过，与这些平台不同的是，Mitzu 不会复制公司的产品使用数据，而是直接基于公司现有的数据仓库或数据湖生成原生 SQL 查询。
 
 
 
@@ -44,26 +44,26 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 - 如何将 Mitzu 集成到 ClickHouse
 
 :::tip 示例数据集
-如果您没有可用于 Mitzu 的数据集,可以使用 NYC Taxi Data。
+如果您没有可用于 Mitzu 的数据集,可以使用纽约出租车数据集。
 该数据集在 ClickHouse Cloud 中可用,也可以[按照这些说明加载](/getting-started/example-datasets/nyc-taxi)。
 :::
 
 本指南仅提供 Mitzu 使用方法的简要概述。更详细的信息请参阅 [Mitzu 文档](https://docs.mitzu.io/)。
 
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接详细信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
 
 ## 2. 登录或注册 Mitzu {#2-sign-in-or-sign-up-to-mitzu}
 
-第一步,前往 [https://app.mitzu.io](https://app.mitzu.io) 进行注册。
+首先,前往 [https://app.mitzu.io](https://app.mitzu.io) 进行注册。
 
 <Image
   size='lg'
   img={mitzu_01}
-  alt='Mitzu 登录页面,包含邮箱和密码输入框'
+  alt='Mitzu 登录页面,包含电子邮件和密码字段'
   border
 />
 
@@ -94,14 +94,14 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 
 ## 5. 配置事件表 {#5-configure-event-tables}
 
-连接保存后,选择 `Event tables` 选项卡并点击 `Add table` 按钮。在弹出的对话框中,选择您的数据库以及要添加到 Mitzu 的表。
+保存连接后,选择 `Event tables` 选项卡并点击 `Add table` 按钮。在弹出的对话框中,选择您的数据库以及要添加到 Mitzu 的表。
 
-使用复选框至少选择一个表,然后点击 `Configure table` 按钮。这将打开一个对话框窗口,您可以在其中为每个表设置关键列。
+使用复选框选择至少一个表,然后点击 `Configure table` 按钮。这将打开一个对话框窗口,您可以在其中为每个表设置关键列。
 
 <Image
   size='lg'
   img={mitzu_04}
-  alt='Mitzu 表选择界面显示数据库表'
+  alt='Mitzu 表选择界面,显示数据库表'
   border
 />
 <br />
@@ -112,12 +112,12 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 >
 > - **User id** - 用户唯一标识符列。
 > - **Event time** - 事件时间戳列。
-> - 可选[**Event name**] - 当表包含多种事件类型时,此列用于区分不同的事件。
+> - Optional[**Event name**] - 当表包含多种事件类型时,此列用于区分事件。
 
 <Image
   size='lg'
   img={mitzu_05}
-  alt='Mitzu 事件目录配置显示列映射选项'
+  alt='Mitzu 事件目录配置,显示列映射选项'
   border
 />
 <br />
@@ -128,7 +128,7 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 
 在 Mitzu 中进行用户分群与在 Amplitude、Mixpanel 或 PostHog 中一样简单。
 
-探索页面左侧提供事件选择区域,顶部区域可配置时间范围。
+探索页面左侧为事件选择区域,顶部区域可配置时间范围。
 
 <Image
   size='lg'
@@ -139,21 +139,21 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 
 <br />
 
-:::tip 过滤与分组
+:::tip 过滤和细分
 过滤操作很直观:选择一个属性(ClickHouse 列),然后从下拉列表中选择要过滤的值。
-您可以选择任何事件或用户属性进行分组分析(有关如何集成用户属性,请参见下文)。
+您可以选择任何事件或用户属性进行细分(有关如何集成用户属性,请参见下文)。
 :::
 
 
 ## 5. 运行漏斗查询 {#5-run-funnel-queries}
 
 为漏斗选择最多 9 个步骤。选择用户可以完成漏斗的时间窗口。
-无需编写任何 SQL 代码即可立即获得转化率洞察。
+无需编写一行 SQL 代码即可立即获得转化率洞察。
 
 <Image
   size='lg'
   img={mitzu_07}
-  alt='Mitzu 漏斗分析视图,显示各步骤之间的转化率'
+  alt='Mitzu 漏斗分析视图，显示各步骤之间的转化率'
   border
 />
 
@@ -179,7 +179,7 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 <br />
 
 :::tip 群组留存
-选择 `Weekly cohort retention` 来可视化留存率随时间的变化趋势。
+选择 `Weekly cohort retention`（每周群组留存）来可视化留存率随时间的变化趋势。
 :::
 
 
@@ -190,13 +190,13 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 <Image
   size='lg'
   img={mitzu_09}
-  alt='Mitzu 旅程可视化,展示事件之间的用户路径流向'
+  alt='Mitzu 旅程可视化展示事件之间的用户路径流向'
   border
 />
 <br />
 
 :::tip 分解步骤
-您可以为 `Break down` 分段选择一个属性,以区分同一步骤内的不同用户。
+您可以为 `Break down` 分段选择一个属性,以区分同一步骤中的不同用户。
 :::
 
 <br />
@@ -209,14 +209,14 @@ Mitzu 是一款零代码、原生对接数据仓库的产品分析应用。与 A
 <Image
   size='lg'
   img={mitzu_10}
-  alt='Mitzu 收入分析仪表板显示 MRR 指标'
+  alt='Mitzu 收入分析仪表板,显示 MRR 指标'
   border
 />
 
 
 ## 9. SQL 原生 {#9-sql-native}
 
-Mitzu 是 SQL 原生工具,这意味着它可以根据您在探索页面上选择的配置生成原生 SQL 代码。
+Mitzu 是 SQL 原生的,这意味着它可以根据您在探索页面上选择的配置生成原生 SQL 代码。
 
 <Image
   size='lg'
@@ -228,7 +228,7 @@ Mitzu 是 SQL 原生工具,这意味着它可以根据您在探索页面上选�
 <br />
 
 :::tip 在 BI 工具中继续工作
-如果 Mitzu UI 无法满足您的需求,可以复制 SQL 代码并在 BI 工具中继续操作。
+如果您在 Mitzu UI 中遇到功能限制,可以复制 SQL 代码并在 BI 工具中继续工作。
 :::
 
 
@@ -236,11 +236,11 @@ Mitzu 是 SQL 原生工具,这意味着它可以根据您在探索页面上选�
 
 如果您需要帮助,请随时通过 [support@mitzu.io](email://support@mitzu.io) 联系我们
 
-或者加入我们的 Slack 社区:[点击这里](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)
+或者加入我们的 Slack 社区[点击这里](https://join.slack.com/t/mitzu-io/shared_invite/zt-1h1ykr93a-_VtVu0XshfspFjOg6sczKg)
 
 
 ## 了解更多 {#learn-more}
 
-在 [mitzu.io](https://mitzu.io) 了解更多关于 Mitzu 的信息
+访问 [mitzu.io](https://mitzu.io) 了解更多关于 Mitzu 的信息
 
 访问我们的文档页面：[docs.mitzu.io](https://docs.mitzu.io)

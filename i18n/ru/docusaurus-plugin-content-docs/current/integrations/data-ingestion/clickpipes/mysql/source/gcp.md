@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Cloud SQL for MySQL'
-description: 'Пошаговое руководство по настройке Cloud SQL for MySQL как источника данных для ClickPipes'
+sidebar_label: 'Cloud SQL для MySQL '
+description: 'Пошаговое руководство по настройке Cloud SQL for MySQL в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mysql/source/gcp
-title: 'Руководство по настройке источника данных Cloud SQL for MySQL'
+title: 'Руководство по настройке источника Cloud SQL for MySQL'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
 doc_type: 'guide'
 ---
@@ -18,15 +18,15 @@ import Image from '@theme/IdealImage';
 
 # Руководство по настройке источника Cloud SQL for MySQL
 
-Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации данных с его помощью через MySQL ClickPipe.
+Пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации данных через MySQL ClickPipe.
 
 
 
 ## Включение хранения бинарного журнала {#enable-binlog-retention-gcp}
 
-Бинарный журнал — это набор файлов журналов, содержащих информацию об изменениях данных, внесённых в экземпляр сервера MySQL. Файлы бинарного журнала необходимы для репликации.
+Бинарный журнал — это набор файлов журналов, содержащих информацию об изменениях данных в экземпляре сервера MySQL. Файлы бинарного журнала необходимы для репликации.
 
-### Включение бинарного журналирования через PITR{#enable-binlog-logging-gcp}
+### Включение бинарного журналирования через PITR {#enable-binlog-logging-gcp}
 
 Функция PITR определяет, включено или выключено бинарное журналирование для MySQL в Google Cloud. Её можно настроить в консоли Cloud, отредактировав экземпляр Cloud SQL и прокрутив вниз до нужного раздела.
 
@@ -36,9 +36,9 @@ import Image from '@theme/IdealImage';
 
 Если эти параметры ещё не настроены, обязательно установите их в разделе флагов базы данных, отредактировав Cloud SQL:
 
-1. `binlog_expire_logs_seconds` — значение >= `86400` (1 день).
-2. `binlog_row_metadata` — `FULL`
-3. `binlog_row_image` — `FULL`
+1. `binlog_expire_logs_seconds` to a value >= `86400` (1 day).
+2. `binlog_row_metadata` to `FULL`
+3. `binlog_row_image` to `FULL`
 
 Для этого нажмите кнопку `Edit` в правом верхнем углу страницы обзора экземпляра.
 
@@ -63,7 +63,7 @@ import Image from '@theme/IdealImage';
 
 Подключитесь к экземпляру Cloud SQL MySQL от имени пользователя root и выполните следующие команды:
 
-1. Создайте отдельного пользователя для ClickPipes:
+1. Создайте выделенного пользователя для ClickPipes:
 
    ```sql
    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
@@ -97,7 +97,7 @@ import Image from '@theme/IdealImage';
 
 1. Перейдите к экземпляру Cloud SQL в консоли Cloud.
 2. Нажмите на `Connections` на боковой панели.
-3. Нажмите на вкладку `Security`.
+3. Перейдите на вкладку `Security`.
 4. В разделе `Manage server CA certificates` нажмите на кнопку `DOWNLOAD CERTIFICATES` внизу.
 
 <Image img={gcp_mysql_cert} alt='Загрузка сертификата GCP MySQL' size='lg' border />

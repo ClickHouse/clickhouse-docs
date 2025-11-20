@@ -3,7 +3,7 @@ description: 'LAION 5B データセットから取得した 1 億個のベクト
 sidebar_label: 'LAION 5B データセット'
 slug: /getting-started/example-datasets/laion-5b-dataset
 title: 'LAION 5B データセット'
-keywords: ['セマンティック検索', 'ベクトル類似度', '近似最近傍探索', '埋め込みベクトル']
+keywords: ['semantic search', 'vector similarity', 'approximate nearest neighbours', 'embeddings']
 doc_type: 'guide'
 ---
 
@@ -15,17 +15,17 @@ import Image from '@theme/IdealImage';
 
 [LAION 5bデータセット](https://laion.ai/blog/laion-5b/)には、58.5億の画像-テキスト埋め込みと関連する画像メタデータが含まれています。埋め込みは`Open AI CLIP`モデル[ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14)を使用して生成されました。各埋め込みベクトルの次元数は`768`です。
 
-このデータセットは、大規模な実環境のベクトル検索アプリケーションにおける設計、サイジング、パフォーマンスの各側面をモデル化する際に使用できます。このデータセットは、テキストから画像への検索と画像から画像への検索の両方に利用可能です。
+このデータセットは、大規模な実環境のベクトル検索アプリケーションにおけるモデル設計、サイジング、パフォーマンス面の検証に使用できます。このデータセットは、テキストから画像への検索と画像から画像への検索の両方に使用できます。
 
 
-## データセット詳細 {#dataset-details}
+## データセットの詳細 {#dataset-details}
 
-完全なデータセットは、`npy`と`Parquet`ファイルの混合形式で[the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)から入手できます。
+完全なデータセットは、`npy`および`Parquet`ファイルの混合形式で[the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)から入手できます。
 
 ClickHouseは、1億ベクトルのサブセットを`S3`バケットで提供しています。
 この`S3`バケットには10個の`Parquet`ファイルが含まれており、各`Parquet`ファイルには1,000万行が格納されています。
 
-このデータセットに必要なストレージとメモリの要件を見積もるため、まず[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してサイジング演習を実施することを推奨します。
+このデータセットのストレージとメモリ要件を見積もるために、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してサイジング演習を事前に実行することを推奨します。
 
 
 ## 手順 {#steps}
@@ -34,7 +34,7 @@ ClickHouseは、1億ベクトルのサブセットを`S3`バケットで提供�
 
 ### テーブルの作成 {#create-table}
 
-埋め込みベクトルとその関連属性を格納する`laion_5b_100m`テーブルを作成します：
+埋め込みベクトルとそれに関連する属性を格納するための`laion_5b_100m`テーブルを作成します:
 
 ```sql
 CREATE TABLE laion_5b_100m
@@ -58,11 +58,11 @@ CREATE TABLE laion_5b_100m
 ) ENGINE = MergeTree ORDER BY (id)
 ```
 
-`id`は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、ポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を理解するために活用できます。
+`id`は単なる増分整数です。追加の属性は述語で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているように、事後フィルタリング/事前フィルタリングと組み合わせたベクトル類似性検索を理解するために利用できます。
 
 ### データの読み込み {#load-table}
 
-すべての`Parquet`ファイルからデータセットを読み込むには、以下のSQLステートメントを実行します：
+すべての`Parquet`ファイルからデータセットを読み込むには、以下のSQL文を実行します:
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
@@ -70,7 +70,7 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 
 テーブルへの1億行の読み込みには数分かかります。
 
-または、個別のSQLステートメントを実行して、特定の数のファイル/行を読み込むこともできます。
+または、個別のSQL文を実行して特定の数のファイル/行を読み込むこともできます。
 
 ```sql
 INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -78,9 +78,9 @@ INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazo
 ⋮
 ```
 
-### ブルートフォースベクトル類似検索の実行 {#run-a-brute-force-vector-similarity-search}
+### ブルートフォースベクトル類似性検索の実行 {#run-a-brute-force-vector-similarity-search}
 
-KNN（k近傍法）検索またはブルートフォース検索では、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得します。データセット自体のベクトルの1つを検索ベクトルとして使用できます。例えば：
+KNN(k近傍法)検索またはブルートフォース検索は、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、その距離を順序付けして最近傍を取得する手法です。データセット自体のベクトルの1つを検索ベクトルとして使用できます。例えば:
 
 ```sql title="クエリ"
 SELECT id, url
@@ -137,9 +137,9 @@ ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync
 
 インデックス作成と検索のパラメータおよびパフォーマンスに関する考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
 上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-ユーザーは、インデックス構築時間と検索結果の品質を評価し、選択した値に応じてこれらのパラメータの最適値を慎重に選択する必要があります。
+ユーザーは、インデックス構築時間と検索結果の品質を評価し、選択した値に応じてこれらのパラメータの最適な値を慎重に選択する必要があります。
 
-1億件の完全なデータセットに対してインデックスを構築し保存するには、利用可能なCPUコア数とストレージ帯域幅によっては数時間かかる場合があります。
+1億件の完全なデータセットに対するインデックスの構築と保存は、利用可能なCPUコア数とストレージ帯域幅によっては数時間かかる場合があります。
 
 ### ANN検索の実行 {#perform-ann-search}
 
@@ -199,7 +199,7 @@ np_arr = text_features.detach().cpu().numpy()
 
 ```
 
-上記の検索結果は以下の通りです:
+The result of the above search is shown below:
 
 <Image img={search_results_image} alt="ベクトル類似度検索結果" size="md"/>
 

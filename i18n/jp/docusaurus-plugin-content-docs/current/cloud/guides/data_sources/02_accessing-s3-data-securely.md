@@ -1,8 +1,8 @@
 ---
 slug: /cloud/data-sources/secure-s3
-sidebar_label: 'S3 データへ安全にアクセスする'
-title: 'S3 データへ安全にアクセスする'
-description: 'この記事では、ClickHouse Cloud のお客様がロールベースアクセスを活用して Amazon Simple Storage Service（S3）に対して認証を行い、自身のデータへ安全にアクセスする方法を説明します。'
+sidebar_label: 'S3 データへのセキュアなアクセス'
+title: 'S3 データへのセキュアなアクセス'
+description: 'この記事では、ClickHouse Cloud のお客様がロールベースのアクセスを活用して Amazon Simple Storage Service (S3) に認証し、データへ安全にアクセスする方法を説明します。'
 keywords: ['RBAC', 'Amazon S3', 'authentication']
 doc_type: 'guide'
 ---
@@ -12,12 +12,12 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.jpg';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
-この記事では、ClickHouse Cloud の顧客がロールベースのアクセスを活用して Amazon Simple Storage Service (S3) で認証を行い、安全にデータへアクセスする方法を説明します。
+この記事では、ClickHouse Cloud のお客様がロールベースのアクセスを活用して Amazon Simple Storage Service (S3) に対して認証を行い、データに安全にアクセスする方法を説明します。
 
 
 ## はじめに {#introduction}
 
-セキュアなS3アクセスの設定を始める前に、その仕組みを理解することが重要です。以下は、ClickHouseサービスが顧客のAWSアカウント内のロールを引き受けることで、プライベートS3バケットにアクセスする方法の概要です。
+セキュアなS3アクセスの設定を始める前に、その仕組みを理解しておくことが重要です。以下は、ClickHouseサービスが顧客のAWSアカウント内のロールを引き受けることで、プライベートS3バケットにアクセスする方法の概要です。
 
 <Image
   img={secure_s3}
@@ -40,7 +40,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 4 - ページ下部の**Network security information**セクションまでスクロールします。
 
-5 - 以下に示すように、サービスに紐づく**Service role ID (IAM)**の値をコピーします。
+5 - 以下に示すように、サービスに属する**Service role ID (IAM)**の値をコピーします。
 
 <Image
   img={s3_info}
@@ -57,17 +57,17 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 2 - [このURL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3)にアクセスして、CloudFormationスタックを作成します。
 
-3 - ClickHouseサービスに紐づく**IAMロール**を入力(または貼り付け)します。
+3 - ClickHouseサービスに属する**IAM Role**を入力(または貼り付け)します。
 
-4 - CloudFormationスタックを設定します。以下は、各パラメータに関する追加情報です。
+4 - CloudFormationスタックを設定します。以下は、これらのパラメータに関する追加情報です。
 
 | パラメータ                 |    デフォルト値     | 説明                                                                                   |
 | :------------------------ | :------------------: | :-------------------------------------------------------------------------------------------- |
 | RoleName                  | ClickHouseAccess-001 | ClickHouse CloudがS3バケットへのアクセスに使用する新しいロールの名前              |
-| Role Session Name         |          \*          | ロールセッション名は、バケットをさらに保護するための共有シークレットとして使用できます              |
-| ClickHouse Instance Roles |                      | このSecure S3統合を使用できるClickHouseサービスのIAMロールのカンマ区切りリスト |
-| Bucket Access             |         Read         | 指定されたバケットのアクセスレベルを設定します                                            |
-| Bucket Names              |                      | このロールがアクセスできる**バケット名**のカンマ区切りリスト                  |
+| Role Session Name         |          \*          | Role Session Nameは、バケットをさらに保護するための共有シークレットとして使用できます。              |
+| ClickHouse Instance Roles |                      | このSecure S3統合を使用できるClickHouseサービスのIAMロールのカンマ区切りリスト。 |
+| Bucket Access             |         Read         | 指定されたバケットのアクセスレベルを設定します。                                            |
+| Bucket Names              |                      | このロールがアクセスできる**バケット名**のカンマ区切りリスト。                  |
 
 _注意_: 完全なバケットARNではなく、バケット名のみを入力してください。
 
@@ -96,7 +96,7 @@ _注意_: 完全なバケットARNではなく、バケット名のみを入力�
 
 3 - 以下のIAMポリシーと信頼ポリシーを使用して、新しいIAMロールを作成します。
 
-信頼ポリシー(ClickHouseインスタンスに紐づくIAMロールARNで`{ClickHouse_IAM_ARN}`を置き換えてください):
+信頼ポリシー(ClickHouseインスタンスに属するIAMロールARNで`{ClickHouse_IAM_ARN}`を置き換えてください):
 
 ```json
 {
@@ -133,12 +133,12 @@ IAMポリシー(バケット名で`{BUCKET_NAME}`を置き換えてください)
 }
 ```
 
-4 - 作成後、新しい**IAMロールARN**をコピーします。これがS3バケットへのアクセスに必要な値です。
+4 - 作成後、新しい**IAM Role Arn**をコピーします。これがS3バケットへのアクセスに必要な値です。
 
 
 ## ClickHouseAccessロールを使用してS3バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
-ClickHouse Cloudには、S3テーブル関数の一部として`extra_credentials`を指定できる新機能があります。以下は、上記で作成したロールを使用してクエリを実行する例です。
+ClickHouse Cloudには、S3テーブル関数の一部として`extra_credentials`を指定できる新機能があります。以下は、上記でコピーした新しく作成されたロールを使用してクエリを実行する例です。
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))

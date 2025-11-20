@@ -3,7 +3,7 @@ sidebar_label: 'Astrato'
 sidebar_position: 131
 slug: /integrations/astrato
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui', 'data apps', 'data viz', 'embedded analytics', 'Astrato']
-description: 'Astrato 通过将分析能力交到每位用户手中，为企业和数据驱动型业务带来真正的自助式商业智能（Self-Service BI），使用户能够构建自己的仪表板、报表和数据应用，在无需 IT 帮助的情况下自行解答数据问题。Astrato 加速产品采用、提升决策效率，并在一个平台上统一分析、嵌入式分析、数据录入和数据应用。Astrato 将行动与分析融为一体，引入实时回写功能、支持与 ML 模型交互，并利用 AI 加速分析——借助 Astrato 对 SQL 下推的支持，让你的能力突破传统仪表板。'
+description: 'Astrato 通过将分析能力交到每位用户手中，为企业和数据驱动型业务带来真正的自助式 BI，使用户能够自行构建仪表板、报告和数据应用，在无需 IT 协助的情况下回答数据问题。Astrato 加速用户采用、提升决策效率，并在一个平台上统一分析、嵌入式分析、数据录入和数据应用。Astrato 将行动与分析融为一体，引入实时回写、与 ML 模型交互、借助 AI 加速分析——凭借 Astrato 对 SQL 下推的支持，助您突破传统仪表板的局限。'
 title: '将 Astrato 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -30,7 +30,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本地部署的 ClickHouse 实例。这意味着你可以在 ClickHouse 行业领先的性能支持下，访问所需的全部数据。
+Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本地部署的 ClickHouse。也就是说，你可以访问所需的全部数据，并享受 ClickHouse 所提供的行业领先性能。
 
 
 
@@ -48,7 +48,7 @@ Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本�
 ## 创建到 ClickHouse 的数据连接 {#creating-the-data-connection-to-clickhouse}
 
 - 在侧边栏中选择 **Data**,然后选择 **Data Connection** 选项卡
-  (或直接访问此链接:https://app.astrato.io/data/sources)
+  (或者直接访问此链接:https://app.astrato.io/data/sources)
   ​
 - 点击屏幕右上角的 **New Data Connection** 按钮。
 
@@ -88,7 +88,7 @@ Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本�
   border
 />
 
-- 连接创建完成,同时会创建一个数据视图。
+- 连接和数据视图创建完成。
 
 :::note
 如果创建了重复项,系统会在数据源名称后添加时间戳。
@@ -117,7 +117,7 @@ Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本�
   border
 />
 
-**Astrato 会智能推荐关联方式**,利用您的元数据,包括 ClickHouse 中的键。我们推荐的关联方式让您可以轻松上手,基于治理良好的 ClickHouse 数据开展工作,无需重复造轮子。我们还会显示**关联质量**,以便您可以详细查看 Astrato 提供的所有建议。
+**Astrato 会智能建议关联方式**,利用您的元数据,包括 ClickHouse 中的键。我们建议的关联方式让您可以轻松上手,基于治理良好的 ClickHouse 数据开展工作,无需重复造轮子。我们还会显示**关联质量**,以便您可以详细审查 Astrato 提供的所有建议。
 
 <Image
   size='lg'
@@ -145,7 +145,7 @@ Astrato 使用下推 SQL（Pushdown SQL）直接查询 ClickHouse Cloud 或本�
 
 ### 查看支持每个可视化的生成 SQL {#view-generated-sql-supporting-each-visualization}
 
-透明性和准确性是 Astrato 的核心。我们确保每个生成的查询都是可见的,让您保持完全控制。所有计算都直接在 ClickHouse 中进行,充分利用其速度优势,同时保持强大的安全性和治理能力。
+透明性和准确性是 Astrato 的核心。我们确保生成的每个查询都是可见的,让您保持完全控制。所有计算都直接在 ClickHouse 中进行,充分利用其速度,同时保持强大的安全性和治理能力。
 
 <Image
   size='lg'

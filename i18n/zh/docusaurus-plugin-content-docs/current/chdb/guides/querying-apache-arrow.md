@@ -7,12 +7,12 @@ keywords: ['chdb', 'Apache Arrow']
 doc_type: 'guide'
 ---
 
-[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据社区中日益流行。
+[Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据领域中越来越受欢迎。
 在本指南中，我们将学习如何使用 `Python` 表函数来查询 Apache Arrow。
 
 
 
-## 设置 {#setup}
+## 环境配置 {#setup}
 
 首先创建一个虚拟环境:
 
@@ -21,26 +21,26 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-然后安装 chDB。
-请确保版本为 2.0.2 或更高:
+接下来安装 chDB。
+请确保版本为 2.0.2 或更高版本:
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-接下来安装 PyArrow、pandas 和 ipython:
+然后安装 PyArrow、pandas 和 ipython:
 
 ```bash
 pip install pyarrow pandas ipython
 ```
 
-我们将使用 `ipython` 来运行本指南后续部分的命令,可以通过以下方式启动:
+本指南后续部分将使用 `ipython` 来运行命令,可以通过以下方式启动:
 
 ```bash
 ipython
 ```
 
-您也可以在 Python 脚本或您喜欢的 Notebook 中使用这些代码。
+您也可以在 Python 脚本或您常用的 notebook 中使用这些代码。
 
 
 ## 从文件创建 Apache Arrow 表 {#creating-an-apache-arrow-table-from-a-file}

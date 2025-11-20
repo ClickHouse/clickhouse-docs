@@ -2,7 +2,7 @@
 title: '支持的云区域'
 sidebar_label: '支持的云区域'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
-description: 'ClickHouse Cloud 支持的云区域'
+description: 'ClickHouse Cloud 支持的区域'
 slug: /cloud/reference/supported-regions
 doc_type: 'reference'
 ---
@@ -29,7 +29,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - us-east-2 (俄亥俄)
 - us-west-2 (俄勒冈)
 
-**专用区域:**
+**私有区域：**
 
 - ca-central-1 (加拿大)
 - af-south-1 (南非)
@@ -39,19 +39,19 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## Google Cloud 区域 {#google-cloud-regions}
 
-- asia-southeast1 (新加坡)
-- asia-northeast1 (东京)
-- europe-west4 (荷兰)
-- us-central1 (爱荷华州)
-- us-east1 (南卡罗来纳州)
+- asia-southeast1(新加坡)
+- asia-northeast1(东京)
+- europe-west4(荷兰)
+- us-central1(爱荷华州)
+- us-east1(南卡罗来纳州)
 
 **私有区域:**
 
-- us-west1 (俄勒冈州)
-- australia-southeast1 (悉尼)
-- europe-west3 (法兰克福)
-- europe-west6 (苏黎世)
-- northamerica-northeast1 (蒙特利尔)
+- us-west1(俄勒冈州)
+- australia-southeast1(悉尼)
+- europe-west3(法兰克福)
+- europe-west6(苏黎世)
+- northamerica-northeast1(蒙特利尔)
 
 
 ## Azure 区域 {#azure-regions}
@@ -90,13 +90,13 @@ HIPAA 合规可能需要满足额外要求(包括签署 BAA)。请注意,HIPAA �
 
 客户必须签署商业伙伴协议 (BAA) 并通过销售或支持团队申请开通,才能在 HIPAA 合规区域中部署服务。以下区域支持 HIPAA 合规:
 
-- AWS af-south-1 (南非) **专属区域**
-- AWS ca-central-1 (加拿大) **专属区域**
+- AWS af-south-1 (南非) **私有区域**
+- AWS ca-central-1 (加拿大) **私有区域**
 - AWS eu-central-1 (法兰克福)
-- AWS eu-north-1 (斯德哥尔摩) **专属区域**
+- AWS eu-north-1 (斯德哥尔摩) **私有区域**
 - AWS eu-west-1 (爱尔兰)
 - AWS eu-west-2 (伦敦)
-- AWS sa-east-1 (南美洲) **专属区域**
+- AWS sa-east-1 (南美洲) **私有区域**
 - AWS us-east-1 (北弗吉尼亚)
 - AWS us-east-2 (俄亥俄)
 - AWS us-west-2 (俄勒冈)
@@ -109,7 +109,7 @@ HIPAA 合规可能需要满足额外要求(包括签署 BAA)。请注意,HIPAA �
 
 <EnterprisePlanFeatureBadge feature='PCI' support='true' />
 
-客户需通过销售或技术支持团队申请开通，方可在 PCI 合规区域中部署服务。以下区域支持 PCI 合规：
+客户需通过销售或技术支持团队申请，方可在 PCI 合规区域中部署服务。以下区域支持 PCI 合规：
 
 - AWS af-south-1（南非）**私有区域**
 - AWS ca-central-1（加拿大）**私有区域**

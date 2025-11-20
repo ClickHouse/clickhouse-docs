@@ -73,7 +73,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 }
 ```
 
-使用 **Dapper**:
+使用 **Dapper**：
 
 ```csharp
 using Dapper;
@@ -105,8 +105,8 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 | `UseSession`        | 启用持久化服务器会话                       | `false`                                    |
 | `SessionId`         | 自定义会话 ID                             | 随机 GUID                                  |
 | `Timeout`           | HTTP 超时时间(秒)                         | `120`                                      |
-| `UseServerTimezone` | 对 datetime 列使用服务器时区               | `true`                                     |
-| `UseCustomDecimals` | 对 decimal 类型使用 `ClickHouseDecimal`   | `false`                                    |
+| `UseServerTimezone` | 对日期时间列使用服务器时区                  | `true`                                     |
+| `UseCustomDecimals` | 对小数类型使用 `ClickHouseDecimal`         | `false`                                    |
 
 **示例:** `Host=clickhouse;Port=8123;Username=default;Password=;Database=default`
 
@@ -128,11 +128,11 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 - 连接可以在 `ClickHouseConnection` 对象被释放后保持活动状态。
 - 可以通过传递带有自定义 `HttpClientHandler` 的定制 `HttpClient` 来调整此行为。
 
-对于依赖注入环境,提供了专用构造函数 `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`,允许统一管理 HTTP 客户端设置。
+对于依赖注入环境,提供了一个专用构造函数 `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`,允许统一配置 HTTP 客户端设置。
 
 **建议:**
 
-- `ClickHouseConnection` 表示与服务器的"会话"。它通过查询服务器版本来执行特性发现(因此打开时有轻微开销),但通常可以安全地多次创建和销毁此类对象。
+- `ClickHouseConnection` 表示与服务器的"会话"。它通过查询服务器版本来执行功能发现(因此打开时有轻微开销),但通常多次创建和销毁此类对象是安全的。
 - 建议的连接生命周期是每个跨越多个查询的大型"事务"使用一个连接对象。连接启动时有轻微开销,因此不建议为每个查询创建一个连接对象。
 - 如果应用程序处理大量事务并需要频繁创建/销毁 `ClickHouseConnection` 对象,建议使用 `IHttpClientFactory` 或 `HttpClient` 的静态实例来管理连接。
 
@@ -417,21 +417,21 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 
 ### DateTime 处理 {#datetime-handling}
 
-`ClickHouse.Driver` 会正确处理时区和 `DateTime.Kind` 属性。具体而言:
+`ClickHouse.Driver` 能够正确处理时区和 `DateTime.Kind` 属性。具体来说:
 
-- `DateTime` 值以 UTC 形式返回。用户可以自行转换,或在 `DateTime` 实例上使用 `ToLocalTime()` 方法。
+- `DateTime` 值以 UTC 格式返回。用户可以自行转换,或在 `DateTime` 实例上使用 `ToLocalTime()` 方法。
 - 插入时,`DateTime` 值按以下方式处理:
-  - `UTC` `DateTime` 按原样插入,因为 ClickHouse 内部以 UTC 存储。
+  - `UTC` `DateTime` 按原样插入,因为 ClickHouse 内部以 UTC 格式存储。
   - `Local` `DateTime` 根据用户的本地时区设置转换为 UTC。
   - `Unspecified` `DateTime` 被视为目标列的时区,因此根据该时区转换为 UTC。
-- 对于未指定时区的列,默认使用客户端时区(传统行为)。可以在连接字符串中使用 `UseServerTimezone` 标志来改用服务器时区。
+- 对于未指定时区的列,默认使用客户端时区(传统行为)。可以在连接字符串中使用 `UseServerTimezone` 标志改用服务器时区。
 
 ---
 
 
 ## 日志记录与诊断 {#logging-and-diagnostics}
 
-ClickHouse .NET 客户端集成了 `Microsoft.Extensions.Logging` 抽象,提供轻量级的可选日志记录功能。启用后,驱动程序会针对连接生命周期事件、命令执行、传输操作和批量复制上传发出结构化消息。日志记录完全可选——未配置日志记录器的应用程序可以继续运行而不会产生额外开销。
+ClickHouse .NET 客户端集成了 `Microsoft.Extensions.Logging` 抽象层,提供轻量级的可选日志记录功能。启用后,驱动程序会为连接生命周期事件、命令执行、传输操作和批量复制上传发出结构化消息。日志记录完全是可选的——未配置日志记录器的应用程序可以继续运行而不会产生额外开销。
 
 ### 快速入门 {#logging-quick-start}
 
@@ -459,7 +459,7 @@ await connection.OpenAsync();
 
 #### 使用 appsettings.json {#logging-appsettings-config}
 
-您可以使用标准 .NET 配置来设置日志级别:
+您可以使用标准的 .NET 配置来配置日志级别:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -489,7 +489,7 @@ await connection.OpenAsync();
 
 #### 使用内存配置 {#logging-inmemory-config}
 
-您也可以在代码中按类别配置日志详细级别:
+您也可以在代码中按类别配置日志详细程度:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -531,7 +531,7 @@ await connection.OpenAsync();
 | ------------------------------ | ---------------------- | ---------------------------------------------------------------------------------------------------- |
 | `ClickHouse.Driver.Connection` | `ClickHouseConnection` | 连接生命周期、HTTP 客户端工厂选择、连接打开/关闭、会话管理。 |
 | `ClickHouse.Driver.Command`    | `ClickHouseCommand`    | 查询执行开始/完成、计时、查询 ID、服务器统计信息和错误详情。           |
-| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | 低级 HTTP 流式请求、压缩标志、响应状态码和传输失败。 |
+| `ClickHouse.Driver.Transport`  | `ClickHouseConnection` | 底层 HTTP 流式请求、压缩标志、响应状态码和传输失败。 |
 | `ClickHouse.Driver.BulkCopy`   | `ClickHouseBulkCopy`   | 元数据加载、批处理操作、行数和上传完成。                              |
 
 #### 示例:诊断连接问题 {#logging-config-example}
@@ -559,14 +559,14 @@ await connection.OpenAsync();
 
 ### 调试模式:网络跟踪与诊断 {#logging-debugmode}
 
-为了帮助诊断网络问题,驱动程序库包含一个辅助工具,可以启用对 .NET 网络内部的低级跟踪。要启用它,您必须传递一个日志级别设置为 Trace 的 LoggerFactory,并将 EnableDebugMode 设置为 true(或通过 `ClickHouse.Driver.Diagnostic.TraceHelper` 类手动启用)。警告:这将生成极其详细的日志,并影响性能。不建议在生产环境中启用调试模式。
+为了帮助诊断网络问题,驱动程序库包含一个辅助工具,可以启用对 .NET 网络内部的底层跟踪。要启用它,您必须传递一个日志级别设置为 Trace 的 LoggerFactory,并将 EnableDebugMode 设置为 true(或通过 `ClickHouse.Driver.Diagnostic.TraceHelper` 类手动启用)。警告:这将生成极其详细的日志,并影响性能。不建议在生产环境中启用调试模式。
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
+        .SetMinimumLevel(LogLevel.Trace); // 必须设置为 Trace 级别才能查看网络事件
 });
 
 ```
@@ -575,7 +575,7 @@ var loggerFactory = LoggerFactory.Create(builder =>
 var settings = new ClickHouseClientSettings()
 {
 LoggerFactory = loggerFactory,
-EnableDebugMode = true, // 启用底层网络追踪
+EnableDebugMode = true, // Enable low-level network tracing
 };
 
 ````

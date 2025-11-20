@@ -1,8 +1,8 @@
 ---
-description: 'Анализ данных Stack Overflow в ClickHouse'
+description: 'Анализ данных Stack Overflow с помощью ClickHouse'
 sidebar_label: 'Stack Overflow'
 slug: /getting-started/example-datasets/stackoverflow
-title: 'Анализ данных Stack Overflow в ClickHouse'
+title: 'Анализ данных Stack Overflow с помощью ClickHouse'
 keywords: ['StackOverflow']
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,7 +13,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 Этот набор данных содержит все `Posts`, `Users`, `Votes`, `Comments`, `Badges`, `PostHistory` и `PostLinks`, которые когда-либо появлялись на Stack Overflow.
 
-Пользователи могут либо скачать заранее подготовленные версии данных в формате Parquet, содержащие все сообщения по апрель 2024 года включительно, либо скачать последние данные в формате XML и загрузить их. Stack Overflow периодически публикует обновления этих данных — исторически каждые 3 месяца.
+Пользователи могут либо скачать заранее подготовленные версии данных в формате Parquet, содержащие все записи вплоть до апреля 2024 года, либо скачать последние данные в формате XML и загрузить их. Stack Overflow периодически обновляет эти данные — исторически примерно раз в 3 месяца.
 
 На следующей диаграмме показана схема доступных таблиц в формате Parquet.
 
@@ -24,13 +24,13 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 ## Предварительно подготовленные данные {#pre-prepared-data}
 
-Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Хотя для ClickHouse этот набор данных небольшой по количеству строк (60 миллионов постов), он содержит значительные объемы текста и большие столбцы типа String.
+Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Несмотря на то, что этот набор данных небольшой для ClickHouse по количеству строк (60 миллионов постов), он содержит значительные объемы текста и большие столбцы типа String.
 
 ```sql
 CREATE DATABASE stackoverflow
 ```
 
-Приведенные ниже показатели времени выполнения получены на кластере ClickHouse Cloud с 96 ГиБ памяти и 24 vCPU, расположенном в регионе `eu-west-2`. Набор данных находится в регионе `eu-west-3`.
+Приведенные ниже показатели времени выполнения получены для кластера ClickHouse Cloud с 96 ГиБ памяти и 24 виртуальными процессорами, расположенного в регионе `eu-west-2`. Набор данных находится в регионе `eu-west-3`.
 
 ### Посты {#posts}
 
@@ -163,7 +163,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### Связи между постами {#postlinks}
+### Связи между публикациями {#postlinks}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -182,7 +182,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### История постов {#posthistory}
+### История публикаций {#posthistory}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -211,7 +211,7 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 
 Исходный набор данных доступен в сжатом формате XML (7zip) по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) — файлы с префиксом `stackoverflow.com*`.
 
-### Скачивание {#download}
+### Загрузка {#download}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -223,7 +223,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-Размер этих файлов достигает 35 ГБ, и их скачивание может занять около 30 минут в зависимости от скорости интернет-соединения — сервер ограничивает скорость загрузки примерно до 20 МБ/сек.
+Размер этих файлов достигает 35 ГБ, загрузка может занять около 30 минут в зависимости от скорости интернет-соединения — сервер ограничивает скорость загрузки примерно до 20 МБ/сек.
 
 ### Преобразование в JSON {#convert-to-json}
 
@@ -242,13 +242,13 @@ pip install yq
 
 Распакуйте файл с помощью [p7zip](https://p7zip.sourceforge.net/). В результате будет создан один XML-файл — в данном случае `Posts.xml`.
 
-> Файлы сжаты примерно в 4,5 раза. При размере 22 ГБ в сжатом виде файл с постами требует около 97 ГБ в распакованном виде.
+> Файлы сжаты примерно в 4,5 раза. При размере 22 ГБ в сжатом виде файл постов требует около 97 ГБ в распакованном виде.
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-Следующая команда разделяет XML-файл на несколько файлов, каждый из которых содержит 10 000 строк.
+Следующая команда разделяет XML-файл на файлы, каждый из которых содержит 10000 строк.
 
 
 ```bash
@@ -258,7 +258,7 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-После выполнения приведённой выше команды у пользователей будет набор файлов, каждый из 10 000 строк. Это гарантирует, что накладные расходы по памяти для следующей команды не будут чрезмерными (преобразование XML в JSON выполняется в памяти).
+После выполнения приведённой выше команды у пользователей будет набор файлов, каждый по 10 000 строк. Это гарантирует, что накладные расходы по памяти для следующей команды не будут чрезмерными (преобразование XML в JSON выполняется в памяти).
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
@@ -266,7 +266,7 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 
 Вышеуказанная команда создаст один файл `posts.json`.
 
-Загрузите данные в ClickHouse следующей командой. Обратите внимание, что схема задана для файла `posts.json`. Её необходимо скорректировать с учётом типов данных, чтобы она соответствовала целевой таблице.
+Загрузите данные в ClickHouse следующей командой. Обратите внимание, что схема указана для файла `posts.json`. Её необходимо скорректировать для каждого типа данных, чтобы они соответствовали целевой таблице.
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
@@ -275,7 +275,7 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 
 ## Примеры запросов {#example-queries}
 
-Несколько простых запросов для начала.
+Несколько простых запросов для начала работы.
 
 ### Самые популярные теги на Stack Overflow {#most-popular-tags-on-stack-overflow}
 
@@ -302,13 +302,13 @@ LIMIT 10
 │ css        │  803755 │
 └────────────┴─────────┘
 
-10 строк в наборе. Время выполнения: 1.013 сек. Обработано 59.82 млн строк, 1.21 ГБ (59.07 млн строк/с, 1.19 ГБ/с).
-Пиковое потребление памяти: 224.03 Миб.
+Получено 10 строк. Затрачено: 1.013 сек. Обработано 59.82 млн строк, 1.21 ГБ (59.07 млн строк/сек., 1.19 ГБ/сек.)
+Пиковое использование памяти: 224.03 МиБ.
 ```
 
 ### Пользователь с наибольшим количеством ответов (активные аккаунты) {#user-with-the-most-answers-active-accounts}
 
-У аккаунта должен быть указан `UserId`.
+Для аккаунта требуется `UserId`.
 
 ```sql
 SELECT
@@ -328,11 +328,11 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-5 строк в наборе. Время выполнения: 0.154 сек. Обработано 35.83 млн строк, 193.39 МБ (232.33 млн строк/с, 1.25 ГБ/с).
-Пиковое потребление памяти: 206.45 Миб.
+Получено 5 строк. Затрачено: 0.154 сек. Обработано 35.83 млн строк, 193.39 МБ (232.33 млн строк/сек., 1.25 ГБ/сек.)
+Пиковое использование памяти: 206.45 МиБ.
 ```
 
-### Самые просматриваемые сообщения, связанные с ClickHouse {#clickhouse-related-posts-with-the-most-views}
+### Посты, связанные с ClickHouse, с наибольшим количеством просмотров {#clickhouse-related-posts-with-the-most-views}
 
 ```sql
 SELECT
@@ -358,8 +358,8 @@ LIMIT 10
 │ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-10 строк в наборе. Время выполнения: 0.472 сек. Обработано 59.82 млн строк, 1.91 ГБ (126.63 млн строк/с, 4.03 ГБ/с).
-Пиковое потребление памяти: 240.01 Миб.
+Получено 10 строк. Затрачено: 0.472 сек. Обработано 59.82 млн строк, 1.91 ГБ (126.63 млн строк/сек., 4.03 ГБ/сек.)
+Пиковое использование памяти: 240.01 МиБ.
 ```
 
 
@@ -398,6 +398,6 @@ Peak memory usage: 6.05 GiB.
 ```
 
 
-## Благодарности {#attribution}
+## Атрибуция {#attribution}
 
-Мы благодарим Stack Overflow за предоставление этих данных по лицензии `cc-by-sa 4.0` и признаём их вклад. Исходные данные доступны по адресу [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange).
+Мы благодарим Stack Overflow за предоставление этих данных по лицензии `cc-by-sa 4.0` и признаём их вклад, а также указываем первоисточник данных: [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange).

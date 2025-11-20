@@ -1,23 +1,23 @@
 ---
-sidebar_label: 'データのロード'
-title: 'BigQuery から ClickHouse へのデータのロード'
+sidebar_label: 'データの読み込み'
+title: 'BigQueryからClickHouseへのデータ読み込み'
 slug: /migrations/bigquery/loading-data
-description: 'BigQuery から ClickHouse へデータをロードする方法'
+description: 'BigQueryからClickHouseへデータを読み込む方法'
 keywords: ['migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'BigQuery']
 doc_type: 'guide'
 ---
 
-_このガイドは ClickHouse Cloud および自己ホスト型 ClickHouse v23.5 以降に対応しています。_
+_このガイドは、ClickHouse Cloudおよびセルフホスト型ClickHouse v23.5以降に対応しています。_
 
-このガイドでは、[BigQuery](https://cloud.google.com/bigquery) から ClickHouse へデータを移行する方法を説明します。
+このガイドでは、[BigQuery](https://cloud.google.com/bigquery)からClickHouseへデータを移行する方法を説明します。
 
-まずテーブルを [Google のオブジェクトストレージ (GCS)](https://cloud.google.com/storage) にエクスポートし、その後そのデータを [ClickHouse Cloud](https://clickhouse.com/cloud) にインポートします。これらの手順は、BigQuery から ClickHouse にエクスポートしたい各テーブルごとに繰り返す必要があります。
+まず、テーブルを[Googleオブジェクトストレージ(GCS)](https://cloud.google.com/storage)にエクスポートし、そのデータを[ClickHouse Cloud](https://clickhouse.com/cloud)にインポートします。BigQueryからClickHouseに移行したい各テーブルに対して、これらの手順を繰り返す必要があります。
 
 
 
 ## ClickHouseへのデータエクスポートにはどのくらい時間がかかりますか？ {#how-long-will-exporting-data-to-clickhouse-take}
 
-BigQueryからClickHouseへのデータエクスポートにかかる時間は、データセットのサイズによって異なります。参考として、このガイドを使用して[4TBの公開Ethereumデータセット](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics)をBigQueryからClickHouseにエクスポートする場合、約1時間かかります。
+BigQueryからClickHouseへのデータエクスポートにかかる時間は、データセットのサイズに依存します。参考として、このガイドを使用して[4TBの公開Ethereumデータセット](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics)をBigQueryからClickHouseへエクスポートする場合、約1時間かかります。
 
 | テーブル                                                                                             | 行数          | エクスポートファイル数 | データサイズ | BigQueryエクスポート | スロット時間       | ClickHouseインポート |
 | ------------------------------------------------------------------------------------------------- | ------------- | -------------- | --------- | --------------- | --------------- | ----------------- |
@@ -58,11 +58,11 @@ WHILE i < n DO
 END WHILE;
 ```
 
-上記のクエリでは、BigQueryテーブルを[Parquetデータ形式](https://parquet.apache.org/)にエクスポートします。また、`uri`パラメータに`*`文字を含めています。これにより、エクスポートが1GBのデータを超える場合、出力が数値で増加するサフィックスを持つ複数のファイルに分割されます。
+上記のクエリでは、BigQueryテーブルを[Parquetデータ形式](https://parquet.apache.org/)にエクスポートします。また、`uri`パラメータに`*`文字を含めています。これにより、エクスポートが1GBのデータを超える場合、出力が数値で増加する接尾辞を持つ複数のファイルに分割されます。
 
 このアプローチには以下の利点があります:
 
-- Googleは1日あたり最大50TBまでGCSへの無料エクスポートを許可しています。ユーザーはGCSストレージの料金のみを支払います。
+- Googleは1日あたり最大50TBまでGCSへ無料でエクスポートできます。ユーザーはGCSストレージの料金のみを支払います。
 - エクスポートは自動的に複数のファイルを生成し、各ファイルを最大1GBのテーブルデータに制限します。これによりインポートを並列化できるため、ClickHouseにとって有益です。
 - Parquetは列指向形式として、本質的に圧縮されており、BigQueryのエクスポートとClickHouseのクエリが高速であるため、より優れたデータ交換形式となります
 
@@ -74,8 +74,8 @@ END WHILE;
 まず、ClickHouseで[テーブルを作成](/sql-reference/statements/create/table)する必要があります：
 
 ```sql
--- BigQueryテーブルにSTRUCT型のカラムが含まれている場合、この設定を有効にして
--- そのカラムをClickHouseのNested型カラムにマッピングする必要があります
+-- BigQueryテーブルにSTRUCT型の列が含まれている場合、この設定を有効にして
+-- その列をClickHouseのNested型の列にマッピングする必要があります
 SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable
@@ -87,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-テーブル作成後、クラスタに複数のClickHouseレプリカがある場合は、インポートを高速化するために`parallel_distributed_insert_select`設定を有効にします。ClickHouseノードが1つしかない場合は、この手順をスキップできます：
+テーブルを作成した後、クラスタに複数のClickHouseレプリカがある場合は、インポートを高速化するために`parallel_distributed_insert_select`設定を有効にします。ClickHouseノードが1つしかない場合は、この手順をスキップできます：
 
 ```sql
 SET parallel_distributed_insert_select = 1;
@@ -112,22 +112,22 @@ FROM s3Cluster(
 
 上記のクエリで使用される`ACCESS_ID`と`SECRET`は、GCSバケットに関連付けられた[HMACキー](https://cloud.google.com/storage/docs/authentication/hmackeys)です。
 
-:::note null許容カラムをエクスポートする際は`ifNull`を使用してください
-上記のクエリでは、[`ifNull`関数](/sql-reference/functions/functions-for-nulls#ifNull)を`some_text`カラムに使用して、デフォルト値でClickHouseテーブルにデータを挿入しています。ClickHouseのカラムを[`Nullable`](/sql-reference/data-types/nullable)にすることもできますが、パフォーマンスに悪影響を及ぼす可能性があるため推奨されません。
+:::note null許容列をエクスポートする際は`ifNull`を使用してください
+上記のクエリでは、[`ifNull`関数](/sql-reference/functions/functions-for-nulls#ifNull)を`some_text`列に使用して、デフォルト値でClickHouseテーブルにデータを挿入しています。ClickHouseの列を[`Nullable`](/sql-reference/data-types/nullable)にすることもできますが、パフォーマンスに悪影響を及ぼす可能性があるため推奨されません。
 
-または、`SET input_format_null_as_default=1`を設定すると、欠損値やNULL値は、デフォルト値が指定されている場合、それぞれのカラムのデフォルト値に置き換えられます。
+または、`SET input_format_null_as_default=1`を設定すると、欠損値またはNULL値は、デフォルト値が指定されている場合、それぞれの列のデフォルト値に置き換えられます。
 :::
 
 
 ## データエクスポートの成功確認 {#3-testing-successful-data-export}
 
-データが正しく挿入されたかどうかを確認するには、新しいテーブルに対して`SELECT`クエリを実行します。
+データが正しく挿入されたかどうかを確認するには、新しいテーブルに対して`SELECT`クエリを実行してください。
 
 ```sql
 SELECT * FROM mytable LIMIT 10;
 ```
 
-さらにBigQueryテーブルをエクスポートする場合は、追加するテーブルごとに上記の手順を繰り返してください。
+さらに多くのBigQueryテーブルをエクスポートする場合は、追加するテーブルごとに上記の手順を繰り返してください。
 
 </VerticalStepper>
 

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
-description: 'Пользователи могут передавать данные в ClickHouse с помощью Apache Beam'
-title: 'Интеграция Apache Beam и ClickHouse'
+description: 'Пользователи могут загружать данные в ClickHouse с помощью Apache Beam'
+title: 'Интеграция Apache Beam с ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -17,14 +17,14 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-**Apache Beam** — это открытая унифицированная модель программирования, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam заключается в его способности поддерживать широкий спектр сценариев обработки данных — от операций ETL (Extract, Transform, Load) до обработки сложных событий и аналитики в реальном времени.
-Эта интеграция использует официальный [JDBC-коннектор](https://github.com/ClickHouse/clickhouse-java) ClickHouse в качестве базового слоя вставки данных.
+**Apache Beam** — это единая модель программирования с открытым исходным кодом, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam заключается в его способности поддерживать широкий спектр сценариев обработки данных — от ETL‑операций (Extract, Transform, Load) до сложной обработки событий и аналитики в реальном времени.
+В этой интеграции для базового слоя вставки данных используется официальный [JDBC‑коннектор](https://github.com/ClickHouse/clickhouse-java) ClickHouse.
 
 
 
 ## Пакет интеграции {#integration-package}
 
-Пакет интеграции, необходимый для интеграции Apache Beam и ClickHouse, поддерживается и разрабатывается в рамках [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) — набора интеграций с множеством популярных систем хранения данных и баз данных.
+Пакет интеграции, необходимый для интеграции Apache Beam и ClickHouse, поддерживается и разрабатывается в рамках [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) — набора интеграций со многими популярными системами хранения данных и базами данных.
 Реализация `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` расположена в [репозитории Apache Beam](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
 
 
@@ -32,7 +32,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### Установка пакета {#package-installation}
 
-Добавьте следующую зависимость в систему управления пакетами:
+Добавьте следующую зависимость в вашу систему управления пакетами:
 
 ```xml
 <dependency>
@@ -47,11 +47,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Более ранние версии могут не полностью поддерживать функциональность коннектора.
 :::
 
-Артефакты доступны в [официальном репозитории Maven](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
+Артефакты можно найти в [официальном репозитории Maven](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
 
 ### Пример кода {#code-example}
 
-Следующий пример считывает CSV-файл `input.csv` в виде `PCollection`, преобразует его в объект Row (используя определённую схему) и вставляет данные в локальный экземпляр ClickHouse с помощью `ClickHouseIO`:
+Следующий пример читает CSV-файл с именем `input.csv` как `PCollection`, преобразует его в объект Row (используя определённую схему) и вставляет данные в локальный экземпляр ClickHouse с помощью `ClickHouseIO`:
 
 ```java
 
@@ -70,7 +70,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // Создать объект Pipeline.
+        // Создание объекта Pipeline.
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -80,7 +80,7 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // Применить преобразования к конвейеру.
+        // Применение преобразований к конвейеру.
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
@@ -98,7 +98,7 @@ public class Main {
         rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // Запустить конвейер.
+        // Запуск конвейера.
         p.run().waitUntilFinish();
     }
 }
@@ -154,11 +154,11 @@ public class Main {
 При использовании коннектора учитывайте следующие ограничения:
 
 - На данный момент поддерживается только операция Sink. Коннектор не поддерживает операцию Source.
-- ClickHouse выполняет дедупликацию при вставке данных в таблицу `ReplicatedMergeTree` или `Distributed`, построенную на основе `ReplicatedMergeTree`. Без репликации вставка в обычную таблицу MergeTree может привести к появлению дубликатов, если операция вставки завершится с ошибкой, а затем успешно повторится. Однако каждый блок вставляется атомарно, и размер блока можно настроить с помощью `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Дедупликация достигается за счет использования контрольных сумм вставляемых блоков. Для получения дополнительной информации о дедупликации см. разделы [Дедупликация](/guides/developer/deduplication) и [Настройка дедупликации при вставке](/operations/settings/settings#insert_deduplicate).
+- ClickHouse выполняет дедупликацию при вставке данных в таблицу `ReplicatedMergeTree` или `Distributed`, построенную на основе `ReplicatedMergeTree`. Без репликации вставка в обычную таблицу MergeTree может привести к появлению дубликатов, если операция вставки завершится неудачей, а затем успешно повторится. Однако каждый блок вставляется атомарно, и размер блока можно настроить с помощью `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Дедупликация достигается за счёт использования контрольных сумм вставляемых блоков. Для получения дополнительной информации о дедупликации см. разделы [Дедупликация](/guides/developer/deduplication) и [Настройка дедупликации при вставке](/operations/settings/settings#insert_deduplicate).
 - Коннектор не выполняет DDL-операции, поэтому целевая таблица должна существовать до выполнения вставки.
 
 
-## Связанные материалы {#related-content}
+## Связанный контент {#related-content}
 
 - [Документация](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html) класса `ClickHouseIO`.
 - Репозиторий `GitHub` с примерами [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).

@@ -1,8 +1,8 @@
 ---
-description: 'Резервное копирование и восстановление с использованием конечной точки Azure Blob Storage'
+description: 'Подробная информация о резервном копировании и восстановлении в/из конечной точки Azure Blob Storage'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: 'Резервное копирование и восстановление в Azure Blob Storage и из него'
+title: 'Резервное копирование и восстановление в/из Azure Blob Storage'
 doc_type: 'guide'
 ---
 

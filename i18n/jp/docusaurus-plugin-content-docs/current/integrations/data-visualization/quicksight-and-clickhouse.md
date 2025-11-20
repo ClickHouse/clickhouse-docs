@@ -2,7 +2,7 @@
 sidebar_label: 'QuickSight'
 slug: /integrations/quicksight
 keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'integrate', 'ui']
-description: 'Amazon QuickSight は、統合されたビジネスインテリジェンス (BI) により、データドリブンな組織の意思決定を支援します。'
+description: 'Amazon QuickSight は、統合されたビジネスインテリジェンス (BI) により、データドリブンな組織づくりを支援します。'
 title: 'QuickSight'
 doc_type: 'guide'
 integration:
@@ -26,7 +26,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-QuickSight は、公式の MySQL データソースと Direct Query モードを使用することで、MySQL インターフェイス経由でオンプレミス環境の ClickHouse (バージョン 23.11 以降) に接続できます。
+QuickSight は、公式の MySQL データソースと Direct Query モードを使用し、MySQL インターフェイス経由でオンプレミス環境の ClickHouse (23.11 以降) に接続できます。
 
 
 
@@ -42,24 +42,24 @@ MySQLインターフェースを有効にしたClickHouseサーバーのセッ�
 </clickhouse>
 ```
 
-MySQLインターフェースを使用するユーザーには、[Double SHA1パスワード暗号化](/operations/settings/settings-users#user-namepassword)の使用も_必須_となります。
+MySQLインターフェースを使用するユーザーには、[Double SHA1パスワード暗号化](/operations/settings/settings-users#user-namepassword)の使用も_必須_です。
 
-シェルからDouble SHA1で暗号化されたランダムパスワードを生成する方法:
+シェルからDouble SHA1で暗号化されたランダムパスワードを生成する:
 
 ```shell
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-出力は以下のようになります:
+出力は次のようになります:
 
 ```text
 LZOQYnqQN4L/T6L0
 fbc958cc745a82188a51f30de69eebfc67c40ee4
 ```
 
-1行目が生成されたパスワードで、2行目がClickHouseの設定に使用するハッシュです。
+1行目が生成されたパスワードで、2行目がClickHouseの設定に使用できるハッシュです。
 
-生成されたハッシュを使用した`mysql_user`の設定例を以下に示します:
+生成されたハッシュを使用した`mysql_user`の設定例は次のとおりです:
 
 `/etc/clickhouse-server/users.d/mysql_user.xml`
 
@@ -76,7 +76,7 @@ fbc958cc745a82188a51f30de69eebfc67c40ee4
 </users>
 ```
 
-`password_double_sha1_hex`エントリを、ご自身で生成したDouble SHA1ハッシュに置き換えてください。
+`password_double_sha1_hex`エントリを、自分で生成したDouble SHA1ハッシュに置き換えてください。
 
 QuickSightでは、MySQLユーザーのプロファイルにいくつかの追加設定が必要です。
 
@@ -92,17 +92,17 @@ QuickSightでは、MySQLユーザーのプロファイルにいくつかの追�
 </profiles>
 ```
 
-ただし、デフォルトのプロファイルではなく、MySQLユーザー専用の別のプロファイルに割り当てることを推奨します。
+ただし、デフォルトのプロファイルではなく、MySQLユーザーが使用できる別のプロファイルに割り当てることを推奨します。
 
 最後に、ClickHouseサーバーが目的のIPアドレスでリッスンするように設定します。
-`config.xml`で、すべてのアドレスでリッスンするには以下の行のコメントを解除してください:
+`config.xml`で、すべてのアドレスでリッスンするには次の行のコメントを解除してください:
 
 ```bash
 <listen_host>::</listen_host>
 ```
 
-`mysql`バイナリが利用可能な場合、コマンドラインから接続をテストできます。
-上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用する場合、コマンドラインは以下のようになります:
+`mysql`バイナリが利用可能な場合は、コマンドラインから接続をテストできます。
+上記のサンプルユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用する場合、コマンドラインは次のようになります:
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -135,7 +135,7 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 />
 <br />
 
-QuickSightにバンドルされている公式MySQLコネクタ(名称は**MySQL**)を検索します:
+QuickSightにバンドルされている公式MySQLコネクタ(名称は単に**MySQL**)を検索します:
 
 <Image
   size='md'
@@ -165,7 +165,7 @@ ClickHouseからデータを取得する方法には2つのオプションがあ
 />
 <br />
 
-もう1つは、カスタムSQLを指定してデータを取得する方法です:
+または、カスタムSQLを指定してデータを取得することもできます:
 
 <Image
   size='md'
@@ -180,7 +180,7 @@ ClickHouseからデータを取得する方法には2つのオプションがあ
 <Image
   size='md'
   img={quicksight_06}
-  alt='カラムとサンプルデータを含むテーブル構造が表示されているQuickSightデータプレビュー'
+  alt='列とサンプルデータを含むテーブル構造が表示されているQuickSightデータプレビュー'
   border
 />
 <br />
@@ -190,7 +190,7 @@ UIの左下隅で「Direct Query」モードが選択されていることを確
 <Image
   size='md'
   img={quicksight_07}
-  alt='下隅でDirect QueryモードオプションがハイライトされているQuickSightインターフェース'
+  alt='左下隅でDirect QueryモードオプションがハイライトされているQuickSightインターフェース'
   border
 />
 <br />

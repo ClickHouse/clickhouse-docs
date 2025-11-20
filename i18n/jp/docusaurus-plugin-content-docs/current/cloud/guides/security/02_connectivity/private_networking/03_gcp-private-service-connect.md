@@ -1,6 +1,6 @@
 ---
 title: 'GCP Private Service Connect'
-description: 'このドキュメントでは、Google Cloud Platform (GCP) の Private Service Connect (PSC) を使用して ClickHouse Cloud に接続する方法と、ClickHouse Cloud の IP アクセスリストを使用して GCP PSC 以外のアドレスから ClickHouse Cloud サービスへのアクセスを無効化する方法について説明します。'
+description: 'このドキュメントでは、Google Cloud Platform (GCP) の Private Service Connect (PSC) を使用して ClickHouse Cloud に接続する方法と、ClickHouse Cloud の IP アクセスリストを使用して GCP PSC 以外のアドレスからの ClickHouse Cloud サービスへのアクセスを無効化する方法について説明します。'
 sidebar_label: 'GCP Private Service Connect'
 slug: /manage/security/gcp-private-service-connect
 doc_type: 'guide'
@@ -38,7 +38,7 @@ Private Service Connect（PSC）は、Google Cloudのネットワーク機能で
 />
 
 :::important
-デフォルトでは、PSC接続が承認され確立されていても、ClickHouseサービスはPrivate Service接続経由では利用できません。以下の[手順](#add-endpoint-id-to-services-allow-list)を完了して、インスタンスレベルの許可リストにPSC IDを明示的に追加する必要があります。
+デフォルトでは、PSC接続が承認され確立されている場合でも、ClickHouseサービスはPrivate Service接続経由では利用できません。以下の[手順](#add-endpoint-id-to-services-allow-list)を完了して、インスタンスレベルの許可リストにPSC IDを明示的に追加する必要があります。
 :::
 
 **Private Service Connect Global Accessを使用する際の重要な考慮事項**：
@@ -48,20 +48,20 @@ Private Service Connect（PSC）は、Google Cloudのネットワーク機能で
 1. ファイアウォール設定が他のリージョンからのPSCへのアクセスをブロックしていないことを確認してください。
 1. GCPのリージョン間データ転送料金が発生する可能性があることに注意してください。
 
-リージョン間接続はサポートされていません。プロバイダーとコンシューマーのリージョンは同じである必要があります。ただし、Private Service Connect（PSC）レベルで[Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access)を有効化することで、VPC内の他のリージョンから接続できます。
+リージョン間接続はサポートされていません。プロバイダーとコンシューマーのリージョンは同じである必要があります。ただし、Private Service Connect（PSC）レベルで[Global Access](https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#global-access)を有効にすることで、VPC内の他のリージョンから接続できます。
 
-**GCP PSCを有効化するには、以下を完了してください**：
+**GCP PSCを有効にするには、以下を完了してください**：
 
 1. Private Service Connect用のGCPサービスアタッチメントを取得します。
 1. サービスエンドポイントを作成します。
-1. ClickHouse Cloudサービスに「エンドポイントID」を追加します。
-1. ClickHouseサービスの許可リストに「エンドポイントID」を追加します。
+1. ClickHouse Cloudサービスに「Endpoint ID」を追加します。
+1. ClickHouseサービスの許可リストに「Endpoint ID」を追加します。
 
 
 ## 注意事項 {#attention}
 
-ClickHouseは、GCPリージョン内で同じ公開済み[PSCエンドポイント](https://cloud.google.com/vpc/docs/private-service-connect)を再利用するために、サービスをグループ化しようとします。ただし、このグループ化は保証されません。特に、複数のClickHouse組織にサービスを分散している場合は保証されません。
-ClickHouse組織内の他のサービスに対してPSCが既に設定されている場合、そのグループ化により、ほとんどの手順をスキップして最終ステップに直接進むことができます：[ClickHouseサービスの許可リストに「エンドポイントID」を追加](#add-endpoint-id-to-services-allow-list)。
+ClickHouseは、GCPリージョン内で同じ公開済み[PSCエンドポイント](https://cloud.google.com/vpc/docs/private-service-connect)を再利用するために、サービスのグループ化を試みます。ただし、このグループ化は保証されません。特に、複数のClickHouse組織にサービスを分散している場合は保証されません。
+ClickHouse組織内の他のサービスに対してPSCが既に設定されている場合、そのグループ化により、ほとんどの手順をスキップして最終ステップに直接進むことができます：[ClickHouseサービスの許可リストに「エンドポイントID」を追加する](#add-endpoint-id-to-services-allow-list)。
 
 Terraformの例は[こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)をご覧ください。
 
@@ -72,20 +72,20 @@ Terraformの例は[こちら](https://github.com/ClickHouse/terraform-provider-c
 以下のコード例では、ClickHouse CloudサービスでPrivate Service Connectを設定する方法を示しています。例では以下の値を使用します：
 
 - GCPリージョン：`us-central1`
-- GCPプロジェクト(お客様のGCPプロジェクト)：`my-gcp-project`
-- お客様のGCPプロジェクト内のGCPプライベートIPアドレス：`10.128.0.2`
-- お客様のGCPプロジェクト内のGCP VPC：`default`
+- GCPプロジェクト（お客様のGCPプロジェクト）：`my-gcp-project`
+- お客様のGCPプロジェクトのGCPプライベートIPアドレス：`10.128.0.2`
+- お客様のGCPプロジェクトのGCP VPC：`default`
   :::
 
 ClickHouse Cloudサービスに関する情報を取得する必要があります。これはClickHouse CloudコンソールまたはClickHouse APIのいずれかで実行できます。ClickHouse APIを使用する場合は、続行する前に以下の環境変数を設定してください：
 
 ```shell
-REGION=<GCP形式のリージョンコード、例：us-central1>
+REGION=<Your region code using the GCP format, for example: us-central1>
 PROVIDER=gcp
-KEY_ID=<お客様のClickHouseキーID>
-KEY_SECRET=<お客様のClickHouseキーシークレット>
-ORG_ID=<お客様のClickHouse組織ID>
-SERVICE_NAME=<お客様のClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 [新しいClickHouse Cloud APIキーを作成](/cloud/manage/openapi)するか、既存のキーを使用できます。
@@ -100,7 +100,7 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 
 :::note
 
-- 組織IDはClickHouseコンソール(Organization -> Organization Details)から取得できます。
+- 組織IDはClickHouseコンソール（Organization -> Organization Details）から取得できます。
 - [新しいキーを作成](/cloud/manage/openapi)するか、既存のキーを使用できます。
   :::
 
@@ -109,7 +109,7 @@ jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\
 
 ### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console}
 
-ClickHouse Cloudコンソールで、Private Service Connect経由で接続するサービスを開き、**Settings**メニューを開きます。**Set up private endpoint**ボタンをクリックします。**Service name**（`endpointServiceId`）と**DNS name**（`privateDnsHostname`）をメモしてください。これらは次のステップで使用します。
+ClickHouse Cloudコンソールで、Private Service Connect経由で接続するサービスを開き、**Settings**メニューを開きます。**Set up private endpoint**ボタンをクリックします。**Service name**（`endpointServiceId`）と**DNS name**（`privateDnsHostname`）をメモしてください。次のステップで使用します。
 
 <Image
   img={gcp_privatelink_pe_create}
@@ -134,17 +134,17 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 }
 ```
 
-`endpointServiceId`と`privateDnsHostname`をメモしてください。これらは次のステップで使用します。
+`endpointServiceId`と`privateDnsHostname`をメモしてください。次のステップで使用します。
 
 
 ## サービスエンドポイントの作成 {#create-service-endpoint}
 
 :::important
-このセクションでは、GCP PSC（Private Service Connect）を介してClickHouseを構成する際のClickHouse固有の詳細について説明します。GCP固有の手順は参考情報として提供されており、確認すべき箇所のガイドとなりますが、GCPクラウドプロバイダーからの通知なしに変更される可能性があります。お客様の具体的なユースケースに応じてGCPの構成を検討してください。
+このセクションでは、GCP PSC（Private Service Connect）経由でClickHouseを設定する際のClickHouse固有の詳細について説明します。GCP固有の手順は参考として提供されていますが、GCPクラウドプロバイダーからの事前通知なしに変更される可能性があります。お客様の具体的なユースケースに応じてGCPの設定を検討してください。
 
-ClickHouseは、必要なGCP PSCエンドポイントやDNSレコードの構成については責任を負いませんのでご注意ください。
+ClickHouseは、必要なGCP PSCエンドポイントやDNSレコードの設定について責任を負いません。
 
-GCP構成タスクに関する問題については、GCPサポートに直接お問い合わせください。
+GCPの設定タスクに関する問題については、GCP Supportに直接お問い合わせください。
 :::
 
 このセクションでは、サービスエンドポイントを作成します。
@@ -153,7 +153,7 @@ GCP構成タスクに関する問題については、GCPサポートに直接�
 
 まず、Private Service Connectionを作成します。
 
-#### オプション1：Google Cloudコンソールの使用 {#option-1-using-google-cloud-console}
+#### オプション1：Google Cloudコンソールを使用する {#option-1-using-google-cloud-console}
 
 Google Cloudコンソールで、**Network services -> Private Service Connect**に移動します。
 
@@ -166,10 +166,10 @@ Google Cloudコンソールで、**Network services -> Private Service Connect**
 
 **Connect Endpoint**ボタンをクリックして、Private Service Connect作成ダイアログを開きます。
 
-- **Target**：**Published service**を使用
-- **Target service**：[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`endpointServiceId`<sup>API</sup>または`Service name`<sup>console</sup>を使用
-- **Endpoint name**：PSC **Endpoint name**の名前を設定
-- **Network/Subnetwork/IP address**：接続に使用するネットワークを選択します。Private Service Connectエンドポイント用にIPアドレスを作成するか、既存のものを使用する必要があります。この例では、**your-ip-address**という名前のアドレスを事前に作成し、IPアドレス`10.128.0.2`を割り当てています
+- **Target**：**Published service**を使用します
+- **Target service**：[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`endpointServiceId`<sup>API</sup>または`Service name`<sup>console</sup>を使用します。
+- **Endpoint name**：PSC **Endpoint name**の名前を設定します。
+- **Network/Subnetwork/IP address**：接続に使用するネットワークを選択します。Private Service Connectエンドポイント用のIPアドレスを作成するか、既存のものを使用する必要があります。この例では、**your-ip-address**という名前のアドレスを事前に作成し、IPアドレス`10.128.0.2`を割り当てています
 - エンドポイントを任意のリージョンから利用可能にするには、**Enable global access**チェックボックスを有効にします。
 
 <Image
@@ -192,7 +192,7 @@ PSCエンドポイントを作成するには、**ADD ENDPOINT**ボタンを使�
 
 **_PSC Connection ID_**をコピーします。次のステップで**_Endpoint ID_**として使用します。
 
-#### オプション2：Terraformの使用 {#option-2-using-terraform}
+#### オプション2：Terraformを使用する {#option-2-using-terraform}
 
 ```json
 provider "google" {
@@ -241,7 +241,7 @@ output "psc_connection_id" {
 ```
 
 :::note
-[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`endpointServiceId`<sup>API</sup>または`Service name`<sup>console</sup>を使用
+[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`endpointServiceId`<sup>API</sup>または`Service name`<sup>console</sup>を使用します
 :::
 
 
@@ -254,13 +254,13 @@ DNSの設定方法は複数あります。ユースケースに応じて適切�
 [Private Service Connect用のGCPサービスアタッチメントとDNS名を取得する](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)の手順で取得した「DNS名」を、GCP Private Service ConnectエンドポイントのIPアドレスに紐付ける必要があります。これにより、VPC/ネットワーク内のサービスやコンポーネントが正しく名前解決できるようになります。
 
 
-## ClickHouse Cloud組織にエンドポイントIDを追加する {#add-endpoint-id-to-clickhouse-cloud-organization}
+## ClickHouse Cloud組織へのエンドポイントIDの追加 {#add-endpoint-id-to-clickhouse-cloud-organization}
 
 ### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console-1}
 
-組織にエンドポイントを追加するには、[ClickHouseサービスの許可リストに「エンドポイントID」を追加する](#add-endpoint-id-to-services-allow-list)の手順に進んでください。ClickHouse Cloudコンソールを使用してサービスの許可リストに`PSC Connection ID`を追加すると、自動的に組織にも追加されます。
+組織にエンドポイントを追加するには、[ClickHouseサービスの許可リストへの「エンドポイントID」の追加](#add-endpoint-id-to-services-allow-list)の手順に進んでください。ClickHouse Cloudコンソールを使用してサービスの許可リストに`PSC Connection ID`を追加すると、自動的に組織にも追加されます。
 
-エンドポイントを削除するには、**Organization details -> Private Endpoints**を開き、削除ボタンをクリックしてエンドポイントを削除します。
+エンドポイントを削除するには、**Organization details -> Private Endpoints**を開き、削除ボタンをクリックします。
 
 <Image
   img={gcp_pe_remove_private_endpoint}
@@ -271,11 +271,11 @@ DNSの設定方法は複数あります。ユースケースに応じて適切�
 
 ### オプション2: API {#option-2-api-1}
 
-コマンドを実行する前に、以下の環境変数を設定してください:
+コマンドを実行する前に、以下の環境変数を設定します:
 
-以下の`ENDPOINT_ID`を、[プライベートサービス接続の追加](#adding-a-private-service-connection)手順の**Endpoint ID**の値に置き換えてください
+以下の`ENDPOINT_ID`を、[プライベートサービス接続の追加](#adding-a-private-service-connection)手順の**Endpoint ID**の値に置き換えます
 
-エンドポイントを追加するには、次のコマンドを実行します:
+エンドポイントを追加するには、以下を実行します:
 
 ```bash
 cat <<EOF | tee pl_config_org.json
@@ -285,7 +285,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "gcp",
         "id": "${ENDPOINT_ID:?}",
-        "description": "A GCP private endpoint",
+        "description": "GCPプライベートエンドポイント",
         "region": "${REGION:?}"
       }
     ]
@@ -294,7 +294,7 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-エンドポイントを削除するには、次のコマンドを実行します:
+エンドポイントを削除するには、以下を実行します:
 
 ```bash
 cat <<EOF | tee pl_config_org.json
@@ -312,7 +312,7 @@ cat <<EOF | tee pl_config_org.json
 EOF
 ```
 
-組織にプライベートエンドポイントを追加/削除する:
+組織へのプライベートエンドポイントの追加/削除:
 
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
@@ -381,13 +381,13 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 ## Private Service Connectを使用したインスタンスへのアクセス {#accessing-instance-using-private-service-connect}
 
-Private Linkが有効化された各サービスには、パブリックエンドポイントとプライベートエンドポイントがあります。Private Linkを使用して接続するには、[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)から取得した`privateDnsHostname`のプライベートエンドポイントを使用する必要があります。
+Private Linkが有効化された各サービスには、パブリックエンドポイントとプライベートエンドポイントがあります。Private Linkを使用して接続するには、[Private Service Connect用のGCPサービスアタッチメントの取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)から取得した`privateDnsHostname`であるプライベートエンドポイントを使用する必要があります。
 
 ### プライベートDNSホスト名の取得 {#getting-private-dns-hostname}
 
 #### オプション1: ClickHouse Cloudコンソール {#option-1-clickhouse-cloud-console-3}
 
-ClickHouse Cloudコンソールで、**Settings**に移動します。**Set up private endpoint**ボタンをクリックします。表示されたフライアウトで、**DNS Name**をコピーします。
+ClickHouse Cloudコンソールで、**Settings**に移動します。**Set up private endpoint**ボタンをクリックします。開いたフライアウトで、**DNS Name**をコピーします。
 
 <Image
   img={gcp_privatelink_pe_dns}
@@ -416,7 +416,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 ### DNS設定のテスト {#test-dns-setup}
 
-DNS_NAME - [Private Service Connect用のGCPサービスアタッチメントとDNS名の取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップで取得した`privateDnsHostname`を使用してください
+DNS_NAME - [Private Service Connect用のGCPサービスアタッチメントとDNS名の取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`privateDnsHostname`を使用してください
 
 ```bash
 nslookup $DNS_NAME
@@ -428,7 +428,7 @@ Non-authoritative answer:
 Address: 10.128.0.2
 ```
 
-### 接続がピアによってリセットされる {#connection-reset-by-peer}
+### 接続がピアによってリセットされました {#connection-reset-by-peer}
 
 - エンドポイントIDがサービスの許可リストに追加されていない可能性が高いです。[_エンドポイントIDをサービスの許可リストに追加する_ステップ](#add-endpoint-id-to-services-allow-list)を再確認してください。
 
@@ -438,7 +438,7 @@ PSCリンクを使用した接続に問題がある場合は、`openssl`を使�
 
 OpenSSLは接続できるはずです(出力に「CONNECTED」と表示されます)。`errno=104`は想定される動作です。
 
-DNS_NAME - [Private Service Connect用のGCPサービスアタッチメントとDNS名の取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップで取得した`privateDnsHostname`を使用してください
+DNS_NAME - [Private Service Connect用のGCPサービスアタッチメントとDNS名の取得](#obtain-gcp-service-attachment-and-dns-name-for-private-service-connect)ステップの`privateDnsHostname`を使用してください
 
 ```bash
 openssl s_client -connect ${DNS_NAME}:9440
@@ -479,13 +479,13 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: appl
 
 ### リモートデータベースへの接続 {#connecting-to-a-remote-database}
 
-ClickHouse Cloudで[MySQL](/sql-reference/table-functions/mysql)または[PostgreSQL](/sql-reference/table-functions/postgresql)テーブル関数を使用して、GCPでホストされているデータベースに接続する場合を考えてみましょう。GCP PSCでは、この接続を安全に確立することはできません。PSCは一方向の単方向接続であり、内部ネットワークまたはGCP VPCからClickHouse Cloudへの安全な接続を可能にしますが、ClickHouse Cloudから内部ネットワークへの接続は許可されません。
+ClickHouse Cloudで[MySQL](/sql-reference/table-functions/mysql)または[PostgreSQL](/sql-reference/table-functions/postgresql)テーブル関数を使用して、GCPでホストされているデータベースに接続しようとしているとします。GCP PSCはこの接続を安全に確立するために使用することはできません。PSCは一方向の単方向接続です。内部ネットワークまたはGCP VPCからClickHouse Cloudへの安全な接続は可能ですが、ClickHouse Cloudから内部ネットワークへの接続は許可されません。
 
-[GCP Private Service Connectドキュメント](https://cloud.google.com/vpc/docs/private-service-connect)によると:
+[GCP Private Service Connectのドキュメント](https://cloud.google.com/vpc/docs/private-service-connect)によると:
 
-> サービス指向設計: プロデューサーサービスは、コンシューマーVPCネットワークに単一のIPアドレスを公開するロードバランサーを通じて公開されます。プロデューサーサービスにアクセスするコンシューマートラフィックは単方向であり、ピアリングされたVPCネットワーク全体にアクセスするのではなく、サービスIPアドレスにのみアクセスできます。
+> サービス指向設計: プロデューサーサービスは、コンシューマーVPCネットワークに単一のIPアドレスを公開するロードバランサーを通じて公開されます。プロデューサーサービスにアクセスするコンシューマートラフィックは単方向であり、ピアリングされたVPCネットワーク全体へのアクセスではなく、サービスIPアドレスにのみアクセスできます。
 
-これを実現するには、GCP VPCファイアウォールルールを設定して、ClickHouse Cloudから内部/プライベートデータベースサービスへの接続を許可してください。[ClickHouse Cloudリージョンのデフォルトエグレス(送信)IPアドレス](/manage/data-sources/cloud-endpoints-api)および[利用可能な静的IPアドレス](https://api.clickhouse.cloud/static-ips.json)を確認してください。
+これを実現するには、GCP VPCファイアウォールルールを設定して、ClickHouse Cloudから内部/プライベートデータベースサービスへの接続を許可します。[ClickHouse CloudリージョンのデフォルトエグレスIPアドレス](/manage/data-sources/cloud-endpoints-api)および[利用可能な静的IPアドレス](https://api.clickhouse.cloud/static-ips.json)を確認してください。
 
 
 ## 詳細情報 {#more-information}

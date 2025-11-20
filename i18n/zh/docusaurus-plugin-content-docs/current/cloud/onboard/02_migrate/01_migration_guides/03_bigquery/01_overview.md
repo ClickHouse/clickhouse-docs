@@ -28,9 +28,9 @@ ClickHouse Cloud 中的资源组织方式与 [BigQuery 的资源层次结构](ht
 
 ### BigQuery 项目与 ClickHouse Cloud 服务 {#bigquery-projects-vs-clickhouse-cloud-services}
 
-在组织内,您可以创建服务,这些服务大致相当于 BigQuery 项目,因为 ClickHouse Cloud 中存储的数据与服务关联。ClickHouse Cloud 提供[多种服务类型](/cloud/manage/cloud-tiers)。每个 ClickHouse Cloud 服务都部署在特定区域中,包含:
+在组织内,您可以创建服务,其功能大致相当于 BigQuery 项目,因为 ClickHouse Cloud 中存储的数据与服务关联。ClickHouse Cloud 提供[多种服务类型](/cloud/manage/cloud-tiers)。每个 ClickHouse Cloud 服务都部署在特定区域中,包含以下组件:
 
-1. 一组计算节点(目前开发层服务为 2 个节点,生产层服务为 3 个节点)。对于这些节点,ClickHouse Cloud [支持垂直和水平扩展](/manage/scaling#how-scaling-works-in-clickhouse-cloud),支持手动和自动两种方式。
+1. 一组计算节点(目前开发层级服务为 2 个节点,生产层级服务为 3 个节点)。对于这些节点,ClickHouse Cloud [支持垂直和水平扩展](/manage/scaling#how-scaling-works-in-clickhouse-cloud),支持手动和自动两种方式。
 2. 一个对象存储文件夹,用于存储服务的所有数据。
 3. 一个端点(或通过 ClickHouse Cloud UI 控制台创建的多个端点)——即用于连接服务的 URL(例如 `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
@@ -59,7 +59,7 @@ ClickHouse Cloud 在两个层面控制用户访问:通过[云控制台](/cloud/g
 
 ## 数据类型 {#data-types}
 
-ClickHouse 在数值类型方面提供了更精细的精度控制。例如,BigQuery 提供了数值类型 [`INT64`、`NUMERIC`、`BIGNUMERIC` 和 `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)。相比之下,ClickHouse 为十进制数、浮点数和整数提供了多种精度类型。通过这些数据类型,ClickHouse 用户可以优化存储和内存开销,从而实现更快的查询速度和更低的资源消耗。下表列出了每种 BigQuery 类型对应的 ClickHouse 等效类型:
+ClickHouse 在数值类型方面提供了更精细的精度控制。例如，BigQuery 提供了数值类型 [`INT64`、`NUMERIC`、`BIGNUMERIC` 和 `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)。相比之下，ClickHouse 为十进制数、浮点数和整数提供了多种精度类型。通过这些数据类型，ClickHouse 用户可以优化存储和内存开销，从而实现更快的查询速度和更低的资源消耗。下表列出了每种 BigQuery 类型对应的 ClickHouse 类型：
 
 | BigQuery                                                                                                 | ClickHouse                                                                                                                                                                        |
 | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -68,19 +68,19 @@ ClickHouse 在数值类型方面提供了更精细的精度控制。例如,BigQu
 | [BIG NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types)    | [Decimal256(S)](/sql-reference/data-types/decimal)                                                                                                                                |
 | [BOOL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type)            | [Bool](/sql-reference/data-types/boolean)                                                                                                                                         |
 | [BYTES](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type)             | [FixedString](/sql-reference/data-types/fixedstring)                                                                                                                              |
-| [DATE](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type)               | [Date32](/sql-reference/data-types/date32)(范围更窄)                                                                                                                  |
-| [DATETIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type)       | [DateTime](/sql-reference/data-types/datetime)、[DateTime64](/sql-reference/data-types/datetime64)(范围更窄,精度更高)                                               |
+| [DATE](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type)               | [Date32](/sql-reference/data-types/date32)（范围更窄）                                                                                                                  |
+| [DATETIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type)       | [DateTime](/sql-reference/data-types/datetime)、[DateTime64](/sql-reference/data-types/datetime64)（范围更窄，精度更高）                                               |
 | [FLOAT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types) | [Float64](/sql-reference/data-types/float)                                                                                                                                        |
 | [GEOGRAPHY](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type)     | [地理数据类型](/sql-reference/data-types/float)                                                                                                                                 |
-| [INT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)          | [UInt8、UInt16、UInt32、UInt64、UInt128、UInt256、Int8、Int16、Int32、Int64、Int128、Int256](/sql-reference/data-types/int-uint)                                                  |
+| [INT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)          | [UInt8, UInt16, UInt32, UInt64, UInt128, UInt256, Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint)                                                  |
 | [INTERVAL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)       | 不适用 - [支持作为表达式](/sql-reference/data-types/special-data-types/interval#usage-remarks)或[通过函数](/sql-reference/functions/date-time-functions#addYears) |
 | [JSON](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#json_type)               | [JSON](/integrations/data-formats/json/inference)                                                                                                                                 |
-| [STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)           | [String(字节)](/sql-reference/data-types/string)                                                                                                                                |
+| [STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)           | [String（字节）](/sql-reference/data-types/string)                                                                                                                                |
 | [STRUCT](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct) | [Tuple](/sql-reference/data-types/tuple)、[Nested](/sql-reference/data-types/nested-data-structures/nested)                                                                       |
 | [TIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type)               | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
 | [TIMESTAMP](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type)     | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
 
-当 ClickHouse 类型有多个选项时,请根据数据的实际范围选择满足需求的最小类型。此外,还应考虑使用[适当的编解码器](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)以实现进一步压缩。
+当 ClickHouse 类型有多个选项时，请根据数据的实际范围选择所需的最小类型。此外，还应考虑使用[适当的编解码器](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)以进一步压缩数据。
 
 
 ## 查询加速技术 {#query-acceleration-techniques}
@@ -89,21 +89,21 @@ ClickHouse 在数值类型方面提供了更精细的精度控制。例如,BigQu
 
 在 BigQuery 中,表可以具有[主键和外键约束](https://cloud.google.com/bigquery/docs/information-schema-table-constraints)。通常,主键和外键在关系数据库中用于确保数据完整性。主键值通常对每一行都是唯一的,且不为 `NULL`。行中的每个外键值必须存在于主键表的主键列中,或者为 `NULL`。在 BigQuery 中,这些约束不会被强制执行,但查询优化器可能会利用这些信息来更好地优化查询。
 
-在 ClickHouse 中,表也可以具有主键。与 BigQuery 类似,ClickHouse 不会强制表的主键列值的唯一性。与 BigQuery 不同的是,表的数据在磁盘上按主键列[有序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)存储。查询优化器利用这种排序顺序来避免重新排序、最小化连接操作的内存使用,并为 limit 子句启用短路优化。与 BigQuery 不同,ClickHouse 会根据主键列值自动创建[稀疏主索引](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。该索引用于加速所有包含主键列过滤条件的查询。ClickHouse 目前不支持外键约束。
+在 ClickHouse 中,表也可以具有主键。与 BigQuery 类似,ClickHouse 不会强制要求表的主键列值具有唯一性。与 BigQuery 不同的是,表的数据在磁盘上按主键列[有序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)存储。查询优化器利用这种排序顺序来避免重新排序、最小化连接操作的内存使用,并为 limit 子句启用短路优化。与 BigQuery 不同,ClickHouse 会根据主键列值自动创建[稀疏主索引](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。该索引用于加速所有包含主键列过滤条件的查询。ClickHouse 目前不支持外键约束。
 
 
 ## 二级索引(仅在 ClickHouse 中可用) {#secondary-indexes-only-available-in-clickhouse}
 
-除了基于表主键列值创建的主索引外,ClickHouse 还允许您在主键以外的列上创建二级索引。ClickHouse 提供了多种类型的二级索引,每种索引适用于不同类型的查询:
+除了根据表的主键列值创建的主索引之外,ClickHouse 还允许您在主键以外的列上创建二级索引。ClickHouse 提供多种类型的二级索引,每种都适用于不同类型的查询:
 
 - **布隆过滤器索引**:
   - 用于加速等值条件查询(例如 =、IN)。
-  - 使用概率数据结构判断数据块中是否存在某个值。
+  - 使用概率数据结构来判断数据块中是否存在某个值。
 - **分词布隆过滤器索引**:
   - 类似于布隆过滤器索引,但用于分词字符串,适用于全文搜索查询。
 - **最小-最大索引**:
   - 为每个数据部分维护列的最小值和最大值。
-  - 帮助跳过不在指定范围内的数据部分,避免读取。
+  - 有助于跳过读取不在指定范围内的数据部分。
 
 
 ## 搜索索引 {#search-indexes}
@@ -113,7 +113,7 @@ ClickHouse 在数值类型方面提供了更精细的精度控制。例如,BigQu
 
 ## 向量索引 {#vector-indexes}
 
-BigQuery 最近推出了[向量索引](https://cloud.google.com/bigquery/docs/vector-index)作为 Pre-GA 功能。同样,ClickHouse 也提供了实验性支持,可通过[索引加速](/engines/table-engines/mergetree-family/annindexes)向量搜索场景。
+BigQuery 最近推出了[向量索引](https://cloud.google.com/bigquery/docs/vector-index)作为预发布(Pre-GA)功能。同样,ClickHouse 也提供了实验性支持,可通过[索引加速](/engines/table-engines/mergetree-family/annindexes)向量搜索场景。
 
 
 ## 分区 {#partitioning}
@@ -125,7 +125,7 @@ BigQuery 最近推出了[向量索引](https://cloud.google.com/bigquery/docs/ve
 
 通过聚簇功能,BigQuery 会根据指定列的值自动对表数据进行排序,并将其存放在大小优化的数据块中。聚簇可以提升查询性能,使 BigQuery 能够更准确地估算查询执行成本。使用聚簇列后,查询还可以避免扫描不必要的数据。
 
-在 ClickHouse 中,数据会根据表的主键列自动[在磁盘上进行聚簇](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files),并在逻辑上组织成数据块,查询可以利用主索引数据结构快速定位或裁剪这些数据块。
+在 ClickHouse 中,数据会根据表的主键列自动[在磁盘上进行聚簇](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files),并按逻辑方式组织成数据块,查询可以利用主索引数据结构快速定位或剪枝这些数据块。
 
 
 ## 物化视图 {#materialized-views}
@@ -135,9 +135,9 @@ BigQuery 和 ClickHouse 都支持物化视图——通过对基表执行转换�
 
 ## 查询物化视图 {#querying-materialized-views}
 
-BigQuery 物化视图可以直接查询,也可以由优化器用于处理基表查询。如果基表的变更可能导致物化视图失效,则直接从基表读取数据。如果基表的变更不会导致物化视图失效,则从物化视图读取其余数据,仅从基表读取变更部分。
+BigQuery 物化视图可以直接查询,也可以由优化器用于处理基表查询。如果基表的更改可能导致物化视图失效,则直接从基表读取数据。如果基表的更改不会导致物化视图失效,则从物化视图读取其余数据,仅从基表读取变更部分。
 
-在 ClickHouse 中,物化视图只能直接查询。但是,与 BigQuery(其物化视图在基表变更后 5 分钟内自动刷新,但刷新频率不超过[每 30 分钟](https://cloud.google.com/bigquery/docs/materialized-views-manage#refresh)一次)相比,ClickHouse 的物化视图始终与基表保持同步。
+在 ClickHouse 中,物化视图只能直接查询。但是,与 BigQuery(其物化视图在基表发生更改后 5 分钟内自动刷新,但刷新频率不超过[每 30 分钟](https://cloud.google.com/bigquery/docs/materialized-views-manage#refresh)一次)相比,ClickHouse 的物化视图始终与基表保持同步。
 
 **更新物化视图**
 
@@ -156,27 +156,27 @@ BigQuery 通过对基表运行视图的转换查询来定期完全刷新物化�
 与 BigQuery 相比,ClickHouse 内置了数量更多的聚合函数:
 
 - BigQuery 提供了 [18 个聚合函数](https://cloud.google.com/bigquery/docs/reference/standard-sql/aggregate_functions)和 [4 个近似聚合函数](https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions)。
-- ClickHouse 拥有超过 [150 个内置聚合函数](/sql-reference/aggregate-functions/reference),以及强大的[聚合组合器](/sql-reference/aggregate-functions/combinators),可用于[扩展](https://www.youtube.com/watch?v=7ApwD0cfAFI)内置聚合函数的行为。例如,只需在调用时添加 [-Array 后缀](/sql-reference/aggregate-functions/combinators#-array),即可将这 150 多个内置聚合函数应用于数组而非表行。使用 [-Map 后缀](/sql-reference/aggregate-functions/combinators#-map)可以将任何聚合函数应用于映射。使用 [-ForEach 后缀](/sql-reference/aggregate-functions/combinators#-foreach)可以将任何聚合函数应用于嵌套数组。
+- ClickHouse 拥有超过 [150 个内置聚合函数](/sql-reference/aggregate-functions/reference),以及强大的[聚合组合器](/sql-reference/aggregate-functions/combinators),可用于[扩展](https://www.youtube.com/watch?v=7ApwD0cfAFI)内置聚合函数的行为。例如,只需在调用时添加 [-Array 后缀](/sql-reference/aggregate-functions/combinators#-array),即可将这 150 多个内置聚合函数应用于数组而非表行。使用 [-Map 后缀](/sql-reference/aggregate-functions/combinators#-map)可以将任何聚合函数应用于映射。而使用 [-ForEach 后缀](/sql-reference/aggregate-functions/combinators#-foreach),则可以将任何聚合函数应用于嵌套数组。
 
 
 ## 数据源和文件格式 {#data-sources-and-file-formats}
 
-与 BigQuery 相比,ClickHouse 支持的文件格式和数据源数量要多得多:
+与 BigQuery 相比,ClickHouse 支持的文件格式和数据源显著更多:
 
 - ClickHouse 原生支持从几乎任何数据源加载 90 多种文件格式的数据
-- BigQuery 支持 5 种文件格式和 19 种数据源
+- BigQuery 支持 5 种文件格式和 19 个数据源
 
 
 ## SQL 语言特性 {#sql-language-features}
 
-ClickHouse 提供标准 SQL 以及众多扩展和增强功能,使其更适用于分析任务。例如,ClickHouse SQL [支持 lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)和高阶函数,因此在应用转换时无需对数组进行 unnest/explode 操作。相比 BigQuery 等其他系统,这是一项显著优势。
+ClickHouse 提供标准 SQL 以及众多扩展和改进,使其更适合分析任务。例如,ClickHouse SQL [支持 lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)和高阶函数,因此在应用转换时无需对数组进行 unnest/explode 操作。相比 BigQuery 等其他系统,这是一个显著的优势。
 
 
 ## 数组 {#arrays}
 
 与 BigQuery 的 8 个数组函数相比,ClickHouse 拥有超过 80 个[内置数组函数](/sql-reference/functions/array-functions),能够优雅简洁地建模和解决各种问题。
 
-ClickHouse 中的一个典型设计模式是使用 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 聚合函数将表中特定行的值(临时)转换为数组。然后可以通过数组函数方便地处理这些数组,并通过 [`arrayJoin`](/sql-reference/functions/array-join) 聚合函数将结果转换回单独的表行。
+ClickHouse 中的一个典型设计模式是使用 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 聚合函数将表的特定行值(临时)转换为数组。然后可以通过数组函数方便地处理这些数组,并通过 [`arrayJoin`](/sql-reference/functions/array-join) 聚合函数将结果转换回单独的表行。
 
 由于 ClickHouse SQL 支持[高阶 lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda),许多高级数组操作可以通过简单调用高阶内置数组函数来实现,而无需像 BigQuery 中经常[需要](https://cloud.google.com/bigquery/docs/arrays)的那样临时将数组转换回表,例如用于[过滤](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays)或[合并](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays)数组。在 ClickHouse 中,这些操作只需分别调用高阶函数 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 和 [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) 即可。
 
@@ -327,7 +327,7 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
 
 *ClickHouse*
 
-[range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap) 函数
+[range](/sql-reference/functions/array-functions#range) 与 [arrayMap](/sql-reference/functions/array-functions#arrayMap) 函数
 
 ```sql
 SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
@@ -339,11 +339,11 @@ Query id: b324c11f-655b-479f-9337-f4d34fd02190
    └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**筛选数组**
+**过滤数组**
 
 *BigQuery*
 
-需要先通过 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符将数组临时展开回表
+需要通过 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符临时将数组还原为表
 
 ```sql
 WITH Sequences AS
@@ -392,11 +392,11 @@ FROM Sequences;
    └────────────────────────┘
 ```
 
-**数组配对（Zipping arrays）**
+**拉链数组**
 
 *BigQuery*
 
-需要通过 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符将数组临时展开回表
+需要通过 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符将数组临时转换回表
 
 ```sql
 WITH
@@ -472,7 +472,7 @@ FROM Sequences AS s;
 
 *ClickHouse*
 
-将 [arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 等函数，或 90 多种现有聚合函数中的任意一个名称，作为 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 函数的参数
+[arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 等函数，或任意一个可作为 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 函数参数的 90 多种现有聚合函数名称
 
 
 ```sql

@@ -25,9 +25,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> は、サブ秒レイテンシで動作するリアルタイムのエンドツーエンドデータ統合ツールであり、プラットフォーム間のシームレスなデータフローを実現します。
+<a href="https://www.bladepipe.com/" target="_blank">BladePipe</a> は、サブセカンドレイテンシでリアルタイムなエンドツーエンドのデータ統合を実現し、プラットフォーム間のシームレスなデータフローを可能にするツールです。
 
-ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つであり、さまざまなソースからのデータを自動的に ClickHouse に取り込むことができます。このページでは、リアルタイムで ClickHouse にデータをロードする手順を、ステップごとに説明します。
+ClickHouse は BladePipe に用意されているプリビルトコネクタの 1 つであり、さまざまなソースから ClickHouse へ自動的にデータを取り込むことができます。このページでは、リアルタイムで ClickHouse にデータをロードする手順をステップごとに説明します。
 
 
 
@@ -44,7 +44,7 @@ ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つ�
 - OceanBase
 - TiDB
 
-今後、さらに多くのソースに対応する予定です。
+今後、さらに多くのソースがサポートされる予定です。
 
 
 <VerticalStepper headerLevel="h2">
@@ -80,7 +80,7 @@ ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つ�
 このチュートリアルでは、MySQLインスタンスをソースとして使用し、MySQLデータをClickHouseにロードするプロセスを説明します。
 
 :::note
-MySQLをソースとして使用する場合は、ユーザーが<a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">必要な権限</a>を持っていることを確認してください。
+MySQLをソースとして使用するには、ユーザーが<a href="https://doc.bladepipe.com/dataMigrationAndSync/datasource_func/MySQL/privs_for_mysql" target="_blank">必要な権限</a>を持っていることを確認してください。
 :::
 
 1. BladePipeで、「DataSource」>「Add DataSource」をクリックします。
@@ -120,7 +120,7 @@ MySQLをソースとして使用する場合は、ユーザーが<a href="https:
 
 1. MySQLインスタンスへのデータ書き込みを停止し、ClickHouseがデータをマージするのを待ちます。
    :::note
-   ClickHouseの自動マージのタイミングは予測できないため、`OPTIMIZE TABLE xxx FINAL;`コマンドを実行して手動でマージをトリガーすることができます。ただし、手動マージが必ずしも成功するとは限らないことに注意してください。
+   ClickHouseの自動マージのタイミングは予測できないため、`OPTIMIZE TABLE xxx FINAL;`コマンドを実行して手動でマージをトリガーできます。ただし、手動マージが必ずしも成功するとは限りません。
 
 または、`CREATE VIEW xxx_v AS SELECT * FROM xxx FINAL;`コマンドを実行してビューを作成し、そのビューに対してクエリを実行することで、データが完全にマージされていることを確認できます。
 :::

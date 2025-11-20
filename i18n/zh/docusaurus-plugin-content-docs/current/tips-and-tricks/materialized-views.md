@@ -4,29 +4,29 @@ slug: /tips-and-tricks/materialized-views
 sidebar_label: '物化视图'
 doc_type: 'guide'
 keywords: [
-  'clickhouse materialized views',
-  'materialized view optimization',
-  'materialized view storage issues',
-  'materialized view best practices',
-  'database aggregation patterns',
-  'materialized view anti-patterns',
-  'storage explosion problems',
-  'materialized view performance',
-  'database view optimization',
-  'aggregation strategy',
-  'materialized view troubleshooting',
-  'view storage overhead'
+  'clickhouse 物化视图',
+  '物化视图优化',
+  '物化视图存储问题',
+  '物化视图最佳实践',
+  '数据库聚合模式',
+  '物化视图反模式',
+  '存储膨胀问题',
+  '物化视图性能',
+  '数据库视图优化',
+  '聚合策略',
+  '物化视图故障排查',
+  '视图存储开销'
 ]
-title: '实践经验：物化视图'
-description: '物化视图的真实案例、常见问题与解决方案'
+title: '实践经验 - 物化视图'
+description: '物化视图的真实案例、常见问题及解决方案'
 ---
 
 
 
 # 物化视图:一把双刃剑 {#materialized-views-the-double-edged-sword}
 
-_本指南是从社区交流会中总结的系列经验之一。如需了解更多实际解决方案和见解,可以[按具体问题浏览](./community-wisdom.md)。_
-_数据分片过多导致数据库性能下降?请参阅[数据分片过多](./too-many-parts.md)社区经验指南。_
+_本指南是社区交流会中总结的系列经验之一。如需了解更多实际解决方案和见解,您可以[按具体问题浏览](./community-wisdom.md)。_
+_数据分片过多导致数据库性能下降?请参阅[数据分片过多](./too-many-parts.md)社区见解指南。_
 _了解更多关于[物化视图](/materialized-views)的信息。_
 
 
@@ -39,25 +39,25 @@ _了解更多关于[物化视图](/materialized-views)的信息。_
 
 ## 生产环境物化视图健康状况验证 {#mv-health-validation}
 
-此查询可帮助您在创建物化视图之前预测其是否会压缩或膨胀数据。针对实际的表和列运行此查询,以避免"190GB 膨胀"场景的发生。
+此查询可帮助您在创建物化视图之前预测其是否会压缩或膨胀数据。针对实际的表和列运行此查询，以避免出现"190GB 膨胀"的情况。
 
-**查询结果说明:**
+**查询结果说明：**
 
-- **低聚合比率** (\<10%) = 物化视图设计良好,数据显著压缩
-- **高聚合比率** (\>70%) = 物化视图设计不佳,存在存储膨胀风险
-- **存储倍数** = 物化视图相对于源表的存储大小变化倍数
+- **低聚合比率**（\<10%）= 物化视图设计良好，数据显著压缩
+- **高聚合比率**（\>70%）= 物化视图设计不佳，存在存储膨胀风险
+- **存储倍数** = 物化视图相对于原表的存储空间变化倍数
 
 ```sql
 -- 替换为您的实际表和列
 SELECT
-    count() as total_rows, -- 总行数
-    uniq(your_group_by_columns) as unique_combinations, -- 唯一组合数
-    round(uniq(your_group_by_columns) / count() * 100, 2) as aggregation_ratio -- 聚合比率
+    count() as total_rows,
+    uniq(your_group_by_columns) as unique_combinations,
+    round(uniq(your_group_by_columns) / count() * 100, 2) as aggregation_ratio
 FROM your_table
 WHERE your_filter_conditions;
 
--- 如果 aggregation_ratio > 70%,请重新考虑物化视图设计
--- 如果 aggregation_ratio < 10%,将获得良好的压缩效果
+-- 如果 aggregation_ratio > 70%，请重新考虑物化视图设计
+-- 如果 aggregation_ratio < 10%，将获得良好的压缩效果
 ```
 
 
@@ -68,7 +68,7 @@ WHERE your_filter_conditions;
 - 插入延迟增加(原本耗时 10ms 的查询现在需要 100ms 以上)
 - "Too many parts" 错误出现得更加频繁
 - 插入操作期间 CPU 出现峰值
-- 之前未曾发生的插入超时
+- 之前不曾发生的插入超时
 
 您可以使用 `system.query_log` 跟踪查询持续时间趋势,以比较添加物化视图前后的插入性能。
 
