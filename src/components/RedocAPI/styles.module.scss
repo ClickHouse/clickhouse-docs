@@ -1,0 +1,155 @@
+:global(.redoc-page) {
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-height: calc(100vh - var(--ifm-navbar-height)) !important;
+        overflow: hidden !important;
+    }
+}
+
+:global(.redoc-wrap) {
+    position: fixed !important;
+    top: var(--ifm-navbar-height) !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    overflow: auto !important;
+    margin: 0 !important;
+}
+
+.embeddedContainer {
+    // Hide the right sidebar/TOC
+    & ~ :global(aside.theme-doc-sidebar-container) {
+        display: none !important;
+    }
+
+    :global(.redoc-wrap) {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        min-height: calc(100vh - var(--ifm-navbar-height)) !important;
+        height: auto !important;
+    }
+}
+
+// Target the parent container when embedded
+:global(.markdown) {
+    .embeddedContainer {
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}
+
+// Make the main content area full width when RedocAPI is embedded
+:global(.theme-doc-markdown) {
+    &:has(.embeddedContainer) {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        & + :global(aside) {
+            display: none !important;
+        }
+    }
+}
+
+// Target the doc item wrapper
+:global(.docItemContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocItem-Layout-styles-module),
+:global([class*="docItemContainer"]) {
+    &:has(.embeddedContainer) {
+        max-width: 100% !important;
+
+        :global(.col--3) {
+            display: none !important;
+        }
+    }
+}
+
+// Ensure the main column takes full width when embedded
+:global(.docMainContainer) {
+    &:has(.embeddedContainer) {
+        max-width: 100% !important;
+
+        :global(.container) {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+
+        :global(.row) {
+            margin: 0 !important;
+        }
+
+        :global(.col) {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+    }
+}
+
+// Fix dark mode text visibility in Redoc
+:global([data-theme='dark']) {
+    .embeddedContainer {
+        // Fix dropdown text
+        :global(select),
+        :global(option),
+        :global(button),
+        :global(input) {
+            color: #ffffff !important;
+            background-color: #2d2d30 !important;
+            border-color: #444444 !important;
+        }
+
+        // Fix any remaining dark text on dark background
+        :global(.redoc-wrap) {
+            color: #ffffff !important;
+
+            // Make all headers white in dark mode
+            :global(h1),
+            :global(h2),
+            :global(h3),
+            :global(h4),
+            :global(h5),
+            :global(h6) {
+                color: #ffffff !important;
+            }
+
+            :global(p),
+            :global(span),
+            :global(div),
+            :global(label) {
+                color: inherit !important;
+            }
+
+            // Fix specific Redoc UI elements
+            :global([role="button"]),
+            :global(.menu-content) {
+                color: #ffffff !important;
+            }
+
+            // Fix authorization dropdown specifically
+            :global(.sc-*),
+            :global([class*="sc-"]) {
+                select,
+                option,
+                button,
+                input {
+                    color: #ffffff !important;
+                    background-color: #2d2d30 !important;
+                    border-color: #444444 !important;
+                }
+            }
+
+            // Fix dropdown menus and select boxes
+            :global(select) {
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+                background-repeat: no-repeat !important;
+                background-position: right 8px center !important;
+                padding-right: 30px !important;
+            }
+        }
+    }
+}
