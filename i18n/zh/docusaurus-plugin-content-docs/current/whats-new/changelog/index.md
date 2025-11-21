@@ -534,51 +534,51 @@ doc_type: "changelog"
 
 #### 新功能
 
-* 已添加对 PromQL 方言的基础支持。要使用它，请在 clickhouse-client 中设置 `dialect='promql'`，并通过设置 `promql_table_name='X'` 将其指向 TimeSeries 表，然后执行类似 `rate(ClickHouseProfileEvents_ReadCompressedBytes[1m])[5m:1m]` 的查询。此外，还可以将 PromQL 查询嵌入到 SQL 中：`SELECT * FROM prometheusQuery('up', ...);`。目前仅支持 `rate`、`delta` 和 `increase` 这几个函数。不支持一元/二元运算符，尚无 HTTP API。[#75036](https://github.com/ClickHouse/ClickHouse/pull/75036)（[Vitaly Baranov](https://github.com/vitlibar)）。
-* AI 驱动的 SQL 生成现在可以在存在环境变量 ANTHROPIC&#95;API&#95;KEY 和 OPENAI&#95;API&#95;KEY 时自动进行推断，从而提供零配置使用此功能的选项。 [#83787](https://github.com/ClickHouse/ClickHouse/pull/83787) ([Kaushik Iska](https://github.com/iskakaushik)).
-* 通过添加以下内容来实现对 [ArrowFlight RPC](https://arrow.apache.org/docs/format/Flight.html) 协议的支持：- 新增表函数 `arrowflight`。 [#74184](https://github.com/ClickHouse/ClickHouse/pull/74184) ([zakr600](https://github.com/zakr600))。
-* 现在所有表都支持 `_table` 虚拟列（不再仅限于使用 `Merge` 引擎的表），这对使用 UNION ALL 的查询尤其有用。[#63665](https://github.com/ClickHouse/ClickHouse/pull/63665)（[Xiaozhe Yu](https://github.com/wudidapaopao)）。
-* 允许将任何存储策略（例如 S3 等对象存储）用于外部聚合/排序。[#84734](https://github.com/ClickHouse/ClickHouse/pull/84734)（[Azat Khuzhin](https://github.com/azat)）。
-* 通过显式指定 IAM 角色实现 AWS S3 身份验证。为 GCS 实现 OAuth。这些功能此前仅在 ClickHouse Cloud 中可用，现在已开源。同步部分接口，例如对象存储连接参数的序列化。[#84011](https://github.com/ClickHouse/ClickHouse/pull/84011) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
-* 添加对 Iceberg TableEngine position delete 的支持。[#83094](https://github.com/ClickHouse/ClickHouse/pull/83094) ([Daniil Ivanik](https://github.com/divanik))。
-* 支持 Iceberg 等值删除功能。 [#85843](https://github.com/ClickHouse/ClickHouse/pull/85843) ([Han Fei](https://github.com/hanfei1991)).
-* 为 Iceberg 的 CREATE 语句添加写入支持。修复 [#83927](https://github.com/ClickHouse/ClickHouse/issues/83927)。[#83983](https://github.com/ClickHouse/ClickHouse/pull/83983)（[Konstantin Vedernikov](https://github.com/scanhex12)）。
-* 用于写入的 Glue 数据目录。[#84136](https://github.com/ClickHouse/ClickHouse/pull/84136) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* Iceberg REST 目录写入支持。 [#84684](https://github.com/ClickHouse/ClickHouse/pull/84684) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* 将所有 Iceberg position delete 文件合并到数据文件中，从而减少 Iceberg 存储中的 Parquet 文件数量和大小。语法：`OPTIMIZE TABLE table_name`。 [#85250](https://github.com/ClickHouse/ClickHouse/pull/85250) ([Konstantin Vedernikov](https://github.com/scanhex12))。
-* 支持对 Iceberg 使用 `drop table`（从 REST/Glue 目录中移除并删除表的元数据）。[#85395](https://github.com/ClickHouse/ClickHouse/pull/85395) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* 在 merge-on-read 格式下为 Iceberg 提供对 `ALTER ... DELETE` 变更操作的支持。 [#85549](https://github.com/ClickHouse/ClickHouse/pull/85549) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* 增加对 DeltaLake 写入的支持。关闭 [#79603](https://github.com/ClickHouse/ClickHouse/issues/79603)。 [#85564](https://github.com/ClickHouse/ClickHouse/pull/85564) ([Kseniia Sumarokova](https://github.com/kssenii))。
-* 添加了设置 `delta_lake_snapshot_version`，用于在表引擎 `DeltaLake` 中读取指定的快照版本。[#85295](https://github.com/ClickHouse/ClickHouse/pull/85295) ([Kseniia Sumarokova](https://github.com/kssenii)).
-* 在元数据（manifest 条目）中写入更多 Iceberg 统计信息（列大小、下界和上界），用于 min-max 剪枝。 [#85746](https://github.com/ClickHouse/ClickHouse/pull/85746) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* 在 Iceberg 中支持对简单类型列执行 add/drop/modify 操作。 [#85769](https://github.com/ClickHouse/ClickHouse/pull/85769) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-* Iceberg：支持写入 version-hint 文件。此更改解决了 [#85097](https://github.com/ClickHouse/ClickHouse/issues/85097)。[#85130](https://github.com/ClickHouse/ClickHouse/pull/85130)（[Konstantin Vedernikov](https://github.com/scanhex12)）。
-* 由临时用户创建的视图现在会存储实际用户的副本，在该临时用户被删除后也不会再失效。 [#84763](https://github.com/ClickHouse/ClickHouse/pull/84763) ([pufit](https://github.com/pufit)).
-* 向量相似度索引现在支持二值量化。二值量化可显著减少内存消耗，并加速构建向量索引的过程（因为距离计算更快）。此外，现有参数 `vector_search_postfilter_multiplier` 已被弃用，并由更通用的参数 `vector_search_index_fetch_multiplier` 取代。[#85024](https://github.com/ClickHouse/ClickHouse/pull/85024)（[Shankar Iyer](https://github.com/shankar-iyer)）。
-* 允许在 `s3` 或 `s3Cluster` 表引擎/函数中使用键值对形式的参数，例如 `s3('url', CSV, structure = 'a Int32', compression_method = 'gzip')`。[#85134](https://github.com/ClickHouse/ClickHouse/pull/85134)（[Kseniia Sumarokova](https://github.com/kssenii)）。
-* 一个新的系统表，用于存储来自 Kafka 等引擎的错误传入消息（“死信队列”）。 [#68873](https://github.com/ClickHouse/ClickHouse/pull/68873) ([Ilya Golshtein](https://github.com/ilejn))。
-* 新增用于 Replicated 数据库的 SYSTEM RESTORE DATABASE REPLICA，其功能类似于现有的用于 ReplicatedMergeTree 的恢复功能。[#73100](https://github.com/ClickHouse/ClickHouse/pull/73100) ([Konstantin Morozov](https://github.com/k-morozov))。
-* PostgreSQL 协议现已支持 `COPY` 命令。[#74344](https://github.com/ClickHouse/ClickHouse/pull/74344) ([Konstantin Vedernikov](https://github.com/scanhex12))。
-* 添加对使用 MySQL 协议的 C# 客户端的支持。此更改解决了 [#83992](https://github.com/ClickHouse/ClickHouse/issues/83992)。[#84397](https://github.com/ClickHouse/ClickHouse/pull/84397)（[Konstantin Vedernikov](https://github.com/scanhex12)）。
-* 添加对 Hive 分区风格读写的支持。[#76802](https://github.com/ClickHouse/ClickHouse/pull/76802) ([Arthur Passos](https://github.com/arthurpassos))。
-* 添加 `zookeeper_connection_log` 系统表，用于存储 ZooKeeper 连接的历史信息。[#79494](https://github.com/ClickHouse/ClickHouse/pull/79494) ([János Benjamin Antal](https://github.com/antaljanosbenjamin))。
-* 服务端设置 `cpu_slot_preemption` 为工作负载启用抢占式 CPU 调度，并确保在各个工作负载之间实现 max-min 公平的 CPU 时间分配。新增了用于 CPU 限流的工作负载设置：`max_cpus`、`max_cpu_share` 和 `max_burst_cpu_seconds`。更多详情参见：[https://clickhouse.com/docs/operations/workload-scheduling#cpu&#95;scheduling](https://clickhouse.com/docs/operations/workload-scheduling#cpu_scheduling)。[#80879](https://github.com/ClickHouse/ClickHouse/pull/80879)（[Sergei Trifonov](https://github.com/serxa)）。
-* 在执行了配置的查询次数或达到时间阈值后关闭 TCP 连接。这有助于在负载均衡器后方的集群节点之间实现更均匀的连接分布。解决了 [#68000](https://github.com/ClickHouse/ClickHouse/issues/68000)。[#81472](https://github.com/ClickHouse/ClickHouse/pull/81472)（[Kenny Sun](https://github.com/hwabis)）。
-* 并行副本现已支持在查询中使用投影。 [#82659](https://github.com/ClickHouse/ClickHouse/issues/82659)。 [#82807](https://github.com/ClickHouse/ClickHouse/pull/82807) ([zoomxi](https://github.com/zoomxi))。
-* 在已支持 `DESCRIBE (SELECT ...)` 的基础上，增加对 `DESCRIBE SELECT` 的支持。[#82947](https://github.com/ClickHouse/ClickHouse/pull/82947) ([Yarik Briukhovetskyi](https://github.com/yariks5s))。
-* 为 mysql&#95;port 和 postgresql&#95;port 强制启用安全连接。 [#82962](https://github.com/ClickHouse/ClickHouse/pull/82962) ([tiandiwonder](https://github.com/tiandiwonder))。
-* 用户现在可以使用 `JSONExtractCaseInsensitive`（以及 `JSONExtract` 的其他变体）进行不区分大小写的 JSON 键名查找。 [#83770](https://github.com/ClickHouse/ClickHouse/pull/83770) ([Alistair Evans](https://github.com/alistairjevans))。
-* 引入 `system.completions` 表。解决 [#81889](https://github.com/ClickHouse/ClickHouse/issues/81889)。 [#83833](https://github.com/ClickHouse/ClickHouse/pull/83833) ([|2ustam](https://github.com/RuS2m))。
-* 新增了函数 `nowInBlock64`。示例用法：`SELECT nowInBlock64(6)` 返回 `2025-07-29 17:09:37.775725`。[#84178](https://github.com/ClickHouse/ClickHouse/pull/84178)（[Halersson Paris](https://github.com/halersson)）。
-* 在 AzureBlobStorage 中添加 extra&#95;credentials，以便使用 client&#95;id 和 tenant&#95;id 进行身份验证。[#84235](https://github.com/ClickHouse/ClickHouse/pull/84235)（[Pablo Marcos](https://github.com/pamarcos)）。
-* 新增函数 `dateTimeToUUIDv7`，用于将 DateTime 值转换为 UUIDv7。使用示例：`SELECT dateTimeToUUIDv7(toDateTime('2025-08-15 18:57:56'))` 返回 `0198af18-8320-7a7d-abd3-358db23b9d5c`。[#84319](https://github.com/ClickHouse/ClickHouse/pull/84319)（[samradovich](https://github.com/samradovich)）。
-* `timeSeriesDerivToGrid` 和 `timeSeriesPredictLinearToGrid` 聚合函数用于将数据重新采样到由指定起始时间戳、结束时间戳和步长定义的时间网格中，分别计算类似 PromQL 的 `deriv` 和 `predict_linear`。 [#84328](https://github.com/ClickHouse/ClickHouse/pull/84328) ([Stephen Chi](https://github.com/stephchi0))。
+* 已添加对 PromQL 方言的基础支持。要使用它，请在 clickhouse-client 中设置 `dialect='promql'`，通过设置 `promql_table_name='X'` 将其指向 TimeSeries 表，然后执行类似 `rate(ClickHouseProfileEvents_ReadCompressedBytes[1m])[5m:1m]` 的查询。此外，也可以使用 SQL 包裹 PromQL 查询：`SELECT * FROM prometheusQuery('up', ...);`。目前仅支持 `rate`、`delta` 和 `increase` 这三个函数。不支持一元/二元运算符，也没有 HTTP API。[#75036](https://github.com/ClickHouse/ClickHouse/pull/75036)（[Vitaly Baranov](https://github.com/vitlibar)）。
+* AI 驱动的 SQL 生成现在在环境变量 `ANTHROPIC_API_KEY` 和 `OPENAI_API_KEY` 可用时会自动读取它们，从而支持以零配置方式使用该功能。 [#83787](https://github.com/ClickHouse/ClickHouse/pull/83787) ([Kaushik Iska](https://github.com/iskakaushik))。
+* 通过添加以下内容来实现对 [ArrowFlight RPC](https://arrow.apache.org/docs/format/Flight.html) 协议的支持：- 新增表函数 `arrowflight`。[#74184](https://github.com/ClickHouse/ClickHouse/pull/74184) ([zakr600](https://github.com/zakr600))。
+* 现在所有表都支持 `_table` 虚拟列（不仅是使用 `Merge` 引擎的表），这对包含 UNION ALL 的查询尤其有用。[#63665](https://github.com/ClickHouse/ClickHouse/pull/63665) ([Xiaozhe Yu](https://github.com/wudidapaopao))。
+* 允许在外部聚合/排序中使用任何存储策略（例如 S3 等对象存储）。[#84734](https://github.com/ClickHouse/ClickHouse/pull/84734) ([Azat Khuzhin](https://github.com/azat))。
+* 使用显式指定的 IAM 角色实现 AWS S3 认证。为 GCS 实现 OAuth。这些功能此前仅在 ClickHouse Cloud 中可用，现在已开源。同步了一些接口，例如对象存储连接参数的序列化方式。[#84011](https://github.com/ClickHouse/ClickHouse/pull/84011) ([Alexey Milovidov](https://github.com/alexey-milovidov))。
+* 支持 Iceberg 表引擎的 position delete。[#83094](https://github.com/ClickHouse/ClickHouse/pull/83094) ([Daniil Ivanik](https://github.com/divanik)).
+* 支持 Iceberg 等值删除（Equality Deletes）功能。 [#85843](https://github.com/ClickHouse/ClickHouse/pull/85843) ([Han Fei](https://github.com/hanfei1991)).
+* 在 `CREATE` 中支持 Iceberg 写入。关闭 [#83927](https://github.com/ClickHouse/ClickHouse/issues/83927)。[#83983](https://github.com/ClickHouse/ClickHouse/pull/83983) ([Konstantin Vedernikov](https://github.com/scanhex12))。
+* 写入支持 Glue Catalog。[#84136](https://github.com/ClickHouse/ClickHouse/pull/84136) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* 用于写入的 Iceberg REST catalog。 [#84684](https://github.com/ClickHouse/ClickHouse/pull/84684) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* 将所有 Iceberg position delete 文件合并到数据文件中。这样可以减少 Iceberg 存储中的 Parquet 文件数量和大小。语法：`OPTIMIZE TABLE table_name`。[#85250](https://github.com/ClickHouse/ClickHouse/pull/85250) ([Konstantin Vedernikov](https://github.com/scanhex12))。
+* 为 Iceberg 支持 `DROP TABLE`（从 REST/Glue 目录中删除并移除该表的元数据）。 [#85395](https://github.com/ClickHouse/ClickHouse/pull/85395) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* 支持在 merge-on-read 格式的 Iceberg 表中执行 ALTER DELETE 变更操作。 [#85549](https://github.com/ClickHouse/ClickHouse/pull/85549) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* 实现对 Delta Lake 的写入支持。关闭 [#79603](https://github.com/ClickHouse/ClickHouse/issues/79603)。[#85564](https://github.com/ClickHouse/ClickHouse/pull/85564)（[Kseniia Sumarokova](https://github.com/kssenii)）。
+* 新增设置 `delta_lake_snapshot_version`，以便在 `DeltaLake` 表引擎中读取指定的快照版本。[#85295](https://github.com/ClickHouse/ClickHouse/pull/85295) ([Kseniia Sumarokova](https://github.com/kssenii)).
+* 在元数据（manifest 条目）中写入更多 Iceberg 统计信息（列大小、上下界），以用于最小-最大剪枝。[#85746](https://github.com/ClickHouse/ClickHouse/pull/85746) ([Konstantin Vedernikov](https://github.com/scanhex12))。
+* 在 Iceberg 中支持对简单类型的列进行添加/删除/修改操作。[#85769](https://github.com/ClickHouse/ClickHouse/pull/85769) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* Iceberg：支持写入 version-hint 文件。此更改关闭了 [#85097](https://github.com/ClickHouse/ClickHouse/issues/85097)。[#85130](https://github.com/ClickHouse/ClickHouse/pull/85130)（[Konstantin Vedernikov](https://github.com/scanhex12)）。
+* 由临时用户创建的视图现在会存储对应真实用户的副本，并且在该临时用户被删除后将不再失效。 [#84763](https://github.com/ClickHouse/ClickHouse/pull/84763) ([pufit](https://github.com/pufit)).
+* 向量相似度索引现已支持二进制量化。二进制量化可显著降低内存消耗，并加速构建向量索引的过程（因为距离计算更快）。此外，现有设置 `vector_search_postfilter_multiplier` 已被弃用，并由更通用的设置 `vector_search_index_fetch_multiplier` 所取代。[#85024](https://github.com/ClickHouse/ClickHouse/pull/85024)（[Shankar Iyer](https://github.com/shankar-iyer)）。
+* 允许在 `s3` 或 `s3Cluster` 表引擎/函数中使用键值对参数，例如：`s3('url', CSV, structure = 'a Int32', compression_method = 'gzip')`。[#85134](https://github.com/ClickHouse/ClickHouse/pull/85134)（[Kseniia Sumarokova](https://github.com/kssenii)）。
+* 一个新的系统表，用于保留从 Kafka 等引擎接收的错误消息（即“死信队列”）。 [#68873](https://github.com/ClickHouse/ClickHouse/pull/68873) ([Ilya Golshtein](https://github.com/ilejn))。
+* 引入了用于 Replicated 数据库的新命令 `SYSTEM RESTORE DATABASE REPLICA`，类似于 `ReplicatedMergeTree` 中现有的恢复功能。[#73100](https://github.com/ClickHouse/ClickHouse/pull/73100)（[Konstantin Morozov](https://github.com/k-morozov)）。
+* PostgreSQL 协议现已支持 `COPY` 命令。[#74344](https://github.com/ClickHouse/ClickHouse/pull/74344) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* 支持使用 MySQL 协议的 C# 客户端。由此关闭 [#83992](https://github.com/ClickHouse/ClickHouse/issues/83992)。[#84397](https://github.com/ClickHouse/ClickHouse/pull/84397)（[Konstantin Vedernikov](https://github.com/scanhex12)）。
+* 为 Hive 分区风格的读写操作提供支持。[#76802](https://github.com/ClickHouse/ClickHouse/pull/76802) ([Arthur Passos](https://github.com/arthurpassos))。
+* 添加 `zookeeper_connection_log` 系统表，用于存储 ZooKeeper 连接的历史信息。 [#79494](https://github.com/ClickHouse/ClickHouse/pull/79494) ([János Benjamin Antal](https://github.com/antaljanosbenjamin)).
+* 服务器端设置 `cpu_slot_preemption` 为工作负载启用抢占式 CPU 调度，并确保在各工作负载之间实现 max-min 公平的 CPU 时间分配。新增用于 CPU 限流的工作负载设置：`max_cpus`、`max_cpu_share` 和 `max_burst_cpu_seconds`。更多详情参见：[https://clickhouse.com/docs/operations/workload-scheduling#cpu&#95;scheduling](https://clickhouse.com/docs/operations/workload-scheduling#cpu_scheduling)。[#80879](https://github.com/ClickHouse/ClickHouse/pull/80879)（[Sergei Trifonov](https://github.com/serxa)）。
+* 在达到配置的查询次数或时间阈值后断开 TCP 连接。这有助于在负载均衡器后面的集群节点之间实现更均匀的连接分布。解决了 [#68000](https://github.com/ClickHouse/ClickHouse/issues/68000)。[#81472](https://github.com/ClickHouse/ClickHouse/pull/81472)（[Kenny Sun](https://github.com/hwabis)）。
+* 并行副本现在支持在查询时使用投影。[#82659](https://github.com/ClickHouse/ClickHouse/issues/82659)。 [#82807](https://github.com/ClickHouse/ClickHouse/pull/82807) ([zoomxi](https://github.com/zoomxi))。
+* 现在除了 `DESCRIBE (SELECT ...)` 之外，还支持 `DESCRIBE SELECT`。 [#82947](https://github.com/ClickHouse/ClickHouse/pull/82947) ([Yarik Briukhovetskyi](https://github.com/yariks5s)).
+* 强制对 `mysql_port` 和 `postgresql_port` 使用安全连接。 [#82962](https://github.com/ClickHouse/ClickHouse/pull/82962) ([tiandiwonder](https://github.com/tiandiwonder)).
+* 用户现在可以使用 `JSONExtractCaseInsensitive`（以及 `JSONExtract` 的其他变体）进行不区分大小写的 JSON 键查找。 [#83770](https://github.com/ClickHouse/ClickHouse/pull/83770) ([Alistair Evans](https://github.com/alistairjevans))。
+* 引入`system.completions`表。解决 [#81889](https://github.com/ClickHouse/ClickHouse/issues/81889)。[#83833](https://github.com/ClickHouse/ClickHouse/pull/83833) ([|2ustam](https://github.com/RuS2m))。
+* 新增函数 `nowInBlock64`。示例：`SELECT nowInBlock64(6)` 返回 `2025-07-29 17:09:37.775725`。[#84178](https://github.com/ClickHouse/ClickHouse/pull/84178) ([Halersson Paris](https://github.com/halersson))。
+* 向 AzureBlobStorage 添加 extra&#95;credentials，以便使用 client&#95;id 和 tenant&#95;id 进行身份验证。[#84235](https://github.com/ClickHouse/ClickHouse/pull/84235)（[Pablo Marcos](https://github.com/pamarcos)）。
+* 新增函数 `dateTimeToUUIDv7`，用于将 DateTime 值转换为 UUIDv7。示例：`SELECT dateTimeToUUIDv7(toDateTime('2025-08-15 18:57:56'))` 返回 `0198af18-8320-7a7d-abd3-358db23b9d5c`。[#84319](https://github.com/ClickHouse/ClickHouse/pull/84319) ([samradovich](https://github.com/samradovich)).
+* `timeSeriesDerivToGrid` 和 `timeSeriesPredictLinearToGrid` 聚合函数，用于将数据重新采样到由指定起始时间戳、结束时间戳和步长定义的时间网格中，分别计算类似 PromQL 的 `deriv` 和 `predict_linear`。 [#84328](https://github.com/ClickHouse/ClickHouse/pull/84328) ([Stephen Chi](https://github.com/stephchi0)).
 * 新增两个 TimeSeries 函数：- `timeSeriesRange(start_timestamp, end_timestamp, step)`，- `timeSeriesFromGrid(start_timestamp, end_timestamp, step, values)`。[#85435](https://github.com/ClickHouse/ClickHouse/pull/85435)（[Vitaly Baranov](https://github.com/vitlibar)）。
-* 新增语法 `GRANT READ ON S3('s3://foo/.*') TO user`。 [#84503](https://github.com/ClickHouse/ClickHouse/pull/84503) ([pufit](https://github.com/pufit)).
-* 新增 `Hash` 输出格式。它会为结果的所有列和行计算单个哈希值。在数据传输成为瓶颈的用例中，这对于为结果计算“指纹”非常有用。例如：`SELECT arrayJoin(['abc', 'def']), 42 FORMAT Hash` 返回 `e5f9e676db098fdb9530d2059d8c23ef`。 [#84607](https://github.com/ClickHouse/ClickHouse/pull/84607) ([Robert Schulze](https://github.com/rschu1ze))。
-* 在 Keeper Multi 查询中新增设置任意 watch 的功能。 [#84964](https://github.com/ClickHouse/ClickHouse/pull/84964) ([Mikhail Artemenko](https://github.com/Michicosun)).
-* 为 `clickhouse-benchmark` 工具新增了选项 `--max-concurrency`，用于启用一种逐步提高并行查询数量的模式。 [#85623](https://github.com/ClickHouse/ClickHouse/pull/85623) ([Sergei Trifonov](https://github.com/serxa)).
-* TODO：这是什么？支持部分聚合指标。 [#85328](https://github.com/ClickHouse/ClickHouse/pull/85328) ([Mikhail Artemenko](https://github.com/Michicosun)).
+* 新增了语法 `GRANT READ ON S3('s3://foo/.*') TO user`。[#84503](https://github.com/ClickHouse/ClickHouse/pull/84503) ([pufit](https://github.com/pufit))。
+* 新增 `Hash` 输出格式。它会为结果中的所有列和行计算一个单个的哈希值。这对于计算结果的“指纹”非常有用，例如在数据传输成为瓶颈的场景中。示例：`SELECT arrayJoin(['abc', 'def']), 42 FORMAT Hash` 返回 `e5f9e676db098fdb9530d2059d8c23ef`。 [#84607](https://github.com/ClickHouse/ClickHouse/pull/84607) ([Robert Schulze](https://github.com/rschu1ze)).
+* 在 Keeper Multi 查询中新增设置任意 watch 的支持。 [#84964](https://github.com/ClickHouse/ClickHouse/pull/84964) ([Mikhail Artemenko](https://github.com/Michicosun))。
+* 为 `clickhouse-benchmark` 工具新增了 `--max-concurrency` 选项，可启用逐步增加并行查询数量的模式。[#85623](https://github.com/ClickHouse/ClickHouse/pull/85623) ([Sergei Trifonov](https://github.com/serxa))。
+* 支持部分聚合指标。 [#85328](https://github.com/ClickHouse/ClickHouse/pull/85328) ([Mikhail Artemenko](https://github.com/Michicosun)).
 
 
 

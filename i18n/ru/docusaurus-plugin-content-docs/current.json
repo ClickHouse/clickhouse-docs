@@ -802,5 +802,197 @@
   "sidebar.dropdownCategories.link.Development and contributing": {
     "message": "Разработка и вклад в проект",
     "description": "Метка для ссылки «Development and contributing» в выпадающем списке sidebar dropdownCategories, указывающей на /development/developer-instruction"
+  },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "Введение",
+    "description": "Название категории «Introduction» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Data types": {
+    "message": "Типы данных",
+    "description": "Метка категории «Типы данных» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "Специальные типы данных",
+    "description": "Метка категории «Специальные типы данных» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "Операторы",
+    "description": "Метка категории «Операторы» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "Название категории SELECT в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE",
+    "description": "Метка категории CREATE в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "Название категории ALTER в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "Операторы",
+    "description": "Метка категории Operators в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "Движки",
+    "description": "Название категории Engines в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "Движки баз данных",
+    "description": "Метка категории «Database Engines» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "Движки таблиц",
+    "description": "Название категории Table Engines в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "Семейство движков MergeTree",
+    "description": "Подпись категории MergeTree Family в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Log family": {
+    "message": "Семейство движков Log",
+    "description": "Ярлык категории Log family в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "Интеграции",
+    "description": "Название категории «Интеграции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "Специальные",
+    "description": "Метка категории «Special» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "Функции",
+    "description": "Название категории Functions в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Regular functions": {
+    "message": "Обычные функции",
+    "description": "Название категории «Обычные функции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "Гео",
+    "description": "Метка категории Geo в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate functions": {
+    "message": "Агрегатные функции",
+    "description": "Метка категории «Агрегатные функции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "Агрегатные функции",
+    "description": "Метка категории «Агрегатные функции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "Примеры комбинаторов",
+    "description": "Метка категории «Примеры комбинаторов» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Table functions": {
+    "message": "Табличные функции",
+    "description": "Метка категории «Табличные функции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Window functions": {
+    "message": "Оконные функции",
+    "description": "Метка для категории «оконные функции» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Formats": {
+    "message": "Форматы",
+    "description": "Метка категории «Formats» в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Arrow": {
+    "message": "Arrow",
+    "description": "Название категории Arrow в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Avro": {
+    "message": "Avro",
+    "description": "Метка категории Avro в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.CSV": {
+    "message": "CSV",
+    "description": "Метка категории CSV в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.CustomSeparated": {
+    "message": "CustomSeparated",
+    "description": "Ярлык для категории CustomSeparated в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.JSON": {
+    "message": "JSON",
+    "description": "Метка категории JSON в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "Название категории LineAsString в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Parquet": {
+    "message": "Parquet",
+    "description": "Название категории Parquet в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Pretty": {
+    "message": "Pretty",
+    "description": "Метка категории Pretty в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "Название категории Protobuf в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "Название категории RowBinary в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "Метка категории TabSeparated в боковой панели sqlreference"
+  },
+  "sidebar.sqlreference.category.Template": {
+    "message": "Шаблон",
+    "description": "Метка категории Template в боковой панели sqlreference"
+  },
+  "sidebar.clickstack.category.Helm": {
+    "message": "Helm",
+    "description": "Подпись категории Helm в боковой панели ClickStack"
+  },
+  "sidebar.integrations.category.Native clients & interfaces": {
+    "message": "Нативные клиенты и интерфейсы",
+    "description": "Метка для категории «Нативные клиенты и интерфейсы» в боковой панели интеграций"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "Драйверы и интерфейсы",
+    "description": "Метка категории «Драйверы и интерфейсы» в боковом меню интеграций"
+  },
+  "sidebar.integrations.category.Misc": {
+    "message": "Разное",
+    "description": "Метка для категории «Разное» в боковой панели интеграций"
+  },
+  "sidebar.integrations.link.View all formats": {
+    "message": "Показать все форматы",
+    "description": "Метка для ссылки «View all formats» в разделе интеграций боковой панели, ссылающейся на /interfaces/formats"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "Сторонние библиотеки",
+    "description": "Метка для элемента документации «Third-party Libraries» в боковой панели раздела Integrations, ведущая к документу interfaces/third-party/integrations"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "Словарь",
+    "description": "Метка категории «Dictionary» в боковой панели managingData"
+  },
+  "sidebar.aboutClickHouse.category.Development and contributing": {
+    "message": "Разработка и участие",
+    "description": "Название категории «Разработка и вклад в проект» в боковой панели раздела aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Native protocol": {
+    "message": "Нативный протокол",
+    "description": "Метка категории «Native protocol» в боковой панели раздела aboutClickHouse"
+  },
+  "sidebar.serverAdmin.category.Allocation profiling": {
+    "message": "Профилирование выделения памяти",
+    "description": "Метка категории «Allocation profiling» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "Настройки",
+    "description": "Название категории «Настройки» в боковой панели serverAdmin"
+  },
+  "sidebar.serverAdmin.category.System tables": {
+    "message": "Системные таблицы",
+    "description": "Метка категории «System tables» в боковой панели serverAdmin"
   }
 }

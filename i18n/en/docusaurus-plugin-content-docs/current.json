@@ -802,5 +802,197 @@
   "sidebar.dropdownCategories.link.Development and contributing": {
     "message": "Development and contributing",
     "description": "The label for link Development and contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+  },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category Introduction in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Data types": {
+    "message": "Data types",
+    "description": "The label for category Data types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "Special Data Types",
+    "description": "The label for category Special Data Types in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "Statements",
+    "description": "The label for category Statements in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "The label for category SELECT in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE",
+    "description": "The label for category CREATE in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "The label for category ALTER in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "Operators",
+    "description": "The label for category Operators in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "Engines",
+    "description": "The label for category Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "Database Engines",
+    "description": "The label for category Database Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "Table Engines",
+    "description": "The label for category Table Engines in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTree Family",
+    "description": "The label for category MergeTree Family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Log family": {
+    "message": "Log family",
+    "description": "The label for category Log family in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "Integrations",
+    "description": "The label for category Integrations in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "Special",
+    "description": "The label for category Special in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "Functions",
+    "description": "The label for category Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Regular functions": {
+    "message": "Regular functions",
+    "description": "The label for category Regular functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "Geo",
+    "description": "The label for category Geo in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate functions": {
+    "message": "Aggregate functions",
+    "description": "The label for category Aggregate functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "Aggregate Functions",
+    "description": "The label for category Aggregate Functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "Combinator examples",
+    "description": "The label for category Combinator examples in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Table functions": {
+    "message": "Table functions",
+    "description": "The label for category Table functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Window functions": {
+    "message": "Window functions",
+    "description": "The label for category Window functions in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Formats": {
+    "message": "Formats",
+    "description": "The label for category Formats in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Arrow": {
+    "message": "Arrow",
+    "description": "The label for category Arrow in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Avro": {
+    "message": "Avro",
+    "description": "The label for category Avro in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CSV": {
+    "message": "CSV",
+    "description": "The label for category CSV in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.CustomSeparated": {
+    "message": "CustomSeparated",
+    "description": "The label for category CustomSeparated in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.JSON": {
+    "message": "JSON",
+    "description": "The label for category JSON in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "The label for category LineAsString in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Parquet": {
+    "message": "Parquet",
+    "description": "The label for category Parquet in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Pretty": {
+    "message": "Pretty",
+    "description": "The label for category Pretty in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "The label for category Protobuf in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "The label for category RowBinary in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "The label for category TabSeparated in sidebar sqlreference"
+  },
+  "sidebar.sqlreference.category.Template": {
+    "message": "Template",
+    "description": "The label for category Template in sidebar sqlreference"
+  },
+  "sidebar.clickstack.category.Helm": {
+    "message": "Helm",
+    "description": "The label for category Helm in sidebar clickstack"
+  },
+  "sidebar.integrations.category.Native clients & interfaces": {
+    "message": "Native clients & interfaces",
+    "description": "The label for category Native clients & interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "Drivers and Interfaces",
+    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+  },
+  "sidebar.integrations.category.Misc": {
+    "message": "Misc",
+    "description": "The label for category Misc in sidebar integrations"
+  },
+  "sidebar.integrations.link.View all formats": {
+    "message": "View all formats",
+    "description": "The label for link View all formats in sidebar integrations, linking to /interfaces/formats"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "Third-party Libraries",
+    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc interfaces/third-party/integrations"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "Dictionary",
+    "description": "The label for category Dictionary in sidebar managingData"
+  },
+  "sidebar.aboutClickHouse.category.Development and contributing": {
+    "message": "Development and contributing",
+    "description": "The label for category Development and contributing in sidebar aboutClickHouse"
+  },
+  "sidebar.aboutClickHouse.category.Native protocol": {
+    "message": "Native protocol",
+    "description": "The label for category Native protocol in sidebar aboutClickHouse"
+  },
+  "sidebar.serverAdmin.category.Allocation profiling": {
+    "message": "Allocation profiling",
+    "description": "The label for category Allocation profiling in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "Settings",
+    "description": "The label for category Settings in sidebar serverAdmin"
+  },
+  "sidebar.serverAdmin.category.System tables": {
+    "message": "System tables",
+    "description": "The label for category System tables in sidebar serverAdmin"
   }
 }
