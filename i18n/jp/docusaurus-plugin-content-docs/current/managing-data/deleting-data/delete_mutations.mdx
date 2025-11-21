@@ -1,0 +1,19 @@
+---
+slug: /managing-data/delete_mutations
+sidebar_label: 'Delete mutations'
+title: '削除ミューテーション'
+hide_title: false
+description: '削除によってテーブルデータを操作する ALTER クエリ（削除ミューテーション）について説明するページ'
+keywords: ['delete mutations', 'ALTER TABLE DELETE', 'data mutations', 'data parts rewrite', 'ReplacingMergeTree']
+doc_type: 'reference'
+---
+
+削除ミューテーションとは、削除によってテーブルデータを操作する `ALTER` クエリを指します。代表的なものは `ALTER TABLE DELETE` などのクエリです。このようなクエリを実行すると、ミューテーション後のデータパーツの新しいバージョンが生成されます。これは、ミューテーションより前に挿入されたすべてのデータについて、データパーツ全体の再書き込みが行われることを意味し、大量の書き込みリクエストにつながります。
+
+:::info
+削除については、デフォルトの MergeTree テーブルエンジンの代わりに [ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) のような専用テーブルエンジンを使用することで、このような大量の書き込みリクエストを回避できます。
+:::
+
+import DeleteMutations from '@site/docs/sql-reference/statements/alter/delete.md';
+
+<DeleteMutations />

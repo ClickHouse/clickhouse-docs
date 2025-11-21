@@ -1,0 +1,8 @@
+:::note
+ClickHouse Server と ClickHouse Keeper を同一サーバー上で動かすことも可能ですが、
+本番環境では ClickHouse Keeper 用に *専用* ホストを使用することを強く推奨します。
+この例では、その構成を用いて説明します。
+
+Keeper サーバーは小規模でよく、ClickHouse Server が大規模になるまでは、
+各 Keeper サーバーあたり 4GB の RAM で概ね十分です。
+:::

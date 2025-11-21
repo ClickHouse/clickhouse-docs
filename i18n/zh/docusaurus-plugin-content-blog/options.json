@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "ClickHouse 知识库",
+    "description": "用于 SEO 的博客文章标题"
+  },
+  "description": {
+    "message": "知识库",
+    "description": "博客的 SEO 描述"
+  },
+  "sidebar.title": {
+    "message": "全部知识库文章",
+    "description": "左侧边栏的标签"
+  }
+}

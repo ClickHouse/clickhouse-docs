@@ -1,0 +1,22 @@
+import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
+import connection_details_https from '@site/static/images/_snippets/connection-details-https.png';
+import Image from '@theme/IdealImage';
+
+Чтобы подключиться к ClickHouse по HTTP(S), вам потребуется следующая информация:
+
+| Parameter(s)              | Description                                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `HOST` and `PORT`         | Обычно при использовании TLS используется порт 8443, а при подключении без TLS — порт 8123.                            |
+| `DATABASE NAME`           | По умолчанию доступна база данных с именем `default`; используйте имя базы данных, к которой вы хотите подключиться.   |
+| `USERNAME` and `PASSWORD` | По умолчанию имя пользователя — `default`. Используйте имя пользователя, подходящее для вашего сценария использования. |
+
+Сведения о вашем сервисе ClickHouse Cloud доступны в консоли ClickHouse Cloud.
+Выберите сервис и нажмите **Connect**:
+
+<Image img={cloud_connect_button} size="md" alt="Кнопка подключения сервиса ClickHouse Cloud" border />
+
+Выберите **HTTPS**. Параметры подключения отображаются в примере команды `curl`.
+
+<Image img={connection_details_https} size="md" alt="Параметры подключения по HTTPS к ClickHouse Cloud" border />
+
+Если вы используете самостоятельно развёрнутый ClickHouse, параметры подключения задаются вашим администратором ClickHouse.

@@ -1,0 +1,806 @@
+{
+  "version.label": {
+    "message": "次へ",
+    "description": "現在のバージョン用のラベル"
+  },
+  "sidebar.docs.category.Introduction": {
+    "message": "はじめに",
+    "description": "サイドバーのドキュメント内にある「Introduction」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Quick start": {
+    "message": "クイックスタート",
+    "description": "サイドバーのドキュメントにある「Quick start」カテゴリ用のラベル"
+  },
+  "sidebar.docs.category.Install": {
+    "message": "インストール",
+    "description": "サイドバーのドキュメントにある「Install」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Concepts": {
+    "message": "基本概念",
+    "description": "サイドバーのドキュメントにある「概念」カテゴリのラベル"
+  },
+  "sidebar.docs.category.FAQ": {
+    "message": "FAQ（よくある質問）",
+    "description": "サイドバーのドキュメントで使用する「FAQ」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Starter guides": {
+    "message": "スターターガイド",
+    "description": "サイドバーのドキュメント内にある「Starter guides」カテゴリーのラベル"
+  },
+  "sidebar.docs.category.Best practices": {
+    "message": "ベストプラクティス",
+    "description": "サイドバーのドキュメントに表示される「ベストプラクティス」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Use case guides": {
+    "message": "ユースケース別ガイド",
+    "description": "サイドバーのドキュメント内にある「ユースケースガイド」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Observability": {
+    "message": "オブザーバビリティ",
+    "description": "サイドバーのドキュメントで使用される「Observability」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Capabilities": {
+    "message": "機能",
+    "description": "サイドバーのドキュメントにある「Capabilities」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Build your own": {
+    "message": "自分で構築する",
+    "description": "サイドバーのドキュメントにある「Build your own」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Time-series": {
+    "message": "時系列",
+    "description": "サイドバーのドキュメントで使う「Time-series」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Data lake": {
+    "message": "データレイク",
+    "description": "サイドバーのドキュメント内にある「データレイク」カテゴリのラベル"
+  },
+  "sidebar.docs.category.AI/ML": {
+    "message": "AI/ML",
+    "description": "サイドバーのドキュメントで使用する AI/ML カテゴリのラベル"
+  },
+  "sidebar.docs.category.MCP": {
+    "message": "MCP",
+    "description": "サイドバーのドキュメントにある「MCP」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Integrate AI agent libraries": {
+    "message": "AIエージェントライブラリを統合する",
+    "description": "サイドバーのドキュメントにおける「AI エージェントライブラリの統合」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Data exploration": {
+    "message": "データ探索",
+    "description": "サイドバーのドキュメントにある「Data exploration」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Example datasets": {
+    "message": "サンプルデータセット",
+    "description": "サイドバーのドキュメントにある「Example datasets」カテゴリのラベル"
+  },
+  "sidebar.docs.category.Tips and community wisdom": {
+    "message": "ヒントとコミュニティの知見",
+    "description": "サイドバーのドキュメントにある「Tips とコミュニティの知見」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Get started": {
+    "message": "はじめに",
+    "description": "サイドバーの Cloud にある「はじめに」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Discover": {
+    "message": "詳しく見る",
+    "description": "Cloud サイドバー内の「Discover」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Use cases": {
+    "message": "ユースケース",
+    "description": "クラウドのサイドバーにある「Use cases」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.ML/AI": {
+    "message": "機械学習／AI",
+    "description": "クラウドのサイドバーにある ML/AI カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Setup": {
+    "message": "セットアップ",
+    "description": "クラウドのサイドバーにある「セットアップ」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Migration guides": {
+    "message": "移行ガイド",
+    "description": "クラウドのサイドバーにある「Migration guides」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.PostgreSQL": {
+    "message": "PostgreSQL",
+    "description": "クラウドのサイドバーにある「PostgreSQL」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Migration guide": {
+    "message": "移行ガイド",
+    "description": "クラウド用サイドバーの「移行ガイド」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.BigQuery": {
+    "message": "BigQuery",
+    "description": "サイドバーの Cloud セクション内にある BigQuery カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Snowflake": {
+    "message": "Snowflake",
+    "description": "クラウドサイドバーの「Snowflake」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Elasticsearch": {
+    "message": "Elasticsearch",
+    "description": "Cloud サイドバー内の「Elasticsearch」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Redshift": {
+    "message": "レッドシフト",
+    "description": "サイドバーのクラウドセクションにある「Redshift」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.OSS to Cloud": {
+    "message": "OSS からクラウドへ",
+    "description": "Cloud サイドバー内の「OSS to Cloud」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Other...": {
+    "message": "その他...",
+    "description": "クラウドのサイドバーにある「Other…」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Tune": {
+    "message": "チューニング",
+    "description": "Cloud のサイドバーにある「Tune」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Features": {
+    "message": "機能",
+    "description": "サイドバーの Cloud 内にある「Features」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.SQL console": {
+    "message": "SQLコンソール",
+    "description": "クラウド版サイドバーの「SQL コンソール」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Infrastructure": {
+    "message": "インフラストラクチャー",
+    "description": "クラウドサイドバーの「インフラストラクチャ」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.Automatic Scaling": {
+    "message": "自動スケーリング",
+    "description": "サイドバー「Cloud」にある「Automatic Scaling」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Admin": {
+    "message": "管理",
+    "description": "クラウド版サイドバー内の「Admin」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Cloud API": {
+    "message": "クラウドAPI",
+    "description": "サイドバー「Cloud」にある「Cloud API」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Monitoring": {
+    "message": "監視",
+    "description": "クラウドのサイドバーにある「Monitoring」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Guides": {
+    "message": "ガイド",
+    "description": "クラウド版サイドバーの「ガイド」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.Backups": {
+    "message": "バックアップ",
+    "description": "クラウドのサイドバーに表示される「バックアップ」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Bring Your Own Backup": {
+    "message": "お客様管理のバックアップの利用",
+    "description": "Cloud サイドバー内の「Bring Your Own Backup」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Best practices": {
+    "message": "ベストプラクティス",
+    "description": "クラウド版のサイドバーにある「Best practices」カテゴリ用のラベル"
+  },
+  "sidebar.cloud.category.Data sources": {
+    "message": "データソース",
+    "description": "クラウドのサイドバー内にある「データソース」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Deployment options": {
+    "message": "デプロイオプション",
+    "description": "サイドバーの Cloud にある「デプロイオプション」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.BYOC (Bring Your Own Cloud)": {
+    "message": "BYOC（Bring Your Own Cloud、自前のクラウド環境を利用する方式）",
+    "description": "サイドバーのクラウドセクションにある「BYOC（Bring Your Own Cloud）」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Onboarding": {
+    "message": "オンボーディング",
+    "description": "Cloud サイドバー内の Onboarding カテゴリのラベル"
+  },
+  "sidebar.cloud.category.FAQ": {
+    "message": "FAQ（よくある質問）",
+    "description": "クラウド版サイドバーの「FAQ」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Observability": {
+    "message": "オブザーバビリティ",
+    "description": "クラウドのサイドバーにある「Observability」カテゴリ用のラベル"
+  },
+  "sidebar.cloud.category.Security": {
+    "message": "セキュリティ",
+    "description": "クラウドのサイドバーにある「Security」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Cloud access management": {
+    "message": "クラウドのアクセス管理",
+    "description": "サイドバーの「Cloud」セクションにある「Cloud access management」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Connectivity": {
+    "message": "接続",
+    "description": "クラウドサイドバーの「接続」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Private networking": {
+    "message": "プライベートネットワーク",
+    "description": "Cloud サイドバーにある「Private networking」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Audit logging": {
+    "message": "監査ログ",
+    "description": "Cloud サイドバーの「監査ログ」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.Compliance": {
+    "message": "コンプライアンス",
+    "description": "クラウドのサイドバー「コンプライアンス」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Reference": {
+    "message": "リファレンス",
+    "description": "Cloud のサイドバーにある「Reference」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Change logs": {
+    "message": "変更履歴",
+    "description": "Cloud サイドバーの「Change logs」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.Release notes": {
+    "message": "リリースノート",
+    "description": "Cloud サイドバー内の「リリースノート」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.Billing": {
+    "message": "請求",
+    "description": "サイドバーの Cloud 内にある「Billing」カテゴリのラベル"
+  },
+  "sidebar.cloud.category.Marketplace": {
+    "message": "マーケットプレイス",
+    "description": "Cloud サイドバーの「Marketplace」カテゴリ用ラベル"
+  },
+  "sidebar.cloud.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "クラウドサイドバーの「ClickPipes」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Language clients": {
+    "message": "各言語向けクライアント",
+    "description": "サイドバーの「統合」セクションにある「Language clients」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Java": {
+    "message": "Java",
+    "description": "サイドバーの「Integrations」内にある「Java」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Python": {
+    "message": "Python",
+    "description": "サイドバーの「インテグレーション」内にある Python カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Third-party Clients": {
+    "message": "サードパーティクライアント",
+    "description": "サイドバーの統合セクションにある「サードパーティクライアント」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "サイドバーの「統合」セクションにある「ClickPipes」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes for Postgres": {
+    "message": "Postgres 向け ClickPipes",
+    "description": "サイドバーの「統合」セクションにある「ClickPipes for Postgres」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Operations": {
+    "message": "運用",
+    "description": "サイドバーの「Integrations」内にある「Operations」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Source": {
+    "message": "ソース",
+    "description": "サイドバーの連携における「Source」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes for object storage": {
+    "message": "オブジェクトストレージ用 ClickPipes",
+    "description": "サイドバーのインテグレーションセクションに表示される、オブジェクトストレージ用 ClickPipes カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes for Kafka": {
+    "message": "Kafka 向け ClickPipes",
+    "description": "サイドバーのインテグレーションにおける「Kafka 向け ClickPipes」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes for MySQL": {
+    "message": "MySQL 用 ClickPipes",
+    "description": "サイドバーの統合セクションにある「ClickPipes for MySQL」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.ClickPipes for MongoDB": {
+    "message": "MongoDB 用 ClickPipes",
+    "description": "サイドバーのインテグレーションにある「ClickPipes for MongoDB」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Data sources": {
+    "message": "データソース",
+    "description": "サイドバーの「インテグレーション」にある［データソース］カテゴリのラベル"
+  },
+  "sidebar.integrations.category.AWS S3": {
+    "message": "AWS S3",
+    "description": "サイドバーの「インテグレーション」セクション内にある「AWS S3」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Kafka": {
+    "message": "Kafka",
+    "description": "サイドバーの「統合」セクションにある「Kafka」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Table engines": {
+    "message": "テーブルエンジン",
+    "description": "サイドバーの「インテグレーション」セクションにある「Table engines」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Data visualization": {
+    "message": "データの可視化",
+    "description": "サイドバーの統合機能における「Data visualization」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Grafana": {
+    "message": "Grafana",
+    "description": "サイドバーの「統合」内にある「Grafana」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Tableau": {
+    "message": "Tableau",
+    "description": "サイドバーの「統合」内にある Tableau カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Third-party": {
+    "message": "サードパーティー",
+    "description": "サイドバーの「連携」内にある「サードパーティ」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Data formats": {
+    "message": "データ形式",
+    "description": "サイドバーのインテグレーション内にある「データ形式」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.JSON": {
+    "message": "JSON",
+    "description": "サイドバーの連携一覧で使用される JSON カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Data ingestion": {
+    "message": "データの取り込み",
+    "description": "サイドバーの「インテグレーション」内にある「データ取り込み」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Apache Spark": {
+    "message": "Apache Spark",
+    "description": "サイドバーの統合セクションにある Apache Spark カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Azure Data Factory": {
+    "message": "Azure Data Factory",
+    "description": "サイドバーの統合セクションにある「Azure Data Factory」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Google Dataflow": {
+    "message": "Google Dataflow",
+    "description": "サイドバーの［統合］セクションにある「Google Dataflow」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Dataflow templates": {
+    "message": "Dataflow テンプレート",
+    "description": "サイドバーの「インテグレーション」内にある「Dataflow テンプレート」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.dbt": {
+    "message": "dbt",
+    "description": "サイドバーのインテグレーション内にある dbt カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Tools": {
+    "message": "ツール",
+    "description": "サイドバーの「インテグレーション」内にある「ツール」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.SQL clients": {
+    "message": "SQL クライアント",
+    "description": "サイドバーの「連携」セクションにある「SQL クライアント」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Data integrations": {
+    "message": "データ連携",
+    "description": "サイドバーの「インテグレーション」内にある「Data integrations」カテゴリーのラベル"
+  },
+  "sidebar.integrations.doc.Overview": {
+    "message": "概要",
+    "description": "サイドバーの「integrations」内にあるドキュメント項目「Overview」のラベルで、ドキュメント integrations/language-clients/java/index へのリンクです"
+  },
+  "sidebar.integrations.doc.Introduction": {
+    "message": "はじめに",
+    "description": "サイドバーの「integrations」で、ドキュメント項目「Introduction」につけるラベル。ドキュメント「integrations/language-clients/python/index」へのリンクです。"
+  },
+  "sidebar.managingData.category.Core concepts": {
+    "message": "コアコンセプト",
+    "description": "managingData サイドバー内の「Core concepts」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Updating data": {
+    "message": "データを更新する",
+    "description": "サイドバー「managingData」の「データ更新」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Deleting data": {
+    "message": "データの削除",
+    "description": "サイドバー「managingData」内の「Deleting data」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Data modeling": {
+    "message": "データモデリング",
+    "description": "サイドバー「managingData」内の「データモデリング」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Materialized views": {
+    "message": "マテリアライズドビュー",
+    "description": "サイドバー「managingData」内の「Materialized views」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Projections": {
+    "message": "プロジェクション",
+    "description": "サイドバー「managingData」にある「Projections」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Data compression": {
+    "message": "データ圧縮",
+    "description": "サイドバー「managingData」にある「Data compression」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Advanced guides": {
+    "message": "高度なガイド",
+    "description": "サイドバー managingData 内の「Advanced guides」カテゴリーのラベル"
+  },
+  "sidebar.managingData.category.Performance and optimizations": {
+    "message": "パフォーマンスと最適化",
+    "description": "サイドバー「managingData」の「Performance and optimizations」カテゴリのラベル"
+  },
+  "sidebar.managingData.category.Data skipping indexes": {
+    "message": "データスキップインデックス",
+    "description": "サイドバー「managingData」内の「Data skipping indexes」カテゴリーのラベル"
+  },
+  "sidebar.managingData.doc.Lightweight updates": {
+    "message": "軽量更新",
+    "description": "サイドバー「managingData」内のドキュメント項目「Lightweight updates」のラベル（ドキュメント guides/developer/on-fly-mutations へのリンク）"
+  },
+  "sidebar.managingData.doc.ReplacingMergeTree": {
+    "message": "ReplacingMergeTree",
+    "description": "サイドバー「managingData」にあるドキュメント項目「ReplacingMergeTree」のラベル（ドキュメント guides/developer/replacing-merge-tree へのリンク）"
+  },
+  "sidebar.managingData.doc.Lightweight deletes": {
+    "message": "軽量削除",
+    "description": "サイドバー「managingData」にある、ドキュメント guides/developer/lightweight-delete へのリンクとなるドキュメント項目「Lightweight deletes」のラベル"
+  },
+  "sidebar.aboutClickHouse.category.About ClickHouse": {
+    "message": "ClickHouse について",
+    "description": "aboutClickHouse サイドバー内の「About ClickHouse」カテゴリ用ラベル"
+  },
+  "sidebar.aboutClickHouse.category.Changelogs": {
+    "message": "変更履歴",
+    "description": "サイドバー内の「ClickHouse について」セクションにある「Changelogs」カテゴリのラベル"
+  },
+  "sidebar.aboutClickHouse.category.Changelog": {
+    "message": "変更履歴",
+    "description": "ClickHouse についてのサイドバーにある「Changelog」カテゴリのラベル"
+  },
+  "sidebar.aboutClickHouse.category.Changelog.link.generated-index.title": {
+    "message": "変更履歴",
+    "description": "aboutClickHouse サイドバー内の「Changelog」カテゴリ用に自動生成されるインデックスページのタイトル"
+  },
+  "sidebar.aboutClickHouse.category.FAQ": {
+    "message": "よくある質問",
+    "description": "aboutClickHouse サイドバーの「FAQ」カテゴリ用ラベル"
+  },
+  "sidebar.serverAdmin.category.Manage and deploy": {
+    "message": "管理とデプロイ",
+    "description": "サイドバーの serverAdmin にある「Manage and deploy」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Deployment and scaling": {
+    "message": "デプロイとスケーリング",
+    "description": "サイドバー serverAdmin にある「デプロイとスケーリング」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Examples": {
+    "message": "例",
+    "description": "サイドバー serverAdmin 内の「Examples」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Backup/Restore": {
+    "message": "バックアップと復元",
+    "description": "サイドバーの serverAdmin にある「Backup/Restore」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Security and authentication": {
+    "message": "セキュリティと認証",
+    "description": "サイドバー serverAdmin 内にある「セキュリティと認証」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.External authenticators": {
+    "message": "外部認証機能",
+    "description": "サイドバー serverAdmin の「External authenticators」カテゴリ用ラベル"
+  },
+  "sidebar.serverAdmin.category.SSL": {
+    "message": "SSL",
+    "description": "サイドバー serverAdmin の「SSL」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.LDAP": {
+    "message": "LDAP",
+    "description": "サイドバーの serverAdmin 内にある「LDAP」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Tools and utilities": {
+    "message": "ツールおよびユーティリティ",
+    "description": "サイドバーの serverAdmin セクション内にある「ツールとユーティリティ」カテゴリのラベル"
+  },
+  "sidebar.chdb.category.chDB": {
+    "message": "chDB",
+    "description": "サイドバー chdb にある chDB カテゴリのラベル"
+  },
+  "sidebar.chdb.category.Language integrations": {
+    "message": "言語インテグレーション",
+    "description": "chdb サイドバー内の「言語連携」カテゴリのラベル"
+  },
+  "sidebar.chdb.category.Developer guides": {
+    "message": "開発者ガイド",
+    "description": "chdb のサイドバーにある「開発者向けガイド」カテゴリのラベル"
+  },
+  "sidebar.chdb.category.Technical reference": {
+    "message": "技術リファレンス",
+    "description": "サイドバーの chdb にある「Technical reference」カテゴリのラベル"
+  },
+  "sidebar.chdb.category.Integrations": {
+    "message": "統合",
+    "description": "chdb のサイドバーにある「Integrations」カテゴリのラベル"
+  },
+  "sidebar.chdb.category.About chDB": {
+    "message": "chDB について",
+    "description": "サイドバー chdb 内の「About chDB」カテゴリのラベル"
+  },
+  "sidebar.chdb.link.JupySQL": {
+    "message": "JupySQL",
+    "description": "サイドバーの chdb 内にある JupySQL へのリンクラベル。リンク先: https://jupysql.ploomber.io/en/latest/integrations/chdb.html"
+  },
+  "sidebar.chdb.link.chdb-lambda": {
+    "message": "chdb-lambda",
+    "description": "サイドバー「chdb」にある、https://github.com/chdb-io/chdb-lambda へのリンク「chdb-lambda」のラベル"
+  },
+  "sidebar.chdb.link.chdb-cli": {
+    "message": "chdb-cli",
+    "description": "サイドバー「chdb」で、https://github.com/chdb-io/chdb-go?tab=readme-ov-file#chdb-go-cli へのリンク「chdb-cli」に使用するラベル"
+  },
+  "sidebar.chdb.link.Discord": {
+    "message": "Discord",
+    "description": "サイドバーの chdb 内にある Discord へのリンクラベル。https://discord.gg/Njw5YXSPPc にリンクします。"
+  },
+  "sidebar.chdb.link.Birth of chDB": {
+    "message": "chDB の誕生",
+    "description": "サイドバー「chdb」にある「Birth of chDB」リンクのラベル。リンク先: https://auxten.com/the-birth-of-chdb/"
+  },
+  "sidebar.chdb.link.Joining ClickHouse, Inc.": {
+    "message": "ClickHouse, Inc. への入社",
+    "description": "サイドバーの chdb 内にある、「ClickHouse, Inc. に参加」のリンク（https://clickhouse.com/blog/welcome-chdb-to-clickhouse へのリンク）のラベル"
+  },
+  "sidebar.chdb.link.Team and dontributors": {
+    "message": "チームとコントリビューター",
+    "description": "サイドバーの chdb セクションにある「Team and dontributors」リンクに付けるラベル。https://github.com/chdb-io/chdb#contributors へのリンクです。"
+  },
+  "sidebar.clickstack.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "サイドバーの clickstack における ClickStack カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Sample datasets": {
+    "message": "サンプルデータセット",
+    "description": "サイドバーの clickstack 内にある「Sample datasets」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Deployment": {
+    "message": "デプロイ",
+    "description": "サイドバーの clickstack 内にある「Deployment」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Ingesting data": {
+    "message": "データの取り込み",
+    "description": "サイドバーの ClickStack にある「Ingesting data」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.SDKs": {
+    "message": "SDK",
+    "description": "ClickStack のサイドバーにある「SDKs」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Migration guides": {
+    "message": "移行ガイド",
+    "description": "サイドバー Clickstack 内の「Migration guides」カテゴリ用ラベル"
+  },
+  "sidebar.clickstack.category.Migrating from Elastic": {
+    "message": "Elastic からの移行",
+    "description": "clickstack のサイドバーにある「Migrating from Elastic」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Integration quick start": {
+    "message": "インテグレーションのクイックスタート",
+    "description": "サイドバーの ClickStack 内にある「Integration quick start」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Host Logs": {
+    "message": "ホストログ",
+    "description": "サイドバーの clickstack にある「Host Logs」カテゴリ用のラベル"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "はじめに",
+    "description": "サイドバーの dropdownCategories で使用される「Get started」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド",
+    "description": "サイドバーの dropdownCategories にある Cloud カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "データの管理",
+    "description": "サイドバーの dropdownCategories 内にある「Manage data」カテゴリ用のラベル"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "サーバー管理者",
+    "description": "サイドバーの dropdownCategories にある「Server admin」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス",
+    "description": "サイドバーの dropdownCategories 内にある「Reference」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "連携",
+    "description": "サイドバーの dropdownCategories にある「Integrations」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "サイドバーの dropdownCategories にある「ClickStack」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "サイドバーの dropdownCategories で使用される chDB カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "概要",
+    "description": "サイドバーの dropdownCategories 内にある「About」カテゴリのラベル"
+  },
+  "sidebar.dropdownCategories.link.Introduction": {
+    "message": "はじめに",
+    "description": "サイドバーのドロップダウン「Categories」内にある「Introduction」リンクのラベルで、/sql-reference へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Concepts": {
+    "message": "基本概念",
+    "description": "サイドバーの「Categories」ドロップダウン内にある、/concepts への「Concepts」リンクのラベル"
+  },
+  "sidebar.dropdownCategories.link.Starter guides": {
+    "message": "入門ガイド",
+    "description": "サイドバーのドロップダウン「Categories」にある「Starter guides」リンクのラベルで、/starter-guides へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Best practices": {
+    "message": "ベストプラクティス",
+    "description": "サイドバーのドロップダウンメニュー「categories」にある「Best practices」リンクのラベルで、/best-practices へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Migration guides": {
+    "message": "移行ガイド",
+    "description": "サイドバーの dropdownCategories 内にある「Migration guides」リンクのラベル。/integrations/migration/overview へのリンクです。"
+  },
+  "sidebar.dropdownCategories.link.Use case guides": {
+    "message": "ユースケース別ガイド",
+    "description": "サイドバーのドロップダウンメニュー「Categories」で、/use-cases へのリンクにつける「Use case guides」というラベル"
+  },
+  "sidebar.dropdownCategories.link.Example datasets": {
+    "message": "サンプルデータセット",
+    "description": "サイドバーの「Categories」ドロップダウン内にある「Example datasets」リンクのラベル。リンク先は /getting-started/example-datasets です。"
+  },
+  "sidebar.dropdownCategories.link.Tips and community wisdom": {
+    "message": "ヒントとコミュニティのナレッジ",
+    "description": "サイドバーのドロップダウン「categories」にある「Tips and community wisdom」（/tips-and-tricks/community-wisdom へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Get Started": {
+    "message": "はじめに",
+    "description": "サイドバーの dropdownCategories 内にある「Get Started」リンクのラベルで、/cloud/get-started/ へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Features": {
+    "message": "機能",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Features」リンクのラベルで、/cloud/manage/cloud-tiers へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "ガイド",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Guides」（/chdb/guides へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Reference": {
+    "message": "リファレンス",
+    "description": "サイドバーのドロップダウン「Categories」内にある、/cloud/reference/ への「Reference」リンク用ラベル"
+  },
+  "sidebar.dropdownCategories.link.Core data concepts": {
+    "message": "データの基本概念",
+    "description": "サイドバーの「dropdownCategories」ドロップダウン内にあり、/managing-data/core-concepts へリンクする「Core data concepts」リンクのラベル"
+  },
+  "sidebar.dropdownCategories.link.Updating data": {
+    "message": "データの更新",
+    "description": "サイドバーの dropdownCategories 内にあり、/updating-data へリンクする「Updating data」というリンクのラベル"
+  },
+  "sidebar.dropdownCategories.link.Deleting data": {
+    "message": "データの削除",
+    "description": "サイドバーのドロップダウン「Categories」にある「Deleting data」（/managing-data/deleting-data/overview へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Data modeling": {
+    "message": "データモデリング",
+    "description": "サイドバーのドロップダウンメニュー「Categories」にある「Data modeling」リンクのラベルで、/data-modeling/overview へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Performance and optimizations": {
+    "message": "性能と最適化",
+    "description": "サイドバーの dropdownCategories 内にある「Performance and optimizations」リンクのラベル（リンク先: /operations/overview）"
+  },
+  "sidebar.dropdownCategories.link.Deployments and scaling": {
+    "message": "デプロイとスケーリング",
+    "description": "サイドバーの dropdownCategories 内にあり、/deployment-guides/index へリンクする「Deployments and scaling」というリンクのラベル。"
+  },
+  "sidebar.dropdownCategories.link.Security and authentication": {
+    "message": "セキュリティと認証",
+    "description": "サイドバーの dropdownCategories 内にある「セキュリティと認証」（/security-and-authentication へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Settings": {
+    "message": "設定",
+    "description": "サイドバーの dropdownCategories 内にある「Settings」リンクのラベルで、/operations/settings へのリンク"
+  },
+  "sidebar.dropdownCategories.link.Tools and utilities": {
+    "message": "ツールとユーティリティー",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Tools and utilities」リンクのラベル。リンク先は /operations/utilities です。"
+  },
+  "sidebar.dropdownCategories.link.System tables": {
+    "message": "システムテーブル",
+    "description": "サイドバーの dropdownCategories にある「System tables」(/operations/system-tables) へのリンク用のラベル"
+  },
+  "sidebar.dropdownCategories.link.Functions": {
+    "message": "関数",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Functions」リンクのラベルで、/sql-reference/functions へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Engines": {
+    "message": "エンジン",
+    "description": "サイドバーの dropdownCategories にある /engines へのリンク「Engines」のラベル"
+  },
+  "sidebar.dropdownCategories.link.All integrations": {
+    "message": "すべてのインテグレーション",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「All integrations」リンク（/integrations へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Language clients": {
+    "message": "言語別クライアント",
+    "description": "サイドバーの「Categories」ドロップダウン内にある「Language clients」リンク（リンク先: /integrations/language-clients）のラベル"
+  },
+  "sidebar.dropdownCategories.link.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "サイドバーのドロップダウン「dropdownCategories」で、/integrations/clickpipes へのリンク「ClickPipes」に表示されるラベル"
+  },
+  "sidebar.dropdownCategories.link.Native clients & interfaces": {
+    "message": "ネイティブクライアントとインターフェース",
+    "description": "サイドバーのドロップダウン「Categories」にある「Native clients & interfaces」というリンクのラベルで、/interfaces/natives-clients-and-interfaces へのリンクです。"
+  },
+  "sidebar.dropdownCategories.link.Data sources": {
+    "message": "データソース",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「データソース」リンクのラベルで、/integrations/data-sources/index へリンクします"
+  },
+  "sidebar.dropdownCategories.link.Data visualization": {
+    "message": "データの可視化",
+    "description": "サイドバーの dropdownCategories 内にある「Data visualization」リンクのラベルで、/integrations/data-visualization へのリンクです。"
+  },
+  "sidebar.dropdownCategories.link.Data formats": {
+    "message": "データ形式",
+    "description": "サイドバーの dropdownCategories 内にあり、/integrations/data-formats へリンクする「Data formats」リンクのラベル"
+  },
+  "sidebar.dropdownCategories.link.Data ingestion": {
+    "message": "データ取り込み",
+    "description": "サイドバーの dropdownCategories 内にある、/integrations/data-ingestion-overview への「Data ingestion」リンクのラベル"
+  },
+  "sidebar.dropdownCategories.link.Getting started": {
+    "message": "はじめに",
+    "description": "サイドバーの dropdownCategories にある「Getting started」リンクのラベルで、/use-cases/observability/clickstack/getting-started へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Sample datasets": {
+    "message": "サンプルデータセット",
+    "description": "サイドバーの「dropdownCategories」ドロップダウン内にある「Sample datasets」リンクのラベル。リンク先は /use-cases/observability/clickstack/sample-datasets です。"
+  },
+  "sidebar.dropdownCategories.link.Architecture": {
+    "message": "アーキテクチャ",
+    "description": "サイドバーのドロップダウン「Categories」にある「Architecture」へのリンクラベルで、/use-cases/observability/clickstack/sample-datasets を指します"
+  },
+  "sidebar.dropdownCategories.link.Deployment": {
+    "message": "デプロイ",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある、/use-cases/observability/clickstack/deployment への「Deployment」リンクのラベル。"
+  },
+  "sidebar.dropdownCategories.link.Ingesting data": {
+    "message": "データの取り込み",
+    "description": "サイドバーの dropdownCategories 内にある「データ取り込み」リンク（/use-cases/observability/clickstack/ingesting-data へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Configuration options": {
+    "message": "設定項目",
+    "description": "サイドバーの「Categories」ドロップダウン内にある「Configuration options」リンクのラベルで、/use-cases/observability/clickstack/production へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Production": {
+    "message": "本番環境",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Production」リンクのラベル。/use-cases/observability/clickstack/production へリンクする"
+  },
+  "sidebar.dropdownCategories.link.Integration examples": {
+    "message": "統合の例",
+    "description": "サイドバーの dropdownCategories 内にある「Integration examples」リンクのラベルであり、/use-cases/observability/clickstack/integration-guides へのリンクです"
+  },
+  "sidebar.dropdownCategories.link.Learn chDB": {
+    "message": "chDB を学ぶ",
+    "description": "サイドバーの dropdownCategories 内にある、/chdb へのリンク「Learn chDB」のラベル"
+  },
+  "sidebar.dropdownCategories.link.Language integrations": {
+    "message": "プログラミング言語との連携",
+    "description": "サイドバーの「Categories」ドロップダウン内にある「Language integrations」リンクのラベル（/chdb/install へのリンク）"
+  },
+  "sidebar.dropdownCategories.link.Adopters": {
+    "message": "導入事例",
+    "description": "サイドバーの dropdownCategories 内にある「Adopters」リンクのラベル。リンク先は /about-us/adopters。"
+  },
+  "sidebar.dropdownCategories.link.Changelogs": {
+    "message": "変更履歴",
+    "description": "サイドバーのドロップダウンメニュー「Categories」内で、/category/changelog への「Changelogs」リンクに表示されるラベル"
+  },
+  "sidebar.dropdownCategories.link.Support": {
+    "message": "サポート",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「サポート」リンク（/about-us/support へのリンク）のラベル"
+  },
+  "sidebar.dropdownCategories.link.Development and contributing": {
+    "message": "開発と貢献",
+    "description": "サイドバーの dropdownCategories ドロップダウン内にある「Development and contributing」というラベルのリンクで、/development/developer-instruction へリンクします"
+  }
+}

@@ -1,0 +1,19 @@
+---
+slug: /managing-data/update_mutations
+sidebar_label: '更新型变更'
+title: '更新型变更'
+hide_title: false
+description: '介绍更新型变更的页面 —— 通过更新操作来修改表数据的 ALTER 查询'
+doc_type: 'reference'
+keywords: ['update', 'mutations', 'alter table', 'data manipulation', 'modify data']
+---
+
+更新型变更是指通过更新来操作表数据的 `ALTER` 查询。最典型的例子是类似 `ALTER TABLE UPDATE` 的查询。执行此类查询会生成数据片段的新的变更版本。这意味着，此类语句会对变更之前插入的所有数据触发整个数据片段的重写，从而产生大量写请求。
+
+:::info
+对于更新操作，你可以使用诸如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 等专用表引擎来替代默认的 MergeTree 表引擎，从而避免产生如此大量的写请求。
+:::
+
+import UpdateMutations from '@site/docs/sql-reference/statements/alter/update.md';
+
+<UpdateMutations />

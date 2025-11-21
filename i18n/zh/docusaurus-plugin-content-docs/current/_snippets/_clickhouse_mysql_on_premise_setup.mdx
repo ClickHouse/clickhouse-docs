@@ -1,0 +1,91 @@
+请参阅[官方文档](/interfaces/mysql)，了解如何配置启用 MySQL 接口的 ClickHouse 服务器。
+
+除了在服务器的 `config.xml` 中添加一条配置项之外
+
+```xml
+<clickhouse>
+    <mysql_port>9004</mysql_port>
+</clickhouse>
+```
+
+还*必须*为将使用 MySQL 接口的用户使用
+[Double SHA1 password encryption](/operations/settings/settings-users#user-namepassword)。
+
+在 shell 中生成使用 Double SHA1 加密的随机密码：
+
+```shell
+PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+```
+
+输出结果应如下所示：
+
+```
+LZOQYnqQN4L/T6L0
+fbc958cc745a82188a51f30de69eebfc67c40ee4
+```
+
+第一行是生成的密码，第二行是我们可用于配置 ClickHouse 的哈希。
+
+以下是一个使用该生成哈希的 `mysql_user` 配置示例：
+
+`/etc/clickhouse-server/users.d/mysql_user.xml`
+
+```xml
+<users>
+    <mysql_user>
+        <password_double_sha1_hex>fbc958cc745a82188a51f30de69eebfc67c40ee4</password_double_sha1_hex>
+        <networks>
+            <ip>::/0</ip>
+        </networks>
+        <profile>default</profile>
+        <quota>default</quota>
+    </mysql_user>
+</users>
+```
+
+将 `password_double_sha1_hex` 条目替换为你自己生成的 Double SHA1 哈希值。
+
+另外，建议使用 `use_mysql_types_in_show_columns`
+在 `SHOW [FULL] COLUMNS` 查询结果中显示原生的 MySQL 类型而不是 ClickHouse 类型，
+从而在使用 MySQL 连接器时便于 BI 工具正确解析数据库 schema。
+
+例如：
+
+`/etc/clickhouse-server/users.d/mysql_user.xml`
+
+```xml
+<profiles>
+    <default>
+        <use_mysql_types_in_show_columns>1</use_mysql_types_in_show_columns>
+    </default>
+</profiles>
+```
+
+或者将其分配给一个非默认的其他配置文件。
+
+如果你已安装并可以使用 `mysql` 可执行文件，可以在命令行中测试该连接。
+使用上面示例中的用户名（`mysql_user`）和密码（`LZOQYnqQN4L/T6L0`），命令行为：
+
+```bash
+mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
+```
+
+```
+mysql> show databases;
++--------------------+
+| name               |
++--------------------+
+| INFORMATION_SCHEMA |
+| default            |
+| information_schema |
+| system             |
++--------------------+
+4 rows in set (0.00 sec)
+Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
+```
+
+最后，配置 ClickHouse 服务器，使其监听所需的 IP 地址。例如，在 `config.xml` 中，取消注释以下配置，使其监听所有地址：
+
+```bash
+<listen_host>::</listen_host> 
+```

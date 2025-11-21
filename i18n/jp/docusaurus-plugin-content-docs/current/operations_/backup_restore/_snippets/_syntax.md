@@ -1,0 +1,24 @@
+```sql
+-- コアコマンド
+BACKUP | RESTORE [ASYNC]
+--- バックアップ/リストア対象（または除外対象）
+TABLE [db.]table_name           [AS [db.]table_name_in_backup] |
+DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup] |
+DATABASE database_name          [AS database_name_in_backup] |
+TEMPORARY TABLE table_name      [AS table_name_in_backup] |
+VIEW view_name                  [AS view_name_in_backup] |
+[EXCEPT TABLES ...] |
+ALL [EXCEPT {TABLES|DATABASES}...] } [,...]
+--- 
+[ON CLUSTER 'cluster_name']
+--- バックアップ先またはリストア元
+TO|FROM 
+File('<path>/<filename>') | 
+Disk('<disk_name>', '<path>/') | 
+S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>', '<extra_credentials>') |
+AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
+--- 追加設定
+[SETTINGS ...]
+```
+
+**各コマンドの詳細は、[「コマンドの概要」](/operations/backup/overview/#command-summary) を参照してください。**

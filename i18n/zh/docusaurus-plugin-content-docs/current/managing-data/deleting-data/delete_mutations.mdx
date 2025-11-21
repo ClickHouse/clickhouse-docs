@@ -1,0 +1,19 @@
+---
+slug: /managing-data/delete_mutations
+sidebar_label: 'Delete mutations'
+title: '删除变更'
+hide_title: false
+description: '介绍删除变更的页面——通过 DELETE 操作来修改表数据的 ALTER 查询'
+keywords: ['delete mutations', 'ALTER TABLE DELETE', 'data mutations', 'data parts rewrite', 'ReplacingMergeTree']
+doc_type: 'reference'
+---
+
+删除变更是指通过 DELETE 操作来修改表数据的 `ALTER` 查询。最典型的是诸如 `ALTER TABLE DELETE` 等查询。执行此类查询会生成数据部分的新变更版本。这意味着，会对变更发生之前已插入的所有数据对应的整个数据部分进行重写，从而产生大量写入请求。
+
+:::info
+对于删除操作，可以通过使用诸如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 这样的专用表引擎，而不是默认的 MergeTree 表引擎，来避免产生如此大量的写入请求。
+:::
+
+import DeleteMutations from '@site/docs/sql-reference/statements/alter/delete.md';
+
+<DeleteMutations />

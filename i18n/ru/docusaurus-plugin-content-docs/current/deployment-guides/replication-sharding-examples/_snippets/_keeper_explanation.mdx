@@ -1,0 +1,34 @@
+Каждый файл конфигурации будет содержать приведённую ниже уникальную конфигурацию.
+Значение `server_id` должно быть уникальным для данного узла ClickHouse Keeper
+в кластере и совпадать со значением `<id>` сервера, заданным в разделе `<raft_configuration>`.
+`tcp_port` — порт, используемый *клиентами* ClickHouse Keeper.
+
+```xml
+<tcp_port>9181</tcp_port>
+<server_id>{id}</server_id>
+```
+
+Следующий раздел используется для настройки серверов, входящих в
+кворум для [алгоритма консенсуса Raft](https://en.wikipedia.org/wiki/Raft_\(algorithm\)):
+
+```xml
+<raft_configuration>
+    <server>
+        <id>1</id>
+        <hostname>clickhouse-keeper-01</hostname>
+        <!-- TCP-порт для взаимодействия между узлами ClickHouse Keeper -->
+        <!--highlight-next-line-->
+        <port>9234</port>
+    </server>
+    <server>
+        <id>2</id>
+        <hostname>clickhouse-keeper-02</hostname>
+        <port>9234</port>
+    </server>
+    <server>
+        <id>3</id>
+        <hostname>clickhouse-keeper-03</hostname>
+        <port>9234</port>
+    </server>
+</raft_configuration>
+```

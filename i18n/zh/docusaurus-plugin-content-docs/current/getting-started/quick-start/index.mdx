@@ -1,0 +1,121 @@
+---
+description: '几分钟内即可上手 ClickHouse，探索示例数据并构建您的解决方案'
+keywords: ['clickhouse', '快速入门']
+sidebar_label: '快速入门'
+sidebar_position: 0
+slug: /get-started/quick-start
+title: '快速入门'
+doc_type: 'landing-page'
+---
+
+import {CardSecondary, CardPromotion} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
+
+<div
+  style={{
+display: 'inline-flex',
+flexDirection: 'column',
+width: '100%',
+maxWidth: 'calc(700px + 1rem)'
+}}
+>
+  <div
+    style={{
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: '1rem',
+    marginBottom: '1rem',
+    width: '100%',
+    '@media (max-width: 996px)': {
+        flexDirection: 'column'
+    }
+}}
+  >
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
+        '@media (max-width: 996px)': {
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
+        }
+    }}
+    >
+      <Link to="/getting-started/quick-start/cloud" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          badgeText="推荐"
+          description="几分钟内即可开始使用 ClickHouse Cloud。
+我们将引导您创建一个 ClickHouse 服务、
+连接到 ClickHouse，并通过 CDC、SQL 控制台、
+本地客户端或文件上传向您的服务添加数据。
+"
+          icon="cloud"
+          infoText="开始使用"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/cloud"
+          title="Cloud 快速入门"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
+    </div>
+
+    <div
+      style={{
+        flex: '1 1 300px',
+        minWidth: '0',
+        maxWidth: '100%',
+        '@media (max-width: 996px)': {
+            width: '100%',
+            maxWidth: 'none',
+            flex: '1 1 auto'
+        }
+    }}
+    >
+      <Link to="/getting-started/quick-start/oss" style={{textDecoration: 'none', width: '100%'}}>
+        <CardSecondary
+          badgeState="success"
+          description="几分钟内即可开始使用 OSS ClickHouse。您将
+学习如何在本地安装 ClickHouse 服务端和客户端，创建
+表并向其中插入一些示例数据，并探索将
+您自己的数据导入 ClickHouse 的多种方式。
+"
+          icon="server"
+          infoText="开始使用"
+          infoUrl="clickhouse.com/docs/getting-started/quick-start/oss"
+          title="OSS 快速入门"
+          style={{width: '100%', height: '100%'}}
+        />
+      </Link>
+    </div>
+  </div>
+
+  <div
+    style={{
+    width: '100%',
+    '@media (max-width: 996px)': {
+        maxWidth: '100%',
+        margin: '0'
+    }
+}}
+  >
+    <Link to="/cloud/overview" style={{textDecoration: 'none', width: '100%'}}>
+      <CardPromotion
+        icon="question"
+        label="不确定该选哪种？点击此处了解 Cloud 与 OSS ClickHouse 之间的区别"
+        style={{
+              display: 'flex',
+              flex: '1',
+              width: '100%',
+              minHeight: 'auto',
+              alignItems: 'flex-start',
+              padding: '1rem',
+              boxSizing: 'border-box',
+              cursor: 'pointer'
+          }}
+      />
+    </Link>
+  </div>
+</div>

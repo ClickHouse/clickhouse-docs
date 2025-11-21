@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "ClickHouse ナレッジベース",
+    "description": "SEO 向けのブログタイトル"
+  },
+  "description": {
+    "message": "ナレッジベース",
+    "description": "SEO 用のブログ説明文"
+  },
+  "sidebar.title": {
+    "message": "すべてのナレッジベース記事",
+    "description": "左サイドバーのラベル"
+  }
+}

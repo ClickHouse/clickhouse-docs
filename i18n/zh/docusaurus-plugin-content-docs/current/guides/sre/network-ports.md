@@ -1,0 +1,34 @@
+---
+slug: /guides/sre/network-ports
+sidebar_label: '网络端口'
+title: '网络端口'
+description: '可用网络端口及其用途说明'
+doc_type: 'reference'
+keywords: ['network', 'ports', 'configuration', 'security', 'firewall']
+---
+
+# 网络端口
+
+:::note
+被标记为 **默认** 的端口意味着该端口号在 `/etc/clickhouse-server/config.xml` 中配置为默认值。要自定义设置，请在 `/etc/clickhouse-server/config.d/` 中添加一个文件。参见[配置文件](/operations/configuration-files)文档。
+:::
+
+|Port|Description|Cloud|OSS|
+|----|-----------|-----|---|
+|2181|ZooKeeper 默认服务端口。**注意：ClickHouse Keeper 请参见端口 `9181`**||✓|
+|8123|HTTP 默认端口||✓|
+|8443|HTTP SSL/TLS 默认端口|✓|✓|
+|9000|原生协议端口（也称为 ClickHouse TCP 协议）。供 ClickHouse 应用程序以及 `clickhouse-server`、`clickhouse-client` 和原生 ClickHouse 工具等进程使用。用于分布式查询的服务器间通信。||✓|
+|9004|MySQL 仿真端口||✓|
+|9005|PostgreSQL 仿真端口（如果为 ClickHouse 启用了 SSL，也用于安全通信）。||✓|
+|9009|用于底层数据访问的服务器间通信端口。用于数据交换、复制和服务器间通信。||✓|
+|9010|用于服务器间通信的 SSL/TLS 端口||✓|
+|9011|原生协议 PROXYv1 协议端口||✓|
+|9019|JDBC bridge||✓|
+|9100|gRPC 端口||✓|
+|9181|推荐的 ClickHouse Keeper 端口||✓|
+|9234|推荐的 ClickHouse Keeper Raft 端口（如果启用了 `<secure>1</secure>`，也用于安全通信）||✓|
+|9363|Prometheus 默认指标端口||✓|
+|9281|推荐的 ClickHouse Keeper 安全 SSL 端口||✓|
+|9440|原生协议 SSL/TLS 端口|✓|✓|
+|42000|Graphite 默认端口||✓|

@@ -1,0 +1,49 @@
+---
+description: '安装 ClickHouse'
+keywords: ['clickhouse', '安装', '入门', '快速入门']
+sidebar_label: '安装'
+slug: /install
+title: '安装 ClickHouse'
+doc_type: 'guide'
+---
+
+import InstallSelector from '@site/src/components/Install/Install'
+import Windows from './_snippets/_windows_install.md'
+import TarProd from './_snippets/_linux_tar_install.md'
+import QuickInstall from './_snippets/_quick_install.md'
+import DebianProd from './_snippets/_deb_install.md'
+import RPMProd from './_snippets/_rpm_install.md'
+import MacOSProd from './_snippets/_macos.md'
+import Docker from './_snippets/_docker.md'
+import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
+
+
+# 安装说明
+
+<CardPrimary
+    alignContent="center"
+    description="立即开始构建，而无需自行规划和扩展集群。我们负责处理容量规划、扩缩容、安全性、可靠性和升级。"
+    icon="cloud"
+    infoText="免费开始使用"
+    infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+    isSelected
+    onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+    size="md"
+    title="ClickHouse Cloud"
+    topBadgeText="推荐"
+/>
+
+<br/>
+
+或者，在下方选择平台、发行版和安装方式，以查看开源版 ClickHouse 的安装说明：
+
+<InstallSelector
+    windows={<Windows/>}
+    quickinstall={<QuickInstall/>}
+    debian_prod={<DebianProd/>}
+    rpm_prod={<RPMProd/>}
+    tar_prod={<TarProd/>}
+    macos_prod={<MacOSProd/>}
+    docker={<Docker/>}
+/>
