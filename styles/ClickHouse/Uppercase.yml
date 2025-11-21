@@ -160,6 +160,7 @@ exceptions:
   - OKR
   - ONLY
   - OSS
+  - OTEL
   - OTP
   - OWASP
   - PAT

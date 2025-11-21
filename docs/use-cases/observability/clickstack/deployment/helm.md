@@ -42,7 +42,7 @@ The chart supports standard Kubernetes best practices, including:
 * Production deployments
 * Cloud-native environments (GKE, EKS, AKS)
 
-## Quick Start {#quick-start}
+## Quick start {#quick-start}
 
 <br/>
 <VerticalStepper headerLevel="h3">
@@ -59,7 +59,7 @@ helm repo add clickstack https://hyperdxio.github.io/helm-charts
 helm repo update
 ```
 
-### Install ClickStack (Full Stack) {#install-clickstack-full-stack}
+### Install ClickStack (full stack) {#install-clickstack-full-stack}
 
 Install with default values (includes ClickHouse, OTEL collector, MongoDB, and HyperDX):
 ```shell
@@ -102,7 +102,7 @@ On clicking `Create`, data sources will be created for the ClickHouse instance d
 
 ClickStack's Helm chart supports multiple deployment configurations to fit your infrastructure needs.
 
-### Full Stack (Default) {#full-stack-default}
+### Full stack (Default) {#full-stack-default}
 
 By default, the chart deploys the complete ClickStack including all dependencies:
 ```shell
@@ -434,7 +434,7 @@ hyperdx:
       tlsSecretName: "hyperdx-tls"
 ```
 
-#### Example Ingress Configuration {#example-ingress-configuration}
+#### Example ingress configuration {#example-ingress-configuration}
 
 For reference, here's what the generated ingress resource looks like:
 ```yaml
@@ -681,7 +681,7 @@ For HTTP-only deployments (development/testing), some browsers may show crypto A
 
 ## Production Notes {#production-notes}
 
-By default, the chart installs ClickHouse and the OTel collector. However, for production environments, it is recommended that you manage ClickHouse and the OTel collector separately for:
+By default, the chart installs ClickHouse and the OTel collector. However, for production environments, it's recommended that you manage ClickHouse and the OTel collector separately for:
 
 - Better scalability and resource management
 - Independent upgrade cycles
@@ -766,7 +766,7 @@ tasks:
 
 ## Operations {#operations}
 
-### Upgrading the Chart {#upgrading-the-chart}
+### Upgrading the chart {#upgrading-the-chart}
 
 To upgrade to a newer version:
 ```shell
@@ -799,7 +799,7 @@ kubectl delete pvc -l app.kubernetes.io/instance=my-clickstack
 
 ## Troubleshooting {#troubleshooting}
 
-### Checking Logs {#checking-logs}
+### Checking logs {#checking-logs}
 
 **View logs for all ClickStack components:**
 ```shell
@@ -843,7 +843,7 @@ kubectl get ingress
 kubectl describe pod <pod-name>
 ```
 
-### Common Issues {#common-issues}
+### Common issues {#common-issues}
 
 **Pods not starting:**
 - Check resource availability: `kubectl describe node`
