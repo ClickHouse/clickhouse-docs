@@ -3,6 +3,12 @@
     "message": "Page Not Found",
     "description": "The title of the 404 page"
   },
+  "mobile.sidebar.current": {
+    "message": "sidebar"
+  },
+  "mobile.sidebar.toplevel": {
+    "message": "main-menu"
+  },
   "topNav.navItems.Products": {
     "message": "Products"
   },
@@ -22,23 +28,23 @@
     "message": "Contact us"
   },
   "theme.admonition.note": {
-    "message": "Note",
+    "message": "note",
     "description": "The default label used for the Note admonition (:::note)"
   },
   "theme.admonition.tip": {
-    "message": "Tip",
+    "message": "tip",
     "description": "The default label used for the Tip admonition (:::tip)"
   },
   "theme.admonition.danger": {
-    "message": "Danger",
+    "message": "danger",
     "description": "The default label used for the Danger admonition (:::danger)"
   },
   "theme.admonition.info": {
-    "message": "Info",
+    "message": "info",
     "description": "The default label used for the Info admonition (:::info)"
   },
   "theme.admonition.caution": {
-    "message": "Caution",
+    "message": "caution",
     "description": "The default label used for the Caution admonition (:::caution)"
   },
   "theme.admonition.experimental": {
@@ -50,7 +56,7 @@
     "description": "The default label used for the Obsolete admonition (:::obsolete)"
   },
   "theme.blog.title": {
-    "message": "Knowledge Base"
+    "message": "Knowledge base"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
     "message": "Breadcrumbs",
@@ -59,6 +65,26 @@
   "theme.docs.DocCard.categoryDescription": {
     "message": "{count} items",
     "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.IdealImageMessage.loading": {
+    "message": "Loading...",
+    "description": "When the full-scale image is loading"
+  },
+  "theme.IdealImageMessage.load": {
+    "message": "Click to load{sizeMessage}",
+    "description": "To prompt users to load the full image. sizeMessage is a parenthesized size figure."
+  },
+  "theme.IdealImageMessage.offline": {
+    "message": "Your browser is offline. Image not loaded",
+    "description": "When the user is viewing an offline document"
+  },
+  "theme.IdealImageMessage.404error": {
+    "message": "404. Image not found",
+    "description": "When the image is not found"
+  },
+  "theme.IdealImageMessage.error": {
+    "message": "Error. Click to reload",
+    "description": "When the image fails to load for unknown error"
   },
   "theme.navbar.mobileVersionsDropdown.label": {
     "message": "Versions",
@@ -86,10 +112,6 @@
   "theme.SearchPage.inputLabel": {
     "message": "Search",
     "description": "The ARIA label for search page input"
-  },
-  "theme.SearchPage.algoliaLabel": {
-    "message": "Search by Algolia",
-    "description": "The ARIA label for Algolia mention"
   },
   "theme.SearchPage.noResultsText": {
     "message": "No results were found",
@@ -129,17 +151,11 @@
   "topNav.navItems.resources.Blog": {
     "message": "Blog"
   },
-  "topNav.navItems.resources.Learning and Certification": {
-    "message": "Learning and Certification"
+  "topNav.navItems.resources.Events": {
+    "message": "Events"
   },
-  "topNav.navItems.resources.ClickHouse Academy": {
-    "message": "ClickHouse Academy"
-  },
-  "topNav.navItems.resources.Free live training": {
-    "message": "Free live training"
-  },
-  "topNav.navItems.resources.ClickHouse Certification": {
-    "message": "ClickHouse Certification"
+  "topNav.navItems.resources.Learn": {
+    "message": "Learning and certification"
   },
   "topNav.navItems.resources.Comparisons": {
     "message": "Comparisons"
@@ -184,6 +200,15 @@
     "message": "Blog recent posts navigation",
     "description": "The ARIA label for recent posts in the blog sidebar"
   },
+  "This documentation is translated with the help of AI": {
+    "message": "This documentation is translated with the help of AI"
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "Spotted a translation issue? Help us to improve it by reporting translation issues."
+  },
+  "Report an issue": {
+    "message": "Report an issue"
+  },
   "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
     "message": "Toggle the collapsible sidebar category '{label}'",
     "description": "The ARIA label to toggle the collapsible sidebar category"
@@ -196,14 +221,13 @@
     "message": "Languages",
     "description": "The label for the mobile language switcher dropdown"
   },
-  "This documentation is translated with the help of AI": {
-    "message": "This documentation is translated with the help of AI"
+  "theme.NotFound.p1": {
+    "message": "We could not find what you were looking for.",
+    "description": "The first paragraph of the 404 page"
   },
-  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
-    "message": "Spotted a translation issue? Help us to improve it by reporting translation issues."
-  },
-  "Report an issue": {
-    "message": "Report an issue"
+  "theme.NotFound.p2": {
+    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+    "description": "The 2nd paragraph of the 404 page"
   },
   "theme.blog.post.readMore": {
     "message": "Read more",
@@ -396,14 +420,6 @@
     "message": "Collapse sidebar category '{label}'",
     "description": "The ARIA label to collapse the sidebar category"
   },
-  "theme.NotFound.p1": {
-    "message": "We could not find what you were looking for.",
-    "description": "The first paragraph of the 404 page"
-  },
-  "theme.NotFound.p2": {
-    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
-    "description": "The 2nd paragraph of the 404 page"
-  },
   "theme.TOCCollapsible.toggleButtonLabel": {
     "message": "On this page",
     "description": "The label used by the button on the collapsible TOC component"
@@ -419,6 +435,10 @@
   "theme.docs.sidebar.expandButtonAriaLabel": {
     "message": "Expand sidebar",
     "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Search by Algolia",
+    "description": "The ARIA label for Algolia mention"
   },
   "theme.SearchBar.label": {
     "message": "Search",

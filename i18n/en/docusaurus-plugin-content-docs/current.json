@@ -7,6 +7,14 @@
     "message": "Introduction",
     "description": "The label for category Introduction in sidebar docs"
   },
+  "sidebar.docs.category.Quick start": {
+    "message": "Quick start",
+    "description": "The label for category Quick start in sidebar docs"
+  },
+  "sidebar.docs.category.Install": {
+    "message": "Install",
+    "description": "The label for category Install in sidebar docs"
+  },
   "sidebar.docs.category.Concepts": {
     "message": "Concepts",
     "description": "The label for category Concepts in sidebar docs"
@@ -15,57 +23,225 @@
     "message": "FAQ",
     "description": "The label for category FAQ in sidebar docs"
   },
-  "sidebar.docs.category.Starter Guides": {
-    "message": "Starter Guides",
-    "description": "The label for category Starter Guides in sidebar docs"
+  "sidebar.docs.category.Starter guides": {
+    "message": "Starter guides",
+    "description": "The label for category Starter guides in sidebar docs"
   },
-  "sidebar.docs.category.Use Case Guides": {
-    "message": "Use Case Guides",
-    "description": "The label for category Use Case Guides in sidebar docs"
+  "sidebar.docs.category.Best practices": {
+    "message": "Best practices",
+    "description": "The label for category Best practices in sidebar docs"
+  },
+  "sidebar.docs.category.Use case guides": {
+    "message": "Use case guides",
+    "description": "The label for category Use case guides in sidebar docs"
   },
   "sidebar.docs.category.Observability": {
     "message": "Observability",
     "description": "The label for category Observability in sidebar docs"
   },
-  "sidebar.docs.category.Migration Guides": {
-    "message": "Migration Guides",
-    "description": "The label for category Migration Guides in sidebar docs"
+  "sidebar.docs.category.Capabilities": {
+    "message": "Capabilities",
+    "description": "The label for category Capabilities in sidebar docs"
   },
-  "sidebar.docs.category.BigQuery": {
-    "message": "BigQuery",
-    "description": "The label for category BigQuery in sidebar docs"
+  "sidebar.docs.category.Build your own": {
+    "message": "Build your own",
+    "description": "The label for category Build your own in sidebar docs"
   },
-  "sidebar.docs.category.PostgreSQL": {
+  "sidebar.docs.category.Time-series": {
+    "message": "Time-series",
+    "description": "The label for category Time-series in sidebar docs"
+  },
+  "sidebar.docs.category.Data lake": {
+    "message": "Data lake",
+    "description": "The label for category Data lake in sidebar docs"
+  },
+  "sidebar.docs.category.AI/ML": {
+    "message": "AI/ML",
+    "description": "The label for category AI/ML in sidebar docs"
+  },
+  "sidebar.docs.category.MCP": {
+    "message": "MCP",
+    "description": "The label for category MCP in sidebar docs"
+  },
+  "sidebar.docs.category.Integrate AI agent libraries": {
+    "message": "Integrate AI agent libraries",
+    "description": "The label for category Integrate AI agent libraries in sidebar docs"
+  },
+  "sidebar.docs.category.Data exploration": {
+    "message": "Data exploration",
+    "description": "The label for category Data exploration in sidebar docs"
+  },
+  "sidebar.docs.category.Example datasets": {
+    "message": "Example datasets",
+    "description": "The label for category Example datasets in sidebar docs"
+  },
+  "sidebar.docs.category.Tips and community wisdom": {
+    "message": "Tips and community wisdom",
+    "description": "The label for category Tips and community wisdom in sidebar docs"
+  },
+  "sidebar.cloud.category.Get started": {
+    "message": "Get started",
+    "description": "The label for category Get started in sidebar cloud"
+  },
+  "sidebar.cloud.category.Discover": {
+    "message": "Discover",
+    "description": "The label for category Discover in sidebar cloud"
+  },
+  "sidebar.cloud.category.Use cases": {
+    "message": "Use cases",
+    "description": "The label for category Use cases in sidebar cloud"
+  },
+  "sidebar.cloud.category.ML/AI": {
+    "message": "ML/AI",
+    "description": "The label for category ML/AI in sidebar cloud"
+  },
+  "sidebar.cloud.category.Setup": {
+    "message": "Setup",
+    "description": "The label for category Setup in sidebar cloud"
+  },
+  "sidebar.cloud.category.Migration guides": {
+    "message": "Migration guides",
+    "description": "The label for category Migration guides in sidebar cloud"
+  },
+  "sidebar.cloud.category.PostgreSQL": {
     "message": "PostgreSQL",
-    "description": "The label for category PostgreSQL in sidebar docs"
+    "description": "The label for category PostgreSQL in sidebar cloud"
   },
-  "sidebar.docs.category.Example Datasets": {
-    "message": "Example Datasets",
-    "description": "The label for category Example Datasets in sidebar docs"
+  "sidebar.cloud.category.Migration guide": {
+    "message": "Migration guide",
+    "description": "The label for category Migration guide in sidebar cloud"
   },
-  "sidebar.docs.doc.Introduction": {
-    "message": "Introduction",
-    "description": "The label for the doc item Introduction in sidebar docs, linking to the doc migrations/postgres/overview"
+  "sidebar.cloud.category.BigQuery": {
+    "message": "BigQuery",
+    "description": "The label for category BigQuery in sidebar cloud"
   },
-  "sidebar.docs.doc.Rockset": {
-    "message": "Rockset",
-    "description": "The label for the doc item Rockset in sidebar docs, linking to the doc integrations/migration/rockset"
+  "sidebar.cloud.category.Snowflake": {
+    "message": "Snowflake",
+    "description": "The label for category Snowflake in sidebar cloud"
   },
-  "sidebar.cloud.category.Get Started": {
-    "message": "Get Started",
-    "description": "The label for category Get Started in sidebar cloud"
+  "sidebar.cloud.category.Elasticsearch": {
+    "message": "Elasticsearch",
+    "description": "The label for category Elasticsearch in sidebar cloud"
   },
-  "sidebar.cloud.category.Managing Cloud": {
-    "message": "Managing Cloud",
-    "description": "The label for category Managing Cloud in sidebar cloud"
+  "sidebar.cloud.category.Redshift": {
+    "message": "Redshift",
+    "description": "The label for category Redshift in sidebar cloud"
+  },
+  "sidebar.cloud.category.OSS to Cloud": {
+    "message": "OSS to Cloud",
+    "description": "The label for category OSS to Cloud in sidebar cloud"
+  },
+  "sidebar.cloud.category.Other...": {
+    "message": "Other...",
+    "description": "The label for category Other... in sidebar cloud"
+  },
+  "sidebar.cloud.category.Tune": {
+    "message": "Tune",
+    "description": "The label for category Tune in sidebar cloud"
+  },
+  "sidebar.cloud.category.Features": {
+    "message": "Features",
+    "description": "The label for category Features in sidebar cloud"
+  },
+  "sidebar.cloud.category.SQL console": {
+    "message": "SQL console",
+    "description": "The label for category SQL console in sidebar cloud"
+  },
+  "sidebar.cloud.category.Infrastructure": {
+    "message": "Infrastructure",
+    "description": "The label for category Infrastructure in sidebar cloud"
+  },
+  "sidebar.cloud.category.Automatic Scaling": {
+    "message": "Automatic Scaling",
+    "description": "The label for category Automatic Scaling in sidebar cloud"
+  },
+  "sidebar.cloud.category.Admin": {
+    "message": "Admin",
+    "description": "The label for category Admin in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud API": {
+    "message": "Cloud API",
+    "description": "The label for category Cloud API in sidebar cloud"
+  },
+  "sidebar.cloud.category.Monitoring": {
+    "message": "Monitoring",
+    "description": "The label for category Monitoring in sidebar cloud"
+  },
+  "sidebar.cloud.category.Guides": {
+    "message": "Guides",
+    "description": "The label for category Guides in sidebar cloud"
   },
   "sidebar.cloud.category.Backups": {
     "message": "Backups",
     "description": "The label for category Backups in sidebar cloud"
   },
-  "sidebar.cloud.category.Monitoring": {
-    "message": "Monitoring",
-    "description": "The label for category Monitoring in sidebar cloud"
+  "sidebar.cloud.category.Bring Your Own Backup": {
+    "message": "Bring Your Own Backup",
+    "description": "The label for category Bring Your Own Backup in sidebar cloud"
+  },
+  "sidebar.cloud.category.Best practices": {
+    "message": "Best practices",
+    "description": "The label for category Best practices in sidebar cloud"
+  },
+  "sidebar.cloud.category.Data sources": {
+    "message": "Data sources",
+    "description": "The label for category Data sources in sidebar cloud"
+  },
+  "sidebar.cloud.category.Deployment options": {
+    "message": "Deployment options",
+    "description": "The label for category Deployment options in sidebar cloud"
+  },
+  "sidebar.cloud.category.BYOC (Bring Your Own Cloud)": {
+    "message": "BYOC (Bring Your Own Cloud)",
+    "description": "The label for category BYOC (Bring Your Own Cloud) in sidebar cloud"
+  },
+  "sidebar.cloud.category.Onboarding": {
+    "message": "Onboarding",
+    "description": "The label for category Onboarding in sidebar cloud"
+  },
+  "sidebar.cloud.category.FAQ": {
+    "message": "FAQ",
+    "description": "The label for category FAQ in sidebar cloud"
+  },
+  "sidebar.cloud.category.Observability": {
+    "message": "Observability",
+    "description": "The label for category Observability in sidebar cloud"
+  },
+  "sidebar.cloud.category.Security": {
+    "message": "Security",
+    "description": "The label for category Security in sidebar cloud"
+  },
+  "sidebar.cloud.category.Cloud access management": {
+    "message": "Cloud access management",
+    "description": "The label for category Cloud access management in sidebar cloud"
+  },
+  "sidebar.cloud.category.Connectivity": {
+    "message": "Connectivity",
+    "description": "The label for category Connectivity in sidebar cloud"
+  },
+  "sidebar.cloud.category.Private networking": {
+    "message": "Private networking",
+    "description": "The label for category Private networking in sidebar cloud"
+  },
+  "sidebar.cloud.category.Audit logging": {
+    "message": "Audit logging",
+    "description": "The label for category Audit logging in sidebar cloud"
+  },
+  "sidebar.cloud.category.Compliance": {
+    "message": "Compliance",
+    "description": "The label for category Compliance in sidebar cloud"
+  },
+  "sidebar.cloud.category.Reference": {
+    "message": "Reference",
+    "description": "The label for category Reference in sidebar cloud"
+  },
+  "sidebar.cloud.category.Change logs": {
+    "message": "Change logs",
+    "description": "The label for category Change logs in sidebar cloud"
+  },
+  "sidebar.cloud.category.Release notes": {
+    "message": "Release notes",
+    "description": "The label for category Release notes in sidebar cloud"
   },
   "sidebar.cloud.category.Billing": {
     "message": "Billing",
@@ -75,157 +251,21 @@
     "message": "Marketplace",
     "description": "The label for category Marketplace in sidebar cloud"
   },
-  "sidebar.cloud.category.Jan 2025 Changes FAQ": {
-    "message": "Jan 2025 Changes FAQ",
-    "description": "The label for category Jan 2025 Changes FAQ in sidebar cloud"
+  "sidebar.cloud.category.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "The label for category ClickPipes in sidebar cloud"
   },
-  "sidebar.cloud.category.Cloud API": {
-    "message": "Cloud API",
-    "description": "The label for category Cloud API in sidebar cloud"
-  },
-  "sidebar.cloud.category.API Reference": {
-    "message": "API Reference",
-    "description": "The label for category API Reference in sidebar cloud"
-  },
-  "sidebar.cloud.category.Cloud Reference ": {
-    "message": "Cloud Reference ",
-    "description": "The label for category Cloud Reference  in sidebar cloud"
-  },
-  "sidebar.cloud.category.Changelogs": {
-    "message": "Changelogs",
-    "description": "The label for category Changelogs in sidebar cloud"
-  },
-  "sidebar.cloud.category.Release Notes": {
-    "message": "Release Notes",
-    "description": "The label for category Release Notes in sidebar cloud"
-  },
-  "sidebar.cloud.category.Best Practices": {
-    "message": "Best Practices",
-    "description": "The label for category Best Practices in sidebar cloud"
-  },
-  "sidebar.cloud.category.Security": {
-    "message": "Security",
-    "description": "The label for category Security in sidebar cloud"
-  },
-  "sidebar.cloud.category.Cloud Access Management": {
-    "message": "Cloud Access Management",
-    "description": "The label for category Cloud Access Management in sidebar cloud"
-  },
-  "sidebar.cloud.category.Connectivity": {
-    "message": "Connectivity",
-    "description": "The label for category Connectivity in sidebar cloud"
-  },
-  "sidebar.cloud.category.Private Networking": {
-    "message": "Private Networking",
-    "description": "The label for category Private Networking in sidebar cloud"
-  },
-  "sidebar.cloud.category.Privacy and Compliance": {
-    "message": "Privacy and Compliance",
-    "description": "The label for category Privacy and Compliance in sidebar cloud"
-  },
-  "sidebar.cloud.category.Migrating to Cloud": {
-    "message": "Migrating to Cloud",
-    "description": "The label for category Migrating to Cloud in sidebar cloud"
-  },
-  "sidebar.cloud.link.Rockset": {
-    "message": "Rockset",
-    "description": "The label for link Rockset in sidebar cloud, linking to /migrations/rockset"
-  },
-  "sidebar.sqlreference.category.Introduction": {
-    "message": "Introduction",
-    "description": "The label for category Introduction in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Data Types": {
-    "message": "Data Types",
-    "description": "The label for category Data Types in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Special Data Types": {
-    "message": "Special Data Types",
-    "description": "The label for category Special Data Types in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Statements": {
-    "message": "Statements",
-    "description": "The label for category Statements in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.SELECT": {
-    "message": "SELECT",
-    "description": "The label for category SELECT in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.CREATE": {
-    "message": "CREATE",
-    "description": "The label for category CREATE in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.ALTER": {
-    "message": "ALTER",
-    "description": "The label for category ALTER in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Engines": {
-    "message": "Engines",
-    "description": "The label for category Engines in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Database Engines": {
-    "message": "Database Engines",
-    "description": "The label for category Database Engines in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Table Engines": {
-    "message": "Table Engines",
-    "description": "The label for category Table Engines in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "MergeTree Family",
-    "description": "The label for category MergeTree Family in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Log Family": {
-    "message": "Log Family",
-    "description": "The label for category Log Family in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Integrations": {
-    "message": "Integrations",
-    "description": "The label for category Integrations in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Special": {
-    "message": "Special",
-    "description": "The label for category Special in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Functions": {
-    "message": "Functions",
-    "description": "The label for category Functions in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Regular Functions": {
-    "message": "Regular Functions",
-    "description": "The label for category Regular Functions in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Geo": {
-    "message": "Geo",
-    "description": "The label for category Geo in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Aggregate Functions": {
-    "message": "Aggregate Functions",
-    "description": "The label for category Aggregate Functions in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Table Functions": {
-    "message": "Table Functions",
-    "description": "The label for category Table Functions in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Window Functions": {
-    "message": "Window Functions",
-    "description": "The label for category Window Functions in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Other Features": {
-    "message": "Other Features",
-    "description": "The label for category Other Features in sidebar sqlreference"
-  },
-  "sidebar.sqlreference.category.Operators": {
-    "message": "Operators",
-    "description": "The label for category Operators in sidebar sqlreference"
-  },
-  "sidebar.integrations.category.Language Clients": {
-    "message": "Language Clients",
-    "description": "The label for category Language Clients in sidebar integrations"
+  "sidebar.integrations.category.Language clients": {
+    "message": "Language clients",
+    "description": "The label for category Language clients in sidebar integrations"
   },
   "sidebar.integrations.category.Java": {
     "message": "Java",
     "description": "The label for category Java in sidebar integrations"
+  },
+  "sidebar.integrations.category.Python": {
+    "message": "Python",
+    "description": "The label for category Python in sidebar integrations"
   },
   "sidebar.integrations.category.Third-party Clients": {
     "message": "Third-party Clients",
@@ -239,21 +279,33 @@
     "message": "ClickPipes for Postgres",
     "description": "The label for category ClickPipes for Postgres in sidebar integrations"
   },
+  "sidebar.integrations.category.Operations": {
+    "message": "Operations",
+    "description": "The label for category Operations in sidebar integrations"
+  },
   "sidebar.integrations.category.Source": {
     "message": "Source",
     "description": "The label for category Source in sidebar integrations"
   },
-  "sidebar.integrations.category.Native Clients & Interfaces": {
-    "message": "Native Clients & Interfaces",
-    "description": "The label for category Native Clients & Interfaces in sidebar integrations"
+  "sidebar.integrations.category.ClickPipes for object storage": {
+    "message": "ClickPipes for object storage",
+    "description": "The label for category ClickPipes for object storage in sidebar integrations"
   },
-  "sidebar.integrations.category.Drivers and Interfaces": {
-    "message": "Drivers and Interfaces",
-    "description": "The label for category Drivers and Interfaces in sidebar integrations"
+  "sidebar.integrations.category.ClickPipes for Kafka": {
+    "message": "ClickPipes for Kafka",
+    "description": "The label for category ClickPipes for Kafka in sidebar integrations"
   },
-  "sidebar.integrations.category.Data Sources": {
-    "message": "Data Sources",
-    "description": "The label for category Data Sources in sidebar integrations"
+  "sidebar.integrations.category.ClickPipes for MySQL": {
+    "message": "ClickPipes for MySQL",
+    "description": "The label for category ClickPipes for MySQL in sidebar integrations"
+  },
+  "sidebar.integrations.category.ClickPipes for MongoDB": {
+    "message": "ClickPipes for MongoDB",
+    "description": "The label for category ClickPipes for MongoDB in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data sources": {
+    "message": "Data sources",
+    "description": "The label for category Data sources in sidebar integrations"
   },
   "sidebar.integrations.category.AWS S3": {
     "message": "AWS S3",
@@ -263,13 +315,13 @@
     "message": "Kafka",
     "description": "The label for category Kafka in sidebar integrations"
   },
-  "sidebar.integrations.category.Apache Spark": {
-    "message": "Apache Spark",
-    "description": "The label for category Apache Spark in sidebar integrations"
+  "sidebar.integrations.category.Table engines": {
+    "message": "Table engines",
+    "description": "The label for category Table engines in sidebar integrations"
   },
-  "sidebar.integrations.category.Data Visualization": {
-    "message": "Data Visualization",
-    "description": "The label for category Data Visualization in sidebar integrations"
+  "sidebar.integrations.category.Data visualization": {
+    "message": "Data visualization",
+    "description": "The label for category Data visualization in sidebar integrations"
   },
   "sidebar.integrations.category.Grafana": {
     "message": "Grafana",
@@ -279,145 +331,113 @@
     "message": "Tableau",
     "description": "The label for category Tableau in sidebar integrations"
   },
-  "sidebar.integrations.category.Data Formats": {
-    "message": "Data Formats",
-    "description": "The label for category Data Formats in sidebar integrations"
+  "sidebar.integrations.category.Third-party": {
+    "message": "Third-party",
+    "description": "The label for category Third-party in sidebar integrations"
+  },
+  "sidebar.integrations.category.Data formats": {
+    "message": "Data formats",
+    "description": "The label for category Data formats in sidebar integrations"
   },
   "sidebar.integrations.category.JSON": {
     "message": "JSON",
     "description": "The label for category JSON in sidebar integrations"
   },
-  "sidebar.integrations.category.View All Formats": {
-    "message": "View All Formats",
-    "description": "The label for category View All Formats in sidebar integrations"
+  "sidebar.integrations.category.Data ingestion": {
+    "message": "Data ingestion",
+    "description": "The label for category Data ingestion in sidebar integrations"
   },
-  "sidebar.integrations.category.Arrow": {
-    "message": "Arrow",
-    "description": "The label for category Arrow in sidebar integrations"
+  "sidebar.integrations.category.Apache Spark": {
+    "message": "Apache Spark",
+    "description": "The label for category Apache Spark in sidebar integrations"
   },
-  "sidebar.integrations.category.Avro": {
-    "message": "Avro",
-    "description": "The label for category Avro in sidebar integrations"
-  },
-  "sidebar.integrations.category.CSV": {
-    "message": "CSV",
-    "description": "The label for category CSV in sidebar integrations"
-  },
-  "sidebar.integrations.category.CustomSeparated": {
-    "message": "CustomSeparated",
-    "description": "The label for category CustomSeparated in sidebar integrations"
-  },
-  "sidebar.integrations.category.LineAsString": {
-    "message": "LineAsString",
-    "description": "The label for category LineAsString in sidebar integrations"
-  },
-  "sidebar.integrations.category.Parquet": {
-    "message": "Parquet",
-    "description": "The label for category Parquet in sidebar integrations"
-  },
-  "sidebar.integrations.category.Pretty": {
-    "message": "Pretty",
-    "description": "The label for category Pretty in sidebar integrations"
-  },
-  "sidebar.integrations.category.Protobuf": {
-    "message": "Protobuf",
-    "description": "The label for category Protobuf in sidebar integrations"
-  },
-  "sidebar.integrations.category.RowBinary": {
-    "message": "RowBinary",
-    "description": "The label for category RowBinary in sidebar integrations"
-  },
-  "sidebar.integrations.category.TabSeparated": {
-    "message": "TabSeparated",
-    "description": "The label for category TabSeparated in sidebar integrations"
-  },
-  "sidebar.integrations.category.Template": {
-    "message": "Template",
-    "description": "The label for category Template in sidebar integrations"
-  },
-  "sidebar.integrations.category.Data Ingestion": {
-    "message": "Data Ingestion",
-    "description": "The label for category Data Ingestion in sidebar integrations"
+  "sidebar.integrations.category.Azure Data Factory": {
+    "message": "Azure Data Factory",
+    "description": "The label for category Azure Data Factory in sidebar integrations"
   },
   "sidebar.integrations.category.Google Dataflow": {
     "message": "Google Dataflow",
     "description": "The label for category Google Dataflow in sidebar integrations"
   },
-  "sidebar.integrations.category.Dataflow Templates": {
-    "message": "Dataflow Templates",
-    "description": "The label for category Dataflow Templates in sidebar integrations"
+  "sidebar.integrations.category.Dataflow templates": {
+    "message": "Dataflow templates",
+    "description": "The label for category Dataflow templates in sidebar integrations"
+  },
+  "sidebar.integrations.category.dbt": {
+    "message": "dbt",
+    "description": "The label for category dbt in sidebar integrations"
   },
   "sidebar.integrations.category.Tools": {
     "message": "Tools",
     "description": "The label for category Tools in sidebar integrations"
   },
-  "sidebar.integrations.category.SQL Clients": {
-    "message": "SQL Clients",
-    "description": "The label for category SQL Clients in sidebar integrations"
+  "sidebar.integrations.category.SQL clients": {
+    "message": "SQL clients",
+    "description": "The label for category SQL clients in sidebar integrations"
   },
-  "sidebar.integrations.category.Data Integrations": {
-    "message": "Data Integrations",
-    "description": "The label for category Data Integrations in sidebar integrations"
-  },
-  "sidebar.integrations.category.Misc": {
-    "message": "Misc",
-    "description": "The label for category Misc in sidebar integrations"
+  "sidebar.integrations.category.Data integrations": {
+    "message": "Data integrations",
+    "description": "The label for category Data integrations in sidebar integrations"
   },
   "sidebar.integrations.doc.Overview": {
     "message": "Overview",
     "description": "The label for the doc item Overview in sidebar integrations, linking to the doc integrations/language-clients/java/index"
   },
-  "sidebar.integrations.doc.Third-party Libraries": {
-    "message": "Third-party Libraries",
-    "description": "The label for the doc item Third-party Libraries in sidebar integrations, linking to the doc interfaces/third-party/integrations"
+  "sidebar.integrations.doc.Introduction": {
+    "message": "Introduction",
+    "description": "The label for the doc item Introduction in sidebar integrations, linking to the doc integrations/language-clients/python/index"
   },
-  "sidebar.managingData.category.Core Concepts": {
-    "message": "Core Concepts",
-    "description": "The label for category Core Concepts in sidebar managingData"
+  "sidebar.managingData.category.Core concepts": {
+    "message": "Core concepts",
+    "description": "The label for category Core concepts in sidebar managingData"
   },
-  "sidebar.managingData.category.Updating Data": {
-    "message": "Updating Data",
-    "description": "The label for category Updating Data in sidebar managingData"
+  "sidebar.managingData.category.Updating data": {
+    "message": "Updating data",
+    "description": "The label for category Updating data in sidebar managingData"
   },
-  "sidebar.managingData.category.Deleting Data": {
-    "message": "Deleting Data",
-    "description": "The label for category Deleting Data in sidebar managingData"
+  "sidebar.managingData.category.Deleting data": {
+    "message": "Deleting data",
+    "description": "The label for category Deleting data in sidebar managingData"
   },
-  "sidebar.managingData.category.Data Modeling": {
-    "message": "Data Modeling",
-    "description": "The label for category Data Modeling in sidebar managingData"
+  "sidebar.managingData.category.Data modeling": {
+    "message": "Data modeling",
+    "description": "The label for category Data modeling in sidebar managingData"
   },
-  "sidebar.managingData.category.Dictionary": {
-    "message": "Dictionary",
-    "description": "The label for category Dictionary in sidebar managingData"
+  "sidebar.managingData.category.Materialized views": {
+    "message": "Materialized views",
+    "description": "The label for category Materialized views in sidebar managingData"
   },
-  "sidebar.managingData.category.Materialized Views": {
-    "message": "Materialized Views",
-    "description": "The label for category Materialized Views in sidebar managingData"
+  "sidebar.managingData.category.Projections": {
+    "message": "Projections",
+    "description": "The label for category Projections in sidebar managingData"
   },
-  "sidebar.managingData.category.Data Compression": {
-    "message": "Data Compression",
-    "description": "The label for category Data Compression in sidebar managingData"
+  "sidebar.managingData.category.Data compression": {
+    "message": "Data compression",
+    "description": "The label for category Data compression in sidebar managingData"
   },
-  "sidebar.managingData.category.Advanced Guides": {
-    "message": "Advanced Guides",
-    "description": "The label for category Advanced Guides in sidebar managingData"
+  "sidebar.managingData.category.Advanced guides": {
+    "message": "Advanced guides",
+    "description": "The label for category Advanced guides in sidebar managingData"
   },
-  "sidebar.managingData.category.Performance and Optimizations": {
-    "message": "Performance and Optimizations",
-    "description": "The label for category Performance and Optimizations in sidebar managingData"
+  "sidebar.managingData.category.Performance and optimizations": {
+    "message": "Performance and optimizations",
+    "description": "The label for category Performance and optimizations in sidebar managingData"
   },
-  "sidebar.managingData.doc.Lightweight Updates": {
-    "message": "Lightweight Updates",
-    "description": "The label for the doc item Lightweight Updates in sidebar managingData, linking to the doc guides/developer/lightweight-update"
+  "sidebar.managingData.category.Data skipping indexes": {
+    "message": "Data skipping indexes",
+    "description": "The label for category Data skipping indexes in sidebar managingData"
+  },
+  "sidebar.managingData.doc.Lightweight updates": {
+    "message": "Lightweight updates",
+    "description": "The label for the doc item Lightweight updates in sidebar managingData, linking to the doc guides/developer/on-fly-mutations"
   },
   "sidebar.managingData.doc.ReplacingMergeTree": {
     "message": "ReplacingMergeTree",
-    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc migrations/postgres/replacing-merge-tree"
+    "description": "The label for the doc item ReplacingMergeTree in sidebar managingData, linking to the doc guides/developer/replacing-merge-tree"
   },
-  "sidebar.managingData.doc.Lightweight Deletes": {
-    "message": "Lightweight Deletes",
-    "description": "The label for the doc item Lightweight Deletes in sidebar managingData, linking to the doc guides/developer/lightweight-delete"
+  "sidebar.managingData.doc.Lightweight deletes": {
+    "message": "Lightweight deletes",
+    "description": "The label for the doc item Lightweight deletes in sidebar managingData, linking to the doc guides/developer/lightweight-delete"
   },
   "sidebar.aboutClickHouse.category.About ClickHouse": {
     "message": "About ClickHouse",
@@ -435,41 +455,33 @@
     "message": "Changelog",
     "description": "The generated-index page title for category Changelog in sidebar aboutClickHouse"
   },
-  "sidebar.aboutClickHouse.category.Development and Contributing": {
-    "message": "Development and Contributing",
-    "description": "The label for category Development and Contributing in sidebar aboutClickHouse"
-  },
-  "sidebar.aboutClickHouse.category.Native Protocol": {
-    "message": "Native Protocol",
-    "description": "The label for category Native Protocol in sidebar aboutClickHouse"
-  },
   "sidebar.aboutClickHouse.category.FAQ": {
     "message": "FAQ",
     "description": "The label for category FAQ in sidebar aboutClickHouse"
   },
-  "sidebar.serverAdmin.category.Manage and Deploy": {
-    "message": "Manage and Deploy",
-    "description": "The label for category Manage and Deploy in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Manage and deploy": {
+    "message": "Manage and deploy",
+    "description": "The label for category Manage and deploy in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.Deployment and Scaling": {
-    "message": "Deployment and Scaling",
-    "description": "The label for category Deployment and Scaling in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Deployment and scaling": {
+    "message": "Deployment and scaling",
+    "description": "The label for category Deployment and scaling in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.Settings": {
-    "message": "Settings",
-    "description": "The label for category Settings in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Examples": {
+    "message": "Examples",
+    "description": "The label for category Examples in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.System Tables": {
-    "message": "System Tables",
-    "description": "The label for category System Tables in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Backup/Restore": {
+    "message": "Backup/Restore",
+    "description": "The label for category Backup/Restore in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.Security and Authentication": {
-    "message": "Security and Authentication",
-    "description": "The label for category Security and Authentication in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Security and authentication": {
+    "message": "Security and authentication",
+    "description": "The label for category Security and authentication in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.External Authenticators": {
-    "message": "External Authenticators",
-    "description": "The label for category External Authenticators in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.External authenticators": {
+    "message": "External authenticators",
+    "description": "The label for category External authenticators in sidebar serverAdmin"
   },
   "sidebar.serverAdmin.category.SSL": {
     "message": "SSL",
@@ -479,25 +491,25 @@
     "message": "LDAP",
     "description": "The label for category LDAP in sidebar serverAdmin"
   },
-  "sidebar.serverAdmin.category.Tools and Utilities": {
-    "message": "Tools and Utilities",
-    "description": "The label for category Tools and Utilities in sidebar serverAdmin"
+  "sidebar.serverAdmin.category.Tools and utilities": {
+    "message": "Tools and utilities",
+    "description": "The label for category Tools and utilities in sidebar serverAdmin"
   },
   "sidebar.chdb.category.chDB": {
     "message": "chDB",
     "description": "The label for category chDB in sidebar chdb"
   },
-  "sidebar.chdb.category.Language Integrations": {
-    "message": "Language Integrations",
-    "description": "The label for category Language Integrations in sidebar chdb"
+  "sidebar.chdb.category.Language integrations": {
+    "message": "Language integrations",
+    "description": "The label for category Language integrations in sidebar chdb"
   },
-  "sidebar.chdb.category.Developer Guides": {
-    "message": "Developer Guides",
-    "description": "The label for category Developer Guides in sidebar chdb"
+  "sidebar.chdb.category.Developer guides": {
+    "message": "Developer guides",
+    "description": "The label for category Developer guides in sidebar chdb"
   },
-  "sidebar.chdb.category.Technical Reference": {
-    "message": "Technical Reference",
-    "description": "The label for category Technical Reference in sidebar chdb"
+  "sidebar.chdb.category.Technical reference": {
+    "message": "Technical reference",
+    "description": "The label for category Technical reference in sidebar chdb"
   },
   "sidebar.chdb.category.Integrations": {
     "message": "Integrations",
@@ -531,25 +543,61 @@
     "message": "Joining ClickHouse, Inc.",
     "description": "The label for link Joining ClickHouse, Inc. in sidebar chdb, linking to https://clickhouse.com/blog/welcome-chdb-to-clickhouse"
   },
-  "sidebar.chdb.link.Team and Contributors": {
-    "message": "Team and Contributors",
-    "description": "The label for link Team and Contributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
+  "sidebar.chdb.link.Team and dontributors": {
+    "message": "Team and dontributors",
+    "description": "The label for link Team and dontributors in sidebar chdb, linking to https://github.com/chdb-io/chdb#contributors"
   },
-  "sidebar.dropdownCategories.category.Getting Started": {
-    "message": "Getting Started",
-    "description": "The label for category Getting Started in sidebar dropdownCategories"
+  "sidebar.clickstack.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "The label for category ClickStack in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Sample datasets": {
+    "message": "Sample datasets",
+    "description": "The label for category Sample datasets in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Deployment": {
+    "message": "Deployment",
+    "description": "The label for category Deployment in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Ingesting data": {
+    "message": "Ingesting data",
+    "description": "The label for category Ingesting data in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.SDKs": {
+    "message": "SDKs",
+    "description": "The label for category SDKs in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Migration guides": {
+    "message": "Migration guides",
+    "description": "The label for category Migration guides in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Migrating from Elastic": {
+    "message": "Migrating from Elastic",
+    "description": "The label for category Migrating from Elastic in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Integration quick start": {
+    "message": "Integration quick start",
+    "description": "The label for category Integration quick start in sidebar clickstack"
+  },
+  "sidebar.clickstack.category.Host Logs": {
+    "message": "Host Logs",
+    "description": "The label for category Host Logs in sidebar clickstack"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "Get started",
+    "description": "The label for category Get started in sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Cloud": {
     "message": "Cloud",
     "description": "The label for category Cloud in sidebar dropdownCategories"
   },
-  "sidebar.dropdownCategories.category.Manage Data": {
-    "message": "Manage Data",
-    "description": "The label for category Manage Data in sidebar dropdownCategories"
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "Manage data",
+    "description": "The label for category Manage data in sidebar dropdownCategories"
   },
-  "sidebar.dropdownCategories.category.Server Admin": {
-    "message": "Server Admin",
-    "description": "The label for category Server Admin in sidebar dropdownCategories"
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "Server admin",
+    "description": "The label for category Server admin in sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.Reference": {
     "message": "Reference",
@@ -558,6 +606,10 @@
   "sidebar.dropdownCategories.category.Integrations": {
     "message": "Integrations",
     "description": "The label for category Integrations in sidebar dropdownCategories"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack",
+    "description": "The label for category ClickStack in sidebar dropdownCategories"
   },
   "sidebar.dropdownCategories.category.chDB": {
     "message": "chDB",
@@ -571,93 +623,89 @@
     "message": "Introduction",
     "description": "The label for link Introduction in sidebar dropdownCategories, linking to /sql-reference"
   },
-  "sidebar.dropdownCategories.link.Starter Guides": {
-    "message": "Starter Guides",
-    "description": "The label for link Starter Guides in sidebar dropdownCategories, linking to /starter-guides"
-  },
   "sidebar.dropdownCategories.link.Concepts": {
     "message": "Concepts",
     "description": "The label for link Concepts in sidebar dropdownCategories, linking to /concepts"
   },
-  "sidebar.dropdownCategories.link.Migration Guides": {
-    "message": "Migration Guides",
-    "description": "The label for link Migration Guides in sidebar dropdownCategories, linking to /migrations/migrations"
+  "sidebar.dropdownCategories.link.Starter guides": {
+    "message": "Starter guides",
+    "description": "The label for link Starter guides in sidebar dropdownCategories, linking to /starter-guides"
   },
-  "sidebar.dropdownCategories.link.Use Case Guides": {
-    "message": "Use Case Guides",
-    "description": "The label for link Use Case Guides in sidebar dropdownCategories, linking to /use-cases"
+  "sidebar.dropdownCategories.link.Best practices": {
+    "message": "Best practices",
+    "description": "The label for link Best practices in sidebar dropdownCategories, linking to /best-practices"
+  },
+  "sidebar.dropdownCategories.link.Migration guides": {
+    "message": "Migration guides",
+    "description": "The label for link Migration guides in sidebar dropdownCategories, linking to /integrations/migration/overview"
+  },
+  "sidebar.dropdownCategories.link.Use case guides": {
+    "message": "Use case guides",
+    "description": "The label for link Use case guides in sidebar dropdownCategories, linking to /use-cases"
   },
   "sidebar.dropdownCategories.link.Example datasets": {
     "message": "Example datasets",
     "description": "The label for link Example datasets in sidebar dropdownCategories, linking to /getting-started/example-datasets"
   },
+  "sidebar.dropdownCategories.link.Tips and community wisdom": {
+    "message": "Tips and community wisdom",
+    "description": "The label for link Tips and community wisdom in sidebar dropdownCategories, linking to /tips-and-tricks/community-wisdom"
+  },
   "sidebar.dropdownCategories.link.Get Started": {
     "message": "Get Started",
     "description": "The label for link Get Started in sidebar dropdownCategories, linking to /cloud/get-started/"
   },
-  "sidebar.dropdownCategories.link.Managing Cloud": {
-    "message": "Managing Cloud",
-    "description": "The label for link Managing Cloud in sidebar dropdownCategories, linking to /cloud/bestpractices"
+  "sidebar.dropdownCategories.link.Features": {
+    "message": "Features",
+    "description": "The label for link Features in sidebar dropdownCategories, linking to /cloud/manage/cloud-tiers"
   },
-  "sidebar.dropdownCategories.link.Cloud API": {
-    "message": "Cloud API",
-    "description": "The label for link Cloud API in sidebar dropdownCategories, linking to /cloud/manage/cloud-api/"
+  "sidebar.dropdownCategories.link.Guides": {
+    "message": "Guides",
+    "description": "The label for link Guides in sidebar dropdownCategories, linking to /chdb/guides"
   },
-  "sidebar.dropdownCategories.link.Cloud Reference": {
-    "message": "Cloud Reference",
-    "description": "The label for link Cloud Reference in sidebar dropdownCategories, linking to /cloud/reference/"
+  "sidebar.dropdownCategories.link.Reference": {
+    "message": "Reference",
+    "description": "The label for link Reference in sidebar dropdownCategories, linking to /cloud/reference/"
   },
-  "sidebar.dropdownCategories.link.Best Practices": {
-    "message": "Best Practices",
-    "description": "The label for link Best Practices in sidebar dropdownCategories, linking to /cloud/bestpractices/"
+  "sidebar.dropdownCategories.link.Core data concepts": {
+    "message": "Core data concepts",
+    "description": "The label for link Core data concepts in sidebar dropdownCategories, linking to /managing-data/core-concepts"
   },
-  "sidebar.dropdownCategories.link.Security": {
-    "message": "Security",
-    "description": "The label for link Security in sidebar dropdownCategories, linking to /cloud/security/"
-  },
-  "sidebar.dropdownCategories.link.Migrating to Cloud": {
-    "message": "Migrating to Cloud",
-    "description": "The label for link Migrating to Cloud in sidebar dropdownCategories, linking to /integrations/migration"
-  },
-  "sidebar.dropdownCategories.link.Core Data Concepts": {
-    "message": "Core Data Concepts",
-    "description": "The label for link Core Data Concepts in sidebar dropdownCategories, linking to /managing-data/core-concepts"
-  },
-  "sidebar.dropdownCategories.link.Updating Data": {
-    "message": "Updating Data",
-    "description": "The label for link Updating Data in sidebar dropdownCategories, linking to /updating-data"
+  "sidebar.dropdownCategories.link.Updating data": {
+    "message": "Updating data",
+    "description": "The label for link Updating data in sidebar dropdownCategories, linking to /updating-data"
   },
   "sidebar.dropdownCategories.link.Deleting data": {
     "message": "Deleting data",
     "description": "The label for link Deleting data in sidebar dropdownCategories, linking to /managing-data/deleting-data/overview"
   },
-  "sidebar.dropdownCategories.link.Data Modeling": {
-    "message": "Data Modeling",
-    "description": "The label for link Data Modeling in sidebar dropdownCategories, linking to /data-modeling/overview"
+  "sidebar.dropdownCategories.link.Data modeling": {
+    "message": "Data modeling",
+    "description": "The label for link Data modeling in sidebar dropdownCategories, linking to /data-modeling/overview"
   },
-  "sidebar.dropdownCategories.link.Performance and Optimizations": {
-    "message": "Performance and Optimizations",
-    "description": "The label for link Performance and Optimizations in sidebar dropdownCategories, linking to /operations/overview"
+  "sidebar.dropdownCategories.link.Performance and optimizations": {
+    "message": "Performance and optimizations",
+    "description": "The label for link Performance and optimizations in sidebar dropdownCategories, linking to /operations/overview"
   },
-  "sidebar.dropdownCategories.link.Deployments and Scaling": {
-    "message": "Deployments and Scaling",
-    "description": "The label for link Deployments and Scaling in sidebar dropdownCategories, linking to /deployment-guides/index"
+  "sidebar.dropdownCategories.link.Deployments and scaling": {
+    "message": "Deployments and scaling",
+    "description": "The label for link Deployments and scaling in sidebar dropdownCategories, linking to /deployment-guides/index"
   },
-  "sidebar.dropdownCategories.link.Security and Authentication": {
-    "message": "Security and Authentication",
-    "description": "The label for link Security and Authentication in sidebar dropdownCategories, linking to /security-and-authentication"
+  "sidebar.dropdownCategories.link.Security and authentication": {
+    "message": "Security and authentication",
+    "description": "The label for link Security and authentication in sidebar dropdownCategories, linking to /security-and-authentication"
   },
   "sidebar.dropdownCategories.link.Settings": {
     "message": "Settings",
     "description": "The label for link Settings in sidebar dropdownCategories, linking to /operations/settings"
   },
-  "sidebar.dropdownCategories.link.Tools and Utilities": {
-    "message": "Tools and Utilities",
-    "description": "The label for link Tools and Utilities in sidebar dropdownCategories, linking to /operations/utilities"
+  "sidebar.dropdownCategories.link.Tools and utilities": {
+    "message": "Tools and utilities",
+    "description": "The label for link Tools and utilities in sidebar dropdownCategories, linking to /operations/utilities"
   },
-  "sidebar.dropdownCategories.link.System Tables": {
-    "message": "System Tables",
-    "description": "The label for link System Tables in sidebar dropdownCategories, linking to /operations/system-tables"
+  "sidebar.dropdownCategories.link.System tables": {
+    "message": "System tables",
+    "description": "The label for link System tables in sidebar dropdownCategories, linking to /operations/system-tables"
   },
   "sidebar.dropdownCategories.link.Functions": {
     "message": "Functions",
@@ -667,53 +715,77 @@
     "message": "Engines",
     "description": "The label for link Engines in sidebar dropdownCategories, linking to /engines"
   },
-  "sidebar.dropdownCategories.link.Other Features": {
-    "message": "Other Features",
-    "description": "The label for link Other Features in sidebar dropdownCategories, linking to /sql-reference/operators"
+  "sidebar.dropdownCategories.link.All integrations": {
+    "message": "All integrations",
+    "description": "The label for link All integrations in sidebar dropdownCategories, linking to /integrations"
   },
-  "sidebar.dropdownCategories.link.All Integrations": {
-    "message": "All Integrations",
-    "description": "The label for link All Integrations in sidebar dropdownCategories, linking to /integrations"
-  },
-  "sidebar.dropdownCategories.link.Language Clients": {
-    "message": "Language Clients",
-    "description": "The label for link Language Clients in sidebar dropdownCategories, linking to /integrations/language-clients"
+  "sidebar.dropdownCategories.link.Language clients": {
+    "message": "Language clients",
+    "description": "The label for link Language clients in sidebar dropdownCategories, linking to /integrations/language-clients"
   },
   "sidebar.dropdownCategories.link.ClickPipes": {
     "message": "ClickPipes",
     "description": "The label for link ClickPipes in sidebar dropdownCategories, linking to /integrations/clickpipes"
   },
-  "sidebar.dropdownCategories.link.Native Clients & Interfaces": {
-    "message": "Native Clients & Interfaces",
-    "description": "The label for link Native Clients & Interfaces in sidebar dropdownCategories, linking to /interfaces/"
+  "sidebar.dropdownCategories.link.Native clients & interfaces": {
+    "message": "Native clients & interfaces",
+    "description": "The label for link Native clients & interfaces in sidebar dropdownCategories, linking to /interfaces/natives-clients-and-interfaces"
   },
-  "sidebar.dropdownCategories.link.Data Sources": {
-    "message": "Data Sources",
-    "description": "The label for link Data Sources in sidebar dropdownCategories, linking to /integrations/index"
+  "sidebar.dropdownCategories.link.Data sources": {
+    "message": "Data sources",
+    "description": "The label for link Data sources in sidebar dropdownCategories, linking to /integrations/data-sources/index"
   },
-  "sidebar.dropdownCategories.link.Data Visualization": {
-    "message": "Data Visualization",
-    "description": "The label for link Data Visualization in sidebar dropdownCategories, linking to /integrations/data-visualization"
+  "sidebar.dropdownCategories.link.Data visualization": {
+    "message": "Data visualization",
+    "description": "The label for link Data visualization in sidebar dropdownCategories, linking to /integrations/data-visualization"
   },
-  "sidebar.dropdownCategories.link.Data Formats": {
-    "message": "Data Formats",
-    "description": "The label for link Data Formats in sidebar dropdownCategories, linking to /integrations/data-formats"
+  "sidebar.dropdownCategories.link.Data formats": {
+    "message": "Data formats",
+    "description": "The label for link Data formats in sidebar dropdownCategories, linking to /integrations/data-formats"
   },
-  "sidebar.dropdownCategories.link.Data Ingestion": {
-    "message": "Data Ingestion",
-    "description": "The label for link Data Ingestion in sidebar dropdownCategories, linking to /integrations/data-ingestion-overview"
+  "sidebar.dropdownCategories.link.Data ingestion": {
+    "message": "Data ingestion",
+    "description": "The label for link Data ingestion in sidebar dropdownCategories, linking to /integrations/data-ingestion-overview"
+  },
+  "sidebar.dropdownCategories.link.Getting started": {
+    "message": "Getting started",
+    "description": "The label for link Getting started in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/getting-started"
+  },
+  "sidebar.dropdownCategories.link.Sample datasets": {
+    "message": "Sample datasets",
+    "description": "The label for link Sample datasets in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Architecture": {
+    "message": "Architecture",
+    "description": "The label for link Architecture in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/sample-datasets"
+  },
+  "sidebar.dropdownCategories.link.Deployment": {
+    "message": "Deployment",
+    "description": "The label for link Deployment in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/deployment"
+  },
+  "sidebar.dropdownCategories.link.Ingesting data": {
+    "message": "Ingesting data",
+    "description": "The label for link Ingesting data in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/ingesting-data"
+  },
+  "sidebar.dropdownCategories.link.Configuration options": {
+    "message": "Configuration options",
+    "description": "The label for link Configuration options in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Production": {
+    "message": "Production",
+    "description": "The label for link Production in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/production"
+  },
+  "sidebar.dropdownCategories.link.Integration examples": {
+    "message": "Integration examples",
+    "description": "The label for link Integration examples in sidebar dropdownCategories, linking to /use-cases/observability/clickstack/integration-guides"
   },
   "sidebar.dropdownCategories.link.Learn chDB": {
     "message": "Learn chDB",
     "description": "The label for link Learn chDB in sidebar dropdownCategories, linking to /chdb"
   },
-  "sidebar.dropdownCategories.link.Language Integrations": {
-    "message": "Language Integrations",
-    "description": "The label for link Language Integrations in sidebar dropdownCategories, linking to /chdb/install"
-  },
-  "sidebar.dropdownCategories.link.Guides": {
-    "message": "Guides",
-    "description": "The label for link Guides in sidebar dropdownCategories, linking to /chdb/guides"
+  "sidebar.dropdownCategories.link.Language integrations": {
+    "message": "Language integrations",
+    "description": "The label for link Language integrations in sidebar dropdownCategories, linking to /chdb/install"
   },
   "sidebar.dropdownCategories.link.Adopters": {
     "message": "Adopters",
@@ -721,14 +793,14 @@
   },
   "sidebar.dropdownCategories.link.Changelogs": {
     "message": "Changelogs",
-    "description": "The label for link Changelogs in sidebar dropdownCategories, linking to /whats-new/security-changelog"
+    "description": "The label for link Changelogs in sidebar dropdownCategories, linking to /category/changelog"
   },
   "sidebar.dropdownCategories.link.Support": {
     "message": "Support",
     "description": "The label for link Support in sidebar dropdownCategories, linking to /about-us/support"
   },
-  "sidebar.dropdownCategories.link.Development and Contributing": {
-    "message": "Development and Contributing",
-    "description": "The label for link Development and Contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
+  "sidebar.dropdownCategories.link.Development and contributing": {
+    "message": "Development and contributing",
+    "description": "The label for link Development and contributing in sidebar dropdownCategories, linking to /development/developer-instruction"
   }
 }

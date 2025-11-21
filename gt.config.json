@@ -1,0 +1,62 @@
+{
+    "defaultLocale": "en",
+    "files": {
+      "md": {
+        "include": [
+          "docs/**/*.md",
+          "knowledgebase/**/*.md"
+        ],
+        "exclude": [
+          "docs/chdb/index.md"
+        ],
+        "transform": [
+          {
+            "match": "^docs/(.*)\\.md$",
+            "replace": "i18n/{locale}/docusaurus-plugin-content-docs/current/$1.md"
+          },
+          {
+            "match": "^knowledgebase/(.*)\\.md$",
+            "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.md"
+          }
+        ]
+      },
+      "mdx": {
+        "include": [
+          "docs/**/*.mdx",
+          "knowledgebase/**/*.mdx"
+        ],
+        "transform": [
+          {
+            "match": "^docs/(.*)\\.mdx$",
+            "replace": "i18n/{locale}/docusaurus-plugin-content-docs/current/$1.mdx"
+          },
+          {
+            "match": "^knowledgebase/(.*)\\.mdx$",
+            "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.mdx"
+          }
+        ]
+      },
+      "json": {
+        "include": [
+          "i18n/[locale]/**/*.json"
+        ]
+      },
+      "gt": {
+        "output": "i18n/locales/[locale].json"
+      }
+    },
+    "locales": [
+      "en",
+      "zh",
+      "ru",
+      "jp"
+    ],
+    "customMapping": {
+      "jp": {
+        "code": "ja"
+      }
+    },
+    "options": {
+      "experimentalClearLocaleDirs": true
+    }
+  }
