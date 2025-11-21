@@ -48,7 +48,7 @@ Docker Compose открывает дополнительные порты для
 - Развертывания ClickStack с отдельным размещением ClickHouse, например, с использованием ClickHouse Cloud
 
 
-## Этапы развертывания {#deployment-steps}
+## Шаги развертывания {#deployment-steps}
 
 <br />
 
@@ -56,32 +56,28 @@ Docker Compose открывает дополнительные порты для
 
 ### Клонирование репозитория {#clone-the-repo}
 
-Для развертывания с помощью Docker Compose клонируйте репозиторий HyperDX, перейдите в его каталог и выполните `docker-compose up`:
-
+Для развертывания с помощью Docker Compose клонируйте репозиторий HyperDX, перейдите в каталог и выполните команду `docker-compose up`:
 
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
-cd hyperdx
-# переключиться на ветку v2
-git checkout v2
 docker compose up
 ```
 
 ### Переход к интерфейсу HyperDX {#navigate-to-hyperdx-ui}
 
-Откройте [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX.
+Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX.
 
 Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям.
 
-При нажатии `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
+При нажатии кнопки `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
 
 :::note Переопределение подключения по умолчанию
-Вы можете переопределить подключение по умолчанию к интегрированному экземпляру ClickHouse. Подробности см. в разделе ["Использование ClickHouse Cloud"](#using-clickhouse-cloud).
+Вы можете переопределить подключение по умолчанию к интегрированному экземпляру ClickHouse. Подробности см. в разделе [«Использование ClickHouse Cloud»](#using-clickhouse-cloud).
 :::
 
 <Image img={hyperdx_login} alt='Интерфейс HyperDX' size='lg' />
 
-Пример использования альтернативного экземпляра ClickHouse см. в разделе ["Создание подключения к ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+Пример использования альтернативного экземпляра ClickHouse см. в разделе [«Создание подключения к ClickHouse Cloud»](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ### Заполнение параметров подключения {#complete-connection-details}
 

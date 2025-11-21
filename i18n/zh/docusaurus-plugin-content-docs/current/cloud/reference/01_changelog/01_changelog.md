@@ -42,6 +42,12 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 :::
 
 
+## November 21, 2025 {#november-21-2025}
+
+- ClickHouse Cloud 现已在 **AWS 以色列（特拉维夫）— il-central-1** 区域上线
+- 改进了市场入门体验，便于设置 ClickHouse 组织并通过市场按量付费订阅或私有优惠进行计费。
+
+
 ## 2025年11月14日 {#november-14-2025}
 
 - 我们很高兴地宣布 **ClickHouse Cloud** 现已在**两个新增公共区域**中可用:

@@ -54,16 +54,12 @@ Docker Compose 基于默认的 `otel-collector` 配置暴露了用于可观测�
 
 <VerticalStepper headerLevel="h3">
 
-### 克隆仓库 {#clone-the-repo}
+### 克隆代码仓库 {#clone-the-repo}
 
-使用 Docker Compose 部署时,请克隆 HyperDX 仓库,进入该目录并运行 `docker-compose up`:
-
+要使用 Docker Compose 进行部署,请克隆 HyperDX 代码仓库,进入该目录并运行 `docker-compose up`:
 
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
-cd hyperdx
-# 切换到 v2 分支
-git checkout v2
 docker compose up
 ```
 
@@ -83,7 +79,7 @@ docker compose up
 
 有关使用其他 ClickHouse 实例的示例,请参阅 ["创建 ClickHouse Cloud 连接"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
-### 完成连接详细信息 {#complete-connection-details}
+### 完成连接配置 {#complete-connection-details}
 
 要连接到已部署的 ClickHouse 实例,只需点击 **Create** 并接受默认设置即可。
 
@@ -91,7 +87,7 @@ docker compose up
 
 如果系统提示创建数据源,请保留所有默认值,并在 `Table` 字段中填入 `otel_logs`。其他设置将自动检测,然后您可以点击 `Save New Source`。
 
-<Image img={hyperdx_logs} alt='创建日志源' size='md' />
+<Image img={hyperdx_logs} alt='创建日志数据源' size='md' />
 
 </VerticalStepper>
 
