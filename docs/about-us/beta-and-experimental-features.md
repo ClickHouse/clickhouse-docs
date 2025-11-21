@@ -128,10 +128,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `0` |
 | [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
+| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `0` |
 | [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) | `0` |
-| [allow_experimental_live_view](/operations/settings/settings#allow_experimental_live_view) | `0` |
-| [live_view_heartbeat_interval](/operations/settings/settings#live_view_heartbeat_interval) | `15` |
-| [max_live_view_insert_blocks_before_refresh](/operations/settings/settings#max_live_view_insert_blocks_before_refresh) | `64` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -159,6 +157,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |
 | [distributed_plan_force_shuffle_aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `0` |
+| [join_runtime_filter_exact_values_limit](/operations/settings/settings#join_runtime_filter_exact_values_limit) | `10000` |
 | [join_runtime_bloom_filter_bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes) | `524288` |
 | [join_runtime_bloom_filter_hash_functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions) | `3` |
 | [rewrite_in_to_join](/operations/settings/settings#rewrite_in_to_join) | `0` |
