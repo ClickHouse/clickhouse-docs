@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm-configuration
-title: 'Helm Configuration'
+title: 'Helm configuration'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4

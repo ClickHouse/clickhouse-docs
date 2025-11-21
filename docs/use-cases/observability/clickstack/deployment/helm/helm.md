@@ -14,7 +14,7 @@ import hyperdx_24 from '@site/static/images/use-cases/observability/hyperdx-24.p
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-:::note Chart Migration
+:::warning Chart Migration
 If you are currently using the `hdx-oss-v2` chart, please migrate to the `clickstack` chart. The `hdx-oss-v2` chart is in maintenance mode and will no longer receive new features. All new development is focused on the `clickstack` chart, which provides the same functionality with improved naming and better organization.
 :::
 
@@ -349,13 +349,13 @@ helm install my-clickstack clickstack/clickstack \
 
 ## Related Documentation {#related-documentation}
 
-### Deployment Guides {#deployment-guides}
-- [Deployment Options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External ClickHouse, OTEL collector, and minimal deployments
-- [Configuration Guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API keys, secrets, and ingress setup
-- [Cloud Deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, AKS configurations and production best practices
+### Deployment guides {#deployment-guides}
+- [Deployment options](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - External ClickHouse, OTEL collector, and minimal deployments
+- [Configuration guide](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API keys, secrets, and ingress setup
+- [Cloud deployments](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE, EKS, AKS configurations and production best practices
 
-### Additional Resources {#additional-resources}
-- [ClickStack Getting Started Guide](/docs/use-cases/observability/clickstack/getting-started) - Introduction to ClickStack
-- [ClickStack Helm Charts Repository](https://github.com/hyperdxio/helm-charts) - Chart source code and values reference
-- [Kubernetes Documentation](https://kubernetes.io/docs/) - Kubernetes reference
-- [Helm Documentation](https://helm.sh/docs/) - Helm reference
+### Additional resources {#additional-resources}
+- [ClickStack getting started guide](/docs/use-cases/observability/clickstack/getting-started) - Introduction to ClickStack
+- [ClickStack Helm charts repository](https://github.com/hyperdxio/helm-charts) - Chart source code and values reference
+- [Kubernetes documentation](https://kubernetes.io/docs/) - Kubernetes reference
+- [Helm documentation](https://helm.sh/docs/) - Helm reference

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm-cloud
-title: 'Helm Cloud Deployments'
+title: 'Helm cloud deployments'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm-deployment-options
-title: 'Helm Deployment Options'
+title: 'Helm deployment options'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
