@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'ClickHouse OSS'
+sidebar_label: 'Using remoteSecure'
 slug: /cloud/migration/clickhouse-to-cloud
 title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
@@ -16,13 +16,13 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
-# Migrating between self-managed ClickHouse and ClickHouse Cloud
+# Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure
 
 <Image img={self_managed_01} size='md' alt='Migrating Self-managed ClickHouse' background='white' />
 
 This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](/sql-reference/table-functions/remote) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
-## Migrating from Self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
+## Migrating from self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size='sm' alt='Migrating Self-managed ClickHouse' background='white' />
 
