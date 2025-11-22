@@ -1,0 +1,72 @@
+---
+description: 'Возвращает массив приблизительно наиболее часто встречающихся значений в указанном столбце. Полученный массив отсортирован по убыванию их приблизительной частоты (а не по самим значениям). Также учитывается вес каждого значения.'
+sidebar_position: 203
+slug: /sql-reference/aggregate-functions/reference/topkweighted
+title: 'topKWeighted'
+doc_type: 'reference'
+---
+
+# topKWeighted
+
+Возвращает массив приблизительно наиболее часто встречающихся значений в указанном столбце. Полученный массив отсортирован по убыванию их приблизительной частоты (а не по самим значениям). Также учитывается вес значений.
+
+**Синтаксис**
+
+```sql
+topKWeighted(N)(column, weight)
+topKWeighted(N, load_factor)(column, weight)
+topKWeighted(N, load_factor, 'counts')(column, weight)
+```
+
+**Параметры**
+
+* `N` — Количество возвращаемых элементов. Необязательный параметр. Значение по умолчанию: 10.
+* `load_factor` — Определяет, сколько ячеек резервируется для значений. Если uniq(column) &gt; N * load&#95;factor, результат функции topK будет приближенным. Необязательный параметр. Значение по умолчанию: 3.
+* `counts` — Определяет, должен ли результат содержать приблизительное количество и величину ошибки.
+
+**Аргументы**
+
+* `column` — Значение.
+* `weight` — Вес. Каждое значение учитывается `weight` раз при вычислении частоты. [UInt64](../../../sql-reference/data-types/int-uint.md).
+
+**Возвращаемое значение**
+
+Возвращает массив значений с максимальной приблизительной суммой весов.
+
+**Пример**
+
+Запрос:
+
+```sql
+SELECT topKWeighted(2)(k, w) FROM
+VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10))
+```
+
+Результат:
+
+```text
+┌─topKWeighted(2)(k, w)──┐
+│ ['z','x']              │
+└────────────────────────┘
+```
+
+Запрос:
+
+```sql
+SELECT topKWeighted(2, 10, 'counts')(k, w)
+FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10))
+```
+
+Результат:
+
+```text
+┌─topKWeighted(2, 10, 'counts')(k, w)─┐
+│ [('z',10,0),('x',5,0)]              │
+└─────────────────────────────────────┘
+```
+
+**См. также**
+
+* [topK](../../../sql-reference/aggregate-functions/reference/topk.md)
+* [approx&#95;top&#95;k](../../../sql-reference/aggregate-functions/reference/approxtopk.md)
+* [approx&#95;top&#95;sum](../../../sql-reference/aggregate-functions/reference/approxtopsum.md)

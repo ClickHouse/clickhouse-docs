@@ -1,0 +1,71 @@
+---
+description: '入力データに Largest-Triangle-Three-Buckets アルゴリズムを適用します。'
+sidebar_label: 'largestTriangleThreeBuckets'
+sidebar_position: 159
+slug: /sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets
+title: 'largestTriangleThreeBuckets'
+doc_type: 'reference'
+---
+
+# largestTriangleThreeBuckets
+
+入力データに [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) アルゴリズムを適用します。
+このアルゴリズムは、可視化のために時系列データをダウンサンプリングするために使用されます。x 座標でソートされた系列に対して動作するように設計されています。
+アルゴリズムは、ソートされた系列をバケットに分割し、それぞれのバケット内で最大の三角形を見つけることで動作します。バケット数は、ダウンサンプリング後に得られる系列内の点の数と等しくなります。
+この関数はまずデータを `x` でソートし、そのソート済みデータに対してダウンサンプリングアルゴリズムを適用します。
+
+**構文**
+
+```sql
+largestTriangleThreeBuckets(n)(x, y)
+```
+
+別名：`lttb`。
+
+**引数**
+
+* `x` — x 座標。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
+* `y` — y 座標。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
+
+指定された系列内の NaN は無視され、NaN の値は解析から除外されます。これにより、この関数は有効な数値データのみに対して動作します。
+
+**パラメータ**
+
+* `n` — 結果の系列内の点の数。 [UInt64](../../../sql-reference/data-types/int-uint.md)。
+
+**返される値**
+
+2 要素を持つ [Tuple](../../../sql-reference/data-types/tuple.md) の [Array](../../../sql-reference/data-types/array.md):
+
+**例**
+
+入力テーブル:
+
+```text
+┌─────x───────┬───────y──────┐
+│ 1.000000000 │ 10.000000000 │
+│ 2.000000000 │ 20.000000000 │
+│ 3.000000000 │ 15.000000000 │
+│ 8.000000000 │ 60.000000000 │
+│ 9.000000000 │ 55.000000000 │
+│ 10.00000000 │ 70.000000000 │
+│ 4.000000000 │ 30.000000000 │
+│ 5.000000000 │ 40.000000000 │
+│ 6.000000000 │ 35.000000000 │
+│ 7.000000000 │ 50.000000000 │
+└─────────────┴──────────────┘
+```
+
+クエリ：
+
+```sql
+SELECT largestTriangleThreeBuckets(4)(x, y) FROM largestTriangleThreeBuckets_test;
+```
+
+結果：
+
+```text
+┌────────largestTriangleThreeBuckets(4)(x, y)───────────┐
+│           [(1,10),(3,15),(9,55),(10,70)]              │
+└───────────────────────────────────────────────────────┘
+```

@@ -1,0 +1,65 @@
+---
+description: '合計を計算します。数値型に対してのみ使用できます。'
+sidebar_position: 195
+slug: /sql-reference/aggregate-functions/reference/sum
+title: 'sum'
+doc_type: 'reference'
+---
+
+# sum
+
+合計を計算します。数値に対してのみ使用できます。
+
+**構文**
+
+```sql
+sum(num)
+```
+
+**パラメータ**
+
+* `num`: 数値型のカラム。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md) のいずれか。
+
+**返される値**
+
+* 値の合計。型は [(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md) のいずれか。
+
+**例**
+
+まずテーブル `employees` を作成し、架空の従業員データを挿入します。
+
+クエリ:
+
+```sql
+CREATE TABLE employees
+(
+    `id` UInt32,
+    `name` String,
+    `salary` UInt32
+)
+ENGINE = Log
+```
+
+```sql
+INSERT INTO employees VALUES
+    (87432, 'John Smith', 45680),
+    (59018, 'Jane Smith', 72350),
+    (20376, 'Ivan Ivanovich', 58900),
+    (71245, 'Anastasia Ivanovna', 89210);
+```
+
+`sum` 関数を使用して、従業員の給与総額を集計します。
+
+クエリ:
+
+```sql
+SELECT sum(salary) FROM employees;
+```
+
+結果：
+
+```response
+   ┌─sum(salary)─┐
+1. │      266140 │
+   └─────────────┘
+```

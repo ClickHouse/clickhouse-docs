@@ -1,0 +1,16 @@
+---
+description: '重複のない引数値から配列を作成します。'
+sidebar_position: 154
+slug: /sql-reference/aggregate-functions/reference/groupuniqarray
+title: 'groupUniqArray'
+doc_type: 'reference'
+---
+
+# groupUniqArray
+
+構文: `groupUniqArray(x)` または `groupUniqArray(max_size)(x)`
+
+引数の異なる値から配列を作成します。メモリ使用量は [uniqExact](../../../sql-reference/aggregate-functions/reference/uniqexact.md) 関数と同じです。
+
+2 番目のバージョン（`max_size` パラメータ付き）は、結果配列のサイズを `max_size` 要素に制限します。
+たとえば、`groupUniqArray(1)(x)` は `[any(x)]` と同等です。
