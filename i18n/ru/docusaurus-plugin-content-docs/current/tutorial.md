@@ -548,5 +548,3 @@ LAYOUT(HASHED_ARRAY())
 - [Интеграция внешних источников данных](/integrations/index.mdx): Ознакомьтесь с вариантами интеграции источников данных, включая файлы, Kafka, PostgreSQL, конвейеры данных и многие другие.
 - [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите ваш любимый инструмент UI/BI к ClickHouse.
 - [Справочник SQL](./sql-reference/index.md): Ознакомьтесь с SQL-функциями, доступными в ClickHouse для преобразования, обработки и анализа данных.
-
-test again!!

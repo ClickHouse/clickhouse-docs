@@ -548,5 +548,3 @@ LAYOUT(HASHED_ARRAY())
 - [集成外部数据源](/integrations/index.mdx)：查看数据源集成选项，包括文件、Kafka、PostgreSQL、数据管道等多种方式。
 - [ClickHouse 数据可视化](./integrations/data-visualization/index.md)：将您常用的 UI/BI 工具连接到 ClickHouse。
 - [SQL 参考手册](./sql-reference/index.md)：浏览 ClickHouse 中用于数据转换、处理和分析的 SQL 函数。
-
-test again!!
