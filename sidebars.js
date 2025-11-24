@@ -2117,6 +2117,12 @@ const sidebars = {
           label: "Integration examples",
           description: "Integration quick start guides",
           href: "/use-cases/observability/clickstack/integration-guides"
+        },
+        {
+          type: "link",
+          label: "API reference",
+          description: "API docs for ClickStack",
+          href: "/use-cases/observability/clickstack/api-reference/hyperdx-external-api"
         }
       ]
     },
