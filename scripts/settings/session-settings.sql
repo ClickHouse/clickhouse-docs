@@ -40,6 +40,16 @@ WITH
         FROM file(cpp_file, LineAsString)
         WHERE match(line, '^\\s*DECLARE(?:_WITH_ALIAS)?\\(')
     ),
+    setting_aliases AS
+    (
+        SELECT
+            alias_for,
+            groupArray(name) AS aliases
+        FROM system.settings
+        WHERE alias_for != ''
+        AND alias_for IN settings_from_cpp
+        GROUP BY alias_for
+    ),
     settings_with_change_history AS
     (
         SELECT
@@ -54,11 +64,14 @@ WITH
     main_content AS
     (
     SELECT
-        format('## {}{}{}{}{}{}{}\n\n',
+        format('## {}{}{}{}{}{}{}{}\n\n',
         name,
         ' {#'||name||'} \n\n',
         multiIf(tier == 'Experimental', '<ExperimentalBadge/>\n\n', tier == 'Beta', '<BetaBadge/>\n\n', ''),
         if(description LIKE '%Only has an effect in ClickHouse Cloud%', '<CloudOnlyBadge/>\n\n', ''),
+        if(sa.aliases IS NOT NULL AND length(sa.aliases) > 0,
+           '**Aliases**: ' || arrayStringConcat(arrayMap(x -> '`' || x || '`', sa.aliases), ', ') || '\n\n',
+           ''),
         if(
             type != '' AND default != '',
             format(
@@ -71,6 +84,7 @@ WITH
         if(rows != '', printf('\n\n<VersionHistory rows={%s}/>\n\n', rows), ''),
         replaceOne(trim(BOTH '\\n' FROM description), ' and [MaterializedMySQL](../../engines/database-engines/materialized-mysql.md)',''))
     FROM settings_with_change_history
+    LEFT JOIN setting_aliases sa ON settings_with_change_history.name = sa.alias_for
     ORDER BY name
     ),
 '---

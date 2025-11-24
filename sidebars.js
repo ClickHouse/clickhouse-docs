@@ -537,6 +537,7 @@ const sidebars = {
               items: [
                 "integrations/data-ingestion/clickpipes/mongodb/source/atlas",
                 "integrations/data-ingestion/clickpipes/mongodb/source/generic",
+                "integrations/data-ingestion/clickpipes/mongodb/source/documentdb",
               ],
             },
           ],
