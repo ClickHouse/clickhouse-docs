@@ -5,7 +5,7 @@ description: "Deletes an alert"
 sidebar_label: "Delete Alert"
 hide_title: true
 hide_table_of_contents: true
-api: eJzFVE1v2zAM/SuGThsQxG6adlhu2ZJhxXYo2hUYUOTAWEyszpZUSi6SGfnvI20nTZtipwHLwdHHI/n4SLFRGkNOxkfjrJqoGZYYMSRgEyiRohoo55FArq80A3QLmPZ3EdZBTe5Vuw9qMVAeCCpGkJw3yvKGrYxmsJEAHmLBa8LH2hCyx0g1DlTIC6xATRoVt14sQiRj12o3eEWwjZRczdgHbqDypYAvL1YXOIbz5Uf88CHPsjM4G52PLy7VbiGhgnc2YBDvoyyTv5c+b+s8xxBWdVluky5BfUg/dzaijWIF3pcmb7VIH4KYNqfE3fIBczH0JMpF0wbmPKKJLdl55eP2piclCR7yaHb8G6hxdnbK8c5CHQtH5jfqf8ZKVZw2rPEN3Y8JEzlSe27jU25dTayLycrV9v/R40NuvcI996l4lIabqBS8SZ9GaVvWkDZG7/gyID3tW7WmknFFjD5MUoEPC45JejM0Tr1uw2tyus5lk0yvr5LODxdz7yY9sfhcE7EkB+hCouc1mbhtw39CIKRpLWzvF8fXt6JWJ8gx6KCJUFb9E5L9sgXxSbf44qiCKGViot9w24pn7Mq1LnoRv0qqs5/JfMNP10IpWZ2kIA5WjpIKLKy5DMneqhOVh4ZONIRi6YB0YHPRtjMdDbNhJs3uXYhsL7H72dCNnGQ/Ul6EbJ476a3R1AsQcRNTXwIPGI7QFqDp637P/WeEyYg/HU1eTHgescAFcxFI0ywh4B2Vu50cP9ZIUhNePgEZWIpCXCFtgqy5u1ZQBvwL1Xc3/Xh7nxzNqzfZ9odgt8ISylp2vPzFhWrn5m7BqAJBc0mFRXcx5Ynl45HJyTOTDjq8htn8+/zHnCv/Bwv1BDQ=
+api: eJzFVE1v2zAM/SuGThsQNG6atlhu2ZJhxXYo2hUYEOTA2EyszpZUSiqaGf7vI20nTZtupwHLwdEHH/n4SLFWOfqMtAvaGjVRMywxoE/AJFAiBTVQ1iGBXF/lbJC3BtP+LsDGq8lCtXuvlgPlgKBiC5LzWhneMErnbKwlgINQ8JrwIWpC9hgo4kD5rMAK1KRWYesE4QNps1HN4BXBNlJyNWMf+ASVK8X44nx9jmM4W33Ay8ssTU/hdHQ2Pr9QzVJCeWeNRy/eR2kqfy993sYsQ+/XsSy3SZdgvk8/syagCYIC50qdtVoM771A62PidnWPmQAdiXJBt4E5j6BDS3ZeubC96UlJgvs86oZ/AzVOT4853hmIobCkf2H+z1ipitOGDb6h+yFhIktqx218zK2ribEhWdto/h89PuTWK+xzn4pHabiJGoLTw8fRsC2rH9Y6b/jSIz3uWjVSKXbqdcddk81jJptken2VdBCu258RnyIRZ783XUqgLJIO2zbSRwRCmkYhtlgeXt+KMF3uh0b79IsQnOpfi+xXrRGfdIvPlioIUhEm+hW3rU7arG3rotfrC7ui2Y9k/sSv1EApWR2lIA7WlpIKDGxY8WSH6vTj+ZAnOfhiZYFyz3CRsYOOTtKTVPraWR8YL7H7MdBNl2Q3PV6ErJ+b5q0p1AsQ8CkMXQk8SzhCW4C6L/GCW00LkxF/Opq8mPDoYYEL5iImdb0Cj3dUNo0cP0QkqQkvH4E0rEQhrlCuvay5kdZQevwL1Xc3/SR7nxyMpjfZ9odgtsISyig7Xv7kQrUjslmyVYGQc0mFRXcx5eHkwgHk6EVJB+0bfzb/Nv8+58r/Biuf/Bc=
 sidebar_class_name: "delete api-method"
 info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
 custom_edit_url: null
@@ -18,6 +18,7 @@ import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <Heading
   as={"h1"}
@@ -25,10 +26,11 @@ import Heading from "@theme/Heading";
   children={"Delete Alert"}
 >
 </Heading>
+<CloudNotSupportedBadge/>
 
 <MethodEndpoint
   method={"delete"}
-  path={"/api/v2/alerts/{id}"}
+  path={"api/v2/alerts/{id}"}
   context={"endpoint"}
 >
   

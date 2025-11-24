@@ -5,7 +5,7 @@ description: "Deletes a dashboard"
 sidebar_label: "Delete Dashboard"
 hide_title: true
 hide_table_of_contents: true
-api: eJzNVE1v2zAM/SuCThsQxG7WjzW3bsmwYjsU3QoMKHJgbCVWZ0sqJQfxDP/3kbaTOE230w7LJZLMRz4+ftQyVT5B7YK2Rk7lTOUqKC9ApOCzpQVM5UhapxDY4jYlm7S1mQ2+B1h7OX2U+zcvFyPpAKEgS+RvtTR0IbRmgOZYDkJGZ1TPpUZFngOWaiR9kqkC5LSWoXKM8AG1Wctm9JLrLpq4nZEftYXC5Qy4vFhdqHN4t7xWV1dJHJ/BxeXV++tYNgsO5501XnmOMIlj/jv2+61MEuX9qszzSnTJpkdyJNYEZQIjwblcJ6020ZNneH2agF0+qSQQ0CErGXQbnPIJOrSE54UL1X1PjBPd51I39BvJ8/jslOeDgTJkFvUv9e9YyYJSh7V6Rf8hYUSLx0QPwCNiAloxx+Lm7lb8VJXQXhTae/IoLAptNpDrdCx3eZ6f5nmos7FBrGxp/q90X+PXdPlQ+2f2MDMcnZt+KiNwOtpMon1b+ajWaUMGXuFmNzIl5mSbheD8NGLIOCOOmG7H2sqX43CHNi0TvrRad36I9M5NdIL4WCKShHvTBUdPStShasN/UIAKb0pm/LgYfv7G6nYCDo32GjJl2Y8y35etEb10h08WC6DSSSb6RVWt2NqsbOuiF/0zpzr7IeZbWiEGcs7qJAV2sKI+KsDAmntqh4Kcakx7zAxG1xOcte2gk3E8jrmozvpAeI7d76huC4rhijsKWx+67w8bs9chqG2IXA607yhQW4e6b4FHalvNhCbsfUhxSiuStM6IFpvV9RK8esC8afj5uVTI5aHjBlDDksWiYqXa85mabQW5V39h/Oa+37hvxYsV+irr/hFMxWwhL/lGRxrmbp03C7LKFKRUYWbSfbihuXdhADmZUm6o/YDM5l/n3+fUCL8BfRk+pg==
+api: eJzNVE1v2zAM/SuCThsQJG6Wtmtu3ZJhwXYo2hUYUOTA2EyszpZUSQ7qGf7vI20ncZp2px2WSySZj3x8/Khkgj52ygZltJzKGWYY0AsQCfh0ZcAlciCNRQdssUjIJmlsZr3vATZeTh/k/s3L5UBacJCTpeNvldR0IbRigOJYFkJKZ4dPhXJInoMrcCB9nGIOclrJUFpG+OCU3sh68JLrLppYzMgPPkNuMwZcnK/PcQIfVld4eRlH0RmcX1x+vIpkveRw3hrt0XOEcRTx37HfuyKO0ft1kWWlaJNNjuSIjQ6oAyPB2kzFjTajR8/w6jQBs3rEOBDQOlYyqCY45RNUaAjPcxvK244YJ7rPparpN5CT6OyU572GIqTGqd/471jJnFKHDb6if5+wc8YdEz0Aj4gJaMQciuubhfiFpVBe5Mp78iiME0pvIVPJUO7ynJzmeaizNkGsTaH/r3Rf41e3+VD7p+YwMxydm34qR2DVaDse7dvKjyqV1GTg0W13I1O4jG3ly86/cSYpYr40srYQ4vc24nPhHKm1N11yoLhwKpRNpE8IDt11weQelv3Pdyxkq1XfaC9XGoKV3dTyfdUY0Ut7+GJcDlQlyUS/YdnoqvTaNC46fb+SKzf7KebPtC00ZJzVSQrsYE0tk4OGDbfPDgUZlZNWlu5NqSc4y9hCx8NoGHH9rPGB8By7W0ftwhP9bXYUtjo02hvLsdMh4HMY2QxotVGgpg5VV+0H6lDFhMbsvU9xStuQtE6JFptV1Qo83rusrvn5qUDH5aHjFpyCFYtFxUqU5zP11Royj39h/O62W67vxYtt+Srr7hF0yWwhK/hGR5rbdnPXS7JKERKqMDNpP1zTiNvQg5wMJDfUfhZm8+/zH3NqhD/ShjaY
 sidebar_class_name: "delete api-method"
 info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
 custom_edit_url: null
@@ -18,6 +18,7 @@ import StatusCodes from "@theme/StatusCodes";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 import Heading from "@theme/Heading";
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <Heading
   as={"h1"}
@@ -25,10 +26,11 @@ import Heading from "@theme/Heading";
   children={"Delete Dashboard"}
 >
 </Heading>
+<CloudNotSupportedBadge/>
 
 <MethodEndpoint
   method={"delete"}
-  path={"/api/v2/dashboards/{id}"}
+  path={"api/v2/dashboards/{id}"}
   context={"endpoint"}
 >
   
