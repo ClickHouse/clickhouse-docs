@@ -6,9 +6,6 @@
         "docs/**/*.md",
         "knowledgebase/**/*.md"
       ],
-      "exclude": [
-        "docs/chdb/index.md"
-      ],
       "transform": [
         {
           "match": "^docs/(.*)\\.md$",
@@ -58,6 +55,5 @@
   },
   "options": {
     "experimentalClearLocaleDirs": true
-  },
-  "baseUrl": "https://sam-api.ngrok.app"
+  }
 }
