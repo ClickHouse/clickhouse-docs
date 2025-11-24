@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.hyperdx.io",
+      "url": "http://<HyperDX host>:<HyperDX port>",
       "description": "Production API server"
     },
     {
