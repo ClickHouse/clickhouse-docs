@@ -14,15 +14,6 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
-import airbyte01 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_01.png';
-import airbyte02 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_02.png';
-import airbyte03 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_03.png';
-import airbyte04 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_04.png';
-import airbyte05 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_05.png';
-import airbyte06 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_06.png';
-import airbyte07 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_07.png';
-import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_08.png';
-import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Connect Streamkap to ClickHouse
