@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Sql Server Clickhouse'
+sidebar_label: 'SQL Server CDC for ClickHouse'
 sidebar_position: 13
 keywords: ['clickhouse', 'sql server', 'connect', 'integrate', 'etl', 'data integration']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
