@@ -1,0 +1,71 @@
+---
+id: get-alert
+title: "Get Alert"
+description: "Retrieves a specific alert by ID"
+sidebar_label: "Get Alert"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVm1v2zYQ/isEgQEb4MSybDeJvrlt1gb7EuQFGBb4AyWdLbYSqZKUa8/wf98dJdlW/dIE2LAgSCTx7rnj8Z6Ht+Yp2MTI0kmteMQfwBkJC7BMMFtCImcyYSIH41i8YncfeY/rEowg87sUHebgJrSMC07MLY9euH+3fNrjpTCiAAeGvq+5whd0kSkaS4pWCpfhs4FvlTSAcM5U0OM2yaAQPFpztyrJw2JSas43vR+y9ZHqrGApijIn43fj2RhGYhjfwNVVEgQDMQiHo/E7vplSKFtqZcESehgE9K+L+VglCVg7q/J8xUxTjrSuAcZJtHKgHPmJssxl4kvR/2LJeX2Yuo6/QEKOpaHCOVmHToV7hRVW6qAIr9tqryn2Oe/Pcp6xW2O0YQ/CATkVuHMx/4lf7YI9AAyWCUBqmcuwsJnOUwLZvexgVFXEYPZhBkGwoTbA7liI/HzEwbjoAD95yyMeGIY6UMR6AfgeQ66/UyPuoOolBLO6MslZFCdzArEgTJJ1UfwSgTgq3NncpRKJk3XMJBNKQf7zg3enNriF/Q5xpvVXQm0e797cLFfXN8Eg5JsN1RZE8VZ/arWra38yWI+3x6fow5GntbBZrIV5MwQlcBP4oxBI08f6rI6AKOSziAmFNAbt50ZX5fvVq2wtbk8lsJ9drHUOQh2zTgxgV6QTdwx7pk0hcIUUAC6cLKCzwzAIhxfBAH+fgiDyv5dBEPxFO6zK9D/A9afnvFEt5AdfHhrNpBwaRN+korNI4lcVhTArElFMKofm4mg1FxNCplewr3+kcKdlrFUx/uH+mT2TMrH2stkqlV+r/JrEW4voza6DX3hHh66DfanhKCcHarIVjVYYtvyvOc4bGh9jcUvGDhfPEK6l22lO7Sh1mjcd2pzmRqchm0YYXgzGT4MgCoNo2DRCp786ZqMoHKNct/3if3p8FAwOL89nJSqXaSP/hvTfuyxP3kr7repvJd7mNjrMrR4WlHZspiv1/6Xnr1ksUjM9ERyNQRHvi1L2F2Hfs8b21zLd+OvHLNoBqjLUvZlzpY36ZH6ZYUCTLi+l5j8OR/dGp1VCL2xyf8dqHOy9FqZ/4PGhMgbrsTWdUvSkMtKtfPj3qK5gJhVl+zLdX36kUtXV2DfaFoRS5s1g59XTG/kbmh5+b8WLEv0DVr5yUs20h2gq+Jm2+vFPdrtEHiuR064OtkAAKIWsEErM8QxY61UXlQmVsi1rLCkS1rZ2DS+xxYmbpbYO/Sl2Iz+fwG2FpxNvveuh14zOTTUcLF2/zAXOwCTrxktJ3QQ4u5SS0grxT50zPkQok1jtDBMjk/U6FhaeTb7Z0OdvFZDovkxJX42s7yI8rlRaesY+m4ncwpnUf31oJvDf2N5IfTTb5qNQq52cc3z8Cqt6tN9M0SoDkeL5Uhb1wgSH6tLtuRwQjtppy4tPt0/YA/8AZawfZA==
+sidebar_class_name: "get api-method"
+info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get Alert"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/v2/alerts/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retrieves a specific alert by ID
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","in":"path","required":true,"schema":{"type":"string"},"description":"Alert ID","example":"65f5e4a3b9e77c001a123456"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved alert","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"object","properties":{"id":{"type":"string","example":"65f5e4a3b9e77c001a123456"},"name":{"type":"string","example":"High Error Rate"},"message":{"type":"string","example":"Error rate exceeds threshold"},"threshold":{"type":"number","example":100},"interval":{"type":"string","example":"15m"},"thresholdType":{"type":"string","enum":["above","below"],"example":"above"},"source":{"type":"string","enum":["tile","search"],"example":"tile"},"state":{"type":"string","example":"inactive"},"channel":{"type":"object","properties":{"type":{"type":"string","example":"webhook"},"webhookId":{"type":"string","example":"65f5e4a3b9e77c001a789012"}}},"team":{"type":"string","example":"65f5e4a3b9e77c001a345678"},"tileId":{"type":"string","example":"65f5e4a3b9e77c001a901234"},"dashboard":{"type":"string","example":"65f5e4a3b9e77c001a567890"},"savedSearch":{"type":"string","nullable":true},"groupBy":{"type":"string","nullable":true},"silenced":{"type":"boolean","nullable":true},"createdAt":{"type":"string","format":"date-time","example":"2023-01-01T00:00:00.000Z"},"updatedAt":{"type":"string","format":"date-time","example":"2023-01-01T00:00:00.000Z"}},"title":"Alert"}},"title":"AlertResponse"},"examples":{"alertResponse":{"summary":"Single alert response","value":{"data":{"id":"65f5e4a3b9e77c001a123456","name":"CPU Usage Alert","message":"CPU usage is above 80%","threshold":80,"interval":"5m","thresholdType":"above","source":"tile","state":"active","channel":{"type":"webhook","webhookId":"65f5e4a3b9e77c001a789012"},"team":"65f5e4a3b9e77c001a345678","tileId":"65f5e4a3b9e77c001a901234","dashboard":"65f5e4a3b9e77c001a567890","createdAt":"2023-03-15T10:20:30.000Z","updatedAt":"2023-03-15T14:25:10.000Z"}}}}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"}}}},"404":{"description":"Alert not found","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

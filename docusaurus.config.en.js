@@ -99,7 +99,7 @@ const config = {
       return await customParseFrontMatter(params);
     }
   },
-  themes: ["@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-mermaid", "docusaurus-theme-openapi-docs"],
   presets: [
     [
       "classic",
@@ -122,6 +122,7 @@ const config = {
             ],
           },
           sidebarPath: require.resolve("./sidebars.js"),
+          docItemComponent: "@theme/ApiItem", // Derived from docusaurus-theme-openapi
           // Implements a custom sidebar to override default behaviour where index.md page shows underneath the category name.
           // With this sidebar the category name is clickable to show the index.md contents.
           async sidebarItemsGenerator({
@@ -205,7 +206,7 @@ const config = {
             containerId: 'GTM-WTNTDT7W',
           },
         }),
-      }),
+      })
     ],
   ],
   // Inserts tags into the <head></head>
@@ -310,6 +311,22 @@ const config = {
     }),
 
   plugins: [
+    [
+      'docusaurus-plugin-openapi-docs',
+      {
+        id: "api",
+        docsPluginId: "classic",
+        config: {
+          clickstack: {
+            specPath: "static/openapi.json",
+            outputDir: "docs/use-cases/observability/clickstack/api-reference",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          },
+        },
+      },
+    ],
     "docusaurus-plugin-sass",
     function (context, options) {
       return {

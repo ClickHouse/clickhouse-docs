@@ -1,0 +1,71 @@
+---
+id: delete-alert
+title: "Delete Alert"
+description: "Deletes an alert"
+sidebar_label: "Delete Alert"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVE1v2zAM/SuGThsQxG6adlhu2ZJhxXYo2hUYUOTAWEyszpZUSi6SGfnvI20nTZtipwHLwdHHI/n4SLFRGkNOxkfjrJqoGZYYMSRgEyiRohoo55FArq80A3QLmPZ3EdZBTe5Vuw9qMVAeCCpGkJw3yvKGrYxmsJEAHmLBa8LH2hCyx0g1DlTIC6xATRoVt14sQiRj12o3eEWwjZRczdgHbqDypYAvL1YXOIbz5Uf88CHPsjM4G52PLy7VbiGhgnc2YBDvoyyTv5c+b+s8xxBWdVluky5BfUg/dzaijWIF3pcmb7VIH4KYNqfE3fIBczH0JMpF0wbmPKKJLdl55eP2piclCR7yaHb8G6hxdnbK8c5CHQtH5jfqf8ZKVZw2rPEN3Y8JEzlSe27jU25dTayLycrV9v/R40NuvcI996l4lIabqBS8SZ9GaVvWkDZG7/gyID3tW7WmknFFjD5MUoEPC45JejM0Tr1uw2tyus5lk0yvr5LODxdz7yY9sfhcE7EkB+hCouc1mbhtw39CIKRpLWzvF8fXt6JWJ8gx6KCJUFb9E5L9sgXxSbf44qiCKGViot9w24pn7Mq1LnoRv0qqs5/JfMNP10IpWZ2kIA5WjpIKLKy5DMneqhOVh4ZONIRi6YB0YHPRtjMdDbNhJs3uXYhsL7H72dCNnGQ/Ul6EbJ476a3R1AsQcRNTXwIPGI7QFqDp637P/WeEyYg/HU1eTHgescAFcxFI0ywh4B2Vu50cP9ZIUhNePgEZWIpCXCFtgqy5u1ZQBvwL1Xc3/Xh7nxzNqzfZ9odgt8ISylp2vPzFhWrn5m7BqAJBc0mFRXcx5Ynl45HJyTOTDjq8htn8+/zHnCv/Bwv1BDQ=
+sidebar_class_name: "delete api-method"
+info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Alert"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/api/v2/alerts/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Deletes an alert
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","in":"path","required":true,"schema":{"type":"string"},"description":"Alert ID","example":"65f5e4a3b9e77c001a123456"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully deleted alert","content":{"application/json":{"schema":{"type":"object","properties":{},"title":"EmptyResponse"},"example":{}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"}}}},"404":{"description":"Alert not found","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: delete-dashboard
+title: "Delete Dashboard"
+description: "Deletes a dashboard"
+sidebar_label: "Delete Dashboard"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVE1v2zAM/SuCThsQxG7WjzW3bsmwYjsU3QoMKHJgbCVWZ0sqJQfxDP/3kbaTOE230w7LJZLMRz4+ftQyVT5B7YK2Rk7lTOUqKC9ApOCzpQVM5UhapxDY4jYlm7S1mQ2+B1h7OX2U+zcvFyPpAKEgS+RvtTR0IbRmgOZYDkJGZ1TPpUZFngOWaiR9kqkC5LSWoXKM8AG1Wctm9JLrLpq4nZEftYXC5Qy4vFhdqHN4t7xWV1dJHJ/BxeXV++tYNgsO5501XnmOMIlj/jv2+61MEuX9qszzSnTJpkdyJNYEZQIjwblcJ6020ZNneH2agF0+qSQQ0CErGXQbnPIJOrSE54UL1X1PjBPd51I39BvJ8/jslOeDgTJkFvUv9e9YyYJSh7V6Rf8hYUSLx0QPwCNiAloxx+Lm7lb8VJXQXhTae/IoLAptNpDrdCx3eZ6f5nmos7FBrGxp/q90X+PXdPlQ+2f2MDMcnZt+KiNwOtpMon1b+ajWaUMGXuFmNzIl5mSbheD8NGLIOCOOmG7H2sqX43CHNi0TvrRad36I9M5NdIL4WCKShHvTBUdPStShasN/UIAKb0pm/LgYfv7G6nYCDo32GjJl2Y8y35etEb10h08WC6DSSSb6RVWt2NqsbOuiF/0zpzr7IeZbWiEGcs7qJAV2sKI+KsDAmntqh4Kcakx7zAxG1xOcte2gk3E8jrmozvpAeI7d76huC4rhijsKWx+67w8bs9chqG2IXA607yhQW4e6b4FHalvNhCbsfUhxSiuStM6IFpvV9RK8esC8afj5uVTI5aHjBlDDksWiYqXa85mabQW5V39h/Oa+37hvxYsV+irr/hFMxWwhL/lGRxrmbp03C7LKFKRUYWbSfbihuXdhADmZUm6o/YDM5l/n3+fUCL8BfRk+pg==
+sidebar_class_name: "delete api-method"
+info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Dashboard"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/api/v2/dashboards/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Deletes a dashboard
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","in":"path","required":true,"schema":{"type":"string"},"description":"Dashboard ID","example":"65f5e4a3b9e77c001a567890"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully deleted dashboard","content":{"application/json":{"schema":{"type":"object","properties":{},"title":"EmptyResponse"},"example":{}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"},"example":{"message":"Unauthorized access. API key is missing or invalid."}}}},"404":{"description":"Dashboard not found","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"},"example":{"message":"Dashboard not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

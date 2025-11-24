@@ -1,0 +1,63 @@
+---
+id: list-alerts
+title: "List Alerts"
+description: "Retrieves a list of all alerts for the authenticated team"
+sidebar_label: "List Alerts"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vl1v2zoM/SuCnrvESdt17Vt3123F9jD0AxhukAfaZmJttuRJcpcsyH8fKTuOjXz0Fncr0sSWyCOKPDzSSqboEqtKr4yWV/IOvVX4hE6AyJXzwswE5Dn9o/VOzIwVPkMBFX1rrxLwmAqPUMgTaUq0wDi3KSGx93XwoikPcyevJrIZmJ5Ii6402iENr+Q4ivinH8p9lSTo3KzK86WwTVxpEwlhJkZ7ioEdoSxzjoUch98ce6+kSzIsgJ/8skTCM/E3TDw5lpYj9apeOwXftQJrYUlGymPhnvdWacfGUYx6Tja4gKLMeej1+ewcz+A0vsSLiySKRjAan56dv5brE6mhwOPeH9U8EzfWUtbvKNPsVFBKYP6MX+1CxUCBiwQxdVQ1ynhm8pRBti9bGF0VMdouzCiKyFZRlu0T5MdXHJ0XPeCHYLnHg5ZhIkBsnpDeY8zNT+bDFqqeIjBnKpscRfEqZxCHYJOsjxKmGMRz4o7GrjQkXtVrJhlojfnzhfeHNtjC/sQ4M+Y7ozaPty8my8Wby2g0lus155a77IX+TLWLN6EylI+Xr8+rn56xfwouiw3YF0NwAJdRKAVQ/97XtdoDoqnRIWYUbysk+7k1Vfl2+Z9sHW1PJ9iNLjYmR9D7rBOLLFzXfh82aVwBNMPKgK+8KrC3w3E0Pn0VjejzEEVX4TOIouhf3mFVpn8BN1TPB6Ognw0dukPuM6ntXSOpHEmDG6gKrUXQxaoowFJW5edW3xtFpS6vcKuJk1reDmvYRsJ2dKojU8e1qCdFpDdduQmasiMprXJs1KEVgbrRt928r5k3PdlrySN9t+m6w6217azD7dPrnsMt0uPlYT70aHaENtN1+DuRZ9Fo93R91HyGG6t+YfrnDtODp1OXsYERHZL2HHuBCQhXgIG4/nIrvuNSKCcK5RwhCiKV0kQUlQ5ks9ECyZFTPMcQGngSGjmEUg2fxsOW5o4IhtYFgleWmZZ5X7qrIVsOMorbpouBMly3Xs6+WJNWCb+EgGoc2sgGZrjj8U9lLaW1NZ3y6klllV+G5d+SGqK9rjjQybQ7fc8Zr5PaNWrzyiHzXoIZq10wCicqP7zfiA0H+gmXoQBKz0yAaArxkbf67qu4WVDPach5VztbYAC+9hWgYc6J33g1V0LQqWjpHVSEclu7jgfERS50aZwnf167UYygPe31sLfiakvG/3UdbRLlceGHZQ5KB4W2QQ5qatA1pFQc8Zi+oL2aZoaVciJXqxgcPtp8vebhHxWybE6mLJRW1QcKFY0cEFLKPReUSMo5I9qWfquouz3FpW7p+uHmgerzGx/Wytk=
+sidebar_class_name: "get api-method"
+info_path: use-cases/observability/clickstack/api-reference/hyperdx-external-api
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"List Alerts"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/v2/alerts"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Retrieves a list of all alerts for the authenticated team
+
+<ParamsDetails
+  parameters={undefined}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successfully retrieved alerts","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","example":"65f5e4a3b9e77c001a123456"},"name":{"type":"string","example":"High Error Rate"},"message":{"type":"string","example":"Error rate exceeds threshold"},"threshold":{"type":"number","example":100},"interval":{"type":"string","example":"15m"},"thresholdType":{"type":"string","enum":["above","below"],"example":"above"},"source":{"type":"string","enum":["tile","search"],"example":"tile"},"state":{"type":"string","example":"inactive"},"channel":{"type":"object","properties":{"type":{"type":"string","example":"webhook"},"webhookId":{"type":"string","example":"65f5e4a3b9e77c001a789012"}}},"team":{"type":"string","example":"65f5e4a3b9e77c001a345678"},"tileId":{"type":"string","example":"65f5e4a3b9e77c001a901234"},"dashboard":{"type":"string","example":"65f5e4a3b9e77c001a567890"},"savedSearch":{"type":"string","nullable":true},"groupBy":{"type":"string","nullable":true},"silenced":{"type":"boolean","nullable":true},"createdAt":{"type":"string","format":"date-time","example":"2023-01-01T00:00:00.000Z"},"updatedAt":{"type":"string","format":"date-time","example":"2023-01-01T00:00:00.000Z"}},"title":"Alert"}}},"title":"AlertsListResponse"},"examples":{"alertsList":{"summary":"List of alerts","value":{"data":[{"id":"65f5e4a3b9e77c001a123456","name":"High Error Rate","message":"Error rate exceeds threshold","threshold":100,"interval":"15m","thresholdType":"above","source":"tile","state":"inactive","channel":{"type":"webhook","webhookId":"65f5e4a3b9e77c001a789012"},"team":"65f5e4a3b9e77c001a345678","tileId":"65f5e4a3b9e77c001a901234","dashboard":"65f5e4a3b9e77c001a567890","createdAt":"2023-01-01T00:00:00.000Z","updatedAt":"2023-01-01T00:00:00.000Z"}]}}}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"message":{"type":"string"}},"title":"Error"},"example":{"message":"Unauthorized access. API key is missing or invalid."}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
