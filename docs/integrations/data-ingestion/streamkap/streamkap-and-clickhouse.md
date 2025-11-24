@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Connect Streamkap to ClickHouse'
 sidebar_position: 11
-keywords: ['clickhouse', 'Streamkap', 'connect', 'integrate', 'etl', 'data integration']
+keywords: ['clickhouse', 'Streamkap', 'CDC', 'connect', 'integrate', 'etl', 'data integration', 'change data capture']
 slug: /integrations/sttreamkap
 description: 'Stream data into ClickHouse using Airbyte data pipelines'
 

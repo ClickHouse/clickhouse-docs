@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'SQL Server CDC for ClickHouse'
 sidebar_position: 13
-keywords: ['clickhouse', 'sql server', 'connect', 'integrate', 'etl', 'data integration']
+keywords: ['clickhouse', 'Streamkap', 'CDC', 'sql server', 'connect', 'integrate', 'etl', 'data integration', 'change data capture']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
 description: 'Streaming Data from SQL Server to ClickHouse for Fast Analytics'
 title: 'Streaming Data from SQL Server to ClickHouse for Fast Analytics'
