@@ -14,3 +14,4 @@
 # /\.temp\./
 
 docs/i18n/.*
+docs/use-cases/observability/clickstack/api-reference/.*
