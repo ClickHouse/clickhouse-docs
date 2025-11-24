@@ -1,0 +1,320 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Java 클라이언트 라이브러리는 DB 서버와의 프로토콜을 통해 통신합니다. 현재 구현은 [HTTP 인터페이스](/interfaces/http)만 지원합니다. 이 라이브러리는 서버에 요청을 보내기 위한 자체 API를 제공합니다.
+
+:::warning Deprecation
+이 라이브러리는 곧 사용 중단될 예정입니다. 새로운 프로젝트에는 최신 [Java Client](/integrations/language-clients/java/client/client.mdx)를 사용하세요.
+:::
+
+## 설정 {#setup}
+
+<Tabs groupId="client-v1-setup">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>clickhouse-http-client</artifactId>
+    <version>0.7.2</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+```
+
+</TabItem>
+</Tabs>
+
+버전 `0.5.0`부터 드라이버는 새로운 클라이언트 HTTP 라이브러리를 사용하며, 이를 의존성으로 추가해야 합니다.
+
+<Tabs groupId="client-v1-http-client">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+<dependency>
+    <groupId>org.apache.httpcomponents.client5</groupId>
+    <artifactId>httpclient5</artifactId>
+    <version>5.3.1</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+```
+
+</TabItem>
+</Tabs>
+
+## 초기화 {#initialization}
+
+연결 URL 형식: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, 예를 들어:
+
+- `http://localhost:8443?ssl=true&sslmode=NONE`
+- `https://explorer@play.clickhouse.com:443`
+
+단일 노드에 연결:
+
+```java showLineNumbers
+ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+```
+여러 노드가 있는 클러스터에 연결:
+
+```java showLineNumbers
+ClickHouseNodes servers = ClickHouseNodes.of(
+    "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
+    + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
+```
+
+## 쿼리 API {#query-api}
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            long totalRows = summary.getTotalRowsToRead();
+}
+```
+
+## 스트리밍 쿼리 API {#streaming-query-api}
+
+[완전한 코드 예제](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73)를 [레포지토리](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)에서 확인하세요.
+
+## 삽입 API {#insert-api}
+
+```java showLineNumbers
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers).write()
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
+        .data(myInputStream) // `myInputStream` is source of data in RowBinary format
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            summary.getWrittenRows();
+}
+```
+
+[완전한 코드 예제](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39)를 [레포지토리](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)에서 확인하세요.
+
+**RowBinary 인코딩**
+
+RowBinary 형식은 [페이지](/interfaces/formats/RowBinaryWithNamesAndTypes)에 설명되어 있습니다.
+
+[코드 예제](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)가 있습니다.
+
+## 기능 {#features}
+### 압축 {#compression}
+
+클라이언트는 기본적으로 LZ4 압축을 사용하며, 다음 의존성이 필요합니다:
+
+<Tabs groupId="client-v1-compression-deps">
+<TabItem value="maven" label="Maven" >
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+<dependency>
+    <groupId>org.lz4</groupId>
+    <artifactId>lz4-java</artifactId>
+    <version>1.8.0</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/org.lz4/lz4-java
+implementation("org.lz4:lz4-java:1.8.0")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/org.lz4/lz4-java
+implementation 'org.lz4:lz4-java:1.8.0'
+```
+
+</TabItem>
+</Tabs>
+
+연결 URL에서 `compress_algorithm=gzip`를 설정하여 gzip을 대신 사용할 수 있습니다.
+
+또는 몇 가지 방법으로 압축을 비활성화할 수 있습니다.
+
+1. 연결 URL에서 `compress=0`을 설정하여 비활성화: `http://localhost:8123/default?compress=0`
+2. 클라이언트 구성에서 비활성화:
+
+```java showLineNumbers
+ClickHouseClient client = ClickHouseClient.builder()
+   .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+   .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+   .build();
+```
+
+다양한 압축 옵션에 대해 더 자세히 알아보려면 [압축 문서](/data-compression/compression-modes)를 참조하세요.
+
+### 여러 쿼리 {#multiple-queries}
+
+작업 스레드에서 동일한 세션 내에서 여러 쿼리를 순차적으로 실행합니다:
+
+```java showLineNumbers
+CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
+    "create database if not exists my_base",
+    "use my_base",
+    "create table if not exists test_table(s String) engine=Memory",
+    "insert into test_table values('1')('2')('3')",
+    "select * from test_table limit 1",
+    "truncate table test_table",
+    "drop table if exists test_table");
+List<ClickHouseResponseSummary> results = future.get();
+```
+
+### 명명된 매개변수 {#named-parameters}
+
+매개변수 목록에서의 위치에만 의존하지 않고 명칭으로 매개변수를 전달할 수 있습니다. 이 기능은 `params` 함수를 사용하여 가능합니다.
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name limit :limit")
+        .params("Ben", 1000)
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+:::note Parameters
+모든 `params` 시그니처는 `String` 형식(`String`, `String[]`, `Map<String, String>`)을 포함하며, 전달되는 키는 유효한 ClickHouse SQL 문자열로 간주됩니다. 예를 들어:
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name","'Ben'"))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+String 객체를 수동으로 ClickHouse SQL로 구문 분석하지 않으려는 경우, `com.clickhouse.data`에 위치한 헬퍼 함수 `ClickHouseValues.convertToSqlExpression`을 사용할 수 있습니다:
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+위의 예에서는 `ClickHouseValues.convertToSqlExpression`이 내부 단일 인용 부호를 이스케이프하고, 변수를 유효한 단일 인용 부호로 둘러쌉니다.
+
+`Integer`, `UUID`, `Array` 및 `Enum`과 같은 기타 유형은 `params` 내에서 자동으로 변환됩니다.
+:::
+
+## 노드 발견 {#node-discovery}
+
+Java 클라이언트는 ClickHouse 노드를 자동으로 발견할 수 있는 기능을 제공합니다. 자동 발견은 기본적으로 비활성화되어 있습니다. 수동으로 활성화하려면 `auto_discovery`를 `true`로 설정합니다:
+
+```java
+properties.setProperty("auto_discovery", "true");
+```
+
+또는 연결 URL에서:
+
+```plaintext
+jdbc:ch://my-server/system?auto_discovery=true
+```
+
+자동 발견이 활성화되면 연결 URL에서 모든 ClickHouse 노드를 명시할 필요가 없습니다. URL에 지정된 노드는 시드로 처리되며, Java 클라이언트는 시스템 테이블 및/또는 clickhouse-keeper 또는 zookeeper에서 더 많은 노드를 자동으로 발견합니다.
+
+자동 발견 구성에 책임이 있는 다음 옵션이 있습니다:
+
+| 속성                     | 기본값 | 설명                                                                                                 |
+|--------------------------|--------|------------------------------------------------------------------------------------------------------|
+| auto_discovery           | `false`| 클라이언트가 시스템 테이블 및/또는 clickhouse-keeper/zookeeper에서 더 많은 노드를 발견해야 하는지 여부. |
+| node_discovery_interval  | `0`    | 노드 발견 간격(밀리초), 0 또는 음수 값은 일회성 발견을 의미합니다.                              |
+| node_discovery_limit     | `100`  | 한 번에 발견할 수 있는 최대 노드 수; 0 또는 음수 값은 제한이 없음을 의미합니다.                 |
+
+### 로드 밸런싱 {#load-balancing}
+
+Java 클라이언트는 로드 밸런싱 정책에 따라 요청을 보낼 ClickHouse 노드를 선택합니다. 일반적으로 로드 밸런싱 정책은 다음과 같은 일들을 책임집니다:
+
+1. 관리되는 노드 목록에서 노드를 선택합니다.
+2. 노드 상태를 관리합니다.
+3. (자동 발견이 활성화되어 있는 경우) 노드 발견을 위한 백그라운드 프로세스를 예약하고 상태 점검을 실행합니다.
+
+로드 밸런싱을 구성하기 위한 다음 옵션 목록입니다:
+
+| 속성                    | 기본값                                  | 설명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|-------------------------|-----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load_balancing_policy   | `""`                                    | 로드 밸런싱 정책은 다음 중 하나일 수 있습니다: <li>`firstAlive` - 관리되는 노드 목록에서 첫 번째 건강한 노드로 요청을 보냅니다.</li><li>`random` - 관리되는 노드 목록에서 무작위 노드로 요청을 보냅니다.</li><li>`roundRobin` - 관리되는 노드 목록의 각 노드로 요청을 차례로 보냅니다.</li><li>`ClickHouseLoadBalancingPolicy`를 구현하는 완전 자격 클래스 이름 - 사용자 정의 로드 밸런싱 정책</li>지정되지 않은 경우 요청은 관리되는 노드 목록의 첫 번째 노드로 전송됩니다. |
+| load_balancing_tags     | `""`                                    | 노드를 필터링하기 위한 로드 밸런싱 태그. 요청은 지정된 태그가 있는 노드에만 전송됩니다.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| health_check_interval    | `0`                                     | 상태 점검 간격(밀리초), 0 또는 음수 값은 일회성을 의미합니다.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| health_check_method      | `ClickHouseHealthCheckMethod.SELECT_ONE`| 상태 점검 방법. 다음 중 하나일 수 있습니다: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` 쿼리로 확인</li><li>`ClickHouseHealthCheckMethod.PING` - 일반적으로 더 빠른 프로토콜별 점검</li>                                                                                                                                                                                                                                                                                     |
+| node_check_interval      | `0`                                     | 노드 점검 간격(밀리초), 음수 숫자는 0으로 처리됩니다. 마지막 점검 이후 지정된 시간이 경과하면 노드 상태가 점검됩니다.<br/>`health_check_interval`과 `node_check_interval`의 차이는 `health_check_interval`옵션이 모든 노드(모두 또는 결함이 있는 노드)의 목록을 점검하는 백그라운드 작업을 예약하는 반면, `node_check_interval`은 특정 노드에 대해 마지막 점검 이후 경과 시간이 지정된 것입니다.  |
+| check_all_nodes          | `false`                                 | 모든 노드 또는 결함이 있는 노드에 대해 상태 점검을 수행할지 여부입니다.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+### 장애 조치 및 재시도 {#failover-and-retry}
+
+Java 클라이언트는 실패한 쿼리에 대한 장애 조치 및 재시도 동작을 설정하는 구성 옵션을 제공합니다:
+
+| 속성                    | 기본값 | 설명                                                                                                                                                                 |
+|-------------------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| failover                | `0`    | 요청에 대한 장애 조치가 발생할 수 있는 최대 횟수입니다. 0 또는 음수 값은 장애 조치가 없음을 의미합니다. 장애 조치는 실패한 요청을 복구하기 위해 (로드 밸런싱 정책에 따라) 다른 노드로 전송합니다. |
+| retry                   | `0`    | 요청에 대한 재시도가 발생할 수 있는 최대 횟수입니다. 0 또는 음수 값은 재시도가 없음을 의미합니다. 재시도는 ClickHouse 서버가 `NETWORK_ERROR` 오류 코드를 반환하는 경우에만 동일한 노드로 요청을 보냅니다. |
+| repeat_on_session_lock  | `true` | 세션이 타임아웃( `session_timeout` 또는 `connect_timeout`에 따라) 될 때까지 실행을 반복할지 여부입니다. ClickHouse 서버가 `SESSION_IS_LOCKED` 오류 코드를 반환하면 실패한 요청이 반복됩니다. |
+
+### 사용자 정의 HTTP 헤더 추가하기 {#adding-custom-http-headers}
+
+Java 클라이언트는 요청에 사용자 정의 HTTP 헤더를 추가하려는 경우 HTTP/S 전송 계층을 지원합니다. 
+custom_http_headers 속성을 사용해야 하며, 헤더는 `,`로 구분되어야 합니다. 헤더의 키/값은 `=`를 사용하여 구분해야 합니다.
+
+## Java 클라이언트 지원 {#java-client-support}
+
+```java
+options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```
+
+## JDBC 드라이버 {#jdbc-driver}
+
+```java
+properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```

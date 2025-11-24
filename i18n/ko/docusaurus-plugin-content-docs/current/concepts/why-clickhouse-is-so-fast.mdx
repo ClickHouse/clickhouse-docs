@@ -1,0 +1,145 @@
+---
+'sidebar_position': 1
+'sidebar_label': 'ClickHouse가 이렇게 빠른 이유는 무엇인가?'
+'description': '빠르도록 설계되었습니다. 쿼리 실행 성능은 개발 과정에서 항상 최우선 사항이었지만, ClickHouse가 실제 프로덕션
+  시스템이 될 수 있도록 사용자 친화성, 확장성, 보안과 같은 다른 중요한 특성도 고려되었습니다.'
+'title': 'ClickHouse가 이렇게 빠른 이유는 무엇인가?'
+'slug': '/concepts/why-clickhouse-is-so-fast'
+'keywords':
+- 'Architecture'
+- 'VLDB'
+- 'Performance'
+'show_related_blogs': true
+'doc_type': 'guide'
+---
+
+
+
+# ClickHouse는 왜 이렇게 빠른가? {#why-clickhouse-is-so-fast}
+
+데이터베이스 성능에 기여하는 여러 가지 요소가 있으며, 그 중 [데이터 방향성](/intro#row-oriented-vs-column-oriented-storage)도 포함됩니다. 다음에서는 ClickHouse가 특히 다른 컬럼 지향 데이터베이스와 비교했을 때 왜 그렇게 빠른지를 자세히 설명하겠습니다.
+
+건축적 관점에서 데이터베이스는 (최소한) 저장 계층과 쿼리 처리 계층으로 구성됩니다. 저장 계층은 테이블 데이터를 저장하고 로드하며 유지 관리하는 역할을 하며, 쿼리 처리 계층은 사용자 쿼리를 실행합니다. 다른 데이터베이스와 비교할 때 ClickHouse는 두 계층 모두에서 매우 빠른 INSERT와 SELECT 쿼리를 가능하게 하는 혁신을 제공합니다.
+
+## 저장 계층: 동시 INSERT는 서로 격리됨 {#storage-layer-concurrent-inserts-are-isolated-from-each-other}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vsykFYns0Ws?si=hE2qnOf6cDKn-otP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+ClickHouse에서 각 테이블은 여러 개의 "테이블 파트"로 구성됩니다. 사용자가 테이블에 데이터를 삽입할 때마다 (INSERT 문) [파트](/parts)가 생성됩니다. 쿼리는 항상 쿼리가 시작될 때 존재하는 모든 테이블 파트에 대해 실행됩니다.
+
+너무 많은 파트가 축적되는 것을 방지하기 위해 ClickHouse는 여러 개의 작은 파트를 하나의 큰 파트로 지속적으로 결합하는 [병합](/merges) 작업을 백그라운드에서 실행합니다.
+
+이 접근 방식에는 여러 가지 장점이 있습니다. 모든 데이터 처리는 [백그라운드 파트 병합](/concepts/why-clickhouse-is-so-fast#storage-layer-merge-time-computation)에 오프로드될 수 있어 데이터 쓰기를 경량화하고 매우 효율적으로 유지합니다. 개별 삽입은 "로컬"로, 즉 전역(즉, 테이블별) 데이터 구조를 업데이트할 필요가 없습니다. 결과적으로 여러 개의 동시 삽입은 상호 동기화나 기존 테이블 데이터와의 동기화가 필요 없으며, 따라서 삽입은 디스크 I/O 속도에 거의 근접하게 수행될 수 있습니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) 섹션에서 확인하십시오.
+
+## 저장 계층: 동시 INSERT와 SELECT는 격리됨 {#storage-layer-concurrent-inserts-and-selects-are-isolated}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dvGlPh2bJFo?si=F3MSALPpe0gAoq5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+INSERT는 SELECT 쿼리와 완전히 격리되어 있으며, 삽입된 데이터 파트의 병합은 동시 쿼리에 영향을 주지 않고 백그라운드에서 진행됩니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [Storage Layer](/docs/academic_overview#3-storage-layer) 섹션에서 확인하십시오.
+
+## 저장 계층: 병합 시간 계산 {#storage-layer-merge-time-computation}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/_w3zQg695c0?si=g0Wa_Petn-LcmC-6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+다른 데이터베이스와 달리 ClickHouse는 모든 추가 데이터 변환을 [병합](/merges) 백그라운드 프로세스 중에 수행하여 데이터 쓰기를 경량화하고 효율적으로 유지합니다. 이의 예로는 다음과 같은 것들이 있습니다:
+
+- **교체 병합**은 입력 파트에서 행의 가장 최근 버전만 유지하고 나머지 버전은 폐기합니다. 교체 병합은 병합 시간 청소 작업으로 생각할 수 있습니다.
+
+- **집계 병합**은 입력 파트의 중간 집계 상태를 새로운 집계 상태로 결합합니다. 이해하기 어려워 보일 수 있지만, 실제로는 점진적 집계를 구현하는 것뿐입니다.
+
+- **TTL (time-to-live) 병합**은 특정 시간 기반 규칙에 따라 행을 압축, 이동 또는 삭제하는 작업입니다.
+
+이러한 변환의 핵심은 사용자 쿼리가 실행될 때의 작업(계산)을 병합 시간으로 이동시키는 것입니다. 이것이 중요한 두 가지 이유는 다음과 같습니다:
+
+한편으로, 사용자 쿼리는 "변환된" 데이터, 예를 들어 미리 집계된 데이터를 활용할 수 있다면 속도가 1000배 또는 그 이상 빨라질 수 있습니다.
+
+다른 한편으로, 병합의 대부분 실행 시간은 입력 파트를 로드하고 출력 파트를 저장하는 데 소비됩니다. 병합 중에 데이터를 변환하는 추가 노력은 일반적으로 병합의 실행 시간에 큰 영향을 미치지 않습니다. 이 모든 마법은 완전히 투명하며 쿼리의 결과(성능 제외)에 영향을 미치지 않습니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [Merge-time Data Transformation](/docs/academic_overview#3-3-merge-time-data-transformation) 섹션에서 확인하십시오.
+
+## 저장 계층: 데이터 가지치기 {#storage-layer-data-pruning}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/UJpVAx7o1aY?si=w-AfhBcRIO-e3Ysj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+실제로 많은 쿼리는 반복적이며, 즉 그대로 실행되거나 약간 수정된 채로(예: 다른 매개변수 값) 주기적으로 수행됩니다. 동일하거나 유사한 쿼리를 계속해서 실행하면 인덱스를 추가하거나 데이터를 재구성하여 자주 사용하는 쿼리가 더 빨리 접근할 수 있게 됩니다. 이 접근 방식은 "데이터 가지치기"라고도 하며, ClickHouse는 이를 위한 세 가지 기술을 제공합니다:
+
+1. [기본 키 인덱스](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)는 테이블 데이터의 정렬 순서를 정의합니다. 잘 선택된 기본 키는 위의 쿼리에서와 같은 필터(예: WHERE 절)를 빠른 이진 검색으로 평가할 수 있도록 합니다. 더 기술적인 용어로는, 스캔의 실행 시간은 데이터 크기 대신 로그적(logarithmic)으로 변하게 됩니다.
+
+2. [테이블 프로젝션](/sql-reference/statements/alter/projection)은 테이블의 대안적인 내부 버전으로, 같은 데이터를 저장하지만 다른 기본 키에 따라 정렬된 것입니다. 프로젝션은 여러 개의 자주 사용하는 필터 조건이 있을 때 유용할 수 있습니다.
+
+3. [스킵 인덱스](/optimize/skipping-indexes)는 추가 데이터 통계를 컬럼에 임베드하며, 예를 들어 최소 및 최대 컬럼 값, 고유 값 집합 등을 포함합니다. 스킵 인덱스는 기본 키 및 테이블 프로젝션과는 독립적이며, 컬럼의 데이터 분포에 따라 필터 평가를 크게 가속화할 수 있습니다.
+
+이 세 가지 기술은 전체 컬럼 읽기 중 가능한 많은 행을 건너뛰는 것을 목표로 하고 있습니다. 데이터 읽기의 가장 빠른 방법은 아예 읽지 않는 것입니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [Data Pruning](/docs/academic_overview#3-2-data-pruning) 섹션에서 확인하십시오.
+
+## 저장 계층: 데이터 압축 {#storage-layer-data-compression}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/MH10E3rVvnM?si=duWmS_OatCLx-akH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+또한 ClickHouse의 저장 계층은 다양한 코덱을 사용하여 원시 테이블 데이터를 추가적으로 (선택적으로) 압축합니다.
+
+컬럼 저장소는 동일한 유형과 데이터 분포를 갖는 값들이 함께 위치하므로 이러한 압축에 특히 잘 적합합니다.
+
+사용자는 [지정할 수 있습니다](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) 컬럼이 다양한 일반 압축 알고리즘(예: ZSTD) 또는 전문 코덱, 예를 들어 부동 소수점 값에 대해 Gorilla 및 FPC, 정수 값에 대해 Delta 및 GCD, 또는 AES와 같은 암호화 코덱으로 압축되도록 할 수 있습니다.
+
+데이터 압축은 데이터베이스 테이블의 저장 크기를 줄여줄 뿐만 아니라, 많은 경우 쿼리 성능도 향상시킵니다. 이는 로컬 디스크 및 네트워크 I/O가 종종 낮은 처리량에 의해 제한되기 때문입니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [On-Disk Format](/docs/academic_overview#3-1-on-disk-format) 섹션에서 확인하십시오.
+
+## 최첨단 쿼리 처리 계층 {#state-of-the-art-query-processing-layer}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/O5qecdQ7Y18?si=XVtOIuVd8NLbqyox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+마지막으로 ClickHouse는 가능한 한 많은 리소스를 활용하여 최대 속도와 효율성을 위해 쿼리 실행을 병렬화하는 벡터화된 쿼리 처리 계층을 사용합니다.
+
+"벡터화"는 쿼리 계획 연산자가 단일 행이 아닌 배치로 중간 결과 행을 전달하는 것을 의미합니다. 이는 CPU 캐시의 활용도를 향상시키고 연산자가 여러 값을 동시에 처리하는 SIMD 명령어를 적용할 수 있게 합니다. 실제로 많은 연산자는 SIMD 명령어 세트 세대마다 하나씩 여러 버전이 존재합니다. ClickHouse는 실행되는 하드웨어의 기능에 따라 가장 최신의 빠른 버전을 자동으로 선택합니다.
+
+현대 시스템에는 수십 개의 CPU 코어가 있습니다. 모든 코어를 활용하기 위해 ClickHouse는 쿼리 계획을 여러 레인으로 펼치며, 일반적으로 하나의 코어마다 하나씩 배치합니다. 각 레인은 테이블 데이터의 불연속적인 범위를 처리합니다. 이렇게 하면 데이터베이스 성능이 사용 가능한 코어 수에 따라 "수직적으로" 확장됩니다.
+
+단일 노드가 테이블 데이터를 보유하기에 너무 작아지면 추가 노드를 추가하여 클러스터를 형성할 수 있습니다. 테이블은 "샤딩"되어 노드 전체에 분산될 수 있습니다. ClickHouse는 테이블 데이터를 저장하는 모든 노드에서 쿼리를 실행하여 사용 가능한 노드 수에 따라 "수평적으로" 확장됩니다.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [Query Processing Layer](/academic_overview#4-query-processing-layer) 섹션에서 확인하십시오.
+
+## 세심한 최적화 {#meticulous-attention-to-detail}
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/dccGLSuYWy0?si=rQ-Jp-z5Ik_-Rb8S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+> **"ClickHouse는 기이한 시스템입니다 - 여러분은 해시 테이블의 20가지 버전을 가지고 있죠. 여러분은 대다수 시스템이 하나의 해시 테이블을 갖고 있는 반면... ClickHouse는 모든 이러한 전문적 요소들 덕분에 놀라운 성능을 발휘합니다."** [앤디 파블로, CMU 데이터베이스 교수](https://www.youtube.com/watch?v=Vy2t_wZx4Is&t=3579s)
+
+ClickHouse를 [둘러싼](https://www.youtube.com/watch?v=CAS2otEoerM) 차별성은 낮은 수준의 최적화에 대한 세심한 주의입니다. 단순히 작동하는 데이터베이스를 구축하는 것은 한 가지 일이지만, 다양한 쿼리 유형, 데이터 구조, 분포 및 인덱스 구성을 통해 속도를 제공하도록 설계하는 것은 "[기이한 시스템](https://youtu.be/Vy2t_wZx4Is?si=K7MyzsBBxgmGcuGU&t=3579)"의 예술성이 빛나는 부분입니다.
+
+**해시 테이블.** 해시 테이블을 예로 들어 보겠습니다. 해시 테이블은 조인 및 집계에 사용되는 중심 데이터 구조입니다. 프로그래머는 이러한 설계 결정을 고려해야 합니다:
+
+* 선택할 해시 함수,
+* 충돌 해결: [오픈 어드레싱](https://en.wikipedia.org/wiki/Open_addressing) 또는 [체이닝](https://en.wikipedia.org/wiki/Hash_table#Separate_chaining),
+* 메모리 레이아웃: 키와 값을 위한 하나의 배열 또는 별도의 배열?
+* 채우기 비율: 언제 및 어떻게 크기를 조정해야 하는가? 크기 조정 시 값을 이동하는 방법은?
+* 삭제: 해시 테이블이 항목을 제거하도록 허용할 것인가?
+
+타사 라이브러리에서 제공하는 표준 해시 테이블은 기능적으로 작동하지만, 빠르지는 않을 것입니다. 뛰어난 성능을 위해서는 세심한 벤치마킹 및 실험이 필요합니다.
+
+[ClickHouse의 해시 테이블 구현](https://clickhouse.com/blog/hash-tables-in-clickhouse-and-zero-cost-abstractions)은 쿼리의 세부 사항에 따라 **30개 이상의 미리 컴파일된 해시 테이블 변형 중 하나를 선택합니다**.
+
+**알고리즘.** 알고리즘 역시 마찬가지입니다. 예를 들어 정렬에서는 고려해야 할 요소가 있습니다:
+
+* 무엇을 정렬할 것인가: 숫자, 튜플, 문자열 또는 구조체?
+* 데이터가 RAM에 있는가?
+* 정렬이 안정성이 요구되는가?
+* 모든 데이터를 정렬해야 하는가, 아니면 부분 정렬로 충분한가?
+
+데이터 특성에 의존하는 알고리즘이 일반적인 알고리즘보다 효과적으로 수행되는 경우가 많습니다. 데이터 특성이 미리 알려지지 않는 경우, 시스템은 여러 구현을 시도하고 실행 중 가장 잘 작동하는 것을 선택할 수 있습니다. 예를 들어 [ClickHouse에서 LZ4 압축 해제가 어떻게 구현되었는지에 대한 기사](https://habr.com/en/company/yandex/blog/457612/)를 확인하십시오.
+
+🤿 자세한 내용은 VLDB 2024 논문의 [Holistic Performance Optimization](/academic_overview#4-4-holistic-performance-optimization) 섹션에서 확인하십시오.
+
+## VLDB 2024 논문 {#vldb-2024-paper}
+
+2024년 8월, 우리는 첫 연구 논문을 VLDB에서 수락 및 발표하였습니다. VLDB는 매우 대규모 데이터베이스에 관한 국제 회의이며, 데이터 관리 분야에서 가장 저명한 회의 중 하나로 널리 알려져 있습니다. 수백 건의 제출 중에서 VLDB는 일반적으로 약 20%의 수락률을 보입니다.
+
+논문의 [PDF 버전](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf) 또는 ClickHouse의 가장 흥미로운 아키텍처 및 시스템 설계 구성 요소를 간결하게 설명하는 [웹 버전](/docs/academic_overview)을 읽어보십시오.
+
+Alexey Milovidov, 우리의 CTO이자 ClickHouse의 창립자는 이 논문을 발표하였으며(슬라이드는 [여기](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)), 뒤이어 Q&A가 이어졌습니다(시간이 금방 지나갔습니다!). 녹화된 발표는 [여기에서](https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF) 시청하실 수 있습니다.

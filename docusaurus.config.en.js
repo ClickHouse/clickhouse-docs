@@ -66,7 +66,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "jp", "zh", "ru"],
+    locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -88,6 +88,11 @@ const config = {
         label: "Русский",
         htmlLang: "ru",
         path: "ru",
+      },
+      ko: {
+        label: "한국어",
+        htmlLang: "ko",
+        path: "ko",
       }
     },
   },
