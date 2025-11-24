@@ -13,5 +13,5 @@
 # /docs\/imports\/.*\.mdx/
 # /\.temp\./
 
-docs/i18n/.*
-docs/use-cases/observability/clickstack/api-reference/.*
+/docs/i18n/.*/
+/docs/use-cases/observability/clickstack/api-reference/.*\.mdx$/
