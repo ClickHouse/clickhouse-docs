@@ -978,6 +978,7 @@ const sidebars = {
           collapsible: true,
           items: [
             "integrations/data-ingestion/streamkap/streamkap-and-clickhouse",
+            "integrations/data-ingestion/streamkap/sql-server-clickhouse",
           ],
         }
       ],

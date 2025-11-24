@@ -587,11 +587,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/en/integrations/streamkap",
-      "destination": "/docs/integrations/streamkap/streamkap-and-clickhouse",
-      "permanent": true
-    },
-    {
       "source": "/docs/en/integrations/postgresql/postgres-with-clickhouse",
       "destination": "/docs/integrations/postgresql",
       "permanent": true
