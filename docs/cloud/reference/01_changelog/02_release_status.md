@@ -1,112 +1,72 @@
 ---
-title: 'Supported cloud regions'
-sidebar_label: 'Supported Cloud regions'
+title: 'Release status page'
+sidebar_label: 'Release status'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
-description: 'Supported regions for ClickHouse Cloud'
-slug: /cloud/reference/supported-regions
+description: 'Page with release status for each release channel'
+slug: /cloud/release-status
 doc_type: 'reference'
 ---
 
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
+ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for users that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
 
-# Supported cloud regions
+## Release Channel Details
 
-## AWS regions {#aws-regions}
+<details>
+<summary>Learn more about release channels</summary>
 
-- ap-northeast-1 (Tokyo)
-- ap-northeast-2 (South Korea, Seoul)
-- ap-south-1 (Mumbai)
-- ap-southeast-1 (Singapore)
-- ap-southeast-2 (Sydney)
-- eu-central-1 (Frankfurt)
-- eu-west-1 (Ireland)
-- eu-west-2 (London)
-- me-central-1 (UAE)
-- us-east-1 (N. Virginia)
-- us-east-2 (Ohio)
-- us-west-2 (Oregon)
-- il-central-1 (Israel, Tel Aviv)
+| Channel Name | Description | Key Considerations | Tiers Supported |
+| :--- | :--- | :--- | :--- |
+| **Fast (Early Release)** | Recommended for non production environments. This is the first release channel for every database version upgrade | New feature access over stability.<br/>Ability to test releases in non production environments ahead of production upgrade | Basic (default)<br/>Scale, Enterprise tiers |
+| **Regular** | Default release channel for all multi replica services.<br/>Updates on this channel typically happen two weeks post the Fast release channel. | Default/ fleetwide upgrades.<br/>Upgrades on this channel are usually done two weeks post the Fast release channel upgrade | Scale and Enterprise |
+| **Slow (Deferred)** | Recommended for those more risk averse users that want their services to be upgraded towards the end of the release schedule.<br/>Updates on this channel typically happen two weeks post the Regular release channel. | Maximum stability and predictability.<br/>Meant for users that need more testing of new releases on either the Fast/Regular channel | Enterprise |
 
-**Private Region:**
-- ca-central-1 (Canada)
-- af-south-1 (South Africa)
-- eu-north-1 (Stockholm)
-- sa-east-1 (South America)
- 
-## Google Cloud regions {#google-cloud-regions}
+<br/>
+<br/>
 
-- asia-southeast1 (Singapore)
-- asia-northeast1 (Tokyo)
-- europe-west4 (Netherlands)
-- us-central1 (Iowa)
-- us-east1 (South Carolina)
-
-**Private Region:**
-
-- us-west1 (Oregon)
-- australia-southeast1(Sydney)
-- europe-west3 (Frankfurt)
-- europe-west6 (Zurich)
-- northamerica-northeast1 (Montréal)
-
-## Azure regions {#azure-regions}
-
-- West US 3 (Arizona)
-- East US 2 (Virginia)
-- Germany West Central (Frankfurt)
-
-**Private Region:**
-
-- JapanEast
-
-:::note 
-Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
+:::note
+All single replica services are automatically enrolled in the Fast release channel.
 :::
 
-## Private regions {#private-regions}
+</details>
 
-<EnterprisePlanFeatureBadge feature="Private regions feature"/>
+Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows users to configure a time window on given day of the week for upgrades.
 
-We offer Private regions for our Enterprise tier services. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
+## Release Schedule
 
-Key considerations for private regions:
-- Services will not auto-scale; however, manual vertical and horizontal scaling is supported.
-- Services cannot be idled.
-- Status page is not available for private regions.
-  
-Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
+import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
 
-## HIPAA compliant regions {#hipaa-compliant-regions}
-
-<EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
-
-Customers must sign a Business Associate Agreement (BAA) and request onboarding through Sales or Support to set up services in HIPAA compliant regions. The following regions support HIPAA compliance:
-- AWS af-south-1 (South Africa) **Private Region**
-- AWS ca-central-1 (Canada) **Private Region**
-- AWS eu-central-1 (Frankfurt)
-- AWS eu-north-1 (Stockholm) **Private Region**
-- AWS eu-west-1 (Ireland)
-- AWS eu-west-2 (London)
-- AWS sa-east-1 (South America) **Private Region**
-- AWS us-east-1 (N. Virginia)
-- AWS us-east-2 (Ohio)
-- AWS us-west-2 (Oregon)
-- GCP europe-west4 (Netherlands)
-- GCP us-central1 (Iowa)
-- GCP us-east1 (South Carolina)
-
-## PCI compliant regions {#pci-compliant-regions}
-
-<EnterprisePlanFeatureBadge feature="PCI" support="true"/>
-
-Customers must request onboarding through Sales or Support to set up services in PCI compliant regions. The following regions support PCI compliance:
-- AWS af-south-1 (South Africa) **Private Region**
-- AWS ca-central-1 (Canada) **Private Region**
-- AWS eu-central-1 (Frankfurt)
-- AWS eu-north-1 (Stockholm) **Private Region**
-- AWS eu-west-1 (Ireland)
-- AWS eu-west-2 (London)
-- AWS sa-east-1 (South America) **Private Region**
-- AWS us-east-1 (N. Virginia)
-- AWS us-east-2 (Ohio)
-- AWS us-west-2 (Oregon)
+<ReleaseSchedule releases={[
+   {
+    version: '24.10',
+    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#2410',
+    fast_date: '2024-10-15',
+    regular_date: '2024-10-29',
+    slow_date: '2024-11-12',
+    fast_progress: 'red',
+    fast_delay_note: 'Critical bug found in beta',
+    regular_progress: 'orange',
+    regular_delay_note: 'Dependent on Fast channel fix',
+    slow_progress: 'green'
+  },
+  {
+    version: '24.9',
+    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#249',
+    fast_date: '2024-09-15',
+    regular_date: '2024-09-29',
+    slow_date: '2024-10-13',
+    fast_progress: 'green',
+    regular_progress: 'orange',
+    regular_delay_note: 'Slight delay due to additional testing',
+    slow_progress: 'green'
+  },
+  {
+    version: '24.8',
+    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#248',
+    fast_date: '2024-08-15',
+    regular_date: '2024-08-29',
+    slow_date: '2024-09-12',
+    fast_progress: 'green',
+    regular_progress: 'green',
+    slow_progress: 'green'
+  }
+]} />
