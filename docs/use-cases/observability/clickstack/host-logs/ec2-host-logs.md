@@ -14,6 +14,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
+import search_view_demo from '@site/static/images/clickstack/host-logs/ec2/search-view-demo.png';
+import log_view_demo from '@site/static/images/clickstack/host-logs/ec2/log-view-demo.png';
 import logs_dashboard from '@site/static/images/clickstack/host-logs/host-logs-dashboard.png';
 import finish_import from '@site/static/images/clickstack/host-logs/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
@@ -371,22 +373,18 @@ processors:
       - key: host.name
         value: "prod-web-01"
         action: insert
-  
-  batch:
-    timeout: 10s
-
-exporters:
-  otlphttp:
-    endpoint: "http://localhost:4318"
-    headers:
-      authorization: "${env:CLICKSTACK_API_KEY}"
 
 service:
   pipelines:
-    logs:
+    logs/ec2-demo:
       receivers: [filelog/journal]
-      processors: [resource, batch]
-      exporters: [otlphttp]
+      processors:
+        - resource
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
 EOF
 ```
 
@@ -417,8 +415,8 @@ Once the collector is running:
 4. Filter by `source:ec2-demo`
 5. Expand a log entry to view EC2 metadata in the resource attributes
 
-<Image img={search_view} alt="EC2 logs search view"/>
-<Image img={log_view} alt="EC2 log detail with metadata"/>
+<Image img={search_view_demo} alt="EC2 logs search view"/>
+<Image img={log_view_demo} alt="EC2 log detail with metadata"/>
 
 :::note[Timezone Display]
 HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
