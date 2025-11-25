@@ -1695,11 +1695,7 @@ const sidebars = {
             },
           ]
         },
-        {
-          type: "link",
-          label: "API reference",
-          href: "https://clickhouse.com/docs/clickstack/api-reference",
-        }
+        "use-cases/observability/clickstack/api-reference"
       ]
     },
   ],
