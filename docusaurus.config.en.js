@@ -99,7 +99,7 @@ const config = {
       return await customParseFrontMatter(params);
     }
   },
-  themes: ["@docusaurus/theme-mermaid", "docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs"],
   presets: [
     [
       "classic",
