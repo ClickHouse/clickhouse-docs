@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ClickHouse Cloud offers different release channels to cater to different user needs regarding stability, access to new features, and upgrade predictability. Each channel has a distinct upgrade schedule and is meant to address the different usecases - for users that want instant access to new releases and those that want to defer upgrades to ensure they receive the most stable version of the release.
 
-## Release Channel Details
+## Release channel details {#release-channel-details}
 
 <details>
 <summary>Learn more about release channels</summary>
@@ -31,7 +31,7 @@ All single replica services are automatically enrolled in the Fast release chann
 
 Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows users to configure a time window on given day of the week for upgrades.
 
-## Release Schedule
+## Release schedule {#release-schedule}
 
 import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
 
@@ -39,9 +39,9 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
    {
     version: '24.10',
     changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#2410',
-    fast_date: '2024-10-15',
-    regular_date: '2024-10-29',
-    slow_date: '2024-11-12',
+    fast_date: '2025-10-15',
+    regular_date: '2025-10-29',
+    slow_date: '2025-11-12',
     fast_progress: 'red',
     fast_delay_note: 'Critical bug found in beta',
     regular_progress: 'orange',
@@ -51,9 +51,9 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
   {
     version: '24.9',
     changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#249',
-    fast_date: '2024-09-15',
-    regular_date: '2024-09-29',
-    slow_date: '2024-10-13',
+    fast_date: '2025-09-15',
+    regular_date: '2025-09-29',
+    slow_date: '2025-10-13',
     fast_progress: 'green',
     regular_progress: 'orange',
     regular_delay_note: 'Slight delay due to additional testing',
@@ -62,9 +62,9 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
   {
     version: '24.8',
     changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#248',
-    fast_date: '2024-08-15',
-    regular_date: '2024-08-29',
-    slow_date: '2024-09-12',
+    fast_date: '2025-08-15',
+    regular_date: '2025-08-29',
+    slow_date: '2025-09-12',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green'
