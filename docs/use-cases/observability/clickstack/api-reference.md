@@ -12,4 +12,4 @@ import {Button} from "@clickhouse/click-ui/bundled";
 
 <CloudNotSupportedBadge/>
 
-For API reference docs, please visit [this page](/docs/clickstack/api-reference)
+For API reference docs, please visit [this page](https://www.clickhouse.com/docs/clickstack/api-reference)
