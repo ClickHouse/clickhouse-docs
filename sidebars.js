@@ -1694,6 +1694,11 @@ const sidebars = {
               dirName: "use-cases/observability/clickstack/integration-examples",
             },
           ]
+        },
+        {
+          type: "link",
+          label: "API reference",
+          href: "/clickstack/api-reference",
         }
       ]
     },
