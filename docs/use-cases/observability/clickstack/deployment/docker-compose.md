@@ -51,9 +51,6 @@ To deploy with Docker Compose clone the HyperDX repo, change into the directory 
 
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
-cd hyperdx
-# switch to the v2 branch
-git checkout v2
 docker compose up
 ```
 

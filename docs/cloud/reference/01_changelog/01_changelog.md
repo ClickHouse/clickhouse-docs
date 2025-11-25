@@ -39,6 +39,11 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## November 21, 2025 {#november-21-2025}
+
+- ClickHouse Cloud is now available in **AWS Israel (Tel Aviv) — il-central-1**
+- Improved the marketplace onboarding experience for setting up ClickHouse organizations to bill to marketplace pay-as-you-go subscriptions or private offers.
+
 ## November 14, 2025 {#november-14-2025}
 - We’re excited to announce that **ClickHouse Cloud** is now available in **two additional public regions**:
   - **GCP Japan (asia-northeast1)**
