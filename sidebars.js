@@ -1698,7 +1698,7 @@ const sidebars = {
         {
           type: "link",
           label: "API reference",
-          href: "/clickstack/api-reference",
+          href: "https://clickhouse.com/docs/clickstack/api-reference",
         }
       ]
     },
