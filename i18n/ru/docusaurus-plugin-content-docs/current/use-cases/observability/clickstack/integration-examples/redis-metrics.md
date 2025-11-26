@@ -151,6 +151,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   * В production-среде с аутентификацией храните пароль в переменной окружения: `${env:REDIS_PASSWORD}`
   * Настройте `collection_interval` в соответствии с вашими потребностями (по умолчанию — 10s; меньшие значения увеличивают объем собираемых данных)
   * Для нескольких инстансов Redis задайте `service.name`, чтобы отличать их (например, `"redis-cache"`, `"redis-sessions"`)
+  :::
 
   #### Настройте ClickStack для загрузки пользовательской конфигурации
 

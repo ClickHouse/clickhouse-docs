@@ -16,7 +16,7 @@ import image_5 from '@site/static/images/use-cases/AI_ML/jupyter/5.png';
 import image_6 from '@site/static/images/use-cases/AI_ML/jupyter/6.png';
 import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
-import image_9 from '@site/static/images/use-cases/use-cases/AI_ML/jupyter/9.png';
+import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 
 # Jupyter Notebook と chDB を使ったデータ探索
