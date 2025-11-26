@@ -1,0 +1,69 @@
+---
+title: 将 system.dashboards 中使用的指标映射到 `system.custom_metrics` 中的 Prometheus 指标
+description: "将 system.dashboards 中使用的指标映射到 `system.custom_metrics` 中的 Prometheus 指标"
+date: 2024-07-23
+tags: ['系统表']
+keywords: ['指标', 'system.dashboards', 'system.custom_metrics']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## `system.dashboards` 中使用的指标与 `system.custom_metrics` 中 Prometheus 指标的映射 \{#mapping-of-metrics-used-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
+
+下表给出了 `system.dashboards` 中使用的指标到 `system.custom_metrics` 中 Prometheus 指标的映射关系。  
+这对于希望监控 `system.dashboards` 中相同指标的客户非常有用。 
+
+### system.dashboards 中的指标到 system.custom_metrics 中 Prometheus 指标的映射表 \{#mapping-table-for-metrics-in-systemdashboards-to-prometheus-metrics-in-systemcustom_metrics\}
+
+Dashboard | Title | Prometheus Metric Name (system.custom_metrics)
+-- | -- | --
+Overview | 每秒查询数 | ClickHouseProfileEvents_Query
+Overview | CPU 使用量（核） | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
+Overview | 正在运行的查询 | ClickHouseMetrics_Query
+Overview | 正在运行的合并 | ClickHouseMetrics_Merge
+Overview | 每秒选出字节数 | ClickHouseProfileEvents_SelectedBytes
+Overview | I/O 等待时间 | ClickHouseProfileEvents_OSIOWaitMicroseconds
+Overview | CPU 等待时间 | ClickHouseProfileEvents_OSCPUWaitMicroseconds
+Overview | 操作系统 CPU 使用率（用户空间） | ClickHouseAsyncMetrics_OSUserTimeNormalized
+Overview | 操作系统 CPU 使用率（内核） | ClickHouseAsyncMetrics_OSSystemTimeNormalized
+Overview | 从磁盘读取 | ClickHouseProfileEvents_OSReadBytes
+Overview | 从文件系统读取 | ClickHouseProfileEvents_OSReadChars
+Overview | 内存（跟踪） | ClickHouseMetrics_MemoryTracking
+Overview | 平均负载（15 分钟） | ClickHouseAsyncMetrics_LoadAverage15
+Overview | 每秒选出行数 | ClickHouseProfileEvents_SelectedRows
+Overview | 每秒插入行数 | ClickHouseProfileEvents_InsertedRows
+Overview | MergeTree 部分总数 | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
+Overview | 单个分区的最大部分数 | ClickHouseAsyncMetrics_MaxPartCountForPartition
+Cloud overview | 每秒查询数 | ClickHouseProfileEvents_Query
+Cloud overview | CPU 使用量（核） | ClickHouseProfileEvents_OSCPUVirtualTimeMicroseconds
+Cloud overview | 正在运行的查询 | ClickHouseMetrics_Query
+Cloud overview | 正在运行的合并 | ClickHouseMetrics_Merge
+Cloud overview | 每秒选出字节数 | ClickHouseProfileEvents_SelectedBytes
+Cloud overview | I/O 等待时间（本地文件系统） | ClickHouseProfileEvents_OSIOWaitMicroseconds
+Cloud overview | S3 读取等待时间 | ClickHouseProfileEvents_ReadBufferFromS3Microseconds
+Cloud overview | S3 读取错误/秒 | ProfileEvent_ReadBufferFromS3RequestsErrors
+Cloud overview | CPU 等待时间 | ClickHouseProfileEvents_OSCPUWaitMicroseconds
+Cloud overview | 操作系统 CPU 使用率（用户空间，归一化） | ClickHouseAsyncMetrics_OSUserTimeNormalized
+Cloud overview | 操作系统 CPU 使用率（内核，归一化） | ClickHouseAsyncMetrics_OSSystemTimeNormalized
+Cloud overview | 从磁盘读取（字节/秒） | ClickHouseProfileEvents_OSReadBytes
+Cloud overview | 从文件系统读取（字节/秒） | ClickHouseProfileEvents_OSReadChars
+Cloud overview | 内存（跟踪，字节） | ClickHouseMetrics_MemoryTracking
+Cloud overview | 平均负载（15 分钟） | ClickHouseAsyncMetrics_LoadAverage15
+Cloud overview | 每秒选出行数 | ClickHouseProfileEvents_SelectedRows
+Cloud overview | 每秒插入行数 | ClickHouseProfileEvents_InsertedRows
+Cloud overview | MergeTree 部分总数 | ClickHouseAsyncMetrics_TotalPartsOfMergeTreeTables
+Cloud overview | 单个分区的最大部分数 | ClickHouseAsyncMetrics_MaxPartCountForPartition
+Cloud overview | 从 S3 读取（字节/秒） | ClickHouseProfileEvents_ReadBufferFromS3Bytes
+Cloud overview | 文件系统缓存大小 | ClickHouseMetrics_FilesystemCacheSize
+Cloud overview | 磁盘 S3 写请求/秒 | ClickHouseProfileEvents_DiskS3PutObject + ClickHouseProfileEvents_DiskS3UploadPart + ClickHouseProfileEvents_DiskS3CreateMultipartUpload + ClickHouseProfileEvents_DiskS3CompleteMultipartUpload
+Cloud overview | 磁盘 S3 读请求/秒 | ClickHouseProfileEvents_DiskS3GetObject + ClickHouseProfileEvents_DiskS3HeadObject + ClickHouseProfileEvents_DiskS3ListObjects
+Cloud overview | 文件系统缓存命中率 | ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes / (ClickHouseProfileEvents_CachedReadBufferReadFromCacheBytes + ClickHouseProfileEvents_CachedReadBufferReadFromSourceBytes)
+Cloud overview | 页缓存命中率 | greatest(0, (sum(ClickHouseProfileEvents_OSReadChars) - sum(ClickHouseProfileEvents_OSReadBytes)) /  (sum(ClickHouseProfileEvents_OSReadChars) + sum(ClickHouseProfileEvents_ReadBufferFromS3Bytes)))
+Cloud overview | 网络接收字节数/秒 | ClickHouseProfileEvents_NetworkReceiveBytes
+Cloud overview | 网络发送字节数/秒 | ClickHouseProfileEvents_NetworkSendBytes
+
+Related links:  
+https://clickhouse.com/docs/integrations/prometheus

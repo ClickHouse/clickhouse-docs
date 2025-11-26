@@ -1,0 +1,170 @@
+---
+title: 更改 clickhouse-client 中的提示符
+description: "本文介绍如何将 ClickHouse 客户端和 clickhouse-local 终端窗口中的提示符，从 :) 更改为带有自定义前缀的 :)"
+date: 2023-11-16
+tags: ['设置', '原生客户端和接口']
+keywords: ['ClickHouse 客户端', '更改提示符']
+---
+
+import Image from "@theme/IdealImage";
+import prompt_0 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/0_prompt.png";
+import prompt_1 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/1_prompt.png";
+import prompt_2 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/2_prompt.png";
+import prompt_3 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/3_prompt.png";
+import prompt_4 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/4_prompt.png";
+import prompt_5 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/5_prompt.png";
+import prompt_6 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/6_prompt.png";
+import prompt_7 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/7_prompt.png";
+import prompt_8 from "@site/static/images/knowledgebase/change-the-prompt-in-clickhouse-client/8_prompt.png";
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+如果你不喜欢 `clickhouse client` 和 clickhouse-local 在终端窗口中显示的提示符，可以通过添加前缀来修改它。
+本文将介绍如何将提示符更改为任意你想要的形式。
+
+默认提示符是你的本地计算机名，后面跟着 `:) `：
+
+<Image img={prompt_0} size="md" alt="默认 ClickHouse 客户端提示符" />
+
+下面是你可以在提示符中使用的变量：`{user}`、`{host}`
+
+有多种方式可以更新提示符，接下来我们会逐一介绍。
+
+
+## --prompt 标志
+
+更改此标志的第一种方法是使用 `--prompt`：
+
+```bash
+clickhouse --prompt 👉
+```
+
+这会在笑脸前添加手指表情符号：
+
+<Image img={prompt_1} size="md" alt="带有手指表情符号的 ClickHouse 客户端提示符" />
+
+
+## 配置文件 - 顶层
+
+或者，您可以在 `config.xml` 文件中提供一个提示前缀：
+
+```xml
+<config>
+    <prompt>👉 </prompt>
+</config>
+```
+
+```
+clickhouse
+```
+
+<Image img={prompt_2} size="md" alt="带有配置文件的 ClickHouse 客户端提示符" />
+
+我们可以使用任意名称的配置文件，并通过 `-C` 参数传入：
+
+```xml
+<config>
+    <prompt>🎄 </prompt>
+</config>
+```
+
+```
+clickhouse -C christmas.xml
+```
+
+<Image img={prompt_3} size="md" alt="带有圣诞树表情符号的 ClickHouse 客户端提示符" />
+
+更喜欢把配置文件写成 YAML 格式？
+也可以这样做：
+
+```yaml
+prompt: 🟡
+```
+
+```bash
+clickhouse -C christmas.yaml
+```
+
+<Image img={prompt_4} size="md" alt="带黄色圆圈表情符号的 ClickHouse 客户端命令行提示符" />
+
+
+## 配置文件 - connections&#95;credentials
+
+或者，你也可以为每个连接凭据单独指定一个提示。
+这仅在使用 clickhouse-client 时有意义。
+
+```xml
+<config>
+    <connections_credentials>
+        <connection>
+            <n>prod<n>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[31m[生产环境]\e[0m {user}@prod</prompt>
+        </connection>
+        <connection>
+            <n>dev<n>
+            <hostname>127.0.0.1</hostname>
+            <port>9000</port>
+            <secure>0</secure>
+            <user>default</user>
+            <prompt>\e[32m[开发环境]\e[0m {user}@dev</prompt>
+        </connection>
+    </connections_credentials>
+</config>
+```
+
+然后我们就可以尝试使用 `dev` 连接来进行连接：
+
+```bash
+clickhouse client -C connections.xml --connection dev
+```
+
+<Image img={prompt_5} size="md" alt="ClickHouse 客户端在开发环境下的提示符" />
+
+或者 `prod` 环境的：
+
+```bash
+clickhouse client -C connections.xml --connection prod
+```
+
+<Image img={prompt_6} size="md" alt="已连接生产环境的 ClickHouse 客户端提示符" />
+
+下面是对应的 YAML 版本：
+
+```yaml
+connections_credentials:
+  connection:
+    - name: 生产
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[35m[生产]\e[0m {user}@{host}"
+    - name: 开发
+      hostname: 127.0.0.1
+      port: 9000
+      secure: 0
+      user: default
+      prompt: "\e[34m[开发]\e[0m {user}@{host}"
+```
+
+使用 `dev` 连接：
+
+```bash
+clickhouse client -C connections.yaml --connection dev
+```
+
+<Image img={prompt_7} size="md" alt="使用 YAML 进行开发环境连接的 ClickHouse 客户端提示" />
+
+接下来是 `prod`：
+
+```bash
+clickhouse client -C connections.yaml --connection prod
+```
+
+<Image img={prompt_8} size="md" alt="使用 YAML 配置生产环境连接的 ClickHouse 客户端提示符" />

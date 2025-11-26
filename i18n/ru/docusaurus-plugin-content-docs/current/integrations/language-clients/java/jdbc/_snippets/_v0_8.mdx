@@ -1,0 +1,238 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::note
+`clickhouse-jdbc` реализует стандартный интерфейс JDBC, используя актуальный Java‑клиент.
+Мы рекомендуем использовать актуальный Java‑клиент напрямую, если для вас критичны производительность и прямой доступ.
+:::
+
+
+## Изменения по сравнению с 0.7.x \{#changes-from-07x\}
+
+В 0.8 мы постарались сделать драйвер строже соответствующим спецификации JDBC, поэтому некоторые возможности были удалены, что может повлиять на вашу работу:
+
+| Старый функционал               | Примечания                                                                                                                                                                                                                                                                                                      |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Поддержка транзакций           | Ранние версии драйвера лишь **имитировали** поддержку транзакций, что могло приводить к непредсказуемым результатам.                                                                                                                                                                                           |
+| Переименование столбцов ответа | `ResultSet` был изменяемым — теперь, в целях эффективности, он доступен только для чтения.                                                                                                                                                                                                                     |
+| Multi-Statement SQL             | Поддержка multi-statement ранее была только **имитацией**, теперь запросы выполняются строго по одному (1:1).                                                                                                                                                                                                 |
+| Именованные параметры          | Не являются частью спецификации JDBC.                                                                                                                                                                                                                                                                          |
+| Потоковый `PreparedStatement`  | Ранняя версия драйвера позволяла использовать `PreparedStatement` вне контекста JDBC — если вам нужны такие возможности, мы рекомендуем обратить внимание на [Java Client](/integrations/language-clients/java/client/client.mdx) и его [примеры](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
+
+:::note
+`Date` хранится без часового пояса, тогда как `DateTime` хранится с часовым поясом. Это может приводить к неожиданным результатам, если не учитывать эту особенность.
+:::
+
+## Требования к окружению \{#environment-requirements\}
+
+- [OpenJDK](https://openjdk.java.net) версии 8 или выше
+
+### Настройка \{#setup\}
+
+<Tabs groupId="jdbc-base-dependencies">
+    <TabItem value="maven" label="Maven" >
+
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.9.1</version>
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.1:shaded-all'
+        ```
+
+    </TabItem>
+</Tabs>
+
+## Конфигурация \{#configuration\}
+
+**Класс драйвера**: `com.clickhouse.jdbc.ClickHouseDriver`
+
+**Синтаксис URL**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, например:
+
+- `jdbc:clickhouse:http://localhost:8123`
+- `jdbc:clickhouse:https://localhost:8443?ssl=true`
+
+**Параметры подключения**:
+
+Помимо стандартных свойств JDBC, драйвер поддерживает специфичные для ClickHouse свойства, предоставляемые базовым [Java-клиентом](/integrations/language-clients/java/client/client.mdx).
+Где возможно, методы возвращают `SQLFeatureNotSupportedException`, если функция не поддерживается. Другие настраиваемые свойства включают:
+
+| Property                         | Default | Description                                                    |
+|----------------------------------|---------|----------------------------------------------------------------|
+| `disable_frameworks_detection`   | `true`  | Отключает обнаружение фреймворков в User-Agent                |
+| `jdbc_ignore_unsupported_values` | `false` | Подавляет генерацию `SQLFeatureNotSupportedException`         |
+| `clickhouse.jdbc.v1`             | `false` | Использовать старую реализацию JDBC вместо новой              |
+| `default_query_settings`         | `null`  | Позволяет передавать настройки запроса по умолчанию при выполнении запросов |
+| `jdbc_resultset_auto_close`      | `true`  | Автоматически закрывает `ResultSet` при закрытии `Statement`  |
+| `beta.row_binary_for_simple_insert` | `false` | Использовать реализацию `PreparedStatement`, основанную на механизме записи `RowBinary`. Работает только для запросов `INSERT INTO ... VALUES`. |
+
+## Поддерживаемые типы данных \{#supported-data-types\}
+
+JDBC-драйвер поддерживает те же форматы данных, что и основной [Java-клиент](/integrations/language-clients/java/client/client.mdx).
+
+### Обработка дат, времени и часовых поясов \{#handling-dates-times-and-timezones\}
+
+`java.sql.Date`, `java.sql.Time` и `java.sql.Timestamp` могут усложнять работу с часовыми поясами — хотя они, разумеется, поддерживаются,
+имеет смысл рассмотреть использование пакета [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html). `ZonedDateTime` и
+`OffsetDateTime` являются отличной заменой для `java.sql.Timestamp`, `java.sql.Date` и `java.sql.Time`.
+
+## Создание подключения
+
+```java
+String url = "jdbc:ch://my-server:8123/system";
+
+Properties properties = new Properties();
+DataSource dataSource = new DataSource(url, properties);//DataSource или DriverManager — основные точки входа
+try (Connection conn = dataSource.getConnection()) {
+... // выполните действия с соединением
+```
+
+
+## Указание учетных данных и настроек
+
+```java showLineNumbers
+String url = "jdbc:ch://localhost:8123?jdbc_ignore_unsupported_values=true&socket_timeout=10";
+
+Properties info = new Properties();
+info.put("user", "default");
+info.put("password", "password");
+info.put("database", "some_db");
+
+//Создание подключения через DataSource
+DataSource dataSource = new DataSource(url, info);
+try (Connection conn = dataSource.getConnection()) {
+... // выполнить операции с подключением
+}
+
+//Альтернативный способ через DriverManager
+try (Connection conn = DriverManager.getConnection(url, info)) {
+... // выполнить операции с подключением
+}
+```
+
+
+## Простой оператор
+
+```java showLineNumbers
+
+try (Connection conn = dataSource.getConnection(...);
+    Statement stmt = conn.createStatement()) {
+    ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
+    while(rs.next()) {
+        // ...
+    }
+}
+```
+
+
+## INSERT
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable VALUES (?, ?)")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // timestamp
+    ps.addBatch();
+    ...
+    ps.executeBatch(); // отправка всех накопленных данных в ClickHouse
+}
+```
+
+
+## `HikariCP`
+
+```java showLineNumbers
+// пулинг соединений не даст существенного прироста производительности,
+// так как базовая реализация использует собственный пул.
+// например: HttpURLConnection имеет пул для сокетов
+HikariConfig poolConfig = new HikariConfig();
+poolConfig.setConnectionTimeout(5000L);
+poolConfig.setMaximumPoolSize(20);
+poolConfig.setMaxLifetime(300_000L);
+poolConfig.setDataSource(new ClickHouseDataSource(url, properties));
+
+try (HikariDataSource ds = new HikariDataSource(poolConfig);
+     Connection conn = ds.getConnection();
+     Statement s = conn.createStatement();
+     ResultSet rs = s.executeQuery("SELECT * FROM system.numbers LIMIT 3")) {
+    while (rs.next()) {
+        // обработка строки
+        log.info("Integer: {}, String: {}", rs.getInt(1), rs.getString(1));//Один столбец, но разные типы
+    }
+}
+```
+
+
+## Дополнительная информация \{#more-information\}
+
+Подробнее см. в нашем [репозитории GitHub](https://github.com/ClickHouse/clickhouse-java) и [документации Java Client](/integrations/language-clients/java/client/client.mdx).
+
+## Устранение неполадок \{#troubleshooting\}
+
+### Логирование \{#logging\}
+
+Драйвер использует [slf4j](https://www.slf4j.org/) для логирования и будет использовать первую доступную реализацию в `classpath`.
+
+### Устранение ошибок тайм-аута JDBC при больших вставках
+
+При выполнении в ClickHouse крупных операций вставки с длительным временем выполнения вы можете столкнуться с ошибками тайм-аута JDBC, такими как:
+
+```plaintext
+Причина: java.sql.SQLException: Истекло время ожидания чтения, сервер myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+
+Эти ошибки могут нарушить процесс записи данных и повлиять на стабильность системы. Чтобы устранить эту проблему, может потребоваться скорректировать несколько настроек таймаутов в операционной системе клиента.
+
+
+#### Mac OS \{#mac-os\}
+
+На Mac OS можно изменить следующие параметры, чтобы устранить проблему:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+#### Linux
+
+В Linux эквивалентные настройки сами по себе могут не решить проблему. Дополнительные действия требуются из‑за отличий в том, как Linux обрабатывает параметры keep-alive для сокетов. Выполните следующие шаги:
+
+1. Настройте следующие параметры ядра Linux в `/etc/sysctl.conf` или связанном конфигурационном файле:
+
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
+* `net.ipv4.tcp_keepalive_intvl`: 75
+* `net.ipv4.tcp_keepalive_probes`: 9
+* `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть снижение этого значения по сравнению со стандартным значением 300 секунд)
+
+2. После изменения параметров ядра примените изменения, выполнив следующую команду:
+
+```shell
+sudo sysctl -p
+```
+
+После настройки этих параметров необходимо убедиться, что в клиенте включён Keep-Alive для сокета:
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```

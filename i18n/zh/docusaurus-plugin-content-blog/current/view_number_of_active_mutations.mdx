@@ -1,0 +1,47 @@
+---
+date: 2023-06-07
+title: 如何查看活动或排队中的 mutation 数量？
+description: 在 ClickHouse 中监控活动或排队中的 mutation 数量，特别是在执行 `ALTER` 或 `UPDATE` 操作时。使用 `system.mutations` 表来跟踪 mutation。
+tags: ['系统表']
+keywords: ['活动 mutation', '排队中的 mutation']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 问题 \{#question\}
+
+如何查看处于活动或排队状态的 mutation 数量？
+
+## 解答
+
+如果在表上大量执行 `ALTER` 或 `UPDATE` 语句，则监控处于活动或排队状态的 mutation 数量就很重要。这些查询会重写数据分片，并且不是原子操作——它们会按照创建时对应分片的顺序排序，并依次应用到每个分片。关于 mutation 的更多细节可以在[文档](https://clickhouse.com/docs/sql-reference/statements/alter#mutations)中查阅。
+
+每个 mutation 都会在 `system.mutations` 表中生成一条记录。当执行大量 mutation 时，可以使用下面的方法监控正在运行和已排队的 mutation 数量：
+
+```
+SELECT
+   hostname() AS host,
+   count()
+   FROM clusterAllReplicas('default', 'system.mutations') WHERE not is_done
+   GROUP BY host;
+```
+
+:::note
+此查询假设你正在运行名为 `default` 的集群，该名称也是你在 ClickHouse Cloud 中的集群名称。请将 `default` 替换为你的集群名称。
+
+如果你尚未创建集群，请使用以下命令：
+
+```sql
+SELECT
+   hostname() AS host,
+   count()
+   FROM system.mutations WHERE not is_done
+   GROUP BY host;
+```
+
+:::
+
+我们也推荐阅读这篇最近发布的[关于更新和删除的博客文章](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)。

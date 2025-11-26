@@ -1,0 +1,345 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+通过其协议与数据库服务器进行通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。该库提供了自己的 API 用于向服务器发送请求。
+
+:::warning Deprecation
+此库即将被弃用。在新项目中，请使用最新的 [Java 客户端](/integrations/language-clients/java/client/client.mdx)。
+:::
+
+
+## 设置 \{#setup\}
+
+<Tabs groupId="client-v1-setup">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>clickhouse-http-client</artifactId>
+    <version>0.7.2</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+```
+
+</TabItem>
+</Tabs>
+
+从版本 `0.5.0` 开始，驱动使用了一个新的 HTTP 客户端库，需要将其添加为项目依赖。
+
+<Tabs groupId="client-v1-http-client">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+<dependency>
+    <groupId>org.apache.httpcomponents.client5</groupId>
+    <artifactId>httpclient5</artifactId>
+    <version>5.3.1</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+```kotlin
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+```
+
+</TabItem>
+</Tabs>
+
+## 初始化
+
+连接 URL 的格式为：`protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`，例如：
+
+* `http://localhost:8443?ssl=true&sslmode=NONE`
+* `https://(https://explorer@play.clickhouse.com:443`
+
+连接到单个节点：
+
+```java showLineNumbers
+ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+```
+
+连接到多节点集群：
+
+```java showLineNumbers
+ClickHouseNodes servers = ClickHouseNodes.of(
+    "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
+    + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
+```
+
+
+## 查询 API
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            long totalRows = summary.getTotalRowsToRead();
+}
+```
+
+
+## 流式查询 API
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            for (ClickHouseRecord r : response.records()) {
+            int num = r.getValue(0).asInteger();
+            // 类型转换
+            String str = r.getValue(0).asString();
+            LocalDate date = r.getValue(0).asDate();
+        }
+}
+```
+
+请参阅 [完整代码示例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73)，位于该 [代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client) 中。
+
+
+## 写入 API
+
+```java showLineNumbers
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers).write()
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
+        .data(myInputStream) // `myInputStream` 是提供 RowBinary 格式数据的输入流
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            summary.getWrittenRows();
+}
+```
+
+完整代码示例请参见 [此处](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39)，位于该 [代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client) 中。
+
+**RowBinary 编码**
+
+RowBinary 格式的说明请参见其[页面](/interfaces/formats/RowBinaryWithNamesAndTypes)。
+
+这是一个[代码示例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)。
+
+
+## 功能特性 \{#features\}
+
+### 压缩
+
+客户端默认使用 LZ4 压缩，这需要引入以下依赖：
+
+<Tabs groupId="client-v1-compression-deps">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+    <dependency>
+        <groupId>org.lz4</groupId>
+        <artifactId>lz4-java</artifactId>
+        <version>1.8.0</version>
+    </dependency>
+    ```
+  </TabItem>
+
+  <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation("org.lz4:lz4-java:1.8.0")
+    ```
+  </TabItem>
+
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation 'org.lz4:lz4-java:1.8.0'
+    ```
+  </TabItem>
+</Tabs>
+
+你也可以选择改用 gzip，只需在连接 URL 中设置 `compress_algorithm=gzip`。
+
+另外，你可以通过以下几种方式禁用压缩：
+
+1. 在连接 URL 中设置 `compress=0` 来禁用压缩：`http://localhost:8123/default?compress=0`
+2. 通过客户端配置禁用压缩：
+
+```java showLineNumbers
+ClickHouseClient client = ClickHouseClient.builder()
+   .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+   .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+   .build();
+```
+
+请参阅[压缩文档](/data-compression/compression-modes)，以进一步了解不同的压缩选项。
+
+
+### 多个查询
+
+在同一会话中，于工作线程中依次执行多个查询：
+
+```java showLineNumbers
+CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
+    "create database if not exists my_base",
+    "use my_base",
+    "create table if not exists test_table(s String) engine=Memory",
+    "insert into test_table values('1')('2')('3')",
+    "select * from test_table limit 1",
+    "truncate table test_table",
+    "drop table if exists test_table");
+List<ClickHouseResponseSummary> results = future.get();
+```
+
+
+### 命名参数
+
+你可以通过参数名称来传递参数，而不必只依赖它们在参数列表中的位置。可以使用 `params` 函数来实现这一功能。
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name limit :limit")
+        .params("Ben", 1000)
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+:::note 参数
+所有涉及 `String` 类型（`String`、`String[]`、`Map<String, String>`）的 `params` 签名都假定传入的键是合法的 ClickHouse SQL 字符串。例如：
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name","'Ben'"))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+如果你不想手动将 String 对象转换为 ClickHouse SQL 表达式，可以使用 `com.clickhouse.data` 包中的辅助函数 `ClickHouseValues.convertToSqlExpression`：
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+在上面的示例中，`ClickHouseValues.convertToSqlExpression` 会对其中的单引号进行转义，并使用有效的单引号将变量包裹起来。
+
+其他类型，例如 `Integer`、`UUID`、`Array` 和 `Enum`，会在 `params` 中自动转换。
+:::
+
+
+## 节点发现
+
+Java 客户端提供了自动发现 ClickHouse 节点的功能。自动发现默认处于禁用状态。若要手动启用，请将 `auto_discovery` 设置为 `true`：
+
+```java
+properties.setProperty("auto_discovery", "true");
+```
+
+或者在连接 URL 中：
+
+```plaintext
+jdbc:ch://my-server/system?auto_discovery=true
+```
+
+如果启用了自动发现，则无需在连接 URL 中指定所有 ClickHouse 节点。URL 中指定的节点将被视为种子节点，Java 客户端会根据系统表和/或 clickhouse-keeper 或 zookeeper 自动发现更多节点。
+
+以下选项用于配置自动发现功能：
+
+| Property                        | Default | Description                                      |
+| ------------------------------- | ------- | ------------------------------------------------ |
+| auto&#95;discovery              | `false` | 是否通过系统表和/或 clickhouse-keeper/zookeeper 自动发现更多节点。 |
+| node&#95;discovery&#95;interval | `0`     | 节点发现的时间间隔（毫秒），为零或负值表示只进行一次发现。                    |
+| node&#95;discovery&#95;limit    | `100`   | 单次最多可发现的节点数量，为零或负值表示不限制。                         |
+
+
+### Load Balancing \{#load-balancing\}
+
+Java 客户端会根据负载均衡策略选择一个 ClickHouse 节点来发送请求。一般来说，负载均衡策略负责以下事项：
+
+1. 从托管节点列表中获取一个节点。
+2. 管理节点状态。
+3. （可选）调度一个后台进程用于节点发现（如果启用自动发现），并执行健康检查。
+
+下面是用于配置负载均衡的一组选项：
+
+| Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load_balancing_policy | `""`                                      | 负载均衡策略可以是以下之一：<li>`firstAlive` - 请求会被发送到托管节点列表中第一个健康节点</li><li>`random` - 请求会被发送到托管节点列表中的一个随机节点</li><li>`roundRobin` - 请求会依次轮流发送到托管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完全限定类名 - 自定义负载均衡策略</li>如果未指定，则请求会被发送到托管节点列表中的第一个节点 |
+| load_balancing_tags   | `""`                                      | 用于筛选节点的负载均衡标签。请求只会发送到具有指定标签的节点                                                                                                                                                                                                                                                                                                                                                                                                      |
+| health_check_interval | `0`                                       | 健康检查间隔（毫秒），零或负值表示仅检查一次。                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | 健康检查方式，可以是以下之一：<li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过执行 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 基于协议的检查方式，一般更快</li>                                                                                                                                                                                                                                                                                          |
+| node_check_interval   | `0`                                       | 节点检查间隔（毫秒），负数将视为零。如果自上次检查以来已经过了指定时间，则会检查该节点状态。<br/>`health_check_interval` 与 `node_check_interval` 的区别在于，`health_check_interval` 选项会调度一个后台任务，用于检查节点列表（全部或仅故障节点）的状态，而 `node_check_interval` 指定的是针对某个特定节点，自上次检查以来所经过的时间间隔                |
+| check_all_nodes       | `false`                                   | 是否对所有节点执行健康检查，而不仅仅是对故障节点执行检查。                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+
+### 故障切换和重试 \{#failover-and-retry\}
+
+Java 客户端提供了配置选项，用于为失败的查询设置故障切换和重试行为：
+
+| Property                | Default | Description                                                                                                                                                                                                                        |
+|-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| failover                | `0`     | 单个请求允许发生故障切换的最大次数。零或负值表示不进行故障切换。故障切换会根据负载均衡策略，将失败的请求发送到其他节点，以从故障中恢复。 |
+| retry                   | `0`     | 单个请求允许发生重试的最大次数。零或负值表示不进行重试。仅当 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时，才会向同一节点重试该请求。                               |
+| repeat_on_session_lock  | `true`  | 当会话被锁定时，是否在超时之前（依据 `session_timeout` 或 `connect_timeout`）重复执行请求。如果 ClickHouse 服务器返回 `SESSION_IS_LOCKED` 错误码，则会重复执行该失败请求。               |
+
+### 添加自定义 HTTP 头 \{#adding-custom-http-headers\}
+
+Java 客户端支持使用 HTTP/S 传输层，从而可以在请求中添加自定义 HTTP 头。
+我们应使用 `custom_http_headers` 属性，多个头需要用 `,` 分隔，头部键和值之间使用 `=` 分隔。
+
+## Java 客户端支持
+
+```java
+options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```
+
+
+## JDBC 驱动程序
+
+```java
+properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```

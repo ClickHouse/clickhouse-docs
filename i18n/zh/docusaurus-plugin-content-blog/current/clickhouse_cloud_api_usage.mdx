@@ -1,0 +1,67 @@
+---
+title: 使用 API 和 cURL 管理 ClickHouse Cloud 服务
+description: 了解如何使用 API 端点和 cURL 命令来启动、停止和恢复 ClickHouse Cloud 服务。
+date: 2023-06-07
+tags: ['管理云服务', '工具和实用工具']
+keywords: ['cURL', '管理云服务', 'ClickHouse API']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 如何使用 ClickHouse API 和 cURL 启动、停止和恢复云服务 \{#how-to-start-stop-and-resume-a-cloud-service-using-the-clickhouse-api-and-curl\}
+
+## 问题 \{#question\}
+
+如何通过 API 端点启动、停止和恢复 ClickHouse Cloud 服务？
+
+## 回答
+
+1. 要唤醒或恢复处于空闲状态的 Cloud 服务，可以 ping 该实例：
+
+```bash
+curl -X GET https://abc123.us-west-2.aws.clickhouse.cloud:8443/ping
+```
+
+2. 要停止 Cloud 服务，请使用 `/state` 端点结合 `stop` 命令。语法如下：
+
+```bash
+curl -X PATCH https://api.clickhouse.cloud/v1/organizations/<org_uuid>/services/<service_uuid>/state -u <key_id>:<key_secret> -H "Content-Type: application/json" -d ''{"command": "<stop|start>"}''
+```
+
+例如，以下命令将停止 `2e2124ca-c5ac-459d-a6f2-abc123549d2a` 服务：
+
+```bash
+curl -X PATCH https://api.clickhouse.cloud/v1/organizations/123abcd0-e9b5-4f55-9e42-0fb04392445c/services/2e2124ca-c5ac-459d-a6f2-abc123549d2a/state -u abc123:ABC123 -H "Content-Type: application/json" -d '{"command": "stop"}'
+```
+
+输出结果如下：
+
+```response
+{"result":{"id":"2e2124ca-c5ac-459d-a6f2-abc123549d2a","name":"mars-s3","provider":"aws","regionId":"us-west-2","state":"stopping","endpoints":[{"protocol":"nativesecure","host":"abc123.us-west-2.aws.clickhouse.cloud","port":9440},{"protocol":"https","host":"abc123ntrb.us-west-2.aws.clickhouse.cloud","port":8443}],"tier":"production","idleScaling":true,"idleTimeoutMinutes":5,"minTotalMemoryGb":24,"maxTotalMemoryGb":48,"ipAccessList":[{"source":"[0.0.0.0/0](http://0.0.0.0/0)","description":"任何位置"}],"createdAt":"2022-10-21T18:46:31Z"},"status":200}%
+```
+
+3. 要再次启动服务，请使用 `start` 命令：
+
+```bash
+curl -X PATCH https://api.clickhouse.cloud/v1/organizations/123abcd0-e9b5-4f55-9e42-0fb04392445c/services/2e2124ca-c5ac-459d-a6f2-abc123549d2a/state -u abc123:ABC123 -H "Content-Type: application/json" -d '{"command": "start"}'
+```
+
+:::note
+以下是服务可能会处于的几种状态：
+
+```
+"state":"stopping"
+"state":"stopped"
+"state":"starting"
+"state":"running"
+"state":"idle"
+```
+
+:::
+
+:::note
+处于 **“空闲”** 状态的 Cloud 服务会被视为已启动，因此执行 `start` 命令不会使其恢复/唤醒。请使用第 1 步中所示的 `ping` 端点来唤醒服务。
+:::

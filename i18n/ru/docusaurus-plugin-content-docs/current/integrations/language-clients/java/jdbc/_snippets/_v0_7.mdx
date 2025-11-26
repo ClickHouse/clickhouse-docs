@@ -1,0 +1,401 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+`clickhouse-jdbc` реализует стандартный интерфейс JDBC. Поскольку он построен поверх [clickhouse-client](/integrations/sql-clients/sql-console), он предоставляет дополнительные возможности, такие как пользовательское сопоставление типов, поддержка транзакций и стандартные синхронные операторы `UPDATE` и `DELETE` и т. д., благодаря чему его можно легко использовать в устаревших (legacy) приложениях и инструментах.
+
+:::note
+Последняя версия JDBC (0.7.2) использует Client-V1
+:::
+
+API `clickhouse-jdbc` является синхронным и в целом имеет большие накладные расходы (например, разбор SQL, сопоставление/преобразование типов и т. д.). Рассмотрите возможность использования [clickhouse-client](/integrations/sql-clients/sql-console), когда критична производительность или если вы предпочитаете более прямой способ доступа к ClickHouse.
+
+
+## Требования к среде \{#environment-requirements\}
+
+- [OpenJDK](https://openjdk.java.net) версии 8 или выше
+
+### Настройка \{#setup\}
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven">
+
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.7.2</version>
+            <!-- используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar -->
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
+        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // используйте uber-jar, включающий все зависимости; измените classifier на http для меньшего jar
+        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+        ```
+
+    </TabItem>
+</Tabs>
+
+Начиная с версии `0.5.0`, мы используем Apache HTTP Client, который включен в клиент. Поскольку общей версии этого пакета нет, необходимо добавить логгер как зависимость.
+
+<Tabs groupId="client-v1-compression-deps">
+    <TabItem value="maven" label="Maven" >
+
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+        ```
+
+    </TabItem>
+    <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation("org.slf4j:slf4j-api:2.0.16")
+        ```
+    </TabItem>
+    <TabItem value="gradle" label="Gradle">
+
+        ```groovy
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation 'org.slf4j:slf4j-api:2.0.16'
+        ```
+
+    </TabItem>
+</Tabs>
+
+## Конфигурация \{#configuration\}
+
+**Класс драйвера**: `com.clickhouse.jdbc.ClickHouseDriver`
+
+**Синтаксис URL**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, например:
+
+- `jdbc:ch://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8123`
+- `jdbc:ch:https://localhost` эквивалентно `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
+- `jdbc:ch:grpc://localhost` эквивалентно `jdbc:clickhouse:grpc://localhost:9100`
+
+**Свойства подключения**:
+
+| Свойство                 | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `continueBatchOnError`     | `false`              | Продолжать ли пакетную обработку при возникновении ошибки                                                                                                                                                                                                                                                                                                                                                                   |
+| `createDatabaseIfNotExist` | `false`              | Создавать ли базу данных, если она не существует                                                                                                                                                                                                                                                                                                                                                                            |
+| `custom_http_headers`      |                      | Пользовательские HTTP-заголовки, разделённые запятыми, например: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                     |
+| `custom_http_params`       |                      | Пользовательские HTTP-параметры запроса, разделённые запятыми, например: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                  |
+| `nullAsDefault`            | `0`                  | `0` — обрабатывать значение null в неизменном виде и выбрасывать исключение при вставке null в столбец, не допускающий null; `1` — обрабатывать значение null в неизменном виде и отключить проверку на null при вставке; `2` — заменять null на значение по умолчанию соответствующего типа данных как для запросов, так и для вставок                                                                                   |
+| `jdbcCompliance`           | `true`               | Поддерживать ли стандартные синхронные операции UPDATE/DELETE и псевдотранзакции                                                                                                                                                                                                                                                                                                                                           |
+| `typeMappings`             |                      | Настроить отображение между типом данных ClickHouse и классом Java, что повлияет на результат [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) и [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). Например: `UInt128=java.lang.String,UInt256=java.lang.String` |
+| `wrapperObject`            | `false`              | Должен ли [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) возвращать java.sql.Array / java.sql.Struct для Array / Tuple.                                                                                                                                                                                                                                                 |
+
+Примечание: дополнительную информацию см. в разделе [конфигурация, специфичная для JDBC](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java).
+
+## Поддерживаемые типы данных \{#supported-data-types\}
+
+JDBC-драйвер поддерживает те же форматы данных, что и клиентская библиотека.
+
+:::note
+
+- AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
+- Decimal — используйте `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
+- Enum — может трактоваться как строка или как целое число
+- UInt64 — отображается в тип `long` (в client-v1)
+:::
+
+## Создание подключения
+
+```java
+String url = "jdbc:ch://my-server/system"; // по умолчанию используется протокол HTTP и порт 8123
+
+Properties properties = new Properties();
+
+ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
+try (Connection conn = dataSource.getConnection("default", "password");
+    Statement stmt = conn.createStatement()) {
+}
+```
+
+
+## Простой оператор
+
+```java showLineNumbers
+
+try (Connection conn = dataSource.getConnection(...);
+    Statement stmt = conn.createStatement()) {
+    ResultSet rs = stmt.executeQuery("select * from numbers(50000)");
+    while(rs.next()) {
+        // ...
+    }
+}
+```
+
+
+## Insert
+
+:::note
+
+* Используйте `PreparedStatement` вместо `Statement`
+  :::
+
+Использовать его проще, но по производительности он уступает функции `input` (см. ниже):
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // timestamp
+    ps.addBatch(); // параметры будут немедленно записаны в буферизованный поток в бинарном формате
+    ...
+    ps.executeBatch(); // отправить все накопленные данные в ClickHouse
+}
+```
+
+
+### С использованием табличной функции input
+
+Вариант с отличными показателями производительности:
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement(
+    "insert into mytable select col1, col2 from input('col1 String, col2 DateTime64(3), col3 Int32')")) {
+    // Определение столбцов будет разобрано, и драйвер определит наличие 3 параметров: col1, col2 и col3
+    ps.setString(1, "test"); // col1
+    ps.setObject(2, LocalDateTime.now()); // col2, setTimestamp медленный и не рекомендуется
+    ps.setInt(3, 123); // col3
+    ps.addBatch(); // параметры будут немедленно записаны в буферизованный поток в бинарном формате
+    ...
+    ps.executeBatch(); // передать все имеющиеся данные в ClickHouse
+}
+```
+
+* [документацию по функции input](/sql-reference/table-functions/input/), когда это возможно
+
+
+### Вставка с плейсхолдерами
+
+Этот вариант рекомендуется использовать только для небольших вставок, поскольку он требует длинного выражения SQL (которое будет парситься на стороне клиента и потреблять ресурсы CPU и памяти):
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
+    ps.setString(1, "test"); // id
+    ps.setObject(2, LocalDateTime.now()); // временная метка
+    ps.setString(3, null); // описание
+    ps.addBatch(); // добавить параметры в запрос
+    ...
+    ps.executeBatch(); // выполнить составной запрос: insert into mytable values(...)(...)...(...)
+}
+```
+
+
+## Работа с DateTime и часовыми поясами
+
+Используйте `java.time.LocalDateTime` или `java.time.OffsetDateTime` вместо `java.sql.Timestamp`, а `java.time.LocalDate` — вместо `java.sql.Date`.
+
+```java showLineNumbers
+try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable where date_time > ?")) {
+    ps.setObject(2, LocalDateTime.now());
+    ResultSet rs = ps.executeQuery();
+    while(rs.next()) {
+        LocalDateTime dateTime = (LocalDateTime) rs.getObject(1);
+    }
+    ...
+}
+```
+
+
+## Обработка `AggregateFunction`
+
+:::note
+В настоящее время поддерживается только `groupBitmap`.
+:::
+
+```java showLineNumbers
+// пакетная вставка с использованием функции input
+try (ClickHouseConnection conn = newConnection(props);
+        Statement s = conn.createStatement();
+        PreparedStatement stmt = conn.prepareStatement(
+                "insert into test_batch_input select id, name, value from input('id Int32, name Nullable(String), desc Nullable(String), value AggregateFunction(groupBitmap, UInt32)')")) {
+    s.execute("drop table if exists test_batch_input;"
+            + "create table test_batch_input(id Int32, name Nullable(String), value AggregateFunction(groupBitmap, UInt32))engine=Memory");
+    Object[][] objs = new Object[][] {
+            new Object[] { 1, "a", "aaaaa", ClickHouseBitmap.wrap(1, 2, 3, 4, 5) },
+            new Object[] { 2, "b", null, ClickHouseBitmap.wrap(6, 7, 8, 9, 10) },
+            new Object[] { 3, null, "33333", ClickHouseBitmap.wrap(11, 12, 13) }
+    };
+    for (Object[] v : objs) {
+        stmt.setInt(1, (int) v[0]);
+        stmt.setString(2, (String) v[1]);
+        stmt.setString(3, (String) v[2]);
+        stmt.setObject(4, v[3]);
+        stmt.addBatch();
+    }
+    int[] results = stmt.executeBatch();
+    ...
+}
+
+// использование bitmap в качестве параметра запроса
+try (PreparedStatement stmt = conn.prepareStatement(
+    "SELECT bitmapContains(my_bitmap, toUInt32(1)) as v1, bitmapContains(my_bitmap, toUInt32(2)) as v2 from {tt 'ext_table'}")) {
+    stmt.setObject(1, ClickHouseExternalTable.builder().name("ext_table")
+            .columns("my_bitmap AggregateFunction(groupBitmap,UInt32)").format(ClickHouseFormat.RowBinary)
+            .content(new ByteArrayInputStream(ClickHouseBitmap.wrap(1, 3, 5).toBytes()))
+            .asTempTable()
+            .build());
+    ResultSet rs = stmt.executeQuery();
+    Assert.assertTrue(rs.next());
+    Assert.assertEquals(rs.getInt(1), 1);
+    Assert.assertEquals(rs.getInt(2), 0);
+    Assert.assertFalse(rs.next());
+}
+```
+
+<br />
+
+
+## Настройка библиотеки HTTP
+
+Коннектор ClickHouse JDBC поддерживает три библиотеки HTTP: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html) и [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/).
+
+:::note
+`HttpClient` поддерживается только в JDK 11 и новее.
+:::
+
+Драйвер JDBC по умолчанию использует `HttpClient`. Вы можете изменить библиотеку HTTP, используемую коннектором ClickHouse JDBC, задав следующее свойство:
+
+```java
+properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
+```
+
+Ниже приведён полный список соответствующих значений:
+
+| Значение свойства           | HTTP-библиотека     |
+| --------------------------- | ------------------- |
+| HTTP&#95;CLIENT             | `HttpClient`        |
+| HTTP&#95;URL&#95;CONNECTION | `HttpURLConnection` |
+| APACHE&#95;HTTP&#95;CLIENT  | Apache `HttpClient` |
+
+<br />
+
+
+## Подключение к ClickHouse с использованием SSL \{#connect-to-clickhouse-with-ssl\}
+
+Чтобы установить защищённое JDBC‑подключение к ClickHouse с использованием SSL, необходимо настроить свойства JDBC, включив в них параметры SSL. Обычно это включает указание SSL‑свойств, таких как `sslmode` и `sslrootcert`, в вашем JDBC URL или объекте Properties.
+
+## Свойства SSL/TLS
+
+| Имя                  | Значение по умолчанию | Допустимые значения | Описание                                                                    |
+| -------------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
+| `ssl`                | false                 | true, false         | Включать ли SSL/TLS для подключения                                         |
+| `sslmode`            | strict                | strict, none        | Проверять ли сертификат SSL/TLS                                             |
+| `sslrootcert`        |                       |                     | Путь к корневым сертификатам SSL/TLS                                        |
+| `sslcert`            |                       |                     | Путь к сертификату SSL/TLS                                                  |
+| `sslkey`             |                       |                     | RSA-ключ в формате PKCS#8                                                   |
+| `key_store_type`     |                       | JKS, PKCS12         | Тип или формат файла `KeyStore`/`TrustStore`                                |
+| `trust_store`        |                       |                     | Путь к файлу `TrustStore`                                                   |
+| `key_store_password` |                       |                     | Пароль для доступа к файлу `KeyStore`, указанному в конфигурации `KeyStore` |
+
+Эти свойства обеспечивают обмен данными между вашим Java-приложением и сервером ClickHouse по зашифрованному соединению, повышая безопасность данных при передаче.
+
+```java showLineNumbers
+  String url = "jdbc:ch://your-server:8443/system";
+
+  Properties properties = new Properties();
+  properties.setProperty("ssl", "true");
+  properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
+  properties.setProperty("sslrootcert", "/mine.crt");
+  try (Connection con = DriverManager
+          .getConnection(url, properties)) {
+
+      try (PreparedStatement stmt = con.prepareStatement(
+
+          // поместите ваш код здесь
+
+      }
+  }
+```
+
+
+## Устранение тайм-аута JDBC при крупных операциях вставки
+
+При выполнении крупных операций вставки в ClickHouse с длительным временем выполнения вы можете столкнуться с ошибками тайм-аута JDBC, например:
+
+```plaintext
+Причина: java.sql.SQLException: Истекло время ожидания чтения, сервер myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+```
+
+Эти ошибки могут нарушить процесс вставки данных и повлиять на стабильность системы. Чтобы устранить эту проблему, необходимо настроить несколько параметров тайм-аутов в операционной системе клиента.
+
+
+### Mac OS \{#mac-os\}
+
+В macOS можно изменить следующие параметры, чтобы устранить проблему:
+
+- `net.inet.tcp.keepidle`: 60000
+- `net.inet.tcp.keepintvl`: 45000
+- `net.inet.tcp.keepinit`: 45000
+- `net.inet.tcp.keepcnt`: 8
+- `net.inet.tcp.always_keepalive`: 1
+
+### Linux
+
+В Linux-системах аналогичные настройки сами по себе могут не устранить проблему. Из‑за особенностей обработки параметров keep-alive для сокетов в Linux требуются дополнительные действия. Выполните следующие шаги:
+
+1. Настройте следующие параметры ядра Linux в `/etc/sysctl.conf` или связанном конфигурационном файле:
+
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
+* `net.ipv4.tcp_keepalive_intvl`: 75
+* `net.ipv4.tcp_keepalive_probes`: 9
+* `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть снижение этого значения по сравнению со значением по умолчанию — 300 секунд)
+
+2. После изменения параметров ядра примените их, выполнив следующую команду:
+
+```shell
+sudo sysctl -p
+```
+
+После применения этих настроек убедитесь, что ваш клиент включает опцию Keep-Alive для сокета:
+
+```java
+properties.setProperty("socket_keepalive", "true");
+```
+
+:::note
+В настоящее время при настройке socket keep-alive необходимо использовать библиотеку Apache HTTP Client, так как другие две HTTP-клиентские библиотеки, поддерживаемые `clickhouse-java`, не позволяют задавать параметры сокета. Подробное руководство см. в разделе [Configuring HTTP library](/integrations/language-clients/java/jdbc-v1#configuring-http-library).
+:::
+
+В качестве альтернативы можно добавить эквивалентные параметры в JDBC-URL.
+
+Тайм-аут сокета и соединения по умолчанию для JDBC-драйвера составляет 30 секунд. Это значение можно увеличить, чтобы поддержать операции вставки больших объёмов данных. Используйте метод `options` для `ClickHouseClient` совместно с параметрами `SOCKET_TIMEOUT` и `CONNECTION_TIMEOUT`, определёнными в `ClickHouseClientOption`:
+
+```java showLineNumbers
+final int MS_12H = 12 * 60 * 60 * 1000; // 12 ч в мс
+final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {
+    client.read(servers).write()
+        .option(ClickHouseClientOption.SOCKET_TIMEOUT, MS_12H)
+        .option(ClickHouseClientOption.CONNECTION_TIMEOUT, MS_12H)
+        .query(sql)
+        .executeAndWait();
+}
+```

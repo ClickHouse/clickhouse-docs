@@ -1,0 +1,39 @@
+---
+title: 如何在不返回行的情况下测量查询处理时间
+description: 学习如何在 ClickHouse 中使用 `FORMAT Null` 选项，在不向客户端返回任何行的前提下测量查询处理时间。
+date: 2023-06-07
+tags: ['性能与优化']
+keywords: ['查询处理时间']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 问题 \{#question\}
+
+我的查询返回了很多行，但我只关心查询的处理时间。如何不返回查询结果，而只查看查询处理时间？
+
+## 答案
+
+在查询中添加 `FORMAT Null`，将输出格式配置为 `Null`，从而防止数据被传输到客户端。
+
+例如：
+
+```sql
+SELECT
+    customer_id,
+    count() AS total,
+    any(review_headline)
+FROM amazon_reviews
+GROUP BY customer_id
+ORDER BY total DESC
+FORMAT Null
+```
+
+响应中会返回处理的行数和耗时，但实际返回的结果行为 0 行：
+
+```response
+返回 0 行。耗时:25.288 秒。已处理 2.2204 亿行,13.50 GB(每秒 878 万行,533.77 MB/秒)
+```

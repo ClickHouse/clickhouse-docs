@@ -1,0 +1,259 @@
+---
+date: 2023-03-24
+title: 如何检查服务器当前正在执行的代码？
+description: ClickHouse 提供了 `system.stack_trace` 等内省工具，用于检查每个服务器线程当前正在执行的代码，有助于调试和性能监控。
+tags: ['服务器管理']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 检查服务器当前正在运行的代码
+
+ClickHouse 具有内置调试器和自省能力。
+
+例如，可以在运行时通过查询 `system.stack_trace` 表，获取服务器上每个线程的堆栈跟踪信息：
+
+```sql
+SELECT
+    count(),
+    arrayStringConcat(arrayMap(x -> concat(demangle(addressToSymbol(x)), '\n    ', addressToLine(x)), trace), '\n') AS sym
+FROM system.stack_trace
+GROUP BY trace
+ORDER BY count() DESC
+LIMIT 10
+FORMAT Vertical
+SETTINGS allow_introspection_functions = 1;
+```
+
+查询结果会显示线程当前正在运行或等待的 ClickHouse 源代码中的位置。（需要将 `allow_introspection_functions` 设置为 `1` 才能启用[自省函数](https://clickhouse.com/docs/sql-reference/functions/introspection)。）返回结果类似如下：
+
+
+```response
+1:
+──────
+count(): 144
+sym:     pthread_cond_wait
+
+DB::BackgroundSchedulePool::threadFunction()
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 2:
+──────
+count(): 80
+sym:     pthread_cond_wait
+
+std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)
+    /usr/bin/clickhouse
+DB::MergeTreeBackgroundExecutor<DB::OrdinaryRuntimeQueue>::threadFunction()
+    /usr/bin/clickhouse
+ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::worker(std::__1::__list_iterator<ThreadFromGlobalPoolImpl<false>, void*>)
+    /usr/bin/clickhouse
+void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<false>::ThreadFromGlobalPoolImpl<void ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::scheduleImpl<void>(std::__1::function<void ()>, long, std::__1::optional<unsigned long>, bool)::'lambda0'()>(void&&)::'lambda'(), void ()>>(std::__1::__function::__policy_storage const*)
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 3:
+──────
+count(): 55
+sym:     pthread_cond_wait
+
+ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::worker(std::__1::__list_iterator<ThreadFromGlobalPoolImpl<false>, void*>)
+    /usr/bin/clickhouse
+void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<false>::ThreadFromGlobalPoolImpl<void ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::scheduleImpl<void>(std::__1::function<void ()>, long, std::__1::optional<unsigned long>, bool)::'lambda0'()>(void&&)::'lambda'(), void ()>>(std::__1::__function::__policy_storage const*)
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 4:
+──────
+count(): 16
+sym:
+
+DB::AsynchronousInsertQueue::processBatchDeadlines(unsigned long)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 5:
+──────
+count(): 16
+sym:     pthread_cond_wait
+
+std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)
+    /usr/bin/clickhouse
+DB::MergeTreeBackgroundExecutor<DB::MergeMutateRuntimeQueue>::threadFunction()
+    /usr/bin/clickhouse
+ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::worker(std::__1::__list_iterator<ThreadFromGlobalPoolImpl<false>, void*>)
+    /usr/bin/clickhouse
+void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<false>::ThreadFromGlobalPoolImpl<void ThreadPoolImpl<ThreadFromGlobalPoolImpl<false>>::scheduleImpl<void>(std::__1::function<void ()>, long, std::__1::optional<unsigned long>, bool)::'lambda0'()>(void&&)::'lambda'(), void ()>>(std::__1::__function::__policy_storage const*)
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 6:
+──────
+count(): 10
+sym:     poll
+
+Poco::Net::SocketImpl::pollImpl(Poco::Timespan&, int)
+    /usr/bin/clickhouse
+Poco::Net::SocketImpl::poll(Poco::Timespan const&, int)
+    /usr/bin/clickhouse
+Poco::Net::TCPServer::run()
+    /usr/bin/clickhouse
+Poco::ThreadImpl::runnableEntry(void*)
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 7:
+──────
+count(): 9
+sym:     pthread_cond_wait
+
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 8:
+──────
+count(): 7
+sym:     poll
+
+Poco::Net::SocketImpl::pollImpl(Poco::Timespan&, int)
+    /usr/bin/clickhouse
+Poco::Net::SocketImpl::poll(Poco::Timespan const&, int)
+    /usr/bin/clickhouse
+DB::ReadBufferFromPocoSocket::poll(unsigned long) const
+    /usr/bin/clickhouse
+DB::TCPHandler::runImpl()
+    /usr/bin/clickhouse
+DB::TCPHandler::run()
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+Poco::Net::TCPServerConnection::start()
+    /usr/bin/clickhouse
+Poco::Net::TCPServerDispatcher::run()
+    /usr/bin/clickhouse
+Poco::PooledThread::run()
+    /usr/bin/clickhouse
+Poco::ThreadImpl::runnableEntry(void*)
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 9:
+───────
+count(): 3
+sym:     pthread_cond_wait
+
+Poco::EventImpl::waitImpl()
+    /usr/bin/clickhouse
+DB::DDLWorker::runCleanupThread()
+    /usr/bin/clickhouse
+void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true>::ThreadFromGlobalPoolImpl<void (DB::DDLWorker::*)(), DB::DDLWorker*>(void (DB::DDLWorker::*&&)(), DB::DDLWorker*&&)::'lambda'(), void ()>>(std::__1::__function::__policy_storage const*)
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+ 10:
+───────
+count(): 3
+sym:     pthread_cond_wait
+
+Poco::EventImpl::waitImpl()
+    /usr/bin/clickhouse
+DB::DDLWorker::runMainThread()
+    /usr/bin/clickhouse
+void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true>::ThreadFromGlobalPoolImpl<void (DB::DDLWorker::*)(), DB::DDLWorker*>(void (DB::DDLWorker::*&&)(), DB::DDLWorker*&&)::'lambda'(), void ()>>(std::__1::__function::__policy_storage const*)
+    /usr/bin/clickhouse
+ThreadPoolImpl<std::__1::thread>::worker(std::__1::__list_iterator<std::__1::thread, void*>)
+    /usr/bin/clickhouse
+
+    /usr/bin/clickhouse
+
+
+clone
+
+
+返回 10 行。用时:0.026 秒。
+```
+
+:::note
+如果你是通过 **.deb/.rpm/.tgz** 包安装的 ClickHouse，也可以安装包含调试信息的包，以便在源代码中看到对应的行号：
+
+```bash
+sudo apt install clickhouse-common-static-dbg
+```
+
+如果你是通过单一二进制文件安装的 ClickHouse，它已经包含了调试信息。
+:::
+
+:::tip
+如需了解更高层面的信息，可以查看以下这些其他 system 表：
+
+* [system.processes](https://clickhouse.com/docs/operations/system-tables/processes)
+* [system.query&#95;log](https://clickhouse.com/docs/operations/system-tables/query_log)
+* [system.metric&#95;log](https://clickhouse.com/docs/operations/system-tables/metric_log)
+* [system.asynchronous&#95;metric&#95;log](https://clickhouse.com/docs/operations/system-tables/asynchronous_metric_log)
+* [system.trace&#95;log](https://clickhouse.com/docs/operations/system-tables/trace_log)
+* [system.processor&#95;profile&#95;log](https://clickhouse.com/docs/operations/system-tables/processors_profile_log)
+
+在[其他 system 表](https://clickhouse.com/docs/operations/system-tables)中也有一些实用信息。
+:::

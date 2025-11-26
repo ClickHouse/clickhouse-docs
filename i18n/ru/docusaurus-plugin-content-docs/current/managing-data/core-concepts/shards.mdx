@@ -1,0 +1,117 @@
+---
+slug: /shards
+title: 'Шарды и реплики таблиц'
+description: 'Что такое шарды и реплики таблиц в ClickHouse'
+keywords: ['shard', 'shards', 'sharding', 'replica', 'replicas']
+doc_type: 'guide'
+---
+
+import image_01 from '@site/static/images/managing-data/core-concepts/shards_01.png'
+import image_02 from '@site/static/images/managing-data/core-concepts/shards_02.png'
+import image_03 from '@site/static/images/managing-data/core-concepts/shards_03.png'
+import image_04 from '@site/static/images/managing-data/core-concepts/shards_04.png'
+import image_05 from '@site/static/images/managing-data/core-concepts/shards_replicas_01.png'
+import Image from '@theme/IdealImage';
+
+<br />
+
+:::note
+Эта тема не применима к ClickHouse Cloud, где [Parallel Replicas](/docs/deployment-guides/parallel-replicas) работают как несколько шардов в традиционных кластерах ClickHouse с архитектурой shared-nothing, а объектное хранилище [заменяет](https://clickhouse.com/blog/clickhouse-cloud-boosts-performance-with-sharedmergetree-and-lightweight-updates#shared-object-storage-for-data-availability) реплики и обеспечивает высокую доступность и отказоустойчивость.
+:::
+
+
+## Что такое шарды таблиц в ClickHouse? \{#what-are-table-shards-in-clickhouse\}
+
+В традиционных кластерах ClickHouse с [архитектурой shared-nothing](https://en.wikipedia.org/wiki/Shared-nothing_architecture) шардинг используется, когда ① объём данных слишком велик для одного сервера или ② один сервер слишком медленно обрабатывает данные. На следующем рисунке показан случай ①, когда таблица [uk_price_paid_simple](/parts) превышает ёмкость одной машины:
+
+<Image img={image_01} size="lg" alt='ШАРДЫ'/>
+
+<br/>
+
+В таком случае данные можно разделить между несколькими серверами ClickHouse в виде шардов таблиц:
+
+<Image img={image_02} size="lg" alt='ШАРДЫ'/>
+
+<br/>
+
+Каждый ^^шард^^ содержит подмножество данных и функционирует как обычная таблица ClickHouse, к которой можно выполнять запросы независимо. Однако такие запросы будут обрабатывать только это подмножество, что может быть приемлемым вариантом в зависимости от распределения данных. Как правило, [distributed table](/docs/engines/table-engines/special/distributed) (часто одна на сервер) предоставляет единое представление всего набора данных. Она сама данные не хранит, а пересылает запросы **SELECT** на все шарды, собирает результаты и маршрутизирует операторы **INSERT** для равномерного распределения данных.
+
+## Создание распределённой таблицы
+
+Для иллюстрации пересылки запросов **SELECT** и маршрутизации **INSERT** рассмотрим пример таблицы [What are table parts](/parts), разбитой на два шарда на двух серверах ClickHouse. Сначала покажем оператор DDL для создания соответствующей таблицы типа **^^Distributed^^** для этой конфигурации:
+
+```sql
+CREATE TABLE uk.uk_price_paid_simple_dist ON CLUSTER test_cluster
+(
+    date Date,
+    town LowCardinality(String),
+    street LowCardinality(String),
+    price UInt32
+)
+ENGINE = Distributed('test_cluster', 'uk', 'uk_price_paid_simple', rand())
+```
+
+Оператор `ON CLUSTER` делает запрос DDL [распределённым DDL-запросом](/docs/sql-reference/distributed-ddl), инструктируя ClickHouse создать таблицу на всех серверах, перечисленных в [определении кластера](/architecture/replication/#configure-clickhouse-servers) `test_cluster`. Для распределённой DDL требуется дополнительный компонент [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/architecture/horizontal-scaling).
+
+Для [параметров движка Distributed](/docs/engines/table-engines/special/distributed#distributed-parameters) мы указываем имя ^^кластера^^ (`test_cluster`), имя базы данных (`uk`) для шардинговой целевой таблицы, имя шардинговой целевой таблицы (`uk_price_paid_simple`) и **ключ шардинга** для маршрутизации INSERT. В этом примере мы используем функцию [rand](/sql-reference/functions/random-functions#rand), чтобы случайным образом распределять строки по шардам. Однако в качестве ключа шардинга может быть использовано любое выражение — даже сложное — в зависимости от сценария использования. В следующем разделе показано, как работает маршрутизация INSERT.
+
+
+## Маршрутизация INSERT \{#insert-routing\}
+
+Диаграмма ниже показывает, как обрабатываются INSERT-запросы в ^^распределённую таблицу^^ в ClickHouse:
+
+<Image img={image_03} size="lg" alt='SHARDS'/>
+
+<br/>
+
+① INSERT-запрос (с одной строкой), нацеленный на ^^распределённую таблицу^^, отправляется на сервер ClickHouse, на котором размещена эта таблица, либо напрямую, либо через балансировщик нагрузки.
+
+② Для каждой строки из INSERT-запроса (в нашем примере только одна) ClickHouse вычисляет ключ шардинга (здесь rand()), берёт результат по модулю количества серверов-^^шардов^^ и использует это значение в качестве идентификатора целевого сервера (ID начинаются с 0 и увеличиваются на 1). Затем строка перенаправляется и ③ вставляется в таблицу соответствующего сервера-^^шарда^^.
+
+В следующем разделе объясняется, как работает пересылка запросов SELECT.
+
+## Перенаправление SELECT \{#select-forwarding\}
+
+Эта диаграмма показывает, как обрабатываются запросы SELECT с использованием ^^distributed table^^ в ClickHouse:
+
+<Image img={image_04} size="lg" alt='SHARDS'/>
+
+<br/>
+
+① Агрегационный запрос SELECT, нацеленный на ^^distributed table^^, отправляется на соответствующий сервер ClickHouse — напрямую или через балансировщик нагрузки.
+
+② ^^Distributed table^^ перенаправляет запрос на все серверы, содержащие шарды целевой таблицы, где каждый сервер ClickHouse вычисляет свой локальный результат агрегации **параллельно**.
+
+Затем сервер ClickHouse, на котором размещена изначально выбранная ^^distributed table^^, ③ собирает все локальные результаты, ④ объединяет их в итоговый глобальный результат и ⑤ возвращает его отправителю запроса.
+
+## Что такое реплики таблиц в ClickHouse? \{#what-are-table-replicas-in-clickhouse\}
+
+Репликация в ClickHouse обеспечивает **целостность данных** и **отказоустойчивость**, поддерживая **копии данных ^^shard^^** на нескольких серверах. Поскольку сбои оборудования неизбежны, репликация предотвращает потерю данных, гарантируя, что у каждого ^^shard^^ есть несколько реплик. Записи могут направляться на любую ^^replica^^ — либо напрямую, либо через [распределённую таблицу](#distributed-table-creation), которая выбирает ^^replica^^ для операции. Изменения автоматически распространяются на другие реплики. В случае сбоя или обслуживания данные остаются доступными на других репликах, а после восстановления вышедшего из строя хоста он автоматически синхронизируется, чтобы оставаться актуальным.
+
+Обратите внимание, что репликация требует наличия компонента [Keeper](https://clickhouse.com/clickhouse/keeper) в [архитектуре кластера](/architecture/horizontal-scaling).
+
+На следующей диаграмме показан ^^cluster^^ ClickHouse из шести серверов, где два шарда таблицы `Shard-1` и `Shard-2`, представленные ранее, имеют по три реплики каждый. В этот ^^cluster^^ отправляется запрос:
+
+<Image img={image_05} size="lg" alt='SHARDS'/>
+
+<br/>
+
+Обработка запроса происходит аналогично конфигурациям без реплик: запрос выполняется только на одной ^^replica^^ из каждого ^^shard^^.
+
+> Реплики не только обеспечивают целостность данных и отказоустойчивость, но и повышают пропускную способность обработки запросов за счёт возможности параллельного выполнения нескольких запросов на разных репликах.
+
+① Запрос, адресованный ^^distributed table^^, отправляется на соответствующий сервер ClickHouse — либо напрямую, либо через балансировщик нагрузки.
+
+② ^^Distributed table^^ пересылает запрос на одну ^^replica^^ из каждого ^^shard^^, где каждый сервер ClickHouse, на котором размещена выбранная ^^replica^^, параллельно вычисляет локальный результат запроса.
+
+Остальная часть процесса работает [так же](#select-forwarding), как в конфигурациях без реплик, и не показана на диаграмме выше. Сервер ClickHouse, на котором размещена ^^distributed table^^, к которой изначально был направлен запрос, собирает все локальные результаты, объединяет их в окончательный глобальный результат и возвращает его отправителю запроса.
+
+Обратите внимание, что в ClickHouse можно настроить стратегию пересылки запросов для шага ②. По умолчанию — в отличие от диаграммы выше — ^^distributed table^^ [предпочитает](/docs/operations/settings/settings#prefer_localhost_replica) локальную ^^replica^^, если она доступна, но могут использоваться и другие [стратегии](/docs/operations/settings/settings#load_balancing) балансировки нагрузки.
+
+## Где найти дополнительную информацию \{#where-to-find-more-information\}
+
+Для получения более подробных сведений, выходящих за рамки этого обзорного введения в шарды и реплики таблиц, ознакомьтесь с нашим [руководством по развертыванию и масштабированию](/docs/architecture/horizontal-scaling).
+
+Мы также настоятельно рекомендуем это обучающее видео для более детального разбора шардов и реплик в ClickHouse:
+
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/vBjCJtw_Ei0?si=WqopTrnti6usCMRs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
