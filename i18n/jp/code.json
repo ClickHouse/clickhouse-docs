@@ -929,5 +929,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "ClickHouse に貢献する方法を学ぶ"
+  },
+  "homepage.hero.description": {
+    "message": "ガイド、リファレンスドキュメント、ビデオを通じて ClickHouse の使い方を学ぶ"
+  },
+  "homepage.hero.quickStart": {
+    "message": "クイックスタート"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Cloud を始める"
+  },
+  "homepage.hero.installLocally": {
+    "message": "ローカルにインストール"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "OSS を始める"
+  },
+  "homepage.search.title": {
+    "message": "ドキュメントを検索"
+  },
+  "homepage.connect.title": {
+    "message": "ClickHouse に接続"
+  },
+  "homepage.connect.description": {
+    "message": "数分でアプリケーションを ClickHouse に接続"
+  },
+  "homepage.connect.viewAll": {
+    "message": "すべてのクライアントとドライバーを見る"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL コンソール"
+  },
+  "homepage.migrate.title": {
+    "message": "ClickHouse に移行"
+  },
+  "homepage.migrate.description": {
+    "message": "他のデータベース、データウェアハウス、オブジェクトストレージからデータを読み込む"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "すべての統合を見る"
+  },
+  "homepage.deploy.title": {
+    "message": "ClickHouse をデプロイ"
+  },
+  "homepage.deploy.description": {
+    "message": "ClickHouse をクラウドまたは独自のインフラストラクチャにデプロイ"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "ノードデプロイ"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "クラスターデプロイ"
+  },
+  "homepage.resources.title": {
+    "message": "その他のリソース"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "サポートに連絡"
+  },
+  "homepage.resources.changelog": {
+    "message": "変更履歴"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "サンプルデータセット"
   }
 }

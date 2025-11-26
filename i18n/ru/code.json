@@ -929,5 +929,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "Узнайте, как внести вклад в ClickHouse"
+  },
+  "homepage.hero.description": {
+    "message": "Изучите ClickHouse с помощью руководств, справочной документации и видео"
+  },
+  "homepage.hero.quickStart": {
+    "message": "Быстрый старт"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Начните работу с Cloud"
+  },
+  "homepage.hero.installLocally": {
+    "message": "Установить локально"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "Начните работу с OSS"
+  },
+  "homepage.search.title": {
+    "message": "Поиск по документации"
+  },
+  "homepage.connect.title": {
+    "message": "Подключение к ClickHouse"
+  },
+  "homepage.connect.description": {
+    "message": "Подключите свое приложение к ClickHouse за несколько минут"
+  },
+  "homepage.connect.viewAll": {
+    "message": "Посмотреть все клиенты и драйверы"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL консоль"
+  },
+  "homepage.migrate.title": {
+    "message": "Миграция в ClickHouse"
+  },
+  "homepage.migrate.description": {
+    "message": "Загрузите данные из других баз данных, хранилищ данных и объектных хранилищ"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "Посмотреть все интеграции"
+  },
+  "homepage.deploy.title": {
+    "message": "Развертывание ClickHouse"
+  },
+  "homepage.deploy.description": {
+    "message": "Разверните ClickHouse в нашем облаке или на вашей инфраструктуре"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "Развертывание узла"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "Развертывание кластера"
+  },
+  "homepage.resources.title": {
+    "message": "Дополнительные ресурсы"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "Связаться с поддержкой"
+  },
+  "homepage.resources.changelog": {
+    "message": "История изменений"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "Примеры наборов данных"
   }
 }

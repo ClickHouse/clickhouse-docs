@@ -929,5 +929,74 @@
   },
   "sidebar.dropdownCategories.category.About.Development and contributing.description": {
     "message": "了解如何为 ClickHouse 做贡献"
+  },
+  "homepage.hero.description": {
+    "message": "通过指南、参考文档和视频学习如何使用 ClickHouse"
+  },
+  "homepage.hero.quickStart": {
+    "message": "快速开始"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "开始使用 Cloud"
+  },
+  "homepage.hero.installLocally": {
+    "message": "本地安装"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "开始使用开源版"
+  },
+  "homepage.search.title": {
+    "message": "搜索文档"
+  },
+  "homepage.connect.title": {
+    "message": "连接到 ClickHouse"
+  },
+  "homepage.connect.description": {
+    "message": "在几分钟内将您的应用程序连接到 ClickHouse"
+  },
+  "homepage.connect.viewAll": {
+    "message": "查看所有客户端和驱动程序"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse 命令行"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL 控制台"
+  },
+  "homepage.migrate.title": {
+    "message": "迁移到 ClickHouse"
+  },
+  "homepage.migrate.description": {
+    "message": "从其他数据库、数据仓库和对象存储加载数据"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "查看所有集成"
+  },
+  "homepage.deploy.title": {
+    "message": "部署 ClickHouse"
+  },
+  "homepage.deploy.description": {
+    "message": "将 ClickHouse 部署到我们的云或您自己的基础设施"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "节点部署"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "集群部署"
+  },
+  "homepage.resources.title": {
+    "message": "其他资源"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "联系支持"
+  },
+  "homepage.resources.changelog": {
+    "message": "更新日志"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "示例数据集"
   }
 }

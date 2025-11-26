@@ -25,6 +25,7 @@ import IconLightning from '@site/src/icons/IconLightning';
 import IconDownload from '@site/src/icons/IconDownload';
 import Image from '@theme/IdealImage';
 import SearchBar from "@theme/SearchBar";
+import Translate from '@docusaurus/Translate';
 
 export const Hero = ({children, color}) => {
     return (
@@ -33,8 +34,10 @@ export const Hero = ({children, color}) => {
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '12px'}}>
                     <ClickHouseLogo width='220px' color='black'/>
                 </div>
-                <div style={{fontSize: '16px', lineHeight: '1.4'}}>Learn how to use ClickHouse through guides, reference
-                    documentation, and videos
+                <div style={{fontSize: '16px', lineHeight: '1.4'}}>
+                    <Translate id="homepage.hero.description">
+                        Learn how to use ClickHouse through guides, reference documentation, and videos
+                    </Translate>
                 </div>
             </div>
             <div className='home-page-hero-right'>
@@ -49,9 +52,13 @@ export const Hero = ({children, color}) => {
                     }}>
                         <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconLightning
                             iconWidth={'24px'}/></div>
-                        <div>Quick start</div>
+                        <div>
+                            <Translate id="homepage.hero.quickStart">Quick start</Translate>
+                        </div>
                     </div>
-                    <div>Get started with Cloud</div>
+                    <div>
+                        <Translate id="homepage.hero.getStartedCloud">Get started with Cloud</Translate>
+                    </div>
                 </a>
                 <a href='/docs/getting-started/quick-start/oss' className='home-page-hero-button'>
                     <div style={{
@@ -64,9 +71,13 @@ export const Hero = ({children, color}) => {
                     }}>
                         <div style={{display: 'flex', float: 'left', margin: 0, marginRight: '8px'}}><IconDownload
                             iconWidth={'24px'}/></div>
-                        <div>Install locally</div>
+                        <div>
+                            <Translate id="homepage.hero.installLocally">Install locally</Translate>
+                        </div>
                     </div>
-                    <div>Get started with OSS</div>
+                    <div>
+                        <Translate id="homepage.hero.getStartedOSS">Get started with OSS</Translate>
+                    </div>
                 </a>
             </div>
         </div>
@@ -93,7 +104,9 @@ export const HomePageOptionButton = ({children, icon, iconWidth, svgIcon, link})
 export const SearchClickHouse = ({children, color}) => {
     return (
         <div className='home-page-section-search'>
-            <p style={{fontWeight: '600', fontSize: '18px', marginTop: '1.5rem', flex: '1'}}>Search documentation</p>
+            <p style={{fontWeight: '600', fontSize: '18px', marginTop: '1.5rem', flex: '1'}}>
+                <Translate id="homepage.search.title">Search documentation</Translate>
+            </p>
             <div className='home-page-hero-right-search'>
                 <SearchBar style="width: 75%"/>
             </div>
@@ -105,17 +118,29 @@ export const ConnectToClickHouse = ({children, color}) => {
     return (
         <div className='home-page-section'>
             <div className='home-page-section-left'>
-                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Connect to ClickHouse</div>
-                <div style={{marginBottom: '12px'}}>Connect your application to ClickHouse in just a few minutes</div>
-                <div><a href='/docs/interfaces/overview'>View all clients and drivers &rarr;</a></div>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>
+                    <Translate id="homepage.connect.title">Connect to ClickHouse</Translate>
+                </div>
+                <div style={{marginBottom: '12px'}}>
+                    <Translate id="homepage.connect.description">
+                        Connect your application to ClickHouse in just a few minutes
+                    </Translate>
+                </div>
+                <div>
+                    <a href='/docs/interfaces/overview'>
+                        <Translate id="homepage.connect.viewAll">View all clients and drivers</Translate> &rarr;
+                    </a>
+                </div>
             </div>
             <div>
                 <div className='home-page-button-container'>
-                    <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px'/>} link='/docs/interfaces/cli'>ClickHouse
-                        CLI</HomePageOptionButton>
+                    <HomePageOptionButton svgIcon={<IconTerminal iconWidth='28px'/>} link='/docs/interfaces/cli'>
+                        <Translate id="homepage.connect.clickhouseCli">ClickHouse CLI</Translate>
+                    </HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconSQLConsole iconWidth='28px'/>}
-                                          link='/docs/cloud/get-started/sql-console'>Cloud SQL
-                        Console</HomePageOptionButton>
+                                          link='/docs/cloud/get-started/sql-console'>
+                        <Translate id="homepage.connect.cloudSqlConsole">Cloud SQL Console</Translate>
+                    </HomePageOptionButton>
                     <HomePageOptionButton icon='/docs/images/logo-nodejs.svg'
                                           link='/docs/integrations/javascript'>Node.js</HomePageOptionButton>
                 </div>
@@ -136,11 +161,19 @@ export const MigrateToClickHouse = ({children, color}) => {
     return (
         <div className='home-page-section'>
             <div className='home-page-section-left'>
-                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Migrate to ClickHouse</div>
-                <div style={{marginBottom: '12px'}}>Load your data from other databases, data warehouses, and object
-                    storage
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>
+                    <Translate id="homepage.migrate.title">Migrate to ClickHouse</Translate>
                 </div>
-                <div><a href='/docs/integrations'>View all integrations &rarr;</a></div>
+                <div style={{marginBottom: '12px'}}>
+                    <Translate id="homepage.migrate.description">
+                        Load your data from other databases, data warehouses, and object storage
+                    </Translate>
+                </div>
+                <div>
+                    <a href='/docs/integrations'>
+                        <Translate id="homepage.migrate.viewAll">View all integrations</Translate> &rarr;
+                    </a>
+                </div>
             </div>
             <div>
                 <div className='home-page-button-container'>
@@ -168,17 +201,28 @@ export const DeployClickHouse = ({children, color}) => {
     return (
         <div className='home-page-section'>
             <div className='home-page-section-left'>
-                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>Deploy ClickHouse</div>
-                <div style={{marginBottom: '12px'}}>Deploy ClickHouse to our cloud or on your own infrastructure</div>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '24px'}}>
+                    <Translate id="homepage.deploy.title">Deploy ClickHouse</Translate>
+                </div>
+                <div style={{marginBottom: '12px'}}>
+                    <Translate id="homepage.deploy.description">
+                        Deploy ClickHouse to our cloud or on your own infrastructure
+                    </Translate>
+                </div>
             </div>
             <div className='home-page-button-container'>
                 <HomePageOptionButton svgIcon={<IconCloud iconWidth='28px'/>}
-                                      link='https://clickhouse.com/cloud'>Cloud</HomePageOptionButton>
+                                      link='https://clickhouse.com/cloud'>
+                    <Translate id="homepage.deploy.cloud">Cloud</Translate>
+                </HomePageOptionButton>
                 <HomePageOptionButton svgIcon={<IconSingleNode iconWidth='28px'/>}
-                                      link='/docs/architecture/introduction'>Node deployment</HomePageOptionButton>
+                                      link='/docs/architecture/introduction'>
+                    <Translate id="homepage.deploy.nodeDeployment">Node deployment</Translate>
+                </HomePageOptionButton>
                 <HomePageOptionButton svgIcon={<IconCluster iconWidth='28px'/>}
-                                      link='/docs/architecture/cluster-deployment'>Cluster
-                    deployment</HomePageOptionButton>
+                                      link='/docs/architecture/cluster-deployment'>
+                    <Translate id="homepage.deploy.clusterDeployment">Cluster deployment</Translate>
+                </HomePageOptionButton>
             </div>
         </div>
     )
@@ -188,18 +232,24 @@ export const MoreResources = ({children, color}) => {
     return (
         <div className='home-page-section'>
             <div className='home-page-section-left'>
-                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '10px'}}>Additional resources</div>
+                <div style={{fontWeight: '600', fontSize: '18px', marginBottom: '10px'}}>
+                    <Translate id="homepage.resources.title">Additional resources</Translate>
+                </div>
             </div>
             <div>
                 <div className='home-page-button-container'>
                     <HomePageOptionButton svgIcon={<IconSupport iconWidth='28px'/>}
-                                          link='https://clickhouse.com/support/program'>Contact
-                        Support</HomePageOptionButton>
+                                          link='https://clickhouse.com/support/program'>
+                        <Translate id="homepage.resources.contactSupport">Contact Support</Translate>
+                    </HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconChangelog iconWidth='28px'/>}
-                                          link='/docs/whats-new/changelog'>Changelog</HomePageOptionButton>
+                                          link='/docs/whats-new/changelog'>
+                        <Translate id="homepage.resources.changelog">Changelog</Translate>
+                    </HomePageOptionButton>
                     <HomePageOptionButton svgIcon={<IconDatasets iconWidth='28px'/>}
-                                          link='/docs/getting-started/example-datasets'>Sample
-                        datasets</HomePageOptionButton>
+                                          link='/docs/getting-started/example-datasets'>
+                        <Translate id="homepage.resources.sampleDatasets">Sample datasets</Translate>
+                    </HomePageOptionButton>
                 </div>
             </div>
         </div>
