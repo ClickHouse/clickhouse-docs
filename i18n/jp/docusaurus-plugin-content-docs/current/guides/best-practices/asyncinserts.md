@@ -7,6 +7,6 @@ doc_type: 'guide'
 keywords: ['非同期挿入', 'async_insert', 'ベストプラクティス', 'データのバッチ処理', 'パフォーマンス最適化']
 ---
 
-import Content from '@site/docs/best-practices/_snippets/_async_inserts.md';
+import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
 
 <Content />

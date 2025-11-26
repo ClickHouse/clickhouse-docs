@@ -1,185 +1,506 @@
 {
   "theme.NotFound.title": {
     "message": "ページが見つかりません",
-    "description": "404 ページのタイトル"
-  },
-  "mobile.sidebar.current": {
-    "message": "サイドバー"
-  },
-  "mobile.sidebar.toplevel": {
-    "message": "メインメニュー"
-  },
-  "topNav.navItems.Products": {
-    "message": "製品"
-  },
-  "topNav.navItems.Use cases": {
-    "message": "ソリューション"
-  },
-  "topNav.navItems.Docs": {
-    "message": "ドキュメント"
-  },
-  "topNav.navItems.Resources": {
-    "message": "リソース"
-  },
-  "topNav.navItems.Pricing": {
-    "message": "料金"
-  },
-  "topNav.navItems.Contact us": {
-    "message": "お問い合わせ"
+    "description": "404 ページタイトル"
   },
   "theme.admonition.note": {
     "message": "注記",
-    "description": "Note アドモニション (:::note) で使用されるデフォルトラベル"
+    "description": "note 注意ブロック（:::note）のデフォルトラベル"
   },
   "theme.admonition.tip": {
     "message": "ヒント",
-    "description": "Tip アドモニション (:::tip) に使用されるデフォルトラベル"
+    "description": "Tip アドモニションブロック（:::tip）に使用される既定ラベル"
   },
   "theme.admonition.danger": {
     "message": "危険",
-    "description": "Danger アドモニション（:::danger）に使用されるデフォルトのラベル"
+    "description": "danger アドモニション（:::danger）のデフォルトラベル"
   },
   "theme.admonition.info": {
-    "message": "情報",
-    "description": "Info アドモニション（:::info）に使用されるデフォルトのラベル"
+    "message": "参考文献",
+    "description": "Info アドモニションブロック（:::info）で使用されるデフォルトのラベル"
   },
   "theme.admonition.caution": {
-    "message": "注意",
-    "description": "Caution アドモニション（:::caution）で使用されるデフォルトのラベル"
+    "message": "注記",
+    "description": "注意 (caution) ブロック（:::caution）のデフォルトラベル"
   },
   "theme.admonition.experimental": {
     "message": "実験的",
-    "description": "実験的アドモニション（:::experimental）で使用されるデフォルトのラベル"
+    "description": "Experimental 注記 (:::experimental) のデフォルトラベル"
   },
   "theme.admonition.obsolete": {
-    "message": "廃止済み",
-    "description": "Obsolete の注意書き（:::obsolete）に使用される既定ラベル"
-  },
-  "theme.blog.title": {
-    "message": "ナレッジベース"
+    "message": "旧",
+    "description": "obsolete アドモニション（:::obsolete）のデフォルトラベル"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
     "message": "パンくずリスト",
-    "description": "パンくずリストの ARIA ラベル"
+    "description": "パンくずリストナビゲーションの ARIA ラベル"
   },
   "theme.docs.DocCard.categoryDescription": {
     "message": "{count} 件",
-    "description": "生成されたインデックスのカテゴリカードに表示される、このカテゴリに含まれる項目数を示すデフォルトの説明文"
-  },
-  "theme.IdealImageMessage.loading": {
-    "message": "読み込み中...",
-    "description": "フルサイズ画像読み込み中"
-  },
-  "theme.IdealImageMessage.load": {
-    "message": "クリックして読み込む{sizeMessage}",
-    "description": "ユーザーに元の画像全体を読み込むよう促すためのものです。sizeMessage にはサイズを括弧書きで指定します。"
-  },
-  "theme.IdealImageMessage.offline": {
-    "message": "ブラウザがオフラインです。画像は読み込まれていません",
-    "description": "ユーザーがオフラインのドキュメントを閲覧しているとき"
-  },
-  "theme.IdealImageMessage.404error": {
-    "message": "404. 画像が見つかりません",
-    "description": "コンテナイメージが見つからない場合"
-  },
-  "theme.IdealImageMessage.error": {
-    "message": "エラーです。クリックして再読み込みしてください",
-    "description": "原因不明のエラーにより画像の読み込みに失敗した場合"
+    "description": "生成されたインデックス内のカテゴリカードに表示される既定の説明文で、そのカード内に含まれる項目数を示します"
   },
   "theme.navbar.mobileVersionsDropdown.label": {
-    "message": "バージョン情報",
-    "description": "モバイル表示時のナビゲーションバーのバージョン選択ドロップダウンのラベル"
+    "message": "その他のバージョン",
+    "description": "モバイル表示時のナビバーのバージョン選択ドロップダウンのラベル"
   },
   "theme.SearchBar.seeAll": {
-    "message": "全{count}件の結果を表示"
+    "message": "{count} 件の結果をすべて表示",
+    "description": "検索バーですべてを表示"
   },
   "theme.SearchPage.documentsFound.plurals": {
-    "message": "ドキュメントが 1 件見つかりました|ドキュメントが {count} 件見つかりました",
-    "description": "「{count} 件のドキュメントが見つかりました」というラベルの複数形用テキストです。使用言語がサポートする複数形の形態ごとに、\"|\" で区切って指定してください（https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照）。"
+    "message": "{count} 件のドキュメントが見つかりました",
+    "description": "「{count} documents found」（「{count}件のドキュメントが見つかりました」）に対応する複数形ラベルです。使用する言語でサポートされている複数形の形の数だけ、「|」で区切って指定してください（詳細は https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照してください）。"
   },
   "theme.SearchPage.existingResultsTitle": {
     "message": "「{query}」の検索結果",
-    "description": "非空クエリ時の検索ページタイトル"
+    "description": "検索クエリが入力されている場合の検索ページのタイトル"
   },
   "theme.SearchPage.emptyResultsTitle": {
     "message": "ドキュメントを検索",
     "description": "空クエリ時の検索ページタイトル"
   },
   "theme.SearchPage.inputPlaceholder": {
-    "message": "ここに検索キーワードを入力",
-    "description": "検索ページの入力フィールド用プレースホルダー"
+    "message": "検索キーワードを入力してください",
+    "description": "検索ページの入力フィールド用のプレースホルダーテキスト"
   },
   "theme.SearchPage.inputLabel": {
     "message": "検索",
-    "description": "検索ページの入力欄に対する ARIA ラベル"
+    "description": "検索ページ上の検索フィールド用の ARIA ラベル"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Algolia を使って検索",
+    "description": "Algolia メンションの ARIA ラベル"
   },
   "theme.SearchPage.noResultsText": {
-    "message": "結果が見つかりませんでした",
-    "description": "検索結果が0件の場合に表示する段落"
+    "message": "結果が見つかりません",
+    "description": "検索結果が見つからなかったときに表示されるテキスト"
   },
   "theme.SearchPage.fetchingNewResults": {
-    "message": "新しい結果を取得中です...",
+    "message": "新しい検索結果を取得中です...",
     "description": "新しい検索結果を取得するための段落要素"
   },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "最近のブログ記事のナビゲーション",
+    "description": "ブログサイドバーの「最近の投稿」用 ARIA ラベル"
+  },
+  "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
+    "message": "「{label}」の展開／折りたたみを切り替える",
+    "description": "折りたたみ式サイドバーカテゴリの切り替え用 ARIA ラベル"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "ナビゲーション",
+    "description": "メインナビゲーションの ARIA ラベル"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "その他の言語",
+    "description": "モバイル向け言語切り替えドロップダウンのラベル"
+  },
+  "theme.blog.post.readMore": {
+    "message": "詳細を見る",
+    "description": "ブログ記事の抜粋部分に表示される、記事全文へのリンク用ラベル"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "{title} の詳細を確認する",
+    "description": "抜粋からブログ記事の全文へのリンクに使用する ARIA ラベル"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "読了時間：約 {readingTime} 分",
+    "description": "「{readingTime} 分で読了」というテキストの複数形に対応したラベルです。ご利用の言語でサポートされている複数形の形を、可能な限り多く使用してください（\"|\" で区切ります）。詳しくは https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照してください。"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "ホーム",
+    "description": "パンくずリスト内のホームリンク用ARIAラベル"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "ドキュメントのサイドバー",
+    "description": "サイドバー ナビゲーションの ARIA ラベル"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "サイドバーを閉じる",
+    "description": "ドキュメントサイドバーの折りたたみボタン用の title 属性"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "サイドバーを閉じる",
+    "description": "ドキュメントサイドバーの折りたたみボタンの title 属性"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "ナビゲーションを閉じる",
+    "description": "モバイルサイドバーの閉じるボタン用のARIAラベル"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← メインメニューへ戻る",
+    "description": "モバイルナビバーのサイドバー内にあるセカンダリメニュー（通常はドキュメントサイドバーの表示に使用）からメインメニューに戻るための「戻る」ボタンのラベル"
+  },
+  "theme.ErrorPageContent.title": {
+    "message": "エラーが発生しました",
+    "description": "ページがクラッシュしたときに表示される代替ページのタイトル"
+  },
+  "theme.BackToTopButton.buttonAriaLabel": {
+    "message": "ページの先頭へ戻る",
+    "description": "「先頭に戻る」ボタンの ARIA ラベル"
+  },
+  "theme.blog.title": {
+    "message": "ナレッジベース",
+    "description": "ブログタイトル — デフォルトは「Knowledge Base」"
+  },
+  "theme.blog.archive.title": {
+    "message": "アーカイブ",
+    "description": "ブログアーカイブページのページタイトルとヒーロータイトル"
+  },
+  "theme.blog.archive.description": {
+    "message": "アーカイブ",
+    "description": "ブログアーカイブページ用のページおよびヒーローの説明文"
+  },
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "ブログ記事一覧ナビゲーション",
+    "description": "ブログページネーション用の ARIA ラベル"
+  },
+  "theme.blog.paginator.newerEntries": {
+    "message": "新規記事",
+    "description": "新しいブログ記事ページ（前のページ）に移動するためのラベル"
+  },
+  "theme.blog.paginator.olderEntries": {
+    "message": "以前の記事",
+    "description": "古いブログ記事（次のページ）に移動するためのラベル"
+  },
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "ブログ記事ナビゲーション",
+    "description": "ブログ記事ページネーション用の ARIA ラベル"
+  },
+  "theme.blog.post.paginator.newerPost": {
+    "message": "新しい記事",
+    "description": "前後のブログ記事に移動するボタンのラベル"
+  },
+  "theme.blog.post.paginator.olderPost": {
+    "message": "過去の記事",
+    "description": "前後のブログ記事に移動するナビゲーションボタンのラベル"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "すべてのタグを表示",
+    "description": "タグリストページへのリンク用ラベル"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "ダークモードを切り替える（現在：{mode}）",
+    "description": "ナビゲーションバーのカラーモード切り替えトグル用の ARIA ラベル"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "ダークモード",
+    "description": "ダークモードの名称"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "ライトモード",
+    "description": "ライトカラーモード用の名前"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "{count} 件",
+    "description": "生成されたインデックスでカテゴリカードに表示され、そのカテゴリ内のアイテム数を示すデフォルトの説明文"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "ドキュメントのページング",
+    "description": "ドキュメントのページネーション用 ARIA ラベル"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "前へ",
+    "description": "前のドキュメントに移動するためのラベル"
+  },
+  "theme.docs.paginator.next": {
+    "message": "次へ",
+    "description": "次のドキュメントに移動するためのラベル"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "{count} 件のタグ付き文書",
+    "description": "「{count} docs tagged」の複数形ラベル。使用する言語がサポートしているだけ多くの複数形フォームを \"|\" で区切って指定してください（https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照）。"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "「{tagName}」タグの付いたドキュメント {nDocsTagged} 件",
+    "description": "ドキュメントタグのページタイトル"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "これは、{siteTitle} のプレリリース版 {versionLabel} に関するドキュメントです。",
+    "description": "ユーザーが未リリース版ドキュメントを閲覧していることを示すラベル"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "このドキュメントは {siteTitle} バージョン {versionLabel} 向けのもので、現在は更新されていません。",
+    "description": "保守されていないドキュメントのバージョンをユーザーが閲覧しているときに表示されるラベル"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "最新のドキュメントは {latestVersionLink}（{versionLabel}）を参照してください。",
+    "description": "ユーザーに対し最新バージョンを確認するよう促すラベル"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "最新バージョン",
+    "description": "「最新バージョンを提案」リンクに表示されるラベル"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "バージョン: {versionLabel}",
+    "description": "バージョンラベル"
+  },
+  "theme.common.editThisPage": {
+    "message": "このページを編集",
+    "description": "現在のページ編集リンクのラベル"
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "{heading} への固定リンク",
+    "description": "この見出しへのリンク"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": "{date} に",
+    "description": "ページの最終更新日を表示する際に使用されるテキスト"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": "{user}",
+    "description": "ページの最終更新者を示すラベル"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "最終更新: {atDate}{byUser}",
+    "description": "ページの最終更新日時と更新者を示すテキスト"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "タグ:",
+    "description": "タグリストの横に表示されるラベル"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "閉じる",
+    "description": "お知らせバーの閉じるボタンの ARIA ラベル"
+  },
+  "theme.admonition.warning": {
+    "message": "警告",
+    "description": "警告ブロック（:::warning）のデフォルトラベル"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "コピーしました！",
+    "description": "コードブロックの「コピー」ボタンのラベル"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "コードをコピー",
+    "description": "「コードをコピー」ボタンの ARIA ラベル"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "コピー",
+    "description": "コードブロックの「コピー」ボタンのラベル"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "行の折り返しを切り替える",
+    "description": "コードブロックの行折り返し切り替えボタンの title 属性"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "「{label}」の目次を開く",
+    "description": "サイドバーのカテゴリを展開するための ARIA ラベル"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "{label} の目次を閉じる",
+    "description": "サイドバーのカテゴリを折りたたむための ARIA ラベル"
+  },
+  "theme.NotFound.p1": {
+    "message": "お探しのページは見つかりませんでした",
+    "description": "404 ページの第1段落"
+  },
+  "theme.NotFound.p2": {
+    "message": "このページへリンクしているサイトの管理者に、リンクがリンク切れであることをお知らせください。",
+    "description": "404ページの第2段落"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "このページ内の見出し",
+    "description": "折りたたみ式目次コンポーネントのボタンに表示されるラベル"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "ナビゲーションバーを開く",
+    "description": "モバイルナビゲーションのハンバーガーメニューボタンの ARIA ラベル"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "サイドバーを開く",
+    "description": "ドキュメントサイドバーの展開ボタン用ARIAラベルとtitle属性"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "サイドバーを開く",
+    "description": "ドキュメントサイドバーの展開ボタンで使用される ARIA ラベルと title 属性"
+  },
+  "theme.SearchBar.label": {
+    "message": "検索",
+    "description": "検索ボタンの ARIA ラベルとプレースホルダー"
+  },
+  "theme.SearchModal.searchBox.resetButtonTitle": {
+    "message": "クリア",
+    "description": "検索ボックスのリセットボタンのラベルおよび ARIA ラベル"
+  },
+  "theme.SearchModal.searchBox.cancelButtonText": {
+    "message": "キャンセル",
+    "description": "検索ボックスのキャンセルボタンのラベルおよび ARIA ラベル"
+  },
+  "theme.SearchModal.startScreen.recentSearchesTitle": {
+    "message": "最近の検索",
+    "description": "最近の検索のタイトル"
+  },
+  "theme.SearchModal.startScreen.noRecentSearchesText": {
+    "message": "最近の検索はありません",
+    "description": "最近の検索がない場合に表示されるテキスト"
+  },
+  "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
+    "message": "この検索条件を保存",
+    "description": "「最近の検索を保存」ボタンのラベル"
+  },
+  "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
+    "message": "履歴からこの検索を削除",
+    "description": "［最近の検索をクリア］ボタンのラベル"
+  },
+  "theme.SearchModal.startScreen.favoriteSearchesTitle": {
+    "message": "保存した検索",
+    "description": "お気に入り検索用のタイトル"
+  },
+  "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
+    "message": "この検索をお気に入りから削除",
+    "description": "「お気に入り検索を削除」ボタンのラベル"
+  },
+  "theme.SearchModal.errorScreen.titleText": {
+    "message": "検索結果を取得できませんでした",
+    "description": "検索モーダルのエラー画面用タイトル"
+  },
+  "theme.SearchModal.errorScreen.helpText": {
+    "message": "ネットワーク接続を確認してください。",
+    "description": "検索モーダルのエラー画面に表示するヘルプテキスト"
+  },
+  "theme.SearchModal.footer.selectText": {
+    "message": "選択",
+    "description": "Enterキー押下時の動作の説明"
+  },
+  "theme.SearchModal.footer.selectKeyAriaLabel": {
+    "message": "Enterキー",
+    "description": "選択を確定するための Enter キーボタンの ARIA ラベル"
+  },
+  "theme.SearchModal.footer.navigateText": {
+    "message": "実行",
+    "description": "上矢印キーおよび下矢印キーの動作説明テキスト"
+  },
+  "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
+    "message": "上矢印キー",
+    "description": "ナビゲーション用の上矢印キー ボタンの ARIA ラベル"
+  },
+  "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
+    "message": "下向き矢印キー",
+    "description": "ナビゲーションを操作する下向き矢印キー ボタンの ARIA ラベル"
+  },
+  "theme.SearchModal.footer.closeText": {
+    "message": "閉じる",
+    "description": "Esc キー動作の説明"
+  },
+  "theme.SearchModal.footer.closeKeyAriaLabel": {
+    "message": "Escキー",
+    "description": "モーダルを閉じるための Escape キーボタン用の ARIA ラベル"
+  },
+  "theme.SearchModal.footer.searchByText": {
+    "message": "検索",
+    "description": "この文章は、検索機能が Algolia によって実現されていることを説明しています。"
+  },
+  "theme.SearchModal.noResultsScreen.noResultsText": {
+    "message": "該当する結果はありません",
+    "description": "このテキストは、次の検索に対して結果が見つからなかったことを示しています"
+  },
+  "theme.SearchModal.noResultsScreen.suggestedQueryText": {
+    "message": "次の検索を試してください：",
+    "description": "以下の検索で結果が見つからなかった場合に表示される、提案検索クエリのテキスト"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
+    "message": "もっと良い検索結果はありますか？",
+    "description": "ユーザーが一部の結果が抜けていると感じたときに表示されるプロンプト用のテキスト"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
+    "message": "レポート",
+    "description": "不足している結果を報告するためのリンクのラベル"
+  },
+  "theme.SearchModal.placeholder": {
+    "message": "ドキュメントを検索",
+    "description": "DocSearch ポップアップモーダル内の入力フィールド用プレースホルダーテキスト"
+  },
+  "theme.blog.post.plurals": {
+    "message": "{count} 件",
+    "description": "「{count} 件の投稿」に対応する複数形ラベル。言語がサポートする複数形の形をすべて使用し（\"|\" で区切る）、詳細は https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照してください。"
+  },
+  "theme.blog.tagTitle": {
+    "message": "「{tagName}」タグが付いた投稿が {nPosts} 件あります",
+    "description": "ブログタグページのタイトル"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - 投稿 {nPosts}件",
+    "description": "ブログ執筆者ページのタイトル"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "著者",
+    "description": "著者ページのタイトル"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "すべての著者を表示",
+    "description": "ブログ執筆者ページへのリンクラベル"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "この著者はまだ何も投稿していません。",
+    "description": "まだブログ記事を投稿していない著者向けのテキスト"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "非公開ページ",
+    "description": "限定公開コンテンツ用バナーのタイトル"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "このページは非公開です。検索結果には表示されず、このページへの直接リンクを知っているユーザーのみが閲覧できます。",
+    "description": "限定公開コンテンツバナーのメッセージ"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "下書きページ",
+    "description": "下書きコンテンツ用バナーのタイトル"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "このページはドラフトであり、本番環境で一般公開されているコンテンツには含まれていません。",
+    "description": "ドラフトコンテンツのバナーメッセージ"
+  },
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "再試行してください。",
+    "description": "React のエラーバウンダリがエラーを検知した際に、レンダリングを再試行するボタンのラベル"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "メインコンテンツへスキップ",
+    "description": "アクセシビリティのために使用される「コンテンツへスキップ」ラベル。キーボードの Tab／Enter による操作で、ユーザーがメインコンテンツへすばやく移動できるようにします"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "タグ",
+    "description": "タグ一覧ページのタイトル"
+  },
+  "topNav.navItems.Products": {
+    "message": "製品"
+  },
+  "topNav.navItems.Use cases": {
+    "message": "ユースケース"
+  },
+  "topNav.navItems.Pricing": {
+    "message": "料金"
+  },
+  "topNav.navItems.Resources": {
+    "message": "リソース"
+  },
+  "topNav.navItems.Docs": {
+    "message": "ドキュメント"
+  },
+  "topNav.navItems.Contact us": {
+    "message": "お問い合わせ"
+  },
   "topNav.navItems.products.clickhouse_cloud_1": {
-    "message": "ClickHouse を最も効果的に利用する方法。"
+    "message": "ClickHouse を最適に活用する方法。"
   },
   "topNav.navItems.products.clickhouse_cloud_2": {
     "message": "AWS、GCP、Azure で利用可能です。"
   },
   "topNav.navItems.products.byoc_1": {
-    "message": "お使いのクラウド環境"
+    "message": "BYOC（Bring Your Own Cloud、自前のクラウド活用）"
   },
   "topNav.navItems.products.byoc_2": {
-    "message": "フルマネージドの ClickHouse Cloud サービス、"
+    "message": "ClickHouse Cloud のフルマネージドサービス、"
   },
   "topNav.navItems.products.byoc_3": {
-    "message": "お客様の AWS アカウントにデプロイされます。"
+    "message": "お客様の AWS アカウント内にデプロイできます。"
   },
   "topNav.navItems.products.oss": {
-    "message": "オープンソース版でデータベースを起動"
-  },
-  "topNav.navItems.products.oss_2": {
-    "message": "ClickHouse"
+    "message": "オープンソースの ClickHouse でデータベースをセットアップします。"
   },
   "topNav.navItems.products.integrations": {
-    "message": "100以上のインテグレーションを表示"
-  },
-  "topNav.navItems.resources.User stories": {
-    "message": "ユーザーストーリー"
-  },
-  "topNav.navItems.resources.Blog": {
-    "message": "ブログ"
-  },
-  "topNav.navItems.resources.Events": {
-    "message": "イベント"
-  },
-  "topNav.navItems.resources.Learn": {
-    "message": "トレーニングと認定"
-  },
-  "topNav.navItems.resources.Comparisons": {
-    "message": "比較"
-  },
-  "topNav.navItems.resources.BigQuery": {
-    "message": "BigQuery"
-  },
-  "topNav.navItems.resources.PostgreSQL": {
-    "message": "PostgreSQL"
-  },
-  "topNav.navItems.resources.Redshift": {
-    "message": "Redshift"
-  },
-  "topNav.navItems.resources.Rockset": {
-    "message": "Rockset"
-  },
-  "topNav.navItems.resources.Snowflake": {
-    "message": "Snowflake"
-  },
-  "topNav.navItems.resources.Videos": {
-    "message": "動画"
-  },
-  "topNav.navItems.resources.Demos": {
-    "message": "デモ"
+    "message": "100種類以上のインテグレーションをご覧ください。"
   },
   "topNav.navItems.use_cases.Real-time analytics": {
     "message": "リアルタイム分析"
@@ -188,23 +509,431 @@
     "message": "機械学習と生成AI"
   },
   "topNav.navItems.use_cases.Business intelligence": {
-    "message": "データウェアハウス"
+    "message": "ビジネスインテリジェンス"
   },
   "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "可観測性"
+    "message": "ログ、イベント、トレース"
   },
   "topNav.navItems.use_cases.All use cases": {
     "message": "すべてのユースケース"
   },
-  "theme.blog.sidebar.navAriaLabel": {
-    "message": "ブログの最新記事ナビゲーション",
-    "description": "ブログサイドバーの「最近の投稿」用 ARIA ラベル"
+  "topNav.navItems.resources.Blog": {
+    "message": "ブログ"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "比較"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "動画"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "デモ"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "はじめに",
+    "description": "はじめに"
+  },
+  "sidebar.dropdownCategories.category.description.Getting Started": {
+    "message": "ClickHouse の使い方を学習する",
+    "description": "ClickHouse の使い方を学ぶ"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "はじめに",
+    "description": "はじめに"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+    "message": "ClickHouse の概要",
+    "description": "ClickHouse の概要"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "導入ガイド",
+    "description": "はじめにガイド"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
+    "message": "ClickHouse 入門",
+    "description": "ClickHouse について学ぶなら、まずはこちらから"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "基礎",
+    "description": "基本概念"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+    "message": "理解しておくべき主要な概念",
+    "description": "理解しておくべき重要な概念"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "移行ガイド",
+    "description": "移行ガイド"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+    "message": "データベースを ClickHouse に移行する",
+    "description": "データベースを ClickHouse へ移行する"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "ユースケース別ガイド",
+    "description": "ユースケース別ガイド"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+    "message": "ClickHouse の代表的なユースケース ガイド",
+    "description": "ClickHouse の一般的なユースケース向けガイド"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "サンプルデータセット",
+    "description": "サンプルデータセット"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+    "message": "役立つデータセットとチュートリアル",
+    "description": "有用なデータセットとチュートリアル"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "クラウド",
+    "description": "クラウド"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "ClickHouse を最速でデプロイする方法",
+    "description": "ClickHouse を最速でデプロイする方法"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "はじめに",
+    "description": "はじめに"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "今すぐ ClickHouse Cloud を始めましょう",
+    "description": "ClickHouse Cloud をすぐに使い始める"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "クラウド管理",
+    "description": "クラウド管理"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
+    "message": "ClickHouse Cloud サービスの管理",
+    "description": "ClickHouse Cloud のサービスを管理する"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "クラウド API",
+    "description": "クラウド API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
+    "message": "ClickHouse Cloud の自動化",
+    "description": "ClickHouse Cloud サービスの自動化"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "クラウド リファレンス",
+    "description": "クラウドリファレンス"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
+    "message": "ClickHouse Cloud の仕組みを理解する",
+    "description": "ClickHouse Cloud の仕組み"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "ベストプラクティス",
+    "description": "ベストプラクティス"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
+    "message": "ClickHouse Cloud を最大限に活用する方法",
+    "description": "ClickHouse Cloud を最大限に活用する"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "セキュリティ",
+    "description": "セキュリティ"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security.description": {
+    "message": "ClickHouse Cloud のセキュリティ確保",
+    "description": "ClickHouse Cloud サービスを保護する"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "クラウドへの移行",
+    "description": "クラウド環境への移行"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
+    "message": "データベースを ClickHouse Cloud へ移行する",
+    "description": "データベースを ClickHouse Cloud へ移行する"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "データ管理",
+    "description": "データを管理"
+  },
+  "sidebar.dropdownCategories.category.description.Manage Data": {
+    "message": "ClickHouse でのデータ管理",
+    "description": "ClickHouse でのデータ管理"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "データの基本的な概念",
+    "description": "データの基本概念"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
+    "message": "ClickHouse の内部的な概念を理解する",
+    "description": "ClickHouse の基本的な内部概念を理解する"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "データ更新",
+    "description": "データを更新する"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
+    "message": "ClickHouse におけるデータの更新および置換",
+    "description": "ClickHouse におけるデータの更新および置き換え"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "データ削除",
+    "description": "データの削除"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
+    "message": "ClickHouse のデータを削除する",
+    "description": "ClickHouse でのデータ削除"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "データモデリング",
+    "description": "データモデリング"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
+    "message": "スキーマとデータモデルの最適化",
+    "description": "スキーマおよびデータモデルを最適化する"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "パフォーマンスと最適化",
+    "description": "パフォーマンスと最適化"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
+    "message": "ClickHouse の最適化ガイド",
+    "description": "ClickHouse を最大限に活用するためのガイド集"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "サーバ管理",
+    "description": "サーバー管理者"
+  },
+  "sidebar.dropdownCategories.category.description.Server Admin": {
+    "message": "ClickHouse の管理とデプロイ",
+    "description": "ClickHouse の管理とデプロイ"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "デプロイメントとスケーリング",
+    "description": "デプロイメントとスケーリング"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
+    "message": "ClickHouse のデプロイ方法",
+    "description": "ClickHouse をデプロイする方法"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "セキュリティと認証",
+    "description": "セキュリティと認証"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
+    "message": "ClickHouse デプロイメントのセキュリティ確保",
+    "description": "ClickHouse デプロイメントをセキュアにする"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "構成",
+    "description": "設定"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
+    "message": "ClickHouse を設定する",
+    "description": "ClickHouse を設定する"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "ツールおよびユーティリティ",
+    "description": "ツールおよびユーティリティ"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
+    "message": "ClickHouse の管理ツール",
+    "description": "ClickHouse 管理ツール"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "システム テーブル",
+    "description": "システムテーブル"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
+    "message": "ClickHouse 管理用のメタデータテーブル",
+    "description": "ClickHouse の運用・管理に役立つメタデータテーブル"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "リファレンス",
+    "description": "リファレンス"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "ClickHouse 機能のリファレンスドキュメント",
+    "description": "ClickHouse 機能リファレンス"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "概要",
+    "description": "はじめに"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "ClickHouse の構文を学ぶ",
+    "description": "ClickHouse の構文を学ぶ"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "関数",
+    "description": "関数"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "データ分析向けの数百種類の組み込み関数",
+    "description": "データ分析のための数百の組み込み関数"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "エンジン",
+    "description": "エンジン"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "データに最適なテーブルエンジンおよびデータベースエンジンを利用する",
+    "description": "データに適したテーブルエンジンとデータベースエンジンを選ぶ"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features": {
+    "message": "追加の機能",
+    "description": "その他の機能"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
+    "message": "その他の ClickHouse 機能について詳しく知る",
+    "description": "ClickHouse のその他の機能を詳しく見る"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "連携",
+    "description": "連携"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "ClickHouse 用のインテグレーション、クライアント、ドライバー",
+    "description": "ClickHouse のインテグレーション、クライアント、およびドライバー"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
+    "message": "すべての連携",
+    "description": "すべてのインテグレーション"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
+    "message": "ClickHouse を他のデータベースやアプリケーションと統合する",
+    "description": "ClickHouse を他のデータベースやアプリケーションと連携する"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
+    "message": "クライアント ライブラリ",
+    "description": "言語別クライアント"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
+    "message": "お気に入りのプログラミング言語で ClickHouse を使う",
+    "description": "お好みのプログラミング言語から ClickHouse を利用する"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "ClickHouse へのデータ取り込みを最も簡単に行う方法",
+    "description": "ClickHouse にデータを取り込む最も簡単な方法"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
+    "message": "ネイティブクライアントとインターフェース",
+    "description": "ネイティブクライアントおよびインターフェース"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
+    "message": "ClickHouse に接続するためのクライアントとインターフェースを選択する",
+    "description": "ClickHouse に接続するためのクライアントとインターフェースを選択してください"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
+    "message": "データソース",
+    "description": "データソース"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
+    "message": "任意のデータソースから ClickHouse にデータを取り込む",
+    "description": "任意のデータソースから ClickHouse にデータを取り込む"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
+    "message": "データの可視化",
+    "description": "データの可視化"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
+    "message": "ClickHouse をお使いの可視化ツールに接続する",
+    "description": "ClickHouse を任意の可視化ツールに接続する"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
+    "message": "データ形式",
+    "description": "データ形式"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
+    "message": "ClickHouse がサポートするデータ形式の確認",
+    "description": "ClickHouse がサポートするデータ形式を確認する"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
+    "message": "データのインジェスト",
+    "description": "データインジェスト"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
+    "message": "さまざまな ELT ツールを利用した ClickHouse へのデータ取り込み",
+    "description": "さまざまな ELT ツールで ClickHouse にデータを取り込む"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB は、ClickHouse の組み込み版です。",
+    "description": "chDB は組み込み型 ClickHouse データベースです"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "chDB について詳しく知る",
+    "description": "chDB を学ぶ"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "chDB の使用方法を学ぶ",
+    "description": "chDB を使用する"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "言語インテグレーション",
+    "description": "言語別インテグレーション"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "プログラミング言語用クライアントから chDB に接続する",
+    "description": "プログラミング言語向けクライアントライブラリを使用して chDB に接続する"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "ガイド",
+    "description": "ガイド"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "chDB の利用ガイド",
+    "description": "chDB の利用ガイド"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "概要",
+    "description": "概要"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "ClickHouse の詳細を確認する",
+    "description": "ClickHouse についてさらに詳しく知る"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "実装例",
+    "description": "導入企業"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse を導入している企業",
+    "description": "ClickHouse ユーザー"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "変更履歴",
+    "description": "更新履歴"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "最新の ClickHouse の変更内容を確認",
+    "description": "ClickHouse の最近の変更を確認"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "サポート",
+    "description": "サポート"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "ClickHouse エンジニアによるサポート",
+    "description": "ClickHouse エンジニアに相談する"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "開発と貢献",
+    "description": "開発と貢献"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "ClickHouse への貢献方法を学ぶ",
+    "description": "ClickHouse へのコントリビュート方法"
   },
   "This documentation is translated with the help of AI": {
-    "message": "このドキュメントの翻訳にはAIを使用しています"
+    "message": "このドキュメントは AI を利用して翻訳されています。"
   },
   "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
-    "message": "翻訳の問題を見つけましたか？問題点を報告して改善にご協力ください。"
+    "message": "翻訳に問題を見つけましたか？改善のためにご報告ください。"
   },
   "Report an issue": {
     "message": "問題を報告する"
