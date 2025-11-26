@@ -6,6 +6,6 @@ title: 'Страница для Distributed DDL'
 doc_type: 'reference'
 ---
 
-import Content from '@site/docs/sql-reference/distributed-ddl.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/distributed-ddl.md';
 
 <Content />

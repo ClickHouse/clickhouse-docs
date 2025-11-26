@@ -7,6 +7,6 @@ doc_type: 'guide'
 keywords: ['partitioning', 'partition key', 'data organization', 'best practices', 'performance']
 ---
 
-import Content from '@site/docs/best-practices/partitioning_keys.mdx';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/partitioning_keys.mdx';
 
 <Content />

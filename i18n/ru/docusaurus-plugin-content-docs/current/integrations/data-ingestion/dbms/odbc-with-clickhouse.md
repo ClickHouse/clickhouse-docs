@@ -9,6 +9,6 @@ hide_title: true
 keywords: ['odbc', 'подключение к базе данных', 'интеграция', 'внешние данные', 'драйвер']
 ---
 
-import Content from '@site/docs/engines/table-engines/integrations/odbc.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/engines/table-engines/integrations/odbc.md';
 
 <Content />

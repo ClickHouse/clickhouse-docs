@@ -6,6 +6,6 @@ description: 'Обзор механизма легковесного удале�
 doc_type: 'reference'
 ---
 
-import Content from '@site/docs/sql-reference/statements/delete.md';
+import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/statements/delete.md';
 
 <Content />
