@@ -1,16 +1,19 @@
 ---
-slug: '/sql-reference/data-types/ipv6'
-sidebar_label: IPv6
+description: 'Документация по типу данных IPv6 в ClickHouse, который хранит IPv6-адреса в виде 16-байтовых значений'
+sidebar_label: 'IPv6'
 sidebar_position: 30
-description: 'Документация для типа данных IPv6 в ClickHouse, который хранит IPv6'
-title: IPv6
-doc_type: reference
+slug: /sql-reference/data-types/ipv6
+title: 'IPv6'
+doc_type: 'reference'
 ---
-## IPv6 {#ipv6}
 
-IPv6 адреса. Хранятся в 16 байтах как UInt128 в порядке big-endian.
 
-### Основное Использование {#basic-usage}
+
+## IPv6
+
+IPv6-адреса. Хранятся в 16 байтах в виде UInt128 в формате big-endian.
+
+### Базовое использование
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;
@@ -25,13 +28,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-ИЛИ вы можете использовать `IPv6` домен в качестве ключа:
+Или вы можете использовать домен `IPv6` в качестве ключа:
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;
 ```
 
-Домен `IPv6` поддерживает пользовательский ввод в виде строк IPv6:
+Домен `IPv6` поддерживает произвольный ввод строк в формате IPv6:
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '2a02:aa08:e000:3100::2')('https://clickhouse.com', '2001:44c8:129:2632:33:0:252:2')('https://clickhouse.com/docs/en/', '2a02:e980:1e::1');
@@ -47,7 +50,7 @@ SELECT * FROM hits;
 └────────────────────────────────────┴───────────────────────────────┘
 ```
 
-Значения хранятся в компактной двоичной форме:
+Значения хранятся в компактном двоичном формате:
 
 ```sql
 SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
@@ -59,7 +62,7 @@ SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
 └──────────────────┴──────────────────────────────────┘
 ```
 
-IPv6 адреса могут прямо сравниваться с IPv4 адресами:
+Адреса IPv6 можно напрямую сравнивать с адресами IPv4:
 
 ```sql
 SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
@@ -71,6 +74,6 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Смотрите Также**
+**См. также**
 
-- [Функции для работы с адресами IPv4 и IPv6](../functions/ip-address-functions.md)
+* [Функции для работы с IP-адресами IPv4 и IPv6](../functions/ip-address-functions.md)

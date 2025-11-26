@@ -1,24 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONLines'
-description: 'Документация для формата JSONLines'
-title: JSONLines
+alias: ['JSONEachRow', 'JSONLines', 'NDJSON', 'JSONL']
+description: 'Документация по формату JSONLines'
 keywords: ['JSONLines']
-doc_type: reference
-alias: 
+slug: /interfaces/formats/JSONLines
+title: 'JSONLines'
+doc_type: 'reference'
 ---
-| Input | Output | Alias                 |
-|-------|--------|-----------------------|
-| ✔     | ✔      | `JSONEachRow`, `NDJSON` |
+
+| Входные данные | Выходные данные | Псевдоним                                 |
+|----------------|-----------------|-------------------------------------------|
+| ✔              | ✔               | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, разделенного новой строкой.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, по одному объекту на строку.
+
+Этот формат также известен как `JSONEachRow`, `NDJSON` (Newline Delimited JSON) или `JSONL` (`JSONLines`). Все эти названия являются синонимами одного и того же формата и могут использоваться взаимозаменяемо.
 
 ## Пример использования {#example-usage}
 
-### Вставка данных {#inserting-data}
+### Вставка данных
 
-Используя JSON-файл с данными, названный `football.json`:
+Используем JSON-файл со следующими данными, сохранённый под именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -46,9 +49,10 @@ alias:
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONLines`:
+### Чтение данных
+
+Прочитайте данные в формате `JSONLines`:
 
 ```sql
 SELECT *
@@ -56,7 +60,7 @@ FROM football
 FORMAT JSONLines
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -78,6 +82,7 @@ FORMAT JSONLines
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Импорт данных с колонками с неизвестными именами будет пропущен, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+Столбцы данных с неизвестными именами будут пропущены при импорте, если настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
 
-## Настройки формата {#format-settings}
+
+## Параметры форматирования {#format-settings}

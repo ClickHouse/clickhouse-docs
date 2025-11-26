@@ -1,10 +1,13 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/corr'
+description: 'Вычисляет коэффициент корреляции Пирсона.'
 sidebar_position: 117
-description: 'Вы calculates коэффициент корреляции Пирсона.'
-title: corr
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/corr
+title: 'corr'
+doc_type: 'reference'
 ---
+
+
+
 # corr
 
 Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
@@ -13,10 +16,11 @@ $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-<br/>
-:::note
-Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`corrStable`](../reference/corrstable.md). Она медленнее, но дает более точный результат.
-:::
+<br />
+:::note Эта функция использует численно неустойчивый алгоритм. Если вам нужна
+[численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) в
+вычислениях, используйте функцию [`corrStable`](../reference/corrstable.md). Она
+работает медленнее, но обеспечивает более точный результат. :::
 
 **Синтаксис**
 
@@ -26,8 +30,8 @@ corr(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md).
-- `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md).
+- `x` — первая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md).
+- `y` — вторая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md).
 
 **Возвращаемое значение**
 

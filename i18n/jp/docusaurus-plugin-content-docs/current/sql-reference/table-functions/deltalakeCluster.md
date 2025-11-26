@@ -1,20 +1,23 @@
 ---
-'description': 'これは deltaLake テーブル関数への拡張です。'
-'sidebar_label': 'deltaLakeCluster'
-'sidebar_position': 46
-'slug': '/sql-reference/table-functions/deltalakeCluster'
-'title': 'deltaLakeCluster'
-'doc_type': 'reference'
+description: 'これは deltaLake テーブル関数の拡張です。'
+sidebar_label: 'deltaLakeCluster'
+sidebar_position: 46
+slug: /sql-reference/table-functions/deltalakeCluster
+title: 'deltaLakeCluster'
+doc_type: 'reference'
 ---
+
 
 
 # deltaLakeCluster テーブル関数
 
 これは [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の拡張です。
 
-指定されたクラスター内の多数のノードから Amazon S3 の [Delta Lake](https://github.com/delta-io/delta) テーブルのファイルを並列に処理できるようにします。イニシエーター上で、クラスター内のすべてのノードへの接続を作成し、各ファイルを動的に配信します。ワーカーノードでは、イニシエーターに次の処理タスクを尋ね、そのタスクを処理します。すべてのタスクが完了するまでこのプロセスは繰り返されます。
+指定したクラスタ内の多数のノードから、Amazon S3 上の [Delta Lake](https://github.com/delta-io/delta) テーブルのファイルを並列処理できるようにします。イニシエーターはクラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り振ります。ワーカーノードは、処理すべき次のタスクについてイニシエーターに問い合わせ、そのタスクを処理します。すべてのタスクが完了するまで、これが繰り返されます。
 
-## 構文 {#syntax}
+
+
+## 構文
 
 ```sql
 deltaLakeCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -26,27 +29,35 @@ deltaLakeS3Cluster(cluster_name, named_collection[, option=value [,..]])
 deltaLakeAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 deltaLakeAzureCluster(cluster_name, named_collection[, option=value [,..]])
 ```
-`deltaLakeS3Cluster` は `deltaLakeCluster` のエイリアスであり、どちらも S3 用です。
+
+`deltaLakeS3Cluster` は `deltaLakeCluster` のエイリアスであり、どちらも S3 向けです。`
+
 
 ## 引数 {#arguments}
 
-- `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータのセットを構築するために使用されるクラスターの名前。
+- `cluster_name` — リモートおよびローカルサーバーへのアドレスや接続パラメータのセットを構成するために使用されるクラスタの名前。
 
-- その他すべての引数の説明は、対応する [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の引数の説明と一致します。
+- その他すべての引数の説明は、同等の [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数における引数の説明と同一です。
 
-## 戻り値 {#returned_value}
 
-指定された Delta Lake テーブルからクラスターのデータを読み取るための指定された構造のテーブル。
+
+## 返される値 {#returned_value}
+
+S3 内の指定された Delta Lake テーブルのうち、クラスタからデータを読み取るために指定された構造を持つテーブル。
+
+
 
 ## 仮想カラム {#virtual-columns}
 
-- `_path` — ファイルのパス。タイプ：`LowCardinality(String)`。
-- `_file` — ファイルの名前。タイプ：`LowCardinality(String)`。
-- `_size` — ファイルのサイズ（バイト単位）。タイプ：`Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
-- `_time` — ファイルの最終変更時刻。タイプ：`Nullable(DateTime)`。時間が不明な場合、値は `NULL` です。
-- `_etag` — ファイルの etag。タイプ：`LowCardinality(String)`。etag が不明な場合、値は `NULL` です。
+- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
+- `_file` — ファイル名。型: `LowCardinality(String)`。
+- `_size` — ファイルのサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` になります。
+- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
+- `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合、値は `NULL` になります。
 
-## 関連 {#related}
+
+
+## 関連項目 {#related}
 
 - [deltaLake エンジン](engines/table-engines/integrations/deltalake.md)
 - [deltaLake テーブル関数](sql-reference/table-functions/deltalake.md)

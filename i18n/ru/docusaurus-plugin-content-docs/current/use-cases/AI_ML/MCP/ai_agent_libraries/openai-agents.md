@@ -1,62 +1,67 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/openai-agents'
-'sidebar_label': 'Создание OpenAI'
-'title': 'Как использовать ClickHouse MCP сервер для создания OpenAI агента.'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать один из агентов OpenAI, который может взаимодействовать
-  с ClickHouse MCP сервером.'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'OpenAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
+sidebar_label: 'Интеграция с OpenAI'
+title: 'Как создать агента OpenAI с использованием ClickHouse MCP Server'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать агента OpenAI, который может взаимодействовать с ClickHouse MCP Server.'
+keywords: ['ClickHouse', 'MCP', 'OpenAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
+
+
 # Как создать агента OpenAI с использованием ClickHouse MCP Server
 
-В этом руководстве вы научитесь создавать агента [OpenAI](https://github.com/openai/openai-agents-python), который
-может взаимодействовать с [SQL-площадкой ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+В этом руководстве вы узнаете, как создать агента [OpenAI](https://github.com/openai/openai-agents-python), который
+может взаимодействовать с [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
 
-:::note Пример блокнота
-Этот пример можно найти в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb).
+:::note Пример ноутбука
+Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
-- У вас должна быть установлена Python на вашей системе.
-- У вас должна быть установлена `pip` на вашей системе.
-- Вам потребуется ключ API OpenAI.
 
-Вы можете выполнить следующие шаги как из вашего Python REPL, так и через скрипт.
+
+## Предварительные требования {#prerequisites}
+
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ OpenAI.
+
+Следующие шаги можно выполнить либо из Python REPL, либо через скрипт.
 
 <VerticalStepper headerLevel="h2">
 
-## Установка библиотек {#install-libraries}
 
-Установите необходимые библиотеки, запустив следующие команды:
+## Установка библиотек
+
+Установите необходимую библиотеку, выполнив следующие команды:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q openai-agents
+pip install -q --upgrade pip
+pip install -q openai-agents
 ```
 
-## Настройка учетных данных {#setup-credentials}
 
-Далее вам нужно будет предоставить ваш ключ API OpenAI:
+## Настройка учетных данных
+
+Далее вам нужно будет указать свой ключ API OpenAI:
 
 ```python
 import os, getpass
-os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Введите API-ключ OpenAI:")
 ```
 
 ```response title="Response"
-Enter OpenAI API Key: ········
+Введите API-ключ OpenAI: ········
 ```
 
-## Инициализация MCP Server и агента OpenAI {#initialize-mcp-and-agent}
 
-Теперь настройте ClickHouse MCP Server так, чтобы он указывал на SQL-площадку ClickHouse,
-инициализируйте вашего агента OpenAI и задайте ему вопрос:
+## Инициализация MCP Server и агента OpenAI
+
+Теперь настройте ClickHouse MCP Server так, чтобы он указывал на ClickHouse SQL playground,
+инициализируйте агента OpenAI и задайте ему вопрос:
 
 ```python
 from agents.mcp import MCPServer, MCPServerStdio
@@ -64,59 +69,59 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """Simple version that just filters important events"""
+    """Упрощённая версия, фильтрующая только важные события"""
 
-    # Tool calls
+    # Вызовы инструментов
     if (hasattr(chunk, 'type') and
             chunk.type == 'run_item_stream_event'):
 
         if chunk.name == 'tool_called':
             tool_name = chunk.item.raw_item.name
             args = chunk.item.raw_item.arguments
-            print(f"🔧 Tool: {tool_name}({args})")
+            print(f"🔧 Инструмент: {tool_name}({args})")
 
         elif chunk.name == 'tool_output':
             try:
-                # Handle both string and already-parsed output
+                # Обработка строкового и уже разобранного вывода
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
                     output = chunk.item.output
 
-                # Handle both dict and list formats
+                # Обработка форматов dict и list
                 if isinstance(output, dict):
                     if output.get('type') == 'text':
                         text = output['text']
                         if 'Error' in text:
-                            print(f"❌ Error: {text}")
+                            print(f"❌ Ошибка: {text}")
                         else:
-                            print(f"✅ Result: {text[:100]}...")
+                            print(f"✅ Результат: {text[:100]}...")
                 elif isinstance(output, list) and len(output) > 0:
-                    # Handle list format
+                    # Обработка формата списка
                     first_item = output[0]
                     if isinstance(first_item, dict) and first_item.get('type') == 'text':
                         text = first_item['text']
                         if 'Error' in text:
-                            print(f"❌ Error: {text}")
+                            print(f"❌ Ошибка: {text}")
                         else:
-                            print(f"✅ Result: {text[:100]}...")
+                            print(f"✅ Результат: {text[:100]}...")
                 else:
-                    # Fallback - just print the raw output
-                    print(f"✅ Result: {str(output)[:100]}...")
+                    # Резервный вариант — вывод необработанных данных
+                    print(f"✅ Результат: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # Fallback to raw output if parsing fails
-                print(f"✅ Result: {str(chunk.item.output)[:100]}...")
+                # Резервный вариант: вывод необработанных данных при ошибке разбора
+                print(f"✅ Результат: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
             try:
                 content = chunk.item.raw_item.content
                 if content and len(content) > 0:
-                    print(f"💬 Response: {content[0].text}")
+                    print(f"💬 Ответ: {content[0].text}")
             except (AttributeError, IndexError):
-                print(f"💬 Response: {str(chunk.item)[:100]}...")
+                print(f"💬 Ответ: {str(chunk.item)[:100]}...")
 
-    # Text deltas for streaming
+    # Текстовые дельты для потоковой передачи
     elif (hasattr(chunk, 'type') and
           chunk.type == 'raw_response_event' and
           hasattr(chunk, 'data') and
@@ -138,21 +143,22 @@ async with MCPServerStdio(
         }, client_session_timeout_seconds = 60
 ) as server:
     agent = Agent(
-        name="Assistant",
-        instructions="Use the tools to query ClickHouse and answer questions based on those files.",
+        name="Ассистент",
+        instructions="Используйте инструменты для выполнения запросов к ClickHouse и ответов на вопросы на основе этих файлов.",
         mcp_servers=[server],
     )
 
-    message = "What's the biggest GitHub project so far in 2025?"
-    print(f"\n\nRunning: {message}")
-    with trace("Biggest project workflow"):
+    message = "Какой самый крупный проект на GitHub в 2025 году?"
+    print(f"\n\nВыполнение: {message}")
+    with trace("Рабочий процесс поиска крупнейшего проекта"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
 
-```response title="Response"
-Running: What's the biggest GitHub project so far in 2025?
+
+```response title="Ответ"
+Выполняется: Какой самый крупный проект на GitHub на данный момент в 2025 году?
 🔧 Tool: list_databases({})
 ✅ Result: amazon
 bluesky
@@ -186,7 +192,7 @@ log...
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.💬 Response: The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.
+Самый крупный проект на GitHub в 2025 году по количеству звёзд — «[sindresorhus/awesome](https://github.com/sindresorhus/awesome)» с 402 893 звёздами.💬 Ответ: Самый крупный проект на GitHub в 2025 году по количеству звёзд — «[sindresorhus/awesome](https://github.com/sindresorhus/awesome)» с 402 893 звёздами.
 ```
 
 </VerticalStepper>

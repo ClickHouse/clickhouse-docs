@@ -1,17 +1,22 @@
 ---
-'description': 'Двигатель позволяет выполнять запросы к удаленным наборам данных через
-  Apache Arrow Flight.'
-'sidebar_label': 'ArrowFlight'
-'sidebar_position': 186
-'slug': '/engines/table-engines/integrations/arrowflight'
-'title': 'ArrowFlight'
-'doc_type': 'reference'
+description: 'Движок позволяет выполнять запросы к удалённым наборам данных через Apache Arrow Flight.'
+sidebar_label: 'ArrowFlight'
+sidebar_position: 186
+slug: /engines/table-engines/integrations/arrowflight
+title: 'Табличный движок ArrowFlight'
+doc_type: 'reference'
 ---
-# ArrowFlight
 
-Движок таблиц ArrowFlight позволяет ClickHouse запрашивать удаленные наборы данных по протоколу [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html). Это интеграция позволяет ClickHouse извлекать данные с внешних серверов, поддерживающих Flight, в колонном формате Arrow с высокой производительностью.
 
-## Создание таблицы {#creating-a-table}
+
+# Движок таблицы ArrowFlight
+
+Движок таблицы ArrowFlight позволяет ClickHouse выполнять запросы к удалённым наборам данных по протоколу [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html).
+Эта интеграция даёт возможность ClickHouse получать данные с внешних серверов с поддержкой Flight в колонном формате Arrow с высокой производительностью.
+
+
+
+## Создание таблицы
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
@@ -20,14 +25,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
 
 **Параметры движка**
 
-* `host:port` — Адрес удалённого сервера Arrow Flight.
-* `dataset_name` — Идентификатор набора данных на сервере Flight.
-* `username` - Имя пользователя для аутентификации в стиле базовой HTTP.
-* `password` - Пароль для аутентификации в стиле базовой HTTP. Если `username` и `password` не указаны, это значит, что аутентификация не используется (это будет работать только если сервер Arrow Flight это допускает).
+* `host:port` — адрес удалённого сервера Arrow Flight.
+* `dataset_name` — идентификатор набора данных на сервере Flight.
+* `username` — имя пользователя для базовой HTTP-аутентификации.
+* `password` — пароль для базовой HTTP-аутентификации.
+  Если `username` и `password` не указаны, это означает, что аутентификация не используется
+  (это будет работать только в том случае, если сервер Arrow Flight это допускает).
 
-## Пример использования {#usage-example}
 
-Этот пример показывает, как создать таблицу, которая считывает данные с удаленного сервера Arrow Flight:
+## Пример использования
+
+В этом примере показано, как создать таблицу для чтения данных с удалённого сервера Arrow Flight:
 
 ```sql
 CREATE TABLE remote_flight_data
@@ -38,7 +46,7 @@ CREATE TABLE remote_flight_data
 ) ENGINE = ArrowFlight('127.0.0.1:9005', 'sample_dataset');
 ```
 
-Запросите удаленные данные так, как если бы это была локальная таблица:
+Запросите удалённые данные так же, как локальную таблицу:
 
 ```sql
 SELECT * FROM remote_flight_data ORDER BY id;
@@ -52,10 +60,13 @@ SELECT * FROM remote_flight_data ORDER BY id;
 └────┴─────────┴───────┘
 ```
 
+
 ## Примечания {#notes}
 
 * Схема, определённая в ClickHouse, должна соответствовать схеме, возвращаемой сервером Flight.
-* Этот движок подходит для федеративных запросов, виртуализации данных и отделения хранения от вычислений.
+* Этот движок подходит для федеративных запросов, виртуализации данных и разделения хранения и вычислений.
+
+
 
 ## См. также {#see-also}
 

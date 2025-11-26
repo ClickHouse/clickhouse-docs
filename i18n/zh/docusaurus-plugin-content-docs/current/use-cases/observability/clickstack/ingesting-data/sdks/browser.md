@@ -1,32 +1,34 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/browser'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 0
-'description': 'ClickStack 的浏览器 SDK - ClickHouse 观测堆栈'
-'title': '浏览器 JS'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/browser
+pagination_prev: null
+pagination_next: null
+sidebar_position: 0
+description: 'ClickStack 浏览器 SDK - ClickHouse 观测栈'
+title: '浏览器 JS'
+doc_type: 'guide'
+keywords: ['ClickStack', 'browser-sdk', 'javascript', 'session-replay', 'frontend']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The ClickStack browser SDK allows you to instrument your frontend application to
-send events to ClickStack. This allows you to view network 
-requests and exceptions alongside backend events in a single timeline.
+ClickStack 浏览器 SDK 允许你在前端应用中接入埋点，
+将事件发送到 ClickStack。借此，你可以在同一时间轴中，
+将网络请求和异常与后端事件一并查看。
 
-Additionally, it'll automatically capture and correlate session replay data, so
-you can visually step through and debug what a user was seeing while using your
-application.
+此外，它会自动捕获并关联会话回放数据，
+这样你就可以以可视化方式逐步回放和调试用户在使用
+应用时所看到的内容。
 
-This guide integrates the following:
+本指南集成以下内容：
 
-- **控制台日志**
-- **会话重放**
-- **XHR/Fetch/Websocket 请求**
-- **异常**
+* **控制台日志（Console Logs）**
+* **会话回放（Session Replays）**
+* **XHR/Fetch/Websocket 请求**
+* **异常（Exceptions）**
 
-## 入门 {#getting-started}
+
+## 快速开始 {#getting-started}
 
 <br/>
 
@@ -35,7 +37,7 @@ This guide integrates the following:
 
 **通过包导入安装（推荐）**
 
-使用以下命令安装 [browser package](https://www.npmjs.com/package/@hyperdx/browser)。
+使用以下命令安装 [browser 包](https://www.npmjs.com/package/@hyperdx/browser)。
 
 ```shell
 npm install @hyperdx/browser
@@ -50,20 +52,22 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
-    consoleCapture: true, // Capture console logs (default false)
-    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
+    tracePropagationTargets: [/api.myapp.domain/i], // 配置用于将前端与后端请求的链路关联起来
+    consoleCapture: true, // 捕获 console 日志（默认 false）
+    advancedNetworkCapture: true, // 捕获完整 HTTP 请求/响应头和请求/响应体（默认 false）
 });
 ```
 
 </TabItem>
-<TabItem value="script_tag" label="脚本标签">
+<TabItem value="script_tag" label="Script 标签">
 
-**通过脚本标签安装（替代方法）**
+**通过 Script 标签安装（可选方式）**
 
-您也可以通过脚本标签而不是通过 NPM 安装来包含和安装脚本。这将暴露 `HyperDX` 全局变量，并可以与 NPM 包以相同的方式使用。
+你也可以通过 script 标签引入并安装该脚本，而不是
+通过 npm 安装。这样会暴露 `HyperDX` 全局变量，并且可以
+像使用 npm 包一样使用它。
 
-如果您的网站当前不是使用捆绑工具构建的，建议使用此方法。
+如果你的站点目前不是通过打包工具构建的，推荐使用这种方式。
 
 ```html
 <script src="//www.unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
@@ -72,7 +76,7 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+    tracePropagationTargets: [/api.myapp.domain/i], // 配置用于将前端与后端请求的链路关联起来
   });
 </script>
 ```
@@ -82,24 +86,25 @@ HyperDX.init({
 
 ### 选项 {#options}
 
-- `apiKey` - 您的 ClickStack 数据接收 API 密钥。
-- `service` - 事件在 HyperDX UI 中显示的服务名称。
-- `tracePropagationTargets` - 匹配 HTTP 请求的正则表达式模式列表，以链接前端和后端追踪，它将向所有匹配任何模式的请求添加额外的 `traceparent` 头。此值应设置为您的后端 API 域（例如 `api.yoursite.com`）。
-- `consoleCapture` - （可选）捕获所有控制台日志（默认 `false`）。
-- `advancedNetworkCapture` - （可选）捕获完整的请求/响应头和主体（默认 false）。
-- `url` - （可选）OpenTelemetry 收集器 URL，仅需要用于自托管实例。
-- `maskAllInputs` - （可选）是否在会话重放中掩盖所有输入字段（默认 `false`）。
-- `maskAllText` - （可选）是否在会话重放中掩盖所有文本（默认 `false`）。
-- `disableIntercom` - （可选）是否禁用 Intercom 集成（默认 `false`）
-- `disableReplay` - （可选）是否禁用会话重放（默认 `false`）
+- `apiKey` - 您的 ClickStack 摄取 API key。
+- `service` - 事件在 HyperDX UI 中显示时使用的服务名称。
+- `tracePropagationTargets` - 用于匹配 HTTP 请求的一组正则表达式模式，用来关联前端和后端的跟踪；它会为匹配任一模式的所有请求添加一个额外的 `traceparent` 头。该值应设置为您的后端 API 域名（例如 `api.yoursite.com`）。
+- `consoleCapture` -（可选）是否捕获所有控制台日志（默认值为 `false`）。
+- `advancedNetworkCapture` -（可选）是否捕获完整的请求/响应头和消息体（默认值为 `false`）。
+- `url` -（可选）OpenTelemetry collector 的 URL，仅在自托管部署中需要。
+- `maskAllInputs` -（可选）是否在会话回放中对所有输入字段进行掩码处理（默认值为 `false`）。
+- `maskAllText` -（可选）是否在会话回放中对所有文本进行掩码处理（默认值为 `false`）。
+- `disableIntercom` -（可选）是否禁用 Intercom 集成（默认值为 `false`）。
+- `disableReplay` -（可选）是否禁用会话回放（默认值为 `false`）。
 
 ## 其他配置 {#additional-configuration}
 
-### 附加用户信息或元数据 {#attach-user-information-or-metadata}
+### 附加用户信息或元数据
 
-附加用户信息将允许您在 HyperDX UI 中搜索/过滤会话和事件。此操作可以在客户端会话的任何时候调用。当前客户端会话及呼叫后发送的所有事件将与用户信息关联。
+附加用户信息可以让你在 HyperDX UI 中搜索和筛选会话与事件。
+可以在客户端会话期间的任意时刻调用该方法。当前客户端会话以及调用之后发送的所有事件都会与该用户信息关联。
 
-`userEmail`、`userName` 和 `teamName` 将在会话 UI 中填充相应的值，但可以省略。可以指定并使用任何其他附加值来搜索事件。
+`userEmail`、`userName` 和 `teamName` 会使用相应的值填充会话界面，但它们是可选的。你也可以指定任何其他附加字段或值，并将其用于搜索事件。
 
 ```javascript
 HyperDX.setGlobalAttributes({
@@ -107,56 +112,60 @@ HyperDX.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // Other custom properties...
+  // 其他自定义属性...
 });
 ```
 
-### 自动捕获 React 错误边界错误 {#auto-capture-react-error-boundary-errors}
 
-如果您使用 React，可以通过将您的错误边界组件传入 `attachToReactErrorBoundary` 函数，自动捕获发生在 React 错误边界中的错误。
+### 自动捕获 React 错误边界中的错误
+
+如果你使用 React，可以通过将错误边界组件传入 `attachToReactErrorBoundary` 函数，自动捕获出现在 React 错误边界内的错误。
 
 ```javascript
-// Import your ErrorBoundary (we're using react-error-boundary as an example)
+// 导入您的 ErrorBoundary(此处以 react-error-boundary 为例)
 import { ErrorBoundary } from 'react-error-boundary';
 
-// This will hook into the ErrorBoundary component and capture any errors that occur
-// within any instance of it.
+// 这将接入 ErrorBoundary 组件并捕获其任何实例中发生的所有错误
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
-### 发送自定义操作 {#send-custom-actions}
 
-要显式跟踪特定应用事件（例如注册、提交等），可以调用 `addAction` 函数，并传入事件名称和可选事件元数据。
+### 发送自定义操作
+
+要对特定的应用程序事件进行明确跟踪（例如注册、提交
+等），可以调用 `addAction` 函数，并传入事件名称以及可选的事件元数据。
 
 示例：
 
 ```javascript
 HyperDX.addAction('Form-Completed', {
   formId: 'signup-form',
-  formName: 'Signup Form',
+  formName: '注册表单',
   formType: 'signup',
 });
 ```
 
-### 动态启用网络捕获 {#enable-network-capture-dynamically}
 
-要动态启用或禁用网络捕获，只需在需要时调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数。
+### 动态启用网络捕获
+
+要动态启用或禁用网络捕获，只需视需要调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数即可。
 
 ```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
-### 为 CORS 请求启用资源计时 {#enable-resource-timing-for-cors-requests}
 
-如果您的前端应用程序向不同域发出 API 请求，您可以选择性地启用 `Timing-Allow-Origin`[header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) 以与请求一起发送。这将允许 ClickStack 捕获细粒度的资源计时信息，如 DNS 查找、响应下载等，通过 [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming)。
+### 为 CORS 请求启用资源计时
 
-如果您在使用 `express` 和 `cors` 包，您可以使用以下代码片段来启用头：
+如果前端应用向其他域名发起 API 请求，可以选择启用随请求发送的 `Timing-Allow-Origin` [头](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)。这将允许 ClickStack 通过 [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming) 捕获该请求的精细资源计时信息，例如 DNS 查询、响应下载等。
+
+如果在 `express` 中使用 `cors` 包，可以使用以下代码片段来启用该头：
 
 ```javascript
 var cors = require('cors');
 var onHeaders = require('on-headers');
 
-// ... all your stuff
+// ... 您的其他代码
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {

@@ -1,13 +1,13 @@
 ---
-'description': 'Describe Table のドキュメント'
-'sidebar_label': 'DESCRIBE TABLE'
-'sidebar_position': 42
-'slug': '/sql-reference/statements/describe-table'
-'title': 'DESCRIBE TABLE'
-'doc_type': 'reference'
+description: 'DESCRIBE TABLE のドキュメント'
+sidebar_label: 'DESCRIBE TABLE'
+sidebar_position: 42
+slug: /sql-reference/statements/describe-table
+title: 'DESCRIBE TABLE'
+doc_type: 'reference'
 ---
 
-テーブルのカラムに関する情報を返します。
+テーブル列に関する情報を返します。
 
 **構文**
 
@@ -15,24 +15,24 @@
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-`DESCRIBE` ステートメントは、以下の [String](../../sql-reference/data-types/string.md) 値を持つ各テーブルカラムに対して行を返します。
+`DESCRIBE` ステートメントは、各テーブル列に対して次の [String](../../sql-reference/data-types/string.md) 型の値を持つ行を返します:
 
-- `name` — カラム名。
-- `type` — カラムの型。
-- `default_type` — カラムの [デフォルト式](/sql-reference/statements/create/table) に使用される句： `DEFAULT`、`MATERIALIZED` または `ALIAS` 。デフォルト式がない場合、空の文字列が返されます。
-- `default_expression` — `DEFAULT` 句の後に指定された式。
-- `comment` — [カラムコメント](/sql-reference/statements/alter/column#comment-column)。
-- `codec_expression` — カラムに適用される [コーデック](/sql-reference/statements/create/table#column_compression_codec)。
-- `ttl_expression` — [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 式。
-- `is_subcolumn` — 内部サブカラムの場合は `1` になるフラグ。この結果には、[describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定によってサブカラムの説明が有効にされている場合のみ含まれます。
+* `name` — 列名。
+* `type` — 列の型。
+* `default_type` — 列の [default expression](/sql-reference/statements/create/table) で使用される句。`DEFAULT`、`MATERIALIZED`、または `ALIAS` のいずれか。デフォルト式がない場合は空文字列が返されます。
+* `default_expression` — `DEFAULT` 句の後に指定される式。
+* `comment` — [列コメント](/sql-reference/statements/alter/column#comment-column)。
+* `codec_expression` — 列に適用される [codec](/sql-reference/statements/create/table#column_compression_codec)。
+* `ttl_expression` — [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 式。
+* `is_subcolumn` — 内部サブカラムに対して `1` となるフラグ。[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定でサブカラムの説明が有効になっている場合にのみ、結果に含まれます。
 
-[Nested](../../sql-reference/data-types/nested-data-structures/index.md) データ構造のすべてのカラムは別々に記述されます。各カラムの名前は親カラム名とドットで接頭辞が付けられます。
+[Nested](../../sql-reference/data-types/nested-data-structures/index.md) データ構造内のすべての列は個別に記述されます。各列名には、親列名とドットが接頭辞として付けられます。
 
-他のデータ型の内部サブカラムを表示するには、[describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定を使用します。
+その他のデータ型の内部サブカラムを表示するには、[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定を使用します。
 
 **例**
 
-クエリ:
+クエリ:`
 
 ```sql
 CREATE TABLE describe_example (
@@ -54,7 +54,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-二番目のクエリは、追加でサブカラムも表示します:
+2つ目のクエリでは、サブカラムも併せて表示されます。
 
 ```text
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
@@ -68,4 +68,4 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 
 **関連項目**
 
-- [describe_include_subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定。
+* [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定

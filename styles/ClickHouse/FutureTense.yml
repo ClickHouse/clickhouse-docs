@@ -8,7 +8,7 @@ message: "Instead of future tense '%s', use present tense."
 ignorecase: true
 nonword: true
 vocab: false
-level: warning
+level: suggestion
 link: https://docs.gitlab.com/development/documentation/styleguide/word_list/#future-tense
 tokens:
   - (going to|will|won't)[ \n:]\w*

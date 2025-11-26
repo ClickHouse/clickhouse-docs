@@ -1,17 +1,11 @@
 ---
-'slug': '/cloud/billing/marketplace/azure-marketplace-committed-contract'
-'title': 'Azure Marketplace Committed Contract'
-'description': 'Подпишитесь на ClickHouse Cloud через Azure Marketplace (Committed
-  Contract)'
-'keywords':
-- 'Microsoft'
-- 'Azure'
-- 'marketplace'
-- 'billing'
-- 'committed'
-- 'committed contract'
-'doc_type': 'guide'
+slug: /cloud/billing/marketplace/azure-marketplace-committed-contract
+title: 'Договор с обязательствами по потреблению в Azure Marketplace'
+description: 'Оформление подписки на ClickHouse Cloud через Azure Marketplace (договор с обязательствами по потреблению)'
+keywords: ['Microsoft', 'Azure', 'marketplace', 'биллинг', 'обязательства по потреблению', 'договор с обязательствами по потреблению']
+doc_type: 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import azure_marketplace_committed_1 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-1.png';
 import azure_marketplace_committed_2 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-committed-2.png';
@@ -27,59 +21,62 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) через коммитированный контракт. Коммитированный контракт, также известный как Частное Предложение, позволяет клиентам обязаться потратить определенную сумму на ClickHouse Cloud в течение определенного времени.
+Начните работу с ClickHouse Cloud в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps), оформив контракт с обязательствами. Такой контракт, также известный как Private Offer (частное предложение), позволяет клиентам заранее обязаться потратить определённую сумму на ClickHouse Cloud в течение заданного периода времени.
+
 
 ## Предварительные требования {#prerequisites}
 
-- Частное предложение от ClickHouse на основе конкретных условий контракта.
+- Индивидуальное предложение от ClickHouse с особыми условиями контракта.
+
+
 
 ## Шаги для регистрации {#steps-to-sign-up}
 
-1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия вашего частного предложения.
+1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия приватного предложения.
 
 <br />
 
-<Image img={azure_marketplace_committed_1} size="md" alt="Электронное письмо частного предложения Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Письмо Azure Marketplace с приватным предложением" border/>
 
 <br />
 
-2. Щелкните по ссылке **Просмотреть Частное Предложение** в электронном письме. Это должно перенести вас на вашу страницу GCP Marketplace с деталями частного предложения.
+2. Нажмите ссылку **Review Private Offer** в электронном письме. Вы будете перенаправлены на страницу Azure Marketplace с деталями приватного предложения.
 
 <br />
 
-<Image img={azure_marketplace_committed_2} size="md" alt="Детали частного предложения Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Детали приватного предложения Azure Marketplace" border/>
 
 <br />
 
-3. После принятия предложения вы будете перенаправлены на экран **Управление Частным Предложением**. Azure может занять некоторое время для подготовки предложения к покупке.
+3. После принятия предложения вы будете перенаправлены на экран **Private Offer Management**. Подготовка предложения к покупке в Azure может занять некоторое время.
 
 <br />
 
-<Image img={azure_marketplace_committed_3} size="md" alt="Страница управления частным предложением Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Страница управления приватным предложением Azure Marketplace" border/>
 
 <br />
 
-<Image img={azure_marketplace_committed_4} size="md" alt="Загрузка страницы управления частным предложением Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Загрузка страницы управления приватным предложением Azure Marketplace" border/>
 
 <br />
 
-4. Через несколько минут обновите страницу. Предложение должно быть готово к **Покупке**.
+4. Через несколько минут обновите страницу. Предложение должно быть готово к покупке (**Purchase**).
 
 <br />
 
-<Image img={azure_marketplace_committed_5} size="md" alt="Страница управления частным предложением Azure Marketplace доступна для покупки" border/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Страница управления приватным предложением Azure Marketplace, покупка доступна" border/>
 
 <br />
 
-5. Нажмите на **Купить** - вы увидите всплывающее окно. Заполните следующие поля:
+5. Нажмите **Purchase** — откроется выдвижная панель. Выполните следующие действия:
 
 <br />
 
-- Подписка и группа ресурсов 
-- Укажите имя для подписки SaaS
-- Выберите тарифный план, для которого у вас есть частное предложение. Только срок, на который было создано частное предложение (например, 1 год), будет иметь сумму против него. Другие варианты тарифного плана будут для сумм $0. 
-- Выберите, хотите ли вы повторяющуюся биллинговую систему или нет. Если повторяющийся биллинг не выбран, контракт закончится в конце расчетного периода, и ресурсы будут объявлены устаревшими.
-- Нажмите на **Просмотреть + подписаться**.
+- Подписка и группа ресурсов (Subscription and resource group)
+- Укажите имя для SaaS-подписки
+- Выберите тарифный план, для которого у вас есть приватное предложение. Только срок, для которого было создано приватное предложение (например, 1 год), будет иметь ненулевую сумму. Другие варианты сроков оплаты будут с суммой $0. 
+- Выберите, нужна ли вам регулярная (recurring) оплата или нет. Если регулярная оплата не выбрана, контракт завершится в конце расчетного периода, а ресурсы будут выведены из эксплуатации.
+- Нажмите **Review + subscribe**.
 
 <br />
 
@@ -87,7 +84,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-6. На следующем экране просмотрите все детали и нажмите **Подписаться**.
+6. На следующем экране проверьте все данные и нажмите **Subscribe**.
 
 <br />
 
@@ -95,7 +92,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-7. На следующем экране вы увидите **Ваша подписка SaaS в процессе**.
+7. На следующем экране вы увидите сообщение **Your SaaS subscription in progress**.
 
 <br />
 
@@ -103,42 +100,42 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-8. Когда будет готово, вы можете нажать на **Настроить аккаунт сейчас**. Обратите внимание, что это критический шаг, который связывает подписку Azure с организацией ClickHouse Cloud для вашего аккаунта. Без этого шага ваша подписка на Marketplace не будет завершена.
+8. Когда все будет готово, вы можете нажать **Configure account now**. Обратите внимание, что это критически важный шаг, который привязывает подписку Azure к организации ClickHouse Cloud для вашего аккаунта. Без этого шага ваша подписка Marketplace не будет завершена.
 
 <br />
 
-<Image img={azure_marketplace_committed_9} size="md" alt="Кнопка настроить аккаунт сейчас Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Кнопка Azure Marketplace Configure account now" border/>
 
 <br />
 
-9. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Вы можете либо зарегистрироваться с помощью новой учетной записи, либо войти с помощью существующей учетной записи. После входа будет создана новая организация, готовая к использованию и биллингу через Azure Marketplace.
+9. Вы будете перенаправлены на страницу регистрации или входа в ClickHouse Cloud. Вы можете либо зарегистрировать новый аккаунт, либо войти с использованием существующего. После входа будет создана новая организация, готовая к использованию и оплате через Azure Marketplace.
 
-10. Вам потребуется ответить на несколько вопросов - адрес и данные о компании - прежде чем вы сможете продолжить.
-
-<br />
-
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма информации для регистрации ClickHouse Cloud" border/>
+10. Перед продолжением вам нужно будет ответить на несколько вопросов — указать адрес и сведения о компании.
 
 <br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма информации для регистрации ClickHouse Cloud 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
 
 <br />
 
-11. После нажатия на **Завершить регистрацию** вы будете перенаправлены в вашу организацию внутри ClickHouse Cloud, где вы сможете просмотреть экран биллинга, чтобы убедиться, что вас биллируют через Azure Marketplace и вы можете создавать услуги.
+<Image img={aws_marketplace_payg_9} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud 2" border/>
 
 <br />
 
-<br />
-
-<Image img={azure_marketplace_payg_11} size="sm" alt="Форма информации для регистрации ClickHouse Cloud" border/>
+11. После нажатия **Complete sign up** вы будете перенаправлены в вашу организацию в ClickHouse Cloud, где вы сможете просмотреть страницу биллинга, чтобы убедиться, что оплата производится через Azure Marketplace, а также создавать сервисы.
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="Форма информации для регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
 
 <br />
 
-Если у вас возникнут какие-либо проблемы, пожалуйста, не стесняйтесь обращаться к [нашей команде поддержки](https://clickhouse.com/support/program).
+<br />
+
+<Image img={azure_marketplace_payg_12} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
+
+<br />
+
+Если у вас возникнут какие-либо проблемы, пожалуйста, свяжитесь с [нашей службой поддержки](https://clickhouse.com/support/program).

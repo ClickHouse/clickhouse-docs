@@ -1,26 +1,23 @@
 ---
-'description': '配列を集約してそれらの配列の大きな配列にします。'
-'keywords':
-- 'groupArrayArray'
-- 'array_concat_agg'
-'sidebar_position': 111
-'slug': '/sql-reference/aggregate-functions/reference/grouparrayarray'
-'title': 'groupArrayArray'
-'doc_type': 'reference'
+description: '複数の配列を集約し、それらを要素とするより大きな配列を生成します。'
+keywords: ['groupArrayArray', 'array_concat_agg']
+sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+title: 'groupArrayArray'
+doc_type: 'reference'
 ---
-
 
 # groupArrayArray
 
-配列をより大きな配列に集約します。
-[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせています。
+複数の配列を、それらの配列を要素とするより大きな配列に集約します。
+[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 関数と [Array](/sql-reference/aggregate-functions/combinators#-array) コンビネータを組み合わせたものです。
 
 エイリアス: `array_concat_agg`
 
 **例**
 
-ユーザのブラウジングセッションをキャプチャするデータがあります。各セッションは特定のユーザが訪れたページのシーケンスを記録します。
-`groupArrayArray` 関数を使用して各ユーザのページ訪問のパターンを分析することができます。
+ユーザーのブラウジングセッションを記録したデータがあるとします。各セッションには、特定のユーザーが訪問したページの遷移順が記録されています。
+`groupArrayArray` 関数を使用して、ユーザーごとのページ訪問パターンを分析できます。
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

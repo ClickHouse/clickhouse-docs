@@ -1,22 +1,33 @@
 ---
 slug: '/examples/aggregate-function-combinators/anyIf'
-sidebar_label: anyIf
+title: 'anyIf'
 description: 'Пример использования комбинатора anyIf'
-title: anyIf
-keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
-doc_type: reference
+keywords: ['any', 'if', 'комбинатор', 'примеры', 'anyIf']
+sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
+
+
+
 # anyIf {#avgif}
+
+
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применен к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any) для выбора первого встречаемого элемента из данной колонки, который соответствует заданному условию.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
+для выбора первого встретившегося элемента из заданного столбца,
+который удовлетворяет указанному условию.
 
-## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `anyIf`, чтобы выбрать первые `transaction_id`, которые превышают и не достигают суммы 200.
 
-Сначала мы создаем таблицу и вставляем данные в нее:
+## Пример использования
+
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+и используем `anyIf`, чтобы выбрать первые значения `transaction_id`, которые больше и
+меньше суммы 200.
+
+Сначала создадим таблицу и вставим в неё данные:
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -49,6 +60,7 @@ FROM sales;
 └────────────┴────────────┘
 ```
 
+
 ## См. также {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

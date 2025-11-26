@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/studentttest'
-sidebar_label: studentTTest
+description: 'Применяет t-критерий Стьюдента к выборкам из двух генеральных совокупностей.'
+sidebar_label: 'studentTTest'
 sidebar_position: 194
-description: 'Применяет t-тест Стьюдента к выборкам из двух популяций.'
-title: studentTTest
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/studentttest
+title: 'studentTTest'
+doc_type: 'reference'
 ---
+
 # studentTTest
 
-Применяет t-тест Стьюдента к выборкам из двух популяций.
+Применяет t-критерий Стьюдента к выборкам из двух генеральных совокупностей.
 
 **Синтаксис**
 
@@ -16,26 +17,26 @@ doc_type: reference
 studentTTest([confidence_level])(sample_data, sample_index)
 ```
 
-Значения обеих выборок находятся в колонке `sample_data`. Если `sample_index` равен 0, то значение в этой строке принадлежит выборке из первой популяции. В противном случае оно принадлежит выборке из второй популяции.
-Нулевая гипотеза состоит в том, что средние значения популяций равны. Предполагается нормальное распределение с равными дисперсиями.
+Значения обеих выборок находятся в столбце `sample_data`. Если `sample_index` равен 0, то значение в этой строке относится к выборке из первой генеральной совокупности. В противном случае оно относится к выборке из второй генеральной совокупности.
+Нулевая гипотеза заключается в том, что средние значения генеральных совокупностей равны. Предполагается нормальное распределение с одинаковыми дисперсиями.
 
 **Аргументы**
 
-- `sample_data` — Данные выборки. [Целое](../../../sql-reference/data-types/int-uint.md), [Число с плавающей точкой](../../../sql-reference/data-types/float.md) или [Десятичное](../../../sql-reference/data-types/decimal.md).
-- `sample_index` — Индекс выборки. [Целое](../../../sql-reference/data-types/int-uint.md).
+* `sample_data` — Данные выборки. [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `sample_index` — Индекс выборки. [Integer](../../../sql-reference/data-types/int-uint.md).
 
 **Параметры**
 
-- `confidence_level` — Уровень доверия для расчета доверительных интервалов. [Число с плавающей точкой](../../../sql-reference/data-types/float.md).
+* `confidence_level` — Уровень доверия для вычисления доверительных интервалов. [Float](../../../sql-reference/data-types/float.md).
 
 **Возвращаемые значения**
 
-[Кортеж](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный `confidence_level`):
+[Tuple](../../../sql-reference/data-types/tuple.md) с двумя или четырьмя элементами (если указан необязательный параметр `confidence_level`):
 
-- рассчитанная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
-- рассчитанное p-значение. [Float64](../../../sql-reference/data-types/float.md).
-- [рассчитанный confidence-interval-low. [Float64](../../../sql-reference/data-types/float.md).]
-- [рассчитанный confidence-interval-high. [Float64](../../../sql-reference/data-types/float.md).]
+* вычисленная t-статистика. [Float64](../../../sql-reference/data-types/float.md).
+* вычисленное p-значение. [Float64](../../../sql-reference/data-types/float.md).
+* [вычисленная нижняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
+* [вычисленная верхняя граница доверительного интервала. [Float64](../../../sql-reference/data-types/float.md).]
 
 **Пример**
 
@@ -68,5 +69,5 @@ SELECT studentTTest(sample_data, sample_index) FROM student_ttest;
 
 **См. также**
 
-- [t-тест Стьюдента](https://en.wikipedia.org/wiki/Student%27s_t-test)
-- [функция welchTTest](/sql-reference/aggregate-functions/reference/welchttest)
+* [t-критерий Стьюдента](https://en.wikipedia.org/wiki/Student%27s_t-test)
+* [функция welchTTest](/sql-reference/aggregate-functions/reference/welchttest)

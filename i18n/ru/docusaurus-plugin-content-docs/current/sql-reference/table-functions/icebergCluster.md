@@ -1,18 +1,24 @@
 ---
-slug: '/sql-reference/table-functions/icebergCluster'
-sidebar_label: icebergCluster
+description: 'Расширение табличной функции iceberg, позволяющее обрабатывать файлы
+  из Apache Iceberg параллельно на множестве узлов в заданном кластере.'
+sidebar_label: 'icebergCluster'
 sidebar_position: 91
-description: 'Расширение для функции таблицы iceberg, которое позволяет обрабатывать'
-title: icebergCluster
-doc_type: reference
+slug: /sql-reference/table-functions/icebergCluster
+title: 'icebergCluster'
+doc_type: 'reference'
 ---
-# icebergCluster Табличная Функция
 
-Это расширение к таблице [iceberg](/sql-reference/table-functions/iceberg.md).
 
-Позволяет обрабатывать файлы из Apache [Iceberg](https://iceberg.apache.org/) параллельно с многих узлов в указанном кластере. На инициаторе создается соединение со всеми узлами в кластере и динамически распределяются файлы. На рабочем узле он запрашивает у инициатора следующую задачу для обработки и обрабатывает её. Это повторяется, пока все задачи не будут завершены.
 
-## Синтаксис {#syntax}
+# Табличная функция icebergCluster
+
+Это расширение табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
+
+Позволяет параллельно обрабатывать файлы Apache [Iceberg](https://iceberg.apache.org/) на многих узлах в заданном кластере. На узле-инициаторе создаётся соединение со всеми узлами кластера, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу для обработки и выполняет её. Это повторяется до тех пор, пока все задачи не будут завершены.
+
+
+
+## Синтаксис
 
 ```sql
 icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -25,14 +31,15 @@ icebergHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
-## Аргументы {#arguments}
 
-- `cluster_name` — Имя кластера, который используется для формирования набора адресов и параметров соединения с удалёнными и локальными серверами.
-- Описание всех других аргументов совпадает с описанием аргументов в эквивалентной таблице [iceberg](/sql-reference/table-functions/iceberg.md).
+## Аргументы
+
+* `cluster_name` — имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.
+* Описание всех остальных аргументов совпадает с описанием аргументов в эквивалентной табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
 
 **Возвращаемое значение**
 
-Таблица с заданной структурой для чтения данных из кластера в указанной таблице Iceberg.
+Таблица с указанной структурой для чтения данных из указанной таблицы Iceberg в кластере.
 
 **Примеры**
 
@@ -40,15 +47,16 @@ icebergHDFSCluster(cluster_name, named_collection[, option=value [,..]])
 SELECT * FROM icebergS3Cluster('cluster_simple', 'http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
 ```
 
-## Виртуальные Колонки {#virtual-columns}
 
-- `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
-- `_file` — Имя файла. Тип: `LowCardinality(String)`.
-- `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
-- `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
-- `_etag` — Etag файла. Тип: `LowCardinality(String)`. Если etag неизвестен, значение равно `NULL`.
+## Виртуальные столбцы {#virtual-columns}
 
-**Смотрите Также**
+- `_path` — путь к файлу. Тип: `LowCardinality(String)`.
+- `_file` — имя файла. Тип: `LowCardinality(String)`.
+- `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
+- `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
+- `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
-- [Iceberg движок](/engines/table-engines/integrations/iceberg.md)
-- [Iceberg таблица функция](sql-reference/table-functions/iceberg.md)
+**См. также**
+
+- [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
+- [Табличная функция Iceberg](sql-reference/table-functions/iceberg.md)

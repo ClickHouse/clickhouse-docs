@@ -1,15 +1,14 @@
 ---
-'description': '计算一列值的 Shannon entropy。'
-'sidebar_position': 131
-'slug': '/sql-reference/aggregate-functions/reference/entropy'
-'title': '熵'
-'doc_type': 'reference'
+description: '计算某列值的香农熵。'
+sidebar_position: 131
+slug: /sql-reference/aggregate-functions/reference/entropy
+title: 'entropy'
+doc_type: 'reference'
 ---
-
 
 # entropy
 
-计算列值的 [Shannon entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory))。
+计算某列数值的[香农熵](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))。
 
 **语法**
 
@@ -19,13 +18,13 @@ entropy(val)
 
 **参数**
 
-- `val` — 任意类型的值列。
+* `val` — 任意类型的值列。
 
 **返回值**
 
-- Shannon entropy。
+* 香农熵。
 
-类型: [Float64](../../../sql-reference/data-types/float.md)。
+类型：[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 

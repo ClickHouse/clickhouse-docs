@@ -1,23 +1,30 @@
 ---
-slug: '/sql-reference/statements/alter/comment'
+description: 'Документация по оператору ALTER TABLE ... MODIFY COMMENT, позволяющему
+добавлять, изменять или удалять комментарии к таблице'
 sidebar_label: 'ALTER TABLE ... MODIFY COMMENT'
 sidebar_position: 51
-description: 'Документация для ALTER TABLE ... MODIFY COMMENT, которая позволяет'
+slug: /sql-reference/statements/alter/comment
 title: 'ALTER TABLE ... MODIFY COMMENT'
 keywords: ['ALTER TABLE', 'MODIFY COMMENT']
-doc_type: reference
+doc_type: 'reference'
 ---
+
+
+
 # ALTER TABLE ... MODIFY COMMENT
 
-Добавляет, изменяет или удаляет комментарий к таблице, независимо от того, был ли он установлен ранее или нет. Изменение комментария отражается как в [`system.tables`](../../../operations/system-tables/tables.md), так и в запросе `SHOW CREATE TABLE`.
+Добавляет, изменяет или удаляет комментарий к таблице, независимо от того, был ли он задан ранее или нет. Изменение комментария отображается как в [`system.tables`](../../../operations/system-tables/tables.md), так и в результате запроса `SHOW CREATE TABLE`.
 
-## Syntax {#syntax}
+
+
+## Синтаксис
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
+ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Комментарий'
 ```
 
-## Examples {#examples}
+
+## Примеры
 
 Чтобы создать таблицу с комментарием:
 
@@ -28,17 +35,17 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT 'The temporary table';
+COMMENT 'Временная таблица';
 ```
 
 Чтобы изменить комментарий к таблице:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'new comment on a table';
+MODIFY COMMENT 'новый комментарий к таблице';
 ```
 
-Чтобы просмотреть измененный комментарий:
+Чтобы просмотреть обновлённый комментарий:
 
 ```sql title="Query"
 SELECT comment 
@@ -48,7 +55,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ new comment on a table │
+│ новый комментарий к таблице │
 └────────────────────────┘
 ```
 
@@ -72,13 +79,18 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 └─────────┘
 ```
 
-## Caveats {#caveats}
 
-Для реплицируемых таблиц комментарий может отличаться на разных репликах. Изменение комментария применяется только к одной реплике.
+## Ограничения {#caveats}
 
-Эта функция доступна с версии 23.9. Она не работает в предыдущих версиях ClickHouse.
+Для таблиц Replicated комментарий может отличаться на разных репликах.
+Изменение комментария применяется только к одной реплике.
 
-## Related content {#related-content}
+Эта возможность доступна, начиная с версии 23.9. В предыдущих версиях 
+ClickHouse она не работает.
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) оператор
+
+
+## Связанные материалы {#related-content}
+
+- предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
 - [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

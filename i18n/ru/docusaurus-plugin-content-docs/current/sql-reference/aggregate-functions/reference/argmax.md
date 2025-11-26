@@ -1,13 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/argmax'
+description: 'Вычисляет значение `arg` для максимального значения `val`.'
 sidebar_position: 109
-description: 'Выдает значение `arg` для максимального `val` значения.'
-title: argMax
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/argmax
+title: 'argMax'
+doc_type: 'reference'
 ---
+
 # argMax
 
-Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым значением `val`, которое является максимальным, какое из связанных `arg` будет возвращено, не является детерминированным. Обе части `arg` и `max` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают значения, отличные от `Null`, если таковые доступны.
+Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым максимальным `val`, то то, какое из соответствующих значений `arg` будет возвращено, не детерминировано.
+Обе части — и `arg`, и `max` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), при обработке обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) и возвращают значения, отличные от `Null`, если такие значения есть.
 
 **Синтаксис**
 
@@ -17,25 +19,25 @@ argMax(arg, val)
 
 **Аргументы**
 
-- `arg` — Аргумент.
-- `val` — Значение.
+* `arg` — аргумент.
+* `val` — значение.
 
 **Возвращаемое значение**
 
-- Значение `arg`, соответствующее максимальному значению `val`.
+* Значение `arg`, которое соответствует максимальному значению `val`.
 
-Тип: соответствует типу `arg`.
+Тип: тот же, что и у `arg`.
 
 **Пример**
 
 Входная таблица:
 
 ```text
-┌─user─────┬─salary─┐
-│ director │   5000 │
-│ manager  │   3000 │
-│ worker   │   1000 │
-└──────────┴────────┘
+┌─пользователь─┬─зарплата─┐
+│ директор     │     5000 │
+│ менеджер     │     3000 │
+│ работник     │     1000 │
+└──────────────┴──────────┘
 ```
 
 Запрос:
@@ -76,35 +78,35 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b' because it the first not Null value, max(b) is from another row!
+│ b            │      3 │ -- argMax = 'b', так как это первое значение, отличное от Null; max(b) взято из другой строки!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
 ┌─argMax(tuple(a), b)─┐
-│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
+│ (NULL)              │ -- `Tuple`, содержащий только значение `NULL`, сам не является `NULL`, поэтому агрегатные функции не пропустят эту строку из-за этого значения `NULL`
 └─────────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- you can use Tuple and get both (all - tuple(*)) columns for the according max(b)
+│ ᴺᵁᴸᴸ    │       3 │ -- можно использовать Tuple и получить оба столбца (все — tuple(*)) для соответствующего max(b)
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- Все агрегируемые строки содержат хотя бы одно значение `NULL` из-за фильтра, поэтому все строки пропускаются, следовательно, результат будет `NULL`
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- There are two rows with b=2, `Tuple` in the `Max` allows to get not the first `arg`
+│ c                      │ -- Есть две строки с b=2; `Tuple` в `Max` позволяет получить не первый `arg`
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
 ┌─argMax(a, tuple(b))─┐
-│ b                   │ -- `Tuple` can be used in `Max` to not skip Nulls in `Max`
+│ b                   │ -- `Tuple` можно использовать в `Max`, чтобы не пропускать значения Null в `Max`
 └─────────────────────┘
 ```
 
 **Смотрите также**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

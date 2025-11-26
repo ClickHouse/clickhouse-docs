@@ -1,16 +1,17 @@
 ---
-slug: '/integrations/data-sources/index'
-description: 'Обзор страницы datasource'
+slug: /integrations/data-sources/index
+keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'локальные файлы', 'JDBC', 'ODBC']
+description: 'Обзорная страница по источникам данных'
 title: 'Источники данных'
-keywords: ['AWS S3', 'Azure Data Factory', 'PostgreSQL', 'Kafka', 'MySQL', 'Cassandra', 'Data Factory', 'Redis', 'RabbitMQ', 'MongoDB', 'Google Cloud Storage', 'Hive', 'Hudi', 'Iceberg', 'MinIO', 'Delta Lake', 'RocksDB', 'Splunk', 'SQLite', 'NATS', 'EMQX', 'local files', 'JDBC', 'ODBC']
-doc_type: landing-page
+doc_type: 'landing-page'
 ---
+
 # Источники данных
 
-ClickHouse позволяет легко загружать данные в вашу базу данных из различных источников. 
-Дополнительную информацию смотрите на страницах, перечисленных ниже:
+ClickHouse позволяет с лёгкостью выполнять приём данных в базу данных из различных источников.
+Дополнительную информацию см. на следующих страницах:
 
-| Источник данных                                                               |
+| Источник данных                                                              |
 |-------------------------------------------------------------------------------|
 | [AWS S3](/integrations/s3)                                            |
 | [PostgreSQL](/integrations/postgresql)                                |
@@ -31,6 +32,6 @@ ClickHouse позволяет легко загружать данные в ва
 | [SQLite](/integrations/sqlite)                                        |
 | [NATS](/integrations/nats)                                            |
 | [EMQX](/integrations/emqx)                                            |
-| [Вставка локальных файлов](/integrations/data-ingestion/insert-local-files) |
+| [Загрузка локальных файлов](/integrations/data-ingestion/insert-local-files) |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |
 | [ODBC](/integrations/data-ingestion/dbms/odbc-with-clickhouse)        |

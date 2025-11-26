@@ -1,13 +1,15 @@
 ---
-slug: '/integrations/grafana/config'
-sidebar_label: 'Настройки плагина'
+sidebar_label: 'Конфигурация плагина'
 sidebar_position: 3
-description: 'Опции конфигурации для плагина источника данных ClickHouse в Grafana'
+slug: /integrations/grafana/config
+description: 'Параметры конфигурации плагина источника данных ClickHouse для Grafana'
 title: 'Настройка источника данных ClickHouse в Grafana'
-doc_type: guide
+doc_type: 'guide'
+keywords: ['настройка плагина Grafana', 'параметры источника данных', 'параметры подключения', 'настройка аутентификации', 'параметры плагина']
 ---
+
 import Image from '@theme/IdealImage';
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 import config_common from '@site/static/images/integrations/data-visualization/grafana/config_common.png';
 import config_http from '@site/static/images/integrations/data-visualization/grafana/config_http.png';
 import config_additional from '@site/static/images/integrations/data-visualization/grafana/config_additional.png';
@@ -22,70 +24,75 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-Самый простой способ изменить конфигурацию — это использовать интерфейс Grafana на странице настройки плагина, но источники данных также могут быть [проведены с помощью YAML файла](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
+Проще всего изменять конфигурацию в интерфейсе Grafana на странице настройки плагина, но источники данных также могут [создаваться и настраиваться с помощью YAML‑файла](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
-Эта страница показывает список доступных параметров для настройки в плагине ClickHouse, а также фрагменты конфигурации для тех, кто проводит источник данных с помощью YAML.
+На этой странице приведён список параметров, доступных для настройки в плагине ClickHouse, а также примеры конфигурации для тех, кто настраивает источник данных с помощью YAML.
 
-Для быстрого обзора всех параметров полный список конфигурационных опций можно найти [здесь](#all-yaml-options).
+Для быстрого ознакомления со всеми параметрами полный список параметров конфигурации можно найти [здесь](#all-yaml-options).
 
-## Общие настройки {#common-settings}
+## Общие настройки
 
 Пример экрана конфигурации:
-<Image size="sm" img={config_common} alt="Пример безопасной конфигурации" border />
+
+<Image size="sm" img={config_common} alt="Пример защищённой нативной конфигурации" border />
 
 Пример конфигурации YAML для общих настроек:
+
 ```yaml
 jsonData:
-  host: 127.0.0.1 # (required) server address.
-  port: 9000      # (required) server port. For native, defaults to 9440 secure and 9000 insecure. For HTTP, defaults to 8443 secure and 8123 insecure.
+  host: 127.0.0.1 # (обязательно) адрес сервера.
+  port: 9000      # (обязательно) порт сервера. Для native по умолчанию используется 9440 для защищённого соединения и 9000 для незащищённого. Для HTTP по умолчанию используется 8443 для защищённого соединения и 8123 для незащищённого.
 
-  protocol: native # (required) the protocol used for the connection. Can be set to "native" or "http".
-  secure: false    # set to true if the connection is secure.
+  protocol: native # (обязательно) протокол, используемый для соединения. Может принимать значения "native" или "http".
+  secure: false    # установите значение true, если соединение защищено.
 
-  username: default # the username used for authentication.
+  username: default # имя пользователя, используемое для аутентификации.
 
-  tlsSkipVerify:     <boolean> # skips TLS verification when set to true.
-  tlsAuth:           <boolean> # set to true to enable TLS client authentication.
-  tlsAuthWithCACert: <boolean> # set to true if CA certificate is provided. Required for verifying self-signed TLS certificates.
+  tlsSkipVerify:     <boolean> # пропускает проверку TLS, если установлено значение true.
+  tlsAuth:           <boolean> # установите значение true для включения клиентской аутентификации TLS.
+  tlsAuthWithCACert: <boolean> # установите значение true, если предоставлен сертификат CA. Требуется для проверки самоподписанных сертификатов TLS.
 
 secureJsonData:
-  password: secureExamplePassword # the password used for authentication.
+  password: secureExamplePassword # пароль, используемый для аутентификации.
 
-  tlsCACert:     <string> # TLS CA certificate
-  tlsClientCert: <string> # TLS client certificate
-  tlsClientKey:  <string> # TLS client key
+  tlsCACert:     <string> # сертификат CA для TLS
+  tlsClientCert: <string> # клиентский сертификат TLS
+  tlsClientKey:  <string> # клиентский ключ TLS
 ```
 
-Обратите внимание, что свойство `version` добавляется, когда конфигурация сохраняется из интерфейса. Это показывает версию плагина, с которой была сохранена конфигурация.
+Обратите внимание, что свойство `version` добавляется, когда конфигурация сохраняется через пользовательский интерфейс. Оно показывает версию плагина, в которой была сохранена конфигурация.
+
 
 ### Протокол HTTP {#http-protocol}
 
-Будут отображены дополнительные настройки, если вы выберете подключение через протокол HTTP.
+Если вы выберете подключение по протоколу HTTP, появятся дополнительные настройки.
 
-<Image size="md" img={config_http} alt="Дополнительные опции конфигурации HTTP" border />
+<Image size="md" img={config_http} alt="Дополнительные параметры настройки HTTP" border />
 
-#### HTTP путь {#http-path}
+#### HTTP path
 
-Если ваш HTTP сервер доступен по другому URL пути, вы можете добавить его здесь.
+Если ваш HTTP-сервер доступен по другому URL-пути, вы можете указать его здесь.
 
 ```yaml
 jsonData:
-  # excludes first slash
+  # исключает первую косую черту
   path: additional/path/example
 ```
 
-#### Пользовательские HTTP заголовки {#custom-http-headers}
 
-Вы можете добавить пользовательские заголовки к запросам, отправляемым на ваш сервер.
+#### Пользовательские HTTP-заголовки
 
-Заголовки могут быть как обычными текстовыми, так и защищенными. 
-Все ключи заголовков хранятся в обычном виде, тогда как защищенные значения заголовков сохраняются в защищенной конфигурации (аналогично полю `password`).
+Вы можете добавлять пользовательские заголовки к запросам, отправляемым на ваш сервер.
 
-:::warning Защищенные значения по HTTP
-Хотя защищенные значения заголовков хранятся безопасно в конфигурации, значение все равно будет отправлено по HTTP, если защищенное соединение отключено.
+Заголовки могут быть как открытыми, так и защищёнными.
+Все имена заголовков хранятся в открытом виде, а значения защищённых заголовков сохраняются в защищённой конфигурации (аналогично полю `password`).
+
+:::warning Передача защищённых значений по HTTP
+Хотя значения защищённых заголовков хранятся в конфигурации безопасно, при отключённом защищённом соединении они всё равно будут передаваться по HTTP.
 :::
 
-Пример YAML для обычных/защищенных заголовков:
+Пример YAML с открытыми и защищёнными заголовками:
+
 ```yaml
 jsonData:
   httpHeaders:
@@ -93,114 +100,124 @@ jsonData:
     value: plain text value
     secure: false
   - name: X-Example-Secure-Header
-    # "value" is excluded
+    # "value" исключено
     secure: true
 secureJsonData:
-  secureHttpHeaders.X-Example-Secure-Header: secure header value
+  secureHttpHeaders.X-Example-Secure-Header: значение защищенного заголовка
 ```
 
-## Дополнительные настройки {#additional-settings}
 
-Эти дополнительные настройки являются необязательными.
+## Дополнительные настройки
+
+Эти дополнительные настройки не являются обязательными.
 
 <Image size="sm" img={config_additional} alt="Пример дополнительных настроек" border />
 
 Пример YAML:
+
 ```yaml
 jsonData:
-  defaultDatabase: default # default database loaded by the query builder. Defaults to "default".
-  defaultTable: <string>   # default table loaded by the query builder.
+  defaultDatabase: default # база данных по умолчанию, загружаемая конструктором запросов. По умолчанию — "default".
+  defaultTable: <string>   # таблица по умолчанию, загружаемая конструктором запросов.
 
-  dialTimeout: 10    # dial timeout when connecting to the server, in seconds. Defaults to "10".
-  queryTimeout: 60   # query timeout when running a query, in seconds. Defaults to 60. This requires permissions on the user, if you get a permission error try setting it to "0" to disable it.
-  validateSql: false # when set to true, will validate the SQL in the SQL editor.
+  dialTimeout: 10    # таймаут подключения к серверу в секундах. По умолчанию — "10".
+  queryTimeout: 60   # таймаут выполнения запроса в секундах. По умолчанию — 60. Требует соответствующих прав пользователя; при ошибке доступа установите значение "0" для отключения.
+  validateSql: false # при значении true выполняется валидация SQL в редакторе SQL.
 ```
+
 
 ### OpenTelemetry {#opentelemetry}
 
-OpenTelemetry (OTel) глубоко интегрирован в плагин. 
-Данные OpenTelemetry могут быть экспортированы в ClickHouse с помощью нашего [экспортера](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). 
-Для лучшего использования рекомендуется настроить OTel как для [логов](#logs), так и для [трассировок](#traces).
+OpenTelemetry (OTel) глубоко интегрирован в плагин.
+Данные OpenTelemetry могут экспортироваться в ClickHouse с помощью нашего [плагина-экспортера](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+Для оптимального использования рекомендуется настроить OTel как для [журналов](#logs), так и для [трассировок](#traces).
 
-Также необходимо настроить эти значения по умолчанию для включения [ссылок на данные](./query-builder.md#data-links), функции, которая позволяет перейти к мощным рабочим процессам мониторинга.
+Также необходимо настроить эти параметры по умолчанию, чтобы включить [data links](./query-builder.md#data-links) — функцию, которая обеспечивает мощные сценарии наблюдаемости.
 
-### Логи {#logs}
+### Логи
 
-Чтобы ускорить [построение запросов для логов](./query-builder.md#logs), вы можете задать базу данных/таблицу по умолчанию, а также колонки для запроса логов. Это предварительно загрузит конструктор запросов с выполнимым запросом логов, что сделает просмотр на странице исследования быстрее для мониторинга.
+Чтобы ускорить [построение запросов для логов](./query-builder.md#logs), вы можете задать базу данных/таблицу и столбцы по умолчанию для запроса по логам. Это предварительно заполнит конструктор запросов готовым к выполнению запросом по логам, что ускорит работу на странице Explore при решении задач наблюдаемости.
 
-Если вы используете OpenTelemetry, вам следует включить переключатель "**Использовать OTel**" и установить **таблицу логов по умолчанию** на `otel_logs`.
-Это автоматически переопределит стандартные колонки для использования выбранной версии схемы OTel.
+Если вы используете OpenTelemetry, включите переключатель «**Use OTel**» и задайте **default log table** со значением `otel_logs`.
+Это автоматически изменит столбцы по умолчанию в соответствии с выбранной версией схемы OTel.
 
-Хотя OpenTelemetry не является обязательным для логов, использование единого набора данных логов/трассировок помогает обеспечить более плавный рабочий процесс мониторинга с [ссылками на данные](./query-builder.md#data-links).
+Хотя использование OpenTelemetry для логов не является обязательным, единый набор данных для логов и трассировок помогает обеспечить более плавный рабочий процесс наблюдаемости со [связыванием данных](./query-builder.md#data-links).
 
 Пример экрана конфигурации логов:
+
 <Image size="sm" img={config_logs} alt="Конфигурация логов" border />
 
-Пример конфигурации логов YAML:
+Пример конфигурации логов в YAML:
+
 ```yaml
 jsonData:
   logs:
-    defaultDatabase: default # default log database.
-    defaultTable: otel_logs  # default log table. If you're using OTel, this should be set to "otel_logs".
+    defaultDatabase: default # база данных для логов по умолчанию.
+    defaultTable: otel_logs  # таблица для логов по умолчанию. Если вы используете OTel, установите значение "otel_logs".
 
-    otelEnabled: false  # set to true if OTel is enabled.
-    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
+    otelEnabled: false  # установите true, если OTel включен.
+    otelVersion: latest # версия схемы OTel collector для использования. Версии отображаются в интерфейсе, но "latest" использует последнюю доступную версию в плагине.
 
-    # Default columns to be selected when opening a new log query. Will be ignored if OTel is enabled.
-    timeColumn:       <string> # the primary time column for the log.
-    levelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
-    messageColumn: <string> # the log's message/content.
+    # Столбцы, выбираемые по умолчанию при открытии нового запроса логов. Игнорируется, если OTel включен.
+    timeColumn:       <string> # основной столбец времени для лога.
+    levelColumn:   <string> # уровень важности лога. Типичные значения: "INFO", "error" или "Debug".
+    messageColumn: <string> # сообщение/содержимое лога.
 ```
 
-### Трассировки {#traces}
 
-Чтобы ускорить [построение запросов для трассировок](./query-builder.md#traces), вы можете задать базу данных/таблицу по умолчанию, а также колонки для запроса трассировок. Это предварительно загрузит конструктор запросов с выполнимым запросом поиска трассировок, что сделает просмотр на странице исследования быстрее для мониторинга.
+### Трейсы
 
-Если вы используете OpenTelemetry, вам следует включить переключатель "**Использовать OTel**" и установить **таблицу трассировок по умолчанию** на `otel_traces`.
-Это автоматически переопределит стандартные колонки для использования выбранной версии схемы OTel.
-Хотя OpenTelemetry не является обязательным, эта функция лучше всего работает при использовании его схемы для трассировок.
+Чтобы ускорить [создание запросов для трейсов](./query-builder.md#traces), вы можете задать базу данных/таблицу по умолчанию, а также столбцы для запроса по трейсам. Это предварительно заполнит конструктор запросов исполняемым запросом поиска по трейсам, что делает работу на странице Explore быстрее для задач наблюдаемости.
 
-Пример экрана конфигурации трассировок:
-<Image size="sm" img={config_traces} alt="Конфигурация трассировок" border />
+Если вы используете OpenTelemetry, следует включить переключатель &quot;**Use OTel**&quot; и задать **default trace table** равным `otel_traces`.
+Это автоматически изменит столбцы по умолчанию так, чтобы использовать выбранную версию схемы OTel.
+Хотя OpenTelemetry не является обязательным, эта функция работает лучше всего при использовании его схемы для трейсов.
 
-Пример конфигурации трассировок YAML:
+Пример экрана настройки трейсов:
+
+<Image size="sm" img={config_traces} alt="Traces config" border />
+
+Пример конфигурации трейсов в YAML:
+
 ```yaml
 jsonData:
   traces:
-    defaultDatabase: default  # default trace database.
-    defaultTable: otel_traces # default trace table. If you're using OTel, this should be set to "otel_traces".
+    defaultDatabase: default  # база данных трассировок по умолчанию.
+    defaultTable: otel_traces # таблица трассировок по умолчанию. При использовании OTel должна иметь значение "otel_traces".
 
-    otelEnabled: false  # set to true if OTel is enabled.
-    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
+    otelEnabled: false  # установите значение true, если OTel включен.
+    otelVersion: latest # версия схемы OTel collector, которая будет использоваться. Версии отображаются в интерфейсе, но значение "latest" будет использовать последнюю доступную версию в плагине.
 
-    # Default columns to be selected when opening a new trace query. Will be ignored if OTel is enabled.
-    traceIdColumn:       <string>    # trace ID column.
-    spanIdColumn:        <string>    # span ID column.
-    operationNameColumn: <string>    # operation name column.
-    parentSpanIdColumn:  <string>    # parent span ID column.
-    serviceNameColumn:   <string>    # service name column.
-    durationTimeColumn:  <string>    # duration time column.
-    durationUnitColumn:  <time unit> # duration time unit. Can be set to "seconds", "milliseconds", "microseconds", or "nanoseconds". For OTel the default is "nanoseconds".
-    startTimeColumn:     <string>    # start time column. This is the primary time column for the trace span.
-    tagsColumn:          <string>    # tags column. This is expected to be a map type.
-    serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
+    # Столбцы, выбираемые по умолчанию при открытии нового запроса трассировки. Игнорируется при включенном OTel.
+    traceIdColumn:       <string>    # столбец идентификатора трассировки.
+    spanIdColumn:        <string>    # столбец идентификатора span.
+    operationNameColumn: <string>    # столбец имени операции.
+    parentSpanIdColumn:  <string>    # столбец идентификатора родительского span.
+    serviceNameColumn:   <string>    # столбец имени сервиса.
+    durationTimeColumn:  <string>    # столбец длительности.
+    durationUnitColumn:  <time unit> # единица измерения длительности. Может принимать значения "seconds", "milliseconds", "microseconds" или "nanoseconds". Для OTel по умолчанию используется "nanoseconds".
+    startTimeColumn:     <string>    # столбец времени начала. Это основной временной столбец для span трассировки.
+    tagsColumn:          <string>    # столбец тегов. Ожидается тип map.
+    serviceTagsColumn:   <string>    # столбец тегов сервиса. Ожидается тип map.
 ```
 
-### Псевдонимы колонок {#column-aliases}
 
-Псевдоним колонок — это удобный способ запросить ваши данные под разными именами и типами. 
-С помощью псевдонимирования вы можете взять вложенную схему и упростить ее, чтобы ее можно было легко выбирать в Grafana.
+### Псевдонимы столбцов {#column-aliases}
 
-Псевдонимирование может быть актуально для вас, если:
-- Вы знаете свою схему и большинство ее вложенных свойств/типов
-- Вы храните свои данные в типах Map
+Использование псевдонимов столбцов — удобный способ выполнять запросы к данным под другими именами и с другими типами.
+С их помощью вы можете преобразовать вложенную схему данных в плоскую структуру, чтобы упростить выборку в Grafana.
+
+Псевдонимы столбцов могут быть полезны, если:
+
+- Вы хорошо знаете свою схему данных и большинство её вложенных свойств/типов
+- Вы храните данные в типе Map
 - Вы храните JSON в виде строк
-- Вы часто применяете функции для преобразования выбранных колонок
+- Вы часто применяете функции для преобразования выбираемых столбцов
 
-#### Колонки ALIAS, определенные таблицей {#table-defined-alias-columns}
+#### Столбцы-алиасы, определённые в таблице
 
-ClickHouse имеет встроенное псевдонимирование колонок и работает с Grafana "из коробки". 
-Псевдонимные колонки могут быть определены непосредственно в таблице.
+В ClickHouse встроена поддержка алиасов столбцов, и он «из коробки» работает с Grafana.
+Алиасы столбцов можно определять прямо в таблице.
 
 ```sql
 CREATE TABLE alias_example (
@@ -209,32 +226,33 @@ CREATE TABLE alias_example (
 )
 ```
 
-В приведенном выше примере мы создаем псевдоним с названием `TimestampDate`, который преобразует временную метку в наносекундах в тип `Date`. 
-Эти данные не хранятся на диске, как первая колонка, они вычисляются во время запроса. 
-Псевдонимы, определенные таблицей, не будут возвращены с `SELECT *`, но это можно настроить в настройках сервера.
+В приведённом выше примере мы создаём псевдоним `TimestampDate`, который преобразует метку времени в наносекундах в значение типа `Date`.
+Эти данные не хранятся на диске, как данные в первом столбце, а вычисляются во время выполнения запроса.
+Псевдонимы, определённые на уровне таблицы, не возвращаются при `SELECT *`, но это поведение можно настроить в параметрах сервера.
 
-Для получения дополнительной информации читайте документацию по типу колонки [ALIAS](/sql-reference/statements/create/table#alias).
+Для получения дополнительной информации см. документацию по типу столбца [ALIAS](/sql-reference/statements/create/table#alias).
 
-#### Таблицы псевдонимов колонок {#column-alias-tables}
 
-По умолчанию Grafana будет предлагать колонки на основе ответа от `DESC table`. 
-В некоторых случаях вы можете полностью переопределить колонки, которые видит Grafana. 
-Это помогает скрыть вашу схему в Grafana при выборе колонок, что может улучшить пользовательский опыт в зависимости от сложности вашей таблицы.
+#### Таблицы с псевдонимами столбцов
 
-Преимущество этого подхода перед псевдонимами, определенными таблицей, заключается в том, что вы можете легко обновить их, не изменяя вашу таблицу. 
-В некоторых схемах это может быть тысячи записей, что может загромождать определение базовой таблицы. 
-Это также позволяет скрывать колонки, которые вы хотите, чтобы пользователь игнорировал.
+По умолчанию Grafana подсказывает столбцы на основе ответа `DESC table`.
+В некоторых случаях может потребоваться полностью переопределить столбцы, которые видит Grafana.
+Это помогает скрыть схему в Grafana при выборе столбцов, что может улучшить удобство работы в зависимости от сложности вашей таблицы.
 
-Grafana требует, чтобы таблица псевдонимов имела следующую структуру колонок:
+Преимущество этого подхода по сравнению с псевдонимами, определёнными в таблице, состоит в том, что вы можете легко обновлять их без изменения самой таблицы. В некоторых схемах такой список может содержать тысячи элементов, что захламляет определение базовой таблицы. Этот подход также позволяет скрывать столбцы, которые вы не хотите показывать пользователю.
+
+Grafana требует, чтобы таблица псевдонимов имела следующую структуру столбцов:
+
 ```sql
 CREATE TABLE aliases (
-  `alias` String,  -- The name of the alias, as seen in the Grafana column selector
-  `select` String, -- The SELECT syntax to use in the SQL generator
-  `type` String    -- The type of the resulting column, so the plugin can modify the UI options to match the data type.
+  `alias` String,  -- Имя псевдонима, отображаемое в селекторе столбцов Grafana
+  `select` String, -- Синтаксис SELECT для использования в генераторе SQL
+  `type` String    -- Тип результирующего столбца, позволяющий плагину настраивать параметры интерфейса в соответствии с типом данных.
 )
 ```
 
-Вот как мы можем воспроизвести поведение колонки `ALIAS`, используя таблицу псевдонимов:
+Вот как можно воспроизвести поведение столбца `ALIAS` с помощью таблицы псевдонимов:
+
 ```sql
 CREATE TABLE example_table (
   TimestampNanos DateTime(9)
@@ -243,24 +261,27 @@ CREATE TABLE example_table (
 CREATE TABLE example_table_aliases (`alias` String, `select` String, `type` String);
 
 INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
-('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Preserve original column from table (optional)
-('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
+('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Сохранить исходный столбец из таблицы (опционально)
+('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Добавить новый столбец, который преобразует TimestampNanos в Date
 ```
 
-Затем мы можем настроить эту таблицу для использования в Grafana. Обратите внимание, что имя может быть любым или даже определенным в отдельной базе данных:
-<Image size="md" img={alias_table_config_example} alt="Пример конфигурации таблицы псевдонимов" border />
+Затем мы можем настроить эту таблицу для использования в Grafana. Обратите внимание, что имя может быть любым, его можно даже задать в отдельной базе данных:
 
-Теперь Grafana будет видеть результаты таблицы псевдонимов вместо результатов от `DESC example_table`:
-<Image size="md" img={alias_table_select_example} alt="Пример выбора из таблицы псевдонимов" border />
+<Image size="md" img={alias_table_config_example} alt="Пример конфигурации таблицы-псевдонима" border />
 
-Оба типа псевдонимирования можно использовать для выполнения сложных преобразований типов или извлечения полей JSON.
+Теперь Grafana будет видеть результаты таблицы-псевдонима вместо результатов `DESC example_table`:
 
-## Все опции YAML {#all-yaml-options}
+<Image size="md" img={alias_table_select_example} alt="Пример запроса к таблице-псевдониму" border />
 
-Это все параметры конфигурации YAML, доступные через плагин. 
-Некоторые поля имеют примерные значения, в то время как другие просто показывают тип поля.
+Оба варианта псевдонимов можно использовать для выполнения сложных преобразований типов или извлечения полей из JSON.
 
-Смотрите [документацию Grafana](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) для получения дополнительной информации о проведении источников данных с помощью YAML.
+
+## Все параметры YAML
+
+Ниже перечислены все параметры конфигурации YAML, доступные в этом плагине.
+Для некоторых полей приведены примеры значений, для других указаны только их типы.
+
+См. [документацию Grafana](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) для получения дополнительной информации об автоматическом создании (provisioning) источников данных с помощью YAML.
 
 ```yaml
 datasources:

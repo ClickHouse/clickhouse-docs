@@ -1,16 +1,11 @@
 ---
-'sidebar_label': 'R2DBC Driver'
-'sidebar_position': 5
-'keywords':
-- 'clickhouse'
-- 'java'
-- 'driver'
-- 'integrate'
-- 'r2dbc'
-'description': 'ClickHouse R2DBC ドライバー'
-'slug': '/integrations/java/r2dbc'
-'title': 'R2DBC ドライバー'
-'doc_type': 'reference'
+sidebar_label: 'R2DBC ドライバ'
+sidebar_position: 5
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'ClickHouse R2DBC ドライバ'
+slug: /integrations/java/r2dbc
+title: 'R2DBC ドライバ'
+doc_type: 'reference'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -18,25 +13,25 @@ import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
 
-# R2DBCドライバー
+# R2DBC ドライバ
 
-## R2DBCドライバー {#r2dbc-driver}
+## R2DBC ドライバー {#r2dbc-driver}
 
-[R2DBC](https://r2dbc.io/) は、ClickHouse用の非同期Javaクライアントのラッパーです。
+ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/) ラッパーです。
 
 ### 環境要件 {#environment-requirements}
 
-- [OpenJDK](https://openjdk.java.net) バージョン >= 8
+- [OpenJDK](https://openjdk.java.net) バージョン 8 以上
 
-### セットアップ {#setup}
+### セットアップ
 
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
+    <!-- SPI 0.9.1.RELEASEを使用する場合はclickhouse-r2dbc_0.9.1に変更 -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
+    <!-- 全依存関係を含むuber jarを使用。jarサイズを小さくする場合はclassifierをhttpまたはgrpcに変更 -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -47,7 +42,8 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### ClickHouseへの接続 {#connect-to-clickhouse}
+
+### ClickHouse に接続する
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -57,7 +53,8 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### クエリ {#query}
+
+### クエリ
 
 ```java showLineNumbers
 connection
@@ -74,7 +71,8 @@ connection
     .subscribe();
 ```
 
-### 挿入 {#insert}
+
+### 挿入
 
 ```java showLineNumbers
 connection

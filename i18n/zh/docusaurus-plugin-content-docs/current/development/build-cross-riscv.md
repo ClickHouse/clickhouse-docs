@@ -1,20 +1,23 @@
 ---
-'description': '针对RISC-V 64架构从源代码构建ClickHouse的指南'
-'sidebar_label': '在Linux上为RISC-V 64构建'
-'sidebar_position': 30
-'slug': '/development/build-cross-riscv'
-'title': '如何在Linux上为RISC-V 64构建ClickHouse'
-'doc_type': 'guide'
+description: '面向 RISC-V 64 架构从源代码构建 ClickHouse 的指南'
+sidebar_label: '在 Linux 上为 RISC-V 64 构建'
+sidebar_position: 30
+slug: /development/build-cross-riscv
+title: '如何在 Linux 上为 RISC-V 64 构建 ClickHouse'
+doc_type: 'guide'
 ---
 
 
-# 如何在 Linux 上为 RISC-V 64 构建 ClickHouse
 
-ClickHouse 对 RISC-V 提供了实验性的支持。并非所有功能都可启用。
+# 如何在 RISC-V 64 架构的 Linux 上构建 ClickHouse
 
-## 构建 ClickHouse {#build-clickhouse}
+ClickHouse 对 RISC-V 架构提供实验性支持。目前尚无法启用全部功能。
 
-在非 RISC-V 机器上进行 RISC-V 的交叉编译：
+
+
+## 构建 ClickHouse
+
+在非 RISC-V 机器上为 RISC-V 目标进行交叉编译：
 
 ```bash
 cd ClickHouse
@@ -23,4 +26,4 @@ CC=clang-19 CXX=clang++-19 cmake . -Bbuild-riscv64 -G Ninja -DCMAKE_TOOLCHAIN_FI
 ninja -C build-riscv64
 ```
 
-生成的二进制文件仅在具有 RISC-V 64 CPU 架构的 Linux 上运行。
+生成的二进制程序只能在采用 RISC-V 64 位 CPU 架构的 Linux 系统上运行。

@@ -1,0 +1,110 @@
+---
+title: Простой пример схемы извлечения данных JSON с использованием landing-таблицы и материализованного представления
+description: "Простой пример схемы извлечения данных JSON с использованием landing-таблицы и материализованного представления"
+date: 2024-05-20
+tags: ['Форматы данных']
+keywords: ['JSON', 'landing-таблица', 'материализованное представление']
+---
+
+{frontMatter.description}
+
+{/* усечь */}
+
+
+## Question \{#question\}
+
+Как работать с JSON-сообщением, используя исходную или промежуточную (landing) таблицу, чтобы извлекать данные с помощью материализованного представления?  
+Как работать с JSON без использования экспериментальной функции JSON Object?
+
+## Ответ
+
+Распространённый подход к работе с данными в формате JSON — отправлять данные в приёмную (landing) таблицу и использовать функции JSONExtract, чтобы перенести их в новую таблицу с помощью материализованного представления, работающего как триггер.
+Обычно это реализуется по следующей схеме:
+
+```
+исходные данные --> таблица MergeTree --> материализованное представление (с базовой таблицей) --> приложение/клиент
+```
+
+Таблица-приёмник должна иметь строковое поле `raw`, в котором вы будете хранить исходный JSON. Также в ней должно быть одно‑два других поля, которые можно использовать для управления этой таблицей, чтобы её можно было партиционировать и удалять из неё устаревшие данные.
+
+* некоторые интеграции могут добавлять поля к исходным данным, например, при использовании ClickHouse Kafka Connector Sink.
+
+Упрощённый пример ниже:
+
+* создайте пример базы данных
+
+```
+create database db1;
+```
+
+* создайте приёмную таблицу, в которую будут записываться необработанные данные JSON:
+
+```
+create table db1.table2_json_raw
+(
+    id Int32,
+    timestamp DateTime,
+    raw String
+)
+engine = MergeTree()
+order by timestamp;
+```
+
+* создать основную таблицу для материализованного представления
+
+```
+create table db1.table2_json_mv_base
+(
+ id Int32,
+ timestamp DateTime,
+ raw_string String,
+ custId Int8,
+ custName String
+)
+engine = MergeTree()
+order by timestamp;
+```
+
+* создайте материализованное представление для базовой таблицы
+
+```
+CREATE MATERIALIZED VIEW db1.table2_json_mv TO db1.table2_json_mv_base
+AS SELECT
+ id,
+ timestamp,
+ raw as raw_string,
+ simpleJSONExtractRaw(raw, 'customerId') as custId,
+ simpleJSONExtractRaw(raw, 'customerName') as custName
+ FROM
+db1.table2_json_raw;
+```
+
+* вставьте несколько примерных строк
+
+```
+ insert into db1.table2_json_raw
+ values
+ (1, '2024-05-16 00:00:00', '{"customerId":1, "customerName":"ABC"}'),
+ (2, '2024-05-16 00:00:01', '{"customerId":2, "customerName":"XYZ"}');
+```
+
+* просмотреть результаты извлечения данных и материализованного представления, которое будет использоваться в запросах
+
+```
+clickhouse-cloud :) select * from db1.table2_json_mv;
+
+SELECT *
+FROM db1.table2_json_mv
+
+Query id: 12655fd3-567a-4dfb-9ef7-abc4b11ad044
+
+┌─id─┬───────────timestamp─┬─raw_string─────────────────────────────┬─custId─┬─custName─┐
+│  1 │ 2024-05-16 00:00:00 │ {"customerId":1, "customerName":"ABC"} │ 1      │ "ABC"    │
+│  2 │ 2024-05-16 00:00:01 │ {"customerId":2, "customerName":"XYZ"} │ 2      │ "XYZ"    │
+└────┴─────────────────────┴────────────────────────────────────────┴────────┴──────────┘
+```
+
+Дополнительные ссылки:\
+Материализованные представления: [https://clickhouse.com/docs/guides/developer/cascading-materialized-views](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)
+Работа с JSON: [https://clickhouse.com/docs/integrations/data-formats/json#other-approaches](https://clickhouse.com/docs/integrations/data-formats/json#other-approaches)
+Функции JSON: [https://clickhouse.com/docs/sql-reference/functions/json-functions](https://clickhouse.com/docs/sql-reference/functions/json-functions)

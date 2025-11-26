@@ -1,0 +1,20 @@
+---
+date: 2023-08-13
+title: "ClickHouse は行レベルおよび列レベルのセキュリティをサポートしていますか？"
+description: "ClickHouse および ClickHouse Cloud における行レベルおよび列レベルのアクセス制限と、ポリシーを用いたロールベースのアクセス制御 (RBAC) の実装方法について解説します。"
+tags: ['セキュリティと認証']
+keywords: ['行レベル', '列レベル', 'セキュリティ']
+---
+
+{frontMatter.description}
+
+{/* 切り捨て */}
+
+
+## ClickHouse と ClickHouse Cloud はどちらも行レベルおよび列レベルのアクセス制限をサポートしています \{#clickhouse-and-clickhouse-cloud-both-support-row-and-column-level-access-restrictions\}
+
+ClickHouse と ClickHouse Cloud はどちらも、ロールベースのアクセス制御 (RBAC) モデルを実現するために必要となる、読み取り専用ユーザー向けの行レベルおよび列レベルのアクセス制限をサポートしています。
+
+[Row Policies](/operations/access-rights#row-policy-management) を使用すると、読み取り専用ユーザーがテーブルをクエリしたときに、どの行が返されるかを指定できます。ClickHouse Cloud では、SQL 駆動のワークフローがデフォルトで有効になるように構成されています。このワークフローを活用するには、[CREATE](/sql-reference/statements/create/user) でユーザーを作成し、[GRANT](/sql-reference/statements/grant) でそのユーザーにテーブルに対する権限を付与し、そのうえで適切な [ROW POLICY](/operations/access-rights#row-policy-management) を設定します。ユーザーが `SELECT * FROM table` を実行すると、ポリシーで許可された行のみが表示されます。
+
+列レベルの制限は、[GRANT statement](/sql-reference/statements/grant) を使用して直接指定でき、ユーザーおよびロールに対するテーブルレベルのアクセスを有効化します。ユーザーは、クエリ内でアクセス権のある列 *のみ* を含めることができます。`SELECT * FROM table` のように、ユーザーが指定されたすべての列にアクセス権を持たないテーブルから制限された列を選択しようとした場合は、権限が不足していることを示すエラーが返されます。

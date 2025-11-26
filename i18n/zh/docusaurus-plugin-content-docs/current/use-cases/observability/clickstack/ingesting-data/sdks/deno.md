@@ -1,26 +1,27 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/deno'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'Deno SDK 用于 ClickStack - ClickHouse 观察性堆栈'
-'title': 'Deno'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/deno
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: '适用于 ClickStack 的 Deno SDK - ClickHouse 可观测性栈'
+title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 集成', 'Deno 可观测性', 'Deno 日志 SDK']
 ---
 
-本指南整合了以下内容：
+本指南集成以下功能：
 
 - **日志**
 
 :::note
-当前仅支持 OpenTelemetry 日志记录。如需支持跟踪，请[查看以下指南](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
+当前仅支持 OpenTelemetry 日志功能。如需链路追踪（tracing）支持，请参阅[以下指南](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
 
-## 日志 {#logging}
+## 日志
 
-通过为 `std/log` 模块导出自定义日志记录器来支持日志记录。
+可以通过为 `std/log` 模块导出自定义日志记录器来实现日志功能。
 
-**示例用法：**
+**使用示例：**
 
 ```typescript
 import * as log from 'https://deno.land/std@0.203.0/log/mod.ts';
@@ -39,14 +40,15 @@ log.setup({
   },
 });
 
-log.getLogger('my-otel-logger').info('Hello from Deno!');
+log.getLogger('my-otel-logger').info('Deno 向你问好！');
 ```
 
-### 运行应用程序 {#run-the-application}
+
+### 运行应用程序
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<您的摄取_API_密钥>" \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
-OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
+OTEL_SERVICE_NAME="<您的应用或服务的名称>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```

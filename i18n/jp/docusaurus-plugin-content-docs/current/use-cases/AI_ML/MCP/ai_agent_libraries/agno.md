@@ -1,50 +1,52 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/agno'
-'sidebar_label': 'Agnoを統合する'
-'title': 'AgnoとClickHouse MCPサーバーを使用してAIエージェントを構築する方法'
-'pagination_prev': null
-'pagination_next': null
-'description': 'AgnoとClickHouse MCPサーバーを使用してAIエージェントを構築する方法を学ぶ'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'Agno'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/agno
+sidebar_label: 'Agno を統合する'
+title: 'Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法を学ぶ'
+keywords: ['ClickHouse', 'MCP', 'Agno']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 
 
-# How to build an AI Agent with Agno and the ClickHouse MCP Server
+# Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法
 
-このガイドでは、[Agno](https://github.com/agno-agi/agno) AIエージェントを構築し、[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)と対話する方法を学びます。これは、[ClickHouseのMCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を使用しています。
+このガイドでは、[Agno](https://github.com/agno-agi/agno) を使って、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 
-:::note 例のノートブック
-この例は、[examplesリポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb)のノートブックとして見つけることができます。
+:::note サンプルノートブック
+このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) にノートブックとして用意されています。
 :::
 
-## 前提条件 {#prerequisites}
-- システムにPythonがインストールされている必要があります。
-- システムに`pip`がインストールされている必要があります。
-- AnthropicのAPIキー、または他のLLMプロバイダーからのAPIキーが必要です。
 
-以下のステップは、Python REPLまたはスクリプトから実行できます。
+
+## 前提条件 {#prerequisites}
+
+- システムにPythonがインストールされていること
+- システムに`pip`がインストールされていること
+- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキー
+
+以下の手順は、Python REPLまたはスクリプトから実行できます。
 
 <VerticalStepper headerLevel="h2">
 
-## ライブラリのインストール {#install-libraries}
 
-次のコマンドを実行して、Agnoライブラリをインストールします。
+## ライブラリをインストールする
+
+以下のコマンドを実行して Agno ライブラリをインストールします。
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agno
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agno
+pip install -q ipywidgets
 ```
 
-## 認証情報の設定 {#setup-credentials}
 
-次に、AnthropicのAPIキーを提供する必要があります：
+## 認証情報の設定
+
+次に、Anthropic API キーを指定する必要があります：
 
 ```python
 import os, getpass
@@ -52,15 +54,15 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Enter Anthropic API Key: ········
+Anthropic APIキーを入力: ········
 ```
 
-:::note 他のLLMプロバイダーの利用
-AnthropicのAPIキーがない場合、他のLLMプロバイダーを使用したい場合は、
-[ DSPy ドキュメント](https://dspy.ai/#__tabbed_1_1)に認証情報の設定に関する手順があります。
+:::note 他の LLM プロバイダーを使用する場合
+Anthropic の API キーを持っておらず、別の LLM プロバイダーを使用したい場合は、
+資格情報の設定手順を [Agno ドキュメント](https://docs.agno.com/concepts/models/introduction) で確認できます。
 :::
 
-次に、ClickHouse SQLプレイグラウンドに接続するために必要な認証情報を定義します：
+次に、ClickHouse の SQL Playground に接続するために必要な資格情報を定義します。
 
 ```python
 env = {
@@ -72,9 +74,11 @@ env = {
 }
 ```
 
+
 ## MCPサーバーとAgnoエージェントの初期化 {#initialize-mcp-and-agent}
 
-Now ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドを指すように構成し、Agnoエージェントを初期化し、質問します：
+ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するように設定し、
+Agnoエージェントを初期化して質問してみます:
 
 ```python
 from agno.agent import Agent
@@ -92,7 +96,7 @@ async with MCPTools(command="uv run --with mcp-clickhouse --python 3.13 mcp-clic
 await agent.aprint_response("What's the most starred project in 2025?", stream=True)
 ```
 
-```response title="Response"
+```response title="応答"
 ▰▱▱▱▱▱▱ Thinking...
 ┏━ Message ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
@@ -116,26 +120,25 @@ await agent.aprint_response("What's the most starred project in 2025?", stream=T
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ┏━ Response (34.9s) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
-┃ To answer your question about the most starred project in 2025, I'll need to query the ClickHouse database.     ┃
-┃ However, before I can do that, I need to gather some information and make sure we're looking at the right data. ┃
-┃ Let me check the available databases and tables first.Thank you for providing the list of databases. I can see  ┃
-┃ that there's a "github" database, which is likely to contain the information we're looking for. Let's check the ┃
-┃ tables in this database.Now that we have information about the tables in the github database, we can query the  ┃
-┃ relevant data to answer your question about the most starred project in 2025. We'll use the repo_events_per_day ┃
-┃ table, which contains daily event counts for each repository, including star events (WatchEvents).              ┃
+┃ 2025年で最もスターを獲得したプロジェクトに関するご質問にお答えするには、ClickHouseデータベースにクエリを実行する必要があります。     ┃
+┃ ただし、その前に情報を収集し、正しいデータを参照していることを確認する必要があります。 ┃
+┃ まず、利用可能なデータベースとテーブルを確認します。データベースのリストをご提供いただきありがとうございます。  ┃
+┃ 「github」データベースがあり、お探しの情報が含まれている可能性が高いことがわかります。このデータベース内の ┃
+┃ テーブルを確認しましょう。githubデータベース内のテーブルに関する情報が得られたので、  ┃
+┃ 2025年で最もスターを獲得したプロジェクトに関するご質問に答えるために関連データをクエリできます。repo_events_per_day ┃
+┃ テーブルを使用します。このテーブルには、スターイベント(WatchEvents)を含む各リポジトリの日次イベント数が含まれています。              ┃
 ┃                                                                                                                 ┃
-┃ Let's create a query to find the most starred project in 2025:Based on the query results, I can answer your     ┃
-┃ question about the most starred project in 2025:                                                                ┃
+┃ 2025年で最もスターを獲得したプロジェクトを見つけるクエリを作成しましょう:クエリ結果に基づいて、     ┃
+┃ 2025年で最もスターを獲得したプロジェクトに関するご質問にお答えできます:                                                                ┃
 ┃                                                                                                                 ┃
-┃ The most starred project in 2025 was deepseek-ai/DeepSeek-R1, which received 84,962 stars during that year.     ┃
+┃ 2025年で最もスターを獲得したプロジェクトはdeepseek-ai/DeepSeek-R1で、その年に84,962個のスターを獲得しました。     ┃
 ┃                                                                                                                 ┃
-┃ This project, DeepSeek-R1, appears to be an AI-related repository from the DeepSeek AI organization. It gained  ┃
-┃ significant attention and popularity among the GitHub community in 2025, earning the highest number of stars    ┃
-┃ for any project during that year.                                                                               ┃
+┃ このプロジェクトDeepSeek-R1は、DeepSeek AI組織によるAI関連のリポジトリと思われます。2025年にGitHubコミュニティの間で  ┃
+┃ 大きな注目と人気を集め、その年のすべてのプロジェクトの中で最も多くのスターを獲得しました。    ┃
 ┃                                                                                                                 ┃
-┃ It's worth noting that this data is based on the GitHub events recorded in the database, and it represents the  ┃
-┃ stars (WatchEvents) accumulated specifically during the year 2025. The total number of stars for this project   ┃
-┃ might be higher if we consider its entire lifespan.                                                             ┃
+┃ このデータはデータベースに記録されたGitHubイベントに基づいており、2025年中に蓄積された  ┃
+┃ スター(WatchEvents)を表していることに注意してください。このプロジェクトの全期間を考慮すると、スターの総数は   ┃
+┃ さらに多い可能性があります。                                                             ┃
 ┃                                                                                                                 ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```

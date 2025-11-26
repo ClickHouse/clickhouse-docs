@@ -1,32 +1,38 @@
 ---
-slug: '/sql-reference/table-functions/jdbc'
-sidebar_label: jdbc
+description: 'Возвращает таблицу, подключённую через JDBC-драйвер.'
+sidebar_label: 'jdbc'
 sidebar_position: 100
-description: 'Возвращает таблицу, которая подключена через JDBC драйвер.'
-title: jdbc
-doc_type: reference
+slug: /sql-reference/table-functions/jdbc
+title: 'jdbc'
+doc_type: 'reference'
 ---
-# jdbc Табличная Функция
+
+
+
+# Табличная функция jdbc
 
 :::note
-clickhouse-jdbc-bridge содержит экспериментальные коды и больше не поддерживается. Он может содержать проблемы надежности и уязвимости безопасности. Используйте его на свой страх и риск. 
-ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые предоставляют более хорошую альтернативу для сценариев ad-hoc запросов (Postgres, MySQL, MongoDB и т.д.).
+clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. В нём могут быть проблемы с надёжностью и уязвимости в области безопасности. Используйте его на свой страх и риск. 
+ClickHouse рекомендует использовать встроенные табличные функции в ClickHouse, которые являются более удобной альтернативой для сценариев разовых запросов (Postgres, MySQL, MongoDB и т. д.).
 :::
 
-Табличная функция JDBC возвращает таблицу, которая подключена через JDBC драйвер.
+Табличная функция JDBC возвращает таблицу, которая подключена через JDBC-драйвер.
 
-Эта табличная функция требует, чтобы отдельная программа [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) была запущена.
-Она поддерживает Nullable типы (на основе DDL удаленной таблицы, к которой осуществляется запрос).
+Для работы этой табличной функции требуется отдельная программа [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge).
+Она поддерживает типы Nullable (на основе DDL удалённой таблицы, к которой выполняется запрос).
 
-## Синтаксис {#syntax}
+
+
+## Синтаксис
 
 ```sql
-jdbc(datasource, external_database, external_table)
-jdbc(datasource, external_table)
-jdbc(named_collection)
+jdbc(источник_данных, внешняя_база_данных, внешняя_таблица)
+jdbc(источник_данных, внешняя_таблица)
+jdbc(именованная_коллекция)
 ```
 
-## Примеры {#examples}
+
+## Примеры
 
 Вместо имени внешней базы данных можно указать схему:
 

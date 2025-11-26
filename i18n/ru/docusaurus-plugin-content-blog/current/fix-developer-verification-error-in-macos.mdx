@@ -1,0 +1,102 @@
+---
+title: Устранение ошибки проверки разработчика в macOS
+description: Узнайте, как устранить ошибку проверки разработчика в macOS при выполнении команд ClickHouse с помощью «Системных настроек» или терминала.
+date: 2024-01-09
+tags: ['Ошибки и исключения']
+keywords: ['Проверка разработчика', 'macOS']
+---
+
+import Image from "@theme/IdealImage";
+import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/dev-verification-error.png";
+import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
+import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
+
+{frontMatter.description}
+
+{/* обрезка */}
+
+***
+
+
+## Устранение ошибки проверки разработчика в macOS \{#fix-the-developer-verification-error-in-macos\}
+
+Если вы устанавливаете ClickHouse с помощью `brew`, вы можете столкнуться с ошибкой от macOS.
+По умолчанию macOS не запускает приложения или инструменты, созданные разработчиком, которого не удаётся проверить.
+
+При попытке выполнить любую команду `clickhouse` вы можете увидеть следующую ошибку:
+
+<Image img={dev_error} size="md" alt="Диалоговое окно ошибки проверки разработчика в macOS" border />
+
+Чтобы обойти эту ошибку проверки, нужно убрать приложение из карантина macOS — либо через соответствующую настройку в окне System Settings, либо с помощью терминала, либо переустановив ClickHouse.
+
+## Процесс настройки системы \{#system-settings-process\}
+
+Самый простой способ удалить исполняемый файл `clickhouse` из карантина:
+
+1. Откройте **System settings**.
+1. Перейдите в раздел **Privacy & Security**:
+
+    <Image img={privacy_default} size="md" alt="MacOS, раздел настроек Privacy & Security, вид по умолчанию" border />
+
+1. Пролистайте окно до конца, чтобы найти сообщение: _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer._
+1. Нажмите **Allow Anyway**.
+
+    <Image img={privacy_allow} size="md" alt="MacOS, раздел настроек Privacy & Security с кнопкой Allow Anyway" border />
+
+1. Введите пароль пользователя MacOS.
+
+Теперь вы можете запускать команды `clickhouse` в терминале.
+
+## Процесс в терминале
+
+Иногда нажатие кнопки `Allow Anyway` не решает проблему, и в таком случае вы можете выполнить это через командную строку.
+Или вы просто предпочитаете работать в терминале!
+
+Сначала узнайте, где Homebrew установил исполняемый файл `clickhouse`:
+
+```shell
+which clickhouse
+```
+
+В результате вы должны увидеть примерно следующее:
+
+```shell
+/opt/homebrew/bin/clickhouse
+```
+
+Удалите `clickhouse` из карантина, выполнив команду `xattr -d com.apple.quarantine` с указанием пути, полученного в предыдущей команде:
+
+```shell
+xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
+```
+
+Теперь вы можете запустить исполняемый файл `clickhouse`:
+
+```shell
+clickhouse
+```
+
+В результате будет выведено примерно следующее:
+
+````
+Используйте одну из следующих команд:
+clickhouse local [args]
+clickhouse client [args]
+clickhouse benchmark [args]
+...
+
+## Устранение проблемы путём переустановки ClickHouse
+
+В Brew есть параметр командной строки, который предотвращает помещение устанавливаемых бинарных файлов в карантин.
+
+Сначала удалите ClickHouse:
+
+```shell
+brew uninstall clickhouse
+````
+
+Теперь переустановите ClickHouse с флагом `--no-quarantine`:
+
+```shell
+brew install --no-quarantine clickhouse
+```

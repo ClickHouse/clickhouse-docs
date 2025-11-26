@@ -1,66 +1,72 @@
 ---
-'title': 'clickhouse-local データベースの使用'
-'sidebar_label': 'clickhouse-local データベースの使用'
-'slug': '/chdb/guides/clickhouse-local'
-'description': 'chDBを使用してclickhouse-local データベースを利用する方法を学びます'
-'keywords':
-- 'chdb'
-- 'clickhouse-local'
-'doc_type': 'guide'
+title: 'clickhouse-local データベースの使用'
+sidebar_label: 'clickhouse-local データベースの使用'
+slug: /chdb/guides/clickhouse-local
+description: 'chDB で clickhouse-local データベースを使用する方法について説明します'
+keywords: ['chdb', 'clickhouse-local']
+doc_type: 'guide'
 ---
 
-[clickhouse-local](/operations/utilities/clickhouse-local) は、埋め込み版の ClickHouse を持つ CLI です。これにより、サーバーをインストールすることなく ClickHouse の機能をユーザーに提供します。このガイドでは、chDB から clickhouse-local データベースを使用する方法を学びます。
+[clickhouse-local](/operations/utilities/clickhouse-local) は、ClickHouse の組み込み版を搭載した CLI ツールです。
+ClickHouse サーバーをインストールせずに、その機能を利用できます。
+このガイドでは、chDB から clickhouse-local データベースを使用する方法を説明します。
 
-## セットアップ {#setup}
 
-まずは仮想環境を作成します：
+
+## セットアップ
+
+まず仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次に、chDB をインストールします。バージョン 2.0.2 以上であることを確認してください：
+次に chDB をインストールします。
+chDB のバージョンが 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-そして、[ipython](https://ipython.org/) をインストールします：
+それでは、ここで [IPython](https://ipython.org/) をインストールします：
 
 ```bash
 pip install ipython
 ```
 
-このガイドの残りのコマンドを実行するために `ipython` を使用します。起動するには次のコマンドを実行します：
+このガイドでは、以降のコマンドを `ipython` を使って実行します。次のコマンドを実行して `ipython` を起動してください。
 
 ```bash
 ipython
 ```
 
-## clickhouse-local のインストール {#installing-clickhouse-local}
 
-clickhouse-local のダウンロードとインストールは、[ClickHouse のダウンロードとインストール](/install) と同じです。以下のコマンドを実行してこれを行います：
+## clickhouse-local のインストール
+
+clickhouse-local のダウンロードとインストールは、[ClickHouse のダウンロードとインストール](/install) と同じです。
+次のコマンドを実行してください。
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-データをディレクトリに永続化するために clickhouse-local を起動するには、`--path` を指定する必要があります：
+データをディレクトリに永続化するように clickhouse-local を起動するには、`--path` オプションを指定する必要があります：
 
 ```bash
 ./clickhouse -m --path demo.chdb
 ```
 
-## clickhouse-local にデータを取り込む {#ingesting-data-into-clickhouse-local}
 
-デフォルトのデータベースはメモリ内のデータしか保存しないため、取り込んだデータがディスクに永続化されるように、名前付きのデータベースを作成する必要があります。
+## clickhouse-local へのデータ取り込み
+
+デフォルトのデータベースはメモリ上にのみデータを保存するため、取り込んだデータをディスクに永続的に保存できるよう、名前付きデータベースを作成する必要があります。
 
 ```sql
 CREATE DATABASE foo;
 ```
 
-テーブルを作成し、ランダムな数字を挿入しましょう：
+テーブルを作成し、いくつかのランダムな数値を挿入してみましょう。
 
 ```sql
 CREATE TABLE foo.randomNumbers
@@ -69,7 +75,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-どのデータを持っているか確認するクエリを書きます：
+どのようなデータがあるか確認するためのクエリを書きましょう：
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -80,27 +86,29 @@ FROM foo.randomNumbers
 └───────────────────────────────────────┘
 ```
 
-これが完了したら、CLI から `exit;` することを忘れないでください。このディレクトリにロックを保持できるのは一つのプロセスだけだからです。それを行わないと、chDB からデータベースに接続しようとしたときに次のエラーが発生します：
+それが終わったら、必ず CLI で `exit;` を実行して終了してください。このディレクトリにロックを取得できるプロセスは 1 つだけです。
+そうしないと、chDB からデータベースに接続しようとしたときに、次のエラーが発生します。
 
 ```text
-ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
+ChdbError: Code: 76. DB::Exception: ファイル demo.chdb/status をロックできません。同じディレクトリ内で別のサーバーインスタンスが既に実行中です。(CANNOT_OPEN_FILE)
 ```
 
-## clickhouse-local データベースへの接続 {#connecting-to-a-clickhouse-local-database}
 
-`ipython` シェルに戻り、chDB から `session` モジュールをインポートします：
+## clickhouse-local データベースへの接続
+
+`ipython` シェルに戻り、chDB の `session` モジュールをインポートします。
 
 ```python
 from chdb import session as chs
 ```
 
-`demo..chdb` を指すセッションを初期化します：
+`demo..chdb` を参照するセッションを初期化します:
 
 ```python
 sess = chs.Session("demo.chdb")
 ```
 
-その後、数字の分位数を返す同じクエリを実行できます：
+次に、同じクエリを実行して数値の分位数を取得できます：
 
 ```python
 sess.query("""
@@ -108,12 +116,12 @@ SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
 FROM foo.randomNumbers
 """, "Vertical")
 
-Row 1:
+行 1:
 ──────
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-また、chDB からこのデータベースにデータを挿入することもできます：
+また、chDB からこのデータベースにデータを挿入することもできます。
 
 ```python
 sess.query("""
@@ -126,4 +134,4 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-その後、chDB または clickhouse-local から分位数クエリを再実行できます。
+その後、chDB または clickhouse-local から quantiles 関数のクエリを再実行できます。

@@ -1,5 +1,17 @@
 {
-  "path": ["2007_Copa_America", "Car_dealerships_in_the_USA", "Dihydromyricetin_reductase"],
-  "month": ["2016-07-01", "2015-07-01", "2015-07-01"],
-  "hits": [178, 11, 1]
+  "path": [
+    "2007_Copa_America",
+    "米国_の_自動車_ディーラー",
+    "Dihydromyricetin_reductase（ジヒドロミリセチン還元酵素）"
+  ],
+  "month": [
+    "2016-07-01",
+    "2015-07-01",
+    "2015-07-01"
+  ],
+  "hits": [
+    178,
+    11,
+    1
+  ]
 }

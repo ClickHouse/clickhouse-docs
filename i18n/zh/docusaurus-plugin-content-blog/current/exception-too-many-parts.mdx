@@ -1,0 +1,44 @@
+---
+title: 解决 ClickHouse 中的 "Too Many Parts" 错误
+description: 了解如何通过优化插入速率、配置 MergeTree 参数以及有效管理分区来解决 ClickHouse 中的 "Too many parts" 错误。
+date: 2023-03-20
+tags: ['错误与异常']
+keywords: ['Too many parts']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## DB::Exception: 数据部分过多 (错误: 252)。合并处理明显慢于插入
+
+您在一个 MergeTree 表上达到了 `parts_to_throw_insert` 设置的阈值。
+
+你可以通过以下方式监控某个表的活动数据部分数量：
+
+```sql
+select count(*) from system.parts where table = '<表名>' and active == 1
+```
+
+向 ClickHouse 写入时的主要要求是：每秒绝不能发送过多的 `INSERT` 语句。理想情况下——每 1 秒 / 几秒只执行一次 INSERT。
+
+因此，你可以每秒插入 10 万行，但只能通过一条大的批量 `INSERT` 语句来完成。如果你每秒向 *MergeTree 表发送数百 / 数千条 INSERT 语句，你总是会遇到一些错误，而且这种情况无法通过调整参数来改变。
+
+如果你无法在应用侧把大量 INSERT 合并成一条大的批量 INSERT 语句——那么你应该在 *MergeTree 表前面创建一个 Buffer 表。
+
+1. 每次 INSERT 都会在 `/var/lib/clickhouse/.../table_name/` 下创建一个目录。在该目录中，每一列会有 2 个文件——一个是数据文件（压缩的），另一个是索引文件。数据在这些文件中会按主键进行物理排序。这些目录被称为“**parts**”（数据片段）。
+
+2. ClickHouse 会在后台把这些较小的 parts 合并成更大的 parts。它会根据一些规则选择要合并的 parts。合并两个（或更多）parts 之后，会生成一个更大的 part，而旧的 parts 会被加入队列等待删除。你列出的那些设置可以用来微调合并 parts 的规则。合并过程的目标是：为每个分区只保留一个大的 part（或者几个较大的 part，如果它们已经大到不值得再合并）。另请参考这个 [comment](https://github.com/yandex/ClickHouse/issues/1661#issuecomment-352739726)。
+
+3. 如果你创建新 parts 的速度太快（例如通过大量的小 INSERT），而 ClickHouse 无法以足够的速度合并它们（也就是新 parts 产生得比 ClickHouse 合并得还快）——那么你会收到异常 “Merges are processing significantly slower than inserts”。你可以尝试提高该限制，但接下来可能会因为文件 / 目录数量过多而遇到文件系统问题（例如触发 inode 限制）。
+
+4. 如果你一次向很多分区写入，问题会按受该 INSERT 影响的分区数量成倍放大。
+
+5. 你可以尝试通过其中一个列出的设置，或者通过 max&#95;insert&#95;block&#95;size / max&#95;block&#95;size / insert&#95;format&#95;max&#95;block&#95;size / max&#95;client&#95;network&#95;bandwidth 来调整 ClickHouse 的行为。但更好的解决方案是按预期节奏写入数据。预期节奏是：**每 1–2 秒一次 INSERT，每次 INSERT 包含 1 万–50 万行数据**。
+
+6. 因此，解决 “Merges are processing significantly slower than inserts” 的正确做法，是同时调整每秒 INSERT 的次数以及每次 INSERT 中的行数。如果数据是按行持续到达，使用批量插入把小的 INSERT 合并成一个更大的 INSERT。如果一次要插入的数据量非常大，则对巨大的 INSERT 进行限速控制。不要修改 ClickHouse 的内部机制，除非你非常清楚这些设置的具体含义。
+
+7. 如果你的数据到达速度超过每秒 50 万行，那么很可能你需要在集群中增加更多服务器来处理该流量，而不是去调整参数。
+
+8. 后台合并的速度通常取决于存储性能、所用压缩设置、MergeTree 的选项（合并算法——普通合并 / 聚合 / 求和 / 折叠等）以及所用的排序键。

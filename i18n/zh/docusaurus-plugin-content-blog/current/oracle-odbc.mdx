@@ -1,0 +1,24 @@
+---
+title: 通过 ODBC 使用 Oracle 时遇到编码问题该怎么办？
+description: "如果通过 Oracle ODBC 驱动将 Oracle 作为 ClickHouse 外部字典的数据源使用，则需要在 `/etc/default/clickhouse` 中为 `NLS_LANG` 环境变量设置正确的值。"
+date: 2022-04-22
+tags: ['原生客户端与接口']
+keywords: ['Oracle', 'ODBC']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 该如何处理
+
+如果你通过 Oracle ODBC 驱动程序使用 Oracle 作为 ClickHouse 外部字典的数据源，则需要在 `/etc/default/clickhouse` 中为 `NLS_LANG` 环境变量设置正确的值。
+
+欲了解更多信息，请参阅 [Oracle NLS&#95;LANG 常见问题](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html)。
+
+**示例**
+
+```sql
+NLS_LANG=RUSSIAN_RUSSIA.UTF8
+```

@@ -1,58 +1,54 @@
 ---
-'slug': '/use-cases/data-lake/nessie-catalog'
-'sidebar_label': 'Каталог Nessie'
-'title': 'Каталог Nessie'
-'pagination_prev': null
-'pagination_next': null
-'description': 'В этом руководстве мы проведем вас через шаги для запроса ваших данных
-  с использованием ClickHouse и Nessie Catalog.'
-'keywords':
-- 'Nessie'
-- 'REST'
-- 'Transactional'
-- 'Data Lake'
-- 'Iceberg'
-- 'Git-like'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/nessie-catalog
+sidebar_label: 'Каталог Nessie'
+title: 'Каталог Nessie'
+pagination_prev: null
+pagination_next: null
+description: 'В этом руководстве мы пошагово покажем, как выполнять запросы к данным с использованием ClickHouse и каталога Nessie.'
+keywords: ['Nessie', 'REST', 'Transactional', 'Data Lake', 'Iceberg', 'Git-like']
+show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 :::note
 Интеграция с каталогом Nessie работает только с таблицами Iceberg.
-Эта интеграция поддерживает как AWS S3, так и другие облачные хранилища.
+Эта интеграция поддерживает как AWS S3, так и других облачных провайдеров хранилищ.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). Этот гид проведет вас через этапы запроса ваших данных с использованием ClickHouse и каталога [Nessie](https://projectnessie.org/).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, REST, Polaris и т. д.). В этом руководстве описаны шаги по выполнению запросов к вашим данным с использованием ClickHouse и каталога [Nessie](https://projectnessie.org/).
 
-Nessie — это открытый транзакционный каталог для дата-озер, который предоставляет:
-- **Управление версиями данных**, вдохновленное Git, с ветвями и коммитами
-- **Кросс-табличные транзакции** и гарантии видимости
-- Соответствие **REST API** спецификации REST каталога Iceberg
-- Подход **открытого дата-озера**, поддерживающий Hive, Spark, Dremio, Trino и другие
-- **Готовую к производству** развертывание на Docker или Kubernetes
+Nessie — это транзакционный каталог с открытым исходным кодом для дата‑лейков, который предоставляет:
+
+* Контроль версий данных **по аналогии с Git** с ветками и коммитами
+* **Транзакции между таблицами** и гарантии видимости
+* Соответствие **REST API** спецификации каталога Iceberg REST
+* Подход **открытого дата‑лейка**, поддерживающий Hive, Spark, Dremio, Trino и другие
+* **Готовое к промышленной эксплуатации** развертывание в Docker или Kubernetes
 
 :::note
-Поскольку эта функция является экспериментальной, вам нужно будет включить ее, используя:
+Поскольку эта функция является экспериментальной, вам нужно включить её с помощью:
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## Настройка локальной разработки {#local-development-setup}
 
-Для локальной разработки и тестирования вы можете использовать контейнеризированную настройку Nessie. Этот подход идеален для обучения, прототипирования и разработки.
+## Локальная среда разработки {#local-development-setup}
+
+Для локальной разработки и тестирования вы можете использовать контейнеризованную среду Nessie. Такой подход идеально подходит для обучения, прототипирования и разработки.
 
 ### Предварительные требования {#local-prerequisites}
 
-1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен
-2. **Пример настройки**: Вы можете использовать официальную настройку Nessie с помощью docker-compose
+1. **Docker и Docker Compose**: Убедитесь, что Docker установлен и запущен.
+2. **Пример конфигурации**: Вы можете использовать официальную конфигурацию Nessie для docker-compose.
 
-### Настройка локального каталога Nessie {#setting-up-local-nessie-catalog}
+### Настройка локального каталога Nessie
 
-Вы можете использовать официальную [настройку Nessie с помощью docker-compose](https://projectnessie.org/guides/setting-up/), которая предоставляет полную среду с Nessie, хранилищем версий в памяти и MinIO для объектного хранения.
+Вы можете использовать официальную [конфигурацию docker-compose для Nessie](https://projectnessie.org/guides/setting-up/), которая предоставляет полноценную среду с Nessie, хранилищем версий в памяти и MinIO для объектного хранения.
 
-**Шаг 1:** Создайте новую папку, в которой будете запускать пример, затем создайте файл `docker-compose.yml` со следующим конфигурацией:
+**Шаг 1:** Создайте новую папку, в которой будет запускаться пример, затем создайте файл `docker-compose.yml` со следующей конфигурацией:
 
 ```yaml
 version: '3.8'
@@ -108,13 +104,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: '0:0'  # Ensures root permissions
+    user: '0:0'  # Обеспечивает права root
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Монтирование каталога с набором данных
     networks:
       - iceberg_net
     environment:
@@ -136,31 +132,32 @@ networks:
     driver: bridge
 ```
 
-**Шаг 2:** Запустите следующую команду, чтобы стартовать сервисы:
+**Шаг 2:** Выполните следующую команду, чтобы запустить службы:
 
 ```bash
 docker compose up -d
 ```
 
-**Шаг 3:** Подождите, пока все сервисы будут готовы. Вы можете проверить логи:
+**Шаг 3:** Дождитесь, пока все сервисы будут готовы. Вы можете проверить логи:
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Настройка Nessie использует хранилище версий в памяти и требует, чтобы примерные данные были загружены в таблицы Iceberg сначала. Убедитесь, что среда создала и заполнила таблицы перед тем, как пытаться запросить их через ClickHouse.
+Конфигурация Nessie использует хранилище версий в памяти и требует, чтобы сначала в таблицы Iceberg были загружены примеры данных. Перед выполнением запросов к этим таблицам через ClickHouse убедитесь, что в среде они уже созданы и заполнены.
 :::
 
-### Подключение к локальному каталогу Nessie {#connecting-to-local-nessie-catalog}
 
-Подключитесь к вашему контейнеру ClickHouse:
+### Подключение к локальному каталогу Nessie
+
+Подключитесь к контейнеру ClickHouse:
 
 ```bash
 docker exec -it nessie-clickhouse clickhouse-client
 ```
 
-Затем создайте подключение к базе данных для каталога Nessie:
+Затем создайте подключение базы данных к каталогу Nessie:
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -170,9 +167,10 @@ ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
 
-## Запрос таблиц каталога Nessie с использованием ClickHouse {#querying-nessie-catalog-tables-using-clickhouse}
 
-Теперь, когда подключение установлено, вы можете начать запрашивать через каталог Nessie. Например:
+## Запросы к таблицам каталога Nessie с помощью ClickHouse
+
+Теперь, когда подключение установлено, вы можете выполнять запросы через каталог Nessie. Например:
 
 ```sql
 USE demo;
@@ -180,7 +178,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-Если ваша настройка включает примерные данные (например, набор данных такси), вы должны увидеть такие таблицы:
+Если в вашей установке есть демонстрационные данные (например, набор данных Taxi), вы должны увидеть следующие таблицы:
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -189,18 +187,21 @@ SHOW TABLES;
 ```
 
 :::note
-Если вы не видите никаких таблиц, это обычно означает, что:
-1. Среда еще не создала примерные таблицы
-2. Сервис каталога Nessie не полностью инициализирован
-3. Процесс загрузки примерных данных не завершен
+Если вы не видите никаких таблиц, это обычно означает:
+
+1. Среда ещё не создала демонстрационные таблицы
+2. Сервис каталога Nessie ещё не полностью инициализирован
+3. Процесс загрузки демонстрационных данных ещё не завершён
 
 Вы можете проверить логи Nessie, чтобы увидеть активность каталога:
+
 ```bash
 docker-compose logs nessie
 ```
+
 :::
 
-Чтобы запросить таблицу (если доступна):
+Чтобы выполнить запрос к таблице (если она доступна):
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -213,7 +214,7 @@ SELECT count(*) FROM `default.taxis`;
 ```
 
 :::note Требуются обратные кавычки
-Обратные кавычки требуются, потому что ClickHouse не поддерживает более одного пространства имен.
+Обратные кавычки необходимы, потому что ClickHouse не поддерживает более одного пространства имен.
 :::
 
 Чтобы просмотреть DDL таблицы:
@@ -250,9 +251,10 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Загрузка данных из вашего ДатаЛэйка в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 
-Если вам нужно загрузить данные из каталога Nessie в ClickHouse, начните с создания локальной таблицы ClickHouse:
+## Загрузка данных из вашего хранилища Data Lake в ClickHouse
+
+Если вам нужно загрузить данные из каталога Nessie в ClickHouse, сначала создайте локальную таблицу ClickHouse:
 
 ```sql
 CREATE TABLE taxis
@@ -282,7 +284,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-Затем загрузите данные из вашей таблицы каталога Nessie с помощью `INSERT INTO SELECT`:
+Затем загрузите данные из таблицы каталога Nessie с помощью оператора `INSERT INTO SELECT`:
 
 ```sql
 INSERT INTO taxis 

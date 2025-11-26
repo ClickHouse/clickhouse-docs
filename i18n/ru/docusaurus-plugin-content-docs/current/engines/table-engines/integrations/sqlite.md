@@ -1,38 +1,42 @@
 ---
-slug: '/engines/table-engines/integrations/sqlite'
-sidebar_label: SQLite
+description: 'Движок позволяет импортировать данные в SQLite и экспортировать их из SQLite, а также поддерживает выполнение запросов к таблицам SQLite непосредственно из ClickHouse.'
+sidebar_label: 'SQLite'
 sidebar_position: 185
-description: 'Движок позволяет импортировать и экспортировать данные в SQLite и'
-title: SQLite
-doc_type: reference
+slug: /engines/table-engines/integrations/sqlite
+title: 'Табличный движок SQLite'
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# SQLite
+# Движок таблиц SQLite
 
 <CloudNotSupportedBadge/>
 
-Движок позволяет импортировать и экспортировать данные в SQLite и поддерживает запросы к таблицам SQLite непосредственно из ClickHouse.
+Этот движок позволяет импортировать данные в SQLite и экспортировать их из неё, а также выполнять запросы к таблицам SQLite непосредственно из ClickHouse.
 
-## Создание таблицы {#creating-a-table}
+
+
+## Создание таблицы
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name
-(
-    name1 [type1],
-    name2 [type2], ...
-) ENGINE = SQLite('db_path', 'table')
+    CREATE TABLE [IF NOT EXISTS] [db.]table_name
+    (
+        name1 [type1],
+        name2 [type2], ...
+    ) ENGINE = SQLite('db_path', 'table')
 ```
 
 **Параметры движка**
 
-- `db_path` — Путь к файлу SQLite с базой данных.
-- `table` — Название таблицы в базе данных SQLite.
+* `db_path` — Путь к файлу базы данных SQLite.
+* `table` — Название таблицы в базе данных SQLite.
 
-## Пример использования {#usage-example}
 
-Показывает запрос, создающий таблицу SQLite:
+## Пример использования
+
+Пример запроса для создания таблицы SQLite:
 
 ```sql
 SHOW CREATE TABLE sqlite_db.table2;
@@ -63,5 +67,5 @@ SELECT * FROM sqlite_db.table2 ORDER BY col1;
 
 **См. также**
 
-- [SQLite](../../../engines/database-engines/sqlite.md) движок
-- [sqlite](../../../sql-reference/table-functions/sqlite.md) табличная функция
+* Движок таблицы [SQLite](../../../engines/database-engines/sqlite.md)
+* Табличная функция [sqlite](../../../sql-reference/table-functions/sqlite.md)

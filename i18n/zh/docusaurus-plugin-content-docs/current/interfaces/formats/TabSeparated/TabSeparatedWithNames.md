@@ -1,35 +1,39 @@
 ---
-'alias':
-- 'TSVWithNames'
-'description': 'TabSeparatedWithNames 格式的文档'
-'input_format': true
-'keywords':
-- 'TabSeparatedWithNames'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedWithNames'
-'title': 'TabSeparatedWithNames'
-'doc_type': 'reference'
+alias: ['TSVWithNames']
+description: 'TabSeparatedWithNames 格式文档'
+input_format: true
+keywords: ['TabSeparatedWithNames']
+output_format: true
+slug: /interfaces/formats/TabSeparatedWithNames
+title: 'TabSeparatedWithNames'
+doc_type: 'reference'
 ---
 
-| 输入  | 输出  | 别名                           |
-|-------|-------|---------------------------------|
-|     ✔    |     ✔    | `TSVWithNames`, `RawWithNames` |
+| 输入 | 输出 | 别名                          |
+|-------|--------|--------------------------------|
+|     ✔    |     ✔     | `TSVWithNames`, `RawWithNames` |
+
+
 
 ## 描述 {#description}
 
-与 [`TabSeparated`](./TabSeparated.md) 格式不同的是，列名写在第一行。
+与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于，第一行写入了列名。
 
-在解析过程中，第一行预期包含列名。你可以使用列名来确定它们的位置并检查其正确性。
+在解析时，预期第一行包含列名。可以使用列名来确定它们的位置，并检查其是否正确。
 
 :::note
-如果设置 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 为 `1`，输入数据中的列将通过其名称映射到表的列，未知名称的列将被跳过，如果设置 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`。否则，第一行将被跳过。
+如果将设置项 [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
+则会根据名称将输入数据中的列映射到表中的列；如果将设置项 [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
+否则，将跳过第一行。
 :::
 
-## 示例用法 {#example-usage}
 
-### 插入数据 {#inserting-data}
 
-使用以下 tsv 文件，命名为 `football.tsv`：
+## 示例用法
+
+### 插入数据
+
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -58,9 +62,9 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNames;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据
 
-使用 `TabSeparatedWithNames` 格式读取数据：
+以 `TabSeparatedWithNames` 格式读取数据：
 
 ```sql
 SELECT *
@@ -90,5 +94,6 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
+
 
 ## 格式设置 {#format-settings}

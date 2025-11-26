@@ -1,36 +1,40 @@
 ---
-'description': '`MergeTree`ファミリーのテーブルエンジンは、高いデータ取り込み速度と巨大なデータ量に対応するように設計されています。'
-'sidebar_label': 'MergeTree'
-'sidebar_position': 11
-'slug': '/engines/table-engines/mergetree-family/mergetree'
-'title': 'MergeTree'
-'doc_type': 'reference'
+description: '`MergeTree` ファミリーのテーブルエンジンは、高いデータ取り込み速度と大量のデータを扱うために設計されています。'
+sidebar_label: 'MergeTree'
+sidebar_position: 11
+slug: /engines/table-engines/mergetree-family/mergetree
+title: 'MergeTree テーブルエンジン'
+doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# MergeTree
+# MergeTree テーブルエンジン
 
-`MergeTree` エンジンおよび `MergeTree` ファミリーのその他のエンジン (例えば `ReplacingMergeTree`、`AggregatingMergeTree` ) は、ClickHouseで最も一般的かつ最も堅牢なテーブルエンジンです。
+`MergeTree` エンジンおよび `ReplacingMergeTree`、`AggregatingMergeTree` などの `MergeTree` ファミリーの他のエンジンは、ClickHouse で最も一般的に使用され、最も堅牢なテーブルエンジンです。
 
-`MergeTree` ファミリーのテーブルエンジンは、高いデータ取り込み速度と膨大なデータ量に対応するために設計されています。挿入操作により、テーブルのパーツが作成され、バックグラウンドプロセスによって他のテーブルパーツとマージされます。
+`MergeTree` ファミリーのテーブルエンジンは、高いデータ取り込みレートと膨大なデータ量を扱えるように設計されています。
+INSERT 操作によりテーブルパーツが作成され、それらはバックグラウンドプロセスによって他のテーブルパーツとマージされます。
 
-`MergeTree` ファミリーのテーブルエンジンの主な機能。
+`MergeTree` ファミリーのテーブルエンジンの主な特長:
 
-- テーブルの主キーは、各テーブルパーツ内のソート順序を決定します（クラスタリングインデックス）。主キーは個々の行ではなく、8192行で構成されるブロック（グラニュール）を参照します。これにより、巨大なデータセットの主キーをメインメモリに留めるのに十分小さく保ちながら、ディスク上のデータへの迅速なアクセスを提供します。
+- テーブルの主キーは、各テーブルパーツ内のソート順（クラスタ化インデックス）を決定します。主キーは個々の行ではなく、グラニュールと呼ばれる 8192 行のブロックを参照します。これにより、巨大なデータセットの主キーであっても主メモリに常駐できる程度に小さく保たれつつ、ディスク上のデータへの高速アクセスが可能になります。
 
-- テーブルは任意のパーティション式を使ってパーティション化できます。クエリによってパーティションが読み取られないようにパーティションプルーニングが保証されます。
+- テーブルは任意のパーティション式を用いてパーティション分割できます。パーティションプルーニングにより、クエリが許す場合は読み取り対象からパーティションが除外されます。
 
-- データは、高可用性、フェイルオーバー、ゼロダウンタイムのアップグレードのために、複数のクラスターノード間でレプリケートできます。詳細については [Data replication](/engines/table-engines/mergetree-family/replication.md) を参照してください。
+- 高可用性、フェイルオーバー、およびゼロダウンタイムでのアップグレードのために、複数のクラスタノード間でデータをレプリケートできます。詳細は [Data replication](/engines/table-engines/mergetree-family/replication.md) を参照してください。
 
-- `MergeTree` テーブルエンジンは、クエリ最適化を支援するために、さまざまな統計の種類とサンプリング手法をサポートしています。
+- `MergeTree` テーブルエンジンは、クエリ最適化を支援するために、さまざまな統計情報の種類とサンプリング手法をサポートします。
 
 :::note
 名前は似ていますが、[Merge](/engines/table-engines/special/merge) エンジンは `*MergeTree` エンジンとは異なります。
 :::
-## Creating tables {#table_engine-mergetree-creating-a-table}
+
+
+
+## テーブルの作成 {#table_engine-mergetree-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -55,49 +59,61 @@ ORDER BY expr
 [SETTINGS name = value, ...]
 ```
 
-パラメータの詳細な説明については、[CREATE TABLE](/sql-reference/statements/create/table.md) ステートメントを参照してください。
-### Query clauses {#mergetree-query-clauses}
+パラメータの詳細については、[CREATE TABLE](/sql-reference/statements/create/table.md)文を参照してください。
+
+### クエリ句 {#mergetree-query-clauses}
+
 #### ENGINE {#engine}
 
-`ENGINE` — エンジンの名前とパラメータ。 `ENGINE = MergeTree()`。`MergeTree` エンジンにはパラメータはありません。
+`ENGINE` — エンジンの名前とパラメータ。`ENGINE = MergeTree()`。`MergeTree`エンジンにはパラメータがありません。
+
 #### ORDER BY {#order_by}
 
 `ORDER BY` — ソートキー。
 
 カラム名または任意の式のタプル。例: `ORDER BY (CounterID + 1, EventDate)`。
 
-主キーが定義されていない場合（つまり `PRIMARY KEY` が指定されていない場合）、ClickHouse はソートキーを主キーとして使用します。
+プライマリキーが定義されていない場合（つまり`PRIMARY KEY`が指定されていない場合）、ClickHouseはソートキーをプライマリキーとして使用します。
 
-ソートが不要な場合、`ORDER BY tuple()` 構文を使用できます。あるいは、`create_table_empty_primary_key_by_default` が有効になっている場合、`CREATE TABLE` ステートメントに `ORDER BY tuple()` が暗黙的に追加されます。主キーの選択については [Selecting a Primary Key](#selecting-a-primary-key) を参照してください。
+ソートが不要な場合は、`ORDER BY tuple()`という構文を使用できます。
+または、設定`create_table_empty_primary_key_by_default`が有効になっている場合、`ORDER BY ()`が`CREATE TABLE`文に暗黙的に追加されます。[プライマリキーの選択](#selecting-a-primary-key)を参照してください。
+
 #### PARTITION BY {#partition-by}
 
-`PARTITION BY` — [パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。オプション。ほとんどの場合、パーティションキーは不要で、必要な場合でも、通常は月ごとのパーティショニングより細かい必要はありません。パーティショニングはクエリを高速化しません（ORDER BY 式とは対照的です）。あまり細かいパーティショニングを使用しないでください。クライアント識別子や名前でデータをパーティショニングしないでください（代わりに、ORDER BY 式の最初のカラムをクライアント識別子または名前にしてください）。
+`PARTITION BY` — [パーティショニングキー](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。オプション。ほとんどの場合、パーティションキーは不要です。パーティション分割が必要な場合でも、通常は月単位よりも細かいパーティションキーは必要ありません。パーティション分割はクエリを高速化しません（ORDER BY式とは対照的です）。過度に細かいパーティション分割は決して使用しないでください。クライアント識別子や名前でデータをパーティション分割しないでください（代わりに、クライアント識別子や名前をORDER BY式の最初のカラムにしてください）。
 
-月でパーティショニングを行う場合は、`toYYYYMM(date_column)` 式を使用します。ここで、`date_column` は [Date](/sql-reference/data-types/date.md) 型の日付を持つカラムです。パーティション名は `"YYYYMM"` 形式です。
+月単位でパーティション分割するには、`toYYYYMM(date_column)`式を使用します。ここで`date_column`は[Date](/sql-reference/data-types/date.md)型の日付を持つカラムです。この場合のパーティション名は`"YYYYMM"`形式になります。
+
 #### PRIMARY KEY {#primary-key}
 
-`PRIMARY KEY` — ソートキーと [異なる場合](#choosing-a-primary-key-that-differs-from-the-sorting-key) の主キー。オプション。
+`PRIMARY KEY` — [ソートキーと異なる](#choosing-a-primary-key-that-differs-from-the-sorting-key)場合のプライマリキー。オプション。
 
-ソートキーを指定する（`ORDER BY` 句を使用）ことは、暗黙的に主キーを指定します。通常、ソートキーに加えて主キーを指定する必要はありません。
+ソートキーを指定すると（`ORDER BY`句を使用）、暗黙的にプライマリキーが指定されます。
+通常、ソートキーに加えてプライマリキーを指定する必要はありません。
+
 #### SAMPLE BY {#sample-by}
 
 `SAMPLE BY` — サンプリング式。オプション。
 
-指定された場合、主キーに含まれている必要があります。サンプリング式は、符号なし整数を返す必要があります。
+指定する場合は、プライマリキーに含まれている必要があります。
+サンプリング式は符号なし整数を返す必要があります。
 
 例: `SAMPLE BY intHash32(UserID) ORDER BY (CounterID, EventDate, intHash32(UserID))`。
-####  TTL {#ttl}
 
-`TTL` — 行の保存期間と自動的なパーツ移動のロジックを指定するルールのリスト [ディスクとボリューム間](#table_engine-mergetree-multiple-volumes)。オプション。
+#### TTL {#ttl}
 
-式は `Date` または `DateTime` になる必要があり、例: `TTL date + INTERVAL 1 DAY`。
+`TTL` — 行の保存期間と[ディスクとボリューム間](#table_engine-mergetree-multiple-volumes)での自動パーツ移動のロジックを指定するルールのリスト。オプション。
 
-ルールのタイプ `DELETE|TO DISK 'xxx'|TO VOLUME 'xxx'|GROUP BY` は、式が満たされた場合（現在の時間に達するとき）にパートで実行されるアクションを指定します：有効期限が切れた行の削除、特定のディスクにパートを移動（`TO DISK 'xxx'`）、またはボリュームに移動（`TO VOLUME 'xxx'`）、または有効期限が切れた行の値の集約。ルールのデフォルトのタイプは削除（`DELETE`）です。複数のルールのリストを指定できますが、`DELETE` ルールは1つだけにしてください。
+式は`Date`または`DateTime`を返す必要があります。例: `TTL date + INTERVAL 1 DAY`。
 
-詳細については [TTL for columns and tables](#table_engine-mergetree-ttl) を参照してください。
+
+ルール `DELETE|TO DISK 'xxx'|TO VOLUME 'xxx'|GROUP BY` のタイプは、式が満たされた場合(現在時刻に達した場合)にパートに対して実行されるアクションを指定します:期限切れ行の削除、パートの移動(パート内のすべての行で式が満たされた場合)を指定されたディスク(`TO DISK 'xxx'`)またはボリューム(`TO VOLUME 'xxx'`)へ、または期限切れ行の値の集約です。ルールのデフォルトタイプは削除(`DELETE`)です。複数のルールのリストを指定できますが、`DELETE` ルールは1つまでです。
+
+詳細については、[カラムとテーブルのTTL](#table_engine-mergetree-ttl)を参照してください。
+
 #### SETTINGS {#settings}
 
-[MergeTree Settings](../../../operations/settings/merge-tree-settings.md) を参照してください。
+[MergeTree設定](../../../operations/settings/merge-tree-settings.md)を参照してください。
 
 **セクション設定の例**
 
@@ -107,16 +123,16 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
 
 この例では、月ごとのパーティショニングを設定しています。
 
-また、ユーザーIDに基づくハッシュとしてサンプリングの式を設定しています。これにより、各 `CounterID` と `EventDate` に対してテーブル内のデータを擬似的にランダム化することができます。データを選択する際に [SAMPLE](/sql-reference/statements/select/sample) 句を指定すると、ClickHouse は特定のユーザーサブセットに対して均等に擬似ランダムなデータサンプルを返します。
+また、ユーザーIDによるハッシュとしてサンプリング用の式を設定しています。これにより、各`CounterID`と`EventDate`に対してテーブル内のデータを疑似ランダム化できます。データを選択する際に[SAMPLE](/sql-reference/statements/select/sample)句を定義すると、ClickHouseはユーザーのサブセットに対して均等に疑似ランダムなデータサンプルを返します。
 
-`index_granularity` 設定は、省略可能です。8192 がデフォルト値です。
+`index_granularity`設定は、8192がデフォルト値であるため省略できます。
 
 <details markdown="1">
 
-<summary>テーブル作成のための非推奨方法</summary>
+<summary>非推奨のテーブル作成方法</summary>
 
 :::note
-新しいプロジェクトではこの方法を使用しないでください。可能な場合は、古いプロジェクトを上記の方法に切り替えてください。
+新しいプロジェクトではこの方法を使用しないでください。可能であれば、古いプロジェクトを上記の方法に切り替えてください。
 :::
 
 ```sql
@@ -128,12 +144,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
 ```
 
-**MergeTree() パラメータ**
+**MergeTree()パラメータ**
 
-- `date-column` — [Date](/sql-reference/data-types/date.md) 型のカラムの名前。ClickHouse はこのカラムに基づいて月ごとに自動的にパーティションを作成します。パーティション名は `"YYYYMM"` 形式です。
-- `sampling_expression` — サンプリングのための式。
-- `(primary, key)` — 主キー。型: [Tuple()](/sql-reference/data-types/tuple.md)
-- `index_granularity` — インデックスの細分化。インデックスの「マーク」の間のデータ行の数。値 8192 はほとんどのタスクに適しています。
+- `date-column` — [Date](/sql-reference/data-types/date.md)型のカラムの名前。ClickHouseはこのカラムに基づいて月ごとのパーティションを自動的に作成します。パーティション名は`"YYYYMM"`形式です。
+- `sampling_expression` — サンプリング用の式。
+- `(primary, key)` — プライマリキー。型: [Tuple()](/sql-reference/data-types/tuple.md)
+- `index_granularity` — インデックスの粒度。インデックスの「マーク」間のデータ行数。ほとんどのタスクでは8192の値が適切です。
 
 **例**
 
@@ -141,26 +157,31 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
 ```
 
-`MergeTree` エンジンは、前述の例と同様に、メインエンジン設定方法として構成されています。
+`MergeTree`エンジンは、メインエンジン設定方法の上記の例と同じ方法で設定されます。
+
 </details>
-## Data storage {#mergetree-data-storage}
 
-テーブルは、主キーでソートされたデータパーツで構成されています。
 
-テーブルにデータが挿入されると、別々のデータパーツが作成され、それぞれが主キーによって辞書式にソートされます。例えば、主キーが `(CounterID, Date)` の場合、パーツ内のデータは `CounterID` によってソートされ、各 `CounterID` 内では `Date` によって順序付けられます。
+## データストレージ {#mergetree-data-storage}
 
-異なるパーティションに属するデータは、異なるパーツに分けられます。バックグラウンドで、ClickHouse はデータパーツをマージしてより効率的なストレージを実現します。異なるパーティションに属するパーツはマージされません。マージメカニズムは、同じ主キーを持つすべての行が同じデータパートに存在することを保証しません。
+テーブルは、プライマリキーでソートされたデータパートで構成されます。
 
-データパーツは `Wide` 形式または `Compact` 形式で保存できます。`Wide` 形式では、各カラムがファイルシステム内の別々のファイルに保存され、`Compact` 形式では、すべてのカラムが1つのファイルに保存されます。`Compact` 形式は、小規模で頻繁な挿入のパフォーマンスを向上させるために使用できます。
+テーブルにデータが挿入されると、個別のデータパートが作成され、それぞれがプライマリキーで辞書順にソートされます。例えば、プライマリキーが`(CounterID, Date)`の場合、パート内のデータは`CounterID`でソートされ、各`CounterID`内では`Date`で順序付けられます。
 
-データ保存形式は、テーブルエンジンの `min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御されます。データパートのバイト数または行数が対応する設定の値未満の場合、そのパートは `Compact` 形式で保存されます。さもなければ、`Wide` 形式で保存されます。これらの設定のいずれも設定されていない場合、データパーツは `Wide` 形式で保存されます。
+異なるパーティションに属するデータは、異なるパートに分離されます。ClickHouseはバックグラウンドで、より効率的なストレージのためにデータパートをマージします。異なるパーティションに属するパートはマージされません。マージメカニズムは、同じプライマリキーを持つすべての行が同じデータパートに存在することを保証しません。
 
-各データパートは論理的にグラニュールに分割されています。グラニュールは、ClickHouse がデータを選択する際に読み取る最小の分割不可能なデータセットです。ClickHouse は行または値を分割しないため、各グラニュールは常に整数の行数を含みます。グラニュールの最初の行には、その行の主キーの値がマークされています。ClickHouse は、各データパートのためにマークを保存するインデックスファイルを作成します。主キーに関係なく、各カラムについても同じマークを保存します。これらのマークは、カラムファイル内のデータを直接見つけるのに役立ちます。
+データパートは`Wide`または`Compact`形式で保存できます。`Wide`形式では、各カラムがファイルシステム内の個別のファイルに保存され、`Compact`形式ではすべてのカラムが1つのファイルに保存されます。`Compact`形式は、小規模で頻繁な挿入のパフォーマンスを向上させるために使用できます。
 
-グラニュールのサイズは、テーブルエンジンの `index_granularity` および `index_granularity_bytes` 設定によって制限されます。グラニュール内の行数は、行のサイズに応じて `[1, index_granularity]` の範囲に収まります。行のサイズが設定の値より大きい場合、グラニュールのサイズは `index_granularity_bytes` を超えることがあります。この場合、グラニュールのサイズは行のサイズに等しくなります。
-## Primary Keys and Indexes in Queries {#primary-keys-and-indexes-in-queries}
+データ保存形式は、テーブルエンジンの`min_bytes_for_wide_part`および`min_rows_for_wide_part`設定によって制御されます。データパート内のバイト数または行数が対応する設定値より少ない場合、パートは`Compact`形式で保存されます。それ以外の場合は`Wide`形式で保存されます。これらの設定がいずれも設定されていない場合、データパートは`Wide`形式で保存されます。
 
-例えば `(CounterID, Date)` 主キーを考えます。この場合、ソートとインデックスは次のように示されます。
+各データパートは論理的にグラニュールに分割されます。グラニュールは、ClickHouseがデータを選択する際に読み取る最小の不可分なデータセットです。ClickHouseは行や値を分割しないため、各グラニュールには常に整数個の行が含まれます。グラニュールの最初の行には、その行のプライマリキーの値がマークされます。各データパートに対して、ClickHouseはマークを保存するインデックスファイルを作成します。各カラムについて、プライマリキーに含まれるかどうかに関わらず、ClickHouseは同じマークを保存します。これらのマークにより、カラムファイル内のデータを直接検索できます。
+
+グラニュールのサイズは、テーブルエンジンの`index_granularity`および`index_granularity_bytes`設定によって制限されます。グラニュール内の行数は、行のサイズに応じて`[1, index_granularity]`の範囲内にあります。単一行のサイズが設定値より大きい場合、グラニュールのサイズは`index_granularity_bytes`を超えることがあります。この場合、グラニュールのサイズは行のサイズと等しくなります。
+
+
+## クエリにおける主キーとインデックス {#primary-keys-and-indexes-in-queries}
+
+`(CounterID, Date)` という主キーを例に取ります。この場合、ソートとインデックスは次のように図示できます:
 
 ```text
 Whole data:     [---------------------------------------------]
@@ -171,61 +192,65 @@ Marks:           |      |      |      |      |      |      |      |      |      
 Marks numbers:   0      1      2      3      4      5      6      7      8      9      10
 ```
 
-データクエリが次のように指定されている場合：
+データクエリが次のように指定された場合:
 
-- `CounterID in ('a', 'h')` の場合、サーバーはマークの範囲 `[0, 3)` および `[6, 8)` からデータを読み取ります。
-- `CounterID IN ('a', 'h') AND Date = 3` の場合、サーバーはマークの範囲 `[1, 3)` および `[7, 8)` からデータを読み取ります。
-- `Date = 3` の場合、サーバーはマークの範囲 `[1, 10]` からデータを読み取ります。
+- `CounterID in ('a', 'h')` の場合、サーバーはマーク `[0, 3)` および `[6, 8)` の範囲のデータを読み取ります。
+- `CounterID IN ('a', 'h') AND Date = 3` の場合、サーバーはマーク `[1, 3)` および `[7, 8)` の範囲のデータを読み取ります。
+- `Date = 3` の場合、サーバーはマーク `[1, 10]` の範囲のデータを読み取ります。
 
-上記の例は、インデックスを利用する方が常にフルスキャンより効果的であることを示しています。
+上記の例は、フルスキャンよりもインデックスを使用する方が常に効果的であることを示しています。
 
-スパースインデックスを使用すると、追加のデータを読み取ることができます。主キーの単一範囲を読み取る際、各データブロックの最大 `index_granularity * 2` 行を追加で読み取ることができます。
+スパースインデックスでは、余分なデータが読み取られることがあります。主キーの単一範囲を読み取る際、各データブロックで最大 `index_granularity * 2` 行の余分な行が読み取られる可能性があります。
 
-スパースインデックスを使うことで、多くのテーブル行を扱うことができます。なぜなら、ほとんどの場合、そのようなインデックスはコンピュータのRAMに収まるからです。
+スパースインデックスを使用すると、非常に多数のテーブル行を扱うことができます。これは、ほとんどの場合、このようなインデックスがコンピュータのRAMに収まるためです。
 
-ClickHouse では、ユニークな主キーは必要ありません。同じ主キーを持つ複数の行を挿入できます。
+ClickHouseは一意な主キーを必要としません。同じ主キーを持つ複数の行を挿入できます。
 
-`PRIMARY KEY` および `ORDER BY` 句で `Nullable` 型の式を使用できますが、強く推奨されません。この機能を許可するには、[allow_nullable_key](/operations/settings/merge-tree-settings/#allow_nullable_key) 設定を有効にしてください。[NULLS_LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) 原則は、`ORDER BY` 句の `NULL` 値に適用されます。
-### Selecting a primary key {#selecting-a-primary-key}
+`PRIMARY KEY` および `ORDER BY` 句で `Nullable` 型の式を使用できますが、強く非推奨です。この機能を有効にするには、[allow_nullable_key](/operations/settings/merge-tree-settings/#allow_nullable_key) 設定をオンにしてください。`ORDER BY` 句における `NULL` 値には [NULLS_LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) の原則が適用されます。
 
-主キー内のカラム数は明示的に制限されていません。データ構造に応じて、主キーに含めるカラムの数を増やすことも減らすこともできます。これにより：
+### 主キーの選択 {#selecting-a-primary-key}
 
-- インデックスのパフォーマンスが向上します。
+主キーの列数に明示的な制限はありません。データ構造に応じて、主キーに含める列を増減できます。これにより次のような効果が得られる可能性があります:
 
-    主キーが `(a, b)` の場合、別のカラム `c` を追加すると、次の条件が満たされる場合にパフォーマンスが向上します：
+- インデックスのパフォーマンスを向上させる。
 
-  - カラム `c` に対する条件を含むクエリがあります。
-  - `(a, b)` が同じ値を持つ長いデータ範囲（`index_granularity` の数倍の長さ）が一般的です。別のカラムを追加すると、かなり長いデータ範囲をスキップできるようになります。
+  主キーが `(a, b)` の場合、次の条件が満たされていれば、別の列 `c` を追加することでパフォーマンスが向上します:
+  - 列 `c` に対する条件を持つクエリが存在する。
+  - `(a, b)` の値が同一である長いデータ範囲(`index_granularity` の数倍の長さ)が一般的である。言い換えれば、別の列を追加することで、かなり長いデータ範囲をスキップできる場合。
 
-- データ圧縮が改善されます。
+- データ圧縮を向上させる。
 
-    ClickHouse は主キーでデータをソートするため、一貫性が高いほど圧縮が良くなります。
+  ClickHouseは主キーでデータをソートするため、一貫性が高いほど圧縮率が向上します。
 
-- [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) および [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) エンジンでデータパーツのマージ時に追加のロジックを提供します。
+- [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) および [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) エンジンでデータパーツをマージする際に追加のロジックを提供する。
 
-    この場合、主キーと異なる *ソートキー* を指定することが意味を持ちます。
+  この場合、主キーとは異なる_ソートキー_を指定することが理にかなっています。
 
-長い主キーは挿入性能やメモリ消費に悪影響を及ぼすが、一部のカラムを主キーに追加することは、`SELECT` クエリのパフォーマンスには影響しません。
+長い主キーは挿入パフォーマンスとメモリ消費に悪影響を及ぼしますが、主キーの余分な列は `SELECT` クエリ実行時のClickHouseのパフォーマンスには影響しません。
 
-`ORDER BY tuple()` 構文を使用して主キーなしのテーブルを作成できます。この場合、ClickHouseは挿入の順序でデータを保存します。`INSERT ... SELECT` クエリによってデータを挿入する際にデータの順序を維持したい場合、[max_insert_threads = 1](/operations/settings/settings#max_insert_threads) を設定してください。
+`ORDER BY tuple()` 構文を使用して、主キーなしでテーブルを作成できます。この場合、ClickHouseはデータを挿入順に格納します。`INSERT ... SELECT` クエリでデータを挿入する際にデータの順序を保持したい場合は、[max_insert_threads = 1](/operations/settings/settings#max_insert_threads) を設定してください。
 
-初期の順序でデータを選択するには、[シングルスレッド](/operations/settings/settings.md/#max_threads) `SELECT` クエリを使用します。
-### Choosing a primary key that differs from the sorting key {#choosing-a-primary-key-that-differs-from-the-sorting-key}
+初期順序でデータを選択するには、[シングルスレッド](/operations/settings/settings.md/#max_threads)の `SELECT` クエリを使用してください。
 
-主キー（インデックスファイルに各マークについて書き込まれる値を持つ表現）が、ソートキー（データパーツ内の行をソートするための表現）と異なるように指定できます。この場合、主キーのタプル式はソートキー表現タプルのプレフィックスでなければなりません。
+### ソートキーとは異なる主キーの選択 {#choosing-a-primary-key-that-differs-from-the-sorting-key}
 
-この機能は、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) および [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルエンジンを使用する際に役立ちます。これらのエンジンを使用する一般的なケースでは、テーブルには *次元* と *計測* の2種類のカラムがあります。典型的なクエリは、任意の `GROUP BY` で計測カラムの値を集計し、次元によってフィルタリングします。SummingMergeTree および AggregatingMergeTree は、ソートキーの同じ値を持つ行を集計するため、すべての次元をソートキーに追加するのが自然です。その結果、キーの式はカラムの長いリストからなり、このリストは新たに追加された次元で頻繁に更新される必要があります。
 
-この場合、効率的な範囲スキャンを提供できる少数のカラムを主キーに残し、残りの次元カラムはソートキーのタプルに追加するのが意味があります。
+プライマリキー(各マークに対してインデックスファイルに書き込まれる値の式)を、ソートキー(データパート内の行をソートするための式)とは異なるものとして指定することができます。この場合、プライマリキー式のタプルは、ソートキー式のタプルの接頭辞である必要があります。
 
-ソートキーの [ALTER](/sql-reference/statements/alter/index.md) は軽量操作です。新しいカラムがテーブルとソートキーに同時に追加される際、既存のデータパーツは変更する必要がないためです。古いソートキーが新しいソートキーのプレフィックスであり、新しく追加されたカラムにはデータがないため、テーブルの修正時にデータは古い及び新しいソートキーの両方でソートされます。
-### Use of indexes and partitions in queries {#use-of-indexes-and-partitions-in-queries}
+この機能は、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md)および[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree.md)テーブルエンジンを使用する際に有用です。これらのエンジンを使用する一般的なケースでは、テーブルには2種類のカラムがあります:_ディメンション_と_メジャー_です。典型的なクエリは、任意の`GROUP BY`でメジャーカラムの値を集計し、ディメンションでフィルタリングします。SummingMergeTreeとAggregatingMergeTreeは、ソートキーの値が同じ行を集計するため、すべてのディメンションをソートキーに追加することが自然です。その結果、キー式は長いカラムのリストで構成され、このリストは新しく追加されるディメンションで頻繁に更新する必要があります。
 
-`SELECT` クエリに対して、ClickHouse はインデックスが利用可能かどうかを分析します。インデックスは、`WHERE/PREWHERE` 句が主キーやパーティショニングキー、もしくはそれらのカラムの特定の部分的に反復する関数の論理関係を示す等号または不等号の比較を表す式や、これらのカラムに対して固定のプレフィックスを使った `IN` または `LIKE` を含む場合に使用できます。
+この場合、効率的な範囲スキャンを提供する少数のカラムのみをプライマリキーに残し、残りのディメンションカラムをソートキーのタプルに追加することが合理的です。
 
-したがって、主キーの1つまたは複数の範囲でクエリを迅速に実行することが可能です。この例では、特定のトラッキングタグ、特定のタグと日付範囲、特定のタグと日付、複数のタグと日付範囲などでクエリを実行すると、高速になります。
+ソートキーの[ALTER](/sql-reference/statements/alter/index.md)は軽量な操作です。新しいカラムがテーブルとソートキーに同時に追加される際、既存のデータパートを変更する必要がないためです。古いソートキーが新しいソートキーの接頭辞であり、新しく追加されたカラムにはデータが存在しないため、テーブル変更の時点でデータは古いソートキーと新しいソートキーの両方でソートされています。
 
-次のように構成されたエンジンを見てみましょう：
+### クエリにおけるインデックスとパーティションの使用 {#use-of-indexes-and-partitions-in-queries}
+
+`SELECT`クエリに対して、ClickHouseはインデックスが使用可能かどうかを分析します。`WHERE/PREWHERE`句に、等価または不等価比較演算を表す式(結合要素の1つとして、または全体として)がある場合、またはプライマリキーまたはパーティショニングキーに含まれるカラムや式、あるいはこれらのカラムの特定の部分的反復関数、またはこれらの式の論理関係に対して、固定接頭辞を持つ`IN`または`LIKE`がある場合、インデックスを使用できます。
+
+したがって、プライマリキーの1つまたは複数の範囲に対してクエリを高速に実行することができます。この例では、特定のトラッキングタグ、特定のタグと日付範囲、特定のタグと日付、日付範囲を持つ複数のタグなどに対してクエリを実行する場合に高速になります。
+
+次のように設定されたエンジンを見てみましょう:
+
 ```sql
 ENGINE MergeTree()
 PARTITION BY toYYYYMM(EventDate)
@@ -233,7 +258,7 @@ ORDER BY (CounterID, EventDate)
 SETTINGS index_granularity=8192
 ```
 
-この場合、クエリでは：
+この場合、以下のクエリにおいて:
 
 ```sql
 SELECT count() FROM table
@@ -251,39 +276,42 @@ AND CounterID IN (101500, 731962, 160656)
 AND (CounterID = 101500 OR EventDate != toDate('2014-05-01'))
 ```
 
-ClickHouse は主キーインデックスを使用して不適切なデータをトリミングし、月ごとのパーティショニングキーを使用して不適切な日付範囲にあるパーティションをトリミングします。
+ClickHouseは、プライマリキーインデックスを使用して不適切なデータを削減し、月次パーティショニングキーを使用して不適切な日付範囲のパーティションを削減します。
 
-上記のクエリは、複雑な式に対してもインデックスが使用されることを示しています。テーブルからのデータの読み取りは、インデックスを使用するのがフルスキャンより遅くなることがないように組織されています。
+上記のクエリは、複雑な式に対してもインデックスが使用されることを示しています。テーブルからの読み取りは、インデックスの使用がフルスキャンよりも遅くならないように構成されています。
 
-次の例では、インデックスは使用できません。
+以下の例では、インデックスを使用できません。
 
 ```sql
 SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 ```
 
-クエリを実行するときに ClickHouse がインデックスを使用できるかどうかを確認するには、[force_index_by_date](/operations/settings/settings.md/#force_index_by_date) 及び [force_primary_key](/operations/settings/settings#force_primary_key) 設定を使用します。
+クエリ実行時にClickHouseがインデックスを使用できるかどうかを確認するには、[force_index_by_date](/operations/settings/settings.md/#force_index_by_date)および[force_primary_key](/operations/settings/settings#force_primary_key)設定を使用してください。
 
-月によるパーティショニングのキーは、適切な範囲のデータブロックだけを読み取ることを可能にします。この場合、データブロックは多くの日付（最大で1か月分）に関するデータを含むことがあります。ブロック内ではデータが主キーによってソートされていますが、主キーに日付が最初のカラムとして含まれているとは限りません。このため、主キーのプレフィックスを指定せずに日付条件のみのクエリを使用すると、単一の日付の場合よりも多くのデータが読み取られます。
-### Use of index for partially-monotonic primary keys {#use-of-index-for-partially-monotonic-primary-keys}
+月次パーティショニングのキーにより、適切な範囲の日付を含むデータブロックのみを読み取ることができます。この場合、データブロックには多数の日付(最大で1か月全体)のデータが含まれる可能性があります。ブロック内では、データはプライマリキーでソートされており、プライマリキーの最初のカラムに日付が含まれていない場合があります。このため、プライマリキーの接頭辞を指定しない日付条件のみを使用するクエリでは、単一の日付に対するよりも多くのデータが読み取られることになります。
 
-例えば、月の日を考えてみます。これらは1か月間の間で [単調増加列](https://en.wikipedia.org/wiki/Monotonic_function) を形成しますが、より長い期間では単調ではありません。これは部分的に単調な列です。ユーザーが部分的に単調な主キーでテーブルを作成すると、ClickHouse は通常通りスパースインデックスを作成します。この種類のテーブルからデータを選択する際、ClickHouse はクエリ条件を分析します。ユーザーがインデックスの2つのマーク間のデータを取得したい場合、両方のマークが1か月内にある場合、ClickHouse はこの特定の場合にインデックスを使用できます。なぜなら、クエリのパラメータとインデックスのマークの距離を計算できるからです。
+### 部分的に単調なプライマリキーに対するインデックスの使用 {#use-of-index-for-partially-monotonic-primary-keys}
 
-もしクエリパラメータ範囲の主キーの値が単調増加列を示さない場合、ClickHouse はインデックスを使用できません。この場合、ClickHouse はフルスキャンメソッドを使用します。
 
-ClickHouse はこの論理を月の日付の列だけでなく、部分的に単調な列を示す任意の主キーにも適用します。
-### Data skipping indexes {#table_engine-mergetree-data_skipping-indexes}
+例えば、月の日付を考えてみましょう。これらは1か月の間は[単調数列](https://en.wikipedia.org/wiki/Monotonic_function)を形成しますが、より長い期間では単調ではありません。これは部分的単調数列です。ユーザーが部分的単調プライマリキーを持つテーブルを作成すると、ClickHouseは通常通りスパースインデックスを作成します。ユーザーがこの種のテーブルからデータを選択すると、ClickHouseはクエリ条件を分析します。ユーザーがインデックスの2つのマーク間のデータを取得したい場合で、両方のマークが1か月以内に収まる場合、ClickHouseはこの特定のケースでインデックスを使用できます。これは、クエリのパラメータとインデックスマーク間の距離を計算できるためです。
 
-インデックス宣言は、`CREATE` クエリのカラムセクションにあります。
+クエリパラメータ範囲内のプライマリキーの値が単調数列を表さない場合、ClickHouseはインデックスを使用できません。この場合、ClickHouseはフルスキャン方式を使用します。
+
+ClickHouseはこのロジックを月の日付の数列だけでなく、部分的単調数列を表すあらゆるプライマリキーに対して使用します。
+
+### データスキップインデックス {#table_engine-mergetree-data_skipping-indexes}
+
+インデックス宣言は`CREATE`クエリのカラムセクションに記述します。
 
 ```sql
 INDEX index_name expr TYPE type(...) [GRANULARITY granularity_value]
 ```
 
-`*MergeTree` ファミリーのテーブルでは、データスキッピングインデックスを指定できます。
+`*MergeTree`ファミリーのテーブルでは、データスキップインデックスを指定できます。
 
-これらのインデックスは、指定された式に関する情報をブロック上で集約します。これらのブロックは `granularity_value` グラニュールで構成されます（グラニュールのサイズはテーブルエンジンの `index_granularity` 設定を使用して指定されます）。次に、これらの集約が `SELECT` クエリ内で使用され、`where` クエリが満たされない大きなデータブロックをスキップすることによって読み取るデータ量を減少させます。
+これらのインデックスは、`granularity_value`個のグラニュール(グラニュールのサイズはテーブルエンジンの`index_granularity`設定で指定されます)で構成されるブロック上の指定された式に関する情報を集約します。その後、これらの集約は`SELECT`クエリで使用され、`where`句を満たさない大きなデータブロックをスキップすることで、ディスクから読み取るデータ量を削減します。
 
-`GRANULARITY` 句は省略可能であり、`granularity_value` のデフォルト値は 1 です。
+`GRANULARITY`句は省略可能で、`granularity_value`のデフォルト値は1です。
 
 **例**
 
@@ -301,7 +329,7 @@ CREATE TABLE table_name
 ...
 ```
 
-例のインデックスは、次のクエリのディスクからの読み取りデータ量を減少させるために ClickHouse によって使用されます：
+この例のインデックスは、以下のクエリでディスクから読み取るデータ量を削減するためにClickHouseで使用できます:
 
 ```sql
 SELECT count() FROM table WHERE u64 == 10;
@@ -309,58 +337,65 @@ SELECT count() FROM table WHERE u64 * i32 >= 1234
 SELECT count() FROM table WHERE u64 * length(s) == 1234
 ```
 
-データスキッピングインデックスは、合成カラムに対しても作成できます：
+データスキップインデックスは複合カラムに対しても作成できます:
 
 ```sql
--- on columns of type Map:
+-- Map型のカラムに対して:
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
--- on columns of type Tuple:
+-- Tuple型のカラムに対して:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 
--- on columns of type Nested:
+-- Nested型のカラムに対して:
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
-### Skip Index Types {#skip-index-types}
 
-`MergeTree` テーブルエンジンは、次の種類のスキップインデックスをサポートしています。
-パフォーマンス最適化のためのスキップインデックスの使用方法についての詳しい情報は、["Understanding ClickHouse data skipping indexes"](/optimize/skipping-indexes)を参照してください。
+### スキップインデックスの種類 {#skip-index-types}
 
-- [`MinMax`](#minmax) インデックス
-- [`Set`](#set) インデックス
-- [`bloom_filter`](#bloom-filter) インデックス
-- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
-- [`tokenbf_v1`](#token-bloom-filter) インデックス
-#### MinMax skip index {#minmax}
+`MergeTree`テーブルエンジンは以下の種類のスキップインデックスをサポートしています。
+スキップインデックスをパフォーマンス最適化に使用する方法の詳細については、
+["ClickHouseデータスキップインデックスの理解"](/optimize/skipping-indexes)を参照してください。
 
-各インデックスグラニュールに対して、式の最小値と最大値が保存されます。
-（式が `tuple` 型の場合、各タプル要素の最小値と最大値を保存します。）
+- [`MinMax`](#minmax)インデックス
+- [`Set`](#set)インデックス
+- [`bloom_filter`](#bloom-filter)インデックス
+- [`ngrambf_v1`](#n-gram-bloom-filter)インデックス
+- [`tokenbf_v1`](#token-bloom-filter)インデックス
 
-```text title="Syntax"
+#### MinMaxスキップインデックス {#minmax}
+
+各インデックスグラニュールに対して、式の最小値と最大値が格納されます。
+(式が`tuple`型の場合、各タプル要素の最小値と最大値が格納されます。)
+
+```text title="構文"
 minmax
 ```
+
 #### Set {#set}
 
-各インデックスグラニュールに対して、指定された式の最大 `max_rows` 個のユニークな値が保存されます。
-`max_rows = 0` は「すべてのユニークな値を保存する」ことを意味します。
+各インデックスグラニュールに対して、指定された式の最大`max_rows`個のユニークな値が格納されます。
+`max_rows = 0`は「すべてのユニークな値を格納する」ことを意味します。
 
-```text title="Syntax"
+```text title="構文"
 set(max_rows)
 ```
-#### Bloom filter {#bloom-filter}
 
-各インデックスグラニュールは、指定されたカラムの [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) を保存します。
+#### Bloomフィルタ {#bloom-filter}
 
-```text title="Syntax"
+各インデックスグラニュールに対して、指定されたカラムの[Bloomフィルタ](https://en.wikipedia.org/wiki/Bloom_filter)を格納します。
+
+```text title="構文"
 bloom_filter([false_positive_rate])
 ```
 
-`false_positive_rate` パラメータは 0 と 1 の間の値を取ることができ（デフォルト値: `0.025`）、ポジティブ（読み取るデータ量を増加させる）を生成する確率を指定します。
+`false_positive_rate`パラメータは0から1の間の値を取ることができ(デフォルト: `0.025`)、偽陽性を生成する確率を指定します(これにより読み取るデータ量が増加します)。
 
-次のデータ型がサポートされています：
+
+以下のデータ型がサポートされています:
+
 - `(U)Int*`
 - `Float*`
 - `Enum`
@@ -374,32 +409,34 @@ bloom_filter([false_positive_rate])
 - `UUID`
 - `Map`
 
-:::note Map データ型: キーまたは値によるインデックス作成の指定
-`Map` データ型の場合、クライアントはインデックスをキーまたは値に対して作成するかを、[`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 関数を使用して指定できます。
+:::note Mapデータ型: キーまたは値を使用したインデックス作成の指定
+`Map`データ型の場合、[`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys)または[`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues)関数を使用して、キーまたは値のどちらに対してインデックスを作成するかを指定できます。
 :::
-#### N-gram bloom filter {#n-gram-bloom-filter}
 
-各インデックスグラニュールは、指定されたカラムの [n-grams](https://en.wikipedia.org/wiki/N-gram) に対する [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) を保存します。
+#### N-gramブルームフィルタ {#n-gram-bloom-filter}
 
-```text title="Syntax"
+各インデックスグラニュールに対して、指定されたカラムの[n-gram](https://en.wikipedia.org/wiki/N-gram)用の[ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter)を格納します。
+
+```text title="構文"
 ngrambf_v1(n, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
-| パラメータ                        | 説明         |
-|----------------------------------|--------------|
-| `n`                              | ngram サイズ |
-| `size_of_bloom_filter_in_bytes` | Bloom フィルターのサイズ（バイト単位）。例えば、`256` や `512` のような大きな値を使用できます、圧縮がよく効くためです。|
-|`number_of_hash_functions`       | Bloom フィルター内で使用されるハッシュ関数の数。|
-|`random_seed` | Bloom フィルターのハッシュ関数用のシード。|
+| パラメータ                       | 説明                                                                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `n`                             | ngramのサイズ                                                                                                                   |
+| `size_of_bloom_filter_in_bytes` | ブルームフィルタのサイズ(バイト単位)。圧縮効率が高いため、例えば`256`や`512`などの大きな値を使用できます。 |
+| `number_of_hash_functions`      | ブルームフィルタで使用されるハッシュ関数の数。                                                                       |
+| `random_seed`                   | ブルームフィルタのハッシュ関数用のシード値。                                                                                    |
 
-このインデックスは、次のデータ型でのみ機能します：
+このインデックスは以下のデータ型でのみ動作します:
+
 - [`String`](/sql-reference/data-types/string.md)
 - [`FixedString`](/sql-reference/data-types/fixedstring.md)
 - [`Map`](/sql-reference/data-types/map.md)
 
-`ngrambf_v1` のパラメータを推定するには、次の [ユーザー定義関数 (UDFs)](/sql-reference/statements/create/function.md) を使用できます。
+`ngrambf_v1`のパラメータを推定するには、以下の[ユーザー定義関数(UDF)](/sql-reference/statements/create/function.md)を使用できます。
 
-```sql title="UDFs for ngrambf_v1"
+```sql title="ngrambf_v1用のUDF"
 CREATE FUNCTION bfEstimateFunctions [ON CLUSTER cluster]
 AS
 (total_number_of_all_grams, size_of_bloom_filter_in_bits) -> round((size_of_bloom_filter_in_bits / total_number_of_all_grams) * log(2));
@@ -417,21 +454,23 @@ AS
 (number_of_hash_functions, probability_of_false_positives, size_of_bloom_filter_in_bytes) -> ceil(size_of_bloom_filter_in_bytes / (-number_of_hash_functions / log(1 - exp(log(probability_of_false_positives) / number_of_hash_functions))))
 ```
 
-これらの関数を使用するには、少なくとも2つのパラメータを指定する必要があります：
+これらの関数を使用するには、少なくとも以下の2つのパラメータを指定する必要があります:
+
 - `total_number_of_all_grams`
 - `probability_of_false_positives`
 
-例えば、グラニュール内に `4300` の ngram があり、偽陽性が `0.0001` 未満であることを期待している場合、他のパラメータは次のようなクエリを実行することで推定できます：
+例えば、グラニュールに`4300`個のngramがあり、偽陽性率を`0.0001`未満にしたい場合、
+以下のクエリを実行することで他のパラメータを推定できます:
 
 ```sql
---- estimate number of bits in the filter
+--- フィルタのビット数を推定
 SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_of_bloom_filter_in_bytes;
 
 ┌─size_of_bloom_filter_in_bytes─┐
 │                         10304 │
 └───────────────────────────────┘
 
---- estimate number of hash functions
+--- ハッシュ関数の数を推定
 SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_hash_functions
 
 ┌─number_of_hash_functions─┐
@@ -439,142 +478,169 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 └──────────────────────────┘
 ```
 
-もちろん、他の条件のためにパラメータを推定するためにもこれらの関数を使用できます。
-上記の関数は、bloom filter の計算機 [こちら](https://hur.st/bloomfilter) に関連します。
-#### Token bloom filter {#token-bloom-filter}
+もちろん、これらの関数を使用して他の条件に対するパラメータを推定することもできます。
+上記の関数は[こちら](https://hur.st/bloomfilter)のブルームフィルタ計算機を参照しています。
 
-トークンbloomフィルターは、`ngrambf_v1` と同じですが、ngram の代わりにトークン（非英数字で区切られたシーケンス）を保存します。
+#### トークンブルームフィルタ {#token-bloom-filter}
 
-```text title="Syntax"
+トークンブルームフィルタは`ngrambf_v1`と同じですが、ngramの代わりにトークン(英数字以外の文字で区切られたシーケンス)を格納します。
+
+```text title="構文"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
-#### Vector similarity {#vector-similarity}
 
-近似最近傍検索をサポートします。詳細については [こちら](annindexes.md) を参照してください。
-### Text (experimental) {#text}
 
-フルテキスト検索をサポートします。詳細については [こちら](invertedindexes.md) を参照してください。
-### Functions support {#functions-support}
+#### スパースグラムブルームフィルター {#sparse-grams-bloom-filter}
 
-`WHERE` 句内の条件には、カラムを操作する関数の呼び出しが含まれます。カラムがインデックスの一部である場合、ClickHouse は関数を実行する際にこのインデックスを使用しようとします。ClickHouse はインデックスを使用するための異なる関数のサブセットをサポートしています。
+スパースグラムブルームフィルターは`ngrambf_v1`と類似していますが、nグラムの代わりに[スパースグラムトークン](/sql-reference/functions/string-functions.md/#sparseGrams)を使用します。
 
-タイプ `set` のインデックスは、すべての関数によって利用可能です。他のインデックスタイプは次のようにサポートされています：
+```text title="構文"
+sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
+```
 
-| 関数 (演算子) / インデックス                                                                                                        | primary key | minmax | ngrambf_v1 | tokenbf_v1 | bloom_filter | text |
-|------------------------------------------------------------------------------------------------------------------------------------|-------------|--------|------------|------------|--------------|------|
-| [equals (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                        | ✔           | ✔      | ✔          | ✔          | ✔            | ✔    |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                            | ✔           | ✔      | ✔          | ✔          | ✔            | ✔    |
-| [like](/sql-reference/functions/string-search-functions.md/#like)                                                                 | ✔           | ✔      | ✔          | ✔          | ✗            | ✔    |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notlike)                                                           | ✔           | ✔      | ✔          | ✔          | ✗            | ✔    |
-| [match](/sql-reference/functions/string-search-functions.md/#match)                                                               | ✗           | ✗      | ✔          | ✔          | ✗            | ✔    |
-| [startsWith](/sql-reference/functions/string-functions.md/#startswith)                                                            | ✔           | ✔      | ✔          | ✔          | ✗            | ✔    |
-| [endsWith](/sql-reference/functions/string-functions.md/#endswith)                                                                | ✗           | ✗      | ✔          | ✔          | ✗            | ✔    |
-| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multisearchany)                                             | ✗           | ✗      | ✔          | ✗          | ✗            | ✗    |
-| [in](/sql-reference/functions/in-functions)                                                                                       | ✔           | ✔      | ✔          | ✔          | ✔            | ✔    |
-| [notIn](/sql-reference/functions/in-functions)                                                                                    | ✔           | ✔      | ✔          | ✔          | ✔            | ✔    |
-| [less (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                             | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [greater (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                        | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [lessOrEquals (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                             | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [greaterOrEquals (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                       | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [empty](/sql-reference/functions/array-functions/#empty)                                                                         | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                                   | ✔           | ✔      | ✗          | ✗          | ✗            | ✗    |
-| [has](/sql-reference/functions/array-functions#has)                                                                               | ✗           | ✗      | ✔          | ✔          | ✔            | ✔    |
-| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                         | ✗           | ✗      | ✔          | ✔          | ✔            | ✗    |
-| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                         | ✗           | ✗      | ✔          | ✔          | ✔            | ✗    |
-| [hasToken](/sql-reference/functions/string-search-functions.md/#hastoken)                                                         | ✗           | ✗      | ✗          | ✔          | ✗            | ✔    |
-| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hastokenornull)                                             | ✗           | ✗      | ✗          | ✔          | ✗            | ✔    |
-| [hasTokenCaseInsensitive (`*`)](/sql-reference/functions/string-search-functions.md/#hastokencaseinsensitive)                    | ✗           | ✗      | ✗          | ✔          | ✗            | ✗    |
-| [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hastokencaseinsensitiveornull)        | ✗           | ✗      | ✗          | ✔          | ✗            | ✗    |
-| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasanytokens)                                                 | ✗           | ✗      | ✗          | ✗          | ✗            | ✔    |
-| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasalltokens)                                                 | ✗           | ✗      | ✗          | ✗          | ✗            | ✔    |
-| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                          | ✗           | ✗      | ✗          | ✗          | ✗            | ✔    |
+### テキストインデックス {#text}
 
-定数引数がngramサイズ未満である関数は、`ngrambf_v1` によるクエリ最適化で使用できません。
+全文検索をサポートしています。詳細は[こちら](invertedindexes.md)を参照してください。
 
-(*) `hasTokenCaseInsensitive` および `hasTokenCaseInsensitiveOrNull` を効果的に機能させるには、`tokenbf_v1` インデックスを小文字化されたデータ上で作成する必要があります。例えば、`INDEX idx (lower(str_col)) TYPE tokenbf_v1(512, 3, 0)` のようにします。
+#### ベクトル類似度 {#vector-similarity}
+
+近似最近傍探索をサポートしています。詳細は[こちら](annindexes.md)を参照してください。
+
+### 関数のサポート {#functions-support}
+
+`WHERE`句の条件には、カラムを操作する関数の呼び出しが含まれます。カラムがインデックスの一部である場合、ClickHouseは関数を実行する際にこのインデックスの使用を試みます。ClickHouseは、インデックスを使用するための異なる関数のサブセットをサポートしています。
+
+`set`型のインデックスはすべての関数で利用できます。その他のインデックス型は以下のようにサポートされています:
+
+
+| 関数（演算子）／インデックス                                                                                                            | 主キー | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | text | sparse&#95;grams |
+| ------------------------------------------------------------------------------------------------------------------------- | --- | ------ | -------------- | -------------- | ---------------- | ---- | ---------------- |
+| [equals（=, ==）](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔   | ✔      | ✔              | ✔              | ✔                | ✔    | ✔                |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔   | ✔      | ✔              | ✔              | ✔                | ✔    | ✔                |
+| [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔   | ✔      | ✔              | ✔              | ✗                | ✔    | ✔                |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔   | ✔      | ✔              | ✔              | ✗                | ✔    | ✔                |
+| [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗   | ✗      | ✔              | ✔              | ✗                | ✔    | ✔                |
+| [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔   | ✔      | ✔              | ✔              | ✗                | ✔    | ✔                |
+| [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗   | ✗      | ✔              | ✔              | ✗                | ✔    | ✔                |
+| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗   | ✗      | ✔              | ✗              | ✗                | ✗    | ✗                |
+| [in](/sql-reference/functions/in-functions)                                                                               | ✔   | ✔      | ✔              | ✔              | ✔                | ✔    | ✔                |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔   | ✔      | ✔              | ✔              | ✔                | ✔    | ✔                |
+| [より小さい (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                     | ✔   | ✔      | ✗              | ✗              | ✗                | ✗    | ✗                |
+| [大なり (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                    | ✔   | ✔      | ✗              | ✗              | ✗                | ✗    | ✗                |
+| [lessOrEquals (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                     | ✔   | ✔      | ✗              | ✗              | ✗                | ✗    | ✗                |
+| [greaterOrEquals (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                               | ✔   | ✔      | ✗              | ✗              | ✗                | ✗    | ✗                |
+| [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔   | ✔      | ✗              | ✗              | ✗                | ✗    | ✗                |
+| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗   | ✔      | ✗              | ✗              | ✗                | ✗    | ✔                |
+| [has](/sql-reference/functions/array-functions#has)                                                                       | ✗   | ✗      | ✔              | ✔              | ✔                | ✔    | ✔                |
+| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                 | ✗   | ✗      | ✔              | ✔              | ✔                | ✗    | ✔                |
+| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                 | ✗   | ✗      | ✔              | ✔              | ✔                | ✗    | ✔                |
+| [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)                                                 | ✗   | ✗      | ✗              | ✔              | ✗                | ✔    | ✗                |
+| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull)                                     | ✗   | ✗      | ✗              | ✔              | ✗                | ✔    | ✗                |
+| [hasTokenCaseInsensitive (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitive)             | ✗   | ✗      | ✗              | ✔              | ✗                | ✗    | ✗                |
+| [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗   | ✗      | ✗              | ✔              | ✗                | ✗    | ✗                |
+| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✔    | ✗                |
+| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✔    | ✗                |
+| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                   | ✗   | ✗      | ✗              | ✗              | ✗                | ✔    | ✗                |
+
+
+
+`ngrambf_v1` では、定数引数が ngram のサイズより小さい関数はクエリ最適化に使用できません。
+
+(*) `hasTokenCaseInsensitive` および `hasTokenCaseInsensitiveOrNull` を効果的に機能させるには、`tokenbf_v1` インデックスを小文字化したデータに対して作成する必要があります。例えば `INDEX idx (lower(str_col)) TYPE tokenbf_v1(512, 3, 0)` のようにします。
 
 :::note
-BLOOMフィルターは誤って陽性を検出する可能性があるため、`ngrambf_v1`、`tokenbf_v1`、および `bloom_filter` インデックスは、関数の結果が偽であることが期待されるクエリの最適化には使用できません。
+Bloom filter には偽陽性が発生する可能性があるため、`ngrambf_v1`、`tokenbf_v1`、`sparse_grams`、および `bloom_filter` インデックスは、関数の結果が false であることが期待されるクエリの最適化には使用できません。
 
-例えば：
+例えば:
 
-- 最適化可能：
+- 最適化できるもの:
   - `s LIKE '%test%'`
   - `NOT s NOT LIKE '%test%'`
   - `s = 1`
   - `NOT s != 1`
   - `startsWith(s, 'test')`
-- 最適化不可能：
+- 最適化できないもの:
   - `NOT s LIKE '%test%'`
   - `s NOT LIKE '%test%'`
   - `NOT s = 1`
   - `s != 1`
   - `NOT startsWith(s, 'test')`
 :::
-## Projections {#projections}
 
-プロジェクションは、[マテリアライズドビュー](/sql-reference/statements/create/view) に似ていますが、パーツレベルで定義されます。クエリ内で自動的に使用されるとともに、一貫性の保証を提供します。
+
+
+## プロジェクション {#projections}
+
+プロジェクションは[マテリアライズドビュー](/sql-reference/statements/create/view)に似ていますが、パートレベルで定義されます。クエリでの自動使用とともに一貫性を保証します。
 
 :::note
-プロジェクションを実装する際には、[force_optimize_projection](/operations/settings/settings#force_optimize_projection) 設定を考慮する必要があります。
+プロジェクションを実装する際は、[force_optimize_projection](/operations/settings/settings#force_optimize_projection)設定も考慮してください。
 :::
 
-プロジェクションは、[FINAL](/sql-reference/statements/select/from#final-modifier) 修飾子を持つ `SELECT` ステートメントではサポートされていません。
-### Projection query {#projection-query}
+プロジェクションは[FINAL](/sql-reference/statements/select/from#final-modifier)修飾子を使用した`SELECT`文ではサポートされていません。
 
-プロジェクションクエリは、プロジェクションを定義するものです。それは暗黙的に親テーブルからデータを選択します。
+### プロジェクションクエリ {#projection-query}
+
+プロジェクションクエリはプロジェクションを定義するものです。親テーブルから暗黙的にデータを選択します。
 **構文**
 
 ```sql
 SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ```
 
-プロジェクションは、[ALTER](/sql-reference/statements/alter/projection.md) ステートメントで修正または削除できます。
-### Projection storage {#projection-storage}
+プロジェクションは[ALTER](/sql-reference/statements/alter/projection.md)文で変更または削除できます。
 
-プロジェクションはパートディレクトリ内に保存されます。これはインデックスに似ていますが、匿名の `MergeTree` テーブルのパートを保存するサブディレクトリを含みます。このテーブルは、プロジェクションの定義クエリによって導かれます。もし `GROUP BY` 句があれば、基本となるストレージエンジンは [AggregatingMergeTree](aggregatingmergetree.md) になり、すべての集約関数は `AggregateFunction` に変換されます。もし `ORDER BY` 句があれば、`MergeTree` テーブルはそれを主キー式として使用します。マージプロセス中、プロジェクションパートはそのストレージのマージルーチンによってマージされます。親テーブルのパートのチェックサムは、プロジェクションパートと組み合わされます。他のメンテナンス作業はスキップインデックスと似ています。
-### クエリ分析 {#projection-query-analysis}
-1. プロジェクションが与えられたクエリに使用できるかどうかを確認します。つまり、基本テーブルをクエリした場合と同じ応答を生成します。
-2. 読み取る粒度が最も少ない、最適な一致を選択します。
-3. プロジェクションを使用するクエリパイプラインは、元のパーツを使用するものとは異なります。プロジェクションがいくつかのパーツに存在しない場合、プロジェクションを動的に「投影」するためのパイプラインを追加できます。
+### プロジェクションストレージ {#projection-storage}
+
+プロジェクションはパートディレクトリ内に保存されます。インデックスに似ていますが、匿名の`MergeTree`テーブルのパートを保存するサブディレクトリを含みます。テーブルはプロジェクションの定義クエリによって生成されます。`GROUP BY`句がある場合、基盤となるストレージエンジンは[AggregatingMergeTree](aggregatingmergetree.md)となり、すべての集約関数は`AggregateFunction`に変換されます。`ORDER BY`句がある場合、`MergeTree`テーブルはそれをプライマリキー式として使用します。マージプロセス中、プロジェクションパートはそのストレージのマージルーチンを介してマージされます。親テーブルのパートのチェックサムはプロジェクションのパートと結合されます。その他のメンテナンス作業はスキップインデックスと同様です。
+
+### クエリ解析 {#projection-query-analysis}
+
+1. プロジェクションが指定されたクエリに応答するために使用できるかどうか、つまりベーステーブルへのクエリと同じ結果を生成するかどうかを確認します。
+2. 読み取るグラニュールが最も少ない、最適な実行可能な一致を選択します。
+3. プロジェクションを使用するクエリパイプラインは、元のパートを使用するものとは異なります。一部のパートでプロジェクションが存在しない場合、その場で「プロジェクト」するパイプラインを追加できます。
+
 
 ## 同時データアクセス {#concurrent-data-access}
 
-同時テーブルアクセスには、マルチバージョンを使用します。言い換えれば、テーブルが同時に読み取られ更新されるとき、データはクエリ時点での最新のパーツのセットから読み取られます。長時間のロックはありません。挿入は読み取り操作の妨げになりません。
+テーブルへの同時アクセスには、マルチバージョニングを使用しています。つまり、テーブルの読み取りと更新が同時に行われる場合、データはクエリ実行時点で最新のパーツセットから読み取られます。長時間のロックは発生しません。挿入操作が読み取り操作を妨げることはありません。
 
 テーブルからの読み取りは自動的に並列化されます。
 
+
 ## カラムとテーブルのTTL {#table_engine-mergetree-ttl}
 
-値の有効期限を決定します。
+値の有効期間を決定します。
 
-`TTL`句は、テーブル全体および各カラムごとに設定できます。テーブルレベルの`TTL`は、ディスクやボリューム間でデータを自動的に移動させるロジックを指定したり、すべてのデータが期限切れになった場合にパーツを再圧縮することもできます。
+`TTL`句は、テーブル全体および個々のカラムに対して設定できます。テーブルレベルの`TTL`では、ディスクとボリューム間でのデータの自動移動や、すべてのデータが期限切れになったパーツの再圧縮のロジックを指定することもできます。
 
-式は、[Date](/sql-reference/data-types/date.md)、[Date32](/sql-reference/data-types/date32.md)、[DateTime](/sql-reference/data-types/datetime.md)または[DateTime64](/sql-reference/data-types/datetime64.md)データ型に評価される必要があります。
+式は[Date](/sql-reference/data-types/date.md)、[Date32](/sql-reference/data-types/date32.md)、[DateTime](/sql-reference/data-types/datetime.md)、または[DateTime64](/sql-reference/data-types/datetime64.md)データ型として評価される必要があります。
 
 **構文**
 
-カラムの有効期限を設定する:
+カラムの有効期間を設定する:
 
 ```sql
 TTL time_column
 TTL time_column + interval
 ```
 
-`interval`を定義するには、[time interval](/sql-reference/operators#operators-for-working-with-dates-and-times)演算子を使用します。例えば：
+`interval`を定義するには、[時間間隔](/sql-reference/operators#operators-for-working-with-dates-and-times)演算子を使用します。例:
 
 ```sql
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
-### カラムのTTL {#mergetree-column-ttl}
 
-カラム内の値が期限切れになると、ClickHouseはそれらをカラムデータ型のデフォルト値で置き換えます。データパーツ内のすべてのカラム値が期限切れの場合、ClickHouseはそのカラムをファイルシステム内のデータパーツから削除します。
+### カラムTTL {#mergetree-column-ttl}
+
+カラム内の値が期限切れになると、ClickHouseはそれらをカラムデータ型のデフォルト値で置き換えます。データパート内のすべてのカラム値が期限切れになった場合、ClickHouseはファイルシステム内のデータパートからこのカラムを削除します。
 
 `TTL`句はキーカラムには使用できません。
 
 **例**
-#### `TTL`のあるテーブルの作成: {#creating-a-table-with-ttl}
+
+#### `TTL`を使用したテーブルの作成: {#creating-a-table-with-ttl}
 
 ```sql
 CREATE TABLE tab
@@ -588,23 +654,26 @@ ENGINE = MergeTree
 PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
-#### 既存テーブルのカラムにTTLを追加 {#adding-ttl-to-a-column-of-an-existing-table}
+
+#### 既存テーブルのカラムにTTLを追加する {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
 ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 DAY;
 ```
-#### カラムのTTLを変更 {#altering-ttl-of-the-column}
+
+#### カラムのTTLを変更する {#altering-ttl-of-the-column}
 
 ```sql
 ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 MONTH;
 ```
+
 ### テーブルTTL {#mergetree-table-ttl}
 
-テーブルは、期限切れの行を削除するための式や、[ディスクまたはボリューム](#table_engine-mergetree-multiple-volumes)間でパーツを自動的に移動させるための複数の式を持つことができます。テーブル内の行が期限切れになると、ClickHouseは対応するすべての行を削除します。パーツの移動または再圧縮の場合、パーツのすべての行が`TTL`式の条件を満たす必要があります。
+テーブルには、期限切れ行を削除するための式と、[ディスクまたはボリューム](#table_engine-mergetree-multiple-volumes)間でパーツを自動的に移動するための複数の式を設定できます。テーブル内の行が期限切れになると、ClickHouseは対応するすべての行を削除します。パーツの移動または再圧縮の場合、パーツのすべての行が`TTL`式の条件を満たす必要があります。
 
 ```sql
 TTL expr
@@ -613,25 +682,27 @@ TTL expr
     [GROUP BY key_expr [SET v1 = aggr_func(v1) [, v2 = aggr_func(v2) ...]] ]
 ```
 
-TTLルールのタイプはそれぞれのTTL式に続くことができます。これは、式が満たされた（現在の時間に達した）ときに行うべきアクションに影響します：
+TTLルールのタイプは各TTL式の後に指定できます。これは、式が満たされた(現在時刻に達した)ときに実行されるアクションを決定します:
 
-- `DELETE` - 期限切れの行を削除します（デフォルトのアクション）；
-- `RECOMPRESS codec_name` - `codec_name`でデータパートを再圧縮します；
-- `TO DISK 'aaa'` - パートをディスク`aaa`に移動します；
-- `TO VOLUME 'bbb'` - パートをディスク`bbb`に移動します；
-- `GROUP BY` - 期限切れの行を集約します。
+- `DELETE` - 期限切れ行を削除する(デフォルトアクション)
+- `RECOMPRESS codec_name` - `codec_name`でデータパーツを再圧縮する
+- `TO DISK 'aaa'` - パーツをディスク`aaa`に移動する
+- `TO VOLUME 'bbb'` - パーツをボリューム`bbb`に移動する
+- `GROUP BY` - 期限切れ行を集約する
 
-`DELETE`アクションは、フィルタ条件に基づいて期限切れの行の一部のみを削除するために`WHERE`句と共に使用できます：
+`DELETE`アクションは`WHERE`句と組み合わせて使用でき、フィルタリング条件に基づいて期限切れ行の一部のみを削除できます:
+
 ```sql
 TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 ```
 
-`GROUP BY`式はテーブルの主キーのプレフィックスでなければなりません。
+`GROUP BY`式は、テーブルのプライマリキーの接頭辞である必要があります。
 
-カラムが`GROUP BY`式の一部でなく、`SET`句に明示的に設定されていない場合、結果行にはグループ化された行からの偶発的な値が含まれます（まるで集約関数`any`が適用されたように）。
+カラムが`GROUP BY`式の一部ではなく、`SET`句で明示的に設定されていない場合、結果行にはグループ化された行からの任意の値が含まれます(集約関数`any`が適用されたかのように)。
 
 **例**
-#### `TTL`のあるテーブルの作成: {#creating-a-table-with-ttl-1}
+
+#### `TTL`を使用したテーブルの作成: {#creating-a-table-with-ttl-1}
 
 ```sql
 CREATE TABLE tab
@@ -646,14 +717,16 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
-#### テーブルの`TTL`を変更: {#altering-ttl-of-the-table}
+
+#### テーブルの`TTL`を変更する: {#altering-ttl-of-the-table}
 
 ```sql
 ALTER TABLE tab
     MODIFY TTL d + INTERVAL 1 DAY;
 ```
 
-作成するテーブルでは、行が1か月後に期限切れになります。期限切れの行で日付が月曜日の場合は削除されます：
+
+1ヶ月後に行の有効期限が切れるテーブルを作成します。日付が月曜日である期限切れの行は削除されます:
 
 ```sql
 CREATE TABLE table_with_where
@@ -666,6 +739,7 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
+
 #### 期限切れの行が再圧縮されるテーブルの作成: {#creating-a-table-where-expired-rows-are-recompressed}
 
 ```sql
@@ -681,7 +755,7 @@ TTL d + INTERVAL 1 MONTH RECOMPRESS CODEC(ZSTD(17)), d + INTERVAL 1 YEAR RECOMPR
 SETTINGS min_rows_for_wide_part = 0, min_bytes_for_wide_part = 0;
 ```
 
-期限切れの行が集約されるテーブルを作成します。結果行の`x`にはグループ行の最大値が含まれ、`y`には最小値、`d`にはグループ行から選ばれた偶発的な値が含まれます。
+期限切れの行が集約されるテーブルを作成します。結果の行では、`x`はグループ化された行全体の最大値、`y`は最小値、`d`はグループ化された行からの任意の値を含みます。
 
 ```sql
 CREATE TABLE table_for_aggregation
@@ -696,56 +770,61 @@ ENGINE = MergeTree
 ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
+
 ### 期限切れデータの削除 {#mergetree-removing-expired-data}
 
-期限切れの`TTL`を持つデータは、ClickHouseがデータパーツをマージするときに削除されます。
+`TTL`が期限切れとなったデータは、ClickHouseがデータパートをマージする際に削除されます。
 
-ClickHouseがデータが期限切れであると検出すると、オフスケジュールマージを実行します。このようなマージの頻度を制御するために、`merge_with_ttl_timeout`を設定できます。もし値が低すぎると、多くのオフスケジュールマージが実行され、たくさんのリソースを消費する可能性があります。
+ClickHouseがデータの期限切れを検出すると、スケジュール外のマージを実行します。このようなマージの頻度を制御するには、`merge_with_ttl_timeout`を設定できます。値が低すぎると、多くのリソースを消費する可能性のあるスケジュール外のマージが頻繁に実行されます。
 
-マージの間に`SELECT`クエリを実行すると、期限切れのデータが返されることがあります。これを避けるために、`SELECT`の前に[OPTIMIZE](/sql-reference/statements/optimize.md)クエリを使用してください。
+マージの間に`SELECT`クエリを実行すると、期限切れのデータが取得される可能性があります。これを回避するには、`SELECT`の前に[OPTIMIZE](/sql-reference/statements/optimize.md)クエリを使用してください。
 
-**関連資料**
+**関連項目**
 
 - [ttl_only_drop_parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts)設定
 
+
 ## ディスクタイプ {#disk-types}
 
-ローカルブロックデバイスに加えて、ClickHouseは次のストレージタイプをサポートしています：
-- [`s3` for S3 and MinIO](#table_engine-mergetree-s3)
-- [`gcs` for GCS](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
-- [`blob_storage_disk` for Azure Blob Storage](/operations/storing-data#azure-blob-storage)
-- [`hdfs` for HDFS](/engines/table-engines/integrations/hdfs)
-- [`web` for read-only from web](/operations/storing-data#web-storage)
-- [`cache` for local caching](/operations/storing-data#using-local-cache)
-- [`s3_plain` for backups to S3](/operations/backup#backuprestore-using-an-s3-disk)
-- [`s3_plain_rewritable` for immutable, non-replicated tables in S3](/operations/storing-data.md#s3-plain-rewritable-storage)
+ローカルブロックデバイスに加えて、ClickHouseは以下のストレージタイプをサポートしています：
 
-## データストレージ用の複数のブロックデバイスの使用 {#table_engine-mergetree-multiple-volumes}
+- [`s3` S3およびMinIO向け](#table_engine-mergetree-s3)
+- [`gcs` GCS向け](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
+- [`blob_storage_disk` Azure Blob Storage向け](/operations/storing-data#azure-blob-storage)
+- [`hdfs` HDFS向け](/engines/table-engines/integrations/hdfs)
+- [`web` Webからの読み取り専用アクセス向け](/operations/storing-data#web-storage)
+- [`cache` ローカルキャッシュ向け](/operations/storing-data#using-local-cache)
+- [`s3_plain` S3へのバックアップ向け](/operations/backup#backuprestore-using-an-s3-disk)
+- [`s3_plain_rewritable` S3上の不変・非レプリケートテーブル向け](/operations/storing-data.md#s3-plain-rewritable-storage)
+
+
+## データ保存のための複数のブロックデバイスを使用する {#table_engine-mergetree-multiple-volumes}
+
 ### はじめに {#introduction}
 
-`MergeTree`ファミリのテーブルエンジンは、複数のブロックデバイスにデータを保存できます。例として、特定のテーブルのデータが暗黙的に「ホット」と「コールド」に分割されている場合に便利です。最新のデータは定期的に要求されますが、必要とされるスペースは少量です。それに対して、非常に大きな履歴データはあまり要求されません。複数のディスクが利用可能な場合、「ホット」データは高速ディスク（たとえば、NVMe SSDやメモリ）に配置され、「コールド」データは比較的遅いディスク（たとえば、HDD）に配置されることがあります。
+`MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイスにデータを格納できます。例えば、あるテーブルのデータが「ホット」と「コールド」に暗黙のうちに分けられる場合に有用です。最近のデータは頻繁にアクセスされますが、必要なストレージ容量は少量です。一方、ファットテールの古い履歴データはアクセス頻度が低いです。複数のディスクが利用可能な場合、「ホット」データは高速ディスク（例: NVMe SSD やメモリ内）に、「コールド」データは比較的低速なディスク（例: HDD）に配置できます。
 
-データパートは、`MergeTree`エンジンテーブルの最小移動可能ユニットです。1つのパートに属するデータは、1つのディスクに保存されます。データパーツは、ユーザーの設定に従って、バックグラウンドでディスク間を移動させることができ、また[ALTER](/sql-reference/statements/alter/partition)クエリを使って移動することもできます。
+データパーツは、`MergeTree` エンジンのテーブルにおける最小の移動単位です。一つのパーツに属するデータは一つのディスクに格納されます。データパーツは、バックグラウンドで（ユーザー設定に基づいて）ディスク間で移動でき、また [ALTER](/sql-reference/statements/alter/partition) クエリによっても移動可能です。
 
 ### 用語 {#terms}
 
-- ディスク — ファイルシステムにマウントされたブロックデバイス。
-- デフォルトディスク — [path](/operations/server-configuration-parameters/settings.md/#path)サーバ設定で指定されたパスを保存するディスク。
-- ボリューム — 等しいディスクの順序付けられたセット（[JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)に類似）。
-- ストレージポリシー — ボリュームのセットとそれら間でデータを移動させるルール。
+- Disk — ファイルシステムにマウントされたブロックデバイス。
+- Default disk — [path](/operations/server-configuration-parameters/settings.md/#path) サーバー設定で指定されたパスにデータを格納するディスク。
+- Volume — 同一のディスクからなる順序付き集合（[JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) に類似）。
+- Storage policy — ボリュームの集合と、それら間でデータを移動するためのルール。
 
-記述されたエンティティにつけられた名前は、システムテーブル、[system.storage_policies](/operations/system-tables/storage_policies)および[system.disks](/operations/system-tables/disks)から見つけることができます。テーブルに構成済みのストレージポリシーの1つを適用するには、`MergeTree`エンジンファミリテーブルの`storage_policy`設定を使用します。
+記述されたエンティティの名前は、システムテーブル [system.storage_policies](/operations/system-tables/storage_policies) および [system.disks](/operations/system-tables/disks) で確認できます。構成済みのストレージポリシーのうちの一つをテーブルに適用するには、`MergeTree` エンジンファミリーテーブルの `storage_policy` 設定を使用します。
 
 ### 設定 {#table_engine-mergetree-multiple-volumes_configure}
 
-ディスク、ボリューム、ストレージポリシーは、`<storage_configuration>`タグ内に宣言されるべきです。これは`config.d`ディレクトリ内のファイルに記述できます。
+ディスク、ボリューム、およびストレージポリシーは、`config.d` ディレクトリのファイル内の `<storage_configuration>` タグで宣言します。
 
 :::tip
-ディスクはクエリの`SETTINGS`セクションにも宣言できます。これは、例えば、URLでホストされているディスクを一時的に接続するために便利です。
-詳細については、[動的ストレージ](/operations/storing-data#dynamic-configuration)を参照してください。
+ディスクはクエリの `SETTINGS` セクションで宣言することも可能です。これは、例えば URL でホストされたディスクを一時的にアタッチするアドホック分析に便利です。
+詳細は [dynamic storage](/operations/storing-data#dynamic-configuration) を参照してください。
 :::
 
-設定構造：
+設定構造:
 
 ```xml
 <storage_configuration>
@@ -769,15 +848,15 @@ ClickHouseがデータが期限切れであると検出すると、オフスケ�
 </storage_configuration>
 ```
 
-タグ：
+タグ:
 
-- `<disk_name_N>` — ディスク名。すべてのディスクで名前は異なる必要があります。
-- `path` — サーバがデータ（`data`および`shadow`フォルダ）を保存するパスで、'/'で終了する必要があります。
-- `keep_free_space_bytes` — 確保されるべき空きディスクスペースの量。
+- `<disk_name_N>` — ディスク名。すべてのディスクで名前は一意でなければなりません。
+- `path` — サーバーがデータを格納するパス（`data` および `shadow` フォルダ）、末尾に '/' を付ける必要があります。
+- `keep_free_space_bytes` — 予約する空きディスク容量の量。
 
-ディスク定義の順番は重要ではありません。
+ディスクの定義順序は重要ではありません。
 
-ストレージポリシー設定のマークアップ：
+ストレージポリシーの設定マークアップ:
 
 ```xml
 <storage_configuration>
@@ -807,32 +886,33 @@ ClickHouseがデータが期限切れであると検出すると、オフスケ�
 </storage_configuration>
 ```
 
-タグ：
+タグ:
 
-- `policy_name_N` — ポリシー名。ポリシー名は一意である必要があります。
-- `volume_name_N` — ボリューム名。ボリューム名は一意である必要があります。
-- `disk` — ボリューム内のディスク。
-- `max_data_part_size_bytes` — ボリュームのディスクのうちのいずれかに保存できるパートの最大サイズ。マージされたパートのサイズが`max_data_part_size_bytes`を超えると、そのパートは次のボリュームに書き込まれます。この機能により、新規/小さいパーツをホット（SSD）ボリュームに保持し、大きくなると冷たい（HDD）ボリュームに移動させることができます。この設定を単一ボリュームのみを持つポリシーでは使用しないでください。
-- `move_factor` — 利用可能なスペースの量がこのファクターより低下すると、データは自動的に次のボリュームに移動し始めます（デフォルトは0.1）。ClickHouseは既存のパートをサイズが大きい順にソートし、`move_factor`条件を満たすのに十分なサイズを持つパーツを選択します。すべてのパートの合計サイズが不十分な場合、すべてのパートが移動されます。
-- `perform_ttl_move_on_insert` — データパートのINSERT時にTTLの移動を無効にします。デフォルト（有効な場合）では、TTL移動ルールによってすでに期限切れのデータパートを挿入した場合、それは即座に移動ルールで宣言されたボリューム/ディスクに移転します。これにより、宛先ボリューム/ディスクが遅い場合（例：S3）に挿入が大幅に遅くなる可能性があります。無効にした場合、すでに期限切れのデータパートはデフォルトのボリュームに書き込まれ、その後すぐにTTLボリュームに移動されます。
-- `load_balancing` - ディスクバランスのポリシー、`round_robin`または`least_used`。
-- `least_used_ttl_ms` - すべてのディスクでの使用可能なスペースの更新に対するタイムアウト（ミリ秒単位）を設定します（`0` - 常に更新、`-1` - 決して更新しないデフォルトは`60000`）。ClickHouseがのみ使用され、オンラインファイルシステムのリサイズ/縮小の影響を受けない場合は`-1`が使用できますが、他の場合では推奨されません。最終的に不正確なスペース配分を引き起こしますので。
-- `prefer_not_to_merge` — この設定は使用すべきではありません。このボリュームでのデータパーツのマージを無効にします（これは害があり、パフォーマンスが低下します）。この設定が有効な場合（やらないでください）、このボリュームでのデータのマージは許可されません（これは悪いことです）。これにより、ClickHouseが遅いディスクとどのように作業するかを制御できます（ただし、ClickHouseはより良く知っているので、この設定を使用しないでください）。
-- `volume_priority` — ボリュームが充填される順序（優先度）を定義します。値が小さいほど優先度が高くなります。このパラメータの値は自然数で、範囲を1からNまで（最低優先度が与えられます）カバーし、数値を飛ばしてはなりません。
-  * _すべて_のボリュームにタグが付けられている場合、それらは指定された順序で優先されます。
-  * _一部_のボリュームにのみタグが付けられている場合、タグのないボリュームは最低優先度を持ち、設定された順序で優先されます。
-  * _ボリュームにタグが付けられていない場合、その優先度は設定で宣言された順序に従って設定されます。
-  * 2つのボリュームは同じ優先度値を持つことができません。
 
-設定例：
+* `policy_name_N` — ポリシー名。ポリシー名は一意でなければなりません。
+* `volume_name_N` — ボリューム名。ボリューム名は一意でなければなりません。
+* `disk` — ボリューム内のディスク。
+* `max_data_part_size_bytes` — そのボリューム内のいずれのディスク上にも保存できるパーツの最大サイズ。マージ後のパーツサイズが `max_data_part_size_bytes` より大きくなると見積もられた場合、そのパーツは次のボリュームに書き込まれます。基本的にこの機能により、新しい/小さいパーツをホット（SSD）ボリュームに保持し、大きなサイズに達したときにコールド（HDD）ボリュームへ移動できます。ポリシーにボリュームが 1 つしかない場合は、この設定を使用しないでください。
+* `move_factor` — 利用可能な空き容量がこの係数より小さくなったとき、自動的にデータを次のボリューム（存在する場合）へ移動し始めます（デフォルトは 0.1）。ClickHouse は既存のパーツをサイズ順に大きいものから小さいものへ（降順で）ソートし、`move_factor` 条件を満たすのに十分な合計サイズとなるようにパーツを選択します。全パーツの合計サイズが不十分な場合は、すべてのパーツが移動されます。
+* `perform_ttl_move_on_insert` — データパーツ INSERT 時の TTL による移動を無効にします。デフォルト（有効な場合）では、TTL move ルールですでに期限切れとなっているデータパーツを挿入すると、直ちに移動ルールで指定されたボリューム/ディスクへ移動されます。宛先のボリューム/ディスクが低速（例：S3 のようなリモートストレージ）の場合、これは INSERT を大幅に遅くする可能性があります。無効にした場合、すでに期限切れのデータパーツはいったんデフォルトボリュームに書き込まれ、その直後に TTL ボリュームへ移動されます。
+* `load_balancing` - ディスクバランシングのポリシー。`round_robin` または `least_used`。
+* `least_used_ttl_ms` - すべてのディスクの利用可能な空き容量を更新するためのタイムアウト（ミリ秒単位）を設定します（`0` - 常に更新、`-1` - 決して更新しない、デフォルトは `60000`）。なお、そのディスクが ClickHouse のみで使用され、オンラインでのファイルシステムのサイズ変更（拡張/縮小）の対象とならない場合は `-1` を使用できます。それ以外のケースでは推奨されません。時間の経過とともに空き容量の把握が不正確になり、容量分布が偏る原因となるためです。
+* `prefer_not_to_merge` — この設定は使用しないでください。このボリューム上のデータパーツのマージを無効にします（有害であり、パフォーマンス低下を招きます）。この設定が有効な場合（有効にしないでください）、このボリューム上でのマージは許可されません（これは望ましくありません）。これにより（ただし、その必要はありません）、ClickHouse が低速ディスクをどのように扱うかを制御できますが（何かを制御したくなる時点で誤りです）、ClickHouse の方が適切に扱うため、この設定は使用しないでください。
+* `volume_priority` — ボリュームがどの優先度（順序）で埋められるかを定義します。値が小さいほど優先度が高くなります。パラメータ値は自然数でなければならず、1 から N（与えられた中で最も低い優先度）までの範囲を欠番なしで網羅する必要があります。
+  * *すべての* ボリュームがタグ付けされている場合、それらは指定された順序で優先されます。
+  * 一部のボリュームのみがタグ付けされている場合、タグのないボリュームは最も優先度が低く、設定ファイル内で定義された順序で優先されます。
+  * *一つも* ボリュームがタグ付けされていない場合、その優先度は設定ファイル内で宣言された順序に対応して設定されます。
+  * 2 つのボリュームが同じ優先度値を持つことはできません。
+
+Configuration examples:
 
 ```xml
 <storage_configuration>
     ...
     <policies>
-        <hdd_in_order> <!-- policy name -->
+        <hdd_in_order> <!-- ポリシー名 -->
             <volumes>
-                <single> <!-- volume name -->
+                <single> <!-- ボリューム名 -->
                     <disk>disk1</disk>
                     <disk>disk2</disk>
                 </single>
@@ -867,13 +947,16 @@ ClickHouseがデータが期限切れであると検出すると、オフスケ�
 </storage_configuration>
 ```
 
-与えられた例では、`hdd_in_order`ポリシーは[ラウンドロビン](https://en.wikipedia.org/wiki/Round-robin_scheduling)方式を実装します。したがって、このポリシーは1つのボリューム（`single`）のみを定義し、データパーツはそのすべてのディスクに円環の順序で保存されます。このようなポリシーは、システムに似た複数のディスクがマウントされているがRAIDが設定されていない場合に非常に便利です。ただし、各個別ディスクドライブは信頼性が低いため、レプリケーション係数を3以上にして対処することをお勧めします。
 
-システム内にさまざまな種類のディスクがある場合、`moving_from_ssd_to_hdd`ポリシーを代わりに使用できます。ボリューム`hot`はSSDディスク（`fast_ssd`）で構成されており、このボリュームに保存できるパートの最大サイズは1GBです。1GBより大きいサイズのすべてのパーツは直接`cold`ボリューム（HDDディスク`disk1`を含む）に保存されます。また、ディスク`fast_ssd`が80％以上満たされると、データはバックグラウンドプロセスによって`disk1`に転送されます。
+この例では、`hdd_in_order` ポリシーは [ラウンドロビン](https://en.wikipedia.org/wiki/Round-robin_scheduling) 方式を実装しています。このポリシーは1つのボリューム（`single`）のみを定義し、データパーツはすべてのディスクに循環順序で格納されます。このようなポリシーは、複数の類似したディスクがシステムにマウントされているが RAID が構成されていない場合に非常に有用です。個々のディスクドライブは信頼性が高くないため、レプリケーション係数を3以上にして補う必要があることに留意してください。
 
-ストレージポリシー内のボリュームの列挙順序は、少なくとも1つのボリュームに明示的な`volume_priority`パラメータがない場合に重要です。ボリュームが満杯になると、データは次のボリュームに移動されます。ディスクの列挙順序も重要で、データはそれらに順番に保存されるからです。
+システムに異なる種類のディスクが利用可能な場合は、代わりに `moving_from_ssd_to_hdd` ポリシーを使用できます。ボリューム `hot` は SSD ディスク（`fast_ssd`）で構成され、このボリュームに格納できるパーツの最大サイズは 1GB です。1GB より大きいサイズのパーツはすべて、HDD ディスク `disk1` を含む `cold` ボリュームに直接格納されます。
+また、ディスク `fast_ssd` が 80% 以上満たされると、バックグラウンドプロセスによってデータが `disk1` に転送されます。
 
-テーブルを作成する際には、構成済みのストレージポリシーの1つを適用できます：
+ストレージポリシー内のボリューム列挙の順序は、リストされたボリュームの少なくとも1つに明示的な `volume_priority` パラメータがない場合に重要です。
+ボリュームが満杯になると、データは次のボリュームに移動されます。ディスク列挙の順序も重要です。なぜなら、データは順番にディスクに格納されるためです。
+
+テーブルを作成する際、構成されたストレージポリシーの1つを適用できます：
 
 ```sql
 CREATE TABLE table_with_non_default_policy (
@@ -887,44 +970,50 @@ PARTITION BY toYYYYMM(EventDate)
 SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ```
 
-`default`ストレージポリシーは、`<path>`で指定された1つのディスクのみで構成される1つのボリュームのみの使用を意味します。
-テーブル作成後にストレージポリシーを変更するには、[ALTER TABLE ... MODIFY SETTING]クエリを使用します。新しいポリシーはすべての古いディスクと同じ名前のボリュームを含む必要があります。
+`default` ストレージポリシーは、`<path>` で指定された1つのディスクのみで構成される1つのボリュームのみを使用することを意味します。
+テーブル作成後に [ALTER TABLE ... MODIFY SETTING] クエリでストレージポリシーを変更できますが、新しいポリシーには同じ名前のすべての古いディスクとボリュームを含める必要があります。
 
-データパーツのバックグラウンド移動を実行するスレッドの数は、[background_move_pool_size](/operations/server-configuration-parameters/settings.md/#background_move_pool_size)設定によって変更できます。
+データパーツのバックグラウンド移動を実行するスレッド数は、[background_move_pool_size](/operations/server-configuration-parameters/settings.md/#background_move_pool_size) 設定で変更できます。
 
 ### 詳細 {#details}
 
-`MergeTree`テーブルの場合、データは次の方法でディスクに入ります：
+`MergeTree` テーブルの場合、データは以下のさまざまな方法でディスクに書き込まれます：
 
-- 挿入の結果（`INSERT`クエリ）。
-- バックグラウンドマージおよび[ミューテーション](/sql-reference/statements/alter#mutations)中。
-- 別のレプリカからのダウンロード。
-- パーティションフリーズの結果 [ALTER TABLE ... FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)。
+- 挿入の結果として（`INSERT` クエリ）。
+- バックグラウンドマージおよび [ミューテーション](/sql-reference/statements/alter#mutations) 中。
+- 別のレプリカからダウンロードする際。
+- パーティションフリーズの結果として [ALTER TABLE ... FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)。
 
-ミューテーションやパーティションのフリーズを除くすべての場合、パートは指定されたストレージポリシーに従ってボリュームとディスクに格納されます：
+ミューテーションとパーティションフリーズを除くこれらすべてのケースにおいて、パーツは指定されたストレージポリシーに従ってボリュームとディスクに格納されます：
 
-1. パートを格納するための十分なディスクスペース（`unreserved_space > current_part_size`）があり、所定のサイズのパーツを格納することを許可する最初のボリューム（定義の順序で）が選択されます（`max_data_part_size_bytes > current_part_size`）。
-2. このボリューム内で、以前のデータのチャンクを保存するために使用されていたディスクに続くディスクが選択され、パートサイズよりも自由なスペースがあるもの（`unreserved_space - keep_free_space_bytes > current_part_size`）。
+1.  パーツを格納するのに十分なディスク容量（`unreserved_space > current_part_size`）があり、指定されたサイズのパーツの格納を許可する（`max_data_part_size_bytes > current_part_size`）最初のボリューム（定義順）が選択されます。
+2.  このボリューム内で、前のデータチャンクの格納に使用されたディスクの次のディスクであり、パーツサイズより大きい空き容量（`unreserved_space - keep_free_space_bytes > current_part_size`）を持つディスクが選択されます。
 
-内部的には、ミューテーションやパーティションのフリーズは[ハードリンク](https://en.wikipedia.org/wiki/Hard_link)を使用します。異なるディスク間のハードリンクはサポートされていないため、このような場合、生成されたパーツは元のパーツと同じディスクに保存されます。
+内部的には、ミューテーションとパーティションフリーズは [ハードリンク](https://en.wikipedia.org/wiki/Hard_link) を使用します。異なるディスク間のハードリンクはサポートされていないため、このような場合、結果のパーツは初期のパーツと同じディスクに格納されます。
 
-バックグラウンドで、パーツはフィル設定に従ってボリューム間で自由なスペースに基づいて移動します（`move_factor`パラメータ）。データは決して最後から最初には転送されません。バックグラウンド移動を監視するには、システムテーブル [system.part_log](/operations/system-tables/part_log)（フィールド`type = MOVE_PART`）および [system.parts](/operations/system-tables/parts.md)（フィールド`path`および`disk`）を使用できます。また、サーバーログに詳細な情報が見つかります。
+バックグラウンドでは、構成ファイルでボリュームが宣言された順序に従って、空き容量（`move_factor` パラメータ）に基づいてパーツがボリューム間で移動されます。
+データは最後のボリュームから最初のボリュームに転送されることはありません。バックグラウンド移動を監視するには、システムテーブル [system.part_log](/operations/system-tables/part_log)（フィールド `type = MOVE_PART`）および [system.parts](/operations/system-tables/parts.md)（フィールド `path` および `disk`）を使用できます。また、詳細情報はサーバーログで確認できます。
 
-ユーザーは、クエリ [ALTER TABLE ... MOVE PART\|PARTITION ... TO VOLUME\|DISK ...](/sql-reference/statements/alter/partition)を使用して、パートまたはパーティションを1つのボリュームから別のボリュームに強制移動できます。この場合、バックグラウンド操作に対するすべての制約が考慮されます。このクエリは独自に移動を開始し、バックグラウンド操作の完了を待ちません。ユーザーは、十分な空きスペースがない場合や必要条件が満たされていない場合はエラーメッセージを受け取ります。
+ユーザーは、クエリ [ALTER TABLE ... MOVE PART\|PARTITION ... TO VOLUME\|DISK ...](/sql-reference/statements/alter/partition) を使用して、パーツまたはパーティションをあるボリュームから別のボリュームに強制的に移動できます。バックグラウンド操作のすべての制限が考慮されます。このクエリは独自に移動を開始し、バックグラウンド操作の完了を待ちません。十分な空き容量がない場合、または必要な条件のいずれかが満たされていない場合、ユーザーはエラーメッセージを受け取ります。
 
-データの移動はデータ複製の妨げになりません。したがって、同じテーブルに対して異なるレプリカに異なるストレージポリシーを指定できます。
+データの移動はデータレプリケーションに干渉しません。したがって、異なるレプリカ上の同じテーブルに対して異なるストレージポリシーを指定できます。
 
-バックグラウンドマージやミューテーションが完了した後、古いパーツは一定の時間が経過するまで削除されません（`old_parts_lifetime`）。この間、それらは他のボリュームやディスクに移動されません。したがって、パーツが最終的に削除されるまで、それらは使用されているディスクスペースの評価に含まれます。
 
-ユーザーは、[JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)ボリュームの異なるディスクに新しい大きなパーツをバランスよく割り当てることができます。これは [min_bytes_to_rebalance_partition_over_jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod)設定を使用します。
+バックグラウンドで実行されるマージおよびミューテーションが完了した後、古いパーツは、一定時間（`old_parts_lifetime`）が経過してから削除されます。
+この間、それらは他のボリュームやディスクに移動されません。したがって、パーツが最終的に削除されるまでは、ディスク使用量の算出に引き続き含まれます。
 
-## 外部ストレージを使用したデータストレージ {#table_engine-mergetree-s3}
+ユーザーは、[min_bytes_to_rebalance_partition_over_jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod) 設定を使用することで、新しい大きなパーツを [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) ボリューム内の複数ディスクにバランス良く割り当てることができます。
 
-[MergeTree](/engines/table-engines/mergetree-family/mergetree.md)ファミリのテーブルエンジンは、`S3`、`AzureBlobStorage`、`HDFS`にデータを保存できます。これは、タイプ`s3`、`azure_blob_storage`、`hdfs`のディスクを使用します。詳細については、[外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)を参照してください。
 
-外部ストレージとして[S3](https://aws.amazon.com/s3/)を使用する例です。
 
-設定マークアップ：
+## 外部ストレージを使用したデータ保存 {#table_engine-mergetree-s3}
+
+[MergeTree](/engines/table-engines/mergetree-family/mergetree.md)ファミリーのテーブルエンジンは、`s3`、`azure_blob_storage`、`hdfs`のディスクタイプを使用して、それぞれ`S3`、`AzureBlobStorage`、`HDFS`にデータを保存できます。詳細については、[外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)を参照してください。
+
+`s3`タイプのディスクを使用した外部ストレージとしての[S3](https://aws.amazon.com/s3/)の例を以下に示します。
+
+設定マークアップ:
+
 ```xml
 <storage_configuration>
     ...
@@ -964,34 +1053,36 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 </storage_configuration>
 ```
 
-外部ストレージオプションの設定については、[こちら](/operations/storing-data.md/#configuring-external-storage)を参照してください。
+[外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
 :::note キャッシュ設定
-ClickHouseバージョン22.3から22.7は異なるキャッシュ設定を使用します。これらのバージョンを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を確認してください。
+ClickHouseバージョン22.3から22.7では異なるキャッシュ設定を使用します。これらのバージョンを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
+
 
 ## 仮想カラム {#virtual-columns}
 
 - `_part` — パートの名前。
-- `_part_index` — クエリ結果におけるパートの連続インデックス。
-- `_part_starting_offset` — クエリ結果におけるパートの累積開始行。
-- `_part_offset` — パート内の行の番号。
-- `_part_granule_offset` — パート内のグラニュールの数。
+- `_part_index` — クエリ結果内のパートの連番インデックス。
+- `_part_starting_offset` — クエリ結果内のパートの累積開始行。
+- `_part_offset` — パート内の行番号。
+- `_part_granule_offset` — パート内のグラニュール番号。
 - `_partition_id` — パーティションの名前。
-- `_part_uuid` — 一意のパート識別子（MergeTree設定`assign_part_uuids`が有効な場合）。
-- `_part_data_version` — パートのデータバージョン（最小ブロック番号またはミューテーションバージョン）。
-- `_partition_value` — `partition by`式の値（タプル）。
-- `_sample_factor` — サンプルファクター（クエリから）。
-- `_block_number` — 挿入時に割り当てられた行の元のブロック番号で、`enable_block_number_column`が有効な場合にマージ時に保持されます。
-- `_block_offset` — 挿入時に割り当てられたブロック内の元の行番号で、`enable_block_offset_column`が有効な場合にマージ時に保持されます。
+- `_part_uuid` — 一意のパート識別子(MergeTree設定`assign_part_uuids`が有効な場合)。
+- `_part_data_version` — パートのデータバージョン(最小ブロック番号またはミューテーションバージョンのいずれか)。
+- `_partition_value` — `partition by`式の値(タプル)。
+- `_sample_factor` — サンプリング係数(クエリより)。
+- `_block_number` — 挿入時に割り当てられた行の元のブロック番号。設定`enable_block_number_column`が有効な場合、マージ時に保持される。
+- `_block_offset` — 挿入時に割り当てられたブロック内の元の行番号。設定`enable_block_offset_column`が有効な場合、マージ時に保持される。
 - `_disk_name` — ストレージに使用されるディスク名。
+
 
 ## カラム統計 {#column-statistics}
 
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
+<ExperimentalBadge />
+<CloudNotSupportedBadge />
 
-統計の宣言は、`*MergeTree*`ファミリーのテーブルの`CREATE`クエリのカラムセクションにあります。これは、`set allow_experimental_statistics = 1`を有効にするときです。
+統計の宣言は、`set allow_experimental_statistics = 1`を有効にした場合、`*MergeTree*`ファミリーのテーブルに対する`CREATE`クエリのカラムセクションに記述します。
 
 ```sql
 CREATE TABLE tab
@@ -1003,68 +1094,69 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-統計は`ALTER`ステートメントで操作することもできます。
+`ALTER`文を使用して統計を操作することもできます。
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-これらの軽量統計は、カラムの値の分布に関する情報を集約します。統計は各パートに保存され、挿入時に更新されます。
-この統計は、`set allow_statistics_optimize = 1`を有効にしている場合にのみ、prewhere最適化に使用できます。
+これらの軽量な統計は、カラム内の値の分布に関する情報を集約します。統計は各パートに保存され、挿入が行われるたびに更新されます。
+統計は、`set allow_statistics_optimize = 1`を有効にした場合にのみ、prewhere最適化に使用できます。
 
 ### 利用可能なカラム統計のタイプ {#available-types-of-column-statistics}
 
 - `MinMax`
 
-    数値カラムに対する範囲フィルタの選択度を推定できる最小値と最大値のカラム値。
+  数値カラムに対する範囲フィルタの選択性を推定するための、カラムの最小値と最大値です。
 
-    構文: `minmax`
+  構文: `minmax`
 
 - `TDigest`
 
-    [TDigest](https://github.com/tdunning/t-digest)スケッチは、数値カラムの近似パーセンタイル（例えば、90パーセンタイル）を計算することを可能にします。
+  数値カラムに対して近似パーセンタイル(例: 90パーセンタイル)を計算できる[TDigest](https://github.com/tdunning/t-digest)スケッチです。
 
-    構文: `tdigest`
+  構文: `tdigest`
 
 - `Uniq`
 
-    [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog)スケッチは、カラムに含まれる異なる値の数を推定します。
+  カラムに含まれる個別値の数を推定する[HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog)スケッチです。
 
-    構文: `uniq`
+  構文: `uniq`
 
 - `CountMin`
 
-    [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch)スケッチは、カラム内の各値の頻度の近似カウントを提供します。
+  カラム内の各値の出現頻度の近似カウントを提供する[CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch)スケッチです。
 
-    構文: `countmin`
+  構文: `countmin`
 
-### サポートされているデータタイプ {#supported-data-types}
+### サポートされるデータ型 {#supported-data-types}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String or FixedString |
-|-----------|----------------------------------------------------|-----------------------|
-| CountMin  | ✔                                                  | ✔                     |
-| MinMax    | ✔                                                  | ✗                     |
-| TDigest   | ✔                                                  | ✗                     |
-| Uniq      | ✔                                                  | ✔                     |
+|          | (U)Int*, Float*, Decimal(_), Date_, Boolean, Enum\* | String or FixedString |
+| -------- | --------------------------------------------------- | --------------------- |
+| CountMin | ✔                                                  | ✔                    |
+| MinMax   | ✔                                                  | ✗                     |
+| TDigest  | ✔                                                  | ✗                     |
+| Uniq     | ✔                                                  | ✔                    |
 
-### サポートされている操作 {#supported-operations}
+### サポートされる操作 {#supported-operations}
 
-|           | 等価フィルタ（==） | 範囲フィルタ（`>, >=, <, <=`） |
-|-----------|-----------------------|------------------------------|
-| CountMin  | ✔                     | ✗                            |
-| MinMax    | ✗                     | ✔                            |
-| TDigest   | ✗                     | ✔                            |
-| Uniq      | ✔                     | ✗                            |
+|          | 等価フィルタ (==) | 範囲フィルタ (`>, >=, <, <=`) |
+| -------- | --------------------- | ------------------------------ |
+| CountMin | ✔                    | ✗                              |
+| MinMax   | ✗                     | ✔                             |
+| TDigest  | ✗                     | ✔                             |
+| Uniq     | ✔                    | ✗                              |
+
 
 ## カラムレベルの設定 {#column-level-settings}
 
-特定のMergeTree設定はカラムレベルでオーバーライドできます：
+特定のMergeTree設定はカラムレベルで上書きできます:
 
-- `max_compress_block_size` — テーブルに書き込む前の非圧縮データの最大ブロックサイズ。
-- `min_compress_block_size` — 次のマークに書き込む際に必要な非圧縮データの最小ブロックサイズ。
+- `max_compress_block_size` — テーブルへの書き込み時に圧縮する前の非圧縮データブロックの最大サイズ。
+- `min_compress_block_size` — 次のマークを書き込む際に圧縮に必要な非圧縮データブロックの最小サイズ。
 
-例：
+例:
 
 ```sql
 CREATE TABLE tab
@@ -1076,21 +1168,21 @@ ENGINE = MergeTree
 ORDER BY id
 ```
 
-カラムレベルの設定は、[ALTER MODIFY COLUMN](/sql-reference/statements/alter/column.md)を使用して変更または削除できます。例えば：
+カラムレベルの設定は[ALTER MODIFY COLUMN](/sql-reference/statements/alter/column.md)を使用して変更または削除できます。例:
 
-- カラム宣言から`SETTINGS`を削除：
+- カラム宣言から`SETTINGS`を削除する:
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document REMOVE SETTINGS;
 ```
 
-- 設定を変更：
+- 設定を変更する:
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document MODIFY SETTING min_compress_block_size = 8192;
 ```
 
-- 1つ以上の設定をリセットし、テーブルのCREATEクエリのカラム式から設定宣言を削除します。
+- 1つ以上の設定をリセットする。これによりテーブルのCREATEクエリのカラム式における設定宣言も削除されます。
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document RESET SETTING min_compress_block_size;

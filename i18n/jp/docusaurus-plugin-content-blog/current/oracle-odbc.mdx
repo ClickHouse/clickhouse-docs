@@ -1,0 +1,24 @@
+---
+title: Oracle を ODBC 経由で使用するときに文字エンコーディングの問題が発生した場合はどうすればよいですか？
+description: "Oracle ODBC ドライバー経由で ClickHouse 外部ディクショナリのソースとして Oracle を使用する場合、`/etc/default/clickhouse` 内の `NLS_LANG` 環境変数に正しい値を設定する必要があります。"
+date: 2022-04-22
+tags: ['ネイティブクライアントとインターフェイス']
+keywords: ['Oracle', 'ODBC']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## 対処方法
+
+Oracle ODBC ドライバー経由で ClickHouse の外部ディクショナリのソースとして Oracle を使用している場合は、`/etc/default/clickhouse` 内の `NLS_LANG` 環境変数に正しい値を設定する必要があります。
+
+詳細については、[Oracle NLS&#95;LANG FAQ](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html) を参照してください。
+
+**例**
+
+```sql
+NLS_LANG=RUSSIAN_RUSSIA.UTF8
+```

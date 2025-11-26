@@ -1,55 +1,59 @@
 ---
-'sidebar_label': 'Ordering keys'
-'description': 'カスタム ordering keys を定義する方法。'
-'slug': '/integrations/clickpipes/postgres/ordering_keys'
-'title': 'Ordering Keys'
-'doc_type': 'guide'
+sidebar_label: 'オーダリングキー'
+description: 'カスタムのオーダリングキーを定義する方法。'
+slug: /integrations/clickpipes/postgres/ordering_keys
+title: 'オーダリングキー'
+doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
-Ordering Keys (またはソーティングキー) は、ClickHouseにおけるテーブルのデータがディスク上でどのようにソートされ、インデックスされるかを定義します。Postgresからレプリケートする際、ClickPipesはテーブルのPostgres主キーをClickHouseの対応するテーブルのオーダリングキーとして設定します。ほとんどの場合、Postgres主キーは十分なオーダリングキーとして機能します。ClickHouseはすでに高速スキャンに最適化されており、カスタムオーダリングキーはしばしば必要ありません。
+Ordering Key（別名 sorting key）は、ClickHouse のテーブルにおいて、データがディスク上でどのようにソートされ、どのようにインデックス付けされるかを定義します。Postgres からレプリケーションする際、ClickPipes はデフォルトで、Postgres のテーブルのプライマリキーを、対応する ClickHouse テーブルのオーダリングキーとして使用します。多くの場合、ClickHouse はすでに高速スキャン向けに最適化されているため、Postgres のプライマリキーだけで十分なオーダリングキーとなり、独自のオーダリングキーを定義する必要はありません。
 
-[マイグレーションガイド](/migrations/postgresql/data-modeling-techniques)に記載されているように、大規模なユースケースの場合、クエリを最適化するためにClickHouseのオーダリングキーにはPostgres主キーに加えて追加のカラムを含めるべきです。
+[移行ガイド](/migrations/postgresql/data-modeling-techniques)に記載されているとおり、より大規模なユースケースでは、クエリを最適化するために、ClickHouse のオーダリングキーに Postgres のプライマリキーに加えて追加の列を含めることを推奨します。 
 
-デフォルトのCDCでは、Postgres主キーとは異なるオーダリングキーを選択すると、ClickHouseでのデータデデュプリケーションの問題を引き起こす可能性があります。これは、ClickHouseにおけるオーダリングキーが二重の役割を果たすために発生します。データのインデクシングとソートを制御し、同時にデデュプリケーションキーとして機能します。この問題に対処する最も簡単な方法は、リフレッシュ可能なマテリアライズドビューを定義することです。
+CDC をデフォルト設定で使用する場合、Postgres のプライマリキーとは異なるオーダリングキーを選択すると、ClickHouse でデータ重複排除に関する問題が発生する可能性があります。これは、ClickHouse のオーダリングキーが二重の役割を持っているためです。すなわち、データのインデックス作成とソートを制御すると同時に、重複排除キーとしても機能します。この問題に対処する最も簡単な方法は、リフレッシュ可能なマテリアライズドビューを定義することです。
 
-## リフレッシュ可能なマテリアライズドビューの使用 {#use-refreshable-materialized-views}
 
-カスタムオーダリングキー (ORDER BY) を定義する簡単な方法は、[リフレッシュ可能なマテリアライズドビュー](/materialized-view/refreshable-materialized-view) (MVs) を使用することです。これにより、特定のオーダリングキーで定期的に (例えば、5分または10分ごとに) テーブル全体をコピーすることができます。
 
-以下は、カスタムORDER BYと必要なデデュプリケーションを持つリフレッシュ可能なMVの例です。
+## 更新可能なマテリアライズドビューを使用する
+
+カスタムの並び替えキー（ORDER BY）を定義する簡単な方法のひとつは、[refreshable materialized views](/materialized-view/refreshable-materialized-view)（MV）を使用することです。これにより、一定間隔（例: 5 分ごとや 10 分ごと）で、任意の並び替えキーを用いてテーブル全体をコピーできます。
+
+以下は、カスタム ORDER BY と必要な重複排除を備えた Refreshable MV の例です。
 
 ```sql
 CREATE MATERIALIZED VIEW posts_final
 REFRESH EVERY 10 second ENGINE = ReplacingMergeTree(_peerdb_version)
-ORDER BY (owneruserid,id) -- different ordering key but with suffixed postgres pkey
+ORDER BY (owneruserid,id) -- 異なるソートキーだが、PostgreSQLの主キーを接尾辞として含む
 AS
 SELECT * FROM posts FINAL 
-WHERE _peerdb_is_deleted = 0; -- this does the deduplication
+WHERE _peerdb_is_deleted = 0; -- これで重複排除を実行
 ```
 
-## リフレッシュ可能なマテリアライズドビューなしでのカスタムオーダリングキー {#custom-ordering-keys-without-refreshable-materialized-views}
 
-リフレッシュ可能なマテリアライズドビューがデータのスケールのために機能しない場合、カスタムオーダリングキーを大きなテーブルで定義し、デデュプリケーションに関連する問題を克服するために従うべきいくつかの推奨事項を以下に示します。
+## リフレッシュ可能なマテリアライズドビューを使わないカスタムオーダリングキー
 
-### 特定の行に対して変更しないオーダリングキーのカラムを選択する {#choose-ordering-key-columns-that-dont-change-for-a-given-row}
+データ規模が大きく、リフレッシュ可能なマテリアライズドビューが利用できない場合に、大きなテーブルでカスタムオーダリングキーを定義し、重複排除に関連する問題を回避するためのいくつかの推奨事項を以下に示します。
 
-ClickHouseのオーダリングキーに追加のカラム (Postgresの主キー以外) を含める場合、各行に対して変更しないカラムを選択することをお勧めします。これにより、ReplacingMergeTreeでのデータの整合性とデデュプリケーションの問題を防ぐことができます。
+### 行ごとに変化しないカラムをオーダリングキーに選択する
 
-例えば、マルチテナントのSaaSアプリケーションでは、(`tenant_id`, `id`)をオーダリングキーとして使用するのが良い選択です。これらのカラムは各行を一意に特定し、他のカラムが変更されても`tenant_id`は一定です。idによるデデュプリケーションは(tenant_id, id)によるデデュプリケーションと整合するため、tenant_idが変更された場合に発生する可能性のあるデータ[デデュプリケーションの問題](https://docs.peerdb.io/mirror/ordering-key-different)を回避するのに役立ちます。
+ClickHouse のオーダリングキーに（Postgres のプライマリキー以外の）追加カラムを含める場合は、各行に対して値が変化しないカラムを選択することを推奨します。これにより、ReplacingMergeTree におけるデータ整合性や重複排除に関する問題を防止できます。
 
-### PostgresテーブルでのReplica Identityをカスタムオーダリングキーに設定する {#set-replica-identity-on-postgres-tables-to-custom-ordering-key}
+例えば、マルチテナントの SaaS アプリケーションでは、オーダリングキーとして (`tenant_id`, `id`) を使用するのは良い選択です。これらのカラムは各行を一意に識別し、他のカラムが変化しても、ある `id` に対する `tenant_id` は一定のままです。`id` による重複排除と (`tenant_id`, `id`) による重複排除が整合するため、`tenant_id` が変更された場合に発生しうるデータの[重複排除問題](https://docs.peerdb.io/mirror/ordering-key-different)を回避するのに役立ちます。
 
-Postgres CDCが期待通りに機能するためには、オーダリングキーのカラムを含むようにテーブルの`REPLICA IDENTITY`を変更することが重要です。これは、DELETEを正確に処理するために不可欠です。
+### Postgres テーブルで Replica Identity をカスタムオーダリングキーに設定する
 
-`REPLICA IDENTITY`がオーダリングキーのカラムを含まない場合、Postgres CDCは主キー以外のカラムの値をキャプチャしません。これはPostgres論理デコーディングの制限です。Postgresの主キー以外のすべてのオーダリングキーのカラムはnullになります。これがデデュプリケーションに影響を与え、行の以前のバージョンが最新の削除されたバージョン (ここで`_peerdb_is_deleted`が1に設定されている) とデデュプリケートされない可能性があります。
+Postgres CDC を期待どおりに動作させるには、テーブルの `REPLICA IDENTITY` をオーダリングキーのカラムを含むように変更することが重要です。これは DELETE を正確に処理するために不可欠です。
 
-`owneruserid`と`id`の例では、主キーがすでに`owneruserid`を含まない場合、(`owneruserid`, `id`)に対する`UNIQUE INDEX`を持つ必要があり、テーブルの`REPLICA IDENTITY`として設定してください。これにより、Postgres CDCが正確なレプリケーションとデデュプリケーションのために必要なカラムの値をキャプチャします。
+`REPLICA IDENTITY` にオーダリングキーのカラムが含まれていない場合、Postgres CDC はプライマリキー以外のカラムの値を取得しません。これは Postgres のロジカルデコーディングの制限です。Postgres においてプライマリキー以外のすべてのオーダリングキーのカラムは NULL になります。その結果、重複排除に影響が生じ、行の以前のバージョンが、最新の削除済みバージョン（`_peerdb_is_deleted` が 1 に設定されている行）と正しく重複排除されない可能性があります。
 
-以下は、イベントテーブルでこれを行う方法の例です。修正されたオーダリングキーを持つすべてのテーブルにこれを適用してください。
+前述の `owneruserid` と `id` の例では、プライマリキーにすでに `owneruserid` が含まれていない場合、(`owneruserid`, `id`) 上に `UNIQUE INDEX` を作成し、それをテーブルの `REPLICA IDENTITY` に設定する必要があります。これにより、Postgres CDC が正確なレプリケーションと重複排除に必要なカラム値を取得できるようになります。
+
+以下は、events テーブルでの設定例です。オーダリングキーを変更したすべてのテーブルに、この設定を適用するようにしてください。
 
 ```sql
--- Create a UNIQUE INDEX on (owneruserid, id)
+-- (owneruserid, id) に一意インデックスを作成
 CREATE UNIQUE INDEX posts_unique_owneruserid_idx ON posts(owneruserid, id);
--- Set REPLICA IDENTITY to use this index
+-- このインデックスを使用するように REPLICA IDENTITY を設定
 ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 ```

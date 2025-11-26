@@ -1,0 +1,30 @@
+---
+title: ClickHouse を時系列データベースとして利用できますか？
+description: "ClickHouse は OLAP ワークロード向けの汎用的なデータストレージソリューションであり、専用の時系列データベース管理システムも多数存在します。"
+date: 2021-09-01
+tags: ['概念']
+keywords: ['時系列データベース']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## 回答 \{#answer\}
+
+:::note
+ClickHouse を用いた時系列分析の追加例については、ブログ記事 [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse) を参照してください。
+:::
+
+ClickHouse は [OLAP](https://clickhouse.com/docs/faq/general/olap) ワークロード向けの汎用データストレージソリューションであり、専用の時系列データベース管理システムは他にも多数存在します。それでも、ClickHouse の[クエリ実行速度への注力](https://clickhouse.com/docs/faq/general/why-clickhouse-is-so-fast)により、多くのケースで専用システムを上回る性能を発揮できます。このトピックに関する独立したベンチマークは多数公開されているため、本ドキュメントではベンチマークは実施しません。その代わりに、このようなユースケースで重要となる ClickHouse の機能に焦点を当てます。
+
+まず第 1 に、典型的な時系列データの圧縮に適した **[specialized codecs](https://clickhouse.com/docs/sql-reference/statements/create/table#specialized-codecs)** が用意されています。`DoubleDelta` や `Gorilla` のような一般的なアルゴリズムに加え、`T64` のような ClickHouse 固有のコーデックも利用できます。
+
+第 2 に、時系列クエリは 1 日〜1 週間程度の直近データのみを参照することが多くあります。そのため、高速な NVMe/SSD ドライブと大容量の HDD を併用したサーバー構成を採用するのが理にかなっています。ClickHouse の [TTL](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree/##table_engine-mergetree-multiple-volumes) 機能を使用すると、新鮮でホットなデータを高速ドライブ上に保持し、時間の経過とともに徐々に低速ドライブへ移動させるように設定できます。要件に応じて、さらに古いデータをロールアップしたり削除したりすることも可能です。
+
+これは生データを保存・処理するという ClickHouse の思想には反する側面もありますが、より厳しいレイテンシー要件やコスト要件を満たすために [マテリアライズドビュー](https://clickhouse.com/docs/sql-reference/statements/create/view) を利用することもできます。
+
+## 関連コンテンツ \{#related-content\}
+
+- ブログ: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

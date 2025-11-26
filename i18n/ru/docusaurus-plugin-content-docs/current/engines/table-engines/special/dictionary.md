@@ -1,16 +1,21 @@
 ---
-slug: '/engines/table-engines/special/dictionary'
-sidebar_label: Dictionary
+description: 'Движок `Dictionary` отображает данные словаря как таблицу в ClickHouse.'
+sidebar_label: 'Dictionary'
 sidebar_position: 20
-description: 'Движок `Dictionary` отображает данные словаря как таблицу ClickHouse.'
+slug: /engines/table-engines/special/dictionary
 title: 'Движок таблицы Dictionary'
-doc_type: reference
+doc_type: 'reference'
 ---
+
+
+
 # Движок таблицы Dictionary
 
-Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
+Движок `Dictionary` представляет данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
 
-## Пример {#example}
+
+
+## Пример
 
 В качестве примера рассмотрим словарь `products` со следующей конфигурацией:
 
@@ -45,7 +50,7 @@ doc_type: reference
 </dictionaries>
 ```
 
-Запросить данные словаря:
+Запросите данные словаря:
 
 ```sql
 SELECT
@@ -67,9 +72,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
+Вы можете использовать функцию [dictGet*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
 
-Этот вид не полезен, когда необходимо получить сырые данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Это представление неудобно, когда нужно получить сырые (raw) данные или выполнить операцию `JOIN`. В таких случаях можно использовать движок `Dictionary`, который отображает данные словаря в виде таблицы.
 
 Синтаксис:
 
@@ -83,9 +88,9 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+Хорошо
 
-Посмотрите, что находится в таблице.
+Посмотрите, что содержится в таблице.
 
 ```sql
 SELECT * FROM products LIMIT 1;
@@ -93,10 +98,10 @@ SELECT * FROM products LIMIT 1;
 
 ```text
 ┌────product_id─┬─title───────────┐
-│        152689 │ Some item       │
+│        152689 │ Некий товар     │
 └───────────────┴─────────────────┘
 ```
 
 **См. также**
 
-- [Функция Dictionary](/sql-reference/table-functions/dictionary)
+* [Функция dictionary](/sql-reference/table-functions/dictionary)

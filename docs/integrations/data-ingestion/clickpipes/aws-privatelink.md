@@ -33,21 +33,25 @@ data source types:
 - Kafka
 - Postgres
 - MySQL
+- MongoDB
 
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:
 
-- [VPC resource](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)
-- [MSK multi-VPC connectivity for MSK ClickPipe](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
-- [VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)
+- [VPC resource](#vpc-resource)
+- [MSK multi-VPC connectivity for MSK ClickPipe](#msk-multi-vpc)
+- [VPC endpoint service](#vpc-endpoint-service)
 
 ### VPC resource {#vpc-resource}
+
+:::info
+Cross-region is not supported.
+:::
 
 Your VPC resources can be accessed in ClickPipes using [PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html). This approach doesn't require setting up a load balancer in front of your data source.
 
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
-Cross-region is not supported.
 
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
@@ -171,8 +175,7 @@ Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup
 It requires setting up a NLB (Network Load Balancer) in front of your data source
 and configuring the VPC endpoint service to use the NLB.
 
-VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html),
-that will be accessible in a ClickPipes VPC.
+VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), that will be accessible in a ClickPipes VPC.
 
 It's a preferred choice for:
 

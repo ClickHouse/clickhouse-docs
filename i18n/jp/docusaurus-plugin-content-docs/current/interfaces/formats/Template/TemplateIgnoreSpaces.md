@@ -1,34 +1,37 @@
 ---
-'alias': []
-'description': 'TemplateIgnoreSpaces フォーマットのドキュメント'
-'input_format': true
-'keywords':
-- 'TemplateIgnoreSpaces'
-'output_format': false
-'slug': '/interfaces/formats/TemplateIgnoreSpaces'
-'title': 'TemplateIgnoreSpaces'
-'doc_type': 'reference'
+alias: []
+description: 'TemplateIgnoreSpaces フォーマットのドキュメント'
+input_format: true
+keywords: ['TemplateIgnoreSpaces']
+output_format: false
+slug: /interfaces/formats/TemplateIgnoreSpaces
+title: 'TemplateIgnoreSpaces'
+doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
-|------|------|-----------|
-| ✔    | ✗    |           |
+| 入力 | 出力 | 別名 |
+|-------|--------|-------|
+| ✔     | ✗      |       |
+
+
 
 ## 説明 {#description}
 
-[`Template`]と似ていますが、入力ストリームの区切り文字と値の間のホワイトスペース文字をスキップします。
-ただし、フォーマット文字列にホワイトスペース文字が含まれている場合、これらの文字は入力ストリームに期待されます。
-また、空のプレースホルダー（`${}`または`${:None}`）を指定して、一部の区切り文字を別々の部分に分割し、それらの間のスペースを無視することも可能です。
-このようなプレースホルダーは、ホワイトスペース文字をスキップするためだけに使用されます。
-列の値がすべての行で同じ順序を持つ場合、このフォーマットを使用して`JSON`を読み取ることができます。
+[`Template`] と似ていますが、入力ストリーム内のデリミタと値の間にある空白文字をスキップします。  
+ただし、フォーマット文字列に空白文字が含まれている場合、その空白文字は入力ストリーム内にも存在している必要があります。  
+また、空白を無視するために、あるデリミタを複数の部分に分割する目的で空のプレースホルダー（`${}` または `${:None}`）を指定することもできます。  
+このようなプレースホルダーは、空白文字をスキップする場合にのみ使用されます。  
+すべての行で列の値の順序が同じであれば、このフォーマットを使って `JSON` を読み込むことも可能です。
 
 :::note
-このフォーマットは入力のみに適しています。
+このフォーマットは入力専用です。
 :::
 
-## 使用例 {#example-usage}
 
-以下のリクエストは、フォーマット[JSON](/interfaces/formats/JSON)の出力例からデータを挿入するために使用できます：
+
+## 使用例
+
+以下のリクエストを使用すると、[JSON](/interfaces/formats/JSON) 形式の出力例からデータを挿入できます。
 
 ```sql
 INSERT INTO table_name 
@@ -46,5 +49,6 @@ FORMAT TemplateIgnoreSpaces
 ```text title="/some/path/row.format"
 {${}"SearchPhrase"${}:${}${phrase:JSON}${},${}"c"${}:${}${cnt:JSON}${}}
 ```
+
 
 ## フォーマット設定 {#format-settings}

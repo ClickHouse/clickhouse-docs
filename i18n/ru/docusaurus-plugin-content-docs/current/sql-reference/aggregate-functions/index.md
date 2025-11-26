@@ -1,25 +1,30 @@
 ---
-slug: '/sql-reference/aggregate-functions/'
+description: 'Справочник по агрегатным функциям'
 sidebar_label: 'Агрегатные функции'
 sidebar_position: 33
-description: 'Документация для Агрегатные функции'
+slug: /sql-reference/aggregate-functions/
 title: 'Агрегатные функции'
-doc_type: reference
+doc_type: 'reference'
 ---
+
+
+
 # Агрегатные функции
 
-Агрегатные функции работают в [обычном](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) режиме, как ожидает от них сообщество экспертов по базам данных.
+Агрегатные функции работают [стандартным](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) образом, привычным для специалистов по базам данных.
 
 ClickHouse также поддерживает:
 
-- [Параметрические агрегатные функции](/sql-reference/aggregate-functions/parametric-functions), которые принимают другие параметры в дополнение к колонкам.
+- [Параметрические агрегатные функции](/sql-reference/aggregate-functions/parametric-functions), которые, помимо столбцов, принимают дополнительные параметры.
 - [Комбинаторы](/sql-reference/aggregate-functions/combinators), которые изменяют поведение агрегатных функций.
 
-## Обработка NULL {#null-processing}
 
-Во время агрегации все `NULL` аргументы пропускаются. Если агрегация имеет несколько аргументов, она будет игнорировать любую строку, в которой один или более из них равны NULL.
 
-Существует исключение из этого правила, которым являются функции [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md), [`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) и их синонимы (`any` и `anyLast` соответственно), когда за ними следует модификатор `RESPECT NULLS`. Например, `FIRST_VALUE(b) RESPECT NULLS`.
+## Обработка NULL
+
+При агрегации все аргументы со значением `NULL` пропускаются. Если агрегатная функция имеет несколько аргументов, она игнорирует любую строку, в которой один или несколько из них равны NULL.
+
+Из этого правила есть исключение — функции [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md), [`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) и их псевдонимы (соответственно `any` и `anyLast`), когда используется модификатор `RESPECT NULLS`. Например, `FIRST_VALUE(b) RESPECT NULLS`.
 
 **Примеры:**
 
@@ -35,7 +40,7 @@ ClickHouse также поддерживает:
 └───┴──────┘
 ```
 
-Допустим, вам нужно подсчитать значения в колонке `y`:
+Предположим, вам нужно просуммировать значения в столбце `y`:
 
 ```sql
 SELECT sum(y) FROM t_null_big
@@ -47,7 +52,7 @@ SELECT sum(y) FROM t_null_big
 └────────┘
 ```
 
-Теперь вы можете использовать функцию `groupArray`, чтобы создать массив из колонки `y`:
+Теперь вы можете использовать функцию `groupArray`, чтобы создать массив из столбца `y`:
 
 ```sql
 SELECT groupArray(y) FROM t_null_big
@@ -61,7 +66,7 @@ SELECT groupArray(y) FROM t_null_big
 
 `groupArray` не включает `NULL` в результирующий массив.
 
-Вы можете использовать [COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce), чтобы преобразовать NULL в значение, которое имеет смысл в вашем случае. Например: `avg(COALESCE(column, 0))` будет использовать значение колонки в агрегации или ноль, если NULL:
+Вы можете использовать [COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce), чтобы заменить NULL значением, которое имеет смысл в вашем варианте использования. Например: `avg(COALESCE(column, 0))` будет использовать значение столбца при агрегации или ноль, если значение равно NULL:
 
 ```sql
 SELECT
@@ -76,7 +81,7 @@ FROM t_null_big
 └────────────────────┴─────────────────────┘
 ```
 
-Также вы можете использовать [Tuple](sql-reference/data-types/tuple.md), чтобы обойти поведение пропуска NULL. `Tuple`, который содержит только значение `NULL`, не является `NULL`, поэтому агрегатные функции не пропустят эту строку из-за этого `NULL` значения.
+Также вы можете использовать [Tuple](sql-reference/data-types/tuple.md), чтобы обойти поведение пропуска значений `NULL`. `Tuple`, который содержит только значение `NULL`, сам по себе не является `NULL`, поэтому агрегатные функции не будут пропускать эту строку из‑за этого значения `NULL`.
 
 ```sql
 SELECT
@@ -89,7 +94,7 @@ FROM t_null_big;
 └───────────────┴───────────────────────────────────────┘
 ```
 
-Обратите внимание, что агрегации пропускаются, когда колонки используются в качестве аргументов для агрегатной функции. Например, [`count`](../../sql-reference/aggregate-functions/reference/count.md) без параметров (`count()`) или с постоянными значениями (`count(1)`) будет считать все строки в блоке (независимо от значения колонки GROUP BY, так как она не является аргументом), в то время как `count(column)` вернет только количество строк, где колонка не равна NULL.
+Обратите внимание, что агрегации пропускаются, когда столбцы используются как аргументы агрегатной функции. Например, [`count`](../../sql-reference/aggregate-functions/reference/count.md) без параметров (`count()`) или с константными (`count(1)`) будет считать все строки в блоке (независимо от значения столбца в `GROUP BY`, так как он не является аргументом), тогда как `count(column)` вернет только количество строк, где `column` не равно `NULL`.
 
 ```sql
 SELECT
@@ -111,14 +116,15 @@ GROUP BY v
 └──────┴─────────┴──────────┘
 ```
 
-И вот пример функции first_value с `RESPECT NULLS`, где мы можем увидеть, что входные значения NULL обрабатываются, и будет возвращено первое считанное значение, независимо от того, является ли оно NULL или нет:
+И вот пример функции first&#95;value с `RESPECT NULLS`, где мы видим, что входные значения NULL учитываются, и будет возвращено первое встретившееся значение, независимо от того, является оно NULL или нет:
+
 
 ```sql
 SELECT
-    col || '_' || ((col + 1) * 5 - 1) AS range,
-    first_value(odd_or_null) AS first,
-    first_value(odd_or_null) IGNORE NULLS as first_ignore_null,
-    first_value(odd_or_null) RESPECT NULLS as first_respect_nulls
+    col || '_' || ((col + 1) * 5 - 1) AS диапазон,
+    first_value(odd_or_null) AS первый,
+    first_value(odd_or_null) IGNORE NULLS AS первый_игнорируя_NULL,
+    first_value(odd_or_null) RESPECT NULLS AS первый_с_учётом_NULL
 FROM
 (
     SELECT
@@ -129,9 +135,9 @@ FROM
 GROUP BY col
 ORDER BY col
 
-┌─range─┬─first─┬─first_ignore_null─┬─first_respect_nulls─┐
-│ 0_4   │     1 │                 1 │                ᴺᵁᴸᴸ │
-│ 1_9   │     5 │                 5 │                   5 │
-│ 2_14  │    11 │                11 │                ᴺᵁᴸᴸ │
-└───────┴───────┴───────────────────┴─────────────────────┘
+┌─диапазон─┬─первый─┬─первый_игнорируя_NULL─┬─первый_с_учётом_NULL─┐
+│ 0_4      │     1  │                     1  │                ᴺᵁᴸᴸ │
+│ 1_9      │     5  │                     5  │                   5  │
+│ 2_14     │    11  │                    11  │                ᴺᵁᴸᴸ │
+└──────────┴────────┴────────────────────────┴──────────────────────┘
 ```

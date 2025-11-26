@@ -1,56 +1,64 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/slackbot'
-'sidebar_label': 'SlackBot を統合する'
-'title': 'SlackBot エージェントを ClickHouse MCP サーバーを使用して構築する方法'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickHouse MCP サーバーと対話する SlackBot エージェントを構築する方法を学びましょう。'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'Slack'
-- 'SlackBot'
-- 'PydanticAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
+sidebar_label: 'SlackBot を統合する'
+title: 'ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'ClickHouse MCP Server と対話できる SlackBot エージェントの作り方を学びます。'
+keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 
-# ClickHouse MCPサーバーを使用してSlackBotエージェントを構築する方法
 
-このガイドでは、[SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot)エージェントを構築する方法を学びます。このボットを使用すると、自然言語を使用してSlackから直接ClickHouseデータについて質問できます。これは、[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse)と[PyDanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1)を利用しています。
+# ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法
 
-:::note 例プロジェクト
-この例のコードは、[examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md)で見つけることができます。
+このガイドでは、[SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) エージェントの構築方法を解説します。
+このボットを使うと、自然言語で Slack から直接 ClickHouse のデータについて質問できます。内部的には
+[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) と [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) を使用します。
+
+:::note サンプルプロジェクト
+このサンプルのコードは [examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md) で参照できます。
 :::
 
+
+
 ## 前提条件 {#prerequisites}
+
 - [`uv`](https://docs.astral.sh/uv/getting-started/installation/)をインストールしておく必要があります
-- Slackワークスペースへのアクセスが必要です
-- Anthropic APIキーまたは他のLLMプロバイダーからのAPIキーが必要です
+- Slackワークスペースへのアクセス権が必要です
+- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキーが必要です
 
 <VerticalStepper headerLevel="h2">
 
-## Slackアプリを作成する {#create-a-slack-app}
 
-1. [slack.com/apps](https://slack.com/apps)に行き、`Create New App`をクリックします。
-2. `From scratch`オプションを選択し、アプリに名前を付けます。
-3. 自分のSlackワークスペースを選択します。
+## Slack アプリを作成する {#create-a-slack-app}
 
-## アプリをワークスペースにインストールする {#install-the-app-to-your-workspace}
+1. [slack.com/apps](https://slack.com/apps) にアクセスし、`Create New App` をクリックします。
+2. `From scratch` を選択し、アプリに名前を付けます。
+3. Slack ワークスペースを選択します。
 
-次に、前のステップで作成したアプリをワークスペースに追加する必要があります。
-Slackドキュメントの「["Add apps to your Slack workspace"](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)」の指示に従うことができます。
 
-## Slackアプリの設定を構成する {#configure-slack-app-settings}
 
-- `App Home`に行く
-  - `Show Tabs` → `Messages Tab`で: `Allow users to send Slash commands and messages from the messages tab`を有効にします
-  - `Socket Mode`に行く
-    - `Socket Mode`を有効にします
-    - 環境変数`SLACK_APP_TOKEN`用に`Socket Mode Handler`をメモします
-  - `OAuth & Permissions`に行く
-    - 次の`Bot Token Scopes`を追加します:
+## ワークスペースにアプリをインストールする {#install-the-app-to-your-workspace}
+
+次に、前の手順で作成したアプリをワークスペースに追加します。
+Slack のドキュメントにある
+「[Slack ワークスペースにアプリを追加する](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)」
+の手順に従ってください。
+
+
+
+## Slack アプリの設定を行う {#configure-slack-app-settings}
+
+- `App Home` に移動する
+  - `Show Tabs` → `Messages Tab` の `Allow users to send Slash commands and messages from the messages tab` を有効にする
+  - `Socket Mode` に移動する
+    - `Socket Mode` を有効にする
+    - 環境変数 `SLACK_APP_TOKEN` に設定するため、`Socket Mode Handler` を控えておく
+  - `OAuth & Permissions` に移動する
+    - 次の `Bot Token Scopes` を追加する:
       - `app_mentions:read`
       - `assistant:write`
       - `chat:write`
@@ -58,18 +66,21 @@ Slackドキュメントの「["Add apps to your Slack workspace"](https://slack.
       - `im:read`
       - `im:write`
       - `channels:history`
-    - アプリをワークスペースにインストールし、環境変数`SLACK_BOT_TOKEN`用の`Bot User OAuth Token`をメモします。
-  - `Event Subscriptions`に行く
-    - `Events`を有効にします
-    - `Subscribe to bot events`の下に、追加します:
+    - アプリをワークスペースにインストールし、環境変数 `SLACK_BOT_TOKEN` に設定するための `Bot User OAuth Token` を控えておく
+  - `Event Subscriptions` に移動する
+    - `Events` を有効にする
+    - `Subscribe to bot events` に次を追加する:
       - `app_mention`
       - `assistant_thread_started`
       - `message:im`
-    - 変更を保存します
+    - 変更を保存する
 
-## 環境変数（`.env`）を追加する {#add-env-vars}
 
-プロジェクトのルートに`.env`ファイルを作成し、以下の環境変数を追加します。これにより、アプリが[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)に接続できるようになります。
+
+## 環境変数を追加する (`.env`)
+
+プロジェクトのルートに `.env` ファイルを作成し、以下の環境変数を定義します。
+これにより、アプリケーションから [ClickHouse の SQL playground](https://sql.clickhouse.com/) に接続できるようになります。
 
 ```env
 SLACK_BOT_TOKEN=your-slack-bot-token
@@ -82,26 +93,28 @@ CLICKHOUSE_PASSWORD=
 CLICKHOUSE_SECURE=true
 ```
 
-ClickHouseの変数を変更して、自分のClickHouseサーバーやCloudインスタンスを使用することもできます。
+必要に応じて、ClickHouse の変数を調整し、ご自身の ClickHouse サーバーまたは ClickHouse Cloud インスタンスを使用することもできます。
 
-## ボットの使用法 {#using-the-bot}
 
-1. **ボットを起動する:**
+## ボットの使用 {#using-the-bot}
 
-```sh
-uv run main.py
-```
-2. **Slackで:**
-    - チャンネルでボットをメンションする: `@yourbot Who are the top contributors to the ClickHouse git repo?`
-    - メンション付きでスレッドに返信する: `@yourbot how many contributions did these users make last week?`
-    - ボットへDMを送る: `Show me all tables in the demo database.`
+1. **ボットを起動:**
 
-ボットはスレッド内で返信し、関連する場合は以前のスレッドメッセージをすべてコンテキストとして使用します。
+   ```sh
+   uv run main.py
+   ```
+
+2. **Slackでの操作:**
+   - チャンネルでボットをメンション: `@yourbot Who are the top contributors to the ClickHouse git repo?`
+   - スレッドでメンションして返信: `@yourbot how many contributions did these users make last week?`
+   - ボットにダイレクトメッセージを送信: `Show me all tables in the demo database.`
+
+ボットはスレッド内で返信し、該当する場合は以前のスレッドメッセージすべてをコンテキストとして使用します。
 
 **スレッドコンテキスト:**
-ボットはスレッド内で返信する際、すべての前のメッセージ（現在のメッセージを除く）を読み込み、AIへのコンテキストとして含めます。
+スレッド内で返信する際、ボットは以前のメッセージすべて(現在のメッセージを除く)を読み込み、AIのコンテキストとして含めます。
 
 **ツールの使用:**
-ボットはMCP経由で利用可能なツール（例: スキーマ発見、SQL実行）を使用し、常に使用されたSQLと回答がどのように見つかったかの要約を表示します。
+ボットはMCP経由で利用可能なツール(スキーマ検出、SQL実行など)のみを使用し、使用されたSQLと回答の導出方法の要約を常に表示します。
 
 </VerticalStepper>

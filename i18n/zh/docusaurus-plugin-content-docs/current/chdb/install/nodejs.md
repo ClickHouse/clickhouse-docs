@@ -1,68 +1,65 @@
 ---
-'title': 'chDB for Node.js'
-'sidebar_label': 'Node.js'
-'slug': '/chdb/install/nodejs'
-'description': '如何安装和使用 chDB 与 Node.js'
-'keywords':
-- 'chdb'
-- 'nodejs'
-- 'javascript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+title: '适用于 Node.js 的 chDB'
+sidebar_label: 'Node.js'
+slug: /chdb/install/nodejs
+description: '如何在 Node.js 中安装和使用 chDB'
+keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
 
 
-# chDB for Node.js
 
-chDB-node 提供了 Node.js 的 chDB 绑定，使您能够直接在 Node.js 应用程序中运行 ClickHouse 查询，无需外部依赖。
+# 适用于 Node.js 的 chDB
 
-## Installation {#installation}
+chDB-node 为 chDB 提供了 Node.js 绑定，让你能够在 Node.js 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
+
+
+
+## 安装
 
 ```bash
-npm install chdb
+npm 安装 chdb
 ```
 
-## Usage {#usage}
 
-chDB-node 支持两种查询模式：用于简单操作的独立查询和用于维护数据库状态的会话查询。
+## 用法
 
-### Standalone queries {#standalone-queries}
+chDB-node 支持两种查询模式：用于简单操作的独立查询，以及用于维护数据库状态的会话查询。
 
-对于不需要持久状态的简单一次性查询：
+### 独立查询
+
+适用于不需要持久状态的简单一次性查询：
 
 ```javascript
 const { query } = require("chdb");
 
-// Basic query
+// 基本查询
 const result = query("SELECT version()", "CSV");
-console.log("ClickHouse version:", result);
+console.log("ClickHouse 版本：", result);
 
-// Query with multiple columns
+// 多列查询
 const multiResult = query("SELECT 'Hello' as greeting, 'chDB' as engine, 42 as answer", "CSV");
-console.log("Multi-column result:", multiResult);
+console.log("多列结果：", multiResult);
 
-// Mathematical operations
+// 数学运算
 const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "JSON");
-console.log("Math result:", mathResult);
+console.log("数学运算结果：", mathResult);
 
-// System information
+// 系统信息
 const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
-console.log("System functions:", systemInfo);
+console.log("系统函数：", systemInfo);
 ```
 
-### Session-Based queries {#session-based-queries}
+### 基于会话的查询
 
 ```javascript
 const { Session } = require("chdb");
 
-// Create a session with persistent storage
+// 创建一个带持久化存储的会话
 const session = new Session("./chdb-node-data");
 
 try {
-    // Create database and table
+    // 创建数据库和数据表
     session.query(`
         CREATE DATABASE IF NOT EXISTS myapp;
         CREATE TABLE IF NOT EXISTS myapp.users (
@@ -73,7 +70,7 @@ try {
         ) ENGINE = MergeTree() ORDER BY id
     `);
 
-    // Insert sample data
+    // 插入示例数据
     session.query(`
         INSERT INTO myapp.users (id, name, email) VALUES 
         (1, 'Alice', 'alice@example.com'),
@@ -81,14 +78,14 @@ try {
         (3, 'Charlie', 'charlie@example.com')
     `);
 
-    // Query the data with different formats
+    // 以不同格式查询数据
     const csvResult = session.query("SELECT * FROM myapp.users ORDER BY id", "CSV");
-    console.log("CSV Result:", csvResult);
+    console.log("CSV 结果：", csvResult);
 
     const jsonResult = session.query("SELECT * FROM myapp.users ORDER BY id", "JSON");
-    console.log("JSON Result:", jsonResult);
+    console.log("JSON 结果：", jsonResult);
 
-    // Aggregate queries
+    // 执行聚合查询
     const stats = session.query(`
         SELECT 
             COUNT(*) as total_users,
@@ -96,15 +93,15 @@ try {
             MIN(created_at) as earliest_signup
         FROM myapp.users
     `, "Pretty");
-    console.log("User Statistics:", stats);
+    console.log("用户统计信息：", stats);
 
 } finally {
-    // Always cleanup the session
-    session.cleanup(); // This deletes the database files
+    // 务必清理会话
+    session.cleanup(); // 这将删除数据库文件
 }
 ```
 
-### Processing external data {#processing-external-data}
+### 处理外部数据
 
 ```javascript
 const { Session } = require("chdb");
@@ -112,7 +109,7 @@ const { Session } = require("chdb");
 const session = new Session("./data-processing");
 
 try {
-    // Process CSV data from URL
+    // 处理来自 URL 的 CSV 数据
     const result = session.query(`
         SELECT 
             COUNT(*) as total_records,
@@ -120,17 +117,17 @@ try {
         FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV') 
         LIMIT 1000
     `, "JSON");
+    
+    console.log("外部数据分析：", result);
 
-    console.log("External data analysis:", result);
-
-    // Create table from external data
+    // 基于外部数据创建表
     session.query(`
         CREATE TABLE web_analytics AS
         SELECT * FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV')
         LIMIT 10000
     `);
 
-    // Analyze the imported data
+    // 分析导入的数据
     const analysis = session.query(`
         SELECT 
             toDate("EventTime") as date,
@@ -141,52 +138,53 @@ try {
         ORDER BY date
         LIMIT 10
     `, "Pretty");
-
-    console.log("Daily analytics:", analysis);
+    
+    console.log("每日数据分析：", analysis);
 
 } finally {
     session.cleanup();
 }
 ```
 
-## Error handling {#error-handling}
 
-在使用 chDB 时始终适当地处理错误：
+## 错误处理
+
+在使用 chDB 时，请务必妥善处理错误：
 
 ```javascript
 const { query, Session } = require("chdb");
 
-// Error handling for standalone queries
+// 独立查询的错误处理
 function safeQuery(sql, format = "CSV") {
     try {
         const result = query(sql, format);
         return { success: true, data: result };
     } catch (error) {
-        console.error("Query error:", error.message);
+        console.error("查询出错：", error.message);
         return { success: false, error: error.message };
     }
 }
 
-// Example usage
+// 使用示例
 const result = safeQuery("SELECT invalid_syntax");
 if (result.success) {
-    console.log("Query result:", result.data);
+    console.log("查询结果：", result.data);
 } else {
-    console.log("Query failed:", result.error);
+    console.log("查询失败：", result.error);
 }
 
-// Error handling for sessions
+// 会话查询的错误处理
 function safeSessionQuery() {
     const session = new Session("./error-test");
-
+    
     try {
-        // This will throw an error due to invalid syntax
+        // 由于语法错误，这里会抛出异常
         const result = session.query("CREATE TABLE invalid syntax", "CSV");
-        console.log("Unexpected success:", result);
+        console.log("出现意外的成功：", result);
     } catch (error) {
-        console.error("Session query error:", error.message);
+        console.error("会话查询出错：", error.message);
     } finally {
-        // Always cleanup, even if an error occurred
+        // 无论是否发生错误都要执行清理
         session.cleanup();
     }
 }
@@ -194,8 +192,9 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## GitHub repository {#github-repository}
 
-- **GitHub Repository**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Issues and Support**: 在 [GitHub repository](https://github.com/chdb-io/chdb-node/issues) 上报告问题
-- **NPM Package**: [chdb on npm](https://www.npmjs.com/package/chdb)
+## GitHub 仓库 {#github-repository}
+
+- **GitHub 仓库**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+- **问题反馈与支持**: 请在 [GitHub 仓库](https://github.com/chdb-io/chdb-node/issues) 上提交 Issue
+- **NPM 包**: [chdb（npm）](https://www.npmjs.com/package/chdb)

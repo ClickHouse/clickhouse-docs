@@ -1,10 +1,11 @@
 ---
-slug: '/operations/system-tables/parts'
-description: 'Системная таблица, содержащая информацию о частях MergeTree'
-title: system.parts
+description: 'Системная таблица, содержащая информацию о частях таблиц MergeTree'
 keywords: ['системная таблица', 'части']
-doc_type: reference
+slug: /operations/system-tables/parts
+title: 'system.parts'
+doc_type: 'reference'
 ---
+
 # system.parts
 
 Содержит информацию о частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
@@ -13,122 +14,123 @@ doc_type: reference
 
 Столбцы:
 
-- `partition` ([String](../../sql-reference/data-types/string.md)) – Название партиции. Чтобы узнать, что такое партиция, смотрите описание запроса [ALTER](/sql-reference/statements/alter).
+* `partition` ([String](../../sql-reference/data-types/string.md)) – Имя партиции. Чтобы узнать, что такое партиция, см. описание запроса [ALTER](/sql-reference/statements/alter).
 
-    Форматы:
+  Форматы:
 
-  - `YYYYMM` для автоматического партиционирования по месяцам.
-  - `any_string` при ручном партиционировании.
+  * `YYYYMM` для автоматического партиционирования по месяцам.
+  * `any_string` при ручном партиционировании.
 
-- `name` ([String](../../sql-reference/data-types/string.md)) – Название части данных. Структура наименования частей может использоваться для определения многих аспектов данных, процессов загрузки и слияния. Формат наименования частей следующий:
+* `name` ([String](../../sql-reference/data-types/string.md)) – Имя части данных. Структура имени части может использоваться для определения многих аспектов данных, приёма и шаблонов слияния. Формат имени части следующий:
 
 ```text
-<partition_id>_<minimum_block_number>_<maximum_block_number>_<level>_<data_version>
+<id_партиции>_<мин_номер_блока>_<макс_номер_блока>_<уровень>_<версия_данных>
 ```
 
 * Определения:
-  - `partition_id` - идентификатор ключа партиции
-  - `minimum_block_number` - минимальный номер блока в части. ClickHouse всегда сливает непрерывные блоки
-  - `maximum_block_number` - максимальный номер блока в части
-  - `level` - увеличивается на один при каждом дополнительном слиянии части. Уровень 0 означает, что это новая часть, которая еще не была слита. Важно помнить, что все части в ClickHouse всегда неизменяемы
-  - `data_version` - необязательное значение, увеличивается при мутации части (опять же, мутированные данные всегда записываются только в новую часть, так как части неизменяемы)
+  * `partition_id` — идентификатор ключа партиционирования
+  * `minimum_block_number` — минимальный номер блока в части. ClickHouse всегда объединяет последовательные блоки
+  * `maximum_block_number` — максимальный номер блока в части
+  * `level` — увеличивается на единицу при каждом дополнительном объединении части. Уровень 0 означает, что это новая часть, которая ещё не была объединена. Важно помнить, что все части в ClickHouse всегда неизменяемы
+  * `data_version` — необязательное значение, увеличивается, когда часть изменяется (при этом изменённые данные всегда записываются только в новую часть, так как части неизменяемы)
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - UUID части данных.
 
-- `part_type` ([String](../../sql-reference/data-types/string.md)) — Формат хранения части данных.
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID части данных.
 
-    Возможные значения:
+* `part_type` ([String](../../sql-reference/data-types/string.md)) — Формат хранения части данных.
 
-  - `Wide` — Каждая колонка хранится в отдельном файле в файловой системе.
-  - `Compact` — Все колонки хранятся в одном файле в файловой системе.
+  Допустимые значения:
 
-    Формат хранения данных контролируется настройками `min_bytes_for_wide_part` и `min_rows_for_wide_part` таблицы [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
+  * `Wide` — Каждый столбец хранится в отдельном файле в файловой системе.
+  * `Compact` — Все столбцы хранятся в одном файле в файловой системе.
 
-- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – Флаг, который указывает, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она удаляется. Неактивные части данных остаются после слияния.
+    Формат хранения данных определяется настройками `min_bytes_for_wide_part` и `min_rows_for_wide_part` для таблицы [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
-- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Количество меток. Для получения приблизительного количества строк в части данных умножьте `marks` на гранулярность индекса (обычно 8192) (данный совет не работает для адаптивной гранулярности).
+* `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – Флаг, показывающий, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она удаляется. Неактивные части данных остаются после слияния.
 
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Количество строк.
+* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – количество меток. Чтобы получить примерное количество строк в части данных, умножьте `marks` на гранулярность индекса (обычно 8192) (эта оценка не работает для адаптивной гранулярности).
 
-- `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер всех файлов части данных в байтах.
+* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Количество строк.
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер сжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не включены.
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер всех файлов частей данных в байтах.
 
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер не сжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не включены.
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер сжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
-- `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), используемой значениями первичного ключа в файле primary.idx/cidx на диске.
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер несжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Размер файла с метками.
+* `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), используемый значениями первичного ключа в файле primary.idx/cidx на диске.
 
-- `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер сжатых данных для вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не включены.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – размер файла меток.
 
-- `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер не сжатых данных для вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не включены.
+* `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – общий размер сжатых данных вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
-- `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Размер файла с метками для вторичных индексов.
+* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер несжатых данных для вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
-- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – Время, когда директория с частью данных была изменена. Обычно это соответствует времени создания части данных.
+* `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Размер файла с метками для вторичных индексов.
 
-- `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – Время, когда часть данных стала неактивной.
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – Время изменения каталога с частью данных. Обычно соответствует времени создания части данных.
 
-- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – Количество мест, где используется часть данных. Значение, большее 2, указывает на то, что часть данных используется в запросах или слияниях.
+* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – время, когда часть данных стала неактивной.
 
-- `min_date` ([Date](../../sql-reference/data-types/date.md)) – Минимальное значение ключа даты в части данных.
+* `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – Количество мест, в которых используется часть данных. Значение больше 2 указывает, что часть данных используется в запросах или слияниях.
 
-- `max_date` ([Date](../../sql-reference/data-types/date.md)) – Максимальное значение ключа даты в части данных.
+* `min_date` ([Date](../../sql-reference/data-types/date.md)) – минимальное значение ключа даты в части данных.
 
-- `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – Минимальное значение ключа даты и времени в части данных.
+* `max_date` ([Date](../../sql-reference/data-types/date.md)) – максимальное значение ключа даты в части данных.
 
-- `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – Максимальное значение ключа даты и времени в части данных.
+* `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – минимальное значение ключа даты и времени в части данных.
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) – ID партиции.
+* `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – максимальное значение ключа даты и времени в части данных.
 
-- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Минимальный номер блока данных, который составляет текущую часть после слияния.
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) – идентификатор партиции.
 
-- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Максимальный номер блока данных, который составляет текущую часть после слияния.
+* `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – минимальный номер блока данных, который входит в состав текущей части после слияния.
 
-- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – Глубина дерева слияния. Ноль означает, что текущая часть была создана в результате вставки, а не в результате слияния других частей.
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Максимальный номер блока данных, входящего в состав текущей части после слияния.
 
-- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Номер, используемый для определения, какие мутации должны быть применены к части данных (мутации с версией выше `data_version`).
+* `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – Глубина дерева MergeTree. Ноль означает, что текущая часть была создана операцией INSERT, а не в результате слияния других частей.
 
-- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), используемой значениями первичного ключа (будет `0` в случае `primary_key_lazy_load=1` и `use_primary_key_cache=1`).
+* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – число, которое используется для определения, какие мутации следует применить к части данных (мутации с версией, большей, чем `data_version`).
 
-- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), зарезервированный для значений первичного ключа (будет `0` в случае `primary_key_lazy_load=1` и `use_primary_key_cache=1`).
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объём памяти (в байтах), занимаемый значениями первичного ключа (будет равен `0` при `primary_key_lazy_load=1` и `use_primary_key_cache=1`).
 
-- `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – Флаг, который показывает, что существует резервная копия данных партиции. 1 - резервная копия существует. 0 - резервная копия не существует. Для получения более подробной информации смотрите [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), зарезервированный для значений первичного ключа (будет `0` при `primary_key_lazy_load=1` и `use_primary_key_cache=1`).
 
-- `database` ([String](../../sql-reference/data-types/string.md)) – Название базы данных.
+* `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – Флаг, показывающий, что существует резервная копия данных партиции. 1 — резервная копия существует. 0 — резервная копия не существует. Подробнее см. в разделе [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)
 
-- `table` ([String](../../sql-reference/data-types/string.md)) – Название таблицы.
+* `database` ([String](../../sql-reference/data-types/string.md)) – имя базы данных.
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) – Название движка таблицы без параметров.
+* `table` ([String](../../sql-reference/data-types/string.md)) – имя таблицы.
 
-- `path` ([String](../../sql-reference/data-types/string.md)) – Абсолютный путь к папке с файлами частей данных.
+* `engine` ([String](../../sql-reference/data-types/string.md)) – Имя движка таблицы без параметров.
 
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) – Название диска, который хранит часть данных.
+* `path` ([String](../../sql-reference/data-types/string.md)) – Абсолютный путь к каталогу с файлами частей данных.
 
-- `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) сжатых файлов.
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) – Имя диска, на котором хранится часть данных.
 
-- `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) не сжатых файлов (файлы с метками, файл индекса и т. д.).
+* `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – значение [sipHash128](/sql-reference/functions/hash-functions#sipHash128) от сжатых файлов.
 
-- `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) данных в сжатых файлах так, как если бы они были не сжатыми.
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) от несжатых файлов (файлов с метками, файла индекса и т. д.).
 
-- `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — Минимальное значение ключа даты и времени для правила [TTL DELETE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – значение [sipHash128](/sql-reference/functions/hash-functions#sipHash128) данных в сжатых файлах, вычисленное так, как если бы они были несжаты.
 
-- `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — Максимальное значение ключа даты и времени для правила [TTL DELETE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — минимальное значение ключа даты и времени для [правила TTL DELETE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
 
-- `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Массив выражений. Каждое выражение определяет правило [TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — максимальное значение ключа даты и времени для [правила TTL DELETE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+
+* `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — массив выражений. Каждое выражение определяет [правило TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
 
 :::note
-Массив `move_ttl_info.expression` в основном сохраняется для обратной совместимости. В настоящее время самый простой способ проверить правило `TTL MOVE` — использовать поля `move_ttl_info.min` и `move_ttl_info.max`.
+Массив `move_ttl_info.expression` в основном сохраняется для обратной совместимости, а сейчас самый простой способ проверить правило `TTL MOVE` — использовать поля `move_ttl_info.min` и `move_ttl_info.max`.
 :::
 
-- `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Массив значений даты и времени. Каждый элемент описывает минимальное значение ключа для правила [TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+* `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Массив значений даты и времени. Каждый элемент задаёт минимальное значение ключа для [правила TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
 
-- `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Массив значений даты и времени. Каждый элемент описывает максимальное значение ключа для правила [TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
+* `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Массив значений даты и времени. Каждый элемент задаёт максимальное значение ключа для [правила TTL MOVE](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl).
 
-- `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Псевдоним для `bytes_on_disk`.
+* `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Псевдоним для `bytes_on_disk`.
 
-- `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Псевдоним для `marks_bytes`.
+* `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Псевдоним для `marks_bytes`.
 
 **Пример**
 
@@ -182,7 +184,7 @@ move_ttl_info.min:                     []
 move_ttl_info.max:                     []
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Семейство MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)
-- [TTL для столбцов и таблиц](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)
+* [Семейство движков MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)
+* [TTL для столбцов и таблиц](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)

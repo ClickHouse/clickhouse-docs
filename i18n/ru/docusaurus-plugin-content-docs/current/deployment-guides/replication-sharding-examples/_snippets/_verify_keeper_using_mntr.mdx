@@ -1,18 +1,25 @@
-Команда `mntr` также часто используется для проверки того, что ClickHouse Keeper работает, и для получения информации о состоянии отношений между тремя узлами Keeper. В конфигурации, используемой в этом примере, три узла работают совместно. Узлы будут выбирать лидера, а оставшиеся узлы станут последователями.
+Команда `mntr` также часто используется для проверки того, что ClickHouse Keeper
+запущен, и для получения информации о состоянии и взаимоотношениях трёх узлов Keeper.
+В конфигурации, используемой в этом примере, три узла работают совместно.
+Узлы выбирают лидера, а остальные узлы становятся ведомыми.
 
-Команда `mntr` предоставляет информацию, связанную с производительностью, а также о том, является ли конкретный узел последователем или лидером.
+Команда `mntr` предоставляет информацию, связанную с производительностью, а также о том,
+является ли конкретный узел лидером или ведомым.
 
 :::tip
-Возможно, вам потребуется установить `netcat`, чтобы отправить команду `mntr` в Keeper. Пожалуйста, смотрите страницу [nmap.org](https://nmap.org/ncat/) для информации о загрузке.
+Вам может потребоваться установить `netcat`, чтобы отправить команду `mntr` Keeper’у.
+См. страницу [nmap.org](https://nmap.org/ncat/) для получения информации о скачивании.
 :::
 
-Запустите команду ниже из командной строки на `clickhouse-keeper-01`, `clickhouse-keeper-02` и `clickhouse-keeper-03`, чтобы проверить статус каждого узла Keeper. Команда для `clickhouse-keeper-01` показана ниже:
+Выполните приведённую ниже команду в оболочке на `clickhouse-keeper-01`, `clickhouse-keeper-02` и
+`clickhouse-keeper-03`, чтобы проверить состояние каждого узла Keeper. Команда
+для `clickhouse-keeper-01` показана ниже:
 
 ```bash
 docker exec -it clickhouse-keeper-01  /bin/sh -c 'echo mntr | nc 127.0.0.1 9181'
 ```
 
-Ответ ниже показывает пример ответа от узла-последователя:
+Ниже приведён пример ответа от ведомого узла:
 
 ```response title="Response"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
@@ -23,9 +30,8 @@ zk_packets_received     0
 zk_packets_sent 0
 zk_num_alive_connections        0
 zk_outstanding_requests 0
-
 # highlight-next-line
-zk_server_state follower
+zk_server_state ведомый
 zk_znode_count  6
 zk_watch_count  0
 zk_ephemerals_count     0
@@ -36,7 +42,7 @@ zk_open_file_descriptor_count   46
 zk_max_file_descriptor_count    18446744073709551615
 ```
 
-Ответ ниже показывает пример ответа от узла-лидера:
+Ниже приведён пример ответа от ведущего узла:
 
 ```response title="Response"
 zk_version      v23.3.1.2823-testing-46e85357ce2da2a99f56ee83a079e892d7ec3726
@@ -47,7 +53,6 @@ zk_packets_received     0
 zk_packets_sent 0
 zk_num_alive_connections        0
 zk_outstanding_requests 0
-
 # highlight-next-line
 zk_server_state leader
 zk_znode_count  6
@@ -58,10 +63,8 @@ zk_key_arena_size       4096
 zk_latest_snapshot_size 0
 zk_open_file_descriptor_count   48
 zk_max_file_descriptor_count    18446744073709551615
-
 # highlight-start
 zk_followers    2
 zk_synced_followers     2
-
 # highlight-end
 ```

@@ -1,16 +1,15 @@
 ---
-'description': '允许在通过 Apache Arrow Flight 服务器暴露的数据上执行查询。'
-'sidebar_label': 'arrowFlight'
-'sidebar_position': 186
-'slug': '/sql-reference/table-functions/arrowflight'
-'title': 'arrowFlight'
-'doc_type': 'reference'
+description: '允许对通过 Apache Arrow Flight 服务器暴露的数据执行查询。'
+sidebar_label: 'arrowFlight'
+sidebar_position: 186
+slug: /sql-reference/table-functions/arrowflight
+title: 'arrowFlight'
+doc_type: 'reference'
 ---
-
 
 # arrowFlight 表函数
 
-允许对通过 [Apache Arrow Flight](../../interfaces/arrowflight.md) 服务器公开的数据执行查询。
+可对通过 [Apache Arrow Flight](../../interfaces/arrowflight.md) 服务器公开的数据执行查询。
 
 **语法**
 
@@ -20,16 +19,16 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 
 **参数**
 
-* `host:port` — Arrow Flight 服务器的地址。 [字符串](../../sql-reference/data-types/string.md).
-* `dataset_name` — 在 Arrow Flight 服务器上可用的数据集或描述符的名称。 [字符串](../../sql-reference/data-types/string.md).
-* `username` - 用于基本 HTTP 风格认证的用户名。
-* `password` - 用于基本 HTTP 风格认证的密码。
-如果未指定 `username` 和 `password`，这意味着不使用认证
-（仅当 Arrow Flight 服务器允许时才有效）。
+* `host:port` — Arrow Flight 服务器地址。[String](../../sql-reference/data-types/string.md)。
+* `dataset_name` — Arrow Flight 服务器上可用的数据集或描述符名称。[String](../../sql-reference/data-types/string.md)。
+* `username` - 用于基本 HTTP 认证的用户名。
+* `password` - 用于基本 HTTP 认证的密码。\
+  如果未指定 `username` 和 `password`，则表示不使用认证\
+  （仅在 Arrow Flight 服务器允许匿名访问时可用）。
 
 **返回值**
 
-* 一个表示远程数据集的表对象。架构是从 Arrow Flight 响应中推断的。
+* 表示远程数据集的表对象。其表结构由 Arrow Flight 响应推断得到。
 
 **示例**
 

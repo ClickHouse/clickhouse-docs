@@ -1,14 +1,16 @@
 ---
-'description': '返回人口方差。与 varPop 不同，这个函数使用了一个数值稳定的算法。它的工作速度较慢，但提供了更低的计算误差。'
-'sidebar_position': 211
-'slug': '/sql-reference/aggregate-functions/reference/varpopstable'
-'title': 'varPopStable'
-'doc_type': 'reference'
+description: '返回总体方差。与 varPop 不同，此函数使用数值稳定的算法。其执行速度较慢，但计算误差更低。'
+sidebar_position: 211
+slug: /sql-reference/aggregate-functions/reference/varpopstable
+title: 'varPopStable'
+doc_type: 'reference'
 ---
 
-## varPopStable {#varpopstable}
 
-返回总体方差。与 [`varPop`](../reference/varpop.md) 不同，此函数使用一种 [数值稳定](https://en.wikipedia.org/wiki/Numerical_stability) 的算法。尽管速度较慢，但提供了更低的计算误差。
+
+## varPopStable
+
+返回总体方差。与 [`varPop`](../reference/varpop.md) 不同，此函数使用[数值稳定](https://en.wikipedia.org/wiki/Numerical_stability)的算法。它的运行速度更慢，但能提供更小的计算误差。
 
 **语法**
 
@@ -20,11 +22,11 @@ varPopStable(x)
 
 **参数**
 
-- `x`：要计算总体方差的值的总体。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md)。
+* `x`：要计算总体方差的一组总体数据。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **返回值**
 
-- 返回 `x` 的总体方差。 [Float64](../../data-types/float.md)。
+* 返回 `x` 的总体方差。[Float64](../../data-types/float.md)。
 
 **示例**
 

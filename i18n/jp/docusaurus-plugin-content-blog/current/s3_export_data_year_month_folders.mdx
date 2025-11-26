@@ -1,0 +1,89 @@
+---
+date: 2023-03-24
+title: "S3 上で年・月単位のパーティション書き込みを行うには？"
+description: "ClickHouse でカスタムパス構造を使用して、S3 バケットに年・月単位でパーティション分割されたデータを書き込む方法を説明します。"
+tags: ['データエクスポート', 'ネイティブクライアントとインターフェース']
+keywords: ['S3', 'パーティション書き込み']
+---
+
+{frontMatter.description}
+
+{/* truncate */}
+
+
+## S3 上で年と月ごとにパーティション分割して書き込む方法 \{#learn-how-to-do-partitioned-writes-by-year-and-month-on-s3\}
+
+S3 バケット内のパスを分けて、次のような構造に従う形でデータをエクスポートしたいと考えています：
+
+- 2022
+  - 1
+  - 2
+  - ...
+  - 12
+- 2021
+  - 1
+  - 2
+  - ...
+  - 12
+
+このように続いていきます。
+
+## 回答
+
+以下の ClickHouse テーブルを考えます:
+
+```sql
+CREATE TABLE sample_data (
+    `name` String,
+    `age` Int,
+    `time` DateTime
+) ENGINE = MergeTree
+ORDER BY
+    name
+```
+
+10000件のエントリを追加:
+
+```sql
+INSERT INTO
+    sample_data
+SELECT
+    *
+FROM
+    generateRandom(
+        'name String, age Int, time DateTime',
+        10,
+        10,
+        10
+    )
+LIMIT
+    10000;
+```
+
+次のコマンドを実行して、S3 バケット `my_bucket` に目的の構造を作成します（この例では Parquet 形式のファイルを書き込みます）:
+
+```sql
+INSERT INTO
+    FUNCTION s3(
+        'https://s3-host:4321/my_bucket/{_partition_id}/file.parquet.gz',
+        's3-access-key',
+        's3-secret-access-key',
+        Parquet,
+        'name String, age Int, time DateTime'
+    ) PARTITION BY concat(
+        formatDateTime(time, '%Y'),
+        '/',
+        formatDateTime(time, '%m')
+    )
+SELECT
+    name,
+    age,
+    time
+FROM
+    sample_data
+Query id: 55adcf22-f6af-491e-b697-d09694bbcc56
+
+Ok.
+
+0 rows in set. Elapsed: 15.579 sec. Processed 10.00 thousand rows, 219.93 KB (641.87 rows/s., 14.12 KB/s.)
+```

@@ -1,21 +1,17 @@
 ---
-'slug': '/managing-data/deleting-data/overview'
-'title': '删除数据'
-'description': '如何在 ClickHouse 中删除数据 目录'
-'keywords':
-- 'delete'
-- 'truncate'
-- 'drop'
-- 'lightweight delete'
-'doc_type': 'guide'
+slug: /managing-data/deleting-data/overview
+title: '删除数据'
+description: '如何在 ClickHouse 中删除数据：目录'
+keywords: ['delete', 'truncate', 'drop', 'lightweight delete']
+doc_type: 'guide'
 ---
 
-在本节文档中，我们将探讨如何在 ClickHouse 中删除数据。
+在本节文档中，我们将介绍如何在 ClickHouse 中删除数据。
 
-| 页面                                                        | 描述                                                                                                                       |
-|-------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| [概述](./overview)                                         | 提供了有关在 ClickHouse 中删除数据的各种方法的概述。                                                                     |
-| [轻量级删除](/guides/developer/lightweight-delete)       | 了解如何使用轻量级删除来删除数据。                                                                                        |
-| [删除突变](/managing-data/delete_mutations)               | 了解删除突变。                                                                                                          |
-| [截断表](../truncate)                                     | 了解如何使用截断，这允许删除表或数据库中的数据，同时保留其存在性。                                                     |
-| [删除分区](../drop_partition)                             | 了解在 ClickHouse 中删除分区。                                                                                           |
+| 页面                                                       | 说明                                                                                                                         |
+|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| [Overview](./overview)                                     | 概述在 ClickHouse 中删除数据的多种方式。                                                                                     |
+| [Lightweight deletes](/guides/developer/lightweight-delete) | 了解如何使用轻量删除（Lightweight Delete）来删除数据。                                                                       |
+| [Delete mutations](/managing-data/delete_mutations)         | 了解 Delete Mutations 的用法。                                                                                               |
+| [Truncate table](../truncate)                              | 了解如何使用 TRUNCATE，在保留表或数据库本身的前提下删除其中的数据。                                                          |
+| [Drop partitions](../drop_partition)                       | 了解如何在 ClickHouse 中删除分区。                                                                                           |

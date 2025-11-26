@@ -1,0 +1,98 @@
+---
+date: 2025-01-16
+title: 如何移除默认用户？
+description: "了解在运行 ClickHouse Server 时如何移除默认用户。"
+tags: ['服务器管理']
+words: ['移除默认用户', 'ClickHouse Server']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 移除 `default` 用户
+
+:::note
+本指南不适用于 ClickHouse Cloud。
+:::
+
+在本指南中，我们将学习如何从 ClickHouse Server 中移除 `default` 用户。
+
+我们可以通过创建一个 YAML 文件（将其命名为 `remove_default_user.yaml`），其中包含以下内容来实现这一点。
+
+```yaml
+users:
+  default:
+    "@remove": remove
+```
+
+该文件的位置取决于 ClickHouse 的安装方式。
+
+
+## 直接运行可执行文件
+
+如果我们直接运行 ClickHouse（`clickhouse server`），则需要将该文件放在 `config.d` 目录下。
+
+当我们运行 ClickHouse Server 时：
+
+```
+ClickHouse 服务器
+```
+
+我们将在日志中看到如下行：
+
+```
+{} <Debug> ConfigProcessor: 合并配置文件 'config.d/remove_default_user.yaml'。
+```
+
+此时将无法通过 `clickhouse client` 进行连接：
+
+```
+ClickHouse 客户端版本 24.11.1.2557（官方构建）。
+正在以用户 default 身份连接到 localhost:9000。
+用户密码 (default):
+正在以用户 default 身份连接到 localhost:9000。
+代码：516。DB::Exception: 来自 localhost:9000。DB::Exception: default: 身份验证失败：密码不正确或不存在该用户名。
+```
+
+
+## Docker 或本机安装
+
+如果我们通过 Docker 运行 ClickHouse，或者已经在本机安装了 ClickHouse，那么需要将该文件放到 `/etc/clickhouse-server/users.d` 目录下。
+
+因此，如果我们通过 Docker 运行，可以将之前创建的 `config.d` 目录挂载到 `/etc/clickhouse-server/users.d`：
+
+```bash
+docker run \
+  -v ./config.d:/etc/clickhouse-server/users.d \
+  -p 8123:8123 -p9000:9000 \
+  clickhouse/clickhouse-server:24.12
+```
+
+```
+正在合并配置文件 '/etc/clickhouse-server/config.d/docker_related_config.xml'。
+跟踪日志记录至 /var/log/clickhouse-server/clickhouse-server.log
+错误日志记录至 /var/log/clickhouse-server/clickhouse-server.err.log
+```
+
+然后我们可以在服务器日志中搜索，确认它是否被收集到：
+
+```bash
+docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Command}}"
+```
+
+```text
+CONTAINER ID   IMAGE                                NAMES               COMMAND
+383e8ed89431   clickhouse/clickhouse-server:24.12   trusting_rosalind   "/entrypoint.sh"
+```
+
+```
+docker exec -it trusting_rosalind grep "users\.d" /var/log/clickhouse-server/clickhouse-server.log
+```
+
+此时应看到如下这一行：
+
+```text
+{} <Debug> ConfigProcessor: 正在合并配置文件 '/etc/clickhouse-server/users.d/remove_default_user.yaml'。
+```

@@ -1,43 +1,52 @@
 ---
-'description': 'MergeTree テーブルのインデックスとマークファイルの内容を表します。それは内省に使用することができます。'
-'sidebar_label': 'mergeTreeIndex'
-'sidebar_position': 77
-'slug': '/sql-reference/table-functions/mergeTreeIndex'
-'title': 'mergeTreeIndex'
-'doc_type': 'reference'
+description: 'MergeTree テーブルの index ファイルおよび marks ファイルの内容を表します。
+  調査や確認のために使用できます。'
+sidebar_label: 'mergeTreeIndex'
+sidebar_position: 77
+slug: /sql-reference/table-functions/mergeTreeIndex
+title: 'mergeTreeIndex'
+doc_type: 'reference'
 ---
+
 
 
 # mergeTreeIndex テーブル関数
 
-MergeTree テーブルのインデックスおよびマークファイルの内容を表します。これを使用して内部情報を取得できます。
+MergeTree テーブルのインデックスおよびマークファイルの内容を表します。内部状態を調査する目的で使用できます。
 
-## 構文 {#syntax}
+
+
+## 構文
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
+
 ## 引数 {#arguments}
 
-| 引数          | 説明                                           |
-|---------------|------------------------------------------------|
-| `database`    | インデックスとマークを読み取るデータベース名。   |
-| `table`       | インデックスとマークを読み取るテーブル名。      |
-| `with_marks`  | 結果にマーク付きのカラムを含めるかどうか。      |
-| `with_minmax` | 結果に最小-最大インデックスを含めるかどうか。    |
+| 引数          | 説明                                                 |
+|---------------|------------------------------------------------------|
+| `database`    | インデックスとマークを読み取る対象のデータベース名。 |
+| `table`       | インデックスとマークを読み取る対象のテーブル名。     |
+| `with_marks`  | 結果にマークを含むカラムを含めるかどうか。           |
+| `with_minmax` | 結果に min-max インデックスを含めるかどうか。       |
+
+
 
 ## 返される値 {#returned_value}
 
-ソーステーブルの主インデックスおよび最小-最大インデックス（有効な場合）の値を持つカラムを含むテーブルオブジェクト、ソーステーブルのデータパーツにあるすべての可能なファイルのマークの値を持つカラム（有効な場合）および仮想カラムを返します：
+次の列を持つテーブルオブジェクトです。ソーステーブルのプライマリインデックスおよび min-max インデックス（有効な場合）の値を持つ列、ソーステーブルのデータパーツ内の存在しうるすべてのファイルに対するマーク（有効な場合）の値を持つ列、さらに仮想列から構成されます。
 
 - `part_name` - データパーツの名前。
-- `mark_number` - データパーツ内の現在のマークの番号。
+- `mark_number` - データパーツ内の現在のマーク番号。
 - `rows_in_granule` - 現在のグラニュール内の行数。
 
-マークカラムは、データパーツにカラムが存在しない場合や、そのサブストリームのいずれかのマークが書き込まれていない場合（例：コンパクトなパーツ）に `(NULL, NULL)` 値を含むことがあります。
+Marks 列には、データパーツに対象の列が存在しない場合、またはそのサブストリームのいずれかについてマークが書き込まれていない場合（例：コンパクトパーツ）に、`(NULL, NULL)` の値が含まれることがあります。
 
-## 使用例 {#usage-example}
+
+
+## 使用例
 
 ```sql
 CREATE TABLE test_table

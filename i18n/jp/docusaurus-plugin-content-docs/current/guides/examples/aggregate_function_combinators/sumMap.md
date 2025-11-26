@@ -1,27 +1,31 @@
 ---
-'slug': '/examples/aggregate-function-combinators/sumMap'
-'title': 'sumMap'
-'description': 'sumMap 結合子を使用する例'
-'keywords':
-- 'sum'
-- 'map'
-- 'combinator'
-- 'examples'
-- 'sumMap'
-'sidebar_label': 'sumMap'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/sumMap'
+title: 'sumMap'
+description: 'sumMap コンビネータの使用例'
+keywords: ['sum', 'map', 'combinator', 'examples', 'sumMap']
+sidebar_label: 'sumMap'
+doc_type: 'reference'
 ---
+
 
 
 # sumMap {#summap}
 
+
+
 ## 説明 {#description}
 
-[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、[`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に適用することができ、`sumMap` 集約コンビネータ関数を使用して各キーに従って Map の値の合計を計算します。
+[`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`sumMap`
+集約コンビネータ関数を使用して、各キーごとに Map 内の値の合計を計算するために、[`sum`](/sql-reference/aggregate-functions/reference/sum)
+関数に適用できます。
 
-## 使用例 {#example-usage}
 
-この例では、異なるタイムスロットのステータスコードとそのカウントを格納するテーブルを作成します。各行には、ステータスコードとその対応するカウントの Map が含まれます。`sumMap` を使用して、各タイムスロット内の各ステータスコードの合計カウントを計算します。
+
+## 使用例
+
+この例では、さまざまなタイムスロットごとにステータスコードとそのカウントを保持するテーブルを作成します。
+各行には、ステータスコードをキー、そのステータスコードに対応するカウントを値とする `Map` が含まれます。
+各タイムスロット内でステータスコードごとの合計カウントを計算するために `sumMap` を使用します。
 
 ```sql title="Query"
 CREATE TABLE metrics(
@@ -43,18 +47,19 @@ FROM metrics
 GROUP BY timeslot;
 ```
 
-`sumMap` 関数は、各タイムスロット内の各ステータスコードの合計カウントを計算します。たとえば：
-- タイムスロット '2000-01-01 00:00:00':
-  - ステータス 'a': 15
-  - ステータス 'b': 25
-  - ステータス 'c': 35 + 45 = 80
-  - ステータス 'd': 55
-  - ステータス 'e': 65
-- タイムスロット '2000-01-01 00:01:00':
-  - ステータス 'd': 75
-  - ステータス 'e': 85
-  - ステータス 'f': 95 + 105 = 200
-  - ステータス 'g': 115 + 125 = 240
+`sumMap` 関数は、各タイムスロットごとにステータスコード別の合計件数を計算します。例えば次のとおりです:
+
+* タイムスロット &#39;2000-01-01 00:00:00&#39; の場合:
+  * ステータス &#39;a&#39;: 15
+  * ステータス &#39;b&#39;: 25
+  * ステータス &#39;c&#39;: 35 + 45 = 80
+  * ステータス &#39;d&#39;: 55
+  * ステータス &#39;e&#39;: 65
+* タイムスロット &#39;2000-01-01 00:01:00&#39; の場合:
+  * ステータス &#39;d&#39;: 75
+  * ステータス &#39;e&#39;: 85
+  * ステータス &#39;f&#39;: 95 + 105 = 200
+  * ステータス &#39;g&#39;: 115 + 125 = 240
 
 ```response title="Response"
    ┌────────────timeslot─┬─sumMap(status)───────────────────────┐
@@ -63,6 +68,7 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 参考 {#see-also}
+
+## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)
+- [`Map コンビネータ`](/sql-reference/aggregate-functions/combinators#-map)

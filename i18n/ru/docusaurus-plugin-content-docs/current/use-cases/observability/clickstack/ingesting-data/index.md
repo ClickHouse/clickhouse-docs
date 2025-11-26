@@ -1,18 +1,19 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Прием данных для ClickStack - Стек мониторинга ClickHouse'
-'title': 'Прием данных'
-'doc_type': 'landing-page'
+slug: /use-cases/observability/clickstack/ingesting-data
+pagination_prev: null
+pagination_next: null
+description: 'Ингестия данных для ClickStack — стек наблюдаемости ClickHouse'
+title: 'Ингестия данных'
+doc_type: 'landing-page'
+keywords: ['ингестия данных ClickStack', 'ингестия данных наблюдаемости', 'ClickStack OpenTelemetry', 'ингестия наблюдаемости ClickHouse', 'сбор телеметрических данных']
 ---
-ClickStack предоставляет несколько способов для приема данных наблюдаемости в вашу инстанцию ClickHouse. Независимо от того, собираете ли вы журналы, метрики, трассировки или данные сессий, вы можете использовать сборщик OpenTelemetry (OTel) в качестве единой точки приема или воспользоваться платформенными интеграциями для специализированных случаев использования.
+
+ClickStack предоставляет несколько способов осуществлять ингестию данных наблюдаемости в ваш экземпляр ClickHouse. Независимо от того, собираете ли вы логи, метрики, трейсы или данные сессий, вы можете использовать коллектор OpenTelemetry (OTel) как унифицированную точку приёма или задействовать интеграции, специфичные для платформы, для специализированных сценариев.
 
 | Раздел | Описание |
 |------|-------------|
-| [Обзор](/use-cases/observability/clickstack/ingesting-data/overview) | Введение в методы приема данных и архитектуру |
-| [Прием данных с OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | Для пользователей, использующих OpenTelemetry и стремящихся быстро интегрироваться с ClickStack |
-| [Сборщик OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector) | Подробная информация о сборщике OpenTelemetry ClickStack |
-| [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes) | Руководство по сбору данных наблюдаемости из кластеров Kubernetes |
+| [Обзор](/use-cases/observability/clickstack/ingesting-data/overview) | Введение в методы и архитектуру ингестии данных |
+| [Ингестия данных с помощью OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | Для пользователей OpenTelemetry, которые хотят быстро интегрироваться с ClickStack |
+| [Коллектор OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector) | Подробные сведения о коллекторе OpenTelemetry в ClickStack |
 | [Таблицы и схемы](/use-cases/observability/clickstack/ingesting-data/schemas) | Обзор таблиц ClickHouse и их схем, используемых ClickStack |
 | [Языковые SDK](/use-cases/observability/clickstack/sdks) | SDK ClickStack для инструментирования языков программирования и сбора телеметрических данных |

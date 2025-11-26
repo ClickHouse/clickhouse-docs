@@ -1,20 +1,26 @@
 ---
-'description': 'StripeLog に関するドキュメント'
-'slug': '/engines/table-engines/log-family/stripelog'
-'toc_priority': 32
-'toc_title': 'StripeLog'
-'title': 'StripeLog'
-'doc_type': 'reference'
+description: 'StripeLog テーブルエンジンに関するドキュメント'
+slug: /engines/table-engines/log-family/stripelog
+toc_priority: 32
+toc_title: 'StripeLog'
+title: 'StripeLog テーブルエンジン'
+doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# StripeLog
 
-このエンジンはログエンジンのファミリーに属しています。ログエンジンの一般的な特性とその違いについては、[Log Engine Family](../../../engines/table-engines/log-family/index.md)の記事を参照してください。
+# StripeLog テーブルエンジン
 
-このエンジンは、少量のデータ（1百万行未満）を持つ多数のテーブルを書き込む必要があるシナリオで使用します。例えば、これは変換のために必要な原子的処理のために受信データバッチを格納するテーブルとして使用できます。このテーブルタイプの100kインスタンスは、ClickHouseサーバーにとって妥当です。このテーブルエンジンは、高数のテーブルが必要な場合に[Log](./log.md)よりも優先されるべきです。これは読み取り効率が犠牲になることを意味します。
+<CloudNotSupportedBadge/>
 
-## テーブルの作成 {#table_engines-stripelog-creating-a-table}
+このエンジンは Log エンジンファミリーに属します。Log エンジンの共通の特性と相違点については、[Log Engine Family](../../../engines/table-engines/log-family/index.md) の記事を参照してください。
+
+このエンジンは、少量のデータ（100 万行未満）を持つ多数のテーブルに書き込む必要があるシナリオで使用します。たとえば、このテーブルは、変換のために取り込まれるデータバッチを、各バッチをアトミックに処理する必要がある場合の保存先として使用できます。このテーブルタイプのインスタンスを最大 10 万個まで ClickHouse サーバー上で運用できます。多数のテーブルが必要な場合、このテーブルエンジンは [Log](./log.md) よりも優先して使用すべきです。ただし、その分読み取り効率は低下します。
+
+
+
+## テーブルの作成
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -25,26 +31,31 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = StripeLog
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明をご覧ください。
+
 
 ## データの書き込み {#table_engines-stripelog-writing-the-data}
 
-`StripeLog`エンジンはすべてのカラムを1つのファイルに格納します。各`INSERT`クエリに対して、ClickHouseはデータブロックをテーブルファイルの末尾に追加し、カラムを1つずつ書き込みます。
+`StripeLog` エンジンは、すべてのカラムを 1 つのファイルに保存します。各 `INSERT` クエリのたびに、ClickHouse はデータブロックをテーブルファイルの末尾に追記し、カラムを 1 つずつ書き込みます。
 
-各テーブルに対して、ClickHouseは次のファイルを書き込みます。
+各テーブルについて、ClickHouse は次のファイルを書き込みます：
 
 - `data.bin` — データファイル。
-- `index.mrk` — マーク付きファイル。マークは挿入された各データブロックの各カラムのオフセットを含みます。
+- `index.mrk` — マークを格納するファイル。マークには、挿入された各データブロックにおける各カラムのオフセットが含まれます。
 
-`StripeLog`エンジンは`ALTER UPDATE`および`ALTER DELETE`操作をサポートしていません。
+`StripeLog` エンジンは `ALTER UPDATE` および `ALTER DELETE` 操作をサポートしません。
+
+
 
 ## データの読み取り {#table_engines-stripelog-reading-the-data}
 
-マーク付きファイルにより、ClickHouseはデータの読み取りを並列化できます。これは、`SELECT`クエリが行を予測不可能な順序で返すことを意味します。行をソートするには、`ORDER BY`句を使用してください。
+マーク付きファイルにより、ClickHouse はデータの読み取りを並列化できます。これにより、`SELECT` クエリは行を不定の順序で返します。行をソートするには、`ORDER BY` 句を使用してください。
 
-## 使用例 {#table_engines-stripelog-example-of-use}
 
-テーブルの作成:
+
+## 使用例
+
+テーブルを作成：
 
 ```sql
 CREATE TABLE stripe_log_table
@@ -59,29 +70,29 @@ ENGINE = StripeLog
 データの挿入:
 
 ```sql
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The first regular message')
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','最初の通常メッセージ')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','2番目の通常メッセージ'),(now(),'WARNING','最初の警告メッセージ')
 ```
 
-2つの`INSERT`クエリを使用して、`data.bin`ファイル内に2つのデータブロックを作成しました。
+2つの `INSERT` クエリを使用して、`data.bin` ファイル内に2つのデータブロックを作成しました。
 
-ClickHouseはデータを選択する際に複数のスレッドを使用します。各スレッドは別々のデータブロックを読み込み、結果の行を独立して返します。そのため、出力における行ブロックの順序は、ほとんどの場合、入力における同じブロックの順序とは一致しません。例えば:
+ClickHouse はデータを選択する際に複数スレッドを使用します。各スレッドは別々のデータブロックを読み取り、処理が完了し次第、それぞれ独立して結果行を返します。その結果、出力される行ブロックの順序は、ほとんどの場合、入力時の同じブロックの順序と一致しません。例えば次のようになります。
 
 ```sql
-SELECT * FROM stripe_log_table
+stripe_log_table から全てを選択する
 ```
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
-│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ 2つ目の通常メッセージ       │
+│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ        │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
+│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ       │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
-結果をソートする（デフォルトは昇順）:
+結果の並べ替え（デフォルトは昇順）：
 
 ```sql
 SELECT * FROM stripe_log_table ORDER BY timestamp
@@ -89,8 +100,8 @@ SELECT * FROM stripe_log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
-│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
-│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
+│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ        │
+│ 2019-01-18 14:27:32 │ REGULAR      │ 2つ目の通常メッセージ       │
+│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ        │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

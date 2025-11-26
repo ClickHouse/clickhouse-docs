@@ -1,14 +1,16 @@
 ---
-'description': '估算给定列的压缩比，而不进行压缩。'
-'sidebar_position': 132
-'slug': '/sql-reference/aggregate-functions/reference/estimateCompressionRatio'
-'title': 'estimateCompressionRatio'
-'doc_type': 'reference'
+description: '在不对列进行实际压缩的情况下，估算给定列的压缩比。'
+sidebar_position: 132
+slug: /sql-reference/aggregate-functions/reference/estimateCompressionRatio
+title: 'estimateCompressionRatio'
+doc_type: 'reference'
 ---
 
-## estimateCompressionRatio {#estimatecompressionration}
 
-估计给定列的压缩比，而不进行实际压缩。
+
+## estimateCompressionRatio
+
+在不实际压缩的情况下估算给定列的压缩比。
 
 **语法**
 
@@ -18,20 +20,20 @@ estimateCompressionRatio(codec, block_size_bytes)(column)
 
 **参数**
 
-- `column` - 任意类型的列
+* `column` - 任意类型的列
 
-**参数**
+**参数说明**
 
-- `codec` - 包含一个 [压缩编解码器](/sql-reference/statements/create/table#column_compression_codec) 的 [String](../../../sql-reference/data-types/string.md) 或多个用逗号分隔的编解码器的字符串。
-- `block_size_bytes` - 压缩数据的块大小。这类似于同时设置 [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) 和 [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)。默认值为 1 MiB (1048576 字节)。
+* `codec` - 一个[String](../../../sql-reference/data-types/string.md)，其内容为一个[压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)或多个以逗号分隔的编解码器。
+* `block_size_bytes` - 压缩数据的块大小。类似于同时设置[`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size)和[`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size)。默认值为 1 MiB（1048576 字节）。
 
-两个参数都是可选的。
+这两个参数都是可选的。
 
 **返回值**
 
-- 返回给定列的估计压缩比。
+* 返回给定列的压缩比估计值。
 
-类型: [Float64](/sql-reference/data-types/float)。
+类型：[Float64](/sql-reference/data-types/float)。
 
 **示例**
 
@@ -59,7 +61,7 @@ SELECT estimateCompressionRatio(number) AS estimate FROM compression_estimate_ex
 ```
 
 :::note
-上面的结果将根据服务器的默认压缩编解码器而有所不同。请参见 [列压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)。
+上面的结果会因服务器的默认压缩编解码器而有所不同。参见[列压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)。
 :::
 
 ```sql title="Query"
@@ -72,7 +74,7 @@ SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_esti
 └───────────────────┘
 ```
 
-该函数还可以指定多个编解码器：
+此函数还可以指定多个编解码器：
 
 ```sql title="Query"
 SELECT estimateCompressionRatio('T64, ZSTD')(number) AS estimate FROM compression_estimate_example;

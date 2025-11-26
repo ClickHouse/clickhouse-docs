@@ -1,17 +1,18 @@
 ---
-'slug': '/managing-data/drop_partition'
-'sidebar_label': 'Drop Partition'
-'title': 'パーティションを削除する'
-'hide_title': false
-'description': 'パーティションを削除することを説明するページ'
-'doc_type': 'reference'
+slug: /managing-data/drop_partition
+sidebar_label: 'パーティションの削除'
+title: 'パーティションの削除'
+hide_title: false
+description: 'パーティションの削除について説明するページです'
+keywords: ['DROP PARTITION', 'drop partition', 'パーティションの削除', 'パーティションの削除', 'パーティション管理']
+doc_type: 'reference'
 ---
 
-## 背景 {#background}
+## 背景
 
-パーティショニングは、テーブルが最初に定義されるときに `PARTITION BY` 句で指定されます。この句は、任意のカラムに対する SQL 式を含むことができ、その結果が行が送信されるパーティションを定義します。
+パーティションは、テーブルを最初に `PARTITION BY` 句で定義するときに指定します。この句には任意のカラムに対する SQL 式を含めることができ、その評価結果によって各行がどのパーティションに送られるかが決まります。
 
-データパーツは論理的に各パーティションに関連付けられ、隔離してクエリを実行できます。以下の例では、`posts` テーブルを年でパーティショニングし、式 `toYear(CreationDate)` を使用しています。行が ClickHouse に挿入されると、この式は各行に対して評価され、結果のパーティションが存在する場合はそこにルーティングされます（その年の最初の行であれば、パーティションが作成されます）。
+データパーツはディスク上でそれぞれのパーティションに論理的に関連付けられており、個別にクエリできます。以下の例では、`posts` テーブルを `toYear(CreationDate)` という式を用いて年ごとにパーティション分割します。行が ClickHouse に挿入されると、この式が各行に対して評価され、対応するパーティションが存在すればそこに振り分けられます（その年の最初の行であれば、そのタイミングでパーティションが作成されます）。
 
 ```sql
  CREATE TABLE posts
@@ -28,21 +29,22 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 PARTITION BY toYear(CreationDate)
 ```
 
-パーティション式の設定については、セクション [パーティション式の設定方法](/sql-reference/statements/alter/partition/#how-to-set-partition-expression) を参照してください。
+パーティション式の設定については、[パーティション式の設定方法](/sql-reference/statements/alter/partition/#how-to-set-partition-expression)のセクションを参照してください。
 
-ClickHouse では、ユーザーは主にパーティショニングをデータ管理機能と見なすべきであり、クエリ最適化技術とは見なすべきではありません。キーに基づいてデータを論理的に分離することにより、各パーティションは独立して操作できるため（例：削除）、ユーザーはパーティションを移動させ、したがってサブセットを [ストレージ階層](/integrations/s3#storage-tiers) 間で効率的に移動させることができ、一定の時間で [データを期限切れにする/クラスターから効率的に削除する](/sql-reference/statements/alter/partition) ことが可能です。
+ClickHouse では、パーティションは主としてクエリ最適化のテクニックではなく、データ管理機能として捉えるべきです。キーに基づいてデータを論理的に分割することで、各パーティションに対して（たとえば削除などの）操作を個別に実行できます。これにより、ユーザーはパーティション、ひいてはそのサブセットを、時系列に応じて、あるいは[データの有効期限を設定する／クラスタから効率的に削除する](/sql-reference/statements/alter/partition)目的で、[ストレージ階層](/integrations/s3#storage-tiers)間で効率的に移動できるようになります。
 
-## パーティションの削除 {#drop-partitions}
 
-`ALTER TABLE ... DROP PARTITION` は、全体のパーティションを削除するためのコスト効率の良い方法を提供します。
+## パーティションの削除
+
+`ALTER TABLE ... DROP PARTITION` は、パーティション全体を削除するためのコスト効率の高い方法です。
 
 ```sql
-ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
+ALTER TABLE テーブル名 [ON CLUSTER クラスター] DROP PARTITION|PART パーティション式
 ```
 
-このクエリは、パーティションを非アクティブとしてタグ付けし、データを完全に削除します。おおよそ 10 分程度で完了します。このクエリはレプリケートされ、すべてのレプリカでデータを削除します。
+このクエリはパーティションを非アクティブとしてタグ付けし、約 10 分後にデータを完全に削除します。このクエリはレプリケーションされており、すべてのレプリカ上のデータを削除します。
 
-以下の例では、関連するパーティションを削除することにより、2008 年の投稿を以前のテーブルから削除します。
+次の例では、関連するパーティションをドロップすることで、先ほどのテーブルから 2008 年の投稿を削除します。
 
 ```sql
 SELECT DISTINCT partition

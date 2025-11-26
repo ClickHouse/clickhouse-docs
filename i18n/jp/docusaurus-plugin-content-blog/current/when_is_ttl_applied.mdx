@@ -1,0 +1,89 @@
+---
+date: 2023-05-02
+title: TTL ルールはいつ適用され、そのタイミングを制御できますか？
+description: ClickHouse における TTL ルールは最終的には適用されますが、`merge_with_ttl_timeout` 設定を使用してその実行タイミングを制御できます。TTL の適用を強制する方法と、TTL 実行用バックグラウンドスレッドを管理する方法を学びます。
+tags: ['コアデータ概念']
+keywords: ['TTL']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## TTL ルールと制御
+
+TTL &#x306F;***いずれ***&#x9069;用されます。これはどういう意味でしょうか？`MergeTree` テーブル設定 [`merge_with_ttl_timeout`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) は、削除 TTL を伴うマージを再度実行するまでの最小待機時間（秒）を設定します。デフォルト値は 14400 秒（4 時間）です。ただしこれはあくまで最小待機時間であり、削除 TTL のためのマージがトリガーされるまでに、それ以上時間がかかることがあります。
+
+次のクエリで（`merge_with_ttl_timeout` のような）現在の TTL 設定をすべて確認できます。
+
+```sql
+SELECT *
+FROM system.merge_tree_settings
+WHERE name like '%ttl%'
+```
+
+レスポンスは次のようになります。
+
+```response
+┌─name───────────────────────────────────────────────────────────┬─value───┬─changed─┬─description────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─min──┬─max──┬─readonly─┬─type───┐
+│ max_replicated_merges_with_ttl_in_queue                        │ 1       │       0 │ ReplicatedMergeTreeキューで同時に実行可能なTTL付きパーツのマージタスク数。                                                                                          │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ UInt64 │
+│ max_number_of_merges_with_ttl_in_pool                          │ 2       │       0 │ プール内のTTLエントリを持つマージ数が指定値を超えた場合、新しいTTLマージを割り当てない。通常のマージ用に空きスレッドを確保し、「Too many parts」エラーを回避するため。 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ UInt64 │
+│ merge_tree_clear_old_broken_detached_parts_ttl_timeout_seconds │ 2592000 │       1 │ この設定で指定された期間、変更されずに残っている古い破損した切り離しパーツをバックグラウンドで削除する。                                                              │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ UInt64 │
+│ merge_with_ttl_timeout                                         │ 14400   │       0 │ 削除TTLを伴うマージを繰り返し実行できる最小間隔(秒単位)。                                                                                                                       │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ Int64  │
+│ merge_with_recompression_ttl_timeout                           │ 14400   │       0 │ 再圧縮TTLを伴うマージを繰り返し実行できる最小間隔(秒単位)。                                                                                                                │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ Int64  │
+│ ttl_only_drop_parts                                            │ 0       │       0 │ 期限切れのパーツを部分的に削除せず、完全に削除する。                                                                                                                       │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ Bool   │
+│ materialize_ttl_recalculate_only                               │ 0       │       0 │ MATERIALIZE TTL実行時にのみTTL情報を再計算する                                                                                                                                             │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ Bool   │
+└────────────────────────────────────────────────────────────────┴─────────┴─────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────┴──────┴──────────┴────────┘
+```
+
+`SHOW CREATE TABLE` を使用すると、テーブルに TTL ルールが含まれているかどうかに加えて、テーブルの `SETTINGS` によって上記の設定値が変更されているかどうかを確認できます。
+
+```sql
+SHOW CREATE TABLE <TableName>
+```
+
+
+## TTL ルールの適用を強制する
+
+これは最も洗練された方法ではありませんが、`MATERIALIZE TTL` を明示的に実行することで、テーブルに定義されたすべての TTL ルールを強制的にマテリアライズできます。
+
+```sql
+ALTER TABLE my_table
+    MATERIALIZE TTL
+```
+
+
+## TTL に影響するバックグラウンドスレッド
+
+バックグラウンドプール内のワーカースレッド数が不足しているために、TTL ルールが適用されていない可能性があります。たとえば、データを集中的に挿入している場合、バックグラウンドプール全体が通常のマージ処理に利用されてしまうことがあります。なお、バックグラウンドプールのサイズは増やすことができます。
+
+次のクエリで、現在のバックグラウンドプールのサイズを確認できます：
+
+```sql
+SELECT *
+FROM system.settings
+WHERE name = 'background_pool_size';
+```
+
+レスポンスは次のとおりです。
+
+```response
+┌─name─────────────────┬─value─┬─changed─┬─description─────────────────────┬─min──┬─max──┬─readonly─┬─type───┬─default─┬─alias_for─┐
+│ background_pool_size │ 16    │       0 │ 廃止された設定です。何も実行しません。 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │        0 │ UInt64 │ 16      │           │
+└──────────────────────┴───────┴─────────┴─────────────────────────────────┴──────┴──────┴──────────┴────────┴─────────┴───────────┘
+```
+
+[`background_pool_size` 設定](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#background_pool_size) の変更方法については、ドキュメントを参照してください。この設定は次のように設定されています：
+
+```xml
+<background_pool_size>16</background_pool_size>
+```
+
+次のクエリで現在のバックグラウンドプールの動作状況を確認できます。
+
+```sql
+SELECT *
+FROM system.metrics
+WHERE metric like 'Background%'
+```

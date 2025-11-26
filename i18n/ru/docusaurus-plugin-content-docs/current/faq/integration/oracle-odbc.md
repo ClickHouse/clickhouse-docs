@@ -1,15 +1,18 @@
 ---
-slug: '/faq/integration/oracle-odbc'
-description: 'Эта страница содержит рекомендации о том, что делать, если у вас возникла'
-title: 'Что делать, если у меня возникла проблема с кодировками при использовании Oracle через ODBC?'
-doc_type: guide
+slug: /faq/integration/oracle-odbc
+title: 'Что делать, если возникают проблемы с кодировками при использовании Oracle через ODBC?'
 toc_hidden: true
 toc_priority: 20
+description: 'Эта страница содержит рекомендации по устранению проблем с кодировками при использовании Oracle через ODBC'
+doc_type: 'guide'
+keywords: ['oracle', 'odbc', 'encoding', 'integration', 'external dictionary']
 ---
 
-# Что делать, если у меня есть проблема с кодировками при использовании Oracle через ODBC? {#oracle-odbc-encodings}
 
-Если вы используете Oracle в качестве источника внешних словарей ClickHouse через ODBC-драйвер Oracle, вам необходимо установить правильное значение для переменной окружения `NLS_LANG` в файле `/etc/default/clickhouse`. Для получения дополнительной информации смотрите [Часто задаваемые вопросы по NLS_LANG Oracle](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html).
+
+# Что делать, если у меня возникают проблемы с кодировками при работе с Oracle через ODBC?
+
+Если вы используете Oracle как источник внешних словарей ClickHouse через драйвер Oracle ODBC, необходимо установить корректное значение переменной окружения `NLS_LANG` в файле `/etc/default/clickhouse`. Дополнительную информацию см. в [Oracle NLS&#95;LANG FAQ](https://www.oracle.com/technetwork/products/globalization/nls-lang-099431.html).
 
 **Пример**
 

@@ -1,12 +1,13 @@
 ---
-slug: '/interfaces/formats/HiveText'
-description: 'Документация для формата HiveText'
-title: HiveText
+description: 'Документация по формату HiveText'
 keywords: ['HiveText']
-doc_type: reference
+slug: /interfaces/formats/HiveText
+title: 'HiveText'
+doc_type: 'reference'
 ---
+
 ## Описание {#description}
 
-## Пример использования {#example-usage}
+## Примеры использования {#example-usage}
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

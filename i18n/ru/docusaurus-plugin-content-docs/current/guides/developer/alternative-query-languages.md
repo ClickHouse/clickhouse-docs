@@ -1,41 +1,46 @@
 ---
-slug: '/guides/developer/alternative-query-languages'
+slug: /guides/developer/alternative-query-languages
 sidebar_label: 'Альтернативные языки запросов'
-description: 'Используйте альтернативные языки запросов в ClickHouse'
 title: 'Альтернативные языки запросов'
-doc_type: reference
+description: 'Использование альтернативных языков запросов в ClickHouse'
+keywords: ['альтернативные языки запросов', 'диалекты запросов', 'диалект MySQL', 'диалект PostgreSQL', 'руководство для разработчиков']
+doc_type: 'reference'
 ---
+
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-Кроме стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для обращения к данным.
+Помимо стандартного SQL, ClickHouse поддерживает различные альтернативные языки запросов для работы с данными.
 
-В настоящее время поддерживаемые диалекты:
-- `clickhouse`: Стандартный [SQL-диалект](../../chdb/reference/sql-reference.md) ClickHouse
-- `prql`: [Язык запросов с конвейером (PRQL)](https://prql-lang.org/)
-- `kusto`: [Язык запросов Kusto (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
+В настоящее время поддерживаются следующие диалекты:
 
-Какой язык запросов используется, контролируется с помощью настройки `dialect`.
+* `clickhouse`: Диалект по умолчанию — [SQL-диалект](../../chdb/reference/sql-reference.md) ClickHouse
+* `prql`: [Pipelined Relational Query Language (PRQL)](https://prql-lang.org/)
+* `kusto`: [Kusto Query Language (KQL)](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query)
 
-## Стандартный SQL {#standard-sql}
+Используемый язык запросов задаётся параметром `dialect`.
 
-Стандартный SQL является языком запросов по умолчанию в ClickHouse.
+
+## Стандартный SQL
+
+Стандартный SQL — язык запросов, используемый в ClickHouse по умолчанию.
 
 ```sql
 SET dialect = 'clickhouse'
 ```
 
-## Язык запросов с конвейером (PRQL) {#pipelined-relational-query-language-prql}
 
-<ExperimentalBadge/>
+## Конвейерный реляционный язык запросов (PRQL)
 
-Чтобы включить PRQL:
+<ExperimentalBadge />
+
+Чтобы включить поддержку PRQL:
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- this SET statement is required only for ClickHouse versions >= v25.1
+SET allow_experimental_prql_dialect = 1; -- эта команда SET требуется только для версий ClickHouse >= v25.1
 SET dialect = 'prql'
 ```
 
-Пример запроса PRQL:
+Пример запроса на PRQL:
 
 ```prql
 from trips
@@ -45,16 +50,17 @@ aggregate {
 }
 ```
 
-Внутри ClickHouse используется трансляция из PRQL в SQL для выполнения запросов PRQL.
+Внутренне ClickHouse транспилирует PRQL в SQL для выполнения запросов PRQL.
 
-## Язык запросов Kusto (KQL) {#kusto-query-language-kql}
 
-<ExperimentalBadge/>
+## Язык запросов Kusto (KQL)
 
-Чтобы включить KQL:
+<ExperimentalBadge />
+
+Чтобы включить поддержку KQL:
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only for ClickHouse versions >= 25.1
+SET allow_experimental_kusto_dialect = 1; -- эта инструкция SET требуется только для версий ClickHouse начиная с 25.1
 SET dialect = 'kusto'
 ```
 
@@ -77,4 +83,4 @@ numbers(10) | project number
 └────────┘
 ```
 
-Обратите внимание, что запросы KQL могут не иметь доступа ко всем функциям, определенным в ClickHouse.
+Обратите внимание, что запросы KQL могут не иметь доступа ко всем функциям, определённым в ClickHouse.

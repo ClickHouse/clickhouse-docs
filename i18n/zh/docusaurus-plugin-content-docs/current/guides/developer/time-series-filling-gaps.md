@@ -1,23 +1,26 @@
 ---
-'slug': '/guides/developer/time-series-filling-gaps'
-'sidebar_label': '时间序列 - 填补空白'
-'sidebar_position': 10
-'description': '填补时间序列数据中的空白。'
-'keywords':
-- 'time series'
-- 'gap fill'
-'title': '填补时间序列数据中的空白'
-'doc_type': 'guide'
+slug: /guides/developer/time-series-filling-gaps
+sidebar_label: '时间序列 - 缺失填充'
+sidebar_position: 10
+description: '填充时间序列数据中的缺失值。'
+keywords: ['时间序列', '缺失填充']
+title: '填充时间序列数据中的缺失值'
+doc_type: 'guide'
 ---
 
 
-# 填补时间序列数据的空白
 
-在处理时间序列数据时，由于缺失数据或不活动，可能会出现数据空白。通常情况下，当我们查询数据时，不希望这些空白存在。在这种情况下，`WITH FILL` 子句可以派上用场。本指南讨论了如何使用 `WITH FILL` 来填补时间序列数据中的空白。
+# 填补时间序列数据中的缺口
 
-## 设置 {#setup}
+在处理时间序列数据时，由于数据缺失或业务/采集不活跃，数据中可能会出现间断。
+通常在查询数据时，我们不希望这些缺口存在。在这种情况下，`WITH FILL` 子句就派上用场了。
+本指南将介绍如何使用 `WITH FILL` 来填补时间序列数据中的缺口。
 
-假设我们有以下表格，该表存储由 GenAI 图像服务生成的图像元数据：
+
+
+## 配置
+
+假设我们有如下表，用于存储由生成式 AI 图像服务生成的图像的元数据：
 
 ```sql
 CREATE TABLE images
@@ -32,7 +35,7 @@ ENGINE = MergeTree
 ORDER BY (size, height, width);
 ```
 
-让我们导入一些记录：
+现在我们来导入一些记录：
 
 ```sql
 INSERT INTO images VALUES (1088619203512250448, '2023-03-24 00:24:03.684', 1536, 1536, 2207289);
@@ -44,16 +47,17 @@ INSERT INTO images VALUES (1088619208524431510, '2023-03-24 00:24:04.879', 1024,
 INSERT INTO images VALUES (1088619208425437515, '2023-03-24 00:24:05.160', 1024, 1024, 1538451);
 ```
 
-## 按桶查询 {#querying-by-bucket}
 
-我们将探索 2023 年 3 月 24 日 `00:24:03` 到 `00:24:04` 之间创建的图像，因此让我们为这些时刻创建一些参数：
+## 按桶查询
+
+我们将查看创建时间在 2023 年 3 月 24 日 `00:24:03` 到 `00:24:04` 之间的图像，因此先为这两个时间点创建一些参数：
 
 ```sql
 SET param_start = '2023-03-24 00:24:03',
     param_end = '2023-03-24 00:24:04';
 ```
 
-接下来，我们将编写一个查询，将数据分组为 100 毫秒的桶，并返回在该桶中创建的图像数量：
+接下来，我们将编写一个查询语句，将数据按 100ms 的时间桶进行分组，并返回每个时间桶中新建图像的数量：
 
 ```sql
 SELECT
@@ -76,11 +80,14 @@ ORDER BY bucket ASC
 └─────────────────────────┴───────┘
 ```
 
-结果集仅包括创建了图像的桶，但对于时间序列分析，我们可能希望返回每个 100 毫秒的桶，即使它没有任何条目。
+结果集只包含那些生成了图像的桶，但在时间序列分析时，我们可能希望返回每个 100ms 的桶，即使其中没有任何记录。
 
-## WITH FILL {#with-fill}
 
-我们可以使用 `WITH FILL` 子句来填补这些空白。我们还将指定 `STEP`，即要填补的空白大小。对于 `DateTime` 类型，这默认值为 1 秒，但我们希望填补长度为 100 毫秒的空白，所以我们将 100 毫秒作为我们的步长值：
+## WITH FILL
+
+我们可以使用 `WITH FILL` 子句来填补这些空缺。
+我们还将指定 `STEP`，即要填充的间隔步长。
+对于 `DateTime` 类型，默认步长为 1 秒，但我们希望填补长度为 100ms 的空缺，因此将步长设置为 100ms 的时间间隔：
 
 ```sql
 SELECT
@@ -112,11 +119,12 @@ STEP toIntervalMillisecond(100);
 └─────────────────────────┴───────┘
 ```
 
-我们可以看到，空白在 `count` 列中已填补为 0 值。
+可以看到，`count` 列中的空缺已经被填充为 0。
 
-## WITH FILL...FROM {#with-fillfrom}
 
-然而，时间范围开始处仍然存在一个空白，我们可以通过指定 `FROM` 来修复它：
+## WITH FILL...FROM
+
+然而，在时间范围的起始位置仍然存在一个空缺，我们可以通过指定 `FROM` 来填补这一点：
 
 ```sql
 SELECT
@@ -155,11 +163,13 @@ STEP toIntervalMillisecond(100);
 └─────────────────────────┴───────┘
 ```
 
-从结果中我们可以看到，从 `00:24:03.000` 到 `00:24:03.500` 的桶现在都出现了。
+从结果可以看到，`00:24:03.000` 到 `00:24:03.500` 这一段的所有分桶现在都已经显示出来了。
 
-## WITH FILL...TO {#with-fillto}
 
-不过，我们仍然缺少一些来自时间范围结束的桶，我们可以通过提供一个 `TO` 值来填补。`TO` 是不包含的，因此我们将结束时间稍微加上一点，以确保它被包含：
+## WITH FILL...TO
+
+不过，在时间范围的末尾我们仍然缺少一些桶，可以通过提供一个 `TO` 值来填补。
+`TO` 不包含其自身指定的时间点，因此我们会在结束时间上增加一小段时间，以确保该时间点被包含在内：
 
 ```sql
 SELECT
@@ -201,17 +211,19 @@ STEP toIntervalMillisecond(100);
 └─────────────────────────┴───────┘
 ```
 
-现在所有的空白都已经被填补，我们有从 `00:24:03.000` 到 `00:24:05.000` 每 100 毫秒的条目。
+现在所有空白区间都已填充完毕，从 `00:24:03.000` 到 `00:24:05.000` 的每个 100 毫秒都有记录。
 
-## 累计计数 {#cumulative-count}
 
-假设我们现在想要保持每个桶中创建的图像数量的累计计数。我们可以通过添加一个 `cumulative` 列来实现，如下所示：
+## 累计计数
+
+假设我们现在希望对所有 bucket 中已创建图像的数量进行累计计数。
+我们可以通过添加一个 `cumulative` 列来实现，如下所示：
 
 ```sql
 SELECT
     toStartOfInterval(timestamp, toIntervalMillisecond(100)) AS bucket,
     count() AS count,
-    sum(count) OVER (ORDER BY bucket) AS cumulative
+    sum(count) OVER (ORDER BY bucket) AS cumulative  -- 累积计数
 FROM MidJourney.images
 WHERE (timestamp >= {start:String}) AND (timestamp <= {end:String})
 GROUP BY ALL
@@ -248,11 +260,13 @@ STEP toIntervalMillisecond(100);
 └─────────────────────────┴───────┴────────────┘
 ```
 
-累计列中的值并没有按我们希望的方式工作。
+累积列中的值未按我们期望的方式运行。
 
-## WITH FILL...INTERPOLATE {#with-fillinterpolate}
 
-任何 `count` 列中为 `0` 的行在累计列中也为 `0`，而我们更希望它使用累计列中的前一个值。我们可以通过使用 `INTERPOLATE` 子句来做到这一点，如下所示：
+## WITH FILL...INTERPOLATE
+
+在 `count` 列中值为 `0` 的所有行，其 `cumulative` 列中的值同样是 `0`，而我们更希望这些行在 `cumulative` 列中沿用前一行的值。
+我们可以通过使用 `INTERPOLATE` 子句来实现，如下所示：
 
 ```sql
 SELECT
@@ -296,7 +310,8 @@ INTERPOLATE (cumulative);
 └─────────────────────────┴───────┴────────────┘
 ```
 
-这看起来好多了。现在让我们用 `bar` 函数添加一个条形图，不要忘记将我们的新列添加到 `INTERPOLATE` 子句中。
+看起来好多了。
+最后，为了完成整个过程，让我们使用 `bar` 函数添加一个柱状图，并且别忘了在 `INTERPOLATE` 子句中加入我们的新列。
 
 ```sql
 SELECT
@@ -314,6 +329,7 @@ TO toDateTime64({end:String}, 3) + INTERVAL 100 millisecond
 STEP toIntervalMillisecond(100)
 INTERPOLATE (cumulative, barChart);
 ```
+
 
 ```response
 ┌──────────────────bucket─┬─count─┬─cumulative─┬─barChart─┐

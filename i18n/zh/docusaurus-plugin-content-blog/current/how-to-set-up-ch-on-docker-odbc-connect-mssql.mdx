@@ -1,0 +1,243 @@
+---
+title: 如何在 Docker 中部署 ClickHouse，并通过 ODBC 连接 Microsoft SQL Server（MSSQL）数据库
+description: "如何在 Docker 中部署 ClickHouse，并通过 ODBC 连接 Microsoft SQL Server（MSSQL）数据库"
+date: 2024-05-29
+tags: ['Native Clients and Interfaces']
+keywords: ['Docker', 'ODBC', 'Microsoft SQL Server', 'MSSQL']
+---
+
+import Image from "@theme/IdealImage";
+import mssql_table from "@site/static/images/knowledgebase/ikb273/c8a5492f-5910-4454-bfbc-5c6ceda15ccd.png";
+import mssql_login from "@site/static/images/knowledgebase/ikb273/568f1143-475e-422f-a26a-2c23ac324771.png";
+import mssql_roles from "@site/static/images/knowledgebase/ikb273/63992978-7078-4985-b661-a3c095099ea7.png";
+import mssql_user from "@site/static/images/knowledgebase/ikb273/15a407ca-53c1-45b1-9beb-ddd8eedde64a.png";
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 问题 \{#question\}
+
+如何通过 Docker 镜像部署 ClickHouse，并将其连接到 Microsoft SQL Server？
+
+## 答案 \{#answer\}
+
+***此示例说明***
+
+- 使用基于 Ubuntu 的 ClickHouse Docker 镜像
+- 使用 FreeTDS 驱动程序
+- 使用 MSSQL Server 2012R2
+- 本示例中的 Windows 主机名为 `MARSDB2.marsnet2.local`，IP 为 `192.168.1.133`（请替换为你自己的主机名和/或 IP）
+- MSSQL 实例名称为 `MARSDB2`
+- MSSQL 登录名和数据库用户均为 `sql_user`
+
+### 在 MSSQL 中用于测试的示例配置 ### \{#example-setup-in-mssql-for-testing-\}
+
+在 MSSQL 中创建的数据库和表：  
+
+<Image img={mssql_table} size="md" alt="MSSQL 数据库和数据表结构" border />
+
+MSSQL 登录用户 `sql_user`：  
+
+<Image img={mssql_login} size="md" alt="MSSQL 登录用户配置" border />
+
+`sql_user` 的数据库角色成员关系：
+
+<Image img={mssql_roles} size="md" alt="MSSQL 数据库角色成员关系" border />
+
+关联登录名的数据库用户：  
+
+<Image img={mssql_user} size="md" alt="关联登录名的 MSSQL 数据库用户" border />
+
+### 通过 ODBC 配置 ClickHouse
+
+创建一个工作目录：
+
+```sh
+mkdir ch-odbc-mssql
+cd ch-odbc-mssql
+```
+
+创建 `odbc.ini` 文件：
+
+```sh
+vim odbc.ini
+```
+
+添加以下条目以更新 DSN 的名称和 IP：
+
+```sh
+[marsdb2_mssql]
+Driver = FreeTDS
+Server = 192.168.1.133
+```
+
+创建 `odbcinst.ini` 文件：
+
+```sh
+vim odbcinst.ini
+```
+
+添加以下条目（trace 为可选，但有助于调试）：
+
+```sh
+[ODBC]
+Trace = Yes
+TraceFile = /tmp/odbc.log
+
+[FreeTDS]
+Description = FreeTDS
+Driver = /usr/lib/aarch64-linux-gnu/odbc/libtdsodbc.so
+Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so
+UsageCount = 1
+```
+
+
+### 配置 Dockerfile，用于下载镜像并添加 TDS 和所需的 ODBC 库
+
+创建 Dockerfile：
+
+```sh
+vim Dockerfile
+```
+
+在 Dockerfile 中添加以下内容：
+
+```sh
+FROM clickhouse/clickhouse-server:23.10
+
+# 安装 ODBC 驱动
+
+RUN apt-get update && apt-get install -y --no-install-recommends unixodbc \
+    && apt-get install -y freetds-bin freetds-common freetds-dev libct4 libsybdb5 \
+	&& apt-get install tdsodbc
+```
+
+构建新的 Docker 镜像：
+
+```sh
+docker build . -t marsnet/clickhouse-odbc:23.10
+```
+
+创建 `docker-compose.yml` 文件：
+
+```sh
+vim docker-compose.yml
+```
+
+将以下内容添加到 YAML 中：
+
+```sh
+version: '3.7'
+services:
+  clickhouse:
+    image: marsnet/clickhouse-odbc:23.10
+    container_name: clickhouse-odbc
+    hostname: clickhouse-host
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+      - "9009:9009"
+    volumes:
+      - ./odbc.ini:/etc/odbc.ini
+      - ./odbcinst.ini:/etc/odbcinst.ini
+    restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 262144
+        hard: 262144
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+```
+
+启动容器：
+
+```sh
+docker compose up --detach
+```
+
+启动容器后，你应该会看到类似下面的输出：
+
+```sh
+ch-odbc-mssql % docker compose up --detach
+[+] Running 1/1
+ ✔ Container clickhouse-odbc  已启动
+```
+
+检查容器是否正在运行：
+
+```sh
+ch-odbc-mssql % docker ps
+CONTAINER ID   IMAGE                           COMMAND            CREATED          STATUS              PORTS                                                                    NAMES
+87a400b803ce   marsnet/clickhouse-odbc:23.10   "/entrypoint.sh"   57 minutes ago   Up About a minute   0.0.0.0:8123->8123/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:9009->9009/tcp   clickhouse-odbc
+```
+
+
+### 测试 ODBC 连接
+
+使用 ClickHouse 客户端登录：
+
+```sh
+./clickhouse client
+```
+
+使用 `odbc` 表函数，对远程 MSSQL 数据库表执行 `SELECT` 查询进行测试：
+
+```
+clickhouse-host :) SELECT * from odbc('DSN=marsdb2_mssql;port=1433;Uid=sql_user;Pwd=ClickHouse123;Database=db1', 'table1');
+
+SELECT *
+FROM odbc('DSN=marsdb2_mssql;port=1433;Uid=sql_user;Pwd=ClickHouse123;Database=db1', 'table1')
+
+Query id: 23494da2-6e12-4ade-95fa-372a0420cac1
+
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ def     │
+│  3 │ ghi     │
+└────┴─────────┘
+
+结果集包含 3 行。用时：0.188 秒。 
+```
+
+你还可以使用 `odbc` 表引擎来创建远程表：
+
+```sql
+CREATE TABLE table1_odbc_mssql
+(
+    `id` Int32,
+    `column1` String
+)
+ENGINE = ODBC('DSN=marsdb2_mssql;port=1433;Uid=sql_user;Pwd=ClickHouse123;Database=db1', 'dbo', 'table1')
+```
+
+使用 `SELECT` 查询测试新建的远程表：
+
+```
+clickhouse-host :) select * from table1_odbc_mssql;
+
+SELECT *
+FROM table1_odbc_mssql
+
+Query id: 94724368-485d-4364-ae58-a435a225c37d
+
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ def     │
+│  3 │ ghi     │
+└────┴─────────┘
+
+结果集包含 3 行。用时：0.218 秒。 
+```
+
+如需了解更多信息，请参阅：
+
+* [https://hub.docker.com/&#95;/clickhouse](https://hub.docker.com/_/clickhouse)
+* [https://clickhouse.com/docs/engines/table-engines/integrations/odbc](https://clickhouse.com/docs/engines/table-engines/integrations/odbc)
+* [https://github.com/ClickHouse/clickhouse-odbc](https://github.com/ClickHouse/clickhouse-odbc)

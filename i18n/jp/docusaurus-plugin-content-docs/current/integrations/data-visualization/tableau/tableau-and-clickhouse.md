@@ -1,20 +1,19 @@
 ---
-'sidebar_label': 'Tableau Desktop'
-'sidebar_position': 1
-'slug': '/integrations/tableau'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'TableauはClickHouse データベースおよびテーブルをデータソースとして使用できます。'
-'title': 'TableauをClickHouseに接続する'
-'doc_type': 'guide'
+sidebar_label: 'Tableau Desktop'
+sidebar_position: 1
+slug: /integrations/tableau
+keywords: ['clickhouse', 'tableau', 'connect', 'integrate', 'ui']
+description: 'Tableau では ClickHouse のデータベースやテーブルをデータソースとして利用できます。'
+title: 'Tableau を ClickHouse に接続する'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
+  - website: 'https://github.com/analytikaplus/clickhouse-tableau-connector-jdbc'
 ---
 
 import TOCInline from '@theme/TOCInline';
-import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import tableau_connecttoserver from '@site/static/images/integrations/data-visualization/tableau_connecttoserver.png';
 import tableau_connector_details from '@site/static/images/integrations/data-visualization/tableau_connector_details.png';
@@ -28,161 +27,190 @@ import tableau_workbook4 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook5 from '@site/static/images/integrations/data-visualization/tableau_workbook5.png';
 import tableau_workbook6 from '@site/static/images/integrations/data-visualization/tableau_workbook6.png';
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# TableauをClickHouseに接続する
+# Tableau を ClickHouse に接続する
 
-ClickHouseは公式のTableauコネクタを提供しており、
-[Tableau Exchange](https://exchange.tableau.com/products/1064)で特集されています。
-このコネクタは、ClickHouseの高度な[JDBCドライバ](/integrations/language-clients/java/jdbc)に基づいています。
+<ClickHouseSupportedBadge/>
 
-このコネクタを使用すると、TableauはClickHouseのデータベースとテーブルをデータソースとして統合します。この機能を有効にするには、以下のセットアップガイドに従ってください。
+ClickHouse は公式の Tableau コネクタを提供しており、
+[Tableau Exchange](https://exchange.tableau.com/products/1064) に掲載されています。
+このコネクタは、ClickHouse の高度な [JDBC ドライバー](/integrations/language-clients/java/jdbc) をベースとしています。
+
+このコネクタを使用すると、Tableau から ClickHouse のデータベースやテーブルをデータソースとして利用できます。この機能を有効にするには、
+以下のセットアップガイドに従ってください。
 
 <TOCInline toc={toc}/>
 
-## 使用前に必要なセットアップ {#setup-required-prior-usage}
 
-1. 接続詳細を収集する
+
+## 利用開始前のセットアップ {#setup-required-prior-usage}
+
+1. 接続情報を準備します
    <ConnectionDetails />
 
-2. <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau Desktop</a>をダウンロードしてインストールします。
-3. `clickhouse-tableau-connector-jdbc`の指示に従って、<a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBCドライバ</a>の互換バージョンをダウンロードします。
+2. <a href="https://www.tableau.com/products/desktop/download" target="_blank">Tableau
+   Desktop</a> をダウンロードしてインストールします。
+3. `clickhouse-tableau-connector-jdbc` の手順に従って、互換性のあるバージョンの
+   <a href="https://github.com/ClickHouse/clickhouse-java/releases/" target="_blank">ClickHouse JDBC driver</a> をダウンロードします。
 
 :::note
-[clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JARファイルをダウンロードしてください。このアーティファクトはバージョン`0.9.2`以降で利用可能です。
+[clickhouse-jdbc-X.X.X-all-dependencies.jar](https://github.com/ClickHouse/clickhouse-java/releases) JAR ファイルを必ずダウンロードしてください。このアーティファクトはバージョン `0.9.2` から利用可能です。
 :::
 
-4. JDBCドライバを以下のフォルダに保存します（OSに基づいており、フォルダが存在しない場合は作成できます）：
+4. JDBC ドライバーを、以下のフォルダーに配置します（OS に応じて、フォルダーが存在しない場合は作成してください）:
     - macOS: `~/Library/Tableau/Drivers`
     - Windows: `C:\Program Files\Tableau\Drivers`
-5. TableauでClickHouseデータソースを設定し、データビジュアライゼーションを構築を開始しましょう！
+5. Tableau で ClickHouse のデータソースを設定し、データの可視化を開始します。
 
-## TableauでClickHouseデータソースを設定する {#configure-a-clickhouse-data-source-in-tableau}
 
-`clickhouse-jdbc`ドライバをインストールして設定したので、ClickHouseの**TPCD**データベースに接続するデータソースをTableauで定義する方法を見てみましょう。
 
-1. Tableauを起動します。（すでに実行している場合は、再起動してください。）
+## Tableau で ClickHouse データソースを構成する {#configure-a-clickhouse-data-source-in-tableau}
 
-2. 左側のメニューから、**サーバーに接続**セクションの**その他**をクリックします。利用できるコネクタ一覧で**ClickHouse by ClickHouse**を検索します：
+`clickhouse-jdbc` ドライバーのインストールと設定が完了したので、ClickHouse の **TPCD** データベースに接続する
+Tableau のデータソースをどのように定義するかを説明します。
 
-<Image size="md" img={tableau_connecttoserver} alt="ClickHouse by ClickHouseオプションがハイライトされたコネクタ選択メニューを示すTableau接続画面" border />
+1. Tableau を起動します。（すでに起動している場合は再起動してください。）
+
+2. 左側メニューの **To a Server** セクションで **More** をクリックします。利用可能なコネクタ一覧で **ClickHouse by ClickHouse** を検索します:
+
+<Image size="md" img={tableau_connecttoserver} alt="ClickHouse by ClickHouse オプションがハイライトされたコネクタ選択メニューを表示している Tableau の接続画面" border />
 <br/>
 
 :::note
-コネクタ一覧に**ClickHouse by ClickHouse**が表示されませんか？古いTableau Desktopバージョンが関係している可能性があります。
-それを解決するために、Tableau Desktopアプリケーションをアップグレードするか、[コネクタを手動でインストール](#install-the-connector-manually)することを検討してください。
+コネクタ一覧に **ClickHouse by ClickHouse** が見つからない場合は、古いバージョンの Tableau Desktop を使用している可能性があります。
+その場合は、Tableau Desktop アプリケーションのアップグレードを検討するか、[コネクタを手動でインストール](#install-the-connector-manually)してください。
 :::
 
-3. **ClickHouse by ClickHouse**をクリックすると、次のダイアログが表示されます：
+3. **ClickHouse by ClickHouse** をクリックすると、次のダイアログが表示されます:
 
-<Image size="md" img={tableau_connector_details} alt="ClickHouse JDBCコネクタの詳細とインストールボタンを示すTableauコネクタインストールダイアログ" border />
+<Image size="md" img={tableau_connector_details} alt="ClickHouse JDBC コネクタの詳細とインストールボタンを表示している Tableau のコネクタインストールダイアログ" border />
 <br/>
  
-4. **インストールしてTableauを再起動**をクリックします。アプリケーションを再起動します。
-5. 再起動後、コネクタは完全な名前を持ちます：`ClickHouse JDBC by ClickHouse, Inc.`。これをクリックすると、次のダイアログが表示されます：
+4. **Install and Restart Tableau** をクリックします。アプリケーションを再起動します。
+5. 再起動後、コネクタは `ClickHouse JDBC by ClickHouse, Inc.` という完全な名前で表示されます。これをクリックすると、次のダイアログが表示されます:
 
-<Image size="md" img={tableau_connector_dialog} alt="サーバー、ポート、データベース、ユーザー名、パスワードのフィールドを示すTableau接続ダイアログ" border />
+<Image size="md" img={tableau_connector_dialog} alt="サーバー、ポート、データベース、ユーザー名、パスワードのフィールドが表示されている Tableau の ClickHouse 接続ダイアログ" border />
 <br/>
 
-6. 接続詳細を入力します：
+6. 接続情報を入力します:
 
-    | 設定  | 値                                                  |
+    | Setting  | Value                                                  |
     | ----------- |--------------------------------------------------------|
-    | サーバー      | **ClickHouseホスト（接頭辞または接尾辞なし）** |
-    | ポート   | **8443**                                               |
-    | データベース | **default**                                            |
-    | ユーザー名 | **default**                                            |
-    | パスワード | *\*****                                                |
+    | Server      | **プレフィックスやサフィックスを付けない ClickHouse ホスト名** |
+    | Port   | **8443**                                               |
+    | Database | **default**                                            |
+    | Username | **default**                                            |
+    | Password | *\*****                                                |
 
 :::note
-ClickHouseクラウドを使用する場合は、安全な接続のためにSSLチェックボックスを有効にする必要があります。
+ClickHouse Cloud を利用する場合は、安全な接続のために SSL のチェックボックスを有効にする必要があります。
 :::
 <br/>
 
 :::note
-私たちのClickHouseデータベースは**TPCD**と呼ばれていますが、上記のダイアログで**データベース**を**default**に設定し、次のステップで**スキーマ**に**TPCD**を選択する必要があります。（これはコネクタのバグによる可能性があるため、この動作が変わる可能性がありますが、現状では**default**をデータベースとして使用する必要があります。）
+今回の ClickHouse データベース名は **TPCD** ですが、上のダイアログでは **Database** を **default** に設定し、その次のステップで
+**Schema** に **TPCD** を選択する必要があります。（これはコネクタ側のバグによるものと思われ、この動作は将来的に変更される可能性がありますが、
+現時点ではデータベースとして **default** を使用する必要があります。）
 :::
 
-7. **サインイン**ボタンをクリックすると、新しいTableauワークブックが表示されます：
+7. **Sign In** ボタンをクリックすると、新しい Tableau ワークブックが表示されます:
 
-<Image size="md" img={tableau_newworkbook} alt="データベース選択オプションを持つ最初の接続画面を示す新しいTableauワークブック" border />
+<Image size="md" img={tableau_newworkbook} alt="データベース選択オプションを含む初期接続画面を表示している新しい Tableau ワークブック" border />
 <br/>
 
-8. **スキーマ**のドロップダウンから**TPCD**を選択すると、**TPCD**のテーブルのリストが表示されます：
+8. **Schema** のドロップダウンから **TPCD** を選択すると、**TPCD** 内のテーブル一覧が表示されます:
 
-<Image size="md" img={tableau_tpcdschema} alt="CUSTOMER、LINEITEM、NATION、ORDERSなどのTPCDデータベーステーブルを示すTableauスキーマ選択画面" border />
+<Image size="md" img={tableau_tpcdschema} alt="CUSTOMER、LINEITEM、NATION、ORDERS などを含む TPCD データベーステーブルを表示している Tableau のスキーマ選択画面" border />
 <br/>
 
-これでTableauでビジュアライゼーションを構築する準備が整いました！
+これで Tableau で可視化を作成する準備が整いました。
 
-## Tableauでのビジュアライゼーション構築 {#building-visualizations-in-tableau}
 
-TableauにClickHouseデータソースが設定されたので、データを可視化してみましょう...
 
-1. **CUSTOMER**テーブルをワークブックにドラッグします。カラムが表示されますが、データテーブルは空です：
+## Tableau での可視化の作成 {#building-visualizations-in-tableau}
 
-<Image size="md" img={tableau_workbook1} alt="カラムヘッダーは表示されるがデータがない状態のCUSTOMERテーブルがキャンバスにドラッグされたTableauワークブック" border />
+Tableau で ClickHouse のデータソースを構成できたので、さっそくデータを可視化してみましょう。
+
+1. **CUSTOMER** テーブルをワークブック上にドラッグします。列は表示されますが、データテーブルは空であることが分かります:
+
+<Image size="md" img={tableau_workbook1} alt="CUSTOMER テーブルをキャンバスにドラッグし、列ヘッダーのみが表示されていてデータが空の Tableau ワークブック" border />
 <br/>
 
-2. **今すぐ更新**ボタンをクリックすると、**CUSTOMER**から100行がテーブルに入力されます。
+2. **Update Now** ボタンをクリックすると、**CUSTOMER** から 100 行がテーブルに読み込まれます。
 
-3. **ORDERS**テーブルをワークブックにドラッグし、2つのテーブルの関係フィールドとして**Custkey**を設定します：
+3. **ORDERS** テーブルをワークブックにドラッグし、2 つのテーブル間のリレーションシップフィールドとして **Custkey** を設定します:
 
-<Image size="md" img={tableau_workbook2} alt="Custkeyフィールドを使用してCUSTOMERとORDERSテーブルの接続を示すTableauリレーションシップエディタ" border />
+<Image size="md" img={tableau_workbook2} alt="Custkey フィールドを使って CUSTOMER テーブルと ORDERS テーブルを関連付けている Tableau のリレーションシップエディター" border />
 <br/>
 
-4. 現在、データソースとして**ORDERS**と**LINEITEM**テーブルが関連付けられているので、この関係を使用してデータに関する質問に答えることができます。ワークブックの一番下にある**シート1**タブを選択します。
+4. これで、データソースとして **ORDERS** と **LINEITEM** テーブルが互いに関連付けられました。このリレーションシップを利用して、
+   データに関するさまざまな問いに答えることができます。ワークブック下部の **Sheet 1** タブを選択します。
 
-<Image size="md" img={tableau_workbook3} alt="分析のために利用可能なClickHouseテーブルからの次元とメジャーを示すTableauワークシート" border />
+<Image size="md" img={tableau_workbook3} alt="分析に利用可能な ClickHouse テーブルのディメンションとメジャーが表示されている Tableau のワークシート" border />
 <br/>
 
-5. 特定の項目が各年にどれだけ注文されたかを知りたいとします。**ORDERS**から**OrderDate**を**列**セクション（横のフィールド）にドラッグし、次に**LINEITEM**から**Quantity**を**行**にドラッグします。Tableauは次の折れ線グラフを生成します：
+5. たとえば、特定のアイテムが各年にどれだけ注文されたかを知りたいとします。**ORDERS** の **OrderDate** を
+   **Columns** セクション（横方向のフィールド）にドラッグし、**LINEITEM** の **Quantity** を **Rows** にドラッグします。Tableau は
+   次のような折れ線グラフを生成します:
 
-<Image size="sm" img={tableau_workbook4} alt="ClickHouseデータから年ごとの注文数を示すTableau折れ線グラフ" border />
+<Image size="sm" img={tableau_workbook4} alt="ClickHouse データから年別の注文数量を示す Tableau の折れ線グラフ" border />
 <br/>
 
-非常に刺激的な折れ線グラフではありませんが、データセットはスクリプトによって生成され、クエリパフォーマンスをテストするために構築されたため、TCPDデータの模擬注文にはあまり変動がないことに気づくでしょう。
+あまり面白い折れ線グラフではありませんが、このデータセットはスクリプトによって生成され、クエリのパフォーマンステスト用に構築されているため、
+TCPD データのシミュレートされた注文には大きな変動がないことに気付くでしょう。
 
-6. 四半期ごとや出荷モード（航空、郵送、出荷、トラックなど）ごとの平均注文額（ドル）を知りたいとします：
+6. 次に、四半期ごとの平均注文額（ドル）を、配送モード（航空、郵便、船舶、トラックなど）ごとにも知りたいとします。
 
-    - **新しいワークシート**タブをクリックして新しいシートを作成する
-    - **ORDERS**から**OrderDate**を**列**にドラッグし、**年**から**四半期**に変更する
-    - **LINEITEM**から**Shipmode**を**行**にドラッグする
+    - **New Worksheet** タブをクリックして新しいシートを作成します
+    - **ORDERS** の **OrderDate** を **Columns** にドラッグし、**Year** から **Quarter** に変更します
+    - **LINEITEM** の **Shipmode** を **Rows** にドラッグします
 
-次のような画面が表示されるはずです：
+次のように表示されるはずです:
 
-<Image size="sm" img={tableau_workbook5} alt="四半期を列、出荷モードを行として示すTableauクロス集計ビュー" border />
+<Image size="sm" img={tableau_workbook5} alt="列に四半期、行に配送モードが表示された Tableau のクロス集計ビュー" border />
 <br/>
 
-7. **Abc**の値は、テーブルにメトリックをドラッグするまで、そのスペースを埋めるためのものです。**ORDERS**から**Totalprice**をテーブルにドラッグします。既定の計算は**Totalprices**を**合計**することです：
+7. **Abc** の値は、テーブルにメトリクスをドラッグするまでの空きスペースを埋めるプレースホルダーです。**ORDERS** の **Totalprice** をテーブル上にドラッグします。
+   デフォルトの集計は **Totalprices** の **SUM**（合計）になっていることに注意してください:
 
-<Image size="md" img={tableau_workbook6} alt="四半期と出荷モードごとの合計価格を示すTableauクロス集計" border />
+<Image size="md" img={tableau_workbook6} alt="四半期と配送モードごとの合計注文金額が表示された Tableau のクロス集計" border />
 <br/>
 
-8. **SUM**をクリックして**メジャー**を**平均**に変更します。同じドロップダウンメニューから**形式**を選択し、**数字**を**通貨（標準）**に変更します：
+8. **SUM** をクリックし、**Measure** を **Average** に変更します。同じドロップダウンメニューから **Format** を選択し、
+   **Numbers** を **Currency (Standard)** に変更します:
 
-<Image size="md" img={tableau_workbook7} alt="通貨形式で四半期と出荷モードごとの平均注文額を示すTableauクロス集計" border />
+<Image size="md" img={tableau_workbook7} alt="四半期と配送モードごとの平均注文金額が通貨形式で表示された Tableau のクロス集計" border />
 <br/>
 
-素晴らしい！TableauをClickHouseに成功裏に接続し、ClickHouseデータの分析と可視化の新たな可能性を開きました。
+これで完了です。Tableau を ClickHouse に正常に接続できました。これにより、ClickHouse データを分析および可視化するための
+可能性が大きく広がりました。
+
+
 
 ## コネクタを手動でインストールする {#install-the-connector-manually}
 
-デフォルトでコネクタが含まれていない古いTableau Desktopバージョンを使用している場合は、以下の手順に従って手動でインストールできます：
+デフォルトでコネクタが含まれていない古いバージョンの Tableau Desktop を使用している場合は、次の手順で手動インストールできます。
 
-1. [Tableau Exchange](https://exchange.tableau.com/products/1064)から最新のtacoファイルをダウンロードします
-2. tacoファイルを以下の場所に配置します：
+1. [Tableau Exchange](https://exchange.tableau.com/products/1064) から最新の taco ファイルをダウンロードします。
+2. taco ファイルを次の場所に配置します。
    * macOS: `~/Documents/My Tableau Repository/Connectors`
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
-3. Tableau Desktopを再起動します。セットアップが成功した場合、`新しいデータソース`セクションにコネクタが表示されます。
+3. Tableau Desktop を再起動します。インストールが正常に完了していれば、「New Data Source」セクションにコネクタが表示されます。
 
-## 接続と分析のヒント {#connection-and-analysis-tips}
 
-Tableau-ClickHouse統合を最適化するためのさらなるガイダンスについては、
-[接続のヒント](/integrations/tableau/connection-tips)と[分析のヒント](/integrations/tableau/analysis-tips)をご覧ください。
+
+## 接続と分析に関するヒント {#connection-and-analysis-tips}
+
+Tableau と ClickHouse の統合を最適化するための、より詳しい説明やベストプラクティスについては、[接続のヒント](/integrations/tableau/connection-tips) および [分析のヒント](/integrations/tableau/analysis-tips) を参照してください。
+
+
 
 ## テスト {#tests}
-コネクタは[TDVTフレームワーク](https://tableau.github.io/connector-plugin-sdk/docs/tdvt)を使用してテストされており、現在97％のカバレッジ率を維持しています。
+このコネクタは [TDVT フレームワーク](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) でテストされており、現在テストカバレッジ 97% を維持しています。
+
+
 
 ## 概要 {#summary}
-一般的なODBC/JDBC ClickHouseドライバを使用してTableauをClickHouseに接続できます。ただし、このコネクタは接続設定プロセスを簡素化しています。コネクタに関する問題がある場合は、<a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a>でお問い合わせください。
+Tableau を ClickHouse に接続するには、汎用の ODBC/JDBC 用 ClickHouse ドライバーを使用できます。ただし、このコネクターを使用すると、接続設定の手順を簡略化できます。コネクターに関して問題が発生した場合は、<a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> でお気軽にお問い合わせください。

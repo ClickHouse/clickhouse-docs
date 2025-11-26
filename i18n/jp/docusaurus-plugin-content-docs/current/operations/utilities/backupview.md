@@ -1,41 +1,45 @@
 ---
-'description': 'clickhouse_backupview のドキュメント {#clickhouse_backupview}'
-'slug': '/operations/utilities/backupview'
-'title': 'clickhouse_backupview'
-'doc_type': 'reference'
+description: 'clickhouse_backupview のリファレンスドキュメント {#clickhouse_backupview}'
+slug: /operations/utilities/backupview
+title: 'clickhouse_backupview'
+doc_type: 'reference'
 ---
+
 
 
 # clickhouse_backupview {#clickhouse_backupview}
 
-Pythonモジュールは、[BACKUP](/operations/backup)コマンドで作成されたバックアップを分析するのに役立ちます。
-主な目的は、バックアップを実際に復元することなく、バックアップから情報を取得できるようにすることでした。
+[BACKUP](/operations/backup) コマンドによって作成されたバックアップを分析するための Python モジュールです。
+主な目的は、バックアップを実際にリストアすることなく、そのバックアップから情報を取得できるようにすることです。
 
-このモジュールは以下の機能を提供します。
+このモジュールは、次の機能を提供します。
 - バックアップに含まれるファイルを列挙する
-- バックアップからファイルを読み込む
-- バックアップに含まれるデータベース、テーブル、パーツに関する有用な情報を可読形式で取得する
+- バックアップからファイルを読み取る
+- バックアップに含まれるデータベース、テーブル、パーツに関する有用な情報を可読な形式で取得する
 - バックアップの整合性をチェックする
 
-## 例: {#example}
+
+
+## 例
 
 ```python
 from clickhouse_backupview import open_backup, S3, FileInfo
+```
 
 
-# Open a backup. We could also use a local path:
-
+# バックアップを開きます。ローカルパスを利用することもできます:
 # backup = open_backup("/backups/my_backup_1/")
 backup = open_backup(S3("uri", "access_key_id", "secret_access_key"))
 
 
-# Get a list of databasess inside the backup.
+
+# バックアップ内のデータベースの一覧を取得する
 print(backup.get_databases()))
 
 
-# Get a list of tables inside the backup,
 
-# and for each table its create query and a list of parts and partitions.
+# バックアップ内のテーブル一覧を取得し、
+# 各テーブルについて、その作成クエリとパーツおよびパーティションの一覧を表示します。
 for db in backup.get_databases():
     for tbl in backup.get_tables(database=db):
         print(backup.get_create_query(database=db, table=tbl))
@@ -43,20 +47,27 @@ for db in backup.get_databases():
         print(backup.get_parts(database=db, table=tbl))
 
 
-# Extract everything from the backup.
+
+# バックアップからすべてを抽出する
 backup.extract_all(table="mydb.mytable", out='/tmp/my_backup_1/all/')
 
 
-# Extract the data of a specific table.
+
+# 特定のテーブルのデータを抽出します。
 backup.extract_table_data(table="mydb.mytable", out='/tmp/my_backup_1/mytable/')
 
 
-# Extract a single partition.
+
+# 1 つのパーティションを抽出する。
 backup.extract_table_data(table="mydb.mytable", partition="202201", out='/tmp/my_backup_1/202201/')
 
 
-# Extract a single part.
-backup.extract_table_data(table="mydb.mytable", part="202201_100_200_3", out='/tmp/my_backup_1/202201_100_200_3/')
+
+# 単一のパートを抽出する。
+
+backup.extract&#95;table&#95;data(table=&quot;mydb.mytable&quot;, part=&quot;202201&#95;100&#95;200&#95;3&quot;, out=&#39;/tmp/my&#95;backup&#95;1/202201&#95;100&#95;200&#95;3/&#39;)
+
 ```
 
-さらに例については、[テスト](https://github.com/ClickHouse/ClickHouse/blob/master/utils/backupview/test/test.py)を参照してください。
+その他の例については、[test](https://github.com/ClickHouse/ClickHouse/blob/master/utils/backupview/test/test.py)を参照してください。
+```

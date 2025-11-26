@@ -1,0 +1,109 @@
+---
+title: 如何基于数组列过滤 ClickHouse 表？
+description: "关于如何基于数组列过滤 ClickHouse 表的知识库文章。"
+date: 2024-12-17
+tags: ['数据建模', '函数']
+keywords: ['过滤', '数组列']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 简介 \{#introduction\}
+
+基于数组列对 ClickHouse 表进行过滤是一项常见任务，ClickHouse 提供了大量用于处理数组列的[函数](/sql-reference/functions/array-functions)。
+
+在本文中，我们将重点介绍如何通过数组列来过滤表，而下方的视频则涵盖了许多其他与数组相关的函数：
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JKHAdCFtYDg?si=OqS3ry1LFrOlF8Iy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## 示例
+
+我们将以一个示例表为例，它包含两列 `tags_string` 和 `tags_int`，分别存储字符串数组和整数数组。
+
+* 创建一个示例数据库和表。
+
+```sql
+CREATE DATABASE db1;
+```
+
+* 创建示例表
+
+```sql
+CREATE TABLE db1.tags_table
+(
+    `id` UInt64,
+    `tags_string` Array(String),
+    `tags_int` Array(UInt64),
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+* 向表中插入一些示例数据。
+
+```sql
+INSERT INTO db1.tags_table VALUES (1, ['tag1', 'tag2', 'tag3'], [1, 2, 3]), (2, ['tag2', 'tag3', 'tag4'], [2, 3, 4]), (3, ['tag1', 'tag3', 'tag5'], [1, 3, 5]);
+```
+
+使用 `has(arr, elem)` 函数过滤表，返回 `arr` 数组中包含 `elem` 元素的行。
+
+过滤表，返回 `tags_string` 数组中包含 `tag1` 元素的行。
+
+```sql
+SELECT * FROM db1.tags_table WHERE has(tags_string, 'tag1');
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```
+
+使用 `hasAll(arr, elems)` 函数来返回这样一些行：其中 `elems` 数组中的所有元素都存在于 `arr` 数组中。
+
+筛选数据表，仅返回这样一些行：其中 `tags_string` 数组中的所有元素都存在于 `['tag1', 'tag2']` 数组中。
+
+```sql
+SELECT * FROM db1.tags_table WHERE hasAll(tags_string, ['tag1', 'tag2']);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+└────┴────────────────────────┴──────────┘
+```
+
+使用 `hasAny(arr, elems)` 函数返回那些 `elems` 数组中至少有一个元素存在于 `arr` 数组中的行。
+
+过滤表格，返回那些 `tags_string` 数组中至少有一个元素存在于 `['tag1', 'tag2']` 数组中的行。
+
+```sql
+SELECT * FROM db1.tags_table WHERE hasAny(tags_string, ['tag1', 'tag2']);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  1 │ ['tag1','tag2','tag3'] │ [1,2,3]  │
+│  2 │ ['tag2','tag3','tag4'] │ [2,3,4]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```
+
+我们可以使用 lambda 函数与 `arrayExists(lambda, arr)` 函数来过滤表中的数据。
+
+过滤该表，使其只返回 `tags_int` 数组中至少有一个元素大于 3 的行。
+
+```sql
+SELECT * FROM db1.tags_table WHERE arrayExists(x -> x > 3, tags_int);
+```
+
+```text
+┌─id─┬─tags_string────────────┬─tags_int─┐
+│  2 │ ['tag2','tag3','tag4'] │ [2,3,4]  │
+│  3 │ ['tag1','tag3','tag5'] │ [1,3,5]  │
+└────┴────────────────────────┴──────────┘
+```

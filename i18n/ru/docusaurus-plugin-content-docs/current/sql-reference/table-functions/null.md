@@ -1,36 +1,47 @@
 ---
-slug: '/sql-reference/table-functions/null'
-sidebar_label: 'null функция'
+description: 'Создаёт временную таблицу указанной структуры с табличным движком Null. Функция используется для удобства написания тестов и проведения демонстраций.'
+sidebar_label: 'функция null'
 sidebar_position: 140
-description: 'Создает временную таблицу заданной структуры с движком таблицы Null.'
+slug: /sql-reference/table-functions/null
 title: 'null'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Функция Таблицы null
 
-Создает временную таблицу заданной структуры с помощью движка таблицы [Null](../../engines/table-engines/special/null.md). В соответствии с свойствами движка `Null` данные таблицы игнорируются, и сама таблица немедленно удаляется сразу после выполнения запроса. Функция используется для удобства написания тестов и демонстраций.
 
-## Синтаксис {#syntax}
+
+# Функция таблицы null
+
+Создает временную таблицу указанной структуры с движком таблицы [Null](../../engines/table-engines/special/null.md). В соответствии со свойствами движка `Null` данные таблицы игнорируются, а сама таблица немедленно удаляется после выполнения запроса. Функция используется для удобства при написании тестов и проведении демонстраций.
+
+
+
+## Синтаксис
 
 ```sql
 null('structure')
 ```
 
+
 ## Аргумент {#argument}
 
-- `structure` — Список колонок и типов колонок. [String](../../sql-reference/data-types/string.md).
+- `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
+
+
 
 ## Возвращаемое значение {#returned_value}
 
-Временная таблица с движком `Null` заданной структуры.
+Временная таблица движка `Null` с указанной структурой.
 
-## Пример {#example}
 
-Запрос с функцией `null`:
+
+## Пример
+
+Запрос с использованием функции `null`:
 
 ```sql
 INSERT INTO function null('x UInt64') SELECT * FROM numbers_mt(1000000000);
 ```
+
 может заменить три запроса:
 
 ```sql
@@ -39,6 +50,7 @@ INSERT INTO t SELECT * FROM numbers_mt(1000000000);
 DROP TABLE IF EXISTS t;
 ```
 
-## Связанные {#related}
+
+## Связанные разделы {#related}
 
 - [Движок таблицы Null](../../engines/table-engines/special/null.md)

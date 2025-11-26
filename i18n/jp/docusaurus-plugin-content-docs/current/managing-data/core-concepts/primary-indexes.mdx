@@ -1,72 +1,77 @@
 ---
-'slug': '/primary-indexes'
-'title': '主キーインデックス'
-'description': 'ClickHouseにおけるスパース主キーインデックスの動作はどうなっていますか'
-'keywords':
-- 'sparse primary index'
-- 'primary index'
-- 'index'
-'doc_type': 'guide'
+slug: /primary-indexes
+title: 'プライマリインデックス'
+description: 'ClickHouse の疎なプライマリインデックスの仕組み'
+keywords: ['疎なプライマリインデックス', 'プライマリインデックス', 'インデックス']
+doc_type: 'guide'
 ---
 
 import visual01 from '@site/static/images/managing-data/core-concepts/primary-index-light_01.gif';
 import visual02 from '@site/static/images/managing-data/core-concepts/primary-index-light_02.gif';
 import visual03 from '@site/static/images/managing-data/core-concepts/primary-index-light_03.gif';
+
 import Image from '@theme/IdealImage';
 
-:::tip 高度なインデックスの詳細を探していますか？
-このページでは、ClickHouseのスパース主インデックスの構築方法、動作原理、クエリの高速化にどのように役立つかを紹介します。
+:::tip 高度なインデックスの詳細をお探しですか？
+このページでは、ClickHouse のスパースプライマリインデックスについて、その構築方法、動作、およびクエリの実行をどのように高速化するかを説明します。
 
-高度なインデックス戦略とさらに深い技術的詳細については、[主インデックスの深掘り](/guides/best-practices/sparse-primary-indexes)をご覧ください。
+さらに高度なインデックス戦略や、より踏み込んだ技術的な詳細については、[プライマリインデックスの詳細解説](/guides/best-practices/sparse-primary-indexes)を参照してください。
 :::
 
-## ClickHouseにおけるスパース主インデックスはどのように機能するのか？ {#how-does-the-sparse-primary-index-work-in-clickHouse}
+
+## ClickHouse におけるスパース主キーインデックスはどのように機能しますか？ \{#how-does-the-sparse-primary-index-work-in-clickHouse\}
 
 <br/>
 
-ClickHouseのスパース主インデックスは、クエリの条件に一致するデータを含む可能性のある[グラニュール](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)—行のブロック—を効率的に特定するのに役立ちます。次のセクションでは、このインデックスがそれらのカラムの値からどのように構築されるかを説明します。
+ClickHouse のスパース主キーインデックスは、テーブルの ^^primary key^^ 列に対するクエリ条件と一致する可能性のあるデータを含む[グラニュール](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行のブロック）を効率的に特定するために利用されます。次のセクションでは、このインデックスがそれらの列の値からどのように構築されるかを説明します。
 
-### スパース主インデックスの作成 {#sparse-primary-index-creation}
+### 疎なプライマリインデックスの作成 \{#sparse-primary-index-creation\}
 
-スパース主インデックスがどのように構築されるかを示すために、[uk_price_paid_simple](https://clickhouse.com/docs/parts)テーブルをいくつかのアニメーションとともに使用します。
+疎なプライマリインデックスがどのように構築されるかを説明するために、[uk_price_paid_simple](https://clickhouse.com/docs/parts) テーブルといくつかのアニメーションを使用します。
 
-[リマインダー](https://clickhouse.com/docs/parts)として、①例示のテーブルには(^^主キー^^(town, street)があり、②挿入されたデータは③ディスクに保存され、^^主キー^^カラムの値に基づいてソートされ、圧縮された状態で、それぞれのカラム用の別々のファイルに格納されます:
+[おさらい](https://clickhouse.com/docs/parts)として、① ^^primary key^^ が (town, street) の例のテーブルでは、② 挿入されたデータは ③ ディスク上に保存され、^^primary key^^ 列の値でソートされ、各列ごとの個別ファイルに圧縮されます。
 
 <Image img={visual01} size="lg"/>
 
-<br/><br/>
+<br/>
 
-処理のために、各カラムのデータは④論理的にグラニュールに分割されます—それぞれが8,192行をカバーします—これはClickHouseのデータ処理メカニズムが操作する最小単位です。
+<br/>
 
-この^^グラニュール^^構造は主インデックスを**スパース**にする要因でもあります：すべての行をインデックス化するのではなく、ClickHouseは⑤各^^グラニュール^^から1行分の^^主キー^^値、具体的には最初の行の値だけを保存します。これにより、各^^グラニュール^^ごとに1つのインデックスエントリが生成されます:
+処理のために、各列のデータは ④ 論理的に granule に分割されます。各 granule は 8,192 行をカバーし、ClickHouse のデータ処理の仕組みが扱う最小単位です。
+
+この ^^granule^^ 構造こそが、プライマリインデックスを**疎**にしている理由です。すべての行をインデックスする代わりに、ClickHouse は ⑤ 各 ^^granule^^ につき 1 行だけ、具体的には先頭行の ^^primary key^^ の値を保存します。これにより、^^granule^^ ごとに 1 つのインデックスエントリが作成されます。
 
 <Image img={visual02} size="lg"/>
 
-<br/><br/>
+<br/>
 
-スパース性のおかげで、主インデックスはメモリに完全に収まるのに十分小さく、^^主キー^^カラムに対する条件を持つクエリのフィルタリングを迅速に行うことを可能にします。次のセクションでは、これがどのようにそのようなクエリの加速に役立つかを示します。
+<br/>
 
-### 主インデックスの使用 {#primary-index-usage}
+疎であることから、プライマリインデックスはメモリ内に完全に収まるほど小さくなり、^^primary key^^ 列に述語を持つクエリのフィルタリングを高速に行えます。次のセクションでは、これがそのようなクエリの高速化にどのように役立つかを示します。
 
-スパース主インデックスがクエリ加速にどのように使用されるか、別のアニメーションを用いて概説します:
+### プライマリインデックスの利用方法 \{#primary-index-usage\}
+
+疎なプライマリインデックスがクエリ高速化にどのように利用されるかを、別のアニメーションで示します。
 
 <Image img={visual03} size="lg"/>
 
-<br/><br/>
+<br/>
 
-①例示のクエリには、両方の^^主キー^^カラムに対する述語が含まれています: `town = 'LONDON' AND street = 'OXFORD STREET'`。
+<br/>
 
-②クエリを加速するために、ClickHouseはテーブルの主インデックスをメモリにロードします。
+① この例のクエリには、^^primary key^^ の両方の列に対する述語が含まれています: `town = 'LONDON' AND street = 'OXFORD STREET'`。
 
-③その後、インデックスエントリをスキャンして、述語に一致する行を含む可能性のあるグラニュールを特定します—言い換えれば、スキップできないグラニュールです。
+② クエリを高速化するために、ClickHouse はテーブルのプライマリインデックスをメモリにロードします。
 
-④これらの潜在的に関連するグラニュールがメモリにロードされ、クエリに必要な他のカラムの対応するグラニュールとともに[処理](/optimize/query-parallelism)されます。
+③ その後、インデックスのエントリを走査して、述語に一致する行を含んでいる可能性のあるグラニュール、言い換えるとスキップできないグラニュールを特定します。
 
-## 主インデックスの監視 {#monitoring-primary-indexes}
+④ これらの潜在的に関連するグラニュールをメモリにロードし、クエリに必要な他の列の対応するグラニュールとともに [処理](/optimize/query-parallelism) します。
 
-テーブル内の各[data part](/parts)には、それぞれの主インデックスがあります。これらのインデックスの内容を[mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex)テーブル関数を使用して調査できます。
+## プライマリインデックスの監視
 
-以下のクエリでは、例示のテーブルの各データ^^part^^の主インデックスにおけるエントリの数を一覧表示します:
+テーブル内の各[データパーツ](/parts)は、それぞれ自身のプライマリインデックスを持ちます。[mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) テーブル関数を使って、これらのインデックスの内容を確認できます。
+
+次のクエリは、例のテーブルの各データパーツについて、プライマリインデックス内のエントリ数を一覧します。
 
 ```sql
 SELECT
@@ -84,7 +89,7 @@ GROUP BY part_name;
    └───────────┴─────────┘
 ```
 
-このクエリは、現在のデータ^^parts^^のうち1つの主インデックスからの最初の10エントリを示しています。これらの^^parts^^は、バックグラウンドで継続的に[マージ](/merges)されて、より大きな^^parts^^となります:
+このクエリは、現在のデータ ^^parts^^ の 1 つにおけるプライマリインデックスの先頭 10 件を表示します。これらの ^^parts^^ は、バックグラウンドで継続的に、より大きな ^^parts^^ へと[マージ](/merges)されていることに注意してください。
 
 ```sql
 SELECT 
@@ -112,7 +117,8 @@ LIMIT 10;
     └───────┴────────────────┴──────────────────┘
 ```
 
-最後に、[EXPLAIN](/sql-reference/statements/explain)句を使用して、すべてのデータ^^parts^^の主インデックスが、例示のクエリの述語に一致する行を含むことができないグラニュールをスキップする方法を確認します。これらのグラニュールは、ロードおよび処理から除外されます:
+最後に、[EXPLAIN](/sql-reference/statements/explain) 句を使用して、すべてのデータパーツのプライマリインデックスがどのように利用され、例のクエリの述語と一致する行を含み得ない granule をスキップしているかを確認します。これらの granule は、読み込みおよび処理の対象から除外されます。
+
 ```sql
 EXPLAIN indexes = 1
 SELECT
@@ -141,49 +147,53 @@ WHERE
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-EXPLAIN出力の行13には、すべてのデータ^^parts^^の中で、主インデックス分析によって処理のために選択されたグラニュールが3,609のうちのわずか3つであることが示されています。残りのグラニュールは完全にスキップされました。
+上の EXPLAIN 出力の 13 行目を見ると、全データの^^parts^^にまたがる 3,609 個の granule のうち、処理のためにプライマリインデックス解析で選択されたのは 3 個だけであることが分かります。残りの granule はすべて完全にスキップされました。
 
-また、クエリを実行するだけで、ほとんどのデータがスキップされたことも観察できます:
+また、クエリを実際に実行するだけでも、ほとんどのデータがスキップされていることを確認できます。
+
 ```sql
 SELECT max(price)
 FROM uk.uk_price_paid_simple
 WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
 ```
 
+
 ```txt
    ┌─max(price)─┐
-1. │  263100000 │ -- 263.10 million
+1. │  263100000 │ -- 2億6310万
    └────────────┘
 
-1 row in set. Elapsed: 0.010 sec. Processed 24.58 thousand rows, 159.04 KB (2.53 million rows/s., 16.35 MB/s.)
-Peak memory usage: 13.00 MiB.
+1行が返されました。経過時間: 0.010秒。処理行数: 24,580行、159.04 KB (253万行/秒、16.35 MB/秒)
+ピークメモリ使用量: 13.00 MiB。
 ```
 
-上記のように、例示のテーブル内の約3000万行のうち、約25,000行しか処理されませんでした:
+上記のとおり、例のテーブルでは約 3,000 万行のうち、処理されたのはおよそ 25,000 行だけでした。
+
 ```sql
 SELECT count() FROM uk.uk_price_paid_simple;
 ```
 
 ```txt
    ┌──count()─┐
-1. │ 29556244 │ -- 29.56 million
+1. │ 29556244 │ -- 2956万
    └──────────┘
 ```
 
-## 主なポイント {#key-takeaways}
 
-* **スパース主インデックス**は、ClickHouseが^^主キー^^カラムのクエリ条件に一致する行を含むグラニュールを特定することで、不必要なデータをスキップするのに役立ちます。
+##  重要なポイント \{#key-takeaways\}
 
-* 各インデックスは、**各^^グラニュール^^の最初の行からの^^主キー^^値のみを保存しており**（デフォルトでは^^グラニュール^^は8,192行です）、メモリに収まるコンパクトな構造となっています。
+* **疎なプライマリインデックス** により、ClickHouse は ^^primary key^^ 列に対するクエリ条件と一致しうる行を含む可能性のある ^^granule^^ を特定し、不要なデータの読み取りをスキップできます。
 
-* ^^MergeTree^^テーブル内の**各データ部分**は、独立してクエリ実行時に使用される**独自の主インデックス**を持っています。
+* 各インデックスでは、**各 ^^granule^^（デフォルトでは 8,192 行）の先頭行の ^^primary key^^ の値のみ** を保持するため、インメモリに収まるほどコンパクトです。
 
-* クエリ中、インデックスによりClickHouseは**グラニュールをスキップ**することができ、I/Oやメモリ使用量を削減しながらパフォーマンスを向上させます。
+* ^^MergeTree^^ テーブルの **各データパート** は、それぞれ **専用のプライマリインデックス** を持ち、クエリ実行時には個別に使用されます。
 
-* `mergeTreeIndex`テーブル関数を使用して**インデックスの内容を調査**し、`EXPLAIN`句でインデックスの使用状況を監視できます。
+* クエリ実行時には、インデックスにより ClickHouse は **^^granule^^ をスキップ** でき、I/O とメモリ使用量を削減しつつ性能を向上させます。
 
-## さらなる情報の入手先 {#where-to-find-more-information}
+* `mergeTreeIndex` テーブル関数を使用して **インデックスの内容を確認** でき、`EXPLAIN` 句でインデックスの利用状況を監視できます。
 
-ClickHouseにおけるスパース主インデックスの機能の詳細な説明や、従来のデータベースインデックスとの差異、使用に関するベストプラクティスについては、詳細なインデクシングの[深掘り](/guides/best-practices/sparse-primary-indexes)をご覧ください。
+## さらに詳しい情報を探すには \{#where-to-find-more-information\}
 
-ClickHouseが主インデックススキャンで選択したデータをどのように高い並列性を持って処理するかに興味がある方は、クエリの並列性ガイドを[こちら](/optimize/query-parallelism)でご覧ください。
+ClickHouse におけるスパースプライマリインデックスの動作について、従来型データベースのインデックスとの違いや利用時のベストプラクティスも含めてより深く知りたい場合は、インデックスに関する詳細な [解説](/guides/best-practices/sparse-primary-indexes) を参照してください。
+
+プライマリインデックスのスキャンで選択されたデータを ClickHouse がどのように高い並列性で処理するかに興味がある場合は、クエリ並列処理に関するガイドを[こちら](/optimize/query-parallelism)で確認してください。

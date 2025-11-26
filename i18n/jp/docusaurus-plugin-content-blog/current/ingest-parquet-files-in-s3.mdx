@@ -1,0 +1,153 @@
+---
+title: S3 バケットから Parquet ファイルをインジェストする方法
+description: "ClickHouse の S3 テーブルエンジンを使用して、S3 バケットから Parquet ファイルをインジェストおよびクエリするための基本（セットアップ、アクセス権限、データインポート例を含む）を学びます。"
+date: 2023-03-22
+tags: ['データインジェスト']
+keywords: ['Parquet', 'S3 バケット']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## S3 バケットから Parquet ファイルを取り込む
+
+以下は、S3 テーブルエンジンを使用して Parquet ファイルを読み取る際の基本事項です。
+
+* IAM サービスユーザー用のアクセスキーとシークレットキーを作成します。
+  通常のログインユーザーは、MFA ポリシーが設定されていることが多く、その場合はうまく動作しないことがあります。
+
+* サービスユーザーがバケットおよびフォルダーにアクセスできるように、ポリシーの権限を設定します。
+
+以下は、実際のデータに適用する前に、Parquet ファイルへ正常にアクセスできるかどうかを確認するために使用できる、非常にシンプルなサンプルです。
+
+ユーザーとバケットの作成例が必要な場合は、最初の 2 セクション（ユーザー作成とバケット作成）を参照してください:
+[https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/](https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/)
+
+このサンプルファイルを使用し、テスト用バケットにアップロードしました: [https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet](https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet)
+
+バケットには、次のようなポリシーを設定できます:
+（必要に応じて調整してください。この例はテストしやすいように権限がかなり広めですが、必要に応じて権限を絞り込んでください）
+
+```
+{
+    "Version": "2012-10-17",
+    "Id": "Policy123456",
+    "Statement": [
+        {
+            "Sid": "abc123",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::1234567890:user/mars-s3-user"
+                ]
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::mars-doc-test",
+                "arn:aws:s3:::mars-doc-test/*"
+            ]
+        }
+    ]
+}
+```
+
+S3 テーブルエンジンを使用すると、この種の構文でクエリを実行できます：
+[https://clickhouse.com/docs/sql-reference/table-functions/s3/](https://clickhouse.com/docs/sql-reference/table-functions/s3/)
+
+```
+clickhouse-cloud :)  select count(*) from s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet','ABC123', 'abc+123', 'Parquet', 'first_name String');
+
+SELECT count(*)
+FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123', 'abc+123', 'Parquet', 'first_name String')
+
+Query id: fd4f1193-d604-4ac0-9a46-bdd2d5e14727
+
+┌─count()─┐
+│    1000 │
+└─────────┘
+
+1行が結果セットに含まれています。経過時間: 1.274秒。処理された行数: 1.00千行、14.64 KB (784.81行/秒、11.49 KB/秒)
+```
+
+Parquet フォーマットにおけるデータ型のリファレンスはこちらです:
+[https://clickhouse.com/docs/interfaces/formats/#data-format-parquet](https://clickhouse.com/docs/interfaces/formats/#data-format-parquet)
+
+データを ClickHouse のネイティブテーブルに取り込むには:
+
+テーブルを作成します。例えば次のようにします（Parquet ファイル内のカラムのうち、いくつかだけを選んでいます）:
+
+```
+clickhouse-cloud :) CREATE TABLE my_parquet_table (id UInt64, first_name String) ENGINE = MergeTree ORDER BY id;
+
+CREATE TABLE my_parquet_table
+(
+    `id` UInt64,
+    `first_name` String
+)
+ENGINE = MergeTree
+ORDER BY id
+
+Query id: 412e3994-bf8e-444e-ac43-a7c82642b7da
+
+Ok.
+
+0 rows in set. Elapsed: 0.600 sec.
+```
+
+新しいテーブルに挿入するデータを S3 バケットから選択します：
+
+```
+clickhouse-cloud :) INSERT INTO my_parquet_table (id, first_name) SELECT id, first_name FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123','abc+123', 'Parquet', 'id UInt64, first_name String') FORMAT Parquet
+
+INSERT INTO my_parquet_table (id, first_name) SELECT
+    id,
+    first_name
+FROM s3('https://mars-doc-test.s3.amazonaws.com/s3-parquet-test/userdata1.parquet', 'ABC123', 'abc+123', 'Parquet', 'id UInt64, first_name String')
+
+Query id: c3cdc871-f338-462d-8797-6751b45a0b58
+
+Ok.
+
+0 行のセット。経過時間: 1.220 秒。処理: 1.00 千行、22.64 KB (819.61 行/秒、18.56 KB/秒)
+```
+
+インポートを検証する：
+
+
+```
+clickhouse-cloud :) SELECT * FROM my_parquet_table LIMIT 10;
+
+SELECT *
+FROM my_parquet_table
+LIMIT 10
+
+Query id: 1ccf59dd-d804-46a9-aadd-ed5c57b9e1a0
+
+┌─id─┬─first_name─┐
+│  1 │ Amanda     │
+│  2 │ Albert     │
+│  3 │ Evelyn     │
+│  4 │ Denise     │
+│  5 │ Carlos     │
+│  6 │ Kathryn    │
+│  7 │ Samuel     │
+│  8 │ Harry      │
+│  9 │ Jose       │
+│ 10 │ Emily      │
+└────┴────────────┘
+```
+
+本番データのインポートを行う準備ができたら、ワイルドカードや範囲指定といった特殊な構文を使って、バケット内のフォルダ、サブフォルダ、ファイルを指定できます。
+まずはインポートのテストとして、いくつかのディレクトリやファイルだけに絞り込んで実行することをおすすめします。たとえば特定の年や、数か月分、ある日付範囲だけを対象にして試すとよいでしょう。
+
+ここで紹介しているパス指定のオプションに加え、新たに導入された `**` 構文を使うと、すべてのサブディレクトリを再帰的に指定できます。
+[https://clickhouse.com/docs/sql-reference/table-functions/s3/](https://clickhouse.com/docs/sql-reference/table-functions/s3/)
+
+たとえば、パスとバケット構造が次のようになっているとします:
+`https://your_s3_bucket.s3.amazonaws.com/<your_folder>/<year>/<month>/<day>/<filename>.parquet`
+`https://mars-doc-test.s3.amazonaws.com/system_logs/2022/11/01/my-app-logs-0001.parquet`
+
+次の指定では、2021〜2022 年の各月 1 日のすべてのファイルが取得されます:
+`https://mars-doc-test.s3.amazonaws.com/system_logs/{2021-2022}/**/01/*.parquet`

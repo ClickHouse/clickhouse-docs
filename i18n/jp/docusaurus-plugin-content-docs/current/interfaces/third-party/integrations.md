@@ -1,18 +1,17 @@
 ---
-'description': 'ClickHouseをさまざまなサードパーティシステムおよびツールと統合するための Documentation'
-'sidebar_label': '統合'
-'sidebar_position': 27
-'slug': '/interfaces/third-party/integrations'
-'title': 'サードパーティ開発者からの統合ライブラリ'
-'doc_type': 'reference'
+description: 'ClickHouse をさまざまなサードパーティ製システムおよびツールと統合するためのドキュメント'
+sidebar_label: '連携'
+sidebar_position: 27
+slug: /interfaces/third-party/integrations
+title: 'サードパーティ開発者による統合ライブラリ'
+doc_type: 'reference'
 ---
 
-
-# サードパーティ開発者の統合ライブラリ
+# サードパーティ開発者による連携ライブラリ
 
 :::warning 免責事項
-ClickHouse, Inc. は、以下にリストされたツールやライブラリを**維持しておらず**、その品質を保証するために広範なテストを行っていません。
-公式統合については、[統合ページ](/integrations)をご覧ください。
+ClickHouse, Inc. は、以下に掲載しているツールおよびライブラリを**保守しておらず**、その品質について十分なテストも行っていません。
+公式な連携については [Integrations ページ](/integrations) を参照してください。
 :::
 
 ## インフラストラクチャ製品 {#infrastructure-products}
@@ -27,7 +26,7 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
   - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
 - [PostgreSQL](https://www.postgresql.org)
   - [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
-  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (uses [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
+  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) ([infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm) を使用)
   - [pg2ch](https://github.com/mkabilov/pg2ch)
   - [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw)
 - [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
@@ -38,7 +37,7 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
 <summary>メッセージキュー</summary>
   
 - [Kafka](https://kafka.apache.org)
-  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (uses [Go client](https://github.com/ClickHouse/clickhouse-go/))
+  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) ([Go client](https://github.com/ClickHouse/clickhouse-go/) を使用)
   - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
@@ -84,13 +83,13 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
   - [graphouse](https://github.com/ClickHouse/graphouse)
   - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
   - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - is optimizes staled partitions in [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) if rules from [rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) could be applied
+  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - [rollup configuration](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration) のルールを適用できる場合に、[\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree) 内の古くなったパーティションを最適化します
 - [Grafana](https://grafana.com/)
-  - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
+  - [clickhouse-grafana](https://github.com/Altinity/clickhouse-grafana)
 - [Prometheus](https://prometheus.io/)
   - [clickhouse_exporter](https://github.com/f1yegor/clickhouse_exporter)
   - [PromHouse](https://github.com/Percona-Lab/PromHouse)
-  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) (uses [Go client](https://github.com/kshvakov/clickhouse/))
+  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) ([Go client](https://github.com/kshvakov/clickhouse/) を使用)
 - [Nagios](https://www.nagios.org/)
   - [check_clickhouse](https://github.com/exogroup/check_clickhouse/)
   - [check_clickhouse.py](https://github.com/innogames/igmonplugins/blob/master/src/check_clickhouse.py)
@@ -101,18 +100,18 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
 </details>
 
 <details>
-<summary>ログ管理</summary>
+<summary>ログ</summary>
 
 - [rsyslog](https://www.rsyslog.com/)
   - [omclickhouse](https://www.rsyslog.com/doc/master/configuration/modules/omclickhouse.html)
 - [fluentd](https://www.fluentd.org)
-  - [loghouse](https://github.com/flant/loghouse) (for [Kubernetes](https://kubernetes.io))
+  - [loghouse](https://github.com/flant/loghouse) ([Kubernetes](https://kubernetes.io) 向け)
 - [logagent](https://www.sematext.com/logagent)
   - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
 </details>
 
 <details>
-<summary>ジオ</summary>
+<summary>ジオロケーション</summary>
 
 - [MaxMind](https://dev.maxmind.com/geoip/)
   - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
@@ -122,7 +121,7 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
 <summary>AutoML</summary>
 
 - [MindsDB](https://mindsdb.com/)
-  - [MindsDB](https://github.com/mindsdb/mindsdb) - ClickHouseと統合され、ClickHouseからのデータを多様なAI/MLモデルにアクセスできるようにします。
+  - [MindsDB](https://github.com/mindsdb/mindsdb) - ClickHouse と統合し、ClickHouse のデータを多様な AI/ML モデルから利用可能にします。
 </details>
 
 ## プログラミング言語エコシステム {#programming-language-ecosystems}
@@ -131,7 +130,7 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
 <summary>Python</summary>
 
 - [SQLAlchemy](https://www.sqlalchemy.org)
-  - [sqlalchemy-clickhouse](https://github.com/cloudflare/sqlalchemy-clickhouse) (uses [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
+  - [sqlalchemy-clickhouse](https://github.com/cloudflare/sqlalchemy-clickhouse)（内部で [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm) を使用）
 - [PyArrow/Pandas](https://pandas.pydata.org)
   - [Ibis](https://github.com/ibis-project/ibis)  
 </details>
@@ -147,16 +146,16 @@ ClickHouse, Inc. は、以下にリストされたツールやライブラリを
 <summary>R</summary>
 
 - [dplyr](https://db.rstudio.com/dplyr/)
-  - [RClickHouse](https://github.com/IMSMWU/RClickHouse) (uses [clickhouse-cpp](https://github.com/artpaul/clickhouse-cpp))
+  - [RClickHouse](https://github.com/IMSMWU/RClickHouse)（内部で [clickhouse-cpp](https://github.com/artpaul/clickhouse-cpp) を使用）
 </details>
 
 <details>
 <summary>Java</summary>
 
 - [Hadoop](http://hadoop.apache.org)
-  - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader) (uses [JDBC](../../sql-reference/table-functions/jdbc.md))
+  - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader)（内部で [JDBC](../../sql-reference/table-functions/jdbc.md) を使用）
 </details>
-  
+
 <details>
 <summary>Scala</summary>
 

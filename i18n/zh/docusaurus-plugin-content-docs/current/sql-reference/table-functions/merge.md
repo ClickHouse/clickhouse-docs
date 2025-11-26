@@ -1,29 +1,38 @@
 ---
-'description': '创建一个临时的 Merge 表。该结构将通过对其列的联合和派生公共类型来从基础表中获取。'
-'sidebar_label': '合并'
-'sidebar_position': 130
-'slug': '/sql-reference/table-functions/merge'
-'title': '合并'
-'doc_type': 'reference'
+description: '创建一个临时 Merge 表。其结构将通过对底层表的列取并集并推导出公共类型来生成。'
+sidebar_label: 'merge'
+sidebar_position: 130
+slug: /sql-reference/table-functions/merge
+title: 'merge'
+doc_type: 'reference'
 ---
 
 
-# merge Table Function
 
-创建一个临时 [Merge](../../engines/table-engines/special/merge.md) 表。该结构将通过使用其列的并集和推导公共类型从基础表中派生。
+# merge 表函数
 
-## Syntax {#syntax}
+创建一个临时的 [Merge](../../engines/table-engines/special/merge.md) 表。
+该表的表结构通过对底层表的列取并集并推导其公共数据类型来确定。
+可用的虚拟列与 [Merge](../../engines/table-engines/special/merge.md) 表引擎中的相同。
+
+
+
+## 语法 {#syntax}
+
+
 
 ```sql
 merge(['db_name',] 'tables_regexp')
 ```
-## Arguments {#arguments}
 
-| Argument        | Description                                                                                                                                                                                                                                                                                     |
-|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `db_name`       | 可选值（默认是 `currentDatabase()`）：<br/>    - 数据库名称,<br/>    - 返回数据库名称字符串的常量表达式，例如 `currentDatabase()`，<br/>    - `REGEXP(expression)`，其中 `expression` 是与数据库名称匹配的正则表达式。                                                 |
-| `tables_regexp` | 用于匹配指定数据库或数据库中的表名称的正则表达式。                                                                                                                                                                                                                       |
+## 参数
 
-## Related {#related}
+| 参数              | 描述                                                                                                                                                                          |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `db_name`       | 取值可以是（可选，默认值为 `currentDatabase()`）：<br />    - 数据库名称，<br />    - 返回数据库名称字符串的常量表达式，例如 `currentDatabase()`，<br />    - `REGEXP(expression)`，其中 `expression` 是用于匹配数据库名称的正则表达式。 |
+| `tables_regexp` | 用于匹配指定数据库或多个数据库中表名的正则表达式。                                                                                                                                                   |
+
+
+## 相关内容 {#related}
 
 - [Merge](../../engines/table-engines/special/merge.md) 表引擎

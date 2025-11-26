@@ -1,45 +1,45 @@
 ---
-'description': '对来自两个群体的样本应用均值 z 检验。'
-'sidebar_label': 'meanZTest'
-'sidebar_position': 166
-'slug': '/sql-reference/aggregate-functions/reference/meanztest'
-'title': 'meanZTest'
-'doc_type': 'reference'
+description: '对来自两个总体的样本进行均值 z 检验。'
+sidebar_label: 'meanZTest'
+sidebar_position: 166
+slug: /sql-reference/aggregate-functions/reference/meanztest
+title: 'meanZTest'
+doc_type: 'reference'
 ---
-
 
 # meanZTest
 
-对来自两个总体的样本应用均值 z 检验。
+对来自两个总体的样本执行均值 Z 检验。
 
 **语法**
 
 ```sql
-meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
+meanZTest(总体方差_x, 总体方差_y, 置信度)(样本数据, 样本索引)
 ```
 
-两个样本的值位于 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的值属于第一个总体的样本。否则，它属于第二个总体的样本。
-原假设是总体的均值相等。假定服从正态分布。总体可能具有不等的方差，并且方差是已知的。
+两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的值属于第一个总体的样本；否则，该行的值属于第二个总体的样本。
+
+原假设是两个总体的均值相等。假设总体服从正态分布。两个总体的方差可以不相等，且方差是已知的。
 
 **参数**
 
-- `sample_data` — 样本数据。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。
-- `sample_index` — 样本索引。 [整数](../../../sql-reference/data-types/int-uint.md)。
+* `sample_data` — 样本数据。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `sample_index` — 样本索引。[Integer](../../../sql-reference/data-types/int-uint.md)。
 
-**参数**
+**参数设置**
 
-- `population_variance_x` — 总体 x 的方差。 [浮点数](../../../sql-reference/data-types/float.md)。
-- `population_variance_y` — 总体 y 的方差。 [浮点数](../../../sql-reference/data-types/float.md)。
-- `confidence_level` — 用于计算置信区间的置信水平。 [浮点数](../../../sql-reference/data-types/float.md)。
+* `population_variance_x` — 总体 x 的方差。[Float](../../../sql-reference/data-types/float.md)。
+* `population_variance_y` — 总体 y 的方差。[Float](../../../sql-reference/data-types/float.md)。
+* `confidence_level` — 用于计算置信区间的置信水平。[Float](../../../sql-reference/data-types/float.md)。
 
 **返回值**
 
-[元组](../../../sql-reference/data-types/tuple.md)，包含四个元素：
+包含四个元素的 [Tuple](../../../sql-reference/data-types/tuple.md)：
 
-- 计算得出的 t 统计量。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的 p 值。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的置信区间下界。 [Float64](../../../sql-reference/data-types/float.md)。
-- 计算得出的置信区间上界。 [Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 t-统计量。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的 p 值。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的置信区间下界。[Float64](../../../sql-reference/data-types/float.md)。
+* 计算得到的置信区间上界。[Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 

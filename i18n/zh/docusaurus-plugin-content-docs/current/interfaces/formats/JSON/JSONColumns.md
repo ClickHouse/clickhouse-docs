@@ -1,36 +1,35 @@
 ---
-'alias': []
-'description': 'JSONColumns 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONColumns'
-'output_format': true
-'slug': '/interfaces/formats/JSONColumns'
-'title': 'JSONColumns'
-'doc_type': 'reference'
+alias: []
+description: 'JSONColumns 格式说明'
+input_format: true
+keywords: ['JSONColumns']
+output_format: true
+slug: /interfaces/formats/JSONColumns
+title: 'JSONColumns'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Description {#description}
+## 描述 {#description}
 
 :::tip
-JSONColumns* 格式的输出提供了 ClickHouse 字段名称，然后是该字段在表中每一行的内容；从视觉上看，数据向左旋转 90 度。
+JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该字段在表中每一行的内容；直观上看，相当于将数据向左旋转了 90 度。
 :::
 
-在此格式中，所有数据都表示为一个单一的 JSON 对象。
+在这种格式下，所有数据都表示为一个 JSON 对象。
 
 :::note
-`JSONColumns` 格式在内存中缓冲所有数据，然后作为一个单一的块输出，因此可能会导致较高的内存消耗。
+`JSONColumns` 格式会将所有数据缓冲在内存中，并一次性作为单个数据块输出，因此可能会导致较高的内存消耗。
 :::
 
-## Example usage {#example-usage}
+## 使用示例 {#example-usage}
 
-### Inserting data {#inserting-data}
+### 插入数据
 
-使用以下数据的 JSON 文件，命名为 `football.json`：
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {
@@ -49,9 +48,10 @@ JSONColumns* 格式的输出提供了 ClickHouse 字段名称，然后是该字�
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
-### Reading data {#reading-data}
 
-使用 `JSONColumns` 格式读取数据：
+### 读取数据
+
+使用 `JSONColumns` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -72,7 +72,8 @@ FORMAT JSONColumns
 }
 ```
 
-## Format settings {#format-settings}
 
-在导入过程中，如果设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则将跳过未知名称的列。
-在块中不存在的列将填充默认值（您可以在此处使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）。
+## 格式设置 {#format-settings}
+
+在导入过程中，如果将 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
+在数据块中不存在的列将用默认值填充（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）。

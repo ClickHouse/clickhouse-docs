@@ -1,11 +1,12 @@
 ---
-'description': 'CREATE DATABASE のためのドキュメント'
-'sidebar_label': 'DATABASE'
-'sidebar_position': 35
-'slug': '/sql-reference/statements/create/database'
-'title': 'CREATE DATABASE'
-'doc_type': 'reference'
+description: 'CREATE DATABASE ステートメントのドキュメント'
+sidebar_label: 'DATABASE'
+sidebar_position: 35
+slug: /sql-reference/statements/create/database
+title: 'CREATE DATABASE'
+doc_type: 'reference'
 ---
+
 
 
 # CREATE DATABASE
@@ -16,28 +17,29 @@
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Comment']
 ```
 
-## Clauses {#clauses}
 
-### IF NOT EXISTS {#if-not-exists}
+## 句
 
-`db_name` データベースがすでに存在する場合、ClickHouse は新しいデータベースを作成せず、以下の動作をします：
+### IF NOT EXISTS
 
-- 条件が指定されている場合、例外をスローしません。
-- 条件が指定されていない場合、例外をスローします。
+`db_name` データベースがすでに存在する場合、ClickHouse は新しいデータベースを作成せず、次のように動作します。
 
-### ON CLUSTER {#on-cluster}
+* この句が指定されている場合は、例外をスローしません。
+* この句が指定されていない場合は、例外をスローします。
 
-ClickHouse は指定されたクラスタのすべてのサーバーに `db_name` データベースを作成します。詳細は [Distributed DDL](../../../sql-reference/distributed-ddl.md) 記事を参照してください。
+### ON CLUSTER
 
-### ENGINE {#engine}
+ClickHouse は、指定したクラスタ内のすべてのサーバーに `db_name` データベースを作成します。詳細は [Distributed DDL](../../../sql-reference/distributed-ddl.md) の記事を参照してください。
 
-デフォルトでは、ClickHouse は独自の [Atomic](../../../engines/database-engines/atomic.md) データベースエンジンを使用します。他に [Lazy](../../../engines/database-engines/lazy.md)、[MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md) もあります。
+### ENGINE
 
-### COMMENT {#comment}
+デフォルトでは、ClickHouse は独自の [Atomic](../../../engines/database-engines/atomic.md) データベースエンジンを使用します。このほかに、[Lazy](../../../engines/database-engines/lazy.md)、[MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md) があります。
 
-データベースを作成する際にコメントを追加することができます。
+### COMMENT
 
-コメントはすべてのデータベースエンジンでサポートされています。
+データベースを作成する際に、コメントを追加できます。
+
+コメント指定は、すべてのデータベースエンジンでサポートされています。
 
 **構文**
 
@@ -50,7 +52,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 クエリ:
 
 ```sql
-CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
+CREATE DATABASE db_comment ENGINE = Memory COMMENT '一時データベース';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
@@ -58,6 +60,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ The temporary database │
+│ db_comment │ 一時データベース       │
 └────────────┴────────────────────────┘
 ```
