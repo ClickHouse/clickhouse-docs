@@ -1,0 +1,16 @@
+[
+  {
+    "name": "乔",
+    "age": 99,
+    "type": "人"
+  },
+  {
+    "url": "/my.post.MD",
+    "hits": 1263,
+    "type": "POST"
+  },
+  {
+    "message": "磁盘空间使用告警",
+    "type": "日志"
+  }
+]

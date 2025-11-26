@@ -1,0 +1,10 @@
+{
+  "position": 5,
+  "label": "集成 AI 代理库",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "文档",
+    "id": "使用案例/AI_ML/MCP/AI智能体库/index"
+  }
+}

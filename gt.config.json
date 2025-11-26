@@ -36,7 +36,18 @@
     "json": {
       "include": [
         "docs/**/*.json",
+        "knowledgebase/**/*.json",
         "i18n/[locale]/**/*.json"
+      ],
+      "transform": [
+        {
+          "match": "^docs/(.*)\\.json$",
+          "replace": "i18n/{locale}/docusaurus-plugin-content-docs/current/$1.json"
+        },
+        {
+          "match": "^knowledgebase/(.*)\\.json$",
+          "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.json"
+        }
       ]
     },
     "gt": {
@@ -53,5 +64,8 @@
     "jp": {
       "code": "ja"
     }
+  },
+  "options": {
+    "experimentalClearLocaleDirs": true
   }
 }

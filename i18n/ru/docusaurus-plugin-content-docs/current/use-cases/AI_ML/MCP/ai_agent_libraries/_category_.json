@@ -1,0 +1,10 @@
+{
+  "position": 5,
+  "label": "Интегрируйте библиотеки ИИ-агентов",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "документация",
+    "id": "варианты-использования/AI_ML/MCP/библиотеки_ai_агентов/index"
+  }
+}

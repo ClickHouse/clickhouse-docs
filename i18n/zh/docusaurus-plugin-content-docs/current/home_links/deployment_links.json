@@ -1,0 +1,14 @@
+[
+  {
+    "title": "快速入门",
+    "description": "几分钟内快速上手 ClickHouse，探索示例数据并开始构建您的解决方案",
+    "url": "/docs/quick-start/",
+    "background": "云"
+  },
+  {
+    "title": "教程和示例数据集",
+    "description": "从出租车行程到房产价格，学习如何将数据导入 ClickHouse，并通过建模来优化查询性能",
+    "url": "/docs/getting-started/example-datasets/",
+    "background": "云服务"
+  }
+]
