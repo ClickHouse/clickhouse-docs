@@ -32,17 +32,17 @@ catalog feature, it is now possible to add and work with multiple catalogs in a 
 
 ## Requirements {#requirements}
 
-- Java 8 or 17
-- Scala 2.12 or 2.13
-- Apache Spark 3.3 or 3.4 or 3.5
+- Java 8 or 17 (Java 17+ required for Spark 4.0)
+- Scala 2.12 or 2.13 (Spark 4.0 only supports Scala 2.13)
+- Apache Spark 3.3, 3.4, 3.5, or 4.0
 
 ## Compatibility matrix {#compatibility-matrix}
 
 | Version | Compatible Spark Versions | ClickHouse JDBC version |
 |---------|---------------------------|-------------------------|
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
+| main    | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
+| 0.9.0   | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
 | 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
 | 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
 | 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
@@ -516,6 +516,7 @@ The following are the adjustable configurations available in the connector:
 | spark.clickhouse.read.compression.codec            | lz4                                                    | The codec used to decompress data for reading. Supported codecs: none, lz4.                                                                                                                                                                                                                                                                                                                                     | 0.5.0 |
 | spark.clickhouse.read.distributed.convertLocal     | true                                                   | When reading Distributed table, read local table instead of itself. If `true`, ignore `spark.clickhouse.read.distributed.useClusterNodes`.                                                                                                                                                                                                                                                                      | 0.1.0 |
 | spark.clickhouse.read.fixedStringAs                | binary                                                 | Read ClickHouse FixedString type as the specified Spark data type. Supported types: binary, string                                                                                                                                                                                                                                                                                                              | 0.8.0 |
+| spark.clickhouse.read.jsonAs                       | variant                                                | Read ClickHouse JSON type as the specified Spark data type. Supported types: variant (Spark 4.0+ VariantType), string. Note: VariantType is only available in Spark 4.0+                                                                                                                                                                                                                                        | 0.9.0 |
 | spark.clickhouse.read.format                       | json                                                   | Serialize format for reading. Supported formats: json, binary                                                                                                                                                                                                                                                                                                                                                   | 0.6.0 |
 | spark.clickhouse.read.runtimeFilter.enabled        | false                                                  | Enable runtime filter for reading.                                                                                                                                                                                                                                                                                                                                                                              | 0.8.0 |
 | spark.clickhouse.read.splitByPartitionId           | true                                                   | If `true`, construct input partition filter by virtual column `_partition_id`, instead of partition value. There are known issues with assembling SQL predicates by partition value. This feature requires ClickHouse Server v21.6+                                                                                                                                                                             | 0.4.0 |
@@ -544,7 +545,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
 |-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
 | `Nothing`                                                         | `NullType`                     | ✅         | Yes          |                                                    |
-| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                           |
 | `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | Yes          |                                                    |
 | `Int8`                                                            | `ByteType`                     | ✅         | Yes          |                                                    |
 | `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | Yes          |                                                    |
@@ -552,7 +553,8 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | Yes          |                                                    |
 | `Float32`                                                         | `FloatType`                    | ✅         | Yes          |                                                    |
 | `Float64`                                                         | `DoubleType`                   | ✅         | Yes          |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | Yes          |                                                    |
+| `String`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`               | `StringType`                   | ✅         | Yes          |                                                    |
+| `JSON`                                                            | `VariantType`, `StringType`    | ✅         | Yes          | Spark 4.0+: VariantType (default) or StringType (configurable via `spark.clickhouse.read.jsonAs`). Spark 3.x: StringType only |
 | `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | Yes          | Controlled by configuration `READ_FIXED_STRING_AS` |
 | `Decimal`                                                         | `DecimalType`                  | ✅         | Yes          | Precision and scale up to `Decimal128`             |
 | `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | Yes          |                                                    |
@@ -567,7 +569,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No           | Specific interval type is used                     |
 | `Object`                                                          |                                | ❌         |              |                                                    |
 | `Nested`                                                          |                                | ❌         |              |                                                    |
-| `Tuple`                                                           |                                | ❌         |              |                                                    |
+| `Tuple`                                                           | `StructType`                   | ✅         | No           | Supports both named and unnamed tuples. Named tuples map to struct fields by name, unnamed tuples use `_1`, `_2`, etc. Supports nested structs and nullable fields |
 | `Point`                                                           |                                | ❌         |              |                                                    |
 | `Polygon`                                                         |                                | ❌         |              |                                                    |
 | `MultiPolygon`                                                    |                                | ❌         |              |                                                    |
@@ -582,7 +584,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 
 | Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
 |-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
-| `BooleanType`                       | `UInt8`              | ✅         | Yes          |                                        |
+| `BooleanType`                       | `Bool`               | ✅         | Yes          | Mapped to `Bool` type (not `UInt8`) since version 0.9.0 |
 | `ByteType`                          | `Int8`               | ✅         | Yes          |                                        |
 | `ShortType`                         | `Int16`              | ✅         | Yes          |                                        |
 | `IntegerType`                       | `Int32`              | ✅         | Yes          |                                        |
@@ -597,6 +599,8 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `TimestampType`                     | `DateTime`           | ✅         | Yes          |                                        |
 | `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | Array element type is also converted   |
 | `MapType`                           | `Map`                | ✅         | No           | Keys are limited to `StringType`       |
+| `StructType`                        | `Tuple`              | ✅         | No           | Converted to named Tuple with field names. Supports nested structs and nullable fields |
+| `VariantType`                       | `JSON`               | ✅         | Yes          | Spark 4.0+ only. Semi-structured data support |
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 
