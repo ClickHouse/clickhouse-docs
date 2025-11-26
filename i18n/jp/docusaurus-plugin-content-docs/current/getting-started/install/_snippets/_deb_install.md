@@ -1,8 +1,6 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 # Debian/UbuntuへのClickHouseのインストール {#install-from-deb-packages}
 
 > **Debian**または**Ubuntu**では、公式のプリコンパイル済み`deb`パッケージの使用を推奨します。
@@ -19,28 +17,18 @@ ClickHouse をインストールするには、次のコマンドを実行しま
 ```bash
 # 前提パッケージをインストール
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
-```
-
 
 # ClickHouse の GPG キーをダウンロードしてキーリングに保存する
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-
-
 # システムのアーキテクチャを取得する
 ARCH=$(dpkg --print-architecture)
-
-
 
 # ClickHouse リポジトリを apt のソースリストに追加する
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-
-
 # apt パッケージリストを更新する
-
 sudo apt-get update
-
 ```
 
 - 必要に応じて、`stable`を`lts`に置き換えることで、異なる[リリース種別](/knowledgebase/production)を使用できます。
@@ -48,8 +36,6 @@ sudo apt-get update
 <br/>
 <details>
 <summary>debパッケージをインストールする旧ディストリビューション方式</summary>
-```
-
 
 ```bash
 # 前提パッケージのインストール
@@ -90,7 +76,6 @@ clickhouse-client # パスワードを設定している場合は &quot;clickhou
 ```
 
 </details>
-```
 
 
 ## ClickHouse サーバーとクライアントのインストール
@@ -160,6 +145,7 @@ sudo systemctl status clickhouse-keeper
 | `clickhouse-keeper`            | 専用の ClickHouse Keeper ノードに ClickHouse Keeper をインストールするために使用します。ClickHouse server と同じサーバー上で ClickHouse Keeper を実行している場合、このパッケージをインストールする必要はありません。ClickHouse Keeper 本体とデフォルトの ClickHouse Keeper 設定ファイルをインストールします。 |
 
 <br/>
+
 :::info
 特定のバージョンの ClickHouse をインストールする必要がある場合は、同じバージョンのパッケージをすべてインストールする必要があります:
 `sudo apt-get install clickhouse-server=21.8.5.7 clickhouse-client=21.8.5.7 clickhouse-common-static=21.8.5.7`

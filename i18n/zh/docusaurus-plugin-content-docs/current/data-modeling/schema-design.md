@@ -119,8 +119,7 @@ CREATE TABLE posts
 )
 ENGINE = MergeTree(&#39;/clickhouse/tables/{uuid}/{shard}&#39;, &#39;{replica}&#39;)
 ORDER BY tuple()
-
-````
+```
 
 定义好初始架构后,我们可以使用 `INSERT INTO SELECT` 来填充数据,通过 S3 表函数读取数据。以下操作在 8 核 ClickHouse Cloud 实例上加载 `posts` 数据大约需要 2 分钟。
 
@@ -128,7 +127,7 @@ ORDER BY tuple()
 INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
 0 rows in set. Elapsed: 148.140 sec. Processed 59.82 million rows, 38.07 GB (403.80 thousand rows/s., 257.00 MB/s.)
-````
+```
 
 > 上述查询会加载 6000 万行。对于 ClickHouse 来说这算小规模，但网络连接较慢的用户可能希望只加载一部分数据。可以通过使用 glob 通配模式指定要加载的年份来实现，例如 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` 或 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`。关于如何使用 glob 模式来筛选文件子集，请参阅[此处](/sql-reference/table-functions/file#globs-in-path)。
 

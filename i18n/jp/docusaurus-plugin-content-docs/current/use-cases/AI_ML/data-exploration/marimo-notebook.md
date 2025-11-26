@@ -40,10 +40,9 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 ここでは、スターターデータセットの 1 つとして ClickHouse Cloud 上で利用可能な UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
+## セットアップ {#setup}
 
-## セットアップ
-
-### データセットの読み込み
+### データセットの読み込み {#loading-the-dataset}
 
 既存の ClickHouse Cloud サービスにこのデータセットを追加するには、アカウントで [console.clickhouse.cloud](https://console.clickhouse.cloud/) にログインします。
 
@@ -63,7 +62,7 @@ ClickHouse は自動的に `pp_complete` テーブルを `default` データベ�
 
 認証情報が漏洩する可能性を減らすため、ClickHouse Cloud のユーザー名とパスワードをローカルマシンの環境変数として登録することをお勧めします。ターミナルから次のコマンドを実行して、ユーザー名とパスワードを環境変数として追加します:
 
-### 認証情報の設定
+### 認証情報の設定 {#setting-up-credentials}
 
 ```bash
 export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
@@ -76,7 +75,7 @@ export CLICKHOUSE_CLOUD_PASSWORD=実際のパスワード
 永続的に設定するには、シェルの設定ファイルに追加してください。
 :::
 
-### Marimo のインストール
+### Marimo のインストール {#installing-marimo}
 
 まず仮想環境を有効にします。
 仮想環境を有効にした状態で、このガイドで使用する次のパッケージをインストールします。
@@ -98,7 +97,7 @@ marimo edit clickhouse_exploration.py
 Marimo ノートブックは純粋な Python ファイルとして保存されるため、バージョン管理や他者との共有が容易です。
 
 
-## 依存関係のインストール
+## 依存関係のインストール {#installing-dependencies}
 
 新しいセルで必要なパッケージをインポートします。
 
@@ -126,14 +125,14 @@ result
 <Image size="md" img={image_5} alt="Marimo hello world" />
 
 
-## データの探索
+## データの探索 {#exploring-the-data}
 
 UK price paid データセットをセットアップし、Marimo ノートブック上で chDB が稼働していれば、データの探索を始めることができます。
 首都ロンドンのような、UK の特定エリアにおける価格が時間とともにどのように変化したかを確認したいとします。
 ClickHouse の [`remoteSecure`](/docs/sql-reference/table-functions/remote) 関数を使うと、ClickHouse Cloud からデータを簡単に取得できます。
 chDB に対して、このデータを同一プロセス内で Pandas のデータフレームとして返すよう指示できます。これはデータを扱ううえで便利でなじみのある形式です。
 
-### ClickHouse Cloud データのクエリ実行
+### ClickHouse Cloud データのクエリ実行 {#querying-clickhouse-cloud-data}
 
 新しいセルを作成し、次のクエリを使用して ClickHouse Cloud サービスから UK price paid データを取得し、それを `pandas.DataFrame` に変換します。
 
@@ -330,14 +329,13 @@ height=600
 )
 
 fig&#95;box
-
 ```
+
 セルの右上にあるオプションボタンをクリックすると、
 コードを非表示にできます。
 スライダーを動かすと、Marimo のリアクティブ実行機能によりプロットが自動的に更新されます。
 
 <Image size="md" img={image_8} alt="Marimo の動的なチャート"/>
-```
 
 
 ## まとめ {#summary}

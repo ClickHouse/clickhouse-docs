@@ -95,8 +95,6 @@ rpc&#95;duration&#95;seconds&#95;sum 17560473
 rpc&#95;duration&#95;seconds&#95;count 2693
 
 something&#95;weird{problem="ゼロによる除算"} +Inf -3982045
-
-```
 ```
 
 

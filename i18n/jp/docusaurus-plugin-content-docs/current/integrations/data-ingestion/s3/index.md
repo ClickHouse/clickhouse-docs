@@ -1,10 +1,10 @@
 ---
 slug: /integrations/s3
 sidebar_position: 1
-sidebar_label: 'ClickHouse と S3 の統合'
-title: 'ClickHouse と S3 の統合'
-description: 'S3 と ClickHouse の統合方法を説明するページ'
-keywords: ['Amazon S3', 'オブジェクトストレージ', 'クラウドストレージ', 'データレイク', 'S3 連携']
+sidebar_label: 'Integrating S3 with ClickHouse'
+title: 'Integrating S3 with ClickHouse'
+description: 'Page describing how to integrate S3 with ClickHouse'
+keywords: ['Amazon S3', 'object storage', 'cloud storage', 'data lake', 'S3 integration']
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -17,16 +17,13 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
+# Integrating S3 with ClickHouse
 
-# ClickHouse と S3 の統合
+You can insert data from S3 into ClickHouse and also use S3 as an export destination, thus allowing interaction with "Data Lake" architectures. Furthermore, S3 can provide "cold" storage tiers and assist with separating storage and compute. In the sections below we use the New York City taxi dataset to demonstrate the process of moving data between S3 and ClickHouse, as well as identifying key configuration parameters and providing hints on optimizing performance.
 
-S3 から ClickHouse にデータを挿入できるほか、S3 をエクスポート先としても利用できるため、「データレイク」アーキテクチャとの連携が可能になります。さらに、S3 は「コールド」ストレージ階層を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi データセットを用いて、S3 と ClickHouse 間でデータを移動する手順を示すとともに、主要な構成パラメータを明らかにし、パフォーマンスを最適化するためのヒントを紹介します。
+## S3 table functions {#s3-table-functions}
 
-
-
-## S3 テーブル関数
-
-`s3` テーブル関数を使用すると、S3 互換ストレージからおよび S3 互換ストレージへファイルの読み取りと書き込みができます。構文の概要は次のとおりです。
+The `s3` table function allows you to read and write files from and to S3 compatible storage. The outline for this syntax is:
 
 ```sql
 s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compression]]])
@@ -34,81 +31,76 @@ s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compr
 
 where:
 
-* path — ファイルへのパスを含むバケットの URL。読み取り専用モードで次のワイルドカードをサポートします: `*`, `?`, `{abc,def}`, `{N..M}`。ここで、`N`, `M` は数値、`'abc'`, `'def'` は文字列です。詳細は、[パスでのワイルドカードの使用](/engines/table-engines/integrations/s3/#wildcards-in-path)に関するドキュメントを参照してください。
-* format — ファイルの[フォーマット](/interfaces/formats#formats-overview)。
-* structure — テーブルの構造。書式は `'column1_name column1_type, column2_name column2_type, ...'` です。
-* compression — 省略可能なパラメータ。サポートされている値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子から圧縮形式を自動検出します。
+* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers, `'abc'`, `'def'` are strings. For more information, see the docs on [using wildcards in path](/engines/table-engines/integrations/s3/#wildcards-in-path).
+* format — The [format](/interfaces/formats#formats-overview) of the file.
+* structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
+* compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
-パス式でワイルドカードを使用すると、複数のファイルを参照できるようになり、並列処理による読み取りが可能になります。
+Using wildcards in the path expression allow multiple files to be referenced and opens the door for parallelism.
 
-### 準備
+### Preparation {#preparation}
 
-ClickHouse でテーブルを作成する前に、まず S3 バケット内のデータを詳しく確認しておくとよいでしょう。これは、ClickHouse から直接 `DESCRIBE` ステートメントを使用して実行できます。
+Prior to creating the table in ClickHouse, you may want to first take a closer look at the data in the S3 bucket. You can do this directly from ClickHouse using the `DESCRIBE` statement:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE` ステートメントの出力を見ると、S3 バケット内のデータを ClickHouse がどのように自動推論するかがわかります。また、gzip 圧縮形式も自動的に認識して解凍されることに注意してください。
+The output of the `DESCRIBE TABLE` statement should show you how ClickHouse would automatically infer this data, as viewed in the S3 bucket. Notice that it also automatically recognizes and decompresses the gzip compression format:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
-```
-
 
 ┌─name──────────────────┬─type───────────────┐
-│ trip&#95;id               │ Nullable(Int64)    │
-│ vendor&#95;id             │ Nullable(Int64)    │
-│ pickup&#95;date           │ Nullable(Date)     │
-│ pickup&#95;datetime       │ Nullable(DateTime) │
-│ dropoff&#95;date          │ Nullable(Date)     │
-│ dropoff&#95;datetime      │ Nullable(DateTime) │
-│ store&#95;and&#95;fwd&#95;flag    │ Nullable(Int64)    │
-│ rate&#95;code&#95;id          │ Nullable(Int64)    │
-│ pickup&#95;longitude      │ Nullable(Float64)  │
-│ pickup&#95;latitude       │ Nullable(Float64)  │
-│ dropoff&#95;longitude     │ Nullable(Float64)  │
-│ dropoff&#95;latitude      │ Nullable(Float64)  │
-│ passenger&#95;count       │ Nullable(Int64)    │
-│ trip&#95;distance         │ Nullable(String)   │
-│ fare&#95;amount           │ Nullable(String)   │
+│ trip_id               │ Nullable(Int64)    │
+│ vendor_id             │ Nullable(Int64)    │
+│ pickup_date           │ Nullable(Date)     │
+│ pickup_datetime       │ Nullable(DateTime) │
+│ dropoff_date          │ Nullable(Date)     │
+│ dropoff_datetime      │ Nullable(DateTime) │
+│ store_and_fwd_flag    │ Nullable(Int64)    │
+│ rate_code_id          │ Nullable(Int64)    │
+│ pickup_longitude      │ Nullable(Float64)  │
+│ pickup_latitude       │ Nullable(Float64)  │
+│ dropoff_longitude     │ Nullable(Float64)  │
+│ dropoff_latitude      │ Nullable(Float64)  │
+│ passenger_count       │ Nullable(Int64)    │
+│ trip_distance         │ Nullable(String)   │
+│ fare_amount           │ Nullable(String)   │
 │ extra                 │ Nullable(String)   │
-│ mta&#95;tax               │ Nullable(String)   │
-│ tip&#95;amount            │ Nullable(String)   │
-│ tolls&#95;amount          │ Nullable(Float64)  │
-│ ehail&#95;fee             │ Nullable(Int64)    │
-│ improvement&#95;surcharge │ Nullable(String)   │
-│ total&#95;amount          │ Nullable(String)   │
-│ payment&#95;type          │ Nullable(String)   │
-│ trip&#95;type             │ Nullable(Int64)    │
+│ mta_tax               │ Nullable(String)   │
+│ tip_amount            │ Nullable(String)   │
+│ tolls_amount          │ Nullable(Float64)  │
+│ ehail_fee             │ Nullable(Int64)    │
+│ improvement_surcharge │ Nullable(String)   │
+│ total_amount          │ Nullable(String)   │
+│ payment_type          │ Nullable(String)   │
+│ trip_type             │ Nullable(Int64)    │
 │ pickup                │ Nullable(String)   │
 │ dropoff               │ Nullable(String)   │
-│ cab&#95;type              │ Nullable(String)   │
-│ pickup&#95;nyct2010&#95;gid   │ Nullable(Int64)    │
-│ pickup&#95;ctlabel        │ Nullable(Float64)  │
-│ pickup&#95;borocode       │ Nullable(Int64)    │
-│ pickup&#95;ct2010         │ Nullable(String)   │
-│ pickup&#95;boroct2010     │ Nullable(String)   │
-│ pickup&#95;cdeligibil     │ Nullable(String)   │
-│ pickup&#95;ntacode        │ Nullable(String)   │
-│ pickup&#95;ntaname        │ Nullable(String)   │
-│ pickup&#95;puma           │ Nullable(Int64)    │
-│ dropoff&#95;nyct2010&#95;gid  │ Nullable(Int64)    │
-│ dropoff&#95;ctlabel       │ Nullable(Float64)  │
-│ dropoff&#95;borocode      │ Nullable(Int64)    │
-│ dropoff&#95;ct2010        │ Nullable(String)   │
-│ dropoff&#95;boroct2010    │ Nullable(String)   │
-│ dropoff&#95;cdeligibil    │ Nullable(String)   │
-│ dropoff&#95;ntacode       │ Nullable(String)   │
-│ dropoff&#95;ntaname       │ Nullable(String)   │
-│ dropoff&#95;puma          │ Nullable(Int64)    │
+│ cab_type              │ Nullable(String)   │
+│ pickup_nyct2010_gid   │ Nullable(Int64)    │
+│ pickup_ctlabel        │ Nullable(Float64)  │
+│ pickup_borocode       │ Nullable(Int64)    │
+│ pickup_ct2010         │ Nullable(String)   │
+│ pickup_boroct2010     │ Nullable(String)   │
+│ pickup_cdeligibil     │ Nullable(String)   │
+│ pickup_ntacode        │ Nullable(String)   │
+│ pickup_ntaname        │ Nullable(String)   │
+│ pickup_puma           │ Nullable(Int64)    │
+│ dropoff_nyct2010_gid  │ Nullable(Int64)    │
+│ dropoff_ctlabel       │ Nullable(Float64)  │
+│ dropoff_borocode      │ Nullable(Int64)    │
+│ dropoff_ct2010        │ Nullable(String)   │
+│ dropoff_boroct2010    │ Nullable(String)   │
+│ dropoff_cdeligibil    │ Nullable(String)   │
+│ dropoff_ntacode       │ Nullable(String)   │
+│ dropoff_ntaname       │ Nullable(String)   │
+│ dropoff_puma          │ Nullable(Int64)    │
 └───────────────────────┴────────────────────┘
-
 ```
 
-S3ベースのデータセットを操作するために、標準的な`MergeTree`テーブルを宛先として準備します。以下のステートメントは、デフォルトデータベースに`trips`という名前のテーブルを作成します。上記で推論されたデータ型の一部を変更しており、特に[`Nullable()`](/sql-reference/data-types/nullable)データ型修飾子は使用しないようにしています。これは、不要な追加ストレージと若干のパフォーマンスオーバーヘッドを引き起こす可能性があるためです。
-```
-
+To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database. Note that we have chosen to modify some of those data types as inferred above, particularly to not use the [`Nullable()`](/sql-reference/data-types/nullable) data type modifier, which could cause some unnecessary additional stored data and some additional performance overhead:
 
 ```sql
 CREATE TABLE trips
@@ -164,13 +156,13 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 ```
 
-`pickup_date` フィールドに対する[パーティショニング](/engines/table-engines/mergetree-family/custom-partitioning-key)の利用に注目してください。通常、パーティションキーはデータ管理のために使用されますが、後ほどこのキーを使って S3 への書き込みを並列化します。
+Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
 
-タクシーデータセットの各エントリは、1 件のタクシー乗車を表しています。この匿名化されたデータは、S3 バケット [https://datasets-documentation.s3.eu-west-3.amazonaws.com/](https://datasets-documentation.s3.eu-west-3.amazonaws.com/) の **nyc-taxi** フォルダ内に格納された、圧縮済みの 2,000 万件のレコードで構成されています。データは TSV 形式で、ファイルあたりおよそ 100 万行が含まれています。
+Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
-### S3 からデータを読み込む
+### Reading Data from S3 {#reading-data-from-s3}
 
-ClickHouse に永続化することなく、S3 上のデータをソースとしてクエリできます。次のクエリでは、10 行だけをサンプリングします。バケットが公開されているため、ここでは認証情報が不要である点に注意してください。
+We can query S3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
 
 ```sql
 SELECT *
@@ -178,16 +170,15 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 LIMIT 10;
 ```
 
-`TabSeparatedWithNames` 形式では最初の行にカラム名が含まれているため、カラム名を明示的に指定する必要はないことに注意してください。`CSV` や `TSV` などの他の形式では、このクエリに対して `c1`、`c2`、`c3` のような自動生成されたカラムが返されます。
+Note that we are not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
 
-クエリではさらに、バケット内のパスおよびファイル名に関する情報をそれぞれ提供する `_path` や `_file` のような[仮想カラム](../sql-reference/table-functions/s3#virtual-columns)もサポートしています。例えば:
+Queries additionally support [virtual columns](../sql-reference/table-functions/s3#virtual-columns), like `_path` and `_file`, that provide information regarding the bucket path and filename respectively. For example:
 
 ```sql
 SELECT  _path, _file, trip_id
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_0.gz', 'TabSeparatedWithNames')
 LIMIT 5;
 ```
-
 
 ```response
 ┌─_path──────────────────────────────────────┬─_file──────┬────trip_id─┐
@@ -199,7 +190,7 @@ LIMIT 5;
 └────────────────────────────────────────────┴────────────┴────────────┘
 ```
 
-このサンプルデータセットに含まれる行数を確認します。ファイル展開のためにワイルドカードを使用しているため、20 個すべてのファイルが対象になります。ClickHouse インスタンス上のコア数にもよりますが、このクエリの実行にはおよそ 10 秒かかります。
+Confirm the number of rows in this sample dataset. Note the use of wildcards for file expansion, so we consider all twenty files. This query will take around 10 seconds, depending on the number of cores on the ClickHouse instance:
 
 ```sql
 SELECT count() AS count
@@ -212,20 +203,20 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 └──────────┘
 ```
 
-S3 から直接データを読み取る方法は、データのサンプリングやアドホックな探索的クエリを実行するには有用ですが、日常的に行うべきものではありません。本格的に運用する段階になったら、ClickHouse の `MergeTree` テーブルにデータをインポートしてください。
+While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 is not something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
 
-### clickhouse-local の使用
+### Using clickhouse-local {#using-clickhouse-local}
 
-`clickhouse-local` プログラムを使用すると、ClickHouse サーバーをデプロイしたり設定したりすることなく、ローカルファイルに対して高速な処理を実行できます。`s3` テーブル関数を用いたクエリは、すべてこのユーティリティで実行できます。例えば、次のように実行します。
+The `clickhouse-local` program enables you to perform fast processing on local files without deploying and configuring the ClickHouse server. Any queries using the `s3` table function can be performed with this utility. For example:
 
 ```sql
 clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
-### S3 からのデータ挿入
+### Inserting Data from S3 {#inserting-data-from-s3}
 
-ClickHouse の機能を最大限に活用するために、次にデータを読み取り、インスタンスに挿入します。
-これを行うために、`s3` 関数とシンプルな `INSERT` 文を組み合わせます。ターゲットテーブル側で必要な構造が定義されているため、列を列挙する必要はない点に注意してください。この場合、テーブルの DDL 文で指定された順序で列が並んでいる必要があります。列は `SELECT` 句内での位置に基づいてマッピングされます。1,000 万行すべてを挿入する処理には、ClickHouse インスタンスによっては数分かかる場合があります。以下では、すばやく結果を得るために 100 万行のみを挿入しています。必要に応じて、`LIMIT` 句や列の選択を調整して、一部だけをインポートしてください。
+To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
+We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
 
 ```sql
 INSERT INTO trips
@@ -234,23 +225,23 @@ INSERT INTO trips
    LIMIT 1000000;
 ```
 
-### ClickHouse Local を使用したリモート挿入
+### Remote Insert using ClickHouse Local {#remote-insert-using-clickhouse-local}
 
-ネットワークセキュリティポリシーによって ClickHouse クラスターからの外向き接続が禁止されている場合、`clickhouse-local` を使用して S3 データを挿入することもできます。以下の例では、S3 バケットから読み取り、`remote` 関数を使用して ClickHouse に挿入します。
+If network security policies prevent your ClickHouse cluster from making outbound connections, you can potentially insert S3 data using `clickhouse-local`. In the example below, we read from an S3 bucket and insert into ClickHouse using the `remote` function:
 
 ```sql
 clickhouse-local --query "INSERT INTO TABLE FUNCTION remote('localhost:9000', 'default.trips', 'username', 'password') (*) SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
 :::note
-これを安全な SSL 接続で実行するには、`remoteSecure` 関数を使用します。
+To execute this over a secure SSL connection, utilize the `remoteSecure` function.
 :::
 
-### データのエクスポート
+### Exporting data {#exporting-data}
 
-`s3` テーブル関数を使用して S3 上のファイルに書き込むことができます。これには適切な権限が必要です。必要な認証情報はリクエスト内で渡しますが、その他のオプションについては [Managing Credentials](#managing-credentials) ページを参照してください。
+You can write to files in S3 using the `s3` table function. This will require appropriate permissions. We pass the credentials needed in the request, but view the [Managing Credentials](#managing-credentials) page for more options.
 
-以下のシンプルな例では、テーブル関数をソースではなく出力先として使用しています。ここでは、`trips` テーブルから 10,000 行を、`lz4` 圧縮と出力形式としての `CSV` を指定して、S3 バケットにストリーミングしています。
+In the simple example below, we use the table function as a destination instead of a source. Here we stream 10,000 rows from the `trips` table to a bucket, specifying `lz4` compression and output type of `CSV`:
 
 ```sql
 INSERT INTO FUNCTION
@@ -265,14 +256,13 @@ FROM trips
 LIMIT 10000;
 ```
 
+Note here how the format of the file is inferred from the extension. We also don't need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
 
-ここでは、ファイルの形式が拡張子から自動的に判別されることに注目してください。また、`s3` 関数では列を指定する必要もありません。これは `SELECT` から自動的に推論されます。
+### Splitting large files {#splitting-large-files}
 
-### 大きなファイルの分割
+It is unlikely you will want to export your data as a single file. Most tools, including ClickHouse, will achieve higher throughput performance when reading and writing to multiple files due to the possibility of parallelism. We could execute our `INSERT` command multiple times, targeting a subset of the data. ClickHouse offers a means of automatic splitting files using a `PARTITION` key.
 
-データを 1 つのファイルとしてエクスポートしたいケースはあまりないでしょう。ClickHouse を含むほとんどのツールは、並列処理が可能になるため、複数ファイルへの読み書きを行うことでスループットが向上します。`INSERT` コマンドを複数回実行し、データのサブセットを対象にすることもできます。ClickHouse には、`PARTITION` キーを使用してファイルを自動的に分割する方法が用意されています。
-
-次の例では、`rand()` 関数の剰余を用いて 10 個のファイルを作成します。生成されたパーティション ID がファイル名でどのように参照されているかに注目してください。これにより、`trips_0.csv.lz4`、`trips_1.csv.lz4` などのように、数値のサフィックスを持つ 10 個のファイルが生成されます。
+In the example below, we create ten files using a modulus of the `rand()` function. Notice how the resulting partition ID is referenced in the filename. This results in ten files with a numerical suffix, e.g. `trips_0.csv.lz4`, `trips_1.csv.lz4` etc...:
 
 ```sql
 INSERT INTO FUNCTION
@@ -288,7 +278,7 @@ FROM trips
 LIMIT 100000;
 ```
 
-別の方法として、データ内のフィールドを参照することもできます。このデータセットでは、`payment_type` は 5 種類の値を持つ自然なパーティションキーになります。
+Alternatively, we can reference a field in the data. For this dataset, the `payment_type` provides a natural partitioning key with a cardinality of 5.
 
 ```sql
 INSERT INTO FUNCTION
@@ -304,28 +294,27 @@ FROM trips
 LIMIT 100000;
 ```
 
-### クラスターの活用
+### Utilizing clusters {#utilizing-clusters}
 
-上記の関数はすべて、単一ノード上での実行に限定されています。読み取り速度は、他のリソース（通常はネットワーク）が飽和するまで CPU コア数に比例して向上し、ユーザーは垂直スケールが可能です。しかし、このアプローチには制約があります。ユーザーは `INSERT INTO SELECT` クエリを実行する際に分散テーブルに挿入することで、ある程度リソースの負荷を軽減できますが、それでも単一ノードでデータの読み取り、パース、処理を行う点は変わりません。この課題に対処し、読み取りを水平方向にスケールさせるために用意されているのが、[s3Cluster](/sql-reference/table-functions/s3Cluster.md) 関数です。
+The above functions are all limited to execution on a single node. Read speeds will scale linearly with CPU cores until other resources (typically network) are saturated, allowing users to vertically scale. However, this approach has its limitations. While users can alleviate some resource pressure by inserting into a distributed table when performing an `INSERT INTO SELECT` query, this still leaves a single node reading, parsing, and processing the data. To address this challenge and allow us to scale reads horizontally, we have the [s3Cluster](/sql-reference/table-functions/s3Cluster.md) function.
 
-クエリを受け取るノードはイニシエーターと呼ばれ、クラスター内のすべてのノードに接続を確立します。どのファイルを読み取る必要があるかを決定するグロブパターンは、読み取る対象となるファイルの集合へと解決されます。イニシエーターは、クラスター内のノード（ワーカーとして動作）にファイルを分配します。これらのワーカーは、読み取りを完了するごとに、処理するファイルを要求します。このプロセスにより、読み取りを水平方向にスケールさせることができます。
+The node which receives the query, known as the initiator, creates a connection to every node in the cluster. The glob pattern determining which files need to be read is resolved to a set of files. The initiator distributes files to the nodes in the cluster, which act as workers. These workers, in turn, request files to process as they complete reads. This process ensures that we can scale reads horizontally.
 
-`s3Cluster` 関数は、対象となるクラスターをワーカーノードとして指定する必要がある点を除き、単一ノード版と同じ形式を取ります。
+The `s3Cluster` function takes the same format as the single node variants, except that a target cluster is required to denote the worker nodes:
 
 ```sql
 s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, structure)
 ```
 
-* `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスタ名。
-* `source` — 単一または複数ファイルへの URL。読み取り専用モードで次のワイルドカードをサポートします: `*`, `?`, `{'abc','def'}` および `{N..M}`。ここで N, M は数値、abc, def は文字列です。詳細は [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path) を参照してください。
-* `access_key_id` と `secret_access_key` — 指定されたエンドポイントで使用する認証情報を表すキー。省略可能です。
-* `format` — ファイルの [format](/interfaces/formats#formats-overview)。
-* `structure` — テーブルの構造。フォーマットは &#39;column1&#95;name column1&#95;type, column2&#95;name column2&#95;type, ...&#39; です。
+* `cluster_name` — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
+* `source` — URL to a file or a bunch of files. Supports following wildcards in read-only mode: `*`, `?`, `{'abc','def'}` and `{N..M}` where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* `access_key_id` and `secret_access_key` — Keys that specify credentials to use with the given endpoint. Optional.
+* `format` — The [format](/interfaces/formats#formats-overview) of the file.
+* `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
-任意の `s3` 関数と同様に、バケットが保護されていない場合や、IAM ロールなどの環境経由で認証・権限付与を行っている場合は、認証情報は省略可能です。ただし s3 関数とは異なり、22.3.1 時点ではリクエスト内で `structure` を指定する必要があり、スキーマは自動推論されません。
+Like any `s3` functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
 
-この関数は、ほとんどのケースで `INSERT INTO SELECT` の一部として使用されます。この場合、多くは分散テーブルに対して INSERT を行います。以下では、trips&#95;all が分散テーブルである単純な例を示します。このテーブルは events クラスタを使用していますが、読み取りおよび書き込みに使用されるノードの一貫性は必須要件ではありません。
-
+This function will be used as part of an `INSERT INTO SELECT` in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. While this table uses the events cluster, the consistency of the nodes used for reads and writes is not a requirement:
 
 ```sql
 INSERT INTO default.trips_all
@@ -337,12 +326,11 @@ INSERT INTO default.trips_all
     )
 ```
 
-INSERT は `initiator` ノードに対して実行されます。つまり、読み取りは各ノードで行われますが、得られた行は分散処理のために `initiator` にルーティングされます。高スループットなシナリオでは、これがボトルネックとなる可能性があります。これに対処するには、`s3cluster` 関数に対してパラメータ [parallel&#95;distributed&#95;insert&#95;select](/operations/settings/settings/#parallel_distributed_insert_select) を設定します。
+Inserts will occur against the initiator node. This means that while reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, set the parameter [parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select) for the `s3cluster` function.
 
+## S3 table engines {#s3-table-engines}
 
-## S3 テーブルエンジン
-
-`s3` 関数を使用すると、S3 に保存されたデータに対してアドホッククエリを実行できますが、構文が冗長になりがちです。この問題を解決するために用意されているのが、バケットの URL や認証情報を何度も指定する必要がなくなる `S3` テーブルエンジンです。
+While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose. The `S3` table engine allows you to not have to specify the bucket URL and credentials over and over again. To address this, ClickHouse provides the S3 table engine.
 
 ```sql
 CREATE TABLE s3_engine_table (name String, value UInt32)
@@ -350,15 +338,14 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-* `path` — ファイルへのパスを含むバケットの URL。読み取り専用モードでは、次のワイルドカードをサポートします: `*`、`?`、`{abc,def}`、`{N..M}`。ここで N、M は数値、&#39;abc&#39;、&#39;def&#39; は文字列です。詳細は[こちら](/engines/table-engines/integrations/s3#wildcards-in-path)を参照してください。
-* `format` — ファイルの[フォーマット](/interfaces/formats#formats-overview)。
-* `aws_access_key_id`, `aws_secret_access_key` - AWS アカウントユーザー用の長期認証情報。リクエストの認証に使用できます。このパラメータは省略可能です。認証情報が指定されていない場合は、設定ファイルの値が使用されます。詳細は[認証情報の管理](#managing-credentials)を参照してください。
-* `compression` — 圧縮形式。サポートされる値: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst。パラメータは省略可能です。デフォルトでは、ファイル拡張子に基づいて圧縮方式を自動検出します。
+* `path` — Bucket URL with a path to the file. Supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/engines/table-engines/integrations/s3#wildcards-in-path).
+* `format` — The[ format](/interfaces/formats#formats-overview) of the file.
+* `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
+* `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
-### データの読み取り
+### Reading data {#reading-data}
 
-次の例では、`https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` バケット内にある最初の 10 個の TSV ファイルを使用して、`trips_raw` という名前のテーブルを作成します。各ファイルには 100 万行が含まれます。
-
+In the following example, we create a table named `trips_raw` using the first ten TSV files located in the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1M rows each:
 
 ```sql
 CREATE TABLE trips_raw
@@ -411,7 +398,7 @@ CREATE TABLE trips_raw
 ) ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..9}.gz', 'TabSeparatedWithNames', 'gzip');
 ```
 
-最初の10個のファイルに限定するために `{0..9}` パターンを使用している点に注意してください。作成されたら、このテーブルには他のテーブルと同様にクエリを実行できます。
+Notice the use of the `{0..9}` pattern to limit to the first ten files. Once created, we can query this table like any other table:
 
 ```sql
 SELECT DISTINCT(pickup_ntaname)
@@ -432,11 +419,11 @@ LIMIT 10;
 └──────────────────────────────────────────────────┘
 ```
 
-### データの挿入
+### Inserting data {#inserting-data}
 
-`S3` テーブルエンジンは並列読み出しをサポートします。書き込みは、テーブル定義にグロブパターンが含まれていない場合にのみサポートされます。そのため、上記のテーブルでは書き込みは行えません。
+The `S3` table engine supports parallel reads. Writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
-書き込みを示すために、書き込み可能な S3 バケットを参照するテーブルを作成します。
+To demonstrate writes, create a table that points to a writable S3 bucket:
 
 ```sql
 CREATE TABLE trips_dest
@@ -449,7 +436,6 @@ CREATE TABLE trips_dest
    `total_amount`          Float32
 ) ENGINE = S3('<bucket path>/trips.bin', 'Native');
 ```
-
 
 ```sql
 INSERT INTO trips_dest
@@ -478,28 +464,27 @@ SELECT * FROM trips_dest LIMIT 5;
 └────────────┴─────────────┴─────────────────────┴─────────────────────┴────────────┴──────────────┘
 ```
 
-行は新しいファイルにしか挿入できないことに注意してください。マージサイクルやファイル分割処理はありません。いったんファイルに書き込まれると、その後の挿入は失敗します。ユーザーには次の 2 つの選択肢があります。
+Note that rows can only be inserted into new files. There are no merge cycles or file split operations. Once a file is written, subsequent inserts will fail. Users have two options here:
 
-* 設定 `s3_create_new_file_on_insert=1` を指定します。これにより、挿入ごとに新しいファイルが作成されます。各ファイルの末尾には数値のサフィックスが付加され、挿入操作ごとに単調増加します。上記の例では、後続の挿入を行うと trips&#95;1.bin ファイルが作成されます。
-* 設定 `s3_truncate_on_insert=1` を指定します。これによりファイルが切り詰められ、完了時には新たに挿入された行のみを含むようになります。
+* Specify the setting `s3_create_new_file_on_insert=1`. This will cause the creation of new files on each insert. A numeric suffix will be appended to the end of each file that will monotonically increase for each insert operation. For the above example, a subsequent insert would cause the creation of a trips_1.bin file.
+* Specify the setting `s3_truncate_on_insert=1`. This will cause a truncation of the file, i.e. it will only contain the newly inserted rows once complete.
 
-これら 2 つの設定のデフォルト値はいずれも 0 であるため、どちらか一方をユーザーが設定する必要があります。両方が設定されている場合は `s3_truncate_on_insert` が優先されます。
+Both of these settings default to 0 - thus forcing the user to set one of them. `s3_truncate_on_insert` will take precedence if both are set.
 
-`S3` テーブルエンジンについての注意点:
+Some notes about the `S3` table engine:
 
-* 従来の `MergeTree` ファミリのテーブルとは異なり、`S3` テーブルを DROP しても、基盤となるデータは削除されません。
-* このテーブルタイプの完全な設定一覧は、[こちら](/engines/table-engines/integrations/s3.md/#settings)にあります。
-* このエンジンを使用する際は、次の点に注意してください:
-  * ALTER クエリはサポートされません。
-  * SAMPLE 操作はサポートされません。
-  * 主キーやスキップインデックスといったインデックスの概念はありません。
+- Unlike a traditional `MergeTree` family table, dropping an `S3` table will not delete the underlying data.
+- Full settings for this table type can be found [here](/engines/table-engines/integrations/s3.md/#settings).
+- Be aware of the following caveats when using this engine:
+  * ALTER queries are not supported
+  * SAMPLE operations are not supported
+  * There is no notion of indexes, i.e. primary or skip.
 
+## Managing credentials {#managing-credentials}
 
-## 認証情報の管理 {#managing-credentials}
+In the previous examples, we have passed credentials in the `s3` function or `S3` table definition. While this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
 
-前の例では、`s3` 関数または `S3` テーブル定義の中で認証情報を渡してきました。これは単発の利用であれば許容できる場合もありますが、本番環境では、ユーザーは認証情報を明示的に記述しなくてもよい認証メカニズムを必要とします。これに対応するため、ClickHouse にはいくつかの選択肢があります。
-
-* 接続情報を **config.xml** または **conf.d** 配下の同等の設定ファイルに指定します。以下に、Debian パッケージを用いてインストールしたことを前提とした例ファイルの内容を示します。
+* Specify the connection details in the **config.xml** or an equivalent configuration file under **conf.d**. The contents of an example file are shown below, assuming installation using the debian package.
 
     ```xml
     ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
@@ -516,9 +501,9 @@ SELECT * FROM trips_dest LIMIT 5;
     </clickhouse>
     ```
 
-    これらの認証情報は、上記のエンドポイントが要求された URL の先頭部分と完全に一致するリクエストに対して使用されます。また、この例ではアクセスキーおよびシークレットキーの代わりに、認可ヘッダーを指定できることにも注目してください。サポートされている設定の完全な一覧は[こちら](/engines/table-engines/integrations/s3.md/#settings)にあります。
+    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/engines/table-engines/integrations/s3.md/#settings).
 
-* 上の例では、設定パラメータ `use_environment_credentials` を利用できることを示しています。この設定パラメータは、`s3` レベルでグローバルに設定することもできます。
+* The example above highlights the availability of the configuration parameter `use_environment_credentials`. This configuration parameter can also be set globally at the `s3` level:
 
     ```xml
     <clickhouse>
@@ -528,42 +513,38 @@ SELECT * FROM trips_dest LIMIT 5;
     </clickhouse>
     ```
 
-    この設定を有効にすると、環境から S3 の認証情報を取得しようと試みるようになり、IAM ロールを通じてアクセスできるようになります。具体的には、次の順序で認証情報の取得が行われます。
+    This setting turns on an attempt to retrieve S3 credentials from the environment, thus allowing access through IAM roles. Specifically, the following order of retrieval is performed:
 
-  * 環境変数 `AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY` および `AWS_SESSION_TOKEN` の参照
-  * **$HOME/.aws** の確認
-  * AWS Security Token Service 経由で取得した一時的な認証情報（[`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API 経由）
-  * ECS 環境変数 `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` または `AWS_CONTAINER_CREDENTIALS_FULL_URI` および `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN` に対する認証情報の確認
-  * [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) が true に設定されていない場合に、[Amazon EC2 インスタンスメタデータ](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) 経由で認証情報を取得
-  * これらと同じ設定は、同じプレフィックスマッチング規則を用いて特定のエンドポイントに対しても設定できます。
+  * A lookup for the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`
+  * Check performed in **$HOME/.aws**
+  * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+  * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
+  * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
+  * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
 
+## Optimizing for performance {#s3-optimizing-performance}
 
+For how to optimize reading and inserting using the S3 function, see the [dedicated performance guide](./performance.md).
 
-## パフォーマンス最適化 {#s3-optimizing-performance}
+### S3 storage tuning {#s3-storage-tuning}
 
-S3 関数を使用した読み取りおよび挿入の最適化方法については、[専用のパフォーマンスガイド](./performance.md)を参照してください。
+Internally, the ClickHouse merge tree uses two primary storage formats: [`Wide` and `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse (controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`), we expect behavior to diverge for S3 in the future releases, e.g., a larger default value of `min_bytes_for_wide_part` encouraging a more `Compact` format and thus fewer files. Users may now wish to tune these settings when using exclusively S3 storage.
 
-### S3 ストレージのチューニング {#s3-storage-tuning}
+## S3 backed MergeTree {#s3-backed-mergetree}
 
-内部的には、ClickHouse の MergeTree は 2 つの主要なストレージ形式（[`Wide` と `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)）を使用します。現在の実装では、ClickHouse のデフォルトの動作（`min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御）に準拠していますが、今後のリリースでは S3 向けに動作が変化すると予想されます。例えば、`min_bytes_for_wide_part` のデフォルト値を大きくすることで、より `Compact` な形式が推奨され、その結果としてファイル数が減少します。S3 ストレージのみを使用する場合は、これらの設定の調整を検討してください。
+The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
+ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on "colder" data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of S3, and the insert and query performance of the MergeTree engine.
 
+### Storage Tiers {#storage-tiers}
 
-## S3 バックエンドの MergeTree
+ClickHouse storage volumes allow physical disks to be abstracted from the MergeTree table engine. Any single volume can be composed of an ordered set of disks. Whilst principally allowing multiple block devices to be potentially used for data storage, this abstraction also allows other storage types, including S3. ClickHouse data parts can be moved between volumes and fill rates according to storage policies, thus creating the concept of storage tiers.
 
-`s3` 関数と関連するテーブルエンジンを使用すると、なじみのある ClickHouse の構文で S3 上のデータをクエリできます。ただし、データ管理機能およびパフォーマンスの観点からは制限があります。プライマリインデックスのサポートがなく、キャッシュ機構のサポートもありません。また、ファイルの挿入（書き込み）はユーザーが管理する必要があります。
+Storage tiers unlock hot-cold architectures where the most recent data, which is typically also the most queried, requires only a small amount of space on high-performing storage, e.g., NVMe SSDs. As the data ages, SLAs for query times increase, as does query frequency. This fat tail of data can be stored on slower, less performant storage such as HDD or object storage such as S3.
 
-ClickHouse は、特に「コールド」データに対するクエリ性能がそれほど重要ではなく、ストレージとコンピュートを分離したい場合に、S3 が魅力的なストレージソリューションであることを認識しています。これを実現するために、MergeTree エンジンのストレージとして S3 を使用するためのサポートが提供されています。これにより、ユーザーは S3 のスケーラビリティとコストメリット、および MergeTree エンジンの挿入とクエリのパフォーマンスを活用できるようになります。
+### Creating a disk {#creating-a-disk}
 
-### ストレージ階層
-
-ClickHouse のストレージボリューム機能により、物理ディスクを MergeTree テーブルエンジンから抽象化できます。単一のボリュームは、順序付けられたディスクの集合で構成できます。これは主に複数のブロックデバイスをデータストレージに利用できるようにするためのものですが、この抽象化により S3 を含む他のストレージタイプも利用可能になります。ClickHouse のデータパーツは、ストレージポリシーに従ってボリューム間を移動したり、使用率に応じて移動したりできるため、ストレージ階層という概念が生まれます。
-
-ストレージ階層によりホット・コールド アーキテクチャが可能になります。もっとも新しいデータは、通常もっとも頻繁にクエリされるため、高性能ストレージ（例: NVMe SSD）の比較的小さな容量のみを必要とします。データが古くなるにつれて、SLA で許容されるクエリ時間は長くなり、クエリ頻度も下がります。この裾野の広いロングテールのデータは、HDD のような低速で性能の低いストレージや、S3 のようなオブジェクトストレージに保存できます。
-
-### ディスクの作成
-
-S3 バケットをディスクとして利用するには、まず ClickHouse の設定ファイル内で宣言する必要があります。`config.xml` を拡張するか、望ましくは `conf.d` 配下に新しいファイルを用意します。S3 ディスクの定義例を次に示します。
+To utilize an S3 bucket as a disk, we must first declare it within the ClickHouse configuration file. Either extend config.xml or preferably provide a new file under conf.d. An example of an S3 disk declaration is shown below:
 
 ```xml
 <clickhouse>
@@ -591,11 +572,11 @@ S3 バケットをディスクとして利用するには、まず ClickHouse �
 
 ```
 
-このディスク宣言に関連する設定の完全な一覧は[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)にあります。クレデンシャルは、[Managing credentials](#managing-credentials) で説明したのと同じ手法を用いてここで管理できます。たとえば、上記の設定ブロックで use&#95;environment&#95;credentials を true に設定することで、IAM ロールを使用できます。
+A complete list of settings relevant to this disk declaration can be found [here](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3). Note that credentials can be managed here using the same approaches described in [Managing credentials](#managing-credentials), i.e., the use_environment_credentials can be set to true in the above settings block to use IAM roles.
 
-### ストレージポリシーの作成
+### Creating a storage policy {#creating-a-storage-policy}
 
-一度設定すると、この「ディスク」はポリシー内で宣言されたストレージボリュームで使用できます。以下の例では、s3 が唯一のストレージであると仮定します。これは、TTL や使用率に基づいてデータを再配置できる、より複雑なホット・コールド構成は考慮していません。
+Once configured, this "disk" can be used by a storage volume declared within a policy. For the example below, we assume s3 is our only storage. This ignores more complex hot-cold architectures where data can be relocated based on TTLs and fill rates.
 
 ```xml
 <clickhouse>
@@ -621,10 +602,9 @@ S3 バケットをディスクとして利用するには、まず ClickHouse �
 </clickhouse>
 ```
 
-### テーブルの作成
+### Creating a table {#creating-a-table}
 
-書き込み権限を持つバケットを使用するようにディスクを構成していると仮定すると、以下の例のようなテーブルを作成できるはずです。説明を簡潔にするため、NYC タクシー・データセットのカラムの一部のみを使用し、データを S3 をバックエンドとするテーブルへ直接ストリーミングします。
-
+Assuming you have configured your disk to use a bucket with write access, you should be able to create a table such as in the example below. For purposes of brevity, we use a subset of the NYC taxi columns and stream data directly to the s3 backed table:
 
 ```sql
 CREATE TABLE trips_s3
@@ -653,15 +633,15 @@ SETTINGS storage_policy='s3_main'
 INSERT INTO trips_s3 SELECT trip_id, pickup_date, pickup_datetime, dropoff_datetime, pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude, passenger_count, trip_distance, tip_amount, total_amount, payment_type FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
 ```
 
-ハードウェアによっては、この後の 100 万行の挿入の実行に数分かかる場合があります。`system.processes` テーブルで進行状況を確認できます。行数は最大 1,000 万行まで調整し、いくつかのサンプルクエリを試してみてください。
+Depending on the hardware, this latter insert of 1m rows may take a few minutes to execute. You can confirm the progress via the system.processes table. Feel free to adjust the row count up to the limit of 10m and explore some sample queries.
 
 ```sql
 SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_s3 GROUP BY passenger_count;
 ```
 
-### テーブルの変更
+### Modifying a table {#modifying-a-table}
 
-特定のテーブルのストレージポリシーを変更する必要が生じることがあります。これは可能ですが、いくつか制限があります。新しいターゲットポリシーには、以前のポリシーに含まれていたすべてのディスクおよびボリュームが含まれていなければなりません。つまり、ポリシー変更に合わせてデータが移動されることはありません。これらの制約を検証する際には、ボリュームとディスクは名前によって識別され、これに反する変更を行おうとするとエラーになります。ただし、前述の例を使用している場合、次の変更は許可されます。
+Occasionally users may need to modify the storage policy of a specific table. Whilst this is possible, it comes with limitations. The new target policy must contain all of the disks and volumes of the previous policy, i.e., data will not be migrated to satisfy a policy change. When validating these constraints, volumes and disks will be identified by their name, with attempts to violate resulting in an error. However, assuming you use the previous examples, the following changes are valid.
 
 ```xml
 <policies>
@@ -690,41 +670,34 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 ```
 
-ここでは、新しい `s3_tiered` ポリシーで既存のメインボリュームを再利用し、新しいホットボリュームを導入します。これはデフォルトディスクを使用しており、このデフォルトディスクはパラメータ `<path>` で設定された 1 つのディスクのみで構成されています。ボリューム名とディスクが変わらない点に注意してください。テーブルへの新規挿入データは、`move_factor * disk_size` に到達するまではデフォルトディスク上に保持され、その時点でデータは S3 に移動されます。
+Here we reuse the main volume in our new s3_tiered policy and introduce a new hot volume. This uses the default disk, which consists of only one disk configured via the parameter `<path>`. Note that our volume names and disks do not change.  New inserts to our table will reside on the default disk until this reaches move_factor * disk_size - at which data will be relocated to S3.
 
-### レプリケーションの処理
+### Handling replication {#handling-replication}
 
-S3 ディスクを用いたレプリケーションは、`ReplicatedMergeTree` テーブルエンジンを使用することで実現できます。詳細については、[S3 Object Storage を使用して 2 つの AWS リージョン間で単一シャードをレプリケートする](#s3-multi-region) ガイドを参照してください。
+Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](#s3-multi-region) guide for details.
 
-### 読み取りと書き込み
+### Read & writes {#read--writes}
 
-以下の注意事項では、ClickHouse における S3 との連携実装について説明します。多くは参考情報レベルですが、[パフォーマンス最適化](#s3-optimizing-performance) を行う際の助けとなる場合があります。
+The following notes cover the implementation of S3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](#s3-optimizing-performance):
 
+* By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings#max_threads).
+* Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. Users will not need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
+* Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
-* デフォルトでは、クエリ処理パイプラインの任意のステージで使用されるクエリ処理用スレッドの最大数は、コア数と同じになります。ステージによって並列化のしやすさが異なるため、この値が上限として機能します。ディスクからデータがストリーミングされるため、複数のクエリステージが同時に実行される場合があります。そのため、クエリで実際に使用されるスレッド数がこの値を超えることもあります。この動作は設定 [max_threads](/operations/settings/settings#max_threads) で変更できます。
-* S3 上での読み取りは、デフォルトでは非同期で行われます。この挙動は `remote_filesystem_read_method` 設定によって決まり、デフォルト値は `threadpool` です。リクエストを処理する際、ClickHouse はストライプ単位でグラニュールを読み取ります。各ストライプには多くのカラムが含まれる可能性があります。1 本のスレッドが、そのグラニュールに対応するカラムを一つずつ読み取ります。これを同期的に行う代わりに、データを待つ前にすべてのカラムに対して先読み（prefetch）を行います。この方式により、各カラムを同期的に待機する場合と比べて大きな性能向上が得られます。多くのケースでは、この設定を変更する必要はありません。詳細は [パフォーマンス最適化](#s3-optimizing-performance) を参照してください。
-* 書き込みは並列で実行され、最大 100 本のファイル書き込みスレッドが同時に動作します。`max_insert_delayed_streams_for_parallel_write` はデフォルト値 1000 で、並列に書き込まれる S3 の BLOB オブジェクトの数を制御します。書き込み中の各ファイルごとにバッファ（約 1MB）が必要になるため、これは実質的に INSERT のメモリ消費量の上限を制約します。サーバーのメモリが少ない環境では、この値を下げることが適切な場合があります。
+## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
-
-
-## S3 オブジェクトストレージを ClickHouse のディスクとして使用する
-
-バケットと IAM ロールを作成するためのステップバイステップの手順が必要な場合は、**Create S3 buckets and an IAM role** を展開して、手順に従ってください。
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
-### ClickHouse を構成して S3 バケットをディスクとして使用する
+### Configure ClickHouse to use the S3 bucket as a disk {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
+The following example is based on a Linux Deb package installed as a service with default ClickHouse directories.
 
-次の例は、デフォルトの ClickHouse ディレクトリを使用してサービスとしてインストールされた Linux の DEB パッケージを前提としています。
-
-1. ストレージ構成を保存するために、ClickHouse の `config.d` ディレクトリに新しいファイルを作成します。
-
+1.  Create a new file in the ClickHouse `config.d` directory to store the storage configuration.
 ```bash
 vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
-
-2. ストレージ設定として以下を追加し、先ほどの手順で取得したバケットパス、アクセスキー、シークレットキーに置き換えます
-
+2. Add the following for storage configuration; substituting the bucket path, access key and secret keys from earlier steps
 ```xml
 <clickhouse>
   <storage_configuration>
@@ -757,37 +730,30 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
 :::note
-`<disks>` タグ内の `s3_disk` および `s3_cache` は任意のラベルです。これらは別の名前に設定できますが、そのディスクを参照するために、同じラベルを `<policies>` タグ配下の `<disk>` タグでも使用する必要があります。
-`<S3_main>` タグも任意であり、ClickHouse 内でリソースを作成する際に、ストレージターゲットを識別するために使用されるポリシー名です。
+The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
+The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
-上記の設定は ClickHouse バージョン 22.8 以降向けです。以前のバージョンを使用している場合は、[storing data](/operations/storing-data.md/#using-local-cache) ドキュメントを参照してください。
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/operations/storing-data.md/#using-local-cache) docs.
 
-S3 の利用に関する詳細については、次を参照してください:
+For more information about using S3:
 Integrations Guide: [S3 Backed MergeTree](#s3-backed-mergetree)
 :::
 
-3. ファイルの所有者を `clickhouse` ユーザーおよびグループに変更します
-
+3. Update the owner of the file to the `clickhouse` user and group
 ```bash
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
-
-4. 変更を有効にするために ClickHouse インスタンスを再起動します。
-
+4. Restart the ClickHouse instance to have the changes take effect.
 ```bash
 service clickhouse-server restart
 ```
 
-### テスト
-
-1. 次のようなコマンドを使用して ClickHouse クライアントにログインします
-
+### Testing {#testing}
+1. Log in with the ClickHouse client, something like the following
 ```bash
 clickhouse-client --user default --password ClickHouse123!
 ```
-
-2. 新しい S3 ストレージポリシーを指定したテーブルを作成する
-
+2. Create a table specifying the new S3 storage policy
 ```sql
 CREATE TABLE s3_table1
            (
@@ -799,12 +765,10 @@ CREATE TABLE s3_table1
            SETTINGS storage_policy = 's3_main';
 ```
 
-3. テーブルが適切なポリシーで作成されていることを確認します
-
+3. Show that the table was created with the correct policy
 ```sql
 SHOW CREATE TABLE s3_table1;
 ```
-
 ```response
 ┌─statement────────────────────────────────────────────────────
 │ CREATE TABLE default.s3_table1
@@ -818,8 +782,7 @@ SETTINGS storage_policy = 's3_main', index_granularity = 8192
 └──────────────────────────────────────────────────────────────
 ```
 
-4. テーブルにテスト用の行を挿入する
-
+4. Insert test rows into the table
 ```sql
 INSERT INTO s3_table1
            (id, column1)
@@ -827,7 +790,6 @@ INSERT INTO s3_table1
            (1, 'abc'),
            (2, 'xyz');
 ```
-
 ```response
 INSERT INTO s3_table1 (id, column1) FORMAT Values
 
@@ -837,70 +799,60 @@ Ok.
 
 2 rows in set. Elapsed: 0.337 sec.
 ```
-
-5. 行を確認する
-
+5. View the rows
 ```sql
 SELECT * FROM s3_table1;
 ```
-
 ```response
 ┌─id─┬─column1─┐
 │  1 │ abc     │
 │  2 │ xyz     │
 └────┴─────────┘
+
+2 rows in set. Elapsed: 0.284 sec.
 ```
+6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
+You should see something like the following:
 
+<Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 
-2 行が結果に含まれます。経過時間: 0.284 秒。
-
-```
-6.  AWSコンソールで、バケットに移動し、新しく作成したバケットとフォルダを選択します。
-以下のような表示が確認できます。
-
-<Image img={S3J} size="lg" border alt="S3に保存されたClickHouseデータファイルを表示するAWSコンソールのS3バケットビュー" />
-```
-
-
-## S3 オブジェクトストレージを使用して単一シャードを 2 つの AWS リージョン間でレプリケートする
+## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
 
 :::tip
-ClickHouse Cloud ではデフォルトでオブジェクトストレージが使用されるため、ClickHouse Cloud 上で実行している場合はこの手順を実施する必要はありません。
+Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
 :::
 
-### デプロイを計画する
+### Plan the deployment {#plan-the-deployment}
+This tutorial is based on deploying two ClickHouse Server nodes and three ClickHouse Keeper nodes in AWS EC2.  The data store for the ClickHouse servers is S3. Two AWS regions, with a ClickHouse Server and an S3 Bucket in each region, are used in order to support disaster recovery.
 
-このチュートリアルは、AWS EC2 上に 2 つの ClickHouse サーバーノードと 3 つの ClickHouse Keeper ノードをデプロイすることを前提としています。ClickHouse サーバーのデータストアには S3 を使用します。ディザスタリカバリをサポートするために、2 つの AWS リージョンを使用し、それぞれのリージョンに 1 つずつ ClickHouse サーバーと S3 バケットを配置します。
+ClickHouse tables are replicated across the two servers, and therefore across the two regions.
 
-ClickHouse テーブルは 2 台のサーバー間でレプリケートされるため、2 つのリージョン間でもレプリケートされます。
+### Install software {#install-software}
 
-### ソフトウェアをインストールする
+#### ClickHouse server nodes {#clickhouse-server-nodes}
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
-#### ClickHouse サーバーノード
+#### Deploy ClickHouse {#deploy-clickhouse}
 
-ClickHouse サーバーノードでデプロイ手順を実行する際は、[インストール手順](/getting-started/install/install.mdx) を参照してください。
+Deploy ClickHouse on two hosts, in the sample configurations these are named `chnode1`, `chnode2`.
 
-#### ClickHouse をデプロイする
+Place `chnode1` in one AWS region, and `chnode2` in a second.
 
-2 つのホストに ClickHouse をデプロイします。サンプル構成では、これらは `chnode1`、`chnode2` という名前になっています。
+#### Deploy ClickHouse Keeper {#deploy-clickhouse-keeper}
 
-`chnode1` を 1 つ目の AWS リージョンに、`chnode2` を 2 つ目のリージョンに配置します。
+Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
-#### ClickHouse Keeper をデプロイする
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
-3 つのホストに ClickHouse Keeper をデプロイします。サンプル構成では、これらは `keepernode1`、`keepernode2`、`keepernode3` という名前になっています。`keepernode1` は `chnode1` と同じリージョンに、`keepernode2` は `chnode2` と同じリージョンに、`keepernode3` はいずれかのリージョン内で、そのリージョンの ClickHouse ノードとは別のアベイラビリティーゾーンにデプロイします。
+### Create S3 buckets {#create-s3-buckets}
 
-ClickHouse Keeper ノードでデプロイ手順を実行する際は、[インストール手順](/getting-started/install/install.mdx) を参照してください。
+Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.
 
-### S3 バケットを作成する
-
-`chnode1` と `chnode2` を配置したそれぞれのリージョンに、S3 バケットを 1 つずつ、合計 2 つ作成します。
-
-バケットと IAM ロールの作成についてステップごとの手順が必要な場合は、**S3 バケットと IAM ロールの作成** を展開して、手順に従ってください。
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
-その後、設定ファイルは `/etc/clickhouse-server/config.d/` に配置します。以下は 1 つのバケットに対するサンプル設定ファイルであり、もう一方も同様ですが、ハイライトされている 3 行のみが異なります。
+The configuration files will then be placed in `/etc/clickhouse-server/config.d/`.  Here is a sample configuration file for one bucket, the other is similar with the three highlighted lines differing:
 
 ```xml title="/etc/clickhouse-server/config.d/storage_config.xml"
 <clickhouse>
@@ -935,17 +887,15 @@ ClickHouse Keeper ノードでデプロイ手順を実行する際は、[イン�
    </storage_configuration>
 </clickhouse>
 ```
-
 :::note
-このガイドの多くの手順では、設定ファイルを `/etc/clickhouse-server/config.d/` に配置するよう指示されます。これは、Linux システムにおける設定上書き用ファイルのデフォルトの場所です。これらのファイルをそのディレクトリに配置すると、ClickHouse はその内容を使用してデフォルト設定を上書きします。これらのファイルをオーバーライド用ディレクトリに配置しておくことで、アップグレード時に設定が失われるのを防ぐことができます。
+Many of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will use the content to override the default configuration.  By placing these files in the override directory you will avoid losing your configuration during an upgrade.
 :::
 
-### ClickHouse Keeper を設定する
+### Configure ClickHouse Keeper {#configure-clickhouse-keeper}
 
-ClickHouse Keeper を単体で（ClickHouse サーバーとは別に）実行する場合、設定は 1 つの XML ファイルで構成されます。このチュートリアルでは、そのファイルは `/etc/clickhouse-keeper/keeper_config.xml` です。3 台すべての Keeper サーバーは同じ設定を使用しますが、1 か所だけ異なる設定があります。それが `<server_id>` です。
+When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper_config.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
 
-
-`server_id` は、その設定ファイルを使用するホストに割り当てられる ID を示します。以下の例では、`server_id` は `3` であり、ファイル内のさらに下にある `<raft_configuration>` セクションを見ると、サーバー 3 のホスト名が `keepernode3` となっていることがわかります。ClickHouse Keeper プロセスは、この情報を基に、リーダーの選出やその他の処理全般を行う際に、どのサーバーへ接続すべきかを認識します。
+`server_id` indicates the ID to be assigned to the host where the configuration files is used.  In the example below, the `server_id` is `3`, and if you look further down in the file in the `<raft_configuration>` section, you will see that server 3 has the hostname `keepernode3`.  This is how the ClickHouse Keeper process knows which other servers to connect to when choosing a leader and all other activities.
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml"
 <clickhouse>
@@ -993,18 +943,17 @@ ClickHouse Keeper を単体で（ClickHouse サーバーとは別に）実行す
 </clickhouse>
 ```
 
-ClickHouse Keeper の設定ファイルを所定の場所にコピーします（`<server_id>` を必ず設定してください）:
-
+Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`):
 ```bash
 sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
 ```
 
-### ClickHouse サーバーの設定
+### Configure ClickHouse server {#configure-clickhouse-server}
 
-#### クラスターの定義
+#### Define a cluster {#define-a-cluster}
 
-ClickHouse のクラスターは設定の `<remote_servers>` セクション内で定義します。この例では `cluster_1S_2R` という 1 つのクラスターが定義されており、単一のシャードと 2 つのレプリカで構成されています。レプリカはそれぞれ `chnode1` と `chnode2` のホスト上に配置されています。
+ClickHouse cluster(s) are defined in the `<remote_servers>` section of the configuration.  In this sample one cluster, `cluster_1S_2R`, is defined and it consists of a single shard with two replicas.  The replicas are located on the hosts `chnode1` and `chnode2`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -1025,7 +974,7 @@ ClickHouse のクラスターは設定の `<remote_servers>` セクション内�
 </clickhouse>
 ```
 
-クラスタを扱う場合、クラスタ、シャード、レプリカの設定を DDL クエリに埋め込むマクロを定義しておくと便利です。このサンプルでは、`shard` と `replica` を個別に指定しなくても、レプリケーション対応テーブルエンジンを利用できるようにしています。テーブルを作成したら、`system.tables` をクエリすることで、`shard` と `replica` のマクロがどのように展開されているかを確認できます。
+When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without providing `shard` and `replica` details.  When you create a table you can see how the `shard` and `replica` macros are used by querying `system.tables`.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml"
 <clickhouse>
@@ -1039,17 +988,15 @@ ClickHouse のクラスターは設定の `<remote_servers>` セクション内�
     </macros>
 </clickhouse>
 ```
-
 :::note
-上記のマクロは `chnode1` 向けです。`chnode2` では `replica` を `replica_2` に設定してください。
+The above macros are for `chnode1`, on `chnode2` set `replica` to `replica_2`.
 :::
 
-#### ゼロコピー レプリケーションを無効化する
+#### Disable zero-copy replication {#disable-zero-copy-replication}
 
+In ClickHouse versions 22.7 and lower the setting `allow_remote_fs_zero_copy_replication` is set to `true` by default for S3 and HDFS disks. This setting should be set to `false` for this disaster recovery scenario, and in version 22.8 and higher it is set to `false` by default.
 
-ClickHouse バージョン 22.7 以前では、`allow_remote_fs_zero_copy_replication` 設定は S3 および HDFS ディスクに対してデフォルトで `true` に設定されています。このディザスタリカバリのシナリオでは、この設定を `false` にする必要があり、バージョン 22.8 以降ではデフォルトで `false` に設定されています。
-
-この設定は次の 2 つの理由から `false` にする必要があります。1) この機能はまだ本番環境での利用に十分な成熟度に達していないこと、2) ディザスタリカバリシナリオでは、データとメタデータの両方を複数のリージョンに保存する必要があることです。`allow_remote_fs_zero_copy_replication` を `false` に設定してください。
+This setting should be false for two reasons: 1) this feature is not production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -1059,7 +1006,7 @@ ClickHouse バージョン 22.7 以前では、`allow_remote_fs_zero_copy_replic
 </clickhouse>
 ```
 
-ClickHouse Keeper は、ClickHouse ノード間でのデータレプリケーションを調整する役割を担います。ClickHouse に ClickHouse Keeper ノードを認識させるには、各 ClickHouse ノードに設定ファイルを追加します。
+ClickHouse Keeper is responsible for coordinating the replication of data across the ClickHouse nodes.  To inform ClickHouse about the ClickHouse Keeper nodes add a configuration file to each of the ClickHouse nodes.
 
 ```xml title="/etc/clickhouse-server/config.d/use_keeper.xml"
 <clickhouse>
@@ -1080,11 +1027,11 @@ ClickHouse Keeper は、ClickHouse ノード間でのデータレプリケーシ
 </clickhouse>
 ```
 
-### ネットワークの設定
+### Configure networking {#configure-networking}
 
-サーバー同士、また利用者がサーバーと通信できるようにするために、AWS のセキュリティ設定を行う際は、[ネットワークポート](../../../guides/sre/network-ports.md)の一覧を参照してください。
+See the [network ports](../../../guides/sre/network-ports.md) list when you configure the security settings in AWS so that your servers can communicate with each other, and you can communicate with them.
 
-3 台すべてのサーバーが、サーバー間および S3 との通信を行えるように、ネットワーク接続を待ち受けるよう構成する必要があります。デフォルトでは ClickHouse はループバックアドレスでのみ待ち受けるため、これを変更する必要があります。これは `/etc/clickhouse-server/config.d/` で設定します。以下は、ClickHouse および ClickHouse Keeper がすべての IPv4 インターフェイスで待ち受けるように構成するサンプルです。詳細については、ドキュメントまたはデフォルトの設定ファイル `/etc/clickhouse/config.xml` を参照してください。
+All three servers must listen for network connections so that they can communicate between the servers and with S3.  By default, ClickHouse listens only on the loopback address, so this must be changed.  This is configured in `/etc/clickhouse-server/config.d/`.  Here is a sample that configures ClickHouse and ClickHouse Keeper to listen on all IP v4 interfaces.  see the documentation or the default configuration file `/etc/clickhouse/config.xml` for more information.
 
 ```xml title="/etc/clickhouse-server/config.d/networking.xml"
 <clickhouse>
@@ -1092,11 +1039,11 @@ ClickHouse Keeper は、ClickHouse ノード間でのデータレプリケーシ
 </clickhouse>
 ```
 
-### サーバーを起動する
+### Start the servers {#start-the-servers}
 
-#### ClickHouse Keeper を起動する
+#### Run ClickHouse Keeper {#run-clickhouse-keeper}
 
-各 Keeper サーバーで、使用しているオペレーティングシステムに応じたコマンドを実行します。例えば:
+On each Keeper server run the commands for your operating system, for example:
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -1104,15 +1051,13 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### ClickHouse Keeper の状態を確認する
+#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
 
-`netcat` を使って ClickHouse Keeper にコマンドを送信します。たとえば、`mntr` は ClickHouse Keeper クラスターの状態を返します。各 Keeper ノードでこのコマンドを実行すると、1 つがリーダーで、残り 2 つがフォロワーであることを確認できます。
-
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
 ```
-
 ```response
 zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
 zk_avg_latency  0
@@ -1139,19 +1084,18 @@ zk_synced_followers     2
 # highlight-end
 ```
 
-#### ClickHouse サーバーを起動する
+#### Run ClickHouse server {#run-clickhouse-server}
 
-各 ClickHouse サーバーで次を実行します。
+On each ClickHouse server run
 
 ```bash
 sudo service clickhouse-server start
 ```
 
-#### ClickHouse サーバーを検証する
+#### Verify ClickHouse server {#verify-clickhouse-server}
 
-[クラスタ設定](#define-a-cluster)を追加したとき、2 つの ClickHouse ノード間でレプリケートされる 1 つのシャードが定義されました。この検証ステップでは、ClickHouse の起動時にクラスタが構築されていることを確認し、そのクラスタを使用してレプリケートされたテーブルを作成します。
-
-* クラスタが存在することを確認します:
+When you added the [cluster configuration](#define-a-cluster) a single shard replicated across the two ClickHouse nodes was defined.  In this verification step you will check that the cluster was built when ClickHouse was started, and you will create a replicated table using that cluster.
+- Verify that the cluster exists:
   ```sql
   show clusters
   ```
@@ -1163,7 +1107,7 @@ sudo service clickhouse-server start
   1 row in set. Elapsed: 0.009 sec. `
   ```
 
-* `ReplicatedMergeTree` テーブルエンジンを使用してクラスタ内にテーブルを作成します:
+- Create a table in the cluster using the `ReplicatedMergeTree` table engine:
   ```sql
   create table trips on cluster 'cluster_1S_2R' (
    `trip_id` UInt32,
@@ -1190,66 +1134,56 @@ sudo service clickhouse-server start
   │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
   └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
   ```
+- Understand the use of the macros defined earlier
 
-* 先ほど定義したマクロの使われ方を確認する
-
-  マクロ `shard` と `replica` は[前に定義しました](#define-a-cluster)。下のハイライトされた行では、各 ClickHouse ノードでそれぞれの値がどのように置き換えられているかを確認できます。さらに `uuid` という値も使用されています。`uuid` はシステムによって生成されるため、マクロ内では定義されていません。
-
+  The macros `shard`, and `replica` were [defined earlier](#define-a-cluster), and in the highlighted line below you can see where the values are substituted on each ClickHouse node.  Additionally, the value `uuid` is used; `uuid` is not defined in the macros as it is generated by the system.
   ```sql
   SELECT create_table_query
   FROM system.tables
   WHERE name = 'trips'
   FORMAT Vertical
   ```
-
   ```response
   Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
+
+  Row 1:
+  ──────
+  create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  # highlight-next-line
+  ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
+  PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS storage_policy = 's3_main'
+
+  1 row in set. Elapsed: 0.012 sec.
   ```
+  :::note
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/operations/server-configuration-parameters/settings.md/#default_replica_path).
+  :::
 
+### Testing {#testing-1}
 
-1 行目:
-──────
-create&#95;table&#95;query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8(&#39;UNK&#39; = 0, &#39;CSH&#39; = 1, &#39;CRE&#39; = 2, &#39;NOC&#39; = 3, &#39;DIS&#39; = 4))
+These tests will verify that data is being replicated across the two servers, and that it is stored in the S3 Buckets and not on local disk.
 
-# highlight-next-line
+- Add data from the New York City taxi dataset:
+  ```sql
+  INSERT INTO trips
+  SELECT trip_id,
+         pickup_date,
+         pickup_datetime,
+         dropoff_datetime,
+         pickup_longitude,
+         pickup_latitude,
+         dropoff_longitude,
+         dropoff_latitude,
+         passenger_count,
+         trip_distance,
+         tip_amount,
+         total_amount,
+         payment_type
+     FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+  ```
+- Verify that data is stored in S3.
 
-ENGINE = ReplicatedMergeTree(&#39;/clickhouse/tables/{uuid}/{shard}&#39;, &#39;{replica}&#39;)
-PARTITION BY toYYYYMM(pickup&#95;date) ORDER BY pickup&#95;datetime SETTINGS storage&#95;policy = &#39;s3&#95;main&#39;
-
-1 行がセットに含まれています。経過時間: 0.012 秒。
-
-````
-:::note
-上記のzookeeperパス `'clickhouse/tables/{uuid}/{shard}` は、`default_replica_path` と `default_replica_name` を設定することでカスタマイズできます。ドキュメントは[こちら](/operations/server-configuration-parameters/settings.md/#default_replica_path)をご参照ください。
-:::
-
-### テスト {#testing-1}
-
-以下のテストでは、データが2つのサーバー間でレプリケーションされていること、およびローカルディスクではなくS3バケットに保存されていることを検証します。
-
-- New York Cityタクシーデータセットからデータを追加します:
-```sql
-INSERT INTO trips
-SELECT trip_id,
-       pickup_date,
-       pickup_datetime,
-       dropoff_datetime,
-       pickup_longitude,
-       pickup_latitude,
-       dropoff_longitude,
-       dropoff_latitude,
-       passenger_count,
-       trip_distance,
-       tip_amount,
-       total_amount,
-       payment_type
-   FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
-````
-
-* データが S3 に保存されていることを確認します。
-
-  このクエリは、ディスク上のデータサイズと、どのディスクが使用されるかを決定するために使用されているストレージポリシーを表示します。
-
+  This query shows the size of the data on disk, and the policy used to determine which disk is used.
   ```sql
   SELECT
       engine,
@@ -1261,7 +1195,6 @@ SELECT trip_id,
   WHERE name = 'trips'
   FORMAT Vertical
   ```
-
   ```response
   Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
 
@@ -1276,41 +1209,39 @@ SELECT trip_id,
   1 row in set. Elapsed: 0.009 sec.
   ```
 
-  ローカルディスク上のデータサイズを確認します。上の結果から、保存されている数百万行のディスク上のサイズは 36.42 MiB です。これはローカルディスクではなく S3 上にあるはずです。上記のクエリからは、ローカルディスク上のデータとメタデータの保存場所も分かります。ローカル側のデータを確認します:
-
+  Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
   ```response
   root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
   536K  /var/lib/clickhouse/disks/s3_disk/store/551
   ```
 
-  各 S3 バケット内のデータを確認します（合計は表示されていませんが、両方のバケットにはインサート後に約 36 MiB が保存されています）:
+  Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
 
-<Image img={Bucket1} size="lg" border alt="最初の S3 バケット内のデータサイズ（ストレージ使用量メトリクスを表示）" />
+<Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
 
-<Image img={Bucket2} size="lg" border alt="2 番目の S3 バケット内のデータサイズ（ストレージ使用量メトリクスを表示）" />
+<Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
 
+## S3Express {#s3express}
 
-## S3Express
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3.
 
-[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) は、Amazon S3 における新しい高性能な単一アベイラビリティーゾーン向けストレージクラスです。
-
-S3Express を ClickHouse でテストした際の経験については、この [ブログ記事](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) を参照してください。
+You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse.
 
 :::note
-S3Express はデータを単一の AZ 内に保存します。これは、AZ 障害時にはデータにアクセスできなくなることを意味します。
+  S3Express stores data within a single AZ. It means data will be unavailable in case of AZ outage.
 :::
 
-### S3 disk
+### S3 disk {#s3-disk}
 
-S3Express バケット上のストレージをバックエンドとするテーブルを作成するには、次の手順を実行します。
+Creating a table with storage backed by a S3Express bucket involves the following steps:
 
-1. `Directory` タイプのバケットを作成する
-2. S3 ユーザーに必要なすべての権限を付与するため、適切なバケットポリシーを設定する（例: 無制限アクセスを許可するために `"Action": "s3express:*"` を設定）
-3. ストレージポリシーを設定する際に、`region` パラメータを指定する
+1. Create a bucket of `Directory` type
+2. Install appropriate bucket policy to grant all required permissions to your S3 user (e.g. `"Action": "s3express:*"` to simply allow unrestricted access)
+3. When configuring the storage policy please provide the `region` parameter
 
-ストレージ構成は通常の S3 と同じであり、たとえば次のようになります。
+Storage configuration is the same as for ordinary S3 and for example might look the following way:
 
-```sql
+``` sql
 <storage_configuration>
     <disks>
         <s3_express>
@@ -1333,9 +1264,9 @@ S3Express バケット上のストレージをバックエンドとするテー�
 </storage_configuration>
 ```
 
-次に、新しいストレージ上にテーブルを作成します。
+And then create a table on the new storage:
 
-```sql
+``` sql
 CREATE TABLE t
 (
     a UInt64,
@@ -1346,17 +1277,17 @@ ORDER BY a
 SETTINGS storage_policy = 's3_express';
 ```
 
-### S3 ストレージ
+### S3 storage {#s3-storage}
 
-S3 ストレージもサポートされていますが、`Object URL` 形式のパスに対してのみ利用できます。例：
+S3 storage is also supported but only for `Object URL` paths. Example:
 
-```sql
+``` sql
 SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
 ```
 
-また、設定でバケットのリージョンを指定する必要もあります：
+it also requires specifying bucket region in the config:
 
-```xml
+``` xml
 <s3>
     <perf-bucket-url>
         <endpoint>https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com</endpoint>
@@ -1365,11 +1296,11 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 </s3>
 ```
 
-### バックアップ
+### Backups {#backups}
 
-上で作成したディスクにバックアップを保存できます。
+It is possible to store a backup on the disk we created above:
 
-```sql
+``` sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status─────────┐
@@ -1377,7 +1308,7 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 └──────────────────────────────────────┴────────────────┘
 ```
 
-```sql
+``` sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status───┐

@@ -331,13 +331,12 @@ height=600
 )
 
 fig&#95;box
-
 ```
+
 如果您选择单元格右上角的选项按钮,即可隐藏代码。
 移动滑块时,图表会自动更新,这得益于 Marimo 的响应式执行机制:
 
 <Image size="md" img={image_8} alt="Marimo 动态图表"/>
-```
 
 
 ## 总结 {#summary}
