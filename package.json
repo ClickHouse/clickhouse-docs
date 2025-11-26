@@ -13,7 +13,7 @@
     "docusaurus": "docusaurus",
     "copy-clickhouse-repo-docs": "bash scripts/copy-clickhouse-repo-docs.sh",
     "serve": "docusaurus serve",
-    "build-swagger": "yarn redocly build-docs https://api.clickhouse.cloud/v1 --output build/cloud/manage/api/swagger.html",
+    "build-swagger": "yarn redocly build-docs https://api.clickhouse.cloud/v1 --output build/cloud/manage/api/swagger.html && yarn redocly build-docs https://raw.githubusercontent.com/hyperdxio/hyperdx/refs/heads/main/packages/api/openapi.json --output build/clickstack/api-reference/index.html",
     "prep-from-local": "bash ./scripts/copy-clickhouse-repo-docs.sh -l $1",
     "autogenerate-settings": "bash ./scripts/settings/autogenerate-settings.sh",
     "autogenerate-table-of-contents": "bash ./scripts/autogenerate-table-of-contents.sh",
