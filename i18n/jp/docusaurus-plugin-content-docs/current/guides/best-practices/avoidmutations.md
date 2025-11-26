@@ -7,6 +7,6 @@ doc_type: 'guide'
 keywords: ['ミューテーションを避ける', 'ALTER クエリ', 'テーブルデータ変更', 'ベストプラクティス', 'パフォーマンス最適化']
 ---
 
-import Content from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_mutations.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_mutations.md';
 
 <Content />

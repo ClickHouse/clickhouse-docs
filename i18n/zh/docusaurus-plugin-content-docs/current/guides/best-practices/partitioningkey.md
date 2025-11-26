@@ -7,6 +7,6 @@ doc_type: 'guide'
 keywords: ['分区', '分区键', '数据组织', '最佳实践', '性能']
 ---
 
-import Content from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/partitioning_keys.mdx';
+import Content from '@site/docs/best-practices/partitioning_keys.mdx';
 
 <Content />
