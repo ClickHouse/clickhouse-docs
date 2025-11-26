@@ -37,8 +37,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 
 <ReleaseSchedule releases={[
    {
-    version: '24.10',
-    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#2410',
+    version: '25.10',
     fast_date: '2025-10-15',
     regular_date: '2025-10-29',
     slow_date: '2025-11-12',
@@ -49,8 +48,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
     slow_progress: 'green'
   },
   {
-    version: '24.9',
-    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#249',
+    version: '25.9',
     fast_date: '2025-09-15',
     regular_date: '2025-09-29',
     slow_date: '2025-10-13',
@@ -60,8 +58,8 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
     slow_progress: 'green'
   },
   {
-    version: '24.8',
-    changelog_link: 'https://clickhouse.com/docs/en/whats-new/changelog/2024#248',
+    version: '25.8',
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
     fast_date: '2025-08-15',
     regular_date: '2025-08-29',
     slow_date: '2025-09-12',
