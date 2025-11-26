@@ -1,9 +1,9 @@
 {
-  "label": "发行说明",
+  "label": "リリースノート",
   "collapsible": true,
   "collapsed": true,
   "link": {
-    "type": "文档",
+    "type": "ドキュメント",
     "id": "cloud/reference/changelog/release_notes/index"
   }
 }

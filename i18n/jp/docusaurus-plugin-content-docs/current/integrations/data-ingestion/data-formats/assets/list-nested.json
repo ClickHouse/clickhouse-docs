@@ -2,7 +2,7 @@
   {
     "page": {
       "path": "Akiba_Hebrew_Academy",
-      "title": "阿基巴希伯来学院",
+      "title": "アキバ・ヘブライ・アカデミー",
       "owner_id": 12
     },
     "month": "2017-08-01",
@@ -11,7 +11,7 @@
   {
     "page": {
       "path": "Aegithina_tiphia",
-      "title": "艾吉希娜·提菲亚",
+      "title": "Aegithina Tiphia",
       "owner_id": 3
     },
     "month": "2018-02-01",
@@ -19,8 +19,8 @@
   },
   {
     "page": {
-      "path": "1971-72_犹他星队_赛季",
-      "title": "犹他之星：71/72 赛季",
+      "path": "1971-72_ユタ・スターズ_シーズン",
+      "title": "ユタ・スターズ：71/72シーズン",
       "owner_id": 432
     },
     "month": "2016-10-01",

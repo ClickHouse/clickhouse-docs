@@ -2,7 +2,7 @@
   {
     "page": {
       "path": "Akiba_Hebrew_Academy",
-      "title": "Еврейская академия «Акиба»",
+      "title": "Еврейская академия Акиба",
       "owner_id": 12
     },
     "month": "2017-08-01",
@@ -11,7 +11,7 @@
   {
     "page": {
       "path": "Aegithina_tiphia",
-      "title": "Айцзисина Тифэйя",
+      "title": "Aegithina tiphia",
       "owner_id": 3
     },
     "month": "2018-02-01",
@@ -19,8 +19,8 @@
   },
   {
     "page": {
-      "path": "1971-72_сезон_команды_«Юта Старз»",
-      "title": "«Юта Старз»: сезон 1971/72",
+      "path": "1971–72_сезон_Utah_Stars",
+      "title": "Utah Stars: сезон 1971/72",
       "owner_id": 432
     },
     "month": "2016-10-01",

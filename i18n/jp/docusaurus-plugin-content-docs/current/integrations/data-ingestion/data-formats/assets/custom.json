@@ -2,15 +2,15 @@
   {
     "name": "Joe",
     "age": 99,
-    "type": "人员"
+    "type": "人"
   },
   {
     "url": "/my.post.MD",
     "hits": 1263,
-    "type": "发布"
+    "type": "POST"
   },
   {
-    "message": "磁盘使用告警",
-    "type": "日志"
+    "message": "ディスク使用量の警告",
+    "type": "ログ"
   }
 ]
