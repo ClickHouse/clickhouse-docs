@@ -1,100 +1,102 @@
 ---
-'slug': '/use-cases/observability/clickstack/overview'
-'title': 'ClickStack - The ClickHouse 可观测性堆栈'
-'sidebar_label': '概述'
-'pagination_prev': null
-'pagination_next': 'use-cases/observability/clickstack/getting-started'
-'description': 'ClickStack - The ClickHouse 可观测性堆栈的概述'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/overview
+title: 'ClickStack - ClickHouse オブザーバビリティスタック'
+sidebar_label: '概要'
+pagination_prev: null
+pagination_next: use-cases/observability/clickstack/getting-started
+description: 'ClickStack - ClickHouse オブザーバビリティスタックの概要'
+doc_type: 'guide'
+keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
 
-<Image img={landing_image} alt="Landing page" size="lg"/>
+<Image img={landing_image} alt="ランディングページ" size="lg" />
 
-**ClickStack**は、ClickHouse上に構築された生産グレードの可観測性プラットフォームであり、ログ、トレース、メトリクス、セッションを一つの高性能ソリューションに統合します。複雑なシステムの監視とデバッグを目的に設計されており、ClickStackは開発者やSRE（Site Reliability Engineers）がツールを切り替えたり、タイムスタンプや相関IDを使用して手動でデータを結合することなく、エンドツーエンドで問題を追跡できるようにします。
+**ClickStack** は ClickHouse 上に構築された本番運用レベルのオブザーバビリティプラットフォームであり、ログ、トレース、メトリクス、セッションを単一の高性能なソリューションとして統合します。複雑なシステムの監視とデバッグのために設計されており、開発者や SRE がツール間を行き来したり、タイムスタンプや相関 ID を使って手作業でデータを突き合わせたりすることなく、エンドツーエンドで問題を追跡できるようにします。
 
-ClickStackの中心にはシンプルですが強力なアイデアがあります。それは、すべての可観測性データを広範でリッチなイベントとして取り込むべきであるということです。これらのイベントは、データ型（ログ、トレース、メトリクス、セッション）ごとにClickHouseテーブルに保存されますが、データベースレベルで完全にクエリ可能で、相互相関可能です。
+ClickStack の中核にあるのは、「すべてのオブザーバビリティデータは、情報量の多いワイドなイベントとして取り込むべきだ」というシンプルかつ強力な考え方です。これらのイベントはログ、トレース、メトリクス、セッションといったデータ種別ごとに ClickHouse のテーブルに保存されますが、データベースレベルで完全にクエリ可能であり、相互に関連付けて分析することができます。
 
-ClickStackは、ClickHouseの列指向アーキテクチャ、ネイティブJSONサポート、完全に並列化された実行エンジンを活用することで、高いカーディナリティワークロードを効率的に処理するように構築されています。これにより、大規模なデータセットに対してサブ秒でのクエリ、高速集計、および個々のトレースに対する深い検査が可能となります。JSONは圧縮された列指向形式で保存されるため、手動介入や事前定義なしにスキーマの進化が可能です。
+ClickStack は、ClickHouse のカラム指向アーキテクチャ、ネイティブな JSON サポート、完全に並列化された実行エンジンを活用することで、高カーディナリティなワークロードを効率的に処理できるように構築されています。これにより、巨大なデータセットに対するサブ秒レイテンシのクエリ、長期間にわたる高速な集計、個々のトレースの詳細な調査が可能になります。JSON は圧縮されたカラムナ形式で保存されるため、手動での対応や事前定義なしにスキーマを柔軟に進化させることができます。
+
 
 ## 機能 {#features}
 
-このスタックには、デバッグや根本原因分析のために設計されたいくつかの主要な機能が含まれています：
+このスタックには、デバッグおよび根本原因分析のために設計された、主要な機能が複数含まれています。
 
-- ログ、メトリクス、セッションリプレイ、トレースをすべて一か所で相関/検索
-- スキーマに依存せず、既存のClickHouseスキーマの上で動作
-- ClickHouse向けに最適化された驚異的な検索と視覚化
-- 直感的なフルテキスト検索とプロパティ検索構文（例：`level:err`）、SQLオプション
-- イベントデルタを使用して異常のトレンドを分析
+- ログ・メトリクス・セッションリプレイ・トレースをすべて 1 か所で相関付けて検索
+- スキーマに依存せず、既存の ClickHouse スキーマ上で動作
+- ClickHouse に最適化された超高速な検索と可視化
+- 直感的な全文検索およびプロパティ検索構文（例: `level:err`）、SQL は必須ではない
+- イベントの差分（event delta）により異常のトレンドを分析
 - 数回のクリックでアラートを設定
-- 複雑なクエリ言語なしで高カーディナリティイベントのダッシュボードを作成
-- ネイティブJSON文字列のクエリ
-- 常に最新のイベントを取得できるライブテールログとトレース
-- OpenTelemetry（OTel）を標準でサポート
-- HTTPリクエストからDBクエリまでの健康状態とパフォーマンスを監視（APM）
-- 異常とパフォーマンス回帰を特定するためのイベントデルタ
-- ログパターン認識
+- 複雑なクエリ言語なしで高カーディナリティなイベントをダッシュボード化
+- ネイティブな JSON 文字列クエリ
+- 常に最新のイベントを取得するためのログおよびトレースのライブテール表示
+- OpenTelemetry (OTel) を標準でサポート
+- HTTP リクエストから DB クエリ (APM) までの健全性とパフォーマンスを監視
+- 異常やパフォーマンス回帰を特定するためのイベントの差分（event delta）
+- ログのパターン認識
 
 ## コンポーネント {#components}
 
-ClickStackは、3つのコアコンポーネントから構成されています：
+ClickStack は、次の3つのコアコンポーネントで構成されています。
 
-1. **HyperDX UI** – 可観測性データを探索し視覚化するための特別に設計されたフロントエンド
-2. **OpenTelemetry collector** – ログ、トレース、メトリクスのためのオピニオン付きスキーマを持つカスタムビルドの事前設定コレクター
-3. **ClickHouse** – スタックの中心にある高性能の分析データベース
+1. **HyperDX UI** – オブザーバビリティデータを探索・可視化するための専用フロントエンド
+2. **OpenTelemetry collector** – ログ、トレース、メトリクス向けに、一定の前提に基づいて設計されたスキーマを備えた、カスタムビルドかつ事前設定済みのコレクター
+3. **ClickHouse** – スタックの中核となる高性能な分析データベース
 
-これらのコンポーネントは独立して、または一緒にデプロイ可能です。また、HyperDX UIのブラウザホステッドバージョンも利用可能で、ユーザーは追加のインフラストラクチャなしに既存のClickHouseデプロイメントに接続できます。
+これらのコンポーネントは、個別にも、スタック全体としてまとめてでもデプロイできます。ブラウザベースの HyperDX UI も利用可能で、追加のインフラを用意することなく、既存の ClickHouse デプロイメントに接続できます。
 
-始めるには、[Getting started guide](/use-cases/observability/clickstack/getting-started)を訪れてから、[sample dataset](/use-cases/observability/clickstack/sample-datasets)をロードしてください。また、[deployment options](/use-cases/observability/clickstack/deployment)や[production best practices](/use-cases/observability/clickstack/production)に関するドキュメントも探ることができます。
+利用を開始するには、まず [Getting started guide](/use-cases/observability/clickstack/getting-started) を参照し、その後に [sample dataset](/use-cases/observability/clickstack/sample-datasets) を読み込みます。[deployment options](/use-cases/observability/clickstack/deployment) や [production best practices](/use-cases/observability/clickstack/production) に関するドキュメントもあわせて確認できます。
 
 ## 原則 {#clickstack-principles}
 
-ClickStackは、可観測性スタックのあらゆるレイヤーで使いやすさ、パフォーマンス、柔軟性を優先する一連のコア原則をもとに設計されています：
+ClickStackは、オブザーバビリティスタックのあらゆるレイヤーにおいて、使いやすさ、パフォーマンス、柔軟性を優先する一連の中核となる原則に基づいて設計されています。
 
-### 数分で簡単に設定できる {#clickstack-easy-to-setup}
+### 数分で簡単にセットアップ {#clickstack-easy-to-setup}
 
-ClickStackは、あらゆるClickHouseインスタンスとスキーマでそのまま動作し、最小限の設定を必要とします。新しく始める場合でも、既存のセットアップに統合する場合でも、数分で開始できます。
+ClickStack は、あらゆる ClickHouse インスタンスおよびスキーマで導入直後から動作し、必要な設定は最小限です。新規導入でも既存環境との統合でも、数分で利用を開始できます。
 
-### ユーザーフレンドリーで目的に特化 {#user-friendly-purpose-built}
+### 使いやすく用途に特化 {#user-friendly-purpose-built}
 
-HyperDX UIはSQLとLuceneスタイルの両方の構文をサポートしており、ユーザーが自分のワークフローに合ったクエリインターフェースを選択できます。可観測性専用に設計されたUIは、チームが根本原因を迅速に特定し、複雑なデータを摩擦なくナビゲートできるよう最適化されています。
+HyperDX UI は SQL と Lucene スタイルの両方の構文をサポートしており、ユーザーは自分のワークフローに適したクエリインターフェースを選択できます。オブザーバビリティ向けに特別に設計されたこの UI は、チームが根本原因を迅速に特定し、複雑なデータをスムーズに探索できるよう最適化されています。
 
-### エンドツーエンドの可観測性 {#end-to-end-observability}
+### エンドツーエンドのオブザーバビリティ {#end-to-end-observability}
 
-ClickStackは、フロントエンドのユーザーセッションからバックエンドのインフラメトリクス、アプリケーションログ、分散トレースまでのフルスタックの可視性を提供します。この統一されたビューにより、システム全体にわたる深い相関と分析が可能になります。
+ClickStack は、フロントエンドのユーザーセッションから、バックエンドのインフラストラクチャのメトリクス、アプリケーションログ、分散トレースまでを対象としたフルスタックの可観測性を提供します。この統合されたビューにより、システム全体にわたる詳細な相関分析とインサイトの抽出が可能になります。
 
-### ClickHouse向けに構築 {#built-for-clickhouse}
+### ClickHouse 向けに構築 {#built-for-clickhouse}
 
-スタックのすべてのレイヤーは、ClickHouseの機能を最大限に活用するように設計されています。クエリはClickHouseの分析機能と列指向エンジンを活用するよう最適化されており、大量のデータに対して迅速な検索と集計を確保します。
+スタックの全レイヤーが、ClickHouse の機能を最大限に活用できるよう設計されています。クエリは ClickHouse の分析関数とカラム型エンジンを活用するよう最適化されており、大規模なデータに対する高速な検索と集約を実現します。
 
-### OpenTelemetryネイティブ {#open-telemetry-native}
+### OpenTelemetry ネイティブ {#open-telemetry-native}
 
-ClickStackはOpenTelemetryとネイティブに統合されており、すべてのデータをOpenTelemetryコレクターエンドポイントを介して取り込みます。高度なユーザー向けには、ネイティブファイル形式、カスタムパイプライン、またはVectorのようなサードパーティツールを使用してClickHouseへの直接取り込みもサポートしています。
+ClickStack は OpenTelemetry にネイティブ対応しており、すべてのデータを OpenTelemetry Collector のエンドポイント経由で取り込みます。上級ユーザー向けには、ネイティブなファイルフォーマット、カスタムパイプライン、Vector のようなサードパーティーツールを利用して、ClickHouse へデータを直接インジェストすることもサポートしています。
 
 ### オープンソースで完全にカスタマイズ可能 {#open-source-and-customizable}
 
-ClickStackは完全にオープンソースであり、どこにでもデプロイできます。スキーマは柔軟でユーザーが変更可能であり、UIは変更を必要とせずカスタムスキーマに設定できるように設計されています。すべてのコンポーネント—コレクター、ClickHouse、UI—は、取り込み、クエリ、ストレージのニーズに応じて独立してスケールさせることができます。
+ClickStack は完全にオープンソースであり、あらゆる環境にデプロイできます。スキーマは柔軟でユーザーが変更可能であり、UI は変更を加えることなくカスタムスキーマに対応できるよう設計されています。コレクター、ClickHouse、UI を含むすべてのコンポーネントは、それぞれ独立してスケールできるため、インジェスト、クエリ、ストレージの要件に対応できます。
 
 ## アーキテクチャ概要 {#architectural-overview}
 
 <Image img={architecture} alt="Simple architecture" size="lg"/>
 
-ClickStackは3つのコアコンポーネントから構成されています：
+ClickStack は 3 つの中核コンポーネントで構成されています。
 
 1. **HyperDX UI**  
-   可観測性のために構築されたユーザーフレンドリーなインターフェース。LuceneスタイルとSQLの両方のクエリ、インタラクティブダッシュボード、アラート、トレース探索、などをサポートし、すべてClickHouseをバックエンドとして最適化されています。
+   オブザーバビリティのために構築されたユーザーフレンドリーなインターフェースです。Lucene スタイルおよび SQL クエリの両方、インタラクティブなダッシュボード、アラート、トレースの探索などをサポートしており、すべて ClickHouse をバックエンドとするよう最適化されています。
 
 2. **OpenTelemetry collector**  
-   ClickHouseへの取り込みに最適化されたオピニオン付きスキーマで構成されたカスタムビルドのコレクター。OpenTelemetryプロトコルを介してログ、メトリクス、トレースを受け取り、効率的なバッチ挿入を使用して直接ClickHouseに書き込みます。
+   ClickHouse へのインジェストに最適化された、設計上の意図を明確に持つスキーマで構成されたカスタムビルドのコレクターです。OpenTelemetry プロトコル経由でログ、メトリクス、トレースを受信し、効率的なバッチ挿入を用いて ClickHouse に直接書き込みます。
 
 3. **ClickHouse**  
-   幅広いイベントの中央データストアとして機能する高性能の分析データベース。ClickHouseは、その列指向エンジンとJSONのネイティブサポートを活用して、大規模な検索、フィルタリング、および集計を迅速に行います。
+   ワイドイベント向けの中核データストアとして機能する高性能な分析データベースです。ClickHouse はカラムナエンジンと JSON のネイティブサポートを活用し、大規模環境での高速な検索、フィルタリング、集計を実現します。
 
-これらの3つのコンポーネントに加えて、ClickStackは**MongoDBインスタンス**を使用して、ダッシュボード、ユーザーアカウント、構成設定などのアプリケーション状態を保存します。
+これら 3 つのコンポーネントに加えて、ClickStack は **MongoDB インスタンス** を使用して、ダッシュボード、ユーザーアカウント、設定などのアプリケーション状態を保存します。
 
-完全なアーキテクチャ図とデプロイの詳細は、[Architecture section](/use-cases/observability/clickstack/architecture)で確認できます。
+完全なアーキテクチャ図とデプロイ方法の詳細は、[アーキテクチャ](/use-cases/observability/clickstack/architecture) セクションを参照してください。
 
-ClickStackを本番環境にデプロイすることに興味があるユーザーには、["Production"](/use-cases/observability/clickstack/production)ガイドを読むことをお勧めします。
+ClickStack を本番環境にデプロイすることを検討しているユーザーは、["本番環境"](/use-cases/observability/clickstack/production) ガイドを参照することを推奨します。

@@ -1,20 +1,23 @@
 ---
-'description': 'LoongArch64アーキテクチャ用にClickHouseをソースからビルドするためのガイド'
-'sidebar_label': 'Linux上でLoongArch64のためにビルド'
-'sidebar_position': 35
-'slug': '/development/build-cross-loongarch'
-'title': 'Linux上でLoongArch64のためにビルド'
-'doc_type': 'guide'
+description: 'LoongArch64 アーキテクチャ向けに ClickHouse をソースコードからビルドするためのガイド'
+sidebar_label: 'LoongArch64 向け Linux 上でのビルド'
+sidebar_position: 35
+slug: /development/build-cross-loongarch
+title: 'LoongArch64 向け Linux 上でのビルド'
+doc_type: 'guide'
 ---
 
 
-# Build on Linux for LoongArch64
 
-ClickHouseはLoongArch64に対して実験的なサポートを提供しています。
+# Linux 上での LoongArch64 向けビルド
 
-## Build ClickHouse {#build-clickhouse}
+ClickHouse は LoongArch64 を実験的にサポートしています
 
-ビルドに必要なllvmのバージョンは19.1.0以上でなければなりません。
+
+
+## ClickHouse をビルドする
+
+ビルドに必要な LLVM のバージョンは 19.1.0 以上である必要があります。
 
 ```bash
 cd ClickHouse
@@ -23,4 +26,4 @@ CC=clang-19 CXX=clang++-19 cmake . -Bbuild-loongarch64 -G Ninja -DCMAKE_TOOLCHAI
 ninja -C build-loongarch64
 ```
 
-生成されたバイナリは、LoongArch64のCPUアーキテクチャを持つLinuxでのみ実行されます。
+生成されるバイナリは、LoongArch64 CPU アーキテクチャの Linux 環境でのみ実行できます。

@@ -1,22 +1,31 @@
 ---
-slug: '/development/build-cross-osx'
+description: 'Руководство по кросс-компиляции ClickHouse на Linux под macOS'
 sidebar_label: 'Сборка на Linux для macOS'
 sidebar_position: 20
-description: 'Руководство по кросс-компиляции ClickHouse из Linux для систем macOS'
+slug: /development/build-cross-osx
 title: 'Сборка на Linux для macOS'
-doc_type: guide
+doc_type: 'guide'
 ---
+
+
+
 # Как собрать ClickHouse на Linux для macOS
 
-Это необходимо в случае, если у вас есть машина на базе Linux, и вы хотите использовать ее для сборки бинарного файла `clickhouse`, который будет работать на OS X. Основное использование заключается в проверках непрерывной интеграции, которые выполняются на машинах под управлением Linux. Если вы хотите собрать ClickHouse непосредственно на macOS, следуйте [инструкциям по сборке для macOS](../development/build-osx.md).
+Этот документ описывает случай, когда у вас есть машина под управлением Linux, и вы хотите использовать её для сборки бинарного файла `clickhouse`, который будет запускаться на OS X.
+Основной сценарий использования — проверки в системе непрерывной интеграции, выполняющиеся на Linux-машинах.
+Если вы хотите собирать ClickHouse непосредственно на macOS, перейдите к [инструкциям по нативной сборке](../development/build-osx.md).
 
-Кросс-сборка для macOS основана на [инструкциях по сборке](../development/build.md), сначала выполните их.
+Кросс-компиляция для macOS основана на [инструкциях по сборке](../development/build.md), сначала выполните шаги, описанные там.
 
-Следующие разделы содержат пошаговое руководство по сборке ClickHouse для `x86_64` macOS. Если вы нацелены на архитектуру ARM, просто замените все вхождения `x86_64` на `aarch64`. Например, замените `x86_64-apple-darwin` на `aarch64-apple-darwin` на протяжении всех шагов.
+В следующих разделах приведено пошаговое руководство по сборке ClickHouse для `x86_64` macOS.
+Если вы нацеливаетесь на архитектуру ARM, просто замените все вхождения `x86_64` на `aarch64`.
+Например, замените `x86_64-apple-darwin` на `aarch64-apple-darwin` на всех этапах.
 
-## Установите инструменты кросс-компиляции {#install-cross-compilation-toolset}
 
-Запомним путь, по которому мы устанавливаем `cctools`, как `${CCTOOLS}`
+
+## Установите набор инструментов для кросс-компиляции
+
+Запомните путь, по которому установлен `cctools`, и обозначьте его как `${CCTOOLS}`
 
 ```bash
 mkdir ~/cctools
@@ -37,14 +46,15 @@ git checkout 2a3e1c2a6ff54a30f898b70cfb9ba1692a55fad7
 make install
 ```
 
-Также нам нужно скачать SDK для macOS X в рабочее дерево.
+Также нужно загрузить SDK macOS X в рабочее дерево.
 
 ```bash
 cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
 
-## Соберите ClickHouse {#build-clickhouse}
+
+## Сборка ClickHouse
 
 ```bash
 cd ClickHouse
@@ -54,4 +64,4 @@ CC=clang-19 CXX=clang++-19 cmake -DCMAKE_AR:FILEPATH=${CCTOOLS}/bin/x86_64-apple
 ninja
 ```
 
-Полученный бинарный файл будет иметь формат исполняемого файла Mach-O и не сможет быть запущен на Linux.
+Полученный бинарный файл будет иметь формат исполняемого файла Mach-O и не сможет быть запущен под Linux.

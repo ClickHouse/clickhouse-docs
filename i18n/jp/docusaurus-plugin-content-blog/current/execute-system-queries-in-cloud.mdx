@@ -1,0 +1,34 @@
+---
+title: ClickHouse Cloud の全ノードで SYSTEM ステートメントを実行する
+description: ClickHouse Cloud サービスのすべてのノードに対して SYSTEM ステートメントやクエリを実行するために、`ON CLUSTER` と `clusterAllReplicas` を使用する方法を説明します。
+date: 2023-03-01
+tags: ['デプロイとスケーリング']
+keywords: ['clusterAllReplicas']
+---
+
+{frontMatter.description}
+
+{/* 切り捨て */}
+
+
+## 解答
+
+ClickHouse Cloud サービス内のすべてのノードで同じクエリを実行するには、[clusterAllReplicas](https://clickhouse.com/docs/sql-reference/table-functions/cluster/) を使用します。
+
+たとえば、(各ノードローカルな) system テーブルから全ノードのエントリを取得するには、次のようにします。
+
+```sql
+SELECT ... FROM clusterAllReplicas(default, system.TABLE) ...;
+```
+
+同様に、[ON CLUSTER](https://clickhouse.com/docs/sql-reference/distributed-ddl/) 句を使用することで、単一のステートメントで全ノード上で同じ [SYSTEM ステートメント](https://clickhouse.com/docs/sql-reference/statements/system/) を実行できます。
+
+```sql
+SYSTEM ... ON CLUSTER default;
+```
+
+例えば、すべてのノードで[filesystem キャッシュをドロップする](https://clickhouse.com/docs/sql-reference/statements/system/#drop-filesystem-cache)には、次のようにします。
+
+```sql
+SYSTEM DROP FILESYSTEM CACHE ON CLUSTER default;
+```

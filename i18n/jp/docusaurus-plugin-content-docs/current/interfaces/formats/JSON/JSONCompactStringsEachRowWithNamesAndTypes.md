@@ -1,25 +1,24 @@
 ---
-'description': 'JSONCompactStringsEachRowWithNamesAndTypes形式のドキュメント'
-'keywords':
-- 'JSONCompactStringsEachRowWithNamesAndTypes'
-'slug': '/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes'
-'title': 'JSONCompactStringsEachRowWithNamesAndTypes'
-'doc_type': 'reference'
+description: 'JSONCompactStringsEachRowWithNamesAndTypes フォーマットに関するドキュメント'
+keywords: ['JSONCompactStringsEachRowWithNamesAndTypes']
+slug: /interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes
+title: 'JSONCompactStringsEachRowWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 説明 {#description}
 
-`JSONCompactEachRow`フォーマットとは異なり、列名とタイプの2つのヘッダー行も印刷され、[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)に似ています。
+`JSONCompactEachRow` フォーマットとは異なり、[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes) と同様に、列名と型を示す 2 行のヘッダー行も出力します。
 
 ## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
+### データの挿入
 
-次のデータを含むJSONファイルを使用し、`football.json`という名前にします：
+次のデータを含む JSON ファイルを `football.json` という名前で用意します：
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -43,15 +42,16 @@
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-### データの読み取り {#reading-data}
 
-`JSONCompactStringsEachRowWithNamesAndTypes`フォーマットを使用してデータを読み取ります：
+### データの読み込み
+
+`JSONCompactStringsEachRowWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -59,7 +59,7 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-出力はJSONフォーマットになります：
+出力は JSON 形式です。
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -83,15 +83,16 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
+
 ## フォーマット設定 {#format-settings}
 
 :::note
-設定が [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) に 1 に設定されている場合、
-入力データのカラムは、その名前によってテーブルのカラムにマッピングされます。未知の名前のカラムは、設定が [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) に 1 に設定されている場合はスキップされます。
-そうでない場合、最初の行はスキップされます。
+[input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) の設定値が 1 の場合、
+入力データの列は名前に基づいてテーブルの列にマッピングされます。[input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) の設定値が 1 の場合、テーブル側に存在しない名前の列はスキップされます。
+それ以外の場合は、最初の行がスキップされます。
 :::
 
 :::note
-設定が [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) に 1 に設定されている場合、
-入力データのタイプは、テーブルの対応するカラムのタイプと比較されます。そうでない場合、2行目はスキップされます。
+[input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) の設定値が 1 の場合、
+入力データの型は、テーブル内の対応する列の型と比較されます。そうでない場合は、2 行目がスキップされます。
 :::

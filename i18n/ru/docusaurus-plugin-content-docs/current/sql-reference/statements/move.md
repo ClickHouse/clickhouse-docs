@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/statements/move'
-sidebar_label: MOVE
+description: 'Документация по оператору MOVE для объектов доступа'
+sidebar_label: 'MOVE'
 sidebar_position: 54
-description: '文档关于 MOVE запросы рекомендации语句'
-title: 'Оператор MOVE доступа к сущности'
-doc_type: reference
+slug: /sql-reference/statements/move
+title: 'Оператор MOVE для объектов доступа'
+doc_type: 'reference'
 ---
-# MOVE access entity statement
 
-Этот оператор позволяет переместить сущность доступа из одного хранилища доступа в другое.
+# Оператор MOVE access entity
+
+Этот оператор позволяет переместить объект доступа из одного хранилища объектов доступа в другое.
 
 Синтаксис:
 
@@ -16,12 +17,13 @@ doc_type: reference
 MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO access_storage_type
 ```
 
-В данный момент в ClickHouse имеется пять хранилищ доступа:
-- `local_directory`
-- `memory`
-- `replicated`
-- `users_xml` (только для чтения)
-- `ldap` (только для чтения)
+Сейчас в ClickHouse доступны пять хранилищ доступа:
+
+* `local_directory`
+* `memory`
+* `replicated`
+* `users_xml` (ro)
+* `ldap` (ro)
 
 Примеры:
 

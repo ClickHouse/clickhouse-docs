@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/window-functions/first_value'
-sidebar_label: first_value
+description: 'Документация для оконной функции first_value'
+sidebar_label: 'first_value'
 sidebar_position: 3
-description: 'Документация для функции окон first_value'
-title: first_value
-doc_type: reference
+slug: /sql-reference/window-functions/first_value
+title: 'first_value'
+doc_type: 'reference'
 ---
-# first_value
 
-Возвращает первое значение, вычисленное в рамках своего упорядоченного фрейма. По умолчанию NULL-аргументы пропускаются, однако модификатор `RESPECT NULLS` может быть использован для отмены этого поведения.
+# first&#95;value
+
+Возвращает первое значение, вычисленное в пределах упорядоченного окна. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для переопределения этого поведения.
 
 **Синтаксис**
 
@@ -23,21 +24,21 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 Псевдоним: `any`.
 
 :::note
-Использование дополнительного модификатора `RESPECT NULLS` после `first_value(column_name)` гарантирует, что аргументы `NULL` не будут пропущены.
-Смотрите [Обработка NULL](../aggregate-functions/index.md/#null-processing) для получения дополнительной информации.
+Использование необязательного модификатора `RESPECT NULLS` после `first_value(column_name)` гарантирует, что аргументы `NULL` не будут пропускаться.
+См. раздел [NULL processing](../aggregate-functions/index.md/#null-processing) для получения дополнительной информации об обработке значений `NULL`.
 
 Псевдоним: `firstValueRespectNulls`
 :::
 
-Для более подробной информации о синтаксисе оконных функций смотрите: [Оконные функции - Синтаксис](./index.md/#syntax).
+Более подробную информацию о синтаксисе оконных функций см. в разделе: [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-- Первое значение, вычисленное в рамках его упорядоченного фрейма.
+* Первое значение, вычисленное в пределах упорядоченного окна.
 
 **Пример**
 
-В этом примере функция `first_value` используется для нахождения самого высокооплачиваемого футболиста на основе вымышленного набора данных о зарплатах футболистов Премьер-лиги.
+В этом примере функция `first_value` используется для поиска самого высокооплачиваемого футболиста в вымышленном наборе данных о зарплатах игроков Премьер-лиги.
 
 Запрос:
 
@@ -71,7 +72,7 @@ FROM salaries;
 Результат:
 
 ```response
-   ┌─player──────────┬─salary─┬─highest_paid_player─┐
+   ┌─игрок───────────┬─зарплата─┬─самый_высокооплачиваемый_игрок─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │
 3. │ Charles Juarez  │ 190000 │ Gary Chen           │
@@ -79,5 +80,5 @@ FROM salaries;
 5. │ Douglas Benson  │ 150000 │ Gary Chen           │
 6. │ James Henderson │ 140000 │ Gary Chen           │
 7. │ Michael Stanley │ 100000 │ Gary Chen           │
-   └─────────────────┴────────┴─────────────────────┘
+   └─────────────────┴──────────┴─────────────────────────────────┘
 ```

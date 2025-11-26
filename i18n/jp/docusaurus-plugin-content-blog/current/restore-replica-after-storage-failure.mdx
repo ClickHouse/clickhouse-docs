@@ -1,0 +1,87 @@
+---
+date: 2025-11-19
+title: ストレージ障害後にレプリカを復元する方法
+tags: ['デプロイメントとスケーリング']
+keywords: ['復元', 'レプリカ', 'ストレージ障害', 'Atomic データベース']
+description: 'この記事では、ClickHouse の Atomic データベースでレプリケートされたテーブルを使用している際に、いずれかのレプリカでディスク／ストレージが喪失または破損した場合にデータを復旧する方法を説明します。'
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+<br />
+
+<br />
+
+:::note
+このガイドでは、config.xml ファイル内の `<path>` パラメータが次の値に設定されていることを前提とします。
+
+```text
+<path>/var/lib/clickhouse/</path>
+```
+
+If you have configured a different data path, replace all instances of `/var/lib/clickhouse` in the below commands with the actual value of your `<path>` setting.
+:::
+
+<VerticalStepper headerLevel="h2">
+  ## 正常なレプリカからアクセス設定をコピーする
+
+  正常なレプリカ上で、ローカルユーザーを含む `access` フォルダの内容をコピーします:
+
+  ```text
+  /var/lib/clickhouse/access
+  ```
+
+  ## 正常なレプリカから metadata フォルダをバックアップする
+
+  1. ClickHouse のデータディレクトリに移動します:
+
+  ```text
+  cd /var/lib/clickhouse
+  ```
+
+  2. metadata フォルダ（シンボリックリンクを含む）のバックアップを作成します。metadata ディレクトリにはデータベースおよびテーブルの DDL が含まれています。
+     データベースディレクトリには、すべてのテーブル DDL を格納している `/var/lib/clickhouse/store/..` へのシンボリックリンクがあります。
+
+  ```bash
+  { find metadata -type f; find metadata -type l; find metadata -type l | xargs readlink -f; } | tar -cPf backup.tar --files-from=-
+  ```
+
+  :::note
+  このコマンドにより、**metadata ファイル**とシンボリックリンク構造の両方がバックアップ内に保持されます。
+  :::
+
+  ## 不調なレプリカ上で metadata をリストアする
+
+  1. 生成された `backup.tar` ファイルを不調なレプリカにコピーします。
+  2. ClickHouse のデータディレクトリで展開します:
+
+  ```text
+  cd /var/lib/clickhouse/
+  tar -xvPf backup.tar
+  ```
+
+  ## 強制リストア用フラグを作成する
+
+  他のレプリカからの自動データ同期をトリガーするため、次のフラグファイルを作成します:
+
+  ```text
+  sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
+  ```
+
+  ## 不調なレプリカを再起動する
+
+  1. 不調なノード上の ClickHouse サーバーを再起動します。
+  2. サーバーログを確認し、正常なレプリカからパーツがダウンロードされていることを確認します:
+
+  ```bash
+  2025.11.02 00:00:04.047097 [ 682 ] {} <Debug> analytics.events_local (...) (Fetcher): Downloading files 23
+  2025.11.02 00:00:04.055542 [ 682 ] {} <Debug> analytics.events_local (...) (Fetcher): Download of part 202511_0_0_0 onto disk disk2 finished.
+  2025.11.02 00:00:04.101888 [ 687 ] {} <Debug> warehouse.customers_local (...) (Fetcher): Downloading part 2025_0_0_1 onto disk default.
+  2025.11.02 00:00:04.102005 [ 687 ] {} <Debug> warehouse.customers_local (...) (Fetcher): Downloading files 11
+  2025.11.02 00:00:04.102210 [ 690 ] {} <Debug> warehouse.customers_local (...) (Fetcher): Downloading part 2022_0_0_1 onto disk disk1.
+  2025.11.02 00:00:04.102247 [ 688 ] {} <Debug> warehouse.customers_local (...) (Fetcher): Downloading part 2021_0_0_1 onto disk disk2.
+  2025.11.02 00:00:04.102331 [ 690 ] {} <Debug> warehouse.customers_local (...) (Fetcher): Downloading files 11
+  ```
+</VerticalStepper>

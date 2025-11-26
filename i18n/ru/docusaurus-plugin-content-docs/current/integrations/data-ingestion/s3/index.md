@@ -1,48 +1,52 @@
 ---
-slug: '/integrations/s3'
-sidebar_label: 'Интеграция S3 с ClickHouse'
+slug: /integrations/s3
 sidebar_position: 1
-description: 'Страница, описывающая, как интегрировать S3 с ClickHouse'
-title: 'Интеграция S3 с ClickHouse'
-doc_type: guide
+sidebar_label: 'Integrating S3 with ClickHouse'
+title: 'Integrating S3 with ClickHouse'
+description: 'Page describing how to integrate S3 with ClickHouse'
+keywords: ['Amazon S3', 'object storage', 'cloud storage', 'data lake', 'S3 integration']
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
-import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
+
+import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import S3J from '@site/static/images/integrations/data-ingestion/s3/s3-j.png';
 import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.png';
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
+# Integrating S3 with ClickHouse
 
-# Интеграция S3 с ClickHouse
+You can insert data from S3 into ClickHouse and also use S3 as an export destination, thus allowing interaction with "Data Lake" architectures. Furthermore, S3 can provide "cold" storage tiers and assist with separating storage and compute. In the sections below we use the New York City taxi dataset to demonstrate the process of moving data between S3 and ClickHouse, as well as identifying key configuration parameters and providing hints on optimizing performance.
 
-Вы можете вставлять данные из S3 в ClickHouse, а также использовать S3 в качестве пункта экспорта, что позволяет взаимодействовать с архитектурами "Data Lake". Более того, S3 может предоставлять "холодные" уровни хранилища и помогать отделять хранение от вычислений. В следующих разделах мы используем набор данных такси Нью-Йорка, чтобы продемонстрировать процесс перемещения данных между S3 и ClickHouse, а также определим ключевые параметры конфигурации и предоставим советы по оптимизации производительности.
+## S3 table functions {#s3-table-functions}
 
-## Функции таблиц S3 {#s3-table-functions}
-
-Функция таблицы `s3` позволяет читать и записывать файлы из и в хранилище, совместимое с S3. Структура этого синтаксиса:
+The `s3` table function allows you to read and write files from and to S3 compatible storage. The outline for this syntax is:
 
 ```sql
 s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compression]]])
 ```
 
-где:
+where:
 
-* path — URL корзины с путем к файлу. Поддерживаются следующие подстановочные знаки в режиме только для чтения: `*`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки. Для получения дополнительной информации смотрите документацию о [использовании подстановочных знаков в пути](/engines/table-engines/integrations/s3/#wildcards-in-path).
-* format — [формат](/interfaces/formats#formats-overview) файла.
-* structure — Структура таблицы. Формат `'column1_name column1_type, column2_name column2_type, ...'`.
-* compression — Параметр является необязательным. Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию будет автоматически определен тип сжатия по расширению файла.
+* path — Bucket URL with a path to the file. This supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers, `'abc'`, `'def'` are strings. For more information, see the docs on [using wildcards in path](/engines/table-engines/integrations/s3/#wildcards-in-path).
+* format — The [format](/interfaces/formats#formats-overview) of the file.
+* structure — Structure of the table. Format `'column1_name column1_type, column2_name column2_type, ...'`.
+* compression — Parameter is optional. Supported values: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. By default, it will autodetect compression by file extension.
 
-Использование подстановочных знаков в выражении пути позволяет ссылаться на несколько файлов и открывает возможности для параллелизма.
+Using wildcards in the path expression allow multiple files to be referenced and opens the door for parallelism.
 
-### Подготовка {#preparation}
+### Preparation {#preparation}
 
-Перед созданием таблицы в ClickHouse, вам может потребоваться сначала внимательно изучить данные в корзине S3. Это можно сделать непосредственно из ClickHouse, используя оператор `DESCRIBE`:
+Prior to creating the table in ClickHouse, you may want to first take a closer look at the data in the S3 bucket. You can do this directly from ClickHouse using the `DESCRIBE` statement:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-Результат выполнения оператора `DESCRIBE TABLE` должен показать, как ClickHouse будет автоматически выводить эти данные, как показано в корзине S3. Обратите внимание, что он также автоматически распознает и распаковывает формат сжатия gzip:
+The output of the `DESCRIBE TABLE` statement should show you how ClickHouse would automatically infer this data, as viewed in the S3 bucket. Notice that it also automatically recognizes and decompresses the gzip compression format:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
@@ -96,7 +100,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 └───────────────────────┴────────────────────┘
 ```
 
-Для взаимодействия с нашим набором данных на основе S3 мы подготавливаем стандартную таблицу `MergeTree` в качестве пункта назначения. Оператор ниже создает таблицу с именем `trips` в базе данных по умолчанию. Обратите внимание, что мы выбрали изменить некоторые из предполагаемых типов данных, в частности, чтобы не использовать модификатор типа данных [`Nullable()`](/sql-reference/data-types/nullable), который может вызвать избыточное хранение данных и дополнительные накладные расходы на производительность:
+To interact with our S3-based dataset, we prepare a standard `MergeTree` table as our destination. The statement below creates a table named `trips` in the default database. Note that we have chosen to modify some of those data types as inferred above, particularly to not use the [`Nullable()`](/sql-reference/data-types/nullable) data type modifier, which could cause some unnecessary additional stored data and some additional performance overhead:
 
 ```sql
 CREATE TABLE trips
@@ -152,13 +156,13 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 ```
 
-Обратите внимание на использование [партирования](/engines/table-engines/mergetree-family/custom-partitioning-key) по полю `pickup_date`. Обычно ключ партиции используется для управления данными, но позже мы будем использовать этот ключ для параллелизации записей в S3.
+Note the use of [partitioning](/engines/table-engines/mergetree-family/custom-partitioning-key) on the `pickup_date` field. Usually a partition key is for data management, but later on we will use this key to parallelize writes to S3.
 
-Каждая запись в нашем наборе данных такси содержит поездку на такси. Эти анонимизированные данные состоят из 20 миллионов записей, сжатых в корзине S3 https://datasets-documentation.s3.eu-west-3.amazonaws.com/ под папкой **nyc-taxi**. Данные находятся в формате TSV с примерно 1 миллион строк в файле.
+Each entry in our taxi dataset contains a taxi trip. This anonymized data consists of 20M records compressed in the S3 bucket https://datasets-documentation.s3.eu-west-3.amazonaws.com/ under the folder **nyc-taxi**. The data is in the TSV format with approximately 1M rows per file.
 
-### Чтение данных из S3 {#reading-data-from-s3}
+### Reading Data from S3 {#reading-data-from-s3}
 
-Мы можем запрашивать данные S3 как источник, не требуя их устойчивости в ClickHouse. В следующем запросе мы выбираем 10 строк. Обратите внимание на отсутствие учетных данных здесь, так как корзина является общедоступной:
+We can query S3 data as a source without requiring persistence in ClickHouse.  In the following query, we sample 10 rows. Note the absence of credentials here as the bucket is publicly accessible:
 
 ```sql
 SELECT *
@@ -166,9 +170,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 LIMIT 10;
 ```
 
-Обратите внимание, что нам не нужно перечислять столбцы, поскольку формат `TabSeparatedWithNames` кодирует имена столбцов в первой строке. Другие форматы, такие как `CSV` или `TSV`, будут возвращать автоматически сгенерированные столбцы для этого запроса, например, `c1`, `c2`, `c3` и т. д.
+Note that we are not required to list the columns since the `TabSeparatedWithNames` format encodes the column names in the first row. Other formats, such as `CSV` or `TSV`, will return auto-generated columns for this query, e.g., `c1`, `c2`, `c3` etc.
 
-Запросы также поддерживают [виртуальные столбцы](../sql-reference/table-functions/s3#virtual-columns), такие как `_path` и `_file`, которые предоставляют информацию о пути к корзине и имени файла соответственно. Например:
+Queries additionally support [virtual columns](../sql-reference/table-functions/s3#virtual-columns), like `_path` and `_file`, that provide information regarding the bucket path and filename respectively. For example:
 
 ```sql
 SELECT  _path, _file, trip_id
@@ -186,7 +190,7 @@ LIMIT 5;
 └────────────────────────────────────────────┴────────────┴────────────┘
 ```
 
-Подтвердите количество строк в этом выборочном наборе данных. Обратите внимание на использование подстановочных знаков для расширения файлов, поэтому мы рассматриваем все двадцать файлов. Этот запрос займет около 10 секунд в зависимости от количества ядер на экземпляре ClickHouse:
+Confirm the number of rows in this sample dataset. Note the use of wildcards for file expansion, so we consider all twenty files. This query will take around 10 seconds, depending on the number of cores on the ClickHouse instance:
 
 ```sql
 SELECT count() AS count
@@ -199,19 +203,20 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trip
 └──────────┘
 ```
 
-Хотя это полезно для выборки данных и выполнения исследовательских запросов, чтение данных напрямую из S3 не является тем, что вы хотите делать регулярно. Когда настанет время серьезной работы, импортируйте данные в таблицу `MergeTree` в ClickHouse.
+While useful for sampling data and executing ae-hoc, exploratory queries, reading data directly from S3 is not something you want to do regularly. When it is time to get serious, import the data into a `MergeTree` table in ClickHouse.
 
-### Использование clickhouse-local {#using-clickhouse-local}
+### Using clickhouse-local {#using-clickhouse-local}
 
-Программа `clickhouse-local` позволяет выполнять быструю обработку на локальных файлах без развертывания и настройки сервера ClickHouse. Любые запросы, использующие функцию таблицы `s3`, могут быть выполнены с помощью этого инструмента. Например:
+The `clickhouse-local` program enables you to perform fast processing on local files without deploying and configuring the ClickHouse server. Any queries using the `s3` table function can be performed with this utility. For example:
 
 ```sql
 clickhouse-local --query "SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
-### Вставка данных из S3 {#inserting-data-from-s3}
+### Inserting Data from S3 {#inserting-data-from-s3}
 
-Чтобы воспользоваться всеми возможностями ClickHouse, мы далее читаем и вставляем данные в наш экземпляр. Мы объединяем нашу функцию `s3` с простым оператором `INSERT`, чтобы достичь этого. Обратите внимание, что нам не нужно перечислять наши столбцы, так как целевая таблица предоставляет необходимую структуру. Это требует, чтобы столбцы появлялись в порядке, указанном в операторе DDL таблицы: столбцы сопоставляются в зависимости от их позиции в предложении `SELECT`. Вставка всех 10 миллионов строк может занять несколько минут в зависимости от экземпляра ClickHouse. Ниже мы вставляем 1 миллион строк, чтобы обеспечить быстрый ответ. Настройте оператор `LIMIT` или выбор столбцов, чтобы импортировать подмножества по мере необходимости:
+To exploit the full capabilities of ClickHouse, we next read and insert the data into our instance.
+We combine our `s3` function with a simple `INSERT` statement to achieve this. Note that we aren't required to list our columns because our target table provides the required structure. This requires the columns to appear in the order specified in the table DDL statement: columns are mapped according to their position in the `SELECT` clause. The insertion of all 10m rows can take a few minutes depending on the ClickHouse instance. Below we insert 1M rows to ensure a prompt response. Adjust the `LIMIT` clause or column selection to import subsets as required:
 
 ```sql
 INSERT INTO trips
@@ -220,23 +225,23 @@ INSERT INTO trips
    LIMIT 1000000;
 ```
 
-### Удаленная вставка с использованием ClickHouse Local {#remote-insert-using-clickhouse-local}
+### Remote Insert using ClickHouse Local {#remote-insert-using-clickhouse-local}
 
-Если политики сетевой безопасности препятствуют вашему кластеру ClickHouse устанавливать исходящие соединения, вы можете потенциально вставлять данные S3, используя `clickhouse-local`. В следующем примере мы читаем из корзины S3 и вставляем в ClickHouse с использованием функции `remote`:
+If network security policies prevent your ClickHouse cluster from making outbound connections, you can potentially insert S3 data using `clickhouse-local`. In the example below, we read from an S3 bucket and insert into ClickHouse using the `remote` function:
 
 ```sql
 clickhouse-local --query "INSERT INTO TABLE FUNCTION remote('localhost:9000', 'default.trips', 'username', 'password') (*) SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') LIMIT 10"
 ```
 
 :::note
-Чтобы выполнить это через защищенное SSL-соединение, используйте функцию `remoteSecure`.
+To execute this over a secure SSL connection, utilize the `remoteSecure` function.
 :::
 
-### Экспорт данных {#exporting-data}
+### Exporting data {#exporting-data}
 
-Вы можете записывать файлы в S3, используя функцию таблицы `s3`. Это потребует соответствующих разрешений. Мы передаем учетные данные, необходимые в запросе, но посмотрите страницу [Управление учетными данными](#managing-credentials) для получения дополнительных вариантов.
+You can write to files in S3 using the `s3` table function. This will require appropriate permissions. We pass the credentials needed in the request, but view the [Managing Credentials](#managing-credentials) page for more options.
 
-В простом примере ниже мы используем функцию таблицы в качестве пункта назначения, а не источника. Здесь мы поточно передаем 10 000 строк из таблицы `trips` в корзину, указывая сжатие `lz4` и выходной тип `CSV`:
+In the simple example below, we use the table function as a destination instead of a source. Here we stream 10,000 rows from the `trips` table to a bucket, specifying `lz4` compression and output type of `CSV`:
 
 ```sql
 INSERT INTO FUNCTION
@@ -251,13 +256,13 @@ FROM trips
 LIMIT 10000;
 ```
 
-Обратите внимание, как формат файла выводится из расширения. Мы также не нуждаемся в указании столбцов в функции `s3` — это можно вывести из `SELECT`.
+Note here how the format of the file is inferred from the extension. We also don't need to specify the columns in the `s3` function - this can be inferred from the `SELECT`.
 
-### Разделение больших файлов {#splitting-large-files}
+### Splitting large files {#splitting-large-files}
 
-Вероятно, вы не захотите экспортировать ваши данные в виде одного файла. Большинство инструментов, включая ClickHouse, достигнут более высокой производительности при чтении и записи в несколько файлов благодаря возможности параллелизма. Мы могли бы выполнять нашу команду `INSERT` несколько раз, нацеливаясь на подмножество данных. ClickHouse предлагает способ автоматического разделения файлов с использованием ключа `PARTITION`.
+It is unlikely you will want to export your data as a single file. Most tools, including ClickHouse, will achieve higher throughput performance when reading and writing to multiple files due to the possibility of parallelism. We could execute our `INSERT` command multiple times, targeting a subset of the data. ClickHouse offers a means of automatic splitting files using a `PARTITION` key.
 
-В следующем примере мы создаем десять файлов, используя модуль функции `rand()`. Обратите внимание, как идентификатор результирующей партиции ссылается на имя файла. Это приводит к созданию десяти файлов с числовым суффиксом, например `trips_0.csv.lz4`, `trips_1.csv.lz4` и т. д.:
+In the example below, we create ten files using a modulus of the `rand()` function. Notice how the resulting partition ID is referenced in the filename. This results in ten files with a numerical suffix, e.g. `trips_0.csv.lz4`, `trips_1.csv.lz4` etc...:
 
 ```sql
 INSERT INTO FUNCTION
@@ -273,7 +278,7 @@ FROM trips
 LIMIT 100000;
 ```
 
-В качестве альтернативы мы можем сослаться на поле в данных. Для этого набора данных `payment_type` предоставляет естественный ключ партиционирования с кардинальностью 5.
+Alternatively, we can reference a field in the data. For this dataset, the `payment_type` provides a natural partitioning key with a cardinality of 5.
 
 ```sql
 INSERT INTO FUNCTION
@@ -289,27 +294,27 @@ FROM trips
 LIMIT 100000;
 ```
 
-### Использование кластеров {#utilizing-clusters}
+### Utilizing clusters {#utilizing-clusters}
 
-Вышеупомянутые функции ограничены выполнением на одном узле. Скорость чтения будет линейно масштабироваться с количеством ядер CPU, пока не будут насыщены другие ресурсы (обычно сеть), что позволит пользователям вертикально масштабироваться. Однако этот подход имеет свои ограничения. Хотя пользователи могут снизить давление на ресурсы, вставляя данные в распределенную таблицу при выполнении запроса `INSERT INTO SELECT`, это все же оставляет единственный узел для чтения, парсинга и обработки данных. Для решения этой проблемы и обеспечения масштабируемости чтения по горизонтали у нас есть функция [s3Cluster](/sql-reference/table-functions/s3Cluster.md).
+The above functions are all limited to execution on a single node. Read speeds will scale linearly with CPU cores until other resources (typically network) are saturated, allowing users to vertically scale. However, this approach has its limitations. While users can alleviate some resource pressure by inserting into a distributed table when performing an `INSERT INTO SELECT` query, this still leaves a single node reading, parsing, and processing the data. To address this challenge and allow us to scale reads horizontally, we have the [s3Cluster](/sql-reference/table-functions/s3Cluster.md) function.
 
-Узел, который получает запрос, известен как инициатор, создает соединение с каждым узлом в кластере. Шаблон glob, определяющий, какие файлы нужно прочитать, разрешается в набор файлов. Инициатор распределяет файлы по узлам кластера, которые действуют как рабочие. Эти рабочие узлы, в свою очередь, запрашивают файлы для обработки по мере завершения чтения. Этот процесс обеспечивает возможность масштабирования чтения по горизонтали.
+The node which receives the query, known as the initiator, creates a connection to every node in the cluster. The glob pattern determining which files need to be read is resolved to a set of files. The initiator distributes files to the nodes in the cluster, which act as workers. These workers, in turn, request files to process as they complete reads. This process ensures that we can scale reads horizontally.
 
-Функция `s3Cluster` имеет тот же формат, что и варианты для одного узла, за исключением того, что требуется целевой кластер для обозначения рабочих узлов:
+The `s3Cluster` function takes the same format as the single node variants, except that a target cluster is required to denote the worker nodes:
 
 ```sql
 s3Cluster(cluster_name, source, [access_key_id, secret_access_key,] format, structure)
 ```
 
-* `cluster_name` — Имя кластера, используемого для создания набора адресов и параметров соединения для удаленных и локальных серверов.
-* `source` — URL к файлу или набору файлов. Поддерживает следующие подстановочные знаки в режиме только для чтения: `*`, `?`, `{'abc','def'}` и `{N..M}`, где N, M — числа, abc, def — строки. Для получения дополнительной информации см. [Подстановочные знаки в пути](/engines/table-engines/integrations/s3.md/#wildcards-in-path).
-* `access_key_id` и `secret_access_key` — Ключи, которые указывают учетные данные для использования с указанной конечной точкой. Необязательные.
-* `format` — [формат](/interfaces/formats#formats-overview) файла.
-* `structure` — Структура таблицы. Формат 'column1_name column1_type, column2_name column2_type, ...'.
+* `cluster_name` — Name of a cluster that is used to build a set of addresses and connection parameters to remote and local servers.
+* `source` — URL to a file or a bunch of files. Supports following wildcards in read-only mode: `*`, `?`, `{'abc','def'}` and `{N..M}` where N, M — numbers, abc, def — strings. For more information see [Wildcards In Path](/engines/table-engines/integrations/s3.md/#wildcards-in-path).
+* `access_key_id` and `secret_access_key` — Keys that specify credentials to use with the given endpoint. Optional.
+* `format` — The [format](/interfaces/formats#formats-overview) of the file.
+* `structure` — Structure of the table. Format 'column1_name column1_type, column2_name column2_type, ...'.
 
-Как и в любых функциях `s3`, учетные данные являются необязательными, если корзина небезопасна или вы определяете безопасность через окружение, например, IAM роли. В отличие от функции s3, однако, с 22.3.1 структура должна быть указана в запросе, т.е. схема не выводится автоматически.
+Like any `s3` functions, the credentials are optional if the bucket is insecure or you define security through the environment, e.g., IAM roles. Unlike the s3 function, however, the structure must be specified in the request as of 22.3.1, i.e., the schema is not inferred.
 
-Эта функция будет использоваться в большинстве случаев в рамках `INSERT INTO SELECT`. В этом случае вы часто будете вставлять в распределенную таблицу. Мы иллюстрируем простой пример ниже, где trips_all является распределенной таблицей. Хотя эта таблица использует кластер событий, согласованность узлов, используемых для чтения и записи, не является обязательной:
+This function will be used as part of an `INSERT INTO SELECT` in most cases. In this case, you will often be inserting a distributed table. We illustrate a simple example below where trips_all is a distributed table. While this table uses the events cluster, the consistency of the nodes used for reads and writes is not a requirement:
 
 ```sql
 INSERT INTO default.trips_all
@@ -321,11 +326,11 @@ INSERT INTO default.trips_all
     )
 ```
 
-Вставки будут происходить против инициатора узла. Это означает, что, хотя чтения происходят на каждом узле, результирующие строки будут направляться к инициатору для распределения. В сценах с высокой пропускной способностью это может привести к узкому месту. Чтобы решить этот вопрос, установите параметр [parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select) для функции `s3cluster`.
+Inserts will occur against the initiator node. This means that while reads will occur on each node, the resulting rows will be routed to the initiator for distribution. In high throughput scenarios, this may prove a bottleneck. To address this, set the parameter [parallel_distributed_insert_select](/operations/settings/settings/#parallel_distributed_insert_select) for the `s3cluster` function.
 
-## Движки таблиц S3 {#s3-table-engines}
+## S3 table engines {#s3-table-engines}
 
-Хотя функции `s3` позволяют выполнять запросы ad-hoc на данные, хранящиеся в S3, они являются синтаксически многословными. Движок таблицы `S3` позволяет вам не указывать URL корзины и учетные данные снова и снова. Для решения этой проблемы ClickHouse предоставляет движок таблицы S3.
+While the `s3` functions allow ad-hoc queries to be performed on data stored in S3, they are syntactically verbose. The `S3` table engine allows you to not have to specify the bucket URL and credentials over and over again. To address this, ClickHouse provides the S3 table engine.
 
 ```sql
 CREATE TABLE s3_engine_table (name String, value UInt32)
@@ -333,14 +338,14 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
     [SETTINGS ...]
 ```
 
-* `path` — URL корзины с путем к файлу. Поддерживает следующие подстановочные знаки в режиме только для чтения: `*`, `?`, `{abc,def}` и `{N..M}`, где N, M — числа, 'abc', 'def' — строки. Для получения дополнительной информации смотрите [здесь](/engines/table-engines/integrations/s3#wildcards-in-path).
-* `format` — [формат](/interfaces/formats#formats-overview) файла.
-* `aws_access_key_id`, `aws_secret_access_key` - Долговременные учетные данные для пользователя учетной записи AWS. Вы можете использовать их для аутентификации своих запросов. Параметр является необязательным. Если учетные данные не указаны, используются значения из файла конфигурации. Для получения дополнительной информации смотрите [Управление учетными данными](#managing-credentials).
-* `compression` — Тип сжатия. Поддерживаемые значения: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. Параметр является необязательным. По умолчанию будет автоматически определен тип сжатия по расширению файла.
+* `path` — Bucket URL with a path to the file. Supports following wildcards in read-only mode: `*`, `?`, `{abc,def}` and `{N..M}` where N, M — numbers, 'abc', 'def' — strings. For more information, see [here](/engines/table-engines/integrations/s3#wildcards-in-path).
+* `format` — The[ format](/interfaces/formats#formats-overview) of the file.
+* `aws_access_key_id`, `aws_secret_access_key` - Long-term credentials for the AWS account user. You can use these to authenticate your requests. The parameter is optional. If credentials are not specified, configuration file values are used. For more information, see [Managing credentials](#managing-credentials).
+* `compression` — Compression type. Supported values: none, gzip/gz, brotli/br, xz/LZMA, zstd/zst. The parameter is optional. By default, it will autodetect compression by file extension.
 
-### Чтение данных {#reading-data}
+### Reading data {#reading-data}
 
-В следующем примере мы создаем таблицу с именем `trips_raw`, используя первые десять TSV файлов, расположенных в корзине `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/`. Каждый из этих файлов содержит по 1 миллиону строк:
+In the following example, we create a table named `trips_raw` using the first ten TSV files located in the `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket. Each of these contains 1M rows each:
 
 ```sql
 CREATE TABLE trips_raw
@@ -393,7 +398,7 @@ CREATE TABLE trips_raw
 ) ENGINE = S3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..9}.gz', 'TabSeparatedWithNames', 'gzip');
 ```
 
-Обратите внимание на использование шаблона `{0..9}` для ограничения до первых десяти файлов. После создания мы можем запрашивать эту таблицу как любую другую таблицу:
+Notice the use of the `{0..9}` pattern to limit to the first ten files. Once created, we can query this table like any other table:
 
 ```sql
 SELECT DISTINCT(pickup_ntaname)
@@ -414,11 +419,11 @@ LIMIT 10;
 └──────────────────────────────────────────────────┘
 ```
 
-### Вставка данных {#inserting-data}
+### Inserting data {#inserting-data}
 
-Движок таблицы `S3` поддерживает параллельные чтения. Записи поддерживаются только в том случае, если определение таблицы не содержит шаблонов glob. Поэтому вышеуказанная таблица будет блокировать записи.
+The `S3` table engine supports parallel reads. Writes are only supported if the table definition does not contain glob patterns. The above table, therefore, would block writes.
 
-Чтобы продемонстрировать записи, создайте таблицу, которая указывает на записываемую корзину S3:
+To demonstrate writes, create a table that points to a writable S3 bucket:
 
 ```sql
 CREATE TABLE trips_dest
@@ -459,87 +464,87 @@ SELECT * FROM trips_dest LIMIT 5;
 └────────────┴─────────────┴─────────────────────┴─────────────────────┴────────────┴──────────────┘
 ```
 
-Обратите внимание, что строки могут быть вставлены только в новые файлы. Нет циклов слияния или операций разделения файлов. Как только файл написан, дальнейшие вставки будут завершены с ошибкой. У пользователей есть два варианта:
+Note that rows can only be inserted into new files. There are no merge cycles or file split operations. Once a file is written, subsequent inserts will fail. Users have two options here:
 
-* Укажите настройку `s3_create_new_file_on_insert=1`. Это приведет к созданию новых файлов при каждой вставке. Числовой суффикс будет добавлен в конец каждого файла, который будет монотонно увеличиваться для каждой операции вставки. Для вышеуказанного примера последующая вставка вызовет создание файла trips_1.bin.
-* Укажите настройку `s3_truncate_on_insert=1`. Это приведет к усечению файла, т.е. он будет содержать только вновь вставленные строки после завершения.
+* Specify the setting `s3_create_new_file_on_insert=1`. This will cause the creation of new files on each insert. A numeric suffix will be appended to the end of each file that will monotonically increase for each insert operation. For the above example, a subsequent insert would cause the creation of a trips_1.bin file.
+* Specify the setting `s3_truncate_on_insert=1`. This will cause a truncation of the file, i.e. it will only contain the newly inserted rows once complete.
 
-Обе эти настройки по умолчанию установлены в 0 - таким образом, пользователю придется установить одну из них. `s3_truncate_on_insert` будет иметь преимущество, если обе установлены.
+Both of these settings default to 0 - thus forcing the user to set one of them. `s3_truncate_on_insert` will take precedence if both are set.
 
-Несколько заметок о движке таблицы `S3`:
+Some notes about the `S3` table engine:
 
-- В отличие от традиционной таблицы семейства `MergeTree`, удаление таблицы `S3` не приведет к удалению основных данных.
-- Полные настройки для этого типа таблиц можно найти [здесь](/engines/table-engines/integrations/s3.md/#settings).
-- Обратите внимание на следующие ограничения при использовании этого движка:
-  * Запросы ALTER не поддерживаются.
-  * Операции SAMPLE не поддерживаются.
-  * Понятие индексов отсутствует, т.е. первичных или индексов пропуска.
+- Unlike a traditional `MergeTree` family table, dropping an `S3` table will not delete the underlying data.
+- Full settings for this table type can be found [here](/engines/table-engines/integrations/s3.md/#settings).
+- Be aware of the following caveats when using this engine:
+  * ALTER queries are not supported
+  * SAMPLE operations are not supported
+  * There is no notion of indexes, i.e. primary or skip.
 
-## Управление учетными данными {#managing-credentials}
+## Managing credentials {#managing-credentials}
 
-В предыдущих примерах мы передавали учетные данные в функции `s3` или определении таблицы `S3`. Хотя это может быть приемлемо для эпизодического использования, пользователи требуют менее явных механизмов аутентификации в производственной среде. Для решения этой проблемы ClickHouse предлагает несколько вариантов:
+In the previous examples, we have passed credentials in the `s3` function or `S3` table definition. While this may be acceptable for occasional usage, users require less explicit authentication mechanisms in production. To address this, ClickHouse has several options:
 
-* Укажите детали соединения в **config.xml** или эквивалентном конфигурационном файле в разделе **conf.d**. Содержимое примера файла показано ниже, предполагая установку с использованием debian-пакета.
+* Specify the connection details in the **config.xml** or an equivalent configuration file under **conf.d**. The contents of an example file are shown below, assuming installation using the debian package.
 
-```xml
-ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
-<clickhouse>
-    <s3>
-        <endpoint-name>
-            <endpoint>https://dalem-files.s3.amazonaws.com/test/</endpoint>
-            <access_key_id>key</access_key_id>
-            <secret_access_key>secret</secret_access_key>
-            <!-- <use_environment_credentials>false</use_environment_credentials> -->
-            <!-- <header>Authorization: Bearer SOME-TOKEN</header> -->
-        </endpoint-name>
-    </s3>
-</clickhouse>
-```
+    ```xml
+    ubuntu@single-node-clickhouse:/etc/clickhouse-server/config.d$ cat s3.xml
+    <clickhouse>
+        <s3>
+            <endpoint-name>
+                <endpoint>https://dalem-files.s3.amazonaws.com/test/</endpoint>
+                <access_key_id>key</access_key_id>
+                <secret_access_key>secret</secret_access_key>
+                <!-- <use_environment_credentials>false</use_environment_credentials> -->
+                <!-- <header>Authorization: Bearer SOME-TOKEN</header> -->
+            </endpoint-name>
+        </s3>
+    </clickhouse>
+    ```
 
-    Эти учетные данные будут использоваться для любых запросов, где приведенный выше конечный пункт является точным префиксным соответствием для запрашиваемого URL. Также обратите внимание на возможность в этом примере объявить заголовок авторизации как альтернативу ключам доступа и секретным ключам. Полный список поддерживаемых настроек можно найти [здесь](/engines/table-engines/integrations/s3.md/#settings).
+    These credentials will be used for any requests where the endpoint above is an exact prefix match for the requested URL. Also, note the ability in this example to declare an authorization header as an alternative to access and secret keys. A complete list of supported settings can be found [here](/engines/table-engines/integrations/s3.md/#settings).
 
-* Пример выше подчеркивает наличие параметра конфигурации `use_environment_credentials`. Этот параметр конфигурации также может быть установлен глобально на уровне `s3`:
+* The example above highlights the availability of the configuration parameter `use_environment_credentials`. This configuration parameter can also be set globally at the `s3` level:
 
-```xml
-<clickhouse>
-    <s3>
-    <use_environment_credentials>true</use_environment_credentials>
-    </s3>
-</clickhouse>
-```
+    ```xml
+    <clickhouse>
+        <s3>
+        <use_environment_credentials>true</use_environment_credentials>
+        </s3>
+    </clickhouse>
+    ```
 
-    Эта настройка включает попытку получить S3 учетные данные из окружения, что позволяет доступ через IAM роли. В частности, выполняется следующий порядок извлечения:
+    This setting turns on an attempt to retrieve S3 credentials from the environment, thus allowing access through IAM roles. Specifically, the following order of retrieval is performed:
 
-  * Поиск переменных окружения `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` и `AWS_SESSION_TOKEN`
-  * Проверка выполняется в **$HOME/.aws**
-  * Временные учетные данные получены через AWS Security Token Service - т.е. с помощью API [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
-  * Проверки учетных данных в переменных окружения ECS `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` или `AWS_CONTAINER_CREDENTIALS_FULL_URI` и `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
-  * Получение учетных данных через [метаданные экземпляра Amazon EC2](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html), при этом обеспечивается, что переменная [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) не установлена в true.
-  * Эти же настройки также могут быть установлены для конкретной конечной точки, используя то же правило префиксного соответствия.
+  * A lookup for the environment variables `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_SESSION_TOKEN`
+  * Check performed in **$HOME/.aws**
+  * Temporary credentials obtained via the AWS Security Token Service - i.e. via [`AssumeRole`](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) API
+  * Checks for credentials in the ECS environment variables `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` or `AWS_CONTAINER_CREDENTIALS_FULL_URI` and `AWS_ECS_CONTAINER_AUTHORIZATION_TOKEN`.
+  * Obtains the credentials via [Amazon EC2 instance metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html) provided [AWS_EC2_METADATA_DISABLED](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html#envvars-list-AWS_EC2_METADATA_DISABLED) is not set to true.
+  * These same settings can also be set for a specific endpoint, using the same prefix matching rule.
 
-## Оптимизация производительности {#s3-optimizing-performance}
+## Optimizing for performance {#s3-optimizing-performance}
 
-Для оптимизации чтения и вставки с использованием функции S3 смотрите [отдельное руководство по производительности](./performance.md).
+For how to optimize reading and inserting using the S3 function, see the [dedicated performance guide](./performance.md).
 
-### Настройка хранилища S3 {#s3-storage-tuning}
+### S3 storage tuning {#s3-storage-tuning}
 
-Внутри ClickHouse дерево слияния использует два основных формата хранения: [`Широкий` и `Компактный`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). В то время как текущая реализация использует поведение по умолчанию ClickHouse (контролируемое через настройки `min_bytes_for_wide_part` и `min_rows_for_wide_part`), мы ожидаем, что поведение S3 будет отличаться в будущих релизах, например, большее значение по умолчанию `min_bytes_for_wide_part`, побуждающее использование более `Компактного` формата и тем самым меньшее количество файлов. Пользователи могут захотеть настроить эти параметры, когда используют исключительно хранилище S3.
+Internally, the ClickHouse merge tree uses two primary storage formats: [`Wide` and `Compact`](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage). While the current implementation uses the default behavior of ClickHouse (controlled through the settings `min_bytes_for_wide_part` and `min_rows_for_wide_part`), we expect behavior to diverge for S3 in the future releases, e.g., a larger default value of `min_bytes_for_wide_part` encouraging a more `Compact` format and thus fewer files. Users may now wish to tune these settings when using exclusively S3 storage.
 
-## MergeTree на основе S3 {#s3-backed-mergetree}
+## S3 backed MergeTree {#s3-backed-mergetree}
 
-Функции `s3` и связанный с ними движок таблиц позволяют нам запрашивать данные в S3, используя знакомый синтаксис ClickHouse. Однако, учитывая функции управления данными и производительность, они имеют свои ограничения. Нет поддержки первичных индексов, поддержки кэша, а вставки файлов необходимо управлять пользователем.
+The `s3` functions and associated table engine allow us to query data in S3 using familiar ClickHouse syntax. However, concerning data management features and performance, they are limited. There is no support for primary indexes, no-cache support, and files inserts need to be managed by the user.
 
-ClickHouse признает, что S3 представляет собой привлекательное решение для хранения, особенно там, где производительность запросов к "холодным" данным менее критична, и пользователи стремятся отделить хранение от вычислений. Для достижения этой цели поддерживается использование S3 в качестве хранилища для движка MergeTree. Это позволит пользователям воспользоваться масштабируемостью и экономическими преимуществами S3, а также производительностью вставки и обработки запросов движка MergeTree.
+ClickHouse recognizes that S3 represents an attractive storage solution, especially where query performance on "colder" data is less critical, and users seek to separate storage and compute. To help achieve this, support is provided for using S3 as the storage for a MergeTree engine. This will enable users to exploit the scalability and cost benefits of S3, and the insert and query performance of the MergeTree engine.
 
-### Уровни хранения {#storage-tiers}
+### Storage Tiers {#storage-tiers}
 
-Объемы хранилища ClickHouse позволяют абстрагировать физические диски от движка таблицы MergeTree. Любой отдельный объем может состоять из упорядоченного набора дисков. Хотя это в первую очередь позволяет использовать несколько блочных устройств для хранения данных, эта абстракция также позволяет использовать другие типы хранения, включая S3. Части данных ClickHouse могут перемещаться между объемами и уровнями заполнения в соответствии с политиками хранения, создавая тем самым концепцию уровней хранения.
+ClickHouse storage volumes allow physical disks to be abstracted from the MergeTree table engine. Any single volume can be composed of an ordered set of disks. Whilst principally allowing multiple block devices to be potentially used for data storage, this abstraction also allows other storage types, including S3. ClickHouse data parts can be moved between volumes and fill rates according to storage policies, thus creating the concept of storage tiers.
 
-Уровни хранения открывают архитектуры горячего-холодного хранения, где самые последние данные, которые обычно также являются наиболее запрашиваемыми, требуют лишь небольшого объема места на высокопроизводительном хранилище, например, NVMe SSD. По мере старения данных SLA для времени выполнения запросов увеличиваются, как и частота запросов. Этот "толстый хвост" данных может храниться на более медленных, менее производительных накопителях, таких как HDD или объектное хранилище, такое как S3.
+Storage tiers unlock hot-cold architectures where the most recent data, which is typically also the most queried, requires only a small amount of space on high-performing storage, e.g., NVMe SSDs. As the data ages, SLAs for query times increase, as does query frequency. This fat tail of data can be stored on slower, less performant storage such as HDD or object storage such as S3.
 
-### Создание диска {#creating-a-disk}
+### Creating a disk {#creating-a-disk}
 
-Чтобы использовать корзину S3 в качестве диска, мы сначала должны объявить ее в файле конфигурации ClickHouse. Либо расширьте config.xml, либо, предпочтительно, предоставьте новый файл в конфигурации conf.d. Пример объявления диска S3 показан ниже:
+To utilize an S3 bucket as a disk, we must first declare it within the ClickHouse configuration file. Either extend config.xml or preferably provide a new file under conf.d. An example of an S3 disk declaration is shown below:
 
 ```xml
 <clickhouse>
@@ -567,11 +572,11 @@ ClickHouse признает, что S3 представляет собой пр�
 
 ```
 
-Полный список настроек, относящихся к этому объявлению диска, можно найти [здесь](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3). Обратите внимание, что здесь можно управлять учетными данными, используя те же подходы, что и в [Управлении учетными данными](#managing-credentials), т.е. параметр use_environment_credentials может быть установлен в true в вышеуказанном блоке настроек для использования IAM ролей.
+A complete list of settings relevant to this disk declaration can be found [here](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3). Note that credentials can be managed here using the same approaches described in [Managing credentials](#managing-credentials), i.e., the use_environment_credentials can be set to true in the above settings block to use IAM roles.
 
-### Создание политики хранения {#creating-a-storage-policy}
+### Creating a storage policy {#creating-a-storage-policy}
 
-После настройки этот "диск" может использоваться объемом хранилища, объявленным в политике. Для примера ниже мы предполагаем, что s3 является нашим единственным хранилищем. Это игнорирует более сложную архитектуру горячего-холодного хранения, где данные могут перемещаться в зависимости от сроков хранения и уровней заполнения.
+Once configured, this "disk" can be used by a storage volume declared within a policy. For the example below, we assume s3 is our only storage. This ignores more complex hot-cold architectures where data can be relocated based on TTLs and fill rates.
 
 ```xml
 <clickhouse>
@@ -597,9 +602,9 @@ ClickHouse признает, что S3 представляет собой пр�
 </clickhouse>
 ```
 
-### Создание таблицы {#creating-a-table}
+### Creating a table {#creating-a-table}
 
-Предполагая, что вы настроили диск для использования корзины с правами на запись, вы должны иметь возможность создать таблицу, как в примере ниже. В целях краткости мы используем подмножество столбцов такси Нью-Йорка и потоково передаем данные непосредственно в таблицу на основе s3:
+Assuming you have configured your disk to use a bucket with write access, you should be able to create a table such as in the example below. For purposes of brevity, we use a subset of the NYC taxi columns and stream data directly to the s3 backed table:
 
 ```sql
 CREATE TABLE trips_s3
@@ -628,15 +633,15 @@ SETTINGS storage_policy='s3_main'
 INSERT INTO trips_s3 SELECT trip_id, pickup_date, pickup_datetime, dropoff_datetime, pickup_longitude, pickup_latitude, dropoff_longitude, dropoff_latitude, passenger_count, trip_distance, tip_amount, total_amount, payment_type FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
 ```
 
-В зависимости от оборудования последующая вставка 1 миллиона строк может занять несколько минут для выполнения. Вы можете подтвердить процесс через таблицу system.processes. Не стесняйтесь увеличивать количество строк до предела в 10 миллионов и исследовать некоторые примерные запросы.
+Depending on the hardware, this latter insert of 1m rows may take a few minutes to execute. You can confirm the progress via the system.processes table. Feel free to adjust the row count up to the limit of 10m and explore some sample queries.
 
 ```sql
 SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amount FROM trips_s3 GROUP BY passenger_count;
 ```
 
-### Изменение таблицы {#modifying-a-table}
+### Modifying a table {#modifying-a-table}
 
-Периодически пользователям может потребоваться изменить политику хранения конкретной таблицы. Хотя это возможно, это имеет ограничения. Новая целевая политика должна содержать все диски и объемы предыдущей политики, т.е. данные не будут мигрировать для удовлетворения изменения политики. При проверке этих ограничений объемы и диски будут идентифицироваться по их именам, с попытками нарушения приводящими к ошибке. Однако, если вы используете предыдущие примеры, следующие изменения будут действительными.
+Occasionally users may need to modify the storage policy of a specific table. Whilst this is possible, it comes with limitations. The new target policy must contain all of the disks and volumes of the previous policy, i.e., data will not be migrated to satisfy a policy change. When validating these constraints, volumes and disks will be identified by their name, with attempts to violate resulting in an error. However, assuming you use the previous examples, the following changes are valid.
 
 ```xml
 <policies>
@@ -665,35 +670,34 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 ```
 
-Здесь мы повторно используем основной объем в нашей новой политике s3_tiered и вводим новый горячий объем. Это использует диск по умолчанию, который состоит только из одного диска, настроенного через параметр `<path>`. Обратите внимание, что наши имена объемов и дисков не меняются. Новые вставки в нашу таблицу будут находиться на диске по умолчанию, пока не будет достигнут лимит move_factor * disk_size - после чего данные будут перемещены в S3.
+Here we reuse the main volume in our new s3_tiered policy and introduce a new hot volume. This uses the default disk, which consists of only one disk configured via the parameter `<path>`. Note that our volume names and disks do not change.  New inserts to our table will reside on the default disk until this reaches move_factor * disk_size - at which data will be relocated to S3.
 
-### Обработка репликации {#handling-replication}
+### Handling replication {#handling-replication}
 
-Репликация с дисками S3 может быть выполнена с использованием движка таблиц `ReplicatedMergeTree`. См. руководство [репликации одного шарда в двух регионах AWS, используя объектное хранилище S3](#s3-multi-region) для получения подробной информации.
+Replication with S3 disks can be accomplished by using the `ReplicatedMergeTree` table engine.  See the [replicating a single shard across two AWS regions using S3 Object Storage](#s3-multi-region) guide for details.
 
-### Чтение и запись {#read--writes}
+### Read & writes {#read--writes}
 
-Следующие заметки охватывают реализацию взаимодействия S3 с ClickHouse. Хотя они в целом носят информативный характер, они могут помочь читателям при [Оптимизации производительности](#s3-optimizing-performance):
+The following notes cover the implementation of S3 interactions with ClickHouse. Whilst generally only informative, it may help the readers when [Optimizing for Performance](#s3-optimizing-performance):
 
-* По умолчанию максимальное количество потоков обработки запросов, используемых на любом этапе процесса обработки запроса, равно количеству ядер. Некоторые этапы более параллелизуемы, чем другие, поэтому это значение предоставляет верхний предел. Несколько этапов запроса могут выполняться одновременно, поскольку данные передаются с диска. Точное количество потоков, используемых для запроса, может таким образом превышать это значение. Изменять можно с помощью настройки [max_threads](/operations/settings/settings#max_threads).
-* Чтения из S3 по умолчанию являются асинхронными. Это поведение определяется настройкой `remote_filesystem_read_method`, которая по умолчанию установлена в значение `threadpool`. При обслуживании запроса ClickHouse читает гранулы по полосам. Каждая из этих полос может содержать много столбцов. Поток будет читать столбцы для своих гранул по одному. Вместо того, чтобы делать это синхронно, выполняется предзагрузка всех столбцов перед ожиданием данных. Это предлагает значительные улучшения производительности по сравнению с синхронными ожиданиями по каждому столбцу. Пользователи не будут нуждаться в изменении этой настройки в большинстве случаев - смотрите [Оптимизацию производительности](#s3-optimizing-performance).
-* Записи выполняются параллельно, с максимум 100 потоками записи файлов одновременно. Параметр `max_insert_delayed_streams_for_parallel_write`, который имеет значение по умолчанию 1000, контролирует количество S3 объектов, записываемых параллельно. Поскольку для каждого записываемого файла требуется буфер (~1MB), это эффективно ограничивает использование памяти при вставке. В сценариях с низкой памятью сервера может быть уместно понизить это значение.
+* By default, the maximum number of query processing threads used by any stage of the query processing pipeline is equal to the number of cores. Some stages are more parallelizable than others, so this value provides an upper bound.  Multiple query stages may execute at once since data is streamed from the disk. The exact number of threads used for a query may thus exceed this. Modify through the setting [max_threads](/operations/settings/settings#max_threads).
+* Reads on S3 are asynchronous by default. This behavior is determined by setting `remote_filesystem_read_method`, set to the value `threadpool` by default. When serving a request, ClickHouse reads granules in stripes. Each of these stripes potentially contain many columns. A thread will read the columns for their granules one by one. Rather than doing this synchronously, a prefetch is made for all columns before waiting for the data. This offers significant performance improvements over synchronous waits on each column. Users will not need to change this setting in most cases - see [Optimizing for Performance](#s3-optimizing-performance).
+* Writes are performed in parallel, with a maximum of 100 concurrent file writing threads. `max_insert_delayed_streams_for_parallel_write`, which has a default value of 1000,  controls the number of S3 blobs written in parallel. Since a buffer is required for each file being written (~1MB), this effectively limits the memory consumption of an INSERT. It may be appropriate to lower this value in low server memory scenarios.
 
-## Использование объектного хранилища S3 как диска для ClickHouse {#configuring-s3-for-clickhouse-use}
+## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
-Если вам нужны пошаговые инструкции по созданию корзин и роли IAM, то разверните **Создание корзин S3 и роли IAM** и следуйте этому примеру:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
-### Настройка ClickHouse для использования корзины S3 в качестве диска {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
+### Configure ClickHouse to use the S3 bucket as a disk {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
+The following example is based on a Linux Deb package installed as a service with default ClickHouse directories.
 
-Следующий пример основан на установленном пакете Linux Deb в виде службы с настройками ClickHouse по умолчанию.
-
-1.  Создайте новый файл в директории `config.d` ClickHouse для хранения конфигурации хранилища.
+1.  Create a new file in the ClickHouse `config.d` directory to store the storage configuration.
 ```bash
 vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
-2. Добавьте следующее для конфигурации хранилища; замените путь к корзине, ключ доступа и секретные ключи из предыдущих шагов
+2. Add the following for storage configuration; substituting the bucket path, access key and secret keys from earlier steps
 ```xml
 <clickhouse>
   <storage_configuration>
@@ -726,30 +730,30 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
 :::note
-Теги `s3_disk` и `s3_cache` внутри тега `<disks>` являются произвольными метками. Их можно установить на что-то другое, но та же метка должна использоваться в вкладке `<disk>` под вкладкой `<policies>`, чтобы сослаться на диск. Тег `<S3_main>` также произвольный и является именем политики, которая будет использоваться как идентификатор целевого хранения при создании ресурсов в ClickHouse.
+The tags `s3_disk` and `s3_cache` within the `<disks>` tag are arbitrary labels. These can be set to something else but the same label must be used in the `<disk>` tab under the `<policies>` tab to reference the disk.
+The `<S3_main>` tag is also arbitrary and is the name of the policy which will be used as the identifier storage target when creating resources in ClickHouse.
 
-Приведенная выше конфигурация предназначена для версии ClickHouse 22.8 или выше, если вы используете более старую версию, пожалуйста, ознакомьтесь с документацией по [хранению данных](/operations/storing-data.md/#using-local-cache).
+The configuration shown above is for ClickHouse version 22.8 or higher, if you are using an older version please see the [storing data](/operations/storing-data.md/#using-local-cache) docs.
 
-Для получения дополнительной информации о использовании S3:
-Руководство по интеграциям: [MergeTree на основе S3](#s3-backed-mergetree)
+For more information about using S3:
+Integrations Guide: [S3 Backed MergeTree](#s3-backed-mergetree)
 :::
 
-3. Обновите владельца файла на пользователя и группу `clickhouse`
+3. Update the owner of the file to the `clickhouse` user and group
 ```bash
 chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```
-4. Перезапустите экземпляр ClickHouse, чтобы изменения вступили в силу.
+4. Restart the ClickHouse instance to have the changes take effect.
 ```bash
 service clickhouse-server restart
 ```
 
-### Тестирование {#testing}
-
-1. Войдите в клиент ClickHouse, например, так:
+### Testing {#testing}
+1. Log in with the ClickHouse client, something like the following
 ```bash
 clickhouse-client --user default --password ClickHouse123!
 ```
-2. Создайте таблицу, указав новую политику хранения S3
+2. Create a table specifying the new S3 storage policy
 ```sql
 CREATE TABLE s3_table1
            (
@@ -761,7 +765,7 @@ CREATE TABLE s3_table1
            SETTINGS storage_policy = 's3_main';
 ```
 
-3. Убедитесь, что таблица была создана с правильной политикой
+3. Show that the table was created with the correct policy
 ```sql
 SHOW CREATE TABLE s3_table1;
 ```
@@ -778,7 +782,7 @@ SETTINGS storage_policy = 's3_main', index_granularity = 8192
 └──────────────────────────────────────────────────────────────
 ```
 
-4. Вставьте тестовые строки в таблицу
+4. Insert test rows into the table
 ```sql
 INSERT INTO s3_table1
            (id, column1)
@@ -795,7 +799,7 @@ Ok.
 
 2 rows in set. Elapsed: 0.337 sec.
 ```
-5. Просмотрите строки
+5. View the rows
 ```sql
 SELECT * FROM s3_table1;
 ```
@@ -807,50 +811,48 @@ SELECT * FROM s3_table1;
 
 2 rows in set. Elapsed: 0.284 sec.
 ```
-6. В консоли AWS перейдите в корзины и выберите новую и папку.
-Вы должны увидеть что-то подобное:
+6.  In the AWS console, navigate to the buckets, and select the new one and the folder.
+You should see something like the following:
 
-<Image img={S3J} size="lg" border alt="Просмотр корзины S3 в консоли AWS, отображающей файлы данных ClickHouse, хранящиеся в S3" />
+<Image img={S3J} size="lg" border alt="S3 bucket view in AWS console showing ClickHouse data files stored in S3" />
 
-## Репликация одного шарда в двух регионах AWS, используя объектное хранилище S3 {#s3-multi-region}
+## Replicating a single shard across two AWS regions using S3 Object Storage {#s3-multi-region}
 
 :::tip
-Объектное хранилище используется по умолчанию в ClickHouse Cloud, вам не нужно следовать этой процедуре, если вы работаете в ClickHouse Cloud.
+Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
 :::
 
-### План развертывания {#plan-the-deployment}
+### Plan the deployment {#plan-the-deployment}
+This tutorial is based on deploying two ClickHouse Server nodes and three ClickHouse Keeper nodes in AWS EC2.  The data store for the ClickHouse servers is S3. Two AWS regions, with a ClickHouse Server and an S3 Bucket in each region, are used in order to support disaster recovery.
 
-Этот учебник основан на развертывании двух узлов сервера ClickHouse и трех узлов ClickHouse Keeper в AWS EC2. Хранилище данных для серверов ClickHouse — это S3. Используются два региона AWS, в каждом из которых есть сервер ClickHouse и корзина S3, для поддержки аварийного восстановления.
+ClickHouse tables are replicated across the two servers, and therefore across the two regions.
 
-Таблицы ClickHouse реплицируются между двумя серверами, а следовательно и между двумя регионами.
+### Install software {#install-software}
 
-### Установка программного обеспечения {#install-software}
+#### ClickHouse server nodes {#clickhouse-server-nodes}
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
 
-#### Узлы сервера ClickHouse {#clickhouse-server-nodes}
+#### Deploy ClickHouse {#deploy-clickhouse}
 
-Смотрите [инструкции по установке](/getting-started/install/install.mdx) при выполнении шагов развертывания на узлах сервера ClickHouse.
+Deploy ClickHouse on two hosts, in the sample configurations these are named `chnode1`, `chnode2`.
 
-#### Развертывание ClickHouse {#deploy-clickhouse}
+Place `chnode1` in one AWS region, and `chnode2` in a second.
 
-Разверните ClickHouse на двух хостах; в примерных конфигурациях эти узлы называются `chnode1`, `chnode2`.
+#### Deploy ClickHouse Keeper {#deploy-clickhouse-keeper}
 
-Поместите `chnode1` в один регион AWS, а `chnode2` во второй.
+Deploy ClickHouse Keeper on three hosts, in the sample configurations these are named `keepernode1`, `keepernode2`, and `keepernode3`.  `keepernode1` can be deployed in the same region as `chnode1`, `keepernode2` with `chnode2`, and `keepernode3` in either region but a different availability zone from the ClickHouse node in that region.
 
-#### Развертывание ClickHouse Keeper {#deploy-clickhouse-keeper}
+Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse Keeper nodes.
 
-Разверните ClickHouse Keeper на трех хостах; в примерных конфигурациях эти узлы называются `keepernode1`, `keepernode2` и `keepernode3`. `keepernode1` может быть развернут в том же регионе, что и `chnode1`, `keepernode2` с `chnode2`, а `keepernode3` в любом регионе, но в другой зоне доступности от узла ClickHouse в этом регионе.
+### Create S3 buckets {#create-s3-buckets}
 
-Смотрите [инструкции по установке](/getting-started/install/install.mdx) при выполнении шагов развертывания на узлах ClickHouse Keeper.
+Create two S3 buckets, one in each of the regions that you have placed `chnode1` and `chnode2`.
 
-### Создание корзин S3 {#create-s3-buckets}
-
-Создайте две корзины S3, по одной в каждом из регионов, где вы разместили `chnode1` и `chnode2`.
-
-Если вам нужны пошаговые инструкции по созданию корзин и роли IAM, то разверните **Создание корзин S3 и роли IAM** и следуйте этому примеру:
+If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
 
 <BucketDetails />
 
-Файлы конфигурации будут помещены в `/etc/clickhouse-server/config.d/`. Вот пример конфигурационного файла для одной корзины, другой будет аналогичен с тремя отличиями, выделенными:
+The configuration files will then be placed in `/etc/clickhouse-server/config.d/`.  Here is a sample configuration file for one bucket, the other is similar with the three highlighted lines differing:
 
 ```xml title="/etc/clickhouse-server/config.d/storage_config.xml"
 <clickhouse>
@@ -885,16 +887,15 @@ SELECT * FROM s3_table1;
    </storage_configuration>
 </clickhouse>
 ```
-
 :::note
-Многие шаги в этом руководстве попросят вас поместить файл конфигурации в `/etc/clickhouse-server/config.d/`. Это расположение по умолчанию в Linux для файлов переопределения конфигурации. Помещая эти файлы в этот каталог, ClickHouse будет использовать содержимое для переопределения конфигурации по умолчанию. Помещая эти файлы в каталог для переопределения, вы избежите потери своей конфигурации во время обновления.
+Many of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will use the content to override the default configuration.  By placing these files in the override directory you will avoid losing your configuration during an upgrade.
 :::
 
-### Настройка ClickHouse Keeper {#configure-clickhouse-keeper}
+### Configure ClickHouse Keeper {#configure-clickhouse-keeper}
 
-При запуске ClickHouse Keeper отдельно (отдельно от сервера ClickHouse) конфигурация представляет собой единый XML файл. В этом учебнике файл называется `/etc/clickhouse-keeper/keeper_config.xml`. Все три сервера Keeper используют одну и ту же конфигурацию с одной отличающейся настройкой: `<server_id>`.
+When running ClickHouse Keeper standalone (separate from ClickHouse server) the configuration is a single XML file.  In this tutorial, the file is `/etc/clickhouse-keeper/keeper_config.xml`.  All three Keeper servers use the same configuration with one setting different; `<server_id>`.
 
-`server_id` указывает ID, который будет присвоен хосту, на котором используется файл конфигурации. В примере ниже `server_id` равен `3`, и если вы посмотрите дальше по файлу в разделе `<raft_configuration>`, вы увидите, что сервер 3 имеет имя хоста `keepernode3`. Это то, как процесс ClickHouse Keeper знает, к каким другим серверам подключаться при выборе лидера и всех других действиях.
+`server_id` indicates the ID to be assigned to the host where the configuration files is used.  In the example below, the `server_id` is `3`, and if you look further down in the file in the `<raft_configuration>` section, you will see that server 3 has the hostname `keepernode3`.  This is how the ClickHouse Keeper process knows which other servers to connect to when choosing a leader and all other activities.
 
 ```xml title="/etc/clickhouse-keeper/keeper_config.xml"
 <clickhouse>
@@ -942,17 +943,17 @@ SELECT * FROM s3_table1;
 </clickhouse>
 ```
 
-Скопируйте файл конфигурации для ClickHouse Keeper (не забывая установить `<server_id>`):
+Copy the configuration file for ClickHouse Keeper in place (remembering to set the `<server_id>`):
 ```bash
 sudo -u clickhouse \
   cp keeper.xml /etc/clickhouse-keeper/keeper.xml
 ```
 
-### Настройка сервера ClickHouse {#configure-clickhouse-server}
+### Configure ClickHouse server {#configure-clickhouse-server}
 
-#### Определите кластер {#define-a-cluster}
+#### Define a cluster {#define-a-cluster}
 
-Кластеры ClickHouse определяются в разделе `<remote_servers>` конфигурации. В этом образце определен один кластер `cluster_1S_2R`, состоящий из одного шарда с двумя репликами. Реплики находятся на хостах `chnode1` и `chnode2`.
+ClickHouse cluster(s) are defined in the `<remote_servers>` section of the configuration.  In this sample one cluster, `cluster_1S_2R`, is defined and it consists of a single shard with two replicas.  The replicas are located on the hosts `chnode1` and `chnode2`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -973,7 +974,7 @@ sudo -u clickhouse \
 </clickhouse>
 ```
 
-При работе с кластерами удобно определять макросы, которые заполняют запросы DDL настройками кластера, шара и реплики. Этот пример позволяет вам указать использование реплицированного движка таблицы без предоставления деталей `shard` и `replica`. Когда вы создаете таблицу, вы можете увидеть, как используются макросы `shard` и `replica`, выполнив запрос к `system.tables`.
+When working with clusters it is handy to define macros that populate DDL queries with the cluster, shard, and replica settings.  This sample allows you to specify the use of a replicated table engine without providing `shard` and `replica` details.  When you create a table you can see how the `shard` and `replica` macros are used by querying `system.tables`.
 
 ```xml title="/etc/clickhouse-server/config.d/macros.xml"
 <clickhouse>
@@ -987,15 +988,15 @@ sudo -u clickhouse \
     </macros>
 </clickhouse>
 ```
-
 :::note
-Вышеуказанные макросы предназначены для `chnode1`, на `chnode2` установите `replica` в `replica_2`.
+The above macros are for `chnode1`, on `chnode2` set `replica` to `replica_2`.
 :::
-#### Отключить репликацию без копирования {#disable-zero-copy-replication}
 
-В версиях ClickHouse 22.7 и ниже параметр `allow_remote_fs_zero_copy_replication` по умолчанию установлен в значение `true` для дисков S3 и HDFS. Этот параметр должен быть установлен в значение `false` для данного сценария восстановления после сбоя, а в версии 22.8 и выше он по умолчанию установлен в значение `false`.
+#### Disable zero-copy replication {#disable-zero-copy-replication}
 
-Этот параметр должен быть ложным по двум причинам: 1) эта функция не готова к производству; 2) в сценарии восстановления после сбоя как данные, так и метаданные должны храниться в нескольких регионах. Установите `allow_remote_fs_zero_copy_replication` в значение `false`.
+In ClickHouse versions 22.7 and lower the setting `allow_remote_fs_zero_copy_replication` is set to `true` by default for S3 and HDFS disks. This setting should be set to `false` for this disaster recovery scenario, and in version 22.8 and higher it is set to `false` by default.
+
+This setting should be false for two reasons: 1) this feature is not production ready; 2) in a disaster recovery scenario both the data and metadata need to be stored in multiple regions. Set `allow_remote_fs_zero_copy_replication` to `false`.
 
 ```xml title="/etc/clickhouse-server/config.d/remote-servers.xml"
 <clickhouse>
@@ -1005,7 +1006,7 @@ sudo -u clickhouse \
 </clickhouse>
 ```
 
-ClickHouse Keeper отвечает за координацию репликации данных между узлами ClickHouse. Чтобы информировать ClickHouse о узлах ClickHouse Keeper, добавьте файл конфигурации на каждый из узлов ClickHouse.
+ClickHouse Keeper is responsible for coordinating the replication of data across the ClickHouse nodes.  To inform ClickHouse about the ClickHouse Keeper nodes add a configuration file to each of the ClickHouse nodes.
 
 ```xml title="/etc/clickhouse-server/config.d/use_keeper.xml"
 <clickhouse>
@@ -1025,30 +1026,34 @@ ClickHouse Keeper отвечает за координацию репликац�
     </zookeeper>
 </clickhouse>
 ```
-### Настройка сетевого взаимодействия {#configure-networking}
 
-Смотрите список [сетевых портов](../../../guides/sre/network-ports.md), когда вы настраиваете параметры безопасности в AWS, чтобы ваши серверы могли общаться друг с другом, и вы могли с ними взаимодействовать.
+### Configure networking {#configure-networking}
 
-Все три сервера должны слушать сетевые соединения, чтобы они могли общаться между серверами и с S3. По умолчанию ClickHouse слушает только на адресе обратной петли, поэтому это необходимо изменить. Это настраивается в `/etc/clickhouse-server/config.d/`. Вот пример, который настраивает ClickHouse и ClickHouse Keeper на прослушивание на всех IP v4 интерфейсах. Смотрите документацию или файл конфигурации по умолчанию `/etc/clickhouse/config.xml` для получения дополнительной информации.
+See the [network ports](../../../guides/sre/network-ports.md) list when you configure the security settings in AWS so that your servers can communicate with each other, and you can communicate with them.
+
+All three servers must listen for network connections so that they can communicate between the servers and with S3.  By default, ClickHouse listens only on the loopback address, so this must be changed.  This is configured in `/etc/clickhouse-server/config.d/`.  Here is a sample that configures ClickHouse and ClickHouse Keeper to listen on all IP v4 interfaces.  see the documentation or the default configuration file `/etc/clickhouse/config.xml` for more information.
 
 ```xml title="/etc/clickhouse-server/config.d/networking.xml"
 <clickhouse>
     <listen_host>0.0.0.0</listen_host>
 </clickhouse>
 ```
-### Запуск серверов {#start-the-servers}
-#### Запустить ClickHouse Keeper {#run-clickhouse-keeper}
 
-На каждом сервере Keeper выполните команды для вашей операционной системы, например:
+### Start the servers {#start-the-servers}
+
+#### Run ClickHouse Keeper {#run-clickhouse-keeper}
+
+On each Keeper server run the commands for your operating system, for example:
 
 ```bash
 sudo systemctl enable clickhouse-keeper
 sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
-#### Проверка статуса ClickHouse Keeper {#check-clickhouse-keeper-status}
 
-Отправьте команды в ClickHouse Keeper с помощью `netcat`. Например, `mntr` возвращает состояние кластера ClickHouse Keeper. Если вы запустите команду на каждом из узлов Keeper, вы увидите, что один из них является лидером, а другие два - подписчиками:
+#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
+
+Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
 
 ```bash
 echo mntr | nc localhost 9181
@@ -1060,12 +1065,10 @@ zk_max_latency  11
 zk_min_latency  0
 zk_packets_received     1783
 zk_packets_sent 1783
-
 # highlight-start
 zk_num_alive_connections        2
 zk_outstanding_requests 0
 zk_server_state leader
-
 # highlight-end
 zk_znode_count  135
 zk_watch_count  8
@@ -1075,168 +1078,170 @@ zk_key_arena_size       28672
 zk_latest_snapshot_size 0
 zk_open_file_descriptor_count   182
 zk_max_file_descriptor_count    18446744073709551615
-
 # highlight-start
 zk_followers    2
 zk_synced_followers     2
-
 # highlight-end
 ```
-#### Запустить сервер ClickHouse {#run-clickhouse-server}
 
-На каждом сервере ClickHouse выполните
+#### Run ClickHouse server {#run-clickhouse-server}
+
+On each ClickHouse server run
 
 ```bash
 sudo service clickhouse-server start
 ```
-#### Проверка сервера ClickHouse {#verify-clickhouse-server}
 
-Когда вы добавили [конфигурацию кластера](#define-a-cluster), был определен один шард, реплицируемый на двух узлах ClickHouse. На этом этапе проверки вы проверите, что кластер был построен при запуске ClickHouse, и создадите реплицированную таблицу, используя этот кластер.
-- Проверьте, что кластер существует:
-```sql
-show clusters
-```
-```response
-┌─cluster───────┐
-│ cluster_1S_2R │
-└───────────────┘
+#### Verify ClickHouse server {#verify-clickhouse-server}
 
-1 row in set. Elapsed: 0.009 sec. `
-```
+When you added the [cluster configuration](#define-a-cluster) a single shard replicated across the two ClickHouse nodes was defined.  In this verification step you will check that the cluster was built when ClickHouse was started, and you will create a replicated table using that cluster.
+- Verify that the cluster exists:
+  ```sql
+  show clusters
+  ```
+  ```response
+  ┌─cluster───────┐
+  │ cluster_1S_2R │
+  └───────────────┘
 
-- Создайте таблицу в кластере, используя движок таблицы `ReplicatedMergeTree`:
-```sql
-create table trips on cluster 'cluster_1S_2R' (
- `trip_id` UInt32,
- `pickup_date` Date,
- `pickup_datetime` DateTime,
- `dropoff_datetime` DateTime,
- `pickup_longitude` Float64,
- `pickup_latitude` Float64,
- `dropoff_longitude` Float64,
- `dropoff_latitude` Float64,
- `passenger_count` UInt8,
- `trip_distance` Float64,
- `tip_amount` Float32,
- `total_amount` Float32,
- `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
-ENGINE = ReplicatedMergeTree
-PARTITION BY toYYYYMM(pickup_date)
-ORDER BY pickup_datetime
-SETTINGS storage_policy='s3_main'
-```
-```response
-┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-│ chnode1 │ 9000 │      0 │       │                   1 │                0 │
-│ chnode2 │ 9000 │      0 │       │                   0 │                0 │
-└─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-```
-- Понять использование ранее определенных макросов
+  1 row in set. Elapsed: 0.009 sec. `
+  ```
 
-  Макросы `shard` и `replica` были [определены ранее](#define-a-cluster), и в выделенной строке ниже вы можете увидеть, где значения подставляются на каждом узле ClickHouse. Кроме того, используется значение `uuid`; `uuid` не определен в макросах, поскольку он генерируется системой.
-```sql
-SELECT create_table_query
-FROM system.tables
-WHERE name = 'trips'
-FORMAT Vertical
-```
-```response
-Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
+- Create a table in the cluster using the `ReplicatedMergeTree` table engine:
+  ```sql
+  create table trips on cluster 'cluster_1S_2R' (
+   `trip_id` UInt32,
+   `pickup_date` Date,
+   `pickup_datetime` DateTime,
+   `dropoff_datetime` DateTime,
+   `pickup_longitude` Float64,
+   `pickup_latitude` Float64,
+   `dropoff_longitude` Float64,
+   `dropoff_latitude` Float64,
+   `passenger_count` UInt8,
+   `trip_distance` Float64,
+   `tip_amount` Float32,
+   `total_amount` Float32,
+   `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  ENGINE = ReplicatedMergeTree
+  PARTITION BY toYYYYMM(pickup_date)
+  ORDER BY pickup_datetime
+  SETTINGS storage_policy='s3_main'
+  ```
+  ```response
+  ┌─host────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+  │ chnode1 │ 9000 │      0 │       │                   1 │                0 │
+  │ chnode2 │ 9000 │      0 │       │                   0 │                0 │
+  └─────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+  ```
+- Understand the use of the macros defined earlier
 
-Row 1:
-──────
-create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  The macros `shard`, and `replica` were [defined earlier](#define-a-cluster), and in the highlighted line below you can see where the values are substituted on each ClickHouse node.  Additionally, the value `uuid` is used; `uuid` is not defined in the macros as it is generated by the system.
+  ```sql
+  SELECT create_table_query
+  FROM system.tables
+  WHERE name = 'trips'
+  FORMAT Vertical
+  ```
+  ```response
+  Query id: 4d326b66-0402-4c14-9c2f-212bedd282c0
 
-# highlight-next-line
-ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
-PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS storage_policy = 's3_main'
+  Row 1:
+  ──────
+  create_table_query: CREATE TABLE default.trips (`trip_id` UInt32, `pickup_date` Date, `pickup_datetime` DateTime, `dropoff_datetime` DateTime, `pickup_longitude` Float64, `pickup_latitude` Float64, `dropoff_longitude` Float64, `dropoff_latitude` Float64, `passenger_count` UInt8, `trip_distance` Float64, `tip_amount` Float32, `total_amount` Float32, `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+  # highlight-next-line
+  ENGINE = ReplicatedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
+  PARTITION BY toYYYYMM(pickup_date) ORDER BY pickup_datetime SETTINGS storage_policy = 's3_main'
 
-1 row in set. Elapsed: 0.012 sec.
-```
+  1 row in set. Elapsed: 0.012 sec.
+  ```
   :::note
-  Вы можете настроить путь Zookeeper `'clickhouse/tables/{uuid}/{shard}` показанный выше, установив `default_replica_path` и `default_replica_name`. Документация доступна [здесь](/operations/server-configuration-parameters/settings.md/#default_replica_path).
+  You can customize the zookeeper path `'clickhouse/tables/{uuid}/{shard}` shown above by setting `default_replica_path` and `default_replica_name`.  The docs are [here](/operations/server-configuration-parameters/settings.md/#default_replica_path).
   :::
-### Тестирование {#testing-1}
 
-Эти тесты проверят, что данные реплицируются между двумя серверами и что они хранятся в S3 корзинах, а не на локальном диске.
+### Testing {#testing-1}
 
-- Добавьте данные из набора данных такси Нью-Йорка:
-```sql
-INSERT INTO trips
-SELECT trip_id,
-       pickup_date,
-       pickup_datetime,
-       dropoff_datetime,
-       pickup_longitude,
-       pickup_latitude,
-       dropoff_longitude,
-       dropoff_latitude,
-       passenger_count,
-       trip_distance,
-       tip_amount,
-       total_amount,
-       payment_type
-   FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
-```
-- Проверьте, что данные хранятся в S3.
+These tests will verify that data is being replicated across the two servers, and that it is stored in the S3 Buckets and not on local disk.
 
-  Этот запрос показывает размер данных на диске и политику, используемую для определения того, какой диск используется.
-```sql
-SELECT
-    engine,
-    data_paths,
-    metadata_path,
-    storage_policy,
-    formatReadableSize(total_bytes)
-FROM system.tables
-WHERE name = 'trips'
-FORMAT Vertical
-```
-```response
-Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
+- Add data from the New York City taxi dataset:
+  ```sql
+  INSERT INTO trips
+  SELECT trip_id,
+         pickup_date,
+         pickup_datetime,
+         dropoff_datetime,
+         pickup_longitude,
+         pickup_latitude,
+         dropoff_longitude,
+         dropoff_latitude,
+         passenger_count,
+         trip_distance,
+         tip_amount,
+         total_amount,
+         payment_type
+     FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
+  ```
+- Verify that data is stored in S3.
 
-Row 1:
-──────
-engine:                          ReplicatedMergeTree
-data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
-metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
-storage_policy:                  s3_main
-formatReadableSize(total_bytes): 36.42 MiB
+  This query shows the size of the data on disk, and the policy used to determine which disk is used.
+  ```sql
+  SELECT
+      engine,
+      data_paths,
+      metadata_path,
+      storage_policy,
+      formatReadableSize(total_bytes)
+  FROM system.tables
+  WHERE name = 'trips'
+  FORMAT Vertical
+  ```
+  ```response
+  Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
 
-1 row in set. Elapsed: 0.009 sec.
-```
+  Row 1:
+  ──────
+  engine:                          ReplicatedMergeTree
+  data_paths:                      ['/var/lib/clickhouse/disks/s3_disk/store/551/551a859d-ec2d-4512-9554-3a4e60782853/']
+  metadata_path:                   /var/lib/clickhouse/store/e18/e18d3538-4c43-43d9-b083-4d8e0f390cf7/trips.sql
+  storage_policy:                  s3_main
+  formatReadableSize(total_bytes): 36.42 MiB
 
-  Проверьте размер данных на локальном диске. Согласно вышеуказанному, размер на диске для миллионов строк составляет 36.42 MiB. Это должно быть в S3, а не на локальном диске. Также вышеизложенный запрос сообщает, где на локальном диске хранятся данные и метаданные. Проверьте локальные данные:
-```response
-root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
-536K  /var/lib/clickhouse/disks/s3_disk/store/551
-```
+  1 row in set. Elapsed: 0.009 sec.
+  ```
 
-  Проверьте данные S3 в каждой S3 корзине (общая сумма не отображается, но в обеих корзинах примерно 36 MiB данных после вставок):
+  Check the size of data on the local disk.  From above, the size on disk for the millions of rows stored is 36.42 MiB.  This should be on S3, and not the local disk.  The query above also tells us where on local disk data and metadata is stored.  Check the local data:
+  ```response
+  root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
+  536K  /var/lib/clickhouse/disks/s3_disk/store/551
+  ```
 
-<Image img={Bucket1} size="lg" border alt="Размер данных в первой S3 корзине, показывающий метрики использования хранилища" />
+  Check the S3 data in each S3 Bucket (the totals are not shown, but both buckets have approximately 36 MiB stored after the inserts):
 
-<Image img={Bucket2} size="lg" border alt="Размер данных во второй S3 корзине, показывающий метрики использования хранилища" />
+<Image img={Bucket1} size="lg" border alt="Size of data in first S3 bucket showing storage usage metrics" />
+
+<Image img={Bucket2} size="lg" border alt="Size of data in second S3 bucket showing storage usage metrics" />
+
 ## S3Express {#s3express}
 
-[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) — это новый высокопроизводительный класс хранения с одним доступным зоной в Amazon S3.
+[S3Express](https://aws.amazon.com/s3/storage-classes/express-one-zone/) is a new high-performance, single-Availability Zone storage class in Amazon S3.
 
-Вы можете ознакомиться с этим [блогом](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/), чтобы прочитать о нашем опыте тестирования S3Express с ClickHouse.
+You could refer to this [blog](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/) to read about our experience testing S3Express with ClickHouse.
 
 :::note
-  S3Express хранит данные в одной AZ. Это означает, что данные будут недоступны в случае сбоя AZ.
+  S3Express stores data within a single AZ. It means data will be unavailable in case of AZ outage.
 :::
-### S3 диск {#s3-disk}
 
-Создание таблицы с хранением, основанным на S3Express корзине, включает в себя следующие шаги:
+### S3 disk {#s3-disk}
 
-1. Создайте корзину типа `Directory`
-2. Установите соответствующую политику корзины, чтобы предоставить все необходимые разрешения вашему пользователю S3 (например, `"Action": "s3express:*"`, чтобы просто разрешить неограниченный доступ)
-3. При настройке политики хранения укажите параметр `region`
+Creating a table with storage backed by a S3Express bucket involves the following steps:
 
-Конфигурация хранения такая же, как для обычного S3 и может выглядеть следующим образом:
+1. Create a bucket of `Directory` type
+2. Install appropriate bucket policy to grant all required permissions to your S3 user (e.g. `"Action": "s3express:*"` to simply allow unrestricted access)
+3. When configuring the storage policy please provide the `region` parameter
 
-```sql
+Storage configuration is the same as for ordinary S3 and for example might look the following way:
+
+``` sql
 <storage_configuration>
     <disks>
         <s3_express>
@@ -1259,9 +1264,9 @@ root@chnode1:~# du -sh /var/lib/clickhouse/disks/s3_disk/store/551
 </storage_configuration>
 ```
 
-А затем создайте таблицу на новом хранилище:
+And then create a table on the new storage:
 
-```sql
+``` sql
 CREATE TABLE t
 (
     a UInt64,
@@ -1271,17 +1276,18 @@ ENGINE = MergeTree
 ORDER BY a
 SETTINGS storage_policy = 's3_express';
 ```
-### S3 хранилище {#s3-storage}
 
-S3 хранилище также поддерживается, но только для путей `Object URL`. Пример:
+### S3 storage {#s3-storage}
 
-```sql
+S3 storage is also supported but only for `Object URL` paths. Example:
+
+``` sql
 SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com/file.csv', ...)
 ```
 
-Это также требует указания региона корзины в конфигурации:
+it also requires specifying bucket region in the config:
 
-```xml
+``` xml
 <s3>
     <perf-bucket-url>
         <endpoint>https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-north-1.amazonaws.com</endpoint>
@@ -1289,11 +1295,12 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
     </perf-bucket-url>
 </s3>
 ```
-### Резервные копии {#backups}
 
-Существует возможность хранить резервную копию на диске, который мы создали выше:
+### Backups {#backups}
 
-```sql
+It is possible to store a backup on the disk we created above:
+
+``` sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status─────────┐
@@ -1301,7 +1308,7 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 └──────────────────────────────────────┴────────────────┘
 ```
 
-```sql
+``` sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
 
 ┌─id───────────────────────────────────┬─status───┐

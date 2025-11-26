@@ -1,13 +1,13 @@
 ---
-slug: '/install/quick-install-curl'
-sidebar_label: 'Quick install'
-description: 'Установить ClickHouse на любой платформе, используя curl'
-title: 'Install ClickHouse via script using curl'
+description: 'Установите ClickHouse на любой платформе с помощью curl'
 keywords: ['ClickHouse', 'install', 'quick', 'curl']
-doc_type: guide
+sidebar_label: 'Быстрая установка'
+slug: /install/quick-install-curl
+title: 'Установка ClickHouse с помощью скрипта curl'
 hide_title: true
+doc_type: 'guide'
 ---
+
 import QuickInstall from './_snippets/_quick_install.md'
 
-
-<QuickInstall/>
+<QuickInstall />

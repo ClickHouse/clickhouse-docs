@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/skewpop'
+description: 'Вычисляет коэффициент асимметрии распределения последовательности.'
 sidebar_position: 185
-description: 'Вычисляет асимметрию последовательности.'
-title: skewPop
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/skewpop
+title: 'skewPop'
+doc_type: 'reference'
 ---
+
 # skewPop
 
-Вычисляет [асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
+Вычисляет [коэффициент асимметрии](https://en.wikipedia.org/wiki/Skewness) последовательности значений.
 
 ```sql
 skewPop(expr)
@@ -15,11 +16,11 @@ skewPop(expr)
 
 **Аргументы**
 
-`expr` — [Выражение](/sql-reference/syntax#expressions), возвращающее число.
+`expr` — [выражение](/sql-reference/syntax#expressions), возвращающее число.
 
 **Возвращаемое значение**
 
-Асимметрия данного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
+Асимметрия заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md)
 
 **Пример**
 

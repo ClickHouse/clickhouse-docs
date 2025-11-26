@@ -1,18 +1,19 @@
 ---
-slug: '/sql-reference/statements/alter/named-collection'
+description: 'Справочник по ALTER NAMED COLLECTION'
 sidebar_label: 'NAMED COLLECTION'
-description: 'Документация для ALTER NAMED COLLECTION'
+slug: /sql-reference/statements/alter/named-collection
 title: 'ALTER NAMED COLLECTION'
-doc_type: reference
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
 
-# ИЗМЕНИТЬ NAMED COLLECTION
+# ALTER NAMED COLLECTION
 
-Этот запрос предназначен для изменения уже существующих именованных коллекций.
+Этот запрос предназначен для изменения существующих именованных коллекций.
 
 **Синтаксис**
 

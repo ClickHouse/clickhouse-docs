@@ -1,53 +1,64 @@
 ---
-slug: '/operations/system-tables/dictionaries'
-description: 'Системная таблица, содержащая информацию о словарях'
-title: system.dictionaries
-keywords: ['системная таблица', 'словари']
-doc_type: reference
+description: 'Системная таблица, содержащая сведения о словарях'
+keywords: ['system table', 'словари']
+slug: /operations/system-tables/dictionaries
+title: 'system.dictionaries'
+doc_type: 'reference'
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-<SystemTableCloud/>
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+<SystemTableCloud />
 
 Содержит информацию о [словарях](../../sql-reference/dictionaries/index.md).
 
 Столбцы:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, содержащей словарь, созданный с помощью DDL-запроса. Пустая строка для других словарей.
-- `name` ([String](../../sql-reference/data-types/string.md)) — [Имя словаря](../../sql-reference/dictionaries/index.md).
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID словаря.
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — Статус словаря. Возможные значения:
-  - `NOT_LOADED` — Словарь не был загружен, потому что не использовался.
-  - `LOADED` — Словарь успешно загружен.
-  - `FAILED` — Не удалось загрузить словарь в результате ошибки.
-  - `LOADING` — Словарь в процессе загрузки.
-  - `LOADED_AND_RELOADING` — Словарь успешно загружен и сейчас повторно загружается (частые причины: [SYSTEM RELOAD DICTIONARY](/sql-reference/statements/system#reload-dictionaries) запрос, тайм-аут, изменена конфигурация словаря).
-  - `FAILED_AND_RELOADING` — Не удалось загрузить словарь в результате ошибки и он загружается сейчас.
-- `origin` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу конфигурации, описывающему словарь.
-- `type` ([String](../../sql-reference/data-types/string.md)) — Тип распределения словаря. [Хранение словарей в памяти](/sql-reference/dictionaries#storing-dictionaries-in-memory).
-- `key.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Массив [имен ключей](/operations/system-tables/dictionaries), предоставленных словарем.
-- `key.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Соответствующий массив [типов ключей](/sql-reference/dictionaries#dictionary-key-and-fields), предоставленных словарем.
-- `attribute.names` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Массив [имен атрибутов](/sql-reference/dictionaries#dictionary-key-and-fields), предоставленных словарем.
-- `attribute.types` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Соответствующий массив [типов атрибутов](/sql-reference/dictionaries#dictionary-key-and-fields), предоставленных словарем.
-- `bytes_allocated` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Объем ОЗУ, выделенный для словаря.
-- `query_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество запросов с момента загрузки словаря или с момента последнего успешного перезапуска.
-- `hit_rate` ([Float64](../../sql-reference/data-types/float.md)) — Для кэшированных словарей процент случаев, когда значение находилось в кэше.
-- `found_rate` ([Float64](../../sql-reference/data-types/float.md)) — Процент случаев, когда значение было найдено.
-- `element_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество элементов, хранящихся в словаре.
-- `load_factor` ([Float64](../../sql-reference/data-types/float.md)) — Процент заполненности словаря (для хэшированного словаря — процент заполненности в хеш-таблице).
-- `source` ([String](../../sql-reference/data-types/string.md)) — Текст, описывающий [источник данных](../../sql-reference/dictionaries/index.md#dictionary-sources) для словаря.
-- `lifetime_min` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Минимальный [срок жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) словаря в памяти, после которого ClickHouse пытается перезагрузить словарь (если установлен `invalidate_query`, то только если он изменился). Устанавливается в секундах.
-- `lifetime_max` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Максимальный [срок жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) словаря в памяти, после которого ClickHouse пытается перезагрузить словарь (если установлен `invalidate_query`, то только если он изменился). Устанавливается в секундах.
-- `loading_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время начала загрузки словаря.
-- `last_successful_update_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время завершения загрузки или обновления словаря. Помогает отслеживать некоторые проблемы с источниками словаря и исследовать причины.
-- `error_count` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) - Количество ошибок с момента последней успешной загрузки. Помогает отслеживать некоторые проблемы с источниками словаря и исследовать причины.
-- `loading_duration` ([Float32](../../sql-reference/data-types/float.md)) — Длительность загрузки словаря.
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — Текст ошибки, возникающей при создании или перезагрузке словаря, если словарь не удалось создать.
-- `comment` ([String](../../sql-reference/data-types/string.md)) — Текст комментария к словарю.
+
+{/*AUTOGENERATED_START*/ }
+
+* `database` ([String](../../sql-reference/data-types/)) — Имя базы данных, содержащей словарь, созданный DDL-запросом. Пустая строка для других словарей.
+* `name` ([String](../../sql-reference/data-types/)) — Имя словаря.
+* `uuid` ([UUID](../../sql-reference/data-types/)) — UUID словаря.
+* `status` ([Enum8(&#39;NOT&#95;LOADED&#39; = 0, &#39;LOADED&#39; = 1, &#39;FAILED&#39; = 2, &#39;LOADING&#39; = 3, &#39;FAILED&#95;AND&#95;RELOADING&#39; = 4, &#39;LOADED&#95;AND&#95;RELOADING&#39; = 5, &#39;NOT&#95;EXIST&#39; = 6)](../../sql-reference/data-types/)) — Статус словаря. Возможные значения:
+  * **NOT&#95;LOADED** — Словарь не был загружен, так как не использовался
+  * **LOADED** — Словарь успешно загружен
+  * **FAILED** — Не удалось загрузить словарь из-за ошибки
+  * **LOADING** — Словарь сейчас загружается
+  * **LOADED&#95;AND&#95;RELOADING** — Словарь успешно загружен
+  * **и в данный момент перезагружается (частые причины: запрос SYSTEM RELOAD DICTIONARY** —
+  * **таймаут** —
+  * **изменение конфигурации словаря)** —
+  * **FAILED&#95;AND&#95;RELOADING** — Не удалось загрузить словарь из-за ошибки, и сейчас он загружается.
+* `origin` ([String](../../sql-reference/data-types/)) — Путь к конфигурационному файлу, который описывает словарь.
+* `type` ([String](../../sql-reference/data-types/)) — Тип размещения словаря. См. «Хранение словарей в памяти».
+* `key.names` ([Array(String)](../../sql-reference/data-types/)) — Массив имён ключей, предоставленных словарём.
+* `key.types` ([Array(String)](../../sql-reference/data-types/)) — Соответствующий массив типов ключей, предоставленных словарём.
+* `attribute.names` ([Array(String)](../../sql-reference/data-types/)) — Массив имён атрибутов, предоставленных словарём.
+* `attribute.types` ([Array(String)](../../sql-reference/data-types/)) — Соответствующий массив типов атрибутов, предоставленных словарём.
+* `bytes_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём оперативной памяти, выделенной для словаря.
+* `hierarchical_index_bytes_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём оперативной памяти, выделенной для иерархического индекса.
+* `query_count` ([UInt64](../../sql-reference/data-types/)) — Количество запросов с момента загрузки словаря или последней успешной перезагрузки.
+* `hit_rate` ([Float64](../../sql-reference/data-types/)) — Для кэш-словарей — процент обращений, при которых значение было найдено в кэше.
+* `found_rate` ([Float64](../../sql-reference/data-types/)) — Процент обращений, при которых значение было найдено.
+* `element_count` ([UInt64](../../sql-reference/data-types/)) — Количество элементов, хранящихся в словаре.
+* `load_factor` ([Float64](../../sql-reference/data-types/)) — Процент заполнения словаря (для хеш-словаря — процент заполнения хеш-таблицы).
+* `source` ([String](../../sql-reference/data-types/)) — Текстовое описание источника данных для словаря.
+* `lifetime_min` ([UInt64](../../sql-reference/data-types/)) — Минимальное время жизни словаря в памяти, по истечении которого ClickHouse пытается перезагрузить словарь (если задан `invalidate_query`, то только если он изменился). Указывается в секундах.
+* `lifetime_max` ([UInt64](../../sql-reference/data-types/)) — Максимальное время жизни словаря в памяти, по истечении которого ClickHouse пытается перезагрузить словарь (если задан `invalidate_query`, то только если он изменился). Указывается в секундах.
+* `loading_start_time` ([DateTime](../../sql-reference/data-types/)) — Время начала загрузки словаря.
+* `last_successful_update_time` ([DateTime](../../sql-reference/data-types/)) — Время окончания загрузки или обновления словаря. Помогает контролировать проблемы с источниками словаря и исследовать их причины.
+* `error_count` ([UInt64](../../sql-reference/data-types/)) — Количество ошибок с момента последней успешной загрузки. Помогает контролировать проблемы с источниками словаря и исследовать их причины.
+* `loading_duration` ([Float32](../../sql-reference/data-types/)) — Длительность загрузки словаря.
+* `last_exception` ([String](../../sql-reference/data-types/)) — Текст ошибки, возникающей при создании или перезагрузке словаря, если словарь не удалось создать.
+* `comment` ([String](../../sql-reference/data-types/)) — Текст комментария к словарю.
+
+{/*AUTOGENERATED_END*/ }
 
 **Пример**
 
 Настройте словарь:
+
 
 ```sql
 CREATE DICTIONARY dictionary_with_comment
@@ -59,7 +70,7 @@ PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'source_table'))
 LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
-COMMENT 'The temporary dictionary';
+COMMENT 'Временный словарь';
 ```
 
 Убедитесь, что словарь загружен.
@@ -94,5 +105,5 @@ loading_start_time:          1970-01-01 00:00:00
 last_successful_update_time: 1970-01-01 00:00:00
 loading_duration:            0
 last_exception:
-comment:                     The temporary dictionary
+comment:                     Временный словарь
 ```

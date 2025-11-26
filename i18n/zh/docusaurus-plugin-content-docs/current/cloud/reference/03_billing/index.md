@@ -1,20 +1,18 @@
 ---
-'slug': '/cloud/manage/billing'
-'title': '账单'
-'description': '账单的目录页。'
-'keywords':
-- 'billing'
-- 'payment thresholds'
-- 'trouble shooting'
-- 'marketplace'
-'doc_type': 'landing-page'
+slug: /cloud/manage/billing
+title: '计费'
+description: '计费目录页面。'
+keywords: ['billing', 'payment thresholds', 'trouble shooting', 'marketplace']
+doc_type: 'landing-page'
 ---
 
-该文档的这一部分涵盖与计费相关的主题，并包含以下页面：
+本节文档涵盖与计费相关的主题，并包含以下页面：
 
-| 页面                                  | 描述                                                              |
-|---------------------------------------|------------------------------------------------------------------|
-| [概述](/cloud/marketplace/marketplace-billing)                       | 市场计费的概述和常见问题页面。                                      | 
-| [付款阈值](/cloud/billing/payment-thresholds)             | 了解付款阈值的工作原理以及如何调整它们。                             |
-| [排查计费问题](/manage/clickhouse-cloud-billing-compliance) | 排查常见的计费问题。                                              |
-| [市场](/cloud/manage/marketplace/)                    | 进一步市场相关主题的着陆页。                                      |
+| Page                                  | Description                                                          |
+|---------------------------------------|----------------------------------------------------------------------|
+| [Overview](/cloud/manage/billing/overview)                       | 计费相关的定价示例和常见问题解答。                      | 
+| [Payment Thresholds](/cloud/billing/payment-thresholds)             | 了解付款阈值的工作机制以及如何进行调整。 |
+| [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | 排查常见计费问题。                                  |
+| [Marketplace](/cloud/manage/marketplace/)                    | 与 Marketplace 相关主题的入口页面。                 |
+
+https://clickhouse.com/docs/cloud/

@@ -1,47 +1,58 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/react-native'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 7
-'description': 'React Native SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'React Native'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/react-native
+pagination_prev: null
+pagination_next: null
+sidebar_position: 7
+description: 'React Native SDK для ClickStack - стек наблюдаемости ClickHouse'
+title: 'React Native'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
-ClickStack React Native SDK позволяет вам интегрировать ваше React Native приложение для отправки событий в ClickStack. Это позволяет вам видеть мобильные сетевые запросы и исключения вместе с событиями бэкенда на одной временной шкале.
 
-Этот гид включает в себя:
+React Native SDK для ClickStack позволяет инструментировать ваше React Native‑приложение
+для отправки событий в ClickStack. Это позволяет просматривать сетевые запросы
+мобильного приложения и исключения вместе с событиями бэкенд‑сервисов на единой временной шкале.
 
-- **XHR/Fetch Запросы**
+В данном руководстве интегрируются:
 
-## Начало работы {#getting-started}
+- **XHR/Fetch‑запросы**
 
-### Установка через NPM {#install-via-npm}
+## Приступаем к работе {#getting-started}
 
-Используйте следующую команду для установки [пакета ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
+### Установка через npm
+
+Используйте следующую команду, чтобы установить [пакет ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
 
 ```shell
 npm install @hyperdx/otel-react-native
 ```
 
-### Инициализация ClickStack {#initialize-clickstack}
 
-Инициализируйте библиотеку как можно раньше в жизненном цикле вашего приложения:
+### Инициализируйте ClickStack
+
+Инициализируйте библиотеку как можно раньше в жизненном цикле приложения:
 
 ```javascript
 import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
   service: 'my-rn-app',
-  apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+  apiKey: '<ВАШ_КЛЮЧ_API_ПРИЁМА>',
+  tracePropagationTargets: [/api.myapp.domain/i], // Укажите для связывания трассировок между фронтендом и бэкенд-запросами
 });
 ```
 
-### Присоединение информации о пользователе или метаданных (необязательно) {#attach-user-information-metadata}
 
-Присоединение информации о пользователе позволит вам искать/фильтровать сессии и события в HyperDX. Это можно вызвать в любой момент во время клиентской сессии. Текущая клиентская сессия и все события, отправленные после вызова, будут ассоциированы с информацией о пользователе.
+### Добавление информации о пользователе или метаданных (необязательно)
 
-`userEmail`, `userName` и `teamName` заполнят интерфейс сессий соответствующими значениями, но могут быть опущены. Любые другие дополнительные значения могут быть указаны и использованы для поиска событий.
+Добавление информации о пользователе позволит выполнять поиск и фильтрацию
+сеансов и событий в HyperDX. Эту функцию можно вызывать в любой момент в ходе
+клиентского сеанса. Текущий клиентский сеанс и все события, отправленные после
+вызова, будут связаны с указанной информацией о пользователе.
+
+`userEmail`, `userName` и `teamName` будут отображаться в интерфейсе сеансов с
+соответствующими значениями, но их можно не указывать. Можно задать любые
+другие дополнительные значения и использовать их для поиска событий.
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
@@ -49,13 +60,16 @@ HyperDXRum.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // Other custom properties...
+  // Другие пользовательские свойства...
 });
 ```
 
-### Инструментирование более низких версий {#instrument-lower-versions}
 
-Чтобы инструментировать приложения, работающие на версиях React Native ниже 0.68, отредактируйте ваш файл `metro.config.js`, чтобы заставить metro использовать специфические для браузера пакеты. Например:
+### Инструментирование более старых версий
+
+Чтобы инструментировать приложения, работающие на React Native версии ниже 0.68,
+отредактируйте файл `metro.config.js`, чтобы Metro использовал пакеты,
+ориентированные на браузер. Например:
 
 ```javascript
 const defaultResolver = require('metro-resolver');
@@ -97,11 +111,12 @@ module.exports = {
 };
 ```
 
-## Навигация представлений {#view-navigation}
 
-Поддерживаются версии [react-navigation](https://github.com/react-navigation/react-navigation) 5 и 6.
+## Навигация между экранами
 
-Следующий пример показывает, как инструментировать навигацию:
+Поддерживаются версии 5 и 6 [react-navigation](https://github.com/react-navigation/react-navigation).
+
+В следующем примере показано, как проинструментировать навигацию:
 
 ```javascript
 import { startNavigationTracking } from '@hyperdx/otel-react-native';

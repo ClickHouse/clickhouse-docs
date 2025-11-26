@@ -1,11 +1,13 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/groupbitmapand'
+description: 'Выполняет операцию AND над столбцом bitmap, возвращает мощность множества типа
+  UInt64; если добавить суффикс -State, то возвращается объект bitmap.'
 sidebar_position: 149
-description: 'Вычисление AND для столбца битовой карты, возвращает кардинальность'
-title: groupBitmapAnd
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+title: 'groupBitmapAnd'
+doc_type: 'reference'
 ---
-Вычисления AND для колонки битовой карты, возвращает кардинальность типа UInt64, если добавить суффикс -State, тогда возвращается [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md).
+
+Выполняет операцию AND над столбцом bitmap, возвращает мощность множества типа UInt64; если добавить суффикс -State, то возвращается [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
 
 ```sql
 groupBitmapAnd(expr)
@@ -13,7 +15,7 @@ groupBitmapAnd(expr)
 
 **Аргументы**
 
-`expr` – Выражение, результатом которого является тип `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – выражение, результатом вычисления которого является значение типа `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 

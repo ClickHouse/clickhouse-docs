@@ -1,28 +1,28 @@
 ---
-'slug': '/use-cases/AI/ai-powered-sql-generation'
-'sidebar_label': 'AI驱动的 SQL 生成'
-'title': 'AI驱动的 SQL 生成'
-'pagination_prev': null
-'pagination_next': null
-'description': '本指南解释如何使用 AI 在 ClickHouse Client 或 clickhouse-local 中生成 SQL 查询。'
-'keywords':
-- 'AI'
-- 'SQL generation'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/ai-powered-sql-generation
+sidebar_label: 'AI 驱动的 SQL 生成'
+title: 'AI 驱动的 SQL 生成'
+pagination_prev: null
+pagination_next: null
+description: '本指南介绍如何在 ClickHouse Client 或 clickhouse-local 中使用 AI 生成 SQL 查询。'
+keywords: ['AI', 'SQL 生成']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
-从 ClickHouse 25.7 开始，[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) 和 [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) 包含 [人工智能驱动的功能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation)，可以将自然语言描述转换为 SQL 查询。此功能允许用户以纯文本描述其数据需求，系统随后将其翻译成相应的 SQL 语句。
+从 ClickHouse 25.7 开始，[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) 和 [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) 内置了[AI 驱动的功能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation)，可以将自然语言描述转换为 SQL 查询。借助该功能，用户可以用普通文本描述自己的数据需求，系统会将其转换为相应的 SQL 语句。
 
-这项功能对于那些可能不熟悉复杂 SQL 语法或需要快速生成探索性数据分析查询的用户特别有用。该功能适用于标准的 ClickHouse 表，并支持包括过滤、聚合和连接在内的常见查询模式。
+这一功能对不熟悉复杂 SQL 语法的用户，或需要快速生成查询以进行探索式数据分析的用户尤其有用。该功能适用于标准的 ClickHouse 表，并支持常见的查询模式，包括过滤、聚合和连接。
 
-它借助以下内置工具/函数实现这一点：
+这是通过以下内置工具和函数实现的：
 
 * `list_databases` - 列出 ClickHouse 实例中所有可用的数据库
-* `list_tables_in_database` - 列出特定数据库中的所有表
-* `get_schema_for_table` - 获取特定表的 `CREATE TABLE` 语句（模式）
+* `list_tables_in_database` - 列出指定数据库中的所有表
+* `get_schema_for_table` - 获取指定表的 `CREATE TABLE` 语句（表结构）
 
-## 先决条件 {#prerequisites}
+
+
+## 前提条件
 
 我们需要将 Anthropic 或 OpenAI 密钥添加为环境变量：
 
@@ -31,13 +31,14 @@ export ANTHROPIC_API_KEY=your_api_key
 export OPENAI_API_KEY=your_api_key
 ```
 
-另外，您可以 [提供配置文件](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)。
+或者可以[提供一个配置文件](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)。
 
-## 连接到 ClickHouse SQL 游乐场 {#connecting-to-the-clickhouse-sql-playground}
 
-我们将使用 [ClickHouse SQL 游乐场](https://sql.clickhouse.com/) 探索此功能。
+## 连接到 ClickHouse SQL Playground
 
-我们可以使用以下命令连接到 ClickHouse SQL 游乐场：
+我们将使用 [ClickHouse SQL Playground](https://sql.clickhouse.com/) 来演示该功能。
+
+我们可以使用以下命令连接到 ClickHouse SQL Playground：
 
 ```bash
 clickhouse client -mn \
@@ -47,73 +48,76 @@ clickhouse client -mn \
 ```
 
 :::note
-我们假设您已经安装了 ClickHouse，但如果没有，请参考 [安装指南](https://clickhouse.com/docs/install)
+我们假定您已经安装了 ClickHouse；如果尚未安装，请参阅[安装指南](https://clickhouse.com/docs/install)。
 :::
 
-## 用自然语言向 ClickHouse 提问 {#asking-clickhouse-questions-in-natural-language}
 
-现在是时候开始提问了！
+## 使用自然语言向 ClickHouse 提问
 
-文本到 SQL 功能实际上是一个一次性查询生成工具。由于它不维护对话历史，因此在提问时要尽可能包含有用的上下文。请具体说明：
+现在是开始提问的时候了！
 
-时间段或日期范围
-您希望进行的分析类型（平均值、总和、排名等）
-任何过滤标准
+文本转 SQL 功能本质上是一个一次性查询生成工具。由于它不会保留对话历史，请在你的问题中尽可能包含有用的上下文。请明确说明：
 
-### 查找昂贵的房地产市场 {#finding-expensive-housing-markets}
+时间段或日期范围\
+你希望进行的分析类型（平均值、总量、排名等）\
+任何筛选条件
 
-让我们首先提出有关房价的问题。SQL 游乐场包含一个英国房价数据集，人工智能会自动发现它：
+### 查找高房价住房市场
+
+我们先从一个关于房价的问题开始。SQL playground 中包含一个英国房价数据集，AI 会自动识别该数据集：
 
 ```sql
-?? Can you tell me the most expensive place to buy a house in 2021?;
+?? 你能告诉我2021年买房最贵的地方在哪里吗?;
 ```
 
-一旦我们按下回车键，我们将看到人工智能在尝试回答我们的问题时的思维过程。
+按下回车键后，我们就能看到 AI 在尝试回答我们问题时的思考过程。
 
 ```text
-• Starting AI SQL generation with schema discovery...
+• 开始通过 Schema 探测进行 AI SQL 生成...
 ─────────────────────────────────────────────────
-🧠 thinking...[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01QpQd35ZD8HM9QSYFZuQ8Wh
-🔧 Calling: list_databases [toolu_01...]
-🧠 thinking✓ list_databases completed
-  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
-🔧 Calling: list_databases [toolu_01...]
-✓ list_databases completed
-  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
-🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_016DxK8SMVKGrUPfFwi43AzE
-🔧 Calling: list_tables_in_database [toolu_01...]
-  └─ Args: {"database":"uk"}
-🧠 thinking.✓ list_tables_in_database completed
-  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
-🔧 Calling: list_tables_in_database [toolu_01...]
-  └─ Args: {"database":"uk"}
-✓ list_tables_in_database completed
-  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
-🧠 thinking.[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_015giF12wm619beNGC5aTrmw
-🔧 Calling: get_schema_for_table [toolu_01...]
-  └─ Args: {"database":"uk","table":"uk_price_paid"}
-✓ get_schema_for_table completed
-  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🔧 Calling: get_schema_for_table [toolu_01...]
-  └─ Args: {"database":"uk","table":"uk_price_paid"}
-🧠 thinking..✓ get_schema_for_table completed
-  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01HxT1HKbaTT3165Wx5bDtY9
+🧠 思考中...[INFO] 文本生成成功 - model: claude-3-5-sonnet-latest, response_id: msg_01QpQd35ZD8HM9QSYFZuQ8Wh
+🔧 调用: list_databases [toolu_01...]
+🧠 思考中✓ list_databases 已完成
+  └─ 找到 37 个数据库：- amazon - bluesky - country - covid - default - dns - en...
+🔧 调用: list_databases [toolu_01...]
+✓ list_databases 已完成
+  └─ 找到 37 个数据库：- amazon - bluesky - country - covid - default - dns - en...
+🧠 思考中[INFO] 文本生成成功 - model: claude-3-5-sonnet-latest, response_id: msg_016DxK8SMVKGrUPfFwi43AzE
+🔧 调用: list_tables_in_database [toolu_01...]
+  └─ 参数: {"database":"uk"}
+🧠 思考中.✓ list_tables_in_database 已完成
+  └─ 在数据库 'uk' 中找到 9 个表：- uk_codes - uk_postcode_to_iso - uk_price_p...
+🔧 调用: list_tables_in_database [toolu_01...]
+  └─ 参数: {"database":"uk"}
+✓ list_tables_in_database 已完成
+  └─ 在数据库 'uk' 中找到 9 个表：- uk_codes - uk_postcode_to_iso - uk_price_p...
+🧠 思考中.[INFO] 文本生成成功 - model: claude-3-5-sonnet-latest, response_id: msg_015giF12wm619beNGC5aTrmw
+🔧 调用: get_schema_for_table [toolu_01...]
+  └─ 参数: {"database":"uk","table":"uk_price_paid"}
+✓ get_schema_for_table 已完成
+  └─ uk.uk_price_paid 的表结构：CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🔧 调用: get_schema_for_table [toolu_01...]
+  └─ 参数: {"database":"uk","table":"uk_price_paid"}
+🧠 思考中..✓ get_schema_for_table 已完成
+  └─ uk.uk_price_paid 的表结构：CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🧠 思考中[INFO] 文本生成成功 - model: claude-3-5-sonnet-latest, response_id: msg_01HxT1HKbaTT3165Wx5bDtY9
 ─────────────────────────────────────────────────
-• ✨ SQL query generated successfully!
+• ✨ SQL 查询生成成功！
 :) SELECT     town,     district,     county,     round(avg(price), 2) as avg_price,     count() as total_sales FROM uk.uk_price_paid WHERE date >= '2021-01-01' AND date <= '2021-12-31' GROUP BY     town,     district,     county HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10
 ```
 
-AI 遵循以下步骤：
+AI 会按以下步骤执行：
 
-1. 模式发现 - 探索可用的数据库和表
-2. 表分析 - 检查相关表的结构
-3. 查询生成 - 根据您的问题和发现的模式创建 SQL
+1. 架构发现（Schema discovery）- 探索可用的数据库和数据表
+2. 数据表分析（Table analysis）- 检查相关数据表的结构
+3. 查询生成（Query generation）- 基于你的问题和已发现的架构生成 SQL
 
-我们可以看到它确实找到了 `uk_price_paid` 表并为我们生成了一个查询。如果我们运行该查询，将看到以下输出：
+我们可以看到，它确实找到了 `uk_price_paid` 表，并为我们生成了一条可执行的查询语句。
+如果我们运行该查询，将会看到如下输出：
+
 
 ```text
-┌─town───────────┬─district───────────────┬─county──────────┬──avg_price─┬─total_sales─┐
+┌─城镇───────────┬─区─────────────────────┬─郡──────────────┬──平均价格──┬─总销售额────┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
 │ LONDON         │ CITY OF LONDON         │ GREATER LONDON  │ 4008117.32 │         311 │
 │ LONDON         │ CITY OF WESTMINSTER    │ GREATER LONDON  │ 2847409.81 │        3984 │
@@ -127,67 +131,70 @@ AI 遵循以下步骤：
 └────────────────┴────────────────────────┴─────────────────┴────────────┴─────────────┘
 ```
 
-如果我们想提出后续问题，则需要从头开始提问。
+如果我们想要继续追问，就需要从头完整地重新提出问题。
 
-### 查找大伦敦地区昂贵的房产 {#finding-expensive-properties-in-greater-london}
+### 在大伦敦地区查找高价房产
 
-由于该功能不维护对话历史，因此每个查询必须是自包含的。在提问后续问题时，您需要提供完整的上下文，而不是引用先前的查询。例如，在看到先前的结果后，我们可能希望专注于大伦敦地区的房产。我们需要包含完整上下文，而不是问“关于大伦敦地区怎么样？”：
+由于该功能不会保留会话历史，每个查询都必须是自包含的。当提出后续问题时，你需要提供完整的上下文，而不是依赖之前的查询。
+例如，在查看了之前的结果之后，我们可能想专门关注大伦敦地区的房产。与其只问 “What about Greater London?”，我们需要在问题中包含完整的上下文：
 
 ```sql
-?? Can you tell me the most expensive place to buy a house in Greater London across the years?;
+?? 您能告诉我大伦敦地区历年来房价最高的区域是哪里吗？;
 ```
 
-请注意，尽管它刚刚检查过这些数据，人工智能仍然经历相同的发现过程：
+请注意，即使刚刚分析过这些数据，AI 仍然会重复同样的探索过程：
+
 
 ```text
-• Starting AI SQL generation with schema discovery...
+• 开始基于模式发现的 AI SQL 生成…
 ─────────────────────────────────────────────────
-🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_012m4ayaSHTYtX98gxrDy1rz
-🔧 Calling: list_databases [toolu_01...]
-✓ list_databases completed
-  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
-🔧 Calling: list_databases [toolu_01...]
-🧠 thinking.✓ list_databases completed
-  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
-🧠 thinking.[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
-🔧 Calling: list_tables_in_database [toolu_01...]
-  └─ Args: {"database":"uk"}
-🧠 thinking..✓ list_tables_in_database completed
-  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
-🔧 Calling: list_tables_in_database [toolu_01...]
-  └─ Args: {"database":"uk"}
-✓ list_tables_in_database completed
-  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
-🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
-🔧 Calling: get_schema_for_table [toolu_01...]
-  └─ Args: {"database":"uk","table":"uk_price_paid"}
-🧠 thinking.✓ get_schema_for_table completed
-  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🔧 Calling: get_schema_for_table [toolu_01...]
-  └─ Args: {"database":"uk","table":"uk_price_paid"}
-✓ get_schema_for_table completed
-  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🧠 thinking...[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01QTMypS1XuhjgVpDir7N9wD
+🧠 思考中[INFO] 文本生成成功 - 模型：claude-3-5-sonnet-latest，response_id: msg_012m4ayaSHTYtX98gxrDy1rz
+🔧 调用：list_databases [toolu_01...]
+✓ list_databases 执行完成
+  └─ 找到 37 个数据库：- amazon - bluesky - country - covid - default - dns - en...
+🔧 调用：list_databases [toolu_01...]
+🧠 思考中.✓ list_databases 执行完成
+  └─ 找到 37 个数据库：- amazon - bluesky - country - covid - default - dns - en...
+🧠 思考中.[INFO] 文本生成成功 - 模型：claude-3-5-sonnet-latest，response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
+🔧 调用：list_tables_in_database [toolu_01...]
+  └─ 参数：{"database":"uk"}
+🧠 思考中..✓ list_tables_in_database 执行完成
+  └─ 在数据库 'uk' 中找到 9 个表：- uk_codes - uk_postcode_to_iso - uk_price_p...
+🔧 调用：list_tables_in_database [toolu_01...]
+  └─ 参数：{"database":"uk"}
+✓ list_tables_in_database 执行完成
+  └─ 在数据库 'uk' 中找到 9 个表：- uk_codes - uk_postcode_to_iso - uk_price_p...
+🧠 思考中[INFO] 文本生成成功 - 模型：claude-3-5-sonnet-latest，response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
+🔧 调用：get_schema_for_table [toolu_01...]
+  └─ 参数：{"database":"uk","table":"uk_price_paid"}
+🧠 思考中.✓ get_schema_for_table 执行完成
+  └─ uk.uk_price_paid 的表结构：CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🔧 调用：get_schema_for_table [toolu_01...]
+  └─ 参数：{"database":"uk","table":"uk_price_paid"}
+✓ get_schema_for_table 执行完成
+  └─ uk.uk_price_paid 的表结构：CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🧠 思考中...[INFO] 文本生成成功 - 模型：claude-3-5-sonnet-latest，response_id: msg_01QTMypS1XuhjgVpDir7N9wD
 ─────────────────────────────────────────────────
-• ✨ SQL query generated successfully!
+• ✨ SQL 查询生成成功！
 :) SELECT     district,     toYear(date) AS year,     round(avg(price), 2) AS avg_price,     count() AS total_sales FROM uk.uk_price_paid WHERE county = 'GREATER LONDON' GROUP BY district, year HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10;
 ```
 
-这生成了一个更加针对性强的查询，专门过滤大伦敦地区的结果并按年份分解结果。查询的输出如下所示：
+这将生成一条更有针对性的查询，专门筛选大伦敦地区的数据，并按年份细分结果。
+查询结果如下：
 
 ```text
-┌─district────────────┬─year─┬───avg_price─┬─total_sales─┐
-│ CITY OF LONDON      │ 2019 │ 14504772.73 │         299 │
-│ CITY OF LONDON      │ 2017 │  6351366.11 │         367 │
-│ CITY OF LONDON      │ 2016 │  5596348.25 │         243 │
-│ CITY OF LONDON      │ 2023 │  5576333.72 │         252 │
-│ CITY OF LONDON      │ 2018 │  4905094.54 │         523 │
-│ CITY OF LONDON      │ 2021 │  4008117.32 │         311 │
-│ CITY OF LONDON      │ 2025 │  3954212.39 │          56 │
-│ CITY OF LONDON      │ 2014 │  3914057.39 │         416 │
-│ CITY OF LONDON      │ 2022 │  3700867.19 │         290 │
-│ CITY OF WESTMINSTER │ 2018 │  3562457.76 │        3346 │
+┌─区域────────────────┬─年份─┬───平均价格─┬─总销售额─┐
+│ 伦敦市              │ 2019 │ 14504772.73 │         299 │
+│ 伦敦市              │ 2017 │  6351366.11 │         367 │
+│ 伦敦市              │ 2016 │  5596348.25 │         243 │
+│ 伦敦市              │ 2023 │  5576333.72 │         252 │
+│ 伦敦市              │ 2018 │  4905094.54 │         523 │
+│ 伦敦市              │ 2021 │  4008117.32 │         311 │
+│ 伦敦市              │ 2025 │  3954212.39 │          56 │
+│ 伦敦市              │ 2014 │  3914057.39 │         416 │
+│ 伦敦市              │ 2022 │  3700867.19 │         290 │
+│ 威斯敏斯特市        │ 2018 │  3562457.76 │        3346 │
 └─────────────────────┴──────┴─────────────┴─────────────┘
 ```
 
-伦敦市始终出现在最昂贵的地区！您会注意到，人工智能创建了一个合理的查询，尽管结果是按平均价格排序而不是按时间顺序排列。为了进行年度分析，我们可以将问题精炼为具体询问“每年最昂贵的地区”，以获得分组不同的结果。
+伦敦金融城一贯位列最昂贵的行政区之首！你会注意到，AI 生成了一个相当合理的查询，不过结果是按平均价格排序，而不是按时间先后排序。对于年度同比分析，我们可以将你的问题进一步细化，明确询问“每一年最昂贵的行政区”，从而以不同的方式对结果进行分组。

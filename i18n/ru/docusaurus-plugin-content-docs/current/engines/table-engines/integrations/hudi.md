@@ -1,18 +1,23 @@
 ---
-slug: '/engines/table-engines/integrations/hudi'
-sidebar_label: Hudi
+description: 'Этот движок обеспечивает доступ только для чтения к существующим таблицам Apache Hudi в Amazon S3.'
+sidebar_label: 'Hudi'
 sidebar_position: 86
-description: 'Этот движок предоставляет интеграцию только для чтения с существующими'
+slug: /engines/table-engines/integrations/hudi
 title: 'Движок таблиц Hudi'
-doc_type: reference
+doc_type: 'reference'
 ---
-# Hudi движок таблицы
 
-Этот движок предоставляет только для чтения интеграцию с существующими таблицами Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
-## Создать таблицу {#create-table}
 
-Обратите внимание, что таблица Hudi должна уже существовать в S3, эта команда не принимает параметры DDL для создания новой таблицы.
+# Табличный движок Hudi
+
+Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
+
+
+
+## Создание таблицы
+
+Имейте в виду, что таблица Hudi должна уже существовать в S3: эта команда не принимает DDL‑параметры для создания новой таблицы.
 
 ```sql
 CREATE TABLE hudi_table
@@ -21,10 +26,10 @@ CREATE TABLE hudi_table
 
 **Параметры движка**
 
-- `url` — URL корзины с путем к существующей таблице Hudi.
-- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя аккаунта [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации ваших запросов. Параметр является необязательным. Если учетные данные не указаны, они используются из файла конфигурации.
+* `url` — URL бакета с путём к существующей таблице Hudi.
+* `aws_access_key_id`, `aws_secret_access_key` — долгосрочные учетные данные пользователя учётной записи [AWS](https://aws.amazon.com/). Их можно использовать для аутентификации запросов. Параметр является необязательным. Если учетные данные не указаны, используются значения из файла конфигурации.
 
-Параметры движка могут быть указаны с использованием [Именованных коллекций](/operations/named-collections.md).
+Параметры движка можно задать с помощью [Named Collections](/operations/named-collections.md).
 
 **Пример**
 
@@ -50,6 +55,7 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
 
+
 ## См. также {#see-also}
 
-- [hudi табличная функция](/sql-reference/table-functions/hudi.md)
+- [табличная функция Hudi](/sql-reference/table-functions/hudi.md)

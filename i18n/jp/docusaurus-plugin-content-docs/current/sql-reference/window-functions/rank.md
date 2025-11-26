@@ -1,18 +1,18 @@
 ---
-'description': 'rank ウィンドウ関数のドキュメント'
-'sidebar_label': 'ランク'
-'sidebar_position': 6
-'slug': '/sql-reference/window-functions/rank'
-'title': 'ランク'
-'doc_type': 'reference'
+description: 'rank ウィンドウ関数のリファレンス'
+sidebar_label: 'rank'
+sidebar_position: 6
+slug: /sql-reference/window-functions/rank
+title: 'rank'
+doc_type: 'reference'
 ---
-
 
 # rank
 
-現在の行をそのパーティション内でランク付けします（ギャップを含む）。言い換えれば、遭遇する行の値が以前の行の値と等しい場合、それはその前の行と同じランクを受け取ります。次の行のランクは、その前の行のランクに、前のランクが与えられた回数と等しいギャップを加えたものになります。
+現在の行を、そのパーティション内で「飛び飛びの順位」としてランク付けします。言い換えると、処理中の行の値が、以前に現れた行の値と等しい場合、その行はその前の行と同じ順位になります。
+次の行の順位は、直前の行の順位に、その直前の順位が付与された回数と同じ値のギャップを加えたものになります。
 
-[dense_rank](./dense_rank.md) 関数は、ギャップのないランク付けを提供しますが、同じ動作をします。
+[dense&#95;rank](./dense_rank.md) 関数は、同様の動作をしますが、順位にギャップがない点が異なります。
 
 **構文**
 
@@ -24,15 +24,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、こちらをご覧ください: [ウィンドウ関数 - 構文](./index.md/#syntax)。
+ウィンドウ関数の構文の詳細は、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
 **返される値**
 
-- ギャップを含む、パーティション内の現在の行のための数値。[UInt64](../data-types/int-uint.md)。
+* パーティション内での現在の行番号（欠番を含む）を表す数値。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-以下の例は、ビデオ教材 [ClickHouse におけるランク付けウィンドウ関数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で提供された例を基にしています。
+次の例は、動画チュートリアル [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で示されている例に基づいています。
 
 クエリ:
 
@@ -62,7 +62,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果:
+結果：
 
 ```response
    ┌─player──────────┬─salary─┬─rank─┐

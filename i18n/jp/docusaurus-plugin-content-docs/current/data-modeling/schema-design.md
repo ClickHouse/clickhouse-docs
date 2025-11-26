@@ -1,12 +1,9 @@
 ---
-'slug': '/data-modeling/schema-design'
-'title': 'スキーマ設計'
-'description': 'クエリパフォーマンスのための ClickHouse スキーマの最適化'
-'keywords':
-- 'schema'
-- 'schema design'
-- 'query optimization'
-'doc_type': 'guide'
+slug: /data-modeling/schema-design
+title: 'Schema Design'
+description: 'Optimizing ClickHouse schema for query performance'
+keywords: ['schema', 'schema design', 'query optimization']
+doc_type: 'guide'
 ---
 
 import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow-schema.png';
@@ -221,7 +218,6 @@ INSERT INTO posts_v2 SELECT * FROM posts
 ```
 
 We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
-
 Primary (Ordering) Keys in ClickHouse
 Users coming from OLTP databases often look for the equivalent concept in ClickHouse.
 

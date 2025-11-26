@@ -1,15 +1,16 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/skewsamp'
-sidebar_position: 186
 description: 'Вычисляет выборочную асимметрию последовательности.'
-title: skewSamp
-doc_type: reference
+sidebar_position: 186
+slug: /sql-reference/aggregate-functions/reference/skewsamp
+title: 'skewSamp'
+doc_type: 'reference'
 ---
+
 # skewSamp
 
-Вычисляет [дисперсию выборки](https://en.wikipedia.org/wiki/Skewness) последовательности.
+Вычисляет [выборочную асимметрию](https://en.wikipedia.org/wiki/Skewness) последовательности.
 
-Это беспристрастная оценка асимметрии случайной величины, если переданные значения образуют её выборку.
+Представляет собой несмещённую оценку асимметрии случайной величины, если переданные значения образуют её выборку.
 
 ```sql
 skewSamp(expr)
@@ -17,11 +18,11 @@ skewSamp(expr)
 
 **Аргументы**
 
-`expr` — [Выражение](/sql-reference/syntax#expressions), возвращающее число.
+`expr` — [выражение](/sql-reference/syntax#expressions), возвращающее число.
 
 **Возвращаемое значение**
 
-Асимметрия данной распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), то функция возвращает `nan`.
+Асимметрия заданного распределения. Тип — [Float64](../../../sql-reference/data-types/float.md). Если `n <= 1` (`n` — размер выборки), функция возвращает `nan`.
 
 **Пример**
 

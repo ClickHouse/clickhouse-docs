@@ -1,24 +1,28 @@
 ---
-'description': '機械生成のログデータ用の新しい分析ベンチマーク'
-'sidebar_label': 'ブラウン大学ベンチマーク'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': 'ブラウン大学ベンチマーク'
-'doc_type': 'reference'
+description: '機械生成ログデータ向けの新しい分析ベンチマーク'
+sidebar_label: 'Brown University ベンチマーク'
+slug: /getting-started/example-datasets/brown-benchmark
+title: 'Brown University ベンチマーク'
+keywords: ['Brown University ベンチマーク', 'MgBench', 'ログデータ用ベンチマーク', '機械生成データ', 'はじめに']
+doc_type: 'guide'
 ---
 
-`MgBench`は、機械生成ログデータのための新しい分析ベンチマークです。[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` は、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) による機械生成ログデータ向けの新しい分析ベンチマークです。
 
-データをダウンロードします：
+データをダウンロード:
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
-データを解凍します：
+データを展開する：
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-データベースとテーブルを作成します：
+データベースとテーブルを作成する：
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -82,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -90,14 +94,15 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## ベンチマーククエリを実行する {#run-benchmark-queries}
+
+## ベンチマーク用クエリを実行する
 
 ```sql
 USE mgbench;
 ```
 
 ```sql
--- Q1.1: What is the CPU/network utilization for each web server since midnight?
+-- Q1.1: 深夜0時以降の各Webサーバーの CPU/ネットワーク使用率は?
 
 SELECT machine_name,
        MIN(cpu) AS cpu_min,
@@ -122,7 +127,7 @@ GROUP BY machine_name;
 ```
 
 ```sql
--- Q1.2: Which computer lab machines have been offline in the past day?
+-- Q1.2: 過去1日間でオフラインだったコンピュータラボのマシンはどれか?
 
 SELECT machine_name,
        log_time
@@ -136,7 +141,36 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
+-- Q1.3: 特定のワークステーションにおける過去10日間の時間別平均メトリクスを取得する
+
+SELECT dt,
+       hr,
+       AVG(load_fifteen) AS load_fifteen_avg,
+       AVG(load_five) AS load_five_avg,
+       AVG(load_one) AS load_one_avg,
+       AVG(mem_free) AS mem_free_avg,
+       AVG(swap_free) AS swap_free_avg
+FROM (
+  SELECT CAST(log_time AS DATE) AS dt,
+         EXTRACT(HOUR FROM log_time) AS hr,
+         load_fifteen,
+         load_five,
+         load_one,
+         mem_free,
+         swap_free
+  FROM logs1
+  WHERE machine_name = 'babbage'
+    AND load_fifteen IS NOT NULL
+    AND load_five IS NOT NULL
+    AND load_one IS NOT NULL
+    AND mem_free IS NOT NULL
+    AND swap_free IS NOT NULL
+    AND log_time >= TIMESTAMP '2017-01-01 00:00:00'
+) AS r
+GROUP BY dt,
+         hr
+ORDER BY dt,
+         hr;
 
 SELECT dt,
        hr,
@@ -169,7 +203,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: Over 1 month, how often was each server blocked on disk I/O?
+-- Q1.4: 1か月間で、各サーバーがディスクI/Oでブロックされた頻度は?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -184,7 +218,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: Which externally reachable VMs have run low on memory?
+-- Q1.5: 外部からアクセス可能なVMのうち、メモリ不足が発生したものはどれか?
 
 SELECT machine_name,
        dt,
@@ -204,8 +238,9 @@ ORDER BY machine_name,
          dt;
 ```
 
+
 ```sql
--- Q1.6: What is the total hourly network traffic across all file servers?
+-- Q1.6: すべてのファイルサーバーにおける1時間あたりの総ネットワークトラフィック量は？
 
 SELECT dt,
        hr,
@@ -231,7 +266,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q2.1: Which requests have caused server errors within the past 2 weeks?
+-- Q2.1: 過去2週間でサーバーエラーを引き起こしたリクエストはどれですか？
 
 SELECT *
 FROM logs2
@@ -241,7 +276,7 @@ ORDER BY log_time;
 ```
 
 ```sql
--- Q2.2: During a specific 2-week period, was the user password file leaked?
+-- Q2.2: 特定の2週間の期間中、ユーザーパスワードファイルの漏洩は発生したか?
 
 SELECT *
 FROM logs2
@@ -253,7 +288,7 @@ WHERE status_code >= 200
 ```
 
 ```sql
--- Q2.3: What was the average path depth for top-level requests in the past month?
+-- Q2.3: 過去1か月間のトップレベルリクエストの平均パス深度は？
 
 SELECT top_level,
        AVG(LENGTH(request) - LENGTH(REPLACE(request, '/', ''))) AS depth_avg
@@ -278,7 +313,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: During the last 3 months, which clients have made an excessive number of requests?
+-- Q2.4: 過去3ヶ月間で、過度なリクエスト数を行ったクライアントはどれか？
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -290,7 +325,7 @@ ORDER BY num_requests DESC;
 ```
 
 ```sql
--- Q2.5: What are the daily unique visitors?
+-- Q2.5: 日別のユニークビジター数は？
 
 SELECT dt,
        COUNT(DISTINCT client_ip)
@@ -304,7 +339,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: What are the average and maximum data transfer rates (Gbps)?
+-- Q2.6: 平均および最大データ転送速度(Gbps)はいくつか?
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -317,7 +352,7 @@ FROM (
 ```
 
 ```sql
--- Q3.1: Did the indoor temperature reach freezing over the weekend?
+-- Q3.1: 週末に室内温度が氷点下に達したか？
 
 SELECT *
 FROM logs3
@@ -327,7 +362,7 @@ WHERE event_type = 'temperature'
 ```
 
 ```sql
--- Q3.4: Over the past 6 months, how frequently were each door opened?
+-- Q3.4: 過去6か月間で、各ドアが開かれた頻度は?
 
 SELECT device_name,
        device_floor,
@@ -340,13 +375,14 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-以下のクエリ3.5ではUNIONを使用します。SELECTクエリ結果を結合するためのモードを設定します。この設定は、UNION ALLまたはUNION DISTINCTを明示的に指定せずにUNIONと共有される場合にのみ使用されます。
+以下のクエリ3.5は UNION を使用します。SELECT クエリ結果の結合モードを設定します。この設定は、UNION ALL または UNION DISTINCT を明示的に指定せずに UNION を使用した場合にのみ適用されます。
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: Where in the building do large temperature variations occur in winter and summer?
+-- Q3.5: 建物内で冬季と夏季に大きな温度変動が発生する場所はどこか?
 
 WITH temperature AS (
   SELECT dt,
@@ -385,7 +421,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'WINTER'
+       '冬季'
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -393,14 +429,14 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       'SUMMER'
+       '夏季'
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
 ```
 
 ```sql
--- Q3.6: For each device category, what are the monthly power consumption metrics?
+-- Q3.6: 各デバイスカテゴリの月次電力消費量メトリクスは?
 
 SELECT yr,
        mo,
@@ -444,4 +480,4 @@ ORDER BY yr,
          mo;
 ```
 
-データは、[Playground](https://sql.clickhouse.com)でインタラクティブクエリ用にも利用可能です。[例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+このデータは、インタラクティブクエリとして [Playground](https://sql.clickhouse.com) で利用でき、[example](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND) も参照できます。

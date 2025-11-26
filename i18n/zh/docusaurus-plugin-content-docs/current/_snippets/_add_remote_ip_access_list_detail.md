@@ -3,14 +3,13 @@ import ip_allow_list_check_list from '@site/static/images/_snippets/ip-allow-lis
 import ip_allow_list_add_current_ip from '@site/static/images/_snippets/ip-allow-list-add-current-ip.png';
 
 <details>
-    <summary>管理您的 IP 访问列表</summary>
+  <summary>管理 IP 访问列表</summary>
 
-从您的 ClickHouse Cloud 服务列表中选择您要使用的服务，并切换到 **设置**。如果 IP 访问列表中不包含需要连接到您的 ClickHouse Cloud 服务的远程系统的 IP 地址或范围，您可以通过 **添加 IP 们** 来解决此问题：
+  在 ClickHouse Cloud 服务列表中选择要使用的服务，并切换到 **Settings**。如果 IP 访问列表中未包含需要连接到该 ClickHouse Cloud 服务的远程系统的 IP 地址或地址范围，则可以通过 **Add IPs** 来解决：
 
-<Image size="md" img={ip_allow_list_check_list} alt="检查服务是否允许来自您的 IP 地址的流量在 IP 访问列表中" border />
+  <Image size="md" img={ip_allow_list_check_list} alt="检查服务的 IP 访问列表中是否允许来自您 IP 地址的流量" border />
 
-添加需要连接到您的 ClickHouse Cloud 服务的单个 IP 地址或地址范围。根据需要修改表单，然后 **保存**。
+  添加需要连接到该 ClickHouse Cloud 服务的单个 IP 地址，或一个地址范围。根据需要修改表单，然后点击 **Save**。
 
-<Image size="md" img={ip_allow_list_add_current_ip} alt="将您的当前 IP 地址添加到 ClickHouse Cloud 的 IP 访问列表中" border />
-
+  <Image size="md" img={ip_allow_list_add_current_ip} alt="将您当前的 IP 地址添加到 ClickHouse Cloud 的 IP 访问列表中" border />
 </details>

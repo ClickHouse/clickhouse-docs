@@ -1,126 +1,128 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-`clickhouse-jdbc` 实现了标准 JDBC 接口。它构建在 [clickhouse-client](/integrations/sql-clients/sql-console) 之上，提供了额外的功能，例如自定义类型映射、事务支持以及标准的同步 `UPDATE` 和 `DELETE` 语句等，因此可以方便地与遗留应用程序和工具结合使用。
+`clickhouse-jdbc` 实现了标准 JDBC 接口。它基于 [clickhouse-client](/integrations/sql-clients/sql-console) 构建，提供了自定义类型映射、事务支持、标准同步 `UPDATE` 和 `DELETE` 语句等附加特性，因此可以方便地与遗留应用和工具配合使用。
 
 :::note
-最新的 JDBC (0.7.2) 版本使用 Client-V1
+最新 JDBC（0.7.2）版本使用 Client-V1
 :::
 
-`clickhouse-jdbc` API 是同步的，通常它有更多的开销（例如，SQL 解析和类型映射/转换等）。当性能至关重要时，或如果您更喜欢一种更直接的方式访问 ClickHouse，请考虑使用 [clickhouse-client](/integrations/sql-clients/sql-console)。
+`clickhouse-jdbc` API 是同步的，一般来说，它会带来更多开销（例如 SQL 解析和类型映射/转换等）。如果性能至关重要，或者倾向于以更直接的方式访问 ClickHouse，请考虑使用 [clickhouse-client](/integrations/sql-clients/sql-console)。
 
-## 环境要求 {#environment-requirements}
 
-- [OpenJDK](https://openjdk.java.net) 版本 >= 8
+## 环境要求 \{#environment-requirements\}
 
-### 设置 {#setup}
+- [OpenJDK](https://openjdk.java.net) 版本 8 或更高
+
+### 设置 \{#setup\}
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven">
 
-```xml
-<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
-<dependency>
-    <groupId>com.clickhouse</groupId>
-    <artifactId>clickhouse-jdbc</artifactId>
-    <version>0.7.2</version>
-    <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
-    <classifier>shaded-all</classifier>
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-jdbc</artifactId>
+            <version>0.7.2</version>
+            <!-- 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包 -->
+            <classifier>shaded-all</classifier>
+        </dependency>
+        ```
 
     </TabItem>
     <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
-```
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
+        implementation("com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all")
+        ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-// use uber jar with all dependencies included, change classifier to http for smaller jar
-implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
+        // 使用包含所有依赖项的 uber JAR，将 classifier 更改为 http 可获得更小的 JAR 包
+        implementation 'com.clickhouse:clickhouse-jdbc:0.7.2:shaded-all'
+        ```
 
     </TabItem>
 </Tabs>
 
-自版本 `0.5.0` 起，我们使用了打包进 Client 的 Apache HTTP Client。由于该包没有共享版本，您需要添加一个日志记录器作为依赖项。
+从版本 `0.5.0` 开始，我们在客户端中使用与其一同打包的 Apache HTTP Client。由于该包没有共享版本，因此需要额外添加一个日志记录库作为依赖。
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven" >
 
-```xml
-<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>2.0.16</version>
-</dependency>
-```
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+        ```
 
     </TabItem>
     <TabItem value="gradle-kt" label="Gradle (Kotlin)">
 
-```kotlin
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation("org.slf4j:slf4j-api:2.0.16")
-```
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation("org.slf4j:slf4j-api:2.0.16")
+        ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
-```groovy
-// https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-implementation 'org.slf4j:slf4j-api:2.0.16'
-```
+        ```groovy
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation 'org.slf4j:slf4j-api:2.0.16'
+        ```
 
     </TabItem>
 </Tabs>
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
-**驱动程序类**: `com.clickhouse.jdbc.ClickHouseDriver`
+**驱动类（Driver Class）**: `com.clickhouse.jdbc.ClickHouseDriver`
 
 **URL 语法**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`，例如：
 
-- `jdbc:ch://localhost` 与 `jdbc:clickhouse:http://localhost:8123` 相同
-- `jdbc:ch:https://localhost` 与 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT` 相同
-- `jdbc:ch:grpc://localhost` 与 `jdbc:clickhouse:grpc://localhost:9100` 相同
+- `jdbc:ch://localhost` 等同于 `jdbc:clickhouse:http://localhost:8123`
+- `jdbc:ch:https://localhost` 等同于 `jdbc:clickhouse:http://localhost:8443?ssl=true&sslmode=STRICT`
+- `jdbc:ch:grpc://localhost` 等同于 `jdbc:clickhouse:grpc://localhost:9100`
 
-**连接属性**:
+**连接属性**：
 
-| 属性                          | 默认值  | 描述                                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `continueBatchOnError`       | `false` | 发生错误时是否继续批处理                                                                                                                                                                                                                                                                                                                                     |
-| `createDatabaseIfNotExist`   | `false` | 是否在数据库不存在时创建数据库                                                                                                                                                                                                                                                                                                                                |
-| `custom_http_headers`         |         | 逗号分隔的自定义 HTTP 头，例如: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                       |
-| `custom_http_params`          |         | 逗号分隔的自定义 HTTP 查询参数，例如: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                     |
-| `nullAsDefault`               | `0`     | `0` - 将 null 值视为原样，并在插入非空列时抛出异常； `1` - 将 null 值视为原样，并在插入时禁用 null 检查； `2` - 将 null 替换为对应数据类型的默认值，适用于查询和插入                                                                                                                                                                             |
-| `jdbcCompliance`              | `true`  | 是否支持标准同步 UPDATE/DELETE 和伪事务                                                                                                                                                                                                                                                                                                                    |
-| `typeMappings`                |         | 自定义 ClickHouse 数据类型与 Java 类之间的映射，这将影响 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) 和 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) 的结果。例如: `UInt128=java.lang.String,UInt256=java.lang.String` |
-| `wrapperObject`               | `false` | 是否 [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) 应返回 java.sql.Array / java.sql.Struct 对于 Array / Tuple。                                                                                                                                                                       |
+| Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `continueBatchOnError`     | `false` | 是否在发生错误时继续执行批处理                                                                                                                                                                                                                                                                                                                                                                                             |
+| `createDatabaseIfNotExist` | `false` | 当数据库不存在时是否自动创建                                                                                                                                                                                                                                                                                                                                                                                               |
+| `custom_http_headers`      |         | 以逗号分隔的自定义 HTTP 头，例如：`User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                                    |
+| `custom_http_params`       |         | 以逗号分隔的自定义 HTTP 查询参数，例如：`extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                                  |
+| `nullAsDefault`            | `0`     | `0` - 按原样处理 null 值，并在向非空列插入 null 时抛出异常；`1` - 按原样处理 null 值，并在插入时禁用 null 检查；`2` - 在查询和插入时均将 null 替换为对应数据类型的默认值                                                                                                                                                                                                                                                 |
+| `jdbcCompliance`           | `true`  | 是否支持标准的同步 UPDATE/DELETE 以及伪事务                                                                                                                                                                                                                                                                                                                                                                               |
+| `typeMappings`             |         | 自定义 ClickHouse 数据类型与 Java 类之间的映射，这会影响 [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-) 和 [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-) 的返回结果。例如：`UInt128=java.lang.String,UInt256=java.lang.String` |
+| `wrapperObject`            | `false` | [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) 是否应对 Array / Tuple 返回 java.sql.Array / java.sql.Struct。                                                                                                                                                                                                                                                          |
 
-注意: 请参阅 [JDBC 特定配置](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java) 以获取更多信息。
+注意：更多内容请参考 [JDBC 特定配置](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java)。
 
-## 支持的数据类型 {#supported-data-types}
+## 支持的数据类型 \{#supported-data-types\}
 
 JDBC 驱动程序支持与客户端库相同的数据格式。
 
 :::note
+
 - AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
-- Decimal - 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以实现一致性
+- Decimal - 在 21.9+ 版本中使用 `SET output_format_decimal_trailing_zeros=1` 以保持一致性
 - Enum - 可以同时作为字符串和整数处理
-- UInt64 - 映射到 `long` (在 client-v1 中)
+- UInt64 - 映射为 `long`（在 client-v1 中）
 :::
 
-## 创建连接 {#creating-connection}
+## 创建连接
 
 ```java
-String url = "jdbc:ch://my-server/system"; // use http protocol and port 8123 by default
+String url = "jdbc:ch://my-server/system"; // 默认使用 HTTP 协议和 8123 端口
 
 Properties properties = new Properties();
 
@@ -130,7 +132,8 @@ try (Connection conn = dataSource.getConnection("default", "password");
 }
 ```
 
-## 简单语句 {#simple-statement}
+
+## 简单语句
 
 ```java showLineNumbers
 
@@ -143,60 +146,66 @@ try (Connection conn = dataSource.getConnection(...);
 }
 ```
 
-## 插入 {#insert}
+
+## 插入
 
 :::note
-- 使用 `PreparedStatement` 而非 `Statement`
-:::
 
-与输入函数（见下文）相比，它更易用但性能较慢：
+* 请使用 `PreparedStatement`，而不要使用 `Statement`
+  :::
+
+它更易用，但与 input 函数（见下文）相比，性能较慢：
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable(* except (description))")) {
     ps.setString(1, "test"); // id
     ps.setObject(2, LocalDateTime.now()); // timestamp
-    ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
+    ps.addBatch(); // 参数将立即以二进制格式写入缓冲流
     ...
-    ps.executeBatch(); // stream everything on-hand into ClickHouse
+    ps.executeBatch(); // 将所有待处理数据流式传输到 ClickHouse
 }
 ```
 
-### 使用输入表函数 {#with-input-table-function}
 
-具有良好性能特征的选项：
+### 使用 input 表函数
+
+一种具有极佳性能表现的选项：
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement(
     "insert into mytable select col1, col2 from input('col1 String, col2 DateTime64(3), col3 Int32')")) {
-    // The column definition will be parsed so the driver knows there are 3 parameters: col1, col2 and col3
+    // 列定义将被解析,驱动程序将识别出 3 个参数:col1、col2 和 col3
     ps.setString(1, "test"); // col1
-    ps.setObject(2, LocalDateTime.now()); // col2, setTimestamp is slow and not recommended
+    ps.setObject(2, LocalDateTime.now()); // col2,setTimestamp 速度较慢,不推荐使用
     ps.setInt(3, 123); // col3
-    ps.addBatch(); // parameters will be write into buffered stream immediately in binary format
+    ps.addBatch(); // 参数将立即以二进制格式写入缓冲流
     ...
-    ps.executeBatch(); // stream everything on-hand into ClickHouse
+    ps.executeBatch(); // 将所有待处理数据流式传输到 ClickHouse
 }
 ```
-- 参考 [input function doc](/sql-reference/table-functions/input/) 尽可能使用
 
-### 带占位符的插入 {#insert-with-placeholders}
+* 尽可能查阅 [input 函数文档](/sql-reference/table-functions/input/)
 
-此选项仅建议用于小型插入，因为它可能需要较长的 SQL 表达式（该表达式将在客户端解析并消耗 CPU 和内存）：
+
+### 使用占位符插入
+
+此选项仅建议在小批量插入时使用，因为它需要构造一条很长的 SQL 表达式（会在客户端进行解析，并消耗 CPU 和内存）：
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("insert into mytable values(trim(?),?,?)")) {
     ps.setString(1, "test"); // id
-    ps.setObject(2, LocalDateTime.now()); // timestamp
-    ps.setString(3, null); // description
-    ps.addBatch(); // append parameters to the query
+    ps.setObject(2, LocalDateTime.now()); // 时间戳
+    ps.setString(3, null); // 描述
+    ps.addBatch(); // 将参数追加到查询中
     ...
-    ps.executeBatch(); // issue the composed query: insert into mytable values(...)(...)...(...)
+    ps.executeBatch(); // 执行组合后的查询: insert into mytable values(...)(...)...(...)
 }
 ```
 
-## 处理 DateTime 和时区 {#handling-datetime-and-time-zones}
 
-请使用 `java.time.LocalDateTime` 或 `java.time.OffsetDateTime` 代替 `java.sql.Timestamp`，并使用 `java.time.LocalDate` 代替 `java.sql.Date`。
+## 处理 DateTime 和时区
+
+请使用 `java.time.LocalDateTime` 或 `java.time.OffsetDateTime` 替代 `java.sql.Timestamp`，并使用 `java.time.LocalDate` 替代 `java.sql.Date`。
 
 ```java showLineNumbers
 try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable where date_time > ?")) {
@@ -209,14 +218,15 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 }
 ```
 
-## 处理 `AggregateFunction` {#handling-aggregatefunction}
+
+## 处理 `AggregateFunction`
 
 :::note
-目前，仅支持 `groupBitmap`。
+目前仅支持 `groupBitmap`。
 :::
 
 ```java showLineNumbers
-// batch insert using input function
+// 使用 input 函数批量插入数据
 try (ClickHouseConnection conn = newConnection(props);
         Statement s = conn.createStatement();
         PreparedStatement stmt = conn.prepareStatement(
@@ -239,7 +249,7 @@ try (ClickHouseConnection conn = newConnection(props);
     ...
 }
 
-// use bitmap as query parameter
+// 使用 bitmap 作为查询参数
 try (PreparedStatement stmt = conn.prepareStatement(
     "SELECT bitmapContains(my_bitmap, toUInt32(1)) as v1, bitmapContains(my_bitmap, toUInt32(2)) as v2 from {tt 'ext_table'}")) {
     stmt.setObject(1, ClickHouseExternalTable.builder().name("ext_table")
@@ -255,82 +265,86 @@ try (PreparedStatement stmt = conn.prepareStatement(
 }
 ```
 
-<br/>
+<br />
 
-## 配置 HTTP 库 {#configuring-http-library}
 
-ClickHouse JDBC 连接器支持三种 HTTP 库: [`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html), [`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html) 和 [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/)。
+## 配置 HTTP 库
+
+ClickHouse JDBC 连接器支持三种 HTTP 库：[`HttpClient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)、[`HttpURLConnection`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/HttpURLConnection.html) 和 [Apache `HttpClient`](https://hc.apache.org/httpcomponents-client-5.2.x/)。
 
 :::note
 `HttpClient` 仅在 JDK 11 或更高版本中受支持。
 :::
 
-JDBC 驱动程序默认使用 `HttpClient`。您可以通过设置以下属性更改 ClickHouse JDBC 连接器使用的 HTTP 库：
+JDBC 驱动默认使用 `HttpClient`。可以通过设置以下属性来更改 ClickHouse JDBC 连接器使用的 HTTP 库：
 
 ```java
 properties.setProperty("http_connection_provider", "APACHE_HTTP_CLIENT");
 ```
 
-以下是对应值的完整列表：
+以下是这些属性对应值的完整列表：
 
-| 属性值                  | HTTP 库               |
-|-------------------------|----------------------|
-| HTTP_CLIENT             | `HttpClient`         |
-| HTTP_URL_CONNECTION     | `HttpURLConnection`   |
-| APACHE_HTTP_CLIENT      | Apache `HttpClient`   |
+| 属性值                         | HTTP 库              |
+| --------------------------- | ------------------- |
+| HTTP&#95;CLIENT             | `HttpClient`        |
+| HTTP&#95;URL&#95;CONNECTION | `HttpURLConnection` |
+| APACHE&#95;HTTP&#95;CLIENT  | Apache `HttpClient` |
 
-<br/>
+<br />
 
-## 使用 SSL 连接 ClickHouse {#connect-to-clickhouse-with-ssl}
 
-要使用 SSL 建立与 ClickHouse 的安全 JDBC 连接，您需要配置您的 JDBC 属性以包含 SSL 参数。这通常涉及在您的 JDBC URL 或 Properties 对象中指定 SSL 属性，如 `sslmode` 和 `sslrootcert`。
+## 使用 SSL 连接 ClickHouse \{#connect-to-clickhouse-with-ssl\}
 
-## SSL 属性 {#ssl-properties}
+要通过 SSL 与 ClickHouse 建立安全的 JDBC 连接，需要在 JDBC 属性中配置相应的 SSL 参数。通常需要在 JDBC URL 或 Properties 对象中指定 `sslmode` 和 `sslrootcert` 等 SSL 属性。
 
-| 名称                       | 默认值      | 可选值        | 描述                                                                      |
-|----------------------------|-------------|----------------|---------------------------------------------------------------------------|
-| `ssl`                       | false       | true, false    | 是否为连接启用 SSL/TLS                                                   |
-| `sslmode`                   | strict      | strict, none   | 是否验证 SSL/TLS 证书                                                   |
-| `sslrootcert`               |             |                | SSL/TLS 根证书的路径                                               |
-| `sslcert`                   |             |                | SSL/TLS 证书的路径                                                   |
-| `sslkey`                    |             |                | PKCS#8 格式的 RSA 密钥                                               |
-| `key_store_type`            |             | JKS, PKCS12    | 指定 `KeyStore`/`TrustStore` 文件的类型或格式                          |
-| `trust_store`               |             |                | `TrustStore` 文件的路径                                               |
-| `key_store_password`        |             |                | 访问在 `KeyStore` 配置中指定的 `KeyStore` 文件所需的密码 |
+## SSL 属性
 
-这些属性确保您的 Java 应用程序通过加密连接与 ClickHouse 服务器通信，提高数据在传输过程中的安全性。
+| Name                 | Default Value | Optional Values | Description                              |
+| -------------------- | ------------- | --------------- | ---------------------------------------- |
+| `ssl`                | false         | true, false     | 是否为连接启用 SSL/TLS                          |
+| `sslmode`            | strict        | strict, none    | 是否验证 SSL/TLS 证书                          |
+| `sslrootcert`        |               |                 | SSL/TLS 根证书的路径                           |
+| `sslcert`            |               |                 | SSL/TLS 证书的路径                            |
+| `sslkey`             |               |                 | PKCS#8 格式的 RSA 密钥                        |
+| `key_store_type`     |               | JKS, PKCS12     | 指定 `KeyStore`/`TrustStore` 文件的类型或格式      |
+| `trust_store`        |               |                 | `TrustStore` 文件路径                        |
+| `key_store_password` |               |                 | 访问在 `KeyStore` 配置中指定的 `KeyStore` 文件所需的密码 |
+
+这些属性可确保您的 Java 应用与 ClickHouse 服务器通过加密连接进行通信，从而在传输过程中提升数据安全性。
 
 ```java showLineNumbers
-String url = "jdbc:ch://your-server:8443/system";
+  String url = "jdbc:ch://your-server:8443/system";
 
-Properties properties = new Properties();
-properties.setProperty("ssl", "true");
-properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
-properties.setProperty("sslrootcert", "/mine.crt");
-try (Connection con = DriverManager
-        .getConnection(url, properties)) {
+  Properties properties = new Properties();
+  properties.setProperty("ssl", "true");
+  properties.setProperty("sslmode", "strict"); // NONE to trust all servers; STRICT for trusted only
+  properties.setProperty("sslrootcert", "/mine.crt");
+  try (Connection con = DriverManager
+          .getConnection(url, properties)) {
 
-    try (PreparedStatement stmt = con.prepareStatement(
+      try (PreparedStatement stmt = con.prepareStatement(
 
-        // place your code here
+          // 在此处编写您的代码
 
-    }
-}
+      }
+  }
 ```
 
-## 解决大插入的 JDBC 超时问题 {#resolving-jdbc-timeout-on-large-inserts}
 
-在 ClickHouse 中执行长时间执行的大插入时，您可能会遇到 JDBC 超时错误，如：
+## 解决大批量插入时的 JDBC 超时问题
+
+在 ClickHouse 中执行执行时间较长的大批量插入操作时，你可能会遇到类似下面的 JDBC 超时错误：
 
 ```plaintext
-Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
+原因:java.sql.SQLException:读取超时,服务器 myHostname [uri=https://hostname.aws.clickhouse.cloud:8443]
 ```
 
-这些错误可能会干扰数据插入过程并影响系统稳定性。为了解决此问题，您需要调整客户端操作系统中的一些超时设置。
+这些错误会中断数据插入过程，并影响系统稳定性。要解决此问题，你需要在客户端操作系统上调整一些超时设置。
 
-### Mac OS {#mac-os}
 
-在 Mac OS 上，可以调整以下设置来解决该问题：
+### Mac OS \{#mac-os\}
+
+在 Mac OS 上，可以通过调整以下设置来解决此问题：
 
 - `net.inet.tcp.keepidle`: 60000
 - `net.inet.tcp.keepintvl`: 45000
@@ -338,43 +352,43 @@ Caused by: java.sql.SQLException: Read timed out, server myHostname [uri=https:/
 - `net.inet.tcp.keepcnt`: 8
 - `net.inet.tcp.always_keepalive`: 1
 
-### Linux {#linux}
+### Linux
 
-在 Linux 上，仅调整对应设置可能无法解决问题。由于 Linux 在处理套接字保持活动设置方面的差异，需要采取额外措施。请遵循以下步骤：
+在 Linux 系统上，仅使用等效设置可能无法解决该问题。由于 Linux 处理套接字 keep-alive 设置的方式不同，还需要执行额外步骤。请按照以下步骤操作：
 
 1. 在 `/etc/sysctl.conf` 或相关配置文件中调整以下 Linux 内核参数：
 
-- `net.inet.tcp.keepidle`: 60000
-- `net.inet.tcp.keepintvl`: 45000
-- `net.inet.tcp.keepinit`: 45000
-- `net.inet.tcp.keepcnt`: 8
-- `net.inet.tcp.always_keepalive`: 1
-- `net.ipv4.tcp_keepalive_intvl`: 75
-- `net.ipv4.tcp_keepalive_probes`: 9
-- `net.ipv4.tcp_keepalive_time`: 60 (您可以考虑将此值从默认的 300 秒降低)
+* `net.inet.tcp.keepidle`: 60000
+* `net.inet.tcp.keepintvl`: 45000
+* `net.inet.tcp.keepinit`: 45000
+* `net.inet.tcp.keepcnt`: 8
+* `net.inet.tcp.always_keepalive`: 1
+* `net.ipv4.tcp_keepalive_intvl`: 75
+* `net.ipv4.tcp_keepalive_probes`: 9
+* `net.ipv4.tcp_keepalive_time`: 60（可以考虑将该值从默认的 300 秒降低）
 
-2. 修改内核参数后，通过运行以下命令应用更改：
+2. 修改内核参数后，运行以下命令以应用更改：
 
 ```shell
 sudo sysctl -p
 ```
 
-在设置这些设置后，您需要确保您的客户端在套接字上启用保持活动选项：
+完成上述设置后，需要确保客户端在套接字上启用了 Keep Alive 选项：
 
 ```java
 properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-当前，当设置套接字保持活动时，您必须使用 Apache HTTP Client 库，因为 `clickhouse-java` 支持的其他两个 HTTP 客户端库不允许设置套接字选项。有关详细指南，请参阅 [配置 HTTP 库](/integrations/language-clients/java/jdbc-v1#configuring-http-library)。
+目前，在设置 socket keep-alive 时，必须使用 Apache HTTP Client 库，因为 `clickhouse-java` 支持的另外两个 HTTP 客户端库不允许设置 socket 选项。有关详细说明，请参阅[配置 HTTP 库](/integrations/language-clients/java/jdbc-v1#configuring-http-library)。
 :::
 
-或者，您可以将等效参数添加到 JDBC URL 中。
+或者，可以在 JDBC URL 中添加等效参数。
 
-JDBC 驱动程序的默认套接字和连接超时为 30 秒。可以增加超时以支持大型数据插入操作。使用 `ClickHouseClient` 的 `options` 方法以及 `ClickHouseClientOption` 定义的 `SOCKET_TIMEOUT` 和 `CONNECTION_TIMEOUT` 选项：
+JDBC 驱动程序的默认 socket 和连接超时时间为 30 秒。可以适当增大该超时时间，以支持大数据量插入操作。使用 `ClickHouseClient` 的 `options` 方法，并结合 `ClickHouseClientOption` 中定义的 `SOCKET_TIMEOUT` 和 `CONNECTION_TIMEOUT` 选项：
 
 ```java showLineNumbers
-final int MS_12H = 12 * 60 * 60 * 1000; // 12 h in ms
+final int MS_12H = 12 * 60 * 60 * 1000; // 12 小时（毫秒）
 final String sql = "insert into table_a (c1, c2, c3) select c1, c2, c3 from table_b;";
 
 try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP)) {

@@ -1,36 +1,35 @@
 ---
-'alias':
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
-'description': 'TabSeparatedRawWithNamesAndTypesフォーマットに関するDocumentation'
-'input_format': true
-'keywords':
-- 'TabSeparatedRawWithNamesAndTypes'
-- 'TSVRawWithNamesAndTypes'
-- 'RawWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRawWithNamesAndTypes'
-'title': 'TabSeparatedRawWithNamesAndTypes'
-'doc_type': 'reference'
+alias: ['TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+description: 'TabSeparatedRawWithNamesAndTypes 形式のドキュメント'
+input_format: true
+keywords: ['TabSeparatedRawWithNamesAndTypes', 'TSVRawWithNamesAndTypes', 'RawWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNamesAndTypes
+title: 'TabSeparatedRawWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias                                             |
-|-------|--------|---------------------------------------------------|
-| ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+| 入力 | 出力 | エイリアス                                         |
+|------|------|---------------------------------------------------|
+| ✔    | ✔    | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
+
+
 
 ## 説明 {#description}
 
-[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) フォーマットと異なり、行がエスケープなしで書き込まれます。
+この形式は、行がエスケープ処理なしで書き出されるという点で、[`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 形式と異なります。
 
 :::note
-このフォーマットで解析する場合、各フィールドにタブまたは改行は許可されていません。
+この形式でパースする場合、各フィールド内にタブや改行文字を含めることはできません。
 :::
 
-## 使用例 {#example-usage}
 
-### データの挿入 {#inserting-data}
 
-`football.tsv` という名前の以下の tsv ファイルを使用します:
+## 使用例
+
+### データの挿入
+
+以下の内容の `football.tsv` という名前の TSV ファイルを使用します：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -54,15 +53,15 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します:
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み取り
 
-`TabSeparatedRawWithNamesAndTypes` フォーマットを使用してデータを読み取ります:
+`TabSeparatedRawWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -70,7 +69,8 @@ FROM football
 FORMAT TabSeparatedRawWithNamesAndTypes
 ```
 
-出力は、カラム名とタイプのための2つのヘッダー行を持つタブ区切りのフォーマットになります:
+出力は、列名と型を示す 2 行のヘッダー行を持つタブ区切り形式になります。
+
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -94,4 +94,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## フォーマット設定 {#format-settings}
+
+## 書式設定 {#format-settings}

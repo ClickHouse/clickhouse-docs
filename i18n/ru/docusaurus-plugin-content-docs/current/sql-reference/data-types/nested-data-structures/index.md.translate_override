@@ -1,6 +1,0 @@
-{
-    "russian": {
-        "Nested(name1 Type1, Name2 Type2, ...)":"Nested(name1 Type1, Name2 Type2, ...)",
-        "Nested", "Nested"
-    }
-}

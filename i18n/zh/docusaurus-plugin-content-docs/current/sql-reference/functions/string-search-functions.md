@@ -1,1657 +1,51 @@
 ---
-'description': '查找字符串的函数的文档'
-'sidebar_label': '字符串搜索'
-'slug': '/sql-reference/functions/string-search-functions'
-'title': '查找字符串的函数'
-'doc_type': 'reference'
+description: '用于在字符串中搜索的函数文档'
+sidebar_label: '字符串搜索函数'
+slug: /sql-reference/functions/string-search-functions
+title: '字符串搜索函数'
+doc_type: 'reference'
 ---
 
 
 
-# 字符串搜索函数
+# 在字符串中搜索的函数
 
-本节中的所有函数默认为区分大小写搜索。区分大小写的搜索通常由单独的函数变体提供。
-
-:::note
-不区分大小写的搜索遵循英语的大小写规则。例如，在英语中大写的 `i` 是 `I`，而在土耳其语中是 `İ` - 非英语语言的结果可能会意外。
-:::
-
-本节中的函数还假设被搜索的字符串（在本节中称为 `haystack`）和搜索字符串（在本节中称为 `needle`）为单字节编码文本。如果违反此假设，则不会抛出异常，结果是未定义的。使用 UTF-8 编码字符串的搜索通常由单独的函数变体提供。同样，如果使用了 UTF-8 函数变体且输入字符串不是 UTF-8 编码文本，则不会抛出异常，结果是未定义的。请注意，没有进行自动 Unicode 规范化，但您可以使用 [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 函数来实现这一点。
-
-[通用字符串函数](string-functions.md) 和 [字符串替换函数](string-replace-functions.md) 被单独描述。
-## position {#position}
-
-返回子字符串 `needle` 在字符串 `haystack` 中的位置（以字节为单位，从 1 开始）。
-
-**语法**
-
-```sql
-position(haystack, needle[, start_pos])
-```
-
-别名：
-- `position(needle IN haystack)`
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md) 或 [Enum](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [String](../data-types/string.md)。
-- `start_pos` – 在 `haystack` 中开始搜索的位置（基于 1）。 [UInt](../data-types/int-uint.md)。 可选。
-
-**返回值**
-
-- 如果找到子字符串，则返回以字节为单位且从 1 开始的起始位置。 [UInt64](../data-types/int-uint.md)。
-- 如果未找到子字符串，则返回 0。 [UInt64](../data-types/int-uint.md)。
-
-如果子字符串 `needle` 为空，则适用以下规则：
-- 如果未指定 `start_pos`：返回 `1`
-- 如果 `start_pos = 0`：返回 `1`
-- 如果 `start_pos >= 1` 且 `start_pos <= length(haystack) + 1`：返回 `start_pos`
-- 否则：返回 `0`
-
-相同规则也适用于函数 `locate`、`positionCaseInsensitive`、`positionUTF8` 和 `positionCaseInsensitiveUTF8`。
-
-**示例**
-
-查询：
-
-```sql
-SELECT position('Hello, world!', '!');
-```
-
-结果：
-
-```text
-┌─position('Hello, world!', '!')─┐
-│                             13 │
-└────────────────────────────────┘
-```
-
-带有 `start_pos` 参数的示例：
-
-查询：
-
-```sql
-SELECT
-    position('Hello, world!', 'o', 1),
-    position('Hello, world!', 'o', 7)
-```
-
-结果：
-
-```text
-┌─position('Hello, world!', 'o', 1)─┬─position('Hello, world!', 'o', 7)─┐
-│                                 5 │                                 9 │
-└───────────────────────────────────┴───────────────────────────────────┘
-```
-
-`needle IN haystack` 语法的示例：
-
-查询：
-
-```sql
-SELECT 6 = position('/' IN s) FROM (SELECT 'Hello/World' AS s);
-```
-
-结果：
-
-```text
-┌─equals(6, position(s, '/'))─┐
-│                           1 │
-└─────────────────────────────┘
-```
-
-带有空 `needle` 子字符串的示例：
-
-查询：
-
-```sql
-SELECT
-    position('abc', ''),
-    position('abc', '', 0),
-    position('abc', '', 1),
-    position('abc', '', 2),
-    position('abc', '', 3),
-    position('abc', '', 4),
-    position('abc', '', 5)
-```
-
-结果：
-
-```text
-┌─position('abc', '')─┬─position('abc', '', 0)─┬─position('abc', '', 1)─┬─position('abc', '', 2)─┬─position('abc', '', 3)─┬─position('abc', '', 4)─┬─position('abc', '', 5)─┐
-│                   1 │                      1 │                      1 │                      2 │                      3 │                      4 │                      0 │
-└─────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┘
-```
-## locate {#locate}
-
-类似于 [position](#position)，但参数 `haystack` 和 `locate` 交换位置。
-
-此函数的行为取决于 ClickHouse 的版本：
-- 在版本 < v24.3 中，`locate` 是函数 `position` 的别名，接受参数 `(haystack, needle[, start_pos])`。
-- 在版本 >= 24.3 中，`locate` 是一个独立的函数（为了更好地与 MySQL 兼容），接受参数 `(needle, haystack[, start_pos])`。可以使用设置 [function_locate_has_mysql_compatible_argument_order = false](/operations/settings/settings#function_locate_has_mysql_compatible_argument_order) 恢复之前的行为。
-
-**语法**
-
-```sql
-locate(needle, haystack[, start_pos])
-```
-## positionCaseInsensitive {#positioncaseinsensitive}
-
-[Position](#position) 的不区分大小写版本。
-
-**示例**
-
-查询：
-
-```sql
-SELECT positionCaseInsensitive('Hello, world!', 'hello');
-```
-
-结果：
-
-```text
-┌─positionCaseInsensitive('Hello, world!', 'hello')─┐
-│                                                 1 │
-└───────────────────────────────────────────────────┘
-```
-## positionUTF8 {#positionutf8}
-
-类似于 [position](#position)，但假定 `haystack` 和 `needle` 是 UTF-8 编码的字符串。
-
-**示例**
-
-函数 `positionUTF8` 正确将字符 `ö`（由两个点表示）计为一个 Unicode 代码点：
-
-查询：
-
-```sql
-SELECT positionUTF8('Motörhead', 'r');
-```
-
-结果：
-
-```text
-┌─position('Motörhead', 'r')─┐
-│                          5 │
-└────────────────────────────┘
-```
-## positionCaseInsensitiveUTF8 {#positioncaseinsensitiveutf8}
-
-类似于 [positionUTF8](#positionutf8)，但不区分大小写搜索。
-## multiSearchAllPositions {#multisearchallpositions}
-
-类似于 [position](#position)，但返回 `haystack` 字符串中多个 `needle` 子字符串的位置数组（以字节为单位，从 1 开始）。
+本节中的所有函数默认执行区分大小写的搜索。不区分大小写的搜索通常通过单独的函数变体提供。
 
 :::note
-所有 `multiSearch*()` 函数最多仅支持 2<sup>8</sup> 个 `needle`。
+不区分大小写的搜索遵循英语的大小写规则。例如，英语中小写字母 `i` 的大写形式是 `I`，而在土耳其语中则是 `İ` —— 因此对于非英语语言，结果可能与预期不符。
 :::
 
-**语法**
+本节中的函数还假定被搜索的字符串（在本节中称为 `haystack`）和搜索字符串（在本节中称为 `needle`）是单字节编码文本。如果不满足这一假设，将不会抛出异常，且结果未定义。对 UTF-8 编码字符串的搜索通常通过单独的函数变体提供。同样地，如果使用了 UTF-8 函数变体而输入字符串不是 UTF-8 编码文本，也不会抛出异常，且结果未定义。请注意，不会执行自动的 Unicode 规范化，不过您可以使用 [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 函数来实现这一点。
 
-```sql
-multiSearchAllPositions(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果找到子字符串，则返回以字节为单位且从 1 开始的起始位置的数组。
-- 如果未找到子字符串，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchAllPositions('Hello, World!', ['hello', '!', 'world']);
-```
-
-结果：
-
-```text
-┌─multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])─┐
-│ [0,13,0]                                                          │
-└───────────────────────────────────────────────────────────────────┘
-```
-## multiSearchAllPositionsCaseInsensitive {#multisearchallpositionscaseinsensitive}
-
-类似于 [multiSearchAllPositions](#multisearchallpositions)，但忽略大小写。
-
-**语法**
-
-```sql
-multiSearchAllPositionsCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果找到子字符串，则返回以字节为单位且从 1 开始的起始位置的数组。
-- 如果未找到子字符串，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h']);
-```
-
-结果：
-
-```response
-["1","6"]
-```
-## multiSearchAllPositionsUTF8 {#multisearchallpositionsutf8}
-
-类似于 [multiSearchAllPositions](#multisearchallpositions)，但假定 `haystack` 和 `needle` 子字符串是 UTF-8 编码的字符串。
-
-**语法**
-
-```sql
-multiSearchAllPositionsUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 编码的字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — UTF-8 编码的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果找到子字符串，则返回以字节为单位且从 1 开始的起始位置的数组。
-- 如果未找到子字符串，则返回 0。
-
-**示例**
-
-给定 `ClickHouse` 作为 UTF-8 字符串，查找 `C`（`\x43`）和 `H`（`\x48`）的位置。
-
-查询：
-
-```sql
-SELECT multiSearchAllPositionsUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x43','\x48']);
-```
-
-结果：
-
-```response
-["1","6"]
-```
-## multiSearchAllPositionsCaseInsensitiveUTF8 {#multisearchallpositionscaseinsensitiveutf8}
-
-类似于 [multiSearchAllPositionsUTF8](#multisearchallpositionsutf8)，但忽略大小写。
-
-**语法**
-
-```sql
-multiSearchAllPositionsCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 编码的字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — UTF-8 编码的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果找到子字符串，则返回以字节为单位且从 1 开始的起始位置的数组。
-- 如果未找到子字符串，则返回 0。
-
-**示例**
-
-给定 `ClickHouse` 作为 UTF-8 字符串，查找 `c`（`\x63`）和 `h`（`\x68`）的位置。
-
-查询：
-
-```sql
-SELECT multiSearchAllPositionsCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x63','\x68']);
-```
-
-结果：
-
-```response
-["1","6"]
-```
-## multiSearchFirstPosition {#multisearchfirstposition}
-
-类似于 [`position`](#position)，但返回在 `haystack` 字符串中匹配任意多个 `needle` 字符串的最左偏移量。
-
-函数 [`multiSearchFirstPositionCaseInsensitive`](#multisearchfirstpositioncaseinsensitive)、[`multiSearchFirstPositionUTF8`](#multisearchfirstpositionutf8) 和 [`multiSearchFirstPositionCaseInsensitiveUTF8`](#multisearchfirstpositioncaseinsensitiveutf8) 提供了此函数的不区分大小写和/或 UTF-8 变体。
-
-**语法**
-
-```sql
-multiSearchFirstPosition(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 在 `haystack` 字符串中匹配任意多个 `needle` 字符串的最左偏移量。
-- 如果没有匹配，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchFirstPosition('Hello World',['llo', 'Wor', 'ld']);
-```
-
-结果：
-
-```response
-3
-```
-## multiSearchFirstPositionCaseInsensitive {#multisearchfirstpositioncaseinsensitive}
-
-类似于 [`multiSearchFirstPosition`](#multisearchfirstposition)，但忽略大小写。
-
-**语法**
-
-```sql
-multiSearchFirstPositionCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 在 `haystack` 字符串中匹配任意多个 `needle` 字符串的最左偏移量。
-- 如果没有匹配，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello']);
-```
-
-结果：
-
-```response
-2
-```
-## multiSearchFirstPositionUTF8 {#multisearchfirstpositionutf8}
-
-类似于 [`multiSearchFirstPosition`](#multisearchfirstposition)，但假定 `haystack` 和 `needle` 是 UTF-8 字符串。
-
-**语法**
-
-```sql
-multiSearchFirstPositionUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 在 `haystack` 字符串中匹配任意多个 `needle` 字符串的最左偏移量。
-- 如果没有匹配，则返回 0。
-
-**示例**
-
-在 UTF-8 字符串 `hello world` 中，查找任意给定 `needle` 的最左偏移量。
-
-查询：
-
-```sql
-SELECT multiSearchFirstPositionUTF8('\x68\x65\x6c\x6c\x6f\x20\x77\x6f\x72\x6c\x64',['wor', 'ld', 'ello']);
-```
-
-结果：
-
-```response
-2
-```
-## multiSearchFirstPositionCaseInsensitiveUTF8 {#multisearchfirstpositioncaseinsensitiveutf8}
-
-类似于 [`multiSearchFirstPosition`](#multisearchfirstposition)，但假定 `haystack` 和 `needle` 是 UTF-8 字符串并忽略大小写。
-
-**语法**
-
-```sql
-multiSearchFirstPositionCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 在 `haystack` 字符串中匹配任意多个 `needle` 字符串的最左偏移量，忽略大小写。
-- 如果没有匹配，则返回 0。
-
-**示例**
-
-在 UTF-8 字符串 `HELLO WORLD` 中，查找任意给定 `needle` 的最左偏移量。
-
-查询：
-
-```sql
-SELECT multiSearchFirstPositionCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4f\x52\x4c\x44',['wor', 'ld', 'ello']);
-```
-
-结果：
-
-```response
-2
-```
-## multiSearchFirstIndex {#multisearchfirstindex}
-
-返回字符串 `haystack` 中找到的最左 `needle`<sub>i</sub> 的索引 `i`（从 1 开始），否则返回 0。
-
-函数 [`multiSearchFirstIndexCaseInsensitive`](#multisearchfirstindexcaseinsensitive)、[`multiSearchFirstIndexUTF8`](#multisearchfirstindexutf8) 和 [`multiSearchFirstIndexCaseInsensitiveUTF8`](#multisearchfirstindexcaseinsensitiveutf8) 提供了不区分大小写和/或 UTF-8 的变体。
-
-**语法**
-
-```sql
-multiSearchFirstIndex(haystack, [needle1, needle2, ..., needleN])
-```
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 找到的最左 `needle` 的索引（从 1 开始）。否则，如果没有匹配，则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchFirstIndex('Hello World',['World','Hello']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchFirstIndexCaseInsensitive {#multisearchfirstindexcaseinsensitive}
-
-返回字符串 `haystack` 中找到的最左 `needle`<sub>i</sub> 的索引 `i`（从 1 开始），否则返回 0。忽略大小写。
-
-**语法**
-
-```sql
-multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 找到的最左 `needle` 的索引（从 1 开始）。否则，如果没有匹配，则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD',['World','Hello']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchFirstIndexUTF8 {#multisearchfirstindexutf8}
-
-返回字符串 `haystack` 中找到的最左 `needle`<sub>i</sub> 的索引 `i`（从 1 开始），否则返回 0。假定 `haystack` 和 `needle` 是 UTF-8 编码的字符串。
-
-**语法**
-
-```sql
-multiSearchFirstIndexUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 字符串数组。 [Array](../data-types/array.md)
-
-**返回值**
-
-- 找到的最左 `needle` 的索引（从 1 开始）。否则，如果没有匹配，则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**示例**
-
-给定 `Hello World` 作为 UTF-8 字符串，查找 UTF-8 字符串 `Hello` 和 `World` 的第一个索引。
-
-查询：
-
-```sql
-SELECT multiSearchFirstIndexUTF8('\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64',['\x57\x6f\x72\x6c\x64','\x48\x65\x6c\x6c\x6f']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchFirstIndexCaseInsensitiveUTF8 {#multisearchfirstindexcaseinsensitiveutf8}
-
-返回字符串 `haystack` 中找到的最左 `needle`<sub>i</sub> 的索引 `i`（从 1 开始），否则返回 0。假定 `haystack` 和 `needle` 是 UTF-8 编码的字符串。忽略大小写。
-
-**语法**
-
-```sql
-multiSearchFirstIndexCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 字符串数组。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 找到的最左 `needle` 的索引（从 1 开始）。否则，如果没有匹配，则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**示例**
-
-给定 `HELLO WORLD` 作为 UTF-8 字符串，查找 UTF-8 字符串 `hello` 和 `world` 的第一个索引。
-
-查询：
-
-```sql
-SELECT multiSearchFirstIndexCaseInsensitiveUTF8('\x48\x45\x4c\x4c\x4f\x20\x57\x4f\x52\x4c\x44',['\x68\x65\x6c\x6c\x6f','\x77\x6f\x72\x6c\x64']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchAny {#multisearchany}
-
-如果至少有一个字符串 `needle`<sub>i</sub> 与字符串 `haystack` 匹配，则返回 1，否则返回 0。
-
-函数 [`multiSearchAnyCaseInsensitive`](#multisearchanycaseinsensitive)、[`multiSearchAnyUTF8`](#multisearchanyutf8) 和 [`multiSearchAnyCaseInsensitiveUTF8`](#multisearchanycaseinsensitiveutf8) 提供了不区分大小写和/或 UTF-8 的变体。
-
-**语法**
-
-```sql
-multiSearchAny(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果至少有一个匹配，则返回 1。
-- 如果没有匹配，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchAny('ClickHouse',['C','H']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchAnyCaseInsensitive {#multisearchanycaseinsensitive}
-
-类似于 [multiSearchAny](#multisearchany)，但忽略大小写。
-
-**语法**
-
-```sql
-multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — 执行搜索的字符串。 [String](../data-types/string.md)。
-- `needle` — 要搜索的子字符串。 [Array](../data-types/array.md)
-
-**返回值**
-
-- 如果至少有一个不区分大小写的匹配，则返回 1。
-- 如果没有至少一个不区分大小写的匹配，则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchAnyUTF8 {#multisearchanyutf8}
-
-类似于 [multiSearchAny](#multisearchany)，但假定 `haystack` 和 `needle` 子字符串是 UTF-8 编码的字符串。
-
-**语法**
-
-```sql
-multiSearchAnyUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 子字符串。 [Array](../data-types/array.md)。
-
-**返回值**
-
-- 如果至少有一个匹配，则返回 1。
-- 如果没有至少一个匹配，则返回 0。
-
-**示例**
-
-给定 `ClickHouse` 作为 UTF-8 字符串，检查单词中是否有字母 `C`（`\x43`）或 `H`（`\x48`）。
-
-查询：
-
-```sql
-SELECT multiSearchAnyUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x43','\x48']);
-```
-
-结果：
-
-```response
-1
-```
-## multiSearchAnyCaseInsensitiveUTF8 {#multisearchanycaseinsensitiveutf8}
-
-类似于 [multiSearchAnyUTF8](#multisearchanyutf8)，但忽略大小写。
-
-**语法**
-
-```sql
-multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
-```
-
-**参数**
-
-- `haystack` — UTF-8 字符串，在其中执行搜索。 [String](../data-types/string.md)。
-- `needle` — 要搜索的 UTF-8 子字符串。 [Array](../data-types/array.md)
-
-**返回值**
-
-- 如果至少有一个不区分大小写的匹配，则返回 1。
-- 如果没有至少一个不区分大小写的匹配，则返回 0。
-
-**示例**
-
-给定 `ClickHouse` 作为 UTF-8 字符串，检查单词中是否有字母 `h`（`\x68`），忽略大小写。
-
-查询：
-
-```sql
-SELECT multiSearchAnyCaseInsensitiveUTF8('\x43\x6c\x69\x63\x6b\x48\x6f\x75\x73\x65',['\x68']);
-```
-
-结果：
-
-```response
-1
-```
-## hasAnyTokens {#hasanytokens}
+[通用字符串函数](string-functions.md) 和 [字符串替换函数](string-replace-functions.md) 在单独的文档中进行说明。
 
 :::note
-此函数仅在设置 [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) 被启用时可以使用。
+下面的文档是从 `system.functions` 系统表生成的。
 :::
 
-如果至少有一个字符串 `needle`<sub>i</sub> 与 `input` 列匹配，则返回 1，否则返回 0。
+{/* 
+  下面标签的内部内容会在文档框架构建时，
+  被 system.functions 生成的文档所替换。
+  请不要修改或删除这些标签。
+  参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
 
-**语法**
 
-```sql
-hasAnyTokens(input, ['needle1', 'needle2', ..., 'needleN'])
-```
+{/*AUTOGENERATED_START*/ }
 
-**参数**
+## countMatches
 
-- `input` — 输入列。 [String](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
-- `needles` — 要搜索的令牌。最多支持 64 个令牌。 [Array](../data-types/array.md)([String](../data-types/string.md))。
+引入于：v21.1
 
-:::note
-列 `input` 必须具有 [文本索引][../../engines/table-engines/mergetree-family/invertedindexes.md]。
-:::
+返回正则表达式在字符串中的匹配次数。
 
-`input` 字符串由索引定义中的分词器进行分词。
+:::note Version dependent behavior
+该函数的行为依赖于 ClickHouse 版本：
 
-每个 `needle` 数组元素 token<sub>i</sub> 被视为一个单一的令牌，即不再进一步分词。
-例如，如果您想用索引 `tokenizer = ngrams(5)` 搜索 `ClickHouse`，提供这些 needles: `['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`。
-要生成这些 needles，您可以使用 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数。
-重复的令牌是无效的，例如，`['ClickHouse', 'ClickHouse']` 与 `['ClickHouse']` 是相同的。
-
-**返回值**
-
-- 如果至少有一个匹配，则返回 1。
-- 否则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-CREATE TABLE table (
-    id UInt32,
-    msg String,
-    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
-)
-ENGINE = MergeTree
-ORDER BY id;
-
-INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
-
-SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
-```
-
-结果：
-
-```response
-3
-```
-
-**使用 `tokens` 函数生成针**
-
-查询：
-
-```sql
-SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
-```
-
-结果：
-
-```response
-3
-```
-## hasAllTokens {#hasalltokens}
-
-:::note
-此函数仅在设置 [allow_experimental_full_text_index](/operations/settings/settings#allow_experimental_full_text_index) 被启用时可以使用。
-:::
-
-类似于 [hasAnyTokens](#hasanytokens)，只有在所有字符串 `needle`<sub>i</sub> 与 `input` 列匹配时才返回 1，否则返回 0。
-
-**语法**
-
-```sql
-hasAllTokens(input, ['needle1', 'needle2', ..., 'needleN'])
-```
-
-**参数**
-
-- `input` — 输入列。 [String](../data-types/string.md) 或 [FixedString](../data-types/fixedstring.md)。
-- `needles` — 要搜索的令牌。最多支持 64 个令牌。 [Array](../data-types/array.md)([String](../data-types/string.md))。
-
-:::note
-列 `input` 必须具有 [文本索引][../../engines/table-engines/mergetree-family/invertedindexes.md]。
-:::
-
-`input` 字符串由索引定义中的分词器进行分词。
-
-每个 `needle` 数组元素 token<sub>i</sub> 被视为一个单一的令牌，即不再进一步分词。
-例如，如果您想用索引 `tokenizer = ngrams(5)` 搜索 `ClickHouse`，提供这些 needles: `['Click', 'lickH', 'ickHo', 'ckHou', 'kHous', 'House']`。
-要生成这些 needles，您可以使用 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数。
-重复的令牌是无效的，例如，`['ClickHouse', 'ClickHouse']` 与 `['ClickHouse']` 是相同的。
-
-**返回值**
-
-- 如果所有 needle 匹配，则返回 1。
-- 否则返回 0。
-
-**示例**
-
-查询：
-
-```sql
-CREATE TABLE table (
-    id UInt32,
-    msg String,
-    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\'])
-)
-ENGINE = MergeTree
-ORDER BY id;
-
-INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
-
-SELECT count() FROM table WHERE hasAllTokens(msg, ['a', 'd']);
-```
-
-结果：
-
-```response
-1
-```
-
-**使用 `tokens` 函数生成针**
-
-查询：
-
-```sql
-SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
-```
-
-结果：
-
-```response
-1
-```
-## match {#match}
-
-返回字符串 `haystack` 是否与正则表达式 `pattern` 匹配，[re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax)。
-
-匹配是基于 UTF-8 的，例如 `.` 匹配 Unicode 代码点 `¥`，其在 UTF-8 中使用两个字节表示。正则表达式中不得包含空字节。如果 haystack 或模式不是有效 UTF-8，则行为是未定义的。
-
-与 re2 的默认行为不同，`.` 匹配换行符。要禁用此功能，请在模式前添加 `(?-s)`。
-
-如果您只想在字符串中查找子字符串，可以使用函数 [like](#like) 或 [position](#position)，它们的速度比此函数快得多。
-
-**语法**
-
-```sql
-match(haystack, pattern)
-```
-
-别名：`haystack REGEXP pattern operator`
-## multiMatchAny {#multimatchany}
-
-类似于 `match`，但如果至少有一个模式匹配，则返回 1，否则返回 0。
-
-:::note
-`multi[Fuzzy]Match*()` 函数系列使用 (Vectorscan)[https://github.com/VectorCamp/vectorscan] 库。因此，它们仅在 ClickHouse 被编译为支持 vectorscan 时启用。
-
-要关闭所有使用 hyperscan 的函数，请使用设置 `SET allow_hyperscan = 0;`。
-
-由于 vectorscan 的限制，`haystack` 字符串的长度必须小于 2<sup>32</sup> 字节。
-
-Hyperscan 通常容易受到正则表达式拒绝服务（ReDoS）攻击（例如，请参见 (here)[https://www.usenix.org/conference/usenixsecurity22/presentation/turonova]、(here)[https://doi.org/10.1007/s10664-021-10033-1] 和 (here)[https://doi.org/10.1145/3236024.3236027]）。建议用户仔细检查提供的模式。
-:::
-
-如果您只想在字符串中搜索多个子字符串，可以使用函数 [multiSearchAny](#multisearchany)，它的速度比此函数快得多。
-
-**语法**
-
-```sql
-multiMatchAny(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiMatchAnyIndex {#multimatchanyindex}
-
-类似于 `multiMatchAny`，但返回与 `haystack` 匹配的任何索引。
-
-**语法**
-
-```sql
-multiMatchAnyIndex(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiMatchAllIndices {#multimatchallindices}
-
-类似于 `multiMatchAny`，但返回所有匹配 `haystack` 的索引数组，顺序无关。
-
-**语法**
-
-```sql
-multiMatchAllIndices(haystack, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAny {#multifuzzymatchany}
-
-类似于 `multiMatchAny`，但如果任何模式在某个常量 [编辑距离](https://en.wikipedia.org/wiki/Edit_distance) 内匹配 `haystack`，则返回 1。此函数依赖于 [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) 库的实验性功能，并且对于某些极端情况可能很慢。性能依赖于编辑距离值和使用的模式，但始终比非模糊变体更昂贵。
-
-:::note
-`multiFuzzyMatch*()` 函数系列不支持 UTF-8 正则表达式（因为它将其视为字节序列），这受到 hyperscan 的限制。
-:::
-
-**语法**
-
-```sql
-multiFuzzyMatchAny(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAnyIndex {#multifuzzymatchanyindex}
-
-类似于 `multiFuzzyMatchAny`，但返回在常量编辑距离内与 `haystack` 匹配的任何索引。
-
-**语法**
-
-```sql
-multiFuzzyMatchAnyIndex(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## multiFuzzyMatchAllIndices {#multifuzzymatchallindices}
-
-类似于 `multiFuzzyMatchAny`，但返回在常量编辑距离内与 `haystack` 匹配的所有索引的数组，顺序无关。
-
-**语法**
-
-```sql
-multiFuzzyMatchAllIndices(haystack, distance, \[pattern<sub>1</sub>, pattern<sub>2</sub>, ..., pattern<sub>n</sub>\])
-```
-## extract {#extract}
-
-返回字符串中正则表达式的第一个匹配。
-如果 `haystack` 不匹配 `pattern` 正则表达式，则返回空字符串。 
-
-如果正则表达式有捕获组，函数将输入字符串与第一个捕获组匹配。
-
-**语法**
-
-```sql
-extract(haystack, pattern)
-```
-
-**参数**
-
-- `haystack` — 输入字符串。 [String](../data-types/string.md)。
-- `pattern` — 采用 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。
-
-**返回值**
-
-- 在 haystack 字符串中正则表达式的第一个匹配。 [String](../data-types/string.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT extract('number: 1, number: 2, number: 3', '\\d+') AS result;
-```
-
-结果：
-
-```response
-┌─result─┐
-│ 1      │
-└────────┘
-```
-## extractAll {#extractall}
-
-返回字符串中正则表达式的所有匹配数组。如果 `haystack` 不匹配 `pattern` 正则表达式，则返回空字符串。
-
-与子模式的行为与函数 [`extract`](#extract) 相同。
-
-**语法**
-
-```sql
-extractAll(haystack, pattern)
-```
-
-**参数**
-
-- `haystack` — 输入字符串。 [String](../data-types/string.md)。
-- `pattern` — 采用 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。
-
-**返回值**
-
-- 在 haystack 字符串中正则表达式的匹配数组。 [Array](../data-types/array.md)([String](../data-types/string.md))。
-
-**示例**
-
-查询：
-
-```sql
-SELECT extractAll('number: 1, number: 2, number: 3', '\\d+') AS result;
-```
-
-结果：
-
-```response
-┌─result────────┐
-│ ['1','2','3'] │
-└───────────────┘
-```
-## extractAllGroupsHorizontal {#extractallgroupshorizontal}
-
-使用 `pattern` 正则表达式匹配 `haystack` 字符串的所有组。返回一个数组的数组，其中第一个数组包含所有匹配第一个组的片段，第二个数组匹配第二组，依此类推。
-
-此函数比 [extractAllGroupsVertical](#extractallgroupsvertical) 速度慢。
-
-**语法**
-
-```sql
-extractAllGroupsHorizontal(haystack, pattern)
-```
-
-**参数**
-
-- `haystack` — 输入字符串。 [String](../data-types/string.md)。
-- `pattern` — 采用 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。必须包含组，每个组用括号括起来。如果 `pattern` 不包含组，则会抛出异常。 [String](../data-types/string.md)。
-
-**返回值**
-
-- 匹配的数组数组。 [Array](../data-types/array.md)。
-
-:::note
-如果 `haystack` 不匹配 `pattern` 正则表达式，则返回一个空数组的数组。
-:::
-
-**示例**
-
-```sql
-SELECT extractAllGroupsHorizontal('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)');
-```
-
-结果：
-
-```text
-┌─extractAllGroupsHorizontal('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)')─┐
-│ [['abc','def','ghi'],['111','222','333']]                                                │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## extractGroups {#extractgroups}
-
-使用给定的正则表达式匹配给定输入字符串的所有组，返回匹配的数组数组。
-
-**语法**
-
-```sql
-extractGroups(haystack, pattern)
-```
-
-**参数**
-
-- `haystack` — 输入字符串。 [String](../data-types/string.md)。
-- `pattern` — 采用 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。必须包含组，每个组用括号括起来。如果 `pattern` 不包含组，则会抛出异常。 [String](../data-types/string.md)。
-
-**返回值**
-
-- 匹配的数组数组。 [Array](../data-types/array.md)。
-
-**示例**
-
-```sql
-SELECT extractGroups('hello abc=111 world', '("[^"]+"|\\w+)=("[^"]+"|\\w+)') AS result;
-```
-
-结果：
-
-```text
-┌─result────────┐
-│ ['abc','111'] │
-└───────────────┘
-```
-## extractAllGroupsVertical {#extractallgroupsvertical}
-
-使用 `pattern` 正则表达式匹配 `haystack` 字符串的所有组。返回一个数组的数组，其中每个数组包含来自每个组的匹配片段。片段按 `haystack` 中的出现顺序分组。
-
-**语法**
-
-```sql
-extractAllGroupsVertical(haystack, pattern)
-```
-
-**参数**
-
-- `haystack` — 输入字符串。 [String](../data-types/string.md)。
-- `pattern` — 采用 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。必须包含组，每个组用括号括起来。如果 `pattern` 不包含组，则会抛出异常。 [String](../data-types/string.md)。
-
-**返回值**
-
-- 匹配的数组数组。 [Array](../data-types/array.md)。
-
-:::note
-如果 `haystack` 不匹配 `pattern` 正则表达式，则返回一个空数组。
-:::
-
-**示例**
-
-```sql
-SELECT extractAllGroupsVertical('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)');
-```
-
-结果：
-
-```text
-┌─extractAllGroupsVertical('abc=111, def=222, ghi=333', '("[^"]+"|\\w+)=("[^"]+"|\\w+)')─┐
-│ [['abc','111'],['def','222'],['ghi','333']]                                            │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## like {#like}
-
-返回字符串 `haystack` 是否匹配 LIKE 表达式 `pattern`。
-
-LIKE 表达式可以包含正常字符和以下元符号：
-
-- `%` 表示任意数量的任意字符（包括零个字符）。
-- `_` 表示单个任意字符。
-- `\` 用于转义字面量 `%`、`_` 和 `\`。
-
-匹配是基于 UTF-8 的，例如 `_` 匹配 Unicode 代码点 `¥`，其在 UTF-8 中使用两个字节表示。
-
-如果 haystack 或 LIKE 表达式不是有效的 UTF-8，则行为是未定义的。
-
-没有进行自动 Unicode 规范化，您可以使用 [normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 函数来实现这一点。
-
-要匹配字面 `%`、`_` 和 `\`（即 LIKE 元字符），请在它们前面加上一个反斜杠：`\%`、`\_` 和 `\\`。
-如果反斜杠前附加的字符不是 `%`、`_` 或 `\\`，则反斜杠失去其特殊含义（即被字面解释）。
-请注意，ClickHouse 还需要将字符串中的反斜杠 [进行转义](../syntax.md#string)，因此您实际上需要写 `\\%`、`\\_` 和 `\\\\`。
-
-对于 `%needle%` 形式的 LIKE 表达式，该函数的速度与 `position` 函数相同。
-所有其他 LIKE 表达式内部转换为正则表达式，并以与 `match` 函数相似的性能执行。
-
-**语法**
-
-```sql
-like(haystack, pattern)
-```
-
-别名：`haystack LIKE pattern` (操作符)
-## notLike {#notlike}
-
-类似于 `like`，但否定结果。
-
-别名：`haystack NOT LIKE pattern` (操作符)
-## ilike {#ilike}
-
-类似于 `like`，但不区分大小写进行搜索。
-
-别名：`haystack ILIKE pattern` (操作符)
-## notILike {#notilike}
-
-类似于 `ilike`，但否定结果。
-
-别名：`haystack NOT ILIKE pattern` (操作符)
-## ngramDistance {#ngramdistance}
-
-计算 `haystack` 字符串和 `needle` 字符串之间的 4-gram 距离。为此，它计算两个 4-grams 的对称差，并通过它们的基数总和进行归一化。返回一个 [Float32](/sql-reference/data-types/float)，范围在 0 到 1 之间。结果越小，字符串之间越相似。
-
-函数 [`ngramDistanceCaseInsensitive`](#ngramdistancecaseinsensitive)、[`ngramDistanceUTF8`](#ngramdistanceutf8) 和 [`ngramDistanceCaseInsensitiveUTF8`](#ngramdistancecaseinsensitiveutf8) 提供不区分大小写和/或 UTF-8 的变体。
-
-**语法**
-
-```sql
-ngramDistance(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个比较字符串。 [String literal](/sql-reference/syntax#string)
-- `needle`：第二个比较字符串。 [String literal](/sql-reference/syntax#string)
-
-**返回值**
-
-- 0 到 1 之间的值表示两个字符串之间的相似度。 [Float32](/sql-reference/data-types/float)
-
-**实现细节**
-
-如果常量 `needle` 或 `haystack` 参数超过 32Kb，则此函数将抛出异常。如果任何非常量 `haystack` 或 `needle` 参数超过 32Kb，则距离总是返回 1。
-
-**示例**
-
-两个字符串越相似，结果值越接近 0（完全相同）。
-
-查询：
-
-```sql
-SELECT ngramDistance('ClickHouse','ClickHouse!');
-```
-
-结果：
-
-```response
-0.06666667
-```
-
-两个字符串越不相似，结果值越大。
-查询：
-
-```sql
-SELECT ngramDistance('ClickHouse','House');
-```
-
-结果：
-
-```response
-0.5555556
-```
-## ngramDistanceCaseInsensitive {#ngramdistancecaseinsensitive}
-
-提供不区分大小写的 [ngramDistance](#ngramdistance) 变体。
-
-**语法**
-
-```sql
-ngramDistanceCaseInsensitive(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个比较字符串。 [String literal](/sql-reference/syntax#string)
-- `needle`：第二个比较字符串。 [String literal](/sql-reference/syntax#string)
-
-**返回值**
-
-- 0 到 1 之间的值表示两个字符串之间的相似度。 [Float32](/sql-reference/data-types/float)
-
-**示例**
-
-使用 [ngramDistance](#ngramdistance) 时，大小写的不同会影响相似度值：
-
-查询：
-
-```sql
-SELECT ngramDistance('ClickHouse','clickhouse');
-```
-
-结果：
-
-```response
-0.71428573
-```
-
-使用 [ngramDistanceCaseInsensitive](#ngramdistancecaseinsensitive) 时，大小写被忽略，因此仅在大小写不同的两个相同字符串现在将返回一个低的相似度值：
-
-查询：
-
-```sql
-SELECT ngramDistanceCaseInsensitive('ClickHouse','clickhouse');
-```
-
-结果：
-
-```response
-0
-```
-
-## ngramDistanceUTF8 {#ngramdistanceutf8}
-
-提供了一个 UTF-8 变体的 [ngramDistance](#ngramdistance)。假设 `needle` 和 `haystack` 字符串为 UTF-8 编码的字符串。
-
-**语法**
-
-```sql
-ngramDistanceUTF8(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示两个字符串之间相似度的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramDistanceUTF8('abcde','cde');
-```
-
-结果：
-
-```response
-0.5
-```
-## ngramDistanceCaseInsensitiveUTF8 {#ngramdistancecaseinsensitiveutf8}
-
-提供了一个不区分大小写的 [ngramDistanceUTF8](#ngramdistanceutf8) 变体。
-
-**语法**
-
-```sql
-ngramDistanceCaseInsensitiveUTF8(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示两个字符串之间相似度的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramDistanceCaseInsensitiveUTF8('abcde','CDE');
-```
-
-结果：
-
-```response
-0.5
-```
-## ngramSearch {#ngramsearch}
-
-类似于 `ngramDistance` ，但计算 `needle` 字符串和 `haystack` 字符串之间的非对称差异，即 n-gram 的数量来自 needle 减去共同的 n-gram 数量，再根据 `needle` 的 n-gram 数量进行归一化。返回一个值在 0 和 1 之间的 [Float32](/sql-reference/data-types/float)。结果越大，`needle` 出现在 `haystack` 中的可能性越大。此函数对于模糊字符串搜索很有用。也可以参考函数 [`soundex`](../../sql-reference/functions/string-functions#soundex)。
-
-函数 [`ngramSearchCaseInsensitive`](#ngramsearchcaseinsensitive)、[`ngramSearchUTF8`](#ngramsearchutf8)、[`ngramSearchCaseInsensitiveUTF8`](#ngramsearchcaseinsensitiveutf8) 提供了此函数的不区分大小写和/或 UTF-8 变体。
-
-**语法**
-
-```sql
-ngramSearch(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示 `needle` 在 `haystack` 中的可能性的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-**实现细节**
-
-:::note
-UTF-8 变体使用 3-gram 距离。这些并不是完全公平的 n-gram 距离。我们使用 2 字节哈希来哈希 n-gram，然后计算这些哈希表之间的（非）对称差异 - 可能会发生哈希冲突。对于不区分大小写的 UTF-8 格式，我们不使用公平的 `tolower` 函数 - 我们将每个代码点字节的第 5 位（从零开始）以及如果字节大于一个的第零字节的第一位置零 - 这适用于拉丁字母和大多数西里尔字母。
-:::
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramSearch('Hello World','World Hello');
-```
-
-结果：
-
-```response
-0.5
-```
-## ngramSearchCaseInsensitive {#ngramsearchcaseinsensitive}
-
-提供了一个不区分大小写的 [ngramSearch](#ngramsearch) 变体。
-
-**语法**
-
-```sql
-ngramSearchCaseInsensitive(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示 `needle` 在 `haystack` 中的可能性的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-结果越大，`needle` 出现在 `haystack` 中的可能性越大。
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramSearchCaseInsensitive('Hello World','hello');
-```
-
-结果：
-
-```response
-1
-```
-## ngramSearchUTF8 {#ngramsearchutf8}
-
-提供了一个 UTF-8 变体的 [ngramSearch](#ngramsearch)，假设 `needle` 和 `haystack` 为 UTF-8 编码的字符串。
-
-**语法**
-
-```sql
-ngramSearchUTF8(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示 `needle` 在 `haystack` 中的可能性的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-结果越大，`needle` 出现在 `haystack` 中的可能性越大。
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд');
-```
-
-结果：
-
-```response
-0.5
-```
-## ngramSearchCaseInsensitiveUTF8 {#ngramsearchcaseinsensitiveutf8}
-
-提供了一个不区分大小写的 [ngramSearchUTF8](#ngramsearchutf8) 变体。
-
-**语法**
-
-```sql
-ngramSearchCaseInsensitiveUTF8(haystack, needle)
-```
-
-**参数**
-
-- `haystack`：第一个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-- `needle`：第二个 UTF-8 编码的比较字符串。 [字符串文字](/sql-reference/syntax#string)
-
-**返回值**
-
-- 表示 `needle` 在 `haystack` 中的可能性的值，范围为 0 到 1。 [Float32](/sql-reference/data-types/float)
-
-结果越大，`needle` 出现在 `haystack` 中的可能性越大。
-
-**示例**
-
-查询：
-
-```sql
-SELECT ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз');
-```
-
-结果：
-
-```response
-0.57142854
-```
-## countSubstrings {#countsubstrings}
-
-返回子字符串 `needle` 在字符串 `haystack` 中出现的次数。
-
-函数 [`countSubstringsCaseInsensitive`](#countsubstringscaseinsensitive) 和 [`countSubstringsCaseInsensitiveUTF8`](#countsubstringscaseinsensitiveutf8) 提供了此函数的不区分大小写和不区分大小写 + UTF-8 变体。
-
-**语法**
-
-```sql
-countSubstrings(haystack, needle[, start_pos])
-```
-
-**参数**
-
-- `haystack` — 进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `needle` — 要搜索的子字符串。 [字符串](../data-types/string.md)。
-- `start_pos` – 在 `haystack` 中开始搜索的位置（基于 1）。 [UInt](../data-types/int-uint.md)。 可选。
-
-**返回值**
-
-- 出现的次数。 [UInt64](../data-types/int-uint.md)。
-
-**示例**
-
-```sql
-SELECT countSubstrings('aaaa', 'aa');
-```
-
-结果：
-
-```text
-┌─countSubstrings('aaaa', 'aa')─┐
-│                             2 │
-└───────────────────────────────┘
-```
-
-带有 `start_pos` 参数的示例：
-
-```sql
-SELECT countSubstrings('abc___abc', 'abc', 4);
-```
-
-结果：
-
-```text
-┌─countSubstrings('abc___abc', 'abc', 4)─┐
-│                                      1 │
-└────────────────────────────────────────┘
-```
-## countSubstringsCaseInsensitive {#countsubstringscaseinsensitive}
-
-返回子字符串 `needle` 在字符串 `haystack` 中出现的次数。 忽略大小写。
-
-**语法**
-
-```sql
-countSubstringsCaseInsensitive(haystack, needle[, start_pos])
-```
-
-**参数**
-
-- `haystack` — 进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `needle` — 要搜索的子字符串。 [字符串](../data-types/string.md)。
-- `start_pos` – 在 `haystack` 中开始搜索的位置（基于 1）。 [UInt](../data-types/int-uint.md)。 可选。
-
-**返回值**
-
-- 出现的次数。 [UInt64](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT countSubstringsCaseInsensitive('AAAA', 'aa');
-```
-
-结果：
-
-```text
-┌─countSubstringsCaseInsensitive('AAAA', 'aa')─┐
-│                                            2 │
-└──────────────────────────────────────────────┘
-```
-
-带有 `start_pos` 参数的示例：
-
-查询：
-
-```sql
-SELECT countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4);
-```
-
-结果：
-
-```text
-┌─countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4)─┐
-│                                                           2 │
-└─────────────────────────────────────────────────────────────┘
-```
-## countSubstringsCaseInsensitiveUTF8 {#countsubstringscaseinsensitiveutf8}
-
-返回子字符串 `needle` 在字符串 `haystack` 中出现的次数。 忽略大小写，并假设 `haystack` 是 UTF8 字符串。
-
-**语法**
-
-```sql
-countSubstringsCaseInsensitiveUTF8(haystack, needle[, start_pos])
-```
-
-**参数**
-
-- `haystack` — 进行搜索的 UTF-8 字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `needle` — 要搜索的子字符串。 [字符串](../data-types/string.md)。
-- `start_pos` – 在 `haystack` 中开始搜索的位置（基于 1）。 [UInt](../data-types/int-uint.md)。 可选。
-
-**返回值**
-
-- 出现的次数。 [UInt64](../data-types/int-uint.md)。
-
-**示例**
-
-查询：
-
-```sql
-SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА');
-```
-
-结果：
-
-```text
-┌─countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА')─┐
-│                                                                  4 │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-带有 `start_pos` 参数的示例：
-
-查询：
-
-```sql
-SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13);
-```
-
-结果：
-
-```text
-┌─countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13)─┐
-│                                                                      2 │
-└────────────────────────────────────────────────────────────────────────┘
-```
-## countMatches {#countmatches}
-
-返回字符串 `haystack` 中与 `pattern` 匹配的正则表达式的数量。
-
-此函数的行为取决于 ClickHouse 版本：
-- 在版本 < v25.6 时，`countMatches` 会在第一个空匹配处停止计数，即使模式接受。
-- 在版本 >= 25.6 时，`countMatches` 会在出现空匹配时继续执行。
-  可以使用设置 [count_matches_stop_at_empty_match = true](/operations/settings/settings#count_matches_stop_at_empty_match) 恢复遗留行为。
+* 在 &lt; v25.6 的版本中，即使模式允许，函数在遇到第一个空匹配时就会停止计数。
+* 在 &gt;= 25.6 的版本中，函数在出现空匹配时会继续执行。可以通过设置 `count_matches_stop_at_empty_match = true` 恢复旧行为。
+  :::
 
 **语法**
 
@@ -1661,41 +55,33 @@ countMatches(haystack, pattern)
 
 **参数**
 
-- `haystack` — 要搜索的字符串。 [字符串](../data-types/string.md)。
-- `pattern` — 带有 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。 [字符串](../data-types/string.md)。
+* `haystack` — 要搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式模式。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 匹配的数量。 [UInt64](../data-types/int-uint.md)。
+返回匹配到的次数。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-```sql
-SELECT countMatches('foobar.com', 'o+');
+**统计数字序列**
+
+```sql title=Query
+SELECT countMatches('hello 123 world 456 test', '[0-9]+')
 ```
 
-结果：
-
-```text
-┌─countMatches('foobar.com', 'o+')─┐
-│                                2 │
-└──────────────────────────────────┘
+```response title=Response
+┌─countMatches('hello 123 world 456 test', '[0-9]+')─┐
+│                                                   2 │
+└─────────────────────────────────────────────────────┘
 ```
 
-```sql
-SELECT countMatches('aaaa', 'aa');
-```
 
-结果：
+## countMatchesCaseInsensitive
 
-```text
-┌─countMatches('aaaa', 'aa')────┐
-│                             2 │
-└───────────────────────────────┘
-```
-## countMatchesCaseInsensitive {#countmatchescaseinsensitive}
+自 v21.1 引入
 
-返回字符串 `haystack` 中与模式匹配的正则表达式的数量，类似于 [`countMatches`](#countmatches)，但匹配时忽略大小写。
+类似于 [`countMatches`](#countMatches)，但进行不区分大小写的匹配。
 
 **语法**
 
@@ -1705,71 +91,656 @@ countMatchesCaseInsensitive(haystack, pattern)
 
 **参数**
 
-- `haystack` — 要搜索的字符串。 [字符串](../data-types/string.md)。
-- `pattern` — 带有 [re2 正则表达式语法](https://github.com/google/re2/wiki/Syntax) 的正则表达式。 [字符串](../data-types/string.md)。
+* `haystack` — 要在其中搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式模式。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 匹配的数量。 [UInt64](../data-types/int-uint.md)。
+返回找到的匹配次数。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**不区分大小写的计数**
 
-```sql
-SELECT countMatchesCaseInsensitive('AAAA', 'aa');
+```sql title=Query
+SELECT countMatchesCaseInsensitive('Hello HELLO world', 'hello')
 ```
 
-结果：
-
-```text
-┌─countMatchesCaseInsensitive('AAAA', 'aa')────┐
-│                                            2 │
-└──────────────────────────────────────────────┘
+```response title=Response
+┌─countMatchesCaseInsensitive('Hello HELLO world', 'hello')─┐
+│                                                         2 │
+└───────────────────────────────────────────────────────────┘
 ```
-## regexpExtract {#regexpextract}
 
-提取在 `haystack` 中与正则表达式模式匹配并对应于正则表达式组索引的第一个字符串。
+
+## countSubstrings
+
+引入于：v21.1
+
+返回子字符串 `needle` 在字符串 `haystack` 中出现的次数。
 
 **语法**
 
 ```sql
-regexpExtract(haystack, pattern[, index])
+countSubstrings(干草堆, 针[, 起始位置])
 ```
-
-别名：`REGEXP_EXTRACT(haystack, pattern[, index])`。
 
 **参数**
 
-- `haystack` — 要匹配正则表达式模式的字符串。 [字符串](../data-types/string.md)。
-- `pattern` — 字符串，正则表达式，必须是常量。 [字符串](../data-types/string.md)。
-- `index` – 整数，取值大于或等于 0，默认值为 1。它表示要提取的正则表达式组。 [UInt 或 Int](../data-types/int-uint.md)。 可选。
+* `haystack` — 进行搜索的字符串。[String](../../sql-reference/data-types/string.md) 或 [Enum](../../sql-reference/data-types/enum.md)。 - `needle` — 要搜索的子字符串。[String](../../sql-reference/data-types/string.md)。 - `start_pos` — 在 `haystack` 中开始搜索的位置（从 1 开始计数）。[UInt](../../sql-reference/data-types/int-uint.md)。可选。
 
 **返回值**
 
-`pattern` 可能包含多个正则表达式组，`index` 指示要提取的正则表达式组。索引 0 意味着匹配整个正则表达式。 [字符串](../data-types/string.md)。
+匹配出现的次数。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
+**用法示例**
+
+```sql title=Query
+SELECT countSubstrings('aaaa', 'aa');
+```
+
+```response title=Response
+┌─countSubstrings('aaaa', 'aa')─┐
+│                             2 │
+└───────────────────────────────┘
+```
+
+**使用 start&#95;pos 参数**
+
+```sql title=Query
+SELECT countSubstrings('abc___abc', 'abc', 4);
+```
+
+```response title=Response
+┌─countSubstrings('abc___abc', 'abc', 4)─┐
+│                                      1 │
+└────────────────────────────────────────┘
+```
+
+
+## countSubstringsCaseInsensitive
+
+引入版本：v21.1
+
+与 [`countSubstrings`](#countSubstrings) 类似，但以不区分大小写的方式计数。
+
+**语法**
+
 ```sql
-SELECT
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 1),
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 2),
-    regexpExtract('100-200', '(\\d+)-(\\d+)', 0),
-    regexpExtract('100-200', '(\\d+)-(\\d+)');
+countSubstringsCaseInsensitive(haystack, needle[, start_pos])
 ```
 
-结果：
+**参数**
 
-```text
-┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┐
-│ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
-└──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
+* `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要搜索的子字符串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的位置（从 1 开始计数）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回 `needle` 在 `haystack` 中出现的次数。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitive('AAAA', 'aa');
 ```
-## hasSubsequence {#hassubsequence}
 
-如果 `needle` 是 `haystack` 的子序列，则返回 1， 否则返回 0。
-字符串的子序列是可以由给定字符串派生的序列，通过删除零或多个元素而不更改剩余元素的顺序。
+```response title=Response
+┌─countSubstri⋯AAA', 'aa')─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+**使用 start&#95;pos 参数**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitive('abc___ABC___abc', 'abc', 4);
+```
+
+```response title=Response
+┌─countSubstri⋯, 'abc', 4)─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+
+## countSubstringsCaseInsensitiveUTF8
+
+自 v21.1 起引入
+
+类似于 [`countSubstrings`](#countSubstrings)，但按不区分大小写的方式计数，并假定 haystack 为 UTF-8 字符串。
+
+**语法**
+
+```sql
+countSubstringsCaseInsensitiveUTF8(haystack, needle[, start_pos])
+```
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的 UTF-8 字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要搜索的子串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的位置（从 1 开始）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回 `needle` 在 `haystack` 中出现的次数。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА');
+```
+
+```response title=Response
+┌─countSubstri⋯шка', 'КА')─┐
+│                        4 │
+└──────────────────────────┘
+```
+
+**使用 start&#95;pos 参数**
+
+```sql title=Query
+SELECT countSubstringsCaseInsensitiveUTF8('ложка, кошка, картошка', 'КА', 13);
+```
+
+```response title=Response
+┌─countSubstri⋯, 'КА', 13)─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+
+## extract
+
+引入于：v1.1
+
+从字符串中提取与正则表达式匹配的第一个结果。
+如果 &#39;haystack&#39; 不匹配 &#39;pattern&#39;，则返回空字符串。
+
+此函数使用 RE2 正则表达式库。有关支持的语法，请参阅 [re2](https://github.com/google/re2/wiki/Syntax)。
+
+如果正则表达式包含捕获组（子模式），函数会基于第一个捕获组对输入字符串进行匹配。
+
+**语法**
+
+```sql
+extract(haystack, pattern)
+```
+
+**参数**
+
+* `haystack` — 要从中提取内容的源字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式，通常包含一个捕获组。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回提取出的片段，类型为字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**从电子邮箱地址中提取域名**
+
+```sql title=Query
+SELECT extract('test@clickhouse.com', '.*@(.*)$')
+```
+
+```response title=Response
+┌─extract('test@clickhouse.com', '.*@(.*)$')─┐
+│ clickhouse.com                            │
+└───────────────────────────────────────────┘
+```
+
+**无匹配时返回空字符串**
+
+```sql title=Query
+SELECT extract('test@clickhouse.com', 'no_match')
+```
+
+```response title=Response
+┌─extract('test@clickhouse.com', 'no_match')─┐
+│                                            │
+└────────────────────────────────────────────┘
+```
+
+
+## extractAll
+
+引入版本：v1.1
+
+与 [`extract`](#extract) 类似，但会返回字符串中正则表达式所有匹配结果构成的数组。
+如果 &#39;haystack&#39; 不匹配 &#39;pattern&#39; 正则表达式，则返回空数组。
+
+如果正则表达式包含捕获组（子模式），该函数会返回第一个捕获组的匹配结果。
+
+**语法**
+
+```sql
+extractAll(haystack, pattern)
+```
+
+**参数**
+
+* `haystack` — 要从中提取片段的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式，可以包含捕获组。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回包含提取片段的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**示例**
+
+**提取所有数字**
+
+```sql title=Query
+SELECT extractAll('hello 123 world 456', '[0-9]+')
+```
+
+```response title=Response
+┌─extractAll('hello 123 world 456', '[0-9]+')─┐
+│ ['123','456']                               │
+└─────────────────────────────────────────────┘
+```
+
+**使用捕获组提取**
+
+```sql title=Query
+SELECT extractAll('test@example.com, user@domain.org', '([a-zA-Z0-9]+)@')
+```
+
+```response title=Response
+┌─extractAll('test@example.com, user@domain.org', '([a-zA-Z0-9]+)@')─┐
+│ ['test','user']                                                    │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+
+## extractAllGroupsHorizontal
+
+自 v20.5 引入
+
+使用提供的正则表达式匹配字符串中的所有捕获组，并返回一个数组的数组，其中每个数组按组号组织，包含同一捕获组的所有捕获结果。
+
+**语法**
+
+```sql
+extractAllGroupsHorizontal(s, regexp)
+```
+
+**参数**
+
+* `s` — 要从中提取的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 用于匹配的正则表达式。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+
+**返回值**
+
+返回一个数组的数组，其中每个内部数组包含某一捕获组在所有匹配结果中的全部捕获内容。第一个内部数组包含第 1 组的所有捕获，第二个内部数组包含第 2 组的所有捕获，依此类推。如果未找到任何匹配，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+WITH '< Server: nginx
+< Date: Tue, 22 Jan 2019 00:26:14 GMT
+< Content-Type: text/html; charset=UTF-8
+< Connection: keep-alive
+' AS s
+SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+```
+
+```response title=Response
+[['Server','Date','Content-Type','Connection'],['nginx','Tue, 22 Jan 2019 00:26:14 GMT','text/html; charset=UTF-8','keep-alive']]
+```
+
+
+## extractGroups
+
+自 v20.5 起引入
+
+从正则表达式匹配到的互不重叠子串中提取所有捕获组。
+
+**语法**
+
+```sql
+extractAllGroups(s, regexp)
+```
+
+**参数**
+
+* `s` — 要从中提取的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正则表达式常量。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+
+**返回值**
+
+如果函数找到至少一个匹配的捕获组，则返回类型为 `Array(Array(String))` 的列，按 group&#95;id（`1` 到 `N`，其中 `N` 是 regexp 中捕获组的数量）组织。如果没有匹配的捕获组，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+WITH '< Server: nginx
+< Date: Tue, 22 Jan 2019 00:26:14 GMT
+< Content-Type: text/html; charset=UTF-8
+< Connection: keep-alive
+' AS s
+SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
+```
+
+```response title=Response
+[['服务器','nginx'],['日期','Tue, 22 Jan 2019 00:26:14 GMT'],['内容类型','text/html; charset=UTF-8'],['连接方式','keep-alive']]
+```
+
+
+## hasAllTokens
+
+引入版本：v25.10
+
+类似于 [`hasAnyTokens`](#hasAnyTokens)，但当 `needle` 字符串或数组中的所有 token 都能匹配 `input` 字符串时返回 1，否则返回 0。如果 `input` 是一列，则返回所有满足该条件的行。
+
+:::note
+为获得最佳性能，应为列 `input` 定义 [text index](../../engines/table-engines/mergetree-family/invertedindexes)。
+如果未定义 text index，该函数将对整列执行穷举扫描，其速度比使用索引查询慢几个数量级。
+:::
+
+在搜索之前，函数会对以下内容进行分词（tokenize）：
+
+* `input` 参数（始终如此），以及
+* `needle` 参数（如果以 [String](../../sql-reference/data-types/string.md) 形式给出），
+  使用为 text index 指定的 tokenizer。
+  如果该列未定义 text index，则改用 `splitByNonAlpha` tokenizer。
+  如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个 token，不再进行额外的分词。
+
+重复的 token 会被忽略。
+例如，needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
+
+**语法**
+
+```sql
+hasAllTokens(input, needles)
+```
+
+**别名**: `hasAllToken`
+
+**参数**
+
+* `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
+* `needles` — 要查找的标记（token）。最多支持 64 个标记。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果所有标记都匹配，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**字符串列的使用示例**
+
+```sql title=Query
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\']))
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAllTokens(msg, 'a\\d()');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**指定在数组中按原样（不分词）搜索的字符串**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAllTokens(msg, ['a', 'd']);
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**使用 `tokens` 函数生成 needle**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**数组列和 Map 列的使用示例**
+
+```sql title=Query
+CREATE TABLE log (
+    id UInt32,
+    tags Array(String),
+    attributes Map(String, String),
+    INDEX idx_tags (tags) TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_attributes_keys mapKeys(attributes) TYPE text(tokenizer = array),
+    INDEX idx_attributes_vals mapValues(attributes) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO log VALUES
+    (1, ['clickhouse', 'clickhouse cloud'], {'address': '192.0.0.1', 'log_level': 'INFO'}),
+    (2, ['chdb'], {'embedded': 'true', 'log_level': 'DEBUG'});
+```
+
+```response title=Response
+```
+
+**包含数组列的示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapKeys 示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
+```
+
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapValues 示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
+```
+
+```response title=Response
+┌─count()─┐
+│       0 │
+└─────────┘
+```
+
+
+## hasAnyTokens
+
+引入于：v25.10
+
+如果 `needle` 字符串或数组中至少有一个 token 与 `input` 字符串匹配，则返回 1，否则返回 0。若 `input` 是一列，则返回满足该条件的所有行。
+
+:::note
+为了获得最佳性能，应为列 `input` 定义[文本索引](../../engines/table-engines/mergetree-family/invertedindexes)。
+如果未定义文本索引，该函数将对整列执行暴力扫描，其速度相比索引查询会慢几个数量级。
+:::
+
+在执行搜索之前，函数会对以下内容进行 token 化（分词）：
+
+* `input` 参数（始终如此），以及
+* `needle` 参数（如果以 [String](../../sql-reference/data-types/string.md) 形式给出），
+  使用为该文本索引指定的 tokenizer。
+  如果该列未定义文本索引，则会改用 `splitByNonAlpha` tokenizer。
+  如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个 token——不会再进行额外的 token 化处理。
+
+重复的 token 会被忽略。
+例如，[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
+
+**语法**
+
+```sql
+hasAnyTokens(input, needles)
+```
+
+**别名**: `hasAnyToken`
+
+**参数**
+
+* `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
+* `needles` — 要搜索的 token。最多支持 64 个 token。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果至少存在一个匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**字符串列的用法示例**
+
+```sql title=Query
+CREATE TABLE table (
+    id UInt32,
+    msg String,
+    INDEX idx(msg) TYPE text(tokenizer = splitByString(['()', '\\']))
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO table VALUES (1, '()a,\\bc()d'), (2, '()\\a()bc\\d'), (3, ',()a\\,bc,(),d,');
+
+SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**在数组中按原样（不进行分词）指定要搜索的字符串集合**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**使用 `tokens` 函数生成 needle**
+
+```sql title=Query
+SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString', ['()', '\\']));
+```
+
+```response title=Response
+┌─count()─┐
+│       3 │
+└─────────┘
+```
+
+**Array 和 Map 列的用法示例**
+
+```sql title=Query
+CREATE TABLE log (
+    id UInt32,
+    tags Array(String),
+    attributes Map(String, String),
+    INDEX idx_tags (tags) TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_attributes_keys mapKeys(attributes) TYPE text(tokenizer = array),
+    INDEX idx_attributes_vals mapValues(attributes) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO log VALUES
+    (1, ['clickhouse', 'clickhouse cloud'], {'address': '192.0.0.1', 'log_level': 'INFO'}),
+    (2, ['chdb'], {'embedded': 'true', 'log_level': 'DEBUG'});
+```
+
+```response title=Response
+```
+
+**数组列示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
+```
+
+```response title=Response
+┌─count()─┐
+│       1 │
+└─────────┘
+```
+
+**mapKeys 示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
+```
+
+
+```response title=Response
+┌─count()─┐
+│       2 │
+└─────────┘
+```
+
+**`mapValues` 示例**
+
+```sql title=Query
+SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
+```
+
+```response title=Response
+┌─count()─┐
+│       2 │
+└─────────┘
+```
+
+
+## hasSubsequence
+
+引入于：v23.7
+
+检查 needle 是否是 haystack 的子序列。
+字符串的子序列是指：通过从另一个字符串中删除某些或不删除字符，且不改变剩余字符顺序而得到的序列。
+
 **语法**
 
 ```sql
@@ -1778,31 +749,45 @@ hasSubsequence(haystack, needle)
 
 **参数**
 
-- `haystack` — 进行搜索的字符串。 [字符串](../data-types/string.md)。
-- `needle` — 要搜索的子序列。 [字符串](../data-types/string.md)。
+* `haystack` — 要在其中搜索子序列的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子序列。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 needle 是 haystack 的子序列，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
+如果 `needle` 是 `haystack` 的子序列，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**基本子序列检查**
 
-```sql
-SELECT hasSubsequence('garbage', 'arg');
+```sql title=Query
+SELECT hasSubsequence('Hello World', 'HlWrd')
 ```
 
-结果：
-
-```text
-┌─hasSubsequence('garbage', 'arg')─┐
-│                                1 │
-└──────────────────────────────────┘
+```response title=Response
+┌─hasSubsequence('Hello World', 'HlWrd')─┐
+│                                      1 │
+└────────────────────────────────────────┘
 ```
-## hasSubsequenceCaseInsensitive {#hassubsequencecaseinsensitive}
 
-类似于 [hasSubsequence](#hassubsequence)，但不区分大小写搜索。
+**未找到子序列**
+
+```sql title=Query
+SELECT hasSubsequence('Hello World', 'xyz')
+```
+
+```response title=Response
+┌─hasSubsequence('Hello World', 'xyz')─┐
+│                                    0 │
+└──────────────────────────────────────┘
+```
+
+
+## hasSubsequenceCaseInsensitive
+
+自 v23.7 引入
+
+与 [`hasSubsequence`](#hasSubsequence) 类似，但执行不区分大小写的搜索。
 
 **语法**
 
@@ -1812,65 +797,33 @@ hasSubsequenceCaseInsensitive(haystack, needle)
 
 **参数**
 
-- `haystack` — 进行搜索的字符串。 [字符串](../data-types/string.md)。
-- `needle` — 要搜索的子序列。 [字符串](../data-types/string.md)。
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子序列。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 needle 是 haystack 的子序列，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
+如果 `needle` 是 `haystack` 的子序列，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**用法示例**
 
-```sql
+```sql title=Query
 SELECT hasSubsequenceCaseInsensitive('garbage', 'ARG');
 ```
 
-结果：
-
-```text
+```response title=Response
 ┌─hasSubsequenceCaseInsensitive('garbage', 'ARG')─┐
 │                                               1 │
 └─────────────────────────────────────────────────┘
 ```
-## hasSubsequenceUTF8 {#hassubsequenceutf8}
 
-类似于 [hasSubsequence](#hassubsequence)，但假设 `haystack` 和 `needle` 为 UTF-8 编码的字符串。
 
-**语法**
+## hasSubsequenceCaseInsensitiveUTF8
 
-```sql
-hasSubsequenceUTF8(haystack, needle)
-```
+引入版本：v23.7
 
-**参数**
-
-- `haystack` — 进行搜索的字符串。 UTF-8 编码的 [字符串](../data-types/string.md)。
-- `needle` — 要搜索的子序列。 UTF-8 编码的 [字符串](../data-types/string.md)。
-
-**返回值**
-
-- 如果 needle 是 haystack 的子序列，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-查询：
-
-**示例**
-
-```sql
-SELECT hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система');
-```
-
-结果：
-
-```text
-┌─hasSubsequenceUTF8('ClickHouse - столбцовая система управления базами данных', 'система')─┐
-│                                                                                         1 │
-└───────────────────────────────────────────────────────────────────────────────────────────┘
-```
-## hasSubsequenceCaseInsensitiveUTF8 {#hassubsequencecaseinsensitiveutf8}
-
-类似于 [hasSubsequenceUTF8](#hassubsequenceutf8)，但不区分大小写搜索。
+与 [`hasSubsequenceUTF8`](#hasSubsequenceUTF8) 类似，但进行不区分大小写的搜索。
 
 **语法**
 
@@ -1880,31 +833,83 @@ hasSubsequenceCaseInsensitiveUTF8(haystack, needle)
 
 **参数**
 
-- `haystack` — 进行搜索的字符串。 UTF-8 编码的 [字符串](../data-types/string.md)。
-- `needle` — 要搜索的子序列。 UTF-8 编码的 [字符串](../data-types/string.md)。
+* `haystack` — 执行搜索的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 编码子序列字符串。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 needle 是 haystack 的子序列，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
+如果 needle 是 haystack 的子序列，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**使用示例**
 
-```sql
+```sql title=Query
 SELECT hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА');
 ```
 
-结果：
-
-```text
-┌─hasSubsequenceCaseInsensitiveUTF8('ClickHouse - столбцовая система управления базами данных', 'СИСТЕМА')─┐
-│                                                                                                        1 │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```response title=Response
+┌─hasSubsequen⋯ 'СИСТЕМА')─┐
+│                        1 │
+└──────────────────────────┘
 ```
-## hasToken {#hastoken}
 
-如果给定的 token 存在于 haystack 中，则返回 1，否则返回 0。
+
+## hasSubsequenceUTF8
+
+自 v23.7 起引入
+
+类似于 [`hasSubsequence`](/sql-reference/functions/string-search-functions#hasSubsequence)，但假设 haystack 和 needle 是 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+hasSubsequenceUTF8(主串, 子串)
+```
+
+**参数**
+
+* `haystack` — 要在其中搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子序列。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果 `needle` 是 `haystack` 的子序列，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT hasSubsequenceUTF8('картошка', 'кошка');
+```
+
+```response title=Response
+┌─hasSubsequen⋯', 'кошка')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**不匹配子序列**
+
+```sql title=Query
+SELECT hasSubsequenceUTF8('картошка', 'апельсин');
+```
+
+```response title=Response
+┌─hasSubsequen⋯'апельсин')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+
+## hasToken
+
+引入于：v20.1
+
+检查给定的 token 是否存在于目标字符串中。
+
+token 定义为由连续字符 `[0-9A-Za-z_]` 组成的最长子序列，即数字、ASCII 字母和下划线。
 
 **语法**
 
@@ -1914,31 +919,73 @@ hasToken(haystack, token)
 
 **参数**
 
-- `haystack`：进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `token`：两个非字母数字 ASCII 字符之间的最大长度子字符串（或 haystack 的边界）。
+* `haystack` — 被搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `token` — 要查找的令牌。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 token 存在于 haystack 中，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**实现细节**
-
-Token 必须是常量字符串。受 tokenbf_v1 索引特殊化支持。
+如果找到令牌则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**令牌搜索**
+
+```sql title=Query
+SELECT hasToken('clickhouse test', 'test')
+```
+
+```response title=Response
+┌─hasToken('clickhouse test', 'test')─┐
+│                                   1 │
+└─────────────────────────────────────┘
+```
+
+
+## hasTokenCaseInsensitive
+
+引入版本：v
+
+在 haystack 中使用 tokenbf&#95;v1 索引对 needle 执行不区分大小写的查找。
+
+**语法**
 
 ```sql
-SELECT hasToken('Hello World','Hello');
 ```
 
-```response
-1
-```
-## hasTokenOrNull {#hastokenornull}
+**参数**
 
-如果给定的 token 存在，则返回 1，如果不存在，则返回 0，如果 token 格式不正确，则返回 null。
+* 无。
+
+**返回值**
+
+**示例**
+
+
+## hasTokenCaseInsensitiveOrNull
+
+引入版本：v
+
+使用 `tokenbf_v1` 索引在 haystack 中对 needle 执行不区分大小写的查找。如果 needle 格式不正确，则返回 null。
+
+**语法**
+
+```sql
+```
+
+**参数**
+
+* 无。
+
+**返回值**
+
+**示例**
+
+
+## hasTokenOrNull
+
+引入版本：v20.1
+
+类似于 [`hasToken`](#hasToken)，但在 token 非法时返回 null。
 
 **语法**
 
@@ -1948,106 +995,1713 @@ hasTokenOrNull(haystack, token)
 
 **参数**
 
-- `haystack`：进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `token`：两个非字母数字 ASCII 字符之间的最大长度子字符串（或 haystack 的边界）。
+* `haystack` — 要搜索的字符串。必须是常量字符串。[`String`](/sql-reference/data-types/string)
+* `token` — 要搜索的标记。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 token 存在于 haystack 中，则返回 1，如果不存在，则返回 0；如果 token 格式不正确，则返回 [`null`](../data-types/nullable.md)。 [UInt8](../data-types/int-uint.md)。
-
-**实现细节**
-
-Token 必须是常量字符串。受 tokenbf_v1 索引特殊化支持。
+如果找到标记则返回 `1`，否则返回 `0`，若标记格式不正确则返回 null。[`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
 **示例**
 
-如果 `hasToken` 对格式不正确的 token 抛出错误，`hasTokenOrNull` 则返回格式不正确的 token 对应的 `null`。
+**使用示例**
 
-查询：
-
-```sql
-SELECT hasTokenOrNull('Hello World','Hello,World');
+```sql title=Query
+SELECT hasTokenOrNull('apple banana cherry', 'ban ana');
 ```
 
-```response
-null
+```response title=Response
+┌─hasTokenOrNu⋯ 'ban ana')─┐
+│                     ᴺᵁᴸᴸ │
+└──────────────────────────┘
 ```
-## hasTokenCaseInsensitive {#hastokencaseinsensitive}
 
-如果给定的 token 存在于 haystack 中，则返回 1，否则返回 0。 忽略大小写。
+
+## ilike
+
+自 v20.6 版本引入
+
+类似于 [`like`](#like)，但执行不区分大小写的匹配。
 
 **语法**
 
 ```sql
-hasTokenCaseInsensitive(haystack, token)
+ilike(haystack, pattern)
+-- haystack ILIKE pattern
 ```
 
 **参数**
 
-- `haystack`：进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `token`：两个非字母数字 ASCII 字符之间的最大长度子字符串（或 haystack 的边界）。
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 要匹配的 LIKE 模式。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
-- 如果 token 存在于 haystack 中，则返回 1，否则返回 0。 [UInt8](../data-types/int-uint.md)。
-
-**实现细节**
-
-Token 必须是常量字符串。受 tokenbf_v1 索引特殊化支持。
+如果字符串符合 LIKE 模式（不区分大小写），则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-查询：
+**使用示例**
+
+```sql title=Query
+SELECT ilike('ClickHouse', '%house%');
+```
+
+```response title=Response
+┌─ilike('ClickHouse', '%house%')─┐
+│                              1 │
+└────────────────────────────────┘
+```
+
+
+## like
+
+Introduced in: v1.1
+
+返回字符串 `haystack` 是否匹配 `LIKE` 表达式 `pattern`。
+
+一个 `LIKE` 表达式可以包含普通字符以及以下元符号：
+
+* `%` 表示任意数量的任意字符（包括零个字符）。
+* `_` 表示单个任意字符。
+* `\` 用于转义字面量 `%`、`_` 和 `\`。
+
+匹配基于 UTF-8 编码，例如 `_` 可以匹配 Unicode 码位 `¥`，其在 UTF-8 中由两个字节表示。
+
+如果 haystack 或 `LIKE` 表达式不是合法的 UTF-8，行为未定义。
+
+不会自动执行 Unicode 归一化，你可以使用 `normalizeUTF8*` 函数来完成这一操作。
+
+要匹配字面量 `%`、`_` 和 `\`（它们是 `LIKE` 元字符），请在前面加上反斜杠：`\%`、`\_` 和 `\\`。
+当前缀的字符不是 `%`、`_` 或 `\` 时，反斜杠会失去其特殊含义（即被按字面量解释）。
+
+:::note
+ClickHouse 要求字符串中的反斜杠[也需要被转义](../syntax.md#string)，因此实际上你需要写成 `\\%`、`\\_` 和 `\\\\`。
+:::
+
+对于形如 `%needle%` 的 `LIKE` 表达式，该函数的速度与 `position` 函数相同。
+所有其他 LIKE 表达式在内部都会被转换为正则表达式，并以与函数 `match` 类似的性能执行。
+
+**Syntax**
 
 ```sql
-SELECT hasTokenCaseInsensitive('Hello World','hello');
+like(haystack, pattern)
+-- haystack LIKE 模式字符串
 ```
 
-```response
-1
-```
-## hasTokenCaseInsensitiveOrNull {#hastokencaseinsensitiveornull}
+**参数**
 
-如果给定的 token 存在于 haystack 中，则返回 1，否则返回 0。 忽略大小写，并在 token 格式不正确时返回 null。
+* `haystack` — 进行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 要匹配的 `LIKE` 模式。可以包含 `%`（匹配任意数量的字符）、`_`（匹配单个字符）以及用于转义的 `\`。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果字符串与 `LIKE` 模式匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT like('ClickHouse', '%House');
+```
+
+```response title=Response
+┌─like('ClickHouse', '%House')─┐
+│                            1 │
+└──────────────────────────────┘
+```
+
+**单个字符通配符**
+
+```sql title=Query
+SELECT like('ClickHouse', 'Click_ouse');
+```
+
+```response title=Response
+┌─like('ClickH⋯lick_ouse')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**非匹配模式**
+
+```sql title=Query
+SELECT like('ClickHouse', '%SQL%');
+```
+
+```response title=Response
+┌─like('ClickHouse', '%SQL%')─┐
+│                           0 │
+└─────────────────────────────┘
+```
+
+
+## locate
+
+引入版本：v18.16
+
+与 [`position`](#position) 相似，但参数 `haystack` 和 `needle` 的顺序相反。
+
+:::note 与版本相关的行为
+此函数的行为取决于 ClickHouse 的版本：
+
+* 在 v24.3 之前的版本中，`locate` 是函数 `position` 的别名，并接受参数 `(haystack, needle[, start_pos])`。
+* 在 v24.3 及之后的版本中，`locate` 是一个独立函数（用于更好地兼容 MySQL），并接受参数 `(needle, haystack[, start_pos])`。
+  可以通过设置 `function_locate_has_mysql_compatible_argument_order = false` 来恢复之前的行为。
+  :::
 
 **语法**
 
 ```sql
-hasTokenCaseInsensitiveOrNull(haystack, token)
+locate(needle, haystack[, start_pos])
 ```
 
 **参数**
 
-- `haystack`：进行搜索的字符串。 [字符串](../data-types/string.md) 或 [枚举](../data-types/enum.md)。
-- `token`：两个非字母数字 ASCII 字符之间的最大长度子字符串（或 haystack 的边界）。
+* `needle` — 要搜索的子字符串。[`String`](/sql-reference/data-types/string)
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的起始位置（从 1 开始计数）。[`UInt`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-- 如果 token 存在于 haystack 中，则返回 1，如果 token 不存在，则返回 0，否则如果 token 格式不正确，则返回 [`null`](../data-types/nullable.md)。 [UInt8](../data-types/int-uint.md)。
-
-**实现细节**
-
-Token 必须是常量字符串。受 tokenbf_v1 索引特殊化支持。
+如果找到子字符串，则返回其起始位置（按字节计算，从 1 开始计数）；如果未找到子字符串，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-如果 `hasTokenCaseInsensitive` 对格式不正确的 token 抛出错误，`hasTokenCaseInsensitiveOrNull` 则返回格式不正确的 token 对应的 `null`。
+**基本用法**
 
-查询：
+```sql title=Query
+SELECT locate('ca', 'abcabc')
+```
+
+```response title=Response
+┌─locate('ca', 'abcabc')─┐
+│                      3 │
+└────────────────────────┘
+```
+
+
+## match
+
+引入版本：v1.1
+
+检查给定字符串是否与提供的正则表达式模式匹配。
+
+此函数使用 RE2 正则表达式库。有关支持的语法，请参阅 [re2](https://github.com/google/re2/wiki/Syntax)。
+
+匹配在假定 UTF-8 编码的前提下进行，例如 `¥` 在内部使用两个字节，但在匹配时会被视为单个码点。
+正则表达式中不得包含 NULL 字节。
+如果待匹配字符串或模式不是有效的 UTF-8，行为未定义。
+
+与 RE2 的默认行为不同，`.` 会匹配换行符。要禁用此行为，请在模式前加上 `(?-s)`。
+
+模式在两端会自动加上锚点（就好像模式以 `^` 开头并以 `$` 结尾）。
+
+如果你只想查找子串，可以使用函数 [`like`](#like) 或 [`position`](#position) —— 它们的执行效率比本函数高得多。
+
+替代运算符语法：`haystack REGEXP pattern`。
+
+**语法**
 
 ```sql
-SELECT hasTokenCaseInsensitiveOrNull('Hello World','hello,world');
+match(haystack, pattern)
 ```
 
-```response
-null
+**别名**: `REGEXP_MATCHES`
+
+**参数**
+
+* `haystack` — 要在其中搜索模式的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式模式。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+当模式匹配时返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本模式匹配**
+
+```sql title=Query
+SELECT match('Hello World', 'Hello.*')
 ```
 
-<!-- 
-The inner content of the tags below are replaced at doc framework build time with 
-docs generated from system.functions. Please do not modify or remove the tags.
-See: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
--->
+```response title=Response
+┌─match('Hello World', 'Hello.*')─┐
+│                               1 │
+└─────────────────────────────────┘
+```
 
-<!--AUTOGENERATED_START-->
-<!--AUTOGENERATED_END-->
+**模式不匹配**
+
+```sql title=Query
+SELECT match('Hello World', 'goodbye.*')
+```
+
+```response title=Response
+┌─match('Hello World', 'goodbye.*')─┐
+│                                 0 │
+└───────────────────────────────────┘
+```
+
+
+## multiFuzzyMatchAllIndices
+
+引入版本：v20.1
+
+类似于 [`multiFuzzyMatchAny`](#multiFuzzyMatchAny)，但返回一个数组，包含所有在固定[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)内与被搜索字符串匹配的索引，顺序不定。
+
+**语法**
+
+```sql
+multiFuzzyMatchAllIndices(干草堆, 距离, [模式1, 模式2, ..., 模式N])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `distance` — 模糊匹配所允许的最大编辑距离。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — 要匹配的模式数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回一个数组，包含所有在指定编辑距离内与 `haystack` 匹配的索引（从 1 开始），顺序不固定。如果未找到匹配项，则返回空数组。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAllIndices('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'ClickHose', 'House']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯, 'House'])─┐
+│ [3,1,4,2]                │
+└──────────────────────────┘
+```
+
+
+## multiFuzzyMatchAny
+
+引入自：v20.1
+
+与 [`multiMatchAny`](#multiMatchAny) 类似，但如果任意模式在给定的常量[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)内与目标字符串匹配成功，则返回 1。
+该函数依赖于 [hyperscan](https://intel.github.io/hyperscan/dev-reference/compilation.html#approximate-matching) 库中的实验性功能，在某些极端情况下可能较慢。
+其性能取决于编辑距离的取值以及所使用的模式，但始终比非模糊版本开销更大。
+
+:::note
+由于 hyperscan 的限制，`multiFuzzyMatch*()` 函数系列不支持 UTF-8 正则表达式（它将其视为字节序列）。
+:::
+
+**语法**
+
+```sql
+multiFuzzyMatchAny(草堆, 距离, [模式1, 模式2, ..., 模式N])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `distance` — 模糊匹配允许的最大编辑距离。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — 可选。由要匹配的模式组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果任一模式在指定编辑距离内与 `haystack` 匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAny('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'ClickHose']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯lickHose'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## multiFuzzyMatchAnyIndex
+
+引入于：v20.1
+
+与 [`multiFuzzyMatchAny`](#multiFuzzyMatchAny) 类似，但返回在给定固定[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)内与 `haystack` 匹配的任意索引。
+
+**语法**
+
+```sql
+multiFuzzyMatchAnyIndex(haystack, distance, [pattern1, pattern2, ..., patternn])
+```
+
+**参数**
+
+* `haystack` — 进行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `distance` — 用于模糊匹配的最大编辑距离。[`UInt8`](/sql-reference/data-types/int-uint)
+* `pattern` — 用于匹配的模式数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回在指定编辑距离内，与 `haystack` 匹配的任意一个模式的索引（从 1 开始），否则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT multiFuzzyMatchAnyIndex('ClickHouse', 2, ['ClckHouse', 'ClickHose', 'ClickHouse']);
+```
+
+```response title=Response
+┌─multiFuzzyMa⋯ickHouse'])─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+
+## multiMatchAllIndices
+
+引入于：v20.1
+
+类似于 [`multiMatchAny`](#multiMatchAny)，但返回在 haystack 中匹配的所有索引（顺序任意）组成的数组。
+
+**语法**
+
+```sql
+multiMatchAllIndices(干草堆, [模式1, 模式2, ..., 模式n])
+```
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 用于匹配的正则表达式模式。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+一个数组，包含在 `haystack` 中与 `pattern` 匹配的所有索引位置（从 1 开始，顺序任意）。如果没有匹配项，则返回空数组。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT multiMatchAllIndices('ClickHouse', ['[0-9]', 'House', 'Click', 'ouse']);
+```
+
+```response title=Response
+┌─multiMatchAl⋯', 'ouse'])─┐
+│ [3, 2, 4]                │
+└──────────────────────────┘
+```
+
+
+## multiMatchAny
+
+引入版本：v20.1
+
+用于检查在多个正则表达式模式中，是否至少有一个与目标字符串匹配。
+
+如果你只想在字符串中搜索多个子串，可以改用函数 [`multiSearchAny`](#multiSearchAny) —— 它的运行速度比本函数快得多。
+
+**语法**
+
+```sql
+multiMatchAny(干草堆, 模式1[, 模式2, ...])
+```
+
+**参数**
+
+* `haystack` — 用于搜索模式的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern1[, pattern2, ...]` — 由一个或多个正则表达式模式组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果任意一个模式匹配则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**多模式匹配**
+
+```sql title=Query
+SELECT multiMatchAny('Hello World', ['Hello.*', 'foo.*'])
+```
+
+```response title=Response
+┌─multiMatchAny('Hello World', ['Hello.*', 'foo.*'])─┐
+│                                                  1 │
+└────────────────────────────────────────────────────┘
+```
+
+**没有匹配的模式**
+
+```sql title=Query
+SELECT multiMatchAny('Hello World', ['goodbye.*', 'foo.*'])
+```
+
+```response title=Response
+┌─multiMatchAny('Hello World', ['goodbye.*', 'foo.*'])─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
+```
+
+
+## multiMatchAnyIndex
+
+自 v20.1 引入
+
+与 [`multiMatchAny`](#multiMatchAny) 类似，但返回在 haystack 中匹配到的任意索引。
+
+**语法**
+
+```sql
+multiMatchAnyIndex(haystack, [pattern1, pattern2, ..., patternn])
+```
+
+**参数**
+
+* `haystack` — 执行查找的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 要进行匹配的正则表达式数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回第一个发生匹配的模式的索引（从 1 开始），如果未找到匹配则返回 0。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT multiMatchAnyIndex('ClickHouse', ['[0-9]', 'House', 'Click']);
+```
+
+```response title=Response
+┌─multiMatchAn⋯, 'Click'])─┐
+│                        3 │
+└──────────────────────────┘
+```
+
+
+## multiSearchAllPositions
+
+引入版本：v20.1
+
+类似于 [`position`](#position)，但会返回一个位置数组（以字节为单位，从 1 开始），用于表示多个 `needle` 子串在 `haystack` 字符串中的所有位置。
+
+所有 `multiSearch*()` 函数最多只支持 2^8 个 `needle`。
+
+**语法**
+
+```sql
+multiSearchAllPositions(主串, 针1[, 针2, ...])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 要搜索的一个或多个子字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回一个数组：如果找到子字符串，对应元素为从 1 开始计数的以字节为单位的起始位置；如果未找到子字符串，对应元素为 `0`。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**示例**
+
+**多子串搜索**
+
+```sql title=Query
+SELECT multiSearchAllPositions('你好，世界！', ['你好', '！', '世界'])
+```
+
+```response title=Response
+┌─multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])─┐
+│ [0,13,0]                                                          │
+└───────────────────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchAllPositionsCaseInsensitive
+
+自 v20.1 引入
+
+类似于 [`multiSearchAllPositions`](#multiSearchAllPositions)，但会忽略大小写。
+
+**语法**
+
+```sql
+multiSearchAllPositionsCaseInsensitive(haystack, needle1[, needle2, ...])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 要搜索的一个或多个子字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回一个数组，元素为子字符串的起始位置（以字节为单位，从 1 开始计数）；如果未找到子字符串，则为 `0`。[`Array(UInt64)`](/sql-reference/data-types/array)
+
+**示例**
+
+**不区分大小写的多模式搜索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h'])
+```
+
+```response title=Response
+┌─multiSearchA⋯['c', 'h'])─┐
+│ [1,6]                    │
+└──────────────────────────┘
+```
+
+
+## multiSearchAllPositionsCaseInsensitiveUTF8
+
+引入于：v20.1
+
+与 [`multiSearchAllPositionsUTF8`](#multiSearchAllPositionsUTF8) 类似，但忽略大小写。
+
+**语法**
+
+```sql
+multiSearchAllPositionsCaseInsensitiveUTF8(主串, [子串1, 子串2, ..., 子串N])
+```
+
+**参数**
+
+* `haystack` — 执行搜索操作的 UTF-8 编码的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 编码子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回一个数组，元素为子字符串的起始位置（按字节计算，从 1 开始计数）。如果未找到子字符串，则返回 0。[`Array`](/sql-reference/data-types/array)
+
+**示例**
+
+**不区分大小写的 UTF-8 搜索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsCaseInsensitiveUTF8('Здравствуй, мир!', ['здравствуй', 'МИР']);
+```
+
+```response title=Response
+┌─multiSearchA⋯й', 'МИР'])─┐
+│ [1, 13]                  │
+└──────────────────────────┘
+```
+
+
+## multiSearchAllPositionsUTF8
+
+引入版本：v20.1
+
+与 [`multiSearchAllPositions`](#multiSearchAllPositions) 类似，但假设 `haystack` 和 `needle` 子串是 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+multiSearchAllPositionsUTF8(主串, 模式1[, 模式2, ...])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — UTF-8 编码的待搜索子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回一个数组：如果找到子字符串，元素为从 1 开始按字节计数的起始位置；如果未找到子字符串，则为 `0`。[`Array`](/sql-reference/data-types/array)
+
+**示例**
+
+**UTF-8 多重搜索**
+
+```sql title=Query
+SELECT multiSearchAllPositionsUTF8('ClickHouse',['C','H'])
+```
+
+```response title=Response
+┌─multiSearchAllPositionsUTF8('ClickHouse', ['C', 'H'])─┐
+│ [1,6]                                                 │
+└───────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchAny
+
+自 v20.1 引入
+
+检查在多个 needle 字符串中，是否至少有一个与 haystack 字符串匹配。
+
+函数 [`multiSearchAnyCaseInsensitive`](#multiSearchAnyCaseInsensitive)、[`multiSearchAnyUTF8`](#multiSearchAnyUTF8) 和 [`multiSearchAnyCaseInsensitiveUTF8`](#multiSearchAnyCaseInsensitiveUTF8) 提供该函数的不区分大小写和/或 UTF-8 变体。
+
+**语法**
+
+```sql
+multiSearchAny(干草堆, needle1[, needle2, ...])
+```
+
+**参数**
+
+* `haystack` — 要执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 由要搜索的子字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果至少有一个匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**任意匹配搜索**
+
+```sql title=Query
+SELECT multiSearchAny('ClickHouse',['C','H'])
+```
+
+```response title=Response
+┌─multiSearchAny('ClickHouse', ['C', 'H'])─┐
+│                                        1 │
+└──────────────────────────────────────────┘
+```
+
+
+## multiSearchAnyCaseInsensitive
+
+自 v20.1 起引入。
+
+与 [multiSearchAny](#multiSearchAny) 类似，但忽略大小写。
+
+**语法**
+
+```sql
+multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子字符串。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果存在至少一个不区分大小写的匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**不区分大小写的搜索**
+
+```sql title=Query
+SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h'])
+```
+
+```response title=Response
+┌─multiSearchAnyCaseInsensitive('ClickHouse', ['c', 'h'])─┐
+│                                                       1 │
+└─────────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchAnyCaseInsensitiveUTF8
+
+自 v20.1 版本引入
+
+与 [multiSearchAnyUTF8](#multiSearchAnyUTF8) 类似，但忽略大小写。
+
+**语法**
+
+```sql
+multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 编码子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果存在至少一个不区分大小写的匹配，则返回 `1`；如果不存在这样的匹配，则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**给定 UTF-8 字符串 &#39;Здравствуйте&#39;，检查字符 &#39;з&#39;（小写）是否存在**
+
+```sql title=Query
+SELECT multiSearchAnyCaseInsensitiveUTF8('Здравствуйте',['з'])
+```
+
+```response title=Response
+┌─multiSearchA⋯те', ['з'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## multiSearchAnyUTF8
+
+自 v20.1 引入
+
+与 [multiSearchAny](#multiSearchAny) 类似，但假定 `haystack` 和 `needle` 这两个子串是 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+multiSearchAnyUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 子字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+如果至少存在一个匹配，则返回 `1`；否则（不存在任何匹配）返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**给定 “你好，世界”（“Hello, world”）这一 UTF-8 字符串，检查字符串中是否包含字符“你”或“界”**
+
+```sql title=Query
+SELECT multiSearchAnyUTF8('你好，世界', ['你', '界'])
+```
+
+```response title=Response
+┌─multiSearchA⋯你', '界'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## multiSearchFirstIndex
+
+引入版本：v20.1
+
+在目标字符串中搜索多个子串（区分大小写），并返回首次匹配子串的从 1 开始的索引。
+
+**语法**
+
+```sql
+multiSearchFirstIndex(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 要在其中进行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needles` — 要搜索的字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回在 `haystack` 中找到的、来自 `needles` 数组的第一个字符串在该数组中的索引（从 1 开始计数）。如果未找到任何字符串，则返回 0。搜索区分大小写。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('ClickHouse Database', ['Click', 'Database', 'Server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'Server'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**大小写敏感行为**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('ClickHouse Database', ['CLICK', 'Database', 'Server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'Server'])─┐
+│                        2 │
+└──────────────────────────┘
+```
+
+**未找到匹配结果**
+
+```sql title=Query
+SELECT multiSearchFirstIndex('Hello World', ['goodbye', 'test']);
+```
+
+```response title=Response
+┌─multiSearchF⋯', 'test'])─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+
+## multiSearchFirstIndexCaseInsensitive
+
+引入于：v20.1
+
+返回在字符串 `haystack` 中找到的最左侧 needle&#95;i 的索引 `i`（从 1 开始），否则返回 0。
+不区分大小写。
+
+**语法**
+
+```sql
+multiSearchFirstIndexCaseInsensitive(主串, [子串1, 子串2, ..., 子串N]
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回最左侧找到的 `needle` 的索引（从 1 开始）。如果没有匹配则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitive('hElLo WoRlD', ['World', 'Hello']);
+```
+
+```response title=Response
+┌─multiSearchF⋯, 'Hello'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## multiSearchFirstIndexCaseInsensitiveUTF8
+
+引入版本：v20.1
+
+在一个字符串中，以支持 UTF-8 编码的大小写不敏感方式搜索多个子串，并返回首次匹配子串的从 1 开始计数的索引。
+
+**语法**
+
+```sql
+multiSearchFirstIndexCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 要在其中搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needles` — 要搜索的字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回在 `haystack` 中找到的第一个 `needle` 在 `needles` 数组中的从 1 开始的索引位置。如果未找到任何 `needle`，则返回 0。搜索不区分大小写，并按 UTF-8 字符编码进行。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('ClickHouse Database', ['CLICK', 'data', 'server']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'server'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**UTF-8 字符大小写处理**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('Привет Мир', ['мир', 'ПРИВЕТ']);
+```
+
+```response title=Response
+┌─multiSearchF⋯ 'ПРИВЕТ'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+**未找到匹配结果**
+
+```sql title=Query
+SELECT multiSearchFirstIndexCaseInsensitiveUTF8('Hello World', ['goodbye', 'test']);
+```
+
+```response title=Response
+┌─multiSearchF⋯', 'test'])─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+
+## multiSearchFirstIndexUTF8
+
+引入版本：v20.1
+
+返回在字符串 `haystack` 中最左侧被找到的 needle&#95;i 对应的索引 `i`（从 1 开始），否则返回 0。
+假设 `haystack` 和 `needle` 为 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+multiSearchFirstIndexUTF8(主串, [子串1, 子串2, ..., 子串N])
+```
+
+**参数**
+
+* `haystack` — 被搜索的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回最左边匹配到的 `needle` 的索引（从 1 开始计数）。如果没有匹配，则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT multiSearchFirstIndexUTF8('Здравствуйте мир', ['мир', 'здравствуйте']);
+```
+
+```response title=Response
+┌─multiSearchF⋯вствуйте'])─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## multiSearchFirstPosition
+
+自 v20.1 引入
+
+类似于 [`position`](#position)，但返回 `haystack` 字符串中与多个 `needle` 字符串中任意一个匹配的最左侧偏移量。
+
+函数 [`multiSearchFirstPositionCaseInsensitive`](#multiSearchFirstPositionCaseInsensitive)、[`multiSearchFirstPositionUTF8`](#multiSearchFirstPositionUTF8) 和 [`multiSearchFirstPositionCaseInsensitiveUTF8`](#multiSearchFirstPositionCaseInsensitiveUTF8) 提供该函数的不区分大小写和/或 UTF-8 版本。
+
+**语法**
+
+```sql
+multiSearchFirstPosition(haystack, needle1[, needle2, ...])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle1[, needle2, ...]` — 由一个或多个要搜索的子字符串组成的数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回在 `haystack` 字符串中，与任一 `needle` 字符串匹配的最左侧偏移量；如果没有匹配，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**从首个位置开始搜索**
+
+```sql title=Query
+SELECT multiSearchFirstPosition('Hello World',['llo', 'Wor', 'ld'])
+```
+
+```response title=Response
+┌─multiSearchFirstPosition('Hello World', ['llo', 'Wor', 'ld'])─┐
+│                                                             3 │
+└───────────────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchFirstPositionCaseInsensitive
+
+自 v20.1 起引入
+
+与 [multiSearchFirstPosition](#multiSearchFirstPosition) 类似，但不区分大小写。
+
+**语法**
+
+```sql
+multiSearchFirstPositionCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的子串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回 `haystack` 字符串中与任一 `needle` 字符串匹配的最左侧偏移量。如果没有匹配，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**首个匹配位置（不区分大小写）**
+
+```sql title=Query
+SELECT multiSearchFirstPositionCaseInsensitive('HELLO WORLD',['wor', 'ld', 'ello'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionCaseInsensitive('HELLO WORLD', ['wor', 'ld', 'ello'])─┐
+│                                                                             2 │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchFirstPositionCaseInsensitiveUTF8
+
+引入版本：v20.1
+
+与 [multiSearchFirstPosition](#multiSearchFirstPosition) 类似，但假定 `haystack` 和 `needle` 为 UTF-8 字符串，并进行不区分大小写的匹配。
+
+**语法**
+
+```sql
+multiSearchFirstPositionCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+返回在 `haystack` 字符串中，与多个 `needle` 字符串中任意一个匹配的最左侧偏移量，忽略大小写。如果没有匹配则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**在 UTF-8 字符串 &#39;Здравствуй, мир&#39;（&#39;Hello, world&#39;）中查找与给定任一 `needle` 匹配的最左侧偏移量**
+
+```sql title=Query
+SELECT multiSearchFirstPositionCaseInsensitiveUTF8('Здравствуй, мир', ['МИР', 'вст', 'Здра'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionCaseInsensitiveUTF8('Здравствуй, мир', ['мир', 'вст', 'Здра'])─┐
+│                                                                                      3 │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## multiSearchFirstPositionUTF8
+
+引入于：v20.1
+
+与 [multiSearchFirstPosition](#multiSearchFirstPosition) 类似，但假定 `haystack` 和 `needle` 均为 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+multiSearchFirstPositionUTF8(大串, [模式1, 模式2, ..., 模式N])
+```
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 要搜索的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**返回值**
+
+`haystack` 字符串中，与多个 `needle` 字符串中任意一个匹配的最左侧偏移量。如果没有匹配，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**在 UTF-8 字符串 &#39;Здравствуй, мир&#39;（&#39;Hello, world&#39;）中查找与任意给定 needle 字符串匹配的最左侧偏移量**
+
+```sql title=Query
+SELECT multiSearchFirstPositionUTF8('Здравствуй, мир',['мир', 'вст', 'авст'])
+```
+
+```response title=Response
+┌─multiSearchFirstPositionUTF8('Здравствуй, мир', ['мир', 'вст', 'авст'])─┐
+│                                                                       3 │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+
+## ngramDistance
+
+引入版本：v20.1
+
+计算两个字符串之间的 4-gram 距离。
+具体而言，它会统计两个 4-gram 多重集之间的对称差，并用它们基数之和进行归一化。
+返回值越小，字符串越相似。
+
+对于不区分大小写的搜索和/或 UTF-8 格式，请使用函数 [`ngramDistanceCaseInsensitive`](#ngramDistanceCaseInsensitive)、[`ngramDistanceUTF8`](#ngramDistanceUTF8)、[`ngramDistanceCaseInsensitiveUTF8`](#ngramDistanceCaseInsensitiveUTF8)。
+
+**语法**
+
+```sql
+ngramDistance(大海, 针)
+```
+
+**参数**
+
+* `haystack` — 用于参与比较的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 用于参与比较的字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个介于 `0` 和 `1` 之间的 Float32 类型数值。返回值越小，字符串越相似。[`Float32`](/sql-reference/data-types/float)
+
+**示例**
+
+**计算 4-gram 距离**
+
+```sql title=Query
+SELECT ngramDistance('ClickHouse', 'ClickHouses')
+```
+
+```response title=Response
+┌─ngramDistance('ClickHouse', 'ClickHouses')─┐
+│                                        0.1 │
+└────────────────────────────────────────────┘
+```
+
+
+## ngramDistanceCaseInsensitive
+
+引入于：v20.1
+
+提供 [`ngramDistance`](#ngramDistance) 的不区分大小写变体。
+计算两个字符串在忽略大小写情况下的 4-gram 距离。
+返回值越小，字符串越相似。
+
+**语法**
+
+```sql
+ngramDistanceCaseInsensitive(大海, 针)
+```
+
+**参数**
+
+* `haystack` — 第一个用于比较的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 第二个用于比较的字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个介于 `0` 和 `1` 之间的 `Float32` 类型数值。[`Float32`](/sql-reference/data-types/float)
+
+**示例**
+
+**不区分大小写的 4-gram 距离**
+
+```sql title=Query
+SELECT ngramDistanceCaseInsensitive('ClickHouse','clickhouse')
+```
+
+```response title=Response
+┌─ngramDistanceCaseInsensitive('ClickHouse','clickhouse')─┐
+│                                                       0 │
+└─────────────────────────────────────────────────────────┘
+```
+
+
+## ngramDistanceCaseInsensitiveUTF8
+
+自 v20.1 引入
+
+提供 [`ngramDistance`](#ngramDistance) 的不区分大小写 UTF-8 变体。
+假定 `needle` 和 `haystack` 为 UTF-8 编码的字符串，并忽略大小写。
+计算两个 UTF-8 字符串之间的 3-gram 距离（忽略大小写）。
+返回值越小，字符串越相似。
+
+**语法**
+
+```sql
+ngramDistanceCaseInsensitiveUTF8(haystack, needle)
+```
+
+**参数**
+
+* `haystack` — 第一个采用 UTF-8 编码的比较字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 第二个采用 UTF-8 编码的比较字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个介于 `0` 和 `1` 之间的 Float32 数值。[`Float32`](/sql-reference/data-types/float)
+
+**示例**
+
+**不区分大小写的 UTF-8 3-gram 距离**
+
+```sql title=Query
+SELECT ngramDistanceCaseInsensitiveUTF8('abcde','CDE')
+```
+
+```response title=Response
+┌─ngramDistanceCaseInsensitiveUTF8('abcde','CDE')─┐
+│                                             0.5 │
+└─────────────────────────────────────────────────┘
+```
+
+
+## ngramDistanceUTF8
+
+引入于：v20.1
+
+提供 [`ngramDistance`](#ngramDistance) 的 UTF-8 版本。
+假设 `needle` 和 `haystack` 字符串为 UTF-8 编码。
+计算两个 UTF-8 字符串之间的 3-gram 距离。
+返回值越小，字符串越相似。
+
+**语法**
+
+```sql
+ngramDistanceUTF8(haystack, needle)
+```
+
+**参数**
+
+* `haystack` — 第一个 UTF-8 编码的比较字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 第二个 UTF-8 编码的比较字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回一个介于 `0` 到 `1` 之间的 Float32 数值。[`Float32`](/sql-reference/data-types/float)
+
+**示例**
+
+**UTF-8 三元语法距离（3-gram distance）**
+
+```sql title=Query
+SELECT ngramDistanceUTF8('abcde','cde')
+```
+
+```response title=Response
+┌─ngramDistanceUTF8('abcde','cde')─┐
+│                               0.5 │
+└───────────────────────────────────┘
+```
+
+
+## ngramSearch
+
+引入版本：v20.1
+
+检查两个字符串之间的 4-gram 距离是否小于或等于给定的阈值。
+
+对于不区分大小写和（或）UTF8 格式的搜索，请使用函数 `ngramSearchCaseInsensitive`、`ngramSearchUTF8`、`ngramSearchCaseInsensitiveUTF8`。
+
+**语法**
+
+```sql
+ngramSearch(干草堆, 针)
+```
+
+**参数**
+
+* `haystack` — 用于比较的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 用于比较的字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果两个字符串的 4-gram 距离小于等于阈值（默认 `1.0`），则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用 4-gram 搜索**
+
+```sql title=Query
+SELECT ngramSearch('ClickHouse', 'Click')
+```
+
+```response title=Response
+┌─ngramSearch('ClickHouse', 'Click')─┐
+│                                  1 │
+└────────────────────────────────────┘
+```
+
+
+## ngramSearchCaseInsensitive
+
+引入版本：v20.1
+
+提供 [`ngramSearch`](#ngramSearch) 的不区分大小写变体。
+计算一个“针”字符串与“草堆”字符串之间的非对称差值，即针中的 n-gram 数量减去公共的 n-gram 数量，再除以针中 n-gram 数量进行归一化。
+在忽略大小写的情况下，检查两个字符串之间的 4-gram 距离是否小于或等于给定阈值。
+
+**语法**
+
+```sql
+ngramSearchCaseInsensitive(haystack, needle)
+```
+
+**参数**
+
+* `haystack` — 用于比较的字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 用于比较的字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果两个字符串之间的 4-gram 距离小于或等于阈值（默认值为 `1.0`），则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基于 4-gram 的不区分大小写搜索**
+
+```sql title=Query
+SELECT ngramSearchCaseInsensitive('Hello World','hello')
+```
+
+```response title=Response
+┌─ngramSearchCaseInsensitive('Hello World','hello')─┐
+│                                                  1 │
+└────────────────────────────────────────────────────┘
+```
+
+
+## ngramSearchCaseInsensitiveUTF8
+
+引入版本：v20.1
+
+提供 [`ngramSearch`](#ngramSearch) 的不区分大小写 UTF-8 版本。
+假定 `haystack` 和 `needle` 为 UTF-8 字符串，并忽略大小写。
+在忽略大小写的情况下，检查两个 UTF-8 字符串之间的 3-gram 距离是否小于或等于给定阈值。
+
+**语法**
+
+```sql
+ngramSearchCaseInsensitiveUTF8(haystack, needle)
+```
+
+**参数**
+
+* `haystack` — 用于比较的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 用于比较的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果字符串之间的 3-gram 距离小于或等于阈值（默认值为 `1.0`），返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用 3-gram 的不区分大小写 UTF-8 搜索**
+
+```sql title=Query
+SELECT ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз')
+```
+
+```response title=Response
+┌─ngramSearchCaseInsensitiveUTF8('абвГДЕёжз', 'АбвгдЕЁжз')─┐
+│                                                        1 │
+└──────────────────────────────────────────────────────────┘
+```
+
+
+## ngramSearchUTF8
+
+自 v20.1 引入。
+
+提供 `ngramSearch` 的 UTF-8 变体。
+假定 `haystack` 和 `needle` 为 UTF-8 字符串。
+检查两个 UTF-8 字符串之间的 3-gram 距离是否小于或等于给定的阈值。
+
+**语法**
+
+```sql
+ngramSearchUTF8(haystack, needle)
+```
+
+**参数**
+
+* `haystack` — 用于比较的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+* `needle` — 用于比较的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果两个字符串之间的 3-gram 距离小于或等于阈值（默认 `1.0`），则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基于 3-gram 的 UTF-8 搜索**
+
+```sql title=Query
+SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд')
+```
+
+```response title=Response
+┌─ngramSearchUTF8('абвгдеёжз', 'гдеёзд')─┐
+│                                      1 │
+└────────────────────────────────────────┘
+```
+
+
+## notILike
+
+自 v20.6 引入
+
+检查字符串在不区分大小写的情况下是否与某个模式不匹配。该模式可以包含用于 SQL LIKE 匹配的特殊字符 `%` 和 `_`。
+
+**语法**
+
+```sql
+notILike(大串, 模式)
+```
+
+**参数**
+
+* `haystack` — 要在其中进行搜索的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 要匹配的 SQL LIKE 模式。`%` 匹配任意数量的字符（包括 0 个），`_` 精确匹配 1 个字符。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果字符串与模式不匹配（不区分大小写），则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT notILike('ClickHouse', '%house%');
+```
+
+```response title=Response
+┌─notILike('Cl⋯ '%house%')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+
+## notLike
+
+自 v1.1 引入
+
+类似于 [`like`](#like)，但返回相反的结果。
+
+**语法**
+
+```sql
+notLike(haystack, pattern)
+-- haystack 不匹配 LIKE 模式 pattern
+```
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `pattern` — 用于匹配的 `LIKE` 模式。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果字符串不匹配 `LIKE` 模式则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT notLike('ClickHouse', '%House%');
+```
+
+```response title=Response
+┌─notLike('Cli⋯ '%House%')─┐
+│                        0 │
+└──────────────────────────┘
+```
+
+**不匹配的模式**
+
+```sql title=Query
+SELECT notLike('ClickHouse', '%SQL%');
+```
+
+```response title=Response
+┌─notLike('Cli⋯', '%SQL%')─┐
+│                        1 │
+└──────────────────────────┘
+```
+
+
+## position
+
+引入于：v1.1
+
+返回子字符串 `needle` 在字符串 `haystack` 中的位置（以字节为单位，从 1 开始计数）。
+
+如果子字符串 `needle` 为空，适用以下规则：
+
+* 如果未指定 `start_pos`：返回 `1`
+* 如果 `start_pos = 0`：返回 `1`
+* 如果 `start_pos >= 1` 且 `start_pos <= length(haystack) + 1`：返回 `start_pos`
+* 否则：返回 `0`
+
+上述规则同样适用于函数 [`locate`](#locate)、[`positionCaseInsensitive`](#positionCaseInsensitive)、[`positionUTF8`](#positionUTF8) 和 [`positionCaseInsensitiveUTF8`](#positionCaseInsensitiveUTF8)。
+
+**语法**
+
+```sql
+position(haystack, needle[, start_pos])
+```
+
+**参数**
+
+* `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要搜索的子串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 在 `haystack` 中开始搜索的位置（从 1 开始计数）。可选。[`UInt`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果找到子串，则返回起始位置（按字节、从 1 开始计数）；如果未找到子串，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT position('Hello, world!', '!')
+```
+
+```response title=Response
+┌─position('Hello, world!', '!')─┐
+│                             13 │
+└────────────────────────────────┘
+```
+
+**使用 start&#95;pos 参数**
+
+```sql title=Query
+SELECT position('Hello, world!', 'o', 1), position('Hello, world!', 'o', 7)
+```
+
+```response title=Response
+┌─position('Hello, world!', 'o', 1)─┬─position('Hello, world!', 'o', 7)─┐
+│                                 5 │                                 9 │
+└───────────────────────────────────┴───────────────────────────────────┘
+```
+
+**Needle IN haystack（大海捞针）语法**
+
+```sql title=Query
+SELECT 6 = position('/' IN s) FROM (SELECT 'Hello/World' AS s)
+```
+
+```response title=Response
+┌─equals(6, position(s, '/'))─┐
+│                           1 │
+└─────────────────────────────┘
+```
+
+**空模式子串**
+
+```sql title=Query
+SELECT position('abc', ''), position('abc', '', 0), position('abc', '', 1), position('abc', '', 2), position('abc', '', 3), position('abc', '', 4), position('abc', '', 5)
+```
+
+```response title=Response
+┌─position('abc', '')─┬─position('abc', '', 0)─┬─position('abc', '', 1)─┬─position('abc', '', 2)─┬─position('abc', '', 3)─┬─position('abc', '', 4)─┬─position('abc', '', 5)─┐
+│                   1 │                      1 │                      1 │                      2 │                      3 │                      4 │                      0 │
+└─────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┘
+```
+
+
+## positionCaseInsensitive
+
+在 v1.1 中引入
+
+与 [`position`](#position) 类似，但不区分大小写。
+
+**语法**
+
+```sql
+positionCaseInsensitive(haystack, needle[, start_pos])
+```
+
+**别名**: `instr`
+
+**参数**
+
+* `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要搜索的子字符串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的位置（从 1 开始计数）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果找到子字符串，则返回其起始位置（按字节，从 1 开始计数）；如果未找到子字符串，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**不区分大小写的搜索**
+
+```sql title=Query
+SELECT positionCaseInsensitive('Hello, world!', 'hello')
+```
+
+```response title=Response
+┌─positionCaseInsensitive('Hello, world!', 'hello')─┐
+│                                                 1 │
+└───────────────────────────────────────────────────┘
+```
+
+
+## positionCaseInsensitiveUTF8
+
+自 v1.1 起引入
+
+类似于 [`positionUTF8`](#positionUTF8)，但进行不区分大小写的搜索。
+
+**语法**
+
+```sql
+positionCaseInsensitiveUTF8(主串, 子串[, 起始位置])
+```
+
+**参数**
+
+* `haystack` — 进行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要查找的子字符串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的位置（从 1 开始计数）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果找到子字符串，则返回以字节为单位、从 1 开始计数的起始位置；如果未找到子字符串，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**大小写不敏感的 UTF-8 搜索**
+
+```sql title=Query
+SELECT positionCaseInsensitiveUTF8('Привет мир', 'МИР')
+```
+
+```response title=Response
+┌─positionCaseInsensitiveUTF8('Привет мир', 'МИР')─┐
+│                                                8 │
+└──────────────────────────────────────────────────┘
+```
+
+
+## positionUTF8
+
+首次引入于：v1.1
+
+与 [`position`](#position) 类似，但假定 `haystack` 和 `needle` 为 UTF-8 编码的字符串。
+
+**语法**
+
+```sql
+positionUTF8(haystack, needle[, start_pos])
+```
+
+**参数**
+
+* `haystack` — 要进行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`Enum`](/sql-reference/data-types/enum)
+* `needle` — 要搜索的子字符串。[`String`](/sql-reference/data-types/string)
+* `start_pos` — 可选。在 `haystack` 中开始搜索的位置（从 1 开始计数）。[`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果找到子字符串，则返回起始位置（以字节为单位，从 1 开始计数）；如果未找到子字符串，则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**UTF-8 字符计数**
+
+```sql title=Query
+SELECT positionUTF8('Motörhead', 'r')
+```
+
+```response title=Response
+┌─position('Motörhead', 'r')─┐
+│                          5 │
+└────────────────────────────┘
+```
+
+{/*AUTOGENERATED_END*/ }

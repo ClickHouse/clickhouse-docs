@@ -1,26 +1,28 @@
 ---
-'description': '描述 APPL的修饰符的文档，允许您对查询的外部表表达式返回的每一行调用某个函数。'
-'sidebar_label': 'APPLY'
-'slug': '/sql-reference/statements/select/apply-modifier'
-'title': 'APPLY 修饰符'
-'keywords':
-- 'APPLY'
-- 'modifier'
-'doc_type': 'reference'
+description: '本文档介绍 APPLY 修饰符，它允许对查询的外层表表达式返回的每一行调用某个函数。'
+sidebar_label: 'APPLY'
+slug: /sql-reference/statements/select/apply-modifier
+title: 'APPLY 修饰符'
+keywords: ['APPLY', 'modifier']
+doc_type: 'reference'
 ---
 
 
-# APPLY modifier {#apply}
 
-> 允许您对查询外部表表达式返回的每一行调用某个函数。
+# APPLY 修饰符 {#apply}
 
-## Syntax {#syntax}
+> 允许对查询的外部表表达式返回的每一行调用某个函数。
+
+
+
+## 语法
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
 
-## Example {#example}
+
+## 示例
 
 ```sql
 CREATE TABLE columns_transformers (i Int64, j Int16, k Int64) ENGINE = MergeTree ORDER by (i);

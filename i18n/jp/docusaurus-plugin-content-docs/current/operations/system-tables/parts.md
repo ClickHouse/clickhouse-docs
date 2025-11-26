@@ -1,138 +1,136 @@
 ---
-'description': 'システムテーブルで、MergeTreeのパーツに関する情報を含みます'
-'keywords':
-- 'system table'
-- 'parts'
-'slug': '/operations/system-tables/parts'
-'title': 'system.parts'
-'doc_type': 'reference'
+description: 'MergeTree のパーツに関する情報を格納するシステムテーブル'
+keywords: ['システムテーブル', 'パーツ']
+slug: /operations/system-tables/parts
+title: 'system.parts'
+doc_type: 'reference'
 ---
-
 
 # system.parts
 
-[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を含みます。
+[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を格納します。
 
-各行は、1つのデータパートを説明します。
+各行は 1 つのデータパーツを表します。
 
 カラム:
 
-- `partition` ([String](../../sql-reference/data-types/string.md)) – パーティション名。パーティションについて学ぶには、[ALTER](/sql-reference/statements/alter) クエリの説明を参照してください。
+* `partition` ([String](../../sql-reference/data-types/string.md)) – パーティション名。パーティションとは何かについては、[ALTER](/sql-reference/statements/alter) クエリの説明を参照してください。
 
-    フォーマット:
+  形式:
 
-  - 月ごとに自動パーティショニングの場合は `YYYYMM` 。
-  - 手動でパーティショニングする場合は `any_string` 。
+  * 月ごとの自動パーティションの場合は `YYYYMM`。
+  * 手動パーティションの場合は `any_string`。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) – データパートの名前。パート命名構造は、データ、取り込み、マージパターンの多くの側面を決定するのに使用できます。パート名のフォーマットは次の通りです：
+* `name` ([String](../../sql-reference/data-types/string.md)) – データパーツの名前。パーツ名の構造から、データ、取り込み、およびマージパターンに関する多くの側面を把握できます。パーツ名の形式は次のとおりです。
 
 ```text
 <partition_id>_<minimum_block_number>_<maximum_block_number>_<level>_<data_version>
 ```
 
 * 定義:
-  - `partition_id` - パーティションキーを識別します
-  - `minimum_block_number` - パート内の最小ブロック番号を識別します。ClickHouseは常に連続したブロックをマージします
-  - `maximum_block_number` - パート内の最大ブロック番号を識別します
-  - `level` - パートに対する追加のマージごとに1ずつ増加します。レベルが0の場合は、まだマージされていない新しいパートを示します。ClickHouseではすべてのパートが常に不変であることを思い出すことが重要です
-  - `data_version` - オプションの値で、パートが変更されると増加します（再度、変更されたデータは常に新しいパートにのみ書き込まれ、パートは不変です）
+  * `partition_id` - パーティションキーを識別します
+  * `minimum_block_number` - パーツ内の最小ブロック番号を識別します。ClickHouse は常に連続したブロックをマージします
+  * `maximum_block_number` - パーツ内の最大ブロック番号を識別します
+  * `level` - パーツに対するマージが 1 回行われるたびに 1 ずつ増加します。レベル 0 は、まだマージされていない新しいパーツであることを示します。ClickHouse のすべてのパーツは常に不変（イミュータブル）であることを理解しておくことが重要です
+  * `data_version` - オプションの値で、パーツに対してミューテーションが実行されると増加します（繰り返しになりますが、パーツは不変であるため、ミューテーションされたデータは常に新しいパーツにのみ書き込まれます）
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - データパートのUUID。
 
-- `part_type` ([String](../../sql-reference/data-types/string.md)) — データパートのストレージフォーマット。
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - データパーツのUUID。
 
-    可能な値:
+* `part_type` ([String](../../sql-reference/data-types/string.md)) — データパーツの格納形式。
 
-  - `Wide` — 各カラムはファイルシステム内の別々のファイルに保存されます。
-  - `Compact` — すべてのカラムがファイルシステム内の1つのファイルに保存されます。
+  指定可能な値:
 
-    データストレージフォーマットは、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルの `min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御されます。
+  * `Wide` — 各列がファイルシステム内の別々のファイルに保存されます。
+  * `Compact` — すべての列がファイルシステム内の1つのファイルに保存されます。
 
-- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – データパートがアクティブかどうかを示すフラグ。データパートがアクティブな場合、それはテーブルで使用されます。そうでない場合、それは削除されます。非アクティブなデータパーツはマージ後に残ります。
+    データの保存形式は、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルの `min_bytes_for_wide_part` および `min_rows_for_wide_part` の設定によって制御されます。
 
-- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マークの数。データパート内の行数の概算を取得するには、`marks` にインデックスの粒度（通常は8192）を掛けます（このヒントは適応粒度には機能しません）。
+* `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – データパーツがアクティブかどうかを示すフラグ。データパーツがアクティブな場合、そのパーツはテーブルで利用される。そうでない場合は削除される。非アクティブなデータパーツはマージ処理後も残る。
 
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 行の数。
+* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マーク数。データパート内のおおよその行数を求めるには、`marks` にインデックス粒度（通常は 8192）を掛けます（この目安はアダプティブ粒度を使用している場合には当てはまりません）。
 
-- `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – バイト単位のデータパートファイルの合計サイズ。
+* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 行数。
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内の圧縮データの合計サイズ。すべての補助ファイル（たとえば、マークのあるファイル）は含まれません。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – すべてのデータパーツファイルのサイズ合計（バイト単位）。
 
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内の未圧縮データの合計サイズ。すべての補助ファイル（たとえば、マークのあるファイル）は含まれません。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内の圧縮済みデータの合計サイズ。すべての補助ファイル（たとえばマークファイル）は含まれません。
 
-- `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – ディスク上の primary.idx/cidx ファイルで主キー値によって使用されるメモリの量（バイト単位）。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内の非圧縮データの合計サイズ。すべての補助ファイル（たとえばマークファイル）は含まれません。
 
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マークのあるファイルのサイズ。
+* `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – ディスク上の primary.idx/cidx ファイルにおいて、プライマリキー値によって消費されているメモリ量（バイト数）。
 
-- `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内のセカンダリインデックスの圧縮データの合計サイズ。すべての補助ファイル（たとえば、マークのあるファイル）は含まれません。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マークを含むファイルのサイズ。
 
-- `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内のセカンダリインデックスの未圧縮データの合計サイズ。すべての補助ファイル（たとえば、マークのあるファイル）は含まれません。
+* `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のセカンダリインデックスに対する圧縮データの合計サイズ。マークファイルなどの補助ファイルは含まれません。
 
-- `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – セカンダリインデックスのマークのあるファイルのサイズ。
+* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のセカンダリインデックスに対する非圧縮データの合計サイズです。すべての補助ファイル（たとえばマークのファイルなど）は含まれません。
 
-- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパートのディレクトリが変更された時間。これは通常、データパート作成時に対応します。
+* `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – セカンダリインデックスのマークを含むファイルのサイズ。
 
-- `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパートが非アクティブになった時間。
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツのディレクトリが更新された時刻。通常はデータパーツの作成時刻に対応します。
 
-- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – データパートが使用されている場所の数。値が2より大きい場合は、データパートがクエリまたはマージに使用されていることを示します。
+* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツが非アクティブになった時刻。
 
-- `min_date` ([Date](../../sql-reference/data-types/date.md)) – データパート内の日付キーの最小値。
+* `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – データパーツが使用されている箇所の数。値が 2 を超える場合、そのデータパーツがクエリまたはマージで使用されていることを示します。
 
-- `max_date` ([Date](../../sql-reference/data-types/date.md)) – データパート内の日付キーの最大値。
+* `min_date` ([Date](../../sql-reference/data-types/date.md)) – データパートにおける日付キーの最小値。
 
-- `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパート内の日付と時間キーの最小値。
+* `max_date` ([Date](../../sql-reference/data-types/date.md)) – データパーツ内における日付キーの最大値です。
 
-- `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – データパート内の日付と時間キーの最大値。
+* `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパート内の日付と時刻キーの最小値。
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) – パーティションのID。
+* `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツ内の日付時刻キーの最大値。
 
-- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マージ後の現在のパートを構成する最小データブロック番号。
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) – パーティション ID。
 
-- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マージ後の現在のパートを構成する最大データブロック番号。
+* `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マージ後に形成される現在のパートを構成するデータブロック番号の最小値。
 
-- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – マージツリーの深さ。ゼロは、現在のパートが他のパートのマージによってではなく、挿入によって作成されたことを意味します。
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マージ後の現在のパーツを構成するデータブロック番号の最大値。
 
-- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパートに適用されるべき変更を判定するために使用される番号（`data_version` よりも大きいバージョンの変更）。
+* `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – マージツリーの深さ。0 の場合、現在のパートは他のパートのマージではなく、挿入によって作成されたことを意味します。
 
-- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 主キー値に使用されるメモリ量（バイト単位）（`primary_key_lazy_load=1` および `use_primary_key_cache=1` の場合は `0` になります）。
+* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツに対してどのミューテーションを適用すべきかを判定するために使用される数値（`data_version` より大きいバージョンを持つミューテーションが適用される）。
 
-- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 主キー値のために予約されたメモリ量（バイト単位）（`primary_key_lazy_load=1` および `use_primary_key_cache=1` の場合は `0` になります）。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – プライマリキーの値によって使用されているメモリ量（バイト単位）。`primary_key_lazy_load=1` かつ `use_primary_key_cache=1` の場合は `0` になります。
 
-- `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – パーティションデータのバックアップが存在することを示すフラグ。1 はバックアップが存在することを示し、0 はバックアップが存在しないことを示します。詳細については、[FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition) を参照してください。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – プライマリキー値のために確保されているメモリ容量（バイト単位）。`primary_key_lazy_load=1` かつ `use_primary_key_cache=1` の場合は `0` になります。
 
-- `database` ([String](../../sql-reference/data-types/string.md)) – データベースの名前。
+* `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – パーティションデータのバックアップが存在するかを示すフラグ。1 の場合はバックアップが存在し、0 の場合はバックアップが存在しません。詳細は [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition) を参照してください。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) – テーブルの名前。
+* `database` ([String](../../sql-reference/data-types/string.md)) – データベースの名前。
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) – パラメーターなしのテーブルエンジンの名前。
+* `table` ([String](../../sql-reference/data-types/string.md)) – テーブルの名前。
 
-- `path` ([String](../../sql-reference/data-types/string.md)) – データパートファイルがあるフォルダの絶対パス。
+* `engine` ([String](../../sql-reference/data-types/string.md)) – パラメータなしのテーブルエンジン名。
 
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) – データパートを保存しているディスクの名前。
+* `path` ([String](../../sql-reference/data-types/string.md)) – データパーツのファイルが格納されているフォルダへの絶対パス。
 
-- `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) の圧縮ファイル。
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) – データパーツが保存されているディスクの名前。
 
-- `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) の未圧縮ファイル（マークのあるファイル、インデックスファイルなど）。
+* `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイルの [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 値。
 
-- `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイル内のデータの[sipHash128](/sql-reference/functions/hash-functions#sipHash128)、未圧縮された場合のように。
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – 非圧縮ファイル（マークファイル、インデックスファイルなど）に対する [sipHash128](/sql-reference/functions/hash-functions#sipHash128) のハッシュ値。
 
-- `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)のための日付と時刻キーの最小値。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイル内のデータを、非圧縮データとして扱った場合の [sipHash128](/sql-reference/functions/hash-functions#sipHash128)。
 
-- `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)のための日付と時刻キーの最大値。
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) における日付時刻キーの最小値。
 
-- `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 式の配列。各式は、[TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)を定義します。
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) における日付と時刻キーの最大値です。
+
+* `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — ルールを定義する式の配列です。各式は [TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) を定義します。
 
 :::note
-`move_ttl_info.expression` 配列は主に後方互換性のために保持されており、現在の最も簡単な方法は、`move_ttl_info.min` および `move_ttl_info.max` フィールドを使用して `TTL MOVE` ルールを確認することです。
+`move_ttl_info.expression` 配列は主に後方互換性のために残されています。現在では、`TTL MOVE` ルールを確認する最も簡単な方法は、`move_ttl_info.min` および `move_ttl_info.max` フィールドを使用することです。
 :::
 
-- `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日付と時刻の値の配列。各要素は、[TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)の最小キー値を説明します。
+* `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日付と時刻の値の配列。各要素は、[TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)の最小キー値を表します。
 
-- `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日付と時刻の値の配列。各要素は、[TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)の最大キー値を説明します。
+* `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日付と時刻の値の配列。各要素は、[TTL MOVE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)の最大キー値を表します。
 
-- `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `bytes_on_disk` のエイリアス。
+* `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `bytes_on_disk` のエイリアス。
 
-- `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `marks_bytes` のエイリアス。
+* `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `marks_bytes` のエイリアス。
 
 **例**
 
@@ -186,7 +184,7 @@ move_ttl_info.min:                     []
 move_ttl_info.max:                     []
 ```
 
-**関連情報**
+**関連項目**
 
-- [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)
-- [カラムとテーブルのためのTTL](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)
+* [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)
+* [列およびテーブルの TTL](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)

@@ -1,0 +1,35 @@
+---
+title: Не удается получить доступ к сервису ClickHouse Cloud
+description: "Устранение неполадок с доступом к сервисам ClickHouse Cloud, включая настройку списка доступа по IP (IP Access List)"
+date: 2024-07-02
+tags: ['Ошибки и исключения', 'Управление облаком']
+keywords: ['доступ к облачному сервису', 'IP Access List']
+doc_type: 'guide'
+---
+
+{frontMatter.description}
+
+{/* усечь */}
+
+
+## Я не могу получить доступ к сервису ClickHouse Cloud
+
+Если вы видите одно из следующих сообщений об ошибке, возможно, ваш список доступа по IP (IP Access List) блокирует подключение:
+
+```response
+curl: (35) error:02FFF036:системная библиотека:func(4095):Соединение сброшено удалённым узлом
+```
+
+или
+
+```response
+curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL при соединении с HOSTNAME.clickhouse.cloud:8443
+```
+
+или
+
+```response
+Код: 210. DB::NetException: SSL-соединение неожиданно разорвано (e46453teek.us-east-2.aws.clickhouse-staging.com:9440). (NETWORK_ERROR)
+```
+
+Проверьте [список доступа по IP](/cloud/security/setting-ip-filters): если вы пытаетесь подключиться с адреса, не входящего в разрешённый список, соединение не будет установлено.

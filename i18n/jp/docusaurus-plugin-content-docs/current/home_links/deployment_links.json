@@ -1,14 +1,14 @@
 [
-	{
-		"title": "Quick Start",
-		"description": "Get up and running on ClickHouse in minutes, explore some sample data, and build your solution",
-		"url": "/docs/quick-start/",
-		"background": "cloud"
-	},
-	{
-	"title": "Tutorials and Sample Datasets",
-	"description": "From taxi rides to property prices, learn how to get data into ClickHouse and model it for query performance",
-	"url": "/docs/getting-started/example-datasets/",
-	"background": "cloud"
-	}
+  {
+    "title": "クイックスタート",
+    "description": "数分で ClickHouse を立ち上げて利用を開始し、サンプルデータを探索して、ソリューションの構築を始めましょう",
+    "url": "/docs/quick-start/",
+    "background": "クラウド"
+  },
+  {
+    "title": "チュートリアルとサンプルデータセット",
+    "description": "タクシー乗車履歴から不動産価格までのデータをClickHouseに取り込み、クエリ性能を高めるためにモデリングする方法を学びます",
+    "url": "/docs/getting-started/example-datasets/",
+    "background": "クラウド"
+  }
 ]

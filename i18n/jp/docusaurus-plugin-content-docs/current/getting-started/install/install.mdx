@@ -1,14 +1,10 @@
 ---
-'description': 'ClickHouseをインストール'
-'keywords':
-- 'clickhouse'
-- 'install'
-- 'getting started'
-- 'quick start'
-'sidebar_label': 'インストール'
-'slug': '/install'
-'title': 'ClickHouseのインストール'
-'doc_type': 'guide'
+description: 'ClickHouse のインストール'
+keywords: ['clickhouse', 'インストール', 'はじめに', 'クイックスタート']
+sidebar_label: 'インストール'
+slug: /install
+title: 'ClickHouse のインストール'
+doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
@@ -27,7 +23,7 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
     alignContent="center"
-    description="クラスターのサイズ設定やスケーリングの必要なく、すぐに構築を開始できます。サイズ設定、スケーリング、セキュリティ、信頼性、アップグレードを私たちが担当します。"
+    description="クラスターの容量やスケーリングを気にせず、すぐに構築を開始できます。サイズ設定、スケーリング、セキュリティ、信頼性、アップグレードはすべて当社が行います。"
     icon="cloud"
     infoText="無料で始める"
     infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
@@ -37,9 +33,11 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
     title="ClickHouse Cloud"
     topBadgeText="推奨"
 />
+
 <br/>
 
-代替として、オープンソースのClickHouseのインストール手順を表示するには、プラットフォーム、ディストリビューション、インストール方法を選択してください：
+または、以下からプラットフォーム、ディストリビューション、およびインストール方法を選択して、
+オープンソース版 ClickHouse のインストール手順を表示します。
 
 <InstallSelector
     windows={<Windows/>}

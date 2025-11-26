@@ -1,22 +1,20 @@
 ---
-'description': '系统表对于 C++ 专家和 ClickHouse 工程师非常有用，包含有关 `clickhouse` 二进制文件的自省信息。'
-'keywords':
-- 'system table'
-- 'symbols'
-'slug': '/operations/system-tables/symbols'
-'title': 'system.symbols'
-'doc_type': 'reference'
+description: '对 C++ 专家和 ClickHouse 工程师有用的 system 表，包含用于对 `clickhouse` 可执行文件进行内省的信息。'
+keywords: ['system 表', '符号']
+slug: /operations/system-tables/symbols
+title: 'system.symbols'
+doc_type: 'reference'
 ---
 
-包含有关 `clickhouse` 二进制文件的自省信息。访问此信息需要自省权限。
-此表仅对 C++ 专家和 ClickHouse 工程师有用。
+包含用于对 `clickhouse` 可执行文件进行内省的信息。访问该表需要具有 introspection 权限。
+此表仅适用于 C++ 专家和 ClickHouse 工程师。
 
 列：
 
-- `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制中的符号名称。它是经过修改的。您可以应用 `demangle(symbol)` 来获取可读名称。
-- `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制中的起始地址。
-- `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制中的结束地址。
-- `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。
+* `symbol` ([String](../../sql-reference/data-types/string.md)) — 二进制文件中的符号名称。该名称是经过重整（mangled）的。你可以使用 `demangle(symbol)` 来获得可读名称。
+* `address_begin` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制文件中的起始地址。
+* `address_end` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 符号在二进制文件中的结束地址。
+* `name` ([String](../../sql-reference/data-types/string.md)) — `event` 的别名。
 
 **示例**
 

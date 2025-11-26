@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/window-functions/row_number'
-sidebar_label: row_number
+description: 'Документация об оконной функции row_number'
+sidebar_label: 'row_number'
 sidebar_position: 2
-description: 'Документация для функции оконного row_number'
-title: row_number
-doc_type: reference
+slug: /sql-reference/window-functions/row_number
+title: 'row_number'
+doc_type: 'reference'
 ---
-# row_number
 
-Нумерует текущую строку в пределах своего раздела, начиная с 1.
+# row&#95;number
+
+Нумерует текущую строку внутри её раздела (partition), начиная с 1.
 
 **Синтаксис**
 
@@ -20,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Для получения более подробной информации о синтаксисе оконных функций см. [Оконные функции - Синтаксис](./index.md/#syntax).
+Для получения более подробной информации о синтаксисе оконных функций см.: [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-- Число для текущей строки в пределах ее раздела. [UInt64](../data-types/int-uint.md).
+* Число для текущей строки в пределах её раздела (partition). [UInt64](../data-types/int-uint.md).
 
 **Пример**
 
-Следующий пример основан на примере, представленном в видеоинструкции [Ранжирующие оконные функции в ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
+Следующий пример основан на примере, приведённом в видеоруководстве [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
 Запрос:
 
@@ -59,11 +60,11 @@ FROM salaries;
 Результат:
 
 ```response
-   ┌─player──────────┬─salary─┬─row_number─┐
+   ┌─игрок───────────┬─зарплата─┬─номер_строки─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          2 │
 3. │ Charles Juarez  │ 190000 │          3 │
 4. │ Scott Harrison  │ 150000 │          4 │
 5. │ Michael Stanley │ 150000 │          5 │
-   └─────────────────┴────────┴────────────┘
+   └─────────────────┴──────────┴──────────────┘
 ```

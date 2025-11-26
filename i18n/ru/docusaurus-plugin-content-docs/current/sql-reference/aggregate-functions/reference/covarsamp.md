@@ -1,16 +1,17 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/covarsamp'
+description: 'Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`'
 sidebar_position: 124
-description: 'Вычисляет значение `A((x - x̄)(y - ȳ)) / (n - 1)`'
-title: covarSamp
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/covarsamp
+title: 'covarSamp'
+doc_type: 'reference'
 ---
+
 # covarSamp
 
 Вычисляет значение `Σ((x - x̅)(y - y̅)) / (n - 1)`.
 
 :::note
-Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`covarSampStable`](../reference/covarsamp.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Эта функция использует численно неустойчивый алгоритм. Если вам важна [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) вычислений, используйте функцию [`covarSampStable`](../reference/covarsamp.md). Она работает медленнее, но даёт меньшую вычислительную погрешность.
 :::
 
 **Синтаксис**
@@ -21,12 +22,12 @@ covarSamp(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
-- `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Выборочная ковариация между `x` и `y`. Для `n <= 1` возвращается `nan`. [Float64](../../data-types/float.md).
+* Выборочная ковариация между `x` и `y`. Если `n <= 1`, возвращается `nan`. [Float64](../../data-types/float.md).
 
 **Пример**
 

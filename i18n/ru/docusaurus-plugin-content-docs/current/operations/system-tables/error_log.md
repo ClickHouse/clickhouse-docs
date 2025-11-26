@@ -1,24 +1,26 @@
 ---
-slug: '/operations/system-tables/system-error-log'
-description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`,'
-title: system.error_log
-keywords: ['системная таблица', 'журнал ошибок']
-doc_type: reference
+description: 'Системная таблица, содержащая историю значений ошибок из таблицы `system.errors`, которая периодически сбрасывается на диск.'
+keywords: ['system table', 'error_log']
+slug: /operations/system-tables/system-error-log
+title: 'system.error_log'
+doc_type: 'reference'
 ---
-import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-<SystemTableCloud/>
+import SystemTableCloud from '@site/docs/_snippets/_system_table_cloud.md';
+
+<SystemTableCloud />
 
 Содержит историю значений ошибок из таблицы `system.errors`, периодически сбрасываемую на диск.
 
 Столбцы:
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — Номер кода ошибки.
-- `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) - Имя ошибки.
-- `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество раз, когда произошла эта ошибка.
-- `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Удаленное исключение (т.е. полученное во время одного из распределенных запросов).
+
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
+* `code` ([Int32](../../sql-reference/data-types/int-uint.md)) — Код ошибки.
+* `error` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Название ошибки.
+* `value` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество возникновений этой ошибки.
+* `remote` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Удалённое исключение (то есть полученное во время одного из распределённых запросов).
 
 **Пример**
 
@@ -38,8 +40,8 @@ value:      2
 remote:     0
 ```
 
-**Смотрите также**
+**См. также**
 
-- [error_log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
-- [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с количеством раз, когда они были вызваны.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+* [error&#95;log setting](../../operations/server-configuration-parameters/settings.md#error_log) — Включение и отключение настройки.
+* [system.errors](../../operations/system-tables/errors.md) — Содержит коды ошибок с числом их срабатываний.
+* [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.

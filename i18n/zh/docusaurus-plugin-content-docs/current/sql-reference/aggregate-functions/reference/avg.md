@@ -1,11 +1,10 @@
 ---
-'description': '计算算术平均值。'
-'sidebar_position': 112
-'slug': '/sql-reference/aggregate-functions/reference/avg'
-'title': 'avg'
-'doc_type': 'reference'
+description: '计算算术平均数。'
+sidebar_position: 112
+slug: /sql-reference/aggregate-functions/reference/avg
+title: 'avg'
+doc_type: 'reference'
 ---
-
 
 # avg
 
@@ -19,12 +18,12 @@ avg(x)
 
 **参数**
 
-- `x` — 输入值，必须是 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `x` — 输入值，必须是 [Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 算术平均值，始终为 [Float64](../../../sql-reference/data-types/float.md)。
-- 如果输入参数 `x` 为空，则返回 `NaN`。
+* 算术平均值，类型始终为 [Float64](../../../sql-reference/data-types/float.md)。
+* 如果输入参数 `x` 为空，则返回 `NaN`。
 
 **示例**
 
@@ -46,13 +45,13 @@ SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 
 创建一个临时表：
 
-查询：
+查询语句：
 
 ```sql
 CREATE TABLE test (t UInt8) ENGINE = Memory;
 ```
 
-获取算术平均值：
+计算算术平均值：
 
 查询：
 

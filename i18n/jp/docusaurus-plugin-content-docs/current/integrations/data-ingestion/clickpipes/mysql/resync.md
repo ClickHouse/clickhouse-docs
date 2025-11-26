@@ -1,47 +1,48 @@
 ---
-'title': 'データベース ClickPipe の再同期'
-'description': 'データベース ClickPipe の再同期に関するドキュメント'
-'slug': '/integrations/clickpipes/mysql/resync'
-'sidebar_label': 'ClickPipe の再同期'
-'doc_type': 'guide'
+title: 'データベース ClickPipe の再同期'
+description: 'データベース ClickPipe の再同期手順について説明します'
+slug: /integrations/clickpipes/mysql/resync
+sidebar_label: 'ClickPipe の再同期'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resyncは何をしますか？ {#what-mysql-resync-do}
+### Resync は何を行いますか？
 
-Resyncは以下の操作を順番に行います。
+Resync では、次の処理が以下の順序で行われます。
 
-1. 既存のClickPipeが削除され、新しい「resync」ClickPipeが開始されます。これにより、ソーステーブルの構造に対する変更がresync時に反映されます。
-2. resync ClickPipeは、元のテーブルと同じ名前で、`_resync`サフィックスが付いた新しい一式の宛先テーブルを作成（または置き換え）します。
-3. `_resync`テーブルに初期ロードが実行されます。
-4. その後、`_resync`テーブルが元のテーブルと置き換えられます。ソフト削除された行は、置き換えの前に元のテーブルから`_resync`テーブルに移動されます。
+1. 既存の ClickPipe が削除され、新しい「resync」ClickPipe が起動されます。これにより、Resync を実行した時点で、ソーステーブル構造の変更が取り込まれます。
+2. resync ClickPipe は、元のテーブル名に `_resync` サフィックスを付けたテーブルを新しい宛先テーブルとして作成（または再作成）します。
+3. `_resync` テーブルに対して初期ロードが実行されます。
+4. その後、`_resync` テーブルと元のテーブルがスワップされます。スワップ前に、ソフトデリートされた行は元のテーブルから `_resync` テーブルへ転送されます。
 
-元のClickPipeのすべての設定は、resync ClickPipeに保持されます。元のClickPipeの統計はUIでクリアされます。
+元の ClickPipe のすべての設定は、resync ClickPipe に引き継がれます。元の ClickPipe の統計情報は UI 上でクリアされます。
 
-### ClickPipeのresyncのユースケース {#use-cases-mysql-resync}
+### ClickPipe を Resync するユースケース
 
 いくつかのシナリオを示します。
 
-1. ソーステーブルに対して大規模なスキーマ変更を行う必要がある場合、既存のClickPipeが機能しなくなる可能性があり、再起動が必要です。変更を行った後、Resyncをクリックするだけです。
-2. 特にClickhouseの場合、ターゲットテーブルのORDER BYキーを変更する必要がある場合があります。Resyncを使用して、新しいテーブルに正しいソートキーでデータを再配置できます。
+1. 既存の ClickPipe が動作しなくなるような大きなスキーマ変更をソーステーブルに対して行う必要があり、再起動が必要になる場合があります。その場合、変更を行ったあとに Resync をクリックするだけで済みます。
+2. 特に ClickHouse の場合、ターゲットテーブルの ORDER BY キーを変更する必要が生じることがあります。Resync を実行することで、新しいテーブルに正しいソートキーでデータを再投入できます。
 
 :::note
-複数回のresyncが可能ですが、resync時にはソースデータベースへの負荷を考慮してください。
+Resync を複数回実行することも可能ですが、その際にはソースデータベースへの負荷を考慮してください。
 :::
 
-### Resync ClickPipeガイド {#guide-mysql-resync}
+### Resync ClickPipe ガイド
 
-1. データソースタブで、resyncしたいMySQL ClickPipeをクリックします。
-2. **設定**タブに移動します。
-3. **Resync**ボタンをクリックします。
+1. **Data Sources** タブで、Resync を実行したい MySQL ClickPipe をクリックします。
+2. **Settings** タブに移動します。
+3. **Resync** ボタンをクリックします。
 
-<Image img={resync_button} border size="md"/>
+<Image img={resync_button} border size="md" />
 
-4. 確認のダイアログボックスが表示されます。再度Resyncをクリックします。
-5. **メトリクス**タブに移動します。
-6. 約5秒後（及びページの再読み込み時に）、パイプのステータスは**Setup**または**Snapshot**になります。
-7. resyncの初期ロードは、**テーブル**タブの**初期ロード統計**セクションで監視できます。
-8. 初期ロードが完了すると、パイプは原子的に`_resync`テーブルと元のテーブルを置き換えます。置き換え中は、ステータスは**Resync**になります。
-9. 置き換えが完了すると、パイプは**Running**状態に入り、CDCが有効な場合は実行されます。
+4. 確認用のダイアログボックスが表示されます。もう一度 Resync をクリックします。
+5. **Metrics** タブに移動します。
+6. おおよそ 5 秒後（およびページを更新したタイミングで）、パイプのステータスは **Setup** または **Snapshot** になっているはずです。
+7. Resync の初期ロードは、**Tables** タブの **Initial Load Stats** セクションで監視できます。
+8. 初期ロードが完了すると、パイプは `_resync` テーブルと元のテーブルをアトミックにスワップします。スワップ中はステータスが **Resync** になります。
+9. スワップが完了すると、パイプは **Running** 状態に入り、有効化されている場合は CDC（変更データキャプチャ）を実行します。

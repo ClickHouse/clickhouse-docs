@@ -1,21 +1,20 @@
 ---
-'description': 'USE ステートメントに関するドキュメント'
-'sidebar_label': 'USE'
-'sidebar_position': 53
-'slug': '/sql-reference/statements/use'
-'title': 'USE 文'
-'doc_type': 'reference'
+description: 'USE ステートメントに関するドキュメント'
+sidebar_label: 'USE'
+sidebar_position: 53
+slug: /sql-reference/statements/use
+title: 'USE ステートメント'
+doc_type: 'reference'
 ---
 
-
-# USE Statement
+# USE ステートメント
 
 ```sql
 USE [DATABASE] db
 ```
 
-セッションの現在のデータベースを設定できます。
+セッションの現在のデータベースを設定します。
 
-現在のデータベースは、クエリでテーブル名の前にドットを指定してデータベースが明示的に定義されていない場合に、テーブルを検索するために使用されます。
+現在のデータベースは、クエリ内でテーブル名の前にピリオドを付けてデータベースが明示的に指定されていない場合に、テーブルを検索する際に使用されます。
 
-HTTPプロトコルを使用している場合には、セッションの概念がないため、このクエリは実行できません。
+HTTP プロトコルを使用している場合はセッションという概念がないため、このクエリは実行できません。

@@ -1,20 +1,21 @@
 ---
-slug: '/sql-reference/window-functions/dense_rank'
-sidebar_label: dense_rank
+description: 'Документация об оконной функции dense_rank'
+sidebar_label: 'dense_rank'
 sidebar_position: 7
-description: 'Документация для функции оконного dense_rank'
-title: dense_rank
-doc_type: reference
+slug: /sql-reference/window-functions/dense_rank
+title: 'dense_rank'
+doc_type: 'reference'
 ---
-# dense_rank
 
-Ранжирует текущую строку в пределах ее партиции без пропусков. Другими словами, если значение любой новой строки совпадает со значением одной из предыдущих строк, то она получит следующий последовательный ранг без пробелов в ранжировании.
+# dense&#95;rank
 
-Функция [rank](./rank.md) обеспечивает такое же поведение, но с пропусками в ранжировании.
+Присваивает текущей строке ранг внутри её раздела без пропусков. Иными словами, если значение любой новой строки совпадает со значением одной из предыдущих строк, то она получит следующий по порядку ранг без каких-либо пропусков в ранжировании.
+
+Функция [rank](./rank.md) реализует то же поведение, но с пропусками в ранжировании.
 
 **Синтаксис**
 
-Псевдоним: `denseRank` (чувствительный к регистру)
+Псевдоним: `denseRank` (чувствительно к регистру)
 
 ```sql
 dense_rank ()
@@ -24,15 +25,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Для получения дополнительной информации о синтаксисе оконных функций смотрите: [Оконные функции - Синтаксис](./index.md/#syntax).
+Подробности о синтаксисе оконных функций см. в разделе [Window Functions - Syntax](./index.md/#syntax).
 
 **Возвращаемое значение**
 
-- Число для текущей строки в пределах ее партиции, без пропусков в ранжировании. [UInt64](../data-types/int-uint.md).
+* Число для текущей строки в своем разделе, без пропусков в ранжировании. [UInt64](../data-types/int-uint.md).
 
 **Пример**
 
-Следующий пример основан на примере, приведенном в видеоинструкции [Ранжирующие оконные функции в ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
+Следующий пример основан на примере, приведённом в видеоинструкции [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
 Запрос:
 

@@ -1,33 +1,35 @@
 ---
-'description': '返回时间序列在索引 `t` 处的指数平滑移动平均值的总和。'
-'sidebar_position': 136
-'slug': '/sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum'
-'title': 'exponentialTimeDecayedSum'
-'doc_type': 'reference'
+description: '返回时间序列在时间索引 `t` 处的指数平滑移动平均值之和。'
+sidebar_position: 136
+slug: /sql-reference/aggregate-functions/reference/exponentialTimeDecayedSum
+title: 'exponentialTimeDecayedSum'
+doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+
+
+## exponentialTimeDecayedSum
 
 返回时间序列在时间索引 `t` 处的指数平滑移动平均值的总和。
 
 **语法**
 
 ```sql
-exponentialTimeDecayedSum(x)(v, t)
+指数时间衰减和(x)(v, t)
 ```
 
 **参数**
 
-- `v` — 值。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
-- `t` — 时间。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)、[日期时间](../../data-types/datetime.md)、[日期时间64](../../data-types/datetime64.md)。
+* `v` — 数值。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `t` — 时间。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)、[DateTime](../../data-types/datetime.md)、[DateTime64](../../data-types/datetime64.md)。
 
-**参数**
+**参数说明**
 
-- `x` — 值的权重衰减到 1/e 所需的时间差。 [整数](../../../sql-reference/data-types/int-uint.md)、[浮点数](../../../sql-reference/data-types/float.md) 或 [十进制](../../../sql-reference/data-types/decimal.md)。
+* `x` — 使某个数值的权重衰减到 1/e 所需的时间差。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回给定时间点的指数平滑移动平均值的总和。 [Float64](../../data-types/float.md)。
+* 返回在给定时间点的指数平滑移动平均值之和。[Float64](../../data-types/float.md)。
 
 **示例**
 
@@ -51,8 +53,9 @@ FROM
 
 结果：
 
+
 ```response
-    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar───────────────────────────────────────────────┐
+┌─值─┬─时间─┬─round(exp_smooth, 3)─┬─条形───────────────────────────────────────────────┐
  1. │     1 │    0 │                    1 │ █████                                             │
  2. │     0 │    1 │                0.905 │ ████▌                                             │
  3. │     0 │    2 │                0.819 │ ████                                              │

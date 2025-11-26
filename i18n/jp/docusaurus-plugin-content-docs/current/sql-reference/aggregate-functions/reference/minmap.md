@@ -1,41 +1,43 @@
 ---
-'description': '与 `key` 数组中指定的键对应，计算 `value` 数组中的最小值。'
-'sidebar_position': 169
-'slug': '/sql-reference/aggregate-functions/reference/minmap'
-'title': 'minMap'
-'doc_type': 'reference'
+description: '`key` 配列で指定されたキーごとに、`value` 配列から最小値を計算します。'
+sidebar_position: 169
+slug: /sql-reference/aggregate-functions/reference/minmap
+title: 'minMap'
+doc_type: 'reference'
 ---
-
 
 # minMap
 
-`key` 配列で指定されたキーに従って、`value` 配列から最小値を計算します。
+`key` 配列で指定されたキーに基づいて、`value` 配列の最小値を計算します。
 
 **構文**
 
 ```sql
 `minMap(key, value)`
 ```
+
 または
+
 ```sql
 minMap(Tuple(key, value))
 ```
 
-エイリアス: `minMappedArrays`
+Alias: `minMappedArrays`
 
 :::note
-- キーと値の配列のタプルを渡すことは、キーの配列と値の配列を渡すことと同じです。
-- 各行で集計される `key` と `value` の要素数は同じでなければなりません。
-:::
+
+* キー配列と値配列のタプルを渡すことは、キーの配列と値の配列をそれぞれ渡すことと同等です。
+* 集計対象となる各行について、`key` と `value` の要素数は同じでなければなりません。
+  :::
 
 **パラメータ**
 
-- `key` — キーの配列。 [Array](../../data-types/array.md)。
-- `value` — 値の配列。 [Array](../../data-types/array.md)。
+* `key` — キーの配列。[Array](../../data-types/array.md)。
+* `value` — 値の配列。[Array](../../data-types/array.md)。
 
-**戻り値**
+**返り値**
 
-- ソートされた順序のキーと、対応するキーに対して計算された値の2つの配列のタプルを返します。 [Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
+* 2 つの配列からなるタプルを返します。キーはソート済みで、値は対応するキーごとに計算されたものです。[Tuple](../../data-types/tuple.md)([Array](../../data-types/array.md), [Array](../../data-types/array.md))。
 
 **例**
 

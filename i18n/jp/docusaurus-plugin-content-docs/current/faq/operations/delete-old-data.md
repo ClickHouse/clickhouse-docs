@@ -1,58 +1,71 @@
 ---
-'slug': '/faq/operations/delete-old-data'
-'title': '古いレコードを ClickHouse テーブルから削除することは可能ですか？'
-'toc_hidden': true
-'toc_priority': 20
-'description': 'このページでは、古いレコードを ClickHouse テーブルから削除することが可能かどうかの質問に回答します。'
-'doc_type': 'reference'
+slug: /faq/operations/delete-old-data
+title: 'ClickHouse テーブルから古いレコードを削除できますか？'
+toc_hidden: true
+toc_priority: 20
+description: 'このページでは、ClickHouse テーブルから古いレコードを削除できるかどうかについて説明します'
+doc_type: 'reference'
+keywords: ['データ削除', 'TTL', 'データ保持', 'クリーンアップ', 'データライフサイクル']
 ---
 
 
-# 古いレコードをClickHouseテーブルから削除することは可能ですか？ {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
 
-短い答えは「はい」です」。ClickHouseは古いデータを削除することによってディスクスペースを解放する複数のメカニズムを持っています。各メカニズムは異なるシナリオに対して設計されています。
+# ClickHouse テーブルから古いレコードを削除することは可能ですか？ {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
+
+簡潔に言えば「はい」です。ClickHouse には、古いデータを削除してディスク容量を解放するための複数の仕組みがあります。それぞれ異なるシナリオに対応しています。
+
+
 
 ## TTL {#ttl}
 
-ClickHouseは、特定の条件が発生した時に自動的に値を削除することを許可します。この条件は、通常は任意のタイムスタンプカラムの静的オフセットに基づく式として構成されます。
+ClickHouse では、特定の条件が満たされたときに値を自動的に削除できます。この条件は任意のカラム（通常はタイムスタンプカラムに対する静的なオフセット）に基づく式として設定します。
 
-このアプローチの主な利点は、TTLが設定されるとデータの削除がバックグラウンドで自動的に行われるため、外部システムをトリガーとして使用する必要がないことです。
+このアプローチの主な利点は、TTL を一度設定すれば外部システムからのトリガーを必要とせず、データの削除がバックグラウンドで自動的に行われることです。
 
 :::note
-TTLはデータを[/dev/null](https://en.wikipedia.org/wiki/Null_device)に移動するだけでなく、SSDからHDDなど異なるストレージシステム間で移動するためにも使用できます。
+TTL は、データを [/dev/null](https://en.wikipedia.org/wiki/Null_device) に移動するだけでなく、SSD から HDD など、異なるストレージシステム間でデータを移動するためにも使用できます。
 :::
 
-[TTLの構成](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)についての詳細。
+詳細は、[TTL の設定](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)を参照してください。
 
-## DELETE FROM {#delete-from}
 
-[DELETE FROM](/sql-reference/statements/delete.md)は、ClickHouseで標準のDELETEクエリを実行することを可能にします。フィルター句でターゲットにされた行は削除されたとマークされ、将来の結果セットからは削除されます。行のクリーンアップは非同期的に行われます。
+
+## DELETE FROM
+
+[DELETE FROM](/sql-reference/statements/delete.md) を使用すると、ClickHouse で標準的な DELETE クエリを実行できます。フィルター句で対象となった行は削除済みとしてマークされ、今後の結果セットには含まれません。行のクリーンアップは非同期に行われます。
 
 :::note
-DELETE FROMはバージョン23.3以降で一般的に利用可能です。古いバージョンでは、これは実験的であり、次のように有効にする必要があります：
+DELETE FROM はバージョン 23.3 以降で一般提供されています。それ以前のバージョンでは実験的機能であり、次の設定で有効にする必要があります。
+
 ```sql
 SET allow_experimental_lightweight_delete = true;
 ```
+
 :::
+
 
 ## ALTER DELETE {#alter-delete}
 
-ALTER DELETEは、非同期バッチ操作を使用して行を削除します。DELETE FROMとは異なり、ALTER DELETEの後に実行されたクエリは、バッチ操作の完了前に削除対象の行を含みます。詳細は[ALTER DELETE](/sql-reference/statements/alter/delete.md)のドキュメントを参照してください。
+ALTER DELETE は、非同期バッチ処理を使用して行を削除します。`DELETE FROM` と異なり、ALTER DELETE の実行後からバッチ処理の完了までの間に実行されたクエリには、削除対象の行も含まれたままになります。詳細については [ALTER DELETE](/sql-reference/statements/alter/delete.md) のドキュメントを参照してください。
 
-`ALTER DELETE`は古いデータを柔軟に削除するために発行できます。定期的に行う必要がある場合の主な欠点は、クエリを送信するために外部システムが必要になることです。また、単一の行を削除する場合でも、変異によって完全なパーツが書き換えられるため、パフォーマンスの考慮事項もあります。
+`ALTER DELETE` は、古いデータを柔軟に削除するために発行できます。これを定期的に行う必要がある場合の主な欠点は、クエリを定期的に送信する外部システムが必要になることです。また、削除する行が 1 行だけであっても mutation はパーツ全体を書き換えるため、パフォーマンス面での考慮も必要です。
 
-これはClickHouseに基づくシステムが[GDPR](https://gdpr-info.eu)に準拠するための最も一般的なアプローチです。
+これは、ClickHouse ベースのシステムを [GDPR](https://gdpr-info.eu) に準拠させるために最も一般的に用いられる手法です。
 
-[変異](https://sql-reference/statements/alter#mutations)の詳細について。
+[mutation](/sql-reference/statements/alter#mutations) の詳細についてはこちらを参照してください。
+
+
 
 ## DROP PARTITION {#drop-partition}
 
-`ALTER TABLE ... DROP PARTITION`は、全体のパーティションを削除するためのコスト効率の良い方法を提供します。これはそれほど柔軟ではなく、テーブル作成時に適切なパーティショニングスキームが構成される必要がありますが、ほとんどの一般的なケースをカバーしています。変異は定期的に使用するために外部システムから実行する必要があります。
+`ALTER TABLE ... DROP PARTITION` は、パーティション全体を削除するためのコスト効率の高い方法です。柔軟性はそれほど高くなく、テーブル作成時に適切なパーティション方式を設定しておく必要がありますが、一般的なケースのほとんどはカバーできます。通常運用では、ミューテーションと同様に外部システムから実行する必要があります。
 
-[パーティションの操作](https://sql-reference/statements/alter/partition)についての詳細。
+[パーティションの操作](/sql-reference/statements/alter/partition)の詳細を参照してください。
+
+
 
 ## TRUNCATE {#truncate}
 
-テーブルからすべてのデータを削除するのはかなり過激ですが、場合によっては正に必要なことかもしれません。
+テーブルからすべてのデータを削除するのはかなり極端な操作ですが、状況によってはまさにそれが必要になる場合もあります。
 
-[テーブルのトランケーション](https://sql-reference/statements/truncate.md)の詳細について。
+詳細については、[テーブルの TRUNCATE](/sql-reference/statements/truncate.md) を参照してください。

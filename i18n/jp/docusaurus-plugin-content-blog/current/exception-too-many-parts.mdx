@@ -1,0 +1,44 @@
+---
+title: ClickHouse における「Too Many Parts」エラーの解決
+description: 挿入レートの最適化、MergeTree 設定の調整、パーティション管理の改善によって、ClickHouse で発生する「Too many parts」エラーを解決する方法を解説します。
+date: 2023-03-20
+tags: ['エラーと例外']
+keywords: ['Too many parts']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## DB::Exception: パーツが多すぎます (Error: 252)。マージ処理が挿入よりも著しく遅くなっています
+
+MergeTree テーブルで `parts_to_throw_insert` 設定の上限に達しました。
+
+特定のテーブルのアクティブなパーツ数は次の方法で監視できます。
+
+```sql
+select count(*) from system.parts where table = '<テーブル名>' and active == 1
+```
+
+ClickHouse への挿入に関する主な要件は、「1 秒あたりに送信する `INSERT` 文を増やしすぎないこと」です。理想的には、1 秒（数秒）あたり 1 回の `INSERT` にとどめるべきです。
+
+そのため、1 秒あたり 100K 行を挿入すること自体は可能ですが、それは 1 つの大きなバルク `INSERT` 文で行う必要があります。1 秒あたりに何百／何千もの `INSERT` 文を *MergeTree テーブルに送信すると、常に何らかのエラーが発生し、これは設定を調整しても変えられません。
+
+多数の `INSERT` をアプリケーション側などで 1 つの大きなバルク `INSERT` 文にまとめられない場合は、*MergeTree テーブルの前段に Buffer テーブルを作成する必要があります。
+
+1. 各 `INSERT` によって `/var/lib/clickhouse/.../table_name/` にディレクトリが 1 つ作成されます。そのディレクトリ内には、各カラムにつき 2 つのファイルがあります。1 つは（圧縮された）データファイル、もう 1 つはインデックスファイルです。データはこれらのファイル内で主キー順に物理的にソートされています。これらのディレクトリは「**parts**」と呼ばれます。
+
+2. ClickHouse はバックグラウンドで、これらの小さな part をより大きな part にマージします。どの part をマージするかは、いくつかのルールに従って選択されます。2 つ（またはそれ以上）の part をマージすると、より大きな 1 つの part が作成され、古い part は削除待ちキューに入れられます。ここで挙げた設定は、part のマージルールを細かく調整するためのものです。マージ処理の目的は、各パーティションについて 1 つの大きな part（または、サイズが大きすぎてマージする意味のない少数の大きな part）だけが残る状態にすることです。[このコメント](https://github.com/yandex/ClickHouse/issues/1661#issuecomment-352739726) も確認してください。
+
+3. 新しい part を作成する速度が速すぎる場合（たとえば多数の小さな `INSERT` を行うことで）、ClickHouse がそれらを十分な速度でマージできないと（つまり、新しい part が ClickHouse のマージ速度より速く増えていくと）、`Merges are processing significantly slower than inserts` という例外が発生します。制限値を引き上げることもできますが、その場合、ファイルやディレクトリの数が多すぎることによるファイルシステム上の問題（inode 制限など）を招く可能性があります。
+
+4. 多数のパーティションに同時に挿入を行うと、この問題は挿入によって影響を受けるパーティション数に比例して増幅されます。
+
+5. 列挙されている設定のいずれか、あるいは `max_insert_block_size` / `max_block_size` / `insert_format_max_block_size` / `max_client_network_bandwidth` を使って ClickHouse の挙動を調整することもできます。ただし、より良い解決策は、想定されるテンポでデータを挿入することです。想定テンポは次のとおりです：**1〜2 秒あたり 1 回の `INSERT`、各 `INSERT` に 10K〜500K 行のデータを含める**。
+
+6. したがって、&quot;Merges are processing significantly slower than inserts&quot; を解決する正しい方法は、1 秒あたりの `INSERT` 回数と、各 `INSERT` に含める行数を調整することです。データが 1 行ずつ到着する場合は、バッチ `INSERT` を使用して小さな `INSERT` を 1 つの大きな `INSERT` にまとめてください。一度に挿入するデータ量が多すぎる場合は、大きな `INSERT` をスロットリングしてください。ClickHouse の内部には手を加えないでください。本当にその意味をよく理解している場合を除き、変更すべきではありません。
+
+7. データが 1 秒あたり 500K 行を超えるペースで到着する場合、そのトラフィックを処理するには、設定を調整するのではなく、クラスター内により多くのサーバーが必要である可能性が非常に高いです。
+
+8. バックグラウンドマージの速度は通常、ストレージの速度、使用している圧縮設定、MergeTree のオプション（マージアルゴリズム ― plain merge / aggregating / summing / collapsing など）、および使用しているソートキーに依存します。

@@ -1,26 +1,29 @@
 ---
-'description': 'JDBCドライバーを介して接続されたテーブルを返します。'
-'sidebar_label': 'jdbc'
-'sidebar_position': 100
-'slug': '/sql-reference/table-functions/jdbc'
-'title': 'jdbc'
-'doc_type': 'reference'
+description: 'JDBC ドライバーを介して接続されたテーブルを返します。'
+sidebar_label: 'jdbc'
+sidebar_position: 100
+slug: /sql-reference/table-functions/jdbc
+title: 'jdbc'
+doc_type: 'reference'
 ---
 
 
-# jdbc テーブル関数
+
+# JDBC テーブル関数
 
 :::note
-clickhouse-jdbc-bridge は実験的なコードを含んでおり、もはやサポートされていません。信頼性の問題やセキュリティの脆弱性を含む可能性があります。自己責任で使用してください。 
-ClickHouse は、Postgres、MySQL、MongoDB などのアドホッククエリシナリオに対して、より良い代替手段を提供する ClickHouse 内蔵のテーブル関数を使用することを推奨します。
+clickhouse-jdbc-bridge には実験的なコードが含まれており、すでにサポート対象外です。信頼性の問題やセキュリティ上の脆弱性を含んでいる可能性があります。自己責任で使用してください。  
+ClickHouse では、アドホックなクエリシナリオ（Postgres、MySQL、MongoDB など）に対してより優れた代替手段を提供する、ClickHouse に組み込まれたテーブル関数の利用を推奨します。
 :::
 
-JDBC テーブル関数は、JDBC ドライバを介して接続されたテーブルを返します。
+JDBC テーブル関数は、JDBC ドライバー経由で接続されたテーブルを返すテーブル関数です。
 
-このテーブル関数は、別途 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) プログラムが実行されている必要があります。
-Nullable 型をサポートしており、クエリされるリモートテーブルの DDL に基づいています。
+このテーブル関数を使用するには、別途 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) プログラムを起動しておく必要があります。  
+リモートテーブル（クエリ対象）の DDL に基づいて Nullable 型をサポートします。
 
-## 構文 {#syntax}
+
+
+## 構文
 
 ```sql
 jdbc(datasource, external_database, external_table)
@@ -28,9 +31,10 @@ jdbc(datasource, external_table)
 jdbc(named_collection)
 ```
 
-## 例 {#examples}
 
-外部データベース名の代わりにスキーマを指定できます：
+## 例
+
+外部データベース名の代わりにスキーマを指定することもできます。
 
 ```sql
 SELECT * FROM jdbc('jdbc:mysql://localhost:3306/?user=root&password=root', 'schema', 'table')

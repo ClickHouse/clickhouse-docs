@@ -1,16 +1,18 @@
 ---
-'sidebar_label': 'Kafka Connector Sink на Confluent Cloud'
-'sidebar_position': 2
-'slug': '/integrations/kafka/cloud/confluent/sink-connector'
-'description': 'Руководство по использованию полностью управляемого ClickHouse Connector
-  Sink на Confluent Cloud'
-'title': 'Интеграция Confluent Cloud с ClickHouse'
-'keywords':
-- 'Kafka'
-- 'Confluent Cloud'
-'doc_type': 'guide'
+sidebar_label: 'Коннектор Kafka Sink в Confluent Cloud'
+sidebar_position: 2
+slug: /integrations/kafka/cloud/confluent/sink-connector
+description: 'Руководство по использованию полностью управляемого коннектора ClickHouse Sink в Confluent Cloud'
+title: 'Интеграция Confluent Cloud с ClickHouse'
+keywords: ['Kafka', 'Confluent Cloud']
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+  - website: 'https://clickhouse.com/cloud/clickpipes'
 ---
-import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
+
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
 
@@ -28,36 +30,40 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-## Предварительные условия {#prerequisites}
-Мы предполагаем, что вы знакомы с:
+
+
+## Предварительные требования {#prerequisites}
+Предполагается, что вы знакомы со следующим:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
 
-## Официальный Kafka коннектор от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-#### Создание темы {#create-a-topic}
-Создание темы в Confluent Cloud довольно просто, и подробные инструкции можно найти [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-#### Важные заметки {#important-notes}
+## Официальный коннектор Kafka от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-* Имя темы Kafka должно совпадать с именем таблицы ClickHouse. Можно изменить это, используя трансформатор (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-* Большее количество партиций не всегда означает большую производительность - смотрите наше предстоящее руководство для получения дополнительных сведений и советов по производительности.
+#### Создание топика {#create-a-topic}
+Создать топик в Confluent Cloud довольно просто; подробные инструкции приведены [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
-#### Соберите детали подключения {#gather-your-connection-details}
+#### Важные замечания {#important-notes}
+
+* Имя топика Kafka должно совпадать с именем таблицы в ClickHouse. Настроить это соответствие можно с помощью трансформера (например, [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
+* Большее число партиций не всегда означает более высокую производительность — следите за нашим будущим руководством с дополнительной информацией и рекомендациями по производительности.
+
+#### Соберите параметры подключения {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### Установите коннектор {#install-connector}
+#### Установка коннектора {#install-connector}
 Установите полностью управляемый ClickHouse Sink Connector в Confluent Cloud, следуя [официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
 
-#### Настройте коннектор {#configure-the-connector}
-Во время настройки ClickHouse Sink Connector вам нужно будет предоставить следующие детали:
-- hostname вашего сервера ClickHouse
-- порт вашего сервера ClickHouse (по умолчанию 8443)
-- имя пользователя и пароль для вашего сервера ClickHouse
-- название базы данных в ClickHouse, в которую будут записываться данные
-- имя темы в Kafka, которая будет использоваться для записи данных в ClickHouse
+#### Настройка коннектора {#configure-the-connector}
+Во время настройки ClickHouse Sink Connector вам потребуется указать следующие параметры:
+- имя хоста (hostname) сервера ClickHouse
+- порт сервера ClickHouse (по умолчанию 8443)
+- имя пользователя и пароль для сервера ClickHouse
+- имя базы данных в ClickHouse, в которую будут записываться данные
+- имя топика в Kafka, который будет использоваться для записи данных в ClickHouse
 
-Интерфейс пользователя Confluent Cloud поддерживает дополнительные настройки для регулировки интервалов опроса, размеров пакетов и других параметров для оптимизации производительности.
+Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для задания интервалов опроса, размеров пакетов и других параметров с целью оптимизации производительности.
 
 #### Известные ограничения {#known-limitations}
-* Смотрите список [ограничений коннекторов в официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)
+* См. список [ограничений коннектора в официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

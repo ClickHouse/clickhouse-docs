@@ -1,15 +1,15 @@
 ---
-'description': '最大の `val` 値のための `arg` 値を計算します。'
-'sidebar_position': 109
-'slug': '/sql-reference/aggregate-functions/reference/argmax'
-'title': 'argMax'
-'doc_type': 'reference'
+description: '最大の `val` に対応する `arg` の値を計算します。'
+sidebar_position: 109
+slug: /sql-reference/aggregate-functions/reference/argmax
+title: 'argMax'
+doc_type: 'reference'
 ---
-
 
 # argMax
 
-最大の `val` 値に対する `arg` 値を計算します。最大の `val` が同じ複数の行が存在する場合、どの関連する `arg` が返されるかは非決定的です。 `arg` と `max` の両方は [集約関数](/sql-reference/aggregate-functions/index.md) として動作し、両方とも処理中に `Null` を [スキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、利用可能な場合は `Null` でない値を返します。
+最大の `val` 値に対応する `arg` の値を計算します。最大値の `val` を持つ行が複数ある場合、どの行の `arg` が返されるかは決定的ではありません。
+`arg` 側と `max` 側はどちらも[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はいずれも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` 以外の値が存在する場合には `Null` 以外の値を返します。
 
 **構文**
 
@@ -19,14 +19,14 @@ argMax(arg, val)
 
 **引数**
 
-- `arg` — 引数。
-- `val` — 値。
+* `arg` — 引数。
+* `val` — 値。
 
-**返される値**
+**戻り値**
 
-- 最大の `val` 値に対応する `arg` 値。
+* `val` の最大値に対応する `arg` の値。
 
-型: `arg` 型と一致します。
+型: `arg` と同じ型。
 
 **例**
 
@@ -46,7 +46,7 @@ argMax(arg, val)
 SELECT argMax(user, salary) FROM salary;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─argMax(user, salary)─┐
@@ -54,7 +54,7 @@ SELECT argMax(user, salary) FROM salary;
 └──────────────────────┘
 ```
 
-**拡張例**
+**詳細な例**
 
 ```sql
 CREATE TABLE test
@@ -78,35 +78,35 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b' because it the first not Null value, max(b) is from another row!
+│ b            │      3 │ -- argMax = 'b' は最初の非NULL値であるため。max(b) は別の行から取得されます!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
 ┌─argMax(tuple(a), b)─┐
-│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
+│ (NULL)              │ -- `NULL` 値のみを含む `Tuple` は `NULL` ではないため、集約関数はその `NULL` 値によってその行をスキップしません
 └─────────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- you can use Tuple and get both (all - tuple(*)) columns for the according max(b)
+│ ᴺᵁᴸᴸ    │       3 │ -- Tuple を使用して、対応する max(b) の両方(すべて - tuple(*))の列を取得できます
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- フィルタにより集約されたすべての行に少なくとも1つの `NULL` 値が含まれるため、すべての行がスキップされ、結果は `NULL` になります
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- There are two rows with b=2, `Tuple` in the `Max` allows to get not the first `arg`
+│ c                      │ -- b=2 の行が2つあります。`Max` 内の `Tuple` を使用すると、最初の `arg` 以外を取得できます
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
 ┌─argMax(a, tuple(b))─┐
-│ b                   │ -- `Tuple` can be used in `Max` to not skip Nulls in `Max`
+│ b                   │ -- `Max` 内で `Tuple` を使用することで、`Max` で NULL をスキップしないようにできます
 └─────────────────────┘
 ```
 
-**参考**
+**関連項目**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

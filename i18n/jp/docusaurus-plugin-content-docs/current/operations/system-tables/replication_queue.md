@@ -1,76 +1,74 @@
 ---
-'description': 'システムテーブルは、`ReplicatedMergeTree` ファミリーのテーブル用に ClickHouse Keeper または
-  ZooKeeper に保存されているレプリケーションキューからのタスクに関する情報を含んでいます。'
-'keywords':
-- 'system table'
-- 'replication_queue'
-'slug': '/operations/system-tables/replication_queue'
-'title': 'system.replication_queue'
-'doc_type': 'reference'
+description: 'ClickHouse Keeper または ZooKeeper に保存されている、`ReplicatedMergeTree`
+  ファミリーのテーブル用レプリケーションキュー内のタスクに関する情報を保持するシステムテーブル。'
+keywords: ['system table', 'replication_queue']
+slug: /operations/system-tables/replication_queue
+title: 'system.replication_queue'
+doc_type: 'reference'
 ---
 
+# system.replication&#95;queue
 
-# system.replication_queue
-
-ClickHouse Keeper または ZooKeeper に保存されているレプリケーションキューからのタスクに関する情報が含まれています。これは `ReplicatedMergeTree` ファミリーのテーブルに関連しています。
+ClickHouse Keeper または ZooKeeper に保存されている、`ReplicatedMergeTree` ファミリーのテーブル用のレプリケーションキュー内のタスクに関する情報が含まれます。
 
 カラム:
 
-- `database` ([String](../../sql-reference/data-types/string.md)) — データベースの名前。
+* `database` ([String](../../sql-reference/data-types/string.md)) — データベース名。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) — テーブルの名前。
+* `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
 
-- `replica_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper におけるレプリカ名。同じテーブルの異なるレプリカは異なる名前を持ちます。
+* `replica_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper 内のレプリカ名。同じテーブルの異なるレプリカは、それぞれ異なる名前を持ちます。
 
-- `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — キュー内のタスクの位置。
+* `position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — キュー内でのタスクの位置。
 
-- `node_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper 内のノード名。
+* `node_name` ([String](../../sql-reference/data-types/string.md)) — ClickHouse Keeper 内のノード名。
 
-- `type` ([String](../../sql-reference/data-types/string.md)) — キュー内のタスクのタイプ、以下のいずれかです:
+* `type` ([String](../../sql-reference/data-types/string.md)) — キュー内のタスクの種類。次のいずれか:
 
-  - `GET_PART` — 他のレプリカからパーツを取得します。
-  - `ATTACH_PART` — パーツを添付します。おそらく自分のレプリカから（`detached` フォルダ内に存在する場合）。これは `GET_PART` とほぼ同じなので、最適化された `GET_PART` と考えることができます。
-  - `MERGE_PARTS` — パーツをマージします。
-  - `DROP_RANGE` — 指定された数値範囲で指定されたパーティション内のパーツを削除します。
-  - `CLEAR_COLUMN` — 注: 非推奨。指定されたパーティションから特定のカラムを削除します。
-  - `CLEAR_INDEX` — 注: 非推奨。指定されたパーティションから特定のインデックスを削除します。
-  - `REPLACE_RANGE` — 特定の範囲のパーツを削除し、新しいものと置き換えます。
-  - `MUTATE_PART` — パーツに1つまたは複数のミューテーションを適用します。
-  - `ALTER_METADATA` — グローバル /metadata と /columns パスに従って変更を適用します。
+  * `GET_PART` — 他のレプリカからパーツを取得します。
+  * `ATTACH_PART` — パーツをアタッチします。`detached` フォルダ内で見つかった場合は、同じレプリカからのパーツである可能性があります。`GET_PART` とほぼ同一で、一部が最適化されたものと考えることができます。
+  * `MERGE_PARTS` — パーツをマージします。
+  * `DROP_RANGE` — 指定されたパーティション内の、指定された範囲のパーツを削除します。
+  * `CLEAR_COLUMN` — 注: 非推奨。指定したパーティションから特定のカラムを削除します。
+  * `CLEAR_INDEX` — 注: 非推奨。指定したパーティションから特定のインデックスを削除します。
+  * `REPLACE_RANGE` — 特定の範囲のパーツを削除し、新しいパーツで置き換えます。
+  * `MUTATE_PART` — パーツに対して 1 つまたは複数のミューテーション (mutation) を適用します。
+  * `ALTER_METADATA` — グローバルな /metadata および /columns パスに従って ALTER による変更を適用します。
 
-- `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが実行のために提出された日時。
+* `create_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが実行のために投入された日時。
 
-- `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの完了を確認するために待機しているレプリカの数。これは `GET_PARTS` タスクにのみ関連します。
+* `required_quorum` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの完了および完了確認を待っているレプリカの数。このカラムは `GET_PARTS` タスクにのみ関連します。
 
-- `source_replica` ([String](../../sql-reference/data-types/string.md)) — ソースレプリカの名前。
+* `source_replica` ([String](../../sql-reference/data-types/string.md)) — ソースレプリカ名。
 
-- `new_part_name` ([String](../../sql-reference/data-types/string.md)) — 新しいパーツの名前。
+* `new_part_name` ([String](../../sql-reference/data-types/string.md)) — 新しいパーツ名。
 
-- `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — マージまたは更新するパーツの名前。
+* `parts_to_merge` ([Array](../../sql-reference/data-types/array.md) ([String](../../sql-reference/data-types/string.md))) — マージまたは更新の対象となるパーツ名。
 
-- `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — `DETACH_PARTS` タスクがキューにあるかどうかを示すフラグ。
+* `is_detach` ([UInt8](../../sql-reference/data-types/int-uint.md)) — `DETACH_PARTS` タスクがキューにあるかどうかを示すフラグ。
 
-- `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 特定のタスクが現在実行中かどうかを示すフラグ。
+* `is_currently_executing` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 特定のタスクが現在実行中かどうかを示すフラグ。
 
-- `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクを完了させるための失敗した試行の回数。
+* `num_tries` ([UInt32](../../sql-reference/data-types/int-uint.md)) — タスクの実行に失敗した試行回数。
 
-- `last_exception` ([String](../../sql-reference/data-types/string.md)) — 最後に発生したエラーに関するテキストメッセージ（あれば）。
+* `last_exception` ([String](../../sql-reference/data-types/string.md)) — 発生した最後のエラー (存在する場合) に関するテキストメッセージ。
 
-- `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが最後に試みられた日時。
+* `last_attempt_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 最後にタスクの実行を試行した日時。
 
-- `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — アクションが延期された回数。
+* `num_postponed` ([UInt32](../../sql-reference/data-types/int-uint.md)) — アクションが延期された回数。
 
-- `postpone_reason` ([String](../../sql-reference/data-types/string.md)) — タスクが延期された理由。
+* `postpone_reason` ([String](../../sql-reference/data-types/string.md)) — タスクが延期された理由。
 
-- `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — タスクが最後に延期された日時。
+* `last_postpone_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 最後にタスクが延期された日時。
 
-- `merge_type` ([String](../../sql-reference/data-types/string.md)) — 現在のマージのタイプ。ミューテーションの場合は空です。
+* `merge_type` ([String](../../sql-reference/data-types/string.md)) — 現在実行中のマージの種類。ミューテーションの場合は空になります。
 
 **例**
 
 ```sql
 SELECT * FROM system.replication_queue LIMIT 1 FORMAT Vertical;
 ```
+
 
 ```text
 Row 1:
@@ -96,6 +94,6 @@ postpone_reason:
 last_postpone_time:     1970-01-01 03:00:00
 ```
 
-**参照**
+**関連情報**
 
-- [ReplicatedMergeTree テーブルの管理](/sql-reference/statements/system#managing-replicatedmergetree-tables)
+* [ReplicatedMergeTree テーブルの管理](/sql-reference/statements/system#managing-replicatedmergetree-tables)

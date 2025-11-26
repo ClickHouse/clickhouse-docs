@@ -1,0 +1,261 @@
+---
+title: Cloud API を使用するための Terraform の例
+description: "このドキュメントでは、API を使用してクラスターを作成／削除するために Terraform を利用する方法の一例を説明します"
+Date: 2023-09-02
+tags: ['ネイティブクライアントとインターフェース']
+keywords: ['Terraform']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+
+## Question \{#question\}
+
+API を使って ClickHouse Cloud 上のクラスタを管理するにはどうすればよいですか？
+
+## Answer
+
+Terraform と [ClickHouse Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) を使ってインフラを構成します。
+
+手順：
+
+1). ClickHouse Cloud 上で API キーを作成します。\
+こちらのドキュメントに従ってください - [https://clickhouse.com/docs/cloud/manage/openapi](https://clickhouse.com/docs/cloud/manage/openapi)
+
+認証情報をローカルに保存します。
+
+2). Terraform をインストールします - [https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+
+Mac を使用している場合は Homebrew パッケージマネージャーを利用できます。
+
+3). 任意の場所にディレクトリを作成します:
+
+```
+mkdir test
+➜  test pwd
+/Users/jaijhala/Desktop/terraform/test
+```
+
+4). `main.tf` と `secret.tfvars` の2つのファイルを作成します
+
+次の内容をコピーします:
+
+`main.tf` ファイルは次のようになります:
+
+```
+terraform {
+ required_providers {
+   clickhouse = {
+     source = "ClickHouse/clickhouse"
+     version = "0.0.2"
+   }
+ }
+}
+
+variable "organization_id" {
+  type = string
+}
+
+variable "token_key" {
+  type = string
+}
+
+variable "token_secret" {
+  type = string
+}
+
+provider clickhouse {
+  environment 	= "production"
+  organization_id = var.organization_id
+  token_key   	= var.token_key
+  token_secret	= var.token_secret
+}
+
+
+variable "service_password" {
+  type = string
+  sensitive   = true
+}
+
+resource "clickhouse_service" "service123" {
+  name       	= "jai-terraform"
+  cloud_provider = "aws"
+  region     	= "us-east-2"
+  tier       	= "development"
+  idle_scaling   = true
+  password  = var.service_password
+  ip_access = [
+	{
+    	source  	= "0.0.0.0/0"
+    	description = "Anywhere"
+	}
+  ]
+}
+
+output "CLICKHOUSE_HOST" {
+  value = clickhouse_service.service123.endpoints.0.host
+}
+```
+
+上記の resources セクション内の service name や region などのパラメータは、任意の値に置き換えて使用できます。
+
+`secret.tfvars` には、先ほどダウンロードしたすべての API キー関連情報を記述します。このファイルの目的は、すべての機密認証情報をメインの設定ファイルから分離し、見えないようにしておくことです。
+
+内容は次のようになります（以下のパラメータを置き換えてください）:
+
+```
+organization_id = "e957a5f7-4qe3-4b05-ad5a-d02b2dcd0593"
+token_key = "QWhhkMeytqQruTeKg"
+token_secret = "4b1dNmjWdLUno9lXxmKvSUcPP62jvn7irkuZPbY"
+service_password = "password123!"
+```
+
+5).  このディレクトリで `terraform init` を実行します
+
+期待される出力：
+
+```
+バックエンドを初期化しています...
+
+プロバイダープラグインを初期化しています...
+- clickhouse/clickhouse バージョン "0.0.2" に一致するものを検索しています...
+- clickhouse/clickhouse v0.0.2 をインストールしています...
+- clickhouse/clickhouse v0.0.2 をインストールしました (自己署名、キー ID D7089EE5C6A92ED1)
+
+パートナーおよびコミュニティプロバイダーは、各開発者によって署名されています。
+プロバイダー署名の詳細については、こちらをご覧ください:
+https://www.terraform.io/docs/cli/plugins/signing.html
+
+Terraform は、上記で選択したプロバイダーを記録するためにロックファイル .terraform.lock.hcl を作成しました。このファイルをバージョン管理リポジトリに含めることで、今後 "terraform init" を実行する際に、Terraform が同じ選択を確実に行うことができます。
+
+Terraform の初期化が正常に完了しました!
+
+これで Terraform の使用を開始できます。"terraform plan" を実行して、インフラストラクチャに必要な変更を確認してください。すべての Terraform コマンドが使用可能になりました。
+
+Terraform のモジュールまたはバックエンド設定を設定または変更した場合は、このコマンドを再実行して作業ディレクトリを再初期化してください。再初期化を忘れた場合でも、他のコマンドがそれを検出し、必要に応じて実行を促します。
+```
+
+6). `terraform apply -var-file=secret.tfvars` コマンドを実行します。
+
+次のようになります：
+
+
+```
+➜  test terraform apply -var-file=secret.tfvars
+
+Terraformは選択されたプロバイダーを使用して、以下の実行計画を生成しました。リソースアクションは
+次の記号で示されます:
+  + create
+
+Terraformは次のアクションを実行します:
+
+  # clickhouse_service.service123 が作成されます
+  + resource "clickhouse_service" "service123" {
+      + cloud_provider = "aws"
+      + endpoints      = (known after apply)
+      + id             = (known after apply)
+      + idle_scaling   = true
+      + ip_access      = [
+          + {
+              + description = "任意の場所"
+              + source      = "0.0.0.0/0"
+            },
+        ]
+      + last_updated   = (known after apply)
+      + name           = "jai-terraform"
+      + password       = (sensitive value)
+      + region         = "us-east-2"
+      + tier           = "development"
+    }
+
+計画: 追加1、変更0、削除0。
+
+出力の変更:
+  + CLICKHOUSE_HOST = (known after apply)
+
+これらのアクションを実行しますか?
+  Terraformは上記で説明されたアクションを実行します。
+  承認するには 'yes' のみが受け入れられます。
+
+  値を入力してください: yes
+```
+
+`yes` と入力して Enter キーを押します
+
+補足: 上部の出力で `password       = (sensitive value)` と表示されていることに注目してください。
+これは、main.tf ファイル内で password に対して `sensitive   = true` を設定しているためです。
+
+7). サービスの作成が完了するまでに数分かかりますが、最終的には次のように起動しているはずです：
+
+```
+  Enter a value: yes
+
+clickhouse_service.service123: Creating...
+clickhouse_service.service123: 作成中... [10s elapsed]
+clickhouse_service.service123: 作成中... [20s elapsed]
+clickhouse_service.service123: 作成中... [30s elapsed]
+clickhouse_service.service123: 作成中... [40s elapsed]
+clickhouse_service.service123: 作成中... [50s elapsed]
+clickhouse_service.service123: 作成中... [1m0s elapsed]
+clickhouse_service.service123: 作成中... [1m10s elapsed]
+clickhouse_service.service123: 作成中... [1m20s elapsed]
+clickhouse_service.service123: 作成中... [1m30s elapsed]
+clickhouse_service.service123: 作成中... [1m40s elapsed]
+clickhouse_service.service123: 1分41秒後に作成が完了しました [id=aa8d8d63-1878-4600-8470-630715af38ed]
+
+適用が完了しました! リソース: 1件追加、0件変更、0件削除
+
+出力:
+
+CLICKHOUSE_HOST = "h3ljlaqez6.us-east-2.aws.clickhouse.cloud"
+➜  test
+```
+
+8). Cloud Console を開き、サービスが作成されていることを確認します。
+
+9). サービスをクリーンアップ／削除するには、`terraform destroy -var-file=secret.tfvars` を実行します。
+
+実行例は次のとおりです:
+
+```
+Terraformは選択されたプロバイダーを使用して、以下の実行計画を生成しました。リソースアクションは
+以下の記号で示されます:
+  - destroy
+
+Terraformは以下のアクションを実行します:
+
+  # clickhouse_service.service123 will be destroyed
+  - resource "clickhouse_service" "service123" {
+      - cloud_provider = "aws" -> null
+      - ............
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  - CLICKHOUSE_HOST = "h3ljlaqez6.us-east-2.aws.clickhouse.cloud" -> null
+
+本当にすべてのリソースを削除しますか?
+  Terraformは上記の通り、管理下にあるすべてのインフラストラクチャを削除します。
+  この操作は取り消せません。確認するには'yes'と入力してください。
+
+  Enter a value:
+```
+
+「yes」と入力して Enter キーを押します。
+
+10).
+
+```
+clickhouse_service.service123: 削除中... [id=aa8d8d63-1878-4600-8470-630715af38ed]
+clickhouse_service.service123: 削除中... [id=aa8d8d63-1878-4600-8470-630715af38ed, 10s elapsed]
+clickhouse_service.service123: 削除中... [id=aa8d8d63-1878-4600-8470-630715af38ed, 20s elapsed]
+clickhouse_service.service123: 27秒後に削除完了
+
+削除完了！リソース: 1件削除
+```
+
+Cloud Console からは削除されているはずです。
+
+Cloud API の詳細については、[https://clickhouse.com/docs/cloud/manage/api/api-overview](https://clickhouse.com/docs/cloud/manage/api/api-overview) を参照してください。

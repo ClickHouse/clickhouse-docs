@@ -1,27 +1,29 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgIf'
-'title': 'avgIf'
-'description': '使用 avgIf 组合器的示例'
-'keywords':
-- 'avg'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'avgIf'
-'sidebar_label': 'avgIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgIf'
+title: 'avgIf'
+description: '使用 avgIf 组合子的示例'
+keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
+sidebar_label: 'avgIf'
+doc_type: 'reference'
 ---
+
 
 
 # avgIf {#avgif}
 
+
+
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，以计算条件为真时的行值的算术平均值，使用 `avgIf` 聚合组合器函数。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
+函数，通过 `avgIf` 聚合组合器函数来计算条件为 true 的行中各值的算术平均值。
 
-## 示例用法 {#example-usage}
 
-在此示例中，我们将创建一个存储销售数据及成功标志的表，并使用 `avgIf` 计算成功交易的平均销售金额。
+
+## 示例用法
+
+在本示例中，我们将创建一个用于存储带有成功标志的销售数据的表，
+并使用 `avgIf` 来计算成功交易的平均销售金额。
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -43,7 +45,8 @@ SELECT
 FROM sales;
 ```
 
-`avgIf` 函数将仅对 `is_successful = 1` 的行计算平均金额。在这种情况下，它将平均金额：100.50、200.75、300.00 和 175.25。
+`avgIf` 函数只会对满足 `is_successful = 1` 条件的行计算平均值。
+在本例中，它会对以下金额取平均值：100.50、200.75、300.00 和 175.25。
 
 ```response title="Response"
    ┌─avg_successful_sale─┐
@@ -51,6 +54,7 @@ FROM sales;
    └─────────────────────┘
 ```
 
-## 参见 {#see-also}
+
+## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

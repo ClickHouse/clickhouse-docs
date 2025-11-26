@@ -1,0 +1,81 @@
+---
+title: 如何验证两个查询是否返回相同的结果集
+description: 学习如何使用哈希函数和比较技术验证两个 ClickHouse 查询是否产生完全相同的结果集。
+date: 2023-05-04
+tags: ['Functions']
+keywords: ['Validate', 'Resultsets', 'Hash Functions']
+---
+
+{frontMatter.description}
+
+{/* 截断 */}
+
+
+## 问题 \{#question\}
+
+如何验证两个查询返回的结果集是否相同？
+
+## 解答
+
+可以采用以下方法：
+
+```sql
+WITH
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            -- 在此处填写查询 1
+            -- SELECT ...
+        )
+    ) AS q1_resultset_hash,
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            -- 在此处填写查询 2
+            -- SELECT ...
+        )
+    ) AS q2_resultset_hash
+SELECT equals(q1_resultset_hash,q2_resultset_hash) as Q1_equals_Q2
+```
+
+此示例使用一个 [CTE](https://clickhouse.com/docs/sql-reference/statements/select/with) 来计算这两个查询中每一行的 [cityHash](https://clickhouse.com/docs/sql-reference/functions/hash-functions#cityhash64) 值的总和，如果两个结果集完全相同则返回 `1`。
+
+使用一些整数序列数据并做一些美观的格式化：
+
+```sql
+WITH
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            SELECT *
+            FROM numbers(10)
+            ORDER BY number DESC
+        )
+    ) AS q1_resultset_hash,
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            SELECT *
+            FROM numbers(10)
+            ORDER BY number ASC
+        )
+    ) AS q2_resultset_hash
+SELECT q1_resultset_hash = q2_resultset_hash AS Q1_equals_Q2
+FORMAT Pretty
+```
+
+将返回：
+
+```
+┏━━━━━━━━━━━━━━┓
+┃ Q1_equals_Q2 ┃
+┡━━━━━━━━━━━━━━┩
+│            1 │
+└──────────────┘
+```
+
+虽然这种方法在许多场景中非常实用，但它不能被视为用于验证所有类型结果集是否相等的万能方案，而且在使用时存在一些注意事项，例如，如果任何一行包含 `NULL` 值，上述方法就会失败。

@@ -1,26 +1,31 @@
 ---
-'description': 'ClickHouse 中 Variant 数据类型的文档'
-'sidebar_label': 'Variant(T1, T2, ...)'
-'sidebar_position': 40
-'slug': '/sql-reference/data-types/variant'
-'title': 'Variant(T1, T2, ...)'
-'doc_type': 'reference'
+description: 'ClickHouse 中 Variant 数据类型文档'
+sidebar_label: 'Variant(T1, T2, ...)'
+sidebar_position: 40
+slug: /sql-reference/data-types/variant
+title: 'Variant(T1, T2, ...)'
+doc_type: 'reference'
 ---
+
 
 
 # Variant(T1, T2, ...)
 
-此类型表示其他数据类型的联合。类型 `Variant(T1, T2, ..., TN)` 意味着此类型的每一行都有一个属于 `T1` 或 `T2` 或 ... 或 `TN` 的值，或者没有值（`NULL` 值）。
+此类型表示由其他数据类型构成的联合类型。类型 `Variant(T1, T2, ..., TN)` 表示该类型的每一行都包含一个值，该值要么是类型 `T1`，要么是 `T2`，……，要么是 `TN`，或者都不是（即为 `NULL` 值）。
 
-嵌套类型的顺序不重要：Variant(T1, T2) = Variant(T2, T1)。嵌套类型可以是任意类型，但不能是 Nullable(...)、LowCardinality(Nullable(...)) 和 Variant(...) 类型。
+嵌套类型的顺序无关紧要：Variant(T1, T2) = Variant(T2, T1)。
+嵌套类型可以是除 Nullable(...)、LowCardinality(Nullable(...)) 和 Variant(...) 之外的任意类型。
 
 :::note
-不建议使用相似类型作为变体（例如不同的数值类型如 `Variant(UInt32, Int64)` 或不同的日期类型如 `Variant(Date, DateTime)`），因为处理此类类型的值可能会导致歧义。默认情况下，创建此类 `Variant` 类型将导致异常，但可以通过设置 `allow_suspicious_variant_types` 启用。
+不建议将相似的类型作为变体（例如不同的数值类型，如 `Variant(UInt32, Int64)`，或不同的日期类型，如 `Variant(Date, DateTime)`），
+因为处理这类类型的值可能会导致歧义。默认情况下，创建此类 `Variant` 类型会抛出异常，但可以通过设置 `allow_suspicious_variant_types` 来放宽此限制。
 :::
 
-## 创建 Variant {#creating-variant}
 
-在表列定义中使用 `Variant` 类型：
+
+## 创建 Variant 类型
+
+在表的列定义中使用 `Variant` 类型：
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -37,10 +42,10 @@ SELECT v FROM test;
 └───────────────┘
 ```
 
-从普通列使用 CAST：
+对普通列使用 CAST：
 
 ```sql
-SELECT toTypeName(variant) AS type_name, 'Hello, World!'::Variant(UInt64, String, Array(UInt64)) as variant;
+SELECT toTypeName(variant) AS type_name, '你好，世界！'::Variant(UInt64, String, Array(UInt64)) as variant;
 ```
 
 ```text
@@ -49,7 +54,7 @@ SELECT toTypeName(variant) AS type_name, 'Hello, World!'::Variant(UInt64, String
 └────────────────────────────────────────┴───────────────┘
 ```
 
-当参数没有公共类型时，使用函数 `if/multiIf`（应启用设置 `use_variant_as_common_type`）：
+在参数之间不存在公共类型时使用函数 `if/multiIf`（需要启用设置 `use_variant_as_common_type`）：
 
 ```sql
 SET use_variant_as_common_type = 1;
@@ -80,7 +85,7 @@ SELECT multiIf((number % 4) = 0, 42, (number % 4) = 1, [1, 2, 3], (number % 4) =
 └───────────────┘
 ```
 
-如果数组元素/映射值没有公共类型，可以使用函数 'array/map'（应启用设置 `use_variant_as_common_type`）：
+如果数组元素或映射值没有共同类型，请使用函数 &#39;array/map&#39;（需启用设置 `use_variant_as_common_type`）：
 
 ```sql
 SET use_variant_as_common_type = 1;
@@ -108,11 +113,16 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-## 作为子列读取 Variant 嵌套类型 {#reading-variant-nested-types-as-subcolumns}
 
-Variant 类型支持使用类型名称作为子列从 Variant 列中读取单个嵌套类型。因此，如果你有列 `variant Variant(T1, T2, T3)`，你可以使用语法 `variant.T2` 读取类型为 `T2` 的子列，如果 `T2` 可以在 `Nullable` 中，则此子列将具有类型 `Nullable(T2)`，否则为 `T2`。这个子列将与原始 `Variant` 列大小相同，并且在原始 `Variant` 列中没有 `T2` 类型的所有行中将包含 `NULL` 值（或空值，如果 `T2` 不能在 `Nullable` 中）。
+## 以子列形式读取 Variant 中的嵌套类型
 
-Variant 子列也可以使用函数 `variantElement(variant_column, type_name)` 读取。
+Variant 类型支持使用类型名作为子列，从 Variant 列中读取单个嵌套类型。
+因此，如果有列 `variant Variant(T1, T2, T3)`，可以使用语法 `variant.T2` 读取类型为 `T2` 的子列。
+当 `T2` 可以出现在 `Nullable` 中时，该子列的类型为 `Nullable(T2)`，否则为 `T2`。该子列的
+大小与原始 `Variant` 列相同，在原始 `Variant` 列不是类型 `T2` 的所有行中，它将包含 `NULL` 值
+（如果 `T2` 不能出现在 `Nullable` 中，则为对应的空值）。
+
+也可以使用函数 `variantElement(variant_column, type_name)` 读取 Variant 子列。
 
 示例：
 
@@ -154,7 +164,7 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 └───────────────┴─────────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-要知道每行存储的变体，可以使用函数 `variantType(variant_column)`。它返回一个 `Enum`，包含每行的变体类型名称（如果行是 `NULL` 则返回 `'None'`）。
+要了解每一行中存储的是哪种变体类型，可以使用函数 `variantType(variant_column)`。它返回一个 `Enum`，其中包含每行对应的变体类型名称（如果该行为 `NULL`，则为 `'None'`）。
 
 示例：
 
@@ -177,19 +187,21 @@ SELECT variantType(v) FROM test;
 SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
+
 ```text
 ┌─toTypeName(variantType(v))──────────────────────────────────────────┐
 │ Enum8('None' = -1, 'Array(UInt64)' = 0, 'String' = 1, 'UInt64' = 2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-## Variant 列与其他列之间的转换 {#conversion-between-a-variant-column-and-other-columns}
 
-可以对类型为 `Variant` 的列执行 4 种可能的转换。
+## 在 Variant 列与其他列之间进行转换
 
-### 将字符串列转换为 Variant 列 {#converting-a-string-column-to-a-variant-column}
+对于类型为 `Variant` 的列，可以执行 4 种转换。
 
-将 `String` 转换为 `Variant` 是通过解析字符串值中的 `Variant` 类型值来执行的：
+### 将 String 列转换为 Variant 列
+
+从 `String` 到 `Variant` 的转换是通过从字符串值中解析出一个 `Variant` 类型的值来完成的：
 
 ```sql
 SELECT '42'::Variant(String, UInt64) AS variant, variantType(variant) AS variant_type
@@ -211,9 +223,9 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └─────────┴───────────────┘
 ```
 
-```sql
+````sql
 SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String, Variant(UInt64, Bool, Date))') AS map_of_variants, mapApply((k, v) -> (k, variantType(v)), map_of_variants) AS map_of_variant_types```
-```
+````
 
 ```text
 ┌─map_of_variants─────────────────────────────┬─map_of_variant_types──────────────────────────┐
@@ -221,7 +233,7 @@ SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String
 └─────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-要在从 `String` 转换为 `Variant` 时禁用解析，可以禁用设置 `cast_string_to_dynamic_use_inference`：
+要在将 `String` 转换为 `Variant` 时禁用解析，可以关闭 `cast_string_to_dynamic_use_inference` 设置：
 
 ```sql
 SET cast_string_to_variant_use_inference = 0;
@@ -234,7 +246,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### 将普通列转换为 Variant 列 {#converting-an-ordinary-column-to-a-variant-column}
+### 将普通列转换为 Variant 列
 
 可以将类型为 `T` 的普通列转换为包含该类型的 `Variant` 列：
 
@@ -248,7 +260,8 @@ SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64,
 └────────────────────────────────────────┴─────────┴───────────────┘
 ```
 
-注意：从 `String` 类型的转换始终通过解析执行，如果需要将 `String` 列转换为不带解析的 `Variant` 的字符串变体，可以执行以下操作：
+注意：从 `String` 类型转换时始终是通过解析完成的，如果你需要在不解析的情况下将 `String` 列转换为 `Variant` 的 `String` 变体，可以按如下方式进行：
+
 ```sql
 SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as variant, variantType(variant) as variant_type
 ```
@@ -259,9 +272,9 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### 将 Variant 列转换为普通列 {#converting-a-variant-column-to-an-ordinary-column}
+### 将 Variant 列转换为普通列
 
-可以将 `Variant` 列转换为普通列。在这种情况下，所有嵌套的变体将转换为目标类型：
+可以将 `Variant` 列转换为普通列。在这种情况下，所有嵌套的 Variant 值都会被转换为目标类型：
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -277,9 +290,10 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### 将一个 Variant 转换为另一个 Variant {#converting-a-variant-to-another-variant}
+### 将一个 Variant 转换为另一个 Variant
 
-可以将 `Variant` 列转换为另一个 `Variant` 列，但前提是目标 `Variant` 列包含来自原始 `Variant` 的所有嵌套类型：
+
+可以将一个 `Variant` 列转换为另一个 `Variant` 列，但只有当目标 `Variant` 列包含源 `Variant` 中的所有嵌套类型时才可以：
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -295,9 +309,10 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-## 从数据中读取 Variant 类型 {#reading-variant-type-from-the-data}
 
-所有文本格式（TSV、CSV、CustomSeparated、Values、JSONEachRow 等）都支持读取 `Variant` 类型。在数据解析期间，ClickHouse 尝试将值插入最合适的变体类型。
+## 从数据中读取 Variant 类型
+
+所有文本格式（TSV、CSV、CustomSeparated、Values、JSONEachRow 等）都支持读取 `Variant` 类型。在解析数据时，ClickHouse 会尝试将每个值写入最合适的 Variant 成员类型中。
 
 示例：
 
@@ -328,15 +343,18 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-## 比较 Variant 类型的值 {#comparing-values-of-variant-data}
 
-`Variant` 类型的值只能与相同 `Variant` 类型的值进行比较。
+## 比较 Variant 类型的值
 
-运算符 `<` 对于底层类型为 `T1` 的值 `v1` 和底层类型为 `T2` 的值 `v2` 的结果定义如下：
-- 如果 `T1 = T2 = T`，结果将是 `v1.T < v2.T`（将比较底层值）。
-- 如果 `T1 != T2`，结果将是 `T1 < T2`（将比较类型名称）。
+`Variant` 类型的值只能与具有相同 `Variant` 类型的值进行比较。
+
+对于类型为 `Variant(..., T1, ... T2, ...)` 的值 `v1`（其底层类型为 `T1`）和 `v2`（其底层类型为 `T2`），运算符 `<` 的结果定义如下：
+
+* 如果 `T1 = T2 = T`，结果为 `v1.T < v2.T`（比较底层值）。
+* 如果 `T1 != T2`，结果为 `T1 < T2`（比较类型名）。
 
 示例：
+
 ```sql
 CREATE TABLE test (v1 Variant(String, UInt64, Array(UInt32)), v2 Variant(String, UInt64, Array(UInt32))) ENGINE=Memory;
 INSERT INTO test VALUES (42, 42), (42, 43), (42, 'abc'), (42, [1, 2, 3]), (42, []), (42, NULL);
@@ -373,9 +391,9 @@ SELECT v1, variantType(v1) AS v1_type, v2, variantType(v2) AS v2_type, v1 = v2, 
 
 ```
 
-如果需要找到具有特定 `Variant` 值的行，可以执行以下操作之一：
+若需要查找具有特定 `Variant` 值的行，可以采用以下任一方法：
 
-- 将值转换为相应的 `Variant` 类型：
+* 将该值转换为相应的 `Variant` 类型：
 
 ```sql
 SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, Array(UInt32));
@@ -387,10 +405,10 @@ SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, A
 └────┴─────────┘
 ```
 
-- 将 `Variant` 子列与所需类型进行比较：
+* 将 `Variant` 子列与目标类型进行比较：
 
 ```sql
-SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- or using variantElement(v2, 'Array(UInt32)')
+SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- 或者使用 variantElement(v2, 'Array(UInt32)')
 ```
 
 ```text
@@ -399,11 +417,12 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- or using variantElemen
 └────┴─────────┘
 ```
 
-有时对变体类型进行额外检查可能是有用的，因为像 `Array/Map/Tuple` 这样的复杂类型无法在 `Nullable` 中，并且在具有不同类型的行上将具有默认值而不是 `NULL`：
+有时对 Variant 类型进行额外检查是有用的，因为具有 `Array/Map/Tuple` 等复杂类型的子列不能置于 `Nullable` 中，对于类型不同的行，这些子列会使用默认值而不是 `NULL`：
 
 ```sql
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
 ```
+
 
 ```text
 ┌─v2───┬─v2.Array(UInt32)─┬─variantType(v2)─┐
@@ -425,7 +444,7 @@ SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE variantType(v2) =
 └────┴──────────────────┴─────────────────┘
 ```
 
-**注意：** 具有不同数值类型的变体被视为不同的变体，并且不会相互比较，而是比较它们的类型名称。
+**注意：** 具有不同数值类型的 `Variant` 值会被视为不同的变体，彼此之间不会进行比较，而是比较它们的类型名称。
 
 示例：
 
@@ -445,11 +464,12 @@ SELECT v, variantType(v) FROM test ORDER by v;
 └─────┴────────────────┘
 ```
 
-**注意** 默认情况下，`Variant` 类型不允许在 `GROUP BY`/`ORDER BY` 键中使用，如果你想使用它，考虑其特殊比较规则并启用 `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 设置。
+**注意** 默认情况下，不允许将 `Variant` 类型用作 `GROUP BY`/`ORDER BY` 键；如果你要使用它，请注意其特殊的比较规则，并启用 `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 设置。
 
-## 与 Variant 相关的 JSONExtract 函数 {#jsonextract-functions-with-variant}
 
-所有 `JSONExtract*` 函数支持 `Variant` 类型：
+## 支持 Variant 类型的 JSONExtract 函数
+
+所有 `JSONExtract*` 函数都支持 `Variant` 类型：
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Variant(UInt32, String, Array(UInt32))') AS variant, variantType(variant) AS variant_type;

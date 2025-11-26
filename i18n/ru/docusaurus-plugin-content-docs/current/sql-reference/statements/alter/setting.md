@@ -1,14 +1,18 @@
 ---
-slug: '/sql-reference/statements/alter/setting'
-sidebar_label: SETTING
+description: 'Документация по операциям с настройками таблиц'
+sidebar_label: 'НАСТРОЙКИ'
 sidebar_position: 38
-description: 'Документация по манипуляциям с настройками таблиц'
-title: 'Манипуляции с настройками таблиц'
-doc_type: reference
+slug: /sql-reference/statements/alter/setting
+title: 'Операции с настройками таблиц'
+doc_type: 'reference'
 ---
-# Манипуляции с настройками таблиц
 
-Существует набор запросов для изменения настроек таблицы. Вы можете изменять настройки или сбрасывать их на значения по умолчанию. Один запрос может изменить несколько настроек одновременно. Если настройка с указанным именем не существует, то запрос вызовет исключение.
+
+
+# Операции с настройками таблицы
+
+Существует набор запросов для изменения настроек таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменить сразу несколько настроек.
+Если настройки с указанным именем не существует, запрос генерирует исключение.
 
 **Синтаксис**
 
@@ -16,18 +20,19 @@ doc_type: reference
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 ```
 
-:::note    
-Эти запросы могут быть применены только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
+:::note\
+Эти запросы можно применять только к таблицам типа [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 :::
 
-## MODIFY SETTING {#modify-setting}
 
-Изменяет настройки таблицы.
+## MODIFY SETTING
+
+Изменяет параметры таблицы.
 
 **Синтаксис**
 
 ```sql
-MODIFY SETTING setting_name=value [, ...]
+MODIFY SETTING имя_настройки=значение [, ...]
 ```
 
 **Пример**
@@ -38,14 +43,15 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_in_total=50000;
 ```
 
-## RESET SETTING {#reset-setting}
 
-Сбрасывает настройки таблицы на значения по умолчанию. Если настройка находится в состоянии по умолчанию, то действие не выполняется.
+## RESET SETTING
+
+Сбрасывает настройки таблицы к значениям по умолчанию. Если настройка уже имеет значение по умолчанию, никаких действий не выполняется.
 
 **Синтаксис**
 
 ```sql
-RESET SETTING setting_name [, ...]
+RESET SETTING имя_настройки [, ...]
 ```
 
 **Пример**
@@ -57,6 +63,6 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table RESET SETTING max_part_loading_threads;
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)
+* [Настройки MergeTree](../../../operations/settings/merge-tree-settings.md)

@@ -1,0 +1,65 @@
+---
+title: Устранение ошибок тайм-аута при использовании табличных функций `remote` и `remoteSecure`
+description: Узнайте, как устранить ошибки превышения времени ожидания при использовании табличных функций `remote` или `remoteSecure` в ClickHouse путем настройки параметров тайм-аута подключения.
+date: 2023-03-20
+tags: ['Ошибки и исключения']
+keywords: ['Connection tries failed']
+---
+
+{frontMatter.description}
+
+{/* усечение */}
+
+
+## Код: 279. DB::NetException: All connection tries failed.
+
+**Проблема**
+Табличная функция [`remote()` или `remoteSecure()`](https://clickhouse.com/docs/sql-reference/table-functions/remote/) позволяет получать доступ к удалённой таблице с другого узла ClickHouse.
+
+При использовании этих функций на узле с задержкой более 100 мс до удалённого узла часто возникает ошибка превышения времени ожидания (тайм-аут).
+
+Например:
+
+```
+4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+
+SELECT *
+FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+
+Query id: 2bd6ddd0-66d9-4d19-830f-87e3cec3724b
+
+
+Получено строк: 0. Прошло времени: 1.213 сек.
+
+Получено исключение с сервера (версия 22.6.9):
+Code: 519. DB::Exception: Получено от localhost:9000. DB::NetException. DB::NetException: Все попытки получить структуру таблицы не удались. Лог:
+
+Code: 279. DB::NetException: Все попытки подключения не удались. Лог:
+
+Code: 209. DB::NetException: Таймаут: истекло время ожидания подключения: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, таймаут подключения 100 мс). (SOCKET_TIMEOUT) (версия 22.6.9.11 (официальная сборка))
+Code: 209. DB::NetException: Таймаут: истекло время ожидания подключения: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, таймаут подключения 100 мс). (SOCKET_TIMEOUT) (версия 22.6.9.11 (официальная сборка))
+Code: 209. DB::NetException: Таймаут: истекло время ожидания подключения: 18.218.245.169:9440 (hc7d963h1t.us-east-2.aws.clickhouse.cloud:9440, таймаут подключения 100 мс). (SOCKET_TIMEOUT) (версия 22.6.9.11 (официальная сборка))
+
+. (ALL_CONNECTION_TRIES_FAILED) (версия 22.6.9.11 (официальная сборка))
+
+. (NO_REMOTE_SHARD_AVAILABLE)
+```
+
+**Обходное решение**
+Чтобы увеличить таймаут подключения, установите для [`connect_timeout_with_failover_secure_ms`](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.h#L67) большее значение (например, до 1 секунды) вместо значения по умолчанию — 100 мс.
+
+```
+4776d4bd8190 :) SELECT * FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud:9440', DATABASE, TABLE, 'USER', 'USER_PASSWORD') SETTINGS connect_timeout_with_failover_secure_ms = 1000
+
+SELECT *
+FROM remoteSecure('HOSTNAME.us-east-2.aws.clickhouse.cloud:9440', DATABASE, TABLE, 'USER', 'USER_PASSWORD')
+SETTINGS connect_timeout_with_failover_secure_ms = 1000
+
+Query id: 8e2f4d41-307b-4e61-abb8-809190023247
+
+┌─x─┐
+│ 1 │
+└───┘
+
+1 строка в наборе. Затрачено: 2.403 сек.
+```

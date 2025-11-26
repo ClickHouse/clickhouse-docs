@@ -1,16 +1,11 @@
 ---
-'description': 'ClickHouse Cloud 中的高级仪表板'
-'keywords':
-- 'monitoring'
-- 'observability'
-- 'advanced dashboard'
-- 'dashboard'
-- 'observability dashboard'
-'sidebar_label': '高级仪表板'
-'sidebar_position': 45
-'slug': '/cloud/manage/monitor/advanced-dashboard'
-'title': 'ClickHouse Cloud 中的高级仪表板'
-'doc_type': 'guide'
+description: 'ClickHouse Cloud 中的高级仪表板'
+keywords: ['监控', '可观测性', '高级仪表板', '仪表板', '可观测性仪表板']
+sidebar_label: '高级仪表板'
+sidebar_position: 45
+slug: /cloud/manage/monitor/advanced-dashboard
+title: 'ClickHouse Cloud 中的高级仪表板'
+doc_type: 'guide'
 ---
 
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
@@ -19,129 +14,156 @@ import EditVisualization from '@site/static/images/cloud/manage/monitoring/edit_
 import InsertedRowsSec from '@site/static/images/cloud/manage/monitoring/inserted_rows_max_parts_for_partition.png';
 import ResourceIntensiveQuery from '@site/static/images/cloud/manage/monitoring/resource_intensive_query.png';
 import SelectedRowsPerSecond from '@site/static/images/cloud/manage/monitoring/selected_rows_sec.png';
+
 import Image from '@theme/IdealImage';
 
-在生产环境中监控数据库系统对于理解部署健康至关重要，以便您能够预防或解决故障。
+在生产环境中监控数据库系统，对于了解部署的运行状况，从而预防或解决故障，至关重要。
 
-高级仪表板是一个轻量级工具，旨在为您提供深入的 ClickHouse 系统及其环境的洞察，帮助您预先识别性能瓶颈、系统故障和效率低下的问题。
+高级仪表盘是一款轻量级工具，可为 ClickHouse 系统及其运行环境提供深度洞察，帮助你提前发现性能瓶颈、系统故障和低效问题。
 
-高级仪表板在 ClickHouse OSS（开源软件）和 Cloud 中均可用。本文将向您展示如何在 Cloud 中使用高级仪表板。
+高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
+
 
 ## 访问高级仪表板 {#accessing-the-advanced-dashboard}
 
-可以通过导航到以下位置访问高级仪表板：
+可以通过以下路径访问高级仪表板：
 
-* 左侧面板
+* 左侧边栏
   * `Monitoring` → `Advanced dashboard`
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
-## 访问本地高级仪表板 {#accessing-the-native-advanced-dashboard}
 
-可以通过导航到以下位置访问本地高级仪表板：
+
+## 访问原生高级仪表盘 {#accessing-the-native-advanced-dashboard}
+
+可以通过以下路径访问原生高级仪表盘：
 
 * 左侧面板
   * `Monitoring` → `Advanced dashboard`
   * 点击 `You can still access the native advanced dashboard.`
 
-这将在新标签页中打开本地高级仪表板。您需要进行身份验证才能访问该仪表板。
+这将在新的浏览器标签页中打开原生高级仪表盘。您需要通过身份验证才能访问该仪表盘。
 
 <Image img={NativeAdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
-每个可视化都有一个与之关联的 SQL 查询来填充它。您可以通过单击铅笔图标来编辑此查询。
+每个可视化视图都关联有一个用于填充数据的 SQL 查询。您可以点击铅笔图标来编辑此查询。
 
 <Image img={EditVisualization} size="lg" alt="Advanced dashboard"/>
 
+
+
 ## 开箱即用的可视化 {#out-of-box-visualizations}
 
-高级仪表板中的默认图表旨在提供对 ClickHouse 系统的实时可见性。以下是每个图表的描述列表。它们分为三个类别，以帮助您导航。
+Advanced Dashboard 中的默认图表旨在帮助你实时了解 ClickHouse 系统的运行状况。下面列出了每个图表及其说明，并分为三大类，便于浏览和查找。
 
-### ClickHouse 特定 {#clickhouse-specific}
+### ClickHouse 专用 {#clickhouse-specific}
 
-这些指标旨在监控 ClickHouse 实例的健康和性能。
+这些指标专门用于监控 ClickHouse 实例的健康状况和性能。
 
-| 指标                        | 描述                                                                                       |
-|-----------------------------|--------------------------------------------------------------------------------------------|
-| 每秒查询数                  | 跟踪正在处理的查询速率                                                                    |
-| 每秒选定行数                | 指示被查询读取的行数                                                                      |
-| 每秒插入行数                | 测量数据摄取速率                                                                           |
-| MergeTree 中的总分片数      | 显示 MergeTree 表中活动分片的数量，帮助识别未批量插入                                        |
-| 分区的最大分片数            | 突出显示任何分区中的最大分片数                                                              |
-| 当前运行的查询              | 显示当前正在执行的查询数量                                                                  |
-| 每秒选定字节数              | 指示被查询读取的数据量                                                                      |
+| Metric                    | Description                                                                                   |
+|---------------------------|-----------------------------------------------------------------------------------------------|
+| Queries Per Second        | 跟踪查询的处理速率                                                                            |
+| Selected Rows/Sec         | 指示查询每秒正在读取的行数                                                                    |
+| Inserted Rows/Sec         | 度量每秒数据摄取速率                                                                          |
+| Total MergeTree Parts     | 显示 MergeTree 表中活动分片的数量，有助于识别未批量处理的插入                                 |
+| Max Parts for Partition   | 突出显示任意分区中的最大分片数量                                                              |
+| Queries Running           | 显示当前正在执行的查询数量                                                                    |
+| Selected Bytes Per Second | 指示查询每秒正在读取的数据量                                                                  |
 
-### 系统健康特定 {#system-health-specific}
+### 系统健康状况专用 {#system-health-specific}
 
-监控底层系统与观察 ClickHouse 自身一样重要。
+监控底层系统与监控 ClickHouse 本身同样重要。
 
-| 指标                        | 描述                                                               |
-|-----------------------------|---------------------------------------------------------------------|
-| IO 等待                     | 跟踪 I/O 等待时间                                                   |
-| CPU 等待                    | 测量由 CPU 资源争用引起的延迟                                       |
-| 从磁盘读取                 | 跟踪从磁盘或块设备读取的字节数                                     |
-| 从文件系统读取            | 跟踪从文件系统（包括页缓存）读取的字节数                           |
-| 内存（跟踪，字节）         | 显示 ClickHouse 跟踪的进程的内存使用情况                           |
-| 负载平均值（15分钟）      | 报告系统的当前负载平均值                                           |
-| 操作系统 CPU 使用率（用户空间） | CPU 使用率运行用户空间代码                                       |
-| 操作系统 CPU 使用率（内核）      | CPU 使用率运行内核代码                                          |
+| Metric                    | Description                                                                |
+|---------------------------|----------------------------------------------------------------------------|
+| IO Wait                   | 跟踪 I/O 等待时间                                                          |
+| CPU Wait                  | 度量由 CPU 资源争用导致的延迟                                              |
+| Read From Disk            | 跟踪从磁盘或块设备读取的字节数                                             |
+| Read From Filesystem      | 跟踪从文件系统（包括页缓存）读取的字节数                                   |
+| Memory (tracked, bytes)   | 显示由 ClickHouse 追踪的进程的内存使用情况                                 |
+| Load Average (15 minutes) | 报告系统当前的 15 分钟平均负载值                                           |
+| OS CPU Usage (Userspace)  | 运行用户态代码的 CPU 使用率                                                |
+| OS CPU Usage (Kernel)     | 运行内核代码的 CPU 使用率                                                  |
 
-## ClickHouse Cloud 特定 {#clickhouse-cloud-specific}
 
-ClickHouse Cloud 使用对象存储（S3 类型）存储数据。监控此接口可以帮助检测问题。
 
-| 指标                          | 描述                                                      |
-|-------------------------------|----------------------------------------------------------|
-| S3 读取等待                   | 测量对 S3 的读取请求延迟                                 |
-| 每秒 S3 读取错误数           | 跟踪读取错误的速率                                       |
-| 从 S3 读取（字节/秒）         | 跟踪从 S3 存储读取数据的速率                           |
-| 每秒磁盘 S3 写入请求         | 监控写入 S3 存储操作的频率                               |
-| 每秒磁盘 S3 读取请求         | 监控读取 S3 存储操作的频率                               |
-| 页面缓存命中率               | 页面缓存的命中率                                         |
-| 文件系统缓存命中率           | 文件系统缓存的命中率                                     |
-| 文件系统缓存大小             | 当前文件系统缓存大小                                     |
-| 网络发送字节/秒              | 跟踪当前入站网络流量的速度                               |
-| 网络接收字节/秒              | 跟踪当前出站网络流量的速度                               |
-| 同时网络连接数               | 跟踪当前同时的网络连接数                                 |
+## ClickHouse Cloud 特有指标 {#clickhouse-cloud-specific}
 
-## 使用高级仪表板识别问题 {#identifying-issues-with-the-advanced-dashboard}
+ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接口有助于发现潜在问题。
 
-实时查看 ClickHouse 服务的健康状态极大地帮助您在问题影响业务之前缓解这些问题或帮助解决它们。以下是一些可以通过高级仪表板发现的问题。
+| Metric                         | Description                               |
+|--------------------------------|-------------------------------------------|
+| S3 Read wait                   | 测量对 S3 读请求的延迟                    |
+| S3 read errors per second      | 跟踪每秒发生的读取错误数                  |
+| Read From S3 (bytes/sec)       | 跟踪从 S3 存储中读取数据的速率            |
+| Disk S3 write req/sec          | 监控对 S3 存储执行写操作的频率            |
+| Disk S3 read req/sec           | 监控对 S3 存储执行读操作的频率            |
+| Page cache hit rate            | 页缓存的命中率                            |
+| Filesystem cache hit rate      | 文件系统缓存的命中率                      |
+| Filesystem cache size          | 当前文件系统缓存的大小                    |
+| Network send bytes/sec         | 跟踪当前出站网络流量速率                  |
+| Network receive bytes/sec      | 跟踪当前入站网络流量速率                  |
+| Concurrent network connections | 跟踪当前并发网络连接的数量                |
 
-### 未批量插入 {#unbatched-inserts}
 
-如 [最佳实践文档](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous) 中所述，建议始终在可能的情况下同步批量插入数据到 ClickHouse。
 
-合理批量大小的批量插入减少了摄取过程中创建的分片数量，从而在磁盘上实现更高效的写入操作和更少的合并操作。
+## 使用高级仪表板识别问题
 
-发现非最优插入的关键指标是 **每秒插入行数** 和 **分区的最大分片数**。
+通过这种对 ClickHouse 服务健康状况的实时视图，可以在问题影响业务之前大大
+缓解或解决问题。下面是一些可以通过高级仪表板识别的问题。
 
-<Image img={InsertedRowsSec} size="lg" alt="Unbatched inserts"/>
+### 未批量插入
 
-上面的示例显示了 **每秒插入行数** 和 **分区的最大分片数** 在 13 时到 14 时之间的两个峰值。这表明我们以合理速度摄取数据。
+如[最佳实践文档](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)中所述，推荐在可以同步执行的情况下，
+始终将数据批量插入 ClickHouse。
 
-然后我们看到在 16 时，**分区的最大分片数** 另一个大峰值，但 **每秒插入行数速度** 非常慢。创建了很多分片，但产生的数据显示，这些分片的大小非最优。
+使用合理批大小的批量插入可以减少数据摄取期间创建的 part 数量，
+从而实现更高效的磁盘写入以及更少的合并操作。
 
-### 资源密集型查询 {#resource-intensive-query}
+识别插入策略是否不理想的关键指标是 **Inserted Rows/sec** 和
+**Max Parts for Partition**。
 
-运行消耗大量资源的 SQL 查询（如 CPU 或内存）是常见现象。然而，监控这些查询并了解它们对部署整体性能的影响非常重要。
+<Image img={InsertedRowsSec} size="lg" alt="未批量的插入" />
 
-没有查询吞吐量的变化而资源消耗出现突然变化可能表明正在执行更昂贵的查询。根据您运行的查询类型，这可能是可以预期的，但通过高级仪表板发现它们是好的。
+上面的示例显示，在 13 点到 14 点之间，**Inserted Rows/sec** 和 **Max Parts for Partition**
+都出现了两个峰值。这表明我们正在以一个合理的速度摄取数据。
 
-下面是 CPU 使用率峰值的示例，而每秒执行的查询数量没有显著变化。
+随后在 16 点之后，我们看到 **Max Parts for Partition** 出现另一个大峰值，但
+**Inserted Rows/sec** 的速度却非常慢。创建了大量 part，但生成的数据量却很少，
+这表明这些 part 的大小并不理想。
 
-<Image img={ResourceIntensiveQuery} size="lg" alt="Resource intensive query"/>
+### 资源密集型查询
 
-### 不良主键设计 {#bad-primary-key-design}
+运行会消耗大量资源（例如 CPU 或内存）的 SQL 查询是很常见的。然而，监控这些查询并了解
+它们对部署整体性能的影响非常重要。
 
-使用高级仪表板可以发现的另一个问题是不良的主键设计。如在 ["ClickHouse 中主索引的实用介绍"](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) 中所述，选择最适合您用例的主键将大大提高性能，减少 ClickHouse 执行查询所需读取的行数。
+在查询吞吐量未发生变化的情况下，资源消耗突然变化可能表明正在执行代价更高的查询。
+根据你正在运行的查询类型，这种情况有时是可以预期的，但能够在高级仪表板中识别到它们
+是很有价值的。
 
-要跟踪主键潜在改进的指标之一是 **每秒选定行数**。选定行数突然峰值可能表明整体查询吞吐量的一般增长，以及执行查询时选择了大量行的查询。
+下面是一个 CPU 使用率达到峰值，但每秒执行的查询数量并未发生显著变化的示例。
 
-<Image img={SelectedRowsPerSecond} size="lg" alt="Resource intensive query"/>
+<Image img={ResourceIntensiveQuery} size="lg" alt="资源密集型查询" />
 
-通过时间戳作为筛选条件，您可以在 `system.query_log` 表中找到在峰值时执行的查询。
+### 不良的主键设计
 
-例如，运行一个查询，显示在某一天上午 11 时到中午 11 时之间执行的所有查询，以了解哪些查询读取了过多的行：
+你可以使用高级仪表板识别的另一个问题是不良的主键设计。
+正如 [&quot;A practical introduction to primary indexes in ClickHouse&quot;](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)
+中所描述的，为你的用例选择合适的主键，将通过减少 ClickHouse
+为执行查询所需读取的行数，大幅提升性能。
+
+用于发现主键潜在改进空间的一个指标是 **Selected Rows per second**。
+选中行数的突然峰值既可能表示整体查询吞吐量的一般性增加，也可能表示存在
+为了执行查询而选择了大量行的查询。
+
+<Image img={SelectedRowsPerSecond} size="lg" alt="资源密集型查询" />
+
+使用时间戳作为过滤条件，你可以在 `system.query_log` 表中找到峰值时刻
+执行的查询。
+
+例如，运行一个查询，显示在某一天 11 点到 11 点之间执行的所有查询，
+以了解哪些查询正在读取过多的行：
 
 ```sql title="Query"
 SELECT
@@ -159,7 +181,7 @@ FORMAT VERTICAL
 ```
 
 ```response title="Response"
-Row 1:
+行 1:
 ──────
 type:              QueryFinish
 event_time:        2024-12-23 11:22:55
@@ -180,72 +202,76 @@ ORDER BY
 LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
-
-Row 2:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:26:50
-query_duration_ms: 7325
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_no_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         150957260
-tables:            ['default.amazon_reviews_no_pk']
-
-Row 3:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:24:10
-query_duration_ms: 3270
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         6242304
-tables:            ['default.amazon_reviews_pk']
-
-Row 4:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:28:10
-query_duration_ms: 2786
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         6242304
-tables:            ['default.amazon_reviews_pk']
 ```
 
-在这个示例中，我们可以看到同一查询在两个表 `amazon_reviews_no_pk` 和 `amazon_reviews_pk` 上执行。可以得出结论：某人在为 `amazon_reviews` 表测试主键选项。
+
+第 2 行：
+──────
+type:              QueryFinish
+event&#95;time:        2024-12-23 11:26:50
+query&#95;duration&#95;ms: 7325
+query:             SELECT
+toStartOfMonth(review&#95;date) AS month,
+any(product&#95;title),
+avg(star&#95;rating) AS avg&#95;stars
+FROM amazon&#95;reviews&#95;no&#95;pk
+WHERE
+product&#95;category = &#39;Home&#39;
+GROUP BY
+month,
+product&#95;id
+ORDER BY
+month DESC,
+product&#95;id ASC
+LIMIT 20
+read&#95;rows:         150957260
+tables:            [&#39;default.amazon&#95;reviews&#95;no&#95;pk&#39;]
+
+第 3 行：
+──────
+type:              QueryFinish
+event&#95;time:        2024-12-23 11:24:10
+query&#95;duration&#95;ms: 3270
+query:             SELECT
+toStartOfMonth(review&#95;date) AS month,
+any(product&#95;title),
+avg(star&#95;rating) AS avg&#95;stars
+FROM amazon&#95;reviews&#95;pk
+WHERE
+product&#95;category = &#39;Home&#39;
+GROUP BY
+month,
+product&#95;id
+ORDER BY
+month DESC,
+product&#95;id ASC
+LIMIT 20
+read&#95;rows:         6242304
+tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
+
+第 4 行：
+──────
+type:              QueryFinish
+event&#95;time:        2024-12-23 11:28:10
+query&#95;duration&#95;ms: 2786
+query:             SELECT
+toStartOfMonth(review&#95;date) AS month,
+any(product&#95;title),
+avg(star&#95;rating) AS avg&#95;stars
+FROM amazon&#95;reviews&#95;pk
+WHERE
+product&#95;category = &#39;Home&#39;
+GROUP BY
+month,
+product&#95;id
+ORDER BY
+month DESC,
+product&#95;id ASC
+LIMIT 20
+read&#95;rows:         6242304
+tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
+
+```
+
+在此示例中,可以看到同一查询针对 `amazon_reviews_no_pk` 和 `amazon_reviews_pk` 两个表执行。由此可以推断,有人正在测试 `amazon_reviews` 表的主键配置选项。
+```

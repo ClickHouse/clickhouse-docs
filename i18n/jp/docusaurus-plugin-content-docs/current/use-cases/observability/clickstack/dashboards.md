@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/dashboards'
-'title': 'ClickStackによるビジュアライゼーションとダッシュボード'
-'sidebar_label': 'ダッシュボード'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackによるビジュアライゼーションとダッシュボード'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/dashboards
+title: 'ClickStack を用いた可視化とダッシュボード'
+sidebar_label: 'ダッシュボード'
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack を用いた可視化とダッシュボード'
+doc_type: 'guide'
+keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -24,158 +25,164 @@ import dashboard_edit from '@site/static/images/use-cases/observability/hyperdx-
 import dashboard_clickhouse from '@site/static/images/use-cases/observability/hyperdx-dashboard-clickhouse.png';
 import dashboard_services from '@site/static/images/use-cases/observability/hyperdx-dashboard-services.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
+import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStackは、HyperDXでのチャート作成をサポートするイベントの視覚化機能を提供しています。これらのチャートは、他のユーザーと共有するためにダッシュボードに追加できます。
+ClickStack はイベントの可視化をサポートしており、HyperDX に組み込みのチャート機能を備えています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
 
-視覚化は、トレース、メトリクス、ログ、またはユーザー定義の広範なイベントスキーマから作成できます。
+可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます。
 
-## 視覚化の作成 {#creating-visualizations}
 
-HyperDXの**Chart Explorer**インターフェースを使用すると、ユーザーはメトリクス、トレース、およびログを時間軸で視覚化でき、データ分析のための迅速な視覚化を容易に作成できます。このインターフェースはダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorerを使用して視覚化を作成するプロセスを説明します。
+## 可視化の作成 {#creating-visualizations}
 
-各視覚化は、**データソース**を選択し、その後**メトリクス**を選択し、オプションの**フィルター式**と**グループ化**フィールドを追加することから始まります。概念的に、HyperDXの視覚化は、内部的にはSQLの`GROUP BY`クエリにマッピングされます— ユーザーは選択した次元にまたがる集計を定義します。
+HyperDX の **Chart Explorer** インターフェイスを使用すると、メトリクス、トレース、ログを時間経過とともに可視化でき、データ分析用の簡易な可視化をすばやく作成できます。このインターフェイスは、ダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorer を使用して可視化を作成する手順を説明します。
 
-たとえば、サービス名でグループ化されたエラーの数（`count()`）をチャート化することがあります。
+各可視化は、まず **データソース** を選択し、その後に **メトリクス** を指定し、必要に応じて **フィルター式** と **GROUP BY** フィールドを設定するところから始まります。概念的には、HyperDX における可視化は、内部的には SQL の `GROUP BY` クエリとして表現されます。ユーザーは、選択したディメンションに対して集計するメトリクスを定義します。
 
-以下の例では、リモートデータセットを使用します。このデータセットは、ガイド["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data)で説明されている[sql.clickhouse.com](https://sql.clickhouse.com)で利用可能です。 **ユーザーは[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)を訪れることで、これらの例を再現することもできます。**
+たとえば、サービス名ごとのエラー数（`count()`）をグラフ化することができます。
+
+以下の例では、ガイド「[Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data)」で説明している、[sql.clickhouse.com](https://sql.clickhouse.com) で利用可能なリモートデータセットを使用します。**[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) にアクセスすることで、これらの例を再現することもできます。**
 
 <VerticalStepper headerLevel="h3">
 
-### Chart Explorerに移動 {#navigate-chart-explorer}
+### Chart Explorer に移動する {#navigate-chart-explorer}
 
-左側のメニューから`Chart Explorer`を選択します。
+左側のメニューから `Chart Explorer` を選択します。
 
 <Image img={visualization_1} alt="Chart Explorer" size="lg"/>
 
-### 視覚化の作成 {#create-visualization}
+### 可視化を作成する {#create-visualization}
 
-以下の例では、サービス名ごとの平均リクエスト時間を時間経過に沿ってチャート化します。これには、ユーザーがメトリック、カラム（SQL表現が可能）、および集計フィールドを指定する必要があります。
+次の例では、サービス名ごとに時間経過に沿って平均リクエスト時間をグラフ化します。これには、メトリクス、列（SQL 式でも可）、および集計フィールドを指定する必要があります。
 
-上部メニューから`Line/Bar`視覚化タイプを選択し、次に`Traces`（または[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)を使用している場合は`Demo Traces`）データセットを選択します。以下の値を入力して、サービス名ごとの平均リクエスト時間を表示するチャートを作成します。
+上部メニューから `Line/Bar` の可視化タイプを選択し、その後 `Traces`（または [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) を使用している場合は `Demo Traces`）データセットを選択します。次の値を設定します。
 
-- メトリック: `Average`  
-- カラム: `Duration/1000`  
-- 条件: `<空>`  
-- グループ化: `ServiceName`  
-- エイリアス: `Average Time`
+- Metric: `Average`  
+- Column: `Duration/1000`  
+- Where: `<empty>`  
+- Group By: `ServiceName`  
+- Alias: `Average Time`
 
 <Image img={visualization_2} alt="Simple visualization" size="lg"/>
 
-ユーザーは、SQLの`WHERE`句またはLucene構文を使用してイベントをフィルタリングし、イベントが視覚化される時間枠を設定できることに注意してください。また、複数のシリーズもサポートされています。
+SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィルタリングできるほか、イベントを可視化する時間範囲も設定できます。複数系列にも対応しています。
 
-たとえば、フィルタ`ServiceName:"frontend"`を追加してサービス`frontend`でフィルタリングします。`Add Series`をクリックして、エイリアス`Count`で時間経過に伴うイベント数の第2シリーズを追加します。
+たとえば、フィルター `ServiceName:"frontend"` を追加して、サービス `frontend` でフィルタリングします。さらに `Add Series` をクリックし、エイリアス `Count` を指定して、時間経過におけるイベント数を表す 2つ目の系列を追加します。
 
 <Image img={visualization_3} alt="Simple visualization 2" size="lg"/>
 
 :::note
-視覚化は、すべてのデータソースから作成できます — メトリクス、トレース、またはログ。ClickStackは、これらすべてを広範なイベントとして扱います。任意の**数値カラム**を時間軸でチャート化でき、**文字列**、**日付**、または**数値**カラムはグループ化に利用できます。
+可視化は、メトリクス、トレース、ログなど、任意のデータソースから作成できます。ClickStack はこれらすべてをワイドイベント（wide event）として扱います。任意の **数値列** を時間経過でグラフ化でき、**文字列**、**日付**、**数値** 列をグルーピングに使用できます。
 
-この統一アプローチにより、ユーザーは一貫した柔軟なモデルを使用して、異なるテレメトリタイプ間でダッシュボードを構築できるようになります。
+この統一されたアプローチにより、一貫性があり柔軟なモデルを用いて、さまざまなテレメトリ種別にまたがるダッシュボードを構築できます。
 :::
 
 </VerticalStepper>
 
 ## ダッシュボードの作成 {#creating-dashboards}
 
-ダッシュボードは、関連する視覚化をグループ化する方法を提供し、ユーザーがメトリクスを比較し、パターンを並べて探索することで、システム内の潜在的な根本原因を特定するのに役立ちます。これらのダッシュボードは、アドホック調査に使用することも、継続的なモニタリングのために保存することもできます。
+ダッシュボードは、関連する可視化をまとめて扱えるようにし、ユーザーがメトリクスを比較したり、パターンを並べて確認したりして、システム内の潜在的な根本原因を特定できるようにします。これらのダッシュボードは、アドホックな調査にも、継続的なモニタリング用として保存して利用することもできます。
 
-ダッシュボードレベルでグローバルフィルターを適用でき、これによりそのダッシュボード内のすべての視覚化に自動的に伝播されます。これにより、チャート全体の一貫したドリルダウンが可能になり、サービスやテレメトリタイプにわたるイベントの相関関係を簡素化します。
+グローバルフィルターはダッシュボード単位で適用でき、そのダッシュボード内のすべての可視化に自動的に伝播します。これにより、チャート間で一貫したドリルダウンが可能になり、サービスやテレメトリ種別をまたいだイベントの相関付けが容易になります。
 
-以下では、ログとトレースデータソースを使用して2つの視覚化を作成するダッシュボードを作成します。これらの手順は、["Remote Demo Dataset"](/use-cases/observability/clickstack/getting-started/remote-demo-data)に説明されている、[sql.clickhouse.com](https://sql.clickhouse.com)でホストされているデータセットに接続して、[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)上でも再現可能です。
+以下では、ログとトレースのデータソースを使用して 2 つの可視化を持つダッシュボードを作成します。これらの手順は、ガイド「[Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data)」で説明されているように、[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 上、もしくはローカルから [sql.clickhouse.com](https://sql.clickhouse.com) 上のデータセットに接続することで再現できます。
 
 <VerticalStepper headerLevel="h3">
 
-### ダッシュボードに移動 {#navigate-dashboards}
+### Dashboards 画面に移動する {#navigate-dashboards}
 
-左側のメニューから`Dashboards`を選択します。
+左側のメニューから `Dashboards` を選択します。
 
-<Image img={dashboard_1} alt="Create Dashboard" size="lg"/>
+<Image img={dashboard_1} alt="ダッシュボードを作成する" size="lg"/>
 
-デフォルトでは、ダッシュボードはアドホック調査をサポートするために一時的なものです。
+既定では、ダッシュボードはアドホックな調査を支援するため、一時的なものとして扱われます。 
 
-独自のHyperDXインスタンスを使用している場合、このダッシュボードが後で保存できるようにするには、`Create New Saved Dashboard`をクリックします。このオプションは、読み取り専用環境[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)を使用している場合は利用できません。
+自前の HyperDX インスタンスを使用している場合は、`Create New Saved Dashboard` をクリックすることで、このダッシュボードを後から保存できるようにできます。読み取り専用環境の [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) を使用している場合、このオプションは利用できません。
 
-### 視覚化の作成 – サービスごとの平均リクエスト時間 {#create-a-tile}
+### 可視化を作成する – サービスごとの平均リクエスト時間 {#create-a-tile}
 
-`Add New Tile`を選択して視覚化作成パネルを開きます。
+`Add New Tile` を選択して、可視化作成パネルを開きます。
 
-上部メニューから`Line/Bar`視覚化タイプを選択し、次に`Traces`（または[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)を使用している場合は`Demo Traces`）データセットを選択します。サービス名ごとの平均リクエスト時間を時間経過に沿って表示するチャートを作成するために、以下の値を入力します。
+上部メニューから可視化タイプとして `Line/Bar` を選択し、続いてデータセットとして `Traces`（もしくは [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) を使用している場合は `Demo Traces`）を選択します。サービス名ごとの時間経過に伴う平均リクエスト時間を表示するチャートを作成するため、以下の値を設定します:
 
-- チャート名: `Average duration by service`  
-- メトリック: `Average`  
-- カラム: `Duration/1000`  
-- 条件: `<空>`  
-- グループ化: `ServiceName`  
-- エイリアス: `Average Time`
+- Chart Name: `Average duration by service`  
+- Metric: `Average`  
+- Column: `Duration/1000`  
+- Where: `<empty>`  
+- Group By: `ServiceName`  
+- Alias: `Average Time`
 
-`Save`をクリックする前に、**プレイ**ボタンをクリックします。
+`Save` をクリックする前に **再生（play）** ボタンをクリックします。
 
-<Image img={dashboard_2} alt="Create Dashboard Visualization" size="lg"/>
+<Image img={dashboard_2} alt="ダッシュボード可視化の作成" size="lg"/>
 
-視覚化をダッシュボードの全幅を占めるようにサイズ変更します。
+可視化のサイズを変更し、ダッシュボードの幅いっぱいに配置します。
 
-<Image img={dashboard_3} alt="Dashboard with visuals" size="lg"/>
+<Image img={dashboard_3} alt="ビジュアルを含むダッシュボード" size="lg"/>
 
-### 視覚化の作成 – サービスごとのイベント数の時間経過 {#create-a-tile-2}
+### 可視化を作成する – サービスごとの時間経過に伴うイベント数 {#create-a-tile-2}
 
-`Add New Tile`を選択して視覚化作成パネルを開きます。
+`Add New Tile` を選択して、可視化作成パネルを開きます。
 
-上部メニューから`Line/Bar`視覚化タイプを選択し、次に`Logs`（または[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)を使用している場合は`Demo Logs`）データセットを選択します。サービス名ごとの時間経過に伴うイベント数を表示するチャートを作成するために、以下の値を入力します。
+上部メニューから可視化タイプとして `Line/Bar` を選択し、続いてデータセットとして `Logs`（もしくは [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) を使用している場合は `Demo Logs`）を選択します。サービス名ごとの時間経過に伴うイベント数を表示するチャートを作成するため、以下の値を設定します:
 
-- チャート名: `Event count by service`  
-- メトリック: `Count of Events`  
-- 条件: `<空>`  
-- グループ化: `ServiceName`  
-- エイリアス: `Count of events`
+- Chart Name: `Event count by service`  
+- Metric: `Count of Events`  
+- Where: `<empty>`  
+- Group By: `ServiceName`  
+- Alias: `Count of events`
 
-`Save`をクリックする前に、**プレイ**ボタンをクリックします。
+`Save` をクリックする前に **再生（play）** ボタンをクリックします。
 
-<Image img={dashboard_4} alt="Dashboard Visualization 2" size="lg"/>
+<Image img={dashboard_4} alt="ダッシュボード可視化 2" size="lg"/>
 
-視覚化をダッシュボードの全幅を占めるようにサイズ変更します。
+可視化のサイズを変更し、ダッシュボードの幅いっぱいに配置します。
 
-<Image img={dashboard_5} alt="Dashboard with visuals 2" size="lg"/>
+<Image img={dashboard_5} alt="ビジュアルを含むダッシュボード 2" size="lg"/>
 
-### ダッシュボードをフィルタリング {#filter-dashboards}
+### ダッシュボードをフィルタリングする {#filter-dashboards}
 
-LuceneまたはSQLフィルターとともに時間範囲を、ダッシュボードレベルで適用でき、自動的にすべての視覚化に伝播されます。
+Lucene または SQL フィルターと時間範囲は、ダッシュボードレベルで適用でき、すべての可視化に自動的に伝播します。
 
-<Image img={dashboard_filter} alt="Dashboard with filtering" size="lg"/>
+<Image img={dashboard_filter} alt="フィルタリングされたダッシュボード" size="lg"/>
 
-例を示すために、ダッシュボードにLuceneフィルタ`ServiceName:"frontend"`を適用し、時間ウィンドウを過去3時間に設定します。視覚化が`frontend`サービスからのデータのみを反映することに注意してください。
+例として、ダッシュボードに Lucene フィルター `ServiceName:"frontend"` を適用し、時間範囲を直近 3 時間（Last 3 hours）を対象とするように変更します。これにより、可視化が `frontend` サービスのデータのみを反映していることを確認できます。
 
-ダッシュボードは自動的に保存されます。ダッシュボード名を設定するには、タイトルを選択し、`Save Name`をクリックする前に修正します。
+ダッシュボードは自動的に保存されます。ダッシュボード名を設定するには、タイトルを選択して編集し、`Save Name` をクリックします。 
 
-<Image img={dashboard_save} alt="Dashboard save" size="lg"/>
+<Image img={dashboard_save} alt="ダッシュボードの保存" size="lg"/>
 
 </VerticalStepper>
 
-## ダッシュボード - 視覚化の編集 {#dashboards-editing-visualizations}
+## ダッシュボード - ビジュアライゼーションの編集 {#dashboards-editing-visualizations}
 
-視覚化を削除、編集、または複製するには、その上にカーソルを合わせて、対応するアクションボタンを使用します。
+ビジュアライゼーションを削除、編集、または複製するには、その上にマウスオーバーして表示されるアクションボタンを使用します。
 
-<Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
+<Image img={dashboard_edit} alt="ダッシュボードの編集" size="lg"/>
 
-## ダッシュボードの一覧表示と検索 {#dashboard-listing-search}
+## ダッシュボード - 一覧と検索 {#dashboard-listing-search}
 
-ダッシュボードは左側のメニューからアクセス可能で、特定のダッシュボードを迅速に見つけるためのビルトイン検索があります。
+ダッシュボードには左側のメニューからアクセスでき、内蔵の検索機能で特定のダッシュボードをすばやく見つけることができます。
 
-<Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+<Image img={dashboard_search} alt="ダッシュボード検索" size="sm"/>
+
+## ダッシュボードのタグ付け {#tagging}
+
+<Tagging />
 
 ## プリセット {#presets}
 
-HyperDXは、即座に使用可能なダッシュボードと共に展開されます。
+HyperDX は、標準のダッシュボード付きでデプロイされます。
 
-### ClickHouseダッシュボード {#clickhouse-dashboard}
+### ClickHouse ダッシュボード {#clickhouse-dashboard}
 
-このダッシュボードはClickHouseの監視用の視覚化を提供します。このダッシュボードに移動するには、左側のメニューから選択します。
+このダッシュボードは、ClickHouse を監視するための可視化を提供します。このダッシュボードに移動するには、左側のメニューからこのダッシュボードを選択します。
 
-<Image img={dashboard_clickhouse} alt="ClickHouse dashboard" size="lg"/>
+<Image img={dashboard_clickhouse} alt="ClickHouse ダッシュボード" size="lg"/>
 
-このダッシュボードは、**Selects**、**Inserts**、および**ClickHouse Infrastructure**の監視を分離するためにタブを使用しています。
+このダッシュボードでは、**Selects**、**Inserts**、**ClickHouse Infrastructure** の監視をタブで切り替えて表示します。
 
-:::note システムテーブルアクセスが必要
-このダッシュボードは、ClickHouseの[system tables](/operations/system-tables)をクエリし、重要なメトリックを公開します。以下の権限が必要です：
+:::note 必要な system テーブルへのアクセス権
+このダッシュボードは、主要なメトリクスを可視化するために ClickHouse の [system テーブル](/operations/system-tables) を参照します。以下の権限が必要です。
 
 `GRANT SHOW COLUMNS, SELECT(CurrentMetric_MemoryTracking, CurrentMetric_S3Requests, ProfileEvent_OSCPUVirtualTimeMicroseconds, ProfileEvent_OSReadChars, ProfileEvent_OSWriteChars, ProfileEvent_S3GetObject, ProfileEvent_S3ListObjects, ProfileEvent_S3PutObject, ProfileEvent_S3UploadPart, event_time) ON system.metric_log`
 
@@ -188,18 +195,18 @@ HyperDXは、即座に使用可能なダッシュボードと共に展開され�
 
 ### サービスダッシュボード {#services-dashboard}
 
-サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これには、ユーザーがトレースを収集し、有効なトレースデータソースを構成していることが必要です。
+サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これには、トレースが収集されており、有効な Traces データソースが構成されている必要があります。
 
-サービス名はトレースデータから自動的に検出され、HTTPサービス、データベース、エラーの3つのタブに整理された一連の組み込み視覚化が表示されます。
+サービス名はトレースデータから自動検出され、HTTP Services、Database、Errors の 3 つのタブに整理された一連の事前構築済みの可視化が提供されます。
 
-観測をLuceneまたはSQL構文を使用してフィルタリングし、時間ウィンドウを調整して分析を集中させることができます。
+可視化は Lucene または SQL の構文を使用してフィルタリングでき、時間範囲を調整して分析対象を絞り込むことができます。
 
 <Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
 
-### Kubernetesダッシュボード {#kubernetes-dashboard}
+### Kubernetes ダッシュボード {#kubernetes-dashboard}
 
-このダッシュボードは、ユーザーがOpenTelemetryを通じて収集されたKubernetesイベントを探索できるようにします。Kubernetes Pod、Deployment、Node名、Namespace、およびClusterによるフィルタリングが可能で、自由形式のテキスト検索も行えます。
+このダッシュボードでは、OpenTelemetry を通じて収集された Kubernetes イベントを確認・探索できます。高度なフィルタリング機能を備えており、Kubernetes のポッド、デプロイメント、ノード名、ネームスペース、クラスターでの絞り込みに加えて、フリーテキスト検索も実行できます。
 
-Kubernetesデータは簡単にナビゲーションできるように、Pods、Nodes、およびNamespacesの3つのタブに整理されています。
+Kubernetes のデータは、容易にナビゲーションできるように「Pods」「Nodes」「Namespaces」の 3 つのタブに整理されています。
 
 <Image img={dashboard_kubernetes} alt="ClickHouse kubernetes" size="lg"/>

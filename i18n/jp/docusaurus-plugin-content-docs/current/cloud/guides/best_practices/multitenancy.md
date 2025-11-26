@@ -1,53 +1,54 @@
 ---
-'slug': '/cloud/bestpractices/multi-tenancy'
-'sidebar_label': 'マルチテナンシー'
-'title': 'マルチテナンシー'
-'description': 'マルチテナンシーを実装するためのベストプラクティス'
-'doc_type': 'guide'
+slug: /cloud/bestpractices/multi-tenancy
+sidebar_label: 'マルチテナンシー'
+title: 'マルチテナンシー'
+description: 'マルチテナンシーを実装するためのベストプラクティス'
+doc_type: 'guide'
+keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi-tenant']
 ---
 
-On a SaaSデータ分析プラットフォームでは、組織や顧客、ビジネスユニットなど、複数のテナントが同じデータベースインフラストラクチャを共有しつつ、データの論理的な分離を維持することが一般的です。これにより、異なるユーザーが同じプラットフォーム内で自分のデータに安全にアクセスできるようになります。
+SaaS 型のデータ分析プラットフォームでは、組織、顧客、事業部門など複数のテナントが、自身のデータを論理的に分離したまま、同じデータベース基盤を共有することが一般的です。これにより、異なるユーザーが同じプラットフォーム上で、自分のデータに安全にアクセスできるようになります。
 
-要件に応じて、マルチテナンシーを実装する方法はさまざまです。以下は、ClickHouse Cloudでの実装方法のガイドです。
+要件に応じて、マルチテナンシーを実装する方法はいくつかあります。以下では、それらの方式を ClickHouse Cloud 上でどのように実装するかを解説します。
 
-## Shared table {#shared-table}
+## 共有テーブル  {#shared-table}
 
-このアプローチでは、すべてのテナントのデータが単一の共有テーブルに格納され、各テナントのデータを識別するためのフィールド（またはフィールドのセット）が使用されます。パフォーマンスを最大化するために、このフィールドは[主キー](/sql-reference/statements/create/table#primary-key)に含めるべきです。ユーザーがそれぞれのテナントに属するデータにのみアクセスできるように、[役割ベースのアクセス制御](/operations/access-rights)を使用し、[行ポリシー](/operations/access-rights#row-policy-management)によって実装します。
+このアプローチでは、すべてのテナントのデータを 1 つの共有テーブルに保存し、各テナントのデータを識別するためのフィールド（またはフィールドの組）を使用します。パフォーマンスを最大化するため、このフィールドは[主キー](/sql-reference/statements/create/table#primary-key)に含める必要があります。各ユーザーが自分のテナントに属するデータのみにアクセスできるようにするため、[ロールベースアクセス制御](/operations/access-rights)を[行ポリシー](/operations/access-rights#row-policy-management)によって実現します。
 
-> **このアプローチは管理が最も簡単であり、特にすべてのテナントが同じデータスキーマを共有し、データボリュームが中程度（< TBs）である場合に推奨します。**
+> **すべてのテナントが同一のデータスキーマを共有し、データ量が中程度（TB 未満）の場合、管理が最も容易なため、このアプローチを推奨します。**
 
-すべてのテナントデータを単一のテーブルに統合することで、最適化されたデータ圧縮とメタデータのオーバーヘッドの削減を通じてストレージ効率が改善されます。さらに、すべてのデータが中央で管理されるため、スキーマの更新が簡素化されます。
+すべてのテナントデータを 1 つのテーブルに集約することで、データ圧縮の最適化とメタデータのオーバーヘッド削減により、ストレージ効率が向上します。さらに、すべてのデータが一元管理されるため、スキーマ更新も簡素化されます。
 
-この方法は、多数のテナント（潜在的に数百万）を扱うのに特に効果的です。
+この方法は、（数百万単位になる可能性があるような）非常に多くのテナントを扱う場合に特に有効です。
 
-ただし、テナントが異なるデータスキーマを持っている場合や、時間とともに分岐することが予想される場合には、代替アプローチの方が適している場合があります。
+ただし、テナントごとに異なるデータスキーマを持つ、または将来的にスキーマが互いに異なっていくことが想定される場合には、別のアプローチの方が適している可能性があります。
 
-テナント間のデータボリュームに大きなギャップがある場合、小規模なテナントは不要なクエリパフォーマンスの影響を受けることがあります。この問題は、主キーにテナントフィールドを含めることで大きく軽減されます。
+テナント間でデータ量に大きな差がある場合、小規模なテナントは不要にクエリ性能への悪影響を受ける可能性があります。なお、この問題は、テナントフィールドを主キーに含めることで大きく軽減されます。
 
-### Example {#shared-table-example}
+### 例
 
-これは共有テーブルマルチテナンシーモデルの実装例です。
+これは、共有テーブルを用いたマルチテナンシーモデルの実装例です。
 
-まず、`tenant_id`フィールドを主キーに含む共有テーブルを作成します。
+まず、プライマリキーに `tenant_id` フィールドを含めた共有テーブルを作成します。
 
 ```sql
---- Create table events. Using tenant_id as part of the primary key
+--- テーブルeventsを作成。tenant_idをプライマリキーの一部として使用
 CREATE TABLE events
 (
-    tenant_id UInt32,                 -- Tenant identifier
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    tenant_id UInt32,                 -- テナント識別子
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントタイプ
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントを発生させたユーザーのID
+    data String,                 -- イベントデータ
 )
 ORDER BY (tenant_id, timestamp)
 ```
 
-次に、フェイクデータを挿入します。
+ダミーデータを挿入します。
 
 ```sql
--- Insert some dummy rows
+-- ダミーデータを挿入
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -62,38 +63,39 @@ VALUES
 (2, '5c150ceb-b869-4ebb-843d-ab42d3cb5410', 'user_login', '2025-03-19 09:00:00', 2004, '{"device": "mobile", "location": "SF"}'),
 ```
 
-それから、`user_1`と`user_2`の2つのユーザーを作成します。
+では、`user_1` と `user_2` という 2 つのユーザーを作成しましょう。
 
 ```sql
--- Create users 
+-- ユーザーを作成する
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-`user_1`と`user_2`がそれぞれのテナントのデータにのみアクセスできるように[行ポリシーを作成](/sql-reference/statements/create/row-policy)します。
+`user_1` と `user_2` が自分のテナントのデータのみにアクセスできるように制限するための [行ポリシーを作成](/sql-reference/statements/create/row-policy) します。
 
 ```sql
--- Create row policies
+-- 行ポリシーの作成
 CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
 
-次に、共通の役割を使用して共有テーブルに対して[`GRANT SELECT`](/sql-reference/statements/grant#usage)権限を付与します。
+次に、共通のロールを使用して、共有テーブルに [`GRANT SELECT`](/sql-reference/statements/grant#usage) 権限を付与します。
 
 ```sql
--- Create role
+-- ロールを作成
 CREATE ROLE user_role
 
--- Grant read only to events table.
+-- eventsテーブルに読み取り専用権限を付与
 GRANT SELECT ON default.events TO user_role
 GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-これで、`user_1`として接続し、簡単な選択を実行できます。最初のテナントの行のみが返されます。
+
+これで `user_1` ユーザーとして接続し、簡単な `SELECT` を実行できます。最初のテナントの行だけが返されます。
 
 ```sql
--- Logged as user_1
+-- user_1 でログイン中
 SELECT *
 FROM events
 
@@ -106,47 +108,48 @@ FROM events
    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-## Separate tables {#separate-tables}
 
-このアプローチでは、各テナントのデータが同じデータベース内の別々のテーブルに格納され、テナントを識別するための特定のフィールドが不要になります。ユーザーアクセスは[GRANT文](/sql-reference/statements/grant)を使用して強制され、各ユーザーがそのテナントのデータを含むテーブルにのみアクセスできるようになります。
+## 個別テーブル {#separate-tables}
 
-> **テナントが異なるデータスキーマを持つ場合、別々のテーブルを使用するのは良い選択です。**
+このアプローチでは、各テナントのデータを同一データベース内の個別のテーブルに保存するため、テナントを識別するための専用フィールドは不要です。[GRANT 文](/sql-reference/statements/grant)を使用してユーザーアクセスを制御し、各ユーザーが自分のテナントのデータを含むテーブルのみにアクセスできるようにします。
 
-クエリパフォーマンスが重要な非常に大きなデータセットを持つ少数のテナントが関与するシナリオでは、このアプローチは共有テーブルモデルを上回る可能性があります。他のテナントのデータをフィルタリングする必要がないため、クエリがより効率的に実行できます。さらに、主キーには追加のフィールド（テナントIDなど）を含める必要がないため、さらに最適化できます。
+> **テナントごとにデータスキーマが異なる場合は、個別テーブル方式が有力な選択肢です。**
 
-このアプローチは、1000のテナントにはスケールしません。詳細は[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
+少数のテナントが非常に大きなデータセットを持ち、クエリ性能が重要となるシナリオでは、このアプローチは共有テーブルモデルより高い性能を発揮する場合があります。他テナントのデータをフィルタリングする必要がないため、クエリをより効率的に実行できます。さらに、主キーに追加フィールド（テナント ID など）を含める必要がないため、主キーをより最適化できます。 
 
-### Example {#separate-tables-example}
+なお、このアプローチは数千単位のテナントにはスケールしません。[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
 
-これは別々のテーブルのマルチテナンシーモデルの実装例です。
+### 例
 
-まず、`tenant_1`のイベント用の1つのテーブルと`tenant_2`のイベント用の1つのテーブルを作成します。
+これは、テーブル分離型マルチテナンシーモデルの実装例です。
+
+まず、`tenant_1`からのイベント用と`tenant_2`からのイベント用の2つのテーブルを作成しましょう。
 
 ```sql
--- Create table for tenant 1 
+-- テナント1用のテーブルを作成 
 CREATE TABLE events_tenant_1
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントタイプ
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントをトリガーしたユーザーのID
+    data String,                 -- イベントデータ
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- プライマリキーは他の属性に重点を置くことが可能
 
--- Create table for tenant 2 
+-- テナント2用のテーブルを作成 
 CREATE TABLE events_tenant_2
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントタイプ
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントをトリガーしたユーザーのID
+    data String,                 -- イベントデータ
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- プライマリキーは他の属性に重点を置くことが可能
 ```
 
-次に、フェイクデータを挿入します。
+ダミーデータを挿入しましょう。
 
 ```sql
 INSERT INTO events_tenant_1 (id, type, timestamp, user_id, data)
@@ -166,26 +169,26 @@ VALUES
 ('5c150ceb-b869-4ebb-843d-ab42d3cb5410', 'user_login', '2025-03-19 09:00:00', 2004, '{"device": "mobile", "location": "SF"}')
 ```
 
-それから、`user_1`と`user_2`の2つのユーザーを作成します。
+次に、2つのユーザー `user_1` と `user_2` を作成しましょう。
 
 ```sql
--- Create users 
+-- ユーザーを作成 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-次に、対応するテーブルに対して`GRANT SELECT`権限を付与します。
+次に、対応するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- Grant read only to events table.
+-- eventsテーブルに読み取り専用権限を付与します。
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-これで、`user_1`として接続し、このユーザーに対応するテーブルから簡単な選択を実行できます。最初のテナントの行のみが返されます。
+これで `user_1` として接続し、このユーザーに対応するテーブルから単純なSELECTクエリを実行できます。最初のテナントの行のみが返されます。 
 
 ```sql
--- Logged as user_1
+-- user_1 でログイン中
 SELECT *
 FROM default.events_tenant_1
 
@@ -198,55 +201,56 @@ FROM default.events_tenant_1
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-## Separate databases {#separate-databases}
 
-各テナントのデータは、同じClickHouseサービス内の別々のデータベースに格納されます。
+## 個別データベース {#separate-databases}
 
-> **このアプローチは、各テナントが多数のテーブルやマテリアライズドビューを必要とし、異なるデータスキーマを持つ場合に便利です。ただし、テナントの数が多い場合、管理が難しくなる可能性があります。**
+各テナントのデータは、同じ ClickHouse サービス内の個別のデータベースに保存されます。
 
-実装は別々のテーブルアプローチと似ていますが、テーブルレベルではなくデータベースレベルで権限を付与します。
+> **このアプローチは、各テナントが多数のテーブルやマテリアライズドビューを必要とし、かつデータスキーマが異なる場合に有用です。ただし、テナント数が多くなると管理が難しくなる可能性があります。**
 
-このアプローチは、1000のテナントにはスケールしません。詳細は[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
+実装方法は個別テーブル方式と似ていますが、テーブル単位で権限を付与する代わりに、データベース単位で権限を付与します。
 
-### Example {#separate-databases-example}
+このアプローチは、数千単位のテナントにはスケールしないことに注意してください。[使用制限](/cloud/bestpractices/usage-limits)を参照してください。
 
-これは別のデータベースのマルチテナンシーモデルの実装例です。
+### 例
 
-まず、`tenant_1`用と`tenant_2`用の2つのデータベースを作成します。
+これは、個別のデータベースを用いるマルチテナンシーモデルの実装例です。
+
+まず、`tenant_1` 用と `tenant_2` 用に 2 つのデータベースを作成します。
 
 ```sql
--- Create database for tenant_1
+-- tenant_1用のデータベースを作成
 CREATE DATABASE tenant_1;
 
--- Create database for tenant_2
+-- tenant_2用のデータベースを作成
 CREATE DATABASE tenant_2;
 ```
 
 ```sql
--- Create table for tenant_1
+-- tenant_1 用のテーブルを作成
 CREATE TABLE tenant_1.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントの種類
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントを発生させたユーザーのID
+    data String,                 -- イベントデータ
 )
 ORDER BY (timestamp, user_id);
 
--- Create table for tenant_2
+-- tenant_2 用のテーブルを作成
 CREATE TABLE tenant_2.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントの種類
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントを発生させたユーザーのID
+    data String,                 -- イベントデータ
 )
 ORDER BY (timestamp, user_id);
 ```
 
-次に、フェイクデータを挿入します。
+ダミーデータを投入しましょう。
 
 ```sql
 INSERT INTO tenant_1.events (id, type, timestamp, user_id, data)
@@ -266,26 +270,27 @@ VALUES
 ('5c150ceb-b869-4ebb-843d-ab42d3cb5410', 'user_login', '2025-03-19 09:00:00', 2004, '{"device": "mobile", "location": "SF"}')
 ```
 
-それから、`user_1`と`user_2`の2つのユーザーを作成します。
+それでは、`user_1` と `user_2` という 2 つのユーザーを作成しましょう。
 
 ```sql
--- Create users 
+-- ユーザーを作成 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-次に、対応するテーブルに対して`GRANT SELECT`権限を付与します。
+次に、対応するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- Grant read only to events table.
+-- eventsテーブルに読み取り専用権限を付与します。
 GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-これで、`user_1`として接続し、適切なデータベースのイベントテーブルから簡単な選択を実行できます。最初のテナントの行のみが返されます。
+
+これで、`user_1` として接続し、対象データベースの events テーブルに対して簡単な SELECT クエリを実行できます。最初のテナントの行だけが返されます。
 
 ```sql
--- Logged as user_1
+-- user_1 でログイン中
 SELECT *
 FROM tenant_1.events
 
@@ -298,44 +303,45 @@ FROM tenant_1.events
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
-## Compute-compute separation {#compute-compute-separation}
 
-上記の3つのアプローチは、[Warehouses](/cloud/reference/warehouses#what-is-a-warehouse)を使用することでさらに分離することができます。データは共通のオブジェクトストレージを介して共有されますが、各テナントは異なるCPU/メモリ比率の[compute-compute separation](/cloud/reference/warehouses#what-is-compute-compute-separation)により独自のコンピュートサービスを持つことができます。
+## コンピュート間分離 {#compute-compute-separation}
 
-ユーザー管理は、すべてのサービスが[アクセス制御を共有](/cloud/reference/warehouses#database-credentials)するため、前述のアプローチに似ています。
+上記で説明した 3 つのアプローチは、[Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) を使用することで、さらに分離できます。データは共通のオブジェクトストレージを介して共有されますが、[compute-compute separation](/cloud/reference/warehouses#what-is-compute-compute-separation) により、各テナントは異なる CPU/メモリ比率を持つ専用のコンピュートサービスを利用できます。
 
-倉庫内の子サービスの数には限りがあります。[倉庫の制限](/cloud/reference/warehouses#limitations)を参照してください。
+ユーザー管理は前述のアプローチと同様で、ウェアハウス内のすべてのサービスが[アクセス制御を共有します](/cloud/reference/warehouses#database-credentials)。
 
-## Separate cloud service {#separate-service}
+なお、1 つのウェアハウス内で作成できる子サービスの数には上限があります。詳細は [Warehouse の制限事項](/cloud/reference/warehouses#limitations) を参照してください。
 
-最も過激なアプローチは、テナントごとに異なるClickHouseサービスを使用することです。
+## 個別のクラウドサービス {#separate-service}
 
-> **これはテナントデータが法律、セキュリティ、または地理的な理由で異なる地域に保存する必要がある場合の解決策となる、あまり一般的でない方法です。**
+最も抜本的なアプローチは、テナントごとに別々の ClickHouse サービスを用意して使用することです。 
 
-ユーザーは、それぞれのテナントのデータにアクセスできるように、各サービスにユーザーアカウントを作成する必要があります。
+> **このあまり一般的ではない方法は、法的要件、セキュリティ、あるいは地理的な近接性の理由から、テナントのデータを異なるリージョンに保存する必要がある場合の解決策となります。**
 
-このアプローチは管理が難しく、各サービスが動作するために独自のインフラストラクチャを必要とするため、オーバーヘッドが発生します。サービスは、[ClickHouse Cloud API](/cloud/manage/api/api-overview)を介して管理でき、[公式Terraformプロバイダー](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)を介してオーケストレーションも可能です。
+ユーザーは、自身のテナントのデータへアクセスできるようにするため、各サービスごとにユーザーアカウントを作成する必要があります。
 
-### Example {#separate-service-example}
+このアプローチは管理が難しく、各サービスがそれぞれの実行に必要な独自のインフラストラクチャを持つ必要があるため、オーバーヘッドが発生します。サービスは [ClickHouse Cloud API](/cloud/manage/api/api-overview) を介して管理でき、[公式 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) を用いたオーケストレーションも可能です。
 
-これは別のサービスのマルチテナンシーモデルの実装例です。例では、1つのClickHouseサービス上でテーブルとユーザーを作成する様子を示していますが、これは全てのサービスに複製する必要があります。
+### 例
 
-まず、`events`テーブルを作成します。
+これは、別サービス型マルチテナンシーモデルの実装例です。なお、この例では 1 つの ClickHouse サービス上でテーブルとユーザーを作成していますが、同様の作業をすべてのサービスで行う必要があります。
+
+まず、テーブル `events` を作成します。
 
 ```sql
--- Create table for tenant_1
+-- tenant_1用のテーブルを作成
 CREATE TABLE events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 一意のイベントID
+    type LowCardinality(String), -- イベントの種類
+    timestamp DateTime,          -- イベントのタイムスタンプ
+    user_id UInt32,               -- イベントを発生させたユーザーのID
+    data String,                 -- イベントデータ
 )
 ORDER BY (timestamp, user_id);
 ```
 
-フェイクデータを挿入します。
+ダミーデータを挿入しましょう。
 
 ```sql
 INSERT INTO events (id, type, timestamp, user_id, data)
@@ -347,24 +353,24 @@ VALUES
 ('975fb0c8-55bd-4df4-843b-34f5cfeed0a9', 'user_login', '2025-03-19 08:50:00', 1004, '{"device": "desktop", "location": "LA"}')
 ```
 
-それから、`user_1`というユーザーを作成します。
+では、2 人のユーザー `user_1` を作成します。
 
 ```sql
--- Create users 
+-- ユーザーを作成する
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
-次に、対応するテーブルに対して`GRANT SELECT`権限を付与します。
+次に、該当するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- Grant read only to events table.
+-- eventsテーブルに読み取り専用権限を付与
 GRANT SELECT ON events TO user_1
 ```
 
-これで、テナント1のサービスで`user_1`として接続し、簡単な選択を実行できます。最初のテナントの行のみが返されます。
+これでテナント1向けのサービスに `user_1` として接続し、簡単な `SELECT` を実行できます。テナント1の行だけが返されます。
 
 ```sql
--- Logged as user_1
+-- user_1 としてログイン中
 SELECT *
 FROM events
 

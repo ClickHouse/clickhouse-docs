@@ -1,84 +1,87 @@
 ---
-'slug': '/best-practices/use-materialized-views'
-'sidebar_position': 10
-'sidebar_label': '使用物化视图'
-'title': '使用物化视图'
-'description': '页面描述物化视图'
-'keywords':
-- 'materialized views'
-- 'medallion architecture'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /best-practices/use-materialized-views
+sidebar_position: 10
+sidebar_label: '使用物化视图'
+title: '使用物化视图'
+description: '介绍物化视图的页面'
+keywords: ['materialized views', 'medallion architecture']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import incremental_materialized_view from '@site/static/images/bestpractices/incremental_materialized_view.gif';
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
-ClickHouse 支持两种类型的物化视图：[**增量**](/materialized-view/incremental-materialized-view) 和 [**可刷新**](/materialized-view/refreshable-materialized-view)。虽然这两种视图都旨在通过预计算和存储结果来加速查询，但它们在执行底层查询的方式、适用的工作负载和数据新鲜度处理方面存在显著差异。
+ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-view/incremental-materialized-view) 和 [**可刷新型**](/materialized-view/refreshable-materialized-view)。二者都通过预先计算并存储结果来加速查询，但在底层查询的执行方式与时机、适用的工作负载以及数据新鲜度的处理方式等方面存在显著差异。
 
-**用户应该考虑在特定的查询模式下使用物化视图，以加速查询，前提是已遵循之前的最佳实践 [关于数据类型](/best-practices/select-data-types) 和 [主键优化](/best-practices/choosing-a-primary-key)。**
+**在已经遵循关于[数据类型选择](/best-practices/select-data-types)和[主键优化](/best-practices/choosing-a-primary-key)等既有最佳实践的前提下，用户应针对需要加速的特定查询模式来考虑使用物化视图。**
 
-**增量物化视图** 实时更新。当新的数据插入源表时，ClickHouse 会自动将物化视图的查询应用于新数据块，并将结果写入单独的目标表。随着时间的推移，ClickHouse 会合并这些部分结果，以生成完整的、最新的视图。这种方法非常高效，因为它将计算成本转移到插入时间，并且只处理新数据。因此，针对目标表的 `SELECT` 查询速度快且轻量。增量视图支持所有聚合函数，并且能够很好地扩展——甚至达到 PB 级别的数据——因为每个查询都在被插入的数据集的小而新的子集上运行。
+**增量物化视图**会实时更新。随着新数据插入源表，ClickHouse 会自动将该物化视图的查询应用到新数据块，并将结果写入单独的目标表。随着时间推移，ClickHouse 会合并这些部分结果，从而生成完整且最新的视图。这种方式非常高效，因为它将计算成本转移到了写入时，只处理新增数据。因此，对目标表执行的 `SELECT` 查询非常快速且开销较小。增量视图支持所有聚合函数，并且具有良好的扩展性——即使扩展到 PB 级数据也同样适用——因为每次查询只需处理正在被插入的数据集中最新的一小部分子集。
 
-<Image img={incremental_materialized_view} size="lg" alt="物化视图" />
+<Image img={incremental_materialized_view} size="lg" alt="Materialized Views" />
 
-**可刷新物化视图** 相反，按计划更新。这些视图定期重新执行完整查询，并覆盖目标表中的结果。这类似于传统 OLTP 数据库（如 Postgres）中的物化视图。
+**可刷新物化视图**则是按计划更新的。这类视图会定期重新执行其完整查询，并用新结果覆盖目标表中的数据。这类似于传统 OLTP 数据库（如 Postgres）中的物化视图。
 
-<Image img={refreshable_materialized_view} size="lg" alt="可刷新物化视图图示"/>
+<Image img={refreshable_materialized_view} size="lg" alt="Refreshable materialized view diagram" />
 
-在增量和可刷新物化视图之间的选择在很大程度上取决于查询的性质、数据变化的频率以及对视图的更新是否需要在每次插入时反映每一行，或者是否可以接受定期刷新。理解这些权衡对于设计高性能、可扩展的 ClickHouse 物化视图至关重要。
+在增量物化视图和可刷新物化视图之间进行选择，在很大程度上取决于查询的性质、数据变更的频率，以及视图更新是否必须在每行插入时立即反映出来，还是可以接受定期刷新的方式。理解这些权衡对在 ClickHouse 中设计高性能、可扩展的物化视图至关重要。
+
 
 ## 何时使用增量物化视图 {#when-to-use-incremental-materialized-views}
 
-增量物化视图通常被优先考虑，因为它们在源表接收到新数据时自动实时更新。它们支持所有聚合函数，并且特别适用于对单个表的聚合操作。通过在插入时以增量方式计算结果，查询将针对显著较小的数据子集运行，从而使这些视图能够毫不费力地扩展到 PB 级别的数据。在大多数情况下，它们对整体集群性能不会产生显着影响。
+增量物化视图通常是首选方案，因为只要源表接收到新数据，它们就会自动实时更新。它们支持所有聚合函数，尤其适用于对单个表进行聚合。通过在插入时增量计算结果，查询只需处理小得多的数据子集，使这些视图即使在 PB 级数据规模下也能轻松扩展。在大多数情况下，它们对整个集群性能几乎没有明显影响。
 
-当你需要增量物化视图时：
+在以下场景中使用增量物化视图：
 
-- 你需要实时查询结果，每次插入时都会更新。
-- 你频繁聚合或过滤大量数据。
-- 你的查询涉及对单个表的简单转换或聚合。
+- 需要在每次插入后实时更新的查询结果。
+- 频繁对海量数据进行聚合或过滤。
+- 查询仅对单个表执行简单的转换或聚合操作。
 
-有关增量物化视图的示例，请见 [这里](/materialized-view/incremental-materialized-view)。
+有关增量物化视图的示例，请参见[此处](/materialized-view/incremental-materialized-view)。
 
-## 何时使用可刷新物化视图 {#when-to-use-refreshable-materialized-views}
 
-可刷新物化视图定期执行其查询，而不是增量执行，将查询结果集存储以便快速检索。
 
-当查询性能至关重要（例如，亚毫秒延迟）并且稍微过时的结果可以接受时，它们最有用。由于查询会完整重新运行，可刷新视图最适合那些计算相对较快的查询，或者这些查询可以在不频繁的间隔（例如每小时）内计算，比如缓存“前 N”结果或查找表。
+## 何时使用可刷新的物化视图 {#when-to-use-refreshable-materialized-views}
 
-执行频率应谨慎调整，以避免对系统造成过大负载。极其复杂、资源消耗较大的查询应谨慎调度——这些查询可能会通过影响缓存和消耗 CPU 和内存来导致整体集群性能下降。相较于刷新间隔，查询的运行速度应该相对较快，以避免对集群的过载。例如，不要安排每 10 秒更新一次视图，假如查询本身至少需要 10 秒才能计算。
+可刷新的物化视图会以固定间隔而非增量方式执行查询，并将查询结果集存储起来以便快速检索。 
+
+当查询性能至关重要（例如需要亚毫秒级延迟），且可以接受结果略有滞后时，它们最为有用。由于查询会被完整地重新执行，可刷新的视图最适合用于计算相对较快，或者可以以较低频率（例如每小时一次）运行的查询，例如缓存“top N”结果或查找表。 
+
+应仔细调优执行频率，以避免对系统造成过高负载。消耗大量资源的极其复杂查询应谨慎调度——这些查询可能通过影响缓存并消耗 CPU 和内存而导致整个集群性能下降。查询的运行时间应明显短于刷新间隔，以避免使集群过载。例如，如果某个查询本身至少需要 10 秒才能计算完成，就不要将视图设置为每 10 秒更新一次。 
+
+
 
 ## 总结 {#summary}
 
-总之，当你需要可刷新物化视图时：
+总而言之，在以下场景中使用可刷新物化视图：
 
-- 你需要快速获取缓存的查询结果，并且可以接受新鲜度的轻微延迟。
-- 你需要查询结果集的前 N 个结果。
-- 结果集的大小不应随着时间的推移而无限增长。这会导致目标视图的性能下降。
-- 你正在执行涉及多个表的复杂连接或非规范化，需要在任一源表更改时进行更新。
-- 你正在构建批处理工作流、非规范化任务，或创建类似于 DBT DAG 的视图依赖关系。
+- 你需要能够立即获取已缓存的查询结果，并且可以接受数据新鲜度存在轻微延迟。
+- 你需要查询结果集的前 N 条记录（Top N）。
+- 结果集的大小不会随着时间无限增长，否则会导致目标视图的性能下降。
+- 你在执行涉及多个表的复杂 `JOIN` 或反规范化操作，并且在任一源表发生变化时都需要更新。
+- 你在构建批处理工作流、反规范化任务，或创建类似 dbt DAG 的视图依赖关系。
 
-有关可刷新物化视图的示例，请见 [这里](/materialized-view/refreshable-materialized-view)。
+有关可刷新物化视图的示例，请参见[此处](/materialized-view/refreshable-materialized-view)。
 
-### APPEND 与 REPLACE 模式 {#append-vs-replace-mode}
+### APPEND 与 REPLACE 模式对比 {#append-vs-replace-mode}
 
-可刷新物化视图支持两种将数据写入目标表的模式：`APPEND` 和 `REPLACE`。这两种模式定义了视图在刷新时查询结果的写入方式。
+可刷新物化视图在向目标表写入数据时支持两种模式：`APPEND` 和 `REPLACE`。这些模式定义了在刷新视图时，视图查询结果如何写入目标表。
 
-`REPLACE` 是默认行为。每次刷新视图时，目标表的先前内容将被最新的查询结果完全覆盖。这适用于视图应始终反映最新状态的用例，例如缓存结果集。
+`REPLACE` 是默认行为。每次刷新视图时，目标表中之前的内容都会被最新的查询结果完全覆盖。该模式适用于需要视图始终反映最新状态的场景，例如缓存查询结果集。
 
-相反，`APPEND` 允许向目标表的末尾添加新行，而不是替换其内容。这使得额外的用例成为可能，例如捕获定期快照。当每次刷新表示一个特定的时间点或需要历史结果累计时，`APPEND` 特别有用。
+相比之下，`APPEND` 允许将新行追加到目标表的末尾，而不是替换其全部内容。这支持更多用例，例如捕获周期性快照。当每次刷新代表一个不同的时间点，或需要对结果进行历史累积时，`APPEND` 尤其有用。
 
-选择 `APPEND` 模式时：
+在以下场景中选择 `APPEND` 模式：
 
-- 你想保留过去刷新的历史。
-- 你正在构建定期快照或报告。
-- 你需要随着时间的推移逐步收集刷新的结果。
+- 你希望保留过去各次刷新的历史记录。
+- 你在构建周期性快照或报表。
+- 你需要随时间增量累积刷新后的结果。
 
-选择 `REPLACE` 模式时：
+在以下场景中选择 `REPLACE` 模式：
 
-- 你只需要最新的结果。
-- 过时的数据应完全丢弃。
-- 视图代表当前状态或查找。
+- 你只需要最新一次的结果。
+- 过期数据应被完全丢弃。
+- 该视图表示当前状态或查找表（lookup）。
 
-如果构建 [Medallion 架构](https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse) 的话，用户可以找到 `APPEND` 功能的应用示例。
+如果你在构建 [Medallion 架构](https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse)，可以找到 `APPEND` 功能的一个具体应用场景。

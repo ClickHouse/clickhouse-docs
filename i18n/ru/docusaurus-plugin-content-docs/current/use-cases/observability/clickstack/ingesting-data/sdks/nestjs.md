@@ -1,15 +1,18 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nestjs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 4
-'description': 'NestJS SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'NestJS'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nestjs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 4
+description: 'NestJS SDK для ClickStack - стек наблюдаемости ClickHouse'
+title: 'NestJS'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
 ---
-Интеграция ClickStack с NestJS позволяет вам создать логгер или использовать стандартный логгер для отправки логов в ClickStack (на базе [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
 
-**Это руководство интегрирует:**
+Интеграция ClickStack с NestJS позволяет создать логгер или использовать логгер
+по умолчанию для отправки логов в ClickStack (на базе [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
+
+**В этом руководстве интегрируются:**
 
 <table>
   <tbody>
@@ -21,11 +24,11 @@
   </tbody>
 </table>
 
-_Чтобы отправить метрики или APM/трейсы, вам нужно добавить соответствующую интеграцию языка в ваше приложение._
+_Чтобы отправлять метрики или APM/трейсы, вам также потребуется добавить соответствующую интеграцию для выбранного языка в ваше приложение._
 
-## Начало работы {#getting-started}
+## Начало работы
 
-Импортируйте `HyperDXNestLoggerModule` в корневой `AppModule` и используйте метод `forRoot()`, чтобы настроить его.
+Импортируйте `HyperDXNestLoggerModule` в корневой `AppModule` и используйте метод `forRoot()` для его конфигурации.
 
 ```javascript
 import { Module } from '@nestjs/common';
@@ -34,7 +37,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 @Module({
   imports: [
     HyperDXNestLoggerModule.forRoot({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      apiKey: ***ВАШ_КЛЮЧ_API_ИНГЕСТИИ***,
       maxLevel: 'info',
       service: 'my-app',
     }),
@@ -43,7 +46,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 export class AppModule {}
 ```
 
-После этого экземпляр winston будет доступен для внедрения по всему проекту с использованием токена внедрения `HDX_LOGGER_MODULE_PROVIDER`:
+После этого экземпляр логгера winston будет доступен для внедрения во всём проекте с использованием токена для внедрения `HDX_LOGGER_MODULE_PROVIDER`:
 
 ```javascript
 import { Controller, Inject } from '@nestjs/common';
@@ -62,15 +65,19 @@ export class CatsController {
 }
 ```
 
-### Замена логгера Nest (также для начальной загрузки) {#replacing-the-nest-logger}
 
-:::note Важно
-Делая это, вы отказываетесь от внедрения зависимостей, что означает, что `forRoot` и `forRootAsync` не нужны и не должны использоваться. Удалите их из вашего главного модуля.
+### Замена логгера Nest (также для начальной загрузки)
+
+:::note Important
+Делая это, вы отказываетесь от внедрения зависимостей, а значит, `forRoot` и `forRootAsync` больше не нужны и не должны использоваться. Удалите их из вашего основного модуля.
 :::
 
-Использование внедрения зависимостей имеет один небольшой недостаток. Nest сначала должен загрузить приложение (создание модулей и провайдеров, внедрение зависимостей и т.д.), и на этом этапе экземпляр `HyperDXNestLogger` еще не доступен, что означает, что Nest возвращается к внутреннему логгеру.
+Использование внедрения зависимостей имеет один небольшой недостаток. Nest сначала должен выполнить начальную загрузку приложения (создать экземпляры модулей и провайдеров, внедрить зависимости и т. д.), и в ходе этого процесса экземпляр `HyperDXNestLogger` ещё недоступен, что означает, что Nest использует внутренний логгер.
 
-Одно из решений — создать логгер вне жизненного цикла приложения, используя функцию `createLogger`, и передать его в `NestFactory.create`. Nest затем обернет наш кастомный логгер (тот же экземпляр, возвращаемый методом `createLogger`) в класс Logger, переправляя все вызовы к нему:
+Одно из решений — создать логгер вне жизненного цикла приложения, используя
+функцию `createLogger`, и передать его в `NestFactory.create`. Затем Nest
+обернёт наш кастомный логгер (тот же экземпляр, возвращаемый методом `createLogger`)
+в класс Logger, перенаправляя ему все вызовы:
 
 Создайте логгер в файле `main.ts`
 
@@ -80,7 +87,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: HyperDXNestLoggerModule.createLogger({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      apiKey: ***ВАШ_API_КЛЮЧ_ДЛЯ_ИНГЕСТИИ***,
       maxLevel: 'info',
       service: 'my-app',
     })
@@ -90,7 +97,7 @@ async function bootstrap() {
 bootstrap();
 ```
 
-Измените ваш главный модуль, чтобы предоставить сервис Logger:
+Измените основной модуль, чтобы он предоставлял сервис Logger:
 
 ```javascript
 import { Logger, Module } from '@nestjs/common';
@@ -101,7 +108,7 @@ import { Logger, Module } from '@nestjs/common';
 export class AppModule {}
 ```
 
-Затем просто внедрите логгер, указав его тип как Logger из `@nestjs/common`:
+Затем просто внедрите логгер, указав его тип как `Logger` из `@nestjs/common`:
 
 ```javascript
 import { Controller, Logger } from '@nestjs/common';

@@ -1,16 +1,18 @@
 ---
-slug: '/interfaces/third-party/integrations'
-sidebar_label: Интеграции
+description: 'Документация по интеграции ClickHouse с различными сторонними системами
+  и инструментами'
+sidebar_label: 'Интеграции'
 sidebar_position: 27
-description: 'Документация по интеграции ClickHouse с различными сторонними системами'
-title: 'Библиотеки интеграции от сторонних разработчиков'
-doc_type: reference
+slug: /interfaces/third-party/integrations
+title: 'Интеграционные библиотеки сторонних разработчиков'
+doc_type: 'reference'
 ---
-# Интеграционные библиотеки от сторонних разработчиков
+
+# Библиотеки интеграции от сторонних разработчиков
 
 :::warning Отказ от ответственности
-ClickHouse, Inc. **не** поддерживает инструменты и библиотеки, перечисленные ниже, и не проводила обширное тестирование для обеспечения их качества.
-Для официальных интеграций смотрите [страницу интеграций](/integrations).
+ClickHouse, Inc. **не** поддерживает перечисленные ниже инструменты и библиотеки и не проводила их всестороннего тестирования для оценки качества.
+Ознакомиться с официальными интеграциями можно на [странице интеграций](/integrations).
 :::
 
 ## Инфраструктурные продукты {#infrastructure-products}
@@ -36,7 +38,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
 <summary>Очереди сообщений</summary>
   
 - [Kafka](https://kafka.apache.org)
-  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (использует [Go client](https://github.com/ClickHouse/clickhouse-go/))
+  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (использует клиент [Go](https://github.com/ClickHouse/clickhouse-go/))
   - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
@@ -69,7 +71,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
 </details>
 
 <details>
-<summary>Управление конфигурацией</summary>
+<summary>Управление конфигурациями</summary>
 - [puppet](https://puppet.com)
   - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
   - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
@@ -82,20 +84,20 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
   - [graphouse](https://github.com/ClickHouse/graphouse)
   - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
   - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) - оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если можно применить правила из [конфигурации сводки](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
+  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) — оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если к ним можно применить правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
 - [Grafana](https://grafana.com/)
-  - [clickhouse-grafana](https://github.com/Vertamedia/clickhouse-grafana)
+  - [clickhouse-grafana](https://github.com/Altinity/clickhouse-grafana)
 - [Prometheus](https://prometheus.io/)
   - [clickhouse_exporter](https://github.com/f1yegor/clickhouse_exporter)
   - [PromHouse](https://github.com/Percona-Lab/PromHouse)
-  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) (использует [Go client](https://github.com/kshvakov/clickhouse/))
+  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) (использует [клиент Go](https://github.com/kshvakov/clickhouse/))
 - [Nagios](https://www.nagios.org/)
   - [check_clickhouse](https://github.com/exogroup/check_clickhouse/)
   - [check_clickhouse.py](https://github.com/innogames/igmonplugins/blob/master/src/check_clickhouse.py)
 - [Zabbix](https://www.zabbix.com)
   - [clickhouse-zabbix-template](https://github.com/Altinity/clickhouse-zabbix-template)
 - [Sematext](https://sematext.com/)
-  - [интеграция clickhouse](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
+  - [интеграция с ClickHouse](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
 </details>
 
 <details>
@@ -120,10 +122,10 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
 <summary>AutoML</summary>
 
 - [MindsDB](https://mindsdb.com/)
-  - [MindsDB](https://github.com/mindsdb/mindsdb) - интеграция с ClickHouse, обеспечивая доступ к данным из ClickHouse для разнообразных моделей AI/ML.
+  - [MindsDB](https://github.com/mindsdb/mindsdb) — интегрируется с ClickHouse, обеспечивая доступ к данным из ClickHouse для широкого спектра моделей AI/ML.
 </details>
 
-## Экотемы языков программирования {#programming-language-ecosystems}
+## Экосистемы языков программирования {#programming-language-ecosystems}
 
 <details>
 <summary>Python</summary>
@@ -154,7 +156,7 @@ ClickHouse, Inc. **не** поддерживает инструменты и б�
 - [Hadoop](http://hadoop.apache.org)
   - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader) (использует [JDBC](../../sql-reference/table-functions/jdbc.md))
 </details>
-  
+
 <details>
 <summary>Scala</summary>
 

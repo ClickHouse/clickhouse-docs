@@ -1,16 +1,15 @@
 ---
-'description': 'ClickHouse 中 Boolean 数据类型的文档'
-'sidebar_label': 'Boolean'
-'sidebar_position': 33
-'slug': '/sql-reference/data-types/boolean'
-'title': 'Bool'
-'doc_type': 'reference'
+description: 'ClickHouse 中 Boolean 类型的文档'
+sidebar_label: 'Boolean'
+sidebar_position: 33
+slug: /sql-reference/data-types/boolean
+title: 'Bool（布尔）'
+doc_type: 'reference'
 ---
-
 
 # Bool
 
-类型 `bool` 在内部存储为 UInt8。可能的值为 `true` (1) 和 `false` (0)。
+`bool` 类型在内部存储为 UInt8。可能的取值为 `true`（1）、`false`（0）。
 
 ```sql
 SELECT true AS col, toTypeName(col);

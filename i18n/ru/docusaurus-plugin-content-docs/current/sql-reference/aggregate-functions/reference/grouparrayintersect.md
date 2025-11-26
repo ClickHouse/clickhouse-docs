@@ -1,13 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/grouparrayintersect'
+description: 'Возвращает пересечение переданных массивов (все элементы массивов,
+  которые присутствуют во всех переданных массивах).'
 sidebar_position: 141
-description: 'Вернуть пересечение заданных массивов (Вернуть все элементы массивов,'
-title: groupArrayIntersect
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/grouparrayintersect
+title: 'groupArrayIntersect'
+doc_type: 'reference'
 ---
+
 # groupArrayIntersect
 
-Возвращает пересечение заданных массивов (Возвращает все элементы массивов, которые присутствуют во всех заданных массивах).
+Возвращает пересечение заданных массивов (все элементы, которые присутствуют во всех указанных массивах).
 
 **Синтаксис**
 
@@ -17,11 +19,11 @@ groupArrayIntersect(x)
 
 **Аргументы**
 
-- `x` — Аргумент (имя столбца или выражение).
+* `x` — аргумент (имя столбца или выражение).
 
 **Возвращаемые значения**
 
-- Массив, содержащий элементы, которые есть во всех массивах.
+* Массив, содержащий элементы, присутствующие во всех массивах.
 
 Тип: [Array](../../data-types/array.md).
 
@@ -37,7 +39,7 @@ groupArrayIntersect(x)
 └────────────────┘
 ```
 
-Запрос с именем столбца в качестве аргумента:
+Запрос, в котором имя столбца передаётся в качестве аргумента:
 
 ```sql
 SELECT groupArrayIntersect(a) AS intersection FROM numbers;
