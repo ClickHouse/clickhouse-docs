@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    useNavbarMobileSidebar,
+  useNavbarMobileSidebar,
 } from '@docusaurus/theme-common/internal';
 import Translate from '@docusaurus/Translate';
 import SearchBar from "@theme/SearchBar";
@@ -9,18 +9,18 @@ import { ThemeClassNames } from '@docusaurus/theme-common'
 import { useNavbarSecondaryMenu } from '@docusaurus/theme-common/internal';
 import styles from './styles.module.scss'
 import DocSidebarItems from '@theme/DocSidebarItems'
-import sidebars from '../../../../../sidebars';
+import { dropdownCategories } from '../../../Navbar/Content/MenuData';
 
 function SecondaryMenuBackButton(props) {
-    return (
-        <button {...props} type="button" className="clean-btn navbar-sidebar__back">
-            <Translate
-                id="theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel"
-                description="The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)">
-                ← Back to main menu
-            </Translate>
-        </button>
-    );
+  return (
+    <button {...props} type="button" className="clean-btn navbar-sidebar__back">
+      <Translate
+        id="theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel"
+        description="The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)">
+        ← Back to main menu
+      </Translate>
+    </button>
+  );
 }
 
 // The secondary menu slides from the right and shows the top nav items. This is a little unusual - we use this to show the drop down items
@@ -37,16 +37,16 @@ export default function NavbarMobileSidebarSecondaryMenu() {
         </div>
       </div>
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, 'menu__list', styles.docsMobileMenuItems)}>
-        <DocSidebarItems items={sidebars.dropdownCategories.map(item => ({
+        <DocSidebarItems items={dropdownCategories.map(item => ({
           ...item,
-          label: (
+          label: React.isValidElement(item.label) ? item.label : (
             <Translate id={`sidebar.dropdownCategories.category.${item.label}`}>
               {item.label}
             </Translate>
           ),
           items: item.items?.map(subItem => ({
             ...subItem,
-            label: (
+            label: React.isValidElement(subItem.label) ? subItem.label : (
               <Translate id={`sidebar.dropdownCategories.category.${item.label}.${subItem.label}`}>
                 {subItem.label}
               </Translate>
