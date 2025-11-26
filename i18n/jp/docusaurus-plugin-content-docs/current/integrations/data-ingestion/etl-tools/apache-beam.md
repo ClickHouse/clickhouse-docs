@@ -133,12 +133,6 @@ public class Main {
 |                                    | `Schema.TypeName#DECIMAL`  | ❌            |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌            |                                                                                                                                          |
 
-<ComponentExample title="例1" />
-
-<ComponentExample title="例2" />
-
-
-
 ## ClickHouseIO.Write のパラメータ {#clickhouseiowrite-parameters}
 
 次のセッターメソッドを使用して `ClickHouseIO.Write` の設定を調整できます。
