@@ -40,39 +40,25 @@ sudo apt-get update
 ```bash
 # 前提パッケージのインストール
 sudo apt-get install apt-transport-https ca-certificates dirmngr
-```
-
 
 # パッケージの認証に使用する ClickHouse の GPG キーを追加する
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-
-
 # APT のソースリストに ClickHouse リポジトリを追加する
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
-    
-
 
 # apt パッケージリストを更新
 sudo apt-get update
 
-
-
 # ClickHouse サーバーおよびクライアントのパッケージをインストールする
 sudo apt-get install -y clickhouse-server clickhouse-client
-
-
 
 # ClickHouse サーバーのサービスを起動する
 sudo service clickhouse-server start
 
-
-
 # ClickHouse コマンドラインクライアントを起動する
-
-clickhouse-client # パスワードを設定している場合は &quot;clickhouse-client --password&quot; を使用します。
-
+clickhouse-client # パスワードを設定している場合は "clickhouse-client --password" を使用します。
 ```
 
 </details>
