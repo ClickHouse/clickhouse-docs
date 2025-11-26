@@ -66,6 +66,7 @@
     }
   },
   "options": {
+    "experimentalLocalizeStaticUrls": true,
     "experimentalAddHeaderAnchorIds": "mintlify",
     "experimentalClearLocaleDirs": true
   }
