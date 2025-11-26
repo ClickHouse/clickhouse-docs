@@ -1,0 +1,110 @@
+---
+title: Python requests モジュールを使用した簡単な例
+description: "Python の requests モジュールを使用して ClickHouse への書き込みおよび読み取りを行う例"
+date: 2022-07-10
+tags: ['ネイティブクライアントとインターフェース']
+keywords: ['Python']
+---
+
+{frontMatter.description}
+
+{/* 切り捨て */}
+
+
+## 質問 \{#question\}
+
+_requests_ モジュールで ClickHouse サーバーに HTTP リクエストを送るだけで十分ですか？
+
+## 回答
+
+以下がサンプルコードです。
+
+```py
+import requests
+import datetime
+
+create_replace_stmt = 'CREATE OR REPLACE TABLE test_table (name String, age UInt8) Engine=MergeTree ORDER BY tuple();'
+select_query = 'SELECT count() FROM test_table'
+insert_query = 'INSERT INTO test_table SELECT * FROM  generateRandom(\'name String, age UInt8\',1,1) LIMIT 300000000'
+
+CH_URL = 'https://your_clickhouse_service_fqdn:8443'
+CH_USER = 'default'
+CH_PASSWORD = 'secret_pwd'
+
+headers = {}
+headers["X-ClickHouse-User"] = CH_USER
+headers["X-ClickHouse-Key"] = CH_PASSWORD
+
+now = (datetime.datetime.now())
+print("{} - starting...".format(now))
+
+
+# テーブルの作成/置換
+now = (datetime.datetime.now())
+print("{} - テーブルを作成/置換中...".format(now))
+response = requests.post(url=CH_URL,
+                         params={"database": "default",
+                                 "query": create_replace_stmt,
+                                 "session_id": "my-session-id-string"
+                                 },
+                         headers=headers)
+
+# count()を実行
+response = requests.post(url=CH_URL,
+                         params={"database": "default",
+                                 "query": select_query,
+                                 "session_id": "my-session-id-string"
+                                 },
+                         headers=headers)
+
+now = (datetime.datetime.now())
+print("{} - 挿入前のtest_tableの要素数: {}".format(
+    now, response.content.decode('utf-8')))
+
+
+# データ挿入
+now = (datetime.datetime.now())
+print("{} - データ挿入中...".format(now))
+response = requests.post(url=CH_URL,
+                         params={"database": "default",
+                                 "query": insert_query,
+                                 "session_id": "my-session-id-string",
+                                 "wait_end_of_query": 1
+                                 },
+                         headers=headers)
+
+now = (datetime.datetime.now())
+print("{} - データ挿入完了...".format(now))
+
+response = requests.post(url=CH_URL,
+                         params={"database": "default",
+                                 "query": select_query,
+                                 "session_id": "my-session-id-string",
+                                 },
+                         headers=headers)
+
+now = (datetime.datetime.now())
+print("{} - 挿入後のtest_tableの要素数: {}".format(
+    now, response.content.decode('utf-8')))
+```
+
+期待される出力例：
+
+```
+(venv) ➜  venv/bin/python main.py
+2023-07-07 14:54:27.336450 - 開始中...
+2023-07-07 14:54:27.336476 - テーブルを作成/置換中...
+2023-07-07 14:54:28.125270 - 挿入前のtest_table内の要素数: 0
+
+2023-07-07 14:54:28.125352 - データを挿入中...
+2023-07-07 14:55:23.788466 - データの挿入が完了しました...
+2023-07-07 14:55:23.962134 - 挿入後のtest_table内の要素数: 299115357
+```
+
+requirements.txt
+
+```
+requests==2.31.0
+```
+
+Python の venv を設定する手順については、こちらの [別の KB](https://clickhouse.com/docs/knowledgebase/python-clickhouse-connect-example#steps) を参照してください。

@@ -229,14 +229,6 @@
     "message": "请联系将你链接到原始 URL 的网站所有者，并告知他们该链接已失效。",
     "description": "404 页面上的第二段"
   },
-  "theme.blog.post.readMore": {
-    "message": "了解更多",
-    "description": "用于在博客文章摘要中链接到完整博客文章的标签"
-  },
-  "theme.blog.post.readMoreLabel": {
-    "message": "进一步了解 {title}",
-    "description": "从摘要跳转到完整博客文章的链接的 ARIA 标签"
-  },
   "theme.blog.post.readingTime.plurals": {
     "message": "1 分钟阅读 | {readingTime} 分钟阅读",
     "description": "“{readingTime} 分钟阅读”的复数形式标签。请根据你的语言所支持的复数形式数量，提供相应数量的复数形式（用“|”分隔）。详见：https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
@@ -244,6 +236,14 @@
   "theme.docs.breadcrumbs.home": {
     "message": "首页",
     "description": "面包屑导航中首页的 ARIA 标签"
+  },
+  "theme.blog.post.readMore": {
+    "message": "了解更多",
+    "description": "用于在博客文章摘要中链接到完整博客文章的标签"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "进一步了解 {title}",
+    "description": "从摘要跳转到完整博客文章的链接的 ARIA 标签"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
     "message": "折叠侧边栏",

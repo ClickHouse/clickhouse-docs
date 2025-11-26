@@ -229,14 +229,6 @@
     "message": "元のURLへリンクしていたサイトの管理者に連絡し、そのリンクがリンク切れであることを知らせてください。",
     "description": "404ページの2番目の段落"
   },
-  "theme.blog.post.readMore": {
-    "message": "続きを読む",
-    "description": "ブログ記事の抜粋に表示され、完全な記事へのリンクとして使われるラベル"
-  },
-  "theme.blog.post.readMoreLabel": {
-    "message": "{title} について詳しく見る",
-    "description": "抜粋からブログ記事の全文へのリンク用の ARIA ラベル"
-  },
   "theme.blog.post.readingTime.plurals": {
     "message": "読了時間1分|読了時間{readingTime}分",
     "description": "「{readingTime} 分で読める」のラベルを複数形にしたものです。あなたの言語がサポートする複数形の形ごとにラベルを用意し、\"|\" で区切って指定してください（https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html を参照）。"
@@ -244,6 +236,14 @@
   "theme.docs.breadcrumbs.home": {
     "message": "ホームページ",
     "description": "パンくずリスト内のホームページ用の ARIA ラベル"
+  },
+  "theme.blog.post.readMore": {
+    "message": "続きを読む",
+    "description": "ブログ記事の抜粋に表示され、完全な記事へのリンクとして使われるラベル"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "{title} について詳しく見る",
+    "description": "抜粋からブログ記事の全文へのリンク用の ARIA ラベル"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
     "message": "サイドバーを折りたたむ",

@@ -255,6 +255,150 @@
     "message": "ClickPipes",
     "description": "Cloud 侧边栏中 ClickPipes 类别的标签"
   },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "简介",
+    "description": "sqlreference 侧边栏中 “Introduction” 类别的标签"
+  },
+  "sidebar.sqlreference.category.Data types": {
+    "message": "数据类型",
+    "description": "sqlreference 侧边栏中“数据类型”类别的标签"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "特殊数据类型",
+    "description": "侧边栏 sqlreference 中“特殊数据类型”类别的标签"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "语句",
+    "description": "sqlreference 侧边栏中 “Statements” 类别的标签"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "侧边栏 sqlreference 中 “SELECT” 类别的标签"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "创建",
+    "description": "侧边栏 sqlreference 中 “CREATE” 分类的标签"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "侧边栏 sqlreference 中 ALTER 类别的标签"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "Operator（运维扩展）",
+    "description": "sqlreference 侧边栏中“运算符”类别的标签"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "引擎",
+    "description": "侧边栏 sqlreference 中 “Engines” 类别的标签"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "数据库引擎",
+    "description": "侧边栏 sqlreference 中 “Database Engines” 类别的标签"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "表引擎",
+    "description": "侧边栏 sqlreference 中 “Table Engines” 分类的标签"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTree 引擎家族",
+    "description": "sqlreference 侧边栏中 MergeTree Family 分类的标签"
+  },
+  "sidebar.sqlreference.category.Log family": {
+    "message": "Log 系列引擎",
+    "description": "sqlreference 侧边栏中 “Log family” 类别的标签"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "集成",
+    "description": "sqlreference 侧边栏中“Integrations”类别的标签"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "特殊",
+    "description": "侧边栏 sqlreference 中“Special”分类的标签"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "函数",
+    "description": "sqlreference 侧边栏中 “Functions” 分类的标签"
+  },
+  "sidebar.sqlreference.category.Regular functions": {
+    "message": "普通函数",
+    "description": "侧边栏 sqlreference 中“Regular functions”类别的标签"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "地理位置",
+    "description": "sqlreference 侧边栏中 Geo 类别的标签"
+  },
+  "sidebar.sqlreference.category.Aggregate functions": {
+    "message": "聚合函数",
+    "description": "侧边栏 sqlreference 中 “Aggregate functions” 分类的标签"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "聚合函数",
+    "description": "侧边栏 sqlreference 中“Aggregate Functions”类别的标签"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "组合器示例",
+    "description": "sqlreference 侧边栏中“Combinator 示例”类别的标签"
+  },
+  "sidebar.sqlreference.category.Table functions": {
+    "message": "表函数",
+    "description": "侧边栏 sqlreference 中“表函数”分类的标签"
+  },
+  "sidebar.sqlreference.category.Window functions": {
+    "message": "窗口函数",
+    "description": "侧边栏 SQL 参考中“窗口函数”类别的标签"
+  },
+  "sidebar.sqlreference.category.Formats": {
+    "message": "格式",
+    "description": "sqlreference 侧边栏中“Formats”分类的标签"
+  },
+  "sidebar.sqlreference.category.Arrow": {
+    "message": "箭头",
+    "description": "sqlreference 侧边栏中 Arrow 分类的标签"
+  },
+  "sidebar.sqlreference.category.Avro": {
+    "message": "Avro",
+    "description": "sqlreference 侧边栏中 Avro 类别的标签"
+  },
+  "sidebar.sqlreference.category.CSV": {
+    "message": "CSV",
+    "description": "在侧边栏 sqlreference 中的 CSV 类别标签"
+  },
+  "sidebar.sqlreference.category.CustomSeparated": {
+    "message": "自定义分隔符",
+    "description": "sqlreference 侧边栏中 “CustomSeparated” 类别的标签"
+  },
+  "sidebar.sqlreference.category.JSON": {
+    "message": "JSON",
+    "description": "侧边栏 sqlreference 中 JSON 类别的标签"
+  },
+  "sidebar.sqlreference.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "侧边栏 sqlreference 中“LineAsString”类别的标签"
+  },
+  "sidebar.sqlreference.category.Parquet": {
+    "message": "Parquet",
+    "description": "sqlreference 侧边栏中 “Parquet” 分类的标签"
+  },
+  "sidebar.sqlreference.category.Pretty": {
+    "message": "美观",
+    "description": "侧边栏 sqlreference 中用于“Pretty”类别的标签"
+  },
+  "sidebar.sqlreference.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "sqlreference 侧边栏中 Protobuf 分类的标签"
+  },
+  "sidebar.sqlreference.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "侧边栏 sqlreference 中 “RowBinary” 类别的标签"
+  },
+  "sidebar.sqlreference.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "侧边栏 sqlreference 中 “TabSeparated” 类别的标签"
+  },
+  "sidebar.sqlreference.category.Template": {
+    "message": "模板",
+    "description": "侧边栏 sqlreference 中的 Template 分类标签"
+  },
   "sidebar.integrations.category.Language clients": {
     "message": "各语言客户端",
     "description": "侧边栏集成中“语言客户端”类别的标签"
@@ -302,6 +446,14 @@
   "sidebar.integrations.category.ClickPipes for MongoDB": {
     "message": "面向 MongoDB 的 ClickPipes",
     "description": "侧边栏“集成”中“ClickPipes for MongoDB”类别的标签"
+  },
+  "sidebar.integrations.category.Native clients & interfaces": {
+    "message": "原生客户端和接口",
+    "description": "侧边栏“集成”中的“原生客户端和接口”类别标签"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "驱动和接口",
+    "description": "侧边栏“集成”中“驱动和接口”类别的标签"
   },
   "sidebar.integrations.category.Data sources": {
     "message": "数据源",
@@ -379,6 +531,14 @@
     "message": "数据集成",
     "description": "侧边栏“集成”中的“数据集成”分类标签"
   },
+  "sidebar.integrations.category.Misc": {
+    "message": "其他",
+    "description": "侧边栏“集成”中“其他”分类的标签"
+  },
+  "sidebar.integrations.link.View all formats": {
+    "message": "查看全部格式",
+    "description": "侧边栏“集成”中的“查看所有格式”链接标签，指向 /interfaces/formats"
+  },
   "sidebar.integrations.doc.Overview": {
     "message": "概览",
     "description": "侧边栏“集成”（Integrations）中名为“Overview”的文档条目的标签，链接到文档 integrations/language-clients/java/index"
@@ -386,6 +546,10 @@
   "sidebar.integrations.doc.Introduction": {
     "message": "简介",
     "description": "侧边栏“集成”中名为“Introduction”的文档条目的标签，链接到文档 integrations/language-clients/python/index"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "第三方库",
+    "description": "侧边栏“集成”部分中“第三方库”文档项的标签，链接到文档 interfaces/third-party/integrations"
   },
   "sidebar.managingData.category.Core concepts": {
     "message": "核心概念",
@@ -402,6 +566,10 @@
   "sidebar.managingData.category.Data modeling": {
     "message": "数据建模",
     "description": "managingData 侧边栏中“数据建模”类别的标签"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "术语表",
+    "description": "在 managingData 侧边栏中的 “Dictionary” 类别标签"
   },
   "sidebar.managingData.category.Materialized views": {
     "message": "物化视图",
@@ -455,6 +623,14 @@
     "message": "更新日志",
     "description": "aboutClickHouse 侧边栏中 Changelog 分类的自动生成索引页面标题"
   },
+  "sidebar.aboutClickHouse.category.Development and contributing": {
+    "message": "开发与贡献",
+    "description": "aboutClickHouse 侧边栏中“开发与贡献”类别的标签"
+  },
+  "sidebar.aboutClickHouse.category.Native protocol": {
+    "message": "原生协议",
+    "description": "关于 ClickHouse 页面侧边栏中“Native protocol”类别的标签"
+  },
   "sidebar.aboutClickHouse.category.FAQ": {
     "message": "常见问题解答",
     "description": "关于 ClickHouse 侧边栏中“常见问题 (FAQ)”分类的标签"
@@ -474,6 +650,18 @@
   "sidebar.serverAdmin.category.Backup/Restore": {
     "message": "备份与恢复",
     "description": "侧边栏 serverAdmin 中“备份/恢复”类别的标签"
+  },
+  "sidebar.serverAdmin.category.Allocation profiling": {
+    "message": "内存分配分析",
+    "description": "serverAdmin 侧边栏中 “Allocation profiling” 类别的标签"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "设置",
+    "description": "侧边栏 serverAdmin 中“设置”分类的标签"
+  },
+  "sidebar.serverAdmin.category.System tables": {
+    "message": "系统表",
+    "description": "侧边栏 serverAdmin 中“系统表”分类的标签"
   },
   "sidebar.serverAdmin.category.Security and authentication": {
     "message": "安全与身份认证",
@@ -558,6 +746,10 @@
   "sidebar.clickstack.category.Deployment": {
     "message": "部署",
     "description": "ClickStack 侧边栏中“部署”分类的标签"
+  },
+  "sidebar.clickstack.category.Helm": {
+    "message": "Helm",
+    "description": "ClickStack 侧边栏中 Helm 分类的标签名称"
   },
   "sidebar.clickstack.category.Ingesting data": {
     "message": "数据摄取",
@@ -802,197 +994,5 @@
   "sidebar.dropdownCategories.link.Development and contributing": {
     "message": "开发与贡献",
     "description": "侧边栏下拉菜单 dropdownCategories 中指向 /development/developer-instruction 的 “Development and contributing” 链接的标签"
-  },
-  "sidebar.sqlreference.category.Introduction": {
-    "message": "简介",
-    "description": "sqlreference 侧边栏中 “Introduction” 类别的标签"
-  },
-  "sidebar.sqlreference.category.Data types": {
-    "message": "数据类型",
-    "description": "sqlreference 侧边栏中“数据类型”类别的标签"
-  },
-  "sidebar.sqlreference.category.Special Data Types": {
-    "message": "特殊数据类型",
-    "description": "侧边栏 sqlreference 中“特殊数据类型”类别的标签"
-  },
-  "sidebar.sqlreference.category.Statements": {
-    "message": "语句",
-    "description": "sqlreference 侧边栏中 “Statements” 类别的标签"
-  },
-  "sidebar.sqlreference.category.SELECT": {
-    "message": "SELECT",
-    "description": "侧边栏 sqlreference 中 “SELECT” 类别的标签"
-  },
-  "sidebar.sqlreference.category.CREATE": {
-    "message": "创建",
-    "description": "侧边栏 sqlreference 中 “CREATE” 分类的标签"
-  },
-  "sidebar.sqlreference.category.ALTER": {
-    "message": "ALTER",
-    "description": "侧边栏 sqlreference 中 ALTER 类别的标签"
-  },
-  "sidebar.sqlreference.category.Operators": {
-    "message": "Operator（运维扩展）",
-    "description": "sqlreference 侧边栏中“运算符”类别的标签"
-  },
-  "sidebar.sqlreference.category.Engines": {
-    "message": "引擎",
-    "description": "侧边栏 sqlreference 中 “Engines” 类别的标签"
-  },
-  "sidebar.sqlreference.category.Database Engines": {
-    "message": "数据库引擎",
-    "description": "侧边栏 sqlreference 中 “Database Engines” 类别的标签"
-  },
-  "sidebar.sqlreference.category.Table Engines": {
-    "message": "表引擎",
-    "description": "侧边栏 sqlreference 中 “Table Engines” 分类的标签"
-  },
-  "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "MergeTree 引擎家族",
-    "description": "sqlreference 侧边栏中 MergeTree Family 分类的标签"
-  },
-  "sidebar.sqlreference.category.Log family": {
-    "message": "Log 系列引擎",
-    "description": "sqlreference 侧边栏中 “Log family” 类别的标签"
-  },
-  "sidebar.sqlreference.category.Integrations": {
-    "message": "集成",
-    "description": "sqlreference 侧边栏中“Integrations”类别的标签"
-  },
-  "sidebar.sqlreference.category.Special": {
-    "message": "特殊",
-    "description": "侧边栏 sqlreference 中“Special”分类的标签"
-  },
-  "sidebar.sqlreference.category.Functions": {
-    "message": "函数",
-    "description": "sqlreference 侧边栏中 “Functions” 分类的标签"
-  },
-  "sidebar.sqlreference.category.Regular functions": {
-    "message": "普通函数",
-    "description": "侧边栏 sqlreference 中“Regular functions”类别的标签"
-  },
-  "sidebar.sqlreference.category.Geo": {
-    "message": "地理位置",
-    "description": "sqlreference 侧边栏中 Geo 类别的标签"
-  },
-  "sidebar.sqlreference.category.Aggregate functions": {
-    "message": "聚合函数",
-    "description": "侧边栏 sqlreference 中 “Aggregate functions” 分类的标签"
-  },
-  "sidebar.sqlreference.category.Aggregate Functions": {
-    "message": "聚合函数",
-    "description": "侧边栏 sqlreference 中“Aggregate Functions”类别的标签"
-  },
-  "sidebar.sqlreference.category.Combinator examples": {
-    "message": "组合器示例",
-    "description": "sqlreference 侧边栏中“Combinator 示例”类别的标签"
-  },
-  "sidebar.sqlreference.category.Table functions": {
-    "message": "表函数",
-    "description": "侧边栏 sqlreference 中“表函数”分类的标签"
-  },
-  "sidebar.sqlreference.category.Window functions": {
-    "message": "窗口函数",
-    "description": "侧边栏 SQL 参考中“窗口函数”类别的标签"
-  },
-  "sidebar.sqlreference.category.Formats": {
-    "message": "格式",
-    "description": "sqlreference 侧边栏中“Formats”分类的标签"
-  },
-  "sidebar.sqlreference.category.Arrow": {
-    "message": "箭头",
-    "description": "sqlreference 侧边栏中 Arrow 分类的标签"
-  },
-  "sidebar.sqlreference.category.Avro": {
-    "message": "Avro",
-    "description": "sqlreference 侧边栏中 Avro 类别的标签"
-  },
-  "sidebar.sqlreference.category.CSV": {
-    "message": "CSV",
-    "description": "在侧边栏 sqlreference 中的 CSV 类别标签"
-  },
-  "sidebar.sqlreference.category.CustomSeparated": {
-    "message": "自定义分隔符",
-    "description": "sqlreference 侧边栏中 “CustomSeparated” 类别的标签"
-  },
-  "sidebar.sqlreference.category.JSON": {
-    "message": "JSON",
-    "description": "侧边栏 sqlreference 中 JSON 类别的标签"
-  },
-  "sidebar.sqlreference.category.LineAsString": {
-    "message": "LineAsString",
-    "description": "侧边栏 sqlreference 中“LineAsString”类别的标签"
-  },
-  "sidebar.sqlreference.category.Parquet": {
-    "message": "Parquet",
-    "description": "sqlreference 侧边栏中 “Parquet” 分类的标签"
-  },
-  "sidebar.sqlreference.category.Pretty": {
-    "message": "美观",
-    "description": "侧边栏 sqlreference 中用于“Pretty”类别的标签"
-  },
-  "sidebar.sqlreference.category.Protobuf": {
-    "message": "Protobuf",
-    "description": "sqlreference 侧边栏中 Protobuf 分类的标签"
-  },
-  "sidebar.sqlreference.category.RowBinary": {
-    "message": "RowBinary",
-    "description": "侧边栏 sqlreference 中 “RowBinary” 类别的标签"
-  },
-  "sidebar.sqlreference.category.TabSeparated": {
-    "message": "TabSeparated",
-    "description": "侧边栏 sqlreference 中 “TabSeparated” 类别的标签"
-  },
-  "sidebar.sqlreference.category.Template": {
-    "message": "模板",
-    "description": "侧边栏 sqlreference 中的 Template 分类标签"
-  },
-  "sidebar.clickstack.category.Helm": {
-    "message": "Helm",
-    "description": "ClickStack 侧边栏中 Helm 分类的标签名称"
-  },
-  "sidebar.integrations.category.Native clients & interfaces": {
-    "message": "原生客户端和接口",
-    "description": "侧边栏“集成”中的“原生客户端和接口”类别标签"
-  },
-  "sidebar.integrations.category.Drivers and Interfaces": {
-    "message": "驱动和接口",
-    "description": "侧边栏“集成”中“驱动和接口”类别的标签"
-  },
-  "sidebar.integrations.category.Misc": {
-    "message": "其他",
-    "description": "侧边栏“集成”中“其他”分类的标签"
-  },
-  "sidebar.integrations.link.View all formats": {
-    "message": "查看全部格式",
-    "description": "侧边栏“集成”中的“查看所有格式”链接标签，指向 /interfaces/formats"
-  },
-  "sidebar.integrations.doc.Third-party Libraries": {
-    "message": "第三方库",
-    "description": "侧边栏“集成”部分中“第三方库”文档项的标签，链接到文档 interfaces/third-party/integrations"
-  },
-  "sidebar.managingData.category.Dictionary": {
-    "message": "术语表",
-    "description": "在 managingData 侧边栏中的 “Dictionary” 类别标签"
-  },
-  "sidebar.aboutClickHouse.category.Development and contributing": {
-    "message": "开发与贡献",
-    "description": "aboutClickHouse 侧边栏中“开发与贡献”类别的标签"
-  },
-  "sidebar.aboutClickHouse.category.Native protocol": {
-    "message": "原生协议",
-    "description": "关于 ClickHouse 页面侧边栏中“Native protocol”类别的标签"
-  },
-  "sidebar.serverAdmin.category.Allocation profiling": {
-    "message": "内存分配分析",
-    "description": "serverAdmin 侧边栏中 “Allocation profiling” 类别的标签"
-  },
-  "sidebar.serverAdmin.category.Settings": {
-    "message": "设置",
-    "description": "侧边栏 serverAdmin 中“设置”分类的标签"
-  },
-  "sidebar.serverAdmin.category.System tables": {
-    "message": "系统表",
-    "description": "侧边栏 serverAdmin 中“系统表”分类的标签"
   }
 }

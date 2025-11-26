@@ -229,14 +229,6 @@
     "message": "Пожалуйста, свяжитесь с владельцем сайта, который разместил ссылку на исходный URL, и сообщите, что эта ссылка не работает.",
     "description": "Второй абзац страницы ошибки 404"
   },
-  "theme.blog.post.readMore": {
-    "message": "Подробнее",
-    "description": "Метка, используемая в кратких анонсах записей блога для ссылки на полные записи блога"
-  },
-  "theme.blog.post.readMoreLabel": {
-    "message": "Подробнее о {title}",
-    "description": "Метка ARIA для ссылки из анонса на полный текст записи блога"
-  },
   "theme.blog.post.readingTime.plurals": {
     "message": "1 мин на чтение|{readingTime} мин на чтение",
     "description": "Множественные формы метки для «{readingTime} мин чтения». Используйте столько форм множественного числа (разделяя их символом «|»), сколько поддерживает ваш язык (см. https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
@@ -244,6 +236,14 @@
   "theme.docs.breadcrumbs.home": {
     "message": "Главная страница",
     "description": "ARIA-метка элемента «Главная» в цепочке навигации (хлебных крошках)"
+  },
+  "theme.blog.post.readMore": {
+    "message": "Подробнее",
+    "description": "Метка, используемая в кратких анонсах записей блога для ссылки на полные записи блога"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Подробнее о {title}",
+    "description": "Метка ARIA для ссылки из анонса на полный текст записи блога"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
     "message": "Свернуть боковую панель",

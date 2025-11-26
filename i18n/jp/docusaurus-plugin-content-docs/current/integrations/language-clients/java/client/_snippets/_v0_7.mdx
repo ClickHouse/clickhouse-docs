@@ -1,0 +1,345 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+DBサーバーとそのプロトコルを通じて通信するための Java クライアントライブラリです。現在の実装では [HTTP インターフェイス](/interfaces/http) のみをサポートしています。このライブラリは、サーバーにリクエストを送信するための独自の API を提供します。
+
+:::warning Deprecation
+このライブラリは近日中に非推奨となる予定です。新規プロジェクトでは最新の [Java Client](/integrations/language-clients/java/client/client.mdx) を使用してください。
+:::
+
+
+## セットアップ \{#setup\}
+
+<Tabs groupId="client-v1-setup">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+<dependency>
+    <groupId>com.clickhouse</groupId>
+    <artifactId>clickhouse-http-client</artifactId>
+    <version>0.7.2</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle（Kotlin）">
+
+```kotlin
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+```
+
+</TabItem>
+</Tabs>
+
+バージョン `0.5.0` 以降、このドライバーは新しい HTTP クライアントライブラリを使用しているため、別途依存関係として追加する必要があります。
+
+<Tabs groupId="client-v1-http-client">
+<TabItem value="maven" label="Maven">
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+<dependency>
+    <groupId>org.apache.httpcomponents.client5</groupId>
+    <artifactId>httpclient5</artifactId>
+    <version>5.3.1</version>
+</dependency>
+```
+
+</TabItem>
+<TabItem value="gradle-kt" label="Gradle（Kotlin）">
+
+```kotlin
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+```
+</TabItem>
+<TabItem value="gradle" label="Gradle">
+
+```groovy
+// https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+```
+
+</TabItem>
+</Tabs>
+
+## 初期化
+
+接続 URL の形式は `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]` です。例:
+
+* `http://localhost:8443?ssl=true&sslmode=NONE`
+* `https://(https://explorer@play.clickhouse.com:443`
+
+単一ノードへの接続:
+
+```java showLineNumbers
+ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+```
+
+複数ノードのクラスタに接続する:
+
+```java showLineNumbers
+ClickHouseNodes servers = ClickHouseNodes.of(
+    "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
+    + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
+```
+
+
+## クエリ API
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            long totalRows = summary.getTotalRowsToRead();
+}
+```
+
+
+## ストリーミングクエリAPI
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from numbers limit :limit")
+        .params(1000)
+        .executeAndWait()) {
+            for (ClickHouseRecord r : response.records()) {
+            int num = r.getValue(0).asInteger();
+            // 型変換
+            String str = r.getValue(0).asString();
+            LocalDate date = r.getValue(0).asDate();
+        }
+}
+```
+
+[リポジトリ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)内の[完全なコード例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73)を参照してください。
+
+
+## 挿入 API
+
+```java showLineNumbers
+
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers).write()
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
+        .data(myInputStream) // `myInputStream` はRowBinary形式のデータソースです
+        .executeAndWait()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            summary.getWrittenRows();
+}
+```
+
+[完全なコード例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39)は[リポジトリ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)で参照できます。
+
+**RowBinary エンコーディング**
+
+RowBinary フォーマットについては、その[ページ](/interfaces/formats/RowBinaryWithNamesAndTypes)で説明されています。
+
+[コード例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)があります。
+
+
+## 機能 \{#features\}
+
+### 圧縮
+
+クライアントはデフォルトで LZ4 圧縮を使用します。これには次の依存関係が必要です。
+
+<Tabs groupId="client-v1-compression-deps">
+  <TabItem value="maven" label="Maven">
+    ```xml
+    <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+    <dependency>
+        <groupId>org.lz4</groupId>
+        <artifactId>lz4-java</artifactId>
+        <version>1.8.0</version>
+    </dependency>
+    ```
+  </TabItem>
+
+  <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+    ```kotlin
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation("org.lz4:lz4-java:1.8.0")
+    ```
+  </TabItem>
+
+  <TabItem value="gradle" label="Gradle">
+    ```groovy
+    // https://mvnrepository.com/artifact/org.lz4/lz4-java
+    implementation 'org.lz4:lz4-java:1.8.0'
+    ```
+  </TabItem>
+</Tabs>
+
+接続 URL で `compress_algorithm=gzip` を設定することで、代わりに gzip を使用することもできます。
+
+また、圧縮を無効化する方法もいくつかあります。
+
+1. 接続 URL で `compress=0` を設定して無効化する: `http://localhost:8123/default?compress=0`
+2. クライアント設定で無効化する:
+
+```java showLineNumbers
+ClickHouseClient client = ClickHouseClient.builder()
+   .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+   .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+   .build();
+```
+
+さまざまな圧縮オプションについての詳細は、[圧縮に関するドキュメント](/data-compression/compression-modes) を参照してください。
+
+
+### 複数クエリ
+
+同じセッション内のワーカースレッドで、複数のクエリを順番に実行します:
+
+```java showLineNumbers
+CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
+    "create database if not exists my_base",
+    "use my_base",
+    "create table if not exists test_table(s String) engine=Memory",
+    "insert into test_table values('1')('2')('3')",
+    "select * from test_table limit 1",
+    "truncate table test_table",
+    "drop table if exists test_table");
+List<ClickHouseResponseSummary> results = future.get();
+```
+
+
+### 名前付きパラメータ
+
+パラメータリスト内での位置だけに頼るのではなく、パラメータ名を指定して渡すことができます。この機能は `params` 関数で利用できます。
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name limit :limit")
+        .params("Ben", 1000)
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+:::note パラメータ
+`String` 型（`String`、`String[]`、`Map<String, String>`）を含むすべての `params` のシグネチャでは、渡されるキーが有効な ClickHouse の SQL 文字列リテラルであることを前提としています。例えば、次のとおりです。
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name","'Ben'"))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+String オブジェクトを自分で ClickHouse SQL に変換したくない場合は、`com.clickhouse.data` パッケージにあるヘルパー関数 `ClickHouseValues.convertToSqlExpression` を利用できます。
+
+```java showLineNumbers
+try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+     ClickHouseResponse response = client.read(servers)
+        .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+        .query("select * from my_table where name=:name")
+        .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+        .executeAndWait()) {
+            //...
+        }
+}
+```
+
+上記の例では、`ClickHouseValues.convertToSqlExpression` は内部のシングルクォートをエスケープし、変数を有効な文字列リテラルとなるようにシングルクォートで囲みます。
+
+`Integer`、`UUID`、`Array`、`Enum` といった他の型は、`params` 内で自動的に変換されます。
+:::
+
+
+## ノード検出
+
+Java クライアントは ClickHouse ノードを自動検出する機能を備えています。自動検出はデフォルトでは無効です。手動で有効にするには、`auto_discovery` を `true` に設定します。
+
+```java
+properties.setProperty("auto_discovery", "true");
+```
+
+または、接続 URL で指定します:
+
+```plaintext
+jdbc:ch://my-server/system?auto_discovery=true
+```
+
+自動ディスカバリが有効になっている場合、接続 URL にすべての ClickHouse ノードを指定する必要はありません。URL で指定されたノードはシードノードとして扱われ、Java クライアントは system テーブルおよび/または clickhouse-keeper もしくは zookeeper から自動的に追加ノードを検出します。
+
+自動ディスカバリを構成するためのオプションは次のとおりです。
+
+| Property                        | Default | Description                                                              |
+| ------------------------------- | ------- | ------------------------------------------------------------------------ |
+| auto&#95;discovery              | `false` | クライアントが system テーブルおよび/または clickhouse-keeper/zookeeper から追加ノードを検出するかどうか。 |
+| node&#95;discovery&#95;interval | `0`     | ノード検出の間隔（ミリ秒）。0 以下の値は一度だけノード検出を行うことを意味します。                               |
+| node&#95;discovery&#95;limit    | `100`   | 一度に検出できるノードの最大数。0 以下の値は上限なしであることを意味します。                                  |
+
+
+### ロードバランシング \{#load-balancing\}
+
+Java クライアントは、ロードバランシングポリシーに従って、リクエストを送信する ClickHouse ノードを選択します。通常、ロードバランシングポリシーには次の役割があります。
+
+1. 管理対象ノードリストからノードを取得する。
+2. ノードのステータスを管理する。
+3. （自動ディスカバリーが有効な場合は）ノードディスカバリー用のバックグラウンドプロセスをスケジュールし、ヘルスチェックを実行する（省略可能）。
+
+ロードバランシングを構成するためのオプションは次のとおりです。
+
+| Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| load_balancing_policy | `""`                                      | ロードバランシングポリシーは次のいずれかになります: <li>`firstAlive` - 管理対象ノードリストのうち、最初の正常なノードにリクエストを送信します</li><li>`random` - 管理対象ノードリストからランダムに選択したノードにリクエストを送信します</li><li>`roundRobin` - 管理対象ノードリスト内の各ノードに対して順番にリクエストを送信します</li><li>`ClickHouseLoadBalancingPolicy` を実装した完全修飾クラス名 - カスタムロードバランシングポリシー</li>指定されていない場合、リクエストは管理対象ノードリスト内の最初のノードに送信されます |
+| load_balancing_tags   | `""`                                      | ノードをフィルタリングするためのロードバランシングタグ。指定されたタグを持つノードにのみリクエストが送信されます                                                                                                                                                                                                                                                                                                                                                                                            |
+| health_check_interval | `0`                                       | ヘルスチェック間隔（ミリ秒）。0 または負の値は、1 回だけ実行されることを意味します。                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | ヘルスチェック方法。次のいずれかになります: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` クエリによるチェック</li> <li>`ClickHouseHealthCheckMethod.PING` - 一般的により高速な、プロトコル固有のチェック</li>                                                                                                                                                                                                                                                                                 |
+| node_check_interval   | `0`                                       | ノードチェック間隔（ミリ秒）。負の数値は 0 として扱われます。前回のチェックから指定した時間が経過した場合にノードステータスがチェックされます。<br/>`health_check_interval` と `node_check_interval` の違いは、`health_check_interval` オプションが、ノード（すべて、または故障中のもの）のリストに対してステータスをチェックするバックグラウンドジョブをスケジュールする一方で、`node_check_interval` は特定のノードについて、前回のチェックからどれだけ時間が経過している必要があるかを指定する点です |
+| check_all_nodes       | `false`                                   | すべてのノードに対してヘルスチェックを実行するか、故障中のノードに対してのみ実行するかを指定します。                                                                                                                                                                                                                                                                                                                                                                                                              |
+
+### フェイルオーバーとリトライ \{#failover-and-retry\}
+
+Java クライアントは、失敗したクエリに対するフェイルオーバーおよびリトライ動作を設定するための構成オプションを提供します:
+
+| Property                | Default | Description                                                                                                                                                                                                                        |
+|-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| failover                | `0`     | 1 件のリクエストに対してフェイルオーバーが発生する最大回数。0 または負の値はフェイルオーバーなしを意味します。フェイルオーバーでは、失敗したリクエストを別のノード（ロードバランシングポリシーに従う）に送信し、障害からの復旧を試みます。 |
+| retry                   | `0`     | 1 件のリクエストに対してリトライが発生する最大回数。0 または負の値はリトライなしを意味します。リトライは同じノードに対してのみ行われ、かつ ClickHouse サーバーが `NETWORK_ERROR` エラーコードを返した場合にのみ実行されます。                               |
+| repeat_on_session_lock  | `true`  | セッションがロックされている場合に、タイムアウトするまで（`session_timeout` または `connect_timeout` に従う）実行を繰り返すかどうか。ClickHouse サーバーが `SESSION_IS_LOCKED` エラーコードを返した場合、失敗したリクエストが再実行されます。               |
+
+### カスタム HTTP ヘッダーの追加 \{#adding-custom-http-headers\}
+
+Java クライアントは、リクエストにカスタム HTTP ヘッダーを追加したい場合に備え、HTTP/S トランスポートレイヤーをサポートしています。
+`custom_http_headers` プロパティを使用し、ヘッダーは `,` 区切りで指定します。ヘッダーのキーと値は `=` で区切ります。
+
+## Java クライアントサポート
+
+```java
+options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```
+
+
+## JDBC ドライバ
+
+```java
+properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+```

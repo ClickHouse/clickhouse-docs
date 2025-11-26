@@ -1,0 +1,80 @@
+---
+slug: /managing-data/drop_partition
+sidebar_label: 'パーティションの削除'
+title: 'パーティションの削除'
+hide_title: false
+description: 'パーティションの削除について説明するページです'
+keywords: ['DROP PARTITION', 'drop partition', 'パーティションの削除', 'パーティションの削除', 'パーティション管理']
+doc_type: 'reference'
+---
+
+## 背景
+
+パーティションは、テーブルを最初に `PARTITION BY` 句で定義するときに指定します。この句には任意のカラムに対する SQL 式を含めることができ、その評価結果によって各行がどのパーティションに送られるかが決まります。
+
+データパーツはディスク上でそれぞれのパーティションに論理的に関連付けられており、個別にクエリできます。以下の例では、`posts` テーブルを `toYear(CreationDate)` という式を用いて年ごとにパーティション分割します。行が ClickHouse に挿入されると、この式が各行に対して評価され、対応するパーティションが存在すればそこに振り分けられます（その年の最初の行であれば、そのタイミングでパーティションが作成されます）。
+
+```sql
+ CREATE TABLE posts
+(
+        `Id` Int32 CODEC(Delta(4), ZSTD(1)),
+        `PostTypeId` Enum8('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8),
+        `AcceptedAnswerId` UInt32,
+        `CreationDate` DateTime64(3, 'UTC'),
+...
+        `ClosedDate` DateTime64(3, 'UTC')
+)
+ENGINE = MergeTree
+ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
+PARTITION BY toYear(CreationDate)
+```
+
+パーティション式の設定については、[パーティション式の設定方法](/sql-reference/statements/alter/partition/#how-to-set-partition-expression)のセクションを参照してください。
+
+ClickHouse では、パーティションは主としてクエリ最適化のテクニックではなく、データ管理機能として捉えるべきです。キーに基づいてデータを論理的に分割することで、各パーティションに対して（たとえば削除などの）操作を個別に実行できます。これにより、ユーザーはパーティション、ひいてはそのサブセットを、時系列に応じて、あるいは[データの有効期限を設定する／クラスタから効率的に削除する](/sql-reference/statements/alter/partition)目的で、[ストレージ階層](/integrations/s3#storage-tiers)間で効率的に移動できるようになります。
+
+
+## パーティションの削除
+
+`ALTER TABLE ... DROP PARTITION` は、パーティション全体を削除するためのコスト効率の高い方法です。
+
+```sql
+ALTER TABLE テーブル名 [ON CLUSTER クラスター] DROP PARTITION|PART パーティション式
+```
+
+このクエリはパーティションを非アクティブとしてタグ付けし、約 10 分後にデータを完全に削除します。このクエリはレプリケーションされており、すべてのレプリカ上のデータを削除します。
+
+次の例では、関連するパーティションをドロップすることで、先ほどのテーブルから 2008 年の投稿を削除します。
+
+```sql
+SELECT DISTINCT partition
+FROM system.parts
+WHERE `table` = 'posts'
+
+┌─partition─┐
+│ 2008      │
+│ 2009      │
+│ 2010      │
+│ 2011      │
+│ 2012      │
+│ 2013      │
+│ 2014      │
+│ 2015      │
+│ 2016      │
+│ 2017      │
+│ 2018      │
+│ 2019      │
+│ 2020      │
+│ 2021      │
+│ 2022      │
+│ 2023      │
+│ 2024      │
+└───────────┘
+
+17 rows in set. Elapsed: 0.002 sec.
+
+ALTER TABLE posts
+(DROP PARTITION '2008')
+
+0 rows in set. Elapsed: 0.103 sec.
+```

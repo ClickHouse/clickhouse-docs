@@ -255,6 +255,150 @@
     "message": "ClickPipes",
     "description": "クラウド版のサイドバーにある「ClickPipes」カテゴリのラベル"
   },
+  "sidebar.sqlreference.category.Introduction": {
+    "message": "概要",
+    "description": "サイドバー「sqlreference」の「Introduction」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Data types": {
+    "message": "データ型",
+    "description": "sqlreference サイドバー内の「データ型」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Special Data Types": {
+    "message": "特殊なデータ型",
+    "description": "サイドバー「sqlreference」にある「Special Data Types」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Statements": {
+    "message": "ステートメント",
+    "description": "「sqlreference」サイドバー内の「Statements」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.SELECT": {
+    "message": "SELECT",
+    "description": "サイドバーの sqlreference にある SELECT カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.CREATE": {
+    "message": "CREATE",
+    "description": "サイドバーの sqlreference セクションにある「CREATE」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.ALTER": {
+    "message": "ALTER",
+    "description": "サイドバー「sqlreference」にあるカテゴリ「ALTER」のラベル"
+  },
+  "sidebar.sqlreference.category.Operators": {
+    "message": "オペレーター",
+    "description": "サイドバー「sqlreference」の「Operators」カテゴリー用ラベル"
+  },
+  "sidebar.sqlreference.category.Engines": {
+    "message": "エンジン",
+    "description": "サイドバー sqlreference 内の「Engines」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Database Engines": {
+    "message": "データベースエンジン",
+    "description": "サイドバー sqlreference における「Database Engines」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Table Engines": {
+    "message": "テーブルエンジン",
+    "description": "サイドバー「sqlreference」のカテゴリ「Table Engines」のラベル"
+  },
+  "sidebar.sqlreference.category.MergeTree Family": {
+    "message": "MergeTree ファミリー",
+    "description": "サイドバーの sqlreference にある「MergeTree ファミリー」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Log family": {
+    "message": "ログファミリー",
+    "description": "サイドバーの sqlreference にある「Log ファミリー」カテゴリ用のラベル"
+  },
+  "sidebar.sqlreference.category.Integrations": {
+    "message": "連携",
+    "description": "サイドバー「sqlreference」内の「Integrations」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Special": {
+    "message": "特別",
+    "description": "サイドバー「sqlreference」内の「Special」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Functions": {
+    "message": "関数",
+    "description": "サイドバー sqlreference 内の「Functions」カテゴリ用ラベル"
+  },
+  "sidebar.sqlreference.category.Regular functions": {
+    "message": "通常関数",
+    "description": "サイドバー「sqlreference」にある「Regular functions」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Geo": {
+    "message": "地理情報",
+    "description": "サイドバー sqlreference 内の「Geo」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Aggregate functions": {
+    "message": "集約関数",
+    "description": "サイドバー sqlreference 内の「集約関数」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Aggregate Functions": {
+    "message": "集約関数",
+    "description": "sqlreference サイドバー内の「Aggregate Functions」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Combinator examples": {
+    "message": "コンビネーターの例",
+    "description": "サイドバー sqlreference 内にある「Combinator examples」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Table functions": {
+    "message": "テーブル関数",
+    "description": "サイドバー「sqlreference」の「Table functions」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Window functions": {
+    "message": "ウィンドウ関数",
+    "description": "サイドバーの sqlreference にある「ウィンドウ関数」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Formats": {
+    "message": "形式",
+    "description": "サイドバー「sqlreference」にある「Formats」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Arrow": {
+    "message": "矢印",
+    "description": "サイドバー sqlreference の「Arrow」カテゴリ用ラベル"
+  },
+  "sidebar.sqlreference.category.Avro": {
+    "message": "Avro",
+    "description": "サイドバーの「sqlreference」にある「Avro」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.CSV": {
+    "message": "CSV",
+    "description": "サイドバーの「sqlreference」内にある「CSV」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.CustomSeparated": {
+    "message": "カスタム区切り形式",
+    "description": "サイドバーの sqlreference 内にある CustomSeparated カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.JSON": {
+    "message": "JSON",
+    "description": "サイドバーの sqlreference 内にある JSON カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.LineAsString": {
+    "message": "LineAsString",
+    "description": "サイドバー sqlreference 内の「LineAsString」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Parquet": {
+    "message": "Parquet",
+    "description": "サイドバーの sqlreference 内にある「Parquet」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Pretty": {
+    "message": "整形表示",
+    "description": "サイドバー「sqlreference」にある「Pretty」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Protobuf": {
+    "message": "Protobuf",
+    "description": "サイドバー「sqlreference」の「Protobuf」カテゴリ用ラベル"
+  },
+  "sidebar.sqlreference.category.RowBinary": {
+    "message": "RowBinary",
+    "description": "サイドバー「sqlreference」にある「RowBinary」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.TabSeparated": {
+    "message": "TabSeparated",
+    "description": "サイドバー sqlreference 内の「TabSeparated」カテゴリのラベル"
+  },
+  "sidebar.sqlreference.category.Template": {
+    "message": "テンプレート",
+    "description": "サイドバー「sqlreference」の「Template」カテゴリ用ラベル"
+  },
   "sidebar.integrations.category.Language clients": {
     "message": "言語別クライアント",
     "description": "サイドバーの「インテグレーション」内にある「Language clients」カテゴリのラベル"
@@ -302,6 +446,14 @@
   "sidebar.integrations.category.ClickPipes for MongoDB": {
     "message": "MongoDB 用 ClickPipes",
     "description": "サイドバーの「インテグレーション」内にある「ClickPipes for MongoDB」カテゴリのラベル"
+  },
+  "sidebar.integrations.category.Native clients & interfaces": {
+    "message": "ネイティブ クライアントとインターフェース",
+    "description": "サイドバーの「インテグレーション」内にある「ネイティブクライアントとインターフェース」カテゴリ用のラベル"
+  },
+  "sidebar.integrations.category.Drivers and Interfaces": {
+    "message": "ドライバおよびインターフェース",
+    "description": "サイドバーの「インテグレーション」内にある「Drivers and Interfaces」カテゴリのラベル"
   },
   "sidebar.integrations.category.Data sources": {
     "message": "データソース",
@@ -379,6 +531,14 @@
     "message": "データ連携",
     "description": "サイドバーの「インテグレーション」内にある「Data Integrations」カテゴリのラベル"
   },
+  "sidebar.integrations.category.Misc": {
+    "message": "その他",
+    "description": "サイドバーの連携機能における「Misc」カテゴリのラベル"
+  },
+  "sidebar.integrations.link.View all formats": {
+    "message": "すべてのフォーマットを表示",
+    "description": "サイドバーのインテグレーションセクション内にある、/interfaces/formats へのリンク「すべての形式を表示」のラベル"
+  },
   "sidebar.integrations.doc.Overview": {
     "message": "概要",
     "description": "サイドバーの「Integrations」内にあるドキュメント項目「Overview」のラベルで、ドキュメント「integrations/language-clients/java/index」へリンクするものです"
@@ -386,6 +546,10 @@
   "sidebar.integrations.doc.Introduction": {
     "message": "はじめに",
     "description": "サイドバーの「integrations」で、ドキュメント項目「Introduction」のラベルとして使用され、「integrations/language-clients/python/index」のドキュメントへリンクします"
+  },
+  "sidebar.integrations.doc.Third-party Libraries": {
+    "message": "サードパーティライブラリ",
+    "description": "サイドバーの「integrations」に表示されるドキュメント項目「Third-party Libraries」のラベルであり、ドキュメント interfaces/third-party/integrations へのリンク。"
   },
   "sidebar.managingData.category.Core concepts": {
     "message": "コアコンセプト",
@@ -402,6 +566,10 @@
   "sidebar.managingData.category.Data modeling": {
     "message": "データモデリング",
     "description": "サイドバー「managingData」内の「データモデリング」カテゴリ用ラベル"
+  },
+  "sidebar.managingData.category.Dictionary": {
+    "message": "辞書",
+    "description": "「managingData」サイドバー内の「Dictionary」カテゴリのラベル"
   },
   "sidebar.managingData.category.Materialized views": {
     "message": "マテリアライズドビュー",
@@ -455,6 +623,14 @@
     "message": "変更履歴",
     "description": "aboutClickHouse のサイドバー内にある「Changelog」カテゴリの自動生成インデックスページのタイトル"
   },
+  "sidebar.aboutClickHouse.category.Development and contributing": {
+    "message": "開発と貢献",
+    "description": "ClickHouse に関するサイドバーにある「Development and contributing」カテゴリーのラベル"
+  },
+  "sidebar.aboutClickHouse.category.Native protocol": {
+    "message": "ネイティブプロトコル",
+    "description": "「ClickHouse について」サイドバー内にある「Native protocol」カテゴリのラベル"
+  },
   "sidebar.aboutClickHouse.category.FAQ": {
     "message": "よくある質問",
     "description": "サイドバー内の ClickHouse に関する FAQ カテゴリのラベル"
@@ -474,6 +650,18 @@
   "sidebar.serverAdmin.category.Backup/Restore": {
     "message": "バックアップと復元",
     "description": "サイドバーの serverAdmin セクションにある「バックアップ/リストア」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Allocation profiling": {
+    "message": "メモリアロケーションのプロファイリング",
+    "description": "サイドバー serverAdmin の「アロケーションプロファイリング」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.Settings": {
+    "message": "設定",
+    "description": "サイドバーの serverAdmin にある「Settings」カテゴリのラベル"
+  },
+  "sidebar.serverAdmin.category.System tables": {
+    "message": "システムテーブル",
+    "description": "serverAdmin サイドバー内の「System tables」カテゴリ用ラベル"
   },
   "sidebar.serverAdmin.category.Security and authentication": {
     "message": "セキュリティと認証",
@@ -558,6 +746,10 @@
   "sidebar.clickstack.category.Deployment": {
     "message": "デプロイメント",
     "description": "ClickStack のサイドバーにある「デプロイメント」カテゴリのラベル"
+  },
+  "sidebar.clickstack.category.Helm": {
+    "message": "Helm",
+    "description": "サイドバーの ClickStack 内にある「Helm」カテゴリ用のラベル"
   },
   "sidebar.clickstack.category.Ingesting data": {
     "message": "データの取り込み",
@@ -802,197 +994,5 @@
   "sidebar.dropdownCategories.link.Development and contributing": {
     "message": "開発と貢献",
     "description": "サイドバーの dropdownCategories 内にある、/development/developer-instruction へ遷移する「Development and contributing」リンク用のラベル"
-  },
-  "sidebar.sqlreference.category.Introduction": {
-    "message": "概要",
-    "description": "サイドバー「sqlreference」の「Introduction」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Data types": {
-    "message": "データ型",
-    "description": "sqlreference サイドバー内の「データ型」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Special Data Types": {
-    "message": "特殊なデータ型",
-    "description": "サイドバー「sqlreference」にある「Special Data Types」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Statements": {
-    "message": "ステートメント",
-    "description": "「sqlreference」サイドバー内の「Statements」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.SELECT": {
-    "message": "SELECT",
-    "description": "サイドバーの sqlreference にある SELECT カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.CREATE": {
-    "message": "CREATE",
-    "description": "サイドバーの sqlreference セクションにある「CREATE」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.ALTER": {
-    "message": "ALTER",
-    "description": "サイドバー「sqlreference」にあるカテゴリ「ALTER」のラベル"
-  },
-  "sidebar.sqlreference.category.Operators": {
-    "message": "オペレーター",
-    "description": "サイドバー「sqlreference」の「Operators」カテゴリー用ラベル"
-  },
-  "sidebar.sqlreference.category.Engines": {
-    "message": "エンジン",
-    "description": "サイドバー sqlreference 内の「Engines」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Database Engines": {
-    "message": "データベースエンジン",
-    "description": "サイドバー sqlreference における「Database Engines」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Table Engines": {
-    "message": "テーブルエンジン",
-    "description": "サイドバー「sqlreference」のカテゴリ「Table Engines」のラベル"
-  },
-  "sidebar.sqlreference.category.MergeTree Family": {
-    "message": "MergeTree ファミリー",
-    "description": "サイドバーの sqlreference にある「MergeTree ファミリー」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Log family": {
-    "message": "ログファミリー",
-    "description": "サイドバーの sqlreference にある「Log ファミリー」カテゴリ用のラベル"
-  },
-  "sidebar.sqlreference.category.Integrations": {
-    "message": "連携",
-    "description": "サイドバー「sqlreference」内の「Integrations」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Special": {
-    "message": "特別",
-    "description": "サイドバー「sqlreference」内の「Special」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Functions": {
-    "message": "関数",
-    "description": "サイドバー sqlreference 内の「Functions」カテゴリ用ラベル"
-  },
-  "sidebar.sqlreference.category.Regular functions": {
-    "message": "通常関数",
-    "description": "サイドバー「sqlreference」にある「Regular functions」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Geo": {
-    "message": "地理情報",
-    "description": "サイドバー sqlreference 内の「Geo」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Aggregate functions": {
-    "message": "集約関数",
-    "description": "サイドバー sqlreference 内の「集約関数」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Aggregate Functions": {
-    "message": "集約関数",
-    "description": "sqlreference サイドバー内の「Aggregate Functions」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Combinator examples": {
-    "message": "コンビネーターの例",
-    "description": "サイドバー sqlreference 内にある「Combinator examples」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Table functions": {
-    "message": "テーブル関数",
-    "description": "サイドバー「sqlreference」の「Table functions」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Window functions": {
-    "message": "ウィンドウ関数",
-    "description": "サイドバーの sqlreference にある「ウィンドウ関数」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Formats": {
-    "message": "形式",
-    "description": "サイドバー「sqlreference」にある「Formats」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Arrow": {
-    "message": "矢印",
-    "description": "サイドバー sqlreference の「Arrow」カテゴリ用ラベル"
-  },
-  "sidebar.sqlreference.category.Avro": {
-    "message": "Avro",
-    "description": "サイドバーの「sqlreference」にある「Avro」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.CSV": {
-    "message": "CSV",
-    "description": "サイドバーの「sqlreference」内にある「CSV」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.CustomSeparated": {
-    "message": "カスタム区切り形式",
-    "description": "サイドバーの sqlreference 内にある CustomSeparated カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.JSON": {
-    "message": "JSON",
-    "description": "サイドバーの sqlreference 内にある JSON カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.LineAsString": {
-    "message": "LineAsString",
-    "description": "サイドバー sqlreference 内の「LineAsString」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Parquet": {
-    "message": "Parquet",
-    "description": "サイドバーの sqlreference 内にある「Parquet」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Pretty": {
-    "message": "整形表示",
-    "description": "サイドバー「sqlreference」にある「Pretty」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Protobuf": {
-    "message": "Protobuf",
-    "description": "サイドバー「sqlreference」の「Protobuf」カテゴリ用ラベル"
-  },
-  "sidebar.sqlreference.category.RowBinary": {
-    "message": "RowBinary",
-    "description": "サイドバー「sqlreference」にある「RowBinary」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.TabSeparated": {
-    "message": "TabSeparated",
-    "description": "サイドバー sqlreference 内の「TabSeparated」カテゴリのラベル"
-  },
-  "sidebar.sqlreference.category.Template": {
-    "message": "テンプレート",
-    "description": "サイドバー「sqlreference」の「Template」カテゴリ用ラベル"
-  },
-  "sidebar.clickstack.category.Helm": {
-    "message": "Helm",
-    "description": "サイドバーの ClickStack 内にある「Helm」カテゴリ用のラベル"
-  },
-  "sidebar.integrations.category.Native clients & interfaces": {
-    "message": "ネイティブ クライアントとインターフェース",
-    "description": "サイドバーの「インテグレーション」内にある「ネイティブクライアントとインターフェース」カテゴリ用のラベル"
-  },
-  "sidebar.integrations.category.Drivers and Interfaces": {
-    "message": "ドライバおよびインターフェース",
-    "description": "サイドバーの「インテグレーション」内にある「Drivers and Interfaces」カテゴリのラベル"
-  },
-  "sidebar.integrations.category.Misc": {
-    "message": "その他",
-    "description": "サイドバーの連携機能における「Misc」カテゴリのラベル"
-  },
-  "sidebar.integrations.link.View all formats": {
-    "message": "すべてのフォーマットを表示",
-    "description": "サイドバーのインテグレーションセクション内にある、/interfaces/formats へのリンク「すべての形式を表示」のラベル"
-  },
-  "sidebar.integrations.doc.Third-party Libraries": {
-    "message": "サードパーティライブラリ",
-    "description": "サイドバーの「integrations」に表示されるドキュメント項目「Third-party Libraries」のラベルであり、ドキュメント interfaces/third-party/integrations へのリンク。"
-  },
-  "sidebar.managingData.category.Dictionary": {
-    "message": "辞書",
-    "description": "「managingData」サイドバー内の「Dictionary」カテゴリのラベル"
-  },
-  "sidebar.aboutClickHouse.category.Development and contributing": {
-    "message": "開発と貢献",
-    "description": "ClickHouse に関するサイドバーにある「Development and contributing」カテゴリーのラベル"
-  },
-  "sidebar.aboutClickHouse.category.Native protocol": {
-    "message": "ネイティブプロトコル",
-    "description": "「ClickHouse について」サイドバー内にある「Native protocol」カテゴリのラベル"
-  },
-  "sidebar.serverAdmin.category.Allocation profiling": {
-    "message": "メモリアロケーションのプロファイリング",
-    "description": "サイドバー serverAdmin の「アロケーションプロファイリング」カテゴリのラベル"
-  },
-  "sidebar.serverAdmin.category.Settings": {
-    "message": "設定",
-    "description": "サイドバーの serverAdmin にある「Settings」カテゴリのラベル"
-  },
-  "sidebar.serverAdmin.category.System tables": {
-    "message": "システムテーブル",
-    "description": "serverAdmin サイドバー内の「System tables」カテゴリ用ラベル"
   }
 }
