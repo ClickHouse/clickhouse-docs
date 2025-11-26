@@ -19,17 +19,17 @@ import Image from '@theme/IdealImage';
 :::
 
 
-## ClickHouse におけるスパース主キーインデックスはどのように機能しますか？ \{#how-does-the-sparse-primary-index-work-in-clickHouse\}
+## ClickHouse におけるスパースなプライマリインデックスの仕組み \{#how-does-the-sparse-primary-index-work-in-clickHouse\}
 
 <br/>
 
-ClickHouse のスパース主キーインデックスは、テーブルの ^^primary key^^ 列に対するクエリ条件と一致する可能性のあるデータを含む[グラニュール](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行のブロック）を効率的に特定するために利用されます。次のセクションでは、このインデックスがそれらの列の値からどのように構築されるかを説明します。
+ClickHouse のスパースなプライマリインデックスは、テーブルの ^^primary key^^ 列に対するクエリ条件に一致するデータを含んでいる可能性がある[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行ブロック）を効率的に特定するのに役立ちます。次のセクションでは、このインデックスがこれらの列の値からどのように構成されるかを説明します。
 
 ### 疎なプライマリインデックスの作成 \{#sparse-primary-index-creation\}
 
-疎なプライマリインデックスがどのように構築されるかを説明するために、[uk_price_paid_simple](https://clickhouse.com/docs/parts) テーブルといくつかのアニメーションを使用します。
+疎なプライマリインデックスがどのように構築されるかを説明するために、[uk_price_paid_simple](/parts) テーブルといくつかのアニメーションを使用します。
 
-[おさらい](https://clickhouse.com/docs/parts)として、① ^^primary key^^ が (town, street) の例のテーブルでは、② 挿入されたデータは ③ ディスク上に保存され、^^primary key^^ 列の値でソートされ、各列ごとの個別ファイルに圧縮されます。
+[おさらいとして](/parts)、① ^^primary key^^ (town, street) を持つ例のテーブルでは、② 挿入されたデータは ③ ディスク上に格納され、^^primary key^^ の列値でソートされ、圧縮され、各列ごとに別々のファイルとして保存されます。
 
 <Image img={visual01} size="lg"/>
 
@@ -37,9 +37,9 @@ ClickHouse のスパース主キーインデックスは、テーブルの ^^pri
 
 <br/>
 
-処理のために、各列のデータは ④ 論理的に granule に分割されます。各 granule は 8,192 行をカバーし、ClickHouse のデータ処理の仕組みが扱う最小単位です。
+処理のために、各列のデータは ④ 論理的にグラニュールに分割されます。各グラニュールは 8,192 行を含み、ClickHouse のデータ処理メカニズムが扱う最小単位です。
 
-この ^^granule^^ 構造こそが、プライマリインデックスを**疎**にしている理由です。すべての行をインデックスする代わりに、ClickHouse は ⑤ 各 ^^granule^^ につき 1 行だけ、具体的には先頭行の ^^primary key^^ の値を保存します。これにより、^^granule^^ ごとに 1 つのインデックスエントリが作成されます。
+この ^^granule^^ 構造こそが、プライマリインデックスが **疎** である理由です。すべての行をインデックスする代わりに、ClickHouse は ⑤ 各 ^^granule^^ について 1 行分、具体的には最初の行の ^^primary key^^ の値だけを保存します。これにより、^^granule^^ ごとに 1 つのインデックスエントリが作成されます。
 
 <Image img={visual02} size="lg"/>
 
@@ -47,7 +47,7 @@ ClickHouse のスパース主キーインデックスは、テーブルの ^^pri
 
 <br/>
 
-疎であることから、プライマリインデックスはメモリ内に完全に収まるほど小さくなり、^^primary key^^ 列に述語を持つクエリのフィルタリングを高速に行えます。次のセクションでは、これがそのようなクエリの高速化にどのように役立つかを示します。
+このように疎であるおかげで、プライマリインデックスはメモリに完全に収まるほど小さくなり、^^primary key^^ 列に対して述語を持つクエリを高速にフィルタリングできます。次のセクションでは、このインデックスがそのようなクエリの高速化にどのように貢献するかを示します。
 
 ### プライマリインデックスの利用方法 \{#primary-index-usage\}
 

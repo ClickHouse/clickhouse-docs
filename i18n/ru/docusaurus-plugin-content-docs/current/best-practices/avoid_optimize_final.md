@@ -11,6 +11,6 @@ doc_type: 'guide'
 
 # Не используйте `OPTIMIZE FINAL`
 
-import Content from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_optimize_final.md';
+import Content from '@site/docs/best-practices/_snippets/_avoid_optimize_final.md';
 
 <Content />
