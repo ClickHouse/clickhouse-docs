@@ -84,7 +84,7 @@ export default function NavbarContent() {
               <button className="click-button primary-btn">Get started</button>
             </a>
           </div>
-          <MobileSideBarMenu sidebar={items} menu={{ ...sidebars, dropdownCategories }} />
+          <MobileSideBarMenu sidebar={items} menu={{ dropdownCategories }} />
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
