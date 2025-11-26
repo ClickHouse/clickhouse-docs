@@ -13,21 +13,15 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 格式的唯一区别在于，数据字段以字符串形式输出，而不是作为带类型的 JSON 值输出。
-
-
+与 [JSON](./JSON.md) 格式的唯一不同之处在于，数据字段以字符串形式输出，而不是输出为带类型的 JSON 值。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用一个包含以下数据的 JSON 文件，并将其命名为 `football.json`：
-
-
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {
@@ -206,9 +200,10 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
+
 ### 读取数据
 
-以 `JSONStrings` 格式读取数据：
+使用 `JSONStrings` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -216,7 +211,8 @@ FROM football
 FORMAT JSONStrings
 ```
 
-输出将为 JSON 格式：
+输出为 JSON 格式：
+
 
 ```json
 {
@@ -247,8 +243,6 @@ FORMAT JSONStrings
                     "type": "Int8"
             }
     ],
-```
-
 
     "data":
     [
@@ -398,12 +392,7 @@ FORMAT JSONStrings
             "rows_read": 0,
             "bytes_read": 0
     }
-
 }
-
 ```
-
-```
-
 
 ## 格式设置 {#format-settings}

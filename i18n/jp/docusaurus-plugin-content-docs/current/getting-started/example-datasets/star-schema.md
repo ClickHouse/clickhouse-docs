@@ -4,19 +4,19 @@ sidebar_label: 'Star Schema Benchmark'
 slug: /getting-started/example-datasets/star-schema
 title: 'Star Schema Benchmark (SSB, 2009)'
 doc_type: 'guide'
-keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
+keywords: ['サンプルデータセット', 'スター・スキーマ', 'サンプルデータ', 'データモデリング', 'ベンチマーク']
 ---
 
-Star Schema Benchmark は [TPC-H](tpch.md) のテーブルおよびクエリにおおむね基づいていますが、TPC-H と異なりスター・スキーマのレイアウトを採用しています。
-データの大部分は巨大なファクトテーブルに格納され、その周囲を複数の小さなディメンションテーブルが取り囲みます。
-クエリでは、ファクトテーブルを 1 つ以上のディメンションテーブルと結合し、例えば `MONTH = 'JANUARY'` のようなフィルター条件を適用します。
+Star Schema Benchmark は、概ね [TPC-H](tpch.md) のテーブルとクエリに基づいていますが、TPC-H と異なり、スター・スキーマのレイアウトを使用します。
+データの大部分は巨大なファクトテーブルに格納されており、その周囲に複数の小さなディメンションテーブルが配置されています。
+クエリでは、フィルタ条件（例: `MONTH = 'JANUARY'`）を適用するために、ファクトテーブルを 1 つ以上のディメンションテーブルと結合します。
 
 参考文献:
 
 * [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O&#39;Neil ほか), 2009
 * [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl ほか), 2013
 
-まず、Star Schema Benchmark リポジトリをチェックアウトし、データジェネレータをコンパイルします。
+まず、Star Schema Benchmark のリポジトリをチェックアウトし、データ生成ツールをコンパイルします。
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -24,7 +24,7 @@ cd ssb-dbgen
 make
 ```
 
-次に、データを生成します。パラメーター `-s` はスケールファクターを指定します。たとえば `-s 100` の場合、6億行が生成されます。
+次にデータを生成します。パラメータ `-s` はスケールファクターを指定します。たとえば `-s 100` の場合、6億行が生成されます。
 
 ```bash
 ./dbgen -s 1000 -T c
@@ -34,7 +34,7 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-次に、ClickHouse にテーブルを作成します：
+次に、ClickHouse でテーブルを作成します：
 
 
 ```sql
@@ -132,8 +132,8 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-多くの ClickHouse のユースケースでは、複数のテーブルが 1 つの非正規化されたフラットなテーブルに変換されます。
-この手順はオプションであり、以下ではクエリを元の形式と、非正規化テーブル用に書き換えた形式の両方で示します。
+ClickHouse の多くのユースケースでは、複数のテーブルが 1 つの非正規化されたフラットテーブルに変換されます。
+このステップは任意です。以下では、クエリを元の形式と、非正規化テーブル向けに書き換えた形式の両方で示します。
 
 
 ```sql
@@ -186,7 +186,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のクエリ例は次のとおりです。
+クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のクエリ例:
 
 Q1.1
 
@@ -203,7 +203,7 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-非正規化されたテーブル：
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -231,7 +231,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -260,7 +260,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非正規化テーブル:
+非正規化されたテーブル:
 
 ```sql
 SELECT
@@ -301,7 +301,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非正規化テーブル:
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -488,7 +488,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-非正規化テーブル:
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -541,7 +541,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規化されたテーブル:
+非正規化テーブル：
 
 ```sql
 SELECT
@@ -593,7 +593,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非正規化されたテーブル：
+非正規化テーブル:
 
 ```sql
 SELECT
@@ -752,7 +752,7 @@ ORDER BY
     P_BRAND
 ```
 
-非正規化テーブル：
+非正規化テーブル:
 
 ```sql
 SELECT

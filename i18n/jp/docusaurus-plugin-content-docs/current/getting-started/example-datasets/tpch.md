@@ -1,15 +1,15 @@
 ---
-description: 'TPC-H ベンチマーク用のデータセットとクエリ。'
+description: 'TPC-H ベンチマークのデータセットとクエリ。'
 sidebar_label: 'TPC-H'
 slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
 doc_type: 'guide'
-keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サンプルデータ', '性能テスト']
+keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サンプルデータ', 'パフォーマンス テスト']
 ---
 
-卸売サプライヤーの社内データウェアハウスをモデル化した、広く利用されているベンチマークです。
-データは第 3 正規形のスキーマで表現されており、クエリ実行時には多数の `JOIN` が必要になります。
-古く、かつデータが一様かつ独立に分布しているという現実的ではない仮定に基づいているにもかかわらず、TPC-H は現在でも最も一般的な OLAP ベンチマークです。
+卸売サプライヤーの社内データウェアハウスをモデル化した、広く用いられているベンチマークです。
+データは第 3 正規形で表現されており、クエリ実行時に多数の `JOIN` が必要になります。
+データが一様かつ互いに独立に分布しているという非現実的な前提と、ベンチマーク自体の古さにもかかわらず、TPC-H は現在も最も広く利用されている OLAP ベンチマークです。
 
 **参考文献**
 
@@ -18,11 +18,9 @@ keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サ�
 - [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 - [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-
-
 ## データ生成とインポート
 
-まず、TPC-H リポジトリをチェックアウトし、データ生成ツールをコンパイルします。
+まず、TPC-H リポジトリを取得し、データ生成ツールをコンパイルします。
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -30,13 +28,13 @@ cd tpch-kit/dbgen
 make
 ```
 
-次に、データを生成します。パラメーター `-s` はスケール係数を指定します。例えば `-s 100` の場合、テーブル &#39;lineitem&#39; には 6 億行が生成されます。
+次にデータを生成します。パラメータ `-s` はスケール係数を指定します。例えば `-s 100` の場合、テーブル&#39;lineitem&#39;に 6 億行のデータが生成されます。
 
 ```bash
 ./dbgen -s 100
 ```
 
-スケールファクター 100 におけるテーブルサイズの詳細:
+スケールファクター 100 の場合の詳細なテーブルサイズ:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |
 | -------- | -------------- | ------------------------------- |
@@ -49,20 +47,19 @@ make
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.000.000    | 26.69 GB                        |
 
-（ClickHouse における圧縮後サイズは `system.tables.total_bytes` から取得した値であり、以下のテーブル定義に基づきます。）
+（ClickHouse における圧縮後のサイズは `system.tables.total_bytes` から取得したもので、以下のテーブル定義に基づきます。）
 
 次に、ClickHouse にテーブルを作成します。
 
-TPC-H 仕様のルールに可能な限り厳密に従います:
+TPC-H 仕様のルールにできるだけ忠実に従います:
 
 * 主キーは、仕様のセクション 1.4.2.2 で言及されているカラムに対してのみ作成します。
-* 仕様のセクション 2.1.x.4 に従い、クエリ検証用の値で置き換えることになっているサブスティテューションパラメータは、その値に置き換えています。
-* セクション 1.4.2.1 に従い、`dbgen` がデフォルトで生成する場合でも、テーブル定義ではオプションの `NOT NULL` 制約は使用しません。
-  ClickHouse における `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無には影響されません。
-* セクション 1.3.1 に従い、仕様で言及されている抽象データ型
-  （例: `Identifier`, `Variable text, size N`）を実装するために、ClickHouse ネイティブのデータ型（例: `Int32`, `String`）を使用します。
-  これにより読みやすさが向上するだけであり、`dbgen` が生成する SQL-92 データ型
-  （例: `INTEGER`, `VARCHAR(40)`）も ClickHouse で問題なく動作します。
+* 置換パラメータは、仕様のセクション 2.1.x.4 にあるクエリ検証用の値に置き換えています。
+* セクション 1.4.2.1 に従い、テーブル定義ではオプションの `NOT NULL` 制約は使用しません。`dbgen` がデフォルトでそれらを生成する場合でも同様です。
+  ClickHouse における `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無によって影響を受けません。
+* セクション 1.3.1 に従い、抽象的なデータ型（例: `Identifier`, `Variable text, size N`）を実装するために、ClickHouse ネイティブのデータ型（例: `Int32`, `String`）を使用します。
+  これにより読みやすさが向上するだけであり、`dbgen` によって生成される SQL-92 のデータ型（例: `INTEGER`, `VARCHAR(40)`）も ClickHouse で問題なく動作します。
+
 
 ```sql
 CREATE TABLE nation (
@@ -118,49 +115,46 @@ CREATE TABLE customer (
     c_mktsegment  String,
     c_comment     String)
 ORDER BY (c_custkey);
-```
-
 
 CREATE TABLE orders  (
-o&#95;orderkey       Int32,
-o&#95;custkey        Int32,
-o&#95;orderstatus    String,
-o&#95;totalprice     Decimal(15,2),
-o&#95;orderdate      Date,
-o&#95;orderpriority  String,
-o&#95;clerk          String,
-o&#95;shippriority   Int32,
-o&#95;comment        String)
-ORDER BY (o&#95;orderkey);
--- 以下は、公式の TPC-H 規則には準拠していないものの、次の文献の第 4.5 節で推奨されている代替の order key です:
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
--- ORDER BY (o&#95;orderdate, o&#95;orderkey);
+    o_orderkey       Int32,
+    o_custkey        Int32,
+    o_orderstatus    String,
+    o_totalprice     Decimal(15,2),
+    o_orderdate      Date,
+    o_orderpriority  String,
+    o_clerk          String,
+    o_shippriority   Int32,
+    o_comment        String)
+ORDER BY (o_orderkey);
+-- 以下は公式TPC-H規則には準拠していない代替のソートキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
+-- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
-l&#95;orderkey       Int32,
-l&#95;partkey        Int32,
-l&#95;suppkey        Int32,
-l&#95;linenumber     Int32,
-l&#95;quantity       Decimal(15,2),
-l&#95;extendedprice  Decimal(15,2),
-l&#95;discount       Decimal(15,2),
-l&#95;tax            Decimal(15,2),
-l&#95;returnflag     String,
-l&#95;linestatus     String,
-l&#95;shipdate       Date,
-l&#95;commitdate     Date,
-l&#95;receiptdate    Date,
-l&#95;shipinstruct   String,
-l&#95;shipmode       String,
-l&#95;comment        String)
-ORDER BY (l&#95;orderkey, l&#95;linenumber);
--- 以下は、公式の TPC-H 規則には準拠していないものの、次の文献の第 4.5 節で推奨されている代替の order key です:
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
--- ORDER BY (l&#95;shipdate, l&#95;orderkey, l&#95;linenumber);
+    l_orderkey       Int32,
+    l_partkey        Int32,
+    l_suppkey        Int32,
+    l_linenumber     Int32,
+    l_quantity       Decimal(15,2),
+    l_extendedprice  Decimal(15,2),
+    l_discount       Decimal(15,2),
+    l_tax            Decimal(15,2),
+    l_returnflag     String,
+    l_linestatus     String,
+    l_shipdate       Date,
+    l_commitdate     Date,
+    l_receiptdate    Date,
+    l_shipinstruct   String,
+    l_shipmode       String,
+    l_comment        String)
+ORDER BY (l_orderkey, l_linenumber);
+-- 以下は公式TPC-H規則には準拠していない代替のソートキーですが、
+-- 「Quantifying TPC-H Choke Points and Their Optimizations」のセクション4.5で推奨されています:
+-- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
+```
 
-````
-
-データは次のようにインポートできます：
+データは次の手順でインポートできます。
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -171,10 +165,10 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO partsupp FORMA
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT CSV" < orders.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
-````
+```
 
 :::note
-tpch-kit を使用して自分でテーブルを生成する代わりに、公開 S3 バケットからデータをインポートすることもできます。事前に、上記の `CREATE` 文を使って空のテーブルを作成しておいてください。
+tpch-kit を使用して自分でテーブルを生成する代わりに、公開 S3 バケットからデータをインポートすることもできます。必ず、上記の `CREATE` 文を使って、先に空のテーブルを作成してください。
 
 
 ```sql
@@ -205,12 +199,12 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 ## クエリ
 
 :::note
-SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 設定を有効にする必要があります。
+SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) の設定を有効にする必要があります。
 :::
 
 :::note
-一部の TPC-H クエリでは、v25.8 以降で利用可能な相関サブクエリを使用します。
-これらのクエリを実行するには、少なくともこの ClickHouse バージョン以降を使用してください。
+一部の TPC-H クエリは、v25.8 以降で利用可能な相関サブクエリを使用します。
+これらのクエリを実行するには、少なくともこのバージョン以降の ClickHouse を使用してください。
 
 ClickHouse バージョン 25.5、25.6、25.7 では、追加で次の設定を行う必要があります：
 
@@ -220,11 +214,11 @@ SET allow_experimental_correlated_subqueries = 1;
 
 :::
 
-クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のクエリ例を以下に示します。
+クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のサンプルクエリを以下に示します。
 
 **正確性**
 
-特に断りがない限り、クエリ結果は公式の結果と一致します。検証するには、スケールファクタ = 1 の TPC-H データベースを（前述の `dbgen` で）生成し、[tpch-kit における想定結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) と比較してください。
+特に断りがない限り、クエリ結果は公式の結果と一致します。検証するには、スケールファクタ = 1 の TPC-H データベース（`dbgen`、前述）を生成し、[tpch-kit における期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
 
 **Q1**
 
@@ -398,9 +392,9 @@ WHERE
 ```
 
 ::::note
-2025年2月時点では、Decimal の加算に関するバグにより、このクエリはそのままでは動作しません。対応する Issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+2025年2月時点では、Decimal 型の加算に関するバグにより、このクエリはそのままでは動作しません。対応する Issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-以下の代替クエリは正常に動作し、期待される結果が返ることを確認済みです。
+以下の代替クエリは正常に動作し、リファレンス結果が返ることを確認済みです。
 
 ```sql
 SELECT
@@ -666,7 +660,6 @@ ORDER BY
 
 **Q14**
 
-
 ```sql
 SELECT
     100.00 * sum(CASE
@@ -818,7 +811,6 @@ ORDER BY
 
 **Q19**
 
-
 ```sql
 SELECT
     sum(l_extendedprice * (1 - l_discount)) AS revenue
@@ -858,6 +850,7 @@ WHERE
 ```
 
 **Q20**
+
 
 ```sql
 SELECT
@@ -944,7 +937,6 @@ ORDER BY
 ```
 
 **Q22**
-
 
 ```sql
 SELECT

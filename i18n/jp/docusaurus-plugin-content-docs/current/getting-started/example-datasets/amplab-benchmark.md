@@ -1,15 +1,15 @@
 ---
-description: 'データウェアハウスソリューションの性能を比較するために使用されるベンチマーク用データセット。'
+description: 'データウェアハウスソリューションのパフォーマンスを比較するために使用されるベンチマークデータセット。'
 sidebar_label: 'AMPLab ビッグデータベンチマーク'
 slug: /getting-started/example-datasets/amplab-benchmark
 title: 'AMPLab ビッグデータベンチマーク'
-keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
+keywords: ['AMPLab ベンチマーク', 'ビッグデータベンチマーク', 'データウェアハウスのパフォーマンス', 'ベンチマークデータセット', '入門']
 doc_type: 'guide'
 ---
 
 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/) を参照してください。
 
-[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントに登録してください。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) から新しいアクセスキーを取得します。
+[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントに登録します。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) で新しいアクセスキーを取得します。
 
 コンソールで次を実行します。
 
@@ -90,7 +90,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-コンソールに戻ります。
+コンソールに戻ってください：
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done

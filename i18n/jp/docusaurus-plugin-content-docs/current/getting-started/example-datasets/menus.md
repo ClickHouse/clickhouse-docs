@@ -1,5 +1,5 @@
 ---
-description: 'ホテル、レストラン、カフェのメニューに関する 130 万件の過去データを含み、料理名とその価格が記録されたデータセット。'
+description: 'ホテル、レストラン、カフェのメニューに含まれる料理とその価格に関する130万件の履歴データを収録したデータセット。'
 sidebar_label: 'New York Public Library「what''s on the menu?」データセット'
 slug: /getting-started/example-datasets/menus
 title: 'New York Public Library「What''s on the Menu?」データセット'
@@ -7,34 +7,30 @@ doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-このデータセットは New York Public Library（ニューヨーク公共図書館）によって作成されたものです。ホテル、レストラン、カフェのメニューに関する過去データが含まれており、料理名とその価格が記録されています。
+このデータセットは New York Public Library（ニューヨーク公共図書館）によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
 
-出典: http://menus.nypl.org/data
-このデータはパブリックドメインです。
+出典: http://menus.nypl.org/data  
+データはパブリックドメインです。
 
-データは図書館のアーカイブ由来であり、不完全であったり、統計分析には扱いにくい場合があります。それでも、とても「おいしい」データです。
-メニューに掲載された料理についてのレコードは 130 万件にすぎず、ClickHouse にとってはごく小さなデータ量ですが、サンプルとしては十分有用です。
+このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
+メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良いサンプルとして利用できます。
 
+## データセットをダウンロードする
 
-
-## データセットをダウンロードする {#download-dataset}
-
-以下のコマンドを実行します。
-
-
+次のコマンドを実行します。
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-# オプション: チェックサムを検証
+# オプション: チェックサムの検証
 md5sum 2021_08_01_07_01_17_data.tgz
-# チェックサムは次の値と一致する必要があります: db6126724de939a5481e3160a2d67d15
+# チェックサムは次と一致する必要があります: db6126724de939a5481e3160a2d67d15
 ```
 
-必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) から取得した最新のリンクに差し替えてください。
+必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。
 ダウンロードサイズは約 35 MB です。
 
 
-## データセットを展開する
+## データセットの展開
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
@@ -42,17 +38,17 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 
 非圧縮サイズは約 150 MB です。
 
-データは正規化されており、4 つのテーブルで構成されています:
+データは正規化されており、4 つのテーブルから成ります。
 
-* `Menu` — メニューに関する情報: レストラン名、メニューが取得された日付など。
-* `Dish` — 料理に関する情報: 料理名およびその特徴。
-* `MenuPage` — メニュー内のページに関する情報。各ページはいずれかのメニューに属します。
-* `MenuItem` — メニュー項目。特定のメニューページ上における料理とその価格: 料理およびメニューページへのリンクを含みます。
+* `Menu` — メニューに関する情報。レストラン名、メニューが確認された日付などを含みます。
+* `Dish` — 料理に関する情報。料理名とその特徴に関する情報などを含みます。
+* `MenuPage` — メニュー内のページに関する情報。各ページは必ずいずれかのメニューに属します。
+* `MenuItem` — メニュー項目。特定のメニューページ上での料理とその価格を表し、`Dish` と `MenuPage` へのリンクを持ちます。
 
 
 ## テーブルを作成する
 
-価格を格納するために [Decimal](../../sql-reference/data-types/decimal.md) データ型を使用します。
+価格を格納するために[Decimal](../../sql-reference/data-types/decimal.md)データ型を使用します。
 
 ```sql
 CREATE TABLE dish
@@ -120,7 +116,7 @@ CREATE TABLE menu_item
 
 ## データをインポートする
 
-ClickHouse にデータを取り込むには、次のコマンドを実行します:
+ClickHouse にデータをアップロードするには、次のコマンドを実行します:
 
 ```bash
 clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_default 0 --query "INSERT INTO dish FORMAT CSVWithNames" < Dish.csv
@@ -131,17 +127,17 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 データがヘッダー付きの CSV で表現されているため、[CSVWithNames](/interfaces/formats/CSVWithNames) フォーマットを使用します。
 
-データフィールドには二重引用符のみを使用し、値の中には単一引用符が含まれる場合があり、それによって CSV パーサーが混乱しないようにするため、`format_csv_allow_single_quotes` を無効にします。
+データフィールドには二重引用符のみを使用し、単一引用符は値の中に含まれる場合があり、CSV パーサーを混同させないようにするため、`format_csv_allow_single_quotes` を無効にします。
 
-データに [NULL](/operations/settings/formats#input_format_null_as_default) が含まれていないため、[input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default) を無効にします。これを有効のままにしておくと、ClickHouse は `\N` シーケンスをパースしようとし、データ内の `\` と紛らわしくなる可能性があります。
+[NULL](/operations/settings/formats#input_format_null_as_default) をデータとして使用していないため、[input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default) を無効にします。有効な場合、ClickHouse は `\N` というシーケンスをパースしようとし、データ内の `\` と紛らわしくなる可能性があります。
 
-[date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定を使用すると、[DateTime](../../sql-reference/data-types/datetime.md) フィールドを多様な形式でパースできます。たとえば、秒を含まない ISO-8601 形式である &#39;2000-01-01 01:02&#39; も認識されます。この設定を有効にしない場合は、固定の DateTime 形式のみが使用できます。
+[date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定により、[DateTime](../../sql-reference/data-types/datetime.md) フィールドをさまざまなフォーマットでパースできます。例えば、秒なしの ISO-8601 形式である「2000-01-01 01:02」も認識されます。この設定を有効にしない場合、固定形式の DateTime フォーマットのみが許可されます。
 
 
 ## データを非正規化する
 
-データは、[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに分割して格納されています。つまり、例えばメニュー項目から料理名をクエリしたい場合には、[JOIN](/sql-reference/statements/select/join) を実行する必要があります。
-一般的な分析タスクでは、毎回 `JOIN` を実行しなくてよいように、あらかじめ JOIN 済みのデータを扱う方がはるかに効率的です。これを「非正規化された」データと呼びます。
+データは[正規化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)で複数のテーブルに分かれて格納されています。これは、例えばメニュー項目から料理名をクエリしたい場合などに、[JOIN](/sql-reference/statements/select/join) を実行する必要があるということです。
+典型的な分析タスクでは、毎回 `JOIN` を実行しないよう、あらかじめ JOIN 済みのデータを扱う方がはるかに効率的です。これを「非正規化」データと呼びます。
 
 すべてのデータを JOIN してまとめた `menu_item_denorm` テーブルを作成します。
 
@@ -193,13 +189,13 @@ FROM menu_item
 
 ## データを検証する
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT count() FROM menu_item_denorm;
 ```
 
-結果：
+結果:
 
 ```text
 ┌─count()─┐
@@ -208,11 +204,11 @@ SELECT count() FROM menu_item_denorm;
 ```
 
 
-## クエリを実行する
+## いくつかのクエリを実行してみる {#run-queries}
 
-### 料理の過去価格の平均値
+### 料理の過去平均価格
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -226,7 +222,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果：
+結果:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
@@ -252,9 +248,10 @@ ORDER BY d ASC;
 
 あくまで目安としてお考えください。
 
-### バーガーの価格
 
-Query:
+### ハンバーガーの価格
+
+クエリ：
 
 ```sql
 SELECT
@@ -268,8 +265,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果：
-
+結果:
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
@@ -290,7 +286,8 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-### Vodka
+
+### ウォッカ
 
 クエリ：
 
@@ -322,11 +319,12 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴─────────────────────────────┘
 ```
 
-ウォッカを検索するには `ILIKE '%vodka%'` と書く必要があり、これは間違いなくインパクトのある書き方です。
+ウォッカを取得するには `ILIKE '%vodka%'` と書く必要があり、これはなかなかインパクトのある書き方です。
+
 
 ### キャビア
 
-キャビアの価格を出力しましょう。さらに、キャビアを使った料理名も1つ出力しましょう。
+キャビアの価格を表示しましょう。また、キャビア料理の名前をひとつ表示しましょう。
 
 クエリ:
 
@@ -343,32 +341,31 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
-
+結果：
 
 ```text
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 1090 │       1 │                    0 │                                  │ キャビア                                                                                                                            │
-│ 1880 │       3 │                    0 │                                  │ キャビア                                                                                                                            │
-│ 1890 │      39 │                 0.59 │ █▏                               │ バターとキャビア                                                                                                                    │
-│ 1900 │    1014 │                 0.34 │ ▋                                │ アンチョビキャビアのせトースト                                                                                                      │
-│ 1910 │    1588 │                 1.35 │ ██▋                              │ 1/1 Brötchen キャビア                                                                                                               │
-│ 1920 │     927 │                 1.37 │ ██▋                              │ ASTRAKAN キャビア                                                                                                                  │
-│ 1930 │     289 │                 1.91 │ ███▋                             │ Astrachan キャビア                                                                                                                 │
-│ 1940 │     201 │                 0.83 │ █▋                               │ （スペシャル）国産キャビアサンドイッチ                                                                                             │
-│ 1950 │      81 │                 2.27 │ ████▌                            │ ベルーガ・キャビア                                                                                                                 │
-│ 1960 │     126 │                 2.21 │ ████▍                            │ ベルーガ・キャビア                                                                                                                 │
-│ 1970 │     105 │                 0.95 │ █▊                               │ ベルーガ・マロソル・キャビア、アメリカンドレッシング                                                                               │
-│ 1980 │      12 │                 7.22 │ ██████████████▍                  │ 本格的なイラン産ベルーガキャビア。世界最高級の黒キャビアをアイスガルニに載せ、よく冷えた100°ロシアンウォッカのテイスティング付きで提供 │
-│ 1990 │      74 │                14.42 │ ████████████████████████████▋    │ アボカドサラダ、フレッシュカットアボカドのキャビア添え                                                                            │
-│ 2000 │       3 │                 7.82 │ ███████████████▋                 │ Aufgeschlagenes Kartoffelsüppchen mit Forellenkaviar                                                                                │
-│ 2010 │       6 │                15.58 │ ███████████████████████████████▏ │ 「OYSTERS AND PEARLS」パールタピオカの「サバイヨン」、Island Creek産オイスターとロシア産セヴルーガキャビア添え                      │
+│ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
+│ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │
+│ 1890 │      39 │                 0.59 │ █▏                               │ Butter and caviar                                                                                                                   │
+│ 1900 │    1014 │                 0.34 │ ▋                                │ Anchovy Caviar on Toast                                                                                                             │
+│ 1910 │    1588 │                 1.35 │ ██▋                              │ 1/1 Brötchen Caviar                                                                                                                 │
+│ 1920 │     927 │                 1.37 │ ██▋                              │ ASTRAKAN CAVIAR                                                                                                                     │
+│ 1930 │     289 │                 1.91 │ ███▋                             │ Astrachan caviar                                                                                                                    │
+│ 1940 │     201 │                 0.83 │ █▋                               │ (SPECIAL) Domestic Caviar Sandwich                                                                                                  │
+│ 1950 │      81 │                 2.27 │ ████▌                            │ Beluga Caviar                                                                                                                       │
+│ 1960 │     126 │                 2.21 │ ████▍                            │ Beluga Caviar                                                                                                                       │
+│ 1970 │     105 │                 0.95 │ █▊                               │ BELUGA MALOSSOL CAVIAR AMERICAN DRESSING                                                                                            │
+│ 1980 │      12 │                 7.22 │ ██████████████▍                  │ Authentic Iranian Beluga Caviar the world's finest black caviar presented in ice garni and a sampling of chilled 100° Russian vodka │
+│ 1990 │      74 │                14.42 │ ████████████████████████████▋    │ Avocado Salad, Fresh cut avocado with caviare                                                                                       │
+│ 2000 │       3 │                 7.82 │ ███████████████▋                 │ Aufgeschlagenes Kartoffelsueppchen mit Forellencaviar                                                                               │
+│ 2010 │       6 │                15.58 │ ███████████████████████████████▏ │ "OYSTERS AND PEARLS" "Sabayon" of Pearl Tapioca with Island Creek Oysters and Russian Sevruga Caviar                                │
 └──────┴─────────┴──────────────────────┴──────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-少なくとも、ウォッカにキャビアが付いてくる。なかなかいいじゃないか。
+少なくともウォッカにはキャビアが付いてる。いい感じだ。
 
 
 ## オンラインプレイグラウンド {#playground}
 
-データは ClickHouse Playground にアップロードされています（[例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)）。
+データは ClickHouse Playground にアップロード済みです。[こちらの例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)を参照してください。

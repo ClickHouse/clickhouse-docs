@@ -9,26 +9,24 @@ title: 'Protobuf'
 doc_type: 'guide'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
-
-
+| Ввод | Вывод | Псевдоним |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## Описание
 
 Формат `Protobuf` — это формат [Protocol Buffers](https://protobuf.dev/).
 
-Этот формат требует внешней схемы, которая кэшируется между запросами.
+Этот формат требует внешней схемы формата, которая кэшируется между запросами.
 
 ClickHouse поддерживает:
 
-* синтаксис `proto2` и `proto3`;
-* поля `repeated`/`optional`/`required`.
+* синтаксис как `proto2`, так и `proto3`.
+* поля `Repeated`/`optional`/`required`.
 
-Чтобы найти соответствие между столбцами таблицы и полями типа сообщения Protocol Buffers, ClickHouse сравнивает их имена.
-Это сравнение нечувствительно к регистру, а символы `_` (подчёркивание) и `.` (точка) считаются равными.
-Если типы столбца и поля сообщения Protocol Buffers различаются, применяется необходимое преобразование.
+Чтобы определить соответствие между столбцами таблицы и полями типа сообщения в Protocol Buffers, ClickHouse сравнивает их имена.
+Сравнение нечувствительно к регистру, а символы `_` (подчёркивание) и `.` (точка) считаются равными.
+Если типы столбца и поля сообщения Protocol Buffers отличаются, выполняется необходимое преобразование.
 
 Поддерживаются вложенные сообщения. Например, для поля `z` в следующем типе сообщения:
 
@@ -46,9 +44,9 @@ message MessageType {
 
 ClickHouse пытается найти столбец с именем `x.y.z` (или `x_y_z`, или `X.y_Z` и так далее).
 
-Вложенные сообщения подходят для ввода или вывода данных с [вложенными структурами](/sql-reference/data-types/nested-data-structures/index.md).
+Вложенные сообщения подходят в качестве входных и выходных данных для [вложенных структур данных](/sql-reference/data-types/nested-data-structures/index.md).
 
-Значения по умолчанию, определённые в схеме protobuf, аналогичной приведённой ниже, не применяются, вместо них используются [табличные значения по умолчанию](/sql-reference/statements/create/table#default_values):
+Значения по умолчанию, определённые в protobuf-схеме, подобной приведённой ниже, не применяются — вместо них используются [значения по умолчанию таблицы](/sql-reference/statements/create/table#default_values):
 
 ```capnp
 syntax = "proto2";
@@ -58,7 +56,7 @@ message MessageType {
 }
 ```
 
-Если сообщение содержит [oneof](https://protobuf.dev/programming-guides/proto3/#oneof) и параметр `input_format_protobuf_oneof_presence` установлен, ClickHouse заполняет столбец, в котором указано, какое поле oneof было найдено.
+Если сообщение содержит [oneof](https://protobuf.dev/programming-guides/proto3/#oneof) и параметр `input_format_protobuf_oneof_presence` установлен, ClickHouse заполняет столбец, указывающий, какое поле oneof было найдено.
 
 ```capnp
 syntax = "proto3";
@@ -73,180 +71,171 @@ message StringOrString {
 
 ```sql
 CREATE TABLE string_or_string ( string1 String, string2 String, string_oneof Enum('no'=0, 'hello' = 1, 'world' = 42))  Engine=MergeTree ORDER BY tuple();
-INSERT INTO string_or_string FROM INFILE '$CURDIR/data_protobuf/String1' SETTINGS format_schema='$SCHEMADIR/string_or_string.proto:StringOrString' FORMAT ProtobufSingle;
+INSERT INTO string_or_string from INFILE '$CURDIR/data_protobuf/String1' SETTINGS format_schema='$SCHEMADIR/string_or_string.proto:StringOrString' FORMAT ProtobufSingle;
 SELECT * FROM string_or_string
 ```
 
 ```text
    ┌─────────┬─────────┬──────────────┐
-   │ string1 │ string2 │ string_oneof │
+   │ строка1 │ строка2 │ строка_один_из │
    ├─────────┼─────────┼──────────────┤
-1. │         │ string2 │ world        │
+1. │         │ строка2 │ мир          │
    ├─────────┼─────────┼──────────────┤
-2. │ string1 │         │ hello        │
+2. │ строка1 │         │ привет       │
    └─────────┴─────────┴──────────────┘
 ```
 
-Имя столбца, указывающего на присутствие, должно совпадать с именем oneof. Поддерживаются вложенные сообщения (см. [basic-examples](#basic-examples)).
+Имя столбца, указывающего на наличие, должно совпадать с именем `oneof`. Поддерживаются вложенные сообщения (см. [basic-examples](#basic-examples)).
 Допустимые типы: Int8, UInt8, Int16, UInt16, Int32, UInt32, Int64, UInt64, Enum, Enum8 или Enum16.
-Enum (а также Enum8 или Enum16) должен содержать все возможные теги oneof плюс 0 для обозначения отсутствия; строковые представления значения не имеют.
+Enum (так же, как Enum8 или Enum16) должен содержать все возможные теги `oneof` плюс 0, обозначающий отсутствие; строковые представления при этом неважны.
 
 Настройка [`input_format_protobuf_oneof_presence`](/operations/settings/settings-formats.md#input_format_protobuf_oneof_presence) по умолчанию отключена.
 
-ClickHouse принимает и отдает сообщения Protobuf в формате `length-delimited`.
+ClickHouse считывает и выводит сообщения protobuf в формате `length-delimited`.
 Это означает, что перед каждым сообщением его длина должна быть записана как [целое число переменной длины (varint)](https://developers.google.com/protocol-buffers/docs/encoding#varints).
 
 
 ## Пример использования {#example-usage}
 
-### Чтение и запись данных {#basic-examples}
+### Чтение и запись данных
 
-:::note Файлы примера
-Файлы, используемые в этом примере, доступны в [репозитории с примерами](https://github.com/ClickHouse/formats/ProtoBuf)
+:::note Example files
+Файлы, используемые в этом примере, можно найти в [репозитории с примерами](https://github.com/ClickHouse/formats/ProtoBuf)
 :::
 
-В этом примере мы прочитаем часть данных из файла `protobuf_message.bin` в таблицу ClickHouse. Затем запишем их
-обратно в файл с именем `protobuf_message_from_clickhouse.bin`, используя формат `Protobuf`.
+В этом примере мы прочитаем данные из файла `protobuf_message.bin` в таблицу ClickHouse. Затем запишем их
+обратно в файл `protobuf_message_from_clickhouse.bin`, используя формат `Protobuf`.
 
-Дан файл `schemafile.proto`:
+Имеется файл `schemafile.proto`:
 
 ```capnp
-syntax = "proto3";
-
-message MessageType {
-  string name = 1;
-  string surname = 2;
-  uint32 birthDate = 3;
-  repeated string phoneNumbers = 4;
+syntax = "proto3";  
+  
+message MessageType {  
+  string name = 1;  
+  string surname = 2;  
+  uint32 birthDate = 3;  
+  repeated string phoneNumbers = 4;  
 };
 ```
 
+
 <details>
-<summary>Генерация бинарного файла</summary>
-  
-Если вы уже знаете, как сериализовать и десериализовать данные в формате `Protobuf`, можете пропустить этот шаг.
+  <summary>Генерация бинарного файла</summary>
 
-Мы используем Python, чтобы сериализовать некоторые данные в `protobuf_message.bin` и загрузить их в ClickHouse.
-Если вы хотите использовать другой язык, см. также: ["How to read/write length-delimited Protobuf messages in popular languages"](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages).
+  Если вы уже знаете, как сериализовать и десериализовать данные в формате `Protobuf`, можете пропустить этот шаг.
 
-Выполните следующую команду, чтобы сгенерировать Python‑файл с именем `schemafile_pb2.py` в
-том же каталоге, что и `schemafile.proto`. Этот файл содержит Python‑классы,
-которые представляют ваше Protobuf‑сообщение `UserData`:
+  Мы будем использовать Python, чтобы сериализовать некоторые данные в файл `protobuf_message.bin` и затем прочитать их в ClickHouse.
+  Если вы хотите использовать другой язык, см. также: [«How to read/write length-delimited Protobuf messages in popular languages»](https://cwiki.apache.org/confluence/display/GEODE/Delimiting+Protobuf+Messages).
 
-```bash
-protoc --python_out=. schemafile.proto
-```
+  Выполните следующую команду, чтобы сгенерировать Python‑файл с именем `schemafile_pb2.py`
+  в том же каталоге, что и `schemafile.proto`. Этот файл содержит Python‑классы,
+  представляющие Protobuf‑сообщение `UserData`:
 
-Теперь создайте новый Python‑файл с именем `generate_protobuf_data.py` в том же
-каталоге, что и `schemafile_pb2.py`. Вставьте в него следующий код:
+  ```bash
+  protoc --python_out=. schemafile.proto
+  ```
 
-```python
-import schemafile_pb2  # Module generated by 'protoc'
-from google.protobuf import text_format
-from google.protobuf.internal.encoder import _VarintBytes # Import the internal varint encoder
+  Теперь создайте новый Python‑файл с именем `generate_protobuf_data.py` в том же
+  каталоге, что и `schemafile_pb2.py`. Вставьте в него следующий код:
 
-def create_user_data_message(name, surname, birthDate, phoneNumbers):
-    """
-    Создаёт и заполняет Protobuf‑сообщение UserData.
-    """
-    message = schemafile_pb2.MessageType()
-    message.name = name
-    message.surname = surname
-    message.birthDate = birthDate
-    message.phoneNumbers.extend(phoneNumbers)
-    return message
+  ```python
+  import schemafile_pb2  # Модуль, сгенерированный с помощью 'protoc'
+  from google.protobuf import text_format
+  from google.protobuf.internal.encoder import _VarintBytes # Импорт внутреннего кодировщика varint
 
-```
+  def create_user_data_message(name, surname, birthDate, phoneNumbers):
+      """
+      Creates and populates a UserData Protobuf message.
+      """
+      message = schemafile_pb2.MessageType()
+      message.name = name
+      message.surname = surname
+      message.birthDate = birthDate
+      message.phoneNumbers.extend(phoneNumbers)
+      return message
 
+  # Данные для пользователей в нашем примере
+  data_to_serialize = [
+      {"name": "Aisha", "surname": "Khan", "birthDate": 19920815, "phoneNumbers": ["(555) 247-8903", "(555) 612-3457"]},
+      {"name": "Javier", "surname": "Rodriguez", "birthDate": 20001015, "phoneNumbers": ["(555) 891-2046", "(555) 738-5129"]},
+      {"name": "Mei", "surname": "Ling", "birthDate": 19980616, "phoneNumbers": ["(555) 956-1834", "(555) 403-7682"]},
+  ]
 
-# Данные для наших пользователей из примера
+  output_filename = "protobuf_messages.bin"
 
-data_to_serialize = [
-{"name": "Aisha", "surname": "Khan", "birthDate": 19920815, "phoneNumbers": ["(555) 247-8903", "(555) 612-3457"]},
-{"name": "Javier", "surname": "Rodriguez", "birthDate": 20001015, "phoneNumbers": ["(555) 891-2046", "(555) 738-5129"]},
-{"name": "Mei", "surname": "Ling", "birthDate": 19980616, "phoneNumbers": ["(555) 956-1834", "(555) 403-7682"]},
-]
+  # Откройте бинарный файл в двоичном режиме записи ('wb')
+  with open(output_filename, "wb") as f:
+      for item in data_to_serialize:
+          # Создаем экземпляр Protobuf-сообщения для текущего пользователя
+          message = create_user_data_message(
+              item["name"],
+              item["surname"],
+              item["birthDate"],
+              item["phoneNumbers"]
+          )
 
-output_filename = "protobuf_messages.bin"
+          # Сериализуем сообщение
+          serialized_data = message.SerializeToString()
 
+          # Получаем длину сериализованных данных
+          message_length = len(serialized_data)
 
-# Откройте двоичный файл в режиме двоичной записи ('wb')
-with open(output_filename, "wb") as f:
-    for item in data_to_serialize:
-        # Создайте экземпляр сообщения Protobuf для текущего пользователя
-        message = create_user_data_message(
-            item["name"],
-            item["surname"],
-            item["birthDate"],
-            item["phoneNumbers"]
-        )
+          # Используем внутреннюю функцию _VarintBytes из библиотеки Protobuf для кодирования длины
+          length_prefix = _VarintBytes(message_length)
 
-        # Сериализуйте сообщение
-        serialized_data = message.SerializeToString()
+          # Записываем префикс длины
+          f.write(length_prefix)
+          # Записываем сериализованные данные сообщения
+          f.write(serialized_data)
 
-        # Получите длину сериализованных данных
-        message_length = len(serialized_data)
+  print(f"Protobuf messages (length-delimited) written to {output_filename}")
 
-        # Используйте внутреннюю функцию библиотеки Protobuf _VarintBytes для кодирования длины
-        length_prefix = _VarintBytes(message_length)
+  # --- Необязательно: проверка (чтение и вывод) ---
+  # Для обратного чтения мы также используем внутренний декодер varint из Protobuf.
+  from google.protobuf.internal.decoder import _DecodeVarint32
 
-        # Запишите префикс длины
-        f.write(length_prefix)
-        # Запишите сериализованные данные сообщения
-        f.write(serialized_data)
+  print("\n--- Verifying by reading back ---")
+  with open(output_filename, "rb") as f:
+      buf = f.read() # Читаем весь файл в буфер для упрощения декодирования varint
+      n = 0
+      while n < len(buf):
+          # Декодируем префикс длины в формате varint
+          msg_len, new_pos = _DecodeVarint32(buf, n)
+          n = new_pos
+          
+          # Извлекаем данные сообщения
+          message_data = buf[n:n+msg_len]
+          n += msg_len
 
-print(f"Сообщения Protobuf (с префиксом длины) записаны в {output_filename}")
+          # Разбираем сообщение
+          decoded_message = schemafile_pb2.MessageType()
+          decoded_message.ParseFromString(message_data)
+          print(text_format.MessageToString(decoded_message, as_utf8=True))
+  ```
 
+  Теперь запустите скрипт из командной строки. Рекомендуется запускать его из
+  виртуального окружения Python, например с использованием `uv`:
 
+  ```bash
+  uv venv proto-venv
+  source proto-venv/bin/activate
+  ```
 
-# --- Необязательно: проверка (повторное чтение и вывод) ---
+  Вам потребуется установить следующую библиотеку Python:
 
-# Для повторного чтения мы также используем внутренний декодер Protobuf для значений varint.
+  ```bash
+  uv pip install --upgrade protobuf
+  ```
 
-from google.protobuf.internal.decoder import \_DecodeVarint32
+  Запустите скрипт для генерации бинарного файла:
 
-print("\n--- Проверка с помощью повторного чтения ---")
-with open(output_filename, "rb") as f:
-buf = f.read() # Считать весь файл в буфер для упрощения декодирования значений varint
-n = 0
-while n < len(buf): # Декодировать префикс длины в формате varint
-msg_len, new_pos = \_DecodeVarint32(buf, n)
-n = new_pos
-
-        # Извлечь данные сообщения
-        message_data = buf[n:n+msg_len]
-        n += msg_len
-
-        # Распарсить сообщение
-        decoded_message = schemafile_pb2.MessageType()
-        decoded_message.ParseFromString(message_data)
-        print(text_format.MessageToString(decoded_message, as_utf8=True))
-
-````
-
-Теперь запустите скрипт из командной строки. Рекомендуется запускать его из
-виртуального окружения Python, например с помощью `uv`:
-
-```bash
-uv venv proto-venv
-source proto-venv/bin/activate
-````
-
-Вам потребуется установить следующие библиотеки Python:
-
-```bash
-uv pip install --upgrade protobuf
-```
-
-Запустите скрипт для генерации бинарного файла:
-
-```bash
-python generate_protobuf_data.py
-```
-
+  ```bash
+  python generate_protobuf_data.py
+  ```
 </details>
 
-Создайте в ClickHouse таблицу, соответствующую схеме:
+Создайте таблицу ClickHouse, соответствующую этой схеме:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;
@@ -259,6 +248,7 @@ CREATE TABLE IF NOT EXISTS test.protobuf_messages (
 ENGINE = MergeTree()
 ORDER BY tuple()
 ```
+
 
 Вставьте данные в таблицу из командной строки:
 
@@ -266,21 +256,22 @@ ORDER BY tuple()
 cat protobuf_messages.bin | clickhouse-client --query "INSERT INTO test.protobuf_messages SETTINGS format_schema='schemafile:MessageType' FORMAT Protobuf"
 ```
 
-Вы также можете записать данные обратно в бинарный файл, используя формат `Protobuf`:
+Также можно записать данные в двоичный файл в формате `Protobuf`:
 
 ```sql
 SELECT * FROM test.protobuf_messages INTO OUTFILE 'protobuf_message_from_clickhouse.bin' FORMAT Protobuf SETTINGS format_schema = 'schemafile:MessageType'
 ```
 
-Используя свою схему Protobuf, вы теперь можете десериализовать данные, которые были записаны ClickHouse в файл `protobuf_message_from_clickhouse.bin`.
+Имея Protobuf-схему, вы теперь можете десериализовать данные, которые ClickHouse записал в файл `protobuf_message_from_clickhouse.bin`.
 
-### Чтение и запись данных с использованием ClickHouse Cloud {#basic-examples-cloud}
 
-В ClickHouse Cloud вы не можете загрузить файл со схемой Protobuf. Однако вы можете использовать настройку `format_protobuf_schema`,
-чтобы указать схему непосредственно в запросе. В этом примере показано, как прочитать сериализованные данные с вашей локальной
-машины и вставить их в таблицу в ClickHouse Cloud.
+### Чтение и запись данных с использованием ClickHouse Cloud
 
-Как и в предыдущем примере, создайте в ClickHouse Cloud таблицу в соответствии со своей схемой Protobuf:
+В ClickHouse Cloud нельзя загрузить файл схемы Protobuf. Однако вы можете использовать параметр `format_protobuf_schema`,
+чтобы указать схему прямо в запросе. В этом примере показано, как читать сериализованные данные с вашей локальной
+машины и вставлять их в таблицу в ClickHouse Cloud.
+
+Как и в предыдущем примере, создайте таблицу в ClickHouse Cloud в соответствии с вашей Protobuf-схемой:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS test;
@@ -294,23 +285,24 @@ ENGINE = MergeTree()
 ORDER BY tuple()
 ```
 
-Настройка `format_schema_source` определяет источник значения параметра `format_schema`
+Параметр `format_schema_source` определяет источник значения параметра `format_schema`.
 
 Возможные значения:
 
-- 'file' (по умолчанию): не поддерживается в Cloud
-- 'string': `format_schema` содержит буквальный текст схемы.
-- 'query': `format_schema` — это запрос для получения схемы.
+* &#39;file&#39; (по умолчанию): не поддерживается в Cloud
+* &#39;string&#39;: `format_schema` содержит буквальное содержимое схемы.
+* &#39;query&#39;: `format_schema` представляет собой запрос для получения схемы.
 
-### `format_schema_source='string'` {#format-schema-source-string}
 
-Чтобы вставить данные в ClickHouse Cloud, указав схему как строку, выполните:
+### `format_schema_source='string'`
+
+Чтобы вставить данные в ClickHouse Cloud, указав схему в виде строки, выполните команду:
 
 ```bash
-cat protobuf_messages.bin | clickhouse client --host <hostname> --secure --password <password> --query "INSERT INTO testing.protobuf_messages SETTINGS format_schema_source='syntax = "proto3";message MessageType {  string name = 1;  string surname = 2;  uint32 birthDate = 3;  repeated string phoneNumbers = 4;};', format_schema='schemafile:MessageType' FORMAT Protobuf"
+cat protobuf_messages.bin | clickhouse client --host <имя_хоста> --secure --password <пароль> --query "INSERT INTO testing.protobuf_messages SETTINGS format_schema_source='syntax = "proto3";message MessageType {  string name = 1;  string surname = 2;  uint32 birthDate = 3;  repeated string phoneNumbers = 4;};', format_schema='schemafile:MessageType' FORMAT Protobuf"
 ```
 
-Выберите данные, вставленные в таблицу:
+Выберите данные, добавленные в таблицу:
 
 ```sql
 clickhouse client --host <hostname> --secure --password <password> --query "SELECT * FROM testing.protobuf_messages"
@@ -322,12 +314,12 @@ Javier Rodriguez 20001015 ['(555) 891-2046','(555) 738-5129']
 Mei Ling 19980616 ['(555) 956-1834','(555) 403-7682']
 ```
 
-### `format_schema_source='query'` {#format-schema-source-query}
 
-Вы также можете хранить свою схему Protobuf в таблице.
+### `format_schema_source='query'`
 
-Создайте таблицу в ClickHouse Cloud, в которую будут вставляться данные:
+Вы также можете хранить Protobuf-схему в таблице.
 
+Создайте в ClickHouse Cloud таблицу для вставки данных:
 
 ```sql
 CREATE TABLE testing.protobuf_schema (
@@ -341,7 +333,7 @@ ORDER BY tuple();
 INSERT INTO testing.protobuf_schema VALUES ('syntax = "proto3";message MessageType {  string name = 1;  string surname = 2;  uint32 birthDate = 3;  repeated string phoneNumbers = 4;};');
 ```
 
-Вставьте данные в ClickHouse Cloud, указав схему в запросе, который нужно выполнить:
+Вставьте данные в ClickHouse Cloud, указав схему в виде выполняемого запроса:
 
 ```bash
 cat protobuf_messages.bin | clickhouse client --host <hostname> --secure --password <password> --query "INSERT INTO testing.protobuf_messages SETTINGS format_schema_source='SELECT schema FROM testing.protobuf_schema', format_schema='schemafile:MessageType' FORMAT Protobuf"
@@ -350,7 +342,7 @@ cat protobuf_messages.bin | clickhouse client --host <hostname> --secure --passw
 Выведите данные, вставленные в таблицу:
 
 ```sql
-clickhouse client --host <hostname> --secure --password <password> --query "SELECT * FROM testing.protobuf_messages"
+clickhouse client --host <имя_хоста> --secure --password <пароль> --query "SELECT * FROM testing.protobuf_messages"
 ```
 
 ```response
@@ -359,40 +351,41 @@ Javier Rodriguez 20001015 ['(555) 891-2046','(555) 738-5129']
 Mei Ling 19980616 ['(555) 956-1834','(555) 403-7682']
 ```
 
+
 ### Использование автоматически сгенерированной схемы
 
-Если у вас нет внешней схемы Protobuf для ваших данных, вы всё равно можете выводить и принимать данные в формате Protobuf,
-используя автоматически сгенерированную схему. Для этого используйте настройку `format_protobuf_use_autogenerated_schema`.
+Если у вас нет внешней Protobuf-схемы для ваших данных, вы всё равно можете выводить и считывать данные в формате Protobuf, используя автоматически сгенерированную схему. Для этого используйте настройку `format_protobuf_use_autogenerated_schema`.
 
 Например:
 
 ```sql
-SELECT * FROM test.hits FORMAT Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1
+SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1
 ```
 
 В этом случае ClickHouse автоматически сгенерирует Protobuf-схему в соответствии со структурой таблицы с помощью функции
 [`structureToProtobufSchema`](/sql-reference/functions/other-functions#structureToProtobufSchema). Затем ClickHouse будет использовать эту схему для сериализации данных в формате Protobuf.
 
-Вы также можете прочитать Protobuf-файл с автоматически сгенерированной схемой. В этом случае необходимо, чтобы файл был создан с использованием той же схемы:
+Вы также можете прочитать файл в формате Protobuf с автоматически сгенерированной схемой. В этом случае необходимо, чтобы файл был создан с использованием той же схемы:
 
 ```bash
 $ cat hits.bin | clickhouse-client --query "INSERT INTO test.hits SETTINGS format_protobuf_use_autogenerated_schema=1 FORMAT Protobuf"
 ```
 
-Настройка [`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema) включена по умолчанию и применяется, если параметр [`format_schema`](/operations/settings/formats#format_schema) не задан.
+Настройка [`format_protobuf_use_autogenerated_schema`](/operations/settings/settings-formats.md#format_protobuf_use_autogenerated_schema) включена по умолчанию и применяется, если [`format_schema`](/operations/settings/formats#format_schema) не задан.
 
-Вы также можете сохранять автоматически сгенерированную схему в файл при вводе/выводе с помощью настройки [`output_format_schema`](/operations/settings/formats#output_format_schema). Например:
+Вы также можете сохранить автоматически сгенерированную схему в файл при вводе/выводе данных с помощью настройки [`output_format_schema`](/operations/settings/formats#output_format_schema). Например:
 
 ```sql
 SELECT * FROM test.hits format Protobuf SETTINGS format_protobuf_use_autogenerated_schema=1, output_format_schema='path/to/schema/schema.proto'
 ```
 
-В этом случае автоматически сгенерированная Protobuf-схема будет сохранена в файле `path/to/schema/schema.capnp`.
+В этом случае автоматически сгенерированная схема Protobuf будет сохранена в файле `path/to/schema/schema.capnp`.
+
 
 ### Сброс кэша Protobuf
 
-Чтобы перезагрузить Protobuf-схему, загруженную из [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path), используйте оператор [`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format).
+Чтобы перезагрузить схему Protobuf, загруженную из [`format_schema_path`](/operations/server-configuration-parameters/settings.md/#format_schema_path), используйте оператор [`SYSTEM DROP ... FORMAT CACHE`](/sql-reference/statements/system.md/#system-drop-schema-format).
 
 ```sql
-СИСТЕМА ОЧИСТИТЬ КЭШ СХЕМЫ ФОРМАТА ДЛЯ Protobuf
+SYSTEM DROP FORMAT SCHEMA CACHE FOR Protobuf
 ```

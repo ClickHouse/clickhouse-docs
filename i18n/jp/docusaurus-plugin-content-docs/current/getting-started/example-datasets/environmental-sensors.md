@@ -1,5 +1,5 @@
 ---
-description: '貢献者主導のグローバルセンサーネットワークである Sensor.Community によって生成された、200 億件超のオープンな環境データ。'
+description: 'Sensor.Community の貢献者主導によるグローバルセンサーネットワークが生成した、200 億件超のデータレコードを含むオープンな環境データ。'
 sidebar_label: '環境センサーデータ'
 slug: /getting-started/example-datasets/environmental-sensors
 title: '環境センサーデータ'
@@ -11,13 +11,13 @@ import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
-[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを作成する、コミュニティ主導のグローバルなセンサーネットワークです。データは世界中のセンサーから収集されています。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするための API は [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) で公開されており、データは [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) の下で自由に利用できます。
+[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを生成する、コントリビューター主導のグローバルなセンサーネットワークです。データは世界中のセンサーから収集されています。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするための API は [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) に公開されており、データは [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) に基づいて自由に利用できます。
 
 :::important
-このデータセットには 200 億件以上のレコードが含まれているため、そのようなボリュームを処理できるリソースがない場合は、以下のコマンドを安易にコピー＆ペーストしないでください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **本番** インスタンス上で実行されたものです。
+このデータセットには 200 億件を超えるレコードがあるため、下記のコマンドをそのままコピー&amp;ペーストする場合は、この規模のデータ量を処理できるリソースがあることを確認してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されました。
 :::
 
-1. データは S3 にあるため、ファイルからテーブルを作成するために `s3` テーブル関数を使用できます。また、S3 上のデータをそのまま直接クエリすることもできます。実際に ClickHouse に挿入する前に、まずはいくつかの行を確認してみましょう。
+1. データは S3 にあるため、`s3` テーブル関数を使用してファイルからテーブルを作成できます。また、データをその場でクエリすることも可能です。ClickHouse への挿入を行う前に、いくつかのレコードを確認してみましょう。
 
 ```sql
 SELECT *
@@ -29,7 +29,7 @@ LIMIT 10
 SETTINGS format_csv_delimiter = ';';
 ```
 
-データは CSV ファイル形式ですが、区切り文字にはセミコロンが使われています。行は次のようになります：
+データは CSV ファイルですが、区切り文字にはセミコロンが使われています。行は次のような形式です：
 
 
 ```response
@@ -47,7 +47,7 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. 次の `MergeTree` テーブルを使用して、ClickHouse にデータを格納します。
+2. ClickHouse にデータを保存するために、次の `MergeTree` テーブルを使用します。
 
 
 ```sql
@@ -77,7 +77,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloud のサービスには、`default` という名前のクラスタがあります。ここでは、クラスタ内のノードから S3 ファイルを並列に読み取る `s3Cluster` テーブル関数を使用します。（クラスタがない場合は、`s3` 関数のみを使用し、クラスタ名は削除してください。）
+3. ClickHouse Cloud のサービスには `default` という名前のクラスタがあり、クラスタ内のノードから並列に S3 ファイルを読み取る `s3Cluster` テーブル関数を使用します。（クラスタがない場合は、`s3` 関数のみを使用し、クラスタ名の指定は行わないでください。）
 
 このクエリの実行にはしばらく時間がかかります。非圧縮のデータ量は約 1.67T あります。
 
@@ -117,7 +117,7 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-こちらがレスポンスです。行数と処理速度が表示されています。1 秒あたり 600 万行を超えるペースで取り込まれています！
+こちらがレスポンスで、行数と処理速度が表示されています。1 秒あたり 600 万行以上のレートでデータが取り込まれています！
 
 ```response
 0行が返されました。経過時間: 3419.330秒。処理済み: 206.9億行、1.67 TB (605万行/秒、488.52 MB/秒)
@@ -140,7 +140,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67T のデータは 310 GiB まで圧縮されており、合計 206.9 億行あります。
+1.67T のデータは圧縮されて 310 GiB となり、総行数は 206.9 億行です。
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -148,7 +148,7 @@ ORDER BY size DESC;
 └───────────┴────────────┴──────────────┴────────────┴─────────────┴────────────┘
 ```
 
-5. データが ClickHouse に取り込まれたので、次はそれを分析してみましょう。より多くのセンサーがデプロイされるにつれて、時間の経過とともにデータ量が増えている点に注目してください。
+5. データが ClickHouse に取り込まれたので、これから分析してみましょう。センサーの設置数が増えるにつれて、時間の経過とともにデータ量が増加していることに注目してください。
 
 ```sql
 SELECT
@@ -159,11 +159,11 @@ GROUP BY date
 ORDER BY date ASC;
 ```
 
-SQL コンソールでチャートを作成し、結果を可視化できます。
+SQL コンソールでチャートを作成して、結果を可視化できます。
 
 <Image img={no_events_per_day} size="md" alt="Number of events per day" />
 
-6. このクエリは、暑さと湿度が高すぎる日の数を集計します。
+6. このクエリは、非常に暑く蒸し暑い日の数を集計します。
 
 ```sql
 WITH
@@ -174,7 +174,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-結果の可視化は以下のとおりです。
+結果の可視化は次のとおりです。
 
 
 <Image img={sensors_02} size="md" alt="暑くて蒸し暑い日"/>

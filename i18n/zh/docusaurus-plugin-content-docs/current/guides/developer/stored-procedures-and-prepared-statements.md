@@ -1,8 +1,8 @@
 ---
 sidebar_label: '存储过程与查询参数'
 sidebar_position: 19
-keywords: ['clickhouse', '存储过程', '预处理语句', '查询参数', 'UDF', '参数化视图']
-description: '关于 ClickHouse 中存储过程、预处理语句和查询参数的指南'
+keywords: ['clickhouse', '存储过程', '预编译语句', '查询参数', 'UDF', '参数化视图']
+description: '关于 ClickHouse 中存储过程、预编译语句和查询参数的指南'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: '存储过程与查询参数'
 doc_type: 'guide'
@@ -12,66 +12,63 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickHouse 中的存储过程与查询参数
+# ClickHouse 中的存储过程和查询参数
 
-如果你过去主要使用传统关系型数据库，可能会希望在 ClickHouse 中使用存储过程和预处理语句。
-本指南说明了 ClickHouse 对这些概念的处理方式，并提供推荐的替代方案。
-
-
+如果你之前使用的是传统关系型数据库，可能会在 ClickHouse 中寻找存储过程和预处理语句（prepared statements）。
+本指南将解释 ClickHouse 对这些概念的处理方式，并提供推荐的替代方案。
 
 ## ClickHouse 中存储过程的替代方案 {#alternatives-to-stored-procedures}
 
-ClickHouse 不支持带有控制流逻辑(如 `IF`/`ELSE`、循环等)的传统存储过程。
-这是基于 ClickHouse 作为分析型数据库架构的有意设计决策。
-分析型数据库不鼓励使用循环,因为处理 O(n) 个简单查询通常比处理少量复杂查询更慢。
+ClickHouse 不支持带有控制流逻辑（`IF`/`ELSE`、循环等）的传统存储过程。
+这是基于 ClickHouse 作为分析型数据库的架构而做出的刻意设计选择。
+在分析型数据库中不鼓励使用循环，因为处理 O(n) 个简单查询通常比处理少量复杂查询更慢。
 
-ClickHouse 针对以下场景进行了优化:
+ClickHouse 针对以下场景进行了优化：
 
 - **分析型工作负载** - 对大型数据集进行复杂聚合
-- **批处理** - 高效处理大量数据
-- **声明式查询** - 描述要检索什么数据而非如何处理数据的 SQL 查询
+- **批处理** - 高效处理大规模数据量
+- **声明式查询** - 使用 SQL 查询描述要检索哪些数据，而不是如何处理这些数据
 
-带有过程式逻辑的存储过程与这些优化背道而驰。相反,ClickHouse 提供了与其优势相契合的替代方案。
+带有过程式逻辑的存储过程与这些优化方向相悖。为此，ClickHouse 提供了与其优势相匹配的替代方案。
 
-### 用户自定义函数 (UDF) {#user-defined-functions}
+### 用户定义函数（UDF） {#user-defined-functions}
 
-用户自定义函数允许您封装可重用的逻辑而无需控制流。ClickHouse 支持两种类型:
+用户定义函数无需使用控制流即可封装可复用的逻辑。ClickHouse 支持两种类型：
 
-#### 基于 Lambda 的 UDF {#lambda-based-udfs}
+#### 基于 Lambda 的 UDF
 
-使用 SQL 表达式和 lambda 语法创建函数:
+使用 SQL 表达式和 lambda 语法创建函数：
 
 <details>
-<summary>示例数据</summary>
+  <summary>用于示例的样本数据</summary>
 
-```sql
--- 创建产品表
-CREATE TABLE products (
-    product_id UInt32,
-    product_name String,
-    price Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY product_id;
+  ```sql
+  -- 创建 products 表
+  CREATE TABLE products (
+      product_id UInt32,
+      product_name String,
+      price Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY product_id;
 
--- 插入示例数据
-INSERT INTO products (product_id, product_name, price) VALUES
-(1, 'Laptop', 899.99),
-(2, 'Wireless Mouse', 24.99),
-(3, 'USB-C Cable', 12.50),
-(4, 'Monitor', 299.00),
-(5, 'Keyboard', 79.99),
-(6, 'Webcam', 54.95),
-(7, 'Desk Lamp', 34.99),
-(8, 'External Hard Drive', 119.99),
-(9, 'Headphones', 149.00),
-(10, 'Phone Stand', 15.99);
-```
-
+  -- 插入示例数据
+  INSERT INTO products (product_id, product_name, price) VALUES
+  (1, 'Laptop', 899.99),
+  (2, 'Wireless Mouse', 24.99),
+  (3, 'USB-C Cable', 12.50),
+  (4, 'Monitor', 299.00),
+  (5, 'Keyboard', 79.99),
+  (6, 'Webcam', 54.95),
+  (7, 'Desk Lamp', 34.99),
+  (8, 'External Hard Drive', 119.99),
+  (9, 'Headphones', 149.00),
+  (10, 'Phone Stand', 15.99);
+  ```
 </details>
 
 ```sql
--- 简单计算函数
+-- 简单的计算函数
 CREATE FUNCTION calculate_tax AS (price, rate) -> price * rate;
 
 SELECT
@@ -82,10 +79,10 @@ FROM products;
 ```
 
 ```sql
--- 使用 if() 的条件逻辑
+-- 使用 if() 实现条件逻辑
 CREATE FUNCTION price_tier AS (price) ->
-    if(price < 100, 'Budget',
-       if(price < 500, 'Mid-range', 'Premium'));
+    if(price < 100, '经济型',
+       if(price < 500, '中端', '高端'));
 
 SELECT
     product_name,
@@ -95,27 +92,28 @@ FROM products;
 ```
 
 ```sql
--- 字符串操作
+-- 字符串处理
 CREATE FUNCTION format_phone AS (phone) ->
     concat('(', substring(phone, 1, 3), ') ',
            substring(phone, 4, 3), '-',
            substring(phone, 7, 4));
 
 SELECT format_phone('5551234567');
--- 结果: (555) 123-4567
+-- 结果：(555) 123-4567
 ```
 
-**限制:**
+**限制：**
 
-- 不支持循环或复杂控制流
-- 无法修改数据(`INSERT`/`UPDATE`/`DELETE`)
-- 不允许递归函数
+* 不支持循环或复杂的控制流
+* 不能修改数据（`INSERT`/`UPDATE`/`DELETE`）
+* 不允许使用递归函数
 
-有关完整语法,请参阅 [`CREATE FUNCTION`](/sql-reference/statements/create/function)。
+完整语法请参阅 [`CREATE FUNCTION`](/sql-reference/statements/create/function)。
 
-#### 可执行 UDF {#executable-udfs}
 
-对于更复杂的逻辑,可使用调用外部程序的可执行 UDF:
+#### 可执行 UDF
+
+对于更复杂的逻辑，可以使用可执行 UDF 函数来调用外部程序：
 
 ```xml
 <!-- /etc/clickhouse-server/sentiment_analysis_function.xml -->
@@ -141,63 +139,60 @@ SELECT
 FROM customer_reviews;
 ```
 
-可执行 UDF 可以使用任何语言(Python、Node.js、Go 等)实现任意逻辑。
+可执行 UDF 可以使用任意语言（Python、Node.js、Go 等）来实现任意逻辑。
 
-有关详细信息,请参阅[可执行 UDF](/sql-reference/functions/udf)。
+有关详细信息，请参阅[可执行 UDF](/sql-reference/functions/udf)。
 
-### 参数化视图 {#parameterized-views}
 
-参数化视图的作用类似于返回数据集的函数。
-它们非常适合具有动态过滤的可重用查询:
+### 参数化视图
+
+参数化视图类似于返回数据集的函数。
+它们非常适合带有动态过滤条件的可复用查询：
 
 <details>
-<summary>示例数据</summary>
+  <summary>示例数据</summary>
 
-```sql
--- 创建销售表
-CREATE TABLE sales (
-  date Date,
-  product_id UInt32,
-  product_name String,
-  category String,
-  quantity UInt32,
-  revenue Decimal(10, 2),
-  sales_amount Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY (date, product_id);
+  ```sql
+  -- 创建 sales 表
+  CREATE TABLE sales (
+    date Date,
+    product_id UInt32,
+    product_name String,
+    category String,
+    quantity UInt32,
+    revenue Decimal(10, 2),
+    sales_amount Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY (date, product_id);
 
-```
-
-
--- 插入示例数据
-INSERT INTO sales VALUES
-(&#39;2024-01-05&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 2, 1799.98, 1799.98),
-(&#39;2024-01-06&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
-(&#39;2024-01-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 5, 124.95, 124.95),
-(&#39;2024-01-15&#39;, 12347, &#39;USB-C Cable&#39;, &#39;Accessories&#39;, 10, 125.00, 125.00),
-(&#39;2024-01-20&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 3, 2699.97, 2699.97),
-(&#39;2024-01-25&#39;, 12348, &#39;Monitor 4K&#39;, &#39;Electronics&#39;, 2, 598.00, 598.00),
-(&#39;2024-02-01&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
-(&#39;2024-02-05&#39;, 12349, &#39;Keyboard Mechanical&#39;, &#39;Accessories&#39;, 4, 319.96, 319.96),
-(&#39;2024-02-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 8, 199.92, 199.92),
-(&#39;2024-02-15&#39;, 12350, &#39;Webcam HD&#39;, &#39;Electronics&#39;, 3, 164.85, 164.85);
-
-````
-
+  -- 插入示例数据
+  INSERT INTO sales VALUES
+  ('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
+  ('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
+  ('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
+  ('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
+  ('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
+  ('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
+  ('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
+  ('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
+  ```
 </details>
+
 ```sql
 -- 创建参数化视图
 CREATE VIEW sales_by_date AS
 SELECT
     date,
     product_id,
-    sum(quantity) AS total_quantity,
-    sum(revenue) AS total_revenue
+    sum(quantity) AS total_quantity,  -- 总数量
+    sum(revenue) AS total_revenue      -- 总收入
 FROM sales
 WHERE date BETWEEN {start_date:Date} AND {end_date:Date}
 GROUP BY date, product_id;
-````
+```
 
 ```sql
 -- 使用参数查询视图
@@ -206,10 +201,11 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
+
 #### 常见用例
 
 * 动态日期范围过滤
-* 用户级数据切分
+* 按用户的数据切片
 * [多租户数据访问](/cloud/bestpractices/multi-tenancy)
 * 报表模板
 * [数据脱敏](/cloud/guides/data-masking)
@@ -241,7 +237,7 @@ FROM (
 )
 WHERE rank <= {top_n:UInt32};
 
--- 使用方式
+-- 使用方法
 SELECT * FROM top_products_by_category(
     category='Electronics',
     min_date='2024-01-01',
@@ -249,11 +245,12 @@ SELECT * FROM top_products_by_category(
 );
 ```
 
-有关更多信息，请参阅[参数化视图](/sql-reference/statements/create/view#parameterized-view)部分。
+有关详细信息，请参阅[参数化视图](/sql-reference/statements/create/view#parameterized-view)部分。
+
 
 ### 物化视图
 
-物化视图非常适合预先计算那些在传统上通常由存储过程完成的高开销聚合操作。如果你熟悉传统数据库，可以将物化视图理解为一种 **INSERT 触发器**，它会在数据插入到源表时自动对其进行转换和聚合：
+物化视图非常适合用于预先计算那些在传统方案中通常由存储过程执行的高开销聚合操作。如果你有使用传统数据库的背景，可以把物化视图理解为一种 **INSERT 触发器（trigger）**，它会在数据插入到源表时自动对其进行转换和聚合：
 
 ```sql
 -- 源表
@@ -278,8 +275,6 @@ AS SELECT
     uniq(page) AS unique_pages
 FROM page_views
 GROUP BY date, user_id;
-```
-
 
 -- 向源表插入示例数据
 INSERT INTO page_views VALUES
@@ -298,18 +293,18 @@ INSERT INTO page_views VALUES
 
 -- 查询预聚合数据
 SELECT
-user_id,
-sum(page_views) AS total_views,
-sum(sessions) AS total_sessions
+    user_id,
+    sum(page_views) AS total_views,
+    sum(sessions) AS total_sessions
 FROM daily_user_stats
 WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
+```
 
-````
 
-#### 可刷新物化视图 {#refreshable-materialized-views}
+#### 可刷新物化视图
 
-用于定时批处理(如夜间存储过程):
+用于计划的批处理任务（例如每晚运行的存储过程）：
 
 ```sql
 -- 每天凌晨 2 点自动刷新
@@ -329,301 +324,289 @@ GROUP BY month, region, product_category;
 -- 查询始终获取最新数据
 SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
-````
+```
 
-有关高级模式,请参阅[级联物化视图](/guides/developer/cascading-materialized-views)。
+有关更高级的用法，请参阅 [级联物化视图](/guides/developer/cascading-materialized-views)。
+
 
 ### 外部编排 {#external-orchestration}
 
-对于复杂的业务逻辑、ETL 工作流或多步骤流程,始终可以使用语言客户端在 ClickHouse 外部实现逻辑。
+对于复杂的业务逻辑、ETL 工作流或多步骤流程，可以在 ClickHouse 外部使用各类语言客户端来实现这些逻辑。
 
-#### 使用应用程序代码 {#using-application-code}
+#### 使用应用代码 {#using-application-code}
 
-以下是并排比较,展示 MySQL 存储过程如何转换为使用 ClickHouse 的应用程序代码:
+下面是一个对比示例，展示了如何将 MySQL 存储过程改写为 ClickHouse 的应用代码：
 
 <Tabs>
-<TabItem value="mysql" label="MySQL 存储过程" default>
+  <TabItem value="mysql" label="MySQL 存储过程" default>
+    ```sql
+    DELIMITER $$
 
-```sql
-DELIMITER $$
+    CREATE PROCEDURE process_order(
+        IN p_order_id INT,
+        IN p_customer_id INT,
+        IN p_order_total DECIMAL(10,2),
+        OUT p_status VARCHAR(50),
+        OUT p_loyalty_points INT
+    )
+    BEGIN
+        DECLARE v_customer_tier VARCHAR(20);
+        DECLARE v_previous_orders INT;
+        DECLARE v_discount DECIMAL(10,2);
 
-CREATE PROCEDURE process_order(
-    IN p_order_id INT,
-    IN p_customer_id INT,
-    IN p_order_total DECIMAL(10,2),
-    OUT p_status VARCHAR(50),
-    OUT p_loyalty_points INT
-)
-BEGIN
-    DECLARE v_customer_tier VARCHAR(20);
-    DECLARE v_previous_orders INT;
-    DECLARE v_discount DECIMAL(10,2);
+        -- 启动事务
+        START TRANSACTION;
 
-    -- 开始事务
-    START TRANSACTION;
-
-    -- 获取客户信息
-    SELECT tier, total_orders
-    INTO v_customer_tier, v_previous_orders
-    FROM customers
-    WHERE customer_id = p_customer_id;
-
-    -- 根据等级计算折扣
-    IF v_customer_tier = 'gold' THEN
-        SET v_discount = p_order_total * 0.15;
-    ELSEIF v_customer_tier = 'silver' THEN
-        SET v_discount = p_order_total * 0.10;
-    ELSE
-        SET v_discount = 0;
-    END IF;
-
-    -- 插入订单记录
-    INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
-    VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
-            p_order_total - v_discount);
-
-    -- 更新客户统计信息
-    UPDATE customers
-    SET total_orders = total_orders + 1,
-        lifetime_value = lifetime_value + (p_order_total - v_discount),
-        last_order_date = NOW()
-    WHERE customer_id = p_customer_id;
-
-    -- 计算忠诚度积分(每美元 1 积分)
-    SET p_loyalty_points = FLOOR(p_order_total - v_discount);
-
-```
-
-
--- 插入忠诚积分记录
-INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
-VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
-CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
-
--- 检查客户是否需要升级会员等级
-IF v&#95;previous&#95;orders + 1 &gt;= 10 AND v&#95;customer&#95;tier = &#39;bronze&#39; THEN
-UPDATE customers SET tier = &#39;silver&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;SILVER&#39;;
-ELSEIF v&#95;previous&#95;orders + 1 &gt;= 50 AND v&#95;customer&#95;tier = &#39;silver&#39; THEN
-UPDATE customers SET tier = &#39;gold&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;GOLD&#39;;
-ELSE
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#39;;
-END IF;
-
-COMMIT;
-END$$
-
-DELIMITER ;
-
--- 调用存储过程
-CALL process&#95;order(12345, 5678, 250.00, @status, @points);
-SELECT @status, @points;
-
-```
-
-</TabItem>
-<TabItem value="clickhouse" label="ClickHouse 应用代码">
-
-:::note 查询参数
-以下示例使用了 ClickHouse 中的查询参数。
-如果您还不熟悉 ClickHouse 中的查询参数,请跳转至["ClickHouse 中预处理语句的替代方案"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)。
-:::
-```
-
-
-```python
-# 使用 clickhouse-connect 的 Python 示例
-import clickhouse_connect
-from datetime import datetime
-from decimal import Decimal
-
-client = clickhouse_connect.get_client(host='localhost')
-
-def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
-    """
-    处理订单,包含通常在存储过程中实现的业务逻辑。
-    返回:(status_message, loyalty_points)
-
-    注意:ClickHouse 针对分析场景进行了优化,不适用于 OLTP 事务。
-    对于事务型工作负载,请使用 OLTP 数据库(PostgreSQL、MySQL),
-    并将分析数据同步到 ClickHouse 用于报表分析。
-    """
-
-    # 步骤 1:获取客户信息
-    result = client.query(
-        """
+        -- 获取客户信息
         SELECT tier, total_orders
+        INTO v_customer_tier, v_previous_orders
         FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id}
-    )
+        WHERE customer_id = p_customer_id;
 
-    if not result.result_rows:
-        raise ValueError(f"未找到客户 {customer_id}")
+        -- 根据会员等级计算折扣
+        IF v_customer_tier = 'gold' THEN
+            SET v_discount = p_order_total * 0.15;
+        ELSEIF v_customer_tier = 'silver' THEN
+            SET v_discount = p_order_total * 0.10;
+        ELSE
+            SET v_discount = 0;
+        END IF;
 
-    customer_tier, previous_orders = result.result_rows[0]
+        -- 插入订单记录
+        INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
+        VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
+                p_order_total - v_discount);
 
-    # 步骤 2:根据等级计算折扣(Python 中的业务逻辑)
-    discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
-    discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
-    final_amount = order_total - discount
+        -- 更新客户统计数据
+        UPDATE customers
+        SET total_orders = total_orders + 1,
+            lifetime_value = lifetime_value + (p_order_total - v_discount),
+            last_order_date = NOW()
+        WHERE customer_id = p_customer_id;
 
-    # 步骤 3:插入订单记录
-    client.command(
-        """
-        INSERT INTO orders (order_id, customer_id, order_total, discount,
-                           final_amount, order_date)
-        VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
-                {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
-        """,
-        parameters={
-            'oid': order_id,
-            'cid': customer_id,
-            'total': float(order_total),
-            'disc': float(discount),
-            'final': float(final_amount)
-        }
-    )
+        -- 计算积分（每美元1积分）
+        SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
-    # 步骤 4:计算新的客户统计数据
-    new_order_count = previous_orders + 1
-
-    # 对于分析型数据库,优先使用 INSERT 而非 UPDATE
-    # 此处使用 ReplacingMergeTree 模式
-    client.command(
-        """
-        INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                              update_time)
-        SELECT
-            customer_id,
-            tier,
-            {new_count: UInt32} AS total_orders,
-            now() AS last_order_date,
-            now() AS update_time
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id, 'new_count': new_order_count}
-    )
-
-    # 步骤 5:计算并记录忠诚度积分
-    loyalty_points = int(final_amount)
-
-    client.command(
-        """
+        -- 插入积分交易记录
         INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-        VALUES ({cid: UInt32}, {pts: Int32}, now(),
-                {desc: String})
-        """,
-        parameters={
-            'cid': customer_id,
-            'pts': loyalty_points,
-            'desc': f'Order #{order_id}'
-        }
+        VALUES (p_customer_id, p_loyalty_points, NOW(),
+                CONCAT('Order #', p_order_id));
+
+        -- 检查客户是否应升级会员等级
+        IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
+            UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
+        ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
+            UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
+        ELSE
+            SET p_status = 'ORDER_COMPLETE';
+        END IF;
+
+        COMMIT;
+    END$$
+
+    DELIMITER ;
+
+    -- 调用存储过程
+    CALL process_order(12345, 5678, 250.00, @status, @points);
+    SELECT @status, @points;
+    ```
+  </TabItem>
+
+  <TabItem value="ClickHouse" label="ClickHouse 应用代码">
+    :::note 查询参数
+    以下示例使用了 ClickHouse 中的查询参数。
+    如果您尚不熟悉 ClickHouse 中的查询参数,请跳转至[&quot;ClickHouse 中预处理语句的替代方案&quot;](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)。
+    :::
+
+    ```python
+    # 使用 clickhouse-connect 的 Python 示例
+    import clickhouse_connect
+    from datetime import datetime
+    from decimal import Decimal
+
+    client = clickhouse_connect.get_client(host='localhost')
+
+    def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
+        """
+        处理订单,包含通常应在存储过程中实现的业务逻辑。
+        返回:(状态消息, 积分)
+
+        注意:ClickHouse 针对分析场景优化,不适用于 OLTP 事务。
+        对于事务型工作负载,应使用 OLTP 数据库(PostgreSQL、MySQL),
+        并将分析数据同步到 ClickHouse 用于报表分析。
+        """
+
+        # 步骤 1:获取客户信息
+        result = client.query(
+            """
+            SELECT tier, total_orders
+            FROM customers
+            WHERE customer_id = {cid: UInt32}
+            """,
+            parameters={'cid': customer_id}
+        )
+
+        if not result.result_rows:
+            raise ValueError(f"未找到客户 {customer_id}")
+
+        customer_tier, previous_orders = result.result_rows[0]
+
+        # 步骤 2:根据等级计算折扣(Python 中的业务逻辑)
+        discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
+        discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
+        final_amount = order_total - discount
+
+        # 步骤 3:插入订单记录
+        client.command(
+            """
+            INSERT INTO orders (order_id, customer_id, order_total, discount,
+                               final_amount, order_date)
+            VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
+                    {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
+            """,
+            parameters={
+                'oid': order_id,
+                'cid': customer_id,
+                'total': float(order_total),
+                'disc': float(discount),
+                'final': float(final_amount)
+            }
+        )
+
+        # 步骤 4:计算新的客户统计数据
+        new_order_count = previous_orders + 1
+
+        # 对于分析型数据库,优先使用 INSERT 而非 UPDATE
+        # 此处使用 ReplacingMergeTree 模式
+        client.command(
+            """
+            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                  update_time)
+            SELECT
+                customer_id,
+                tier,
+                {new_count: UInt32} AS total_orders,
+                now() AS last_order_date,
+                now() AS update_time
+            FROM customers
+            WHERE customer_id = {cid: UInt32}
+            """,
+            parameters={'cid': customer_id, 'new_count': new_order_count}
+        )
+
+        # 步骤 5:计算并记录积分
+        loyalty_points = int(final_amount)
+
+        client.command(
+            """
+            INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+            VALUES ({cid: UInt32}, {pts: Int32}, now(),
+                    {desc: String})
+            """,
+            parameters={
+                'cid': customer_id,
+                'pts': loyalty_points,
+                'desc': f'Order #{order_id}'
+            }
+        )
+
+        # 步骤 6:检查等级升级(Python 中的业务逻辑)
+        status = 'ORDER_COMPLETE'
+
+        if new_order_count >= 10 and customer_tier == 'bronze':
+            # 升级至银卡
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'silver' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
+
+        elif new_order_count >= 50 and customer_tier == 'silver':
+            # 升级至金卡
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'gold' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
+
+        return status, loyalty_points
+
+    # 使用该函数
+    status, points = process_order(
+        order_id=12345,
+        customer_id=5678,
+        order_total=Decimal('250.00')
     )
 
-    # 步骤 6:检查等级升级(Python 中的业务逻辑)
-    status = 'ORDER_COMPLETE'
-
-    if new_order_count >= 10 and customer_tier == 'bronze':
-        # 升级到银卡
-        client.command(
-            """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'silver' AS tier, total_orders, last_order_date,
-                now() AS update_time
-            FROM customers
-            WHERE customer_id = {cid: UInt32}
-            """,
-            parameters={'cid': customer_id}
-        )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
-
-    elif new_order_count >= 50 and customer_tier == 'silver':
-        # 升级到金卡
-        client.command(
-            """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'gold' AS tier, total_orders, last_order_date,
-                now() AS update_time
-            FROM customers
-            WHERE customer_id = {cid: UInt32}
-            """,
-            parameters={'cid': customer_id}
-        )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
-
-    return status, loyalty_points
-```
-
-
-# 使用函数
-
-status, points = process&#95;order(
-order&#95;id=12345,
-customer&#95;id=5678,
-order&#95;total=Decimal(&#39;250.00&#39;)
-)
-
-print(f&quot;状态: {status}, 会员积分: {points}&quot;)
-
-```
-
-</TabItem>
+    print(f"状态:{status},积分:{points}")
+    ```
+  </TabItem>
 </Tabs>
 
 <br/>
 
-#### 主要差异 {#key-differences}
+#### 关键区别 {#key-differences}
 
-1. **控制流** - MySQL 存储过程使用 `IF/ELSE`、`WHILE` 循环。在 ClickHouse 中，需在应用程序代码（Python、Java 等）中实现此类逻辑
-2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 实现 ACID 事务。ClickHouse 是针对仅追加工作负载优化的分析型数据库，不支持事务性更新
-3. **更新** - MySQL 使用 `UPDATE` 语句。ClickHouse 处理可变数据时更推荐使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
-4. **变量和状态** - MySQL 存储过程可以声明变量（`DECLARE v_discount`）。使用 ClickHouse 时，需在应用程序代码中管理状态
-5. **错误处理** - MySQL 支持 `SIGNAL` 和异常处理程序。在应用程序代码中，使用所用语言的原生错误处理机制（try/catch）
+1. **控制流** - MySQL 存储过程使用 `IF/ELSE`、`WHILE` 等循环结构。在 ClickHouse 中，应在应用程序代码（Python、Java 等）中实现这类逻辑。
+2. **事务** - MySQL 支持 `BEGIN/COMMIT/ROLLBACK` 以实现 ACID 事务。ClickHouse 是为追加写入型工作负载优化的分析型数据库，而不是面向事务性更新。
+3. **更新** - MySQL 使用 `UPDATE` 语句。对于可变数据，ClickHouse 更倾向于使用 `INSERT` 配合 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)。
+4. **变量和状态** - MySQL 存储过程可以声明变量（`DECLARE v_discount`）。在 ClickHouse 中，应在应用程序代码中管理状态。
+5. **错误处理** - MySQL 支持 `SIGNAL` 和异常处理器。在应用程序代码中，应使用所用语言的原生错误处理机制（try/catch）。
 
 :::tip
-**各方法的适用场景：**
-- **OLTP 工作负载**（订单、支付、用户账户）→ 使用 MySQL/PostgreSQL 配合存储过程
-- **分析工作负载**（报表、聚合、时间序列）→ 使用 ClickHouse 配合应用程序编排
-- **混合架构** → 两者兼用！将事务数据从 OLTP 流式传输到 ClickHouse 进行分析
+**何时采用各方案：**
+
+- **OLTP 工作负载**（订单、支付、用户账户）→ 使用带存储过程的 MySQL/PostgreSQL
+- **分析型工作负载**（报表、聚合、时序数据）→ 使用配合应用程序编排的 ClickHouse
+- **混合架构** → 两者都用！将 OLTP 中的事务数据流式传输到 ClickHouse 用于分析
 :::
 
 #### 使用工作流编排工具 {#using-workflow-orchestration-tools}
 
-- **Apache Airflow** - 调度和监控 ClickHouse 查询的复杂 DAG
-- **dbt** - 使用基于 SQL 的工作流转换数据
-- **Prefect/Dagster** - 基于 Python 的现代化编排工具
-- **自定义调度器** - Cron 作业、Kubernetes CronJobs 等
+- **Apache Airflow** - 调度和监控由 ClickHouse 查询组成的复杂 DAG
+- **dbt** - 使用基于 SQL 的工作流进行数据转换
+- **Prefect/Dagster** - 现代的、基于 Python 的编排框架
+- **自定义调度器** - Cron 作业、Kubernetes CronJob 等
 
-**外部编排的优势：**
-- 完整的编程语言能力
+**使用外部编排的优势：**
+
+- 完整的编程语言特性
 - 更完善的错误处理和重试逻辑
-- 与外部系统（API、其他数据库）集成
+- 与外部系统集成（API、其他数据库）
 - 版本控制和测试
-- 监控和告警
-- 更灵活的调度机制
-```
+- 监控与告警
+- 更灵活的调度
 
+## ClickHouse 中预处理语句的替代方案 {#alternatives-to-prepared-statements-in-clickhouse}
 
-## ClickHouse 中预处理语句的替代方案
+虽然 ClickHouse 不支持传统关系型数据库（RDBMS）中的“预处理语句（prepared statements）”，但它提供了具有相同作用的**查询参数**：通过安全的参数化查询来防止 SQL 注入。
 
-虽然 ClickHouse 没有传统 RDBMS 意义上的“prepared statements”（预处理语句），但它提供了**查询参数（query parameters）**，可以实现相同的目的：使用安全的参数化查询，以防止 SQL 注入攻击。
+### 语法 {#query-parameters-syntax}
 
-### 语法
+定义查询参数有两种方式：
 
-有两种方式来定义查询参数：
-
-#### 方法一：使用 `SET`
+#### 方法 1：使用 `SET`
 
 <details>
-  <summary>示例表和示例数据</summary>
+  <summary>示例表和数据</summary>
 
   ```sql
   -- 创建 user_events 表（ClickHouse 语法）
@@ -672,7 +655,8 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-#### 方法二：使用 CLI 参数
+
+#### 方法 2：使用 CLI 参数
 
 ```bash
 clickhouse-client \
@@ -684,139 +668,145 @@ clickhouse-client \
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
 
-### 参数语法
 
-参数通过以下语法引用：`{parameter_name: DataType}`
+### 参数语法 {#parameter-syntax}
 
+参数使用以下语法进行引用：`{parameter_name: DataType}`
 
-* `parameter_name` - 参数名称（不包含 `param_` 前缀）
-* `DataType` - 将参数转换为的 ClickHouse 数据类型
+- `parameter_name` - 参数名称（不包含 `param_` 前缀）
+- `DataType` - 参数要转换成的 ClickHouse 数据类型
 
-### 数据类型示例
+### 数据类型示例 {#data-type-examples}
 
 <details>
-  <summary>示例所用的表和样例数据</summary>
+<summary>示例所用的表和示例数据</summary>
 
-  ```sql
-  -- 1. 创建用于字符串和数字测试的表
-  CREATE TABLE IF NOT EXISTS users (
-      name String,
-      age UInt8,
-      salary Float64
-  ) ENGINE = Memory;
+```sql
+-- 1. 创建用于字符串和数字测试的表
+CREATE TABLE IF NOT EXISTS users (
+    name String,
+    age UInt8,
+    salary Float64
+) ENGINE = Memory;
 
-  INSERT INTO users VALUES
-      ('John Doe', 25, 75000.50),
-      ('Jane Smith', 30, 85000.75),
-      ('Peter Jones', 20, 50000.00);
+INSERT INTO users VALUES
+    ('John Doe', 25, 75000.50),
+    ('Jane Smith', 30, 85000.75),
+    ('Peter Jones', 20, 50000.00);
 
-  -- 2. 创建用于日期和时间戳测试的表
-  CREATE TABLE IF NOT EXISTS events (
-      event_date Date,
-      event_timestamp DateTime
-  ) ENGINE = Memory;
+-- 2. 创建用于日期和时间戳测试的表
+CREATE TABLE IF NOT EXISTS events (
+    event_date Date,
+    event_timestamp DateTime
+) ENGINE = Memory;
 
-  INSERT INTO events VALUES
-      ('2024-01-15', '2024-01-15 14:30:00'),
-      ('2024-01-15', '2024-01-15 15:00:00'),
-      ('2024-01-16', '2024-01-16 10:00:00');
+INSERT INTO events VALUES
+    ('2024-01-15', '2024-01-15 14:30:00'),
+    ('2024-01-15', '2024-01-15 15:00:00'),
+    ('2024-01-16', '2024-01-16 10:00:00');
 
-  -- 3. 创建用于数组测试的表
-  CREATE TABLE IF NOT EXISTS products (
-      id UInt32,
-      name String
-  ) ENGINE = Memory;
+-- 3. 创建用于数组测试的表
+CREATE TABLE IF NOT EXISTS products (
+    id UInt32,
+    name String
+) ENGINE = Memory;
 
-  INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
+INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
-  -- 4. 创建用于 Map（类似 struct）测试的表
-  CREATE TABLE IF NOT EXISTS accounts (
-      user_id UInt32,
-      status String,
-      type String
-  ) ENGINE = Memory;
+-- 4. 创建用于 Map（类似 struct）测试的表
+CREATE TABLE IF NOT EXISTS accounts (
+    user_id UInt32,
+    status String,
+    type String
+) ENGINE = Memory;
 
-  INSERT INTO accounts VALUES
-      (101, 'active', 'premium'),
-      (102, 'inactive', 'basic'),
-      (103, 'active', 'basic');
+INSERT INTO accounts VALUES
+    (101, 'active', 'premium'),
+    (102, 'inactive', 'basic'),
+    (103, 'active', 'basic');
 
-  -- 5. 创建用于 Identifier 测试的表
-  CREATE TABLE IF NOT EXISTS sales_2024 (
-      value UInt32
-  ) ENGINE = Memory;
+-- 5. 创建用于 Identifier 类型测试的表
+CREATE TABLE IF NOT EXISTS sales_2024 (
+    value UInt32
+) ENGINE = Memory;
 
-  INSERT INTO sales_2024 VALUES (100), (200), (300);
-  ```
+INSERT INTO sales_2024 VALUES (100), (200), (300);
+```
 </details>
 
 <Tabs>
-  <TabItem value="strings" label="字符串与数字" default>
-    ```sql
-    SET param_name = 'John Doe';
-    SET param_age = 25;
-    SET param_salary = 75000.50;
+<TabItem value="strings" label="字符串与数字" default>
 
-    SELECT name, age, salary FROM users
-    WHERE name = {name: String}
-      AND age >= {age: UInt8}
-      AND salary <= {salary: Float64};
-    ```
-  </TabItem>
+```sql
+SET param_name = 'John Doe';
+SET param_age = 25;
+SET param_salary = 75000.50;
 
-  <TabItem value="dates" label="日期与时间">
-    ```sql
-    SET param_date = '2024-01-15';
-    SET param_timestamp = '2024-01-15 14:30:00';
+SELECT name, age, salary FROM users
+WHERE name = {name: String}
+  AND age >= {age: UInt8}
+  AND salary <= {salary: Float64};
+```
 
-    SELECT * FROM events
-    WHERE event_date = {date: Date}
-       OR event_timestamp > {timestamp: DateTime};
-    ```
-  </TabItem>
+</TabItem>
+<TabItem value="dates" label="日期与时间">
 
-  <TabItem value="arrays" label="数组">
-    ```sql
-    SET param_ids = [1, 2, 3, 4, 5];
+```sql
+SET param_date = '2024-01-15';
+SET param_timestamp = '2024-01-15 14:30:00';
 
-    SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-    ```
-  </TabItem>
+SELECT * FROM events
+WHERE event_date = {date: Date}
+   OR event_timestamp > {timestamp: DateTime};
+```
 
-  <TabItem value="maps" label="映射 (Map)">
-    ```sql
-    SET param_filters = {'target_status': 'active'};
+</TabItem>
+<TabItem value="arrays" label="数组">
 
-    SELECT user_id, status, type FROM accounts
-    WHERE status = arrayElement(
-        mapValues({filters: Map(String, String)}),
-        indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
-    );
-    ```
-  </TabItem>
+```sql
+SET param_ids = [1, 2, 3, 4, 5];
 
-  <TabItem value="identifiers" label="标识符 (Identifier)">
-    ```sql
-    SET param_table = 'sales_2024';
+SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+```
 
-    SELECT count() FROM {table: Identifier};
-    ```
-  </TabItem>
+</TabItem>
+<TabItem value="maps" label="映射">
+
+```sql
+SET param_filters = {'target_status': 'active'};
+
+SELECT user_id, status, type FROM accounts
+WHERE status = arrayElement(
+    mapValues({filters: Map(String, String)}),
+    indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
+);
+```
+
+</TabItem>
+<TabItem value="identifiers" label="标识符">
+
+```sql
+SET param_table = 'sales_2024';
+
+SELECT count() FROM {table: Identifier};
+```
+
+</TabItem>
 </Tabs>
 
-<br />
+<br/>
 
-关于在[语言客户端](/integrations/language-clients)中使用查询参数，请参阅你感兴趣的特定语言客户端的文档。
+关于在[语言客户端](/integrations/language-clients)中使用查询参数，请参考相应语言客户端的文档。
 
 ### 查询参数的限制
 
-查询参数**不是通用的文本替换机制**。它们有一些特定限制：
+查询参数**不是通用的文本替换机制**。它们有特定的限制：
 
-1. 它们**主要用于 SELECT 语句**——在 SELECT 查询中的支持最好
+1. 它们**主要面向 SELECT 语句**——对 SELECT 查询的支持最佳
 2. 它们**只能作为标识符或字面量使用**——不能替换任意 SQL 片段
-3. 它们对 DDL 语句的支持**是有限的**——在 `CREATE TABLE` 中受支持，但在 `ALTER TABLE` 中不受支持
+3. 它们对 DDL 的支持**有限**——在 `CREATE TABLE` 中受支持，但在 `ALTER TABLE` 中不受支持
 
-**可以正常使用的场景：**
+**可以正常工作的用法：**
 
 ```sql
 -- ✓ WHERE 子句中的值
@@ -827,17 +817,15 @@ SELECT * FROM {db: Identifier}.{table: Identifier};
 
 -- ✓ IN 子句中的值
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+
+-- ✓ CREATE TABLE 语句
+CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTree() ORDER BY id;
 ```
 
+**不支持的内容：**
 
--- ✓ CREATE TABLE
-CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTree() ORDER BY id;
-
-````
-
-**不支持的操作：**
 ```sql
--- ✗ SELECT 中的列名（谨慎使用 Identifier）
+-- ✗ SELECT 中的列名(请谨慎使用 Identifier)
 SELECT {column: Identifier} FROM users;  -- 支持有限
 
 -- ✗ 任意 SQL 片段
@@ -848,12 +836,12 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- 不支持
 
 -- ✗ 多条语句
 {statements: String};  -- 不支持
-````
+```
 
-### 安全最佳实践 {#security-best-practices}
 
-**始终对用户输入使用查询参数：**
+### 安全最佳实践
 
+**对所有用户输入一律使用查询参数：**
 
 ```python
 # ✓ 安全 - 使用参数
@@ -862,25 +850,21 @@ result = client.query(
     "SELECT * FROM orders WHERE user_id = {uid: UInt64}",
     parameters={'uid': user_input}
 )
+
+# ✗ 危险 - 存在 SQL 注入风险!
+user_input = request.get('user_id')
+result = client.query(f"SELECT * FROM orders WHERE user_id = {user_input}")
 ```
 
-
-# ✗ 危险：存在 SQL 注入风险！
-
-user&#95;input = request.get(&#39;user&#95;id&#39;)
-result = client.query(f&quot;SELECT * FROM orders WHERE user&#95;id = {user_input}&quot;)
-
-````
-
-**验证输入类型：**
+**校验输入类型：**
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
     # 查询前验证类型
     if not isinstance(user_id, int) or user_id <= 0:
-        raise ValueError("无效的 user_id")
+        raise ValueError("user_id 无效")
 
-    # 参数强制执行类型安全
+    # 参数确保类型安全
     return client.query(
         """
         SELECT * FROM orders
@@ -889,28 +873,29 @@ def get_user_orders(user_id: int, start_date: str):
         """,
         parameters={'uid': user_id, 'start': start_date}
     )
-````
+```
 
-### MySQL 协议中的预处理语句
 
-ClickHouse 的 [MySQL 接口](/interfaces/mysql) 对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）仅提供了有限支持，主要是为了兼容 Tableau Online 等会将查询封装为预处理语句的工具。
+### MySQL 协议预处理语句
+
+ClickHouse 的 [MySQL 接口](/interfaces/mysql) 对预处理语句（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）仅提供有限支持，主要用于兼容诸如 Tableau Online 这类会将查询包装为预处理语句的工具，以便建立连接。
 
 **主要限制：**
 
 * **不支持参数绑定** - 不能使用带绑定参数的 `?` 占位符
-* 查询在 `PREPARE` 时会被保存，但不会被解析
-* 实现较为精简，仅针对特定 BI 工具的兼容性场景设计
+* 查询在 `PREPARE` 期间会被存储，但不会被解析
+* 实现非常精简，仅用于特定 BI 工具的兼容性场景
 
-**下面是一个不受支持的示例：**
+**以下示例是不可行的用法：**
 
 ```sql
--- 这种带参数的 MySQL 风格预处理语句在 ClickHouse 中无法使用
+-- 这种 MySQL 风格的带参数预处理语句在 ClickHouse 中无法使用
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
 EXECUTE stmt USING @user_id;  -- 不支持参数绑定
 ```
 
 :::tip
-**请改用 ClickHouse 的原生查询参数。** 它们在所有 ClickHouse 接口中都提供完整的参数绑定支持、类型安全保障以及 SQL 注入防护：
+**请改用 ClickHouse 的原生查询参数。** 它们在所有 ClickHouse 接口中都提供完善的参数绑定支持、类型安全以及 SQL 注入防护：
 
 ```sql
 -- ClickHouse 原生查询参数（推荐）
@@ -925,31 +910,30 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 ## 总结 {#summary}
 
-### ClickHouse 中替代存储过程的方案 {#summary-stored-procedures}
+### ClickHouse 中用于替代存储过程的方案 {#summary-stored-procedures}
 
-| 传统存储过程模式 | ClickHouse 替代方案                                                      |
-|------------------|---------------------------------------------------------------------------|
+| 传统存储过程模式 | ClickHouse 中的替代方案                                                      |
+|--------------------------------------|-----------------------------------------------------------------------------|
 | 简单计算和转换 | 用户自定义函数（UDF）                                               |
-| 可重用的参数化查询 | 参数化视图                                                         |
+| 可复用的参数化查询 | 参数化视图                                                         |
 | 预计算聚合 | 物化视图                                                          |
-| 定时批处理 | 可刷新物化视图                                              |
-| 复杂的多步 ETL | 串联物化视图或外部编排（如 Python、Airflow、dbt） |
+| 定时批处理 | 可刷新的物化视图                                              |
+| 复杂的多步骤 ETL 流程 | 链式物化视图或外部编排（Python、Airflow、dbt） |
 | 带有控制流的业务逻辑 | 应用程序代码                                                            |
 
 ### 查询参数的使用 {#summary-query-parameters}
 
 查询参数可用于：
+
 - 防止 SQL 注入
-- 具备类型安全的参数化查询
-- 应用中的动态过滤
+- 类型安全的参数化查询
+- 在应用中进行动态过滤
 - 可重用的查询模板
-
-
 
 ## 相关文档 {#related-documentation}
 
 - [`CREATE FUNCTION`](/sql-reference/statements/create/function) - 用户定义函数
 - [`CREATE VIEW`](/sql-reference/statements/create/view) - 视图，包括参数化视图和物化视图
-- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - 完整的参数语法
-- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - 高级级联物化视图模式
-- [Executable UDFs](/sql-reference/functions/udf) - 外部函数执行
+- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - 参数语法的完整说明
+- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - 高级物化视图模式
+- [Executable UDFs](/sql-reference/functions/udf) - 可执行 UDF（外部函数执行）

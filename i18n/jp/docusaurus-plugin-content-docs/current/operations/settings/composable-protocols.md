@@ -1,5 +1,5 @@
 ---
-description: 'コンポーザブルプロトコルにより、ClickHouse サーバーへの TCP アクセスをより柔軟に構成できます。'
+description: 'コンポーザブルプロトコルを使用すると、ClickHouse サーバーへの TCP アクセスの構成をより柔軟に行えます。'
 sidebar_label: 'コンポーザブルプロトコル'
 sidebar_position: 64
 slug: /operations/settings/composable-protocols
@@ -7,21 +7,15 @@ title: 'コンポーザブルプロトコル'
 doc_type: 'reference'
 ---
 
-
-
 # 合成可能なプロトコル
-
-
 
 ## 概要 {#overview}
 
 Composable プロトコルを使用すると、ClickHouse サーバーへの TCP アクセスをより柔軟に設定できます。この設定は、従来の設定と併用することも、置き換えることもできます。
 
-
-
 ## コンポーザブルプロトコルの設定
 
-コンポーザブルプロトコルは、XML 設定ファイル内で設定できます。`protocols` セクションは、XML 設定ファイル内で `protocols` タグによって表されます。
+コンポーザブルプロトコルは XML 設定ファイルで設定できます。`protocols` セクションは、XML 設定ファイル内で `protocols` タグで表されます。
 
 ```xml
 <protocols>
@@ -29,14 +23,15 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### プロトコル層の構成
 
-基本モジュールを使用してプロトコル層を定義できます。たとえば、HTTP 層を定義するには、`protocols` セクションに新しい基本モジュールを追加します。
+### プロトコルレイヤーの設定
+
+プロトコルレイヤーは基本モジュールを使用して定義できます。たとえば、HTTP レイヤーを定義するには、`protocols` セクションに新しい基本モジュールを追加します。
 
 ```xml
 <protocols>
 
-  <!-- plain_http モジュール -->
+  <!-- plain_http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
@@ -44,29 +39,30 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-モジュールは次のように構成できます:
+モジュールは次の項目で構成できます:
 
-* `plain_http` - 別のレイヤーから参照できる名前
-* `type` - データを処理するためにインスタンス化されるプロトコルハンドラーを示します。
-  あらかじめ定義されているプロトコルハンドラーは次のとおりです:
-  * `tcp` - ネイティブな ClickHouse プロトコルハンドラー
-  * `http` - HTTP ClickHouse プロトコルハンドラー
+* `plain_http` - 別のレイヤーから参照される名前
+* `type` - データを処理するためにインスタンス化されるプロトコルハンドラを示します。
+  あらかじめ定義されているプロトコルハンドラは次のとおりです:
+  * `tcp` - ネイティブな ClickHouse プロトコルハンドラ
+  * `http` - HTTP ClickHouse プロトコルハンドラ
   * `tls` - TLS 暗号化レイヤー
   * `proxy1` - PROXYv1 レイヤー
-  * `mysql` - MySQL 互換プロトコルハンドラー
-  * `postgres` - PostgreSQL 互換プロトコルハンドラー
-  * `prometheus` - Prometheus プロトコルハンドラー
-  * `interserver` - ClickHouse インターサーバーハンドラー
+  * `mysql` - MySQL 互換プロトコルハンドラ
+  * `postgres` - PostgreSQL 互換プロトコルハンドラ
+  * `prometheus` - Prometheus プロトコルハンドラ
+  * `interserver` - ClickHouse インターサーバープロトコルハンドラ
 
 :::note
-`gRPC` プロトコルハンドラーは `Composable protocols` には実装されていません。
+`gRPC` プロトコルハンドラは `Composable protocols` では実装されていません。
 :::
+
 
 ### エンドポイントの設定
 
-エンドポイント（リッスンポート）は `<port>` と、オプションの `<host>` タグで指定されます。
-たとえば、先ほど追加した HTTP レイヤー上にエンドポイントを構成するには、
-設定を次のように変更できます:
+エンドポイント（待ち受けポート）は `<port>` と、任意の `<host>` タグで指定します。
+例えば、先ほど追加した HTTP レイヤーに対してエンドポイントを設定するには、
+次のように設定を変更します。
 
 ```xml
 <protocols>
@@ -74,7 +70,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
   <plain_http>
 
     <type>http</type>
-    <!-- エンドポイント -->
+    <!-- endpoint -->
     <host>127.0.0.1</host>
     <port>8123</port>
 
@@ -83,11 +79,12 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-`&lt;host&gt;` タグが省略された場合は、ルート設定の `&lt;listen_host&gt;` が使用されます。
+`<host>` タグが省略された場合は、ルート設定の `<listen_host>` が使用されます。
+
 
 ### レイヤーシーケンスの設定
 
-レイヤーシーケンスは `&lt;impl&gt;` タグを使用し、別のモジュールを参照して定義します。たとえば、plain&#95;http モジュールの上に TLS レイヤーを構成するには、設定を次のようにさらに変更できます。
+レイヤーシーケンスは `<impl>` タグを使用し、別のモジュールを参照することで定義します。例えば、`plain_http` モジュールの上に TLS レイヤーを構成するには、設定を次のようにさらに変更できます。
 
 ```xml
 <protocols>
@@ -108,9 +105,10 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### エンドポイントをレイヤーに関連付ける
 
-エンドポイントは任意のレイヤーに関連付けることができます。たとえば、HTTP（ポート 8123）および HTTPS（ポート 8443）のエンドポイントを定義できます。
+### レイヤーにエンドポイントを関連付ける
+
+エンドポイントは任意のレイヤーに関連付けることができます。たとえば、HTTP（ポート 8123）および HTTPS（ポート 8443）向けのエンドポイントを定義できます。
 
 ```xml
 <protocols>
@@ -131,9 +129,10 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
+
 ### 追加のエンドポイントの定義
 
-追加のエンドポイントは、任意のモジュールを参照して `<type>` タグを省略することで定義できます。たとえば、`plain_http` モジュール用に `another_http` エンドポイントを次のように定義できます。
+追加のエンドポイントは、任意のモジュールを参照し、`<type>` タグを省略することで定義できます。たとえば、`plain_http` モジュールに対する `another_http` エンドポイントを次のように定義できます。
 
 ```xml
 <protocols>
@@ -156,15 +155,16 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
     <host>127.0.0.1</host>
     <port>8223</port>
   </another_http>
-```
-
 
 </protocols>
 ```
 
-### 追加のレイヤーパラメータの指定 {#some-modules-can-contain-specific-for-its-layer-parameters}
 
-一部のモジュールでは、追加のレイヤーパラメータを含めることができます。例えば、TLSレイヤーでは、秘密鍵(`privateKeyFile`)と証明書ファイル(`certificateFile`)を以下のように指定できます:
+### 追加のレイヤーパラメータの指定
+
+一部のモジュールには、追加のレイヤーパラメータが含まれる場合があります。たとえば、TLS レイヤーでは
+秘密鍵ファイル（`privateKeyFile`）および証明書ファイル（`certificateFile`）を
+次のように指定できます。
 
 ```xml
 <protocols>

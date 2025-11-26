@@ -1,5 +1,5 @@
 ---
-description: '0.5兆件のレコードを含む WikiStat データセットを探索します。'
+description: '0.5 兆件のレコードを含む WikiStat データセットを探索します。'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
@@ -7,15 +7,15 @@ doc_type: 'guide'
 keywords: ['example dataset', 'wikipedia', 'tutorial', 'sample data', 'pageviews']
 ---
 
-このデータセットには0.5兆件のレコードが含まれます。
+このデータセットには 0.5 兆件のレコードが含まれています。
 
-FOSDEM 2023 の動画をご覧ください: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+FOSDEM 2023 の動画はこちらを参照してください: [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-あわせてこちらのプレゼンテーションも参照してください: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+プレゼンテーションはこちらを参照してください: [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
 データソース: [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
-リンク一覧を取得する:
+リンク一覧の取得:
 
 ```shell
 for i in {2015..2023}; do
@@ -34,9 +34,9 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
   links.txt | xargs -P3 wget --continue
 ```
 
-(作成には約3日かかります)
+（3日ほどかかります）
 
-テーブルを作成する：
+テーブルの作成:
 
 ```sql
 CREATE TABLE wikistat
@@ -51,7 +51,7 @@ ENGINE = MergeTree
 ORDER BY (path, time);
 ```
 
-データのロード：
+データの読み込み：
 
 ```shell
 clickhouse-local --query "
@@ -68,7 +68,7 @@ clickhouse-local --query "
 " | clickhouse-client --query "INSERT INTO wikistat FORMAT Native"
 ```
 
-または、前処理済みデータを読み込む場合:
+または前処理済みデータを読み込む場合：
 
 ```sql
 INSERT INTO wikistat WITH

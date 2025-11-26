@@ -9,11 +9,7 @@ keywords: ['サンプルデータセット', 'フライトデータ', 'サンプ
 
 このデータセットには、米国運輸統計局（Bureau of Transportation Statistics）のデータが含まれています。
 
-
-
 ## テーブルの作成 {#creating-a-table}
-
-
 
 ```sql
 CREATE TABLE `ontime`
@@ -131,11 +127,7 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-
-
-
-
-## 生データからインポート
+## 生データのインポート
 
 データのダウンロード：
 
@@ -149,18 +141,18 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(サーバーでメモリ不足やその他の問題が発生するおそれがある場合は、`-P $(nproc)` の部分を削除してください)
+(サーバーでメモリ不足などの問題が発生する場合は、`-P $(nproc)` の部分を削除してください)
 
 
-## 保存済みのコピーからのインポート
+## 保存したコピーからのインポート
 
-別の方法として、次のクエリを使用して保存済みのコピーからデータをインポートすることもできます。
+別の方法として、次のクエリを使用して保存したコピーからデータをインポートできます。
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-このスナップショットは 2022年5月29日に作成されました。
+このスナップショットは2022-05-29に作成されました。
 
 
 ## クエリ
@@ -177,7 +169,7 @@ FROM
 );
 ```
 
-Q1. 2000年〜2008年の1日あたりのフライト数
+Q1. 2000年から2008年までの1日あたりの便数
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -187,7 +179,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. 2000～2008年における、10分超の遅延が発生したフライト数（曜日別）
+Q2. 2000～2008 年における、10 分超の遅延が発生したフライト数（曜日別）
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -197,7 +189,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. 2000～2008年の空港別遅延件数
+Q3. 2000〜2008年の空港ごとの遅延件数
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -208,7 +200,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. 2007年の航空会社別の遅延件数
+Q4. 2007年の航空会社別遅延件数
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -244,7 +236,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改良版:
+同じクエリのより良いバージョン：
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -254,7 +246,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. 先ほどのリクエストを 2000〜2008 年のより広い期間に拡大する
+Q6. 先ほどの、より広い年範囲（2000〜2008）のリクエスト
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -280,7 +272,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-同じクエリの改善版:
+同じクエリの改良版:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -290,7 +282,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. 10分超の遅延が発生した便の割合（年別）
+Q7. 10分を超える遅延が発生したフライトの割合（年別）
 
 ```sql
 SELECT Year, c1/c2
@@ -314,7 +306,7 @@ JOIN
 ORDER BY Year;
 ```
 
-同じクエリの改良版:
+同じクエリのより良い書き方：
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -323,7 +315,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. 各年範囲ごとに、直接接続されている都市数が最も多い目的地
+Q8. さまざまな年の範囲において、直行便で接続されている都市数が最も多い目的地
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -398,9 +390,9 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Playground でデータをいろいろ試すこともできます。[例](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
+Playground でデータを試してみることもできます。[サンプル](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K)。
 
-このパフォーマンステストは Vadim Tkachenko によって作成されました。詳細は次を参照してください:
+このパフォーマンステストは Vadim Tkachenko によって作成されました。次を参照してください:
 
 * [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
 * [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)

@@ -7,16 +7,14 @@ doc_type: 'guide'
 keywords: ['サンプルデータセット', 'laion', '画像埋め込み', 'サンプルデータ', '機械学習']
 ---
 
-[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/) には、英語の画像キャプション付きの 4 億枚の画像が含まれています。現在 Laion は [さらに大規模なデータセット](https://laion.ai/blog/laion-5b/) も提供していますが、その扱い方もほぼ同様です。
+[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/)には、英語の画像キャプション付きの 4 億枚の画像が含まれています。現在 Laion は[さらに大規模なデータセット](https://laion.ai/blog/laion-5b/)も提供していますが、扱い方はほぼ同様です。
 
-このデータセットには、画像 URL、画像および画像キャプションそれぞれの埋め込みベクトル、画像と画像キャプション間の類似度スコアに加えて、画像の幅・高さ、ライセンス、NSFW フラグといったメタデータが含まれます。このデータセットを使用して、ClickHouse における[近似最近傍探索](../../engines/table-engines/mergetree-family/annindexes.md)を例示できます。
-
-
+このデータセットには、画像の URL、画像および画像キャプションそれぞれの埋め込みベクトル、画像と画像キャプション間の類似度スコアに加え、画像の幅/高さ、ライセンス、NSFW フラグといったメタデータが含まれます。このデータセットを使って、ClickHouse における[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)を実演できます。
 
 ## データ準備
 
-埋め込みとメタデータは、生データでは別々のファイルに保存されています。データ準備のステップでは、データをダウンロードし、ファイルを結合して
-CSV に変換し、ClickHouse にインポートします。そのために、次の `download.sh` スクリプトを使用できます。
+生データでは、埋め込みとメタデータは別々のファイルに保存されています。データ準備のステップでは、データをダウンロードしてファイルを結合し、
+CSV に変換して ClickHouse にインポートします。そのために、次の `download.sh` スクリプトを使用できます。
 
 ```bash
 number=${1}
@@ -29,7 +27,7 @@ wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embedd
 python3 process.py $number # ファイルを結合しCSVに変換
 ```
 
-`process.py` スクリプトは次のように定義されています：
+`process.py` スクリプトは次のように定義されています。
 
 ```python
 import pandas as pd
@@ -41,62 +39,46 @@ str_i = str(sys.argv[1])
 npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
-```
 
-
-# すべてのファイルを読み込む
+# 全ファイルを読み込み
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-
-
 # ファイルを結合
-
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-
-# ClickHouse にインポートする列
+# ClickHouseへインポートする列
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
-
-
-# np.array をリストに変換する
+# np.arraysをリストへ変換
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-
-
-# caption にはさまざまな引用符が含まれることがあるため、このちょっとしたハックが必要です
+# captionに様々な引用符が含まれる場合があるため、この回避策が必要
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-
-
-# データを CSV ファイルにエクスポートする
+# データをCSVファイルとしてエクスポート
 data.to_csv(str_i + '.csv', header=False)
 
-
-
 # 生データファイルを削除
+os.system(f"rm {npy_file} {metadata_file} {text_npy}")
+```
 
-os.system(f&quot;rm {npy_file} {metadata_file} {text_npy}&quot;)
-
-````
-
-データ準備パイプラインを開始するには、次のコマンドを実行します：
+データ準備パイプラインを開始するには、次のコマンドを実行します:
 
 ```bash
 seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
-````
+```
 
-このデータセットは 410 個のファイルに分割されており、各ファイルには約 100 万行が含まれています。より小さいサブセットで作業したい場合は、`seq 0 9 | ...` のように上限値を調整してください。
+このデータセットは 410 個のファイルに分割されており、各ファイルにはおよそ 100 万行が含まれています。より小さなサブセットで作業したい場合は、単に上限を調整してください（例: `seq 0 9 | ...`）。
 
-(上記の Python スクリプトは非常に遅く（ファイルあたり約 2～10 分）、大量のメモリを消費し（ファイルあたり 41 GB）、生成される CSV ファイルも大きいです（各 10 GB）。そのため注意してください。十分な RAM がある場合は、並列度を上げるために `-P1` の数値を増やしてください。それでもまだ遅い場合は、より良いインジェスト手順を検討してください。たとえば .npy ファイルを parquet に変換し、その後の処理をすべて ClickHouse で実行するなどです。)
+（上記の Python スクリプトは非常に遅く（1 ファイルあたり約 2〜10 分）、大量のメモリを消費し（1 ファイルあたり 41 GB）、生成される CSV ファイルも大きい（各 10 GB）ため、注意してください。十分な RAM がある場合は、より高い並列度を得るために `-P1` の値を増やしてください。これでもまだ遅い場合は、より良いインジェスト手順を検討してください。たとえば .npy ファイルを Parquet に変換してから、残りの処理をすべて ClickHouse で行うなどです。）
 
 
-## テーブルの作成
+## テーブルを作成する
 
-インデックスを定義せずにテーブルを作成するには、次を実行します:
+最初にインデックスなしでテーブルを作成するには、次を実行します。
 
 ```sql
 CREATE TABLE laion
@@ -114,16 +96,16 @@ ORDER BY id
 SETTINGS index_granularity = 8192
 ```
 
-CSV ファイルを ClickHouse にインポートするには：
+CSV ファイルを ClickHouse にインポートするには、次の手順を実行します。
 
 ```sql
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-`id` 列はあくまで例示用であり、スクリプトによって一意ではない値が設定されていることに注意してください。
+`id` 列はあくまで例示用のものであり、スクリプトによって一意ではない値が入力されている点に注意してください。
 
 
-## 総当たり方式のベクトル類似度検索を実行する
+## 総当たり方式でベクトル類似度検索を実行する
 
 総当たり方式の近似ベクトル検索を実行するには、次を実行します。
 
@@ -131,9 +113,9 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target` は 512 要素からなる配列であり、クライアントパラメーターです。
-そのような配列を取得する便利な方法は、本記事の最後で紹介します。
-当面は、ランダムな LEGO セットの画像を `target` として埋め込みを実行してみます。
+`target` は 512 要素からなる配列であり、クライアントパラメータです。
+そのような配列を取得するための便利な方法は、記事の最後で紹介します。
+今のところは、ランダムな LEGO セットの画像を `target` として埋め込みを実行してみます。
 
 **結果**
 
@@ -155,35 +137,36 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ```
 
 
-## ベクトル類似インデックスを使用して近似ベクトル類似検索を実行する
+## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する
 
-では、テーブルに 2 つのベクトル類似インデックスを定義しましょう。
+ここでは、テーブルに 2 つのベクトル類似度インデックスを定義します。
 
 ```sql
 ALTER TABLE laion ADD INDEX image_index image_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
 ALTER TABLE laion ADD INDEX text_index text_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
 ```
 
-インデックス作成と検索のためのパラメータおよびパフォーマンス上の考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-上記のインデックス定義では、「cosine distance」を距離指標として使用する HNSW インデックスを指定しており、パラメータ「hnsw&#95;max&#95;connections&#95;per&#95;layer」は 64 に、「hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;construction」は 256 に設定されています。
-インデックスは、メモリ使用量を最適化するために、量子化方式として半精度の bfloat16（brain floating point）を使用します。
+インデックス作成および検索時のパラメータとパフォーマンス面での考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
+上記のインデックス定義では、「cosine distance」を距離指標として使用する HNSW インデックスを指定しており、パラメータ「hnsw&#95;max&#95;connections&#95;per&#95;layer」を 64 に、「hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;construction」を 256 に設定しています。
+このインデックスは、メモリ使用量を最適化するために、量子化として半精度ブレインフロート (bfloat16) を使用します。
 
-インデックスを構築してマテリアライズするには、次のステートメントを実行します：
+インデックスを構築およびマテリアライズするには、次のステートメントを実行します。
 
 ```sql
 ALTER TABLE laion MATERIALIZE INDEX image_index;
 ALTER TABLE laion MATERIALIZE INDEX text_index;
 ```
 
-インデックスの構築と保存には、行数や HNSW インデックスのパラメータ設定によって、数分から場合によっては数時間かかることがあります。
+インデックスの構築と保存には、行数や HNSW インデックスのパラメータによっては、数分から数時間程度かかる場合があります。
 
-ベクトル検索を行うには、同じクエリをもう一度実行するだけです。
+ベクトル検索を実行するには、同じクエリをもう一度実行するだけです。
 
 ```sql
 SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
 **結果**
+
 
 ```response
     ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
@@ -198,26 +181,22 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
  9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+10行のセット。経過時間: 0.019秒。処理済み: 137.27千行、24.42 MB (7.38百万行/秒、1.31 GB/秒)
 ```
 
-
-結果行数: 10 行。経過時間: 0.019 秒。処理量: 137.27 千行、24.42 MB (7.38 百万行/秒、1.31 GB/秒)。
-
-```
-
-ベクトルインデックスを使用して最近傍を取得したため、クエリレイテンシが大幅に減少しました。
-ベクトル類似度インデックスを使用したベクトル類似度検索では、ブルートフォース検索の結果とわずかに異なる結果が返される場合があります。
-HNSWインデックスは、HNSWパラメータを慎重に選択し、インデックス品質を評価することで、1に近い再現率(ブルートフォース検索と同等の精度)を達成できる可能性があります。
-```
+ベクトルインデックスを使用して最近傍を取得したため、クエリレイテンシが大幅に短縮されました。
+ベクトル類似度インデックスを用いたベクトル類似検索では、総当たり検索の結果とわずかに異なる結果が返される場合があります。
+HNSW インデックスは、HNSW パラメータを慎重に選定し、インデックス品質を評価することで、リコールを 1 に近づける（総当たり検索と同等の精度を達成する）ことが可能です。
 
 
-## UDF を使用して埋め込みを作成する
+## UDF を使用した埋め込みの作成 {#creating-embeddings-with-udfs}
 
-通常は、新しい画像や新しい画像キャプションに対して埋め込みを作成し、データ内で類似する画像 / 画像キャプションのペアを検索することが多いでしょう。クライアントを離れずに `target` ベクトルを作成するために、[UDF](/sql-reference/functions/udf) を利用できます。データの作成と、検索用の新しい埋め込みの作成に同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤にもなっている `ViT-B/32` モデルを利用します。
+通常は、新しい画像や新しい画像キャプションに対して埋め込みを作成し、そのデータ内で類似する画像／画像キャプションのペアを検索します。[UDF](/sql-reference/functions/udf) を使用すると、クライアント環境を離れることなく `target` ベクトルを作成できます。データ作成時と検索用の新しい埋め込みを生成する際には、同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤にもなっている `ViT-B/32` モデルを利用します。
 
 ### テキスト埋め込み
 
-まず、次の Python スクリプトを ClickHouse のデータパス内の `user_scripts/` ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
+まず、次の Python スクリプトを ClickHouse のデータパス配下にある `user_scripts/` ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
 
 `encode_text.py`:
 
@@ -240,7 +219,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-次に、ClickHouse サーバーの設定ファイル内で `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` として参照されている場所に `encode_text_function.xml` を作成します。
+次に、ClickHouse サーバーの設定ファイルで `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` として指定されているパスに `encode_text_function.xml` を作成します。
 
 ```xml
 <functions>
@@ -259,13 +238,13 @@ if __name__ == '__main__':
 </functions>
 ```
 
-これで、次をそのまま使用できます：
+これで次のように簡単に使えます:
 
 ```sql
 SELECT encode_text('cat');
 ```
 
-最初の実行はモデルを読み込むため時間がかかりますが、2回目以降の実行は高速になります。その後、出力を `SET param_target=...` にコピーすれば、簡単にクエリを記述できます。あるいは、`encode_text()` 関数を `cosineDistance` 関数の引数として直接使用することもできます。
+最初の実行はモデルを読み込むために遅くなりますが、2回目以降は高速になります。その後、出力を `SET param_target=...` にコピーすれば、簡単にクエリを書けます。あるいは、`encode_text()` 関数を `cosineDistance` 関数への引数として直接渡すこともできます。
 
 ```SQL
 SELECT url
@@ -274,11 +253,12 @@ ORDER BY cosineDistance(text_embedding, encode_text('a dog and a cat')) ASC
 LIMIT 10
 ```
 
-`encode_text()` UDF 自体が埋め込みベクトルを計算して出力する処理には、数秒かかる場合があることに注意してください。
+`encode_text()` UDF 自体が計算を行い埋め込みベクトルを出力するまでに、数秒かかる場合があることに注意してください。
+
 
 ### 画像埋め込み
 
-画像埋め込みも同様に作成でき、ローカルにファイルとして保存されている画像の埋め込みを生成するための Python スクリプトを用意しています。
+画像埋め込みも同様に作成できるように、ローカルにファイルとして保存されている画像の埋め込みを生成するための Python スクリプトを用意しています。
 
 `encode_image.py`
 
@@ -321,15 +301,14 @@ if __name__ == '__main__':
 </functions>
 ```
 
-検索に使用するサンプル画像を取得する：
-
+検索用のサンプル画像を取得：
 
 ```shell
 # LEGOセットのランダムな画像を取得
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 
-次に、上記の画像の埋め込みを生成するために、次のクエリを実行します。
+次に、先ほどの画像の埋め込みを生成するために、次のクエリを実行します：
 
 ```sql
 SELECT encode_image('/path/to/your/image');

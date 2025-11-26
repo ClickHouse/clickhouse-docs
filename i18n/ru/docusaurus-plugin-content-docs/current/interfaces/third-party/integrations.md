@@ -8,41 +8,38 @@ title: 'Интеграционные библиотеки сторонних р�
 doc_type: 'reference'
 ---
 
-
-
-# Библиотеки интеграций от сторонних разработчиков
+# Библиотеки интеграции от сторонних разработчиков
 
 :::warning Отказ от ответственности
 ClickHouse, Inc. **не** поддерживает перечисленные ниже инструменты и библиотеки и не проводила их всестороннего тестирования для оценки качества.
-Список официальных интеграций см. на [странице интеграций](/integrations).
+Ознакомиться с официальными интеграциями можно на [странице интеграций](/integrations).
 :::
-
-
 
 ## Инфраструктурные продукты {#infrastructure-products}
 
 <details>
-  <summary>Системы управления реляционными базами данных</summary>-
-  [MySQL](https://www.mysql.com) -
-  [mysql2ch](https://github.com/long2ice/mysql2ch) -
-  [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support) -
-  [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
-  - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator) -
-  [PostgreSQL](https://www.postgresql.org) -
-  [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw) -
-  [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (использует
-  [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)) -
-  [pg2ch](https://github.com/mkabilov/pg2ch) -
-  [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw) -
-  [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server) -
-  [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
+<summary>Системы управления реляционными базами данных</summary>
+  
+- [MySQL](https://www.mysql.com)
+  - [mysql2ch](https://github.com/long2ice/mysql2ch)
+  - [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
+  - [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
+  - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
+- [PostgreSQL](https://www.postgresql.org)
+  - [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
+  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (использует [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
+  - [pg2ch](https://github.com/mkabilov/pg2ch)
+  - [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw)
+- [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
+  - [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
 </details>
 
 <details>
-  <summary>Очереди сообщений</summary>- [Kafka](https://kafka.apache.org) -
-  [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (использует [Go
-  client](https://github.com/ClickHouse/clickhouse-go/)) -
-  [stream-loader-clickhouse](https://github.com/adform/stream-loader)
+<summary>Очереди сообщений</summary>
+  
+- [Kafka](https://kafka.apache.org)
+  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (использует клиент [Go](https://github.com/ClickHouse/clickhouse-go/))
+  - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
 <details>
@@ -50,54 +47,58 @@ ClickHouse, Inc. **не** поддерживает перечисленные н
 
 - [Spark](https://spark.apache.org)
   - [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
-    </details>
-
-<details>
-  <summary>Потоковая обработка</summary>- [Flink](https://flink.apache.org) -
-  [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 </details>
 
 <details>
-  <summary>Объектные хранилища</summary>-
-  [S3](https://en.wikipedia.org/wiki/Amazon_S3) -
-  [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
+<summary>Потоковая обработка</summary>
+  
+- [Flink](https://flink.apache.org)
+  - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 </details>
 
 <details>
-  <summary>Оркестрация контейнеров</summary>-
-  [Kubernetes](https://kubernetes.io) -
-  [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+<summary>Объектные хранилища</summary>
+  
+- [S3](https://en.wikipedia.org/wiki/Amazon_S3)
+  - [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
 </details>
 
 <details>
-  <summary>Управление конфигурацией</summary>- [puppet](https://puppet.com) -
-  [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse) -
-  [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
+<summary>Оркестрация контейнеров</summary>
+  
+- [Kubernetes](https://kubernetes.io)
+  - [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+</details>
+
+<details>
+<summary>Управление конфигурациями</summary>
+- [puppet](https://puppet.com)
+  - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
+  - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
 </details>
 
 <details>
 <summary>Мониторинг</summary>
 
-
 - [Graphite](https://graphiteapp.org)
   - [graphouse](https://github.com/ClickHouse/graphouse)
   - [carbon-clickhouse](https://github.com/lomik/carbon-clickhouse)
   - [graphite-clickhouse](https://github.com/lomik/graphite-clickhouse)
-  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) — оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если применимы правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
+  - [graphite-ch-optimizer](https://github.com/innogames/graphite-ch-optimizer) — оптимизирует устаревшие партиции в [\*GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree), если к ним можно применить правила из [конфигурации rollup](../../engines/table-engines/mergetree-family/graphitemergetree.md#rollup-configuration)
 - [Grafana](https://grafana.com/)
   - [clickhouse-grafana](https://github.com/Altinity/clickhouse-grafana)
 - [Prometheus](https://prometheus.io/)
   - [clickhouse_exporter](https://github.com/f1yegor/clickhouse_exporter)
   - [PromHouse](https://github.com/Percona-Lab/PromHouse)
-  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) (использует [Go-клиент](https://github.com/kshvakov/clickhouse/))
+  - [clickhouse_exporter](https://github.com/hot-wifi/clickhouse_exporter) (использует [клиент Go](https://github.com/kshvakov/clickhouse/))
 - [Nagios](https://www.nagios.org/)
   - [check_clickhouse](https://github.com/exogroup/check_clickhouse/)
   - [check_clickhouse.py](https://github.com/innogames/igmonplugins/blob/master/src/check_clickhouse.py)
 - [Zabbix](https://www.zabbix.com)
   - [clickhouse-zabbix-template](https://github.com/Altinity/clickhouse-zabbix-template)
 - [Sematext](https://sematext.com/)
-  - [clickhouse integration](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
-    </details>
+  - [интеграция с ClickHouse](https://github.com/sematext/sematext-agent-integrations/tree/master/clickhouse)
+</details>
 
 <details>
 <summary>Логирование</summary>
@@ -108,22 +109,21 @@ ClickHouse, Inc. **не** поддерживает перечисленные н
   - [loghouse](https://github.com/flant/loghouse) (для [Kubernetes](https://kubernetes.io))
 - [logagent](https://www.sematext.com/logagent)
   - [logagent output-plugin-clickhouse](https://sematext.com/docs/logagent/output-plugin-clickhouse/)
-    </details>
+</details>
 
 <details>
-<summary>Геолокация</summary>
+<summary>Гео</summary>
 
 - [MaxMind](https://dev.maxmind.com/geoip/)
   - [clickhouse-maxmind-geoip](https://github.com/AlexeyKupershtokh/clickhouse-maxmind-geoip)
-    </details>
+</details>
 
 <details>
 <summary>AutoML</summary>
 
 - [MindsDB](https://mindsdb.com/)
-  - [MindsDB](https://github.com/mindsdb/mindsdb) — интегрируется с ClickHouse, предоставляя данные из ClickHouse широкому спектру моделей AI/ML.
-    </details>
-
+  - [MindsDB](https://github.com/mindsdb/mindsdb) — интегрируется с ClickHouse, обеспечивая доступ к данным из ClickHouse для широкого спектра моделей AI/ML.
+</details>
 
 ## Экосистемы языков программирования {#programming-language-ecosystems}
 
@@ -156,7 +156,7 @@ ClickHouse, Inc. **не** поддерживает перечисленные н
 - [Hadoop](http://hadoop.apache.org)
   - [clickhouse-hdfs-loader](https://github.com/jaykelin/clickhouse-hdfs-loader) (использует [JDBC](../../sql-reference/table-functions/jdbc.md))
 </details>
-  
+
 <details>
 <summary>Scala</summary>
 

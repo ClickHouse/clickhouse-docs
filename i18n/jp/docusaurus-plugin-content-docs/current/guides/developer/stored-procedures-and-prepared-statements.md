@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'ストアドプロシージャとクエリパラメータ'
 sidebar_position: 19
-keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメータ化ビュー']
-description: 'ClickHouse のストアドプロシージャ、プリペアドステートメント、およびクエリパラメータに関するガイド'
+keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメータ化されたビュー']
+description: 'ClickHouse におけるストアドプロシージャ、プリペアドステートメント、およびクエリパラメータに関するガイド'
 slug: /guides/developer/stored-procedures-and-prepared-statements
 title: 'ストアドプロシージャとクエリパラメータ'
 doc_type: 'guide'
@@ -14,64 +14,61 @@ import TabItem from '@theme/TabItem';
 
 # ClickHouse におけるストアドプロシージャとクエリパラメータ
 
-従来型のリレーショナルデータベースを使い慣れている場合、ClickHouse でストアドプロシージャやプリペアドステートメントを探しているかもしれません。
-このガイドでは、ClickHouse におけるこれらの概念の扱い方を説明し、推奨される代替手段を紹介します。
+従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
+このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
 
+## ClickHouse におけるストアドプロシージャの代替手段 {#alternatives-to-stored-procedures}
 
+ClickHouse は、`IF`/`ELSE` やループなどの制御フローを含む、従来型のストアドプロシージャをサポートしていません。
+これは、分析データベースとしての ClickHouse のアーキテクチャに基づいた、意図的な設計上の判断です。
+分析データベースでは、多数の単純なクエリを O(n) 回処理するよりも、少数の複雑なクエリとして処理する方が一般に高速であるため、ループは推奨されません。
 
-## ClickHouseにおけるストアドプロシージャの代替手段 {#alternatives-to-stored-procedures}
+ClickHouse は次の用途向けに最適化されています:
 
-ClickHouseは、制御フロー論理（`IF`/`ELSE`、ループなど）を持つ従来のストアドプロシージャをサポートしていません。
-これは、分析データベースとしてのClickHouseのアーキテクチャに基づく意図的な設計上の決定です。
-分析データベースでは、O(n)個の単純なクエリを処理するよりも、より少数の複雑なクエリを処理する方が通常高速であるため、ループは推奨されません。
+- **分析ワークロード** - 大規模なデータセットに対する複雑な集約処理
+- **バッチ処理** - 大量データを効率的に処理
+- **宣言的クエリ** - データの処理方法ではなく、どのデータを取得するかを記述する SQL クエリ
 
-ClickHouseは以下のために最適化されています：
+手続き型ロジックを伴うストアドプロシージャは、これらの最適化に反します。その代わりに、ClickHouse は自らの強みと整合する代替手段を提供しています。
 
-- **分析ワークロード** - 大規模データセットに対する複雑な集計
-- **バッチ処理** - 大量のデータを効率的に処理
-- **宣言的クエリ** - データの処理方法ではなく、取得するデータを記述するSQLクエリ
+### ユーザー定義関数 (UDF) {#user-defined-functions}
 
-手続き型ロジックを持つストアドプロシージャは、これらの最適化に反します。代わりに、ClickHouseはその強みに沿った代替手段を提供します。
+ユーザー定義関数を使うと、制御フローを用いずに再利用可能なロジックをカプセル化できます。ClickHouse は 2 種類のユーザー定義関数をサポートしています。
 
-### ユーザー定義関数（UDF） {#user-defined-functions}
+#### ラムダベースの UDF
 
-ユーザー定義関数を使用すると、制御フローなしで再利用可能なロジックをカプセル化できます。ClickHouseは2つのタイプをサポートしています：
-
-#### ラムダベースのUDF {#lambda-based-udfs}
-
-SQL式とラムダ構文を使用して関数を作成します：
+SQL 式とラムダ構文を使って関数を作成します。
 
 <details>
-<summary>例のサンプルデータ</summary>
+  <summary>サンプルデータ（例で使用）</summary>
 
-```sql
--- productsテーブルを作成
-CREATE TABLE products (
-    product_id UInt32,
-    product_name String,
-    price Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY product_id;
+  ```sql
+  -- products テーブルを作成
+  CREATE TABLE products (
+      product_id UInt32,
+      product_name String,
+      price Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY product_id;
 
--- サンプルデータを挿入
-INSERT INTO products (product_id, product_name, price) VALUES
-(1, 'Laptop', 899.99),
-(2, 'Wireless Mouse', 24.99),
-(3, 'USB-C Cable', 12.50),
-(4, 'Monitor', 299.00),
-(5, 'Keyboard', 79.99),
-(6, 'Webcam', 54.95),
-(7, 'Desk Lamp', 34.99),
-(8, 'External Hard Drive', 119.99),
-(9, 'Headphones', 149.00),
-(10, 'Phone Stand', 15.99);
-```
-
+  -- サンプルデータを挿入
+  INSERT INTO products (product_id, product_name, price) VALUES
+  (1, 'Laptop', 899.99),
+  (2, 'Wireless Mouse', 24.99),
+  (3, 'USB-C Cable', 12.50),
+  (4, 'Monitor', 299.00),
+  (5, 'Keyboard', 79.99),
+  (6, 'Webcam', 54.95),
+  (7, 'Desk Lamp', 34.99),
+  (8, 'External Hard Drive', 119.99),
+  (9, 'Headphones', 149.00),
+  (10, 'Phone Stand', 15.99);
+  ```
 </details>
 
 ```sql
--- 単純な計算関数
+-- 税額計算関数
 CREATE FUNCTION calculate_tax AS (price, rate) -> price * rate;
 
 SELECT
@@ -82,10 +79,10 @@ FROM products;
 ```
 
 ```sql
--- if()を使用した条件ロジック
+-- if()を使用した条件分岐
 CREATE FUNCTION price_tier AS (price) ->
-    if(price < 100, 'Budget',
-       if(price < 500, 'Mid-range', 'Premium'));
+    if(price < 100, '低価格帯',
+       if(price < 500, '中価格帯', '高価格帯'));
 
 SELECT
     product_name,
@@ -105,17 +102,18 @@ SELECT format_phone('5551234567');
 -- 結果: (555) 123-4567
 ```
 
-**制限事項：**
+**制限事項:**
 
-- ループや複雑な制御フローは使用不可
-- データの変更（`INSERT`/`UPDATE`/`DELETE`）は不可
-- 再帰関数は許可されていません
+* ループや複雑な制御フローは使用できません
+* データの変更（`INSERT`/`UPDATE`/`DELETE`）はできません
+* 再帰関数は使用できません
 
-完全な構文については、[`CREATE FUNCTION`](/sql-reference/statements/create/function)を参照してください。
+完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
 
-#### 実行可能UDF {#executable-udfs}
 
-より複雑なロジックには、外部プログラムを呼び出す実行可能UDFを使用します：
+#### 実行可能 UDF
+
+より複雑なロジックには、外部プログラムを呼び出す実行可能 UDF を使用します。
 
 ```xml
 <!-- /etc/clickhouse-server/sentiment_analysis_function.xml -->
@@ -134,58 +132,55 @@ SELECT format_phone('5551234567');
 ```
 
 ```sql
--- 実行可能UDFを使用
+-- 実行可能なUDFを使用
 SELECT
     review_text,
     sentiment_score(review_text) AS score
 FROM customer_reviews;
 ```
 
-実行可能UDFは、任意の言語（Python、Node.js、Goなど）で任意のロジックを実装できます。
+実行可能な UDF は、任意の言語（Python、Node.js、Go など）で任意の処理ロジックを実装できます。
 
-詳細については、[実行可能UDF](/sql-reference/functions/udf)を参照してください。
+詳細については、[実行可能 UDF](/sql-reference/functions/udf) を参照してください。
 
-### パラメータ化ビュー {#parameterized-views}
 
-パラメータ化ビューは、データセットを返す関数のように動作します。
-動的フィルタリングを伴う再利用可能なクエリに最適です：
+### パラメーター化ビュー
+
+パラメーター化ビューは、データセットを返す関数のように振る舞います。
+動的フィルタリングを行う再利用可能なクエリに最適です。
 
 <details>
-<summary>例のサンプルデータ</summary>
+  <summary>例で使用するサンプルデータ</summary>
 
-```sql
--- salesテーブルを作成
-CREATE TABLE sales (
-  date Date,
-  product_id UInt32,
-  product_name String,
-  category String,
-  quantity UInt32,
-  revenue Decimal(10, 2),
-  sales_amount Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY (date, product_id);
+  ```sql
+  -- sales テーブルを作成
+  CREATE TABLE sales (
+    date Date,
+    product_id UInt32,
+    product_name String,
+    category String,
+    quantity UInt32,
+    revenue Decimal(10, 2),
+    sales_amount Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY (date, product_id);
 
-```
-
-
--- サンプルデータを挿入
-INSERT INTO sales VALUES
-(&#39;2024-01-05&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 2, 1799.98, 1799.98),
-(&#39;2024-01-06&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
-(&#39;2024-01-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 5, 124.95, 124.95),
-(&#39;2024-01-15&#39;, 12347, &#39;USB-C Cable&#39;, &#39;Accessories&#39;, 10, 125.00, 125.00),
-(&#39;2024-01-20&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 3, 2699.97, 2699.97),
-(&#39;2024-01-25&#39;, 12348, &#39;Monitor 4K&#39;, &#39;Electronics&#39;, 2, 598.00, 598.00),
-(&#39;2024-02-01&#39;, 12345, &#39;Laptop Pro&#39;, &#39;Electronics&#39;, 1, 899.99, 899.99),
-(&#39;2024-02-05&#39;, 12349, &#39;Keyboard Mechanical&#39;, &#39;Accessories&#39;, 4, 319.96, 319.96),
-(&#39;2024-02-10&#39;, 12346, &#39;Wireless Mouse&#39;, &#39;Electronics&#39;, 8, 199.92, 199.92),
-(&#39;2024-02-15&#39;, 12350, &#39;Webcam HD&#39;, &#39;Electronics&#39;, 3, 164.85, 164.85);
-
-````
-
+  -- サンプルデータを挿入
+  INSERT INTO sales VALUES
+  ('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
+  ('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
+  ('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
+  ('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
+  ('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
+  ('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
+  ('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
+  ('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
+  ```
 </details>
+
 ```sql
 -- パラメータ化ビューを作成
 CREATE VIEW sales_by_date AS
@@ -197,19 +192,20 @@ SELECT
 FROM sales
 WHERE date BETWEEN {start_date:Date} AND {end_date:Date}
 GROUP BY date, product_id;
-````
+```
 
 ```sql
--- パラメータを指定してビューをクエリする
+-- パラメータを使用してビューをクエリする
 SELECT *
 FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
+
 #### 一般的なユースケース
 
-* 動的な日付範囲のフィルタリング
-* ユーザー単位のデータスライシング
+* 動的な日付範囲によるフィルタリング
+* ユーザーごとのデータスライス
 * [マルチテナント環境でのデータアクセス](/cloud/bestpractices/multi-tenancy)
 * レポートテンプレート
 * [データマスキング](/cloud/guides/data-masking)
@@ -249,11 +245,12 @@ SELECT * FROM top_products_by_category(
 );
 ```
 
-詳細については、[パラメータ化ビュー](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
+詳しくは、[Parameterized Views](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
+
 
 ### マテリアライズドビュー
 
-マテリアライズドビューは、従来であればストアドプロシージャで実行していたような、計算コストの高い集約処理をあらかじめ実行しておくのに最適です。従来型のデータベースに慣れている場合は、マテリアライズドビューを、ソーステーブルにデータが挿入される際に自動的に変換および集約を行う **INSERT トリガー** のようなものと考えてください。
+マテリアライズドビューは、従来はストアドプロシージャで行っていたようなコストの高い集計処理を、事前に計算・集約しておくのに最適です。従来型のデータベースに慣れている場合、マテリアライズドビューは、ソーステーブルにデータが挿入されるタイミングで自動的にデータを変換・集計する **INSERT トリガー** と考えることができます。
 
 ```sql
 -- ソーステーブル
@@ -266,7 +263,7 @@ CREATE TABLE page_views (
 ENGINE = MergeTree()
 ORDER BY (user_id, timestamp);
 
--- 集計統計を維持するマテリアライズドビュー
+-- 集計統計を保持するマテリアライズドビュー
 CREATE MATERIALIZED VIEW daily_user_stats
 ENGINE = SummingMergeTree()
 ORDER BY (date, user_id)
@@ -278,8 +275,6 @@ AS SELECT
     uniq(page) AS unique_pages
 FROM page_views
 GROUP BY date, user_id;
-```
-
 
 -- ソーステーブルにサンプルデータを挿入
 INSERT INTO page_views VALUES
@@ -298,21 +293,21 @@ INSERT INTO page_views VALUES
 
 -- 事前集計データをクエリ
 SELECT
-user_id,
-sum(page_views) AS total_views,
-sum(sessions) AS total_sessions
+    user_id,
+    sum(page_views) AS total_views,
+    sum(sessions) AS total_sessions
 FROM daily_user_stats
 WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
+```
 
-````
 
-#### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
+#### リフレッシュ可能なマテリアライズドビュー
 
-スケジュールされたバッチ処理（夜間ストアドプロシージャなど）の場合：
+スケジュールされたバッチ処理（夜間に実行されるストアドプロシージャなど）の場合：
 
 ```sql
--- 毎日午前2時に自動リフレッシュ
+-- 毎日午前2時に自動更新
 CREATE MATERIALIZED VIEW monthly_sales_report
 REFRESH EVERY 1 DAY OFFSET 2 HOUR
 AS SELECT
@@ -326,304 +321,293 @@ FROM orders
 WHERE order_date >= today() - INTERVAL 13 MONTH
 GROUP BY month, region, product_category;
 
--- クエリは常に最新データを取得
+-- クエリは常に最新データを保持
 SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
-````
+```
 
-高度なパターンについては、[カスケードマテリアライズドビュー](/guides/developer/cascading-materialized-views)を参照してください。
+高度なパターンについては、[カスケード型マテリアライズドビュー](/guides/developer/cascading-materialized-views)を参照してください。
+
 
 ### 外部オーケストレーション {#external-orchestration}
 
-複雑なビジネスロジック、ETLワークフロー、または複数ステップのプロセスの場合、言語クライアントを使用してClickHouse外部でロジックを実装することが可能です。
+複雑なビジネスロジック、ETL ワークフロー、または複数ステップの処理が必要な場合は、ClickHouse の外側で
+言語クライアントを使用してロジックを実装することも可能です。
 
-#### アプリケーションコードの使用 {#using-application-code}
+#### アプリケーションコードを使用する {#using-application-code}
 
-MySQLストアドプロシージャがClickHouseのアプリケーションコードにどのように変換されるかを示す比較例：
+ここでは、MySQL のストアドプロシージャを、ClickHouse を用いたアプリケーションコードに書き換えた場合の対応関係を、左右の比較で示します。
 
 <Tabs>
-<TabItem value="mysql" label="MySQLストアドプロシージャ" default>
+  <TabItem value="mysql" label="MySQL ストアドプロシージャ" default>
+    ```sql
+    DELIMITER $$
 
-```sql
-DELIMITER $$
+    CREATE PROCEDURE process_order(
+        IN p_order_id INT,
+        IN p_customer_id INT,
+        IN p_order_total DECIMAL(10,2),
+        OUT p_status VARCHAR(50),
+        OUT p_loyalty_points INT
+    )
+    BEGIN
+        DECLARE v_customer_tier VARCHAR(20);
+        DECLARE v_previous_orders INT;
+        DECLARE v_discount DECIMAL(10,2);
 
-CREATE PROCEDURE process_order(
-    IN p_order_id INT,
-    IN p_customer_id INT,
-    IN p_order_total DECIMAL(10,2),
-    OUT p_status VARCHAR(50),
-    OUT p_loyalty_points INT
-)
-BEGIN
-    DECLARE v_customer_tier VARCHAR(20);
-    DECLARE v_previous_orders INT;
-    DECLARE v_discount DECIMAL(10,2);
+        -- トランザクションを開始
+        START TRANSACTION;
 
-    -- トランザクション開始
-    START TRANSACTION;
-
-    -- 顧客情報を取得
-    SELECT tier, total_orders
-    INTO v_customer_tier, v_previous_orders
-    FROM customers
-    WHERE customer_id = p_customer_id;
-
-    -- ティアに基づいて割引を計算
-    IF v_customer_tier = 'gold' THEN
-        SET v_discount = p_order_total * 0.15;
-    ELSEIF v_customer_tier = 'silver' THEN
-        SET v_discount = p_order_total * 0.10;
-    ELSE
-        SET v_discount = 0;
-    END IF;
-
-    -- 注文レコードを挿入
-    INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
-    VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
-            p_order_total - v_discount);
-
-    -- 顧客統計を更新
-    UPDATE customers
-    SET total_orders = total_orders + 1,
-        lifetime_value = lifetime_value + (p_order_total - v_discount),
-        last_order_date = NOW()
-    WHERE customer_id = p_customer_id;
-
-    -- ロイヤルティポイントを計算（1ドルあたり1ポイント）
-    SET p_loyalty_points = FLOOR(p_order_total - v_discount);
-
-```
-
-
--- ロイヤルティポイントのトランザクションを挿入
-INSERT INTO loyalty&#95;points (customer&#95;id, points, transaction&#95;date, description)
-VALUES (p&#95;customer&#95;id, p&#95;loyalty&#95;points, NOW(),
-CONCAT(&#39;Order #&#39;, p&#95;order&#95;id));
-
--- 顧客のティアをアップグレードすべきか確認
-IF v&#95;previous&#95;orders + 1 &gt;= 10 AND v&#95;customer&#95;tier = &#39;bronze&#39; THEN
-UPDATE customers SET tier = &#39;silver&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;SILVER&#39;;
-ELSEIF v&#95;previous&#95;orders + 1 &gt;= 50 AND v&#95;customer&#95;tier = &#39;silver&#39; THEN
-UPDATE customers SET tier = &#39;gold&#39; WHERE customer&#95;id = p&#95;customer&#95;id;
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#95;TIER&#95;UPGRADED&#95;GOLD&#39;;
-ELSE
-SET p&#95;status = &#39;ORDER&#95;COMPLETE&#39;;
-END IF;
-
-COMMIT;
-END$$
-
-DELIMITER ;
-
--- ストアドプロシージャを呼び出す
-CALL process&#95;order(12345, 5678, 250.00, @status, @points);
-SELECT @status, @points;
-
-```
-
-</TabItem>
-<TabItem value="clickhouse" label="ClickHouseアプリケーションコード">
-
-:::note クエリパラメータ
-以下の例では、ClickHouseのクエリパラメータを使用しています。
-ClickHouseのクエリパラメータにまだ慣れていない場合は、["ClickHouseにおけるプリペアドステートメントの代替手段"](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)を先にご参照ください。
-:::
-```
-
-
-```python
-# clickhouse-connect を使用した Python の例
-import clickhouse_connect
-from datetime import datetime
-from decimal import Decimal
-
-client = clickhouse_connect.get_client(host='localhost')
-
-def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
-    """
-    ストアドプロシージャに相当するビジネスロジックを使用して注文を処理します。
-    戻り値: (status_message, loyalty_points)
-
-    注意: ClickHouse は分析処理に最適化されており、OLTP トランザクションには適していません。
-    トランザクション処理には OLTP データベース (PostgreSQL、MySQL) を使用し、
-    分析データを ClickHouse に同期してレポート作成を行ってください。
-    """
-
-    # ステップ 1: 顧客情報を取得
-    result = client.query(
-        """
+        -- 顧客情報を取得
         SELECT tier, total_orders
+        INTO v_customer_tier, v_previous_orders
         FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id}
-    )
+        WHERE customer_id = p_customer_id;
 
-    if not result.result_rows:
-        raise ValueError(f"顧客 {customer_id} が見つかりません")
+        -- ティアに基づいて割引を計算
+        IF v_customer_tier = 'gold' THEN
+            SET v_discount = p_order_total * 0.15;
+        ELSEIF v_customer_tier = 'silver' THEN
+            SET v_discount = p_order_total * 0.10;
+        ELSE
+            SET v_discount = 0;
+        END IF;
 
-    customer_tier, previous_orders = result.result_rows[0]
+        -- 注文レコードを挿入
+        INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
+        VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
+                p_order_total - v_discount);
 
-    # ステップ 2: ティアに基づいて割引を計算 (Python のビジネスロジック)
-    discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
-    discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
-    final_amount = order_total - discount
+        -- 顧客統計を更新
+        UPDATE customers
+        SET total_orders = total_orders + 1,
+            lifetime_value = lifetime_value + (p_order_total - v_discount),
+            last_order_date = NOW()
+        WHERE customer_id = p_customer_id;
 
-    # ステップ 3: 注文レコードを挿入
-    client.command(
-        """
-        INSERT INTO orders (order_id, customer_id, order_total, discount,
-                           final_amount, order_date)
-        VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
-                {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
-        """,
-        parameters={
-            'oid': order_id,
-            'cid': customer_id,
-            'total': float(order_total),
-            'disc': float(discount),
-            'final': float(final_amount)
-        }
-    )
+        -- ロイヤルティポイントを計算（1ドルあたり1ポイント）
+        SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
-    # ステップ 4: 新しい顧客統計を計算
-    new_order_count = previous_orders + 1
-
-    # 分析データベースでは UPDATE よりも INSERT を優先
-    # ReplacingMergeTree パターンを使用
-    client.command(
-        """
-        INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                              update_time)
-        SELECT
-            customer_id,
-            tier,
-            {new_count: UInt32} AS total_orders,
-            now() AS last_order_date,
-            now() AS update_time
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id, 'new_count': new_order_count}
-    )
-
-    # ステップ 5: ロイヤルティポイントを計算して記録
-    loyalty_points = int(final_amount)
-
-    client.command(
-        """
+        -- ロイヤルティポイントトランザクションを挿入
         INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-        VALUES ({cid: UInt32}, {pts: Int32}, now(),
-                {desc: String})
-        """,
-        parameters={
-            'cid': customer_id,
-            'pts': loyalty_points,
-            'desc': f'Order #{order_id}'
-        }
+        VALUES (p_customer_id, p_loyalty_points, NOW(),
+                CONCAT('Order #', p_order_id));
+
+        -- 顧客のアップグレード要否を確認
+        IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
+            UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
+        ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
+            UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
+        ELSE
+            SET p_status = 'ORDER_COMPLETE';
+        END IF;
+
+        COMMIT;
+    END$$
+
+    DELIMITER ;
+
+    -- ストアドプロシージャを呼び出す
+    CALL process_order(12345, 5678, 250.00, @status, @points);
+    SELECT @status, @points;
+    ```
+  </TabItem>
+
+  <TabItem value="ClickHouse" label="ClickHouse アプリケーションのコード">
+    :::note クエリパラメータ
+    以下の例では、ClickHouseのクエリパラメータを使用しています。
+    ClickHouseのクエリパラメータにまだ馴染みがない場合は、[&quot;ClickHouseにおけるプリペアドステートメントの代替手段&quot;](/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse)を参照してください。
+    :::
+
+    ```python
+    # clickhouse-connectを使用したPythonの例
+    import clickhouse_connect
+    from datetime import datetime
+    from decimal import Decimal
+
+    client = clickhouse_connect.get_client(host='localhost')
+
+    def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
+        """
+        ストアドプロシージャに含まれるようなビジネスロジックで注文を処理します。
+        戻り値: (status_message, loyalty_points)
+
+        注意: ClickHouseは分析処理に最適化されており、OLTPトランザクションには適していません。
+        トランザクション処理が必要な場合は、OLTPデータベース（PostgreSQL、MySQL）を使用し、
+        分析データをClickHouseに同期してレポート作成を行ってください。
+        """
+
+        # ステップ1: 顧客情報を取得
+        result = client.query(
+            """
+            SELECT tier, total_orders
+            FROM customers
+            WHERE customer_id = {cid: UInt32}
+            """,
+            parameters={'cid': customer_id}
+        )
+
+        if not result.result_rows:
+            raise ValueError(f"顧客 {customer_id} が見つかりません")
+
+        customer_tier, previous_orders = result.result_rows[0]
+
+        # ステップ2: ティアに基づいて割引を計算（Pythonのビジネスロジック）
+        discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
+        discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
+        final_amount = order_total - discount
+
+        # ステップ3: 注文レコードを挿入
+        client.command(
+            """
+            INSERT INTO orders (order_id, customer_id, order_total, discount,
+                               final_amount, order_date)
+            VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
+                    {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
+            """,
+            parameters={
+                'oid': order_id,
+                'cid': customer_id,
+                'total': float(order_total),
+                'disc': float(discount),
+                'final': float(final_amount)
+            }
+        )
+
+        # ステップ4: 新しい顧客統計を計算
+        new_order_count = previous_orders + 1
+
+        # 分析データベースでは、UPDATEよりもINSERTを優先します
+        # これはReplacingMergeTreeパターンを使用しています
+        client.command(
+            """
+            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                  update_time)
+            SELECT
+                customer_id,
+                tier,
+                {new_count: UInt32} AS total_orders,
+                now() AS last_order_date,
+                now() AS update_time
+            FROM customers
+            WHERE customer_id = {cid: UInt32}
+            """,
+            parameters={'cid': customer_id, 'new_count': new_order_count}
+        )
+
+        # ステップ5: ロイヤルティポイントを計算して記録
+        loyalty_points = int(final_amount)
+
+        client.command(
+            """
+            INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+            VALUES ({cid: UInt32}, {pts: Int32}, now(),
+                    {desc: String})
+            """,
+            parameters={
+                'cid': customer_id,
+                'pts': loyalty_points,
+                'desc': f'注文 #{order_id}'
+            }
+        )
+
+        # ステップ6: ティアアップグレードを確認（Pythonのビジネスロジック）
+        status = 'ORDER_COMPLETE'
+
+        if new_order_count >= 10 and customer_tier == 'bronze':
+            # シルバーにアップグレード
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'silver' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
+
+        elif new_order_count >= 50 and customer_tier == 'silver':
+            # ゴールドにアップグレード
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'gold' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
+
+        return status, loyalty_points
+
+    # 関数を使用
+    status, points = process_order(
+        order_id=12345,
+        customer_id=5678,
+        order_total=Decimal('250.00')
     )
 
-    # ステップ 6: ティアのアップグレードを確認 (Python のビジネスロジック)
-    status = 'ORDER_COMPLETE'
-
-    if new_order_count >= 10 and customer_tier == 'bronze':
-        # シルバーにアップグレード
-        client.command(
-            """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'silver' AS tier, total_orders, last_order_date,
-                now() AS update_time
-            FROM customers
-            WHERE customer_id = {cid: UInt32}
-            """,
-            parameters={'cid': customer_id}
-        )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
-
-    elif new_order_count >= 50 and customer_tier == 'silver':
-        # ゴールドにアップグレード
-        client.command(
-            """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'gold' AS tier, total_orders, last_order_date,
-                now() AS update_time
-            FROM customers
-            WHERE customer_id = {cid: UInt32}
-            """,
-            parameters={'cid': customer_id}
-        )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
-
-    return status, loyalty_points
-```
-
-
-# 関数の使用
-
-status, points = process&#95;order(
-order&#95;id=12345,
-customer&#95;id=5678,
-order&#95;total=Decimal(&#39;250.00&#39;)
-)
-
-print(f&quot;Status: {status}, Loyalty Points: {points}&quot;)
-
-```
-
-</TabItem>
+    print(f"ステータス: {status}、ロイヤルティポイント: {points}")
+    ```
+  </TabItem>
 </Tabs>
 
 <br/>
 
 #### 主な違い {#key-differences}
 
-1. **制御フロー** - MySQLストアドプロシージャは`IF/ELSE`、`WHILE`ループを使用します。ClickHouseでは、このロジックをアプリケーションコード(Python、Javaなど)で実装します
-2. **トランザクション** - MySQLはACIDトランザクションのために`BEGIN/COMMIT/ROLLBACK`をサポートしています。ClickHouseは追記専用ワークロードに最適化された分析データベースであり、トランザクション更新には非対応です
-3. **更新** - MySQLは`UPDATE`文を使用します。ClickHouseは可変データに対して[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)または[CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)を使用した`INSERT`を推奨します
-4. **変数と状態** - MySQLストアドプロシージャは変数を宣言できます(`DECLARE v_discount`)。ClickHouseでは、アプリケーションコードで状態を管理します
-5. **エラー処理** - MySQLは`SIGNAL`と例外ハンドラをサポートしています。アプリケーションコードでは、使用する言語のネイティブなエラー処理(try/catch)を使用します
+1. **制御フロー** - MySQL のストアドプロシージャは `IF/ELSE` や `WHILE` ループを使用します。ClickHouse では、このロジックはアプリケーションコード（Python、Java など）側で実装します。
+2. **トランザクション** - MySQL は ACID トランザクション向けに `BEGIN/COMMIT/ROLLBACK` をサポートします。ClickHouse は追記専用ワークロード向けに最適化された分析用データベースであり、トランザクション的な更新処理には向きません。
+3. **更新処理** - MySQL は `UPDATE` 文を使用します。ClickHouse では、可変データには [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) と組み合わせて `INSERT` を用いることを推奨します。
+4. **変数と状態** - MySQL のストアドプロシージャでは（`DECLARE v_discount` のように）変数を宣言できます。ClickHouse では、状態管理はアプリケーションコード側で行います。
+5. **エラー処理** - MySQL は `SIGNAL` や例外ハンドラをサポートします。アプリケーションコードでは、使用言語が備えるネイティブなエラー処理（try/catch）を利用します。
 
 :::tip
-**各アプローチの使用場面:**
-- **OLTPワークロード**(注文、支払い、ユーザーアカウント)→ ストアドプロシージャを使用したMySQL/PostgreSQLを使用
-- **分析ワークロード**(レポート、集計、時系列)→ アプリケーションオーケストレーションを使用したClickHouseを使用
-- **ハイブリッドアーキテクチャ** → 両方を使用!OLTPからClickHouseへトランザクションデータをストリーミングして分析を実行
+**それぞれのアプローチを使う場面:**
+
+- **OLTP ワークロード**（注文、決済、ユーザーアカウント） → ストアドプロシージャ付きの MySQL/PostgreSQL を使用
+- **分析ワークロード**（レポート、集計、時系列） → ClickHouse とアプリケーション側でのオーケストレーションを使用
+- **ハイブリッドアーキテクチャ** → 両方を使用。OLTP から ClickHouse へトランザクションデータをストリーミングし、分析に利用
 :::
 
-#### ワークフローオーケストレーションツールの使用 {#using-workflow-orchestration-tools}
+#### ワークフローオーケストレーションツールの利用 {#using-workflow-orchestration-tools}
 
-- **Apache Airflow** - ClickHouseクエリの複雑なDAGをスケジュールおよび監視
-- **dbt** - SQLベースのワークフローでデータを変換
-- **Prefect/Dagster** - モダンなPythonベースのオーケストレーション
-- **カスタムスケジューラ** - Cronジョブ、Kubernetes CronJobsなど
+- **Apache Airflow** - 複雑な ClickHouse クエリの DAG のスケジューリングと監視を実行
+- **dbt** - SQL ベースのワークフローでデータを変換
+- **Prefect/Dagster** - モダンな Python ベースのオーケストレーション
+- **Custom schedulers** - カスタムスケジューラ（Cron ジョブ、Kubernetes CronJob など）
 
-**外部オーケストレーションの利点:**
-- 完全なプログラミング言語機能
+**外部オーケストレーションを利用する利点:**
+
+- プログラミング言語の機能をフルに活用できる
 - より優れたエラー処理とリトライロジック
-- 外部システムとの統合(API、他のデータベース)
+- 外部システム（API、他のデータベース）との連携
 - バージョン管理とテスト
-- 監視とアラート
+- モニタリングとアラート
 - より柔軟なスケジューリング
-```
 
+## ClickHouse におけるプリペアドステートメントの代替手段 {#alternatives-to-prepared-statements-in-clickhouse}
 
-## ClickHouse におけるプリペアドステートメントの代替手段
+ClickHouse には、RDBMS の意味での従来型の「プリペアドステートメント」はありませんが、同じ目的――SQL インジェクションを防ぐための安全なパラメータ化されたクエリ――を実現する **クエリパラメータ** が提供されています。
 
-ClickHouse には、一般的な RDBMS における意味での従来型の「プリペアドステートメント」はありませんが、同じ目的を果たす **クエリパラメータ** を提供しています。これにより、SQL インジェクションを防ぐ安全なパラメータ化されたクエリを利用できます。
+### 構文 {#query-parameters-syntax}
 
-### 構文
-
-クエリパラメータを定義する方法は 2 つあります。
+クエリパラメータを指定する方法は 2 通りあります。
 
 #### 方法 1：`SET` を使用する
 
 <details>
-  <summary>サンプルのテーブルとデータ</summary>
+  <summary>テーブルとデータの例</summary>
 
   ```sql
   -- user_events テーブルを作成する (ClickHouse 構文)
@@ -636,7 +620,7 @@ ClickHouse には、一般的な RDBMS における意味での従来型の「�
   ) ENGINE = MergeTree()
   ORDER BY (user_id, event_date);
 
-  -- 複数ユーザーとイベントのサンプルデータを挿入する
+  -- 複数ユーザーおよびイベントのサンプルデータを挿入する
   INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
   (1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
   (2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
@@ -672,7 +656,8 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-#### 方法2：CLI パラメーターを使用する
+
+#### 方法 2：CLI パラメーターを使用する
 
 ```bash
 clickhouse-client \
@@ -684,139 +669,145 @@ clickhouse-client \
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
 
-### パラメーター構文
 
-パラメーターは次の構文で参照します: `{parameter_name: DataType}`
+### パラメータ構文 {#parameter-syntax}
 
+パラメータは次の構文で指定します: `{parameter_name: DataType}`
 
-* `parameter_name` - パラメータの名前（`param_` プレフィックスを除いたもの）
-* `DataType` - パラメータの型として指定する ClickHouse のデータ型
+- `parameter_name` - パラメータ名（`param_` プレフィックスを除いた部分）
+- `DataType` - パラメータをキャストする ClickHouse のデータ型
 
-### データ型の例
+### データ型の例 {#data-type-examples}
 
 <details>
-  <summary>例で使用するテーブルとサンプルデータ</summary>
+<summary>例で使用するテーブルとサンプルデータ</summary>
 
-  ```sql
-  -- 1. 文字列と数値のテスト用テーブルを作成
-  CREATE TABLE IF NOT EXISTS users (
-      name String,
-      age UInt8,
-      salary Float64
-  ) ENGINE = Memory;
+```sql
+-- 1. 文字列と数値のテスト用テーブルを作成
+CREATE TABLE IF NOT EXISTS users (
+    name String,
+    age UInt8,
+    salary Float64
+) ENGINE = Memory;
 
-  INSERT INTO users VALUES
-      ('John Doe', 25, 75000.50),
-      ('Jane Smith', 30, 85000.75),
-      ('Peter Jones', 20, 50000.00);
+INSERT INTO users VALUES
+    ('John Doe', 25, 75000.50),
+    ('Jane Smith', 30, 85000.75),
+    ('Peter Jones', 20, 50000.00);
 
-  -- 2. 日付とタイムスタンプのテスト用テーブルを作成
-  CREATE TABLE IF NOT EXISTS events (
-      event_date Date,
-      event_timestamp DateTime
-  ) ENGINE = Memory;
+-- 2. 日付とタイムスタンプのテスト用テーブルを作成
+CREATE TABLE IF NOT EXISTS events (
+    event_date Date,
+    event_timestamp DateTime
+) ENGINE = Memory;
 
-  INSERT INTO events VALUES
-      ('2024-01-15', '2024-01-15 14:30:00'),
-      ('2024-01-15', '2024-01-15 15:00:00'),
-      ('2024-01-16', '2024-01-16 10:00:00');
+INSERT INTO events VALUES
+    ('2024-01-15', '2024-01-15 14:30:00'),
+    ('2024-01-15', '2024-01-15 15:00:00'),
+    ('2024-01-16', '2024-01-16 10:00:00');
 
-  -- 3. 配列のテスト用テーブルを作成
-  CREATE TABLE IF NOT EXISTS products (
-      id UInt32,
-      name String
-  ) ENGINE = Memory;
+-- 3. 配列のテスト用テーブルを作成
+CREATE TABLE IF NOT EXISTS products (
+    id UInt32,
+    name String
+) ENGINE = Memory;
 
-  INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
+INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
-  -- 4. Map（構造体に類似）のテスト用テーブルを作成
-  CREATE TABLE IF NOT EXISTS accounts (
-      user_id UInt32,
-      status String,
-      type String
-  ) ENGINE = Memory;
+-- 4. Map（構造体のような型）のテスト用テーブルを作成
+CREATE TABLE IF NOT EXISTS accounts (
+    user_id UInt32,
+    status String,
+    type String
+) ENGINE = Memory;
 
-  INSERT INTO accounts VALUES
-      (101, 'active', 'premium'),
-      (102, 'inactive', 'basic'),
-      (103, 'active', 'basic');
+INSERT INTO accounts VALUES
+    (101, 'active', 'premium'),
+    (102, 'inactive', 'basic'),
+    (103, 'active', 'basic');
 
-  -- 5. Identifier のテスト用テーブルを作成
-  CREATE TABLE IF NOT EXISTS sales_2024 (
-      value UInt32
-  ) ENGINE = Memory;
+-- 5. Identifier のテスト用テーブルを作成
+CREATE TABLE IF NOT EXISTS sales_2024 (
+    value UInt32
+) ENGINE = Memory;
 
-  INSERT INTO sales_2024 VALUES (100), (200), (300);
-  ```
+INSERT INTO sales_2024 VALUES (100), (200), (300);
+```
 </details>
 
 <Tabs>
-  <TabItem value="strings" label="文字列と数値" default>
-    ```sql
-    SET param_name = 'John Doe';
-    SET param_age = 25;
-    SET param_salary = 75000.50;
+<TabItem value="strings" label="文字列と数値" default>
 
-    SELECT name, age, salary FROM users
-    WHERE name = {name: String}
-      AND age >= {age: UInt8}
-      AND salary <= {salary: Float64};
-    ```
-  </TabItem>
+```sql
+SET param_name = 'John Doe';
+SET param_age = 25;
+SET param_salary = 75000.50;
 
-  <TabItem value="dates" label="日付と時刻">
-    ```sql
-    SET param_date = '2024-01-15';
-    SET param_timestamp = '2024-01-15 14:30:00';
+SELECT name, age, salary FROM users
+WHERE name = {name: String}
+  AND age >= {age: UInt8}
+  AND salary <= {salary: Float64};
+```
 
-    SELECT * FROM events
-    WHERE event_date = {date: Date}
-       OR event_timestamp > {timestamp: DateTime};
-    ```
-  </TabItem>
+</TabItem>
+<TabItem value="dates" label="日付と時刻">
 
-  <TabItem value="arrays" label="配列">
-    ```sql
-    SET param_ids = [1, 2, 3, 4, 5];
+```sql
+SET param_date = '2024-01-15';
+SET param_timestamp = '2024-01-15 14:30:00';
 
-    SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-    ```
-  </TabItem>
+SELECT * FROM events
+WHERE event_date = {date: Date}
+   OR event_timestamp > {timestamp: DateTime};
+```
 
-  <TabItem value="maps" label="Map">
-    ```sql
-    SET param_filters = {'target_status': 'active'};
+</TabItem>
+<TabItem value="arrays" label="配列">
 
-    SELECT user_id, status, type FROM accounts
-    WHERE status = arrayElement(
-        mapValues({filters: Map(String, String)}),
-        indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
-    );
-    ```
-  </TabItem>
+```sql
+SET param_ids = [1, 2, 3, 4, 5];
 
-  <TabItem value="identifiers" label="識別子">
-    ```sql
-    SET param_table = 'sales_2024';
+SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
+```
 
-    SELECT count() FROM {table: Identifier};
-    ```
-  </TabItem>
+</TabItem>
+<TabItem value="maps" label="Map">
+
+```sql
+SET param_filters = {'target_status': 'active'};
+
+SELECT user_id, status, type FROM accounts
+WHERE status = arrayElement(
+    mapValues({filters: Map(String, String)}),
+    indexOf(mapKeys({filters: Map(String, String)}), 'target_status')
+);
+```
+
+</TabItem>
+<TabItem value="identifiers" label="Identifier">
+
+```sql
+SET param_table = 'sales_2024';
+
+SELECT count() FROM {table: Identifier};
+```
+
+</TabItem>
 </Tabs>
 
-<br />
+<br/>
 
-[言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、対象とする言語クライアントのドキュメントを参照してください。
+[言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、利用したい特定の言語クライアントのドキュメントを参照してください。
 
-### クエリパラメータの制約
+### クエリパラメータの制約事項
 
-クエリパラメータは、**一般的なテキスト置換機能ではありません**。次のような特定の制約があります。
+クエリパラメータは**汎用的なテキスト置換ではありません**。次のような特有の制約があります。
 
-1. **主に SELECT 文向け**です - 最もよくサポートされているのは SELECT クエリです
-2. **識別子またはリテラルとして動作**します - 任意の SQL フラグメントの代わりとしては使用できません
-3. **DDL のサポートは限定的**です - `CREATE TABLE` ではサポートされていますが、`ALTER TABLE` ではサポートされていません
+1. **主に SELECT 文向けに設計されています** - 最も手厚くサポートされているのは SELECT クエリです
+2. **識別子またはリテラルとして動作します** - 任意の SQL フラグメントを置き換えることはできません
+3. **DDL のサポートは限定的です** - `CREATE TABLE` ではサポートされていますが、`ALTER TABLE` ではサポートされていません
 
-**サポートされるもの:**
+**動作するケース:**
 
 ```sql
 -- ✓ WHERE句の値
@@ -827,18 +818,16 @@ SELECT * FROM {db: Identifier}.{table: Identifier};
 
 -- ✓ IN句の値
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
-```
-
 
 -- ✓ CREATE TABLE
 CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTree() ORDER BY id;
-
-````
+```
 
 **動作しないもの:**
+
 ```sql
--- ✗ SELECT内の列名（Identifierは慎重に使用すること）
-SELECT {column: Identifier} FROM users;  -- サポートに制限あり
+-- ✗ SELECT句内のカラム名(Identifierは慎重に使用すること)
+SELECT {column: Identifier} FROM users;  -- サポートは限定的
 
 -- ✗ 任意のSQLフラグメント
 SELECT * FROM users {where_clause: String};  -- サポート対象外
@@ -848,12 +837,12 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- サポート対�
 
 -- ✗ 複数のステートメント
 {statements: String};  -- サポート対象外
-````
+```
 
-### セキュリティのベストプラクティス {#security-best-practices}
 
-**ユーザー入力には必ずクエリパラメータを使用すること:**
+### セキュリティのベストプラクティス
 
+**ユーザーからの入力には必ずクエリパラメータを使用すること：**
 
 ```python
 # ✓ 安全 - パラメータを使用
@@ -862,23 +851,19 @@ result = client.query(
     "SELECT * FROM orders WHERE user_id = {uid: UInt64}",
     parameters={'uid': user_input}
 )
+
+# ✗ 危険 - SQLインジェクションのリスク!
+user_input = request.get('user_id')
+result = client.query(f"SELECT * FROM orders WHERE user_id = {user_input}")
 ```
 
-
-# ✗ 危険 - SQLインジェクションのリスクがあります！
-
-user&#95;input = request.get(&#39;user&#95;id&#39;)
-result = client.query(f&quot;SELECT * FROM orders WHERE user&#95;id = {user_input}&quot;)
-
-````
-
-**入力型の検証:**
+**入力の型を検証する：**
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
     # クエリ実行前に型を検証
     if not isinstance(user_id, int) or user_id <= 0:
-        raise ValueError("無効なuser_id")
+        raise ValueError("user_idが無効です")
 
     # パラメータで型安全性を確保
     return client.query(
@@ -889,28 +874,29 @@ def get_user_orders(user_id: int, start_date: str):
         """,
         parameters={'uid': user_id, 'start': start_date}
     )
-````
+```
+
 
 ### MySQL プロトコルのプリペアドステートメント
 
-ClickHouse の [MySQL インターフェイス](/interfaces/mysql) には、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対する最小限のサポートが含まれており、主にクエリをプリペアドステートメントでラップする Tableau Online のようなツールと接続するためのものです。
+ClickHouse の [MySQL インターフェイス](/interfaces/mysql) は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対して最小限のサポートのみを提供します。これは主に、クエリをプリペアドステートメントでラップする Tableau Online のようなツールとの接続性を確保するためのものです。
 
 **主な制限事項:**
 
-* **パラメータバインディングはサポートされません** - バインドされたパラメータ付きで `?` プレースホルダーを使用することはできません
-* クエリは `PREPARE` 時に保存されますが、解析は行われません
-* 実装は最小限で、特定の BI ツールとの互換性のために設計されています
+* **パラメータのバインドはサポートされません** - バインドパラメータ付きの `?` プレースホルダは使用できません
+* クエリは `PREPARE` 実行時に保存されますが、解析は行われません
+* 実装は最小限で、特定の BI ツールとの互換性確保のみを目的としています
 
 **動作しない例:**
 
 ```sql
 -- このMySQLスタイルのパラメータ付きプリペアドステートメントはClickHouseでは動作しません
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
-EXECUTE stmt USING @user_id;  -- パラメータバインディングはサポートされていません
+EXECUTE stmt USING @user_id;  -- パラメータバインディングには非対応
 ```
 
 :::tip
-**代わりに ClickHouse のネイティブクエリパラメータを使用してください。** これにより、すべての ClickHouse インターフェースで、完全なパラメータバインディングサポート、型安全性、および SQL インジェクション防止を利用できます。
+**代わりに ClickHouse ネイティブのクエリパラメータを使用してください。** これらは、すべての ClickHouse インターフェースで、完全なパラメータバインディングのサポート、型安全性、SQL インジェクションの防止を提供します。
 
 ```sql
 -- ClickHouseネイティブクエリパラメータ（推奨）
@@ -920,36 +906,35 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 :::
 
-詳細については、[MySQL インターフェースのドキュメント](/interfaces/mysql) および [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey)を参照してください。
+詳細については、[MySQL インターフェイスのドキュメント](/interfaces/mysql) と [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey) を参照してください。
 
 
-## まとめ {#summary}
+## 概要 {#summary}
 
 ### ストアドプロシージャに対する ClickHouse の代替手段 {#summary-stored-procedures}
 
-| 従来のストアドプロシージャパターン | ClickHouse における代替手段                                                      |
-|--------------------------------------|----------------------------------------------------------------------------------|
-| 単純な計算や変換 | ユーザー定義関数 (UDF)                                               |
-| 再利用可能なパラメータ付きクエリ | パラメータ化ビュー                                                         |
-| 事前計算済みの集約 | マテリアライズドビュー                                                          |
-| 定期バッチ処理 | リフレッシュ可能なマテリアライズドビュー                                              |
-| 複雑なマルチステップ ETL | チェーンしたマテリアライズドビューまたは外部オーケストレーション (Python, Airflow, dbt) |
-| 制御フローを含むビジネスロジック | アプリケーションコード                                                            |
+| 従来のストアドプロシージャのパターン | ClickHouse の代替手段                                                      |
+|--------------------------------------|-----------------------------------------------------------------------------|
+| 単純な計算と変換処理 | ユーザー定義関数 (UDF)                                               |
+| 再利用可能なパラメータ化クエリ | パラメータ化ビュー                                                         |
+| 事前計算された集計 | マテリアライズドビュー                                                          |
+| スケジュールされたバッチ処理 | リフレッシュ可能なマテリアライズドビュー                                              |
+| 複雑な多段階の ETL | チェーン構成のマテリアライズドビューまたは外部オーケストレーション (Python, Airflow, dbt) |
+| 制御フローを伴うビジネスロジック | アプリケーションコード                                                            |
 
 ### クエリパラメータの利用 {#summary-query-parameters}
 
-クエリパラメータは次の用途に使用できます：
-- SQL インジェクションの防止
-- 型安全なパラメータ付きクエリ
-- アプリケーションにおける動的フィルタリング
+クエリパラメータは次の用途に利用できます:
+
+- SQLインジェクションの防止
+- 型安全なパラメータ化されたクエリ
+- アプリケーションでの動的なフィルタリング
 - 再利用可能なクエリテンプレート
-
-
 
 ## 関連ドキュメント {#related-documentation}
 
 - [`CREATE FUNCTION`](/sql-reference/statements/create/function) - ユーザー定義関数
-- [`CREATE VIEW`](/sql-reference/statements/create/view) - パラメータ化ビューやマテリアライズドビューを含むビュー
-- [SQL Syntax - Query Parameters](/sql-reference/syntax#defining-and-using-query-parameters) - パラメータ構文の詳細
-- [Cascading Materialized Views](/guides/developer/cascading-materialized-views) - 高度なマテリアライズドビューパターン
-- [Executable UDFs](/sql-reference/functions/udf) - 外部関数の実行
+- [`CREATE VIEW`](/sql-reference/statements/create/view) - パラメータ化ビューおよびマテリアライズドビューを含むビュー
+- [SQL 構文 - クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters) - パラメータ構文の完全なリファレンス
+- [カスケード型マテリアライズドビュー](/guides/developer/cascading-materialized-views) - 高度なマテリアライズドビューのパターン
+- [実行可能な UDF](/sql-reference/functions/udf) - 外部関数の実行
