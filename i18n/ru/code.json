@@ -872,7 +872,7 @@
     "message": "История изменений"
   },
   "homepage.resources.sampleDatasets": {
-    "message": "Примеры наборов данных"
+    "message": "Примеры наборов данных",
     "description": "Заголовок страницы списка тегов"
   },
   "topNav.navItems.Products": {
