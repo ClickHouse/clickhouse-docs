@@ -89,15 +89,13 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stac
 
 ```sql
 SHOW CREATE TABLE posts
-```
-
 
 CREATE TABLE posts
 (
 `Id` Nullable(Int64),
 `PostTypeId` Nullable(Int64),
 `AcceptedAnswerId` Nullable(Int64),
-`CreationDate` Nullable(DateTime64(3, &#39;UTC&#39;)),
+`CreationDate` Nullable(DateTime64(3, 'UTC')),
 `Score` Nullable(Int64),
 `ViewCount` Nullable(Int64),
 `Body` Nullable(String),
@@ -105,8 +103,8 @@ CREATE TABLE posts
 `OwnerDisplayName` Nullable(String),
 `LastEditorUserId` Nullable(Int64),
 `LastEditorDisplayName` Nullable(String),
-`LastEditDate` Nullable(DateTime64(3, &#39;UTC&#39;)),
-`LastActivityDate` Nullable(DateTime64(3, &#39;UTC&#39;)),
+`LastEditDate` Nullable(DateTime64(3, 'UTC')),
+`LastActivityDate` Nullable(DateTime64(3, 'UTC')),
 `Title` Nullable(String),
 `Tags` Nullable(String),
 `AnswerCount` Nullable(Int64),
@@ -114,10 +112,10 @@ CREATE TABLE posts
 `FavoriteCount` Nullable(Int64),
 `ContentLicense` Nullable(String),
 `ParentId` Nullable(String),
-`CommunityOwnedDate` Nullable(DateTime64(3, &#39;UTC&#39;)),
-`ClosedDate` Nullable(DateTime64(3, &#39;UTC&#39;))
+`CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
+`ClosedDate` Nullable(DateTime64(3, 'UTC'))
 )
-ENGINE = MergeTree(&#39;/clickhouse/tables/{uuid}/{shard}&#39;, &#39;{replica}&#39;)
+ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
 ```
 
