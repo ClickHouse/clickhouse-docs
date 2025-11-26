@@ -587,5 +587,347 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "Get started"
+  },
+  "sidebar.dropdownCategories.category.description.Get started": {
+    "message": "Learn how to use ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction": {
+    "message": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction.description": {
+    "message": "An introduction to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts": {
+    "message": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts.description": {
+    "message": "Core concepts to know"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides": {
+    "message": "Starter guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides.description": {
+    "message": "Start here when learning ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices": {
+    "message": "Best practices"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices.description": {
+    "message": "Follow best practices with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides": {
+    "message": "Migration guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides.description": {
+    "message": "Migrate your database to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides": {
+    "message": "Use case guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides.description": {
+    "message": "Common use case guides for ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets": {
+    "message": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets.description": {
+    "message": "Helpful datasets and tutorials"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom": {
+    "message": "Tips and community wisdom"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom.description": {
+    "message": "Tips and tricks from the community"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "Cloud"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "The fastest way to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "Get Started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "Start quickly with ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features": {
+    "message": "Features"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features.description": {
+    "message": "Features offered by ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides": {
+    "message": "Guides"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides.description": {
+    "message": "ClickHouse Cloud guides"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference": {
+    "message": "Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference.description": {
+    "message": "Reference docs for ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "Manage data"
+  },
+  "sidebar.dropdownCategories.category.description.Manage data": {
+    "message": "How to manage data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts": {
+    "message": "Core data concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts.description": {
+    "message": "Understand internal concepts in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data": {
+    "message": "Updating data"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data.description": {
+    "message": "Updating and replacing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data": {
+    "message": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data.description": {
+    "message": "Deleting data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling": {
+    "message": "Data modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling.description": {
+    "message": "Optimize your schema and data model"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations": {
+    "message": "Performance and optimizations"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations.description": {
+    "message": "Guides to help you optimize ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "Server admin"
+  },
+  "sidebar.dropdownCategories.category.description.Server admin": {
+    "message": "Manage and deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling": {
+    "message": "Deployments and scaling"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling.description": {
+    "message": "How to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication": {
+    "message": "Security and authentication"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication.description": {
+    "message": "Secure your ClickHouse deployment"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings": {
+    "message": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings.description": {
+    "message": "Configure ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities": {
+    "message": "Tools and utilities"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities.description": {
+    "message": "Tools to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables": {
+    "message": "System tables"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables.description": {
+    "message": "Metadata tables to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "Reference"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "Reference documentation for ClickHouse features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "Learn ClickHouse syntax"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "Functions"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "Hundreds of built-in functions to help you analyze your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "Engines"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "Use the right table and database engines for your data"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "Integrations, clients, and drivers to use with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations": {
+    "message": "All integrations"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations.description": {
+    "message": "Integrate ClickHouse with other databases and applications"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients": {
+    "message": "Language clients"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients.description": {
+    "message": "Use your favorite language to work with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "The easiest way to ingest data into ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces": {
+    "message": "Native clients & interfaces"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces.description": {
+    "message": "Choose a client and interface to connect to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources": {
+    "message": "Data sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
+    "message": "Load data into ClickHouse from your prefered source"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization": {
+    "message": "Data visualization"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization.description": {
+    "message": "Connect ClickHouse to your favorite visualization tool"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats": {
+    "message": "Data formats"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats.description": {
+    "message": "Explore data formats supported by ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion": {
+    "message": "Data ingestion"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion.description": {
+    "message": "Ingest data into ClickHouse with a range of ELT tools"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack"
+  },
+  "sidebar.dropdownCategories.category.description.ClickStack": {
+    "message": "ClickStack - The ClickHouse Observability Stack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started": {
+    "message": "Getting started"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started.description": {
+    "message": "Get started with ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets": {
+    "message": "Sample datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets.description": {
+    "message": "Learn ClickStack with sample datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
+    "message": "Architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
+    "message": "Familiarize yourself with the ClickStack architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
+    "message": "Deployment"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
+    "message": "Choose a ClickStack deployment mode"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data": {
+    "message": "Ingesting data"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data.description": {
+    "message": "Ingest data into ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options": {
+    "message": "Configuration options"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options.description": {
+    "message": "Deploy ClickStack in production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production": {
+    "message": "Production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
+    "message": "Deploy ClickStack in production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples": {
+    "message": "Integration examples"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples.description": {
+    "message": "Integration quick start guides"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB is an embedded version of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "Learn how to use chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations": {
+    "message": "Language integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations.description": {
+    "message": "Connect to chDB using a language client"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "Guides to help you use chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "View the latest changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "Get support from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing": {
+    "message": "Development and contributing"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing.description": {
+    "message": "Learn how to contribute to ClickHouse"
   }
 }

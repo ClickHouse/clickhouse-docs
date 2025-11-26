@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import NavbarLogo from "@theme/Navbar/Logo";
 import styles from "./styles.module.scss";
@@ -9,11 +9,12 @@ import DocsCategoryDropdown, { DocsCategoryDropdownLinkOnly } from "../../../com
 import MobileSideBarMenu from "../../../components/MobileSideBarMenu";
 import Navigation from "../../../components/Navigation";
 import sidebars from "../../../../sidebars";
+import { dropdownCategories } from "./MenuData";
 import { useDocsSidebar } from '@docusaurus/plugin-content-docs/client';
 import { translate } from "@docusaurus/Translate";
 import LocaleDropdownNavbarItem from "@theme/NavbarItem/LocaleDropdownNavbarItem"
 import SearchBar from "@theme/SearchBar";
-import {useNavbarMobileSidebar} from "@docusaurus/theme-common/internal";
+import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 
 export default function NavbarContent() {
   let items = [];
@@ -67,28 +68,28 @@ export default function NavbarContent() {
             </div>
           </a>
           <div className={styles.mobileSearchBar}>
-            <SearchBar/>
+            <SearchBar />
           </div>
           <div className={styles.signUp}>
             <a
-                href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
-                className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
+              href="https://console.clickhouse.cloud/signIn?loc=docs-nav-signIn-cta"
+              className={clsx("sign-in navbar__link ch-menu", styles.signIn)}
             >
               Sign in
             </a>
             <a
-                href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
-                className="click-button-anchor"
+              href="https://console.clickhouse.cloud/signUp?loc=docs-nav-signUp-cta"
+              className="click-button-anchor"
             >
               <button className="click-button primary-btn">Get started</button>
             </a>
           </div>
-          <MobileSideBarMenu sidebar={items} menu={sidebars}/>
+          <MobileSideBarMenu sidebar={items} menu={{ ...sidebars, dropdownCategories }} />
         </div>
       </div>
       <div className={clsx("secondary-nav--items", styles.secondaryMenu)}>
         <div className={styles.dropdownCategoriesContainer}>
-          {sidebars.dropdownCategories.map((dropdownCategory, index) => {
+          {dropdownCategories.map((dropdownCategory, index) => {
             return <DocsCategoryDropdown key={index} dropdownCategory={dropdownCategory} />
           })}
           <DocsCategoryDropdownLinkOnly title={translate({

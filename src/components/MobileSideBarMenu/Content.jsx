@@ -184,14 +184,14 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
 
         return items.map(item => ({
             ...item,
-            label: (
+            label: React.isValidElement(item.label) ? item.label : (
                 <Translate id={`${translationPrefix}.${item.label}`}>
                     {item.label}
                 </Translate>
             ),
             items: item.items?.map(subItem => ({
                 ...subItem,
-                label: (
+                label: React.isValidElement(subItem.label) ? subItem.label : (
                     <Translate id={`${translationPrefix}.${item.label}.${subItem.label}`}>
                         {subItem.label}
                     </Translate>
@@ -245,13 +245,13 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                 <div className={styles.toplevel}>
                     {/* Left Side - Logo and Navigation Toggle */}
                     <div className={styles.leftSection}>
-                        <NavbarLogo/>
+                        <NavbarLogo />
                     </div>
 
                     {/* Right Side - Controls */}
                     <div className={styles.headerActions}>
                         <MobileLanguagePicker onLanguageChange={handleLanguageChange} />
-                        <ColorModeToggle/>
+                        <ColorModeToggle />
                         <div className={styles.iconClose} onClick={onClose || onClick}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="31" height="31" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" strokeLinecap="round" strokeLinejoin="round">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 6L18 18M6 18L18 6" />
@@ -268,14 +268,14 @@ const MobileSideBarMenuContents = ({ className, onClick, onClose, sidebar, path,
                         >
                             {showTopLevel ? (
                                 <>
-                                    <IconArrowRight className={styles.arrow}/>
+                                    <IconArrowRight className={styles.arrow} />
                                     <span>
                                         <Translate id="mobile.sidebar.current">sidebar</Translate>
                                     </span>
                                 </>
                             ) : (
                                 <>
-                                    <IconArrowLeft className={styles.arrow}/>
+                                    <IconArrowLeft className={styles.arrow} />
                                     <span>
                                         <Translate id="mobile.sidebar.toplevel">main-menu</Translate>
                                     </span>
