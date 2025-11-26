@@ -1,6 +1,6 @@
-各設定ファイルには、以下に示す固有の構成が含まれます。
-使用する `server_id` は、そのクラスタ内の当該 ClickHouse Keeper ノードごとに一意であり、
-`&lt;raft_configuration&gt;` セクションで定義されているサーバーの `&lt;id&gt;` と一致している必要があります。
+各設定ファイルには、以下のような固有の設定が含まれています（下記参照）。
+使用する `server_id` は、そのクラスタ内で該当する ClickHouse Keeper ノードごとに一意であり、
+`<raft_configuration>` セクションで定義されているサーバーの `<id>` と一致している必要があります。
 `tcp_port` は ClickHouse Keeper の *クライアント* が使用するポートです。
 
 ```xml
@@ -8,7 +8,8 @@
 <server_id>{id}</server_id>
 ```
 
-以下のセクションでは、[Raft コンセンサスアルゴリズム](https://en.wikipedia.org/wiki/Raft_\(algorithm\)) のクォーラムに参加するサーバーを構成します。
+次のセクションでは、[Raft 合意アルゴリズム](https://en.wikipedia.org/wiki/Raft_\(algorithm\)) の
+クォーラムに参加するサーバーを構成します。
 
 ```xml
 <raft_configuration>

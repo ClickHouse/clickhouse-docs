@@ -4,8 +4,8 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Microsoft OneLake に格納されたデータをクエリする手順を説明します。'
-keywords: ['OneLake', 'Data Lake', 'Fabric']
+description: 'このガイドでは、Microsoft OneLake 内のデータをクエリするための手順を説明します。'
+keywords: ['OneLake', 'データレイク', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -14,12 +14,12 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ（OneLake、Unity、Glue、Polaris など）との連携をサポートしています。このガイドでは、ClickHouse と [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) を使用して、Microsoft OneLake に保存されたデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ (OneLake、Unity、Glue、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) を使用して、Microsoft OneLake に保存されているデータをクエリする手順を説明します。
 
-Microsoft OneLake では、レイクハウス向けに複数のテーブル形式がサポートされています。ClickHouse を使用すると、Iceberg テーブルに対してクエリを実行できます。
+Microsoft OneLake は、レイクハウス向けに複数のテーブル形式をサポートしています。ClickHouse では、Iceberg テーブルをクエリできます。
 
 :::note
-この機能はベータ版のため、次の設定を実行して有効化する必要があります:
+この機能はベータ版のため、次の設定を有効にする必要があります。
 `SET allow_database_iceberg = 1;`
 :::
 
@@ -28,22 +28,21 @@ Microsoft OneLake では、レイクハウス向けに複数のテーブル形�
 
 Microsoft Fabric でテーブルをクエリする前に、次の情報を収集する必要があります。
 
-- OneLake テナント ID（Entra ID）
+- OneLake テナント ID（ご利用の Entra ID）
 - クライアント ID
 - クライアント シークレット
 - ウェアハウス ID とデータ アイテム ID
 
-これらの値の取得方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
+これらの値の確認方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
 
+## OneLake と ClickHouse 間の接続を作成する
 
-
-## OneLake と ClickHouse 間の接続を確立する
-
-上記で必要な情報が揃ったので、Microsoft OneLake と ClickHouse の間に接続を確立できます。ただしその前に、カタログ機能を有効化する必要があります。
+上記の必要な情報が揃ったら、Microsoft OneLake と ClickHouse 間の接続を作成できます。ただし、その前にカタログを有効にする必要があります。
 
 ```sql
 SET allow_database_iceberg=1
 ```
+
 
 ### OneLakeに接続する
 
@@ -61,9 +60,9 @@ onelake_client_secret = '<client_secret>'
 ```
 
 
-## ClickHouse から OneLake をクエリする
+## ClickHouse を使用した OneLake へのクエリ実行
 
-接続が確立できたので、OneLake に対してクエリを実行できます。
+接続が確立できたので、これで OneLake に対してクエリを実行できます。
 
 ```sql
 SHOW TABLES FROM onelake_catalog
@@ -79,9 +78,9 @@ Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
    └───────────────────────────────┘
 ```
 
-Iceberg クライアントを使用している場合は、Uniform が有効になっている Delta テーブルのみが表示されます。
+Iceberg クライアントを使用している場合、Uniform が有効化されている Delta テーブルのみが表示されます。
 
-テーブルをクエリするには:
+テーブルをクエリするには、次のようにします:
 
 ```sql
 SELECT *
@@ -115,56 +114,51 @@ congestion_surcharge:  ᴺᵁᴸᴸ
 source_file:           green_tripdata_2017-05.parquet
 ```
 
-:::note バッククォートが必須
-ClickHouse では複数のネームスペースをサポートしていないため、バッククォートが必須です。
+:::note Backticks required
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォート（`）が必要です。
 :::
 
-テーブルの DDL を確認するには、次を実行します。
+テーブルの DDL を確認するには：
+
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
 Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
-```
 
-
-┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-
-1. │ CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017` ↴│
-   │↳( ↴│
-   │↳ `VendorID` Nullable(Int64), ↴│
-   │↳ `lpep_pickup_datetime` Nullable(DateTime64(6, 'UTC')), ↴│
-   │↳ `lpep_dropoff_datetime` Nullable(DateTime64(6, 'UTC')), ↴│
-   │↳ `store_and_fwd_flag` Nullable(String), ↴│
-   │↳ `RatecodeID` Nullable(Int64), ↴│
-   │↳ `PULocationID` Nullable(Int64), ↴│
-   │↳ `DOLocationID` Nullable(Int64), ↴│
-   │↳ `passenger_count` Nullable(Int64), ↴│
-   │↳ `trip_distance` Nullable(Float64), ↴│
-   │↳ `fare_amount` Nullable(Float64), ↴│
-   │↳ `extra` Nullable(Float64), ↴│
-   │↳ `mta_tax` Nullable(Float64), ↴│
-   │↳ `tip_amount` Nullable(Float64), ↴│
-   │↳ `tolls_amount` Nullable(Float64), ↴│
-   │↳ `ehail_fee` Nullable(Float64), ↴│
-   │↳ `improvement_surcharge` Nullable(Float64), ↴│
-   │↳ `total_amount` Nullable(Float64), ↴│
-   │↳ `payment_type` Nullable(Int64), ↴│
-   │↳ `trip_type` Nullable(Int64), ↴│
-   │↳ `congestion_surcharge` Nullable(Float64), ↴│
-   │↳ `source_file` Nullable(String) ↴│
-   │↳) ↴│
+   ┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+1. │ CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`                                                                                                               ↴│
+   │↳(                                                                                                                                                                          ↴│
+   │↳    `VendorID` Nullable(Int64),                                                                                                                                            ↴│
+   │↳    `lpep_pickup_datetime` Nullable(DateTime64(6, 'UTC')),                                                                                                                 ↴│
+   │↳    `lpep_dropoff_datetime` Nullable(DateTime64(6, 'UTC')),                                                                                                                ↴│
+   │↳    `store_and_fwd_flag` Nullable(String),                                                                                                                                 ↴│
+   │↳    `RatecodeID` Nullable(Int64),                                                                                                                                          ↴│
+   │↳    `PULocationID` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `DOLocationID` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `passenger_count` Nullable(Int64),                                                                                                                                     ↴│
+   │↳    `trip_distance` Nullable(Float64),                                                                                                                                     ↴│
+   │↳    `fare_amount` Nullable(Float64),                                                                                                                                       ↴│
+   │↳    `extra` Nullable(Float64),                                                                                                                                             ↴│
+   │↳    `mta_tax` Nullable(Float64),                                                                                                                                           ↴│
+   │↳    `tip_amount` Nullable(Float64),                                                                                                                                        ↴│
+   │↳    `tolls_amount` Nullable(Float64),                                                                                                                                      ↴│
+   │↳    `ehail_fee` Nullable(Float64),                                                                                                                                         ↴│
+   │↳    `improvement_surcharge` Nullable(Float64),                                                                                                                             ↴│
+   │↳    `total_amount` Nullable(Float64),                                                                                                                                      ↴│
+   │↳    `payment_type` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `trip_type` Nullable(Int64),                                                                                                                                           ↴│
+   │↳    `congestion_surcharge` Nullable(Float64),                                                                                                                              ↴│
+   │↳    `source_file` Nullable(String)                                                                                                                                         ↴│
+   │↳)                                                                                                                                                                          ↴│
    │↳ENGINE = Iceberg('abfss://<warehouse_id>@onelake.dfs.fabric.microsoft.com/<data_item_id>/Tables/year_2017/green_tripdata_2017') │
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-```
-
 ```
 
 
 ## データレイクから ClickHouse へのデータ読み込み
 
-OneLake から ClickHouse にデータを読み込む必要がある場合:
+OneLake から ClickHouse にデータを読み込む必要がある場合は、次の手順を実行します。
 
 ```sql
 CREATE TABLE trips
@@ -177,6 +171,6 @@ Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
 Ok.
 
-0 rows in set. 経過時間: 32.570秒 処理済み: 1,174万行、275.37 MB (360,360行/秒、8.45 MB/秒)
-ピークメモリ使用量: 1.31 GiB
+0 rows in set. Elapsed: 32.570 sec. Processed 11.74 million rows, 275.37 MB (360.36 thousand rows/s., 8.45 MB/s.)
+Peak memory usage: 1.31 GiB.
 ```

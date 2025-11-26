@@ -1,15 +1,16 @@
 ---
-description: 'Эталонный набор данных, используемый для сравнения производительности решений для хранилищ данных.'
-sidebar_label: 'Эталонный набор данных AMPLab для больших данных'
+description: 'Эталонный набор данных, используемый для сравнения производительности решений
+  для хранилищ данных.'
+sidebar_label: 'Эталон AMPLab для больших данных'
 slug: /getting-started/example-datasets/amplab-benchmark
-title: 'AMPLab: эталонный набор данных для больших данных'
-keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
+title: 'AMPLab: эталонный тест для больших данных'
+keywords: ['эталон AMPLab', 'эталон больших данных', 'производительность хранилищ данных', 'эталонный набор данных', 'начало работы']
 doc_type: 'guide'
 ---
 
-См. [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
+См. [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/).
 
-Зарегистрируйте бесплатную учётную запись на [https://aws.amazon.com](https://aws.amazon.com). Для регистрации потребуется банковская карта, адрес электронной почты и номер телефона. Получите новый ключ доступа (access key) по адресу [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential)
+Зарегистрируйте бесплатную учетную запись на [https://aws.amazon.com](https://aws.amazon.com). Для этого необходимы кредитная карта, адрес электронной почты и номер телефона. Создайте новый ключ доступа на [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential).
 
 Выполните в консоли следующее:
 
@@ -90,7 +91,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Вернитесь в консоль:
+Вернитесь к консоли:
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -101,7 +102,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-Примеры запросов для выборки данных:
+Запросы для получения выборок данных:
 
 
 ```sql

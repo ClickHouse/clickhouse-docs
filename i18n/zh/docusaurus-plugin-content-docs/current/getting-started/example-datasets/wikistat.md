@@ -1,19 +1,19 @@
 ---
-description: '探索包含 0.5 万亿条记录的 WikiStat 数据集。'
+description: '探索包含约 5,000 亿条记录的 WikiStat 数据集。'
 sidebar_label: 'WikiStat'
 slug: /getting-started/example-datasets/wikistat
 title: 'WikiStat'
 doc_type: 'guide'
-keywords: ['示例数据集', '维基百科', '教程', '样本数据', '页面浏览量']
+keywords: ['示例数据集', 'Wikipedia', '教程', '示例数据', '页面浏览量']
 ---
 
-此数据集包含 0.5 万亿条记录。
+该数据集包含约 5,000 亿条记录。
 
-参见 FOSDEM 2023 的视频： [https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
+请观看 FOSDEM 2023 的视频：[https://www.youtube.com/watch?v=JlcI2Vfz&#95;uk](https://www.youtube.com/watch?v=JlcI2Vfz_uk)
 
-以及演讲： [https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
+以及演讲文稿：[https://presentations.clickhouse.com/fosdem2023/](https://presentations.clickhouse.com/fosdem2023/)
 
-数据来源： [https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
+数据来源：[https://dumps.wikimedia.org/other/pageviews/](https://dumps.wikimedia.org/other/pageviews/)
 
 获取链接列表：
 
@@ -34,7 +34,7 @@ sed -r 's!pageviews-([0-9]{4})([0-9]{2})[0-9]{2}-[0-9]+\.gz!https://dumps.wikime
   links.txt | xargs -P3 wget --continue
 ```
 
-（这将花费大约 3 天）
+（大约需要 3 天时间）
 
 创建表：
 

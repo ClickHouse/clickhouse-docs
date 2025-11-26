@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация формата JSONAsString'
+description: 'Документация по формату JSONAsString'
 input_format: true
 keywords: ['JSONAsString']
 output_format: false
@@ -9,31 +9,27 @@ title: 'JSONAsString'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
-|-------|---------|-------|
-| ✔     | ✗       |       |
-
-
+| Вход | Выход  | Псевдоним |
+|------|--------|-----------|
+| ✔    | ✗      |           |
 
 ## Описание {#description}
 
 В этом формате один JSON-объект интерпретируется как одно значение. 
-Если на входе несколько JSON-объектов (разделённых запятыми), они интерпретируются как отдельные строки. 
+Если на вход передано несколько JSON-объектов (разделённых запятыми), они интерпретируются как отдельные строки. 
 Если входные данные заключены в квадратные скобки, они интерпретируются как массив JSON-объектов.
 
 :::note
-Этот формат можно разобрать только для таблицы с единственным полем типа [String](/sql-reference/data-types/string.md). 
-Оставшиеся столбцы должны быть заданы либо как [`DEFAULT`](/sql-reference/statements/create/table.md/#default), либо как [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view), 
-или не указываться. 
+Этот формат может быть разобран только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
+Остальные столбцы должны быть заданы с помощью [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view), 
+либо опущены. 
 :::
 
-После сериализации всего JSON-объекта в значение типа String вы можете использовать [JSON-функции](/sql-reference/functions/json-functions.md) для его обработки.
+После того как вы сериализуете весь JSON-объект в значение типа String, вы можете использовать [JSON-функции](/sql-reference/functions/json-functions.md) для его обработки.
 
+## Пример использования {#example-usage}
 
-
-## Пример использования
-
-### Простейший пример
+### Простой пример
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -49,6 +45,7 @@ SELECT * FROM json_as_string;
 │ {"any json stucture":1}           │
 └───────────────────────────────────┘
 ```
+
 
 ### Массив объектов JSON
 

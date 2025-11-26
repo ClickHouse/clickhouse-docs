@@ -3,36 +3,34 @@ slug: /use-cases/observability/clickstack/sdks/react-native
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'React Native SDK для ClickStack — стек наблюдаемости ClickHouse'
+description: 'React Native SDK для ClickStack - стек наблюдаемости ClickHouse'
 title: 'React Native'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-React Native SDK для ClickStack позволяет инструментировать ваше приложение
-React Native для отправки событий в ClickStack. Это позволяет видеть сетевые
-запросы мобильного приложения и исключения вместе с событиями бэкенда на единой
-временной шкале.
+React Native SDK для ClickStack позволяет инструментировать ваше React Native‑приложение
+для отправки событий в ClickStack. Это позволяет просматривать сетевые запросы
+мобильного приложения и исключения вместе с событиями бэкенд‑сервисов на единой временной шкале.
 
-В этом руководстве вы настроите интеграцию:
+В данном руководстве интегрируются:
 
-- **XHR/Fetch-запросы**
+- **XHR/Fetch‑запросы**
 
-
-
-## Начало работы
+## Приступаем к работе {#getting-started}
 
 ### Установка через npm
 
-С помощью следующей команды установите [пакет ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
+Используйте следующую команду, чтобы установить [пакет ClickStack React Native](https://www.npmjs.com/package/@hyperdx/otel-react-native).
 
 ```shell
 npm install @hyperdx/otel-react-native
 ```
 
+
 ### Инициализируйте ClickStack
 
-Инициализируйте библиотеку как можно раньше в жизненном цикле вашего приложения:
+Инициализируйте библиотеку как можно раньше в жизненном цикле приложения:
 
 ```javascript
 import { HyperDXRum } from '@hyperdx/otel-react-native';
@@ -40,20 +38,21 @@ import { HyperDXRum } from '@hyperdx/otel-react-native';
 HyperDXRum.init({
   service: 'my-rn-app',
   apiKey: '<ВАШ_КЛЮЧ_API_ПРИЁМА>',
-  tracePropagationTargets: [/api.myapp.domain/i], // Установите для связывания трассировок между фронтендом и бэкендом
+  tracePropagationTargets: [/api.myapp.domain/i], // Укажите для связывания трассировок между фронтендом и бэкенд-запросами
 });
 ```
 
+
 ### Добавление информации о пользователе или метаданных (необязательно)
 
-Добавление информации о пользователе позволит вам искать и фильтровать сессии и события
-в HyperDX. Этот метод можно вызвать в любой момент в рамках клиентской сессии.
-Текущая клиентская сессия и все события, отправленные после вызова, будут связаны
-с информацией о пользователе.
+Добавление информации о пользователе позволит выполнять поиск и фильтрацию
+сеансов и событий в HyperDX. Эту функцию можно вызывать в любой момент в ходе
+клиентского сеанса. Текущий клиентский сеанс и все события, отправленные после
+вызова, будут связаны с указанной информацией о пользователе.
 
-`userEmail`, `userName` и `teamName` заполнят интерфейс сессий соответствующими
-значениями, но их можно опустить. Любые дополнительные значения могут быть
-указаны и использованы для поиска событий.
+`userEmail`, `userName` и `teamName` будут отображаться в интерфейсе сеансов с
+соответствующими значениями, но их можно не указывать. Можно задать любые
+другие дополнительные значения и использовать их для поиска событий.
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
@@ -65,11 +64,12 @@ HyperDXRum.setGlobalAttributes({
 });
 ```
 
+
 ### Инструментирование более старых версий
 
 Чтобы инструментировать приложения, работающие на React Native версии ниже 0.68,
-отредактируйте файл `metro.config.js`, чтобы заставить Metro использовать
-пакеты, предназначенные для браузера. Например:
+отредактируйте файл `metro.config.js`, чтобы Metro использовал пакеты,
+ориентированные на браузер. Например:
 
 ```javascript
 const defaultResolver = require('metro-resolver');
@@ -116,7 +116,7 @@ module.exports = {
 
 Поддерживаются версии 5 и 6 [react-navigation](https://github.com/react-navigation/react-navigation).
 
-Следующий пример показывает, как настроить инструментирование навигации:
+В следующем примере показано, как проинструментировать навигацию:
 
 ```javascript
 import { startNavigationTracking } from '@hyperdx/otel-react-native';

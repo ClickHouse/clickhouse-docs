@@ -1,34 +1,32 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm-cloud
-title: 'Облачные развертывания с использованием Helm'
+title: 'Облачные развертывания с помощью Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'Облачные конфигурации для развертывания ClickStack в GKE, EKS и AKS'
+description: 'Специфичные для облака конфигурации развертывания ClickStack в GKE, EKS и AKS'
 doc_type: 'guide'
-keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'облачное развертывание Kubernetes', 'развертывание в продакшене']
+keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'облачное развертывание Kubernetes', 'продакшн-развертывание']
 ---
 
-В этом руководстве рассматриваются облачные конфигурации для развертывания ClickStack в управляемых облачных сервисах Kubernetes. Для базовой установки см. [основное руководство по развертыванию Helm](/docs/use-cases/observability/clickstack/deployment/helm).
+В этом руководстве рассматриваются конфигурации, специфичные для облачных платформ, для развертывания ClickStack в управляемых Kubernetes‑сервисах. Для базовой установки см. [основное руководство по развертыванию с помощью Helm](/docs/use-cases/observability/clickstack/deployment/helm).
 
+## Google Kubernetes Engine (GKE) {#google-kubernetes-engine-gke}
 
+При развертывании в GKE может потребоваться переопределить некоторые значения из‑за особенностей сетевой инфраструктуры облака.
 
-## Google Kubernetes Engine (GKE)
+### Проблема с разрешением DNS для LoadBalancer
 
-При развертывании в GKE может потребоваться переопределить некоторые значения из‑за специфики сетевого поведения в облаке.
-
-### Проблема с DNS‑разрешением для LoadBalancer
-
-Сервис LoadBalancer в GKE может вызывать проблемы с внутренним DNS‑разрешением, когда взаимодействие между подами (pod‑to‑pod) идёт через внешние IP‑адреса вместо того, чтобы оставаться в пределах сети кластера. Это, в частности, влияет на подключение OTel collector к OpAMP‑серверу.
+Сервис LoadBalancer в GKE может вызывать внутренние проблемы с разрешением DNS, при которых взаимодействие между подами осуществляется через внешние IP‑адреса вместо использования сетевого трафика внутри кластера. Это, в частности, влияет на подключение OTel collector к серверу OpAMP.
 
 **Симптомы:**
 
-* В логах OTel collector отображаются ошибки «connection refused» с IP‑адресами кластера
-* Сбои подключения OpAMP, например: `dial tcp 34.118.227.30:4320: connect: connection refused`
+* В логах OTel collector отображаются ошибки `connection refused` с IP‑адресами кластера
+* Сбои подключения к OpAMP, например: `dial tcp 34.118.227.30:4320: connect: connection refused`
 
 **Решение:**
 
-Используйте полностью квалифицированное доменное имя (FQDN) для URL OpAMP‑сервера:
+Используйте полностью квалифицированное доменное имя (FQDN) в URL сервера OpAMP:
 
 ```shell
 helm install my-clickstack clickstack/clickstack \
@@ -36,8 +34,8 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-### Прочие особенности GKE
 
+### Дополнительные соображения по GKE
 
 ```yaml
 # values-gke.yaml
@@ -46,60 +44,43 @@ hyperdx:
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
-```
 
-
-# При необходимости настройте сетевые параметры подов в GKE
-
+# При необходимости настройте для сетевой конфигурации подов GKE
 clickhouse:
-config:
-clusterCidrs:
-
-* &quot;10.8.0.0/16&quot;  # GKE обычно использует этот диапазон
-* &quot;10.0.0.0/8&quot;   # Запасной вариант для других конфигураций
-
-```
+  config:
+    clusterCidrs:
+      - "10.8.0.0/16"  # GKE обычно использует этот диапазон
+      - "10.0.0.0/8"   # Резервный вариант для других конфигураций
 ```
 
 
-## Amazon EKS {#amazon-eks}
+## Amazon EKS
 
-
-
-При развертывании в EKS рассмотрите следующие типовые конфигурации:
+Для развертывания в EKS рассмотрите следующие распространённые конфигурации:
 
 ```yaml
 # values-eks.yaml
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
-```
 
-
-# В EKS обычно используются следующие диапазоны подсетей CIDR для подов
+# EKS обычно использует следующие CIDR для подов
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-
-
-# Включение входного шлюза для рабочей среды
-
+# Включить входной шлюз для production-среды
 hyperdx:
-ingress:
-enabled: true
-host: &quot;hyperdx.yourdomain.com&quot;
-tls:
-enabled: true
-
-```
+  ingress:
+    enabled: true
+    host: "hyperdx.yourdomain.com"
+    tls:
+      enabled: true
 ```
 
 
-## Azure AKS {#azure-aks}
-
-
+## Azure AKS
 
 Для развертывания в AKS:
 
@@ -107,39 +88,31 @@ enabled: true
 # values-aks.yaml
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
-```
 
-
-# Сетевая подсистема подов в AKS
-
+# Сетевая конфигурация подов AKS
 clickhouse:
-config:
-clusterCidrs:
-
-* &quot;10.244.0.0/16&quot;  # Стандартный CIDR подсети подов AKS
-* &quot;10.0.0.0/8&quot;
-
-```
+  config:
+    clusterCidrs:
+      - "10.244.0.0/16"  # Стандартный CIDR подов AKS
+      - "10.0.0.0/8"
 ```
 
 
-## Контрольный список развертывания production-окружения в облаке {#production-cloud-deployment-checklist}
+## Контрольный список для продакшн-развертывания в облаке {#production-cloud-deployment-checklist}
 
-Перед развертыванием ClickStack в production-окружении у любого облачного провайдера:
+Перед развертыванием ClickStack в продакшене у любого провайдера облачных услуг:
 
-- [ ] Настройте корректное значение `frontendUrl` с вашим внешним доменным именем/IP-адресом
+- [ ] Настройте корректный `frontendUrl` с вашим внешним доменом или IP-адресом
 - [ ] Настройте Входной шлюз с TLS для доступа по HTTPS
-- [ ] Переопределите `otel.opampServerUrl` с использованием FQDN, если возникают проблемы с подключением (особенно в GKE)
-- [ ] Скорректируйте `clickhouse.config.clusterCidrs` в соответствии с CIDR-сетями ваших подов
-- [ ] Настройте постоянное хранилище для production-нагрузок
-- [ ] Задайте соответствующие запросы и лимиты ресурсов
+- [ ] Переопределите `otel.opampServerUrl` с использованием FQDN (полного доменного имени), если возникают проблемы с подключением (особенно в GKE)
+- [ ] Скорректируйте `clickhouse.config.clusterCidrs` под CIDR вашей подсети подов
+- [ ] Настройте постоянное хранилище для продакшн-нагрузок
+- [ ] Задайте подходящие запросы и лимиты ресурсов
 - [ ] Включите мониторинг и оповещения
 - [ ] Настройте резервное копирование и восстановление после сбоев
 - [ ] Реализуйте корректное управление секретами
 
-
-
-## Лучшие практики для продакшена
+## Лучшие практики для продакшена {#production-best-practices}
 
 ### Управление ресурсами
 
@@ -153,6 +126,7 @@ hyperdx:
       cpu: 2000m
       memory: 4Gi
 ```
+
 
 ### Высокая доступность
 
@@ -174,9 +148,10 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
+
 ### Персистентное хранилище
 
-Убедитесь, что для сохранения данных настроены персистентные тома:
+Убедитесь, что для хранения данных настроены персистентные тома.
 
 ```yaml
 clickhouse:
@@ -186,21 +161,21 @@ clickhouse:
     storageClass: "fast-ssd"  # Используйте класс хранилища, соответствующий вашему облачному провайдеру
 ```
 
-**Облачные классы хранилища:**
+**Классы хранилища, зависящие от облачного провайдера:**
 
 * **GKE**: `pd-ssd` или `pd-balanced`
 * **EKS**: `gp3` или `io2`
 * **AKS**: `managed-premium` или `managed-csi`
 
-### Замечания по совместимости с браузерами
 
-Для развертываний по HTTP (разработка/тестирование) некоторые браузеры могут показывать ошибки Crypto API из-за требований к защищённому контексту. Для боевых развертываний всегда используйте HTTPS с корректными TLS‑сертификатами через конфигурацию входного шлюза.
+### Примечания по совместимости с браузерами {#browser-compatibility-notes}
 
-См. [конфигурацию входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) для инструкций по настройке TLS.
+Для развертываний, работающих только по HTTP (разработка/тестирование), некоторые браузеры могут показывать ошибки криптографического API из‑за требований к защищённому контексту. Для продуктивных развертываний всегда используйте HTTPS с корректными TLS‑сертификатами, настроенными через конфигурацию входного шлюза.
 
+См. раздел [Конфигурация входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) с инструкциями по настройке TLS.
 
-## Дальнейшие шаги {#next-steps}
+## Следующие шаги {#next-steps}
 
-- [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — ключи API, секреты и входной шлюз
+- [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — API-ключи, секреты и входной шлюз
 - [Варианты развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) — настройка внешних систем
 - [Основное руководство по Helm](/docs/use-cases/observability/clickstack/deployment/helm) — базовая установка

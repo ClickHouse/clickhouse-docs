@@ -9,23 +9,19 @@ title: 'JSONCompactEachRow'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
-
-
 
 ## 説明 {#description}
 
 [`JSONEachRow`](./JSONEachRow.md) と異なる点は、データ行がオブジェクトではなく配列として出力されることだけです。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-次のデータを含み、`football.json` という名前を付けた JSON ファイルを使用します:
+以下のデータを含む JSON ファイルを `football.json` という名前で用意します:
 
 ```json
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]
@@ -47,15 +43,16 @@ doc_type: 'reference'
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-データを挿入します：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRow;
 ```
 
+
 ### データの読み込み
 
-`JSONCompactEachRow` 形式でデータを読み込みます。
+`JSONCompactEachRow` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -63,8 +60,7 @@ FROM football
 FORMAT JSONCompactEachRow
 ```
 
-出力は JSON 形式です：
-
+出力は JSON 形式で行われます。
 
 ```json
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]

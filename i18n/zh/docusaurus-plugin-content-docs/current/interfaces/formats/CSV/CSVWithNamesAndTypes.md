@@ -9,24 +9,20 @@ title: 'CSVWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-另外会输出两行表头，包含列名和类型，与 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes) 类似。
+还会输出两行表头，其中包含列名和类型，类似于 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes)。
 
-
-
-## 使用示例
+## 示例用法 {#example-usage}
 
 ### 插入数据
 
 :::tip
-自 [23.1 版本](https://github.com/ClickHouse/ClickHouse/releases) 起，在使用 `CSV` 格式时，ClickHouse 会自动检测 CSV 文件中的表头，因此无需再使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
+从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行，因此不再需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
 :::
 
 使用以下名为 `football_types.csv` 的 CSV 文件：
@@ -75,6 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
+
 ### 读取数据
 
 使用 `CSVWithNamesAndTypes` 格式来读取数据：
@@ -85,8 +82,7 @@ FROM football
 FORMAT CSVWithNamesAndTypes
 ```
 
-输出将是一个 CSV，包含两行表头，分别表示列名和列类型：
-
+输出将是一个包含两行表头的 CSV 文件：第一行为列名，第二行为列类型：
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -114,12 +110,12 @@ FORMAT CSVWithNamesAndTypes
 ## 格式设置 {#format-settings}
 
 :::note
-如果将设置项 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设为 `1`，
-则会根据名称将输入数据中的列映射到表中的列；如果将设置项 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`，则会跳过名称未知的列。
-否则，第一行会被跳过。
+如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
+则会根据列名将输入数据中的列映射到表中的列；如果将 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
+否则，将跳过第一行。
 :::
 
 :::note
-如果将设置项 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设为 `1`，
-则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行会被跳过。
+如果将 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，将跳过第二行。
 :::

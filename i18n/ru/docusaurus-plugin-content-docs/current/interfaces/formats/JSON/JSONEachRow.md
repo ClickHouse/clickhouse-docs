@@ -7,19 +7,15 @@ title: 'JSONEachRow'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Алиас                |
+| Вход | Выход | Псевдоним            |
 |------|-------|----------------------|
 | ✔    | ✔     | `JSONLines`, `NDJSON` |
 
-
-
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, при этом объекты разделяются символами перевода строки.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, отделённого символом новой строки.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
@@ -51,6 +47,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
+
 ### Чтение данных
 
 Прочитайте данные в формате `JSONEachRow`:
@@ -62,7 +59,6 @@ FORMAT JSONEachRow
 ```
 
 Результат будет в формате JSON:
-
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -84,7 +80,7 @@ FORMAT JSONEachRow
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Столбцы данных с неизвестными именами не будут импортированы, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение 1.
+Импорт столбцов с неизвестными именами будет пропускаться, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
 
 
-## Параметры формата {#format-settings}
+## Параметры форматирования {#format-settings}

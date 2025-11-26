@@ -9,17 +9,13 @@ title: 'JSONAsObject'
 doc_type: 'reference'
 ---
 
-
-
 ## 描述 {#description}
 
-在这种格式下，单个 JSON 对象会被解析为单个 [JSON](/sql-reference/data-types/newjson.md) 值。若输入包含多个 JSON 对象（以逗号分隔），则会被解析为多行数据。若输入数据被方括号包裹，则会被解析为一个 JSON 对象数组。
+在此格式中，单个 JSON 对象会被解释为一个 [JSON](/sql-reference/data-types/newjson.md) 值。如果输入包含多个 JSON 对象（以逗号分隔），则它们会被解释为多行数据。如果输入数据被方括号包裹，则会被解释为一个 JSON 数组。
 
-此格式只能用于解析仅包含一个 [JSON](/sql-reference/data-types/newjson.md) 类型字段的表。其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)。
+此格式只能用于解析到仅包含一个 [JSON](/sql-reference/data-types/newjson.md) 类型字段的表中。其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ### 基本示例
 
@@ -35,7 +31,8 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-### JSON 对象的数组
+
+### JSON 对象数组
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
@@ -47,6 +44,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"1","name":"name1"}}
 {"field":{"id":"2","name":"name2"}}
 ```
+
 
 ### 具有默认值的列
 
@@ -65,4 +63,4 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 ```
 
 
-## 格式设置 {#format-settings}
+## 格式设定 {#format-settings}

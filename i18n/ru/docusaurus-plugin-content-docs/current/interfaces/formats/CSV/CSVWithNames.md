@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация по формату CSVWithNames'
+description: 'Документация о формате CSV'
 input_format: true
 keywords: ['CSVWithNames']
 output_format: true
@@ -9,27 +9,23 @@ title: 'CSVWithNames'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
+| Входные данные | Выходные данные | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## Описание {#description}
 
-Также выводит строку заголовка с названиями столбцов, аналогично формату [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames).
+Также выводит строку заголовка с названиями столбцов, аналогично [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames).
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
 :::tip
-Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически определяет заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
+Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически распознаёт заголовки в файлах CSV при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
 :::
 
-Будем использовать следующий CSV-файл `football.csv`:
+Возьмём следующий CSV-файл с именем `football.csv`:
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -74,9 +70,10 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
 
+
 ### Чтение данных
 
-Считывайте данные в формате `CSVWithNames`:
+Прочитайте данные в формате `CSVWithNames`:
 
 ```sql
 SELECT *
@@ -84,8 +81,7 @@ FROM football
 FORMAT CSVWithNames
 ```
 
-Результатом будет CSV-файл с одной строкой заголовка:
-
+На выходе получится CSV‑файл с одной строкой заголовка:
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -113,6 +109,6 @@ FORMAT CSVWithNames
 
 :::note
 Если настройка [`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в значение `1`,
-столбцы из входных данных будут сопоставлены со столбцами в таблице по их именам, а столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`.
-В противном случае первая строка будет пропущена.
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) также установлена в значение `1`.
+В противном случае первая строка входных данных будет пропущена.
 :::

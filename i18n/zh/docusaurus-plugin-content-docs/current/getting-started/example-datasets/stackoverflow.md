@@ -11,28 +11,29 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
-该数据集包含在 Stack Overflow 上发生的所有 `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory` 和 `PostLinks` 记录。
+该数据集包含在 Stack Overflow 上产生的所有 `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory` 和 `PostLinks` 记录。
 
-用户可以下载预生成的 Parquet 格式数据，其中包含截至 2024 年 4 月的所有帖子数据，或者下载最新的 XML 格式数据并自行加载。Stack Overflow 会定期更新这些数据——过去通常每 3 个月更新一次。
+用户可以下载预先生成的 Parquet 版本数据集（包含截至 2024 年 4 月的所有帖子），或下载最新的 XML 格式数据并自行加载。Stack Overflow 会定期发布这些数据的更新——通常每 3 个月一次。
 
-下图展示了在采用 Parquet 格式时可用数据表的模式结构。
+下图展示了在使用 Parquet 格式时，可用数据表的模式。
 
-<Image img={stackoverflow} alt="Stack Overflow 模式结构" size="md" />
+<Image img={stackoverflow} alt="Stack Overflow schema" size="md" />
 
-关于该数据模式的说明文档可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
+该数据集的模式说明可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
 
 
-## 预先准备好的数据
+## 预置数据
 
-我们提供了一份 Parquet 格式的数据副本，内容更新至 2024 年 4 月。就行数（共 6000 万条帖子）而言，这个数据集对 ClickHouse 来说规模较小，但其中包含大量文本以及体积较大的 String 列。
+我们提供了一份 Parquet 格式的数据副本，内容更新至 2024 年 4 月。虽然从行数规模来看（6,000 万条帖子），这个数据集对 ClickHouse 来说并不算大，但其中包含了大量文本以及体积较大的 String 类型列。
 
 ```sql
 CREATE DATABASE stackoverflow
 ```
 
-以下时间统计基于一个位于 `eu-west-2`、具有 96 GiB 内存和 24 个 vCPU 的 ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
+以下时间测试结果基于一个位于 `eu-west-2`、具有 96 GiB 内存和 24 个 vCPU 的 ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
 
-### Posts（帖子）
+
+### 文章
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -69,7 +70,8 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 265.466 sec. Processed 59.82 million rows, 38.07 GB (225.34 thousand rows/s., 143.42 MB/s.)
 ```
 
-帖子数据也可以按年份获取，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
+Posts 数据集也可以按年份获取，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
+
 
 ### 投票
 
@@ -91,7 +93,8 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
-投票数据也按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+投票数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+
 
 ### 评论
 
@@ -111,11 +114,11 @@ ORDER BY CreationDate
 
 INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/*.parquet')
 
-结果集包含 0 行。耗时：56.593 秒。已处理 9038 万行，11.14 GB（每秒 160 万行，196.78 MB/s）。
+0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
+评论数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
-评论数据也可以按年份获取，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 ### 用户
 
@@ -143,6 +146,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
+
 ### 徽章
 
 ```sql
@@ -160,8 +164,9 @@ ORDER BY UserId
 
 INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
+返回 0 行。用时:6.635 秒。已处理 5129 万行,797.05 MB(773 万行/秒,120.13 MB/秒)
 ```
+
 
 ### 文章链接
 
@@ -182,7 +187,8 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### 帖子历史
+
+### PostHistory
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -207,9 +213,9 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 ```
 
 
-## 原始数据集
+## 原始数据集 {#original-dataset}
 
-原始数据集以压缩（7zip）XML 格式提供，可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 下载，文件前缀为 `stackoverflow.com*`。
+原始数据集以压缩的 7-Zip XML 格式提供，可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 获取，文件前缀为 `stackoverflow.com*`。
 
 ### 下载
 
@@ -223,13 +229,14 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-这些文件最大可达 35GB，下载时间可能在 30 分钟左右，具体取决于网络连接情况——下载服务器会将带宽限制在约 20 MB/s。
+这些文件大小可达 35GB，具体下载时间取决于网络状况，大约需要 30 分钟——下载服务器的限速约为 20 MB/秒。
+
 
 ### 转换为 JSON
 
-在撰写本文时，ClickHouse 尚未原生支持将 XML 作为输入格式。为了将数据加载到 ClickHouse，我们首先将其转换为 NDJSON。
+在撰写本文时，ClickHouse 暂不原生支持将 XML 作为输入格式。要将数据加载到 ClickHouse，我们首先将其转换为 NDJSON。
 
-要将 XML 转换为 JSON，我们推荐使用 [`xq`](https://github.com/kislyuk/yq) 这一 Linux 工具，它是一个针对 XML 文档的简单 `jq` 封装。
+要将 XML 转换为 JSON，我们推荐使用 [`xq`](https://github.com/kislyuk/yq) 这个 Linux 工具，它是一个针对 XML 文档的简单 `jq` 封装。
 
 安装 xq 和 jq：
 
@@ -238,18 +245,17 @@ sudo apt install jq
 pip install yq
 ```
 
-以下步骤适用于上述任意一个文件。我们以 `stackoverflow.com-Posts.7z` 文件为例，根据需要进行调整。
+以下步骤适用于上述任意一个文件。这里以 `stackoverflow.com-Posts.7z` 文件为例，请根据需要进行调整。
 
-使用 [p7zip](https://p7zip.sourceforge.net/) 解压该文件。这将生成一个单独的 XML 文件——在本例中为 `Posts.xml`。
+使用 [p7zip](https://p7zip.sourceforge.net/) 解压该文件。解压后会生成一个单个的 XML 文件——在本例中为 `Posts.xml`。
 
-> 文件压缩率约为 4.5 倍。压缩后为 22GB 时，Posts 文件解压后大约需要 97GB 的空间。
+> 文件压缩率大约为 4.5 倍。帖子文件压缩后约为 22GB，解压后大约需要 97GB 的空间。
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-下面的命令会将该 XML 文件拆分成多个文件，每个文件包含 10000 行。
-
+以下操作会将该 XML 文件拆分为多个文件，每个文件包含 10000 行。
 
 ```bash
 mkdir posts
@@ -258,26 +264,26 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-在运行上述命令后，用户将得到一组文件，每个文件包含 10000 行。这样可以确保下一条命令的内存开销不会过高（XML 到 JSON 的转换是在内存中完成的）。
+在运行上述命令后，用户会得到一组文件，每个文件包含 10,000 行。这样可以确保下一条命令的内存开销不会过大（XML 到 JSON 的转换是在内存中完成的）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-上述命令将生成一个 `posts.json` 文件。
+上述命令会生成一个 `posts.json` 文件。
 
-使用以下命令将其加载到 ClickHouse 中。注意为 `posts.json` 文件指定了 schema。你需要根据各字段的数据类型进行相应调整，使其与目标表的定义保持一致。
+使用以下命令将其加载到 ClickHouse 中。注意，这里为 `posts.json` 文件指定了 schema。你需要根据数据类型对其进行相应调整，使其与目标表保持一致。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
 
-## 示例查询
+## 示例查询 {#example-queries}
 
-几个简单的查询，帮助你快速上手。
+下面是一些简单的查询示例，帮助你开始使用。
 
-### Stack Overflow 上最热门的标签
+### Stack Overflow 上最常用的标签
 
 ```sql
 
@@ -302,13 +308,14 @@ LIMIT 10
 │ css        │  803755 │
 └────────────┴─────────┘
 
-共 10 行。耗时 1.013 秒。已处理 59.82 百万行，1.21 GB（59.07 百万行/秒，1.19 GB/秒）。
-峰值内存占用：224.03 MiB。
+返回了 10 行。耗时：1.013 秒。处理了 5982 万行，1.21 GB（5907 万行/秒，1.19 GB/秒）。
+峰值内存使用：224.03 MiB。
 ```
 
-### 回答数量最多的用户（活跃账户）
 
-账户必须具有 `UserId`。
+### 回答数最多的用户（活跃账户）
+
+账户必须包含 `UserId`。
 
 ```sql
 SELECT
@@ -328,11 +335,12 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-返回 5 行。用时:0.154 秒。处理了 3583 万行,193.39 MB(每秒 2.3233 亿行,1.25 GB/秒)。
-峰值内存使用量:206.45 MiB。
+返回 5 行。耗时：0.154 秒。处理了 35.83 百万行，193.39 MB（232.33 百万行/秒，1.25 GB/秒）。
+峰值内存使用：206.45 MiB。
 ```
 
-### 浏览量最高的 ClickHouse 相关文章
+
+### 阅读量最高的 ClickHouse 相关文章
 
 ```sql
 SELECT
@@ -346,20 +354,20 @@ ORDER BY ViewCount DESC
 LIMIT 10
 
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
-│ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
-│ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
-│ 37901642 │ Updating data in Clickhouse                                                      │     36236 │           6 │
-│ 58422110 │ Pandas: How to insert dataframe into Clickhouse                                  │     29731 │           4 │
-│ 63621318 │ DBeaver - Clickhouse - SQL Error [159] .. Read timed out                         │     27350 │           1 │
-│ 47591813 │ How to filter clickhouse table by array column contents?                         │     27078 │           2 │
-│ 58728436 │ How to search the string in query with case insensitive on Clickhouse database?  │     26567 │           3 │
-│ 65316905 │ Clickhouse: DB::Exception: Memory limit (for query) exceeded                     │     24899 │           2 │
-│ 49944865 │ How to add a column in clickhouse                                                │     24424 │           1 │
-│ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
+│ 52355143 │ 是否可以从 ClickHouse 表中删除旧记录?                      │     41462 │           3 │
+│ 37954203 │ ClickHouse 数据导入                                                           │     38735 │           3 │
+│ 37901642 │ 在 ClickHouse 中更新数据                                                      │     36236 │           6 │
+│ 58422110 │ Pandas: 如何将 DataFrame 插入 ClickHouse                                  │     29731 │           4 │
+│ 63621318 │ DBeaver - ClickHouse - SQL 错误 [159] .. 读取超时                         │     27350 │           1 │
+│ 47591813 │ 如何根据数组列内容过滤 ClickHouse 表?                         │     27078 │           2 │
+│ 58728436 │ 如何在 ClickHouse 数据库中执行不区分大小写的字符串查询?  │     26567 │           3 │
+│ 65316905 │ ClickHouse: DB::Exception: 内存限制(查询)已超出                     │     24899 │           2 │
+│ 49944865 │ 如何在 ClickHouse 中添加列                                                │     24424 │           1 │
+│ 59712399 │ 如何在 ClickHouse 中使用扩展解析将日期字符串转换为 DateTime 格式? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-返回 10 行。用时:0.472 秒。已处理 5982 万行,1.91 GB(1.2663 亿行/秒,4.03 GB/秒)。
-内存峰值:240.01 MiB。
+返回 10 行。用时:0.472 秒。处理了 5982 万行,1.91 GB(每秒 1.2663 亿行,4.03 GB/秒)。
+峰值内存使用量:240.01 MiB。
 ```
 
 
@@ -388,16 +396,16 @@ ORDER BY Controversial_ratio ASC
 LIMIT 3
 
 ┌───────Id─┬─Title─────────────────────────────────────────────┬─UpVotes─┬─DownVotes─┬─Controversial_ratio─┐
-│   583177 │ VB.NET 无限 For 循环                               │      12 │        12 │                   0 │
-│  9756797 │ 将控制台输入作为可枚举对象读取——只用一条语句？      │      16 │        16 │                   0 │
-│ 13329132 │ Ruby 中 ARGV 有什么用？                            │      22 │        22 │                   0 │
+│   583177 │ VB.NET Infinite For Loop                          │      12 │        12 │                   0 │
+│  9756797 │ Read console input as enumerable - one statement? │      16 │        16 │                   0 │
+│ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-结果集包含 3 行。耗时：4.779 秒。已处理 2.9880 亿行，3.16 GB（6252 万行/秒，661.05 MB/s）。
-峰值内存使用：6.05 GiB。
+返回 3 行。用时:4.779 秒。已处理 2.988 亿行,3.16 GB(6252 万行/秒,661.05 MB/秒)。
+内存峰值:6.05 GiB。
 ```
 
 
 ## 致谢 {#attribution}
 
-我们感谢 Stack Overflow 在 `cc-by-sa 4.0` 许可协议下提供这些数据，并对其付出以及数据的原始来源 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 表示感谢。
+我们感谢 Stack Overflow 按照 `cc-by-sa 4.0` 许可证提供这些数据，并对其付出和在 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 提供的原始数据来源表示认可。

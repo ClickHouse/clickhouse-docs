@@ -9,23 +9,19 @@ title: 'JSONCompactStrings'
 doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## Описание {#description}
 
-Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
+Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) лишь тем, что строки данных выводятся как массивы, а не как объекты.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Чтение данных
 
-Считывайте данные в формате `JSONCompactStrings`:
+Считайте данные в формате `JSONCompactStrings`:
 
 ```sql
 SELECT *
@@ -98,4 +94,4 @@ FORMAT JSONCompactStrings
 ```
 
 
-## Параметры формата {#format-settings}
+## Настройки форматирования {#format-settings}

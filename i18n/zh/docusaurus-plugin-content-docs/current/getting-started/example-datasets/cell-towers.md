@@ -1,10 +1,10 @@
 ---
-description: '学习如何将 OpenCelliD 数据加载到 ClickHouse，将 Apache Superset 连接到 ClickHouse，并基于这些数据构建仪表板'
+description: '了解如何将 OpenCelliD 数据加载到 ClickHouse、将 Apache Superset 连接到 ClickHouse，并基于这些数据构建仪表板'
 sidebar_label: '蜂窝基站'
 slug: /getting-started/example-datasets/cell-towers
 title: '使用蜂窝基站数据集的地理数据'
 keywords: ['蜂窝基站数据', '地理数据', 'OpenCelliD', '地理空间数据集', '入门']
-doc_type: 'guide'
+doc_type: '指南'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
@@ -32,45 +32,44 @@ import superset_cell_tower_dashboard from '@site/static/images/getting-started/e
 
 ## 目标 {#goal}
 
-在本指南中，你将了解如何：
-- 在 ClickHouse 中加载 OpenCelliD 数据
+在本指南中，您将学习如何：
+
+- 将 OpenCelliD 数据导入 ClickHouse
 - 将 Apache Superset 连接到 ClickHouse
-- 基于该数据集中的数据构建一个仪表盘
+- 基于数据集中可用的数据构建一个仪表盘
 
 下面是本指南中创建的仪表盘预览：
 
-<Image img={cell_towers_1} size="md" alt="MCC 204 中按无线电类型分类的基站仪表盘"/>
-
-
+<Image img={cell_towers_1} size="md" alt="mcc 204 区域内按无线制式分类的基站仪表盘"/>
 
 ## 获取数据集 {#get-the-dataset}
 
-该数据集来自 [OpenCelliD](https://www.opencellid.org/) —— 全球最大的蜂窝基站开放数据库。
+该数据集来自 [OpenCelliD](https://www.opencellid.org/)——全球最大的蜂窝基站开放数据库。
 
-截至 2021 年，它包含全球蜂窝基站（GSM、LTE、UMTS 等）超过 4000 万条记录，包括其地理坐标以及元数据（国家代码、网络等）。
+截至 2021 年，它包含了全球蜂窝基站（GSM、LTE、UMTS 等）的 4,000 多万条记录，包括其地理坐标以及元数据（国家代码、网络等）。
 
-OpenCelliD 项目采用 Creative Commons Attribution-ShareAlike 4.0 International License（知识共享署名-相同方式共享 4.0 国际许可协议）授权，我们在相同许可条款下重新分发该数据集的一个快照。最新版本的数据集可在登录后下载。
+OpenCelliD 项目采用 Creative Commons Attribution-ShareAlike 4.0 International License 授权，我们在相同许可条款下重新分发该数据集的一个快照。最新版本的数据集可在登录后下载。
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
 ### 加载示例数据 {#load-the-sample-data}
 
-ClickHouse Cloud 提供了从 S3 加载该数据集的一键式体验。登录您的 ClickHouse Cloud 组织，或在 [ClickHouse.cloud](https://clickhouse.cloud) 创建一个免费试用账户。
+ClickHouse Cloud 提供了从 S3 上传该数据集的一键式操作。登录到你的 ClickHouse Cloud 组织，或在 [ClickHouse.cloud](https://clickhouse.cloud) 创建一个免费试用。
 <ActionsMenu menu="Load Data" />
 
 在 **Sample data** 选项卡中选择 **Cell Towers** 数据集，然后点击 **Load data**：
 
-<Image img={cloud_load_data_sample} size='md' alt='加载蜂窝基站数据集' />
+<Image img={cloud_load_data_sample} size='md' alt='Load cell towers dataset' />
 
-### 查看 cell_towers 表的表结构 {#examine-the-schema-of-the-cell_towers-table}
+### 查看 cell_towers 表的结构 {#examine-the-schema-of-the-cell_towers-table}
 ```sql
 DESCRIBE TABLE cell_towers
 ```
 
 <SQLConsoleDetail />
 
-以下是 `DESCRIBE` 的输出。后文将说明各字段类型的选择。
+下面是 `DESCRIBE` 的输出。本指南后文将介绍各字段类型选择的理由。
 ```response
 ┌─name──────────┬─type──────────────────────────────────────────────────────────────────┬
 │ radio         │ Enum8('' = 0, 'CDMA' = 1, 'GSM' = 2, 'LTE' = 3, 'NR' = 4, 'UMTS' = 5) │
@@ -116,7 +115,7 @@ CREATE TABLE cell_towers
 ENGINE = MergeTree ORDER BY (radio, mcc, net, created);
 ```
 
-2. 从公共 S3 存储桶中导入数据集（686 MB）：
+2. 从公共 S3 存储桶导入数据集（686 MB）：
 
 ```sql
 INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amazonaws.com/cell_towers/cell_towers.csv.xz', 'CSVWithNames')
@@ -125,11 +124,9 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
-
-
 ## 运行一些示例查询
 
-1. 按类型统计蜂窝基站数量：
+1. 各类型蜂窝基站的数量：
 
 ```sql
 SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
@@ -147,7 +144,7 @@ SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
 5 rows in set. Elapsed: 0.011 sec. Processed 43.28 million rows, 43.28 MB (3.83 billion rows/s., 3.83 GB/s.)
 ```
 
-2. 按[移动国家代码（MCC）](https://en.wikipedia.org/wiki/Mobile_country_code)划分的蜂窝基站：
+2. 按[移动国家码 (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code)划分的蜂窝基站：
 
 ```sql
 SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
@@ -167,12 +164,12 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 │ 311 │ 1332798 │
 └─────┴─────────┘
 
-返回 10 行。用时:0.019 秒。已处理 4328 万行,86.55 MB(23.3 亿行/秒,4.65 GB/秒)。
+10 rows in set. Elapsed: 0.019 sec. Processed 43.28 million rows, 86.55 MB (2.33 billion rows/s., 4.65 GB/s.)
 ```
 
-基于上述查询结果和 [MCC 列表](https://en.wikipedia.org/wiki/Mobile_country_code)，基站数量最多的国家是美国、德国和俄罗斯。
+根据上述查询以及 [MCC 列表](https://en.wikipedia.org/wiki/Mobile_country_code)，基站数量最多的国家包括：美国、德国和俄罗斯。
 
-你可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来解析这些值。
+您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来对这些值进行解码。
 
 
 ## 使用场景：集成地理数据 {#use-case}
@@ -190,7 +187,7 @@ ORDER BY polygon;
 ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="自托管">
+<TabItem value="selfmanaged" label="Self-managed">
 
 ```sql
 CREATE TEMPORARY TABLE
@@ -200,9 +197,7 @@ moscow (polygon Array(Tuple(Float64, Float64)));
 </TabItem>
 </Tabs>
 
-2. 这是莫斯科的大致轮廓（不含“新莫斯科”区域）：
-
-
+2. 下面是莫斯科的大致轮廓（不包含“新莫斯科”）：
 
 ```sql
 INSERT INTO moscow VALUES ([(37.84172564285271, 55.78000432402266),
@@ -256,7 +251,7 @@ INSERT INTO moscow VALUES ([(37.84172564285271, 55.78000432402266),
 (37.84172564285271, 55.78000432402266)]);
 ```
 
-3. 查看莫斯科有多少座移动通信基站：
+3. 查看莫斯科有多少个基站：
 
 ```sql
 SELECT count() FROM cell_towers
@@ -272,40 +267,40 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 ```
 
 
-## 表结构概览 {#review-of-the-schema}
+## 查看模式 {#review-of-the-schema}
 
-在 Superset 中构建可视化之前，先查看你将要使用的列。该数据集主要提供了全球移动蜂窝基站的位置（经度和纬度）以及无线接入技术类型。列的详细说明可以在[社区论坛](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186)中找到。将在本指南中用于构建可视化的列如下所述：
+在 Superset 中构建可视化之前，请先查看你将要使用的列。此数据集主要提供全球移动蜂窝基站的位置（经度和纬度）以及无线接入技术类型。各列的说明可以在[社区论坛](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186)中找到。下面描述将用于构建可视化的列。
 
-下面是从 OpenCelliD 论坛中摘录的列说明：
+以下是从 OpenCelliD 论坛中摘取的列说明：
 
 | Column       | Description                                            |
 |--------------|--------------------------------------------------------|
 | radio        | 技术代际：CDMA、GSM、UMTS、5G NR                        |
-| mcc          | 移动国家码（Mobile Country Code）：`204` 表示荷兰       |
-| lon          | 经度：与纬度一起，用于近似基站位置                      |
-| lat          | 纬度：与经度一起，用于近似基站位置                      |
+| mcc          | 移动国家码（Mobile Country Code）：`204` 代表荷兰       |
+| lon          | 经度：与纬度一起，表示基站的大致位置                   |
+| lat          | 纬度：与经度一起，表示基站的大致位置                   |
 
 :::tip mcc
-若要查找你的 MCC，请查看 [Mobile network codes](https://en.wikipedia.org/wiki/Mobile_country_code)，并使用 **Mobile country code** 列中的三位数字。
+要查找你的 MCC，请查看 [Mobile network codes](https://en.wikipedia.org/wiki/Mobile_country_code)，并使用 **Mobile country code** 列中的三位数字。
 :::
 
-此表的表结构旨在实现磁盘上的紧凑存储和更快的查询速度。
+此表的模式专为在磁盘上实现紧凑存储和提升查询速度而设计。
+
 - `radio` 数据以 `Enum8`（`UInt8`）而不是字符串形式存储。
-- `mcc`（移动国家码）存储为 `UInt16`，因为我们知道其取值范围为 1 - 999。
+- `mcc`（移动国家码）以 `UInt16` 存储，因为我们知道其取值范围为 1 - 999。
 - `lon` 和 `lat` 为 `Float64`。
 
-本指南中的查询或可视化不会使用其他字段，但如果你感兴趣，可以在上面链接的论坛中查看它们的说明。
-
-
+本指南中的查询或可视化不会用到其他字段，但如果你感兴趣，可以在上面链接的论坛中查看它们的说明。
 
 ## 使用 Apache Superset 构建可视化 {#build-visualizations-with-apache-superset}
 
-Superset 可以方便地通过 Docker 运行。 如果你已经在运行 Superset，只需要通过 `pip install clickhouse-connect` 安装并添加 ClickHouse Connect 即可。 如果你需要安装 Superset，请打开下方的 **Launch Apache Superset in Docker**。
+Superset 可以很方便地通过 Docker 运行。 如果已经在运行 Superset，只需要执行 `pip install clickhouse-connect` 来添加 ClickHouse Connect 即可。 如果需要安装 Superset，请打开下方的 **Launch Apache Superset in Docker**。
 
 <SupersetDocker />
 
 要使用 OpenCelliD 数据集构建 Superset dashboard，你需要：
-- 将你的 ClickHouse 服务添加为 Superset 的 **database**
+
+- 将 ClickHouse 服务添加为 Superset 的 **database**
 - 将表 **cell_towers** 添加为 Superset 的 **dataset**
 - 创建一些 **charts**
 - 将这些图表添加到一个 **dashboard**
@@ -314,72 +309,70 @@ Superset 可以方便地通过 Docker 运行。 如果你已经在运行 Superse
 
 <ConnectionDetails />
 
-  在 Superset 中，可以通过选择数据库类型并提供连接信息来添加一个数据库。 打开 Superset，找到 **+**，在其菜单中选择 **Data**，然后选择 **Connect database** 选项。
+在 Superset 中，可以通过选择数据库类型并提供连接信息来添加数据库。打开 Superset，找到 **+** 按钮，在其菜单中选择 **Data**，然后选择 **Connect database** 选项。
 
-  <Image img={add_a_database} size="md" alt="添加数据库"/>
-  
-  从列表中选择 **ClickHouse Connect**：
+<Image img={add_a_database} size="md" alt="添加数据库"/>
 
-  <Image img={choose_clickhouse_connect} size="md" alt="选择 ClickHouse Connect 作为数据库类型"/>
+从列表中选择 **ClickHouse Connect**：
+
+<Image img={choose_clickhouse_connect} size="md" alt="选择 ClickHouse Connect 作为数据库类型"/>
 
 :::note
-  如果 **ClickHouse Connect** 不在可选项中，则需要先安装它。命令为 `pip install clickhouse-connect`，更多信息可在[此处查看](https://pypi.org/project/clickhouse-connect/)。
+  如果在可选项中没有 **ClickHouse Connect**，则需要先安装它。命令为 `pip install clickhouse-connect`，更多信息请参见[此处](https://pypi.org/project/clickhouse-connect/)。
 :::
 
-#### 添加连接详情 {#add-your-connection-details}
+#### 添加连接详细信息 {#add-your-connection-details}
 
 :::tip
-  在连接 ClickHouse Cloud 或其他强制使用 SSL 的 ClickHouse 系统时，请务必开启 **SSL**。
+  在连接到 ClickHouse Cloud 或其他强制使用 SSL 的 ClickHouse 系统时，请确保已启用 **SSL**。
 :::
 
-  <Image img={add_clickhouse_as_superset_datasource} size="md" alt="将 ClickHouse 添加为 Superset 数据源"/>
+<Image img={add_clickhouse_as_superset_datasource} size="md" alt="将 ClickHouse 添加为 Superset 数据源"/>
 
-### 将表 **cell_towers** 添加为 Superset **dataset** {#add-the-table-cell_towers-as-a-superset-dataset}
+### 将表 **cell_towers** 添加为 Superset **数据集（dataset）** {#add-the-table-cell_towers-as-a-superset-dataset}
 
-  在 Superset 中，一个 **dataset** 映射到数据库中的一张表。 点击“添加 dataset”，然后选择你的 ClickHouse 服务、包含该表的数据库（`default`），并选择 `cell_towers` 表：
+在 Superset 中，一个 **dataset** 对应数据库中的一张表。点击 “Add dataset”，选择你的 ClickHouse 服务、包含该表的数据库（`default`），然后选择 `cell_towers` 表：
 
-<Image img={add_cell_towers_table_as_dataset} size="md" alt="将 cell_towers 表添加为 dataset"/>
+<Image img={add_cell_towers_table_as_dataset} size="md" alt="将 cell_towers 表添加为一个数据集（dataset）"/>
 
-### 创建一些 **charts** {#create-some-charts}
+### 创建一些**图表** {#create-some-charts}
 
-在 Superset 中选择添加图表时，你需要指定 dataset（`cell_towers`）和图表类型。 由于 OpenCelliD 数据集为基站提供了经纬度坐标，我们将创建一个 **Map** 图表。 **deck.gL Scatterplot** 类型非常适合该数据集，因为它在地图上展示高密度数据点时效果很好。
+在 Superset 中选择添加图表时，您需要指定数据集（`cell_towers`）和图表类型。由于 OpenCelliD 数据集为基站提供了经度和纬度坐标，我们将创建一个**地图图表（Map）**。**deck.gl Scatterplot** 类型非常适合该数据集，因为它在地图上展示高密度数据点时表现出色。
 
 <Image img={create_a_map_in_superset} size="md" alt="在 Superset 中创建地图"/>
 
-#### 指定用于地图的查询 {#specify-the-query-used-for-the-map}
+#### 为地图指定所使用的查询 {#specify-the-query-used-for-the-map}
 
-一个 deck.gl Scatterplot 需要经度和纬度，并且可以在查询中应用一个或多个过滤条件。 在本示例中应用了两个过滤条件：一个用于具有 UMTS 无线制式的基站，另一个用于分配给荷兰的移动国家码（Mobile Country Code）。
+deck.gl 的散点图（Scatterplot）需要经度和纬度字段，并且可以在查询中应用一个或多个过滤条件。本示例中应用了两个过滤条件：一个用于带有 UMTS 无线电的基站，一个用于分配给荷兰的移动国家码（Mobile Country Code, MCC）。
 
 字段 `lon` 和 `lat` 包含经度和纬度：
 
 <Image img={specify_long_and_lat} size="md" alt="指定经度和纬度字段"/>
 
-添加一个过滤条件 `mcc` = `204`（或替换为任意其他 `mcc` 值）：
+添加一个过滤条件，使 `mcc` = `204`（或替换为任意其他 `mcc` 值）：
 
-<Image img={superset_mcc_2024} size="md" alt="按 MCC 204 过滤"/>
+<Image img={superset_mcc_2024} size="md" alt="按 MCC 204 进行过滤"/>
 
-添加一个过滤条件 `radio` = `'UMTS'`（或替换为任意其他 `radio` 值，你可以在 `DESCRIBE TABLE cell_towers` 的输出中查看可选值）：
+添加一个过滤条件，使 `radio` = `'UMTS'`（或替换为任意其他 `radio` 值，你可以在 `DESCRIBE TABLE cell_towers` 的输出中查看可选值）：
 
-<Image img={superset_radio_umts} size="md" alt="按 radio 等于 UMTS 过滤"/>
+<Image img={superset_radio_umts} size="md" alt="按 radio 等于 UMTS 进行过滤"/>
 
-下面是该图表的完整配置，用于过滤 `radio = 'UMTS'` 且 `mcc = 204` 的数据：
+以下是图表的完整配置，用于过滤出 `radio = 'UMTS'` 且 `mcc = 204` 的数据：
 
-<Image img={superset_umts_netherlands} size="md" alt="MCC 204 中 UMTS 无线制式的图表"/>
+<Image img={superset_umts_netherlands} size="md" alt="用于 MCC 204 中 UMTS 无线电的图表"/>
 
-点击 **UPDATE CHART** 来渲染可视化结果。
+点击 **UPDATE CHART** 来渲染该可视化图表。
 
-### 将图表添加到 **dashboard** {#add-the-charts-to-a-dashboard}
+### 将图表添加到**仪表板** {#add-the-charts-to-a-dashboard}
 
-此截图展示了带有 LTE、UMTS 和 GSM 无线制式的基站位置。 这些图表的创建方式相同，然后被添加到一个 dashboard 中。
+此截图展示了包含 LTE、UMTS 和 GSM 无线电的基站位置。所有图表均以相同方式创建，然后添加到同一个仪表板中。
 
-
-
-<Image img={superset_cell_tower_dashboard} size="md" alt="mcc 204 中按无线电类型划分的基站仪表盘"/>
+<Image img={superset_cell_tower_dashboard} size="md" alt="按无线电类型展示 mcc 204 区域内基站的仪表板"/>
 
 :::tip
-这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询。
+这些数据也可以在 [Playground](https://sql.clickhouse.com) 中通过交互式查询进行访问。
 
-这个[示例](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM)会为您预先填充用户名甚至查询语句。
+此[示例](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM)会为你预填用户名，甚至查询语句。
 
-虽然您不能在 Playground 中创建表，但可以运行所有查询，甚至可以配合 Superset 使用（只需调整主机名和端口号）。
+尽管你不能在 Playground 中创建表，但你可以运行所有查询，甚至可以使用 Superset（只需调整主机名和端口号）。
 :::

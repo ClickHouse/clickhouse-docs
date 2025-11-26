@@ -52,8 +52,5 @@
       "jp": {
         "code": "ja"
       }
-    },
-    "options": {
-      "experimentalClearLocaleDirs": true
     }
   }

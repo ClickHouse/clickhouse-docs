@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONColumns 格式文档'
+description: 'JSONColumns 格式说明'
 input_format: true
 keywords: ['JSONColumns']
 output_format: true
@@ -13,27 +13,23 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 :::tip
-JSONColumns* 格式的输出首先给出 ClickHouse 字段名，然后给出该字段在表中每一行的内容；从视觉上看，相当于将数据整体向左旋转 90 度。
+JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该字段在表中每一行的内容；直观上看，相当于将数据向左旋转了 90 度。
 :::
 
-在这种格式中，所有数据都表示为单个 JSON 对象。
+在这种格式下，所有数据都表示为一个 JSON 对象。
 
 :::note
-`JSONColumns` 格式会将所有数据缓存在内存中，然后作为一个整体块输出，因此可能导致较高的内存占用。
+`JSONColumns` 格式会将所有数据缓冲在内存中，并一次性作为单个数据块输出，因此可能会导致较高的内存消耗。
 :::
 
-
-
-## 示例用法
+## 使用示例 {#example-usage}
 
 ### 插入数据
 
-使用名为 `football.json` 的 JSON 文件，内容如下：
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {
@@ -52,9 +48,10 @@ JSONColumns* 格式的输出首先给出 ClickHouse 字段名，然后给出该�
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
+
 ### 读取数据
 
-使用 `JSONColumns` 格式读取数据：
+使用 `JSONColumns` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -63,7 +60,6 @@ FORMAT JSONColumns
 ```
 
 输出将为 JSON 格式：
-
 
 ```json
 {
@@ -79,5 +75,5 @@ FORMAT JSONColumns
 
 ## 格式设置 {#format-settings}
 
-在导入过程中，如果将设置项 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`，则会跳过名称未知的列。
-在数据块中不存在的列将被填充为默认值（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）。
+在导入过程中，如果将 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
+在数据块中不存在的列将用默认值填充（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）。

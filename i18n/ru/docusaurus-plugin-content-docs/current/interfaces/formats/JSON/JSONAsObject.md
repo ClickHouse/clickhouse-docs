@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация для формата JSONAsObject'
+description: 'Документация о формате JSONAsObject'
 input_format: true
 keywords: ['JSONAsObject']
 output_format: false
@@ -9,17 +9,13 @@ title: 'JSONAsObject'
 doc_type: 'reference'
 ---
 
-
-
 ## Описание {#description}
 
-В этом формате один JSON-объект интерпретируется как одно значение типа [JSON](/sql-reference/data-types/newjson.md). Если на вход поступает несколько JSON-объектов (через запятую), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, они интерпретируются как массив значений JSON.
+В этом формате один JSON-объект интерпретируется как одно значение типа [JSON](/sql-reference/data-types/newjson.md). Если на входе — несколько JSON-объектов (через запятую), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, они интерпретируются как массив значений JSON.
 
 Этот формат может быть разобран только для таблицы с одним полем типа [JSON](/sql-reference/data-types/newjson.md). Остальные столбцы должны быть заданы как [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Простой пример
 
@@ -35,6 +31,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
+
 ### Массив объектов JSON
 
 ```sql title="Query"
@@ -48,6 +45,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
+
 ### Столбцы со значениями по умолчанию
 
 ```sql title="Query"
@@ -60,9 +58,9 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 
 ```response title="Response"
 {"time":"2024-09-16 12:18:10","json":{}}
-{"time":"2024-09-16 12:18:13","json":{"любая json-структура":"1"}}
+{"time":"2024-09-16 12:18:13","json":{"any json stucture":"1"}}
 {"time":"2024-09-16 12:18:08","json":{"foo":{"bar":{"x":"y"},"baz":"1"}}}
 ```
 
 
-## Параметры форматирования {#format-settings}
+## Параметры формата {#format-settings}

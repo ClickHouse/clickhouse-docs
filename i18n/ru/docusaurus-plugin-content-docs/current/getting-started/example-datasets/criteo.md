@@ -1,9 +1,9 @@
 ---
-description: 'Терабайт логов кликов Criteo'
-sidebar_label: 'Логи кликов Criteo, 1 ТБ'
+description: 'Терабайт логов кликов от Criteo'
+sidebar_label: '1 ТБ логов кликов Criteo'
 slug: /getting-started/example-datasets/criteo
-keywords: ['логи кликов Criteo', 'рекламные данные', 'данные кликов по объявлениям', 'набор данных в терабайт', 'начало работы']
-title: 'Терабайт логов кликов Criteo'
+keywords: ['Criteo click logs', 'advertising data', 'click-through data', 'terabyte dataset', 'getting started']
+title: 'Терабайт логов кликов от Criteo'
 doc_type: 'guide'
 ---
 
@@ -57,13 +57,13 @@ CREATE TABLE criteo_log (
 ) ENGINE = Log;
 ```
 
-Добавьте данные:
+Вставьте данные:
 
 ```bash
 $ for i in {00..23}; do echo $i; zcat datasets/criteo/day_${i#0}.gz | sed -r 's/^/2000-01-'${i/00/24}'\t/' | clickhouse-client --host=example-perftest01j --query="INSERT INTO criteo_log FORMAT TabSeparated"; done
 ```
 
-Создайте таблицу для преобразованных данных:
+Создайте таблицу для конвертированных данных:
 
 ```sql
 CREATE TABLE criteo
@@ -114,7 +114,7 @@ PARTITION BY toYYYYMM(date)
 ORDER BY (date, icat1)
 ```
 
-Преобразуйте данные из необработанного лога и поместите их во вторую таблицу:
+Преобразуйте данные из сырого лога и поместите их во вторую таблицу:
 
 
 ```sql

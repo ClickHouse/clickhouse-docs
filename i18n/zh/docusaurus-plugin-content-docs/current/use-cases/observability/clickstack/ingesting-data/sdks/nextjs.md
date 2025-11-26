@@ -3,34 +3,34 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'ClickStack 的 Next.js SDK - ClickHouse 可观测性技术栈'
+description: '适用于 ClickStack 的 Next.js SDK - ClickHouse 可观测性栈'
 title: 'Next.js'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', '日志', '集成', '应用监控']
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack 可以从 Next 13.2+ 中的
-[Next.js 无服务器函数](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
-摄取原生 OpenTelemetry Trace 数据。
+ClickStack 可以从 Next.js 13.2 及以上版本的
+[Next.js serverless functions](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+中摄取原生 OpenTelemetry 跟踪（traces）。
 
-本指南集成：
+本指南将集成：
 
 * **控制台日志（Console Logs）**
-* **Trace（Traces）**
+* **跟踪（Traces）**
 
 :::note
-如果你需要会话回放或浏览器端监控，请改为安装 [Browser integration](/use-cases/observability/clickstack/sdks/browser)。
+如果你在寻找会话回放或浏览器端监控，请改为安装 [Browser integration](/use-cases/observability/clickstack/sdks/browser)。
 :::
 
 
-## 安装
+## 安装 {#installing}
 
-### 启用 instrumentation hook（适用于 v15 及以下版本，必需）
+### 启用 instrumentation hook（v15 及以下版本必需）
 
-首先，你需要在 `next.config.js` 中设置 `experimental.instrumentationHook = true;` 来启用 Next.js 的 instrumentation hook。
+首先，您需要在 `next.config.js` 中将 `experimental.instrumentationHook` 设置为 `true`，以启用 Next.js instrumentation hook。
 
 **示例：**
 
@@ -39,7 +39,7 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // 忽略 OTel 包警告 
+  // 忽略 OTel 包的警告 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -55,25 +55,29 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### 安装 ClickHouse OpenTelemetry SDK
+
+### 安装 ClickHouse OpenTelemetry SDK {#install-sdk}
 
 <Tabs groupId="npm">
-  <TabItem value="npm" label="NPM" default>
-    ```shell
-    npm install @hyperdx/node-opentelemetry 
-    ```
-  </TabItem>
+<TabItem value="npm" label="NPM" default>
 
-  <TabItem value="yarn" label="Yarn" default>
-    ```shell
-    yarn add @hyperdx/node-opentelemetry 
-    ```
-  </TabItem>
+```shell 
+npm install @hyperdx/node-opentelemetry 
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```shell  
+yarn add @hyperdx/node-opentelemetry 
+```
+
+</TabItem>
 </Tabs>
 
-### 创建埋点文件
+### 创建 Instrumentation 文件
 
-在 Next.js 项目的根目录下创建一个名为 `instrumentation.ts`（或 `.js`）的文件，并填入以下内容：
+在 Next.js 项目的根目录下创建一个名为 `instrumentation.ts`（或 `.js`）的文件，并写入以下内容：
 
 ```javascript
 export async function register() {
@@ -88,11 +92,13 @@ export async function register() {
 }
 ```
 
-这将使 Next.js 能够为任何 Serverless 函数调用导入 OpenTelemetry 插桩。
+这将使 Next.js 能在调用任何 Serverless 函数时导入 OpenTelemetry 插桩。
+
 
 ### 配置环境变量
 
-如果您直接将 traces 发送到 ClickStack，则需要使用以下环境变量启动 Next.js 服务器，以将 spans 指向 OTel collector：
+如果你要将 trace 数据直接发送到 ClickStack，则需要在启动 Next.js
+服务器时设置以下环境变量，以便将 span 转发到 OTel collector：
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
@@ -101,4 +107,4 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
 
-如果你在 Vercel 上进行部署，请确保为该部署配置好上述所有环境变量。
+如果你在 Vercel 上进行部署，请确保为此次部署正确配置以上所有环境变量。

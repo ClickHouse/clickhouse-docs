@@ -4,8 +4,7 @@ sidebar_label: 'AWS Glue 目录'
 title: 'AWS Glue 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将向你演示如何使用 ClickHouse 和 AWS Glue Data Catalog
- 来查询存储在 S3 存储桶中的数据。'
+description: '在本指南中，我们将逐步演示如何使用 ClickHouse 和 AWS Glue 数据目录查询 S3 存储桶中的数据。'
 keywords: ['Glue', '数据湖']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,7 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个 catalog（如 Unity、Glue、Polaris 等）集成。在本指南中，我们将演示如何使用 ClickHouse 结合 Glue Data Catalog 查询存储在 S3 存储桶中的数据。
+ClickHouse 支持与多个目录集成（Unity、Glue、Polaris 等）。在本指南中，我们将向您展示如何使用 ClickHouse 和 Glue Data Catalog 查询 S3 存储桶中的数据。
 
 :::note
 Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
@@ -24,17 +23,15 @@ Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
 
 ## 在 AWS 中配置 Glue {#configuring}
 
-要连接到 Glue 目录，您需要确定目录所在的区域，并提供访问密钥 ID 和秘密访问密钥。 
+要连接到 Glue 数据目录，您需要确定目录所在的区域，并提供访问密钥和秘密访问密钥。 
 
 :::note
-目前，Glue 目录仅支持通过访问密钥 ID 和秘密访问密钥进行访问，但我们将在未来支持更多身份验证方式。
+当前 Glue 数据目录仅支持使用访问密钥和秘密访问密钥进行访问，但我们将在未来支持更多的身份验证方式。
 :::
-
-
 
 ## 在 Glue 数据目录与 ClickHouse 之间创建连接
 
-在完成 Unity Catalog 配置并设置好身份验证后，即可在 ClickHouse 与 Unity Catalog 之间建立连接。
+在完成 Unity Catalog 的配置并设置好身份验证后，即可在 ClickHouse 与 Unity Catalog 之间建立连接。
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -42,14 +39,14 @@ ENGINE = DataLakeCatalog
 SETTINGS 
     catalog_type = 'glue', 
     region = 'us-west-2', 
-    aws_access_key_id = '<访问密钥>', 
-    aws_secret_access_key = '<私密访问密钥>'
+    aws_access_key_id = '<access-key>', 
+    aws_secret_access_key = '<secret-key>'
 ```
 
 
 ## 使用 ClickHouse 查询 Glue 数据目录
 
-现在连接已经建立，可以开始查询 Glue：
+现在连接已经建立，可以开始查询 Glue 了：
 
 ```sql title="Query"
 USE glue;
@@ -65,7 +62,7 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-你可以在上方看到，部分表并不是 Iceberg 表，例如
+你可以在上面看到，有些表并不是 Iceberg 表，例如
 `iceberg-benchmark.hitsparquet`。这些表无法被查询，因为目前只支持 Iceberg。
 
 要查询一张表：
@@ -75,7 +72,7 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-需要使用反引号，因为 ClickHouse 不支持同时使用多个命名空间。
+由于 ClickHouse 仅支持单一命名空间，因此需要使用反引号。
 :::
 
 要查看该表的 DDL，请运行以下查询：
@@ -199,15 +196,9 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   └─────────────────────────────────────────────────────────┘
 ```
 
-
-
-
-
 ## 将数据湖中的数据加载到 ClickHouse {#loading-data-into-clickhouse}
 
-如果需要将 Databricks 中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
-
-
+如果您需要从 Databricks 向 ClickHouse 加载数据，请首先创建一个本地 ClickHouse 表：
 
 ```sql title="Query"
 CREATE TABLE hits
@@ -321,7 +312,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-然后从 Iceberg 表中加载数据：
+接下来，从 Iceberg 表加载数据：
 
 ```sql title="Query"
 INSERT INTO default.hits 

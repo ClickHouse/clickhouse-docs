@@ -1,29 +1,25 @@
 ---
 alias: ['JSONLines', 'NDJSON']
-description: 'JSONEachRow 形式のドキュメント'
+description: 'JSONEachRow 形式に関するドキュメント'
 keywords: ['JSONEachRow']
 slug: /interfaces/formats/JSONEachRow
 title: 'JSONEachRow'
 doc_type: 'reference'
 ---
 
-| Input | Output | 別名                  |
-|-------|--------|-----------------------|
-| ✔     | ✔      | `JSONLines`, `NDJSON` |
-
-
+| 入力 | 出力 | エイリアス             |
+|------|------|-------------------------|
+| ✔    | ✔    | `JSONLines`, `NDJSON`   |
 
 ## 説明 {#description}
 
-このフォーマットでは、ClickHouse は各行を個別の改行区切り JSON オブジェクトとして出力します。
+この形式では、ClickHouse は各行を改行区切りの個別の JSON オブジェクトとして出力します。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-次のデータを含む JSON ファイル `football.json` を用意します。
+次のデータを含む JSON ファイル `football.json` を用意します：
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -45,15 +41,16 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-データを挿入する：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-### データの読み込み
 
-`JSONEachRow` 形式を使用してデータを読み込みます：
+### データの読み取り
+
+`JSONEachRow` 形式を使ってデータを読み込みます。
 
 ```sql
 SELECT *
@@ -61,8 +58,7 @@ FROM football
 FORMAT JSONEachRow
 ```
 
-出力は JSON 形式です:
-
+出力は JSON 形式です：
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -84,7 +80,7 @@ FORMAT JSONEachRow
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定を 1 に設定すると、名前が不明なデータ列のインポートはスキップされます。
+[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が 1 に設定されている場合、不明な名前のデータ列のインポートはスキップされます。
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

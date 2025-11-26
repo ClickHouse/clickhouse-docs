@@ -9,23 +9,19 @@ title: 'JSONCompactStringsEachRow'
 doc_type: 'reference'
 ---
 
-| Ввод | Вывод | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
-
-
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
-Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) только тем, что поля данных выводятся в виде строк, а не в виде типизированных значений JSON.
+Отличается от [`JSONCompactEachRow`](./JSONCompactEachRow.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
-Используйте JSON-файл со следующими данными с именем `football.json`:
+Используйте JSON‑файл со следующими данными под названием `football.json`:
 
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
@@ -47,15 +43,16 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-Введите данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
+
 ### Чтение данных
 
-Прочитайте данные, используя формат `JSONCompactStringsEachRow`:
+Считывайте данные в формате `JSONCompactStringsEachRow`:
 
 ```sql
 SELECT *
@@ -65,7 +62,6 @@ FORMAT JSONCompactStringsEachRow
 
 Результат будет в формате JSON:
 
-
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
 ["2022-04-30", "2021", "Swindon Town", "Barrow", "2", "1"]
@@ -87,4 +83,4 @@ FORMAT JSONCompactStringsEachRow
 ```
 
 
-## Параметры форматирования {#format-settings}
+## Настройки формата {#format-settings}

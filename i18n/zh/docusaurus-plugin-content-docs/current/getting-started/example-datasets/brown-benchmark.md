@@ -1,13 +1,13 @@
 ---
-description: '用于机器生成日志数据的新分析基准测试'
-sidebar_label: '布朗大学基准测试'
+description: '一种面向机器生成日志数据的新分析基准'
+sidebar_label: 'Brown University 基准测试'
 slug: /getting-started/example-datasets/brown-benchmark
-title: '布朗大学基准测试'
-keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'getting started']
+title: 'Brown University 基准测试'
+keywords: ['Brown University Benchmark', 'MgBench', '日志数据基准测试', '机器生成数据', '入门']
 doc_type: 'guide'
 ---
 
-`MgBench` 是一个针对机器生成日志数据的新分析基准测试，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
+`MgBench` 是一个面向机器生成日志数据的新分析基准，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
 
 下载数据：
 
@@ -21,7 +21,7 @@ wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-创建数据库和表：
+创建数据库和数据表：
 
 ```sql
 CREATE DATABASE mgbench;
@@ -174,7 +174,7 @@ ORDER BY dt,
 ```
 
 ```sql
--- Q1.4: 在一个月内,每台服务器被磁盘 I/O 阻塞的次数是多少?
+-- Q1.4: 在 1 个月内,每台服务器被磁盘 I/O 阻塞的次数是多少?
 
 SELECT machine_name,
        COUNT(*) AS spikes
@@ -209,44 +209,42 @@ ORDER BY machine_name,
          dt;
 ```
 
+
 ```sql
 -- Q1.6: 所有文件服务器的每小时网络流量总和是多少?
-```
-
 
 SELECT dt,
-hr,
-SUM(net&#95;in) AS net&#95;in&#95;sum,
-SUM(net&#95;out) AS net&#95;out&#95;sum,
-SUM(net&#95;in) + SUM(net&#95;out) AS both&#95;sum
+       hr,
+       SUM(net_in) AS net_in_sum,
+       SUM(net_out) AS net_out_sum,
+       SUM(net_in) + SUM(net_out) AS both_sum
 FROM (
-SELECT CAST(log&#95;time AS DATE) AS dt,
-EXTRACT(HOUR FROM log&#95;time) AS hr,
-COALESCE(bytes&#95;in, 0.0) / 1000000000.0 AS net&#95;in,
-COALESCE(bytes&#95;out, 0.0) / 1000000000.0 AS net&#95;out
-FROM logs1
-WHERE machine&#95;name IN (&#39;allsorts&#39;,&#39;andes&#39;,&#39;bigred&#39;,&#39;blackjack&#39;,&#39;bonbon&#39;,
-&#39;cadbury&#39;,&#39;chiclets&#39;,&#39;cotton&#39;,&#39;crows&#39;,&#39;dove&#39;,&#39;fireball&#39;,&#39;hearts&#39;,&#39;huey&#39;,
-&#39;lindt&#39;,&#39;milkduds&#39;,&#39;milkyway&#39;,&#39;mnm&#39;,&#39;necco&#39;,&#39;nerds&#39;,&#39;orbit&#39;,&#39;peeps&#39;,
-&#39;poprocks&#39;,&#39;razzles&#39;,&#39;runts&#39;,&#39;smarties&#39;,&#39;smuggler&#39;,&#39;spree&#39;,&#39;stride&#39;,
-&#39;tootsie&#39;,&#39;trident&#39;,&#39;wrigley&#39;,&#39;york&#39;)
+  SELECT CAST(log_time AS DATE) AS dt,
+         EXTRACT(HOUR FROM log_time) AS hr,
+         COALESCE(bytes_in, 0.0) / 1000000000.0 AS net_in,
+         COALESCE(bytes_out, 0.0) / 1000000000.0 AS net_out
+  FROM logs1
+  WHERE machine_name IN ('allsorts','andes','bigred','blackjack','bonbon',
+      'cadbury','chiclets','cotton','crows','dove','fireball','hearts','huey',
+      'lindt','milkduds','milkyway','mnm','necco','nerds','orbit','peeps',
+      'poprocks','razzles','runts','smarties','smuggler','spree','stride',
+      'tootsie','trident','wrigley','york')
 ) AS r
 GROUP BY dt,
-hr
-ORDER BY both&#95;sum DESC
+         hr
+ORDER BY both_sum DESC
 LIMIT 10;
-
-````
+```
 
 ```sql
--- Q2.1: 过去两周内哪些请求导致了服务器错误？
+-- Q2.1: 过去两周内哪些请求导致了服务器错误?
 
 SELECT *
 FROM logs2
 WHERE status_code >= 500
   AND log_time >= TIMESTAMP '2012-12-18 00:00:00'
 ORDER BY log_time;
-````
+```
 
 ```sql
 -- Q2.2: 在特定的两周期间内，用户密码文件是否泄露？
@@ -286,7 +284,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: 在过去 3 个月内，哪些客户端发出了过多的请求？
+-- Q2.4: 在过去 3 个月内,哪些客户端发出了过多请求?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -312,7 +310,7 @@ ORDER BY dt;
 ```
 
 ```sql
--- Q2.6: 平均和最大数据传输速率（Gbps）是多少？
+-- Q2.6: 平均和最大数据传输速率是多少（Gbps）？
 
 SELECT AVG(transfer) / 125000000.0 AS transfer_avg,
        MAX(transfer) / 125000000.0 AS transfer_max
@@ -348,15 +346,14 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-
-下面的查询 3.5 使用了 UNION。该设置用于指定合并 SELECT 查询结果的方式。只有在使用 UNION 且未显式指定 UNION ALL 或 UNION DISTINCT 时，才会应用此设置。
+下面的查询 3.5 使用了 UNION。设置用于合并 SELECT 查询结果的模式。该设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时生效。
 
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
 
 ```sql
--- Q3.5: 建筑物内哪些位置在冬季和夏季出现较大温度波动?
+-- Q3.5: 建筑物内哪些位置在冬夏季节出现较大温度波动?
 
 WITH temperature AS (
   SELECT dt,
@@ -395,7 +392,7 @@ WITH temperature AS (
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '冬季'
+       'WINTER' -- 冬季
 FROM temperature
 WHERE dt >= DATE '2018-12-01'
   AND dt < DATE '2019-03-01'
@@ -403,7 +400,7 @@ UNION
 SELECT DISTINCT device_name,
        device_type,
        device_floor,
-       '夏季'
+       'SUMMER' -- 夏季
 FROM temperature
 WHERE dt >= DATE '2019-06-01'
   AND dt < DATE '2019-09-01';
@@ -454,4 +451,4 @@ ORDER BY yr,
          mo;
 ```
 
-这些数据也可以在 [Playground](https://sql.clickhouse.com) 中进行交互式查询（参见[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)）。
+此外，这些数据也可以在 [Playground](https://sql.clickhouse.com) 中通过交互式查询进行访问，参见 [示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

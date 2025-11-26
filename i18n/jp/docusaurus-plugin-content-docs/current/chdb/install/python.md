@@ -1,20 +1,16 @@
 ---
-title: 'Python 用 chDB のインストール'
+title: 'Python 向け chDB のインストール'
 sidebar_label: 'Python'
 slug: /chdb/install/python
-description: 'Python 用 chDB のインストール方法'
+description: 'Python 向け chDB のインストール方法'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
 
-
-
 ## 要件 {#requirements}
 
-- Python 3.8+ 
-- サポートされるプラットフォーム: macOS および Linux（x86_64 および ARM64）
-
-
+- Python 3.8 以降
+- サポート対象のプラットフォーム: macOS および Linux（x86_64 と ARM64）
 
 ## インストール
 
@@ -25,113 +21,82 @@ pip install chdb
 
 ## 使用方法 {#usage} 
 
-### コマンドラインインターフェイス {#command-line-interface}
+### コマンドラインインターフェイス
 
-コマンドラインから直接 SQL クエリを実行します：
-
-
+コマンドラインから直接 SQL クエリを実行できます：
 
 ```bash
 # 基本的なクエリ
 python3 -m chdb "SELECT 1, 'abc'" Pretty
+
+# フォーマットを指定したクエリ
+python3 -m chdb "SELECT version()" JSON
 ```
 
 
-# フォーマット指定でクエリを実行する
-
-python3 -m chdb &quot;SELECT version()&quot; JSON
-
-````
-
-### 基本的なPythonの使用方法 {#basic-python-usage}
+### 基本的な Python の使い方
 
 ```python
 import chdb
-````
 
-
-# 簡単なクエリ
+# シンプルなクエリ
 result = chdb.query("SELECT 1 as id, 'Hello World' as message", "CSV")
 print(result)
 
+# クエリ統計を取得
+print(f"読み取り行数: {result.rows_read()}")
+print(f"読み取りバイト数: {result.bytes_read()}")
+print(f"実行時間: {result.elapsed()} 秒")
+```
 
 
-# クエリ統計情報の取得
+### 接続ベースの API（推奨）
 
-print(f&quot;Rows read: {result.rows_read()}&quot;)
-print(f&quot;Bytes read: {result.bytes_read()}&quot;)
-print(f&quot;Execution time: {result.elapsed()} seconds&quot;)
-
-````
-
-### 接続ベースAPI（推奨） {#connection-based-api}
-
-リソース管理とパフォーマンスを向上させるため：
+リソース管理とパフォーマンスを改善するには、次の方法を使用します。
 
 ```python
 import chdb
-````
 
-
-# 接続を作成（デフォルトではインメモリ）
+# 接続を作成（デフォルトはインメモリ）
 conn = chdb.connect(":memory:")
-# またはファイルベース接続を使用: conn = chdb.connect("mydata.db")
-
-
+# またはファイルベースを使用: conn = chdb.connect("mydata.db")
 
 # クエリ実行用のカーソルを作成
 cur = conn.cursor()
 
-
-
-# クエリを実行する
+# クエリを実行
 cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3")
 
-
-
-# 結果をさまざまな方法で取得する
+# 様々な方法で結果を取得
 print(cur.fetchone())    # 単一行: (0, '0')
 print(cur.fetchmany(2))  # 複数行: ((1, '1'), (2, '2'))
-
-
 
 # メタデータを取得
 print(cur.column_names())  # ['number', 'str']
 print(cur.column_types())  # ['UInt64', 'String']
 
-
-
-# カーソルをイテレータとして使用する
+# カーソルをイテレータとして使用
 for row in cur:
     print(row)
 
-
-
-# 必ずリソースを閉じる
-
+# 必ずリソースをクローズ
 cur.close()
 conn.close()
-
-```
 ```
 
 
-## データ入力方法 {#data-input}
+## データの入力方法 {#data-input}
 
-### ファイルベースのデータソース {#file-based-data-sources}
+### ファイルベースのデータソース
 
-chDB は、ファイルを直接クエリするための 70 以上のデータ形式をサポートしています。
-
-
+chDB は、ファイルを直接クエリできるよう、70 種類以上のデータ形式をサポートしています。
 
 ```python
 import chdb
 # データを準備する
 # ...
-```
 
-
-# Parquet ファイルをクエリ
+# Parquetファイルにクエリを実行
 result = chdb.query("""
     SELECT customer_id, sum(amount) as total
     FROM file('sales.parquet', Parquet) 
@@ -140,111 +105,88 @@ result = chdb.query("""
     LIMIT 10
 """, 'JSONEachRow')
 
-
-
-# ヘッダー行付き CSV をクエリする
+# ヘッダー付きCSVにクエリを実行
 result = chdb.query("""
     SELECT * FROM file('data.csv', CSVWithNames) 
     WHERE column1 > 100
 """, 'DataFrame')
 
-
-
-# 複数のファイルフォーマット
-
-result = chdb.query(&quot;&quot;&quot;
-SELECT * FROM file(&#39;logs*.jsonl&#39;, JSONEachRow)
-WHERE timestamp &gt; &#39;2024-01-01&#39;
-&quot;&quot;&quot;, &#39;Pretty&#39;)
-
+# 複数のファイル形式を扱う
+result = chdb.query("""
+    SELECT * FROM file('logs*.jsonl', JSONEachRow)
+    WHERE timestamp > '2024-01-01'
+""", 'Pretty')
 ```
 
-### 出力形式の例 {#output-format-examples}
-```
 
+### 出力フォーマットの例
 
 ```python
 # 分析用DataFrame
 df = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'DataFrame')
 print(type(df))  # <class 'pandas.core.frame.DataFrame'>
-```
 
+# 相互運用性のためのArrowテーブル  
+arrow_table = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'ArrowTable')
+print(type(arrow_table))  # <class 'pyarrow.lib.Table'>
 
-# 相互運用性のためのArrow Table
-
-arrow_table = chdb.query('SELECT \* FROM system.numbers LIMIT 5', 'ArrowTable')
-print(type(arrow_table)) # <class 'pyarrow.lib.Table'>
-
-
-# API 向けの JSON
+# API用JSON
 json_result = chdb.query('SELECT version()', 'JSON')
 print(json_result)
 
+# デバッグ用Pretty形式
+pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
+print(pretty_result)
+```
 
 
-# デバッグ用の Pretty 表示形式
+### DataFrame の操作 {#dataframe-operations}
 
-pretty&#95;result = chdb.query(&#39;SELECT * FROM system.numbers LIMIT 3&#39;, &#39;Pretty&#39;)
-print(pretty&#95;result)
-
-````
-
-### DataFrame操作 {#dataframe-operations}
-
-#### レガシーDataFrame API {#legacy-dataframe-api}
+#### 従来の DataFrame API
 
 ```python
 import chdb.dataframe as cdf
 import pandas as pd
-````
-
 
 # 複数のDataFrameを結合する
-
 df1 = pd.DataFrame({'a': [1, 2, 3], 'b': ["one", "two", "three"]})
 df2 = pd.DataFrame({'c': [1, 2, 3], 'd': ["①", "②", "③"]})
 
 result_df = cdf.query(
-sql="SELECT \* FROM **tbl1** t1 JOIN **tbl2** t2 ON t1.a = t2.c",
-tbl1=df1,
-tbl2=df2
+    sql="SELECT * FROM __tbl1__ t1 JOIN __tbl2__ t2 ON t1.a = t2.c",
+    tbl1=df1, 
+    tbl2=df2
 )
 print(result_df)
 
-
-# 結果の DataFrame にクエリを実行する
-
-summary = result&#95;df.query(&#39;SELECT b, sum(a) FROM **table** GROUP BY b&#39;)
+# 結果のDataFrameに対してクエリを実行する
+summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
+```
 
-````
 
-#### Pythonテーブルエンジン（推奨） {#python-table-engine-recommended}
+#### Python テーブルエンジン（推奨）
 
 ```python
 import chdb
 import pandas as pd
 import pyarrow as pa
-````
 
-
-# Pandas DataFrameに直接クエリを実行する
-
+# Pandas DataFrameを直接クエリする
 df = pd.DataFrame({
-"customer_id": [1, 2, 3, 1, 2],
-"product": ["A", "B", "A", "C", "A"],
-"amount": [100, 200, 150, 300, 250],
-"metadata": [
-{'category': 'electronics', 'priority': 'high'},
-{'category': 'books', 'priority': 'low'},
-{'category': 'electronics', 'priority': 'medium'},
-{'category': 'clothing', 'priority': 'high'},
-{'category': 'books', 'priority': 'low'}
-]
+    "customer_id": [1, 2, 3, 1, 2],
+    "product": ["A", "B", "A", "C", "A"],
+    "amount": [100, 200, 150, 300, 250],
+    "metadata": [
+        {'category': 'electronics', 'priority': 'high'},
+        {'category': 'books', 'priority': 'low'},
+        {'category': 'electronics', 'priority': 'medium'},
+        {'category': 'clothing', 'priority': 'high'},
+        {'category': 'books', 'priority': 'low'}
+    ]
 })
 
-
-# JSON サポート付きの DataFrame 直接クエリ
+# JSONサポートによるDataFrameの直接クエリ
 result = chdb.query("""
     SELECT 
         customer_id,
@@ -256,45 +198,35 @@ result = chdb.query("""
     ORDER BY total_spent DESC
 """).show()
 
-
-
-# Arrow テーブルへのクエリ
-
+# Arrow Tableをクエリする
 arrow_table = pa.table({
-"id": [1, 2, 3, 4],
-"name": ["Alice", "Bob", "Charlie", "David"],
-"score": [98, 89, 86, 95]
+    "id": [1, 2, 3, 4],
+    "name": ["Alice", "Bob", "Charlie", "David"],
+    "score": [98, 89, 86, 95]
 })
 
 chdb.query("""
-SELECT name, score
-FROM Python(arrow_table)
-ORDER BY score DESC
+    SELECT name, score
+    FROM Python(arrow_table)
+    ORDER BY score DESC
 """).show()
+```
 
-````
 
-### ステートフルセッション {#stateful-sessions}
+### ステートフル セッション
 
-セッションは複数の操作間でクエリの状態を維持し、複雑なワークフローを実現します：
+セッションは複数の操作にわたってクエリの状態を保持し、複雑なワークフローを可能にします。
 
 ```python
 from chdb import session
 
-````
-
-
-# 一時的なセッション（自動クリーンアップ）
+# 一時セッション(自動クリーンアップ)
 sess = session.Session()
 
-
-
-# または特定のパスを指定した永続的なセッション
+# または特定のパスを指定した永続セッション
 # sess = session.Session("/path/to/data")
 
-
-
-# データベースとテーブルを作成する
+# データベースとテーブルを作成
 sess.query("CREATE DATABASE IF NOT EXISTS analytics ENGINE = Atomic")
 sess.query("USE analytics")
 
@@ -308,9 +240,7 @@ sess.query("""
     ORDER BY (sale_date, id)
 """)
 
-
-
-# データの挿入
+# データを挿入
 sess.query("""
     INSERT INTO sales VALUES 
         (1, 'Laptop', 999.99, '2024-01-15'),
@@ -318,9 +248,7 @@ sess.query("""
         (3, 'Keyboard', 79.99, '2024-01-17')
 """)
 
-
-
-# マテリアライズドビューの作成
+# マテリアライズドビューを作成
 sess.query("""
     CREATE MATERIALIZED VIEW daily_sales AS
     SELECT 
@@ -331,137 +259,106 @@ sess.query("""
     GROUP BY sale_date
 """)
 
-
-
-# ビューをクエリする
+# ビューをクエリ
 result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
 print(result)
 
-
-
-# セッションはリソースを自動管理する
-
-sess.close()  # 省略可 - オブジェクトの破棄時に自動的にクローズされる
-
+# セッションはリソースを自動管理
+sess.close()  # オプション - オブジェクト削除時に自動クローズ
 ```
 
-### 高度なセッション機能 {#advanced-session-features}
-```
 
+### 高度なセッション機能
 
 ```python
 # カスタム設定を使用したセッション
 sess = session.Session(
     path="/tmp/analytics_db",
 )
+
+# クエリパフォーマンスの最適化
+result = sess.query("""
+    SELECT product, sum(amount) as total
+    FROM sales 
+    GROUP BY product
+    ORDER BY total DESC
+    SETTINGS max_threads = 4
+""", "JSON")
 ```
 
+こちらも参照してください: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)
 
-# クエリ性能の最適化
 
-result = sess.query(&quot;&quot;&quot;
-SELECT product, sum(amount) as total
-FROM sales
-GROUP BY product
-ORDER BY total DESC
-SETTINGS max&#95;threads = 4
-&quot;&quot;&quot;, &quot;JSON&quot;)
+### Python DB-API 2.0 インターフェイス
 
-````
-
-参照: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)
-
-### Python DB-API 2.0 インターフェース {#python-db-api-20}
-
-既存のPythonアプリケーションとの互換性を保つための標準データベースインターフェース:
+既存の Python アプリケーションとの互換性を確保するための標準的なデータベースインターフェイス。
 
 ```python
 import chdb.dbapi as dbapi
-````
 
+# ドライバー情報を確認
+print(f"chDBドライバーバージョン: {dbapi.get_client_info()}")
 
-# ドライバー情報を確認する
-print(f"chDB driver version: {dbapi.get_client_info()}")
-
-
-
-# 接続を確立する
+# 接続を作成
 conn = dbapi.connect()
 cursor = conn.cursor()
 
-
-
-# パラメータを指定してクエリを実行する
+# パラメータ付きクエリを実行
 cursor.execute("""
     SELECT number, number * ? as doubled 
     FROM system.numbers 
     LIMIT ?
 """, (2, 5))
 
-
-
-# メタデータの取得
-print("Column descriptions:", cursor.description)
-print("Row count:", cursor.rowcount)
-
-
+# メタデータを取得
+print("カラムの説明:", cursor.description)
+print("行数:", cursor.rowcount)
 
 # 結果を取得
-print("First row:", cursor.fetchone())
-print("Next 2 rows:", cursor.fetchmany(2))
+print("最初の行:", cursor.fetchone())
+print("次の2行:", cursor.fetchmany(2))
 
-
-
-# 残りの行を取得する
+# 残りの行を取得
 for row in cursor.fetchall():
-    print("Row:", row)
-
-
+    print("行:", row)
 
 # バッチ操作
-
-data = [(1, &#39;Alice&#39;), (2, &#39;Bob&#39;), (3, &#39;Charlie&#39;)]
-cursor.execute(&quot;&quot;&quot;
-CREATE TABLE temp&#95;users (
-id UInt64,
-name String
-) ENGINE = MergeTree()
-ORDER BY (id)
-&quot;&quot;&quot;)
+data = [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
+cursor.execute("""
+    CREATE TABLE temp_users (
+        id UInt64,
+        name String
+    ) ENGINE = MergeTree()
+    ORDER BY (id)
+""")
 cursor.executemany(
-&quot;INSERT INTO temp&#95;users (id, name) VALUES (?, ?)&quot;,
-data
+    "INSERT INTO temp_users (id, name) VALUES (?, ?)", 
+    data
 )
+```
 
-````
 
-### ユーザー定義関数（UDF） {#user-defined-functions}
+### ユーザー定義関数 (UDF) {#user-defined-functions}
 
-カスタムPython関数を使用してSQLを拡張します：
+カスタム Python 関数で SQL を拡張できます。
 
-#### 基本的なUDFの使用方法 {#basic-udf-usage}
+#### 基本的な UDF の使い方
 
 ```python
 from chdb.udf import chdb_udf
 from chdb import query
-````
 
-
-# 簡単な数値演算関数
+# シンプルな数値演算関数
 @chdb_udf()
 def add_numbers(a, b):
     return int(a) + int(b)
-
-
 
 # 文字列処理関数
 @chdb_udf()
 def reverse_string(text):
     return text[::-1]
 
-
-
-# JSON 処理用関数  
+# JSON処理関数  
 @chdb_udf()
 def extract_json_field(json_str, field):
     import json
@@ -471,75 +368,62 @@ def extract_json_field(json_str, field):
     except:
         return ''
 
-
-
 # クエリでUDFを使用する
-
 result = query("""
-SELECT
-add_numbers('10', '20') as sum_result,
-reverse_string('hello') as reversed,
-extract_json_field('{"name": "John", "age": 30}', 'name') as name
+    SELECT 
+        add_numbers('10', '20') as sum_result,
+        reverse_string('hello') as reversed,
+        extract_json_field('{"name": "John", "age": 30}', 'name') as name
 """)
 print(result)
-
 ```
 
-#### カスタム戻り値型を使用した高度なUDF {#advanced-udf-custom-return-types}
 
-```
-
+#### カスタムの戻り値型を持つ高度な UDF
 
 ```python
 # 戻り値の型を指定したUDF
 @chdb_udf(return_type="Float64")
 def calculate_bmi(height_str, weight_str):
-    height = float(height_str) / 100  # cmをmに変換
+    height = float(height_str) / 100  # cmをメートルに変換
     weight = float(weight_str)
     return weight / (height * height)
-```
-
 
 # データ検証用UDF
-
-@chdb*udf(return_type="UInt8")
+@chdb_udf(return_type="UInt8") 
 def is_valid_email(email):
-import re
-pattern = r'^[a-zA-Z0-9.*%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-return 1 if re.match(pattern, email) else 0
+    import re
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return 1 if re.match(pattern, email) else 0
 
-
-# 複雑なクエリでの利用
-
-result = query(&quot;&quot;&quot;
-SELECT
-name,
-calculate&#95;bmi(height, weight) as bmi,
-is&#95;valid&#95;email(email) as has&#95;valid&#95;email
-FROM (
-SELECT
-&#39;John&#39; as name, &#39;180&#39; as height, &#39;75&#39; as weight, &#39;[john@example.com](mailto:john@example.com)&#39; as email
-UNION ALL
-SELECT
-&#39;Jane&#39; as name, &#39;165&#39; as height, &#39;60&#39; as weight, &#39;invalid-email&#39; as email
-)
-&quot;&quot;&quot;, &quot;Pretty&quot;)
+# 複雑なクエリでの使用例
+result = query("""
+    SELECT 
+        name,
+        calculate_bmi(height, weight) as bmi,
+        is_valid_email(email) as has_valid_email
+    FROM (
+        SELECT 
+            'John' as name, '180' as height, '75' as weight, 'john@example.com' as email
+        UNION ALL
+        SELECT 
+            'Jane' as name, '165' as height, '60' as weight, 'invalid-email' as email
+    )
+""", "Pretty")
 print(result)
-
 ```
 
-#### UDFのベストプラクティス {#udf-best-practices}
 
-1. **ステートレス関数**: UDFは副作用のない純粋関数として実装してください
-2. **関数内でのインポート**: 必要なモジュールはすべてUDF内でインポートする必要があります
-3. **文字列の入出力**: すべてのUDFパラメータは文字列です（TabSeparated形式）
-4. **エラー処理**: 堅牢なUDFを実現するためにtry-catchブロックを含めてください
-5. **パフォーマンス**: UDFは各行に対して呼び出されるため、パフォーマンスの最適化が重要です
-```
+#### UDF のベストプラクティス
 
+1. **ステートレス関数**: UDF は副作用のない純粋関数であることが望ましいです
+2. **関数内でのインポート**: 必要なモジュールはすべて UDF 内でインポートする必要があります
+3. **文字列の入出力**: すべての UDF パラメータは文字列（TabSeparated 形式）です
+4. **エラー処理**: 堅牢な UDF にするために、try-catch ブロックを組み込んでください
+5. **パフォーマンス**: UDF は各行ごとに呼び出されるため、パフォーマンスを最適化してください
 
 ```python
-# エラー処理を含む適切に構造化されたUDF
+# エラー処理を実装した適切に構造化されたUDF
 @chdb_udf(return_type="String")
 def safe_json_extract(json_str, path):
     import json
@@ -555,58 +439,48 @@ def safe_json_extract(json_str, path):
         return str(result)
     except Exception as e:
         return f'error: {str(e)}'
+
+# 複雑にネストされたJSONでの使用
+query("""
+    SELECT safe_json_extract(
+        '{"user": {"profile": {"name": "Alice", "age": 25}}}',
+        'user.profile.name'
+    ) as extracted_name
+""")
 ```
 
 
-# 複雑にネストされたJSONの使用
+### ストリーミングクエリ処理
 
-query("""
-SELECT safe_json_extract(
-'{"user": {"profile": {"name": "Alice", "age": 25}}}',
-'user.profile.name'
-) as extracted_name
-""")
-
-````
-
-### ストリーミングクエリ処理 {#streaming-queries}
-
-一定のメモリ使用量で大規模なデータセットを処理:
+一定のメモリ使用量で大規模データセットを処理できます：
 
 ```python
 from chdb import session
 
 sess = session.Session()
 
-````
-
-
-# 大規模データセットをセットアップ
+# 大規模データセットのセットアップ
 sess.query("""
     CREATE TABLE large_data ENGINE = Memory() AS 
     SELECT number as id, toString(number) as data 
     FROM numbers(1000000)
 """)
 
-
-
-# 例 1: コンテキストマネージャーを用いた基本的なストリーミング処理
+# 例1: コンテキストマネージャーを使用した基本的なストリーミング
 total_rows = 0
 with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
     for chunk in stream:
         chunk_rows = len(chunk.data().split('\n')) - 1
         total_rows += chunk_rows
-        print(f"Processed chunk: {chunk_rows} rows")
+        print(f"チャンクを処理しました: {chunk_rows} 行")
         
-        # 必要に応じて早期に処理を終了
+        # 必要に応じて早期終了
         if total_rows > 100000:
             break
 
-print(f"Total rows processed: {total_rows}")
+print(f"処理された総行数: {total_rows}")
 
-
-
-# 例2: 明示的なクリーンアップを行う手動イテレーション
+# 例2: 明示的なクリーンアップを伴う手動イテレーション
 stream = sess.send_query("SELECT * FROM large_data WHERE id % 100 = 0", "JSONEachRow")
 processed_count = 0
 
@@ -623,66 +497,53 @@ while True:
     
     print(f"これまでに {processed_count} 件のレコードを処理しました...")
     
-stream.close()  # 重要: 明示的にクリーンアップする
-
-
+stream.close()  # 重要: 明示的なクリーンアップ
 
 # 例3: 外部ライブラリとのArrow統合
-
 import pyarrow as pa
 from deltalake import write_deltalake
 
-
-# 結果を Arrow フォーマットでストリーミングする
+# Arrow形式で結果をストリーミング
 stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
 
-
-
-# カスタムバッチサイズで RecordBatchReader を作成する
+# カスタムバッチサイズでRecordBatchReaderを作成
 batch_reader = stream.record_batch(rows_per_batch=10000)
 
-
-
-# Delta Lake へのエクスポート
-
-write&#95;deltalake(
-table&#95;or&#95;uri=&quot;./my&#95;delta&#95;table&quot;,
-data=batch&#95;reader,
-mode=&quot;overwrite&quot;
+# Delta Lakeへエクスポート
+write_deltalake(
+    table_or_uri="./my_delta_table",
+    data=batch_reader,
+    mode="overwrite"
 )
 
 stream.close()
 sess.close()
+```
 
-````
 
-### Pythonテーブルエンジン {#python-table-engine}
+### Python テーブルエンジン {#python-table-engine}
 
-#### Pandas DataFrameへのクエリ {#query-pandas-dataframes}
+#### Pandas DataFrame をクエリする
 
 ```python
 import chdb
 import pandas as pd
-````
-
 
 # ネストされたデータを含む複雑なDataFrame
-
 df = pd.DataFrame({
-"customer_id": [1, 2, 3, 4, 5, 6],
-"customer_name": ["Alice", "Bob", "Charlie", "Alice", "Bob", "David"],
-"orders": [
-{"order_id": 101, "amount": 250.50, "items": ["laptop", "mouse"]},
-{"order_id": 102, "amount": 89.99, "items": ["book"]},
-{"order_id": 103, "amount": 1299.99, "items": ["phone", "case", "charger"]},
-{"order_id": 104, "amount": 45.50, "items": ["pen", "paper"]},
-{"order_id": 105, "amount": 199.99, "items": ["headphones"]},
-{"order_id": 106, "amount": 15.99, "items": ["cable"]}
-]
+    "customer_id": [1, 2, 3, 4, 5, 6],
+    "customer_name": ["Alice", "Bob", "Charlie", "Alice", "Bob", "David"],
+    "orders": [
+        {"order_id": 101, "amount": 250.50, "items": ["laptop", "mouse"]},
+        {"order_id": 102, "amount": 89.99, "items": ["book"]},
+        {"order_id": 103, "amount": 1299.99, "items": ["phone", "case", "charger"]},
+        {"order_id": 104, "amount": 45.50, "items": ["pen", "paper"]},
+        {"order_id": 105, "amount": 199.99, "items": ["headphones"]},
+        {"order_id": 106, "amount": 15.99, "items": ["cable"]}
+    ]
 })
 
-
-# JSON 操作による高度なクエリ
+# JSON操作による高度なクエリ
 result = chdb.query("""
     SELECT 
         customer_name,
@@ -702,30 +563,27 @@ result = chdb.query("""
     ORDER BY total_spent DESC
 """).show()
 
+# DataFrameに対するウィンドウ関数
+window_result = chdb.query("""
+    SELECT 
+        customer_name,
+        toFloat64(orders.amount) as amount,
+        sum(toFloat64(orders.amount)) OVER (
+            PARTITION BY customer_name 
+            ORDER BY toInt32(orders.order_id)
+        ) as running_total
+    FROM Python(df)
+    ORDER BY customer_name, toInt32(orders.order_id)
+""", "Pretty")
+print(window_result)
+```
 
 
-# データフレーム上のウィンドウ関数
+#### PyReader を使用したカスタムデータソース
 
-window&#95;result = chdb.query(&quot;&quot;&quot;
-SELECT
-customer&#95;name,
-toFloat64(orders.amount) as amount,
-sum(toFloat64(orders.amount)) OVER (
-PARTITION BY customer&#95;name
-ORDER BY toInt32(orders.order&#95;id)
-) as running&#95;total
-FROM Python(df)
-ORDER BY customer&#95;name, toInt32(orders.order&#95;id)
-&quot;&quot;&quot;, &quot;Pretty&quot;)
-print(window&#95;result)
+独自のデータソース向けにカスタムデータリーダーを実装します。
 
-````
-
-#### PyReaderを使用したカスタムデータソース {#custom-data-sources-pyreader}
-
-特殊なデータソース用のカスタムデータリーダーを実装します:
-
-```python
+````python
 import chdb
 from typing import List, Tuple, Any
 import json
@@ -774,36 +632,32 @@ class DatabaseReader(chdb.PyReader):
             if col in self.data:
                 result.append(self.data[col][self.cursor:end_pos])
             else:
-                # 欠損列を処理
+                # 欠落している列を処理
                 result.append([None] * (end_pos - self.cursor))
         
         self.cursor = end_pos
         return result
 
-### JSON型推論と処理 {#json-type-inference-handling}
+### JSON型推論と処理
 
-chDBは複雑なネストされたデータ構造を自動的に処理します:
+chDBは複雑なネスト構造のデータを自動的に処理します:
 
 ```python
 import pandas as pd
 import chdb
-````
 
-
-# 混合JSONオブジェクトを含むDataFrame
-
+# 混在したJSONオブジェクトを含むDataFrame
 df_with_json = pd.DataFrame({
-"user_id": [1, 2, 3, 4],
-"profile": [
-{"name": "Alice", "age": 25, "preferences": ["music", "travel"]},
-{"name": "Bob", "age": 30, "location": {"city": "NYC", "country": "US"}},
-{"name": "Charlie", "skills": ["python", "sql", "ml"], "experience": 5},
-{"score": 95, "rank": "gold", "achievements": [{"title": "Expert", "date": "2024-01-01"}]}
-]
+    "user_id": [1, 2, 3, 4],
+    "profile": [
+        {"name": "Alice", "age": 25, "preferences": ["music", "travel"]},
+        {"name": "Bob", "age": 30, "location": {"city": "NYC", "country": "US"}},
+        {"name": "Charlie", "skills": ["python", "sql", "ml"], "experience": 5},
+        {"score": 95, "rank": "gold", "achievements": [{"title": "Expert", "date": "2024-01-01"}]}
+    ]
 })
 
-
-# 設定でJSON推論を制御する
+# 設定でJSON推論を制御
 result = chdb.query("""
     SELECT 
         user_id,
@@ -812,59 +666,50 @@ result = chdb.query("""
         length(profile.preferences) as pref_count,
         profile.location.city as city
     FROM Python(df_with_json)
-    SETTINGS pandas_analyze_sample = 1000  -- JSON検出のために全行を分析
+    SETTINGS pandas_analyze_sample = 1000  -- JSON検出のため全行を解析
 """, "Pretty")
 print(result)
 
+# 高度なJSON操作
+complex_json = chdb.query("""
+    SELECT 
+        user_id,
+        JSONLength(toString(profile)) as json_fields,
+        JSONType(toString(profile), 'preferences') as pref_type,
+        if(
+            JSONHas(toString(profile), 'achievements'),
+            JSONExtractString(toString(profile), 'achievements[0].title'),
+            'None'
+        ) as first_achievement
+    FROM Python(df_with_json)
+""", "JSONEachRow")
+print(complex_json)
+````
 
 
-# 高度な JSON 操作
+## パフォーマンスと最適化 {#performance-optimization}
 
-complex&#95;json = chdb.query(&quot;&quot;&quot;
-SELECT
-user&#95;id,
-JSONLength(toString(profile)) as json&#95;fields,
-JSONType(toString(profile), &#39;preferences&#39;) as pref&#95;type,
-if(
-JSONHas(toString(profile), &#39;achievements&#39;),
-JSONExtractString(toString(profile), &#39;achievements[0].title&#39;),
-&#39;None&#39;
-) as first&#95;achievement
-FROM Python(df&#95;with&#95;json)
-&quot;&quot;&quot;, &quot;JSONEachRow&quot;)
-print(complex&#95;json)
-
-```
-```
-
-
-## パフォーマンスと最適化
-
-### ベンチマーク
+### ベンチマーク {#benchmarks}
 
 chDB は他の組み込みエンジンと比べて一貫して高い性能を発揮します。
 
-* **DataFrame 操作**: 分析クエリにおいて、従来の DataFrame ライブラリの 2〜5 倍の高速性
-* **Parquet 処理**: 主要なカラム型エンジンと同等の性能
-* **メモリ効率**: 他の選択肢と比べてメモリフットプリントが小さい
+- **DataFrame 操作**: 分析クエリにおいて、従来の DataFrame ライブラリより 2～5 倍高速
+- **Parquet 処理**: 主要なカラムナ型エンジンと同等の性能
+- **メモリ効率**: 代替手段よりもメモリ使用量が少ない
 
 [ベンチマーク結果の詳細](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
-### パフォーマンス最適化のヒント
+### パフォーマンス向上のヒント
 
 ```python
 import chdb
-```
 
-
-# 1. 適切な出力形式を使用する
+# 1. 適切な出力形式を使用
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 分析用
-arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 他ツールとの連携用
-native_result = chdb.query("SELECT * FROM large_table", "Native")   # chDB 同士の連携用
+arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 相互運用用
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # chDB間通信用
 
-
-
-# 2. 設定を使ってクエリを最適化する
+# 2. 設定によるクエリの最適化
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -875,16 +720,12 @@ fast_result = chdb.query("""
         use_uncompressed_cache = 1
 """, "DataFrame")
 
-
-
-# 3. 大規模データセット向けにストリーミングを活用する
+# 3. 大規模データセットに対するストリーミングの活用
 from chdb import session
 
 sess = session.Session()
 
-
-
-# 大規模データセットの準備
+# 大規模データセットのセットアップ
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -894,9 +735,7 @@ sess.query("""
     FROM numbers(10000000)
 """)
 
-
-
-# メモリ使用量を一定に保つストリーム処理
+# 一定のメモリ使用量でのストリーム処理
 total_amount = 0
 processed_rows = 0
 
@@ -910,41 +749,31 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
                 total_amount += row['total']
                 processed_rows += 1
         
-        print(f"{processed_rows}件の顧客レコードを処理しました。現在の合計金額: {total_amount}")
+        print(f"Processed {processed_rows} customer records, running total: {total_amount}")
         
-        # デモのため早期に終了
+        # デモ用の早期終了
         if processed_rows > 1000:
             break
 
-print(f"最終結果: {processed_rows}件の顧客を処理しました。合計金額: {total_amount}")
+print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
 
-
-
-# 外部システムへのストリーム送信（例：Delta Lake）
+# 外部システムへのストリーミング（例：Delta Lake）
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
-
-
-# バッチ単位で処理を行う
-
-for batch in batch&#95;reader:
-print(f&quot;{batch.num_rows} 行のバッチを処理しています...&quot;)
-
-# 各バッチを変換またはエクスポートする
-
-# df&#95;batch = batch.to&#95;pandas()
-
-# process&#95;batch(df&#95;batch)
+# バッチ処理
+for batch in batch_reader:
+    print(f"Processing batch with {batch.num_rows} rows...")
+    # 各バッチの変換またはエクスポート
+    # df_batch = batch.to_pandas()
+    # process_batch(df_batch)
 
 stream.close()
 sess.close()
-
-```
 ```
 
 
 ## GitHub リポジトリ {#github-repository}
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues) の Issue ページで報告してください
+- **Issue とサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues)で Issue を報告してください

@@ -6,14 +6,8 @@ title: 'HiveText'
 doc_type: 'reference'
 ---
 
-
-
 ## Описание {#description}
 
-
-
-## Пример использования {#example-usage}
-
-
+## Примеры использования {#example-usage}
 
 ## Параметры форматирования {#format-settings}

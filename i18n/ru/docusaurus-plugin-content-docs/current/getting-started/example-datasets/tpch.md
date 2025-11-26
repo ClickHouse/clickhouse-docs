@@ -1,5 +1,5 @@
 ---
-description: 'Набор данных и запросы бенчмарка TPC-H.'
+description: 'Набор данных и запросов бенчмарка TPC-H.'
 sidebar_label: 'TPC-H'
 slug: /getting-started/example-datasets/tpch
 title: 'TPC-H (1999)'
@@ -8,8 +8,8 @@ keywords: ['пример набора данных', 'tpch', 'бенчмарк',
 ---
 
 Популярный бенчмарк, моделирующий внутреннее хранилище данных оптового поставщика.
-Данные представлены в третьей нормальной форме, что требует большого количества соединений (JOIN) при выполнении запросов.
-Несмотря на возраст и нереалистичное предположение о том, что данные распределены равномерно и независимо, TPC-H по-прежнему остается самым популярным OLAP-бенчмарком на сегодняшний день.
+Данные хранятся в виде схемы в третьей нормальной форме, что требует большого количества соединений (JOIN) при выполнении запросов.
+Несмотря на возраст и нереалистичное предположение о равномерном и независимом распределении данных, TPC-H по-прежнему остается самым популярным OLAP-бенчмарком на сегодняшний день.
 
 **Ссылки**
 
@@ -18,11 +18,9 @@ keywords: ['пример набора данных', 'tpch', 'бенчмарк',
 - [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 - [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-
-
 ## Генерация и импорт данных
 
-Сначала клонируйте репозиторий TPC-H и соберите генератор данных:
+Сначала клонируйте репозиторий TPC-H и скомпилируйте генератор данных:
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -30,38 +28,36 @@ cd tpch-kit/dbgen
 make
 ```
 
-Затем сгенерируйте данные. Параметр `-s` задаёт коэффициент масштаба. Например, при `-s 100` для таблицы «lineitem» будет сгенерировано 600 миллионов строк.
+Затем сгенерируйте данные. Параметр `-s` задаёт коэффициент масштабирования. Например, при `-s 100` для таблицы &#39;lineitem&#39; будет сгенерировано 600 миллионов строк.
 
 ```bash
 ./dbgen -s 100
 ```
 
-Подробные размеры таблиц при факторе масштаба 100:
+Подробные размеры таблиц при коэффициенте масштабирования 100:
 
-| Таблица  | размер (в строках) | размер (в сжатом виде в ClickHouse) |
-| -------- | ------------------ | ----------------------------------- |
-| nation   | 25                 | 2 kB                                |
-| region   | 5                  | 1 kB                                |
-| part     | 20.000.000         | 895 MB                              |
-| supplier | 1.000.000          | 75 MB                               |
-| partsupp | 80.000.000         | 4.37 GB                             |
-| customer | 15.000.000         | 1.19 GB                             |
-| orders   | 150.000.000        | 6.15 GB                             |
-| lineitem | 600.000.000        | 26.69 GB                            |
+| Table    | size (in rows) | size (compressed in ClickHouse) |
+| -------- | -------------- | ------------------------------- |
+| nation   | 25             | 2 kB                            |
+| region   | 5              | 1 kB                            |
+| part     | 20.000.000     | 895 MB                          |
+| supplier | 1.000.000      | 75 MB                           |
+| partsupp | 80.000.000     | 4.37 GB                         |
+| customer | 15.000.000     | 1.19 GB                         |
+| orders   | 150.000.000    | 6.15 GB                         |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
-(Сжатые размеры в ClickHouse получены из `system.tables.total_bytes` и основаны на приведённых ниже определениях таблиц.)
+(Сжатые размеры в ClickHouse получены из `system.tables.total_bytes` и соответствуют приведённым ниже определениям таблиц.)
 
-Теперь создайте таблицы в ClickHouse.
+Теперь создадим таблицы в ClickHouse.
 
 Мы придерживаемся правил спецификации TPC-H настолько строго, насколько это возможно:
 
-* Первичные ключи создаём только для столбцов, указанных в разделе 1.4.2.2 спецификации.
-* Параметры подстановки были заменены значениями для проверки корректности запросов в разделах 2.1.x.4 спецификации.
-* В соответствии с разделом 1.4.2.1, определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию.
-  Производительность запросов `SELECT` в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
-* В соответствии с разделом 1.3.1, мы используем собственные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных,
-  упомянутых в спецификации (например, `Identifier`, `Variable text, size N`). Единственный эффект этого — лучшая читаемость; типы данных SQL-92,
-  генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
+* Первичные ключи создаются только для столбцов, указанных в разделе 1.4.2.2 спецификации.
+* Параметры подстановки заменены значениями для проверки запросов в разделах 2.1.x.4 спецификации.
+* В соответствии с разделом 1.4.2.1 определения таблиц не используют необязательные ограничения `NOT NULL`, даже если `dbgen` генерирует их по умолчанию. Производительность запросов `SELECT` в ClickHouse не зависит от наличия или отсутствия ограничений `NOT NULL`.
+* В соответствии с разделом 1.3.1 мы используем собственные типы данных ClickHouse (например, `Int32`, `String`) для реализации абстрактных типов данных, указанных в спецификации (например, `Identifier`, `Variable text, size N`). Единственный эффект этого — лучшая читаемость; типы данных SQL-92, генерируемые `dbgen` (например, `INTEGER`, `VARCHAR(40)`), также будут работать в ClickHouse.
+
 
 ```sql
 CREATE TABLE nation (
@@ -117,47 +113,44 @@ CREATE TABLE customer (
     c_mktsegment  String,
     c_comment     String)
 ORDER BY (c_custkey);
-```
-
 
 CREATE TABLE orders  (
-o&#95;orderkey       Int32,
-o&#95;custkey        Int32,
-o&#95;orderstatus    String,
-o&#95;totalprice     Decimal(15,2),
-o&#95;orderdate      Date,
-o&#95;orderpriority  String,
-o&#95;clerk          String,
-o&#95;shippriority   Int32,
-o&#95;comment        String)
-ORDER BY (o&#95;orderkey);
--- Ниже приведён альтернативный ключ сортировки, который не соответствует официальным правилам TPC-H, но рекомендован в разделе 4.5 в
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
--- ORDER BY (o&#95;orderdate, o&#95;orderkey);
+    o_orderkey       Int32,
+    o_custkey        Int32,
+    o_orderstatus    String,
+    o_totalprice     Decimal(15,2),
+    o_orderdate      Date,
+    o_orderpriority  String,
+    o_clerk          String,
+    o_shippriority   Int32,
+    o_comment        String)
+ORDER BY (o_orderkey);
+-- Следующий ключ сортировки является альтернативным, не соответствует официальным правилам TPC-H, но рекомендуется в разделе 4.5
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
-l&#95;orderkey       Int32,
-l&#95;partkey        Int32,
-l&#95;suppkey        Int32,
-l&#95;linenumber     Int32,
-l&#95;quantity       Decimal(15,2),
-l&#95;extendedprice  Decimal(15,2),
-l&#95;discount       Decimal(15,2),
-l&#95;tax            Decimal(15,2),
-l&#95;returnflag     String,
-l&#95;linestatus     String,
-l&#95;shipdate       Date,
-l&#95;commitdate     Date,
-l&#95;receiptdate    Date,
-l&#95;shipinstruct   String,
-l&#95;shipmode       String,
-l&#95;comment        String)
-ORDER BY (l&#95;orderkey, l&#95;linenumber);
--- Ниже приведён альтернативный ключ сортировки, который не соответствует официальным правилам TPC-H, но рекомендован в разделе 4.5 в
--- &quot;Quantifying TPC-H Choke Points and Their Optimizations&quot;:
--- ORDER BY (l&#95;shipdate, l&#95;orderkey, l&#95;linenumber);
-
-````
+    l_orderkey       Int32,
+    l_partkey        Int32,
+    l_suppkey        Int32,
+    l_linenumber     Int32,
+    l_quantity       Decimal(15,2),
+    l_extendedprice  Decimal(15,2),
+    l_discount       Decimal(15,2),
+    l_tax            Decimal(15,2),
+    l_returnflag     String,
+    l_linestatus     String,
+    l_shipdate       Date,
+    l_commitdate     Date,
+    l_receiptdate    Date,
+    l_shipinstruct   String,
+    l_shipmode       String,
+    l_comment        String)
+ORDER BY (l_orderkey, l_linenumber);
+-- Следующий ключ сортировки является альтернативным, не соответствует официальным правилам TPC-H, но рекомендуется в разделе 4.5
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
+-- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
+```
 
 Данные можно импортировать следующим образом:
 
@@ -170,11 +163,11 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO partsupp FORMA
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO customer FORMAT CSV" < customer.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT CSV" < orders.tbl
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
-````
+```
 
 :::note
-Вместо использования tpch-kit и самостоятельной генерации таблиц вы можете также импортировать данные из публичного бакета S3. Предварительно
-создайте пустые таблицы с помощью приведённых выше операторов `CREATE`.
+Вместо использования tpch-kit и самостоятельной генерации таблиц вы можете импортировать данные из общедоступного бакета S3. Перед этим обязательно
+создайте пустые таблицы, используя приведённые выше операторы `CREATE`.
 
 
 ```sql
@@ -209,10 +202,10 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 :::
 
 :::note
-Некоторые запросы TPC-H используют коррелированные подзапросы, которые доступны, начиная с v25.8.
-Пожалуйста, используйте как минимум эту версию ClickHouse для выполнения запросов.
+Некоторые запросы TPC-H используют коррелированные подзапросы, которые доступны начиная с v25.8.
+Пожалуйста, используйте версию ClickHouse не ниже этой для запуска запросов.
 
-В версиях ClickHouse 25.5, 25.6, 25.7 дополнительно необходимо установить:
+В версиях ClickHouse 25.5, 25.6, 25.7 необходимо дополнительно задать:
 
 ```sql
 SET allow_experimental_correlated_subqueries = 1;
@@ -220,11 +213,11 @@ SET allow_experimental_correlated_subqueries = 1;
 
 :::
 
-Запросы генерируются утилитой `./qgen -s <scaling_factor>`. Ниже приведены примеры запросов для `s = 100`:
+Запросы генерируются командой `./qgen -s <scaling_factor>`. Примеры запросов для `s = 100` приведены ниже:
 
 **Корректность**
 
-Результаты запросов совпадают с официальными результатами, если не указано иное. Для проверки сгенерируйте базу данных TPC-H с фактором масштабирования 1 (`dbgen`, см. выше) и сравните её с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
+Результаты запросов совпадают с официальными результатами, если не указано иное. Чтобы проверить корректность, сгенерируйте базу данных TPC-H с коэффициентом масштабирования = 1 (`dbgen`, см. выше) и сравните её с [ожидаемыми результатами в tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
 
 **Q1**
 
@@ -252,7 +245,7 @@ ORDER BY
     l_linestatus;
 ```
 
-**Вопрос 2**
+**Q2**
 
 ```sql
 SELECT
@@ -327,7 +320,7 @@ ORDER BY
     o_orderdate;
 ```
 
-**Q4**
+**4 кв.**
 
 ```sql
 SELECT
@@ -383,7 +376,7 @@ ORDER BY
     revenue DESC;
 ```
 
-**Q6**
+**Вопрос 6**
 
 ```sql
 SELECT
@@ -398,13 +391,13 @@ WHERE
 ```
 
 ::::note
-По состоянию на февраль 2025 года запрос не работает «из коробки» из‑за ошибки при сложении значений типа Decimal. Соответствующая задача: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+По состоянию на февраль 2025 года этот запрос не работает «из коробки» из‑за ошибки при сложении значений типа Decimal. Соответствующая проблема: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-Этот альтернативный вариант работает, его корректность проверена: он возвращает эталонные результаты.
+Эта альтернативная формулировка запроса работает; проверено, что она возвращает эталонные результаты.
 
 ```sql
 SELECT
-    sum(l_extendedprice * l_discount) AS выручка
+    sum(l_extendedprice * l_discount) AS revenue
 FROM
     lineitem
 WHERE
@@ -501,7 +494,7 @@ ORDER BY
     o_year;
 ```
 
-**Вопрос 9**
+**Q9**
 
 
 ```sql
@@ -666,7 +659,6 @@ ORDER BY
 
 **Q14**
 
-
 ```sql
 SELECT
     100.00 * sum(CASE
@@ -721,21 +713,21 @@ ORDER BY
 DROP VIEW revenue0;
 ```
 
-**Вопрос 16**
+**Q16**
 
 ```sql
 SELECT
     p_brand,
     p_type,
     p_size,
-    count(DISTINCT ps_suppkey) AS количество_поставщиков
+    count(DISTINCT ps_suppkey) AS supplier_cnt
 FROM
     partsupp,
     part
 WHERE
     p_partkey = ps_partkey
-    AND p_brand <> 'Бренд#45'
-    AND p_type NOT LIKE 'СРЕДНИЙ ПОЛИРОВАННЫЙ%'
+    AND p_brand <> 'Brand#45'
+    AND p_type NOT LIKE 'MEDIUM POLISHED%'
     AND p_size IN (49, 14, 23,  45, 19, 3, 36, 9)
     AND ps_suppkey NOT IN (
         SELECT
@@ -743,20 +735,20 @@ WHERE
         FROM
             supplier
         WHERE
-            s_comment LIKE '%Жалобы%Покупателей%'
+            s_comment LIKE '%Customer%Complaints%'
     )
 GROUP BY
     p_brand,
     p_type,
     p_size
 ORDER BY
-    количество_поставщиков DESC,
+    supplier_cnt DESC,
     p_brand,
     p_type,
     p_size;
 ```
 
-**Вопрос 17**
+**Q17**
 
 ```sql
 SELECT
@@ -778,7 +770,7 @@ WHERE
     );
 ```
 
-**Вопрос 18**
+**Q18**
 
 ```sql
 SELECT
@@ -816,8 +808,7 @@ ORDER BY
     o_orderdate;
 ```
 
-**Вопрос 19**
-
+**Q19**
 
 ```sql
 SELECT
@@ -858,6 +849,7 @@ WHERE
 ```
 
 **Q20**
+
 
 ```sql
 SELECT
@@ -943,8 +935,7 @@ ORDER BY
     s_name;
 ```
 
-**Q22**
-
+**Вопрос 22**
 
 ```sql
 SELECT

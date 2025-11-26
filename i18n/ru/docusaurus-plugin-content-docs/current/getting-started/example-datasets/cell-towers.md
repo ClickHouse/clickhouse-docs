@@ -1,10 +1,10 @@
 ---
 description: 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset
-  к ClickHouse и создать панель на основе этих данных'
-sidebar_label: 'Базовые станции'
+  к ClickHouse и создать дашборд на их основе'
+sidebar_label: 'Сотовые вышки'
 slug: /getting-started/example-datasets/cell-towers
-title: 'Геоданные на основе набора данных базовых станций'
-keywords: ['данные базовых станций', 'геоданные', 'OpenCelliD', 'геопространственный набор данных', 'начало работы']
+title: 'Геоданные на основе набора данных о сотовых вышках'
+keywords: ['данные о сотовых вышках', 'геоданные', 'OpenCelliD', 'геопространственный набор данных', 'начало работы']
 doc_type: 'guide'
 ---
 
@@ -34,44 +34,43 @@ import superset_cell_tower_dashboard from '@site/static/images/getting-started/e
 ## Цель {#goal}
 
 В этом руководстве вы узнаете, как:
+
 - загрузить данные OpenCelliD в ClickHouse
 - подключить Apache Superset к ClickHouse
-- создать дашборд на основе данных, доступных в наборе данных
+- построить дашборд на основе данных из набора данных
 
-Ниже приведён пример дашборда, созданного в этом руководстве:
+Ниже приведён пример дашборда, который вы создадите в этом руководстве:
 
-<Image img={cell_towers_1} size="md" alt="Дашборд с вышками сотовой связи по типу радиоинтерфейса в MCC 204"/>
-
-
+<Image img={cell_towers_1} size="md" alt="Дашборд вышек сотовой связи по типу радиоинтерфейса в MCC 204"/>
 
 ## Получение набора данных {#get-the-dataset}
 
-Этот набор данных взят из [OpenCelliD](https://www.opencellid.org/) — крупнейшей в мире открытой базы данных базовых станций.
+Этот набор данных взят из [OpenCelliD](https://www.opencellid.org/) — крупнейшей в мире открытой базы данных сотовых вышек.
 
-По состоянию на 2021 год он содержит более 40 миллионов записей о базовых станциях (GSM, LTE, UMTS и т.д.) по всему миру с их географическими координатами и метаданными (код страны, сеть и т.д.).
+По состоянию на 2021 год он содержит более 40 миллионов записей о сотовых вышках (GSM, LTE, UMTS и т. д.) по всему миру с их географическими координатами и метаданными (код страны, сеть и т. д.).
 
-Проект OpenCelliD распространяется под лицензией Creative Commons Attribution-ShareAlike 4.0 International License, и мы перераспространяем снимок этого набора данных на условиях той же лицензии. Актуальная версия набора данных доступна для скачивания после входа в систему.
+Проект OpenCelliD распространяется под лицензией Creative Commons Attribution-ShareAlike 4.0 International, и мы перераспространяем снимок этого набора данных на условиях той же лицензии. Актуальная версия набора данных доступна для загрузки после входа в систему.
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-### Загрузка примерного набора данных {#load-the-sample-data}
+### Загрузка примера данных {#load-the-sample-data}
 
-ClickHouse Cloud предоставляет простой способ загрузки этого набора данных из S3. Войдите в свою организацию ClickHouse Cloud или создайте бесплатный пробный период на [ClickHouse.cloud](https://clickhouse.cloud).
+ClickHouse Cloud предоставляет простой способ загрузить этот набор данных из S3. Войдите в свою организацию ClickHouse Cloud или создайте бесплатную пробную версию на [ClickHouse.cloud](https://clickhouse.cloud).
 <ActionsMenu menu="Load Data" />
 
 Выберите набор данных **Cell Towers** на вкладке **Sample data** и нажмите **Load data**:
 
-<Image img={cloud_load_data_sample} size='md' alt='Загрузка набора данных базовых станций' />
+<Image img={cloud_load_data_sample} size='md' alt='Загрузка набора данных о сотовых вышках' />
 
-### Изучите схему таблицы cell_towers {#examine-the-schema-of-the-cell_towers-table}
+### Изучение схемы таблицы cell_towers {#examine-the-schema-of-the-cell_towers-table}
 ```sql
 DESCRIBE TABLE cell_towers
 ```
 
 <SQLConsoleDetail />
 
-Это вывод `DESCRIBE`. Далее в этом руководстве будут описаны выбор типов полей.
+Это вывод `DESCRIBE`. Далее в этом руководстве будет описан выбор типов столбцов.
 ```response
 ┌─name──────────┬─type──────────────────────────────────────────────────────────────────┬
 │ radio         │ Enum8('' = 0, 'CDMA' = 1, 'GSM' = 2, 'LTE' = 3, 'NR' = 4, 'UMTS' = 5) │
@@ -92,7 +91,7 @@ DESCRIBE TABLE cell_towers
 ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="Самостоятельное развертывание">
+<TabItem value="selfmanaged" label="Самостоятельное управление">
 
 1. Создайте таблицу:
 
@@ -126,11 +125,9 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
+## Выполните несколько примеров запросов
 
-
-## Выполните несколько примерных запросов
-
-1. Количество базовых станций сотовой связи по типам:
+1. Количество сотовых вышек по типу:
 
 ```sql
 SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
@@ -148,7 +145,7 @@ SELECT radio, count() AS c FROM cell_towers GROUP BY radio ORDER BY c DESC
 5 строк в наборе. Затрачено: 0.011 сек. Обработано 43.28 млн строк, 43.28 МБ (3.83 млрд строк/сек., 3.83 ГБ/сек.)
 ```
 
-2. Базовые станции с разбивкой по [коду страны мобильной сети (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code):
+2. Базовые станции сотовой связи по [мобильному коду страны (MCC)](https://en.wikipedia.org/wiki/Mobile_country_code):
 
 ```sql
 SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
@@ -168,19 +165,19 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 │ 311 │ 1332798 │
 └─────┴─────────┘
 
-10 строк в наборе. Прошло: 0.019 сек. Обработано 43.28 млн строк, 86.55 МБ (2.33 млрд строк/сек., 4.65 ГБ/сек.)
+10 rows in set. Elapsed: 0.019 sec. Processed 43.28 million rows, 86.55 MB (2.33 billion rows/s., 4.65 GB/s.)
 ```
 
-На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) страны с наибольшим количеством сотовых вышек — США, Германия и Россия.
+На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) странами с наибольшим количеством сотовых вышек являются США, Германия и Россия.
 
-Возможно, вы захотите создать в ClickHouse [Dictionary](../../sql-reference/dictionaries/index.md) для декодирования этих значений.
+Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/dictionaries/index.md) для расшифровки этих значений.
 
 
-## Сценарий использования: работа с геоданными {#use-case}
+## Сценарий использования: использование геоданных {#use-case}
 
 Использование функции [`pointInPolygon`](/sql-reference/functions/geo/coordinates.md/#pointinpolygon).
 
-1. Создайте таблицу, в которой будем хранить полигоны:
+1. Создайте таблицу, в которой будут храниться полигоны:
 
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
@@ -191,7 +188,7 @@ ORDER BY polygon;
 ```
 
 </TabItem>
-<TabItem value="selfmanaged" label="Самостоятельное управление">
+<TabItem value="selfmanaged" label="Self-managed">
 
 ```sql
 CREATE TEMPORARY TABLE
@@ -201,9 +198,7 @@ moscow (polygon Array(Tuple(Float64, Float64)));
 </TabItem>
 </Tabs>
 
-2. Это приблизительный контур Москвы (без «Новой Москвы»):
-
-
+2. Это приближённый контур Москвы (без «Новой Москвы»):
 
 ```sql
 INSERT INTO moscow VALUES ([(37.84172564285271, 55.78000432402266),
@@ -257,7 +252,7 @@ INSERT INTO moscow VALUES ([(37.84172564285271, 55.78000432402266),
 (37.84172564285271, 55.78000432402266)]);
 ```
 
-3. Проверьте, сколько базовых станций находится в Москве:
+3. Проверьте, сколько базовых станций сотовой связи находится в Москве:
 
 ```sql
 SELECT count() FROM cell_towers
@@ -275,112 +270,110 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 ## Обзор схемы {#review-of-the-schema}
 
-Прежде чем создавать визуализации в Superset, ознакомьтесь со столбцами, которые вы будете использовать. Этот набор данных в основном содержит местоположение (долготу и широту) и типы радиосетей на базовых станциях сотовой связи по всему миру. Описания столбцов можно найти на [форуме сообщества](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186). Столбцы, которые будут использоваться в визуализациях, описаны ниже.
+Прежде чем создавать визуализации в Superset, ознакомьтесь со столбцами, которые вы будете использовать. Этот набор данных в первую очередь содержит сведения о местоположении (долгота и широта) и типах радиотехнологий на базовых станциях мобильной связи по всему миру. Описание столбцов можно найти на [форуме сообщества](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186). Столбцы, используемые в визуализациях, которые вы будете строить, описаны ниже.
 
 Ниже приведено описание столбцов, взятое с форума OpenCelliD:
 
 | Column       | Description                                            |
 |--------------|--------------------------------------------------------|
 | radio        | Поколение технологии: CDMA, GSM, UMTS, 5G NR           |
-| mcc          | Mobile Country Code: `204` — это Нидерланды           |
-| lon          | Longitude: вместе со широтой, примерное расположение вышки |
-| lat          | Latitude: вместе с долготой, примерное расположение вышки |
+| mcc          | Mobile Country Code: `204` — Нидерланды                |
+| lon          | Longitude: вместе с Latitude, примерное местоположение вышки |
+| lat          | Latitude: вместе с Longitude, примерное местоположение вышки |
 
 :::tip mcc
-Чтобы найти свой MCC, см. статью [Mobile network codes](https://en.wikipedia.org/wiki/Mobile_country_code) и используйте три цифры из столбца **Mobile country code**.
+Чтобы найти свой MCC, обратитесь к статье [Mobile network codes](https://en.wikipedia.org/wiki/Mobile_country_code) и используйте три цифры из столбца **Mobile country code**.
 :::
 
-Схема для этой таблицы была разработана для компактного хранения на диске и высокой скорости выполнения запросов.
+Схема этой таблицы была спроектирована для компактного хранения на диске и высокой скорости выполнения запросов.
+
 - Данные `radio` хранятся как `Enum8` (`UInt8`), а не как строка.
-- `mcc` (Mobile country code) хранится как `UInt16`, так как нам известен диапазон значений 1–999.
+- `mcc`, или Mobile country code, хранится как `UInt16`, так как известен диапазон значений 1–999.
 - `lon` и `lat` имеют тип `Float64`.
 
-Никакие другие поля не используются в запросах или визуализациях в этом руководстве, но они описаны на форуме по ссылке выше, если вас это интересует.
-
-
+Остальные поля не используются в запросах или визуализациях в этом руководстве, но они описаны на форуме по ссылке выше, если вам интересно.
 
 ## Создание визуализаций с Apache Superset {#build-visualizations-with-apache-superset}
 
-Superset легко запускать в Docker. Если у вас уже запущен Superset, всё, что нужно сделать, — добавить ClickHouse Connect с помощью `pip install clickhouse-connect`. Если вам нужно установить Superset, откройте раздел **Launch Apache Superset in Docker** непосредственно ниже.
+Superset достаточно просто запускать в Docker. Если у вас уже запущен Superset, всё, что нужно сделать, — добавить ClickHouse Connect с помощью `pip install clickhouse-connect`. Если вам нужно установить Superset, воспользуйтесь разделом **Launch Apache Superset in Docker** ниже.
 
 <SupersetDocker />
 
-Чтобы создать дашборд Superset с использованием набора данных OpenCelliD, вам нужно:
-- Добавить ваш сервис ClickHouse как **database** в Superset
+Чтобы создать дашборд Superset с использованием набора данных OpenCelliD, вам необходимо:
+
+- Добавить ваш экземпляр ClickHouse как **database** в Superset
 - Добавить таблицу **cell_towers** как **dataset** в Superset
 - Создать несколько **charts**
-- Добавить эти charts в **dashboard**
+- Добавить эти **charts** в **dashboard**
 
-### Добавьте ваш сервис ClickHouse как базу данных Superset {#add-your-clickhouse-service-as-a-superset-database}
+### Добавьте службу ClickHouse в качестве базы данных Superset {#add-your-clickhouse-service-as-a-superset-database}
 
 <ConnectionDetails />
 
-  В Superset базу данных можно добавить, выбрав тип базы данных и указав параметры подключения. Откройте Superset и найдите значок **+** — в его меню выберите пункт **Data**, а затем **Connect database**.
+В Superset базу данных можно добавить, выбрав её тип, а затем указав параметры подключения. Откройте Superset, найдите значок **+** и в появившемся меню выберите **Data**, затем **Connect database**.
 
-  <Image img={add_a_database} size="md" alt="Добавление базы данных"/>
-  
-  Выберите **ClickHouse Connect** из списка:
+<Image img={add_a_database} size="md" alt="Добавить базу данных"/>
 
-  <Image img={choose_clickhouse_connect} size="md" alt="Выбор ClickHouse Connect в качестве типа базы данных"/>
+Выберите **ClickHouse Connect** из списка:
+
+<Image img={choose_clickhouse_connect} size="md" alt="Выберите ClickHouse Connect как тип базы данных"/>
 
 :::note
-  Если **ClickHouse Connect** не отображается в списке вариантов, его необходимо установить. Команда: `pip install clickhouse-connect`, дополнительная информация [доступна здесь](https://pypi.org/project/clickhouse-connect/).
+  Если **ClickHouse Connect** отсутствует среди доступных вариантов, его необходимо установить. Используйте команду `pip install clickhouse-connect`. Дополнительная информация [доступна здесь](https://pypi.org/project/clickhouse-connect/).
 :::
 
-#### Добавьте параметры подключения {#add-your-connection-details}
+#### Добавьте данные подключения {#add-your-connection-details}
 
 :::tip
-  Убедитесь, что вы включили **SSL** при подключении к ClickHouse Cloud или другим системам ClickHouse, которые требуют использования SSL.
+  Убедитесь, что при подключении к ClickHouse Cloud или другим системам ClickHouse, где использование SSL является обязательным, у вас включен **SSL**.
 :::
 
-  <Image img={add_clickhouse_as_superset_datasource} size="md" alt="Добавление ClickHouse как источника данных Superset"/>
+<Image img={add_clickhouse_as_superset_datasource} size="md" alt="Добавление ClickHouse в качестве источника данных Superset"/>
 
-### Добавьте таблицу **cell_towers** как **dataset** Superset {#add-the-table-cell_towers-as-a-superset-dataset}
+### Добавьте таблицу **cell_towers** как **dataset** в Superset {#add-the-table-cell_towers-as-a-superset-dataset}
 
-  В Superset **dataset** сопоставляется таблице в базе данных. Нажмите «добавить dataset» и выберите ваш сервис ClickHouse, базу данных, содержащую вашу таблицу (`default`), и выберите таблицу `cell_towers`:
+В Superset объект **dataset** соответствует таблице в базе данных. Нажмите «add a dataset», выберите свой сервис ClickHouse, базу данных (`default`), содержащую таблицу, а затем таблицу `cell_towers`:
 
 <Image img={add_cell_towers_table_as_dataset} size="md" alt="Добавление таблицы cell_towers как dataset"/>
 
-### Создайте несколько **charts** {#create-some-charts}
+### Создание нескольких **диаграмм** {#create-some-charts}
 
-Когда вы выбираете добавление chart в Superset, необходимо указать dataset (`cell_towers`) и тип chart. Поскольку набор данных OpenCelliD содержит широту и долготу базовых станций, мы создадим chart типа **Map**. Тип **deck.gl Scatterplot** подходит для этого набора данных, так как он хорошо работает с плотными точками на карте.
+При добавлении диаграммы в Superset необходимо указать набор данных (`cell_towers`) и тип диаграммы. Поскольку набор данных OpenCelliD содержит координаты широты и долготы для сотовых вышек, мы создадим диаграмму типа **Map**. Тип **deck.gL Scatterplot** подходит для этого набора данных, так как хорошо работает с плотными точками данных на карте.
 
 <Image img={create_a_map_in_superset} size="md" alt="Создание карты в Superset"/>
 
 #### Укажите запрос, используемый для карты {#specify-the-query-used-for-the-map}
 
-Для deck.gl Scatterplot требуются долгота и широта; также к запросу можно применять один или несколько фильтров. В этом примере применяются два фильтра: один для базовых станций с радиоинтерфейсом UMTS и один для кода мобильной страны (Mobile Country Code), назначенного Нидерландам.
+Для диаграммы рассеяния deck.gl требуются долгота и широта; к запросу также можно применить один или несколько фильтров. В этом примере применены два фильтра: один для сотовых вышек с радиоинтерфейсами UMTS и один для мобильного кода страны (Mobile Country Code, MCC), назначенного Нидерландам.
 
 Поля `lon` и `lat` содержат долготу и широту:
 
-<Image img={specify_long_and_lat} size="md" alt="Указание полей долготы и широты"/>
+<Image img={specify_long_and_lat} size="md" alt="Укажите поля долготы и широты"/>
 
-Добавьте фильтр с `mcc` = `204` (или укажите любое другое значение `mcc`):
+Добавьте фильтр с `mcc` = `204` (или подставьте любое другое значение `mcc`):
 
 <Image img={superset_mcc_2024} size="md" alt="Фильтр по MCC 204"/>
 
-Добавьте фильтр с `radio` = `'UMTS'` (или укажите любое другое значение `radio`; варианты можно увидеть в результате `DESCRIBE TABLE cell_towers`):
+Добавьте фильтр с `radio` = `'UMTS'` (или подставьте любое другое значение `radio`, варианты можно увидеть в выводе `DESCRIBE TABLE cell_towers`):
 
-<Image img={superset_radio_umts} size="md" alt="Фильтр по radio, равному UMTS"/>
+<Image img={superset_radio_umts} size="md" alt="Фильтр по radio со значением UMTS"/>
 
-Это полная конфигурация для chart, который фильтрует по `radio = 'UMTS'` и `mcc = 204`:
+Ниже показана полная конфигурация диаграммы, которая фильтрует по `radio = 'UMTS'` и `mcc = 204`:
 
-<Image img={superset_umts_netherlands} size="md" alt="График для радиоинтерфейсов UMTS в MCC 204"/>
+<Image img={superset_umts_netherlands} size="md" alt="Диаграмма для радиоинтерфейсов UMTS в MCC 204"/>
 
 Нажмите **UPDATE CHART**, чтобы построить визуализацию.
 
-### Добавьте charts в **dashboard** {#add-the-charts-to-a-dashboard}
+### Добавьте диаграммы на **дашборд** {#add-the-charts-to-a-dashboard}
 
-Этот скриншот показывает расположение базовых станций с радиоинтерфейсами LTE, UMTS и GSM. Charts создаются одинаковым образом и затем добавляются в дашборд.
+Этот скриншот показывает расположение базовых станций сотовой связи с радиоинтерфейсами LTE, UMTS и GSM. Все диаграммы создаются одинаково и добавляются на дашборд.
 
-
-
-<Image img={superset_cell_tower_dashboard} size="md" alt="Дашборд базовых станций по типу радиоинтерфейса в MCC 204"/>
+<Image img={superset_cell_tower_dashboard} size="md" alt="Дашборд сотовых вышек по типу радио в mcc 204"/>
 
 :::tip
-Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com).
+Данные также доступны для интерактивного выполнения запросов в [Playground](https://sql.clickhouse.com).
 
-Этот [пример](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM) за вас заполнит имя пользователя и даже текст запроса.
+Этот [пример](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM) автоматически заполнит имя пользователя и даже сам запрос.
 
-Хотя в Playground нельзя создавать таблицы, вы можете выполнять все запросы и даже использовать Superset (измените имя хоста и номер порта).
+Хотя вы не можете создавать таблицы в Playground, вы можете выполнять все запросы и даже использовать Superset (измените имя хоста и номер порта).
 :::

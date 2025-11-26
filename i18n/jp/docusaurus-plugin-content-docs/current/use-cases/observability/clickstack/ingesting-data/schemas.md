@@ -9,11 +9,9 @@ doc_type: 'reference'
 keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-ClickStack の OpenTelemetry (OTel) collector は [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して、ClickHouse にテーブルを作成し、データを挿入します。
+ClickStack の OpenTelemetry (OTel) collector は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse にテーブルを作成し、データを挿入します。
 
-`default` データベース内の各データタイプごとに、次のテーブルが作成されます。ユーザーは、OTel collector をホストしているイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この出力先データベースを変更できます。
-
-
+各データタイプごとに、`default` データベース内に次のテーブルが作成されます。ユーザーは、OTel collector を実行しているコンテナイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この対象データベースを変更できます。
 
 ## ログ
 
@@ -92,7 +90,7 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
 
-## メトリクス
+## メトリクス {#metrics}
 
 ### ゲージ型メトリクス
 
@@ -132,8 +130,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 合計メトリクス
 
+### Sum 型メトリクス
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -173,8 +171,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### ヒストグラムメトリクス
 
+### ヒストグラム・メトリクス
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -218,12 +216,12 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
+
 ### 指数ヒストグラム
 
 :::note
-HyperDX は、指数ヒストグラム形式のメトリクスの取得および表示をまだサポートしていません。メトリクスのソース側でそれらを設定することは可能ですが、今後サポートが追加される予定です。
+HyperDX は、指数ヒストグラムのメトリクスの取得および表示をまだサポートしていません。メトリクスの送信元でそれらを設定することはできますが、将来的なサポートが予定されています。
 :::
-
 
 ```sql
 CREATE TABLE otel_metrics_exponentialhistogram (
@@ -272,8 +270,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 概要表
 
+### 概要表
 
 ```sql
 CREATE TABLE otel_metrics_summary

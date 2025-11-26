@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/data-lake/lakekeeper-catalog
-sidebar_label: 'Lakekeeper 目录'
-title: 'Lakekeeper 目录'
+sidebar_label: 'Lakekeeper Catalog'
+title: 'Lakekeeper Catalog'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将演示如何使用 ClickHouse 和 Lakekeeper 目录来查询您的数据。'
+description: '在本指南中，我们将逐步演示如何结合使用 ClickHouse 和 Lakekeeper Catalog 来查询您的数据。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
@@ -16,37 +16,37 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 与 Lakekeeper Catalog 的集成目前仅适用于 Iceberg 表。
-该集成同时支持 AWS S3 和其他云存储提供商。
+此集成同时支持 AWS S3 和其他云存储提供商。
 :::
 
-ClickHouse 支持与多个 Catalog 集成（Unity、Glue、REST、Polaris 等）。本指南将介绍如何使用 ClickHouse 和 [Lakekeeper](https://docs.lakekeeper.io/) Catalog 来查询你的数据。
+ClickHouse 支持与多个目录服务集成（Unity、Glue、REST、Polaris 等）。本指南将介绍如何使用 ClickHouse 和 [Lakekeeper](https://docs.lakekeeper.io/) catalog 来查询数据。
 
-Lakekeeper 是一个面向 Apache Iceberg 的开源 REST Catalog 实现，提供：
+Lakekeeper 是一个面向 Apache Iceberg 的开源 REST catalog 实现，提供：
 
-* **Rust 原生** 实现，具备高性能和高可靠性
-* **REST API**，符合 Iceberg REST Catalog 规范
-* 与兼容 **S3** 的云存储进行 **云存储集成**
+* **Rust 原生** 实现，具有高性能和高可靠性
+* **REST API**，遵循 Iceberg REST catalog 规范
+* 与 **云存储** 集成，支持兼容 S3 的存储
 
 :::note
-由于该特性仍处于实验阶段，你需要通过以下设置启用它：
+由于该功能仍为实验性特性，需要先通过以下命令启用：
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
 
-## 本地开发环境设置
+## 本地开发环境设置 {#local-development-setup}
 
-在本地进行开发和测试时，可以使用容器化的 Lakekeeper 环境。此方法非常适合用于学习、原型设计和开发环境。
+在进行本地开发和测试时，你可以使用容器化的 Lakekeeper 环境。此方式非常适合用于学习、原型验证和开发环境。
 
-### 前置条件
+### 先决条件 {#local-prerequisites}
 
 1. **Docker 和 Docker Compose**：确保已安装并正在运行 Docker 和 Docker Compose
-2. **示例环境**：可以使用 Lakekeeper 的 docker-compose 示例配置
+2. **示例环境**：可以使用 Lakekeeper 的 docker-compose 配置
 
-### 本地 Lakekeeper Catalog 设置
+### 在本地设置 Lakekeeper Catalog {#setting-up-local-lakekeeper-catalog}
 
-你可以使用官方的 [Lakekeeper docker-compose 设置](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal)，它提供了一个完整的环境，包括 Lakekeeper、PostgreSQL 元数据后端，以及用于对象存储的 MinIO。
+可以使用官方提供的 [Lakekeeper docker-compose 配置](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal)，该配置提供了一个完整的环境，包括 Lakekeeper、用作元数据后端的 PostgreSQL，以及用于对象存储的 MinIO。
 
-**步骤 1：** 创建一个用于运行该示例的新文件夹，然后创建一个名为 `docker-compose.yml` 的文件，并写入以下配置：
+**步骤 1：** 新建一个用于运行该示例的文件夹，然后创建一个名为 `docker-compose.yml` 的文件，并填入以下配置：
 
 ```yaml
 version: '3.8'
@@ -138,113 +138,108 @@ services:
       - "/dev/null"
     networks:
       - iceberg_net
-```
 
+  db:
+    image: bitnami/postgresql:16.3.0
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -p 5432 -d postgres"]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - postgres_data:/bitnami/postgresql
+    networks:
+      - iceberg_net
 
-db:
-image: bitnami/postgresql:16.3.0
-environment:
-
-* POSTGRESQL&#95;USERNAME=postgres
-* POSTGRESQL&#95;PASSWORD=postgres
-* POSTGRESQL&#95;DATABASE=postgres
-  healthcheck:
-  test: [&quot;CMD-SHELL&quot;, &quot;pg&#95;isready -U postgres -p 5432 -d postgres&quot;]
-  interval: 2s
-  timeout: 10s
-  retries: 5
-  start&#95;period: 10s
-  volumes:
-* postgres&#95;data:/bitnami/postgresql
-  networks:
-* iceberg&#95;net
-
-minio:
-image: bitnami/minio:2025.4.22
-environment:
-
-* MINIO&#95;ROOT&#95;USER=minio
-* MINIO&#95;ROOT&#95;PASSWORD=ClickHouse&#95;Minio&#95;P@ssw0rd
-* MINIO&#95;API&#95;PORT&#95;NUMBER=9000
-* MINIO&#95;CONSOLE&#95;PORT&#95;NUMBER=9001
-* MINIO&#95;SCHEME=http
-* MINIO&#95;DEFAULT&#95;BUCKETS=warehouse-rest
-  networks:
-  iceberg&#95;net:
-  aliases:
-  * warehouse-rest.minio
-    ports:
-* &quot;9002:9000&quot;
-* &quot;9003:9001&quot;
-  healthcheck:
-  test: [&quot;CMD&quot;, &quot;mc&quot;, &quot;ls&quot;, &quot;local&quot;, &quot;|&quot;, &quot;grep&quot;, &quot;warehouse-rest&quot;]
-  interval: 2s
-  timeout: 10s
-  retries: 3
-  start&#95;period: 15s
-  volumes:
-* minio&#95;data:/bitnami/minio/data
-
-clickhouse:
-image: clickhouse/clickhouse-server:head
-container&#95;name: lakekeeper-clickhouse
-user: &#39;0:0&#39;  # 确保以 root 权限运行
-ports:
-
-* &quot;8123:8123&quot;
-* &quot;9000:9000&quot;
-  volumes:
-* clickhouse&#95;data:/var/lib/clickhouse
-* ./clickhouse/data&#95;import:/var/lib/clickhouse/data&#95;import  # 挂载数据集文件夹
-  networks:
-* iceberg&#95;net
-  environment:
-* CLICKHOUSE&#95;DB=default
-* CLICKHOUSE&#95;USER=default
-* CLICKHOUSE&#95;DO&#95;NOT&#95;CHOWN=1
-* CLICKHOUSE&#95;PASSWORD=
-  depends&#95;on:
-  lakekeeper:
-  condition: service&#95;healthy
   minio:
-  condition: service&#95;healthy
+    image: bitnami/minio:2025.4.22
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=ClickHouse_Minio_P@ssw0rd
+      - MINIO_API_PORT_NUMBER=9000
+      - MINIO_CONSOLE_PORT_NUMBER=9001
+      - MINIO_SCHEME=http
+      - MINIO_DEFAULT_BUCKETS=warehouse-rest
+    networks: 
+      iceberg_net:
+        aliases:
+          - warehouse-rest.minio
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    healthcheck:
+      test: ["CMD", "mc", "ls", "local", "|", "grep", "warehouse-rest"]
+      interval: 2s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    volumes:
+      - minio_data:/bitnami/minio/data
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:head
+    container_name: lakekeeper-clickhouse
+    user: '0:0'  # Ensures root permissions
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+    networks:
+      - iceberg_net
+    environment:
+      - CLICKHOUSE_DB=default
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_DO_NOT_CHOWN=1
+      - CLICKHOUSE_PASSWORD=
+    depends_on:
+      lakekeeper:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
 
 volumes:
-postgres&#95;data:
-minio&#95;data:
-clickhouse&#95;data:
+  postgres_data:
+  minio_data:
+  clickhouse_data:
 
 networks:
-iceberg&#95;net:
-driver: bridge
+  iceberg_net:
+    driver: bridge
+```
 
-````
-
-**步骤 2：** 运行以下命令启动服务：
+**步骤 2：** 运行以下命令来启动服务：
 
 ```bash
 docker compose up -d
-````
+```
 
-**步骤 3：** 等待所有服务就绪。可以通过检查日志进行确认：
+**步骤 3：** 等待所有服务准备就绪。您可以通过查看日志来检查：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Lakekeeper 部署要求先将示例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询之前，当前环境中已经创建这些表并写入了数据。表是否可用取决于具体的 docker-compose 部署以及示例数据加载脚本。
+Lakekeeper 的部署要求必须先将样例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询这些表之前，环境中已经创建并填充好这些表。表是否可用取决于具体的 docker-compose 配置和样例数据加载脚本。
 :::
 
-### 连接到本地 Lakekeeper Catalog
 
-连接到你的 ClickHouse 容器：
+### 连接到本地 Lakekeeper 目录
+
+连接到 ClickHouse 容器：
 
 ```bash
 docker exec -it lakekeeper-clickhouse clickhouse-client
 ```
 
-然后创建指向 Lakekeeper 目录的数据库连接：
+然后创建与 Lakekeeper 目录的数据库连接：
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -257,7 +252,7 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 
 ## 使用 ClickHouse 查询 Lakekeeper 目录表
 
-现在连接已经就绪，你可以开始通过 Lakekeeper 目录执行查询。例如：
+现在连接已经建立，你可以开始通过 Lakekeeper 目录来查询数据。例如：
 
 ```sql
 USE demo;
@@ -265,7 +260,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果你的配置中包含示例数据（例如 taxi 数据集），你应该会看到类似下面这样的表：
+如果你的部署中包含示例数据（例如 taxi 数据集），应该会看到如下这些表：
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -276,19 +271,19 @@ SHOW TABLES;
 :::note
 如果你没有看到任何表，通常意味着：
 
-1. 当前环境尚未创建示例表
+1. 该环境尚未创建示例表
 2. Lakekeeper 目录服务尚未完全初始化
-3. 示例数据加载过程尚未完成
+3. 示例数据的加载过程尚未完成
 
-你可以检查 Spark 日志来查看表创建进度：
+你可以查看 Spark 日志以了解表创建的进度：
 
 ```bash
-docker-compose 日志 spark
+docker-compose logs spark
 ```
 
 :::
 
-要查询一张表（如果已存在）：
+查询表（如果存在）：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -301,7 +296,7 @@ SELECT count(*) FROM `default.taxis`;
 ```
 
 :::note 必须使用反引号
-必须使用反引号，因为 ClickHouse 不支持多个命名空间。
+需要使用反引号，因为 ClickHouse 不支持多个命名空间。
 :::
 
 要查看该表的 DDL：
@@ -339,9 +334,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## 从数据湖向 ClickHouse 加载数据
+## 将数据湖中的数据加载到 ClickHouse
 
-如果你需要从 Lakekeeper 目录向 ClickHouse 加载数据，请先创建一个本地 ClickHouse 表：
+如需将 Lakekeeper 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
 
 ```sql
 CREATE TABLE taxis
@@ -371,7 +366,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-然后通过 `INSERT INTO SELECT` 语句从 Lakekeeper 目录表加载数据：
+然后通过执行 `INSERT INTO SELECT` 语句，从你的 Lakekeeper 目录表中加载数据：
 
 ```sql
 INSERT INTO taxis 

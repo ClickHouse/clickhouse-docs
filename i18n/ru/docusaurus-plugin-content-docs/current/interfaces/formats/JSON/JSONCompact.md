@@ -9,50 +9,46 @@ title: 'JSONCompact'
 doc_type: 'reference'
 ---
 
-| Входные данные | Выходные данные | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
-
-
+| Входной | Выходной | Псевдонимы |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от [JSON](./JSON.md) лишь тем, что строки данных выводятся в виде массивов, а не объектов.
+Отличается от [JSON](./JSON.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
+## Пример использования {#example-usage}
 
+### Вставка данных
 
-## Пример использования
-
-### Добавление данных
-
-JSON-файл со следующими данными с именем `football.json`:
+Используйте JSON-файл со следующими данными в файле с именем `football.json`:
 
 ```json
 {
     "meta":
     [
         {
-            "name": "дата",
+            "name": "date",
             "type": "Date"
         },
         {
-            "name": "сезон",
+            "name": "season",
             "type": "Int16"
         },
         {
-            "name": "команда_хозяев",
+            "name": "home_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "команда_гостей",
+            "name": "away_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "голы_хозяев",
+            "name": "home_team_goals",
             "type": "Int8"
         },
         {
-            "name": "голы_гостей",
+            "name": "away_team_goals",
             "type": "Int8"
         }
     ],
@@ -85,6 +81,7 @@ JSON-файл со следующими данными с именем `football
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
+
 ### Чтение данных
 
 Считайте данные в формате `JSONCompact`:
@@ -95,39 +92,37 @@ FROM football
 FORMAT JSONCompact
 ```
 
-Результат будет в формате JSON:
+Вывод будет в формате JSON:
 
 ```json
 {
     "meta":
     [
         {
-            "name": "дата",
+            "name": "date",
             "type": "Date"
         },
         {
-            "name": "сезон",
+            "name": "season",
             "type": "Int16"
         },
         {
-            "name": "домашняя_команда",
+            "name": "home_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "гостевая_команда",
+            "name": "away_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "голы_домашней_команды",
+            "name": "home_team_goals",
             "type": "Int8"
         },
         {
-            "name": "голы_гостевой_команды",
+            "name": "away_team_goals",
             "type": "Int8"
         }
     ],
-```
-
 
     "data":
     [
@@ -158,11 +153,7 @@ FORMAT JSONCompact
         "rows_read": 0,
         "bytes_read": 0
     }
-
 }
-
-```
-
 ```
 
 

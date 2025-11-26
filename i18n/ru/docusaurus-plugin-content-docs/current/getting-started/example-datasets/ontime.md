@@ -1,19 +1,15 @@
 ---
-description: 'Набор данных, содержащий показатели пунктуальности авиарейсов'
-sidebar_label: 'Данные авиарейсов OnTime'
+description: 'Набор данных, содержащий информацию о своевременности выполнения авиарейсов'
+sidebar_label: 'Набор данных авиарейсов OnTime'
 slug: /getting-started/example-datasets/ontime
 title: 'OnTime'
 doc_type: 'guide'
 keywords: ['пример набора данных', 'данные о рейсах', 'пример данных', 'эффективность авиакомпаний', 'бенчмарк']
 ---
 
-Этот набор основан на данных Бюро транспортной статистики США.
-
-
+Этот набор сформирован на основе данных Бюро транспортной статистики США (Bureau of Transportation Statistics).
 
 ## Создание таблицы {#creating-a-table}
-
-
 
 ```sql
 CREATE TABLE `ontime`
@@ -131,11 +127,7 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-
-
-
-
-## Импорт из сырых данных
+## Импорт сырых данных
 
 Загрузка данных:
 
@@ -149,7 +141,7 @@ wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если на вашем сервере будет не хватать памяти или появятся другие проблемы, удалите часть `-P $(nproc)`)
+(если на вашем сервере будет нехватка памяти или возникнут другие проблемы, удалите флаг `-P $(nproc)`)
 
 
 ## Импорт из сохранённой копии
@@ -187,7 +179,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Число рейсов с задержкой более 10 минут по дням недели в 2000–2008 годах
+Q2. Количество рейсов, задержанных более чем на 10 минут, по дням недели в 2000–2008 годах
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -197,7 +189,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. Количество задержек по аэропортам за 2000–2008 годы
+Q3. Количество задержек по аэропортам в 2000–2008 годах
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -208,7 +200,7 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Q4. Количество задержек по перевозчикам за 2007 год
+Q4. Количество задержек по авиакомпаниям за 2007 год
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, count(*)
@@ -218,7 +210,7 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержек по авиакомпаниям в 2007 году
+Q5. Процент задержек по авиаперевозчикам в 2007 году
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -254,7 +246,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. Предыдущий запрос с более широким диапазоном лет, 2000–2008
+Q6. Предыдущий запрос с более широким диапазоном лет — 2000–2008
 
 ```sql
 SELECT Carrier, c, c2, c*100/c2 AS c3
@@ -280,7 +272,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-Улучшенный вариант того же запроса:
+Более удачная версия этого же запроса:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -290,7 +282,7 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. Доля рейсов с задержкой более 10 минут по годам
+Q7. Доля рейсов, задержанных более чем на 10 минут, по годам
 
 ```sql
 SELECT Year, c1/c2
@@ -323,7 +315,7 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Наиболее популярные направления по количеству городов с прямым сообщением в разных периодах (по годам)
+Q8. Наиболее популярные пункты назначения по количеству городов с прямым сообщением для различных периодов
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
@@ -360,7 +352,7 @@ ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-Бонус:
+Дополнительно:
 
 ```sql
 SELECT avg(cnt)

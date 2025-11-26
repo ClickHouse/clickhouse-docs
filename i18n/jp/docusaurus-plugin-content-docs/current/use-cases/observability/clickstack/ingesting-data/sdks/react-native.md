@@ -3,35 +3,32 @@ slug: /use-cases/observability/clickstack/sdks/react-native
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'ClickStack 用 React Native SDK - ClickHouse Observability Stack'
+description: 'ClickStack 用 React Native SDK - ClickHouse Observability スタック'
 title: 'React Native'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', 'ロギング', '連携', 'アプリケーション監視']
+keywords: ['clickstack', 'sdk', 'ログ記録', '連携', 'アプリケーション監視']
 ---
 
-ClickStack React Native SDK を使用すると、React Native アプリケーションを
-インストルメントして、イベントを ClickStack に送信できます。これにより、
-モバイルのネットワークリクエストや例外を、バックエンド側のイベントと並べて 1 つのタイムライン上で確認できます。
+ClickStack React Native SDK を使用すると、React Native アプリケーションを計装し、イベントを ClickStack に送信できます。これにより、モバイルアプリのネットワークリクエストや例外を、バックエンドのイベントと同じタイムライン上で並べて確認できます。
 
-このガイドでは、次の内容との連携について説明します:
+このガイドで扱う統合対象:
 
-- **XHR/Fetch Requests**
+- **XHR/Fetch リクエスト**
 
+## はじめに {#getting-started}
 
+### npm でインストール
 
-## はじめに
-
-### NPM 経由でインストール
-
-次のコマンドを使用して、[ClickStack React Native パッケージ](https://www.npmjs.com/package/@hyperdx/otel-react-native) をインストールします。
+次のコマンドを実行して、[ClickStack React Native パッケージ](https://www.npmjs.com/package/@hyperdx/otel-react-native) をインストールします。
 
 ```shell
 npm install @hyperdx/otel-react-native
 ```
 
-### ClickStack を初期化する
 
-アプリケーションのライフサイクルの可能な限り早い段階で、このライブラリを初期化してください。
+### ClickStack の初期化
+
+アプリケーションのライフサイクルの、できるだけ早い段階でライブラリを初期化してください。
 
 ```javascript
 import { HyperDXRum } from '@hyperdx/otel-react-native';
@@ -39,15 +36,16 @@ import { HyperDXRum } from '@hyperdx/otel-react-native';
 HyperDXRum.init({
   service: 'my-rn-app',
   apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストに対してトレースをリンクするための設定
+  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドとバックエンド間のリクエストのトレースを連携するために設定
 });
 ```
 
-### ユーザー情報またはメタデータを付与する（オプション）
 
-ユーザー情報を付与すると、HyperDX 内でセッションやイベントを検索・フィルタリングできるようになります。これはクライアントセッションの任意のタイミングで呼び出せます。現在のクライアントセッションおよび、その呼び出し以降に送信されるすべてのイベントは、指定したユーザー情報と関連付けられます。
+### ユーザー情報またはメタデータを付与する（任意）
 
-`userEmail`、`userName`、`teamName` は、対応する値がセッション UI に表示されるようになりますが、省略することもできます。その他の任意の追加値も指定でき、それらを用いてイベントを検索できます。
+ユーザー情報を付与すると、HyperDX 内でセッションやイベントを検索・フィルタリングできるようになります。これはクライアントセッション中の任意のタイミングで呼び出すことができます。現在のクライアントセッションおよびその呼び出し以降に送信されるすべてのイベントは、そのユーザー情報と関連付けられます。
+
+`userEmail`、`userName`、`teamName` は、対応する値をセッション UI に表示するために使用されますが、省略することもできます。その他の任意の追加値も指定でき、イベントの検索に利用できます。
 
 ```javascript
 HyperDXRum.setGlobalAttributes({
@@ -59,11 +57,12 @@ HyperDXRum.setGlobalAttributes({
 });
 ```
 
-### 旧バージョンでのインストルメンテーション
 
-React Native 0.68 未満のバージョンで動作しているアプリケーションをインストルメントするには、
-`metro.config.js` ファイルを編集して、Metro にブラウザー向けの
-パッケージを使用するよう強制します。例:
+### 旧バージョンを計装する
+
+バージョン 0.68 未満の React Native で動作しているアプリケーションを計装するには、
+`metro.config.js` ファイルを編集して、metro にブラウザ向けパッケージを強制的に
+使用させます。例:
 
 ```javascript
 const defaultResolver = require('metro-resolver');
@@ -106,11 +105,11 @@ module.exports = {
 ```
 
 
-## 画面ナビゲーション
+## ビューのナビゲーション
 
-[react-navigation](https://github.com/react-navigation/react-navigation) のバージョン 5 および 6 に対応しています。
+[react-navigation](https://github.com/react-navigation/react-navigation) のバージョン 5 および 6 がサポートされています。
 
-次の例は、ナビゲーションを計装する方法を示しています。
+次の例では、ナビゲーションを計装する方法を示します。
 
 ```javascript
 import { startNavigationTracking } from '@hyperdx/otel-react-native';

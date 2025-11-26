@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactStrings 格式的文档'
+description: 'JSONCompactStrings 格式文档'
 input_format: false
 keywords: ['JSONCompactStrings']
 output_format: true
@@ -13,15 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的区别仅在于数据行以数组形式输出，而不是以对象形式输出。
+`JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的唯一区别是数据行以数组形式输出，而不是对象。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ### 读取数据
 

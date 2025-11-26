@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'ArrowStream 格式文档'
+description: 'ArrowStream 格式的文档'
 input_format: true
 keywords: ['ArrowStream']
 output_format: true
@@ -13,16 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-`ArrowStream` 是 Apache Arrow 的“流模式”格式，专为内存流处理而设计。
+`ArrowStream` 是 Apache Arrow 的“流式模式”格式，专为内存流处理而设计。
 
-
-
-## 使用示例 {#example-usage}
-
-
+## 示例用法 {#example-usage}
 
 ## 格式设置 {#format-settings}

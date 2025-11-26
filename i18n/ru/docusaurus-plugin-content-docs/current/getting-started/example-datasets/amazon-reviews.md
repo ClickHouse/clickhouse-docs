@@ -4,21 +4,19 @@ sidebar_label: 'Отзывы покупателей Amazon'
 slug: /getting-started/example-datasets/amazon-reviews
 title: 'Отзывы покупателей Amazon'
 doc_type: 'guide'
-keywords: ['отзывы о товарах Amazon', 'набор данных с отзывами покупателей', 'данные электронной коммерции', 'пример набора данных', 'начало работы']
+keywords: ['отзывы Amazon', 'датасет с отзывами покупателей', 'данные электронной коммерции', 'пример датасета', 'начало работы']
 ---
 
-Этот набор данных содержит более 150 млн отзывов покупателей о товарах Amazon. Данные находятся в файлах Parquet, сжатых с помощью Snappy, в AWS S3; общий сжатый размер — 49 ГБ. Рассмотрим шаги по загрузке его в ClickHouse.
+Этот датасет содержит более 150 млн отзывов покупателей о товарах Amazon. Данные хранятся в файлах формата Parquet, сжатых алгоритмом Snappy, в AWS S3; общий сжатый объём — 49 ГБ. Далее рассмотрим шаги по загрузке этого датасета в ClickHouse.
 
 :::note
 Приведённые ниже запросы выполнялись на **Production**-инстансе ClickHouse Cloud. Для получения дополнительной информации см. раздел
-["Характеристики Playground"](/getting-started/playground#specifications).
+["Playground specifications"](/getting-started/playground#specifications).
 :::
-
-
 
 ## Загрузка набора данных
 
-1. Даже не загружая данные в ClickHouse, мы можем выполнять по ним запросы прямо на месте. Давайте выберем несколько строк, чтобы посмотреть, как они выглядят:
+1. Не загружая данные в ClickHouse, мы можем обращаться к ним напрямую. Давайте выберем несколько строк, чтобы посмотреть, как они выглядят:
 
 ```sql
 SELECT *
@@ -29,14 +27,14 @@ LIMIT 3
 Строки имеют следующий вид:
 
 ```response
-Row 1:
+Строка 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 25.44 million
+customer_id:       25444946 -- 25,44 миллиона
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 908.18 million
+product_parent:    908181913 -- 908,18 миллиона
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -44,17 +42,17 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   чехол прочный и защищает так, как мне нужно
-review_body:       Я не стал бы полагаться на водонепроницаемость (я снял резиновые уплотнители снизу, потому что они меня раздражали). Но чехол прочный и защищает так, как мне нужно.
+review_headline:   чехол прочный и защищает как надо
+review_body:       Не буду рассчитывать на водонепроницаемость (снял резиновые уплотнители снизу, потому что они действовали на нервы). Но чехол прочный и защищает как надо.
 
-Row 2:
+Строка 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 1.97 million
+customer_id:       1974568 -- 1,97 миллиона
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 951.21 million
+product_parent:    951208259 -- 951,21 миллиона
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -63,16 +61,16 @@ total_votes:       0
 vine:              false
 verified_purchase: true
 review_headline:   Одна звезда
-review_body:       Не могу использовать чехол, потому что он слишком большой для телефона. Выброшенные деньги!
+review_body:       Не могу использовать чехол, потому что он велик для телефона. Выброшенные деньги!
 
-Row 3:
+Строка 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 24.80 million
+customer_id:       24803564 -- 24,80 миллиона
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 524.59 million
+product_parent:    524588109 -- 524,59 миллиона
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -80,11 +78,11 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   но в целом этот чехол довольно прочный и обеспечивает хорошую защиту телефона
-review_body:       Переднюю часть поначалу было немного сложно закрепить на телефоне, но в целом этот чехол довольно прочный и обеспечивает хорошую защиту телефона, что мне и нужно. Я бы купил этот чехол снова.
+review_headline:   но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона
+review_body:       Переднюю часть поначалу было немного сложно закрепить на телефоне, но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона, что мне и нужно. Купил бы этот чехол снова.
 ```
 
-2. Создадим новую таблицу `MergeTree` с именем `amazon_reviews` для хранения данных в ClickHouse:
+2. Давайте создадим новую таблицу типа `MergeTree` с именем `amazon_reviews` для хранения этих данных в ClickHouse:
 
 ```sql
 CREATE DATABASE amazon
@@ -116,7 +114,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. Следующая команда `INSERT` использует табличную функцию `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно на всех узлах вашего кластера. Мы также используем подстановочный символ, чтобы вставить любой файл, путь к которому начинается с `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
+3. Следующая команда `INSERT` использует табличную функцию `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно на всех узлах кластера. Мы также используем подстановочный символ (wildcard), чтобы вставить любые файлы, имена которых начинаются с `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -126,10 +124,10 @@ FROM s3Cluster('default',
 
 
 :::tip
-В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера… или используйте табличную функцию `s3` (вместо `s3Cluster`), если у вас нет кластера.
+В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера... или используйте табличную функцию `s3` (вместо `s3Cluster`), если кластера у вас нет.
 :::
 
-5. Этот запрос выполняется недолго — в среднем около 300 000 строк в секунду. Примерно через 5 минут (или около того) вы сможете увидеть все вставленные строки:
+5. Этот запрос выполняется недолго — в среднем около 300 000 строк в секунду. Примерно через 5 минут или около того вы должны увидеть все вставленные строки:
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
@@ -152,12 +150,12 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-Объём исходных данных составлял около 70 ГБ, но в сжатом виде в ClickHouse занимает примерно 30 ГБ.
+Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
 
 
 ## Примеры запросов
 
-7. Давайте выполним несколько запросов. Ниже представлены 10 наиболее полезных отзывов в этом наборе данных:
+7. Давайте выполним несколько запросов. Ниже приведены 10 наиболее полезных отзывов в этом наборе данных:
 
 ```sql runnable
 SELECT
@@ -172,7 +170,7 @@ LIMIT 10
 Этот запрос использует [проекцию](/data-modeling/projections) для повышения производительности.
 :::
 
-8. Топ‑10 товаров на Amazon с наибольшим числом отзывов:
+8. Вот топ‑10 товаров на Amazon по количеству отзывов:
 
 ```sql runnable
 SELECT
@@ -184,7 +182,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. Вот средние оценки отзывов по месяцам для каждого товара (реальный [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
+9. Вот средние рейтинги отзывов по месяцам для каждого товара (реальный [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -201,7 +199,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. Вот общее количество голосов по категориям товаров. Этот запрос выполняется быстро, потому что `product_category` входит в состав первичного ключа:
+10. Вот общее число голосов по категориям товаров. Этот запрос выполняется быстро, потому что `product_category` входит в первичный ключ:
 
 ```sql runnable
 SELECT
@@ -212,7 +210,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. Найдём товары, в отзывах о которых слово **&quot;awful&quot;** встречается чаще всего. Это серьёзная задача — нужно проанализировать более 151 млн строк в поисках одного слова:
+11. Найдём товары, в отзывах на которые слово **«awful»** встречается чаще всего. Это большая задача — нужно разобрать более 151 млн строк в поисках одного слова:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -227,9 +225,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-Обратите внимание на время выполнения запроса для такого большого объёма данных. Результаты тоже интересно почитать!
+Обратите внимание на время выполнения запроса для такого большого объёма данных. Результаты тоже любопытно почитать!
 
-12. Мы можем запустить тот же запрос ещё раз, но на этот раз поищем слово **awesome** в отзывах:
+12. Мы можем выполнить тот же запрос ещё раз, только на этот раз будем искать **awesome** в отзывах:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Hash 格式文档'
+description: 'Hash 格式的文档'
 input_format: false
 keywords: ['hash', 'format']
 output_format: true
@@ -13,20 +13,16 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-`Hash` 输出格式会为结果的所有列和所有行计算一个单一的哈希值。
-这对于计算结果的“指纹”非常有用，例如当数据传输成为瓶颈时。
+`Hash` 输出格式会为结果中的所有列和行计算一个单个哈希值。
+这在数据传输成为瓶颈的场景中，对于计算结果的“指纹”非常有用。
 
-
-
-## 示例用法
+## 示例用法 {#example-usage}
 
 ### 读取数据
 
-假设有一张名为 `football` 的表，包含以下数据：
+假设有一张名为 `football` 的表，包含如下数据：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -58,12 +54,12 @@ FROM football
 FORMAT Hash
 ```
 
-该查询会处理数据，但不会产生任何输出。
+此查询将处理数据，但不会产生任何输出。
 
 ```response
 df2ec2f0669b000edff6adee264e7d68
 
-1 rows in set. Elapsed: 0.154 sec.
+返回 1 行。用时：0.154 秒。
 ```
 
 

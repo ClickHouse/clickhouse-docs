@@ -1,15 +1,15 @@
 ---
-description: 'Новый аналитический бенчмарк для машинно‑сгенерированных журналов (логов)'
+description: 'Новый аналитический бенчмарк для машинно-генерируемых журнальных логов'
 sidebar_label: 'Бенчмарк Brown University'
 slug: /getting-started/example-datasets/brown-benchmark
 title: 'Бенчмарк Brown University'
-keywords: ['Brown University Benchmark', 'MgBench', 'бенчмарк логовых данных', 'машинно-генерируемые данные', 'начало работы']
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'начало работы']
 doc_type: 'guide'
 ---
 
-`MgBench` — это новый аналитический бенчмарк для машинно‑сгенерированных журналов (логов), созданный [Эндрю Кроти](http://cs.brown.edu/people/acrotty/).
+`MgBench` — это новый аналитический бенчмарк для машинно-генерируемых журнальных логов, разработанный [Эндрю Кроти](http://cs.brown.edu/people/acrotty/).
 
-Скачайте данные:
+Загрузите данные:
 
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
@@ -86,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-Вставьте данные:
+Вставка данных:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -95,7 +95,7 @@ clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbe
 ```
 
 
-## Выполнение тестовых запросов
+## Выполните тестовые запросы
 
 ```sql
 USE mgbench;
@@ -141,7 +141,7 @@ ORDER BY machine_name,
 ```
 
 ```sql
--- Q1.3: Какие почасовые средние значения метрик за последние 10 дней для конкретной рабочей станции?
+-- Q1.3: Каковы средние почасовые показатели за последние 10 дней для конкретной рабочей станции?
 
 SELECT dt,
        hr,
@@ -189,7 +189,7 @@ LIMIT 10;
 ```
 
 ```sql
--- Q1.5: На каких виртуальных машинах, доступных извне, наблюдается нехватка памяти?
+-- Q1.5: Какие внешне доступные виртуальные машины испытывали нехватку памяти?
 
 SELECT machine_name,
        dt,
@@ -209,34 +209,32 @@ ORDER BY machine_name,
          dt;
 ```
 
-```sql
--- Q1.6: Каков общий почасовой сетевой трафик на всех файловых серверах?
-```
 
+```sql
+-- Q1.6: Каков общий почасовой объём сетевого трафика по всем файловым серверам?
 
 SELECT dt,
-hr,
-SUM(net&#95;in) AS net&#95;in&#95;sum,
-SUM(net&#95;out) AS net&#95;out&#95;sum,
-SUM(net&#95;in) + SUM(net&#95;out) AS both&#95;sum
+       hr,
+       SUM(net_in) AS net_in_sum,
+       SUM(net_out) AS net_out_sum,
+       SUM(net_in) + SUM(net_out) AS both_sum
 FROM (
-SELECT CAST(log&#95;time AS DATE) AS dt,
-EXTRACT(HOUR FROM log&#95;time) AS hr,
-COALESCE(bytes&#95;in, 0.0) / 1000000000.0 AS net&#95;in,
-COALESCE(bytes&#95;out, 0.0) / 1000000000.0 AS net&#95;out
-FROM logs1
-WHERE machine&#95;name IN (&#39;allsorts&#39;,&#39;andes&#39;,&#39;bigred&#39;,&#39;blackjack&#39;,&#39;bonbon&#39;,
-&#39;cadbury&#39;,&#39;chiclets&#39;,&#39;cotton&#39;,&#39;crows&#39;,&#39;dove&#39;,&#39;fireball&#39;,&#39;hearts&#39;,&#39;huey&#39;,
-&#39;lindt&#39;,&#39;milkduds&#39;,&#39;milkyway&#39;,&#39;mnm&#39;,&#39;necco&#39;,&#39;nerds&#39;,&#39;orbit&#39;,&#39;peeps&#39;,
-&#39;poprocks&#39;,&#39;razzles&#39;,&#39;runts&#39;,&#39;smarties&#39;,&#39;smuggler&#39;,&#39;spree&#39;,&#39;stride&#39;,
-&#39;tootsie&#39;,&#39;trident&#39;,&#39;wrigley&#39;,&#39;york&#39;)
+  SELECT CAST(log_time AS DATE) AS dt,
+         EXTRACT(HOUR FROM log_time) AS hr,
+         COALESCE(bytes_in, 0.0) / 1000000000.0 AS net_in,
+         COALESCE(bytes_out, 0.0) / 1000000000.0 AS net_out
+  FROM logs1
+  WHERE machine_name IN ('allsorts','andes','bigred','blackjack','bonbon',
+      'cadbury','chiclets','cotton','crows','dove','fireball','hearts','huey',
+      'lindt','milkduds','milkyway','mnm','necco','nerds','orbit','peeps',
+      'poprocks','razzles','runts','smarties','smuggler','spree','stride',
+      'tootsie','trident','wrigley','york')
 ) AS r
 GROUP BY dt,
-hr
-ORDER BY both&#95;sum DESC
+         hr
+ORDER BY both_sum DESC
 LIMIT 10;
-
-````
+```
 
 ```sql
 -- Q2.1: Какие запросы вызвали ошибки сервера за последние 2 недели?
@@ -246,7 +244,7 @@ FROM logs2
 WHERE status_code >= 500
   AND log_time >= TIMESTAMP '2012-12-18 00:00:00'
 ORDER BY log_time;
-````
+```
 
 ```sql
 -- Q2.2: Произошла ли утечка файла паролей пользователей в течение определенного двухнедельного периода?
@@ -286,7 +284,7 @@ ORDER BY top_level;
 ```
 
 ```sql
--- Q2.4: Какие клиенты за последние 3 месяца сделали чрезмерное количество запросов?
+-- Q2.4: За последние 3 месяца какие клиенты выполнили чрезмерное количество запросов?
 
 SELECT client_ip,
        COUNT(*) AS num_requests
@@ -348,8 +346,7 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-
-Запрос 3.5 ниже использует UNION. Установите режим объединения результатов запросов SELECT. Этот параметр применяется только при использовании с UNION без явного указания UNION ALL или UNION DISTINCT.
+Запрос 3.5 ниже использует UNION. Задайте режим объединения результатов запросов SELECT. Этот параметр применяется только к UNION без явного указания UNION ALL или UNION DISTINCT.
 
 ```sql
 SET union_default_mode = 'DISTINCT'
@@ -410,7 +407,7 @@ WHERE dt >= DATE '2019-06-01'
 ```
 
 ```sql
--- Q3.6: Для каждой категории устройств: каковы помесячные показатели потребления электроэнергии?
+-- Q3.6: Каковы ежемесячные показатели потребления электроэнергии для каждой категории устройств?
 
 SELECT yr,
        mo,

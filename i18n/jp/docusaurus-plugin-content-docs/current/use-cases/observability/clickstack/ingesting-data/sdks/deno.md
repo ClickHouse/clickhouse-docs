@@ -3,25 +3,23 @@ slug: /use-cases/observability/clickstack/sdks/deno
 pagination_prev: null
 pagination_next: null
 sidebar_position: 6
-description: 'ClickStack 用 Deno SDK - ClickHouse オブザーバビリティスタック'
+description: 'ClickStack 用 Deno SDK - ClickHouse オブザーバビリティ スタック'
 title: 'Deno'
 doc_type: 'guide'
-keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 連携', 'Deno オブザーバビリティ', 'Deno ログ記録 SDK']
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 統合', 'Deno オブザーバビリティ', 'Deno ロギング SDK']
 ---
 
-このガイドでは、次の機能を統合します。
+このガイドでは、次の内容を統合します:
 
-- **Logs**
+- **ログ**
 
 :::note
-現在は OpenTelemetry のログ機能のみをサポートしています。トレーシングのサポートについては、[次のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
+現在は OpenTelemetry Logging のみをサポートしています。トレースを利用する場合は、[次のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
-
-
 
 ## ロギング
 
-`std/log` モジュール向けにカスタムロガーをエクスポートすることで、ロギングをサポートします。
+`std/log` モジュール用のカスタムロガーをエクスポートすることで、ロギングに対応しています。
 
 **使用例:**
 
@@ -44,6 +42,7 @@ log.setup({
 
 log.getLogger('my-otel-logger').info('Denoからこんにちは！');
 ```
+
 
 ### アプリケーションを実行する
 

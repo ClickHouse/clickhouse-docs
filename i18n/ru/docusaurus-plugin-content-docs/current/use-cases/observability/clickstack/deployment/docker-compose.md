@@ -4,9 +4,9 @@ title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
-description: 'Развертывание ClickStack с использованием Docker Compose — стек наблюдаемости ClickHouse'
+description: 'Развертывание ClickStack с помощью Docker Compose — стек наблюдаемости ClickHouse'
 doc_type: 'guide'
-keywords: ['ClickStack с Docker Compose', 'Docker Compose для ClickHouse', 'Развертывание HyperDX в Docker', 'Руководство по развертыванию ClickStack', 'OpenTelemetry Docker Compose']
+keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'Развертывание HyperDX в Docker', 'Руководство по развертыванию ClickStack', 'OpenTelemetry Docker Compose']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,78 +18,75 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) collector**
+* **коллектор OpenTelemetry (OTel)**
 * **MongoDB**
 
-Эти образы можно комбинировать и развёртывать локально с помощью Docker Compose.
+Эти образы можно комбинировать и разворачивать локально с помощью Docker Compose.
 
 Docker Compose открывает дополнительные порты для наблюдаемости и ингестии на основе стандартной конфигурации `otel-collector`:
 
-* `13133`: endpoint проверки работоспособности для расширения `health_check`
-* `24225`: Fluentd‑приёмник для приёма логов
-* `4317`: OTLP gRPC‑приёмник (стандарт для трейсов, логов и метрик)
-* `4318`: OTLP HTTP‑приёмник (альтернатива gRPC)
-* `8888`: endpoint метрик Prometheus для мониторинга самого коллектора
+* `13133`: конечная точка проверки работоспособности для расширения `health_check`
+* `24225`: приёмник Fluentd для приёма логов
+* `4317`: приёмник OTLP gRPC (стандарт для трейсов, логов и метрик)
+* `4318`: приёмник OTLP HTTP (альтернатива gRPC)
+* `8888`: конечная точка метрик Prometheus для мониторинга самого коллектора
 
-Эти порты обеспечивают интеграцию с различными источниками телеметрии и делают OpenTelemetry collector готовым к промышленной эксплуатации для разнообразных сценариев ингестии.
+Эти порты обеспечивают интеграцию с широким набором источников телеметрии и делают коллектор OpenTelemetry готовым к промышленной эксплуатации для различных сценариев ингестии.
 
-### Подходит для
+
+### Подходит для {#suitable-for}
 
 * Локального тестирования
-* Proof-of-concept‑экспериментов
-* Промышленных развертываний, где отказоустойчивость не требуется и одного сервера достаточно для размещения всех данных ClickHouse
-* Сценариев, когда ClickStack развёртывается, а ClickHouse размещается отдельно, например с использованием ClickHouse Cloud.
-
+* Создания прототипов и пилотных решений (proof of concept)
+* Боевых развертываний, где отказоустойчивость не требуется и одного сервера достаточно для размещения всех данных ClickHouse
+* При развертывании ClickStack, но отдельном размещении ClickHouse, например, с использованием ClickHouse Cloud.
 
 ## Шаги развертывания {#deployment-steps}
+
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
 ### Клонирование репозитория {#clone-the-repo}
 
-Чтобы выполнить развертывание с помощью Docker Compose, клонируйте репозиторий HyperDX, перейдите в созданный каталог и выполните команду `docker-compose up`:
+Чтобы развернуть с помощью Docker Compose, клонируйте репозиторий HyperDX, перейдите в каталог и выполните `docker-compose up`:
 
 ```shell
 git clone git@github.com:hyperdxio/hyperdx.git
 docker compose up
 ```
 
-### Перейдите в интерфейс HyperDX {#navigate-to-hyperdx-ui}
+### Переход к интерфейсу HyperDX {#navigate-to-hyperdx-ui}
 
 Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
 Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям. 
 
-После нажатия кнопки `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
+При нажатии `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
 
 :::note Переопределение подключения по умолчанию
-Вы можете переопределить подключение по умолчанию к встроенному экземпляру ClickHouse. Подробности см. в разделе ["Использование ClickHouse Cloud"](#using-clickhouse-cloud).
+Вы можете переопределить подключение по умолчанию к интегрированному экземпляру ClickHouse. Подробности см. в разделе ["Использование ClickHouse Cloud"](#using-clickhouse-cloud).
 :::
 
 <Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg"/>
 
-Пример использования альтернативного экземпляра ClickHouse приведён в разделе ["Создание подключения ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+Пример использования альтернативного экземпляра ClickHouse см. в разделе ["Создание подключения к ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-### Заполните сведения о подключении {#complete-connection-details}
+### Заполнение сведений о подключении {#complete-connection-details}
 
-Чтобы подключиться к развернутому экземпляру ClickHouse, просто нажмите **Create** и примите настройки по умолчанию.  
+Чтобы подключиться к развернутому экземпляру ClickHouse, просто нажмите **Create** и примите значения по умолчанию.  
 
-Если вы предпочитаете подключиться к собственному **внешнему кластеру ClickHouse**, например ClickHouse Cloud, вы можете вручную ввести учетные данные подключения.
+Если вы предпочитаете подключиться к своему **внешнему кластеру ClickHouse**, например ClickHouse Cloud, вы можете вручную ввести учетные данные подключения.
 
-Если вам будет предложено создать источник, сохраните все значения по умолчанию и заполните поле `Table` значением `otel_logs`. Все остальные настройки должны быть определены автоматически, после чего вы сможете нажать `Save New Source`.
+Если будет предложено создать источник, сохраните все значения по умолчанию и заполните поле `Table` значением `otel_logs`. Все остальные параметры должны быть автоматически определены, после чего вы сможете нажать `Save New Source`.
 
 <Image img={hyperdx_logs} alt="Создание источника логов" size="md"/>
 
 </VerticalStepper>
 
+## Изменение настроек Compose
 
-
-## Изменение настроек Compose {#modifying-settings}
-
-Вы можете изменять настройки стека, например используемую версию, с помощью файла с переменными окружения:
-
-
+Пользователи могут изменять настройки стека, например используемую версию, через файл с переменными окружения:
 
 ```shell
 user@example-host hyperdx % cat .env
@@ -108,43 +105,36 @@ CODE_VERSION=2.0.0-beta.16
 IMAGE_VERSION_SUB_TAG=.16
 IMAGE_VERSION=2-beta
 IMAGE_NIGHTLY_TAG=2-nightly
-```
 
-
-# Настройка доменных URL-адресов
-HYPERDX_API_PORT=8000 # необязательно (порт не должен использоваться другими сервисами)
+# Настройка URL доменов
+HYPERDX_API_PORT=8000 #необязательно (не должен быть занят другими сервисами)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-
-
 # Конфигурация OTel/ClickHouse
-
-HYPERDX&#95;OTEL&#95;EXPORTER&#95;CLICKHOUSE&#95;DATABASE=default
-
+HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
-### Настройка OpenTelemetry collector {#configuring-collector}
 
-При необходимости конфигурацию OTel collector можно изменить — см. ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
-```
+### Настройка коллектора OTel {#configuring-collector}
 
+Конфигурацию коллектора OTel можно изменить при необходимости — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
 ## Использование ClickHouse Cloud
 
-Этот дистрибутив может использоваться с ClickHouse Cloud. Пользователям следует:
+Этот дистрибутив можно использовать с ClickHouse Cloud. Пользователям следует:
 
-* Удалить сервис ClickHouse из файла `docker-compose.yaml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет потреблять локальные ресурсы. При удалении сервиса убедитесь, что все ссылки на этот сервис, такие как `depends_on`, также удалены.
+* Удалить сервис ClickHouse из файла `docker-compose.yaml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет расходовать локальные ресурсы. При удалении сервиса убедитесь, что удалены все ссылки на него, такие как `depends_on`.
 
-* Настроить OTel collector на использование экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в compose-файле. В частности, добавьте переменные окружения в сервис OTel collector:
+* Изменить OTel collector для использования экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в файле `docker-compose.yaml`. В частности, добавьте переменные окружения в сервис OTel collector:
 
   ```shell
   otel-collector:
       image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
       environment:
-        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # HTTPS endpoint here
         CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
         CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
         HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
@@ -161,13 +151,13 @@ HYPERDX&#95;OTEL&#95;EXPORTER&#95;CLICKHOUSE&#95;DATABASE=default
         - internal
   ```
 
-  Значение `CLICKHOUSE_ENDPOINT` должно быть HTTPS-эндпоинтом ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
+  Переменная `CLICKHOUSE_ENDPOINT` должна указывать на HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
 * При подключении к интерфейсу HyperDX и создании подключения к ClickHouse используйте свои учетные данные ClickHouse Cloud.
 
 <JSONSupport />
 
-Чтобы задать эти значения, измените соответствующие сервисы в `docker-compose.yaml`:
+Чтобы их задать, измените соответствующие сервисы в файле `docker-compose.yaml`:
 
 ```yaml
   app:

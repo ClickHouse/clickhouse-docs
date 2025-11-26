@@ -1,4 +1,4 @@
-下表列出了 Apache Avro 格式支持的所有数据类型，以及它们在 `INSERT` 和 `SELECT` 查询中对应的 ClickHouse [数据类型](/sql-reference/data-types/index.md)。
+下表展示了 Apache Avro 格式支持的所有数据类型，以及它们在 `INSERT` 和 `SELECT` 查询中对应的 ClickHouse [数据类型](/sql-reference/data-types/index.md)。
 
 | Avro 数据类型 `INSERT`                     | ClickHouse 数据类型                                                                                                          | Avro 数据类型 `SELECT`         |
 |---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
@@ -26,12 +26,12 @@
 | `fixed(32)`                                 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                               | `fixed(32)`                     |
 | `record`                                    | [Tuple](/sql-reference/data-types/tuple.md)                                                                           | `record`                        |
 
-\* 默认使用 `bytes`，由设置 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) 控制。
+\* 默认值为 `bytes`，此行为由设置 [`output_format_avro_string_column_pattern`](/operations/settings/settings-formats.md/#output_format_avro_string_column_pattern) 控制
 
-\**  [Variant 类型](/sql-reference/data-types/variant) 会隐式接受 `null` 作为字段值，因此例如 Avro `union(T1, T2, null)` 会被转换为 `Variant(T1, T2)`。
-因此，当从 ClickHouse 生成 Avro 时，我们必须始终在 Avro 的 `union` 类型集合中包含 `null` 类型，因为在模式推断过程中，我们无法预先得知某个值是否实际为 `null`。
+\**  [Variant 类型](/sql-reference/data-types/variant) 会隐式接受 `null` 作为字段值，因此，例如 Avro 的 `union(T1, T2, null)` 会被转换为 `Variant(T1, T2)`。
+因此，当从 ClickHouse 生成 Avro 时，我们必须始终在 Avro 的 `union` 类型集合中包含 `null` 类型，因为在模式推断期间我们无法得知是否有任何值实际为 `null`。
 
-\**\* [Avro logical types](https://avro.apache.org/docs/current/spec.html#Logical+Types)
+\**\* [Avro 逻辑类型](https://avro.apache.org/docs/current/spec.html#Logical+Types)
 
 不支持的 Avro 逻辑数据类型：
 

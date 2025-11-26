@@ -13,18 +13,14 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 `BSONEachRow` 格式将数据解析为一系列二进制 JSON（BSON）文档，文档之间没有任何分隔符。
-每一行被格式化为一个单独的文档，每一列被格式化为该文档中的一个 BSON 字段，字段名为该列的名称。
-
-
+每一行会被格式化为一个单独的文档，每一列会被格式化为该文档中的一个 BSON 字段，列名作为字段名。
 
 ## 数据类型匹配 {#data-types-matching}
 
-用于输出时，使用以下 ClickHouse 类型与 BSON 类型之间的对应关系：
+在输出时，使用以下 ClickHouse 类型与 BSON 类型之间的对应关系：
 
 | ClickHouse 类型                                                                                                       | BSON 类型                                                                                                     |
 |-----------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
@@ -44,7 +40,7 @@ doc_type: 'reference'
 | [Decimal256](/sql-reference/data-types/decimal.md)                                                            | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
 | [Int128/UInt128](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 16                                                               |
 | [Int256/UInt256](/sql-reference/data-types/int-uint.md)                                                       | `\x05` binary, `\x00` binary subtype, size = 32                                                               |
-| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary, `\x00` binary subtype，或 \x02 string（如果启用了设置 output_format_bson_string_as_string） |
+| [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md) | `\x05` binary, `\x00` binary subtype 或 \x02 string（如果启用了 output_format_bson_string_as_string 设置） |
 | [UUID](/sql-reference/data-types/uuid.md)                                                                     | `\x05` binary, `\x04` uuid subtype, size = 16                                                                 |
 | [Array](/sql-reference/data-types/array.md)                                                                   | `\x04` array                                                                                                  |
 | [Tuple](/sql-reference/data-types/tuple.md)                                                                   | `\x04` array                                                                                                  |
@@ -53,11 +49,9 @@ doc_type: 'reference'
 | [IPv4](/sql-reference/data-types/ipv4.md)                                                                     | `\x10` int32                                                                                                  |
 | [IPv6](/sql-reference/data-types/ipv6.md)                                                                     | `\x05` binary, `\x00` binary subtype                                                                          |
 
-用于输入时，使用以下 BSON 类型与 ClickHouse 类型之间的对应关系：
+在输入时，使用以下 BSON 类型与 ClickHouse 类型之间的对应关系：
 
-
-
-| BSON 类型                                | ClickHouse 类型                                                                                                                                                                                                                             |
+| BSON Type                                | ClickHouse 类型                                                                                                                                                                                                                             |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `\x01` double                            | [Float32/Float64](/sql-reference/data-types/float.md)                                                                                                                                                                               |
 | `\x02` string                            | [String](/sql-reference/data-types/string.md)/[FixedString](/sql-reference/data-types/fixedstring.md)                                                                                                                       |
@@ -76,23 +70,21 @@ doc_type: 'reference'
 | `\x10` int32                             | [Int32/UInt32](/sql-reference/data-types/int-uint.md)/[Decimal32](/sql-reference/data-types/decimal.md)/[IPv4](/sql-reference/data-types/ipv4.md)/[Enum8/Enum16](/sql-reference/data-types/enum.md) |
 | `\x12` int64                             | [Int64/UInt64](/sql-reference/data-types/int-uint.md)/[Decimal64](/sql-reference/data-types/decimal.md)/[DateTime64](/sql-reference/data-types/datetime64.md)                                                       |
 
-其他 BSON 类型不支持。此外，它还会在不同整数类型之间执行转换。  
-例如，可以将 BSON `int32` 值作为 [`UInt8`](../../sql-reference/data-types/int-uint.md) 写入 ClickHouse。
+其他 BSON 类型不受支持。此外，该格式也会在不同整数类型之间进行转换。  
+例如，可以将 BSON `int32` 值作为 [`UInt8`](../../sql-reference/data-types/int-uint.md) 插入到 ClickHouse 中。
 
-`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` 等大整数和十进制数可以从带有 `\x00` 二进制子类型的 BSON Binary 值中解析。  
-在这种情况下，此格式会校验二进制数据的大小是否等于期望值的大小。
+`Int128`/`UInt128`/`Int256`/`UInt256`/`Decimal128`/`Decimal256` 等大整数和小数可以从具有 `\x00` 二进制子类型的 BSON Binary 值中解析。  
+在这种情况下，该格式会验证二进制数据的大小是否与预期值的大小一致。
 
 :::note
-此格式在大端平台上无法正常工作。
+此格式在大端（Big-Endian）平台上不能正常工作。
 :::
 
-
-
-## 示例用法
+## 使用示例 {#example-usage}
 
 ### 插入数据
 
-使用一个名为 `football.bson` 的 BSON 文件，其中包含以下数据：
+使用名为 `football.bson`、包含以下数据的 BSON 文件：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -122,9 +114,10 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
+
 ### 读取数据
 
-使用 `BSONEachRow` 格式来读取数据：
+以 `BSONEachRow` 格式读取数据：
 
 ```sql
 SELECT *
@@ -133,7 +126,7 @@ FORMAT BSONEachRow
 ```
 
 :::tip
-BSON 是一种二进制格式，无法在终端中以人类可读的形式显示。请使用 `INTO OUTFILE` 导出 BSON 文件。
+BSON 是一种二进制格式，无法在终端以人类可读形式显示。使用 `INTO OUTFILE` 将数据输出为 BSON 文件。
 :::
 
 
@@ -141,5 +134,5 @@ BSON 是一种二进制格式，无法在终端中以人类可读的形式显示
 
 | 设置                                                                                                                                                                                                  | 描述                                                                                         | 默认值   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|----------|
-| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | 对于 String 列，使用 BSON String 类型而不是 Binary 类型。                                   | `false`  |
-| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | 在对 BSONEachRow 格式进行模式推断时，允许跳过具有不支持类型的列。                           | `false`  |
+| [`output_format_bson_string_as_string`](../../operations/settings/settings-formats.md/#output_format_bson_string_as_string)                                                                           | 对 String 列使用 BSON String 类型而不是 Binary 类型。                                        | `false`  |
+| [`input_format_bson_skip_fields_with_unsupported_types_in_schema_inference`](../../operations/settings/settings-formats.md/#input_format_bson_skip_fields_with_unsupported_types_in_schema_inference) | 在对 BSONEachRow 格式进行 schema 推断时，允许跳过类型不受支持的列。                         | `false`  |

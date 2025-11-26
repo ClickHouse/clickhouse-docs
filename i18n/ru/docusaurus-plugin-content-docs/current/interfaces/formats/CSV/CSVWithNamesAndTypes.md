@@ -9,27 +9,23 @@ title: 'CSVWithNamesAndTypes'
 doc_type: 'reference'
 ---
 
-| Входной формат | Выходной формат | Псевдоним |
-|----------------|-----------------|-----------|
-| ✔              | ✔               |           |
-
-
+| Вход | Выход | Псевдоним |
+|-------|--------|-------|
+| ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Также выводит две строки заголовка с названиями столбцов и их типами, аналогично формату [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes).
+Также выводит две заголовочные строки с именами и типами столбцов, аналогично формату [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes).
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
 :::tip
-Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически определяет заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
+Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически распознаёт заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
 :::
 
-Рассмотрим следующий CSV-файл `football_types.csv`:
+Используем следующий CSV-файл с именем `football_types.csv`:
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -69,15 +65,16 @@ ENGINE = MergeTree
 ORDER BY (date, home_team);
 ```
 
-Вставьте данные в формате `CSVWithNamesAndTypes`:
+Вставьте данные, используя формат `CSVWithNamesAndTypes`:
 
 ```sql
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
+
 ### Чтение данных
 
-Считайте данные в формате `CSVWithNamesAndTypes`:
+Прочитайте данные в формате `CSVWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -85,8 +82,7 @@ FROM football
 FORMAT CSVWithNamesAndTypes
 ```
 
-Результатом будет CSV с двумя строками заголовков для названий столбцов и их типов:
-
+Результатом будет CSV с двумя строками заголовков: одна для названий столбцов, другая — для их типов:
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -114,12 +110,12 @@ FORMAT CSVWithNamesAndTypes
 ## Настройки формата {#format-settings}
 
 :::note
-Если настройка [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в значение `1`,
-то столбцы из входных данных будут сопоставляться со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропускаться, если настройка [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`.
+Если параметр [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в значение `1`,
+столбцы из входных данных будут сопоставляться со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если параметр [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в значение `1`.
 В противном случае первая строка будет пропущена.
 :::
 
 :::note
-Если настройка [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в значение `1`,
-то типы из входных данных будут сопоставляться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
+Если параметр [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) установлен в значение `1`,
+типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::

@@ -3,17 +3,17 @@ slug: /use-cases/observability/clickstack/sdks/golang
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: 'Golang SDK для ClickStack - стек наблюдаемости ClickHouse'
+description: 'Golang SDK для ClickStack — ClickHouse Observability Stack'
 title: 'Golang'
 doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'интеграция Go с OpenTelemetry', 'наблюдаемость в Golang', 'инструментирование трассировки в Go', 'ClickStack Go SDK']
 ---
 
 ClickStack использует стандарт OpenTelemetry для сбора телеметрии (логов и
-трейсов). Трейсы автоматически генерируются с помощью автоматического инструментирования, поэтому ручное
-инструментирование не требуется, чтобы извлечь пользу из трассировки.
+трейсов). Трейсы автоматически генерируются с помощью автоматического инструментирования, поэтому
+ручное инструментирование не требуется, чтобы извлекать пользу из трассировки.
 
-**В этом руководстве рассматривается интеграция:**
+**Это руководство охватывает интеграцию:**
 
 <table>
   <tbody>
@@ -25,13 +25,11 @@ ClickStack использует стандарт OpenTelemetry для сбора
   </tbody>
 </table>
 
+## Первые шаги {#getting-started}
 
+### Установите пакеты инструментации OpenTelemetry
 
-## Начало работы
-
-### Установка пакетов инструментирования OpenTelemetry
-
-Чтобы установить пакеты OpenTelemetry и HyperDX для Go, выполните команду, приведённую ниже. Рекомендуется ознакомиться с [актуальными пакетами инструментирования](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) и установить необходимые пакеты, чтобы обеспечить корректное прикрепление данных трассировки.
+Чтобы установить пакеты OpenTelemetry и HyperDX для Go, используйте следующую команду. Рекомендуется ознакомиться с [актуальными пакетами инструментации](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) и установить необходимые пакеты, чтобы обеспечить корректную привязку информации о трассировках.
 
 ```shell
 go get -u go.opentelemetry.io/otel
@@ -40,15 +38,16 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-### Пример нативного HTTP-сервера (net/http)
 
-В этом примере мы используем `net/http/otelhttp`.
+### Пример HTTP-сервера на базе стандартной библиотеки (net/http)
+
+В этом примере используется `net/http/otelhttp`.
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
-Обратитесь к разделам с комментариями, чтобы узнать, как добавить инструментирование в ваше Go‑приложение.
+См. закомментированные фрагменты, чтобы узнать, как инструментировать ваше Go-приложение.
 
 ```go
 
@@ -82,7 +81,7 @@ func newResource() *resource.Resource {
   )
 }
 
-// добавление trace id к логу
+// привязка идентификатора трассировки к логу
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
@@ -97,10 +96,10 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // Инициализация конфигурации OTel и использование во всем приложении
+  // Инициализация конфигурации OTel и её использование во всём приложении
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("ошибка при настройке OTel SDK - %e", err)
+    log.Fatalf("ошибка настройки OTel SDK - %e", err)
   }
   defer otelShutdown()
 
@@ -114,7 +113,7 @@ func main() {
   // корректное завершение работы логгера для сброса накопленных сигналов перед завершением программы
   defer loggerProvider.Shutdown(ctx)
 
-  // создание нового логгера с ядром OpenTelemetry zap и установка его глобально
+  // создание нового логгера с ядром OpenTelemetry zap и его глобальная установка
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
   logger.Warn("hello world", zap.String("foo", "bar"))
@@ -132,34 +131,32 @@ func main() {
   }
 }
 
-// Используйте для обертывания всех обработчиков с целью добавления метаданных трассировки к логгеру
+// Используйте для обёртки всех обработчиков с целью добавления метаданных трассировки к логгеру
 func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
     logger := WithTraceMetadata(r.Context(), logger)
     logger.Info("запрос получен", zap.String("url", r.URL.Path), zap.String("method", r.Method))
     handler(w, r)
-    logger.Info("запрос завершен", zap.String("path", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("запрос завершён", zap.String("path", r.URL.Path), zap.String("method", r.Method))
   }
+}
+
+func ExampleHandler(w http.ResponseWriter, r *http.Request) {
+  w.Header().Add("Content-Type", "application/json")
+  io.WriteString(w, `{"status":"ok"}`)
 }
 ```
 
 
-func ExampleHandler(w http.ResponseWriter, r \*http.Request) {
-w.Header().Add("Content-Type", "application/json")
-io.WriteString(w, `{"status":"ok"}`)
-}
-
-````
-
-### Пример приложения Gin {#gin-application-example}
+### Пример приложения на Gin
 
 В этом примере используется `gin-gonic/gin`.
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
-````
+```
 
-Обратитесь к комментариям в коде, чтобы узнать, как инструментировать ваше Go-приложение.
+Обратитесь к разделам с комментариями, чтобы узнать, как инструментировать Go‑приложение.
 
 ```go
 
@@ -180,12 +177,12 @@ import (
   "go.uber.org/zap"
 )
 
-// добавить trace id в лог
+// привязать trace id к логу
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
     // ctx не содержит валидный span.
-    // Нет метаданных трассировки для добавления.
+    // Метаданные трассировки отсутствуют.
     return logger
   }
   return logger.With(
@@ -235,9 +232,10 @@ func main() {
 }
 ```
 
-### Настройка переменных окружения {#configure-environment-variables}
 
-После этого необходимо настроить следующие переменные окружения в вашей оболочке для отправки телеметрии в ClickStack:
+### Настройка переменных окружения
+
+Далее необходимо задать в оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
@@ -246,4 +244,4 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит API-ключ, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
+Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` должна содержать API-ключ, который можно получить в приложении HyperDX в разделе `Team Settings → API Keys`.

@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactStrings 形式に関するドキュメント'
+description: 'JSONCompactStrings フォーマットのドキュメント'
 input_format: false
 keywords: ['JSONCompactStrings']
 output_format: true
@@ -13,19 +13,15 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
+## 概要 {#description}
 
+`JSONCompactStrings` フォーマットは、データ行がオブジェクトではなく配列として出力されるという点だけが、[JSONStrings](./JSONStrings.md) と異なります。
 
-## 説明 {#description}
-
-`JSONCompactStrings` フォーマットは、データ行がオブジェクトではなく配列として出力される点のみが、[JSONStrings](./JSONStrings.md) と異なります。
-
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの読み込み
 
-`JSONCompactStrings` 形式を使ってデータを読み込みます：
+`JSONCompactStrings` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -33,7 +29,7 @@ FROM football
 FORMAT JSONCompactStrings
 ```
 
-出力は JSON 形式です：
+出力結果は JSON 形式になります：
 
 ```json
 {

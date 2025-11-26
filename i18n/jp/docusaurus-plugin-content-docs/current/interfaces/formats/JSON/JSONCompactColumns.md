@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactColumns フォーマットに関するドキュメント'
+description: 'JSONCompactColumns フォーマットのドキュメント'
 input_format: true
 keywords: ['JSONCompactColumns']
 output_format: true
@@ -13,23 +13,19 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-この形式では、すべてのデータが 1 つの JSON 配列として表現されます。
+この形式では、すべてのデータは 1 つの JSON 配列として表現されます。
 
 :::note
-`JSONCompactColumns` 出力形式は、すべてのデータを単一のブロックとして出力するためにメモリ上にバッファリングするため、メモリ使用量が増大する可能性があります。
+`JSONCompactColumns` 出力形式は、すべてのデータを 1 つのブロックとして出力するためにメモリ上にバッファリングするため、多くのメモリを消費する可能性があります。
 :::
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-以下のデータを含む JSON ファイル `football.json` を用意します。
+次のデータが含まれた JSON ファイル `football.json` を使用します。
 
 ```json
 [
@@ -42,15 +38,16 @@ doc_type: 'reference'
 ]
 ```
 
-データを挿入します：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
+
 ### データの読み込み
 
-`JSONCompactColumns` フォーマットを使用してデータを読み込みます：
+`JSONCompactColumns` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -58,8 +55,7 @@ FROM football
 FORMAT JSONCompactColumns
 ```
 
-出力は JSON 形式です：
-
+出力はJSON形式です：
 
 ```json
 [
@@ -72,7 +68,7 @@ FORMAT JSONCompactColumns
 ]
 ```
 
-ブロック内に存在しない列はデフォルト値で補完されます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
+ブロック内に存在しないカラムにはデフォルト値が補われます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
 
 
-## フォーマット設定 {#format-settings}
+## フォーマットの設定 {#format-settings}

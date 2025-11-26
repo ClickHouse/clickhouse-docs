@@ -4,8 +4,9 @@ sidebar_label: 'Nessie 目录'
 title: 'Nessie 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将介绍如何使用 ClickHouse 和 Nessie 目录来查询您的数据。'
-keywords: ['Nessie', 'REST', 'Transactional', 'Data Lake', 'Iceberg', 'Git-like']
+description: '在本指南中，我们将分步骤介绍如何使用 ClickHouse 和 Nessie Catalog
+ 来查询您的数据。'
+keywords: ['Nessie', 'REST', '事务型', '数据湖', 'Iceberg', '类似 Git']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,40 +16,40 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge />
 
 :::note
-与 Nessie 目录的集成仅适用于 Iceberg 表。
-此集成支持 AWS S3 以及其他云存储服务商。
+与 Nessie Catalog 的集成仅适用于 Iceberg 表。
+此集成支持 AWS S3 以及其他云存储服务提供商。
 :::
 
-ClickHouse 支持与多个目录（Unity、Glue、REST、Polaris 等）集成。本指南将带您逐步完成使用 ClickHouse 和 [Nessie](https://projectnessie.org/) 目录查询数据的步骤。
+ClickHouse 支持与多个 catalog 集成（Unity、Glue、REST、Polaris 等）。本指南将引导您完成使用 ClickHouse 和 [Nessie](https://projectnessie.org/) catalog 查询数据的步骤。
 
-Nessie 是一个面向数据湖的开源事务目录，提供：
+Nessie 是一个面向数据湖的开源事务型 catalog，提供：
 
-* **类似 Git 的** 分支和提交式数据版本控制
+* **类 Git 风格的** 分支与提交式数据版本控制
 * **跨表事务** 与可见性保证
-* **REST API** 符合 Iceberg REST 目录规范
+* **REST API**，符合 Iceberg REST catalog 规范
 * **开放数据湖** 方案，支持 Hive、Spark、Dremio、Trino 等
-* 可在 Docker 或 Kubernetes 上进行**生产可用的部署**
+* 可在 Docker 或 Kubernetes 上进行 **生产就绪** 的部署
 
 :::note
-由于该功能目前为实验性功能，您需要通过以下命令启用：
+由于该功能目前为实验特性，您需要通过以下命令启用：
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
 
-## 本地开发设置
+## 本地开发环境设置 {#local-development-setup}
 
-对于本地开发和测试，你可以使用容器化的 Nessie 部署。该方式非常适合用于学习、原型验证和开发环境。
+在进行本地开发和测试时，你可以使用容器化的 Nessie 环境。此方式非常适合用于学习、原型验证以及开发环境。
 
-### 前置条件
+### 前提条件 {#local-prerequisites}
 
-1. **Docker 和 Docker Compose**：确保已安装并正在运行 Docker
-2. **示例配置**：你可以使用官方提供的 Nessie docker-compose 配置
+1. **Docker 和 Docker Compose**：确保已安装 Docker 并已启动运行
+2. **示例环境**：可以使用官方提供的 Nessie docker-compose 配置
 
-### 配置本地 Nessie Catalog
+### 设置本地 Nessie Catalog
 
-你可以使用官方的 [Nessie docker-compose 配置](https://projectnessie.org/guides/setting-up/)，它提供了一个完整环境，其中包括 Nessie、内存版版本存储，以及用于对象存储的 MinIO。
+你可以使用官方提供的 [Nessie docker-compose 部署](https://projectnessie.org/guides/setting-up/)，它提供了一个完整的环境，包括 Nessie、内存版本存储（in-memory version store）以及用于对象存储的 MinIO。
 
-**步骤 1：** 创建一个用于运行示例的新文件夹，然后创建一个名为 `docker-compose.yml` 的文件，并使用以下配置：
+**步骤 1：** 创建一个新文件夹用于运行该示例，然后创建一个名为 `docker-compose.yml` 的文件，并填入以下配置：
 
 ```yaml
 version: '3.8'
@@ -104,13 +105,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: '0:0'  # Ensures root permissions
+    user: '0:0'  # 确保 root 权限
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # 挂载数据集目录
     networks:
       - iceberg_net
     environment:
@@ -138,42 +139,39 @@ networks:
 docker compose up -d
 ```
 
-**步骤 3：** 等待所有服务就绪。您可以查看日志进行确认：
+**步骤 3：** 等待所有服务就绪。您可以通过查看日志进行检查：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Nessie 设置使用内存中的版本存储，并且要求先将示例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询这些表之前，环境中已创建并填充这些表。
+Nessie 设置使用基于内存的版本存储，并要求先将示例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询这些表之前，环境中已经创建并填充好这些表。
 :::
+
 
 ### 连接到本地 Nessie Catalog
 
-连接到你的 ClickHouse 容器：
+连接到 ClickHouse 容器：
 
 ```bash
 docker exec -it nessie-clickhouse clickhouse-client
 ```
 
-然后创建一个指向 Nessie 目录的数据库连接：
+然后创建与 Nessie 目录的数据库连接：
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
-```
-
 
 CREATE DATABASE demo
-ENGINE = DataLakeCatalog(&#39;[http://nessie:19120/iceberg](http://nessie:19120/iceberg)&#39;, &#39;admin&#39;, &#39;password&#39;)
-SETTINGS catalog&#95;type = &#39;rest&#39;, storage&#95;endpoint = &#39;[http://minio:9002/my-bucket](http://minio:9002/my-bucket)&#39;, warehouse = &#39;warehouse&#39;
-
-```
+ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
+SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
 
 
 ## 使用 ClickHouse 查询 Nessie 目录表
 
-连接已建立后，就可以开始通过 Nessie 目录表进行查询。例如：
+现在连接已就绪，您可以开始通过 Nessie 目录执行查询。例如：
 
 ```sql
 USE demo;
@@ -181,7 +179,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果你的环境中包含示例数据（例如 taxi 数据集），你应该会看到如下所示的表：
+如果你的环境包含示例数据（例如 taxi 数据集），应该能看到如下所示的表：
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -190,13 +188,13 @@ SHOW TABLES;
 ```
 
 :::note
-如果你没有看到任何表，通常意味着：
+如果没有看到任何数据表，通常意味着：
 
 1. 环境尚未创建示例表
-2. Nessie catalog 服务尚未完全初始化
-3. 示例数据加载过程尚未完成
+2. Nessie 目录服务尚未完全初始化
+3. 示例数据加载流程尚未完成
 
-你可以查看 Nessie 日志来了解 catalog 的活动情况：
+可以查看 Nessie 日志以了解目录的活动情况：
 
 ```bash
 docker-compose logs nessie
@@ -204,7 +202,7 @@ docker-compose logs nessie
 
 :::
 
-要查询表（如果已存在）：
+要查询某个表（如果已存在）：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -216,11 +214,11 @@ SELECT count(*) FROM `default.taxis`;
 └─────────┘
 ```
 
-:::note 需要使用反引号
-需要使用反引号，因为 ClickHouse 不支持使用多个命名空间。
+:::note Backticks required
+需要使用反引号，因为 ClickHouse 仅支持单一命名空间。
 :::
 
-要查看该表的 DDL：
+要检查该表的 DDL：
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
@@ -255,9 +253,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## 将 Data Lake 中的数据加载到 ClickHouse
+## 将数据湖中的数据加载到 ClickHouse
 
-如果您需要将 Nessie 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
+如果需要将 Nessie 目录中的数据加载到 ClickHouse，请首先创建一个本地 ClickHouse 表：
 
 ```sql
 CREATE TABLE taxis
@@ -287,7 +285,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-然后通过执行 `INSERT INTO SELECT` 语句，从 Nessie 目录中的表加载数据：
+然后通过 `INSERT INTO ... SELECT` 语句从 Nessie 目录表中加载数据：
 
 ```sql
 INSERT INTO taxis 

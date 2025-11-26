@@ -1,5 +1,5 @@
 ---
-description: '超过 1.5 亿条关于 Amazon 商品的客户评论'
+description: '超过 1.5 亿条 Amazon 商品的客户评论'
 sidebar_label: 'Amazon 客户评论'
 slug: /getting-started/example-datasets/amazon-reviews
 title: 'Amazon 客户评论'
@@ -7,18 +7,16 @@ doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-该数据集包含超过 1.5 亿条关于 Amazon 商品的客户评论。数据以 Snappy 压缩的 Parquet 文件形式存储在 AWS S3 中，压缩后总大小为 49GB。下面将逐步演示如何将其导入 ClickHouse。
+该数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以存储在 AWS S3 中的 snappy 压缩 Parquet 文件形式提供，压缩后总大小为 49GB。下面我们逐步演示如何将其导入 ClickHouse。
 
 :::note
-下面的查询是在 **生产环境** 的 ClickHouse Cloud 实例上执行的。更多信息请参见
+下面的查询是在 **Production** 环境的 ClickHouse Cloud 实例上执行的。更多信息请参阅
 ["Playground 规格说明"](/getting-started/playground#specifications)。
 :::
 
-
-
 ## 加载数据集
 
-1. 无需将数据插入 ClickHouse，我们可以直接在原位置查询它。先获取几行数据，看看它们的实际情况：
+1. 在不将数据插入 ClickHouse 的情况下，我们可以直接在原处对其进行查询。先取出几行数据，看看它们的样子：
 
 ```sql
 SELECT *
@@ -26,10 +24,10 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-这些行的格式如下：
+这些行如下所示：
 
 ```response
-Row 1:
+行 1:
 ──────
 review_date:       16462
 marketplace:       US
@@ -44,10 +42,10 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   外壳坚固,保护效果符合预期
-review_body:       我不指望防水功能(我把底部的橡胶密封条拆了,因为它们让我很烦)。但外壳很坚固,保护效果符合我的预期。
+review_headline:   case is sturdy and protects as I want
+review_body:       I won't count on the waterproof part (I took off the rubber seals at the bottom because the got on my nerves). But the case is sturdy and protects as I want.
 
-Row 2:
+行 2:
 ──────
 review_date:       16462
 marketplace:       US
@@ -62,10 +60,10 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   一星
-review_body:       无法使用这个外壳,因为它对这款手机来说太大了。浪费钱!
+review_headline:   One Star
+review_body:       Cant use the case because its big for the phone. Waist of money!
 
-Row 3:
+行 3:
 ──────
 review_date:       16462
 marketplace:       US
@@ -80,11 +78,11 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   但总体来说,这个外壳相当坚固,为手机提供了良好的保护
-review_body:       前面板一开始有点难固定到手机上,但总体来说,这个外壳相当坚固,为手机提供了良好的保护,这正是我需要的。我会再次购买这个外壳。
+review_headline:   but overall this case is pretty sturdy and provides good protection for the phone
+review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
-2. 接下来，我们在 ClickHouse 中定义一个名为 `amazon_reviews` 的新 `MergeTree` 表来存储这些数据：
+2. 让我们在 ClickHouse 中定义一个名为 `amazon_reviews` 的新 `MergeTree` 表来存储这些数据：
 
 ```sql
 CREATE DATABASE amazon
@@ -116,7 +114,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. 以下 `INSERT` 命令使用 `s3Cluster` 表函数，它允许使用集群中所有节点对多个 S3 文件进行并行处理。我们还使用通配符来插入所有以 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` 开头的文件：
+3. 下面的 `INSERT` 命令使用了 `s3Cluster` 表函数，它可以利用集群中所有节点并行处理多个 S3 文件。我们还使用通配符来插入所有名称以 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet` 开头的文件：
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -126,17 +124,17 @@ FROM s3Cluster('default',
 
 
 :::tip
-在 ClickHouse Cloud 中，集群名称为 `default`。请将 `default` 修改为你的集群名称……或者，如果你没有集群，可以使用 `s3` 表函数（而不是 `s3Cluster`）。
+在 ClickHouse Cloud 中，集群名称为 `default`。请将 `default` 更改为你的集群名称……或者如果你没有集群，可以使用 `s3` 表函数（而不是 `s3Cluster`）。
 :::
 
-5. 该查询执行时间很短——平均每秒约 300,000 行。大约 5 分钟内，你就应该能看到所有行都已插入：
+5. 该查询执行时间很短——平均每秒大约处理 300,000 行数据。大约 5 分钟内你就应该能看到所有行都已插入：
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. 查看一下我们的数据占用了多少空间：
+6. 查看数据占用的空间大小：
 
 ```sql runnable
 SELECT
@@ -157,7 +155,7 @@ ORDER BY size DESC
 
 ## 示例查询
 
-7. 我们来运行一些查询。下面是该数据集中最有用的前 10 条评论：
+7. 现在来运行一些查询。下面是数据集中最有帮助的前 10 条评论：
 
 ```sql runnable
 SELECT
@@ -169,10 +167,10 @@ LIMIT 10
 ```
 
 :::note
-此查询使用[投影](/data-modeling/projections)来提升查询性能。
+此查询使用 [projection](/data-modeling/projections) 来提升性能。
 :::
 
-8. 以下是在 Amazon 上评论数最多的前 10 个产品：
+8. 以下是在 Amazon 上评论数最多的前 10 款产品：
 
 ```sql runnable
 SELECT
@@ -184,7 +182,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. 以下是每个产品按月统计的平均评价得分（一道真实的 [亚马逊求职面试题](https://datalemur.com/questions/sql-avg-review-ratings)！）：
+9. 以下是每个产品每个月的平均评论评分（这是一道真实的 [Amazon 求职面试题](https://datalemur.com/questions/sql-avg-review-ratings)！）：
 
 ```sql runnable
 SELECT
@@ -201,7 +199,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. 下面是按产品类别统计的投票总数。该查询之所以很快，是因为 `product_category` 是主键的一部分：
+10. 以下是每个产品类别的总投票数。该查询速度很快，因为 `product_category` 是主键的一部分：
 
 ```sql runnable
 SELECT
@@ -212,7 +210,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. 让我们找出在评论中 **&quot;awful&quot;** 一词出现最频繁的产品。这是一个庞大的任务——需要在超过 1.51 亿条字符串中解析并查找这个单词：
+11. 让我们查找在评论中 **&quot;awful&quot;** 这个单词出现最频繁的产品。这是一个很大的任务——需要解析超过 1.51 亿个字符串，只为查找这一个单词：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -227,9 +225,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-注意留意在如此大规模数据下的查询耗时。查询结果本身读起来也很有趣！
+注意观察针对如此大规模数据的查询耗时。查询结果本身读起来也很有趣！
 
-12. 我们可以再次运行相同的查询，不过这次在评论中搜索 **awesome**：
+12. 我们可以再次运行相同的查询，不过这一次在评论中搜索 **awesome**：
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

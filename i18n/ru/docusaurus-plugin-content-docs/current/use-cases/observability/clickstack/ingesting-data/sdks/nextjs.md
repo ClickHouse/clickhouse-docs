@@ -3,34 +3,34 @@ slug: /use-cases/observability/clickstack/sdks/nextjs
 pagination_prev: null
 pagination_next: null
 sidebar_position: 4
-description: 'SDK Next.js для ClickStack — стека наблюдаемости ClickHouse'
+description: 'SDK Next.js для ClickStack — стек наблюдаемости ClickHouse'
 title: 'Next.js'
-doc_type: 'руководство'
+doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ClickStack может осуществлять приём нативных трасс OpenTelemetry из ваших
-[серверлесс‑функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
+ClickStack может выполнять приём трасс OpenTelemetry в нативном формате из ваших
+[бессерверных функций Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/open-telemetry#manual-opentelemetry-configuration)
 в Next 13.2+.
 
-Это руководство охватывает интеграцию:
+В этом руководстве интегрируются:
 
-* **Консольных логов**
-* **Трассировок**
+* **Логи консоли**
+* **Трейсы**
 
 :::note
-Если вам нужно воспроизведение сессий и мониторинг в браузере, вместо этого установите [интеграцию для браузера](/use-cases/observability/clickstack/sdks/browser).
+Если вам нужна запись пользовательских сессий и мониторинг на стороне браузера, вместо этого установите [интеграцию для браузера](/use-cases/observability/clickstack/sdks/browser).
 :::
 
 
-## Установка
+## Установка {#installing}
 
-### Включение хука инструментирования (обязательно для v15 и ниже)
+### Включите хук инструментирования (требуется для версий v15 и ниже)
 
-Для начала включите хук инструментирования Next.js, установив `experimental.instrumentationHook = true;` в файле `next.config.js`.
+Для начала необходимо включить хук инструментирования Next.js, установив `experimental.instrumentationHook = true;` в вашем `next.config.js`.
 
 **Пример:**
 
@@ -55,25 +55,29 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### Установите ClickHouse OpenTelemetry SDK
+
+### Установите SDK OpenTelemetry для ClickHouse {#install-sdk}
 
 <Tabs groupId="npm">
-  <TabItem value="npm" label="NPM" default>
-    ```shell
-    npm install @hyperdx/node-opentelemetry 
-    ```
-  </TabItem>
+<TabItem value="npm" label="NPM" default>
 
-  <TabItem value="yarn" label="Yarn" default>
-    ```shell
-    yarn add @hyperdx/node-opentelemetry 
-    ```
-  </TabItem>
+```shell 
+npm install @hyperdx/node-opentelemetry 
+```
+
+</TabItem>
+<TabItem value="yarn" label="Yarn" default>
+
+```shell  
+yarn add @hyperdx/node-opentelemetry 
+```
+
+</TabItem>
 </Tabs>
 
-### Создайте файлы инструментирования
+### Создайте файл инструментирования
 
-Создайте файл `instrumentation.ts` (или `.js`) в корневом каталоге проекта Next.js со следующим содержимым:
+Создайте файл с именем `instrumentation.ts` (или `.js`) в корне вашего проекта Next.js со следующим содержимым:
 
 ```javascript
 export async function register() {
@@ -88,12 +92,13 @@ export async function register() {
 }
 ```
 
-Это позволит Next.js импортировать инструментирование OpenTelemetry для любого вызова серверлесс‑функции.
+Это позволит Next.js импортировать инструментацию OpenTelemetry при любом вызове бессерверной функции.
+
 
 ### Настройка переменных окружения
 
-Если вы отправляете трейсы напрямую в ClickStack, вам потребуется запустить сервер Next.js
-со следующими переменными окружения, чтобы направить спаны в OTel collector:
+Если вы отправляете трассировки напрямую в ClickStack, вам потребуется запустить сервер Next.js
+со следующими переменными окружения, чтобы направлять спаны на OTel collector:
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
@@ -102,4 +107,5 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
 
-Если вы развёртываете приложение на Vercel, убедитесь, что все перечисленные выше переменные окружения заданы для этого развёртывания.
+Если вы разворачиваете приложение на Vercel, убедитесь, что все перечисленные выше переменные окружения настроены
+для этого развертывания.

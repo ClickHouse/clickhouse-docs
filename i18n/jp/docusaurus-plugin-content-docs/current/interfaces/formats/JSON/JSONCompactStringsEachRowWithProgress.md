@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONCompactStringsEachRowWithProgress フォーマットに関するドキュメント'
+description: 'JSONCompactStringsEachRowWithProgress 形式に関するドキュメント'
 input_format: true
 keywords: ['JSONCompactStringsEachRowWithProgress']
 output_format: true
@@ -9,26 +9,23 @@ title: 'JSONCompactStringsEachRowWithProgress'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力  | エイリアス |
-|------|-------|------------|
-| ✗    | ✔     |            |
-
-
+| Input | Output  | Alias  |
+|-------|---------|--------|
+| ✗     | ✔       |        |
 
 ## 説明 {#description}
 
 [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress) と同様ですが、すべての値が文字列に変換されます。
-すべてのデータ型を一貫した文字列表現にする必要がある場合に便利です。
+これは、すべてのデータ型について一貫した文字列表現が必要な場合に役立ちます。
 
-主な特長:
+主な特徴:
+
 - `JSONCompactEachRowWithProgress` と同じ構造
-- すべての値が文字列として表現される（数値や配列なども、すべて引用符付きの文字列）
-- 進捗状況の更新、合計値、例外処理を含む
-- 文字列ベースのデータを好む、または必要とするクライアントに有用
+- すべての値が文字列として表現される（数値や配列なども、すべて引用符で囲まれた文字列）
+- 進捗情報、合計値、例外処理を含む
+- 文字列ベースのデータを好む、または必要とするクライアントに適している
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
@@ -51,4 +48,4 @@ FORMAT JSONCompactStringsEachRowWithProgress
 ```
 
 
-## 書式設定 {#format-settings}
+## フォーマット設定 {#format-settings}

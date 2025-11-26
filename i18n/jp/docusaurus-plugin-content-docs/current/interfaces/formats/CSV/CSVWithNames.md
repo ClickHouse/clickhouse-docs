@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'CSV 形式に関するドキュメント'
+description: 'CSV 形式のドキュメント'
 input_format: true
 keywords: ['CSVWithNames']
 output_format: true
@@ -9,27 +9,23 @@ title: 'CSVWithNames'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | 別名 |
+| Input | Output | Alias |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-[TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames) と同様に、列名付きのヘッダー行も出力します。
+[TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames) と同様に、列名を含むヘッダー行も出力します。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
 :::tip
-[バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降の ClickHouse では、`CSV` フォーマットを使用する場合、CSV ファイル内のヘッダー行を自動検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
+[バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降、ClickHouse は `CSV` 形式を使用する際に CSV ファイル内のヘッダーを自動的に検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
 :::
 
-次の内容の、`football.csv` という名前の CSV ファイルを使用します。
+以下の内容の CSV ファイル `football.csv` を使用します。
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -68,15 +64,16 @@ ENGINE = MergeTree
 ORDER BY (date, home_team);
 ```
 
-`CSVWithNames` フォーマットを使用してデータを挿入します：`
+`CSVWithNames` 形式を使用してデータを挿入します：
 
 ```sql
-football.csv から読み込み、ヘッダー付き CSV 形式で football に挿入;
+INSERT INTO football FROM INFILE 'football.csv' FORMAT CSVWithNames;
 ```
+
 
 ### データの読み込み
 
-`CSVWithNames` フォーマットを使用してデータを読み込みます。
+`CSVWithNames` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -84,11 +81,10 @@ FROM football
 FORMAT CSVWithNames
 ```
 
-出力はヘッダー行が1行だけのCSVになります。
-
+出力は、先頭に 1 行のヘッダーのみを持つ CSV になります。
 
 ```csv
-"日付","シーズン","ホームチーム","アウェイチーム","ホームチーム得点数","アウェイチーム得点数"
+"date","season","home_team","away_team","home_team_goals","away_team_goals"
 "2022-04-30",2021,"Sutton United","Bradford City",1,4
 "2022-04-30",2021,"Swindon Town","Barrow",2,1
 "2022-04-30",2021,"Tranmere Rovers","Oldham Athletic",2,0
@@ -112,7 +108,7 @@ FORMAT CSVWithNames
 ## フォーマット設定 {#format-settings}
 
 :::note
-[`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) が `1` に設定されている場合、
-入力データの列は名前に基づいてテーブルの列にマッピングされ、[input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合は、名前が不明な列はスキップされます。
+[`input_format_with_names_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_names_use_header) の設定値が `1` の場合、
+入力データのカラムはその名前に基づいてテーブルのカラムにマッピングされます。また、[`input_format_skip_unknown_fields`](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) の設定値が `1` の場合、テーブル側に存在しない名前のカラムはスキップされます。
 それ以外の場合は、最初の行がスキップされます。
 :::

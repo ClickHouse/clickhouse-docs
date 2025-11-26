@@ -13,19 +13,15 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-[JSON](./JSON.md) と異なる点は、データ行がオブジェクトではなく配列として出力されることだけです。
+[JSON](./JSON.md) との違いは、データ行がオブジェクトではなく配列として出力される点のみです。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-以下のデータを含む JSON ファイルを `football.json` という名前で用意します:
+次のデータが含まれた JSON ファイル `football.json` を用意します:
 
 ```json
 {
@@ -79,15 +75,16 @@ doc_type: 'reference'
 }
 ```
 
-データを挿入します。
+データを挿入する：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
+
 ### データの読み込み
 
-`JSONCompact` 形式を使ってデータを読み込みます:
+`JSONCompact` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -95,7 +92,7 @@ FROM football
 FORMAT JSONCompact
 ```
 
-出力は JSON 形式で行われます。
+出力は JSON 形式です：
 
 ```json
 {
@@ -126,8 +123,6 @@ FORMAT JSONCompact
             "type": "Int8"
         }
     ],
-```
-
 
     "data":
     [
@@ -158,11 +153,7 @@ FORMAT JSONCompact
         "rows_read": 0,
         "bytes_read": 0
     }
-
 }
-
-```
-
 ```
 
 

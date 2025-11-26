@@ -13,23 +13,19 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-在此格式中，所有数据都表示为一个 JSON 数组。
+在这种格式下，所有数据都表示为单个 JSON 数组。
 
 :::note
-`JSONCompactColumns` 输出格式会将所有数据缓存在内存中，并作为单个数据块输出，这可能会导致较高的内存消耗。
+`JSONCompactColumns` 输出格式会将所有数据缓冲至内存中，然后以单个数据块的形式输出，这可能导致较高的内存占用。
 :::
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ### 插入数据
 
-使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
+使用一个名为 `football.json` 的 JSON 文件，包含如下数据：
 
 ```json
 [
@@ -48,9 +44,10 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
+
 ### 读取数据
 
-使用 `JSONCompactColumns` 格式来读取数据：
+以 `JSONCompactColumns` 格式读取数据：
 
 ```sql
 SELECT *
@@ -59,7 +56,6 @@ FORMAT JSONCompactColumns
 ```
 
 输出将为 JSON 格式：
-
 
 ```json
 [
@@ -72,7 +68,7 @@ FORMAT JSONCompactColumns
 ]
 ```
 
-在该数据块中不存在的列将使用默认值填充（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）
+在该数据块中不存在的列会被填充为默认值（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）
 
 
 ## 格式设置 {#format-settings}

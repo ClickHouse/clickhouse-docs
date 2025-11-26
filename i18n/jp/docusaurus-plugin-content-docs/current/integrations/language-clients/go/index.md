@@ -3,7 +3,7 @@ sidebar_label: 'Go'
 sidebar_position: 1
 keywords: ['clickhouse', 'go', 'client', 'golang']
 slug: /integrations/go
-description: 'ClickHouse 用 Go クライアントを使用すると、Go 標準の database/sql インターフェイスまたは最適化されたネイティブインターフェイス経由で ClickHouse に接続できます。'
+description: 'ClickHouse 用の Go クライアントを使用すると、Go 標準の database/sql インターフェイスまたは最適化されたネイティブインターフェイスを使用して ClickHouse に接続できます。'
 title: 'ClickHouse Go'
 doc_type: 'reference'
 integration:
@@ -16,17 +16,15 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.
 
 # ClickHouse Go
 
+## 簡単な例 {#a-simple-example}
 
+まずは簡単な例から始めましょう。これは ClickHouse に接続し、`system` データベースに対して `SELECT` を実行します。始めるにあたっては、接続情報を手元に用意しておく必要があります。
 
-## 簡単な例
-
-まずは、簡単な Go の例から始めます。これは ClickHouse に接続し、`system` データベースに対して `SELECT` を実行します。作業を始めるにあたっては、接続情報が必要です。
-
-### 接続情報
+### 接続情報 {#connection-details}
 
 <ConnectionDetails />
 
-### モジュールの初期化
+### モジュールを初期化する
 
 ```bash
 mkdir clickhouse-golang-example
@@ -34,9 +32,10 @@ cd clickhouse-golang-example
 go mod init clickhouse-golang-example
 ```
 
+
 ### サンプルコードをコピーする
 
-次のコードを `clickhouse-golang-example` ディレクトリ内に `main.go` としてコピーします。
+このコードを `clickhouse-golang-example` ディレクトリに `main.go` として保存します。
 
 ```go title=main.go
 package main
@@ -114,15 +113,17 @@ func connect() (driver.Conn, error) {
 }
 ```
 
-### go mod tidy を実行
+
+### go mod tidy を実行する
 
 ```bash
 go mod tidy
 ```
 
+
 ### 接続情報を設定する
 
-前の手順で接続情報を確認しました。`main.go` の `connect()` 関数内でそれらを設定します。
+先ほど接続情報を確認しました。その値を `main.go` の `connect()` 関数内で設定します。
 
 ```go
 func connect() (driver.Conn, error) {
@@ -140,6 +141,7 @@ func connect() (driver.Conn, error) {
       },
 ```
 
+
 ### サンプルを実行する
 
 ```bash
@@ -154,62 +156,56 @@ go run .
 2023/03/06 14:18:33 name: hourly_data, uuid: a4e36bd4-1e82-45b3-be77-74a0fe65c52b
 ```
 
-### さらに詳しく
+
+### さらに詳しく {#learn-more}
 
 このカテゴリの他のドキュメントでは、ClickHouse Go クライアントの詳細について説明します。
 
+## ClickHouse Go client {#clickhouse-go-client}
 
-## ClickHouse Go クライアント {#clickhouse-go-client}
+ClickHouse は 2 つの公式な Go クライアントをサポートしています。これらのクライアントは補完的な関係にあり、意図的に異なるユースケースをサポートしています。
 
-ClickHouse は 2 つの公式 Go クライアントをサポートしています。これらのクライアントは補完的な関係にあり、意図的に異なるユースケースをサポートしています。
+* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - Go 標準の `database/sql` インターフェイスまたはネイティブインターフェイスのいずれかをサポートする高レベルクライアント。
+* [ch-go](https://github.com/ClickHouse/ch-go) - 低レベルクライアント。ネイティブインターフェイスのみ。
 
-* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - Go の標準である `database/sql` インターフェイスまたはネイティブインターフェイスのいずれかをサポートする高レベル言語クライアント。
-* [ch-go](https://github.com/ClickHouse/ch-go) - 低レベルクライアント。ネイティブインターフェイスのみをサポート。
+clickhouse-go は高レベルインターフェイスを提供し、ユーザーが行指向のセマンティクスとバッチ処理を用いてクエリおよびデータ挿入を行えるようにします。これはデータ型に対して寛容であり、精度の損失が生じない限り値を変換します。一方、ch-go は最適化された列指向インターフェイスを提供し、型の厳密さとより複雑な使用方法を代償として、低い CPU およびメモリオーバーヘッドで高速なデータブロックストリーミングを実現します。
 
-clickhouse-go は高レベルインターフェイスを提供しており、ユーザーは行指向のセマンティクスとバッチ処理を用いてクエリの実行およびデータの挿入を行えます。この際、データ型に対しては寛容であり、精度損失が発生しない限り値は変換されます。一方 ch-go は、型の厳密さとより複雑な利用方法と引き換えに、CPU およびメモリのオーバーヘッドが低く高速なデータブロックストリーミングを提供する、最適化された列指向インターフェイスを提供します。
+バージョン 2.3 から、clickhouse-go はエンコード、デコード、圧縮などの低レベル機能に ch-go を利用します。なお、clickhouse-go は Go の `database/sql` インターフェイス標準もサポートしています。両方のクライアントは最適なパフォーマンスを提供するためにエンコードにネイティブフォーマットを使用し、ネイティブ ClickHouse プロトコルを介して通信できます。さらに、ユーザーがトラフィックのプロキシやロードバランシングを行う必要がある場合に備えて、clickhouse-go は HTTP を転送方式としてもサポートします。
 
-バージョン 2.3 以降、clickhouse-go はエンコード、デコード、圧縮といった低レベル処理に ch-go を利用します。なお、clickhouse-go は Go の `database/sql` インターフェイス標準もサポートしています。両クライアントは、最適なパフォーマンスを提供するためエンコードにネイティブ形式を使用し、ネイティブ ClickHouse プロトコルで通信できます。さらに clickhouse-go は、トラフィックのプロキシやロードバランシングが必要なケース向けに HTTP をトランスポート機構としてもサポートします。
+クライアントライブラリを選択する際には、それぞれの長所と短所を把握しておく必要があります。詳細は「Choosing a Client Library」を参照してください。
 
-クライアントライブラリを選択する際は、それぞれの長所と短所を把握しておく必要があります。詳細は「Choosing a Client Library」を参照してください。
-
-|               | ネイティブ形式 | ネイティブプロトコル | HTTP プロトコル | 行指向 API | 列指向 API | 型の柔軟性 | 圧縮 | クエリプレースホルダー |
-|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
-| clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
-|     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
-
-
+|               | ネイティブフォーマット | ネイティブプロトコル | HTTP プロトコル | 行指向 API | 列指向 API | 型の柔軟性 | 圧縮 | クエリプレースホルダー |
+|:-------------:|:----------------------:|:---------------------:|:---------------:|:----------:|:-----------:|:----------:|:----:|:----------------------:|
+| clickhouse-go |           ✅           |           ✅           |        ✅        |     ✅      |      ✅      |     ✅      |  ✅   |           ✅           |
+|     ch-go     |           ✅           |           ✅           |                 |            |      ✅      |            |  ✅   |                        |
 
 ## クライアントの選択 {#choosing-a-client}
 
-クライアントライブラリの選択は、利用パターンと求める性能要件によって異なります。1 秒あたり数百万件規模の大量インサートを行うユースケースでは、低レベルクライアントである [ch-go](https://github.com/ClickHouse/ch-go) の使用を推奨します。このクライアントは、ClickHouse ネイティブフォーマットが要求する列指向フォーマットに合わせるために、行指向フォーマットからデータを変換する際に発生するオーバーヘッドを回避します。さらに、使いやすさのためにリフレクションや `interface{}`（`any`）型の利用も避けています。
+どのクライアントライブラリを選択するかは、利用パターンと求めるパフォーマンス要件によって異なります。毎秒数百万件の挿入が必要となるような挿入中心のユースケースでは、低レベルクライアントである [ch-go](https://github.com/ClickHouse/ch-go) の使用を推奨します。このクライアントは、ClickHouse のネイティブフォーマットが要求する列指向フォーマットへ行指向データを変換（ピボット）する際のオーバーヘッドを回避します。さらに、使いやすさのために `interface{}`（`any`）型やリフレクションの使用も避けています。
 
-集計中心のクエリワークロードや、インサートのスループット要件がそれほど高くないワークロードの場合には、[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) が、馴染みのある `database/sql` インターフェイスと、より扱いやすい行ベースのセマンティクスを提供します。ユーザーはオプションで HTTP をトランスポートプロトコルとして利用でき、構造体と行との相互変換を支援するヘルパー関数を活用できます。
-
-
+集約処理にフォーカスしたクエリワークロードや、スループット要件がそれほど高くない挿入ワークロードでは、[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) は親しみやすい `database/sql` インターフェイスと、より分かりやすい行セマンティクスを提供します。ユーザーはトランスポートプロトコルとして HTTP を任意で利用できるほか、行と struct 間のマーシャリングを行うヘルパー関数も活用できます。
 
 ## clickhouse-go クライアント {#the-clickhouse-go-client}
 
-clickhouse-go クライアントは、ClickHouse と通信するために 2 種類の API インターフェースを提供します。
+clickhouse-go クライアントは、ClickHouse と通信するために 2 つの API インターフェースを提供します:
 
 * ClickHouse クライアント専用 API
-* `database/sql` 標準 - Go 言語が提供する、SQL データベース向けの汎用インターフェース
+* `database/sql` 標準 - Go 言語が提供する SQL データベース向けの汎用インターフェース
 
-`database/sql` はデータベースに依存しないインターフェースを提供し、開発者がデータストアを抽象化できるようにしますが、パフォーマンスに影響しうる型やクエリセマンティクスに関する制約を課します。このため、[パフォーマンスが重要な場合](https://github.com/clickHouse/clickHouse-go#benchmark)には、クライアント専用 API を使用することを推奨します。ただし、複数のデータベースをサポートするツールに ClickHouse を統合したいユーザーは、標準インターフェースを使用することを好む場合があります。
+`database/sql` はデータベース非依存のインターフェースを提供し、開発者がデータストアを抽象化できる一方で、パフォーマンスに影響する型付けやクエリのセマンティクスを強制します。このため、[パフォーマンスが重要な場合](https://github.com/clickHouse/clickHouse-go#benchmark)にはクライアント専用 API を使用することを推奨します。ただし、複数のデータベースをサポートするツールに ClickHouse を統合したい場合は、標準インターフェースを利用した方がよいケースもあります。
 
-どちらのインターフェースも、[ネイティブフォーマット](/native-protocol/basics.md) とネイティブプロトコルを用いてデータをエンコードし、通信を行います。さらに、標準インターフェースは HTTP 経由での通信もサポートします。
+両方のインターフェースは、通信に [native format](/native-protocol/basics.md) およびネイティブプロトコルを使用してデータをエンコードします。さらに、標準インターフェースは HTTP 経由での通信もサポートします。
 
-|                    | ネイティブフォーマット | ネイティブプロトコル | HTTP プロトコル | バルク書き込みサポート | 構造体のマーシャリング | 圧縮 | クエリプレースホルダー |
-|:------------------:|:----------------------:|:---------------------:|:---------------:|:----------------------:|:----------------------:|:----:|:----------------------:|
-|   ClickHouse API   |           ✅           |           ✅           |                 |           ✅            |           ✅            |  ✅   |           ✅            |
-| `database/sql` API |           ✅           |           ✅           |        ✅        |           ✅            |                        |  ✅   |           ✅            |
-
-
+|                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
+|:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
+|   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
+| `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
 
 ## インストール
 
-ドライバーの v1 は非推奨となっており、新しい ClickHouse 型に対する機能追加やサポートは今後行われません。より高いパフォーマンスを提供する v2 へ移行してください。
+ドライバーの v1 は非推奨となっており、新しい ClickHouse 型へのサポートや機能更新は行われません。より高いパフォーマンスを提供する v2 への移行が推奨されます。
 
-クライアントの 2.x バージョンをインストールするには、パッケージを go.mod ファイルに追加します:
+2.x 系バージョンのクライアントをインストールするには、次の行を go.mod ファイルに追加します:
 
 `require github.com/ClickHouse/clickhouse-go/v2 main`
 
@@ -219,7 +215,7 @@ clickhouse-go クライアントは、ClickHouse と通信するために 2 種�
 git clone --branch v2 https://github.com/clickhouse/clickhouse-go.git $GOPATH/src/github
 ```
 
-別のバージョンをインストールするには、パスまたはブランチ名を適宜変更してください。
+別のバージョンをインストールするには、パスやブランチ名を適宜変更してください。
 
 ```bash
 mkdir my-clickhouse-app && cd my-clickhouse-app
@@ -252,34 +248,34 @@ go run main.go
 
 ```
 
-### バージョン管理と互換性
 
-このクライアントは ClickHouse とは独立してリリースされます。2.x は現在開発中のメジャーバージョンを表します。2.x のすべてのバージョンは相互に互換性がある想定です。
+### バージョニングと互換性 {#versioning--compatibility}
 
-#### ClickHouse との互換性
+このクライアントは ClickHouse とは独立してリリースされます。2.x は現在開発中のメジャーバージョンを表します。2.x 系のすべてのバージョンは互いに互換性があるように設計されています。
 
-このクライアントは以下をサポートします:
+#### ClickHouse の互換性 {#clickhouse-compatibility}
 
-* [こちら](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) に記載されている、現在サポートされているすべての ClickHouse バージョン。ClickHouse のバージョンがサポート対象外になると、そのバージョンに対してはクライアント リリース時のテストも積極的には行われなくなります。
-* クライアントのリリース日から遡って 2 年以内にリリースされたすべての ClickHouse バージョン。なお、積極的にテストされるのは LTS バージョンのみです。
+このクライアントは以下をサポートします：
 
-#### Golang との互換性
+- [こちら](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md) に記載されている、現在サポートされているすべての ClickHouse バージョン。ClickHouse の各バージョンがサポート対象外になると、それらはクライアントのリリースに対しても積極的なテスト対象から外れます。
+- クライアントのリリース日時点から遡って 2 年間にリリースされたすべての ClickHouse バージョン。なお、積極的にテストされるのは LTS バージョンのみです。
 
-|    Client Version   | Golang Versions |
-| :-----------------: | :-------------: |
-| &gt;= 2.0 &lt;= 2.2 |    1.17, 1.18   |
-|      &gt;= 2.3      |       1.18      |
+#### Golang の互換性 {#golang-compatibility}
 
+| クライアントバージョン | Golang バージョン |
+|:----------------------:|:------------------:|
+|    => 2.0 &lt;= 2.2    |    1.17, 1.18     |
+|        >= 2.3         |       1.18        |
 
-## ClickHouse クライアント API
+## ClickHouse クライアント API {#clickhouse-client-api}
 
-ClickHouse クライアント API のすべてのコード例は[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples)にあります。
+ClickHouse クライアント API のすべてのコード例は[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples)で確認できます。
 
 ### 接続
 
-次の例はサーバーのバージョンを返すもので、ClickHouse への接続方法を示しています。ここでは、ClickHouse がセキュリティで保護されておらず、デフォルトユーザーでアクセス可能であると仮定しています。
+次の例はサーバーバージョンを返すもので、ClickHouse がセキュリティ保護されておらず、デフォルトユーザーでアクセス可能であることを前提に、ClickHouse への接続方法を示します。
 
-接続にはデフォルトのネイティブポートを使用していることに注意してください。
+接続にはデフォルトのネイティブポートを使用している点に注意してください。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -297,29 +293,30 @@ v, err := conn.ServerVersion()
 fmt.Println(v)
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
 
-**この後に続くすべてのサンプルでは、明示的に示されていない限り、ClickHouse の `conn` 変数がすでに作成済みで利用可能であることを前提とします。**
+**以降のすべてのサンプルでは、特に明記がない限り、ClickHouse の `conn` 変数はすでに作成済みで利用可能であるものとします。**
+
 
 #### 接続設定
 
-接続を開く際、Options 構造体を使用してクライアントの挙動を制御できます。利用可能な設定は次のとおりです:
+接続を開く際、`Options` 構造体を使用してクライアントの動作を制御できます。利用可能な設定は次のとおりです。
 
-* `Protocol` - Native か HTTP のいずれか。HTTP は現時点では [database/sql API](#databasesql-api) でのみサポートされます。
-* `TLS` - TLS オプション。nil 以外の値で TLS が有効になります。[Using TLS](#using-tls) を参照してください。
+* `Protocol` - Native または HTTP のいずれか。HTTP は現在、[database/sql API](#databasesql-api) でのみサポートされています。
+* `TLS` - TLS オプション。nil 以外の値を指定すると TLS が有効になります。詳しくは [Using TLS](#using-tls) を参照してください。
 * `Addr` - ポートを含むアドレスのスライス。
-* `Auth` - 認証情報。[Authentication](#authentication) を参照してください。
-* `DialContext` - 接続の確立方法を決定するカスタム dial 関数。
+* `Auth` - 認証情報。詳しくは [Authentication](#authentication) を参照してください。
+* `DialContext` - 接続の確立方法を制御するためのカスタム dial 関数。
 * `Debug` - デバッグを有効にするかどうかを指定する true/false。
-* `Debugf` - デバッグ出力を受け取る関数を指定します。`debug` が true に設定されている必要があります。
-* `Settings` - ClickHouse 設定のマップ。これらはすべての ClickHouse クエリに適用されます。[Using Context](#using-context) を利用すると、クエリごとに設定を行うことができます。
-* `Compression` - ブロックに対する圧縮を有効にします。[Compression](#compression) を参照してください。
-* `DialTimeout` - 接続確立の最大時間。デフォルトは `1s` です。
-* `MaxOpenConns` - 任意の時点で使用可能な最大接続数。アイドルプール内の接続数はこれより多くても少なくてもかまいませんが、同時に使用できるのはこの数のみです。デフォルトは `MaxIdleConns+5` です。
-* `MaxIdleConns` - プール内に維持する接続数。可能であれば接続は再利用されます。デフォルトは `5` です。
-* `ConnMaxLifetime` - 接続を利用可能な状態で維持する最大存続時間。デフォルトは 1 時間です。この時間経過後、接続は破棄され、必要に応じて新しい接続がプールに追加されます。
-* `ConnOpenStrategy` - ノードアドレスのリストをどのように順に消費し、接続を確立するかを決定します。[Connecting to Multiple Nodes](#connecting-to-multiple-nodes) を参照してください。
-* `BlockBufferSize` - 一度にバッファへデコードするブロックの最大数。値を大きくするとメモリを犠牲にして並列性が向上します。ブロックサイズはクエリ依存であるため、接続単位で設定することもできますが、返されるデータに基づいてクエリ単位で上書きすることを推奨します。デフォルトは `2` です。
+* `Debugf` - デバッグ出力を処理する関数を指定します。`debug` が true に設定されている必要があります。
+* `Settings` - ClickHouse の設定を保持するマップ。これらはすべての ClickHouse クエリに適用されます。[Using Context](#using-context) を使用すると、クエリごとに設定を行うことができます。
+* `Compression` - ブロックの圧縮を有効にします。詳しくは [Compression](#compression) を参照してください。
+* `DialTimeout` - 接続を確立するための最大時間。デフォルトは `1s` です。
+* `MaxOpenConns` - 任意の時点で使用可能な最大接続数。アイドルプール内の接続数はこれより多くても少なくてもかまいませんが、一度に使用できるのはこの数までです。デフォルトは `MaxIdleConns+5` です。
+* `MaxIdleConns` - プール内に維持する接続数。可能な場合には接続が再利用されます。デフォルトは `5` です。
+* `ConnMaxLifetime` - 接続を利用可能な状態で維持する最大存続時間。デフォルトは 1 時間です。この時間を過ぎると接続は破棄され、必要に応じて新しい接続がプールに追加されます。
+* `ConnOpenStrategy` - ノードアドレスのリストをどのような戦略で取り出し、接続の確立に使用するかを決定します。詳しくは [Connecting to Multiple Nodes](#connecting-to-multiple-nodes) を参照してください。
+* `BlockBufferSize` - 一度にバッファへデコードするブロックの最大数。値を大きくすると、メモリ消費量と引き換えに並列処理が向上します。ブロックサイズはクエリに依存するため、接続単位でも設定できますが、返されるデータに応じてクエリ単位で上書きすることを推奨します。デフォルトは `2` です。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -356,20 +353,20 @@ if err != nil {
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
-
-#### 接続プール
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
 
 
-クライアントはコネクションプールを維持し、必要に応じてクエリ間でコネクションを再利用します。任意の時点で同時に使用されるコネクション数は最大で `MaxOpenConns` となり、プールの最大サイズは `MaxIdleConns` によって制御されます。クライアントは各クエリ実行時にプールからコネクションを取得し、再利用のためにプールへ返却します。コネクションはバッチのライフタイムの間使用され、`Send()` のタイミングで解放されます。
+#### コネクションプーリング {#connection-pooling}
 
-プール内の同じコネクションが後続のクエリでも使用される保証はありません。これを保証したい場合は、ユーザーが `MaxOpenConns=1` を設定する必要があります。この設定が必要になることはまれですが、一時テーブルを使用するケースなどで必要となることがあります。
+クライアントはコネクションプールを保持し、必要に応じてクエリ間でコネクションを再利用します。任意の時点で使用されるコネクション数は最大で `MaxOpenConns` までであり、プールの最大サイズは `MaxIdleConns` によって制御されます。クライアントは各クエリ実行時にプールからコネクションを取得し、実行後は再利用のためにプールへ戻します。1つのバッチの存続期間中は同じコネクションが使用され、`Send()` の呼び出し時に解放されます。
 
-また、`ConnMaxLifetime` のデフォルト値は 1 時間である点にも注意してください。ノードがクラスタから離脱した場合、ClickHouse への負荷のバランスが崩れるケースが生じる可能性があります。これは、あるノードが利用不能になると、コネクションが他のノードに振り分けられる状況で発生します。これらのコネクションは、問題のあるノードがクラスタに復帰した後であっても、デフォルトでは 1 時間の間維持され、更新されません。高負荷ワークロードの場合は、この値を下げることを検討してください。
+ユーザーが `MaxOpenConns=1` を設定しない限り、プール内の同じコネクションが後続のクエリで使用されることは保証されません。この設定が必要になることはまれですが、一時テーブルを使用しているケースなどでは必要となる場合があります。
+
+また、`ConnMaxLifetime` はデフォルトで 1 時間である点に注意してください。これは、ノードがクラスタから離脱した場合に ClickHouse への負荷が不均衡になる原因となる可能性があります。ノードが利用不能になると、コネクションは他のノードへ分散されます。これらのコネクションは、問題のあるノードがクラスタに復帰したとしても、デフォルトでは 1 時間は維持され、再確立されません。高負荷なワークロードの場合には、この値を下げることを検討してください。
 
 ### TLS の使用
 
-低レベルの実装としては、すべてのクライアント接続メソッド（`DSN/OpenDB/Open`）は [Go tls パッケージ](https://pkg.go.dev/crypto/tls) を利用してセキュアな接続を確立します。`Options` 構造体に `nil` ではない `tls.Config` ポインタが含まれている場合、クライアントは TLS を使用する必要があると判断します。
+内部的には、すべてのクライアント接続メソッド（`DSN/OpenDB/Open`）はセキュアな接続を確立するために [Go の tls パッケージ](https://pkg.go.dev/crypto/tls) を使用します。Options 構造体に `nil` ではない `tls.Config` ポインタが含まれている場合、クライアントは TLS を使用すべきことを認識します。
 
 ```go
 env, err := GetNativeTestEnvironment()
@@ -410,9 +407,9 @@ if err != nil {
 fmt.Println(v.String())
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-この最小限の `TLS.Config` の設定だけで、通常は ClickHouse サーバー上のセキュアなネイティブポート（通常は 9440）に接続するのに十分です。ClickHouse サーバーが有効な証明書（期限切れ、ホスト名の不一致、一般に信頼されているルート認証局によって署名されていない、など）を持たない場合、`InsecureSkipVerify` を true に設定することもできますが、これは強く非推奨です。
+この最小限の `TLS.Config` 設定だけで、通常は ClickHouse サーバーのセキュアなネイティブポート（デフォルトは 9440）に接続するのに十分です。ClickHouse サーバーが有効な証明書を持っていない場合（証明書の有効期限切れ、ホスト名の不一致、公的に認められたルート認証局による未署名 など）、`InsecureSkipVerify` を true に設定することも可能ですが、これは強く非推奨です。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -434,11 +431,12 @@ v, err := conn.ServerVersion()
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl_no_verify.go)
 
-追加の TLS パラメータが必要な場合は、アプリケーションコード側で `tls.Config` 構造体内の必要なフィールドを設定します。これには、特定の暗号スイートの指定、特定の TLS バージョン（1.2 や 1.3 など）の強制、内部 CA 証明書チェーンの追加、ClickHouse サーバーで要求される場合のクライアント証明書（および秘密鍵）の追加など、より高度なセキュリティ設定に伴うほとんどのオプションが含まれます。
+追加の TLS パラメータが必要な場合は、アプリケーションコード側で `tls.Config` 構造体の該当フィールドを設定する必要があります。これには、特定の暗号スイートの指定、特定の TLS バージョン (1.2 や 1.3 など) の強制、内部 CA 証明書チェーンの追加、ClickHouse サーバーによって要求される場合のクライアント証明書 (および秘密鍵) の追加など、より高度なセキュリティ構成で利用されるほとんどのオプションが含まれます。
+
 
 ### 認証
 
-接続情報で Auth 構造体を指定し、ユーザー名とパスワードを設定します。
+接続設定で `Auth` 構造体を指定し、ユーザー名とパスワードを設定します。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -456,12 +454,12 @@ if err != nil {
 v, err := conn.ServerVersion()
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
+
 
 ### 複数ノードへの接続
 
 複数のアドレスを `Addr` 構造体で指定できます。
-
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -482,14 +480,14 @@ if err != nil {
 fmt.Println(v.String())
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
 
-2つの接続戦略が利用可能です：
+2 つの接続戦略を利用できます:
 
-* `ConnOpenInOrder` (デフォルト)  - アドレスは順番に試行されます。リスト内の前のアドレスでの接続に失敗した場合にのみ、後ろのアドレスが使用されます。これは実質的にフェイルオーバー戦略です。
-* `ConnOpenRoundRobin` - ラウンドロビン戦略を用いて、負荷がアドレス間で分散されます。
+* `ConnOpenInOrder` (デフォルト) - アドレスを順番に試行します。リストの前方のアドレスで接続に失敗した場合にのみ、後方のアドレスが使用されます。これは実質的にフォールオーバー戦略です。
+* `ConnOpenRoundRobin` - ラウンドロビン戦略を使用して、アドレス間で負荷を分散します。
 
-これはオプション `ConnOpenStrategy` で制御できます。
+これらはオプション `ConnOpenStrategy` で制御できます。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -512,9 +510,10 @@ if err != nil {
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
 
+
 ### 実行
 
-任意のステートメントを `Exec` メソッドで実行できます。これは DDL や単純なステートメントに便利です。ただし、大量の挿入処理やクエリを繰り返し実行する用途には使用しないでください。
+任意のステートメントは `Exec` メソッドで実行できます。これは DDL や簡単なステートメントを実行する場合に便利です。大量データの挿入やクエリの反復実行には使用すべきではありません。
 
 ```go
 conn.Exec(context.Background(), `DROP TABLE IF EXISTS example`)
@@ -532,13 +531,14 @@ conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
 
-クエリに `Context` を渡すことができる点に注意してください。これは特定のクエリレベルの設定を渡すために使用できます。詳しくは [Using Context](#using-context) を参照してください。
+クエリに `Context` を渡せることに注意してください。これは、クエリごとの特定の設定を渡すために使用できます。詳しくは [Using Context](#using-context) を参照してください。
+
 
 ### バッチ挿入
 
-大量の行を挿入するには、クライアントはバッチ挿入のための機能を提供しています。まず、行を追加していくためのバッチを準備します。最終的にこれは `Send()` メソッドによって送信されます。バッチは `Send` が実行されるまでメモリ上に保持されます。
+多数の行を挿入するには、クライアントはバッチ挿入用のセマンティクスを提供します。そのためには、行を追加していくためのバッチを事前に用意する必要があります。最終的にこのバッチは `Send()` メソッド経由で送信されます。バッチは `Send` が実行されるまでメモリ上に保持されます。
 
-接続リークを防ぐため、バッチに対して `Close` を呼び出すことを推奨します。これは、バッチを準備した後に `defer` キーワードを使用することで実現できます。これにより、`Send` が一度も呼び出されなかった場合でも接続がクリーンアップされます。行が一行も追加されなかった場合、クエリログには 0 行の挿入として表示される点に注意してください。
+接続リークを防ぐため、バッチに対して `Close` を呼び出すことを推奨します。これは、バッチを準備した直後に `defer` キーワードを用いて指定することで実行できます。これにより、`Send` が一度も呼び出されなかった場合でも接続がクリーンアップされます。なお、行が一度も追加されなかった場合、クエリログには挿入行数 0 として表示される点に注意してください。
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -571,40 +571,37 @@ if err != nil {
     return err
 }
 defer batch.Close()
-```
-
 
 for i := 0; i < 1000; i++ {
-err := batch.Append(
-uint8(42),
-"ClickHouse",
-"Inc",
-uuid.New(),
-map[string]uint8{"key": 1}, // Map(String, UInt8)
-[]string{"Q", "W", "E", "R", "T", "Y"}, // Array(String)
-[]interface{}{ // Tuple(String, UInt8, Array(Map(String, String)))
-"String Value", uint8(5), []map[string]string{
-{"key": "value"},
-{"key": "value"},
-{"key": "value"},
-},
-},
-time.Now(),
-)
-if err != nil {
-return err
-}
+    err := batch.Append(
+        uint8(42),
+        "ClickHouse",
+        "Inc",
+        uuid.New(),
+        map[string]uint8{"key": 1},             // Map(String, UInt8)
+        []string{"Q", "W", "E", "R", "T", "Y"}, // Array(String)
+        []interface{}{ // Tuple(String, UInt8, Array(Map(String, String)))
+            "String Value", uint8(5), []map[string]string{
+                {"key": "value"},
+                {"key": "value"},
+                {"key": "value"},
+            },
+        },
+        time.Now(),
+    )
+    if err != nil {
+        return err
+    }
 }
 
 return batch.Send()
-
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
 
-ClickHouseの推奨事項は[こちら](/guides/inserting-data#best-practices-for-inserts)を参照してください。バッチはgo-routines間で共有せず、ルーチンごとに個別のバッチを構築してください。
+ClickHouse に関する推奨事項については[こちら](/guides/inserting-data#best-practices-for-inserts)に記載されている内容がこの場合にも適用されます。バッチは goroutine 間で共有せず、goroutine ごとに個別のバッチを構築してください。
 
-上記の例から、行を追加する際に変数の型と列の型を一致させる必要があることに注意してください。通常、マッピングは明白ですが、このインターフェースは柔軟性を持たせており、精度の損失が発生しない限り型変換が行われます。例えば、以下はdatetime64型に文字列を挿入する例です。
+上記の例から、行を追加する際には変数の型がカラム型と一致している必要がある点に注意してください。マッピングは通常明らかですが、このインターフェイスは柔軟に動作するようになっており、精度の損失が発生しない限り型は変換されます。例えば、次の例では string を datetime64 列に挿入する方法を示しています。
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -623,15 +620,16 @@ for i := 0; i < 1000; i++ {
 }
 
 return batch.Send()
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
-各列型でサポートされているgo型の完全な一覧については、[型変換](#type-conversions)を参照してください。
+各カラム型ごとにサポートされる Go 型の一覧については、[型変換](#type-conversions) を参照してください。
 
-### 行のクエリ {#querying-rows}
 
-ユーザーは`QueryRow`メソッドを使用して単一行をクエリするか、`Query`を使用して結果セットを反復処理するためのカーソルを取得できます。前者はデータのシリアライズ先を受け取りますが、後者は各行で`Scan`を呼び出す必要があります。
+### 行のクエリ実行
+
+ユーザーは、`QueryRow` メソッドを使用して 1 行だけを取得するか、`Query` を使用して結果セットを反復処理するためのカーソルを取得できます。前者はシリアライズ結果の格納先を引数として受け取りますが、後者では各行に対して `Scan` を呼び出す必要があります。
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
@@ -673,16 +671,16 @@ return rows.Err()
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_rows.go)
 
-どちらの場合も、各列の値をシリアライズする変数へのポインタを渡す必要があることに注意してください。これらは`SELECT`文で指定された順序で渡す必要があります。デフォルトでは、上記のように`SELECT *`の場合は列宣言の順序が使用されます。
+どちらの場合も、それぞれのカラム値を格納したい変数へのポインタを渡す必要がある点に注意してください。これらは `SELECT` ステートメントで指定された順序で渡さなければなりません。デフォルトでは、上記のように `SELECT *` を使用した場合、カラム宣言の順序が使用されます。
+
+挿入時と同様に、Scan メソッドには適切な型のターゲット変数が必要です。ここでも柔軟に扱えるようになっており、精度損失が発生しない限りにおいて、可能な場合には型変換が行われます。たとえば、上記の例では UUID カラムが文字列型の変数に読み込まれています。各 Column 型に対してサポートされている Go 型の全一覧については、[Type Conversions](#type-conversions) を参照してください。
+
+最後に、`Query` および `QueryRow` メソッドに `Context` を渡すことができる点に注意してください。これはクエリレベルの設定に利用できます。詳細については [Using Context](#using-context) を参照してください。
 
 
-挿入と同様に、Scan メソッドではスキャン先の変数が適切な型である必要があります。これは柔軟に扱えるように設計されており、精度の損失が生じない限り、可能な場合には型変換が行われます。例えば、上記の例では UUID カラムを文字列変数として読み取っています。各 Column 型に対してサポートされる Go 型の一覧については、[Type Conversions](#type-conversions) を参照してください。
+### 非同期挿入
 
-最後に、`Query` および `QueryRow` メソッドに `Context` を渡すことができる点に注意してください。これはクエリレベルの設定に使用できます。詳細については [Using Context](#using-context) を参照してください。
-
-### Async Insert
-
-非同期挿入は Async メソッドでサポートされています。これにより、クライアントがサーバーによる挿入の完了を待つか、データが受信された時点で応答するかを指定できます。これは実質的にパラメータ [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert) を制御します。
+非同期挿入は Async メソッドで利用できます。これにより、クライアントがサーバー側で挿入処理の完了を待機するか、データが受信された時点で応答を返すかを指定できます。これは実質的にパラメータ [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert) の挙動を制御します。
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -711,17 +709,18 @@ if err := conn.Exec(ctx, ddl); err != nil {
 for i := 0; i < 100; i++ {
     if err := conn.AsyncInsert(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
         %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-    )`, i, "Go 言語用 SQL データベースドライバー"), false); err != nil {
+    )`, i, "Golang SQLデータベースドライバー"), false); err != nil {
         return err
     }
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
 
-### カラム形式での挿入
 
-挿入はカラム形式で行うことができます。データがすでにこの構造に沿った形で用意されている場合、行形式への変換（ピボット）が不要になるため、パフォーマンスの向上が見込めます。
+### カラム単位の挿入
+
+データはカラム形式で挿入できます。データがすでにこの構造で用意されている場合、行形式への変換が不要になるため、パフォーマンス上の利点が得られることがあります。
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -738,7 +737,7 @@ var (
 )
 for i := 0; i < 1_000; i++ {
     col1 = append(col1, uint64(i))
-    col2 = append(col2, "Go 用 SQL データベースドライバ")
+    col2 = append(col2, "Golang SQLデータベースドライバー")
     col3 = append(col3, []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9})
     col4 = append(col4, time.Now())
 }
@@ -758,15 +757,16 @@ if err := batch.Column(3).Append(col4); err != nil {
 return batch.Send()
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
 
-### struct の使用
 
-ユーザーにとって、Go 言語の struct は ClickHouse 内の 1 行分のデータを論理的に表現する手段となります。これを支援するために、ネイティブインターフェースはいくつかの便利な関数を提供しています。
+### struct の使用 {#using-structs}
 
-#### serialize を用いた Select
+ユーザーにとって、Go 言語の struct は ClickHouse における 1 行分のデータを論理的に表現する手段となります。これを支援するために、ネイティブインターフェイスはいくつかの便利な関数を提供しています。
 
-`Select` メソッドを使用すると、1 回の呼び出しでレスポンス行のセットを struct のスライスにマーシャルできます。
+#### serialize を使用した Select
+
+Select メソッドを使うと、1 回の呼び出しでレスポンスの行セットを構造体のスライスへマーシャリングできます。
 
 ```go
 var result []struct {
@@ -784,12 +784,12 @@ for _, v := range result {
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
+
 
 #### 構造体のスキャン
 
-
-`ScanStruct` は、クエリ結果の単一の Row を構造体にマーシャリングすることを可能にします。
+`ScanStruct` を使用すると、クエリ結果の単一の Row を構造体にマッピングできます。
 
 ```go
 var result struct {
@@ -801,11 +801,12 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
 
-#### struct の追加
 
-`AppendStruct` を使用すると、構造体を既存の [batch](#batch-insert) に追加して、1 行分のレコードとして解釈させることができます。これには、構造体のカラムがテーブルのカラムと名前および型の両方で揃っている必要があります。すべてのカラムに対応する構造体フィールドが存在しなければなりませんが、構造体フィールドの中には対応するカラムを持たないものがあってもかまいません。そのようなフィールドは単に無視されます。
+#### Append struct
+
+`AppendStruct` を使用すると、既存の[バッチ](#batch-insert)に構造体を追加し、それを 1 行分の完全なレコードとして解釈できます。これには、構造体の列がテーブルの列と名前・型の両方で一致している必要があります。すべての列に対応する構造体フィールドが存在している必要がありますが、一部の構造体フィールドには対応する列が存在しない場合があります。そのようなフィールドは単に無視されます。
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -817,7 +818,7 @@ defer batch.Close()
 for i := 0; i < 1_000; i++ {
     err := batch.AppendStruct(&row{
         Col1:       uint64(i),
-        Col2:       "Golang 用 SQL データベースドライバ",
+        Col2:       "Golang SQLデータベースドライバー",
         Col3:       []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9},
         Col4:       time.Now(),
         ColIgnored: "これは無視されます",
@@ -828,37 +829,37 @@ for i := 0; i < 1_000; i++ {
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
 
-### 型変換
 
-このクライアントは、挿入およびレスポンスのマーシャリングの両方について、受け付ける変数型に関して可能な限り柔軟であることを目指しています。多くの場合、ClickHouse のカラム型に対応する同等の Golang 型が存在します。例えば、[UInt64](/sql-reference/data-types/int-uint/) は [uint64](https://pkg.go.dev/builtin#uint64) に対応します。これらの論理的なマッピングは常にサポートされるべきです。ユーザーは、変数側または受信データ側で事前に変換を行えば、カラムへの挿入やレスポンスの受け取りに利用できる別の変数型を使いたい場合があります。クライアントは、ユーザーが挿入前にデータを厳密に揃えるために変換する必要がないようにし、かつクエリ時に柔軟なマーシャリングを提供するために、これらの変換を透過的にサポートすることを目指しています。この透過的な変換では精度の損失は許可されません。例えば、`uint32` は `UInt64` カラムからデータを受信するためには使用できません。逆に、フォーマット要件を満たしていれば、`string` を `datetime64` フィールドに挿入できます。
+### 型変換 {#type-conversions}
 
-プリミティブ型に対して現在サポートされている型変換は[こちら](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md)にまとめられています。
+このクライアントは、挿入およびレスポンスのマーシャリングの両方において、受け付ける変数の型に関して可能な限り柔軟であることを目指しています。ほとんどの場合、ClickHouse のカラム型には対応する Go 言語の型が存在します。例えば、[UInt64](/sql-reference/data-types/int-uint/) に対する [uint64](https://pkg.go.dev/builtin#uint64) などです。これらの論理的なマッピングは常にサポートされるべきです。ユーザーは、変数または受信データの変換が先に行われるのであれば、カラムへの挿入やレスポンスの受け取りに利用できる別の型を使用したい場合があります。クライアントは、ユーザーが挿入前にデータを厳密に変換する必要がないように、またクエリ実行時に柔軟なマーシャリングを提供できるように、これらの変換を透過的にサポートすることを目指しています。この透過的な変換では精度の損失は許可されません。例えば、`uint32` を使用して `UInt64` カラムからデータを受け取ることはできません。一方、フォーマット要件を満たしている限り、`string` を `datetime64` フィールドに挿入することは可能です。
 
-この取り組みは継続中であり、挿入時（`Append` / `AppendRow`）と読み取り時（`Scan` を介して）の 2 つに分けて考えることができます。特定の変換に対するサポートが必要な場合は、Issue を起票してください。
+現在、プリミティブ型に対してサポートされている型変換は [こちら](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md) にまとまっています。
 
-### 複合型
+この対応は継続中であり、挿入時（`Append` / `AppendRow`）と読み取り時（`Scan` を通じて）に分けて検討されています。特定の変換に対するサポートが必要な場合は、issue を作成してください。
 
-#### Date/DateTime 型
+### 複合データ型 {#complex-types}
 
-ClickHouse Go クライアントは、`Date`、`Date32`、`DateTime`、`DateTime64` の日付/日時型をサポートします。日付は `2006-01-02` という形式の `string`、またはネイティブな Go の `time.Time{}` や `sql.NullTime` を用いて挿入できます。`DateTime` も同様に後者の型をサポートしますが、`string` を渡す場合は、オプションのタイムゾーンオフセット（例: `2006-01-02 15:04:05 +08:00`）付きの `2006-01-02 15:04:05` 形式で指定する必要があります。`time.Time{}` と `sql.NullTime` は読み取り時もサポートされており、さらに `sql.Scanner` インターフェースの任意の実装もサポートされます。
+#### Date/DateTime types {#datedatetime-types}
 
-タイムゾーン情報の扱いは、ClickHouse の型と、その値が挿入されるのか読み出されるのかによって異なります。
+ClickHouse の Go クライアントは、`Date`、`Date32`、`DateTime`、`DateTime64` の日付/日時型をサポートしています。日付は、`2006-01-02` 形式の文字列として、またはネイティブな Go の `time.Time{}` もしくは `sql.NullTime` を用いて挿入できます。DateTime 型も同様にこれらの型をサポートしますが、文字列で渡す場合は `2006-01-02 15:04:05` 形式に従い、オプションでタイムゾーンオフセット（例: `2006-01-02 15:04:05 +08:00`）を指定する必要があります。`time.Time{}` と `sql.NullTime` は、`sql.Scanner` インターフェースを実装した任意の型と同様に、読み取り時にもサポートされます。
 
+タイムゾーン情報の扱いは、ClickHouse の型と、その値が挿入されるのか読み取られるのかによって異なります。
 
 * **DateTime/DateTime64**
-  * **insert** 時には、値は UNIX タイムスタンプ形式で ClickHouse に送信されます。タイムゾーンが指定されていない場合、クライアントはクライアントのローカルタイムゾーンを前提とします。`time.Time{}` または `sql.NullTime` は、それに応じてエポック秒に変換されます。
+  * **挿入** 時には、値は Unix タイムスタンプ形式で ClickHouse に送信されます。タイムゾーンが指定されていない場合、クライアントはクライアントのローカルタイムゾーンを仮定します。`time.Time{}` または `sql.NullTime` は、それに応じてエポックに変換されます。
   * **select** 時には、`time.Time` 値を返す際に、カラムにタイムゾーンが設定されていればそのタイムゾーンが使用されます。設定されていない場合は、サーバーのタイムゾーンが使用されます。
 * **Date/Date32**
-  * **insert** 時には、日付を UNIX タイムスタンプに変換する際に、その日付に対応するタイムゾーンが考慮されます。つまり、保存時にはタイムゾーンでオフセットされたうえで日付として格納されます。これは、ClickHouse における Date 型にはロケールの概念がないためです。文字列値でタイムゾーンが指定されていない場合は、ローカルタイムゾーンが使用されます。
-  * **select** 時には、日付は `time.Time{}` または `sql.NullTime{}` のインスタンスにスキャンされ、タイムゾーン情報なしで返されます。
+  * **挿入** 時には、任意の日付について、その日付を Unix タイムスタンプに変換する際にタイムゾーンが考慮されます。つまり、Date 型にはロケール情報がないため、日付として保存する前に、そのタイムゾーンを考慮してオフセットされます。文字列値でタイムゾーンが明示されていない場合は、ローカルタイムゾーンが使用されます。
+  * **select** 時には、日付は `time.Time{}` または `sql.NullTime{}` インスタンスにスキャンされ、タイムゾーン情報なしで返されます。
 
 #### Array
 
-配列はスライスとして挿入する必要があります。要素の型付けルールは [プリミティブ型](#type-conversions) と一貫しており、可能な場合には要素が変換されます。
+配列はスライスとして挿入する必要があります。要素の型付けのルールは [primitive type](#type-conversions) の場合と同じであり、可能な場合は要素が変換されます。
 
-Scan 時には、スライスへのポインタを指定する必要があります。
+Scan 時には、スライスへのポインタを渡す必要があります。
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -899,9 +900,10 @@ rows.Close()
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
 
+
 #### Map
 
-Map は、キーと値が[前述](#type-conversions)の型ルールに従うようにした Golang の map として挿入します。
+Map 型の値は、キーと値が[前述](#type-conversions)の型ルールに従う Golang の map として挿入します。
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -937,16 +939,17 @@ for rows.Next() {
     if err := rows.Scan(&col1, &col2, &col3); err != nil {
         return err
     }
-    fmt.Printf("行: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
+    fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 }
 rows.Close()
 ```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
 
-#### タプル
 
-タプルは、任意の長さのカラム群を一つにまとめたものを表します。カラムには、明示的に名前を付けることも、型だけを指定することもできます（例えば）。
+#### Tuples
+
+Tuple は任意の長さのカラムのグループを表します。各カラムは明示的に名前を付けることも、型だけを指定することもできます（例: ）。
 
 ```sql
 //名前なし
@@ -956,8 +959,7 @@ Col1 Tuple(String, Int64)
 Col2 Tuple(name String, id Int64, age uint8)
 ```
 
-これらのアプローチの中では、名前付きタプルの方が柔軟性に優れています。名前なしタプルはスライスを使って挿入および読み取りを行う必要がありますが、名前付きタプルはマップ型とも互換性があります。
-
+これらのアプローチの中では、名前付きタプルの方が柔軟に扱えます。名前なしタプルはスライスを使って挿入および読み取りを行う必要がありますが、名前付きタプルはマップとも互換性があります。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -980,7 +982,7 @@ if err != nil {
 }
 defer batch.Close()
 
-// 名前付きタプルと名前なしタプルの両方をスライスで追加できます。すべての要素の型が同じであれば、強い型付けのリストやマップを使用できることに注意してください。
+// 名前付きと名前なしの両方をスライスで追加できます。すべての要素が同じ型である場合、強く型付けされたリストとマップを使用できます
 if err = batch.Append([]interface{}{"Clicky McClickHouse", uint8(42)}, []interface{}{"Clicky McClickHouse Snr", uint8(78)}, []string{"Dale", "521211"}); err != nil {
     return err
 }
@@ -995,24 +997,25 @@ var (
     col2 []interface{}
     col3 map[string]string
 )
-// 名前付きタプルは map またはスライスとして取得でき、名前なしタプルはスライスとしてのみ取得できます。
+// 名前付きタプルはマップまたはスライスに取得できます。名前なしタプルはスライスのみです
 if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3); err != nil {
     return err
 }
-fmt.Printf("行: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
+fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 ```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/tuple.go)
 
-注: 型付きの slice および map もサポートされていますが、名前付き Tuple 内のサブカラムがすべて同じ型である必要があります。
+注意: 名前付きタプル内のサブカラムがすべて同じ型である場合、型付きスライスおよびマップがサポートされます。
+
 
 #### Nested
 
-Nested フィールドは、名前付き Tuple の Array と同等です。どのように扱われるかは、ユーザーが [flatten&#95;nested](/operations/settings/settings#flatten_nested) を 1 または 0 に設定しているかどうかに依存します。
+Nested フィールドは、名前付き Tuple の配列に相当します。利用方法は、ユーザーが [flatten&#95;nested](/operations/settings/settings#flatten_nested) を 1 にしているか 0 にしているかによって異なります。
 
-flatten&#95;nested を 0 に設定すると、Nested カラムは 1 つの Tuple の配列として保持されます。これにより、ユーザーは挿入および取得に map の slice を使用できるほか、任意のレベルまでネストできます。下記の例に示すように、map のキーはカラム名と一致している必要があります。
+flatten&#95;nested を 0 に設定すると、Nested カラムは単一のタプル配列のまま保持されます。これにより、ユーザーは挿入および取得にマップのスライスを使用でき、任意のレベルのネストが可能になります。以下の例に示すように、マップのキーはカラム名と同一でなければなりません。
 
-注: map は Tuple を表すため、型は `map[string]interface{}` でなければなりません。値は現在、厳密な型付けはされていません。
+注: マップはタプルを表すため、型は `map[string]interface{}` である必要があります。値には現在、厳密な型付けは行われていません。
 
 ```go
 conn, err := GetNativeConnection(clickhouse.Settings{
@@ -1047,75 +1050,73 @@ if err != nil {
     return err
 }
 defer batch.Close()
-```
-
 
 var i int64
 for i = 0; i < 10; i++ {
-err := batch.Append(
-[]map[string]interface{}{
-{
-"Col1_1": strconv.Itoa(int(i)),
-"Col1_2": uint8(i),
-},
-{
-"Col1_1": strconv.Itoa(int(i + 1)),
-"Col1_2": uint8(i + 1),
-},
-{
-"Col1_1": strconv.Itoa(int(i + 2)),
-"Col1_2": uint8(i + 2),
-},
-},
-[]map[string]interface{}{
-{
-"Col2_2": []map[string]interface{}{
-{
-"Col2_2_1": uint8(i),
-"Col2_2_2": uint8(i + 1),
-},
-},
-"Col2_1": uint8(i),
-},
-{
-"Col2_2": []map[string]interface{}{
-{
-"Col2_2_1": uint8(i + 2),
-"Col2_2_2": uint8(i + 3),
-},
-},
-"Col2_1": uint8(i + 1),
-},
-},
-)
-if err != nil {
-return err
-}
+    err := batch.Append(
+        []map[string]interface{}{
+            {
+                "Col1_1": strconv.Itoa(int(i)),
+                "Col1_2": uint8(i),
+            },
+            {
+                "Col1_1": strconv.Itoa(int(i + 1)),
+                "Col1_2": uint8(i + 1),
+            },
+            {
+                "Col1_1": strconv.Itoa(int(i + 2)),
+                "Col1_2": uint8(i + 2),
+            },
+        },
+        []map[string]interface{}{
+            {
+                "Col2_2": []map[string]interface{}{
+                    {
+                        "Col2_2_1": uint8(i),
+                        "Col2_2_2": uint8(i + 1),
+                    },
+                },
+                "Col2_1": uint8(i),
+            },
+            {
+                "Col2_2": []map[string]interface{}{
+                    {
+                        "Col2_2_1": uint8(i + 2),
+                        "Col2_2_2": uint8(i + 3),
+                    },
+                },
+                "Col2_1": uint8(i + 1),
+            },
+        },
+    )
+    if err != nil {
+        return err
+    }
 }
 if err := batch.Send(); err != nil {
-return err
+    return err
 }
 var (
-col1 []map[string]interface{}
-col2 []map[string]interface{}
+    col1 []map[string]interface{}
+    col2 []map[string]interface{}
 )
-rows, err := conn.Query(ctx, "SELECT \* FROM example")
+rows, err := conn.Query(ctx, "SELECT * FROM example")
 if err != nil {
-return err
+    return err
 }
 for rows.Next() {
-if err := rows.Scan(&col1, &col2); err != nil {
-return err
-}
-fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
+    if err := rows.Scan(&col1, &col2); err != nil {
+        return err
+    }
+    fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
 rows.Close()
-
-````
+```
 
 [完全な例 - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
-`flatten_nested` のデフォルト値 1 を使用すると、ネストされたカラムは個別の配列にフラット化されます。これには、挿入と取得にネストされたスライスを使用する必要があります。任意のレベルのネストが機能する可能性がありますが、これは公式にはサポートされていません。
+`flatten_nested` のデフォルト値 1 を使用すると、ネストされたカラムは個別の配列に展開されます。これには、挿入および取得時にネストしたスライスを使用する必要があります。任意の深さのネストも動作する可能性はありますが、これは公式にはサポートされていません。
+
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1178,18 +1179,18 @@ for i = 0; i < 10; i++ {
 if err := batch.Send(); err != nil {
     return err
 }
-````
+```
 
-[完全な例 - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
+[完全なサンプル - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
 
-注意: ネストされたカラムは同じ次元を持つ必要があります。例えば、上記の例では、`Col_2_2` と `Col_2_1` は同じ数の要素を持つ必要があります。
+注意：ネストされたカラムは同じ次元を持つ必要があります。たとえば上記の例では、`Col_2_2` と `Col_2_1` は同じ要素数でなければなりません。
 
-より直感的なインターフェースとネストの公式サポートにより、`flatten_nested=0` を推奨します。
-
-#### Geo 型 {#geo-types}
+よりシンプルなインターフェースとネストに対する公式なサポートがあるため、`flatten_nested=0` の使用を推奨します。
 
 
-このクライアントは、geo 型である Point、Ring、Polygon、Multi Polygon をサポートしています。これらのフィールドは、Go 言語でパッケージ [github.com/paulmach/orb](https://github.com/paulmach/orb) を使用して扱われます。
+#### Geo 型
+
+クライアントは Geo 型である Point、Ring、Polygon、Multi Polygon をサポートしています。これらのフィールドは、Go 言語ではパッケージ [github.com/paulmach/orb](https://github.com/paulmach/orb) を使用して表現されます。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1268,11 +1269,12 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
+
 
 #### UUID
 
-UUID 型は [github.com/google/uuid](https://github.com/google/uuid) パッケージでサポートされています。ユーザーは、UUID を文字列として、または `sql.Scanner` もしくは `Stringify` を実装する任意の型として送信およびマーシャリングすることもできます。
+UUID 型は [github.com/google/uuid](https://github.com/google/uuid) パッケージでサポートされています。また、UUID は文字列、または `sql.Scanner` もしくは `Stringify` を実装する任意の型として送信およびマーシャリングすることもできます。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1315,9 +1317,10 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
 
+
 #### Decimal
 
-Decimal 型は [github.com/shopspring/decimal](https://github.com/shopspring/decimal) パッケージによりサポートされています。
+Decimal 型は [github.com/shopspring/decimal](https://github.com/shopspring/decimal) パッケージによってサポートされています。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1359,23 +1362,21 @@ var (
     col4 decimal.Decimal
     col5 decimal.Decimal
 )
-```
 
-
-if err = conn.QueryRow(ctx, "SELECT \* FROM example").Scan(&col1, &col2, &col3, &col4, &col5); err != nil {
-return err
+if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &col4, &col5); err != nil {
+    return err
 }
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, col4, col5)
+```
 
-````
+[完全なサンプルコード](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
 
-#### Nullable（NULL 可能） {#nullable}
+#### Nullable
 
-Go の Nil 値は ClickHouse の NULL を表します。これはフィールドが Nullable として宣言されている場合に使用できます。挿入時には、非 Nullable なカラムと Nullable なカラムのどちらにも Nil を渡すことができます。前者の場合は、その型のデフォルト値（例: string 型であれば空文字列）が永続化されます。Nullable 版の場合は、ClickHouse には NULL 値が保存されます。
+`Nil` の Go 値は ClickHouse の `NULL` を表します。これはフィールドが `Nullable` として宣言されている場合に使用できます。挿入時には、非 Nullable のカラムと Nullable のカラムの両方に対して `Nil` を渡すことができます。前者の場合、その型のデフォルト値が永続化されます（例: `string` 型であれば空文字列）。後者の Nullable カラムの場合は、ClickHouse に `NULL` 値が保存されます。
 
-Scan 時には、ユーザーは Nullable フィールドの nil 値を表現できるよう、nil を取れる型（例: *string）へのポインタを渡す必要があります。以下の例では、Nullable(String) である col1 は **string を受け取ります。これにより nil を表現できます。
+Scan 時には、ユーザーは Nullable フィールドの nil 値を表現するために、`*string` のような nil を取り得る型へのポインタを渡す必要があります。以下の例では、`Nullable(String)` である `col1` は二重ポインタである `**string` を受け取ります。これにより nil を表現できるようになります。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1419,15 +1420,16 @@ var (
 if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &col4); err != nil {
     return err
 }
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nullable.go)
 
-クライアントはさらに、`sql.NullInt64` などの `sql.Null*` 型もサポートします。これらは対応する ClickHouse の型と互換性があります。
+クライアントはこれに加えて、`sql.Null*` 型（例: `sql.NullInt64`）もサポートしています。これらは対応する ClickHouse の型と互換性があります。
 
-#### 大きな整数型 - Int128, Int256, UInt128, UInt256 {#big-ints---int128-int256-uint128-uint256}
 
-64 ビットを超える数値型は、Go 標準の [big](https://pkg.go.dev/math/big) パッケージを使って表現されます。
+#### ビッグ整数 - Int128, Int256, UInt128, UInt256
+
+64 ビットを超える数値型は、Go 標準の [big](https://pkg.go.dev/math/big) パッケージで表現されます。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1487,21 +1489,18 @@ var (
     col7 []*big.Int
 )
 
-```
-
-
-if err = conn.QueryRow(ctx, "SELECT \* FROM example").Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7); err != nil {
-return err
+if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7); err != nil {
+    return err
 }
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v, col6=%v, col7=%v\n", col1, col2, col3, col4, col5, col6, col7)
-
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/big_int.go)
 
-### 圧縮 {#compression}
 
-圧縮方式のサポートは、使用する基盤プロトコルに依存します。ネイティブプロトコルの場合、クライアントは`LZ4`および`ZSTD`圧縮をサポートします。圧縮はブロックレベルでのみ実行されます。圧縮を有効にするには、接続に`Compression`設定を含めます。
+### 圧縮
+
+サポートされる圧縮方式は、使用する下位プロトコルに依存します。ネイティブプロトコルの場合、クライアントは `LZ4` と `ZSTD` 圧縮をサポートします。圧縮はブロックレベルでのみ行われます。接続に `Compression` 設定を含めることで圧縮を有効にできます。
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -1542,30 +1541,31 @@ for i := 0; i < 1000; i++ {
 if err := batch.Send(); err != nil {
     return err
 }
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
-HTTP経由で標準インターフェースを使用する場合、追加の圧縮技術が利用可能です。詳細については、[database/sql API - 圧縮](#compression)を参照してください。
+標準インターフェースを HTTP 経由で使用する場合は、追加の圧縮方式を利用できます。詳細は [database/sql API - Compression](#compression) を参照してください。
 
-### パラメータバインディング {#parameter-binding}
 
-クライアントは、`Exec`、`Query`、および`QueryRow`メソッドに対するパラメータバインディングをサポートします。以下の例に示すように、名前付き、番号付き、および位置指定パラメータを使用できます。以下にこれらの例を示します。
+### パラメータバインディング
+
+クライアントは `Exec`、`Query`、`QueryRow` メソッドに対してパラメータバインディングをサポートします。次の例のように、名前付きパラメータ、番号付きパラメータ、位置パラメータを利用できます。以下でそれぞれの例を示します。
 
 ```go
 var count uint64
-// 位置指定バインド
+// 位置バインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("位置指定バインドのカウント: %d\n", count)
-// 番号付きバインド
+fmt.Printf("位置バインドのカウント: %d\n", count)
+// 数値バインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("番号付きバインドのカウント: %d\n", count)
+fmt.Printf("数値バインドのカウント: %d\n", count)
 // 名前付きバインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
@@ -1574,16 +1574,16 @@ if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND
 fmt.Printf("名前付きバインドのカウント: %d\n", count)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
 
-#### 特殊なケース {#special-cases}
 
-デフォルトでは、スライスがクエリのパラメータとして渡された場合、カンマ区切りの値リストに展開されます。`[ ]`で囲まれた値のセットを挿入する必要がある場合は、`ArraySet`を使用してください。
+#### 特殊なケース
 
-グループやタプルが必要な場合、例えばIN演算子で使用するために`( )`で囲む必要がある場合は、`GroupSet`を使用できます。これは、以下の例に示すように、複数のグループが必要な場合に特に有用です。
+デフォルトでは、スライスをクエリのパラメータとして渡した場合、値のカンマ区切りリストに展開されます。角括弧 `[ ]` で囲まれた値の集合として埋め込みたい場合は、`ArraySet` を使用する必要があります。
 
-最後に、DateTime64フィールドは、パラメータが適切にレンダリングされるように精度が必要です。ただし、フィールドの精度レベルはクライアントには不明であるため、ユーザーが指定する必要があります。これを容易にするために、`DateNamed`パラメータを提供しています。
+グループやタプルが必要で、たとえば IN 演算子で使用するために丸括弧 `( )` で囲む必要がある場合は、`GroupSet` を使用できます。これは、以下の例で示すように、複数のグループが必要なケースで特に有用です。
 
+最後に、`DateTime64` フィールドでは、パラメータが適切にレンダリングされるように精度を指定する必要があります。ただしクライアント側ではそのフィールドの精度レベルが不明なため、ユーザーがそれを指定しなければなりません。そのために、`DateNamed` パラメータを用意しています。
 
 ```go
 var count uint64
@@ -1591,42 +1591,43 @@ var count uint64
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN (?)", []int{100, 200, 300, 400, 500}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("配列展開後の件数: %d\n", count)
+fmt.Printf("配列展開後のカウント: %d\n", count)
 // 配列は [] で保持されます
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col4 = ?", clickhouse.ArraySet{300, 301}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("配列の件数: %d\n", count)
+fmt.Printf("配列のカウント: %d\n", count)
 // グループセットを使用すると ( ) リストを形成できます
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN ?", clickhouse.GroupSet{[]interface{}{100, 200, 300, 400, 500}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("グループの件数: %d\n", count)
+fmt.Printf("グループのカウント: %d\n", count)
 // ネストが必要な場合に便利です
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE (Col1, Col5) IN (?)", []clickhouse.GroupSet{{[]interface{}{100, 101}}, {[]interface{}{200, 201}}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("グループの件数: %d\n", count)
-// 時刻の精度が必要な場合は DateNamed を使用します
+fmt.Printf("グループのカウント: %d\n", count)
+// 時刻の精度が必要な場合は DateNamed を使用してください
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col3 >= @col3", clickhouse.DateNamed("col3", now.Add(time.Duration(500)*time.Millisecond), clickhouse.NanoSeconds)).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("NamedDate の件数: %d\n", count)
+fmt.Printf("NamedDate のカウント: %d\n", count)
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
 
-### context の使用
 
-Go の context は、デッドライン、キャンセルシグナル、およびその他のリクエスト単位の値を API 境界をまたいで受け渡す手段を提供します。コネクション上のすべてのメソッドは、最初の引数として context を受け取ります。前の例では context.Background() を使用していましたが、この仕組みを利用すると、設定やデッドラインを渡したり、クエリをキャンセルしたりできます。
+### コンテキストの利用
 
-`withDeadline` で作成された context を渡すことで、クエリに対して実行時間の上限を設定できます。これは絶対時刻である点に注意してください。有効期限が来ると、コネクションが解放され、ClickHouse にキャンセルシグナルが送信されるだけです。`WithCancel` を使用すると、クエリを明示的にキャンセルすることもできます。
+Go の context は、期限（デッドライン）、キャンセルシグナル、その他のリクエストスコープの値を API 境界をまたいで受け渡す手段を提供します。コネクションのすべてのメソッドは、最初の引数として context を受け取ります。前の例では `context.Background()` を使用していましたが、この仕組みを利用して設定やデッドラインを渡したり、クエリをキャンセルしたりできます。
 
-ヘルパー関数 `clickhouse.WithQueryID` と `clickhouse.WithQuotaKey` を使用すると、クエリ ID とクオータキーを指定できます。クエリ ID は、ログでクエリを追跡したり、キャンセル目的で利用したりするのに有用です。クオータキーは、一意なキー値に基づいて ClickHouse の利用に制限を課すために使用できます。詳細については [Quotas Management](/operations/access-rights#quotas-management) を参照してください。
+`withDeadline` で作成した context を渡すと、クエリに対して実行時間の制限を設定できます。これは絶対時刻である点に注意してください。期限切れになった場合は、接続が解放され、ClickHouse にキャンセルシグナルが送信されるだけです。明示的にクエリをキャンセルしたい場合は、代わりに `WithCancel` を使用できます。
 
-ユーザーは context を使って、[Connection Settings](#connection-settings) に示すように、設定をコネクション全体ではなく特定のクエリに対してのみ適用されるようにすることもできます。
+ヘルパー `clickhouse.WithQueryID` および `clickhouse.WithQuotaKey` を使用すると、クエリ ID とクオータキーを指定できます。クエリ ID は、ログ内でクエリを追跡したり、キャンセルに利用したりする場合に有用です。クオータキーは、一意なキー値に基づいて ClickHouse の利用に制限を課すために使用できます。詳細は [Quotas Management ](/operations/access-rights#quotas-management) を参照してください。
 
-最後に、`clickhouse.WithBlockSize` によってブロックバッファのサイズを制御できます。これはコネクションレベルの設定である `BlockBufferSize` をオーバーライドし、任意の時点でデコードされメモリ上に保持されるブロック数の上限を制御します。値を大きくすると、メモリ消費と引き換えに、より高い並列性が得られる可能性があります。
+また、ユーザーは context を利用して、特定のクエリに対してのみ設定を適用し、[Connection Settings](#connection-settings) に示すようにコネクション全体には適用しないようにすることもできます。
+
+最後に、`clickhouse.WithBlockSize` を使用してブロックバッファのサイズを制御できます。これはコネクションレベルの設定 `BlockBufferSize` を上書きし、ある時点でデコードされメモリ上に保持されるブロックの最大数を制御します。値を大きくすると、メモリ使用量と引き換えに、より高い並列化が可能になる場合があります。
 
 上記の例を以下に示します。
 
@@ -1651,14 +1652,14 @@ if err != nil {
 if err := clickhouse_tests.CheckMinServerServerVersion(conn, 22, 6, 1); err != nil {
     return nil
 }
-// context を使って特定の API 呼び出しに設定を渡せます
+// コンテキストを使用して特定のAPI呼び出しに設定を渡すことができます
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 
 conn.Exec(ctx, "DROP TABLE IF EXISTS example")
 
-// JSON 列を作成するには allow_experimental_object_type=1 が必要です
+// JSON列を作成するには allow_experimental_object_type=1 が必要です
 if err = conn.Exec(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -1667,69 +1668,67 @@ if err = conn.Exec(ctx, `
     `); err != nil {
     return err
 }
-```
 
-
-// クエリは context を使用してキャンセルできます
+// コンテキストを使用してクエリをキャンセルできます
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
-cancel()
+    cancel()
 }()
 if err = conn.QueryRow(ctx, "SELECT sleep(3)").Scan(); err == nil {
-return fmt.Errorf("キャンセルが発生するはずでした")
+    return fmt.Errorf("キャンセルされることを期待")
 }
 
-// クエリにデッドラインを設定します - 絶対時刻に到達するとクエリはキャンセルされます。
-// ClickHouse ではクエリは完了まで実行され続けます
+// クエリのデッドラインを設定します - 指定時刻に達するとクエリがキャンセルされます。
+// ClickHouse内ではクエリは完了まで継続されます
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.Ping(ctx); err == nil {
-return fmt.Errorf("デッドライン超過が発生するはずでした")
+    return fmt.Errorf("デッドライン超過を期待")
 }
 
-// ログでクエリをトレースできるように、クエリ ID を設定します（例: system.query*log を参照）
+// ログ内でクエリをトレースするためにクエリIDを設定します(例: system.query_log を参照)
 var one uint8
-queryId, * := uuid.NewUUID()
+queryId, _ := uuid.NewUUID()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(queryId.String()))
 if err = conn.QueryRow(ctx, "SELECT 1").Scan(&one); err != nil {
-return err
+    return err
 }
 
 conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
 defer func() {
-conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
+    conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// クオータキーを設定します - まずクオータを作成します
+// クォータキーを設定します - まずクォータを作成します
 if err = conn.Exec(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
-return err
+    return err
 }
 
 type Number struct {
-Number uint64 `ch:"number"`
+    Number uint64 `ch:"number"`
 }
 for i := 1; i <= 6; i++ {
-var result []Number
-if err = conn.Select(ctx, &result, "SELECT number FROM numbers(10)"); err != nil {
-return err
+    var result []Number
+    if err = conn.Select(ctx, &result, "SELECT number FROM numbers(10)"); err != nil {
+        return err
+    }
 }
-}
-
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
-### Progress / Profile / Log 情報 {#progressprofilelog-information}
 
-クエリに対して Progress、Profile、Log の情報を要求できます。Progress 情報は、ClickHouse で読み取りおよび処理された行数やバイト数の統計を報告します。これに対して、Profile 情報はクライアントに返されたデータの概要を提供し、非圧縮バイト数、行数、ブロック数の合計を含みます。最後に、Log 情報はスレッドに関する統計、たとえばメモリ使用量やデータ処理速度などを提供します。
+### 進捗 / プロファイル / ログ情報
 
-これらの情報を取得するには [Context](#using-context) を使用する必要があり、そこにコールバック関数を渡すことができます。
+クエリに対して、Progress、Profile、Log の情報を要求できます。Progress 情報は、ClickHouse 内で読み取りおよび処理された行数とバイト数に関する統計を報告します。一方、Profile 情報はクライアントに返されたデータの概要を提供し、（非圧縮の）バイト数、行数、およびブロック数の合計を含みます。最後に、Log 情報は、メモリ使用量やデータ処理速度などのスレッドに関する統計を提供します。
+
+この情報を取得するには、ユーザーは [Context](#using-context) を使用し、その Context にコールバック関数を渡す必要があります。
 
 ```go
 totalRows := uint64(0)
-// Progress と Profile 情報用のコールバックを渡すために context を使用します
+// コンテキストを使用して進捗状況とプロファイル情報のコールバックを渡す
 ctx := clickhouse.Context(context.Background(), clickhouse.WithProgress(func(p *clickhouse.Progress) {
-    fmt.Println("進捗: ", p)
+    fmt.Println("進捗状況: ", p)
     totalRows += p.Rows
 }), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
     fmt.Println("プロファイル情報: ", p)
@@ -1746,13 +1745,14 @@ for rows.Next() {
 
 fmt.Printf("合計行数: %d\n", totalRows)
 rows.Close()
-````
+```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
 
-### 動的スキャン {#dynamic-scanning}
 
-ユーザーは、返されるフィールドのスキーマや型が分からないテーブルを読み取る必要がある場合があります。これは、アドホックなデータ分析を実行する場合や、汎用ツールを実装する場合によく発生します。これを実現するために、クエリのレスポンスから列の型情報を取得できます。これを Go のリフレクションと組み合わせて使用することで、適切な型を持つ変数のランタイムインスタンスを生成し、それらを Scan に渡すことができます。
+### 動的スキャン
+
+返されるフィールドのスキーマや型が分からないテーブルを読み取る必要がある場合があります。これは、アドホックなデータ分析を行う場合や、汎用的なツールを作成する場合によくあります。そのため、クエリのレスポンスには列の型情報が含まれています。これを Go のリフレクションと組み合わせることで、実行時に正しい型の変数インスタンスを生成し、それらを Scan に渡すことができます。
 
 ```go
 const query = `
@@ -1788,12 +1788,12 @@ for rows.Next() {
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
 
-### 外部テーブル {#external-tables}
 
+### 外部テーブル
 
-[External tables](/engines/table-engines/special/external-data/) により、クライアントは SELECT クエリと一緒にデータを ClickHouse に送信できます。このデータは一時テーブルに格納され、クエリ自体の評価に利用できます。
+[外部テーブル](/engines/table-engines/special/external-data/) を使用すると、クライアントは SELECT クエリとともにデータを ClickHouse に送信できます。このデータは一時テーブルに格納され、評価のためにクエリ自体の中で使用できます。
 
-クエリに外部データを添えてクライアントに送信するには、ユーザーはコンテキスト経由で渡す前に、`ext.NewTable` を使って外部テーブルを作成しておく必要があります。
+クエリとともに外部データを ClickHouse に送信するには、コンテキスト経由で渡す前に `ext.NewTable` を使って外部テーブルを作成しておく必要があります。
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -1853,11 +1853,12 @@ if err := conn.QueryRow(ctx, "SELECT COUNT(*) FROM (SELECT * FROM external_table
 fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
+
 
 ### OpenTelemetry
 
-ClickHouse は、ネイティブプロトコルの一部として [トレースコンテキスト](/operations/opentelemetry/) を受け渡すことをサポートしています。クライアントでは、この目的のために、関数 `clickhouse.withSpan` を使って Span を作成し、それを Context 経由で渡すことができます。
+ClickHouse では、ネイティブプロトコルの一部として [トレースコンテキスト](/operations/opentelemetry/) を渡せます。クライアントは、関数 `clickhouse.withSpan` を使用して Span を作成し、これを Context 経由で渡すことで、この機能を利用できます。
 
 ```go
 var count uint64
@@ -1873,24 +1874,24 @@ if err := rows.Scan(&count); err != nil {
 fmt.Printf("count: %d\n", count)
 ```
 
-[完全なコード例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
 
-トレーシングの活用方法の詳細については、[OpenTelemetry サポート](/operations/opentelemetry/)を参照してください。
+トレーシングの活用方法の詳細については、[OpenTelemetry サポート](/operations/opentelemetry/)をご覧ください。
 
 
-## Database/SQL API
+## Database/SQL API {#databasesql-api}
 
-`database/sql` または「標準」API は、標準インターフェイスに準拠することで、アプリケーションコードを基盤となるデータベースに依存させずにクライアントを利用できるようにします。これには、追加の抽象化レイヤーや間接参照、さらに ClickHouse に必ずしも適合しないプリミティブが伴うというコストが生じます。しかし、ツールが複数のデータベースに接続する必要があるシナリオでは、これらのコストは一般的に許容可能です。
+`database/sql` や「標準」API は、標準インターフェイスに従うことで、アプリケーションコードを基盤となるデータベースに依存させずにクライアントを利用できるようにします。これは、追加の抽象化レイヤーや間接参照、さらに ClickHouse と必ずしも整合しないプリミティブを導入するというコストを伴います。しかし、ツールが複数のデータベースへ接続する必要があるようなシナリオでは、これらのコストは通常は許容可能です。
 
-さらに、このクライアントはトランスポート層として HTTP の利用をサポートしており、データ自体は引き続き最適なパフォーマンスのためにネイティブ形式でエンコードされます。
+さらに、このクライアントはトランスポート層として HTTP の利用をサポートしています。データは引き続き、最適なパフォーマンスのためにネイティブ形式でエンコードされます。
 
-以下は、ClickHouse API のドキュメント構造に倣ったものです。
+以下では、ClickHouse API のドキュメント構成を踏襲することを目指します。
 
 標準 API 向けの完全なコード例は[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std)で確認できます。
 
-### Connecting
+### 接続
 
-接続は、`clickhouse://<host>:<port>?<query_option>=<value>` という形式の DSN 文字列と `Open` メソッド、または `clickhouse.OpenDB` メソッドのいずれかによって行うことができます。後者は `database/sql` 仕様の一部ではありませんが、`sql.DB` インスタンスを返します。このメソッドは、`database/sql` 仕様上は明確な公開手段がないプロファイリングなどの機能を提供します。
+接続は、`clickhouse://<host>:<port>?<query_option>=<value>` という形式の DSN 文字列と `Open` メソッドを使用するか、`clickhouse.OpenDB` メソッドを使用することで行えます。後者は `database/sql` 仕様の一部ではありませんが、`sql.DB` インスタンスを返します。このメソッドでは、`database/sql` 仕様では明確な公開手段がないプロファイリングなどの機能も利用できます。
 
 ```go
 func Connect() error {
@@ -1922,32 +1923,32 @@ func ConnectDSN() error {
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
 
-**以降のすべての例では、明示的に記載されている場合を除き、ClickHouse の `conn` 変数がすでに作成されており、利用可能であることを前提とします。**
+**以降のすべてのサンプルでは、特に断りのない限り、ClickHouse の `conn` 変数はすでに作成されており、利用可能であるものとします。**
+
 
 #### 接続設定
 
 以下のパラメータを DSN 文字列で指定できます:
 
-* `hosts` - ロードバランシングおよびフェイルオーバー用の、単一アドレスホストのカンマ区切りリスト - [複数ノードへの接続](#connecting-to-multiple-nodes)を参照
-* `username/password` - 認証情報 - [認証](#authentication)を参照
+* `hosts` - ロードバランシングおよびフェイルオーバー用の、単一アドレスのホストをカンマ区切りで並べたリスト - [複数ノードへの接続](#connecting-to-multiple-nodes) を参照。
+* `username/password` - 認証クレデンシャル - [認証](#authentication) を参照
 * `database` - 現在のデフォルトデータベースを選択
-* `dial_timeout` - 継続時間を表す文字列。符号付きの場合があり、小数部を含む 10 進数と、`300ms` や `1s` のような単位サフィックスから成るシーケンスです。利用可能な時間単位は `ms`、`s`、`m` です。
-* `connection_open_strategy` - `random/in_order` (デフォルトは `random`) - [複数ノードへの接続](#connecting-to-multiple-nodes)を参照
+* `dial_timeout` - 期間を表す文字列。符号付きの 10 進数の並びで構成され、それぞれは任意の小数部および `300ms` や `1s` のような単位サフィックスを持つことができます。有効な時間単位は `ms`、`s`、`m` です。
+* `connection_open_strategy` - `random/in_order`（デフォルトは `random`） - [複数ノードへの接続](#connecting-to-multiple-nodes) を参照
   * `round_robin` - セット内からラウンドロビンでサーバーを選択
-  * `in_order` - 指定された順序で、最初の稼働中サーバーを選択
-* `debug` - デバッグ出力を有効化 (ブール値)
-* `compress` - 圧縮アルゴリズムを指定 - `none` (デフォルト), `zstd`, `lz4`, `gzip`, `deflate`, `br`。`true` に設定した場合は `lz4` が使用されます。ネイティブ通信でサポートされるのは `lz4` と `zstd` のみです。
-* `compress_level` - 圧縮レベル (デフォルトは `0`)。「Compression」を参照してください。これはアルゴリズム固有です:
-  * `gzip` - `-2` (最高速度) 〜 `9` (最高圧縮)
-  * `deflate` - `-2` (最高速度) 〜 `9` (最高圧縮)
-  * `br` - `0` (最高速度) 〜 `11` (最高圧縮)
-  * `zstd`, `lz4` - 無視されます
-* `secure` - セキュアな SSL 接続を確立 (デフォルトは `false`)
-* `skip_verify` - 証明書検証をスキップ (デフォルトは `false`)
-* `block_buffer_size` - ブロックバッファサイズを制御します。[`BlockBufferSize`](#connection-settings) を参照。(デフォルトは `2`)
-
+  * `in_order` - 指定された順序で、最初に稼働中のサーバーを選択
+* `debug` - デバッグ出力を有効化（ブール値）
+* `compress` - 圧縮アルゴリズムを指定 - `none`（デフォルト）、`zstd`、`lz4`、`gzip`、`deflate`、`br`。`true` に設定した場合は `lz4` が使用されます。ネイティブ通信では `lz4` と `zstd` のみがサポートされます。
+* `compress_level` - 圧縮レベル（デフォルトは `0`）。圧縮については Compression を参照。これはアルゴリズム固有です:
+  * `gzip` - `-2`（最高速度）から `9`（最高圧縮率）
+  * `deflate` - `-2`（最高速度）から `9`（最高圧縮率）
+  * `br` - `0`（最高速度）から `11`（最高圧縮率）
+  * `zstd`、`lz4` - 無視されます
+* `secure` - セキュアな SSL 接続を確立（デフォルトは `false`）
+* `skip_verify` - 証明書検証をスキップ（デフォルトは `false`）
+* `block_buffer_size` - ブロックバッファサイズを制御できます。[`BlockBufferSize`](#connection-settings) を参照。（デフォルトは `2`）
 
 ```go
 func ConnectSettings() error {
@@ -1963,15 +1964,16 @@ func ConnectSettings() error {
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
-#### コネクションプール
 
-ユーザーは、[複数ノードへの接続](#connecting-to-multiple-nodes) で説明されているように、提供されたノードアドレスのリストの利用方法を制御できます。ただし、コネクション管理およびプーリングは、設計上 `sql.DB` に委譲されています。
+#### 接続プーリング {#connection-pooling-1}
 
-#### HTTP 経由での接続
+ユーザーは、[複数ノードへの接続](#connecting-to-multiple-nodes)で説明されているように、提供されたノードアドレス一覧の使われ方を制御できます。ただし、接続管理およびプーリングは、設計上 `sql.DB` に委任されています。
 
-デフォルトでは、ネイティブプロトコル経由で接続が確立されます。HTTP を利用する必要がある場合は、DSN を変更して HTTP プロトコルを含めるか、接続オプションで `Protocol` を指定することで有効化できます。
+#### HTTP 経由で接続する
+
+デフォルトでは、接続はネイティブプロトコルで確立されます。HTTP を利用する必要がある場合は、DSN を変更して HTTP プロトコルを指定するか、接続オプションで Protocol を指定して有効化できます。
 
 ```go
 func ConnectHTTP() error {
@@ -2004,13 +2006,14 @@ func ConnectDSNHTTP() error {
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
+[完全なサンプルコード](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
+
 
 #### 複数ノードへの接続
 
-`OpenDB` を使用する場合は、ClickHouse API と同様のオプション指定方法で複数ホストに接続します。必要に応じて `ConnOpenStrategy` を指定できます。
+`OpenDB` を使用する場合は、ClickHouse API と同じオプション指定方法で複数のホストに接続し、必要に応じて `ConnOpenStrategy` を指定します。
 
-DSN ベースの接続では、接続文字列で複数ホストと `connection_open_strategy` パラメーターを指定でき、その値として `round_robin` または `in_order` を設定できます。
+DSN ベースの接続では、DSN 文字列で複数のホストを指定できるほか、`connection_open_strategy` パラメータに `round_robin` または `in_order` の値を設定できます。
 
 ```go
 func MultiStdHost() error {
@@ -2051,12 +2054,12 @@ func MultiStdHostDSN() error {
 }
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
+
 
 ### TLS の使用
 
-DSN 接続文字列を使用する場合、パラメータ `secure=true` によって SSL を有効化できます。`OpenDB` メソッドは、非 nil な TLS 構造体を指定するという点で、[TLS 用のネイティブ API](#using-tls) と同じアプローチを利用します。DSN 接続文字列は SSL 検証をスキップするための `skip_verify` パラメータをサポートしていますが、より高度な TLS 設定には `OpenDB` メソッドが必要です。これは TLS 設定を引数として渡すことができるためです。
-
+DSN 接続文字列を使用する場合は、パラメータ `secure=true` によって SSL を有効化できます。`OpenDB` メソッドは、非 nil の TLS struct を指定するという点で、[TLS 用のネイティブ API](#using-tls) と同じアプローチを取ります。DSN 接続文字列では SSL 検証をスキップするためのパラメータ `skip_verify` がサポートされていますが、より高度な TLS 設定を行うには、設定を渡すことができる `OpenDB` メソッドを使用する必要があります。
 
 ```go
 func ConnectSSL() error {
@@ -2105,11 +2108,12 @@ func ConnectDSNSSL() error {
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/ssl.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/ssl.go)
+
 
 ### 認証
 
-`OpenDB` を使用する場合、認証情報は通常のオプションを通じて渡すことができます。DSN ベースの接続では、ユーザー名とパスワードを接続文字列で渡すことができ、パラメーターとして指定するか、アドレス内にエンコードされた認証情報として含めることができます。
+`OpenDB` を使用する場合は、通常どおりオプションで認証情報を渡すことができます。DSN ベースの接続の場合、ユーザー名とパスワードは接続文字列内で指定できます。パラメーターとして渡すか、アドレスに資格情報としてエンコードして含めることができます。
 
 ```go
 func ConnectAuth() error {
@@ -2147,9 +2151,10 @@ func ConnectDSNAuth() error {
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/auth.go)
 
+
 ### 実行
 
-接続を確立したら、Exec メソッドを使って `sql` ステートメントを実行できます。
+接続を取得したら、ユーザーは Exec メソッドで `sql` ステートメントを実行できます。
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)
@@ -2165,14 +2170,14 @@ if err != nil {
 _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
-このメソッドは `context` の受け取りをサポートしていません。デフォルトではバックグラウンド `context` で実行されます。必要な場合は `ExecContext` を使用してください。詳しくは [Using Context](#using-context) を参照してください。
+このメソッドは context の受け取りをサポートしていません。デフォルトでは background context で実行されます。必要な場合は `ExecContext` を使用してください。詳しくは [Using Context](#using-context) を参照してください。
+
 
 ### バッチ挿入
 
-バッチ処理は、`Begin` メソッドで `sql.Tx` を作成することで実現できます。そのトランザクションから、`INSERT` 文を指定して `Prepare` メソッドを呼ぶことでバッチを取得します。これにより `sql.Stmt` が返され、`Exec` メソッドを使って行を追加できます。`Commit` が元の `sql.Tx` に対して実行されるまで、バッチはメモリ上に蓄積されます。
-
+バッチ挿入は、`Being` メソッドで `sql.Tx` を作成することで実現できます。そこから、`INSERT` 文を指定して `Prepare` メソッドを呼び出すことでバッチを取得できます。これにより `sql.Stmt` が返され、`Exec` メソッドを使って行を追加していくことができます。バッチは、元の `sql.Tx` に対して `Commit` が実行されるまでメモリ上に蓄積されます。
 
 ```go
 batch, err := scope.Prepare("INSERT INTO example")
@@ -2204,9 +2209,10 @@ return scope.Commit()
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/batch.go)
 
-### 行のクエリ
 
-単一行のクエリ実行は `QueryRow` メソッドで行えます。このメソッドは *sql.Row を返し、その Row に対して `Scan` を呼び出し、カラム値を格納する変数へのポインタを渡します。`QueryRowContext` バリアントを使用すると、`background` 以外の context を渡すことができます。詳しくは [Using Context](#using-context) を参照してください。
+### 行のクエリ実行
+
+単一行のクエリは `QueryRow` メソッドを使って実行できます。これは *sql.Row を返し、その上で `Scan` をポインタを渡した変数に対して呼び出すことで、列の値をそれらの変数に詰め替えることができます。`QueryRowContext` バリアントを使用すると、バックグラウンド以外の context を渡すことができます。詳しくは [Using Context](#using-context) を参照してください。
 
 ```go
 row := conn.QueryRow("SELECT * FROM example")
@@ -2223,9 +2229,9 @@ if err := row.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err 
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
 
-複数行を反復処理するには `Query` メソッドを使用します。このメソッドは、`Next` を呼び出して行を順に処理できる `*sql.Rows` 構造体を返します。`Query` に対応する `QueryContext` メソッドを使うと、context を渡すことができます。
+複数行をイテレートするには `Query` メソッドを使用します。これは `*sql.Rows` 構造体を返し、その上で `Next` を呼び出して行を順に処理できます。`QueryContext` メソッドを使うと、context を渡すことができます。
 
 ```go
 rows, err := conn.Query("SELECT * FROM example")
@@ -2244,15 +2250,16 @@ for rows.Next() {
     if err := rows.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err != nil {
         return err
     }
-    fmt.Printf("行: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
+    fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
 }
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
+[完全なコード例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
+
 
 ### 非同期 Insert
 
-非同期での Insert は、`ExecContext` メソッドを使って Insert を実行することで行えます。以下に示すように、非同期モードを有効にした `context` を渡す必要があります。これにより、クライアントがサーバーによる Insert の完了を待つか、データが受信された時点で応答するかをユーザー側で指定できます。これは実質的にパラメータ [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert) を制御することになります。
+非同期 insert は、`ExecContext` メソッドで insert を実行することで実現できます。その際、以下の例のように非同期モードを有効にした context を渡す必要があります。これにより、クライアントがサーバーによる insert の完了を待つか、データが受信された時点で応答するかをユーザーが指定できるようになります。これは実質的にパラメータ [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert) を制御します。
 
 ```go
 const ddl = `
@@ -2271,7 +2278,7 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
     for i := 0; i < 100; i++ {
         _, err := conn.ExecContext(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
             %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-        )`, i, "Golang SQL データベースドライバ"))
+        )`, i, "Golang SQLデータベースドライバー"))
         if err != nil {
             return err
         }
@@ -2279,28 +2286,28 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 }
 ```
 
-[完全なコード例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
 
 
-### カラム型インサート
+### 列指向挿入 {#columnar-insert-1}
 
-標準インターフェイスではサポートされていません。
+標準インターフェースではサポートされていません。
 
-### struct の使用
+### struct の使用 {#using-structs-1}
 
-標準インターフェイスではサポートされていません。
+標準インターフェースでは利用できません。
 
-### 型変換
+### 型変換 {#type-conversions-1}
 
-標準の `database/sql` インターフェイスは、[ClickHouse API](#type-conversions) と同じ型をサポートします。主に複合型に関していくつかの例外があり、それらについて以下で説明します。ClickHouse API と同様に、クライアントは挿入およびレスポンスのマーシャリングの両方において、さまざまな型をできる限り柔軟に受け入れることを目指しています。詳細については [Type Conversions](#type-conversions) を参照してください。
+標準の `database/sql` インターフェイスは、[ClickHouse API](#type-conversions) と同じ型をサポートします。主に複合型に関していくつかの例外があり、それらを以下で説明します。ClickHouse API と同様に、このクライアントはデータ挿入とレスポンスのマーシャリングの両方において、受け付ける型に関して可能な限り柔軟であることを目指しています。詳細については [型変換](#type-conversions) を参照してください。
 
-### 複合型
+### 複合型 {#complex-types-1}
 
-特に記載がない限り、複合型の扱いは [ClickHouse API](#complex-types) と同じです。違いは `database/sql` の内部実装によるものです。
+特に断りがない限り、複合型の扱いは [ClickHouse API](#complex-types) と同様です。差異は `database/sql` の内部実装によるものです。
 
-#### Map
+#### マップ
 
-ClickHouse API と異なり、標準 API ではスキャン時の型として Map を厳密に型指定する必要があります。たとえば、ユーザーは `Map(String,String)` フィールドに対して `map[string]interface{}` を渡すことはできず、代わりに `map[string]string` を使用する必要があります。`interface{}` 変数は常に互換性があり、より複雑な構造に対して使用できます。読み取り時に struct はサポートされていません。
+ClickHouse の API と異なり、標準 API ではマップに対してスキャン時の型を厳密に指定する必要があります。例えば、`Map(String,String)` フィールドに `map[string]interface{}` を渡すことはできず、代わりに `map[string]string` を使用する必要があります。`interface{}` 変数は常に互換性があり、より複雑な構造に利用できます。構造体は読み取り時にはサポートされません。
 
 ```go
 var (
@@ -2341,15 +2348,16 @@ if err := conn.QueryRow("SELECT * FROM example").Scan(&col1, &col2, &col3, &col4
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4, col5)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
 
-データ挿入時の動作は ClickHouse API と同じです。
+Insert の動作は ClickHouse API と同じです。
+
 
 ### 圧縮
 
-標準 API は、ネイティブな [ClickHouse API](#compression) と同じ圧縮アルゴリズム、すなわちブロック単位の `lz4` および `zstd` 圧縮をサポートします。加えて、HTTP 接続では gzip、deflate、および br 圧縮がサポートされます。これらのいずれかが有効化されている場合、挿入時のブロックおよびクエリ応答に対して圧縮が行われます。その他のリクエスト、たとえば ping やクエリ実行リクエストは非圧縮のままです。これは `lz4` および `zstd` オプションの場合と同様です。
+標準 API は、ネイティブの [ClickHouse API](#compression) と同じ圧縮アルゴリズムをサポートしており、ブロック単位の `lz4` および `zstd` 圧縮を利用できます。さらに、HTTP 接続では gzip、deflate、br 圧縮もサポートされます。これらのいずれかが有効になっている場合、挿入時およびクエリレスポンスに対してブロック単位で圧縮が行われます。その他のリクエスト（例：ping リクエストやクエリの送信）は非圧縮のままです。これは `lz4` および `zstd` オプションの挙動と一貫しています。
 
-接続を確立するために `OpenDB` メソッドを使用する場合は、`Compression` 設定を渡すことができます。これには圧縮レベルを指定する機能が含まれます（後述）。DSN を用いて `sql.Open` 経由で接続する場合は、パラメータ `compress` を利用します。これは、`gzip`、`deflate`、`br`、`zstd`、`lz4` のような特定の圧縮アルゴリズム、または真偽値フラグのいずれかを指定できます。`true` に設定した場合は `lz4` が使用されます。デフォルトは `none`、すなわち圧縮無効です。
+接続確立に `OpenDB` メソッドを使用する場合は、Compression 設定を渡すことができます。ここでは圧縮レベルの指定も可能です（下記参照）。DSN を指定して `sql.Open` で接続する場合は、パラメータ `compress` を使用します。これは特定の圧縮アルゴリズム（例：`gzip`、`deflate`、`br`、`zstd`、`lz4`）か、もしくは真偽値フラグを指定できます。true に設定した場合は `lz4` が使用されます。デフォルトは `none`、すなわち圧縮は無効です。
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2367,64 +2375,65 @@ conn := clickhouse.OpenDB(&clickhouse.Options{
 })
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
-
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
 
 ```go
 conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s&compress=gzip&compress_level=5", env.Host, env.HttpPort, env.Username, env.Password))
 ```
 
-[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L78-L115)
+[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L78-L115)
 
-適用される圧縮レベルは、DSN パラメーター `compress_level` または Compression オプションの `Level` フィールドで制御できます。デフォルトは 0 ですが、設定可能な範囲はアルゴリズムごとに異なります:
+適用される圧縮レベルは、DSN パラメータ `compress_level` または Compression オプションの `Level` フィールドで制御できます。既定値は 0 ですが、アルゴリズムごとに仕様が異なります:
 
-* `gzip` - `-2`（最高速）から `9`（最高圧縮）
-* `deflate` - `-2`（最高速）から `9`（最高圧縮）
-* `br` - `0`（最高速）から `11`（最高圧縮）
+* `gzip` - `-2` (最高速) から `9` (最高圧縮)
+* `deflate` - `-2` (最高速) から `9` (最高圧縮)
+* `br` - `0` (最高速) から `11` (最高圧縮)
 * `zstd`, `lz4` - 無視されます
+
 
 ### パラメータバインディング
 
-標準の API は、[ClickHouse API](#parameter-binding) と同じパラメータバインディング機能をサポートしており、`Exec`、`Query`、`QueryRow` メソッド（およびそれらに相当する [Context](#using-context) 付きのバリアント）にパラメータを渡すことができます。位置指定パラメータ、名前付きパラメータ、および番号付きパラメータがサポートされています。
+標準 API では [ClickHouse API](#parameter-binding) と同じパラメータバインディング機能がサポートされており、`Exec`、`Query`、`QueryRow` メソッド（およびそれらに対応する [Context](#using-context) 版）にパラメータを渡すことができます。位置指定パラメータ、名前付きパラメータ、および番号付きパラメータがサポートされています。
 
 ```go
 var count uint64
-// 位置パラメータバインド
+// 位置バインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("位置パラメータバインドの件数: %d\n", count)
-// 番号指定パラメータバインド
+fmt.Printf("位置バインドのカウント: %d\n", count)
+// 数値バインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("番号指定パラメータバインドの件数: %d\n", count)
-// 名前付きパラメータバインド
+fmt.Printf("数値バインドのカウント: %d\n", count)
+// 名前付きバインド
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
 }
 // 50
-fmt.Printf("名前付きパラメータバインドの件数: %d\n", count)
+fmt.Printf("名前付きバインドのカウント: %d\n", count)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
 
-[特殊なケース](#special-cases) についての注意事項は引き続き適用されます。
+なお、[特殊ケース](#special-cases) は引き続き有効です。
 
-### context の使用
 
-標準 API は、[ClickHouse API](#using-context) と同様に、context を通じて期限、キャンセルシグナル、その他のリクエストスコープの値を渡す機能をサポートします。ClickHouse API と異なり、これはメソッドの `Context` 付きバリアントを使用することで実現します。つまり、デフォルトでバックグラウンド context を使用する `Exec` のようなメソッドには、最初のパラメータとして context を渡せる `ExecContext` というバリアントが用意されています。これにより、アプリケーションフローの任意の段階で context を渡すことができます。例えば、`ConnContext` を用いて接続を確立する際や、`QueryRowContext` を用いてクエリの 1 行を取得する際に context を渡すことが可能です。利用可能なすべてのメソッドの例を以下に示します。
+### コンテキストの使用
 
-期限、キャンセルシグナル、クエリ ID、クオータキー、および接続設定を渡すために context を使用する方法の詳細については、[ClickHouse API](#using-context) 向けの「Using Context」を参照してください。
+標準 API は、[ClickHouse API](#using-context) と同様に、コンテキストを介して期限、キャンセルシグナル、その他のリクエストスコープの値を渡す機能をサポートします。ClickHouse API と異なり、これはメソッドの `Context` 付きバリアントを使用することで実現されます。つまり、デフォルトではバックグラウンドコンテキストを使用する `Exec` のようなメソッドには、最初の引数としてコンテキストを渡せる `ExecContext` というバリアントが用意されています。これにより、アプリケーションフローの任意の段階でコンテキストを渡すことができます。例えば、`ConnContext` を使用して接続を確立する際や、`QueryRowContext` を使用してクエリの行を取得する際にコンテキストを渡すことができます。利用可能なすべてのメソッドの例を以下に示します。
+
+コンテキストを使用して期限、キャンセルシグナル、クエリ ID、クオータキーおよび接続設定を渡す方法の詳細については、[ClickHouse API](#using-context) におけるコンテキストの使用に関するセクションを参照してください。
 
 ```go
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 conn.ExecContext(ctx, "DROP TABLE IF EXISTS example")
-// JSON 列を作成するには allow_experimental_object_type=1 を有効にする必要があります
+// JSON列を作成するには allow_experimental_object_type=1 が必要です
 if _, err = conn.ExecContext(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -2434,78 +2443,76 @@ if _, err = conn.ExecContext(ctx, `
     return err
 }
 
-// クエリはコンテキストを使用してキャンセルできます
+// コンテキストを使用してクエリをキャンセルできます
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
 }()
 if err = conn.QueryRowContext(ctx, "SELECT sleep(3)").Scan(); err == nil {
-    return fmt.Errorf("キャンセルされるはずです")
+    return fmt.Errorf("expected cancel")
 }
 
-// クエリにデッドラインを設定します - 絶対時刻に達するとクエリをキャンセルします。ここでも接続のみが終了し、
-// ClickHouse ではクエリは完了まで実行され続けます
+// クエリのデッドラインを設定します - 絶対時刻に達した後にクエリをキャンセルします。これも接続のみを終了し、
+// クエリはClickHouse内で完了まで継続されます
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.PingContext(ctx); err == nil {
-    return fmt.Errorf("Deadline Exceeded が発生するはずです")
+    return fmt.Errorf("expected deadline exceeeded")
 }
-```
 
-
-// ログでクエリをトレースしやすくするためにクエリ ID を設定します（例: system.query_log を参照）
+// ログ内でクエリをトレースするためにクエリIDを設定します(例: system.query_logを参照)
 var one uint8
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(uuid.NewString()))
 if err = conn.QueryRowContext(ctx, "SELECT 1").Scan(&one); err != nil {
-return err
+    return err
 }
 
 conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
 defer func() {
-conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
+    conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// クオータキーを設定します - まずクオータを作成します
-if \_, err = conn.ExecContext(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
-return err
+// クォータキーを設定します - まずクォータを作成します
+if _, err = conn.ExecContext(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
+    return err
 }
 
 // コンテキストを使用してクエリをキャンセルできます
 ctx, cancel = context.WithCancel(context.Background())
-// キャンセルする前にいくつかの結果が得られます
+// キャンセル前にいくつかの結果を取得します
 ctx = clickhouse.Context(ctx, clickhouse.WithSettings(clickhouse.Settings{
-"max_block_size": "1",
+    "max_block_size": "1",
 }))
 rows, err := conn.QueryContext(ctx, "SELECT sleepEachRow(1), number FROM numbers(100);")
 if err != nil {
-return err
+    return err
 }
 var (
-col1 uint8
-col2 uint8
+    col1 uint8
+    col2 uint8
 )
 
 for rows.Next() {
-if err := rows.Scan(&col1, &col2); err != nil {
-if col2 > 3 {
-fmt.Println("キャンセルされることを想定しています")
-return nil
+    if err := rows.Scan(&col1, &col2); err != nil {
+        if col2 > 3 {
+            fmt.Println("expected cancel")
+            return nil
+        }
+        return err
+    }
+    fmt.Printf("row: col2=%d\n", col2)
+    if col2 == 3 {
+        cancel()
+    }
 }
-return err
-}
-fmt.Printf("行: col2=%d\n", col2)
-if col2 == 3 {
-cancel()
-}
-}
-
-````
+```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
 
-### セッション {#sessions}
 
-ネイティブ接続ではセッションが暗黙的に存在しますが、HTTP 経由の接続では、設定としてコンテキストに渡すためのセッション ID をユーザーが作成する必要があります。これにより、セッションに紐づく一時テーブルなどの機能を利用できるようになります。
+### セッション
+
+ネイティブ接続では暗黙的にセッションが存在しますが、HTTP 経由の接続では、コンテキストを設定として渡すためにユーザーがセッション ID を作成する必要があります。これにより、セッションに紐づく一時テーブルなどの機能を利用できるようになります。
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2558,15 +2565,16 @@ for rows.Next() {
     if err := rows.Scan(&col1); err != nil {
         return err
     }
-    fmt.Printf("行: col1=%d\n", col1)
+    fmt.Printf("row: col1=%d\n", col1)
 }
-````
+```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
 
-### 動的スキャン {#dynamic-scanning-1}
 
-[ClickHouse API](#dynamic-scanning) と同様に、カラム型情報が利用可能であり、ユーザーはその情報を用いて実行時に適切な型の変数インスタンスを作成し、Scan に渡すことができます。これにより、型が事前に分からないカラムも読み取ることができます。
+### 動的スキャン
+
+[ClickHouse API](#dynamic-scanning) と同様に、カラム型の情報を利用できるため、ユーザーは実行時に正しい型の変数のインスタンスを作成し、それを Scan に渡すことができます。これにより、事前に型が分からないカラムでも読み取ることが可能になります。
 
 ```go
 const query = `
@@ -2601,14 +2609,14 @@ for rows.Next() {
 }
 ```
 
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
 
 ### 外部テーブル
 
-[外部テーブル](/engines/table-engines/special/external-data/) を使用すると、クライアントは `SELECT` クエリと共にデータを ClickHouse に送信できます。このデータは一時テーブルに配置され、クエリ内で評価に利用できます。
+[外部テーブル](/engines/table-engines/special/external-data/) を使用すると、クライアントは `SELECT` クエリと一緒にデータを ClickHouse に送信できます。このデータは一時テーブルに格納され、クエリ内で評価に利用できます。
 
-クエリとともに外部データを送信するには、コンテキスト経由で渡す前に `ext.NewTable` を使って外部テーブルを作成しておく必要があります。
+クエリとともに外部データを送信するには、ユーザーはコンテキスト経由で渡す前に `ext.NewTable` を使って外部テーブルを作成する必要があります。
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -2668,11 +2676,12 @@ if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM (SELECT * FROM externa
 fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
-### Open telemetry
 
-ClickHouse では、ネイティブプロトコルの一部として [trace context](/operations/opentelemetry/) を渡すことができます。クライアントは、関数 `clickhouse.withSpan` を使用して Span を作成し、Context 経由で渡すことで、これを実現します。HTTP をトランスポートとして使用している場合はサポートされません。
+### OpenTelemetry
+
+ClickHouse では、ネイティブプロトコルの一部として [trace context](/operations/opentelemetry/) を渡すことが可能です。クライアントは、関数 `clickhouse.withSpan` を使用して Span を作成し、Context 経由で渡すことでこれを実現できます。この機能は、HTTP をトランスポートとして使用している場合にはサポートされません。
 
 ```go
 var count uint64
@@ -2688,13 +2697,13 @@ if err := rows.Scan(&count); err != nil {
 fmt.Printf("count: %d\n", count)
 ```
 
-[完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
+[完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
 
 
 ## パフォーマンスのヒント {#performance-tips}
 
-* 特にプリミティブ型に対しては、可能な限り ClickHouse API を利用してください。これにより、リフレクション処理や間接参照による大きなオーバーヘッドを回避できます。
-* 大きなデータセットを読み取る場合は、[`BlockBufferSize`](#connection-settings) の変更を検討してください。これはメモリ使用量を増やしますが、行の反復処理中により多くのブロックを並列にデコードできるようになります。デフォルト値の 2 は保守的で、メモリのオーバーヘッドを最小限に抑えます。値を大きくすると、メモリ上に保持されるブロック数が増えます。クエリによってブロックサイズは変わり得るため、テストが必要です。そのため、Context を介して[クエリ単位](#using-context)で設定できます。
-* データを挿入する際は、型を明確に指定してください。クライアントは、たとえば UUID や IP に対して文字列からのパースを許可するなど柔軟に動作することを目指していますが、これはデータ検証を必要とし、挿入時にコストが発生します。
-* 可能な限りカラム指向の挿入を使用してください。この場合も厳密に型付けされたデータを使用し、クライアントによる値変換が不要になるようにしてください。
-* 挿入処理のパフォーマンスを最適化するために、ClickHouse の[推奨事項](/sql-reference/statements/insert-into/#performance-considerations)に従ってください。
+* 可能な限り、特にプリミティブ型については ClickHouse API を利用してください。これにより、大きなオーバーヘッドを伴うリフレクションや間接参照を避けられます。
+* 大きなデータセットを読み込む場合は、[`BlockBufferSize`](#connection-settings) の変更を検討してください。これはメモリ使用量を増加させますが、行のイテレーション時に、より多くのブロックを並列にデコードできるようになります。デフォルト値の 2 は保守的な設定で、メモリのオーバーヘッドを最小限に抑えます。より大きな値にすると、メモリ上のブロック数が増加します。クエリによって生成されるブロックサイズが異なるため、テストが必要です。そのため、Context を介して[クエリ単位](#using-context)で設定できます。
+* データを挿入する際は、型を明示的に指定してください。クライアントは、たとえば UUID や IP に対して文字列のパースを許可するなど、柔軟に扱えるよう設計されていますが、これはデータ検証を必要とし、挿入時のコスト増につながります。
+* 可能な限り列指向の INSERT を使用してください。この場合も、強く型付けされた形式とし、クライアントによる値の変換が不要になるようにします。
+* 最適な INSERT パフォーマンスのために、ClickHouse の[推奨事項](/sql-reference/statements/insert-into/#performance-considerations)に従ってください。

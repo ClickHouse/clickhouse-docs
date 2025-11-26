@@ -10,19 +10,15 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-与 `JSONCompactEachRow` 格式的区别在于，它还会输出两行表头，分别包含列名和类型，类似于 [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)。
+与 `JSONCompactEachRow` 格式的区别在于，它还会输出两行表头，包含列名和列类型，类似于 [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)。
 
-
-
-## 使用示例
+## 使用示例 {#example-usage}
 
 ### 插入数据
 
-使用一个包含以下数据的 JSON 文件，文件名为 `football.json`：
+使用一个包含如下数据的 JSON 文件，并命名为 `football.json`：
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -52,9 +48,10 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
+
 ### 读取数据
 
-使用 `JSONCompactStringsEachRowWithNamesAndTypes` 格式读取数据：
+使用 `JSONCompactStringsEachRowWithNamesAndTypes` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -62,11 +59,10 @@ FROM football
 FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ```
 
-输出将为 JSON 格式：
-
+输出结果为 JSON 格式：
 
 ```json
-["日期", "赛季", "主队", "客队", "主队进球", "客队进球"]
+["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
 ["Date", "Int16", "LowCardinality(String)", "LowCardinality(String)", "Int8", "Int8"]
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
 ["2022-04-30", "2021", "Swindon Town", "Barrow", "2", "1"]
@@ -92,11 +88,11 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 
 :::note
 如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 1，
-则会按名称将输入数据中的列映射到表中的列；如果将 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1，则会跳过名称未知的列。
-否则，将跳过第一行。
+则输入数据中的列会按名称映射到表中的列；如果将 [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 1，则名称未知的列会被跳过。
+否则，第一行将被跳过。
 :::
 
 :::note
 如果将 [input_format_with_types_use_header](/operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 1，
-则会将输入数据中的类型与表中对应列的类型进行比较。否则，将跳过第二行。
+则输入数据中的类型会与表中对应列的类型进行比较。否则，第二行将被跳过。
 :::

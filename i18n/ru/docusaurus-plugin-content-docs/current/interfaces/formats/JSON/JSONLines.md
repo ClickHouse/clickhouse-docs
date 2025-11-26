@@ -7,25 +7,21 @@ title: 'JSONLines'
 doc_type: 'reference'
 ---
 
-| Input | Output | Псевдоним                                   |
-|-------|--------|----------------------------------------------|
-| ✔     | ✔      | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
-
-
+| Входные данные | Выходные данные | Псевдоним                                 |
+|----------------|-----------------|-------------------------------------------|
+| ✔              | ✔               | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
 ## Описание {#description}
 
-В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, разделённого символом новой строки.
+В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, по одному объекту на строку.
 
 Этот формат также известен как `JSONEachRow`, `NDJSON` (Newline Delimited JSON) или `JSONL` (`JSONLines`). Все эти названия являются синонимами одного и того же формата и могут использоваться взаимозаменяемо.
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
-Используя JSON‑файл со следующими данными с именем `football.json`:
+Используем JSON-файл со следующими данными, сохранённый под именем `football.json`:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -53,9 +49,10 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
+
 ### Чтение данных
 
-Считывайте данные в формате `JSONLines`:
+Прочитайте данные в формате `JSONLines`:
 
 ```sql
 SELECT *
@@ -64,7 +61,6 @@ FORMAT JSONLines
 ```
 
 Результат будет в формате JSON:
-
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -86,7 +82,7 @@ FORMAT JSONLines
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-Импорт столбцов с неизвестными именами будет пропускаться, если для настройки [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлено значение 1.
+Столбцы данных с неизвестными именами будут пропущены при импорте, если настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
 
 
 ## Параметры форматирования {#format-settings}

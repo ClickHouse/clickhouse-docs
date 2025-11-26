@@ -1,32 +1,32 @@
 ---
-description: '自 2009 年以来在纽约市发车的数十亿次出租车和网约车（Uber、Lyft 等）行程数据'
+description: '自 2009 年以来在纽约市出发的数十亿次出租车和网约车（如 Uber、Lyft 等）出行数据'
 sidebar_label: '纽约出租车数据'
 slug: /getting-started/example-datasets/nyc-taxi
 title: '纽约出租车数据'
 doc_type: 'guide'
-keywords: ['示例数据集', '纽约出租车', '教程', '示例数据', '入门']
+keywords: ['示例数据集', 'NYC 出租车', '教程', '示例数据', '快速入门']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-纽约出租车数据示例集由自 2009 年以来起点位于纽约市的 30 多亿次出租车和网约车（Uber、Lyft 等）行程组成。本入门指南使用的是一个包含 300 万行的数据样本。
+纽约出租车数据样本包含自 2009 年以来在纽约市出发的 30 亿多次出租车和网约车（Uber、Lyft 等）行程。本入门指南使用的是一个包含 300 万行记录的样本。
 
-完整数据集可以通过以下几种方式获取：
+可以通过以下几种方式获取完整数据集：
 
 * 直接从 S3 或 GCS 将数据插入到 ClickHouse Cloud 中
-* 下载预先准备好的分区
-* 或者，用户可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)。
+* 下载已准备好的分区
+* 或者，用户也可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)。
 
 :::note
-下面的示例查询是在 ClickHouse Cloud 的 **生产环境** 实例上执行的。更多信息请参见
-[“Playground 规格说明”](/getting-started/playground#specifications)。
+下面的示例查询是在 ClickHouse Cloud 的 **生产** 实例上执行的。有关详细信息，请参见
+[&quot;Playground 规格说明&quot;](/getting-started/playground#specifications)。
 :::
 
 
-## 创建 trips 表
+## 创建 `trips` 表
 
-首先创建一个用于存储出租车行程的表：
+首先为出租车行程创建一张表：
 
 ```sql
 
@@ -58,15 +58,14 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 
 ## 直接从对象存储加载数据 {#load-the-data-directly-from-object-storage}
 
-用户可以获取一小部分数据（300 万行）来熟悉数据集。数据以 TSV 文件形式存放在对象存储中，可通过 `s3` 表函数轻松流式导入
-ClickHouse Cloud。
+用户可以先获取一小部分数据（300 万行）来熟悉数据集。数据以 TSV 文件形式存储在对象存储中，可以很方便地通过 `s3` 表函数流式写入 ClickHouse Cloud。
 
-相同的数据同时存储在 S3 和 GCS 中；任选其一标签页即可。
+同一份数据同时存储在 S3 和 GCS 中；任选一个选项卡即可。
 
 <Tabs groupId="storageVendor">
 <TabItem value="s3" label="S3">
 
-以下命令会从一个 S3 bucket 中将三个文件流式写入 `trips_small` 表（`{0..2}` 语法是对值 0、1 和 2 的通配符）：
+以下命令会将 S3 bucket 中的三个文件流式导入到 `trips_small` 表中（`{0..2}` 语法是对值 0、1 和 2 的通配符）：
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -96,7 +95,7 @@ FROM s3(
 </TabItem>
 <TabItem value="gcs" label="GCS" default>
 
-以下命令会从一个 GCS bucket 中将三个文件流式写入 `trips` 表（`{0..2}` 语法是对值 0、1 和 2 的通配符）：
+以下命令会将 GCS bucket 中的三个文件流式导入到 `trips` 表中（`{0..2}` 语法是对值 0、1 和 2 的通配符）：
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -126,20 +125,18 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-
-
 ## 示例查询
 
-以下查询基于上述示例执行。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上对完整数据集运行以下示例查询，并将下面的查询修改为使用 `nyc_taxi.trips` 表。
+下面的查询是在上文所述的示例数据上执行的。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上针对完整数据集运行这些示例查询，只需将下面的查询修改为使用表 `nyc_taxi.trips`。
 
-让我们看看插入了多少行：
+我们来看一下插入了多少行数据：
 
 ```sql runnable
 SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-每个 TSV 文件大约有 100 万行，三个文件加起来共有 3,000,317 行。我们来看几行示例数据：
+每个 TSV 文件大约包含 100 万行，三个文件一共是 3,000,317 行。我们来看几行示例：
 
 ```sql runnable
 SELECT *
@@ -147,9 +144,9 @@ FROM nyc_taxi.trips_small
 LIMIT 10;
 ```
 
-请注意，这里有取车和还车日期、地理坐标、车费明细、纽约各个街区等相关列。
+请注意，这里有取车和还车日期、地理坐标、车费明细、纽约各街区等列。
 
-我们来运行几个查询。下面这个查询会显示取车次数最多的前 10 个社区：
+我们来运行几个查询。下面这个查询会显示取车次数最多的前 10 个街区：
 
 ```sql runnable
 SELECT
@@ -161,7 +158,7 @@ ORDER BY count DESC
 LIMIT 10;
 ```
 
-该查询按乘客人数显示平均车费：
+该查询根据乘客数量显示平均票价：
 
 ```sql runnable view='chart' chart_config='eyJ0eXBlIjoiYmFyIiwiY29uZmlnIjp7InhheGlzIjoicGFzc2VuZ2VyX2NvdW50IiwieWF4aXMiOiJhdmcodG90YWxfYW1vdW50KSIsInRpdGxlIjoiQXZlcmFnZSBmYXJlIGJ5IHBhc3NlbmdlciBjb3VudCJ9fQ'
 SELECT
@@ -172,7 +169,7 @@ WHERE passenger_count < 10
 GROUP BY passenger_count;
 ```
 
-以下是乘客数量与行程距离之间的相关性：
+下面展示了乘客数量与行程距离之间的关系：
 
 ```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsieGF4aXMiOiJwYXNzZW5nZXJfY291bnQiLCJ5YXhpcyI6ImRpc3RhbmNlIiwic2VyaWVzIjoiY291bnRyeSIsInRpdGxlIjoiQXZnIGZhcmUgYnkgcGFzc2VuZ2VyIGNvdW50In19'
 SELECT
@@ -185,18 +182,16 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 下载预处理好的分区 {#download-of-prepared-partitions}
+## 下载预先生成的分区
 
 :::note
-以下步骤介绍原始数据集的信息，以及一种将预处理好的分区加载到自主管理 ClickHouse 服务器环境中的方法。
+以下步骤介绍原始数据集的信息，以及将预先生成的分区加载到自行管理的 ClickHouse 服务器环境中的方法。
 :::
 
-有关数据集的说明和下载指引，请参见 https://github.com/toddwschneider/nyc-taxi-data 和 http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html。
+有关数据集说明和下载指引，请参阅 [https://github.com/toddwschneider/nyc-taxi-data](https://github.com/toddwschneider/nyc-taxi-data) 和 [http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html](http://tech.marksblogg.com/billion-nyc-taxi-rides-redshift.html)。
 
-下载完成后，将得到约 227 GB 的未压缩 CSV 数据文件。通过 1 Gbit 连接下载大约需要一小时（从 s3.amazonaws.com 并行下载可以占用至少一半的 1 Gbit 带宽）。
-部分文件可能未能完整下载。请检查文件大小，并重新下载任何看起来有问题的文件。
-
-
+下载后会得到约 227 GB 的未压缩 CSV 格式数据。通过 1 Gbit 连接下载大约需要一小时（从 s3.amazonaws.com 并行下载可以利用至少一半的 1 Gbit 带宽）。
+某些文件可能未完整下载。请检查文件大小，并重新下载任何看起来可疑的文件。
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
@@ -210,21 +205,21 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 ```
 
 :::info
-如果要运行下文所述的查询，必须使用完整的表名：`datasets.trips_mergetree`。
+如果您要运行下文所述的查询，必须使用完整的表名 `datasets.trips_mergetree`。
 :::
 
 
-## 单台服务器上的结果
+## 单机环境下的结果
 
-Q1：
+问题 1：
 
 ```sql
 SELECT cab_type, count(*) FROM trips_mergetree GROUP BY cab_type;
 ```
 
-0.490 秒。
+0.490秒。
 
-Q2:
+问题 2：
 
 ```sql
 SELECT passenger_count, avg(total_amount) FROM trips_mergetree GROUP BY passenger_count;
@@ -232,13 +227,13 @@ SELECT passenger_count, avg(total_amount) FROM trips_mergetree GROUP BY passenge
 
 1.224 秒。
 
-问题 3：
+Q3：
 
 ```sql
 SELECT passenger_count, toYear(pickup_date) AS year, count(*) FROM trips_mergetree GROUP BY passenger_count, year;
 ```
 
-2.104 秒。
+2.104秒。
 
 Q4：
 
@@ -251,13 +246,13 @@ ORDER BY year, count(*) DESC;
 
 3.593 秒。
 
-使用的服务器配置如下：
+使用了以下服务器：
 
-两颗 Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz，总计 16 个物理核心，128 GiB 内存，8 块 6 TB 硬盘，硬件 RAID-5
+两块 Intel(R) Xeon(R) CPU E5-2650 v2 @ 2.60GHz，共 16 个物理核心，128 GiB 内存，8×6 TB 硬盘，硬件 RAID-5
 
-执行时间取三次运行中的最佳值。但从第二次运行开始，查询会从文件系统缓存中读取数据。不会发生进一步缓存：每次运行都会重新读取并处理数据。
+执行时间取三次运行中的最佳值。但从第二次运行开始，查询会从文件系统缓存中读取数据。不再发生进一步的缓存：每次运行都会重新读取并处理数据。
 
-在三台服务器上创建表：
+在三台服务器上创建一张表：
 
 在每台服务器上：
 
@@ -272,7 +267,7 @@ CREATE TABLE default.trips_mergetree_third ( trip_id UInt32,  vendor_id Enum8('1
 CREATE TABLE trips_mergetree_x3 AS trips_mergetree_third ENGINE = Distributed(perftest, default, trips_mergetree_third, rand());
 ```
 
-以下查询会重新分配数据：
+以下查询会对数据进行重新分布：
 
 ```sql
 INSERT INTO trips_mergetree_x3 SELECT * FROM trips_mergetree;
@@ -280,14 +275,14 @@ INSERT INTO trips_mergetree_x3 SELECT * FROM trips_mergetree;
 
 这耗时 2454 秒。
 
-在三台服务器上运行时：
+在三台服务器上：
 
 Q1：0.212 秒。
 Q2：0.438 秒。
 Q3：0.733 秒。
 Q4：1.241 秒。
 
-这里没有什么意外，因为查询是线性扩展的。
+这并不意外，因为查询是线性扩展的。
 
 我们还有一个由 140 台服务器组成的集群的结果：
 
@@ -302,8 +297,8 @@ Q4：0.072 秒。
 
 ## 摘要 {#summary}
 
-| 服务器数量 | Q1    | Q2    | Q3    | Q4    |
-|-----------|-------|-------|-------|-------|
+| 服务器 | Q1    | Q2    | Q3    | Q4    |
+|---------|-------|-------|-------|-------|
 | 1, E5-2650v2          | 0.490 | 1.224 | 2.104 | 3.593 |
 | 3, E5-2650v2          | 0.212 | 0.438 | 0.733 | 1.241 |
 | 1, AWS c5n.4xlarge    | 0.249 | 1.279 | 1.738 | 3.527 |

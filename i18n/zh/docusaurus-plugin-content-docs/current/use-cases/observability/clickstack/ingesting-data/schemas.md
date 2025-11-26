@@ -2,18 +2,16 @@
 slug: /use-cases/observability/clickstack/ingesting-data/schemas
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 使用的表和模式 - ClickHouse Observability Stack'
+description: 'ClickStack 使用的表和模式 - ClickHouse 可观测性栈'
 sidebar_label: '表和模式'
 title: 'ClickStack 使用的表和模式'
 doc_type: 'reference'
-keywords: ['clickstack', 'schema', '数据模型', '表设计', '日志']
+keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
 ClickStack 的 OpenTelemetry (OTel) collector 使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并插入数据。
 
-对于 `default` 数据库中的每种数据类型，都会创建下列表。用户可以通过修改为运行 OTel collector 的镜像配置的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库。
-
-
+在 `default` 数据库中，会为每种数据类型创建以下表。用户可以通过修改运行 OTel collector 的镜像中的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改此目标数据库。
 
 ## 日志
 
@@ -52,7 +50,7 @@ ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
 
-## 链路追踪
+## 追踪
 
 ```sql
 CREATE TABLE otel_traces
@@ -92,9 +90,9 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
 
-## 指标
+## 指标 {#metrics}
 
-### Gauge 型指标
+### Gauge 指标
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -132,8 +130,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Sum 指标
 
+### 求和（Sum）指标
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -173,8 +171,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 直方图指标
 
+### 直方图指标
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -218,12 +216,12 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
+
 ### 指数直方图
 
 :::note
-HyperDX 目前尚不支持获取或展示指数直方图指标。用户可以在指标数据源中对其进行配置，未来版本将会提供支持。
+HyperDX 目前尚不支持获取或展示指数直方图类型的指标。用户可以在指标数据源中对其进行配置，未来将提供相关支持。
 :::
-
 
 ```sql
 CREATE TABLE otel_metrics_exponentialhistogram (
@@ -272,8 +270,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 汇总表
 
+### 汇总表
 
 ```sql
 CREATE TABLE otel_metrics_summary

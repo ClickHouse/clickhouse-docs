@@ -1,6 +1,6 @@
 ---
 alias: ['JSONEachRow', 'JSONLines', 'NDJSON', 'JSONL']
-description: 'JSONLines 形式に関するドキュメント'
+description: 'JSONLines フォーマットに関するドキュメント'
 keywords: ['JSONLines']
 slug: /interfaces/formats/JSONLines
 title: 'JSONLines'
@@ -8,24 +8,20 @@ doc_type: 'reference'
 ---
 
 | 入力 | 出力 | 別名                                        |
-|------|------|----------------------------------------------|
-| ✔    | ✔    | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
-
-
+|-------|--------|----------------------------------------------|
+| ✔     | ✔      | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
 ## 説明 {#description}
 
-このフォーマットでは、ClickHouse は各行を個別の改行区切り JSON オブジェクトとして出力します。
+この形式では、ClickHouse は各行を改行区切りの個別の JSON オブジェクトとして出力します。
 
-このフォーマットは `JSONEachRow`、`NDJSON`（Newline Delimited JSON）、または `JSONL`（`JSONLines`）としても知られています。これらすべての名称は同じフォーマットの別名であり、相互に置き換えて使用できます。
+この形式は `JSONEachRow`、`NDJSON`（Newline Delimited JSON）、または `JSONL`（`JSONLines`）としても知られています。これらの名称はすべて同じ形式の別名であり、区別なく使用できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-次のデータを含む JSON ファイルを `football.json` という名前で用意します。
+次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -47,15 +43,16 @@ doc_type: 'reference'
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-データを挿入する：
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### データの読み込み
 
-`JSONLines` 形式を使用してデータを読み込みます。
+### データの読み取り
+
+`JSONLines` フォーマットを使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -63,8 +60,7 @@ FROM football
 FORMAT JSONLines
 ```
 
-出力は JSON 形式で行われます。
-
+出力は JSON 形式です:
 
 ```json
 {"date":"2022-04-30","season":2021,"home_team":"Sutton United","away_team":"Bradford City","home_team_goals":1,"away_team_goals":4}
@@ -86,7 +82,7 @@ FORMAT JSONLines
 {"date":"2022-05-07","season":2021,"home_team":"Walsall","away_team":"Swindon Town","home_team_goals":0,"away_team_goals":3}
 ```
 
-名前が不明なデータ列のインポートは、[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が 1 に設定されている場合はスキップされます。
+列名が不明な列のインポートは、[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が 1 に設定されている場合、スキップされます。
 
 
 ## フォーマット設定 {#format-settings}

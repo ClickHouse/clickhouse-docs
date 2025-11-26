@@ -3,13 +3,13 @@ slug: /use-cases/observability/clickstack/sdks/ruby-on-rails
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'ClickStack 向け Ruby on Rails SDK - ClickHouse Observability Stack'
+description: 'ClickStack 用 Ruby on Rails SDK - ClickHouse Observability Stack'
 title: 'Ruby on Rails'
 doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-このガイドでサポートされる機能は次のとおりです:
+このガイドで扱う統合対象は次のとおりです:
 
 <table>
   <tbody>
@@ -21,26 +21,28 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
   </tbody>
 </table>
 
-_ClickStack にログを送信するには、ログを [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 経由で送信してください。_
+_ClickStack にログを送信するには、[OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) を経由して送信してください。_
 
+## はじめに {#getting-started}
 
+### OpenTelemetry パッケージをインストールする
 
-## はじめに
-
-### OpenTelemetry パッケージのインストール
-
-次のコマンドを実行して、OpenTelemetry パッケージをインストールします。
+次のコマンドで OpenTelemetry パッケージをインストールします。
 
 ```shell
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-### OpenTelemetry とロガーフォーマッタの設定
 
-次に、OpenTelemetry のトレーシング用インストルメンテーションを初期化し、Rails logger のログメッセージフォーマッタを設定して、ログがトレースに自動的に関連付けられるようにします。カスタムフォーマッタがない場合、ログは ClickStack 内で自動的に相関付けられません。
+### OpenTelemetry とロガーフォーマッタを設定する
 
-`config/initializers` ディレクトリ内に `hyperdx.rb` というファイルを作成し、次の内容を追加します:
+次に、OpenTelemetry のトレーシング用インストルメンテーションを初期化し、
+Rails の logger 用のログメッセージフォーマッタを設定して、ログが自動的に
+トレースにひも付けられるようにする必要があります。カスタムフォーマッタがない場合、
+ログは ClickStack 上で自動的に相関付けられません。
 
+`config/initializers` ディレクトリ内に `hyperdx.rb` というファイルを作成し、
+次の内容を追加します。
 
 ```ruby
 # config/initializers/hyperdx.rb
@@ -55,7 +57,7 @@ end
 
 Rails.application.configure do
   Rails.logger = Logger.new(STDOUT)
-  # Rails.logger.log_level = Logger::INFO # デフォルトはDEBUG、本番環境ではINFO以上を推奨
+  # Rails.logger.log_level = Logger::INFO # デフォルトはDEBUGですが、本番環境ではINFO以上が推奨されます
   Rails.logger.formatter = proc do |severity, time, progname, msg|
     span_id = OpenTelemetry::Trace.current_span.context.hex_span_id
     trace_id = OpenTelemetry::Trace.current_span.context.hex_trace_id
@@ -73,17 +75,18 @@ Rails.application.configure do
 end
 ```
 
+
 ### 環境変数を設定する
 
-次に、ClickStack にテレメトリを送信するため、シェルで次の環境変数を設定する必要があります。
+以降、ClickStack にテレメトリデータを送信するために、シェルで次の環境変数を設定します。
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+OTEL_SERVICE_NAME='<アプリまたはサービスの名前>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<インジェストAPIキー>'
 ```
 
-*`OTEL_SERVICE_NAME` 環境変数は HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を設定できます。*
+*`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内で自分のサービスを識別するために使用されます。任意の名前を設定できます。*
 
-`OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` で取得できる API Key を指定します。
+`OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` から取得できる API キーを設定します。

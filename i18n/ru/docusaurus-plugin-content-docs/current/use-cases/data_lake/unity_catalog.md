@@ -1,11 +1,12 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity catalog'
-title: 'Unity catalog'
+sidebar_label: 'Unity Catalog'
+title: 'Unity Catalog'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве мы рассмотрим, как выполнять запросы к вашим данным в бакетах S3 с помощью ClickHouse и Unity Catalog.'
-keywords: ['Unity', 'Data Lake']
+description: 'В этом руководстве мы пошагово разберём, как выполнять запросы
+к данным в S3-бакетах с помощью ClickHouse и Unity Catalog.'
+keywords: ['Unity', 'Озеро данных']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,37 +16,35 @@ import BetaBadge from '@theme/badges/BetaBadge';
 <BetaBadge />
 
 :::note
-Интеграция с Unity Catalog работает как для управляемых, так и для внешних таблиц.
-В настоящий момент эта интеграция поддерживается только в AWS.
+Интеграция с Unity Catalog работает для управляемых и внешних таблиц.
+В настоящее время эта интеграция поддерживается только в AWS.
 :::
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т.д.). В этом руководстве описаны шаги по выполнению запросов к данным, управляемым Databricks, с помощью ClickHouse и [Unity Catalog](https://www.databricks.com/product/unity-catalog).
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве описаны шаги для выполнения запросов к вашим данным, управляемым Databricks, с помощью ClickHouse и [Unity Catalog](https://www.databricks.com/product/unity-catalog).
 
 Databricks поддерживает несколько форматов данных для своей lakehouse-платформы. С ClickHouse вы можете выполнять запросы к таблицам Unity Catalog в форматах Delta и Iceberg.
 
 :::note
-Поскольку эта функциональность является экспериментальной, вам необходимо включить её с помощью:
+Поскольку эта функция является экспериментальной, вам нужно включить её с помощью:
 `SET allow_experimental_database_unity_catalog = 1;`
 :::
 
 
 ## Настройка Unity в Databricks {#configuring-unity-in-databricks}
 
-Чтобы ClickHouse мог взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен на взаимодействие с внешним клиентом. Это можно сделать, выполнив шаги из руководства ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
+Чтобы разрешить ClickHouse взаимодействовать с каталогом Unity, необходимо убедиться, что Unity Catalog настроен на взаимодействие с внешним клиентом. Этого можно добиться, следуя руководству ["Enable external data access to Unity Catalog"](https://docs.databricks.com/aws/en/external-access/admin).
 
-Помимо включения внешнего доступа, убедитесь, что принципал (principal), настраивающий интеграцию, имеет привилегию `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema)) для схемы, содержащей таблицы.
+Помимо включения внешнего доступа, убедитесь, что принципал, выполняющий настройку интеграции, имеет привилегию `EXTERNAL USE SCHEMA` ([privilege](https://docs.databricks.com/aws/en/external-access/admin#external-schema)) для схемы, содержащей таблицы.
 
-После того как ваш каталог настроен, необходимо сгенерировать учетные данные для ClickHouse. Можно использовать два разных метода в зависимости от режима взаимодействия с Unity:
+После того как ваш каталог будет настроен, необходимо сгенерировать учетные данные для ClickHouse. В зависимости от режима взаимодействия с Unity можно использовать два разных метода:
 
-* Для клиентов Iceberg используйте аутентификацию от имени [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
+* Для клиентов Iceberg используйте аутентификацию через [service principal](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-m2m).
 
 * Для клиентов Delta используйте Personal Access Token ([PAT](https://docs.databricks.com/aws/en/dev-tools/auth/pat)).
 
+## Создание подключения между Unity Catalog и ClickHouse {#creating-a-connection-between-unity-catalog-and-clickhouse}
 
-
-## Создание соединения между Unity Catalog и ClickHouse
-
-После настройки Unity Catalog и аутентификации установите соединение между ClickHouse и Unity Catalog.
+После настройки Unity Catalog и аутентификации установите подключение между ClickHouse и Unity Catalog.
 
 ### Чтение Delta
 
@@ -55,7 +54,8 @@ ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/un
 SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type = 'unity'
 ```
 
-### Чтение из Iceberg
+
+### Чтение данных из Iceberg
 
 ```sql
 CREATE DATABASE unity
@@ -65,9 +65,9 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 ```
 
 
-## Выполнение запросов к таблицам Unity Catalog с помощью ClickHouse
+## Выполнение запросов к таблицам каталога Unity из ClickHouse
 
-Теперь, когда подключение установлено, вы можете начинать выполнять запросы по Unity Catalog. Например:
+Теперь, когда соединение установлено, вы можете начинать выполнять запросы через каталог Unity. Например:
 
 ```sql
 USE unity;
@@ -126,7 +126,7 @@ SELECT count(*) FROM `uniform.delta_hits`
 ```
 
 :::note Требуются обратные кавычки
-Обратные кавычки требуются, так как ClickHouse не поддерживает более одного пространства имен.
+Обратные кавычки требуются, потому что ClickHouse не поддерживает более чем одно пространство имен.
 :::
 
 Чтобы просмотреть DDL таблицы:
@@ -156,7 +156,7 @@ ENGINE = Iceberg('s3://<path>);
 ```
 
 
-## Загрузка данных из озера данных (Data Lake) в ClickHouse
+## Загрузка данных из озера данных в ClickHouse
 
 Если вам нужно загрузить данные из Databricks в ClickHouse, начните с создания локальной таблицы ClickHouse:
 

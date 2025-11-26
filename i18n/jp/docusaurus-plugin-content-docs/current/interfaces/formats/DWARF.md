@@ -9,60 +9,56 @@ title: 'DWARF'
 doc_type: 'reference'
 ---
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✔     | ✗       |       |
-
-
+| Input | Output | Alias |
+|-------|--------|-------|
+| ✔     | ✗      |       |
 
 ## 説明 {#description}
 
-`DWARF` 形式は、ELF ファイル（実行ファイル、ライブラリ、またはオブジェクトファイル）から DWARF デバッグシンボルをパースします。  
-これは `dwarfdump` と似ていますが、はるかに高速（毎秒数百MB）であり、さらに SQL をサポートしています。  
-`.debug_info` セクション内の各 Debug Information Entry（DIE）ごとに 1 行を生成し、  
-DWARF エンコーディングがツリー内の子リストの終端に使用する「null」エントリも含みます。
+`DWARF` フォーマットは、ELF ファイル（実行ファイル、ライブラリ、またはオブジェクトファイル）から DWARF デバッグシンボルをパースします。  
+`dwarfdump` に似ていますが、はるかに高速（数百 MB/s）で動作し、SQL をサポートします。  
+`.debug_info` セクション内の各 Debug Information Entry (DIE) ごとに 1 行を出力し、さらに、DWARF エンコーディングがツリー内の子リストを終端するために使用する「null」エントリも含みます。
 
 :::info
-`.debug_info` は *unit* から成り、それぞれがコンパイル単位に対応します:
-- 各 unit は *DIE* のツリーであり、ルートとして `compile_unit` DIE を持ちます。
-- 各 DIE は *tag* と *attribute* のリストを持ちます。
-- 各 attribute は *name* と *value*（および値のエンコード方法を指定する *form*）を持ちます。
+`.debug_info` は *unit* から構成されており、これはコンパイル単位に対応します:
 
-DIE はソースコード中の対象を表し、その *tag* によって何を表す DIE なのかが分かります。例えば次のようなものがあります:
+- 各 unit は *DIE* の木構造であり、ルートには `compile_unit` DIE が存在します。
+- 各 DIE は *tag* と *attribute* のリストを持ちます。
+- 各 attribute は *name* と *value*（および、その値がどのようにエンコードされているかを指定する *form*）を持ちます。
+
+DIE はソースコード中のさまざまな要素を表し、その *tag* によって何を表しているかが分かります。例えば次のようなものがあります:
 
 - 関数（tag = `subprogram`）
-- クラス / 構造体 / 列挙体（`class_type` / `structure_type` / `enumeration_type`）
+- クラス / 構造体 / enum（`class_type` / `structure_type` / `enumeration_type`）
 - 変数（`variable`）
 - 関数引数（`formal_parameter`）
 
-このツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIE は、そのクラスのメソッドを表す `subprogram` DIE を子として含むことができます。
+ツリー構造は対応するソースコードを反映しています。例えば、`class_type` DIE は、そのクラスのメソッドを表す `subprogram` DIE を含むことができます。
 :::
 
-`DWARF` 形式は次の列を出力します:
+`DWARF` フォーマットは次の列を出力します:
 
 - `offset` - `.debug_info` セクション内での DIE の位置
 - `size` - エンコードされた DIE のバイト数（attribute を含む）
-- `tag` - DIE の種別。慣例的な `DW_TAG_` 接頭辞は省略されます
+- `tag` - DIE の種類。慣例的な `"DW_TAG_"` プレフィックスは省略されています
 - `unit_name` - この DIE を含むコンパイル単位の名前
 - `unit_offset` - この DIE を含むコンパイル単位の `.debug_info` セクション内での位置
-- `ancestor_tags` - ツリー内で現在の DIE の祖先にあたる tag の配列。内側から外側への順
-- `ancestor_offsets` - 祖先の offset。`ancestor_tags` と並行な配列
-- いくつかの一般的な attribute を利便性のために attribute 配列から複製した列:
+- `ancestor_tags` - 現在の DIE の祖先となるタグの配列（内側から外側の順）
+- `ancestor_offsets` - 祖先のオフセットの配列で、`ancestor_tags` と並行
+- 利便性のために、attribute 配列から複製された、よく使われる attribute:
   - `name`
-  - `linkage_name` - マングル済みの完全修飾名。通常は関数のみが持ちます（ただしすべての関数ではありません）
+  - `linkage_name` - マングルされた完全修飾名。通常は関数のみに存在します（すべての関数にあるとは限りません）
   - `decl_file` - このエンティティが宣言されたソースコードファイル名
-  - `decl_line` - このエンティティが宣言されたソースコード上の行番号
-- attribute を表す並行配列:
-  - `attr_name` - attribute の名前。慣例的な `DW_AT_` 接頭辞は省略されます
-  - `attr_form` - attribute のエンコードおよび解釈方法。慣例的な `DW_FORM_` 接頭辞は省略されます
-  - `attr_int` - attribute の整数値。数値を持たない attribute の場合は 0
-  - `attr_str` - attribute の文字列値。文字列値を持たない attribute の場合は空文字列
-
-
+  - `decl_line` - このエンティティが宣言されたソースコード中の行番号
+- attribute を表現する並行配列:
+  - `attr_name` - attribute の名前。慣例的な `"DW_AT_"` プレフィックスは省略されています
+  - `attr_form` - attribute がどのようにエンコードおよび解釈されるか。慣例的な `DW_FORM_` プレフィックスは省略されています
+  - `attr_int` - attribute の整数値。attribute に数値がない場合は 0
+  - `attr_str` - attribute の文字列値。attribute に文字列がない場合は空文字列
 
 ## 使用例
 
-`DWARF` フォーマットを使用すると、テンプレートのインスタンス化やインクルードされたヘッダーファイル内の関数を含め、最も多くの関数定義を含むコンパイル単位を特定できます。
+`DWARF` 形式を使うと、最も多くの関数定義（テンプレートのインスタンス化や、インクルードされたヘッダーファイル内の関数を含む）を持つコンパイル単位を特定できます。
 
 ```sql title="Query"
 SELECT
@@ -87,4 +83,4 @@ LIMIT 3
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

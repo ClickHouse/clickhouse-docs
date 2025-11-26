@@ -1,15 +1,15 @@
 ---
 description: '用于比较数据仓库解决方案性能的基准数据集。'
-sidebar_label: 'AMPLab 大数据基准'
+sidebar_label: 'AMPLab 大数据基准测试'
 slug: /getting-started/example-datasets/amplab-benchmark
-title: 'AMPLab 大数据基准'
-keywords: ['AMPLab 基准', '大数据基准', '数据仓库性能', '基准数据集', '入门']
+title: 'AMPLab 大数据基准测试'
+keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
 doc_type: 'guide'
 ---
 
-请参见 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
+请参阅 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
 
-在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册需要信用卡、电子邮箱和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取新的访问密钥。
+在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册需要信用卡、电子邮件地址和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取一个新的访问密钥（access key）。
 
 在控制台中运行以下命令：
 
@@ -26,7 +26,7 @@ $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
 ```
 
-运行以下 ClickHouse 查询语句：
+执行以下 ClickHouse 查询：
 
 ```sql
 CREATE TABLE rankings_tiny
@@ -101,7 +101,7 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-用于获取数据样本的查询语句：
+获取数据示例的查询：
 
 
 ```sql

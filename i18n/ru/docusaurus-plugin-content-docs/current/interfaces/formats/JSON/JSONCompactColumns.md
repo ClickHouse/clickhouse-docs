@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Документация формата JSONCompactColumns'
+description: 'Документация по формату JSONCompactColumns'
 input_format: true
 keywords: ['JSONCompactColumns']
 output_format: true
@@ -9,27 +9,23 @@ title: 'JSONCompactColumns'
 doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
+| Ввод | Вывод | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
-
-
 
 ## Описание {#description}
 
 В этом формате все данные представлены в виде одного массива JSON.
 
 :::note
-Формат вывода `JSONCompactColumns` загружает все данные в память, чтобы вывести их одним блоком, что может привести к высокому потреблению памяти.
+Формат вывода `JSONCompactColumns` буферизует все данные в памяти и выводит их одним блоком, что может привести к высокому потреблению памяти.
 :::
 
-
-
-## Пример использования
+## Пример использования {#example-usage}
 
 ### Вставка данных
 
-Используя JSON‑файл `football.json` со следующими данными:
+JSON-файл со следующими данными, сохранённый как `football.json`:
 
 ```json
 [
@@ -42,11 +38,12 @@ doc_type: 'reference'
 ]
 ```
 
-Вставьте данные:
+Добавьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
+
 
 ### Чтение данных
 
@@ -60,7 +57,6 @@ FORMAT JSONCompactColumns
 
 Результат будет в формате JSON:
 
-
 ```json
 [
     ["2022-04-30", "2022-04-30", "2022-04-30", "2022-05-02", "2022-05-02", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07", "2022-05-07"],
@@ -72,7 +68,7 @@ FORMAT JSONCompactColumns
 ]
 ```
 
-Столбцы, отсутствующие в блоке, будут заполнены значениями по умолчанию (здесь можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields))
+Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (здесь можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields))
 
 
-## Параметры форматирования {#format-settings}
+## Настройки формата {#format-settings}

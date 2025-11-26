@@ -1,8 +1,8 @@
 :::note
-ClickHouse Server と ClickHouse Keeper を同一サーバー上で同時に実行することも可能ですが、
+ClickHouse Server と ClickHouse Keeper を同じサーバー上で動かすことも可能ですが、
 本番環境では ClickHouse Keeper 用に *専用* ホストを使用することを強く推奨します。
-この例でもそのアプローチを採用します。
+この例でもその構成を用いて説明します。
 
-Keeper サーバーは小規模な構成で問題なく、各 Keeper サーバーあたり 4GB のメモリがあれば、
-ClickHouse Server が大規模になるまでは一般的に十分です。
+Keeper サーバーは小さめの構成でも問題なく、各 Keeper サーバーあたり 4GB の RAM があれば、
+ClickHouse Server 群が大きくなるまでは一般的には十分です。
 :::

@@ -4,7 +4,7 @@ sidebar_label: 'Lakekeeper カタログ'
 title: 'Lakekeeper カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Lakekeeper カタログを使用してデータをクエリする手順を説明します。'
+description: 'このガイドでは、ClickHouse と Lakekeeper Catalog を使用してデータを照会する手順を説明します。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,38 +15,38 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge />
 
 :::note
-Lakekeeper カタログとの統合は Iceberg テーブルにのみ対応しています。
+Lakekeeper Catalog との統合は、Iceberg テーブルでのみ利用できます。
 この統合は AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
-ClickHouse は複数のカタログ（Unity、Glue、REST、Polaris など）との統合をサポートしています。このガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータをクエリするための手順を説明します。
+ClickHouse は、複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。本ガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータにクエリを実行する手順を説明します。
 
-Lakekeeper は Apache Iceberg 向けのオープンソース REST カタログ実装で、次の機能を提供します：
+Lakekeeper は Apache Iceberg 向けのオープンソース REST カタログ実装で、次の機能を提供します。
 
-* 高いパフォーマンスと信頼性を実現する **Rust ネイティブ** 実装
+* 高いパフォーマンスと信頼性を備えた **Rust ネイティブ** 実装
 * Iceberg REST カタログ仕様に準拠した **REST API**
-* S3 互換ストレージとの **クラウドストレージ** 統合
+* S3 互換ストレージと連携する **クラウドストレージ** 統合
 
 :::note
-この機能は実験的な機能であるため、次の設定を有効にする必要があります：
+この機能は実験的機能のため、次の設定で有効化する必要があります。
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
 
-## ローカル開発環境のセットアップ
+## ローカル開発環境のセットアップ {#local-development-setup}
 
-ローカルでの開発およびテストには、コンテナ化された Lakekeeper 環境を使用できます。この方法は、学習、プロトタイピング、および開発環境に最適です。
+ローカルでの開発やテストには、Lakekeeper のコンテナ化環境を使用できます。この方法は、学習、プロトタイピング、および開発環境に最適です。
 
-### 前提条件
+### 前提条件 {#local-prerequisites}
 
-1. **Docker と Docker Compose**: Docker がインストールされ、起動していることを確認します。
-2. **サンプル構成**: Lakekeeper の docker-compose セットアップを利用できます。
+1. **Docker と Docker Compose**: Docker がインストールされ、起動していることを確認する
+2. **サンプルセットアップ**: Lakekeeper の docker-compose セットアップを利用できる
 
-### ローカル Lakekeeper カタログのセットアップ
+### ローカル Lakekeeper カタログのセットアップ {#setting-up-local-lakekeeper-catalog}
 
-公式の [Lakekeeper docker-compose setup](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal) を使用できます。これは、Lakekeeper、PostgreSQL メタデータバックエンド、およびオブジェクトストレージ用の MinIO を備えた完全な環境を提供します。
+公式の [Lakekeeper の docker-compose セットアップ](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal) を使用できます。これは、Lakekeeper、PostgreSQL メタデータバックエンド、オブジェクトストレージ用の MinIO を含む完全な環境を提供します。
 
-**手順 1:** サンプルを実行するための新しいフォルダを作成し、その中に以下の設定内容で `docker-compose.yml` ファイルを作成します。
+**ステップ 1:** サンプルを実行するための新しいフォルダーを作成し、次に以下の設定で `docker-compose.yml` ファイルを作成します。
 
 ```yaml
 version: '3.8'
@@ -138,105 +138,100 @@ services:
       - "/dev/null"
     networks:
       - iceberg_net
-```
 
+  db:
+    image: bitnami/postgresql:16.3.0
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -p 5432 -d postgres"]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - postgres_data:/bitnami/postgresql
+    networks:
+      - iceberg_net
 
-db:
-image: bitnami/postgresql:16.3.0
-environment:
-
-* POSTGRESQL&#95;USERNAME=postgres
-* POSTGRESQL&#95;PASSWORD=postgres
-* POSTGRESQL&#95;DATABASE=postgres
-  healthcheck:
-  test: [&quot;CMD-SHELL&quot;, &quot;pg&#95;isready -U postgres -p 5432 -d postgres&quot;]
-  interval: 2s
-  timeout: 10s
-  retries: 5
-  start&#95;period: 10s
-  volumes:
-* postgres&#95;data:/bitnami/postgresql
-  networks:
-* iceberg&#95;net
-
-minio:
-image: bitnami/minio:2025.4.22
-environment:
-
-* MINIO&#95;ROOT&#95;USER=minio
-* MINIO&#95;ROOT&#95;PASSWORD=ClickHouse&#95;Minio&#95;P@ssw0rd
-* MINIO&#95;API&#95;PORT&#95;NUMBER=9000
-* MINIO&#95;CONSOLE&#95;PORT&#95;NUMBER=9001
-* MINIO&#95;SCHEME=http
-* MINIO&#95;DEFAULT&#95;BUCKETS=warehouse-rest
-  networks:
-  iceberg&#95;net:
-  aliases:
-  * warehouse-rest.minio
-    ports:
-* &quot;9002:9000&quot;
-* &quot;9003:9001&quot;
-  healthcheck:
-  test: [&quot;CMD&quot;, &quot;mc&quot;, &quot;ls&quot;, &quot;local&quot;, &quot;|&quot;, &quot;grep&quot;, &quot;warehouse-rest&quot;]
-  interval: 2s
-  timeout: 10s
-  retries: 3
-  start&#95;period: 15s
-  volumes:
-* minio&#95;data:/bitnami/minio/data
-
-clickhouse:
-image: clickhouse/clickhouse-server:head
-container&#95;name: lakekeeper-clickhouse
-user: &#39;0:0&#39;  # root 権限を確保します
-ports:
-
-* &quot;8123:8123&quot;
-* &quot;9000:9000&quot;
-  volumes:
-* clickhouse&#95;data:/var/lib/clickhouse
-* ./clickhouse/data&#95;import:/var/lib/clickhouse/data&#95;import  # データセットフォルダをマウントします
-  networks:
-* iceberg&#95;net
-  environment:
-* CLICKHOUSE&#95;DB=default
-* CLICKHOUSE&#95;USER=default
-* CLICKHOUSE&#95;DO&#95;NOT&#95;CHOWN=1
-* CLICKHOUSE&#95;PASSWORD=
-  depends&#95;on:
-  lakekeeper:
-  condition: service&#95;healthy
   minio:
-  condition: service&#95;healthy
+    image: bitnami/minio:2025.4.22
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=ClickHouse_Minio_P@ssw0rd
+      - MINIO_API_PORT_NUMBER=9000
+      - MINIO_CONSOLE_PORT_NUMBER=9001
+      - MINIO_SCHEME=http
+      - MINIO_DEFAULT_BUCKETS=warehouse-rest
+    networks: 
+      iceberg_net:
+        aliases:
+          - warehouse-rest.minio
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    healthcheck:
+      test: ["CMD", "mc", "ls", "local", "|", "grep", "warehouse-rest"]
+      interval: 2s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    volumes:
+      - minio_data:/bitnami/minio/data
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:head
+    container_name: lakekeeper-clickhouse
+    user: '0:0'  # Ensures root permissions
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
+    networks:
+      - iceberg_net
+    environment:
+      - CLICKHOUSE_DB=default
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_DO_NOT_CHOWN=1
+      - CLICKHOUSE_PASSWORD=
+    depends_on:
+      lakekeeper:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
 
 volumes:
-postgres&#95;data:
-minio&#95;data:
-clickhouse&#95;data:
+  postgres_data:
+  minio_data:
+  clickhouse_data:
 
 networks:
-iceberg&#95;net:
-driver: bridge
+  iceberg_net:
+    driver: bridge
+```
 
-````
-
-**ステップ2:** 次のコマンドを実行してサービスを起動します:
+**ステップ 2：** 次のコマンドを実行してサービスを起動します。
 
 ```bash
 docker compose up -d
-````
+```
 
-**ステップ 3:** すべてのサービスが起動して準備完了になるまで待ちます。ログを確認できます:
+**ステップ 3：** すべてのサービスが準備完了になるまで待ちます。ログを確認できます：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Lakekeeper のセットアップでは、最初に Iceberg テーブルにサンプルデータをロードしておく必要があります。ClickHouse からクエリを実行する前に、環境でテーブルが作成され、データが投入済みであることを確認してください。テーブルの有無は、利用している特定の docker-compose 構成とサンプルデータのロード用スクリプトに依存します。
+Lakekeeper のセットアップでは、まずサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse を通じてクエリを実行する前に、環境でテーブルが作成され、データが投入されていることを必ず確認してください。テーブルが利用可能かどうかは、使用している特定の docker-compose セットアップやサンプルデータ読み込み用スクリプトに依存します。
 :::
 
-### ローカル Lakekeeper カタログへの接続
+
+### ローカルの Lakekeeper カタログへの接続
 
 ClickHouse コンテナに接続します。
 
@@ -255,9 +250,9 @@ SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-
 ```
 
 
-## ClickHouse からの Lakekeeper カタログテーブルのクエリ実行
+## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする
 
-これで接続が確立されたので、Lakekeeper カタログ経由でクエリを実行できるようになりました。例えば、次のように実行します。
+接続が確立したので、Lakekeeper カタログ経由でクエリを実行できます。例えば次のとおりです。
 
 ```sql
 USE demo;
@@ -265,7 +260,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ（例: taxi データセット）が含まれている場合、次のようなテーブルが表示されます。
+セットアップにサンプルデータ（タクシーのデータセットなど）が含まれている場合は、次のようなテーブルが表示されます。
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -274,13 +269,13 @@ SHOW TABLES;
 ```
 
 :::note
-テーブルが表示されない場合、通常は次のいずれかが原因です。
+テーブルが表示されない場合、通常は次のいずれかが原因です:
 
-1. 環境がまだサンプルテーブルを作成していない
+1. 環境でサンプルテーブルがまだ作成されていない
 2. Lakekeeper カタログサービスが完全に初期化されていない
-3. サンプルデータのロード処理が完了していない
+3. サンプルデータの読み込み処理が完了していない
 
-Spark のログを確認すると、テーブル作成の進行状況を把握できます。
+テーブル作成の進捗状況は Spark のログで確認できます:
 
 ```bash
 docker-compose logs spark
@@ -288,7 +283,7 @@ docker-compose logs spark
 
 :::
 
-テーブルに対してクエリを実行するには（利用可能な場合）:
+テーブル（存在する場合）をクエリするには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -300,11 +295,11 @@ SELECT count(*) FROM `default.taxis`;
 └─────────┘
 ```
 
-:::note バッククォートが必須
-ClickHouse は複数のネームスペースをサポートしていないため、バッククォートが必須です。
+:::note バッククォートが必要
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルの DDL を確認するには：
+テーブルの DDL を確認するには:
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
@@ -339,9 +334,9 @@ SHOW CREATE TABLE `default.taxis`;
 ```
 
 
-## Data Lake から ClickHouse へのデータ読み込み
+## データレイクから ClickHouse へのデータ取り込み
 
-Lakekeeper カタログから ClickHouse にデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
+Lakekeeper カタログのデータを ClickHouse に取り込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 
 ```sql
 CREATE TABLE taxis
@@ -371,7 +366,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-次に、`INSERT INTO SELECT` を使用して Lakekeeper のカタログテーブルからデータを読み込みます：
+次に、`INSERT INTO SELECT` を使用して Lakekeeper のカタログテーブルからデータをロードします。
 
 ```sql
 INSERT INTO taxis 

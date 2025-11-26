@@ -3,10 +3,10 @@ slug: /use-cases/observability/clickstack/sdks/ruby-on-rails
 pagination_prev: null
 pagination_next: null
 sidebar_position: 7
-description: 'Ruby on Rails SDK для ClickStack — ClickHouse Observability Stack'
+description: 'Ruby on Rails SDK для ClickStack — стек наблюдаемости ClickHouse'
 title: 'Ruby on Rails'
 doc_type: 'guide'
-keywords: ['clickstack', 'sdk', 'логирование', 'интеграция', 'мониторинг приложений']
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
 В этом руководстве рассматривается интеграция:
@@ -21,30 +21,28 @@ keywords: ['clickstack', 'sdk', 'логирование', 'интеграция'
   </tbody>
 </table>
 
-_Чтобы отправлять логи в ClickStack, используйте [коллектор OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
+_Чтобы отправлять логи в ClickStack, используйте [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
 
+## Начало работы {#getting-started}
 
+### Установите пакеты OpenTelemetry
 
-## Начало работы
-
-### Установка пакетов OpenTelemetry
-
-Используйте следующую команду для установки пакета OpenTelemetry.
+Выполните следующую команду, чтобы установить пакет OpenTelemetry.
 
 ```shell
 bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exporter-otlp
 ```
 
-### Настройка OpenTelemetry и форматтера логгера
 
-Далее необходимо инициализировать инструментацию трассировки OpenTelemetry
+### Настройка OpenTelemetry и форматтера логов
+
+Далее необходимо инициализировать трассировочную инструментацию OpenTelemetry
 и настроить форматтер сообщений логов для логгера Rails, чтобы логи могли
-автоматически привязываться к трейсам. Без пользовательского форматтера логи не
-будут автоматически коррелироваться между собой в ClickStack.
+автоматически привязываться к трейсам. Без пользовательского форматтера логи
+не будут автоматически коррелироваться между собой в ClickStack.
 
-В папке `config/initializers` создайте файл с именем `hyperdx.rb` и добавьте в
-него следующее:
-
+В папке `config/initializers` создайте файл `hyperdx.rb` и добавьте в него
+следующее:
 
 ```ruby
 # config/initializers/hyperdx.rb
@@ -77,18 +75,19 @@ Rails.application.configure do
 end
 ```
 
-### Настройте переменные окружения
 
-После этого потребуется настроить в своей оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
+### Настройка переменных окружения
+
+Далее вам нужно будет настроить в вашей оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+OTEL_SERVICE_NAME='<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<ВАШ_API_КЛЮЧ_ПРИЁМА>'
 ```
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
-в приложении HyperDX и может быть любым удобным вам именем.*
+в приложении HyperDX; вы можете задать любое удобное вам имя.*
 
-Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
+Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, который можно получить в приложении HyperDX в разделе `Team Settings → API Keys`.

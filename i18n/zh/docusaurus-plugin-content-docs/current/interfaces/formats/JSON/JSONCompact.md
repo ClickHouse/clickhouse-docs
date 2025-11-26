@@ -13,46 +13,42 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 唯一的不同之处在于：数据行以数组而非对象的形式输出。
+与 [JSON](./JSON.md) 的唯一区别在于，数据行以数组形式输出，而不是以对象形式输出。
 
-
-
-## 使用示例
+## 示例用法 {#example-usage}
 
 ### 插入数据
 
-使用一个包含以下数据的 JSON 文件，命名为 `football.json`：
+使用包含以下数据的 JSON 文件，将其命名为 `football.json`：
 
 ```json
 {
     "meta":
     [
         {
-            "name": "日期",
+            "name": "date",
             "type": "Date"
         },
         {
-            "name": "赛季",
+            "name": "season",
             "type": "Int16"
         },
         {
-            "name": "主队",
+            "name": "home_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "客队",
+            "name": "away_team",
             "type": "LowCardinality(String)"
         },
         {
-            "name": "主队进球",
+            "name": "home_team_goals",
             "type": "Int8"
         },
         {
-            "name": "客队进球",
+            "name": "away_team_goals",
             "type": "Int8"
         }
     ],
@@ -79,15 +75,16 @@ doc_type: 'reference'
 }
 ```
 
-写入数据：
+插入数据：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
+
 ### 读取数据
 
-使用 `JSONCompact` 格式来读取数据：
+以 `JSONCompact` 格式读取数据：
 
 ```sql
 SELECT *
@@ -126,8 +123,6 @@ FORMAT JSONCompact
             "type": "Int8"
         }
     ],
-```
-
 
     "data":
     [
@@ -158,11 +153,7 @@ FORMAT JSONCompact
         "rows_read": 0,
         "bytes_read": 0
     }
-
 }
-
-```
-
 ```
 
 

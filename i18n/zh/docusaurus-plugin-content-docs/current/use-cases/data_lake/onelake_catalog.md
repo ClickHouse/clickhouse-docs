@@ -4,7 +4,7 @@ sidebar_label: 'Fabric OneLake'
 title: 'Fabric OneLake'
 pagination_prev: null
 pagination_next: null
-description: '本指南将逐步讲解如何在 Microsoft OneLake 中查询数据。'
+description: '在本指南中，我们将带您逐步了解如何在 Microsoft OneLake 中查询数据。'
 keywords: ['OneLake', '数据湖', 'Fabric']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,36 +14,35 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个 Catalog 集成（如 OneLake、Unity、Glue、Polaris 等）。本指南将逐步介绍如何使用 ClickHouse 和 [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) 查询存储在 Microsoft OneLake 中的数据。
+ClickHouse 支持与多个目录（OneLake、Unity、Glue、Polaris 等）集成。本指南将引导你逐步完成使用 ClickHouse 和 [OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview) 查询存储在 Microsoft OneLake 中的数据的操作。
 
-Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，可以查询 Iceberg 表。
+Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你可以查询 Iceberg 表。
 
 :::note
-由于此功能目前为测试版，需要先通过以下命令启用：
+由于此功能处于 beta 阶段，你需要先通过以下命令将其启用：
 `SET allow_database_iceberg = 1;`
 :::
 
 
 ## 收集 OneLake 所需信息 {#gathering-requirements}
 
-在 Microsoft Fabric 中查询表之前，你需要收集以下信息：
+在 Microsoft Fabric 中查询数据表之前，你需要收集以下信息：
 
 - OneLake 租户 ID（你的 Entra ID）
 - 客户端 ID
 - 客户端密钥
-- 数据仓库 ID 和数据项 ID
+- 仓库 ID 和数据项 ID
 
-如需了解如何获取这些值，请参阅 [Microsoft OneLake 文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)。
-
-
+如需帮助查找这些值，请参阅 [Microsoft OneLake 的文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)。
 
 ## 在 OneLake 和 ClickHouse 之间创建连接
 
-借助上面获取的必要信息，您现在可以在 Microsoft OneLake 和 ClickHouse 之间创建连接。但在此之前，您需要先启用目录（catalogs）：
+借助上面准备好的信息，现在可以在 Microsoft OneLake 和 ClickHouse 之间创建连接，但在此之前需要先启用目录（catalog）：
 
 ```sql
 SET allow_database_iceberg=1
 ```
+
 
 ### 连接 OneLake
 
@@ -63,7 +62,7 @@ onelake_client_secret = '<client_secret>'
 
 ## 使用 ClickHouse 查询 OneLake
 
-建立连接后，您即可开始查询 OneLake：
+连接已建立后，您就可以开始查询 OneLake 了：
 
 ```sql
 SHOW TABLES FROM onelake_catalog
@@ -79,9 +78,9 @@ Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
    └───────────────────────────────┘
 ```
 
-如果您使用的是 Iceberg 客户端，则只会显示已启用 Uniform 的 Delta 表：
+如果您正在使用 Iceberg 客户端，则只会显示启用了 Uniform 的 Delta 表：
 
-要查询表：
+要查询某张表：
 
 ```sql
 SELECT *
@@ -115,56 +114,51 @@ congestion_surcharge:  ᴺᵁᴸᴸ
 source_file:           green_tripdata_2017-05.parquet
 ```
 
-:::note 必须使用反引号
-必须使用反引号，因为 ClickHouse 仅支持单一命名空间。
+:::note 需要反引号
+需要使用反引号，因为 ClickHouse 不支持多个命名空间。
 :::
 
-要检查该表的 DDL：
+要查看该表的 DDL：
+
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
 Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
-```
 
-
-┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-
-1. │ CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017` ↴│
-   │↳( ↴│
-   │↳ `VendorID` Nullable(Int64), ↴│
-   │↳ `lpep_pickup_datetime` Nullable(DateTime64(6, 'UTC')), ↴│
-   │↳ `lpep_dropoff_datetime` Nullable(DateTime64(6, 'UTC')), ↴│
-   │↳ `store_and_fwd_flag` Nullable(String), ↴│
-   │↳ `RatecodeID` Nullable(Int64), ↴│
-   │↳ `PULocationID` Nullable(Int64), ↴│
-   │↳ `DOLocationID` Nullable(Int64), ↴│
-   │↳ `passenger_count` Nullable(Int64), ↴│
-   │↳ `trip_distance` Nullable(Float64), ↴│
-   │↳ `fare_amount` Nullable(Float64), ↴│
-   │↳ `extra` Nullable(Float64), ↴│
-   │↳ `mta_tax` Nullable(Float64), ↴│
-   │↳ `tip_amount` Nullable(Float64), ↴│
-   │↳ `tolls_amount` Nullable(Float64), ↴│
-   │↳ `ehail_fee` Nullable(Float64), ↴│
-   │↳ `improvement_surcharge` Nullable(Float64), ↴│
-   │↳ `total_amount` Nullable(Float64), ↴│
-   │↳ `payment_type` Nullable(Int64), ↴│
-   │↳ `trip_type` Nullable(Int64), ↴│
-   │↳ `congestion_surcharge` Nullable(Float64), ↴│
-   │↳ `source_file` Nullable(String) ↴│
-   │↳) ↴│
+   ┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+1. │ CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`                                                                                                               ↴│
+   │↳(                                                                                                                                                                          ↴│
+   │↳    `VendorID` Nullable(Int64),                                                                                                                                            ↴│
+   │↳    `lpep_pickup_datetime` Nullable(DateTime64(6, 'UTC')),                                                                                                                 ↴│
+   │↳    `lpep_dropoff_datetime` Nullable(DateTime64(6, 'UTC')),                                                                                                                ↴│
+   │↳    `store_and_fwd_flag` Nullable(String),                                                                                                                                 ↴│
+   │↳    `RatecodeID` Nullable(Int64),                                                                                                                                          ↴│
+   │↳    `PULocationID` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `DOLocationID` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `passenger_count` Nullable(Int64),                                                                                                                                     ↴│
+   │↳    `trip_distance` Nullable(Float64),                                                                                                                                     ↴│
+   │↳    `fare_amount` Nullable(Float64),                                                                                                                                       ↴│
+   │↳    `extra` Nullable(Float64),                                                                                                                                             ↴│
+   │↳    `mta_tax` Nullable(Float64),                                                                                                                                           ↴│
+   │↳    `tip_amount` Nullable(Float64),                                                                                                                                        ↴│
+   │↳    `tolls_amount` Nullable(Float64),                                                                                                                                      ↴│
+   │↳    `ehail_fee` Nullable(Float64),                                                                                                                                         ↴│
+   │↳    `improvement_surcharge` Nullable(Float64),                                                                                                                             ↴│
+   │↳    `total_amount` Nullable(Float64),                                                                                                                                      ↴│
+   │↳    `payment_type` Nullable(Int64),                                                                                                                                        ↴│
+   │↳    `trip_type` Nullable(Int64),                                                                                                                                           ↴│
+   │↳    `congestion_surcharge` Nullable(Float64),                                                                                                                              ↴│
+   │↳    `source_file` Nullable(String)                                                                                                                                         ↴│
+   │↳)                                                                                                                                                                          ↴│
    │↳ENGINE = Iceberg('abfss://<warehouse_id>@onelake.dfs.fabric.microsoft.com/<data_item_id>/Tables/year_2017/green_tripdata_2017') │
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-```
-
 ```
 
 
 ## 将数据湖中的数据导入 ClickHouse
 
-如果需要将 OneLake 中的数据导入 ClickHouse：
+如果您需要从 OneLake 向 ClickHouse 导入数据：
 
 ```sql
 CREATE TABLE trips

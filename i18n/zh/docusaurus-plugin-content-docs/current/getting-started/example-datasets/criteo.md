@@ -2,14 +2,14 @@
 description: '来自 Criteo 的 1 TB 点击日志'
 sidebar_label: 'Criteo 1 TB 点击日志'
 slug: /getting-started/example-datasets/criteo
-keywords: ['Criteo 点击日志', '广告数据', '点击率数据', 'TB 级数据集', '入门']
+keywords: ['Criteo 点击日志', '广告数据', '点击流数据', 'TB 级数据集', '入门']
 title: '来自 Criteo 的 1 TB 点击日志'
 doc_type: 'guide'
 ---
 
 从 [http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/) 下载数据。
 
-创建一个用于导入这些日志的表：
+创建一个用于导入日志的表：
 
 ```sql
 CREATE TABLE criteo_log (
@@ -63,7 +63,7 @@ CREATE TABLE criteo_log (
 $ for i in {00..23}; do echo $i; zcat datasets/criteo/day_${i#0}.gz | sed -r 's/^/2000-01-'${i/00/24}'\t/' | clickhouse-client --host=example-perftest01j --query="INSERT INTO criteo_log FORMAT TabSeparated"; done
 ```
 
-为转换后的数据创建一个表：
+为转换后的数据创建表：
 
 ```sql
 CREATE TABLE criteo
@@ -114,7 +114,7 @@ PARTITION BY toYYYYMM(date)
 ORDER BY (date, icat1)
 ```
 
-从原始日志中转换数据并写入第二张表：
+将原始日志中的数据转换后写入第二张表：
 
 
 ```sql

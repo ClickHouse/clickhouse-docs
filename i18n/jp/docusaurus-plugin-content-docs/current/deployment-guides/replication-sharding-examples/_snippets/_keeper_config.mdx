@@ -1,18 +1,18 @@
 レプリケーションを機能させるためには、ClickHouse Keeper クラスターをセットアップして
 構成する必要があります。ClickHouse Keeper はデータレプリケーションのためのコーディネーションシステムを提供し、
 ZooKeeper の代替として動作しますが、ZooKeeper を使用することも可能です。
-しかしながら、ClickHouse Keeper は ZooKeeper よりも高い保証と
-信頼性を提供し、使用するリソースも少ないため推奨されます。高可用性を確保し、
-クォーラムを維持するために、少なくとも 3 つの ClickHouse Keeper ノードを実行することが推奨されます。
+ただし ClickHouse Keeper は、より強い保証と高い信頼性を提供し、ZooKeeper よりも少ないリソースで
+動作するため推奨されます。高可用性とクォーラム維持のために、少なくとも 3 つの ClickHouse Keeper ノードを
+実行することを推奨します。
 
 :::note
-ClickHouse Keeper はクラスター内の任意のノードで ClickHouse と同居させて
-実行できますが、スケーリングや ClickHouse Keeper クラスターをデータベースクラスターとは独立して
-管理できるように、専用ノード上で実行することが推奨されます。
+ClickHouse Keeper はクラスター内の任意のノード上で ClickHouse と一緒に実行できますが、
+スケーリングおよびデータベースクラスターとは独立した ClickHouse Keeper クラスターの管理を可能にするため、
+専用ノード上で実行することを推奨します。
 :::
 
 各 ClickHouse Keeper ノード用の `keeper_config.xml` ファイルを、
-例フォルダーのルートから次のコマンドを実行して作成します:
+サンプルディレクトリのルートから次のコマンドを使用して作成します:
 
 ```bash
 for i in {01..03}; do
@@ -20,8 +20,8 @@ for i in {01..03}; do
 done
 ```
 
-各ノードのディレクトリ `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper` に作成された空の設定ファイルを編集します。
-以下のハイライトされた行は、各ノード固有の設定となるように変更する必要があります。
+各ノードのディレクトリ `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper` に作成された空の設定ファイルを編集します。\
+以下のハイライトされた行を、各ノードに固有の設定となるように変更してください。
 
 ```xml title="/clickhouse-keeper/keeper_config.xml"
 <clickhouse replace="true">

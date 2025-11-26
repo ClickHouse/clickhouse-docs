@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONEachRowWithProgress 格式的文档'
+description: 'JSONEachRowWithProgress 格式文档'
 input_format: false
 keywords: ['JSONEachRowWithProgress']
 output_format: true
@@ -13,15 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
-与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 不同，ClickHouse 还会以 JSON 值的形式输出进度信息。
+与 [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) 的区别在于，ClickHouse 还会以 JSON 值的形式输出进度信息。
 
-
-
-## 示例用法
+## 使用示例
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}

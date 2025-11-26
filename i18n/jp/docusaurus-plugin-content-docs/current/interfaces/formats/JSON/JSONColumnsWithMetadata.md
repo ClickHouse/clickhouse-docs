@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONColumnsWithMetadata フォーマットのドキュメント'
+description: 'JSONColumnsWithMetadata 形式に関するドキュメント'
 input_format: true
 keywords: ['JSONColumnsWithMetadata']
 output_format: true
@@ -9,21 +9,17 @@ title: 'JSONColumnsWithMetadata'
 doc_type: 'reference'
 ---
 
-| 入力 | 出力 | エイリアス |
+| 入力 | 出力 | 別名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-[`JSONColumns`](./JSONColumns.md) フォーマットと異なる点は、追加でメタデータや統計情報を含むことです（[`JSON`](./JSON.md) フォーマットと同様）。
+[`JSONColumns`](./JSONColumns.md) フォーマットとは異なり、一部のメタデータおよび統計情報も含まれます（[`JSON`](./JSON.md) フォーマットと同様）。
 
 :::note
-`JSONColumnsWithMetadata` フォーマットは、すべてのデータをいったんメモリ上にバッファしてから単一のブロックとして出力するため、大量のメモリを消費する可能性があります。
+`JSONColumnsWithMetadata` フォーマットは、すべてのデータをメモリ内にバッファリングしてから単一のブロックとして出力するため、メモリ消費量が大きくなる可能性があります。
 :::
-
-
 
 ## 使用例
 
@@ -68,8 +64,8 @@ doc_type: 'reference'
 }
 ```
 
-`JSONColumnsWithMetadata` 入力フォーマットの場合、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 設定を `1` にすると、
-入力データ内のメタデータに含まれる型が、テーブル内の対応するカラムの型と照合されます。
+`JSONColumnsWithMetadata` 入力形式では、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) の設定が `1` の場合、
+入力データ内のメタデータに含まれる型が、テーブル内の対応するカラムの型と比較されます。
 
 
 ## フォーマット設定 {#format-settings}

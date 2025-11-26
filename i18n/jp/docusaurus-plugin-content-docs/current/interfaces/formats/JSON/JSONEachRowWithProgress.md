@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONEachRowWithProgress 形式に関するドキュメント'
+description: 'JSONEachRowWithProgress 形式のドキュメント'
 input_format: false
 keywords: ['JSONEachRowWithProgress']
 output_format: true
@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) と異なり、ClickHouseは進行状況を示す情報も JSON 値として出力します。
-
-
+[`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) とは異なり、ClickHouseは進捗情報もJSON値として出力します。
 
 ## 使用例
 
@@ -31,4 +27,4 @@ doc_type: 'reference'
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

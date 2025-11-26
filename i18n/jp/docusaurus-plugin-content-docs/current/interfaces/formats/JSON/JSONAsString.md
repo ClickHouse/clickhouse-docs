@@ -9,29 +9,25 @@ title: 'JSONAsString'
 doc_type: 'reference'
 ---
 
-| Input | 出力  | 別名 |
-|-------|-------|------|
-| ✔     | ✗     |      |
-
-
+| Input | Output  | Alias |
+|-------|---------|-------|
+| ✔     | ✗       |       |
 
 ## 説明 {#description}
 
-この形式では、1 つの JSON オブジェクトが 1 つの値として解釈されます。  
-入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それぞれが別々の行として解釈されます。  
-入力データが角括弧で囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
+この形式では、1つの JSON オブジェクトは1つの値として解釈されます。  
+入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それぞれが個別の行として解釈されます。  
+入力データが角かっこで囲まれている場合、それは JSON オブジェクトの配列として解釈されます。
 
 :::note
-この形式をパースできるのは、型が [String](/sql-reference/data-types/string.md) の単一フィールドだけを持つテーブルに対してのみです。  
-残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定するか、  
+この形式は、型が [String](/sql-reference/data-types/string.md) の1つのフィールドを持つテーブルに対してのみ解析できます。  
+残りの列は [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) のいずれかに設定するか、  
 省略する必要があります。 
 :::
 
-JSON オブジェクト全体を String にシリアライズしたら、[JSON 関数](/sql-reference/functions/json-functions.md) を利用して処理できます。
+JSON オブジェクト全体を String にシリアライズしたら、[JSON 関数](/sql-reference/functions/json-functions.md) を使用して処理できます。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### 基本的な例
 
@@ -50,6 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
+
 ### JSON オブジェクトの配列
 
 ```sql title="Query"
@@ -67,4 +64,4 @@ SELECT * FROM json_square_brackets;
 ```
 
 
-## 形式設定 {#format-settings}
+## フォーマットの設定 {#format-settings}

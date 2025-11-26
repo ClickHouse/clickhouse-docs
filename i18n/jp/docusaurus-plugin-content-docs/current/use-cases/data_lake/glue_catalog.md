@@ -4,7 +4,7 @@ sidebar_label: 'AWS Glue カタログ'
 title: 'AWS Glue カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、S3 バケット内のデータに対して ClickHouse と AWS Glue Data Catalog を使用してクエリを実行する手順を説明します。'
+description: 'このガイドでは、ClickHouse と AWS Glue データカタログを使用して、S3 バケット内のデータにクエリを実行する手順を順を追って説明します。'
 keywords: ['Glue', 'データレイク']
 show_related_blogs: true
 doc_type: 'guide'
@@ -14,26 +14,24 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との統合をサポートしています。このガイドでは、S3 バケット内のデータに対して、ClickHouse と Glue Data Catalog を使用してクエリを実行する手順を説明します。
+ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との統合をサポートしています。このガイドでは、ClickHouse と Glue Data Catalog を使用して、S3 バケット内のデータをクエリする手順を説明します。
 
 :::note
-Glue は多くのテーブルフォーマットをサポートしていますが、この統合でサポートされるのは Iceberg テーブルのみです。
+Glue は多くの異なるテーブル形式をサポートしていますが、この統合でサポートされるのは Iceberg テーブルのみです。
 :::
 
 
 ## AWS で Glue を構成する {#configuring}
 
-Glue カタログに接続するには、カタログのリージョンを把握し、アクセスキーとシークレットキーを指定する必要があります。
+Glue カタログに接続するには、カタログのリージョンを特定し、アクセスキーとシークレットキーを指定する必要があります。
 
 :::note
-現在、Glue カタログはアクセスキーとシークレットキーによる認証のみに対応していますが、将来的には追加の認証方式もサポートする予定です。
+現在、Glue カタログはアクセスキーとシークレットキーのみをサポートしていますが、将来的には追加の認証方式もサポートする予定です。
 :::
 
+## Glue データカタログと ClickHouse 間の接続を確立する
 
-
-## Glue データカタログと ClickHouse の接続を作成する
-
-Unity Catalog の設定と認証が完了したら、ClickHouse と Unity Catalog 間の接続を確立します。
+Unity Catalog の構成と認証の設定が完了したら、ClickHouse と Unity Catalog の間に接続を確立します。
 
 ```sql title="Query"
 CREATE DATABASE glue
@@ -46,9 +44,9 @@ SETTINGS
 ```
 
 
-## ClickHouse から Glue データカタログにクエリを実行する
+## ClickHouse から Glue データカタログをクエリする
 
-接続が確立できたので、Glue データカタログに対してクエリを実行できるようになりました。
+接続が確立できたので、Glue に対してクエリを実行できるようになりました。
 
 ```sql title="Query"
 USE glue;
@@ -64,17 +62,16 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-上記のとおり、いくつかのテーブルは Iceberg テーブルではありません。たとえば
-`iceberg-benchmark.hitsparquet` のようなテーブルです。現在は Iceberg のみがサポートされているため、これらのテーブルにはクエリを実行できません。
+上の出力からわかるように、`iceberg-benchmark.hitsparquet` のように、いくつかのテーブルは Iceberg テーブルではありません。現在は Iceberg のみがサポートされているため、これらのテーブルに対してクエリを実行することはできません。
 
-テーブルにクエリを実行するには:
+テーブルに対してクエリを実行するには:
 
 ```sql title="Query"
 SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 ```
 
 :::note
-ClickHouse は 1 つのネームスペースしかサポートしていないため、バッククォートが必要です。
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォートで囲む必要があります。
 :::
 
 テーブルの DDL を確認するには、次のクエリを実行します。
@@ -198,15 +195,9 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   └─────────────────────────────────────────────────────────┘
 ```
 
-
-
-
-
 ## データレイクから ClickHouse へのデータ読み込み {#loading-data-into-clickhouse}
 
-Databricks から ClickHouse にデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成することから始めます。
-
-
+Databricks から ClickHouse にデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 
 ```sql title="Query"
 CREATE TABLE hits
@@ -320,7 +311,7 @@ CREATE TABLE hits
 PRIMARY KEY (CounterID, EventDate, UserID, EventTime, WatchID);
 ```
 
-次に、Iceberg テーブルからデータを読み込みます:
+次に、Iceberg テーブルからデータをロードします。
 
 ```sql title="Query"
 INSERT INTO default.hits 

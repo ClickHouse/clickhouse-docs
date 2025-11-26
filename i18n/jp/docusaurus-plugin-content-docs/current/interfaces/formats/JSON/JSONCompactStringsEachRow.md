@@ -13,19 +13,15 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
-データフィールドを型付きの JSON 値ではなく文字列として出力する点だけが、[`JSONCompactEachRow`](./JSONCompactEachRow.md) と異なります。
+[`JSONCompactEachRow`](./JSONCompactEachRow.md) とは、データフィールドが型付きの JSON 値ではなく文字列として出力される点のみが異なります。
 
-
-
-## 使用例
+## 使用例 {#example-usage}
 
 ### データの挿入
 
-次のデータを含む JSON ファイルを `football.json` という名前で保存します：
+次のデータを含む JSON ファイル `football.json` を用意します。
 
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
@@ -47,15 +43,16 @@ doc_type: 'reference'
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-データを挿入する
+データを挿入する:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
+
 ### データの読み込み
 
-`JSONCompactStringsEachRow` フォーマットを使用してデータを読み込みます：
+`JSONCompactStringsEachRow` 形式を使用してデータを読み込みます。
 
 ```sql
 SELECT *
@@ -65,7 +62,6 @@ FORMAT JSONCompactStringsEachRow
 
 出力は JSON 形式です：
 
-
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]
 ["2022-04-30", "2021", "Swindon Town", "Barrow", "2", "1"]
@@ -87,4 +83,4 @@ FORMAT JSONCompactStringsEachRow
 ```
 
 
-## フォーマット設定 {#format-settings}
+## 形式設定 {#format-settings}

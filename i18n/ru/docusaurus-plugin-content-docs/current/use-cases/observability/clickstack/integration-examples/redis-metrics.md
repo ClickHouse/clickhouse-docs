@@ -19,317 +19,279 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 # Мониторинг метрик Redis с помощью ClickStack {#redis-metrics-clickstack}
 
-:::note[Кратко]
-В этом руководстве показано, как отслеживать метрики производительности Redis с помощью ClickStack, настроив ресивер Redis в OTel collector. Вы узнаете, как:
+:::note[TL;DR]
+В этом руководстве показано, как отслеживать метрики производительности Redis с помощью ClickStack, настроив Redis receiver в OTel collector. Вы узнаете, как:
 
 - Настроить OTel collector для сбора метрик Redis
-- Развернуть ClickStack с вашей пользовательской конфигурацией
-- Использовать готовый дашборд для визуализации производительности Redis (команды/сек, использование памяти, подключенные клиенты, эффективность кэша)
+- Развернуть ClickStack с вашей собственной конфигурацией
+- Использовать готовый дашборд для визуализации производительности Redis (команды/с, использование памяти, подключенные клиенты, эффективность кэша)
 
-Демо-набор данных с примерными метриками доступен, если вы хотите протестировать интеграцию до настройки вашего боевого Redis.
+Демо-набор данных с примерами метрик доступен, если вы хотите протестировать интеграцию перед настройкой вашего боевого Redis.
 
 Требуемое время: 5–10 минут
 :::
 
-
-
 ## Интеграция с существующим Redis {#existing-redis}
 
-В этом разделе описывается настройка существующей установки Redis для отправки метрик в ClickStack путём конфигурирования OTel collector ClickStack с приёмником Redis.
+В этом разделе описывается, как настроить вашу существующую установку Redis для отправки метрик в ClickStack путём настройки ClickStack OTel collector с приёмником Redis.
 
-Если вы хотите протестировать интеграцию метрик Redis перед настройкой собственной установки, можете воспользоваться нашим предварительно настроенным демонстрационным набором данных в [следующем разделе](#demo-dataset).
+Если вы хотите протестировать интеграцию метрик Redis, прежде чем настраивать собственную инфраструктуру, вы можете использовать наш предварительно настроенный демонстрационный набор данных в [следующем разделе](#demo-dataset).
 
 ##### Предварительные требования {#prerequisites}
 
 - Запущенный экземпляр ClickStack
-- Существующая установка Redis (версия 3.0 или новее)
+- Установка Redis версии 3.0 или новее
 - Сетевой доступ от ClickStack к Redis (порт по умолчанию 6379)
 - Пароль Redis, если включена аутентификация
 
 <VerticalStepper headerLevel="h4">
+  #### Проверка подключения к Redis
 
-#### Проверка подключения к Redis {#verify-redis}
+  Сначала проверьте, что вы можете подключиться к Redis и что команда INFO работает:
 
+  ```bash
+  # Проверка подключения
+  redis-cli ping
+  # Ожидаемый вывод: PONG
 
-Сначала убедитесь, что вы можете подключиться к Redis и что команда INFO выполняется успешно:
+  # Проверка команды INFO (используется сборщиком метрик)
+  redis-cli INFO server
+  # Должна вывести информацию о сервере Redis
+  ```
 
-```bash
-# Проверка подключения
-redis-cli ping
-# Ожидаемый вывод: PONG
-```
+  Если для Redis требуется аутентификация:
 
+  ```bash
+  redis-cli -a <your-password> ping
+  ```
 
-# Проверка команды INFO (используется сборщиком метрик)
+  **Общие конечные точки Redis:**
 
-redis-cli INFO server
+  * **Локальный экземпляр**: `localhost:6379`
+  * **Docker**: используйте имя контейнера или имя службы (например, `Redis:6379`)
+  * **Удалённый сервер**: `<redis-host>:6379`
 
-# Должна отобразиться информация о сервере Redis
+  #### Создайте пользовательскую конфигурацию OTel collector
 
-````
+  ClickStack позволяет расширить базовую конфигурацию коллектора OpenTelemetry путём монтирования пользовательского конфигурационного файла и установки переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
 
-Если для Redis требуется аутентификация:
-```bash
-redis-cli -a <ваш-пароль> ping
-````
+  Создайте файл `redis-metrics.yaml` со следующей конфигурацией:
 
-**Распространённые Redis-эндпоинты:**
+  ```yaml title="redis-metrics.yaml"
+  receivers:
+    redis:
+      endpoint: "localhost:6379"
+      collection_interval: 10s
+      # Раскомментируйте, если для Redis требуется аутентификация
+      # password: ${env:REDIS_PASSWORD}
+      
+      # Настройте, какие метрики необходимо собирать
+      metrics:
+        redis.commands.processed:
+          enabled: true
+        redis.clients.connected:
+          enabled: true
+        redis.memory.used:
+          enabled: true
+        redis.keyspace.hits:
+          enabled: true
+        redis.keyspace.misses:
+          enabled: true
+        redis.keys.evicted:
+          enabled: true
+        redis.keys.expired:
+          enabled: true
 
-* **Локальная установка**: `localhost:6379`
-* **Docker**: используйте имя контейнера или сервиса (например, `redis:6379`)
-* **Удалённый хост**: `<redis-host>:6379`
+  processors:
+    resource:
+      attributes:
+        - key: service.name
+          value: "redis"
+          action: upsert
 
-#### Создание пользовательской конфигурации OTel collector
+  service:
+    pipelines:
+      metrics/redis:
+        receivers: [redis]
+        processors:
+          - resource
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
-ClickStack позволяет расширить базовую конфигурацию OpenTelemetry collector, смонтировав пользовательский конфигурационный файл и задав переменную окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
+  Эта конфигурация:
 
-Создайте файл с именем `redis-metrics.yaml` со следующей конфигурацией:
+  * Подключается к Redis на `localhost:6379` (измените endpoint в соответствии с вашей конфигурацией)
+  * Собирает метрики каждые 10 секунд
+  * Собирает ключевые метрики производительности (команды, клиенты, память, статистика по пространству ключей)
+  * **Устанавливает обязательный атрибут ресурса `service.name`** согласно [семантическим соглашениям OpenTelemetry](https://opentelemetry.io/docs/specs/semconv/resource/#service)
+  * Маршрутизирует метрики в экспортёр ClickHouse через отдельный конвейер
 
-```yaml title="redis-metrics.yaml"
-receivers:
-  redis:
-    endpoint: "localhost:6379"
-    collection_interval: 10s
-    # Раскомментируйте, если для Redis требуется аутентификация
-    # password: ${env:REDIS_PASSWORD}
-    
-    # Настройте, какие метрики необходимо собирать
-    metrics:
-      redis.commands.processed:
-        enabled: true
-      redis.clients.connected:
-        enabled: true
-      redis.memory.used:
-        enabled: true
-      redis.keyspace.hits:
-        enabled: true
-      redis.keyspace.misses:
-        enabled: true
-      redis.keys.evicted:
-        enabled: true
-      redis.keys.expired:
-        enabled: true
+  **Собираемые ключевые метрики:**
 
-processors:
-  resource:
-    attributes:
-      - key: service.name
-        value: "redis"
-        action: upsert
+  * `redis.commands.processed` - Число обработанных команд в секунду
+  * `redis.clients.connected` - Количество подключенных клиентов
+  * `redis.clients.blocked` - Клиенты, заблокированные из-за блокирующих вызовов
+  * `redis.memory.used` - используемая Redis память в байтах
+  * `redis.memory.peak` - Пиковое потребление памяти
+  * `redis.keyspace.hits` - Успешные обращения к ключам
+  * `redis.keyspace.misses` - Неуспешные обращения к ключам (для расчёта коэффициента попаданий в кэш)
+  * `redis.keys.expired` - Истекшие ключи
+  * `redis.keys.evicted` - Ключи, удалённые при нехватке памяти
+  * `redis.connections.received` - Общее число принятых подключений
+  * `redis.connections.rejected` - Отклонённые подключения
 
-service:
-  pipelines:
-    metrics/redis:
-      receivers: [redis]
-      processors:
-        - resource
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-```
+  :::note
 
-Эта конфигурация:
+  * В пользовательской конфигурации вы задаёте только новые receivers, processors и pipelines
+  * Процессоры `memory_limiter` и `batch`, а также экспортер `clickhouse` уже определены в базовой конфигурации ClickStack — достаточно сослаться на них по имени
+  * Процессор `resource` задаёт необходимый атрибут `service.name` в соответствии с семантическими соглашениями OpenTelemetry
+  * В production-среде с аутентификацией храните пароль в переменной окружения: `${env:REDIS_PASSWORD}`
+  * Настройте `collection_interval` в соответствии с вашими потребностями (по умолчанию — 10s; меньшие значения увеличивают объем собираемых данных)
+  * Для нескольких инстансов Redis задайте `service.name`, чтобы отличать их (например, `"redis-cache"`, `"redis-sessions"`)
 
-* Подключается к Redis на `localhost:6379` (скорректируйте endpoint под вашу среду)
-* Собирает метрики каждые 10 секунд
-* Собирает ключевые метрики производительности (команды, клиенты, память, статистику по пространству ключей)
-* **Устанавливает обязательный ресурсный атрибут `service.name`** в соответствии с [семантическими соглашениями OpenTelemetry](https://opentelemetry.io/docs/specs/semconv/resource/#service)
-* Направляет метрики в экспортер ClickHouse через выделенный конвейер
+  #### Настройте ClickStack для загрузки пользовательской конфигурации
 
-**Собираемые ключевые метрики:**
+  Чтобы включить пользовательскую конфигурацию коллектора в существующем развертывании ClickStack, необходимо:
 
-* `redis.commands.processed` - количество обработанных команд в секунду
-* `redis.clients.connected` - число подключенных клиентов
-* `redis.clients.blocked` - клиенты, заблокированные на блокирующих вызовах
-* `redis.memory.used` - объем памяти, используемой Redis, в байтах
-* `redis.memory.peak` - пиковое использование памяти
-* `redis.keyspace.hits` - успешные обращения к ключам
-* `redis.keyspace.misses` - неуспешные обращения к ключам (для расчета коэффициента попаданий в кэш)
-* `redis.keys.expired` - истекшие ключи
-* `redis.keys.evicted` - ключи, вытесненные из-за нехватки памяти
-* `redis.connections.received` - общее число установленных подключений
-* `redis.connections.rejected` - отклоненные подключения
+  1. Смонтируйте пользовательский конфигурационный файл в `/etc/otelcol-contrib/custom.config.yaml`
+  2. Установите переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. Убедитесь, что между ClickStack и Redis есть сетевое соединение
 
-:::note
+  ##### Вариант 1: Docker Compose
 
-* В пользовательской конфигурации вы определяете только новые receivers, processors и pipelines
-* Процессоры `memory_limiter` и `batch` и экспортер `clickhouse` уже определены в базовой конфигурации ClickStack — вы лишь ссылаетесь на них по имени
-* Процессор `resource` устанавливает обязательный атрибут `service.name` в соответствии с семантическими соглашениями OpenTelemetry
-* В продуктивной среде с аутентификацией храните пароль в переменной окружения: `${env:REDIS_PASSWORD}`
-* Настройте `collection_interval` в соответствии с вашими требованиями (по умолчанию 10s; меньшие значения увеличивают объем данных)
-* Для нескольких экземпляров Redis настройте `service.name`, чтобы различать их (например, `"redis-cache"`, `"redis-sessions"`)
-  :::
+  Обновите конфигурацию развёртывания ClickStack:
 
-#### Настройка ClickStack для загрузки пользовательской конфигурации
+  ```yaml
+  services:
+    clickstack:
+      # ... существующая конфигурация ...
+      environment:
+        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+        # Опционально: если Redis требует аутентификации
+        # - REDIS_PASSWORD=ваш-пароль-redis
+        # ... другие переменные окружения ...
+      volumes:
+        - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        # ... другие тома ...
+      # Если Redis находится в том же compose-файле:
+      depends_on:
+        - redis
 
-Чтобы включить пользовательскую конфигурацию коллектора в существующем развертывании ClickStack, необходимо:
+    redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      # Опционально: включение аутентификации
+      # command: redis-server --requirepass ваш-пароль-redis
+  ```
 
-1. Смонтировать пользовательский конфигурационный файл в `/etc/otelcol-contrib/custom.config.yaml`
-2. Установить переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-3. Обеспечить сетевую доступность между ClickStack и Redis
+  ##### Вариант 2: Запуск через Docker (универсальный образ)
 
-##### Вариант 1: Docker Compose
+  При использовании универсального образа с `docker run`:
 
-Обновите конфигурацию развертывания ClickStack:
+  ```bash
+  docker run --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  ```
 
-```yaml
-services:
-  clickstack:
-    # ... существующая конфигурация ...
-    environment:
-      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # Опционально: если Redis требует аутентификации
-      # - REDIS_PASSWORD=ваш-пароль-redis
-      # ... другие переменные окружения ...
-    volumes:
-      - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      # ... другие тома ...
-    # Если Redis находится в том же compose-файле:
-    depends_on:
-      - redis
-```
+  **Важно:** Если Redis запущен в другом контейнере, используйте сеть Docker:
 
+  ```bash
+  # Создайте сеть
+  docker network create monitoring
 
-redis:
-image: redis:7-alpine
-ports:
+  # Запустите Redis в сети
+  docker run -d --name redis --network monitoring redis:7-alpine
 
-* &quot;6379:6379&quot;
+  # Запустите ClickStack в той же сети (укажите endpoint "redis:6379" в конфигурации)
+  docker run --name clickstack \
+    --network monitoring \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  ```
 
-# Необязательный шаг: включите аутентификацию
+  #### Проверка метрик в HyperDX
 
-# command: redis-server --requirepass your-redis-password
+  После настройки войдите в HyperDX и убедитесь, что метрики поступают:
 
-````
+  1. Перейдите в раздел «Metrics Explorer»
+  2. Найдите метрики, начинающиеся с `redis.` (например, `redis.commands.processed`, `redis.memory.used`)
+  3. Вы должны увидеть, как точки метрик появляются с настроенным интервалом сбора
 
-##### Вариант 2: Docker run (образ all-in-one) {#all-in-one}
-
-При использовании образа all-in-one с `docker run`:
-```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-````
-
-
-**Важно:** если Redis запущен в отдельном контейнере, используйте сетевые возможности Docker:
-
-```bash
-# Создайте сеть
-docker network create monitoring
-```
-
-
-# Запуск Redis в сети
-docker run -d --name redis --network monitoring redis:7-alpine
-
-
-
-# Запуск ClickStack в той же сети (обновите конечную точку на &quot;redis:6379&quot; в конфигурации)
-
-docker run --name clickstack \
---network monitoring \
--p 8080:8080 -p 4317:4317 -p 4318:4318 \
--e CUSTOM&#95;OTELCOL&#95;CONFIG&#95;FILE=/etc/otelcol-contrib/custom.config.yaml \
--v &quot;$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro&quot; \
-docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-
-```
-
-#### Проверка метрик в HyperDX {#verifying-metrics}
-
-После настройки войдите в HyperDX и убедитесь, что метрики поступают:
-
-1. Перейдите в обозреватель метрик (Metrics explorer)
-2. Найдите метрики, начинающиеся с `redis.` (например, `redis.commands.processed`, `redis.memory.used`)
-3. Вы должны увидеть точки данных метрик, появляющиеся с заданным интервалом сбора
-
-<!-- <Image img={metrics_view} alt="Представление метрик Redis"/> -->
-
+  {/* <Image img={metrics_view} alt="Экран с метриками Redis"/> */ }
 </VerticalStepper>
-```
-
 
 ## Демонстрационный набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию Redis Metrics перед настройкой продуктивных систем, мы предоставляем предварительно сгенерированный набор данных с реалистичными паттернами метрик Redis.
+Для пользователей, которые хотят протестировать интеграцию метрик Redis перед настройкой своих производственных систем, мы предоставляем предварительно сгенерированный набор данных с реалистичными паттернами метрик Redis.
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите демонстрационный набор данных метрик {#download-sample}
+#### Загрузка примерного набора метрик {#download-sample}
 
-
-Скачайте заранее сгенерированные файлы метрик (24 часа метрик Redis с реалистичными шаблонами):
-
+Скачайте предварительно сгенерированные файлы метрик (24 часа метрик Redis с реалистичными паттернами):
 ```bash
-# Скачайте метрики типа gauge (память, коэффициент фрагментации)
+# Скачать метрики типа gauge (память, коэффициент фрагментации)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
+
+# Скачать метрики типа sum (команды, подключения, статистика по keyspace)
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
+Набор данных включает реалистичные паттерны:
+- **Событие прогрева кэша (06:00)** — доля попаданий растет с 30% до 80%
+- **Пик трафика (14:30–14:45)** — 5-кратный скачок трафика с ростом нагрузки на подключения
+- **Дефицит памяти (20:00)** — удаление ключей и деградация производительности кэша
+- **Ежедневные паттерны трафика** — пики в рабочие часы, спад вечером, случайные небольшие всплески
 
-# Скачать суммарные метрики (команды, подключения, статистика по пространству ключей keyspace)
-
-curl -O [https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv](https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv)
-
-````
-
-Набор данных включает реалистичные сценарии:
-- **Событие прогрева кэша (06:00)** — коэффициент попаданий возрастает с 30% до 80%
-- **Всплеск трафика (14:30-14:45)** — пятикратный рост трафика с нагрузкой на соединения
-- **Нагрузка на память (20:00)** — вытеснение ключей и снижение производительности кэша
-- **Суточные паттерны трафика** — пики в рабочие часы, спады вечером, случайные микровсплески
-
-#### Запуск ClickStack                    
+#### Запуск ClickStack {#start-clickstack}
 
 Запустите экземпляр ClickStack:
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-````
-
-Подождите около 30 секунд, пока ClickStack полностью запустится.
-
-#### Загрузите метрики в ClickStack
-
-
-Загрузите метрики непосредственно в ClickHouse:
-
-```bash
-# Загрузка метрик gauge (память, фрагментация)
-cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
-  clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 ```
 
+Подождите примерно 30 секунд, пока ClickStack полностью не запустится.
 
-# Загрузка суммарных метрик (команды, подключения, пространство ключей)
+#### Загрузка метрик в ClickStack {#load-metrics}
 
+Загрузите метрики напрямую в ClickHouse:
+```bash
+# Загрузить метрики типа gauge (память, фрагментация)
+cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
+  clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
+
+# Загрузить метрики типа sum (команды, подключения, keyspace)
 cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
-clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVWithNames&quot;
-
+  clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
 #### Проверка метрик в HyperDX {#verify-metrics}
 
-После загрузки самый быстрый способ просмотреть метрики — воспользоваться готовой панелью мониторинга.
+После загрузки самый быстрый способ просмотреть метрики — использовать предварительно созданную панель.
 
-Перейдите к разделу [Dashboards and visualization](#dashboards), чтобы импортировать панель мониторинга и просмотреть все метрики Redis.
+Перейдите к разделу [Панели и визуализация](#dashboards), чтобы импортировать панель и просмотреть все метрики Redis сразу.
 
 :::note
-Временной диапазон демонстрационного набора данных: с 2025-10-20 00:00:00 по 2025-10-21 05:00:00. Убедитесь, что временной диапазон в HyperDX соответствует этому интервалу.
+Диапазон времени демонстрационного набора данных: с 2025-10-20 00:00:00 по 2025-10-21 05:00:00. Убедитесь, что диапазон времени в HyperDX соответствует этому окну.
 
-Обратите внимание на следующие характерные паттерны:
-- **06:00** — Прогрев кеша (низкий процент попаданий с последующим ростом)
-- **14:30-14:45** — Всплеск трафика (высокое количество клиентских подключений, некоторые отклонения)
-- **20:00** — Нагрузка на память (начинается вытеснение ключей)
+Обратите внимание на следующие интересные паттерны:
+- **06:00** — прогрев кэша (низкая доля попаданий постепенно растет)
+- **14:30–14:45** — пик трафика (высокое количество клиентских подключений, некоторые отказы)
+- **20:00** — дефицит памяти (начинается удаление ключей)
 :::
 
 </VerticalStepper>
-```
-
 
 ## Дашборды и визуализация {#dashboards}
 
@@ -342,7 +304,7 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 #### Импорт готового дашборда {#import-dashboard}
 
 1. Откройте HyperDX и перейдите в раздел **Dashboards**
-2. Нажмите **Import Dashboard** в правом верхнем углу под иконкой с многоточием
+2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием
 
 <Image img={import_dashboard} alt="Кнопка импорта дашборда"/>
 
@@ -352,19 +314,17 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 
 #### Просмотр дашборда {#created-dashboard}
 
-Дашборд будет создан со всеми предварительно настроенными визуализациями:
+Дашборд будет создан со всеми преднастроенными визуализациями:
 
 <Image img={example_dashboard} alt="Дашборд Redis Metrics"/>
 
 :::note
-Для демонстрационного набора данных установите диапазон времени **2025-10-20 05:00:00 - 2025-10-21 05:00:00 (UTC)** (откорректируйте с учетом вашего часового пояса). Импортируемый дашборд по умолчанию не будет иметь заданного диапазона времени.
+Для демонстрационного набора данных установите диапазон времени **2025-10-20 05:00:00 - 2025-10-21 05:00:00 (UTC)** (при необходимости скорректируйте под ваш часовой пояс). По умолчанию у импортированного дашборда не будет задан диапазон времени.
 :::
 
 </VerticalStepper>
 
-
-
-## Устранение неполадок
+## Устранение неполадок {#troubleshooting}
 
 ### Пользовательская конфигурация не загружается
 
@@ -374,22 +334,22 @@ clickhouse-client --query &quot;INSERT INTO otel&#95;metrics&#95;sum FORMAT CSVW
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
-Убедитесь, что пользовательский конфигурационный файл смонтирован по пути `/etc/otelcol-contrib/custom.config.yaml`:
+Убедитесь, что пользовательский файл конфигурации смонтирован в `/etc/otelcol-contrib/custom.config.yaml`:
 
 ```bash
-docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
+docker exec <имя-контейнера> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 Просмотрите содержимое пользовательской конфигурации и убедитесь, что его можно прочитать:
 
 ```bash
-docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
+
 
 ### Метрики не отображаются в HyperDX
 
-
-Убедитесь, что к Redis есть доступ из коллектора:
+Убедитесь, что Redis доступен из коллектора:
 
 ```bash
 # Из контейнера ClickStack
@@ -397,85 +357,72 @@ docker exec <clickstack-container> redis-cli -h <redis-host> ping
 # Ожидаемый результат: PONG
 ```
 
-
 Проверьте, работает ли команда INFO в Redis:
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
-# Должна отобразиться статистика Redis
+# Должна отобразить статистику Redis
 ```
 
-Убедитесь, что в итоговой конфигурации присутствует ваш приёмник Redis:
+Убедитесь, что эффективная конфигурация включает ваш ресивер Redis:
 
 ```bash
-docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
+docker exec <контейнер> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
 ```
 
-
-Проверьте наличие ошибок в логах коллектора:
+Проверьте журналы коллектора на наличие ошибок:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# Ищите ошибки подключения или ошибки аутентификации
+# Проверьте наличие ошибок подключения или сбоев аутентификации
 ```
+
 
 ### Ошибки аутентификации
 
-
-Если в логах есть ошибки аутентификации:
+Если вы видите ошибки аутентификации в журналах:
 
 ```bash
-# Проверьте, требует ли Redis аутентификации
+# Проверка требования аутентификации Redis
 redis-cli CONFIG GET requirepass
-```
 
-
-# Проверка аутентификации
-
+# Тестирование аутентификации
 redis-cli -a <password> ping
 
-
-# Убедитесь, что пароль установлен в окружении ClickStack
-
+# Проверка установки пароля в окружении ClickStack
 docker exec <clickstack-container> printenv REDIS_PASSWORD
+```
 
-````
+Обновите конфигурацию, чтобы использовать пароль:
 
-Обновите конфигурацию для использования пароля:
 ```yaml
 receivers:
   redis:
     endpoint: "redis:6379"
     password: ${env:REDIS_PASSWORD}
-````
-
-### Проблемы с сетевым подключением {#network-issues}
+```
 
 
-Если ClickStack не удаётся подключиться к Redis:
+### Проблемы с сетевой связью
+
+Если ClickStack не может подключиться к Redis:
 
 ```bash
 # Проверьте, находятся ли оба контейнера в одной сети
 docker network inspect <network-name>
-```
 
-
-# Проверка подключения
-
+# Проверьте соединение
 docker exec <clickstack-container> ping redis
 docker exec <clickstack-container> telnet redis 6379
-
 ```
 
-Убедитесь, что файл Docker Compose или команды `docker run` размещают оба контейнера в одной сети.
-
-```
+Убедитесь, что в вашем файле Docker Compose или командах `docker run` оба контейнера подключены к одной сети.
 
 
-## Дальнейшие шаги {#next-steps}
+## Следующие шаги {#next-steps}
 
-Если вы хотите продолжить изучение, вот несколько идей для экспериментов с мониторингом:
+Если вы хотите продолжить изучение, вот несколько следующих шагов для экспериментов с мониторингом:
 
-- Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик (порогов использования памяти, лимитов соединений, снижения коэффициента попаданий в кэш)
-- Создайте дополнительные панели мониторинга для конкретных сценариев (задержка репликации, производительность подсистемы хранения данных)
-- Отслеживайте несколько экземпляров Redis, дублируя конфигурацию `receiver` с разными конечными точками и именами сервисов
+- Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик (пороги использования памяти, лимиты подключений, падение коэффициента попаданий в кэш)
+- Создайте дополнительные дашборды для конкретных сценариев использования (лаг репликации, производительность персистентного хранилища)
+- Мониторьте несколько экземпляров Redis, дублируя конфигурацию receiver с разными endpoint и именами сервисов
